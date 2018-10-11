@@ -256,12 +256,13 @@ function setThresholdList1(result) {
             switch (inner_index) {
                 //序号
                 case (0):
-                    $(this).find("span[id^='thresholdId']").text(obj.thresholdId);
+                    $(this).find("span[id^='thresholdId']").text(num);
                     break;
                 //处理类别
                 case (1):
                     if (obj.handleCategory != null) {
                         $(this).find("select").val(obj.handleCategory.index);
+                        selectAuto( $(this).find("select"));             // 自动匹配物质形态
                     }
                     break;
                 //物质形态
@@ -471,18 +472,38 @@ function saveData() {
         var handleCategory = $("#handleCategory" + $i).val();
         var formType = $("#formType" + $i).val();
         switch (parseInt(handleCategory)) {
-            case(1): handleCategory = 'Sludge';break;
-            case(2): handleCategory = 'WasteLiquid';break;
-            case(3): handleCategory = 'Bulk';break;
-            case(4): handleCategory = 'Crushing';break;
-            case(5): handleCategory = 'Distillation';break;
-            case(6): handleCategory = 'Suspension';break;
+            case(1):
+                handleCategory = 'Sludge';
+                break;
+            case(2):
+                handleCategory = 'WasteLiquid';
+                break;
+            case(3):
+                handleCategory = 'Bulk';
+                break;
+            case(4):
+                handleCategory = 'Crushing';
+                break;
+            case(5):
+                handleCategory = 'Distillation';
+                break;
+            case(6):
+                handleCategory = 'Suspension';
+                break;
         }
         switch (parseInt(formType)) {
-            case(1): formType = 'Gas';break;
-            case(2): formType = 'Liquid';break;
-            case(3): formType = 'Solid';break;
-            case(4): formType = 'HalfSolid';break;
+            case(1):
+                formType = 'Gas';
+                break;
+            case(2):
+                formType = 'Liquid';
+                break;
+            case(3):
+                formType = 'Solid';
+                break;
+            case(4):
+                formType = 'HalfSolid';
+                break;
         }
         threshold.thresholdId = $("#thresholdId" + $i).text();
         threshold.handleCategory = handleCategory;
@@ -528,6 +549,88 @@ function saveData() {
         },
         error: function (result) {
             alert("服务器异常！");
+        }
+    });
+}
+
+/**
+ * 选择处置类别自动匹配物质形态
+ * @param e
+ */
+function selectAuto(e) {
+    var handleCategory = $(e).val();
+    var item = $(e).parent().parent().children().find("select[id^='formType']");
+    setSelectedList1(item);          // 填充下拉框
+    var option = $('<option />');
+    // 设置选中项，删除多余项
+    switch (parseInt(handleCategory)) {
+        case(1): {
+            item.empty();
+            option.val(4);
+            option.text('半固态');
+            item.append(option);
+        }
+            break; // 污泥--半固体
+        case(2): {
+            item.empty();
+            option.val(2);
+            option.text('液体');
+            item.append(option);
+        }
+            break; // 废液--液体
+        case(3): {
+            item.empty();
+            option.val(3);
+            option.text('固体');
+            item.append(option);
+        }
+        break;  // 散装料--固体
+        case(4): {
+            item.empty();
+            option.val(4);
+            option.text('半固态');
+            item.append(option);
+        }
+            break;  // 破碎料--半固体
+        case(5): {
+            item.find("option[value='1']").remove();
+            item.get(0).selectedIndex = -1; // 初始化
+            break;  // 精馏残渣--半固体/固体/液体
+        }
+        case(6): break;  // 悬挂连--全部
+    }
+}
+
+/**
+ * 设置下拉框数据
+ */
+function setSelectedList1(e) {
+    //添加产废单位信息
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getThresholdSelectedList",              // url
+        cache: false,
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                // 各下拉框数据填充
+                // 清空遗留元素
+                e.children().remove();
+                $.each(data.formTypeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.index);
+                    option.text(item.name);
+                    e.append(option);
+                });
+                e.get(0).selectedIndex = -1; // 初始化
+            } else {
+                   console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
         }
     });
 }

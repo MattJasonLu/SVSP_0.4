@@ -13,12 +13,12 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/threshold.js"></script>
+    <script src="js/produce/contractCommission.js"></script>
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');
 </script>
-<body onload="loadThresholdList()">
+<body onload="loadContractPercentage()">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -113,7 +113,7 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 编辑</a>
+                        <a class="btn btn-primary btn-xs" href="contractCommissionAdd.html"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 编辑</a>
                     </div>
                 </div>
             </div>
@@ -131,61 +131,19 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td class="text-center"><10</td>
-                            <td class="text-center">10kg</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0.000</td>
+                        <tr id="clonedTr">
                             <td class="text-center"></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">10≤签约量≤50</td>
-                            <td class="text-center">10kg</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0.004</td>
                             <td class="text-center"></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">50≤签约量≤200</td>
-                            <td class="text-center">10kg</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0.010</td>
                             <td class="text-center"></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">200≤签约量≤500</td>
-                            <td class="text-center">20kg</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0.13</td>
                             <td class="text-center"></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">500≤签约量≤2000</td>
-                            <td class="text-center">30kg</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0.020</td>
-                            <td class="text-center"></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">2000≤签约量≤5000</td>
-                            <td class="text-center">30kg</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0.025</td>
-                            <td class="text-center"></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">5000≤签约量</td>
-                            <td class="text-center">40kg</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0.035</td>
                             <td class="text-center"></td>
                         </tr>
                         <tr>
                             <td class="text-center">合计</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0</td>
+                            <td class="text-center"><span id="totalContractAmount"></span></td>
+                            <td class="text-center"><span id="totalEligibleQuantity"></span></td>
                             <td class="text-center">提成比例</td>
-                            <td class="text-center"></td>
+                            <td class="text-center">--</td>
                         </tr>
                         </tbody>
                     </table>
