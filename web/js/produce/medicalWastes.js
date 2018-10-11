@@ -529,62 +529,62 @@ function setMedicalWastesList(result) {
             // 根据索引为部分td赋值
             switch (inner_index) {
                 // 登记单号
-                case (0):
+                case (1):
                     $(this).html(obj.medicalWastesId);
                     break;
                 // 登记日期
-                case (1):
+                case (2):
                     $(this).html(getDateStr(obj.dateTime));
                     break;
                 // 登记部门
-                case (2):
+                case (3):
                     $(this).html(obj.department);
                     break;
                 // 登记人
-                case (3):
+                case (4):
                     $(this).html(obj.departmentName);
                     break;
                 // 修改人
-                case (4):
+                case (5):
                     $(this).html(obj.adjustName);
                     break;
                 // 修改时间
-                case (5):
+                case (6):
                     $(this).html(getDateStr(obj.adjustDate));
                     break;
                     //本月进厂危废
-                case (6):
+                case (7):
                     $(this).html(obj.thisMonthWastes);
                     break;
                     //本日直接转外处置量
-                case (7):
+                case (8):
                     $(this).html(obj.directDisposal);
                     break;
                 //本日蒸煮医废(过磅)
-                case (8):
+                case (9):
                     $(this).html(obj.cookingWastes);
                     break;
                     //蒸煮后重量
-                case (9):
+                case (10):
                     $(this).html(obj.afterCookingNumber);
                     break;
                     //蒸煮后入库量
-                case (10):
+                case (11):
                     $(this).html(obj.afterCookingInbound);
                     break;
                     //本月蒸煮后外送量
-                case (11):
+                case (12):
                     $(this).html(obj.thisMonthSendCooking);
                     break;
                     //误差量
-                case (12):
+                case (13):
                     $(this).html(obj.errorNumber);
                     break;
                     //水分含量
-                case (13):
+                case (14):
                     $(this).html(obj.wetNumber);
                     break;
-                case (14):
+                case (15):
                     if(obj.checkState!=null){
                         $(this).html(obj.checkState.name);
                     }
@@ -788,4 +788,110 @@ function cancelMedicalWastes(item) {
     }
 
 }
+
+
+//导入数据
+function importExcelChoose() {
+    $("#importExcelModal").modal('show');
+}
+
+function importExcel() {
+    document.getElementById("idExcel").click();
+    document.getElementById("idExcel").addEventListener("change", function () {
+        var eFile = document.getElementById("idExcel").files[0];
+        var formFile = new FormData();
+        formFile.append("excelFile", eFile);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "importMedicalWaste",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: formFile,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                if (result != undefined) {
+                    console.log(result);
+                    if (result.status == "success") {
+
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+        alert("导入成功！");
+        window.location.reload();         //刷新
+    });
+}
+
+// function importExcel() {
+//     document.getElementById("idExcel").click();
+//     document.getElementById("idExcel").addEventListener("change", function () {
+//         var id = '0000';
+//         console.log("change");
+//         $.ajax({
+//             type: "POST",                       // 方法类型
+//             url: "getCurrentCompatibilityId",              // url
+//             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+//             dataType: "json",
+//             contentType: false,
+//             success: function (result) {
+//                 if (result != undefined || result != NaN) {
+//                     id = result.compatibilityId;
+//                 } else {
+//                     alert("数据获取失败！ " + result);
+//                 }
+//             },
+//             error: function (result) {
+//                 alert("导入失败，请检查后重试！")
+//                 console.log("error" + result);
+//             }
+//         });
+//         var eFile = document.getElementById("idExcel").files[0];
+//         var formFile = new FormData();
+//         formFile.append("excelFile", eFile);
+//         formFile.append("tableName", 't_pr_pw');
+//         formFile.append("id", id);
+//         $.ajax({
+//             type: "POST",                       // 方法类型
+//             url: "importCompatibilityExcel",              // url
+//             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+//             dataType: "json",
+//             data: formFile,
+//             processData: false,
+//             contentType: false,
+//             success: function (result) {
+//                 if (result != undefined) {
+//                     console.log(result);
+//                     if (result.status == "success") {
+//                         alert(result.message);
+//                         window.location.reload();         //刷新
+//                     } else {
+//                         alert(result.message);
+//                     }
+//                 }
+//             },
+//             error: function (result) {
+//                 console.log(result);
+//             }
+//         });
+//     });
+//
+// }
+
+/**
+ * 下载模板
+ * */
+function downloadModal() {
+    var filePath = 'Files/Templates/配伍周导入模板.xlsx';
+    var r = confirm("是否下载模板?");
+    if (r == true) {
+        window.open('downloadFile?filePath=' + filePath);
+    }
+}
+
 

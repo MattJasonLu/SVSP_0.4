@@ -75,5 +75,6 @@ public interface ContractService {
     void deleteQuotationItem(String contractId);
     List<Contract> getContractByClientId(String id);
     List<Contract> getContractByMonth(String month);
+    List<String> getNewestContractId1();
 
 }

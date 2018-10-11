@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>组织架构管理表</title>
-    <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/jquery/jquery2.0.3/jquery-2.0.3.min.js"></script>
+    <script src="js/jquery/jquery2.0.3/jquery-2.0.3.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap/3.3.6/bootstrap.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <script src="js/bootstrap/treeview/bootstrap-treeview.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
@@ -95,80 +98,123 @@
     </div>
 
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h1 class="page-header">流程节点</h1>
-
-        <div class="row placeholders">
-            <div class="col-xs-6 col-sm-3 placeholder"></div>
-            <div class="col-xs-6 col-sm-2 placeholder">
-                <a href="businessModel.html"><img src="image/Business.png" width="80" height="80" class="img-circle"></a>
-                <h4>商务</h4>
-                <!--<span class="text-muted">系统节点1</span>-->
-            </div>
-            <div class="col-xs-6 col-sm-2 placeholder">
-                <img src="image/LR.png" width="80" height="80">
-            </div>
-            <div class="col-xs-6 col-sm-2 placeholder">
-                <a href="#"><img src="image/Receive.png" width="80" height="80" class="img-circle"></a>
-                <h4>接收</h4>
-                <!--<span class="text-muted">系统节点2</span>-->
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder"></div>
-        </div>
-        <div class="row placeholders">
-            <div class="col-xs-6 col-sm-6 placeholder">
-                <img src="image/RT.png" width="80" height="80">
-            </div>
-            <div class="col-xs-6 col-sm-6 placeholder">
-                <img src="image/RB.png" width="80" height="80">
-            </div>
-        </div>
-        <div class="row placeholders">
-            <!--<div class="col-xs-6 col-sm-2 placeholder"></div>-->
-            <div class="col-xs-6 col-sm-4 placeholder">
-                <a href="#"><img src="image/Storage.png" width="80" height="80" class="img-circle"></a>
-                <h4>贮存</h4>
-                <!--<span class="text-muted">系统节点3</span>-->
-            </div>
-            <div class="col-xs-6 col-sm-4 placeholder">
-                <h1>产废平台</h1>
-            </div>
-            <div class="col-xs-6 col-sm-4 placeholder">
-                <a href="#"><img src="image/Preprocessing.png" width="80" height="80" class="img-circle"></a>
-                <h4>预处理</h4>
-                <!--<span class="text-muted">系统节点4</span>-->
-            </div>
-            <!--<div class="col-xs-6 col-sm-2 placeholder"></div>-->
-        </div>
-        <div class="row placeholders">
-            <div class="col-xs-6 col-sm-6 placeholder">
-                <img src="image/LT.png" width="80" height="80">
-            </div>
-            <div class="col-xs-6 col-sm-6 placeholder">
-                <img src="image/LB.png" width="80" height="80">
-            </div>
-        </div>
-        <div class="row placeholders">
-            <div class="col-xs-6 col-sm-3 placeholder"></div>
-            <div class="col-xs-6 col-sm-2 placeholder">
-                <a href="#"><img src="image/Management.png" width="80" height="80" class="img-circle"></a>
-                <h4>处置</h4>
-                <!--<span class="text-muted">系统节点5</span>-->
-            </div>
-            <div class="col-xs-6 col-sm-2 placeholder">
-                <img src="image/RL.png" width="80" height="80">
-            </div>
-            <div class="col-xs-6 col-sm-2 placeholder">
-                <a href="#"><img src="image/Secondary.png" width="80" height="80" class="img-circle"></a>
-                <h4>次生</h4>
-                <!--<span class="text-muted">系统节点6</span>-->
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder"></div>
-        </div>
+        <table border="0" style="width: 100%;height: 100%" align="center">
+            <tr>
+                <td class="text-center" style="width: 30%;BORDER-RIGHT: #999999 1px dashed;height: 100%">
+                    <h3>公司管理</h3>
+                    <div id="tree"></div>
+                </td>
+                <td class="text-center" style="width: 30%;BORDER-RIGHT: #999999 1px dashed">
+                    <h3>部门管理</h3>
+                    <div id="tree1"></div>
+                </td>
+                <td class="text-center" style="width: 30%;">
+                    <h3>项目组管理</h3>
+                    <div id="tree2"></div>
+                </td>
+            </tr>
+        </table>
     </div>
 </div>
 <div id="embed"></div>
 </body>
 <script>
     $('#embed').load('embed/loginLogModal.html');
+
+    /**
+     * 建立树表
+     */
+    function getTree() {
+        return tree;
+    }
+
+    var tree = [
+        {
+            id: 1,
+            text: "********公司",
+            selectable:true,
+            tags: ['available'],
+            nodes:[
+                {
+                    text: "******部门",
+                    selectable:true,
+                    nodes: [
+                        {
+                            text: "*****小组1",
+                            selectable:true,
+                            href: "#tree1",
+                            icon:"glyphicon glyphicon-stop",
+                            state: {
+                                checked: true,
+                                disabled:false,
+                                expanded:true,
+                                selected:false
+                            },
+                            tags: ['available']
+                        },
+                        {
+                            text: "*****小组2",
+                            selectable:true,
+                            href: "#tree1",
+                            icon:"glyphicon glyphicon-stop",
+                            state: {
+                                checked: true,
+                                disabled:false,
+                                expanded:true,
+                                selected:false
+                            },
+                            tags: ['available']
+                        }
+                    ]
+                },
+                {
+                    text: "*******部门",
+                    selectable:true
+                }
+            ]
+        },
+        {
+            text: "*****公司2"
+        },
+        {
+            text: "******公司3"
+        },
+        {
+            text: "*****公司4"
+        },
+        {
+            text: "******公司5"
+        }
+    ];
+    $(document).ready(
+        $('#tree').treeview({
+            data: getTree(),               //将设置好的树装入容器
+            backColor: "#ffffff",           //列表树节点的背景色
+            borderColor: "#ffffff",              // 列表树颜色的边框颜色
+            checkedIcon: "glyphicon glyphicon-check",  //设置复选框图标
+            highlightSearchResults: true,    //选择节点时是否高亮显示
+            collapseIcon: "glyphicon glyphicon-minus" //加号
+        })
+    );
+    $(document).ready(
+        $('#tree1').treeview({
+            data: getTree(),               //将设置好的树装入容器
+            backColor: "#ffffff",           //列表树节点的背景色
+            borderColor: "#ffffff",              // 列表树颜色的边框颜色
+            checkedIcon: "glyphicon glyphicon-check",  //设置复选框图标
+            highlightSearchResults: true,    //选择节点时是否高亮显示
+            collapseIcon: "glyphicon glyphicon-minus" //加号
+        })
+    );
+    $(document).ready(
+        $('#tree2').treeview({
+            data: getTree(),               //将设置好的树装入容器
+            backColor: "#ffffff",           //列表树节点的背景色
+            borderColor: "#ffffff",              // 列表树颜色的边框颜色
+            checkedIcon: "glyphicon glyphicon-check",  //设置复选框图标
+            highlightSearchResults: true,    //选择节点时是否高亮显示
+            collapseIcon: "glyphicon glyphicon-minus" //加号
+        })
+    );
 </script>
 </html>

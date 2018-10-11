@@ -221,11 +221,20 @@ $.ajax({
                 </tr>
                 <tr>
                     <td class="text-center">合同编号</td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center">产废单位</td>
+                    <td class="text-center" colspan="2" id="contractId"></td>
+
+                    <td class="text-center" id="name">产废单位</td>
+
                     <td class="text-center" colspan="2">
+                        <div id="client">
                         <select title="" class="selectpicker input-sm form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="companyName" name="companyName" onchange="findClient();"></select>
-                    </td>
+                    </div>
+                    <div id="supplier">
+                            <select class="selectpicker input-sm form-control form-inline" data-live-search="true" data-live-search-placeholder="搜索..." id="suppier" name="suppier" onchange="findSuppier();">
+                            </select>
+                    </div>
+                        </td>
+<
                 </tr>
                 <tr>
                     <td class="text-center" >合同版本</td>     <!--时间，精确到秒 下同-->
@@ -242,7 +251,7 @@ $.ajax({
                         <div class="input-group ">
                             <input title="" type="date" class=" form-control" name="beginTime" id="beginTime" required="required" onchange="warning(this)">
                         </div>
-                        <span >to</span>
+                        <samp >to</samp>
                         <div class="input-group ">
                             <input title="" type="date" class=" form-control" name="endTime" id="endTime" required="required" onchange="warning(this)"/>
                         </div>
@@ -261,7 +270,13 @@ $.ajax({
                     </td>
                     <!--合同类型-->
                     <td class="text-center">合同类型</td>
-                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2">
+                        <select title="" class="form-control" id="contractType" onchange="findModel()">
+                        <option value="Wastes">危废合同</option>
+                        <option value="Logistics">物流合同</option>
+                        <option value="Emergency">应急合同</option>
+                    </select>
+                    </td>
                 </tr>
                 <tr>
                     <td class="text-center" style="width: 150px;">联系电话</td>
@@ -304,8 +319,8 @@ $.ajax({
                     <th class="text-center">包装类型</th>
                     <th class="text-center">单位</th>
                     <th class="text-center">处置单价</th>
-                    <th class="text-center">处置金额</th>
                     <th class="text-center">合同量</th>
+                    <th class="text-center">处置金额</th>
                     <th class="text-center">运输方式</th>
                 </tr>
                 </thead>
@@ -319,8 +334,8 @@ $.ajax({
                     <td class="text-center"><select class="focus" title="" id="packageType"></select></td>
                     <td class="text-center"><input class="focus" title=""></td>
                     <td class="text-center"><input class="focus" title=""></td>
-                    <td class="text-center"><input class="focus" title=""></td>
                     <td class="text-center"><input class="focus" title="" onkeyup="calculateTotalPrice(this)" ></td>
+                    <td class="text-center"><input class="focus" title=""readonly></td>
                     <td class="text-center">
                         <select class="focus" title="" id="transportType" >
                             <option value="0">0</option>
@@ -386,176 +401,18 @@ $.ajax({
             </div>
         </form>
         <form method="post" id="contractInfoForm" enctype="multipart/form-data" >
-            <!--<div class="row">-->
-                <!--<div class="form-horizontal col-md-4">-->
-                    <!--<div class="form-group">-->
-                        <!--<label class="col-sm-6 control-label" for="submitName">送审人员</label>-->
-                        <!--<div class="col-xs-6">-->
-                            <!--<input type="text" class="form-control"  name="reviewer" id="submitName" placeholder="***" readonly>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="form-horizontal col-md-4" >-->
-                    <!--<div class="form-group"  >-->
-                        <!--<label class="col-sm-6 control-label" for="submitDate"> 送审日期</label>-->
-                        <!--<div class="col-xs-6">-->
-                            <!--<input type="text" class="form-control"  name="reviewDate" id="submitDate" placeholder="***" readonly>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="form-horizontal col-md-4" >-->
-                    <!--<div class="form-group">-->
-                        <!--<label class="col-sm-6 control-label" for="submitDep"> 送审部门</label>-->
-                        <!--<div class="col-xs-6">-->
-                            <!--<input type="text" class="form-control"  name="reviewDepartment" id="submitDep" placeholder="***" readonly>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
             <div class="row">
                 <div class="form-horizontal col-md-6">
-                    <!--<div class="form-group" >-->
-                        <!--<label  class="col-sm-4 control-label" for="companyName">产废单位名称</label>-->
-                        <!--<div class="col-xs-4">-->
-                            <!--<select class="selectpicker input-sm form-control" data-live-search="true" data-live-search-placeholder="搜索..."  name="companyName" onchange="findClient();">-->
-                            <!--</select>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group" >-->
-                        <!--<label class="col-sm-4 control-label" for="province">所属区域 </label>-->
-                        <!--<form name="form1" method="post" action="">-->
-                        <!--<div class="form-inline">-->
-                         <!--<div class="form-group col-xs-3">-->
-                                <!--<select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="province"  name="province" onchange="changeSelect(this.selectedIndex)">-->
-                                <!--</select>-->
-                            <!--</div>-->
-                            <!--<div class="form-group col-xs-3">-->
-                                <!--<select class="selectpicker input-xlarge form-control" id="city" name="city" data-live-search="true" data-live-search-placeholder="搜索...">-->
-                                <!--</select>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--</form>-->
-                    <!--</div>-->
-                    <!--<div class="form-group" >-->
-                        <!--<label  for="contractName" class="col-sm-4 control-label">合同名称</label>-->
-                        <!--<div class="col-xs-4"  >-->
-                            <!--<input type="text" class="focus" name="contractName">-->
-                        <!--</div>-->
-                        <!--<div class="col-xs-5 form-inline" >-->
-                            <!--<select class="form-control"  type="text"  name="modelName"  >-->
-                            <!--</select>-->
-                            <!--<input type="button" class="form-control" value="查看" onclick="check1(this)">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group" >-->
-                        <!--<label  for="contactName" class="col-sm-4 control-label">联系人</label>-->
-                         <!--<div class="col-xs-4" >-->
-                            <!--<input type="text" class="form-control"  name="contactName" placeholder="">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group" >-->
-                        <!--<label  for="bankName" class="col-sm-4 control-label">开户行名称</label>-->
-                        <!--<div class="col-xs-4" >-->
-                            <!--<input type="text" class="form-control"  name="bankName" placeholder="">-->
-                        <!--</div>-->
-                    <!--</div>-->
                     <div class="form-group" >
                         <div class="col-xs-4" >
                             <input type="hidden" class="form-control" id="company1" name="company1" placeholder="">
                         </div>
                     </div><!--隐藏域保存产废单位名称-->
-                    <!--<div class="form-group" >-->
-                        <!--<label for="taxRate1" class="col-sm-4 control-label">开票税率</label>-->
-                        <!--<div class="col-xs-5">-->
-                            <!--<select class="form-control"  name="ticketRate1">-->
-                            <!--</select>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group ">-->
-                        <!--&lt;!&ndash;<label for="isFreight" class="col-sm-4 control-label">是否包含运费</label>-->
-                        <!--<div class="col-xs-5 checkbox">-->
-                            <!--<input type="checkbox" id="isFreight" name="freight">-->
-                        <!--</div>&ndash;&gt;-->
-                        <!--<label class="col-sm-2 control-label sr-only" > 1111111</label>-->
-                        <!--<label class="checkbox-inline col-xs-5" for="isFreight">-->
-                            <!--是否包含运费<input type="checkbox"  class="col-xs-3" name="freight" value="true">-->
-                        <!--</label>-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<label class="col-sm-4 control-label">保存之后 </label>-->
-                        <!--<div class="col-xs-5 radio">-->
-                            <!--<label>-->
-                                <!--<input type="radio" name="addType"  value="continue" checked>-->
-                                <!--继续添加-->
-                            <!--</label>-->
-                            <!--<label>-->
-                                <!--<input type="radio" name="addType"  value="break">-->
-                                <!--返回列表-->
-                            <!--</label>-->
-                        <!--</div>-->
-                    <!--</div>-->
+
                 </div>
                 <div class="form-horizontal col-md-6">
-                    <!--<div class="form-group" >-->
-                        <!--<label  class="col-sm-3 control-label" for="contractVersion" >合同版本</label>-->
-                        <!--<div class="col-xs-8" >-->
-                            <!--<label class="radio-inline">-->
-                                <!--<input type="radio" name="contractVersion"  value="companyContract" onclick="Appear()" checked> 公司合同-->
-                            <!--</label>-->
-                            <!--<label class="radio-inline">-->
-                                <!--<input type="radio" name="contractVersion"  value="customerContract" onclick="Appear1()"  > 产废单位合同-->
-                            <!--</label>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group" >-->
-                            <!--<label class="col-sm-3 control-label">合同有效期 </label>-->
-                        <!--<div class="input-group date">-->
-                            <!--<input type="text" class="input-sm form-control form_datetime1" name="beginTime"/>-->
-                            <!--<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
-                            <!--<span class="input-group-addon">to</span>-->
-                            <!--<input type="text" class="input-sm form-control form_datetime2" name="endTime"/>-->
-                            <!--<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group" >-->
-                        <!--<label for="order1" class="col-sm-3 control-label">预计处置费</label>-->
-                        <!--<div class="col-xs-5" >-->
-                            <!--<input type="text" class="form-control" id="order1" name="order1" >-->
-                        <!--</div>-->
-                        <!--<h4>元</h4>-->
-                    <!--</div>-->
-                    <!--<div class="form-group" >-->
-                        <!--<label for="telephone" class="col-sm-3 control-label">联系电话</label>-->
-                        <!--<div class="col-xs-5" >-->
-                            <!--<input type="text" class="form-control"  name="telephone" >-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group" >-->
-                        <!--<label  for="bankAccount" class="col-sm-3 control-label">开户行账号</label>-->
-                        <!--<div class="col-xs-5" >-->
-                            <!--<input type="text" class="form-control" name="bankAccount" placeholder="">                        </div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group" >-->
-                        <!--<label for="taxRate2" class="col-sm-3 control-label">开票税率2</label>-->
-                        <!--<div class="col-xs-5">-->
-                            <!--<select class="form-control" id="taxRate2" name="ticketRate2">-->
-                            <!--</select>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group" >-->
-                        <!--<label for="contractType" class="col-sm-3 control-label"></label>-->
-                        <!--<div class="col-xs-5">-->
-                            <!--<input class="form-control"  type="text"  name="contractType" value="Wastes" >-->
-                            <!--</input>-->
-                        <!--</div>-->
-                    <!--</div>-->
                 </div>
             </div>
-            <!--<div class="row text-center">-->
-                <!--<a class="btn btn-success" onclick="contractSave()">保存</a>-->
-                <!--<a class="btn btn-primary" onclick="contractSubmit()">提交</a>-->
-                <!--<a class="btn btn-danger" href="contractManage.html" id="back">返回</a>-->
-            <!--</div>-->
         </form>
         <!-- 日志模态框 -->
         <div class="modal fade" id="logModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -678,16 +535,12 @@ $.ajax({
     function Appear() {
         $("#contractName1").hide();
         $('#contractType2').show();
-        $('#contractType1').attr('required','required');
-        $('#contractName').removeAttr('required');
 
     }
 
     function Appear1() {
         $('#contractType2').hide();
         $("#contractName1").show();
-        $('#contractName').attr('required','required');
-        $('#contractType1').removeAttr('required');
 
     }
 
