@@ -1,22 +1,612 @@
+var currentPage = 1;                          //当前页数
+var isSearch = false;
+var data;
+
 /**
- *
- * 加载基础数据阈值表数据
+ * 返回count值
+ * */
+function countValue() {
+    var mySelect = document.getElementById("count");
+    var index = mySelect.selectedIndex;
+    return mySelect.options[index].text;
+}
+
+/**
+ * 计算总页数
+ * */
+function totalPage() {
+    var totalRecord = 0;
+    if (!isSearch) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "totalThresholdListRecord",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                if (result > 0) {
+                    totalRecord = result;
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
+    } else {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchThresholdListTotal",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                // console.log(result);
+                if (result > 0) {
+                    totalRecord = result;
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
+    }
+    var count = countValue();                         // 可选
+    var total = loadPages(totalRecord, count);
+    return total;
+}
+
+/**
+ * 设置克隆页码
+ * */
+function setPageClone(result) {
+    $(".beforeClone").remove();
+    setThresholdOutList(result);
+    var total = totalPage();
+    $("#next").prev().hide();            // 将页码克隆模板隐藏
+    var st = "共" + total + "页";
+    $("#totalPage").text(st);
+    var myArray = new Array();
+    for (var i = 0; i < total; i++) {
+        var li = $("#next").prev();
+        myArray[i] = i + 1;
+        var clonedLi = li.clone();
+        clonedLi.show();
+        clonedLi.find('a:first-child').text(myArray[i]);
+        clonedLi.find('a:first-child').click(function () {
+            var num = $(this).text();
+            switchPage(num);
+            addAndRemoveClass(this);
+        });
+        clonedLi.addClass("beforeClone");
+        clonedLi.removeAttr("id");
+        clonedLi.insertAfter(li);
+    }
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页码标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
+}
+
+/**
+ * 点击页数跳转页面
+ * @param pageNumber 跳转页数
+ * */
+function switchPage(pageNumber) {
+    console.log("当前页：" + pageNumber);
+    if (pageNumber > totalPage()) {
+        pageNumber = totalPage();
+    }
+    if (pageNumber == 0) {                 //首页
+        pageNumber = 1;
+    }
+    if (pageNumber == -2) {
+        pageNumber = totalPage();        //尾页
+    }
+    if (pageNumber == null || pageNumber == undefined) {
+        console.log("参数为空,返回首页!");
+        pageNumber = 1;
+    }
+    $("#current").find("a").text("当前页：" + pageNumber);
+    if (pageNumber == 1) {
+        $("#previous").addClass("disabled");
+        $("#firstPage").addClass("disabled");
+        $("#next").removeClass("disabled");
+        $("#endPage").removeClass("disabled");
+    }
+    if (pageNumber == totalPage()) {
+        $("#next").addClass("disabled");
+        $("#endPage").addClass("disabled");
+        $("#previous").removeClass("disabled");
+        $("#firstPage").removeClass("disabled");
+    }
+    if (pageNumber > 1) {
+        $("#previous").removeClass("disabled");
+        $("#firstPage").removeClass("disabled");
+    }
+    if (pageNumber < totalPage()) {
+        $("#next").removeClass("disabled");
+        $("#endPage").removeClass("disabled");
+    }
+    addPageClass(pageNumber);           // 设置页码标蓝
+    var page = {};
+    page.count = countValue();                        //可选
+    page.pageNumber = pageNumber;
+    currentPage = pageNumber;          //当前页面
+    //addClass("active");
+    page.start = (pageNumber - 1) * page.count;
+    if (!isSearch) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "thresholdOutList",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    setThresholdOutList(result.data);
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+            }
+        });
+    } else {
+        data['page'] = page;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchThresholdList",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    // console.log(result);
+                    setThresholdOutList(result.data);
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+            }
+        });
+    }
+}
+
+/**
+ * 输入页数跳转页面
+ * */
+function inputSwitchPage() {
+    var pageNumber = $("#pageNumber").val();    // 获取输入框的值
+    if (pageNumber > totalPage()) {
+        pageNumber = totalPage();
+    }
+    $("#current").find("a").text("当前页：" + pageNumber);
+    if (pageNumber == null || pageNumber == "") {
+        window.alert("跳转页数不能为空！")
+    } else {
+        if (pageNumber == 1) {
+            $("#previous").addClass("disabled");
+            $("#firstPage").addClass("disabled");
+            $("#next").removeClass("disabled");
+            $("#endPage").removeClass("disabled");
+        }
+        if (pageNumber == totalPage()) {
+            $("#next").addClass("disabled");
+            $("#endPage").addClass("disabled");
+            $("#previous").removeClass("disabled");
+            $("#firstPage").removeClass("disabled");
+        }
+        if (pageNumber > 1) {
+            $("#previous").removeClass("disabled");
+            $("#firstPage").removeClass("disabled");
+        }
+        if (pageNumber < totalPage()) {
+            $("#next").removeClass("disabled");
+            $("#endPage").removeClass("disabled");
+        }
+        currentPage = pageNumber;
+        addPageClass(pageNumber);           // 设置页码标蓝
+        var page = {};
+        page.count = countValue();//可选
+        page.pageNumber = pageNumber;
+        page.start = (pageNumber - 1) * page.count;
+        if (!isSearch) {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "thresholdOutList",         // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(page),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    if (result != undefined) {
+                        console.log(result);
+                        setThresholdOutList(result.data);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        } else {
+            data['page'] = page;
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "searchThresholdList",         // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    if (result != undefined) {
+                        // console.log(result);
+                        setThresholdOutList(result.data);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+    }
+}
+
+/**
+ * 计算分页总页数
+ * @param totalRecord
+ * @param count
+ * @returns {number}
  */
-function loadThresholdList() {
-//通过ajax从后台获取
+function loadPages(totalRecord, count) {
+    if (totalRecord == 0) {
+        console.log("总记录数为0，请检查！");
+        return 0;
+    }
+    else if (totalRecord % count == 0)
+        return totalRecord / count;
+    else
+        return parseInt(totalRecord / count) + 1;
+}
+
+/**
+ * 加载数据
+ */
+function loadThresholdOutList() {
+    var pageNumber = 1;               // 显示首页
+    $("#current").find("a").text("当前页：1");
+    $("#previous").addClass("disabled");
+    $("#firstPage").addClass("disabled");
+    $("#next").removeClass("disabled");            // 移除上一次设置的按钮禁用
+    $("#endPage").removeClass("disabled");
+    if (totalPage() == 1) {
+        $("#next").addClass("disabled");
+        $("#endPage").addClass("disabled");
+    }
+    var page = {};
+    page.count = countValue();                                 // 可选
+    page.pageNumber = pageNumber;
+    page.start = (pageNumber - 1) * page.count;
+    //通过ajax从后台获取
     $.ajax({
         type: "POST",
-        url: "thresholdList",
+        url: "thresholdOutList",
+        data: JSON.stringify(page),
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         contentType: 'application/json;charset=utf-8',
         success: function (result) {
             if (result !== undefined && result.status === "success") {
                 console.log(result);
+                setPageClone(result);
+            }
+            else {
+                console.log(message);
+            }
+        },
+        error: function (result) {
+            alert("服务器异常！");
+        }
+    });
+}
+
+/**
+ * 设置数据
+ */
+function setThresholdOutList(result) {
+    $(".newLine").remove();    // 删除旧行
+    var tr = $("#clonedTr1");//克隆一行
+    //tr.siblings().remove();
+    $.each(result.data, function (index, item) {
+        var obj = eval(item);
+        var clonedTr = tr.clone();
+        clonedTr.show();
+        clonedTr.children("td").each(function (inner_index) {
+            // 根据索引为部分td赋值
+            switch (inner_index) {
+                // 编号
+                case (1):
+                    $(this).html(obj.id);
+                    break;
+                // 创建日期
+                case (2):
+                    $(this).html(getDateStr(obj.creationDate));
+                    break;
+                // 状态
+                case (3):
+                    if (obj.state != null)
+                        $(this).html(obj.state.name);
+                    break;
+            }
+        });
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+        clonedTr.addClass('newLine');
+    });
+    // 隐藏无数据的tr
+    tr.hide();
+}
+
+/**
+ * 获取编号(单击)
+ * @param item
+ */
+function getCurrentThrenholdId(item) {
+    return item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+}
+
+function getCurrentThrenholdId1(item) {
+    return item.firstElementChild.nextElementSibling.innerHTML;
+}
+
+/**
+ * 单击查看
+ * @param item
+ */
+function toView(item) {
+    localStorage.id = getCurrentThrenholdId(item);
+    window.location.href = "thresholdTable.html";
+}
+
+/**
+ * 双击查看
+ * @param item
+ */
+function toView1(item) {
+    localStorage.id = getCurrentThrenholdId1(item);
+    window.location.href = "thresholdTable.html";
+}
+
+/**
+ * 启用功能
+ * @param item
+ */
+function enable(item) {
+    var id = getCurrentThrenholdId(item);
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "enableThresholdList",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            id: id
+        },
+        dataType: "json",
+        success: function (result) {
+            console.log(result);
+            if (result.data != undefined || result.status == "success") {
+                alert("启用成功！");
+                window.location.reload();
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器错误！");
+        }
+    });
+}
+
+/**
+ * 关闭功能
+ * @param item
+ */
+function disabled(item) {
+    var id = getCurrentThrenholdId(item);
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "disabledThresholdList",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            id: id
+        },
+        dataType: "json",
+        success: function (result) {
+            console.log(result);
+            if (result.data != undefined || result.status == "success") {
+                alert("关闭成功！");
+                window.location.reload();
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器错误！");
+        }
+    });
+}
+
+/**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchData();      //
+    }
+}
+
+/**
+ * 延时自动查询
+ */
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if (last - event.timeStamp === 0) {
+                searchData();
+            } else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchData();      //
+            }
+        }, 600);
+    });
+});
+
+/**
+ * 查询功能
+ */
+function searchData() {
+    isSearch = true;
+    var page = {};
+    var pageNumber = 1;                       // 显示首页
+    page.pageNumber = pageNumber;
+    page.count = countValue();
+    page.start = (pageNumber - 1) * page.count;
+    if ($("#senior").is(':visible')) {
+        data = {
+            id: $.trim($("#search-id").val()),
+            startDate: $("#search-startDate").val(),
+            endDate: $("#search-endDate").val(),
+            page: page
+        };
+    } else {
+        var keywords = $.trim($("#searchContent").val());
+        switch (keywords) {
+            case('生效中'): keywords = 'Enabled';break;
+            case('生效'): keywords = 'Enabled';break;
+            case('已失效'): keywords = 'Disabled';break;
+            case('失效'): keywords = 'Disabled';break;
+        }
+        data = {
+            page: page,
+            keywords: keywords
+        }
+    }
+    console.log(data);
+    if (data == null) alert("请点击'查询设置'输入查询内容!");
+    else {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "searchThresholdList",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                console.log(result);
+                if (result.data != undefined || result.status == "success") {
+                    setPageClone(result);
+                } else {
+                    console.log(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器错误！");
+            }
+        });
+    }
+}
+
+/**
+ * 获取当前处置类别阈值表编号
+ */
+function getCurrentThresholdListId() {
+    var id = '';
+    $.ajax({
+        type: "POST",
+        url: "getCurrentThresholdListId",
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                console.log(result);
+                id = result.id;
+            }
+        },
+        error: function (result) {
+            alert("服务器异常！");
+        }
+    });
+    return id;
+}
+
+/**
+ * 导出excel
+ * @param e
+ */
+function exportExcelList() {
+    var name = 't_pr_threshold';
+    // 获取勾选项
+    var idArry = [];
+    $.each($("input[name='select']:checked"), function (index, item) {
+        idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
+    });
+    var sqlWords = '';
+    var sql = ' in (';
+    if (idArry.length > 0) {
+        for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+            if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
+            else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
+        }
+        sqlWords = "select * from t_pr_threshold where id" + sql;
+    } else {          // 若无勾选项则导出全部
+        sqlWords = "select * from t_pr_threshold";
+    }
+    console.log("sql:" + sqlWords);
+    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+}
+
+
+//////////////////////详细数据页面/////////////////////////
+/**
+ *
+ * 加载基础数据阈值表数据
+ */
+function loadThresholdList() {
+    var id = localStorage.id;            // 获取编号
+    $("#data1-thresholdListId").text(id);
+    //通过ajax从后台获取
+    $.ajax({
+        type: "POST",
+        url: "thresholdList",
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            id: id
+        },
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined && result.status === "success") {
+                console.log(result);
                 setThresholdList(result);
             }
             else {
-
+                console.log(message);
             }
         },
         error: function (result) {
@@ -195,7 +785,8 @@ function getWeekDate() {
  */
 function exportExcel() {
     var name = 't_pr_threshold';
-    var sqlWords = "select * from t_pr_threshold";
+    // 获取勾选项
+    var sqlWords = "select * from t_pr_threshold where id = " + localStorage.id;
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 
@@ -205,28 +796,38 @@ function exportExcel() {
  * 加载基础数据阈值表数据
  */
 function loadThresholdList1() {
-//通过ajax从后台获取
-    setSelectedList();    // 设置下拉框数据
-    $.ajax({
-        type: "POST",
-        url: "thresholdList",
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (result) {
-            if (result !== undefined && result.status === "success") {
-                console.log(result);
-                setThresholdList1(result);
+    console.log("id=" + localStorage.id);
+    var id = getCurrentThresholdListId();
+    $("#data-thresholdListId").text(id);
+    if (localStorage.id != null) {
+        //通过ajax从后台获取
+        console.log(id);
+        setSelectedList();    // 设置下拉框数据
+        $.ajax({
+            type: "POST",
+            url: "thresholdList",
+            data: {
+                id: localStorage.id
+            },
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                if (result !== undefined && result.status === "success") {
+                    console.log(result);
+                    setThresholdList1(result);
+                }
+                else {
+                    console.log(result.message);
+                }
+            },
+            error: function (result) {
+                alert("服务器异常！");
             }
-            else {
-                console.log(result.message);
-            }
-        },
-        error: function (result) {
-            alert("服务器异常！");
-        }
-    });
-    $("#weekDate").text(getWeekDate());
+        });
+    } else {
+        $("#thresholdId0").text(1);      // 设置首行序号
+        setSelectedList();
+    }
 }
 
 /**
@@ -262,7 +863,7 @@ function setThresholdList1(result) {
                 case (1):
                     if (obj.handleCategory != null) {
                         $(this).find("select").val(obj.handleCategory.index);
-                        selectAuto( $(this).find("select"));             // 自动匹配物质形态
+                        selectAuto($(this).find("select"));             // 自动匹配物质形态
                     }
                     break;
                 //物质形态
@@ -529,18 +1130,21 @@ function saveData() {
         threshold.endTime = $("#endTime" + $i).val();
         thresholdList.push(threshold);         // 将多个对象装到LIST中
     }
+    var thresholds = {};
+    thresholds.id = $("#data-thresholdListId").text();
+    thresholds.thresholdList = thresholdList;
     $.ajax({
         type: "POST",
         url: "saveThresholdList",
         async: false, // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(thresholdList),
+        data: JSON.stringify(thresholds),
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result !== undefined && result.status === "success") {
                 console.log(result);
-                if (confirm("保存成功，是否返回主页？"))
-                    window.location.href = "thresholdTable.html";
+                if (confirm("保存成功，是否返回上一页？"))
+                    history.back();
                 else window.location.reload(); // 刷新界面
             }
             else {
@@ -584,7 +1188,7 @@ function selectAuto(e) {
             option.text('固体');
             item.append(option);
         }
-        break;  // 散装料--固体
+            break;  // 散装料--固体
         case(4): {
             item.empty();
             option.val(4);
@@ -597,7 +1201,8 @@ function selectAuto(e) {
             item.get(0).selectedIndex = -1; // 初始化
             break;  // 精馏残渣--半固体/固体/液体
         }
-        case(6): break;  // 悬挂连--全部
+        case(6):
+            break;  // 悬挂连--全部
     }
 }
 
@@ -626,7 +1231,7 @@ function setSelectedList1(e) {
                 });
                 e.get(0).selectedIndex = -1; // 初始化
             } else {
-                   console.log(result);
+                console.log(result);
             }
         },
         error: function (result) {
@@ -634,3 +1239,4 @@ function setSelectedList1(e) {
         }
     });
 }
+

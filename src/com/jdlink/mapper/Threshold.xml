@@ -3,6 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jdlink.mapper.ThresholdMapper">
+    <resultMap id="ThresholdListRM" type="ThresholdList" autoMapping="true">
+        <id property="id" column="id"/>
+        <collection property="thresholdList" select="getThresholdList" column="id"
+                    ofType="com.jdlink.domain.Produce.Threshold"
+                    javaType="ArrayList"/>
+    </resultMap>
+
     <resultMap id="ThresholdRM" type="Threshold" autoMapping="true">
         <result property="thresholdId" column="thresholdId"></result>
         <result property="handleCategory" column="handleCategory" javaType="HandleCategory"></result>
@@ -27,8 +34,20 @@
         <result property="waterMin" column="watermin"></result>
         <result property="ashMin" column="ashmin"></result>
     </resultMap>
-    <select id="list" resultMap="ThresholdRM">
-        select  * from t_pr_threshold;
+
+    <select id="getThresholdList" parameterType="String" resultMap="ThresholdRM">
+        select * from t_pr_threshold where id= #{id};
+    </select>
+
+    <select id="listOut" resultMap="ThresholdListRM">
+        select * from t_pr_thresholdlist order by nowTime desc
+        <if test="start != null and count != null and count != 0">
+            limit #{start}, #{count};
+        </if>
+    </select>
+
+    <select id="list" parameterType="String" resultMap="ThresholdRM">
+        select  * from t_pr_threshold where id =#{id};
     </select>
 
     <select id="getByHandleCategory" parameterType="String" resultMap="ThresholdRM">
@@ -39,6 +58,83 @@
         select Safety from t_pr_threshold where  handleCategory=#{handleCategory}
     </select>
 
+    <select id="getThresholdByHandleCategoryAndFormType" resultMap="ThresholdRM">
+        select * from t_pr_threshold  where handleCategory=#{0} and formType=#{1};
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from t_pr_thresholdlist;
+    </select>
+
+    <select id="countById" parameterType="String" resultType="int">
+        select count(*) from t_pr_thresholdlist where id like "%"#{id}"%";
+    </select>
+
+    <select id="search" parameterType="ThresholdList" resultMap="ThresholdListRM">
+        select * from t_pr_thresholdlist
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or state like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
+            </if>
+            <if test="id != '' and id != null">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
+            </if>
+        </where>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count};
+        </if>
+    </select>
+
+    <select id="searchCount" parameterType="ThresholdList" resultType="int">
+        select count(*) from t_pr_thresholdlist
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or state like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
+            </if>
+            <if test="id != '' and id != null">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
+            </if>
+        </where>
+        order by nowTime desc
+    </select>
+
+    <select id="getById" parameterType="String" resultMap="ThresholdListRM">
+        select * from t_pr_thresholdlist where id =#{id};
+    </select>
+
     <update id="update" parameterType="Threshold">
         update t_pr_threshold set handleCategory = #{handleCategory},formType =#{formType},calorificMax =#{calorificMax},
         calorificMin =#{calorificMin},ashMax =#{ashMax},ashMin =#{ashMin},waterMax =#{waterMax},waterMin =#{waterMin},
@@ -47,20 +143,43 @@
         where thresholdId =#{thresholdId};
     </update>
 
-    <insert id="add" parameterType="Threshold">
-        insert into t_pr_threshold
-        (thresholdId,handleCategory,formType,calorificMax,calorificMin,ashMax,ashMin,waterMax,waterMin,sMax,sMin,clMax,
-        clMin,pMax,pMin,fMax,fMin,phMax,phMin,safety,beginTime,endTime)
-        values
-       (#{thresholdId},#{handleCategory},#{formType},#{calorificMax},#{calorificMin},#{ashMax},#{ashMin},#{waterMax},
-        #{waterMin},#{sMax},#{sMin},#{clMax},#{clMin},#{pMax},#{pMin},#{fMax},#{fMin},#{phMax},#{phMin},#{safety},#{beginTime},
-        #{endTime})
+    <update id="updateStateEnable" parameterType="String">
+        update t_pr_thresholdlist set state='Enabled' where id=#{id};
+    </update>
+
+    <update id="updateStateDisabled" parameterType="String">
+        update t_pr_thresholdlist set state='Disabled' where id=#{id};
+    </update>
+
+
+    <insert id="add" parameterType="ThresholdList">
+        <if test="keywords == null">
+            insert into t_pr_thresholdlist
+            (id,creationDate,nowTime)
+            values
+            (#{id},NOW(),NOW());
+        </if>
+        <if test="keywords != null">
+            update t_pr_thresholdlist
+            set nowTime = NOW()
+            where id =#{id};
+        </if>
+
+        <foreach collection="thresholdList" index="index" item="threshold">
+            insert into t_pr_threshold
+            (thresholdId,id,handleCategory,formType,calorificMax,calorificMin,ashMax,ashMin,waterMax,waterMin,sMax,sMin,clMax,
+            clMin,pMax,pMin,fMax,fMin,phMax,phMin,safety,beginTime,endTime)
+            values
+            (#{threshold.thresholdId},#{id},#{threshold.handleCategory},#{threshold.formType},#{threshold.calorificMax},
+            #{threshold.calorificMin},#{threshold.ashMax},#{threshold.ashMin},#{threshold.waterMax},#{threshold.waterMin},
+            #{threshold.sMax},#{threshold.sMin},#{threshold.clMax},#{threshold.clMin},#{threshold.pMax},#{threshold.pMin},
+            #{threshold.fMax},#{threshold.fMin},#{threshold.phMax},#{threshold.phMin},#{threshold.safety},#{threshold.beginTime},
+            #{threshold.endTime})
+        </foreach>
     </insert>
 
-    <delete id="deleteAll" >
-        delete from t_pr_threshold;
+    <delete id="deleteAll" parameterType="String">
+        delete from t_pr_threshold where id=#{id};
     </delete>
-    <select id="getThresholdByHandleCategoryAndFormType" resultMap="ThresholdRM">
-        select * from t_pr_threshold  where handleCategory=#{0} and formType=#{1};
-    </select>
+
 </mapper>
