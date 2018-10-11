@@ -41,7 +41,7 @@ function setThresholdList(result) {
             switch (inner_index) {
                 //序号
                 case (0):
-                    $(this).html(obj.thresholdId);
+                    $(this).html(index+1);
                     break;
                 //处理类别
                 case (1):

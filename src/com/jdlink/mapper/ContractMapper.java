@@ -107,4 +107,6 @@ public interface ContractMapper {
 
     List<Contract> getContractByMonth(String month);
 
+   List<String> getNewestContractId1();
+
 }
