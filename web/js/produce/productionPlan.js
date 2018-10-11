@@ -415,7 +415,22 @@ function setSeniorSelectedList() {
  */
 function exportExcel() {
     var name = 't_pr_productionplan';
-    var sqlWords = "select * from t_pr_productionplan ";
+    // 获取勾选项
+    var idArry = [];
+    $.each($("input[name='select']:checked"),function(index,item){
+        idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
+    });
+    var sqlWords = '';
+    var sql = ' in (';
+    if (idArry.length > 0) {
+        for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+            if (i < idArry.length - 1) sql += idArry[i] + ",";
+            else if (i == idArry.length - 1) sql += idArry[i] + ");"
+        }
+        sqlWords = "select * from t_pr_productionplan where id" + sql;
+    }else {
+        sqlWords = "select * from t_pr_productionplan;";
+    }
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 

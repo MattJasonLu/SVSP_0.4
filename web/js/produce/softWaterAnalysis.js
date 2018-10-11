@@ -400,8 +400,23 @@ function setSoftWaterList(result) {
  */
 function exportExcel() {
     var name = 't_pr_softwater';
-    var sqlWords = "select id as '编号', name as '软水名称',receiveDate as '软水接收日期',relativeAlkalinity as '相对碱度',dissolvedSolidForm as '溶解固形物',PH,alkalinity as '碱度',hardness as '硬度',electricalConductivity as '电导率',remarks as '备注' from t_pr_softwater;";
-   // var tableHead = "编号/软水名称/软水接收日期/相对碱度/溶解固形物/PH/碱度/硬度/电导率/备注";
+    // 获取勾选项
+    var idArry = [];
+    $.each($("input[name='select']:checked"),function(index,item){
+        idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
+    });
+    var sqlWords = '';
+    var sql = ' in (';
+    if (idArry.length > 0) {
+        for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+            if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
+            else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
+        }
+        sqlWords = "select id as '编号', name as '软水名称',receiveDate as '软水接收日期',relativeAlkalinity as '相对碱度',dissolvedSolidForm as '溶解固形物',PH,alkalinity as '碱度',hardness as '硬度',electricalConductivity as '电导率',remarks as '备注' from t_pr_softwater where id" + sql;
+    }else {          // 若无勾选项则导出全部
+        sqlWords = "select id as '编号', name as '软水名称',receiveDate as '软水接收日期',relativeAlkalinity as '相对碱度',dissolvedSolidForm as '溶解固形物',PH,alkalinity as '碱度',hardness as '硬度',electricalConductivity as '电导率',remarks as '备注' from t_pr_softwater;";
+    }
+    console.log("sql:"+sqlWords);
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 

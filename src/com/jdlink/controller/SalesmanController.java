@@ -5,6 +5,7 @@ import com.jdlink.domain.Page;
 import com.jdlink.domain.Salesman;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.SalesmanService;
+import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.NumberFormat;
@@ -251,6 +253,36 @@ public class SalesmanController {
             return null;
         }
 
+    }
+
+    /**
+     * 导入excel文件来增加化验单
+     * @param excelFile 化验单excel文件
+     * @return 导入成功与否
+     */
+    @RequestMapping("importSalesmanExcel")
+    @ResponseBody
+    public String importSalesmanExcel(MultipartFile excelFile) {
+        JSONObject res = new JSONObject();
+        try {
+            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+            for (int i = 1; i < data.length; i++) {
+                Salesman salesman = new Salesman();
+                salesman.setSalesmanId(data[i][0].toString());
+                salesman.setName(data[i][1].toString());
+                salesman.setSex(data[i][2].toString().equals("男"));
+                salesman.setAge(Integer.parseInt(data[i][3].toString().split("\\.")[0]));
+                salesmanService.add(salesman);
+            }
+            res.put("status", "success");
+            res.put("message", "导入成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导入失败，请检查文件！");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
     }
 
 }

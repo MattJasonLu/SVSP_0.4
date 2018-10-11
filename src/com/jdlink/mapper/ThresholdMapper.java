@@ -9,4 +9,8 @@ public interface ThresholdMapper {
     Threshold getByHandleCategory(String handleCategory);
     //根据进料类别返回安全库存量
     float getSafety(String handleCategory);
+    void update(Threshold threshold);
+    void add(Threshold threshold);
+    void deleteAll();
+    Threshold getThresholdByHandleCategoryAndFormType(String handleCategory,String formType);
 }

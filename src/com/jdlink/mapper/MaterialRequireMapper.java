@@ -21,4 +21,11 @@ public interface MaterialRequireMapper {
     void updatemarketPurchases(String id,float marketPurchases);
     List<MaterialRequire>getMaterialList(Page page);
      List<MaterialRequireItem> getMaterialRequireById(String materialRequireId);
+     void  updateMaterialRequireItem(MaterialRequireItem materialRequireItem);
+     void updateMaterialRequire(MaterialRequire materialRequire);
+ MaterialRequire  getMaterialRequireByMaterialRequireId(String materialRequireId);
+ List<MaterialRequire> searchMaterialRequire(MaterialRequire materialRequire);
+ int searchMaterialRequireCount(MaterialRequire materialRequire);
+List<String> searchMaterialRequireItem(MaterialRequireItem materialRequireItem);
+int searchMaterialRequireItemCount(MaterialRequireItem materialRequireItem);
 }

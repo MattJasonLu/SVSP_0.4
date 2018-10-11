@@ -6,11 +6,10 @@ var currentPage = 1;                          //当前页数
 var isSearch = false;
 var data1;
 /**
- * 重置搜索数据
+ * 重置页面功能
  */
 function reset() {
-    $("#senior").find("input").val("");
-    $("#senior").find("select").get(0).selectedIndex = -1;
+    window.location.reload();
 }
 
 /*获得最新一期的物料需求*/
@@ -75,7 +74,7 @@ function totalPage() {
         if(data1.keywords==undefined){//高级查询
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "searchCompatibilityItemTotal",                  // url
+                url: "searchMaterialRequireItemCount",                  // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data1),
                 dataType: "json",
@@ -99,7 +98,7 @@ function totalPage() {
         if(data1.keywords!=undefined){
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "searchCompatibilityTotal",                  // url
+                url: "searchMaterialRequireCount",                  // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data1),
                 dataType: "json",
@@ -134,7 +133,7 @@ function totalPage() {
  * */
 function setPageClone(result) {
     $(".beforeClone").remove();
-    setMaterialList(result);
+    setMaterialList(result.array);
     var total = totalPage();
     $("#next").prev().hide();
     var st = "共" + total + "页";
@@ -210,14 +209,14 @@ function switchPage(pageNumber) {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "getList1",         // url
+            url: "getMaterialList",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(page),
             dataType: "json",
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined) {
-                    setCompatibility(result);
+                   setPageClone(result);
                 } else {
                     console.log("fail: " + result);
                 }
@@ -233,14 +232,15 @@ function switchPage(pageNumber) {
             console.log("进来了")
             $.ajax({
                 type: "POST",                            // 方法类型
-                url: "searchCompatibilityItem",                 // url
+                url: "searchMaterialRequireItem",                 // url
                 async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data1),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (result) {
                     if (result != undefined && result.status == "success"){
-                        setCompatibility(result)
+                        // setCompatibility(result)
+                        setMaterialList(result.array)
                     } else {
                         alert(result.message);
 
@@ -256,14 +256,14 @@ function switchPage(pageNumber) {
         if(data1.keywords!=undefined){
             $.ajax({
                 type: "POST",                            // 方法类型
-                url: "searchCompatibility",                 // url
+                url: "searchMaterialRequire",                 // url
                 async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data1),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (result) {
                     if (result != undefined && result.status == "success"){
-                        setCompatibility(result)
+                        setMaterialList(result.array)
                     } else {
                         alert(result.message);
 
@@ -320,7 +320,7 @@ function inputSwitchPage() {
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "getList1",         // url
+                url: "getMaterialList",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(page),
                 dataType: "json",
@@ -328,7 +328,7 @@ function inputSwitchPage() {
                 success: function (result) {
                     if (result != undefined) {
                         console.log(result);
-                        setCompatibility(result);
+                        setPageClone(result);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -343,14 +343,14 @@ function inputSwitchPage() {
                 console.log("进来了")
                 $.ajax({
                     type: "POST",                            // 方法类型
-                    url: "searchCompatibilityItem",                 // url
+                    url: "searchMaterialRequireItem",                 // url
                     async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
                     data: JSON.stringify(data1),
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         if (result != undefined && result.status == "success"){
-                            setCompatibility(result)
+                            setMaterialList(result.array)
                         } else {
                             alert(result.message);
 
@@ -366,14 +366,14 @@ function inputSwitchPage() {
             if(data1.keywords!=undefined){
                 $.ajax({
                     type: "POST",                            // 方法类型
-                    url: "searchCompatibility",                 // url
+                    url: "searchMaterialRequire",                 // url
                     async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
                     data: JSON.stringify(data1),
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         if (result != undefined && result.status == "success"){
-                            setCompatibility(result)
+                            setMaterialList(result.array)
                         } else {
                             alert(result.message);
 
@@ -438,7 +438,7 @@ function loadPageMaterialList() {
                 console.log(result);
                 var obj=result.array;
                 //设置下拉框数据
-                setPageClone(result.array)
+                setPageClone(result)
                 // setMaterialList(obj,n);
             }
             else {
@@ -450,6 +450,91 @@ function loadPageMaterialList() {
         }
     });
     isSearch = false;
+    //加载高级查询的数据
+    //物质形态和包装方式
+    $.ajax({
+        type:"POST",
+        url:"getFormTypeAndPackageType",
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:JSON.stringify(page),
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined){
+              var formType=$("#search-formType");
+                formType.children().remove();
+                $.each(result.formTypeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    formType.append(option);
+                });
+                formType.get(0).selectedIndex = -1;
+
+                var packageType=$('#search-packageType');
+                packageType.children().remove();
+                $.each(result.packageTypeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    packageType.append(option);
+                });
+                packageType.get(0).selectedIndex = -1;
+
+
+
+
+
+
+
+
+
+            }
+            else {
+                alert(result.message);
+            }
+        },
+    });
+
+    //进料方式
+    $.ajax({
+        type:"POST",
+        url:"getHandleCategory",
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:JSON.stringify(page),
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined){
+                var handleCategory=$("#search-handleCategory");
+                handleCategory.children().remove();
+                $.each(result.handleCategoryList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    handleCategory.append(option);
+                });
+                handleCategory.get(0).selectedIndex = -1;
+
+
+
+
+
+
+
+
+
+
+
+
+            }
+            else {
+                alert(result.message);
+            }
+        },
+    });
+
+
 }
 /*加载表格数据*/
 function setMaterialList(result) {
@@ -457,6 +542,7 @@ function setMaterialList(result) {
     //tr.siblings().remove();
     //每日配比量合计
    // tr.siblings().remove();
+    tr.siblings().remove();
     $.each(result, function (index, item) {
         var data = eval(item);
         var clonedTr = tr.clone();
@@ -475,51 +561,51 @@ function setMaterialList(result) {
                     break;
                 // 周生产计划总量
                 case (3):
-                    $(this).html(data.weeklyDemandTotal);
+                    $(this).html((data.weeklyDemandTotal).toFixed(1));
                     break;
                 //目前库存总量
                 case (4):
-                    $(this).html(data.currentInventoryTotal);
+                    $(this).html(data.currentInventoryTotal.toFixed(1));
                     break;
                 // 安全库存总量
                 case (5):
-                    $(this).html(data.safetyTotal);
+                    $(this).html(data.safetyTotal.toFixed(1));
                     break;
                 //市场采购总量
                 case (6):
-                    $(this).html(data.marketPurchasesTotal);
+                    $(this).html(data.marketPurchasesTotal.toFixed(1));
                     break;
                 // 热值平均
                 case (7):
-                    $(this).html(data.calorificAvg);
+                    $(this).html(data.calorificAvg.toFixed(1));
                     break;
                 // 灰分平均
                 case (8):
-                    $(this).html(data.ashAvg);
+                    $(this).html(data.ashAvg.toFixed(1));
                     break;
                 //水分平均
                 case (9):
-                    $(this).html(data.waterAvg);
+                    $(this).html(data.waterAvg.toFixed(1));
                     break;
                 //S平均
                 case (10):
-                    $(this).html(data.sAvg);
+                    $(this).html(data.sAvg.toFixed(1));
                     break;
                 //CL平均
                 case (11):
-                    $(this).html(data.clAvg);
+                    $(this).html(data.clAvg.toFixed(1));
                     break;
                 //P平均
                 case (12):
-                    $(this).html(data.pAvg);
+                    $(this).html(data.pAvg.toFixed(1));
                     break;
                 //F平均
                 case (13):
-                    $(this).html(data.fAvg);
+                    $(this).html(data.fAvg.toFixed(1));
                     break;
                 //PH平均
                 case (14):
-                    $(this).html(data.phAvg);
+                    $(this).html(data.phAvg.toFixed(1));
                     break;
                 //状态
                 case (15):
@@ -618,49 +704,66 @@ function selected2(item) {
         }
     }
 }
+
 /*
 * 审批*/
-function approvalMa(){
-id=arrayId[0];
-$("#back1").hide();
-$("#confirm").show();
-console.log(id);
-    if(arrayId.length==1){
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getByMrId",         // url
-            // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {"id":id.toString()},
-            dataType: "json",
-            //contentType: 'application/json;charset=utf-8',
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
-                    console.log(result);
-                    var obj=result.data;
-                    console.log(obj);
-                    //赋值
-                    //物料编号
-                    $("#materialRequireId").text(obj.materialRequireId);
-                    //序号
-                    $("#id").text(obj.id);
-                    $('#advice').text(obj.approvalContent);
-                    //驳回意见
-                    $("#remarks").text(obj.remarks);
-                    $("#contractInfoForm2").modal('show');
-                }
-                else {
-                    alert(result.message);
-                }
-            },
-            error:function (result) {
-                alert("服务器异常！")
+function approvalMa(item){
+
+
+    $.ajax({
+        type: "POST",
+        url: "getMaterialRequireByMaterialRequireId",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'materialRequireId': $(item).parent().parent().children('td').eq(2).html()},
+        //contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                //赋值配伍单号
+             $("#remarks").val(result.data.opinion);
             }
-        });
-    }
-    else {
-        alert("请选择数据！")
-    }
+            else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+
+    });
+
+    $('#materialRequireId').text($(item).parent().parent().children('td').eq(2).html())
+
+
+
+    $('#contractInfoForm2').modal('show');
+
+
+    // $.ajax({
+    //     type: "POST",
+    //     url: "backMa",
+    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     dataType: "json",
+    //     data: {'id': id, 'remarks': remarks,},
+    //     success: function (result) {
+    //         if(result != undefined && result.status == "success"){
+    //             alert(result.message);
+    //             console.log(result);
+    //             window.location.reload();
+    //         }
+    //         else {
+    //             alert(result.message)
+    //         }
+    //     },
+    //     error: function (result) {
+    //         alert("服务器异常！")
+    //     }
+    // });
+
+
 }
+
 /*驳回*/
 function backMa() {
     id=arrayId[0];
@@ -702,15 +805,17 @@ function backMa() {
         alert("请选择数据！")
     }
 }
+
 //把按钮功能分出来做这个是审批
 function confirm2() {
-    remarks = $('#remarks').val();
+    var materialRequireId=$('#materialRequireId').text();
+    var opinion=$('#remarks').val();
     $.ajax({
         type: "POST",
         url: "approvalMa",
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data: {'id': id, 'remarks': remarks,},
+        data: {'materialRequireId': materialRequireId, 'opinion': opinion,},
         success: function (result) {
             if(result != undefined && result.status == "success"){
                 alert(result.message);
@@ -725,7 +830,10 @@ function confirm2() {
             alert("服务器异常！")
         }
     });
+
+
 }
+
 //把按钮功能分出来做这个是驳回
 function back2() {
     remarks = $('#remarks').val();
@@ -751,6 +859,7 @@ function back2() {
     });
 
 }
+
 /*时间显示*/
 function getWeekDate() {
     //获取时间
@@ -773,43 +882,75 @@ function getWeekDate() {
 
 /*提交功能*/
 function submitMa() {
-    //1获得id
-    id=arrayId[0];
-    if(arrayId.length==1){
-        //2ajax后台操作
-        //3判断框是否提交
-        if(confirm("确定提交?")){
-            //点击确定后操作
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "submitByMrId",         // url
-                // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: {"id":id},
-                dataType: "json",
-                //contentType: 'application/json;charset=utf-8',
-                success:function (result) {
-                    if (result != undefined && result.status == "success"){
-                        alert(result.message);
-                        window.location.reload();
-                    }
-                    else {
-                        alert(result.message);
-                    }
-                },
-                error:function (result) {
-                    alert("服务器异常！")
+    var items = $("input[name='select']:checked");//判断复选框是否选中
+
+    if(items.length>0){
+        if(confirm("确认提交?")){
+            $.each(items,function () {
+                if($(this).parent().parent().next().next().html().length>0){
+                   var materialRequireId=$(this).parent().parent().next().next().html();
+                   //提交方法
+                    $.ajax({
+                        type: "POST",
+                        url: "submitByMrId",
+                        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                        dataType: "json",
+                        data: {'materialRequireId': materialRequireId},
+                        success: function (result) {
+                            if(result != undefined && result.status == "success"){
+                                console.log(result);
+                            }
+                            else {
+                                alert(result.message)
+                            }
+                        },
+                        error: function (result) {
+                            alert("服务器异常！")
+                        }
+                    });
                 }
-            });
+            })
+
+
         }
+        alert('提交成功!')
+        window.location.reload();
     }
     else {
-        alert("请选择数据！")
+        alert("请勾选数据！")
     }
+
+
 
 }
 /*作废*/
-function cancelMa() {
+function cancelMa(item) {
 
+    var materialRequireId=$(item).parent().parent().children('td').eq(2).html();
+    if(confirm("确认作废?")){
+     //作废方法
+        $.ajax({
+            type: "POST",
+            url: "cancelByMrId",
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'materialRequireId': materialRequireId},
+            success: function (result) {
+                if(result != undefined && result.status == "success"){
+                    console.log(result);
+                    alert(result.message)
+                    window.location.reload();
+                }
+                else {
+                    alert(result.message)
+                }
+            },
+            error: function (result) {
+                alert("服务器异常！")
+            }
+        });
+
+    }
 
 
 }
@@ -996,102 +1137,102 @@ function setCompatibilityModal(result) {
                     break;
                 //周生产计划量
                 case (4):
-                    $(this).html(obj.weeklyDemand);
+                    $(this).html(obj.weeklyDemand.toFixed(1));
                     weeklyDemandTotal+=parseFloat(obj.weeklyDemand)
                     break;
                 //目前库存量
                 case (5):
-                    $(this).html(obj.currentInventory);
+                    $(this).html(obj.currentInventory.toFixed(1));
                     currentInventoryTotal+=parseFloat(obj.currentInventory)
                     break;
                 //安全库存量
                 case (6):
-                    $(this).html(obj.safety);
+                    $(this).html(obj.safety.toFixed(1));
                     safetyTotal+=parseFloat(obj.safety)
                     break;
                 //市场采购量
                 case (7):
-                    $(this).html(obj.marketPurchases);
+                    $(this).html(obj.marketPurchases.toFixed(1));
                     marketPurchasesTotal+=parseFloat(obj.marketPurchases)
                     break;
                 //热值Max
                 case (8):
-                    $(this).html(obj.calorificMax);
+                    $(this).html(obj.calorificMax.toFixed(1));
                     calorificMaxTotal+=parseFloat(obj.calorificMax)
                     break;
                 //热值Min
                 case (9):
-                    $(this).html(obj.calorificMin);
+                    $(this).html(obj.calorificMin.toFixed(1));
                     calorificMinTotal+=parseFloat(obj.calorificMin)
                     break;
                 //灰分Max
                 case (10):
-                    $(this).html(obj.ashMax);
+                    $(this).html(obj.ashMax.toFixed(1));
                     ashMaxTotal+=parseFloat(obj.ashMax)
                     break;
                 //灰分Min
                 case (11):
-                    $(this).html(obj.ashMin);
+                    $(this).html(obj.ashMin.toFixed(1));
                     ashMinTotal+=parseFloat(obj.ashMin)
                     break;
                 //水分Max
                 case (12):
-                    $(this).html(obj.waterMax);
+                    $(this).html(obj.waterMax.toFixed(1));
                     waterMaxTotal+=parseFloat(obj.waterMax)
                     break;
                 //水分Min
                 case (13):
-                    $(this).html(obj.waterMin);
+                    $(this).html(obj.waterMin.toFixed(1));
                     waterMinTotal+=parseFloat(obj.waterMin)
                     break;
                     //氯Max
                 case (14):
-                    $(this).html(obj.clMax);
+                    $(this).html(obj.clMax.toFixed(1));
                     clMaxTotal+=parseFloat(obj.clMax)
                     break;
                     //氯Min
                 case (15):
-                    $(this).html(obj.clMin);
+                    $(this).html(obj.clMin.toFixed(1));
                     clMinTotal+=parseFloat(obj.clMin)
                     break;
                     //硫Max
                 case (16):
-                    $(this).html(obj.sMax);
+                    $(this).html(obj.sMax.toFixed(1));
                     sMaxTotal+=parseFloat(obj.sMax)
                     break;
                     //硫Min
                 case (17):
-                    $(this).html(obj.sMin);
+                    $(this).html(obj.sMin.toFixed(1));
                     sMinTotal+=parseFloat(obj.sMin)
                     break;
                     //磷Max
                 case (18):
-                    $(this).html(obj.pMax);
+                    $(this).html(obj.pMax.toFixed(1));
                     pMaxTotal+=parseFloat(obj.pMax)
                     break;
                     //磷Min
                 case (19):
-                    $(this).html(obj.pMin);
+                    $(this).html(obj.pMin.toFixed(1));
                     pMinTotal+=parseFloat(obj.pMin)
                     break;
                     //氟Max
                 case (20):
-                    $(this).html(obj.fMax);
+                    $(this).html(obj.fMax.toFixed(1));
                     fMaxTotal+=parseFloat(obj.fMax)
                     break;
                     //氟Min
                 case (21):
-                    $(this).html(obj.fMin);
+                    $(this).html(obj.fMin.toFixed(1));
                     fMinTotal+=parseFloat(obj.fMin)
                     break;
                     //酸碱度Max
                 case (22):
-                    $(this).html(obj.phMax);
+                    $(this).html(obj.phMax.toFixed(1));
                     phMaxTotal+=parseFloat(obj.phMax)
                     break;
                     //酸碱度MaxMin
                 case (23):
-                    $(this).html(obj.phMin);
+                    $(this).html(obj.phMin.toFixed(1));
                     phMinTotal+=parseFloat(obj.phMin);
                     break;
 
@@ -1105,26 +1246,26 @@ function setCompatibilityModal(result) {
 
 
     })
-    $("#weeklyDemandTotal").html(weeklyDemandTotal);
-    $("#currentInventoryTotal").html(currentInventoryTotal);
-    $("#safetyTotal").html(safetyTotal);
-    $("#marketPurchasesTotal").html(marketPurchasesTotal);
-    $("#calorificMaxTotal").html(calorificMaxTotal);
-    $("#calorificMinTotal").html(calorificMinTotal);
-    $("#ashMaxTotal").html(ashMaxTotal);
-    $("#ashMinTotal").html(ashMinTotal);
-    $("#waterMaxTotal").html(waterMaxTotal);
-    $("#waterMinTotal").html(waterMinTotal);
-    $("#clMaxTotal").html(clMaxTotal);
-    $("#clMinTotal").html(clMinTotal);
-    $("#sMaxTotal").html(sMaxTotal);
-    $("#sMinTotal").html(sMinTotal);
-    $("#pMaxTotal").html(pMaxTotal);
-    $("#pMinTotal").html(pMinTotal);
-    $("#fMaxTotal").html(fMaxTotal);
-    $("#fMinTotal").html(fMinTotal);
-    $("#phMaxTotal").html(phMaxTotal);
-    $("#phMinTotal").html(phMinTotal);
+    $("#weeklyDemandTotal").html(weeklyDemandTotal.toFixed(1));
+    $("#currentInventoryTotal").html(currentInventoryTotal.toFixed(1));
+    $("#safetyTotal").html(safetyTotal.toFixed(1));
+    $("#marketPurchasesTotal").html(marketPurchasesTotal.toFixed(1));
+    $("#calorificMaxTotal").html(calorificMaxTotal.toFixed(1));
+    $("#calorificMinTotal").html(calorificMinTotal.toFixed(1));
+    $("#ashMaxTotal").html(ashMaxTotal.toFixed(1));
+    $("#ashMinTotal").html(ashMinTotal.toFixed(1));
+    $("#waterMaxTotal").html(waterMaxTotal.toFixed(1));
+    $("#waterMinTotal").html(waterMinTotal.toFixed(1));
+    $("#clMaxTotal").html(clMaxTotal.toFixed(1));
+    $("#clMinTotal").html(clMinTotal.toFixed(1));
+    $("#sMaxTotal").html(sMaxTotal.toFixed(1));
+    $("#sMinTotal").html(sMinTotal.toFixed(1));
+    $("#pMaxTotal").html(pMaxTotal.toFixed(1));
+    $("#pMinTotal").html(pMinTotal.toFixed(1));
+    $("#fMaxTotal").html(fMaxTotal.toFixed(1));
+    $("#fMinTotal").html(fMinTotal.toFixed(1));
+    $("#phMaxTotal").html(phMaxTotal.toFixed(1));
+    $("#phMinTotal").html(phMinTotal.toFixed(1));
 
 
 }
@@ -1337,16 +1478,185 @@ function adjustConfirm() {
     var marketPurchasesTotal=0;
 
     $('.myclass2').each(function () {
-        var data={
+        var materialRequireItem={
             handleCategory: $(this).children('td').eq(1).children('select').get(0).selectedIndex,
             formType: $(this).children('td').eq(2).children('select').get(0).selectedIndex,
             packageType:$(this).children('td').eq(3).children('select').get(0).selectedIndex,
-            // weeklyDemand:$(this).children('td').eq(3).children('input').val(),
+            weeklyDemand:$(this).children('td').eq(4).children('input').val(),
+            currentInventory:$(this).children('td').eq(5).children('input').val(),
+            safety:$(this).children('td').eq(6).children('input').val(),
+            marketPurchases:$(this).children('td').eq(7).children('input').val(),
+            id:$(this).children('td').eq(24).html(),
         };
-       console.log(data)
+        //物料明细的更新
+        $.ajax({
+            type: 'POST',
+            url: "updateMaterialRequireItem",
+            data:JSON.stringify(materialRequireItem),
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(result)
+                }
+                else {
+                    alert(result.message);
+                }
 
-       })
+            },
+            error:function (result) {
+                alert("服务器异常!")
+            }
+            
+        });
 
+       console.log(materialRequireItem)//物料明细
+        weeklyDemandTotal+=parseFloat($(this).children('td').eq(4).children('input').val());
+        currentInventoryTotal+=parseFloat($(this).children('td').eq(5).children('input').val());
+        safetyTotal+=parseFloat($(this).children('td').eq(6).children('input').val());
+        marketPurchasesTotal+=parseFloat($(this).children('td').eq(7).children('input').val());
+    })
+    var materialRequire={
+        materialRequireId:$('#materialRequireId').text(),
+        weeklyDemandTotal:weeklyDemandTotal,
+        currentInventoryTotal:currentInventoryTotal,
+        safetyTotal:safetyTotal,
+        marketPurchasesTotal:marketPurchasesTotal
+    };
+  console.log(materialRequire)
+    //更新主表
+    //物料明细的更新
+    $.ajax({
+        type: 'POST',
+        url: "updateMaterialRequire",
+        data:JSON.stringify(materialRequire),
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+            }
+            else {
+                alert(result.message);
+            }
 
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+
+    });
+
+  alert("修改成功!")
+    window.location.href="materialDemand.html"
 
 }
+
+
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp==0){
+                searchMaterialRequire();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchMaterialRequire();      //
+            }
+        },400);
+    });
+});
+//粗查询
+
+function searchMaterialRequire() {
+    isSearch = true;
+    var page = {};
+    var pageNumber = 1;                       // 显示首页
+    page.pageNumber = pageNumber;
+    page.count = countValue();
+    page.start = (pageNumber - 1) * page.count;
+    var keywords = $.trim($("#searchContent").val());
+    data1 = {
+        page: page,
+        keywords: keywords
+    }
+    if (data1 == null) alert("请点击'查询设置'输入查询内容!");
+    else {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "searchMaterialRequire",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined || result.status == "success") {
+                   console.log(result);
+                   setPageClone(result)
+                   // setMaterialList(result.array)
+                } else {
+                    console.log(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器错误！");
+            }
+        });
+    }
+}
+
+//高级查询
+function searchMa() {
+    isSearch = true;
+    var page = {};
+    var pageNumber = 1;                       // 显示首页
+    page.pageNumber = pageNumber;
+    page.count = countValue();
+    page.start = (pageNumber - 1) * page.count;
+
+    data1={
+        materialRequireId:$('#search-materialRequireId').val(),
+        handleCategory:$("#search-handleCategory").val(),
+        formType:$("#search-formType").val(),
+        packageType:$("#search-packageType").val(),
+        weeklyDemandBeg:$("#search-weeklyDemandBeg").val(),
+        weeklyDemandEnd:$("#search-weeklyDemandEnd").val(),
+        currentInventoryBeg:$("#search-currentInventoryBeg").val(),
+        currentInventoryEnd:$("#search-currentInventoryEnd").val(),
+        safetyBeg:$("#search-safetyBeg").val(),
+        safetyEnd:$("#search-safetyEnd").val(),
+        marketPurchasesBeg:$("#search-marketPurchasesBeg").val(),
+        marketPurchasesEnd:$("#search-marketPurchasesEnd").val(),
+        page: page,
+    };
+    if (data1 == null) alert("请点击'查询设置'输入查询内容!");
+
+    else {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "searchMaterialRequireItem",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined && result.status == "success"){
+                    setPageClone(result)
+                } else {
+                    alert(result.message);
+
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器错误！");
+            }
+        });
+    }
+}
+
+
+
+

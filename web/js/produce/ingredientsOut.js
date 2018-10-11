@@ -458,7 +458,23 @@ function setSeniorSelectedList() {
  */
 function exportExcel() {
     var name = 't_pr_ingredients_out';
-    var sqlWords = "select * from t_pr_ingredients_out as a join t_pr_ingredients as b where outId = id;";
+    // 获取勾选项
+    var idArry = [];
+    $.each($("input[name='select']:checked"),function(index,item){
+        idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
+    });
+    var sqlWords = '';
+    var sql = ' in (';
+    if (idArry.length > 0) {
+        for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+            if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
+            else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
+        }
+        sqlWords = "select * from t_pr_ingredients_out as a join t_pr_ingredients as b where outId = id and id" + sql;
+    }else {          // 若无勾选项则导出全部
+        sqlWords = "select * from t_pr_ingredients_out as a join t_pr_ingredients as b where outId = id;";
+    }
+    console.log("sql:"+sqlWords);
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 

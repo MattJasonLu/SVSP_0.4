@@ -185,7 +185,7 @@
 </select>
 
     <select id="getQuotationByWastesCodeAndClientId" parameterType="String" resultMap="QuotationItemRM">
-        SELECT * FROM t_quotationitem WHERE wastesCode=#{wastesCode} AND clientId=#{clientId};
+        SELECT * FROM t_quotationitem WHERE wastesCode=#{wastesCode} AND clientId=#{clientId} limit 0, 1;
     </select>
 
 </mapper>

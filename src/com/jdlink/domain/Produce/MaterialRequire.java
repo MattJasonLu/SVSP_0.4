@@ -91,9 +91,35 @@ public class MaterialRequire {
     private List<MaterialRequireItem> materialRequireItemList=new ArrayList<>();
 
     /**
+     * 意见
+     */
+    private String opinion;
+
+    /**
      * 分页
      * @return
      */
+    /**
+     * 关键字
+     * @return
+     */
+    private String keywords;
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
+    public String getOpinion() {
+        return opinion;
+    }
+
+    public void setOpinion(String opinion) {
+        this.opinion = opinion;
+    }
     private Page page;
 
     public Page getPage() {

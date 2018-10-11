@@ -481,8 +481,8 @@ function switchPage(pageNumber) {
             dataType: "json",
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
-                if (result !== undefined && result.status === "success") {
-                    setDataList(result.data);
+                if (result != undefined && result.status == "success") {
+                    setInboundOrderDataList(result.data);
                 } else {
                     console.log(result);
                 }
@@ -501,7 +501,7 @@ function switchPage(pageNumber) {
             dataType: "json",
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
-                if (result !== undefined && result.status === "success") {
+                if (result != undefined && result.status == "success") {
                     setInboundOrderDataList(result.data);
                 } else {
                     console.log("fail: " + result);
@@ -520,7 +520,7 @@ function switchPage(pageNumber) {
 function inputSwitchPage() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
     $("#current").find("a").text("当前页：" + pageNumber);
-    if (pageNumber == null || pageNumber === undefined) {
+    if (pageNumber == null || pageNumber == undefined) {
         window.alert("跳转页数不能为空！")
     } else {
         if (pageNumber === 1) {
@@ -557,7 +557,7 @@ function inputSwitchPage() {
                 dataType: "json",
                 contentType: 'application/json;charset=utf-8',
                 success: function (result) {
-                    if (result !== undefined && result.status === "success") {
+                    if (result != undefined && result.status == "success") {
                         console.log(result);
                         setInboundOrderDataList(result.data);
                     } else {
@@ -580,7 +580,7 @@ function inputSwitchPage() {
                 success: function (result) {
                     if (result !== undefined && result.status === "success") {
                         // console.log(result);
-                        setDataList(result.data);
+                        setInboundOrderDataList(result.data);
                     } else {
                         console.log("fail: " + result);
                     }

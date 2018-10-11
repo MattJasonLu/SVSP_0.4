@@ -1337,7 +1337,22 @@ Date.prototype.format = function (format) {
  */
 function exportExcel(e) {
     var name = 't_pr_sampleinformation';
-    var sqlWords = "select companyCode,wastesCode,applyState,laboratorySigner,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity from t_pr_sampleinformation ";
+    // 获取勾选项
+    var idArry = [];
+    $.each($("input[name='select']:checked"),function(index,item){
+        idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
+    });
+    var sqlWords = '';
+    var sql = 'in (';
+    if (idArry.length > 0) {
+        for (var i = 0; i < idArry.length; i++) {       // 设置sql条件语句
+            if (i < idArry.length - 1) sql += idArry[i] + ",";
+            else if (i == idArry.length - 1) sql += idArry[i] + ");"
+        }
+        sqlWords = "select companyCode,wastesCode,applyState,laboratorySigner,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity from t_pr_sampleinformation where id " + sql;
+    }else{
+        sqlWords = "select companyCode,wastesCode,applyState,laboratorySigner,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity from t_pr_sampleinformation;";
+    }
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 

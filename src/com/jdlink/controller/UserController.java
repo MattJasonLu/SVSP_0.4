@@ -71,6 +71,7 @@ public class UserController {
                 res.put("message", "用户名或密码错误");
             }
         } catch (Exception e) {
+            e.printStackTrace();
             res.put("status", "error");
             res.put("message", "服务器异常");
             res.put("exception", e.getMessage());
