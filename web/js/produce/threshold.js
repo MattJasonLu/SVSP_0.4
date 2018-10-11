@@ -354,11 +354,17 @@ function setThresholdOutList(result) {
             }
         });
         clonedTr.removeAttr("id");
-        clonedTr.insertBefore(tr);
+
+        if(obj.state != null && obj.state.name == '生效中'){
+            clonedTr.insertBefore($("#clonedTr1").parent().children().eq(0));   // 将生效中的处置类别阈值表置顶
+        } else {
+            clonedTr.insertBefore(tr);
+        }
         clonedTr.addClass('newLine');
     });
     // 隐藏无数据的tr
     tr.hide();
+
 }
 
 /**
@@ -582,6 +588,12 @@ function exportExcelList() {
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 
+/**
+ * 新增功能
+ */
+function addNewData(){      // 新增时将ID清零
+    localStorage.id = null;
+}
 
 //////////////////////详细数据页面/////////////////////////
 /**
@@ -790,18 +802,18 @@ function exportExcel() {
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 
-////////////////////////编辑页面//////////////////////////
+////////////////////////编辑/新增页面//////////////////////////
 /**
  *
  * 加载基础数据阈值表数据
  */
 function loadThresholdList1() {
-    console.log("id=" + localStorage.id);
+    console.log("localStorage.id=" + localStorage.id);
     var id = getCurrentThresholdListId();
-    $("#data-thresholdListId").text(id);
-    if (localStorage.id != null) {
+    console.log("id:"+id);
+    if (localStorage.id != null && localStorage.id != "null") {
+        $("#data-thresholdListId").text(localStorage.id); // 设置编号
         //通过ajax从后台获取
-        console.log(id);
         setSelectedList();    // 设置下拉框数据
         $.ajax({
             type: "POST",
@@ -812,9 +824,11 @@ function loadThresholdList1() {
             async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
-                if (result !== undefined && result.status === "success") {
+                if (result !== undefined && result.status == "success" && result.data.length > 0) {
                     console.log(result);
                     setThresholdList1(result);
+                }else if (result.data.length == 0){
+                    $("#thresholdId0").text(1);      // 设置首行序号
                 }
                 else {
                     console.log(result.message);
@@ -825,6 +839,7 @@ function loadThresholdList1() {
             }
         });
     } else {
+        $("#data-thresholdListId").text(id); // 设置编号
         $("#thresholdId0").text(1);      // 设置首行序号
         setSelectedList();
     }
@@ -978,6 +993,11 @@ function addNewLine() {
     var tr = $("#plusBtn1").prev();
     // 克隆tr，每次遍历都可以产生新的tr
     var clonedTr = tr.clone();
+    if(localStorage.id == null || localStorage.id == 'null'){      // 新增功能添加减行按钮
+        clonedTr.children("td:eq(0)").find(".btn-default").remove();   // 删除之前的减行按钮
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        clonedTr.children("td:eq(0)").prepend(delBtn);
+    }
     // 克隆后清空新克隆出的行数据
     clonedTr.children().find("input").val("");
     clonedTr.children().find("select").get(0).selectedIndex = -1;
