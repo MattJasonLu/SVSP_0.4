@@ -598,7 +598,7 @@ function cancel(item) {
 }
 //查询
 function view1(item) {
-    var receiptNumber=$(item).parent().parent().children('td').eq(0).text();
+    var receiptNumber=$(item).parent().parent().children('td').eq(1).text();
     //console.log(receiptNumber);
     $.ajax({
         type: "POST",                       // 方法类型
@@ -624,7 +624,7 @@ function view1(item) {
 }
 //双击查询
 function view(item) {
-    var receiptNumber=$(item).children().get(0).innerHTML;
+    var receiptNumber=$(item).children().get(1).innerHTML;
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getProcurementListById",          // url

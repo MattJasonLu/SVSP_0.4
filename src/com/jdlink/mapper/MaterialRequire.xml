@@ -134,6 +134,7 @@
                   or  pAvg  like "%"#{keywords}"%"
                   or  fAvg  like "%"#{keywords}"%"
                   or  phAvg  like "%"#{keywords}"%"
+                  or checkState like "%"#{keywords}"%"
               </if>
           </where>
         order by nowTime desc
@@ -160,6 +161,7 @@
                 or  pAvg  like "%"#{keywords}"%"
                 or  fAvg  like "%"#{keywords}"%"
                 or  phAvg  like "%"#{keywords}"%"
+                or checkState like "%"#{keywords}"%"
             </if>
         </where>
     </select>
