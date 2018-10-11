@@ -904,17 +904,7 @@ function setContractList(result) {
                         break;
                     // 合同名称
                     case (3):
-                        if (obj.contractVersion != null) {
-                            if (obj.contractVersion.name == "公司合同") {
-                                $(this).html(obj.contractName);
-                            }
-                            if (obj.contractVersion.name == "产废单位合同") {
-                                $(this).html(obj.contractName + obj.contractType.name);
-                            }
-                        }
-                        else {
-                            $(this).html("");
-                        }
+                        $(this).html(obj.contractName);
                         break;
                     // 状态
                     case (4):
@@ -1745,6 +1735,8 @@ function loadWastesContractSelectList() {
 
       var contractType = ($('#contractType option:selected').text()).substring(0, 2);
 
+      console.log(contractType)
+
       if(contractType=='物流'){
           $('#supplier').show();//供应商显示
           $('#client').hide();//产废单位隐藏
@@ -1927,7 +1919,7 @@ function loadWastesContractSelectList() {
 
 
       }
-      else {
+      if(contractType!='物流') {
           $('#supplier').hide();//供应商隐藏
           $('#client').show();//产废单位显示
           $('#name').text('产废单位')
