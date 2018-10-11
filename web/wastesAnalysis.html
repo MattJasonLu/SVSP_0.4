@@ -207,32 +207,41 @@
                 </div>
             </div>
             <br>
-            <table class="table table-bordered">
+            <table class="table table-striped table-hover table-condensed">
                 <thead>
-                    <tr>
-                        <td class="text-center">序号</td>
-                        <td class="text-center">收样日期</td>
-                        <td class="text-center">联单号码</td>
-                        <td class="text-center">产废单位</td>
-                        <td class="text-center">废物名称</td>
-                        <td class="text-center">废物类别</td>
-                        <td class="text-center">进料方式</td>
-                        <td class="text-center">pH</td>
-                        <td class="text-center">热值kal/kg</td>
-                        <td class="text-center">水分%</td>
-                        <td class="text-center">灰分%</td>
-                        <td class="text-center">氟含量%</td>
-                        <td class="text-center">氯含量%</td>
-                        <td class="text-center">硫含量%</td>
-                        <td class="text-center">磷含量%</td>
-                        <td class="text-center">闪点℃</td>
-                        <td class="text-center">粘度mpa·s</td>
-                        <td class="text-center">熔融温度℃</td>
-                        <td class="text-center">备注</td>
-                    </tr>
+                <th class="text-center">
+                    <label>
+                        <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
+                    </label>
+                </th>
+                        <th class="text-center">序号</th>
+                        <th class="text-center">收样日期</th>
+                        <th class="text-center">联单号码</th>
+                        <th class="text-center">产废单位</th>
+                        <th class="text-center">废物名称</th>
+                        <th class="text-center">废物类别</th>
+                        <th class="text-center">进料方式</th>
+                        <th class="text-center">pH</th>
+                        <th class="text-center">热值kal/kg</th>
+                        <th class="text-center">水分%</th>
+                        <th class="text-center">灰分%</th>
+                        <th class="text-center">氟含量%</th>
+                        <th class="text-center">氯含量%</th>
+                        <th class="text-center">硫含量%</th>
+                        <th class="text-center">磷含量%</th>
+                        <th class="text-center">闪点℃</th>
+                        <th class="text-center">粘度mpa·s</th>
+                        <th class="text-center">熔融温度℃</th>
+                        <th class="text-center">备注</th>
                 </thead>
                 <tbody id="tbody1">
                     <tr id="cloneTr" class="myclass">
+                        <td class="text-center">
+                            <label>
+                                <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                                <!--<input class="checkbox" type="checkbox" value="option1" name="select" id="select">-->
+                            </label>
+                        </td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
