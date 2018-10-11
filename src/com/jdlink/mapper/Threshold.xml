@@ -59,7 +59,9 @@
     </select>
 
     <select id="getThresholdByHandleCategoryAndFormType" resultMap="ThresholdRM">
-        select * from t_pr_threshold  where handleCategory=#{0} and formType=#{1};
+        select * from t_pr_threshold  where handleCategory=#{0} and formType=#{1}
+        and  id=(select id from  t_pr_thresholdlist where state='Enabled')
+        ;
     </select>
 
     <select id="count" resultType="int">
