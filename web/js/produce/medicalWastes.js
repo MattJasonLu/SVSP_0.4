@@ -529,62 +529,62 @@ function setMedicalWastesList(result) {
             // 根据索引为部分td赋值
             switch (inner_index) {
                 // 登记单号
-                case (0):
+                case (1):
                     $(this).html(obj.medicalWastesId);
                     break;
                 // 登记日期
-                case (1):
+                case (2):
                     $(this).html(getDateStr(obj.dateTime));
                     break;
                 // 登记部门
-                case (2):
+                case (3):
                     $(this).html(obj.department);
                     break;
                 // 登记人
-                case (3):
+                case (4):
                     $(this).html(obj.departmentName);
                     break;
                 // 修改人
-                case (4):
+                case (5):
                     $(this).html(obj.adjustName);
                     break;
                 // 修改时间
-                case (5):
+                case (6):
                     $(this).html(getDateStr(obj.adjustDate));
                     break;
                     //本月进厂危废
-                case (6):
+                case (7):
                     $(this).html(obj.thisMonthWastes);
                     break;
                     //本日直接转外处置量
-                case (7):
+                case (8):
                     $(this).html(obj.directDisposal);
                     break;
                 //本日蒸煮医废(过磅)
-                case (8):
+                case (9):
                     $(this).html(obj.cookingWastes);
                     break;
                     //蒸煮后重量
-                case (9):
+                case (10):
                     $(this).html(obj.afterCookingNumber);
                     break;
                     //蒸煮后入库量
-                case (10):
+                case (11):
                     $(this).html(obj.afterCookingInbound);
                     break;
                     //本月蒸煮后外送量
-                case (11):
+                case (12):
                     $(this).html(obj.thisMonthSendCooking);
                     break;
                     //误差量
-                case (12):
+                case (13):
                     $(this).html(obj.errorNumber);
                     break;
                     //水分含量
-                case (13):
+                case (14):
                     $(this).html(obj.wetNumber);
                     break;
-                case (14):
+                case (15):
                     if(obj.checkState!=null){
                         $(this).html(obj.checkState.name);
                     }
