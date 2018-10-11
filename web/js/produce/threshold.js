@@ -402,6 +402,7 @@ function toView1(item) {
  * @param item
  */
 function enable(item) {
+    // 将表生效
     var id = getCurrentThrenholdId(item);
     $.ajax({
         type: "POST",                            // 方法类型
@@ -415,6 +416,38 @@ function enable(item) {
             console.log(result);
             if (result.data != undefined || result.status == "success") {
                 alert("启用成功！");
+                // 将之前生效的表格关闭
+                var lineCount = $(item.parentElement.parentElement.parentElement).children().length - 1; // 获取总行数
+                var tBody = $(item.parentElement.parentElement.parentElement);
+                for(var i = 0; i < lineCount; i++){
+                    var item1 = tBody.children().eq(i).children();
+                    if(item1.eq(3).get(0).innerHTML == '生效中'){
+                        var id1 = item1.eq(1).get(0).innerHTML;
+                        $.ajax({
+                            type: "POST",                            // 方法类型
+                            url: "disabledThresholdList",                 // url
+                            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                            data: {
+                                id: id1
+                            },
+                            dataType: "json",
+                            success: function (result) {
+                                console.log(result);
+                                if (result.data != undefined || result.status == "success") {
+                                    //alert("关闭成功！");
+                                   // window.location.reload();
+                                } else {
+                                    console.log(result.message);
+                                }
+                            },
+                            error: function (result) {
+                                console.log(result);
+                                alert("服务器错误！");
+                            }
+                        });
+                    }
+
+                }
                 window.location.reload();
             } else {
                 console.log(result.message);
@@ -425,6 +458,7 @@ function enable(item) {
             alert("服务器错误！");
         }
     });
+
 }
 
 /**
