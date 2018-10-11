@@ -54,7 +54,7 @@ function setDataList(result) {
                     break;
                 //提成比例
                 case (3):
-                    $(this).html(obj.commissionRatio);
+                    $(this).html(obj.commissionRatio.toFixed(3));
                     break;
                 //加权平均提成比例
                 case (4):
@@ -140,11 +140,11 @@ function setDataList1(result) {
                     break;
                 //提成比例
                 case (3):
-                    $(this).find("input").val(obj.commissionRatio);
+                    $(this).find("input").val(obj.commissionRatio.toFixed(3));
                     break;
                 //加权平均提成比例
                 case (4):
-                    $(this).find("input").val(obj.weightedAverageCommissionRatio);
+                    $(this).find("input").val(obj.weightedAverageCommissionRatio.toFixed(3));
                     break;
             }
         });
