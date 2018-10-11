@@ -683,7 +683,7 @@
                                 <td class="text-center"></td>
                                 <td class="text-center">
                                     <a href="#" id="function_144" onclick=" check(this); function check(e){if(!checkAuthority($(e))) return false; viewContract(e);}" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                                    <a href="wastesContractInfoChange.html" id="function_145" onclick="checkAuthority($(this))" title="变更"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                                    <a href="#" id="function_145" onclick=" check(this); function check(e){if(!checkAuthority($(e))) return false; adjust(e);}" title="变更"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
                                     <a href="#" id="function_146" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; cancel(e);}" class="glyphicon3" title="作废"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true" id="glyphicon3"></span></a>
                                     <a href="#" id="function_147" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; approval(e);}" title="审批"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></a>
                                 </td>
@@ -773,7 +773,7 @@
                             <p class="text-left"><b>开户行账号&nbsp;&nbsp;</b><span id="modal3_bankAccout"></span></p>
                             <!--<p class="text-left"><b>所属区域&nbsp;&nbsp;</b><span id="modal3_area"></span></p>-->
                             <p class="text-left"><b>联系方式&nbsp;&nbsp;</b><span id="modal3_telephone"></span></p>
-                            <p class="text-left"><b>预计处置费&nbsp;&nbsp;</b><span id="modal3_order"></span><span>元</span>
+                            <!--<p class="text-left"><b>预计处置费&nbsp;&nbsp;</b><span id="modal3_order"></span><span>元</span>-->
                             </p>
                         </div>
                         <table class="table" style="margin-left: -14px">
@@ -1076,25 +1076,6 @@
                     else {
                         $('#modal3_ticketRate1').text(data.ticketRate1.name);
                     }
-                    //资质开始日期
-                    // if (data.beginQualification == null) {
-                    //     $('#modal3_beginQualification').text(" ");
-                    // }
-                    // else {
-                    //     var begin1 = gettime(data.beginQualification);
-                    //     $('#modal3_beginQualification').text(begin1);
-                    // }
-                    //资质结束日期
-                    // if (data.endQualification == null) {
-                    //     $('#modal3_endQualification').text(" ");
-                    // }
-                    // else {
-                    //     var end1 = gettime(data.endQualification);
-                    //     $('#modal3_endQualification').text(end1);
-                    // }
-                    //物流公司资质
-                    // $('#modal3_logisticsQualification').text(data.logisticsQualification);
-                    //开户行名称
                     $('#modal3_bankName').text(data.bankName);
                     //开户行账号
                     $('#modal3_bankAccout').text(data.bankAccount);
