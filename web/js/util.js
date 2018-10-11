@@ -247,3 +247,10 @@ function addPageClass(pageNumber){
         }
     });
 }
+
+/**
+ * 返回上一页
+ */
+function backLastPage(){
+    history.back();
+}
