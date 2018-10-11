@@ -387,4 +387,9 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
           <!--insert into t_quotationitem(contractId,clientId,wastesCode,wastesName,packageType,util,unitPriceTax,contractAmount,totalPrice,transport,supplierId) values-->
          <!--(#{contractId},#{client.clientId},#{wastesCode},#{wastesName},#{packageType},#{util},#{unitPriceTax},#{contractAmount},#{totalPrice},#{transport},#{supplier.supplierId});-->
     <!--</update>-->
+
+    <!--获得最新的合同编号-->
+    <select id="getNewestContractId1" resultType="String">
+        select contractId from  t_contract order by contractId desc;
+    </select>
 </mapper>
