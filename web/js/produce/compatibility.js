@@ -1493,6 +1493,15 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
         page.count = countValue();
         page.start = (pageNumber - 1) * page.count;
         var keywords = $.trim($("#searchContent").val());
+        if(keywords=='已失效'){
+            keywords='Disabled'
+        }
+        if(keywords=='待提交'){
+            keywords='ToSubmit'
+        }
+        if(keywords=='审批通过'){
+            keywords='Approval'
+        }
         data1 = {
             page: page,
             keywords: keywords
