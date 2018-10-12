@@ -151,7 +151,7 @@
                             <div class="form-group">
                                 <label for="search-client" class="col-sm-4 control-label">产废单位</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-client" name="search-client" placeholder="">
+                                    <input type="text" class="form-control" id="search-client" name="search-client" placeholder="" onkeyup="enterSearch()">
                                 </div>
                             </div>
 
@@ -160,7 +160,7 @@
                             <div class="form-group">
                                 <label for="search-storageType" class="col-sm-4 control-label">仓库名称</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-storageType" name="search-storageType" placeholder="">
+                                    <input type="text" class="form-control" id="search-storageType" name="search-storageType" placeholder="" onkeyup="enterSearch()">
                                 </div>
                             </div>
                             <!--<div class="form-group">-->
@@ -207,9 +207,9 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" style="margin-left: 40px">入库日期 </label>
                                 <div class="input-group">
-                                    <input type="date" class="input-sm form-control" id="search-inDate" title="" onkeydown=""/>
+                                    <input type="date" class="input-sm form-control" id="search-inDate" title="" onkeydown="" onkeyup="enterSearch()"/>
                                     <span class="input-group-addon">-</span>
-                                    <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown=""/>
+                                    <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown="" onkeyup="enterSearch()"/>
                                 </div>
                             </div>
                         </div>

@@ -605,6 +605,15 @@ function searchSec() {
 
 }
 
+/**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchSec();      //
+    }
+}
+
 //查看出库信息==>次生库存
 function view(item) {
     var inboundOrderItemId=$(item).parent().prev().html();

@@ -129,7 +129,7 @@
                         <div class="form-group">
                             <label for="search-warehouseId" class="col-sm-4 control-label">仓&nbsp;&nbsp;库&nbsp;&nbsp;号</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-warehouseId" name="search-warehouseId" placeholder="">
+                                <input type="text" class="form-control" id="search-warehouseId" name="search-warehouseId" placeholder="" onkeyup="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -137,7 +137,7 @@
                         <div class="form-group">
                             <label for="search-storageQuantity" class="col-sm-4 control-label">出库数量</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-storageQuantity" name="search-storageQuantity" placeholder="">
+                                <input type="text" class="form-control" id="search-storageQuantity" name="search-storageQuantity" placeholder="" onkeyup="enterSearch()">
                             </div>
                         </div>
 
@@ -162,7 +162,7 @@
                         <div class="form-group">
                             <label for="search-materialForm" class="col-sm-4 control-label">业务员</label>
                             <div class="col-xs-7">
-                                <input class="form-control" name="search-salesman" id="search-salesman" title="">
+                                <input class="form-control" name="search-salesman" id="search-salesman" title="" onkeyup="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -172,9 +172,9 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label" style="margin-left: 15px">出库日期 </label>
                             <div class="input-group">
-                                <input type="date" class="input-sm form-control" id="search-storageDate" title="" onkeydown=""/>
+                                <input type="date" class="input-sm form-control" id="search-storageDate" title="" onkeydown="" onkeyup="enterSearch()"/>
                                 <span class="input-group-addon">-</span>
-                                <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown=""/>
+                                <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown="" onkeyup="enterSearch()"/>
                             </div>
                         </div>
                     </div>

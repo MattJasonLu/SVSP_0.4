@@ -687,6 +687,15 @@ function searchMedicalWastes() {
 
 }
 
+/**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchMedicalWastes();      //
+    }
+}
+
 //误差量计算
 //医废-误差量计算公式：误差量=本日进厂医废（接运单）-本日直接转外处置量-本日蒸煮医废（过磅量）
 function geterrorNumberByWastes() {

@@ -1623,3 +1623,12 @@ function searchPw() {
     }
 console.log(data1)
 }
+
+/**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchPw();      //
+    }
+}
