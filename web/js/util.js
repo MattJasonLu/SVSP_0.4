@@ -21,11 +21,12 @@ function updateVersion(versionId) {
  * 重置
  */
 function reset() {
-    $("#searchContent").val("");
-    $("#senior").find("input").val("");
-    $("#senior").find("select").each(function () {
-        $(this).get(0).selectedIndex = -1;
-    });
+    // $("#searchContent").val("");
+    // $("#senior").find("input").val("");
+    // $("#senior").find("select").each(function () {
+    //     $(this).get(0).selectedIndex = -1;
+    // });
+    window.location.reload();//只要刷新即可，刷新时数据会自动消失，因为有些界面没有下拉框，会报错==>JackYang
 }
 /**
  * 通过字符串获取处置类别
