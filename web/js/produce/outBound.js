@@ -413,15 +413,21 @@ function setOutboutList(result,index) {
                         break;
                     // 产废单位
                     case (1):
+                        if(obj.client!=null){
                             $(this).html(obj.client.companyName);
+                        }
                         break;
                     // 危废名称
                     case (2):
-                        $(this).html(obj.laboratoryTest.wastesName);
+                        if(obj.laboratoryTest!=null){
+                            $(this).html(obj.laboratoryTest.wastesName);
+                        }
                         break;
                     // 危废代码
-                    case (3):
+                    case (3):     if(obj.laboratoryTest!=null){
                         $(this).html(obj.laboratoryTest.wastesCode);
+                    }
+
                         break;
                     // 出库数量
                     case (4):
@@ -437,7 +443,9 @@ function setOutboutList(result,index) {
                         break;
                     //处置方式
                     case (7):
-                        $(this).html(obj.processWay.name);
+                        if(obj.processWay!=null){
+                            $(this).html(obj.processWay.name);
+                        }
                         break;
                     //备注
                     case (8):

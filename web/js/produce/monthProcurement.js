@@ -879,6 +879,8 @@ function getIngredientsList() {
             alert("服务器异常！");
         }
     });
+    $('#applyDate').val(dateToString(new Date()));
+    var data=getCurrentUserData();
 }
 
 

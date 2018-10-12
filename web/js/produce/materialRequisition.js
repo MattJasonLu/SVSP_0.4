@@ -604,6 +604,11 @@ function loadRequisitionList() {
     }
     /*加载出库类别下拉框
      */
+    var data=getCurrentUserData();
+    console.log(data)
+    if(data!=null){
+     $('#creator').val(data.username)
+    }
 
     localStorage.clear();
 }

@@ -309,7 +309,10 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
             if(last-event.timeStamp==0){
                 searchStock1();
             }
-        },400);
+            else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchStock1();      //
+            }
+        },600);
     });
 });
 
@@ -531,6 +534,8 @@ function saveEmer() {
             });
 
         });
+        alert("添加成功！")
+        window.location.href="emergencyProcurement.html"
     }
     else {
         $('#applyDate').next('span').remove();
