@@ -668,6 +668,8 @@ public class MaterialRequireController {
         return res.toString();
     }
 
+
+
    //物料需求明细修改
     @RequestMapping("updateMaterialRequireItem")
     @ResponseBody
@@ -783,6 +785,35 @@ public class MaterialRequireController {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    /**
+     * 获取最新的物料信息
+     * @param
+     * @return
+     */
+
+    @RequestMapping("getNewMaterialRequire")
+    @ResponseBody
+    public String getNewMaterialRequire(){
+        JSONObject res=new JSONObject();
+
+        try {
+            List<String> materialRequireIdList = compatibilityService.getNewestMaterialRequireId();
+          MaterialRequire materialRequire=  materialRequireService.getMaterialRequireByMaterialRequireId(materialRequireIdList.get(0));
+            res.put("status", "success");
+            res.put("message", "获取最新的物料信息成功");
+            res.put("materialRequire", materialRequire);
+        }
+
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取最新的物料信息失败");
+        }
+
+        return res.toString();
+
     }
 
     //获取三位序列号
