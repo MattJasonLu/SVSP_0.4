@@ -280,4 +280,9 @@
     <select id="getNewestInBoundDateSec" resultType="Date">
          select  inboundDate from t_pl_wasteinventory  where  inboundDate is not null  and boundType='SecondaryInbound' order  by inboundDate;
      </select>
+
+    <!--配料完更新库存的数量-->
+    <select id="updateInventoryCount" >
+        update t_pl_wasteinventory set actualCount=actualCount-#{0},leftNumeber=(actualCount-#{0})  where inboundOrderItemId=#{1};
+    </select>
 </mapper>

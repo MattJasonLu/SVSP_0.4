@@ -578,9 +578,12 @@ function setOutBoundList(result) {
                         break;
                     // 业务员
                     case (3):
-                        if(obj.client.salesman!=null){
-                            $(this).html(obj.client.salesman.name);
+                        if(obj.client!=null){
+                            if(obj.client.salesman!=null){
+                                $(this).html(obj.client.salesman.name);
+                            }
                         }
+
 
                         break;
                     // 出库日期
@@ -624,15 +627,23 @@ function setOutBoundList(result) {
                         break;
                     //进料方式
                     case (13):
-                        $(this).html(obj.handelCategory.name);
+                        if(obj.handelCategory!=null){
+                            $(this).html(obj.handelCategory.name);
+                        }
                         break;
                         //单据状态
                     case (14):
-                        $(this).html(obj.recordState.name);
+                        if(obj.recordState!=null){
+                            $(this).html(obj.recordState.name);
+                        }
+
                         break;
                         //审批状态
                     case (15):
-                        $(this).html(obj.checkState.name);
+                        if(obj.checkState!=null){
+                            $(this).html(obj.checkState.name);
+                        }
+
                         break;
                         //备注
                     case (16):

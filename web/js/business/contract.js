@@ -724,7 +724,10 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
             if(last-event.timeStamp==0){
                 searchFuzzy();
             }
-        },400);
+            else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchFuzzy();      //
+            }
+        },600);
     });
 });
 
@@ -4351,15 +4354,15 @@ function contractAdjustSave() {
                             client:{clientId:$('#companyName').selectpicker('val')} ,
                             wastesCode:$(this).children('td').eq(1).children('div').find('button').attr('title'),
                             wastesName:$(this).children('td').eq(2).children('input').val(),
-                            packageType:$(this).children('td').eq(3).children('select').val(),
-                            transport:$(this).children('td').eq(8).children('select').val(),
+                            packageType:$(this).children('td').eq(3).children('select').get(0).selectedIndex,
+                            transport:$(this).children('td').eq(8).children('select').get(0).selectedIndex,
                             util:$(this).children('td').eq(4).children('input').val(),
                             unitPriceTax:$(this).children('td').eq(5).children('input').val(),
                             contractAmount:$(this).children('td').eq(6).children('input').val(),
                             totalPrice:$(this).children('td').eq(7).children('input').val(),
                         };
                         console.log(quotationItemData);
-                        //1添加报价单明细
+                       // 1添加报价单明细
                         $.ajax({
                             type:'POST',
                             url:"updateQuotationItem",
@@ -4383,7 +4386,7 @@ function contractAdjustSave() {
                     console.log(result)
                     alert("修改成功!");
                     $(location).attr('href', 'contractManage.html');
-                    //location.href="contractManage.html";
+                    location.href="contractManage.html";
                     localStorage.name=contractType1;
                 }
                 else {

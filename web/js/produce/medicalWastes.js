@@ -625,12 +625,12 @@ function searchMedicalWastes() {
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
             //console.log(this);
-            if(!($(this).children('td').eq(1).text().indexOf(date)!=-1&&$(this).children('td').eq(3).text().indexOf(person)!=-1
+            if(!($(this).children('td').eq(2).text().indexOf(date)!=-1&&$(this).children('td').eq(4).text().indexOf(person)!=-1
               &&$(this).children('td').text().indexOf(text)!=-1
             )){
                 $(this).hide();
             }
-            if(($(this).children('td').eq(1).text().indexOf(date)!=-1&&$(this).children('td').eq(3).text().indexOf(person)!=-1
+            if(($(this).children('td').eq(2).text().indexOf(date)!=-1&&$(this).children('td').eq(4).text().indexOf(person)!=-1
                 &&$(this).children('td').text().indexOf(text)!=-1
             )){
                 array1.push($(this));
@@ -887,7 +887,7 @@ function importExcel() {
  * 下载模板
  * */
 function downloadModal() {
-    var filePath = 'Files/Templates/配伍周导入模板.xlsx';
+    var filePath = 'Files/Templates/医危废出入库模板.xlsx';
     var r = confirm("是否下载模板?");
     if (r == true) {
         window.open('downloadFile?filePath=' + filePath);

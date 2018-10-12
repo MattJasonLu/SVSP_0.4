@@ -882,7 +882,10 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
             if(last-event.timeStamp==0){
                 searchWastesAnalysis();
             }
-        },400);
+            else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchWastesAnalysis();      //
+            }
+        },600);
     });
 });
 
@@ -1028,7 +1031,7 @@ function importExcel() {
  * */
 
 function downloadModal() {
-    var filePath = 'model/materialDemand.xlsx';
+    var filePath = 'Files/Templates/2018年月度采购申请单03.xls';
     var r = confirm("是否下载模板?");
     if (r == true) {
         window.open('downloadFile?filePath=' + filePath);
