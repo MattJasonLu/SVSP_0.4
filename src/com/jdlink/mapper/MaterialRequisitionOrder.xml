@@ -28,7 +28,7 @@
     <collection property="quotationItem" column="{clientId=clientId,wastesCode=wastesCode}" select="getQuotationItem"></collection>
     </resultMap>
     <select id="getQuotationItem" resultType="QuotationItem">
-        select * from t_quotationitem where clientId=#{clientId} and wastesCode=#{wastesCode};
+        select * from t_quotationitem where clientId=#{clientId} and wastesCode=#{wastesCode} limit 0,1;
     </select>
     <select id="getLaboratoryTest" resultType="LaboratoryTest">
         select * from t_pr_laboratorytest where laboratorytestnumber=#{laboratoryTestId};

@@ -13,7 +13,7 @@
     </resultMap>
     <!--查询报价单的信息-->
     <select id="getQuotationItem" resultType="QuotationItem">
-        select  * from t_quotationitem  where clientId=#{clientId} and wastesCode=#{wastesCode};
+        select  * from t_quotationitem  where clientId=#{clientId} and wastesCode=#{wastesCode} limit 0,1;
     </select>
     <!--查询化验单信息给仓库-->
     <select id="getLaboratoryTest" parameterType="String" resultType="LaboratoryTest">
@@ -184,7 +184,7 @@
     </resultMap>
     <!--查找配料单的具体信息-->
     <select id="getBatching" resultMap="BH">
-        select * from t_pl_batchingorder where checkState='ToPick'
+        select * from t_pl_batchingorder where checkState='ToPick' order by  nowTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
