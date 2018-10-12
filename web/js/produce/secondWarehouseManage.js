@@ -13,14 +13,6 @@ function countValue() {
     var index = mySelect.selectedIndex;
     return mySelect.options[index].text;
 }
-/**
- * 重置搜索数据
- */
-function reset() {
-    $("#senior").find("input").val("");
-    $("#senior").find("select").get(0).selectedIndex = -1;
-}
-
 
 /**
  * 计算总页数

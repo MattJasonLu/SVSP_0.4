@@ -103,7 +103,7 @@ function setPageClone(result) {
  * */
 function switchPage(pageNumber) {
     console.log("当前页：" + pageNumber);
-    if(pageNumber > totalPage()){
+    if (pageNumber > totalPage()) {
         pageNumber = totalPage();
     }
     if (pageNumber == 0) {                 //首页
@@ -192,7 +192,7 @@ function switchPage(pageNumber) {
  * */
 function inputSwitchPage() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
-    if(pageNumber > totalPage()){
+    if (pageNumber > totalPage()) {
         pageNumber = totalPage();
     }
     $("#current").find("a").text("当前页：" + pageNumber);
@@ -417,7 +417,7 @@ function exportExcel() {
     var name = 't_pr_productionplan';
     // 获取勾选项
     var idArry = [];
-    $.each($("input[name='select']:checked"),function(index,item){
+    $.each($("input[name='select']:checked"), function (index, item) {
         idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
     });
     var sqlWords = '';
@@ -428,7 +428,7 @@ function exportExcel() {
             else if (i == idArry.length - 1) sql += idArry[i] + ");"
         }
         sqlWords = "select * from t_pr_productionplan where id" + sql;
-    }else {
+    } else {
         sqlWords = "select * from t_pr_productionplan;";
     }
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
@@ -505,12 +505,12 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
     $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
-            if(last-event.timeStamp=== 0){
+            if (last - event.timeStamp === 0) {
                 searchProductionPlan();
-            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+            } else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
                 searchProductionPlan();      //
             }
-        },600);
+        }, 600);
     });
 });
 
@@ -631,37 +631,39 @@ function view(item) {
                 console.log(data);
                 $("#view-transportRate").text(data.transportRate);
                 $("#view-planQuantity").text(data.planQuantity);
-                $("#view-calcareousLime").text(data.auxiliaryConsumption.calcareousLime);
-                $("#view-waterScaleInhibitor").text(data.auxiliaryConsumption.waterScaleInhibitor);
-                $("#view-commonActivatedCarbon").text(data.auxiliaryConsumption.commonActivatedCarbon);
-                $("#view-naclo").text(data.auxiliaryConsumption.naclo);
-                $("#view-activatedCarbon").text(data.auxiliaryConsumption.activatedCarbon);
-                $("#view-standardBox").text(data.auxiliaryConsumption.standardBox);
-                $("#view-activatedCarbonParticles").text(data.auxiliaryConsumption.activatedCarbonParticles);
-                $("#view-woodenPallets").text(data.auxiliaryConsumption.woodenPallets);
-                $("#view-lye").text(data.auxiliaryConsumption.lye);
-                $("#view-standardTray_1m").text(data.auxiliaryConsumption.standardTray_1m);
-                $("#view-causticSoda").text(data.auxiliaryConsumption.causticSoda);
-                $("#view-standardTray_1_2m").text(data.auxiliaryConsumption.standardTray_1_2m);
-                $("#view-urea").text(data.auxiliaryConsumption.urea);
-                $("#view-slagBag").text(data.auxiliaryConsumption.slagBag);
-                $("#view-hydrochloricAcid").text(data.auxiliaryConsumption.hydrochloricAcid);
-                $("#view-flyAshBag").text(data.auxiliaryConsumption.flyAshBag);
-                $("#view-nahco3").text(data.auxiliaryConsumption.nahco3);
-                $("#view-TonBox").text(data.auxiliaryConsumption.tonBox);
-                $("#view-flour").text(data.auxiliaryConsumption.flour);
-                $("#view-steam").text(data.auxiliaryConsumption.steam);
-                $("#view-defoamer").text(data.auxiliaryConsumption.defoamer);
-                $("#view-dieselOil").text(data.auxiliaryConsumption.dieselOil);
-                $("#view-flocculant").text(data.auxiliaryConsumption.flocculant);
-                $("#view-naturalGas").text(data.auxiliaryConsumption.naturalGas);
-                $("#view-softWaterReducingAgent").text(data.auxiliaryConsumption.softWaterReducingAgent);
-                $("#view-electricQuantity").text(data.auxiliaryConsumption.electricQuantity);
-                $("#view-softWaterScaleInhibitor").text(data.auxiliaryConsumption.softWaterScaleInhibitor);
-                $("#view-industrialWater").text(data.auxiliaryConsumption.industrialWater);
-                $("#view-pH").text(data.auxiliaryConsumption.pH);
-                $("#view-tapWaterQuantity").text(data.auxiliaryConsumption.tapWaterQuantity);
-                $("#view-waterReducingAgent").text(data.auxiliaryConsumption.waterReducingAgent);
+                if (data.auxiliaryConsumption != null) {
+                    $("#view-calcareousLime").text(data.auxiliaryConsumption.calcareousLime);
+                    $("#view-waterScaleInhibitor").text(data.auxiliaryConsumption.waterScaleInhibitor);
+                    $("#view-commonActivatedCarbon").text(data.auxiliaryConsumption.commonActivatedCarbon);
+                    $("#view-naclo").text(data.auxiliaryConsumption.naclo);
+                    $("#view-activatedCarbon").text(data.auxiliaryConsumption.activatedCarbon);
+                    $("#view-standardBox").text(data.auxiliaryConsumption.standardBox);
+                    $("#view-activatedCarbonParticles").text(data.auxiliaryConsumption.activatedCarbonParticles);
+                    $("#view-woodenPallets").text(data.auxiliaryConsumption.woodenPallets);
+                    $("#view-lye").text(data.auxiliaryConsumption.lye);
+                    $("#view-standardTray_1m").text(data.auxiliaryConsumption.standardTray_1m);
+                    $("#view-causticSoda").text(data.auxiliaryConsumption.causticSoda);
+                    $("#view-standardTray_1_2m").text(data.auxiliaryConsumption.standardTray_1_2m);
+                    $("#view-urea").text(data.auxiliaryConsumption.urea);
+                    $("#view-slagBag").text(data.auxiliaryConsumption.slagBag);
+                    $("#view-hydrochloricAcid").text(data.auxiliaryConsumption.hydrochloricAcid);
+                    $("#view-flyAshBag").text(data.auxiliaryConsumption.flyAshBag);
+                    $("#view-nahco3").text(data.auxiliaryConsumption.nahco3);
+                    $("#view-TonBox").text(data.auxiliaryConsumption.tonBox);
+                    $("#view-flour").text(data.auxiliaryConsumption.flour);
+                    $("#view-steam").text(data.auxiliaryConsumption.steam);
+                    $("#view-defoamer").text(data.auxiliaryConsumption.defoamer);
+                    $("#view-dieselOil").text(data.auxiliaryConsumption.dieselOil);
+                    $("#view-flocculant").text(data.auxiliaryConsumption.flocculant);
+                    $("#view-naturalGas").text(data.auxiliaryConsumption.naturalGas);
+                    $("#view-softWaterReducingAgent").text(data.auxiliaryConsumption.softWaterReducingAgent);
+                    $("#view-electricQuantity").text(data.auxiliaryConsumption.electricQuantity);
+                    $("#view-softWaterScaleInhibitor").text(data.auxiliaryConsumption.softWaterScaleInhibitor);
+                    $("#view-industrialWater").text(data.auxiliaryConsumption.industrialWater);
+                    $("#view-pH").text(data.auxiliaryConsumption.pH);
+                    $("#view-tapWaterQuantity").text(data.auxiliaryConsumption.tapWaterQuantity);
+                    $("#view-waterReducingAgent").text(data.auxiliaryConsumption.waterReducingAgent);
+                }
                 $("#viewModal").modal('show');
             } else {
                 alert(result.message);
@@ -713,37 +715,39 @@ function edit(item) {
                 $("#modal-founder").val(data.founder);
                 $("#modal-transportRate").val(data.transportRate);
                 $("#modal-planQuantity").val(data.planQuantity);
-                $("#modal-calcareousLime").val(data.auxiliaryConsumption.calcareousLime);
-                $("#modal-waterScaleInhibitor").val(data.auxiliaryConsumption.waterScaleInhibitor);
-                $("#modal-commonActivatedCarbon").val(data.auxiliaryConsumption.commonActivatedCarbon);
-                $("#modal-naclo").val(data.auxiliaryConsumption.naclo);
-                $("#modal-activatedCarbon").val(data.auxiliaryConsumption.activatedCarbon);
-                $("#modal-standardBox").val(data.auxiliaryConsumption.standardBox);
-                $("#modal-activatedCarbonParticles").val(data.auxiliaryConsumption.activatedCarbonParticles);
-                $("#modal-woodenPallets").val(data.auxiliaryConsumption.woodenPallets);
-                $("#modal-lye").val(data.auxiliaryConsumption.lye);
-                $("#modal-standardTray_1m").val(data.auxiliaryConsumption.standardTray_1m);
-                $("#modal-causticSoda").val(data.auxiliaryConsumption.causticSoda);
-                $("#modal-standardTray_1_2m").val(data.auxiliaryConsumption.standardTray_1_2m);
-                $("#modal-urea").val(data.auxiliaryConsumption.urea);
-                $("#modal-slagBag").val(data.auxiliaryConsumption.slagBag);
-                $("#modal-hydrochloricAcid").val(data.auxiliaryConsumption.hydrochloricAcid);
-                $("#modal-flyAshBag").val(data.auxiliaryConsumption.flyAshBag);
-                $("#modal-nahco3").val(data.auxiliaryConsumption.nahco3);
-                $("#modal-tonBox").val(data.auxiliaryConsumption.tonBox);
-                $("#modal-flour").val(data.auxiliaryConsumption.flour);
-                $("#modal-steam").val(data.auxiliaryConsumption.steam);
-                $("#modal-defoamer").val(data.auxiliaryConsumption.defoamer);
-                $("#modal-dieselOil").val(data.auxiliaryConsumption.dieselOil);
-                $("#modal-flocculant").val(data.auxiliaryConsumption.flocculant);
-                $("#modal-naturalGas").val(data.auxiliaryConsumption.naturalGas);
-                $("#modal-softWaterReducingAgent").val(data.auxiliaryConsumption.softWaterReducingAgent);
-                $("#modal-electricQuantity").val(data.auxiliaryConsumption.electricQuantity);
-                $("#modal-softWaterScaleInhibitor").val(data.auxiliaryConsumption.softWaterScaleInhibitor);
-                $("#modal-industrialWater").val(data.auxiliaryConsumption.industrialWater);
-                $("#modal-pH").val(data.auxiliaryConsumption.pH);
-                $("#modal-tapWaterQuantity").val(data.auxiliaryConsumption.tapWaterQuantity);
-                $("#modal-waterReducingAgent").val(data.auxiliaryConsumption.waterReducingAgent);
+                if (data.auxiliaryConsumption != null) {
+                    $("#modal-calcareousLime").val(data.auxiliaryConsumption.calcareousLime);
+                    $("#modal-waterScaleInhibitor").val(data.auxiliaryConsumption.waterScaleInhibitor);
+                    $("#modal-commonActivatedCarbon").val(data.auxiliaryConsumption.commonActivatedCarbon);
+                    $("#modal-naclo").val(data.auxiliaryConsumption.naclo);
+                    $("#modal-activatedCarbon").val(data.auxiliaryConsumption.activatedCarbon);
+                    $("#modal-standardBox").val(data.auxiliaryConsumption.standardBox);
+                    $("#modal-activatedCarbonParticles").val(data.auxiliaryConsumption.activatedCarbonParticles);
+                    $("#modal-woodenPallets").val(data.auxiliaryConsumption.woodenPallets);
+                    $("#modal-lye").val(data.auxiliaryConsumption.lye);
+                    $("#modal-standardTray_1m").val(data.auxiliaryConsumption.standardTray_1m);
+                    $("#modal-causticSoda").val(data.auxiliaryConsumption.causticSoda);
+                    $("#modal-standardTray_1_2m").val(data.auxiliaryConsumption.standardTray_1_2m);
+                    $("#modal-urea").val(data.auxiliaryConsumption.urea);
+                    $("#modal-slagBag").val(data.auxiliaryConsumption.slagBag);
+                    $("#modal-hydrochloricAcid").val(data.auxiliaryConsumption.hydrochloricAcid);
+                    $("#modal-flyAshBag").val(data.auxiliaryConsumption.flyAshBag);
+                    $("#modal-nahco3").val(data.auxiliaryConsumption.nahco3);
+                    $("#modal-tonBox").val(data.auxiliaryConsumption.tonBox);
+                    $("#modal-flour").val(data.auxiliaryConsumption.flour);
+                    $("#modal-steam").val(data.auxiliaryConsumption.steam);
+                    $("#modal-defoamer").val(data.auxiliaryConsumption.defoamer);
+                    $("#modal-dieselOil").val(data.auxiliaryConsumption.dieselOil);
+                    $("#modal-flocculant").val(data.auxiliaryConsumption.flocculant);
+                    $("#modal-naturalGas").val(data.auxiliaryConsumption.naturalGas);
+                    $("#modal-softWaterReducingAgent").val(data.auxiliaryConsumption.softWaterReducingAgent);
+                    $("#modal-electricQuantity").val(data.auxiliaryConsumption.electricQuantity);
+                    $("#modal-softWaterScaleInhibitor").val(data.auxiliaryConsumption.softWaterScaleInhibitor);
+                    $("#modal-industrialWater").val(data.auxiliaryConsumption.industrialWater);
+                    $("#modal-pH").val(data.auxiliaryConsumption.pH);
+                    $("#modal-tapWaterQuantity").val(data.auxiliaryConsumption.tapWaterQuantity);
+                    $("#modal-waterReducingAgent").val(data.auxiliaryConsumption.waterReducingAgent);
+                }
                 $("#addModal").modal('show');
             } else {
                 alert(result.message);
@@ -1024,6 +1028,31 @@ function confirm1(item) {
  */
 function addModal() {
     btn = 'add';
+    var data = getCurrentUserData();
+    console.log("data:");
+    console.log(data);
+    if(data != null )
+       $("#modal-founder").val(data.username);  // 将创建人设置为当前登陆用户
+    // $.ajax({
+    //     type: "POST",                       // 方法类型
+    //     url: "getCurrentUserInfo",              // url
+    //     cache: false,
+    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     dataType: "json",
+    //     success: function (result) {
+    //         if (result != undefined && result.status == "success") {
+    //             var data = eval(result.data);
+    //             console.log(data);
+    //             // 各下拉框数据填充
+    //             $("#modal-founder").val(data.username);  // 将创建人设置为当前登陆用户
+    //         } else {
+    //             console.log(result.message);
+    //         }
+    //     },
+    //     error: function (result) {
+    //         console.log(result);
+    //     }
+    // });
     $("#addModal").modal('show');
 }
 

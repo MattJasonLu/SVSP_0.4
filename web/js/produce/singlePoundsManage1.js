@@ -101,7 +101,7 @@ function setPageClone(result) {
  * */
 function switchPage(pageNumber) {
     console.log("当前页：" + pageNumber);
-    if(pageNumber > totalPage()){
+    if (pageNumber > totalPage()) {
         pageNumber = totalPage();
     }
     if (pageNumber == 0) {                 //首页
@@ -190,7 +190,7 @@ function switchPage(pageNumber) {
  * */
 function inputSwitchPage() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
-    if(pageNumber > totalPage()){
+    if (pageNumber > totalPage()) {
         pageNumber = totalPage();
     }
     $("#current").find("a").text("当前页：" + pageNumber);
@@ -373,7 +373,7 @@ function setPoundsList(result) {
                 case (8):
                     //收货单位
                     if (obj.receiveCompany != null)
-                    $(this).html(obj.receiveCompany.companyName);
+                        $(this).html(obj.receiveCompany.companyName);
                     break;
                 case (9):
                     //业务类型
@@ -386,7 +386,7 @@ function setPoundsList(result) {
                 case(11):
                     //状态
                     if (obj.state != null)
-                    $(this).html(obj.state.name);
+                        $(this).html(obj.state.name);
                     break;
                 case(12):
                     //备注
@@ -442,7 +442,7 @@ function exportExcel() {
     var name = 't_pr_pounds';
     // 获取勾选项
     var idArry = [];
-    $.each($("input[name='select']:checked"),function(index,item){
+    $.each($("input[name='select']:checked"), function (index, item) {
         idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
     });
     var sqlWords = '';
@@ -453,7 +453,7 @@ function exportExcel() {
             else if (i == idArry.length - 1) sql += idArry[i] + ");"
         }
         sqlWords = "select id as '磅单号',transferId as '转移联单号',enterLicencePlate as '入厂车号',goodsName as '货物名',grossWeight as '毛重',netWeight as '净重',tare as '皮重',(select companyName from client where clientId = deliveryCompanyId) as '发货公司',(select companyName from client where clientId = receiveCompanyId) as '收货公司',businessType as '业务类型',enterTime as '入厂时间',outTime as '出厂时间',driver as '司机',weighman as '司磅员',remarks as '备注',outLicencePlate as '出厂车号',state as '状态',founder as '磅单创建人',creationDate as '创建时间' from t_pr_pounds where id" + sql;
-    }else{
+    } else {
         sqlWords = "select id as '磅单号',transferId as '转移联单号',enterLicencePlate as '入厂车号',goodsName as '货物名',grossWeight as '毛重',netWeight as '净重',tare as '皮重',(select companyName from client where clientId = deliveryCompanyId) as '发货公司',(select companyName from client where clientId = receiveCompanyId) as '收货公司',businessType as '业务类型',enterTime as '入厂时间',outTime as '出厂时间',driver as '司机',weighman as '司磅员',remarks as '备注',outLicencePlate as '出厂车号',state as '状态',founder as '磅单创建人',creationDate as '创建时间' from t_pr_pounds;";
     }
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
@@ -554,7 +554,7 @@ function reset() {
 /**
  * 回车查询
  */
-function enterSearch(){
+function enterSearch() {
     if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
         searchPounds();      //
     }
@@ -568,12 +568,12 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
     $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
-            if(last-event.timeStamp=== 0){
+            if (last - event.timeStamp === 0) {
                 searchPounds();
-            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+            } else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
                 searchPounds();      //
             }
-        },600);
+        }, 600);
     });
 });
 
@@ -605,22 +605,42 @@ function searchPounds() {
             state: state,
             page: page
         };
-    }else{
+    } else {
         var keywords = $.trim($("#searchContent").val());
-        switch (keywords){
-            case("新建"): keywords = "NewBuild";break;
-            case("待审批"): keywords = "ToExamine";break;
-            case("审批中"): keywords = "Examining";break;
-            case("审批通过"): keywords = "Approval";break;
-            case("已驳回"): keywords = "Backed";break;
-            case("驳回"): keywords = "Backed";break;
-            case("已作废"): keywords = "Invalid";break;
-            case("作废"): keywords = "Invalid";break;
-            case("已确认"): keywords = "Confirm";break;
-            case("确认"): keywords = "Confirm";break;
+        switch (keywords) {
+            case("新建"):
+                keywords = "NewBuild";
+                break;
+            case("待审批"):
+                keywords = "ToExamine";
+                break;
+            case("审批中"):
+                keywords = "Examining";
+                break;
+            case("审批通过"):
+                keywords = "Approval";
+                break;
+            case("已驳回"):
+                keywords = "Backed";
+                break;
+            case("驳回"):
+                keywords = "Backed";
+                break;
+            case("已作废"):
+                keywords = "Invalid";
+                break;
+            case("作废"):
+                keywords = "Invalid";
+                break;
+            case("已确认"):
+                keywords = "Confirm";
+                break;
+            case("确认"):
+                keywords = "Confirm";
+                break;
         }
-        data={
-            page:page,
+        data = {
+            page: page,
             keywords: keywords
         }
     }
@@ -725,8 +745,10 @@ function loadPoundsItems() {
                 $("#modal1_outLicencePlate").text(data.outLicencePlate);
                 $("#modal1_goodsName").text(data.goodsName);
                 $("#modal1_grossWeight").text(data.grossWeight);
+                if (data.deliveryCompany != null)
                 $("#modal1_deliveryCompany").text(data.deliveryCompany.companyName);
                 $("#modal1_tare").text(data.tare);
+                if (data.receiveCompany != null)
                 $("#modal1_receiveCompany").text(data.receiveCompany.companyName);
                 $("#modal1_netWeight").text(data.netWeight);
                 $("#modal1_businessType").text(data.businessType);
@@ -789,9 +811,11 @@ function showPrintModal() {
                 $("#modal2_outLicencePlate").text(data1.outLicencePlate);
                 $("#modal2_goodsName").text(data1.goodsName);
                 $("#modal2_grossWeight").text(data1.grossWeight);
-                $("#modal2_deliveryCompany").text(data1.deliveryCompany.companyName);
+                if (data1.deliveryCompany != null)
+                    $("#modal2_deliveryCompany").text(data1.deliveryCompany.companyName);
                 $("#modal2_tare").text(data1.tare);
-                $("#modal2_receiveCompany").text(data1.receiveCompany.companyName);
+                if (data1.receiveCompany != null)
+                    $("#modal2_receiveCompany").text(data1.receiveCompany.companyName);
                 $("#modal2_netWeight").text(data1.netWeight);
                 $("#modal2_businessType").text(data1.businessType);
                 $("#modal2_enterTime").text(getTimeStr(data1.enterTime));

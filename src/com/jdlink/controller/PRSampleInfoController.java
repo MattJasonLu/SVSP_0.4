@@ -205,8 +205,8 @@ public class PRSampleInfoController {
     public String updateSampleInformation(@RequestBody SampleInformation sampleInformation){
         JSONObject res = new JSONObject();
         try{
-
-            sampleInformationService.update(sampleInformation);
+            sampleInformationService.deleteById(sampleInformation.getId()); // 删除旧数据
+            sampleInformationService.update(sampleInformation);       // 添加新数据
             System.out.println("更新的数据为：");
             System.out.println(sampleInformation.getWastesList().size());
             System.out.println(sampleInformation);
