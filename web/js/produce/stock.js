@@ -1442,8 +1442,9 @@ function viewStock(item) {
 
 //添加危废列表新行
 function addWastesNewLine() {
-    $("#body2").children().last().clone().remove();
-    var tr = $("#body2").children().last();
+    // $("#body2").children().last().clone().remove();
+    var tr = $("#body2").children('tr').first();
+    tr.siblings().remove();
     // 克隆tr，每次遍历都可以产生新的tr
     var clonedTr = tr.clone();
     // 获取编号

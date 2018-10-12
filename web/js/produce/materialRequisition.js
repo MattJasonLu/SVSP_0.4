@@ -631,15 +631,22 @@ function setRequisitionList(result) {
                         break;
                     // 厂家
                     case (2):
+                        if(obj.client!=null){
                             $(this).html(obj.client.companyName);
+                        }
+
                         break;
                     // 危废名称
                     case (3):
-                        $(this).html(obj.laboratoryTest.wastesName);
+                        if(obj.laboratoryTest!=null){
+                            $(this).html(obj.laboratoryTest.wastesName);
+                        }
                         break;
                     // 危废代码
                     case (4):
-                        $(this).html(obj.laboratoryTest.wastesCode);
+                        if(obj.laboratoryTest!=null){
+                            $(this).html(obj.laboratoryTest.wastesCode);
+                        }
                         break;
                     // 危废类别
                     case (5):
