@@ -13,6 +13,7 @@ function reset() {
     $("#searchContent").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
 
+
 }
 
 /**

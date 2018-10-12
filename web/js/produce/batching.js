@@ -238,19 +238,7 @@ function  batchingList() {
     setSeniorSelectedList();
 }
 
-/**
- * 重置搜索数据
- */
-function reset() {
-    isSearch=false;
-    $("#senior").find("input").val("");
-    $("#senior").find("select").get(0).selectedIndex = -1;
-    $("select[name='search-companyName']").selectpicker('val',' ');
-     $('#searchContentAdd').val('');
-     window.location.reload();
 
-
-}
 
 function resetList() {
     isSearch=false;
@@ -499,6 +487,10 @@ function setWasteInventoryList(result) {
 
 /*配料*/
 function batching() {
+    //1确认前删除行元素==>已下拉的
+$('#cloneTr2').siblings().remove();
+
+
     var items = $("input[name='select']:checked");//判断复选框是否选中
     items.each(function () {
         //获得库存Id
@@ -536,7 +528,7 @@ function setBatchingWList(result) {
     var tr = $("#cloneTr2");
     tr.attr('class','myclass2');
     //tr.siblings().remove();
-    //console.log(result);
+    console.log(result);
     $.each(result, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
@@ -557,15 +549,21 @@ function setBatchingWList(result) {
                     break;
                 //产废单位
                 case (2):
-                    $(this).html(obj.produceCompany.companyName);
+                    if(obj.produceCompany!=null){
+                        $(this).html(obj.produceCompany.companyName);
+                    }
                     break;
                 // 危废名称
                 case (3):
-                    $(this).html(obj.laboratoryTest.wastesName);
+                    if(obj.laboratoryTest!=null){
+                        $(this).html(obj.laboratoryTest.wastesName);
+                    }
                     break;
                 // 危废代码
                 case (4):
-                    $(this).html(obj.laboratoryTest.wastesCode);
+                    if(obj.laboratoryTest=null){
+                        $(this).html(obj.laboratoryTest.wastesCode);
+                    }
                     break;
                 // 产废类别
                 case (5):
@@ -573,12 +571,16 @@ function setBatchingWList(result) {
                     break;
                 // 进料方式
                 case (6):
-                    $(this).html(obj.handleCategory.name);
+                    if(obj.handleCategory!=null){
+                        $(this).html(obj.handleCategory.name);
+                    }
                     break;
                 //数量
                 case (7):
                     break;
+                    //剩余数量
                 case (8):
+                    $(this).html(obj.actualCount);
                     break;
                 case (9):
                     $(this).html(obj.remarks);
@@ -1482,4 +1484,12 @@ function exportExcel() {
     var name = 't_pl_batchingorder';
     var sqlWords = "select * from t_pl_batchingorder;";
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+}
+
+//实时计算剩余数量
+function CalRemainQuantities(item) {
+ var count=$(item).val();//需要的数量
+ var residual
+
+
 }

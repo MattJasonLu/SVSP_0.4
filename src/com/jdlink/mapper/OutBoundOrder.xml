@@ -112,7 +112,7 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
     <collection property="quotationItem" column="{clientId=clientId,wastesCode=wastesCode}" select="getQuotationItem"></collection>
     </resultMap>
     <select id="getQuotationItem" resultType="QuotationItem">
-        select  * from t_quotationitem where clientId=#{clientId} and  wastesCode=#{wastesCode};
+        select  * from t_quotationitem where clientId=#{clientId} and  wastesCode=#{wastesCode} limit 0,1;
     </select>
     <!--//查找领料单的数据-->
     <select id="materialRequisitionOrderList1" resultMap="MaterialRequisitionOrderRM" parameterType="String">
