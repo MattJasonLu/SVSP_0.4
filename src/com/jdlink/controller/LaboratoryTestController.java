@@ -11,6 +11,11 @@ import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.poi.ss.util.CellAddress;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,8 +23,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 化验单控制器
@@ -501,6 +513,79 @@ public class LaboratoryTestController {
         }
         return res.toString();
 
+    }
+
+    /**
+     * 导出化验单
+     * @param id 编号
+     * @return 化验单表格
+     */
+    @RequestMapping("exportLaboratoryTestExcel")
+    @ResponseBody
+    public void exportLaboratoryTestExcel(String id, HttpServletResponse response) {
+        String filePath = "Files/Out/生产日报导出文件.xlsx";
+        String fileName = "";   // 初始化文件名
+        try {
+            LaboratoryTest laboratoryTest = laboratoryTestService.getLaboratoryTestById(id);
+            makeLaboratoryTestExcel(laboratoryTest);
+            // 获取文件路径，适配中文
+//            filePath = new String(filePath.getBytes("iso8859-1"), "utf-8");
+            String[] str = filePath.split("[/]");     // 根据“/”将字符串分割成数组
+            fileName = java.net.URLEncoder.encode(str[str.length - 1], "UTF-8");  // 设置文件名
+            response.setCharacterEncoding("UTF-8");   // 设置编码
+            response.setContentType("multipart/form-data");
+            // 设置头文件
+            response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+            // 初始化输入流
+            InputStream in = null;
+            in = new FileInputStream(filePath);
+            byte[] buffer = new byte[1024];
+            int bytesRead = 0;
+            do {
+                // 写入字节
+                bytesRead = in.read(buffer, 0, buffer.length);
+                response.getOutputStream().write(buffer, 0, bytesRead);
+            } while (bytesRead == buffer.length);
+            in.close();      // 关闭输入流等
+            response.getOutputStream().flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void makeLaboratoryTestExcel(LaboratoryTest laboratoryTest) {
+        String filePath = "Files/Templates/生产日报模板.xlsx";
+        try {
+            FileInputStream excelFileInputStream = new FileInputStream(filePath);
+            XSSFWorkbook xwb = new XSSFWorkbook(excelFileInputStream);
+            excelFileInputStream.close();
+            XSSFSheet xSheet = xwb.getSheetAt(0);
+            Map<String, Object> hashMap = new HashMap<>();
+//            hashMap.put("E02", DateUtil.getDateStr(productionDaily.getDate()));
+//            // 危废进厂数量
+//            hashMap.put("C05", productionDaily.getTodayInboundMedicalWastes());
+
+            // 迭代map赋值, 获取迭代器
+            Iterator<Map.Entry<String, Object>> entries = hashMap.entrySet().iterator();
+            while (entries.hasNext()) {
+                Map.Entry<String, Object> entry = entries.next();
+                // 定义单元格的位置
+                CellAddress cellAddress = new CellAddress(entry.getKey());
+                // 获取行
+                XSSFRow row = xSheet.getRow(cellAddress.getRow());
+                // 获取单元格
+                XSSFCell cell = row.getCell(cellAddress.getColumn());
+                if (entry.getValue() != null) cell.setCellValue(entry.getValue().toString());
+                else cell.setCellValue("");
+            }
+            // 写入文件
+            FileOutputStream excelFileOutPutStream = new FileOutputStream("Files/Out/生产日报导出文件.xlsx");//写数据到这个路径上		workbook.write(excelFileOutPutStream);		excelFileOutPutStream.flush();		excelFileOutPutStream.close();
+            xwb.write(excelFileOutPutStream);
+            excelFileOutPutStream.flush();
+            excelFileOutPutStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

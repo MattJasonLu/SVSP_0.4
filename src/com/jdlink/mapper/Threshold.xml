@@ -157,9 +157,9 @@
     <insert id="add" parameterType="ThresholdList">
         <if test="keywords == null">
             insert into t_pr_thresholdlist
-            (id,creationDate,nowTime)
+            (id,creationDate,nowTime,state)
             values
-            (#{id},NOW(),NOW());
+            (#{id},NOW(),NOW(),'Disabled');
         </if>
         <if test="keywords != null">
             update t_pr_thresholdlist
@@ -176,7 +176,7 @@
             #{threshold.calorificMin},#{threshold.ashMax},#{threshold.ashMin},#{threshold.waterMax},#{threshold.waterMin},
             #{threshold.sMax},#{threshold.sMin},#{threshold.clMax},#{threshold.clMin},#{threshold.pMax},#{threshold.pMin},
             #{threshold.fMax},#{threshold.fMin},#{threshold.phMax},#{threshold.phMin},#{threshold.safety},#{threshold.beginTime},
-            #{threshold.endTime})
+            #{threshold.endTime});
         </foreach>
     </insert>
 

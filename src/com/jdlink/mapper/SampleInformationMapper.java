@@ -25,4 +25,5 @@ public interface SampleInformationMapper {
     List<Wastes> listWastes();
     List<Client> listClient();
     List<SampleInformation> getSampleInfoByClientId(String id);
+    void deleteById(String id);
 }

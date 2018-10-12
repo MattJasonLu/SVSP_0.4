@@ -2,6 +2,7 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.*;
 import com.jdlink.service.SupplierService;
+import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 import java.text.NumberFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -519,8 +521,173 @@ public class SupplierController {
             // 获取危废入库的表格数据
             Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
             for (int i = 1; i < data.length; i++) {
+                // 创建供应商
                 Supplier supplier = new Supplier();
+                supplier.setSupplierId(data[i][0].toString());
+                supplier.setGroupId(data[i][1].toString());
+                supplier.setCompanyName(data[i][2].toString());
+                supplier.setOrganizationCode(data[i][3].toString());
+                supplier.setLicenseCode(data[i][4].toString());
+                supplier.setRepresentative(data[i][5].toString());
+                supplier.setPostCode(data[i][6].toString());
+                // 设置企业类型
+                switch (data[i][7].toString()) {
+                    case "国有企业":
+                        supplier.setEnterpriseType(EnterpriseType.StateOwnedEnterprises);
+                        break;
+                    case "集体企业":
+                        supplier.setEnterpriseType(EnterpriseType.CollectiveEnterprise);
+                        break;
+                    case "国有企业改组的股份合作企业":
+                        supplier.setEnterpriseType(EnterpriseType.JointStockByStateOwnedEnterprises);
+                        break;
+                    case "集体企业改组的股份合作企业":
+                        supplier.setEnterpriseType(EnterpriseType.JointStockByCollectiveEnterprise);
+                        break;
+                    default:
+                        break;
+                }
+                // 设置经营方式
+                switch (data[i][8].toString()) {
+                    case "综合":
+                        supplier.setOperationMode(OperationMode.Comprehensive);
+                        break;
+                    case "收集":
+                        supplier.setOperationMode(OperationMode.Collect);
+                        break;
+                    default:
+                        break;
+                }
+                // 经营单位类别
+                switch (data[i][9].toString()) {
+                    case "利用处置危险废物及医疗废物":
+                        supplier.setOperationType(OperationType.WasteAndClinical);
+                        break;
+                    case "只从事收集活动":
+                        supplier.setOperationType(OperationType.CollectOnly);
+                        break;
+                    case "只利用处置危险废物":
+                        supplier.setOperationType(OperationType.WasteOnly);
+                        break;
+                    case "只处置医疗废物":
+                        supplier.setOperationType(OperationType.ClinicalOnly);
+                        break;
+                    default:
+                        break;
+                }
+                // 事故防范和应急预案
+                switch (data[i][10].toString()) {
+                    case "制定并确定了应急协调人":
+                        supplier.setContingencyPlan(ContingencyPlan.Identify);
+                        break;
+                    case "已制定":
+                        supplier.setContingencyPlan(ContingencyPlan.Developed);
+                        break;
+                    case "未制定":
+                        supplier.setContingencyPlan(ContingencyPlan.Undeveloped);
+                        break;
+                    default:
+                        break;
+                }
+                // 建立危废经营记录情况
+                switch (data[i][11].toString()) {
+                    case "已建立":
+                        supplier.setOperationRecord(OperationRecord.Established);
+                        break;
+                    case "未建立":
+                        supplier.setOperationRecord(OperationRecord.Unestablished);
+                        break;
+                    default:
+                        break;
+                }
+                // 工商注册地址
+                supplier.setLocation(data[i][12].toString());
+                supplier.setStreet(data[i][13].toString());
+                // 申报状态
+                switch (data[i][14].toString()) {
+                    case "已申报":
+                        break;
+                    case "未申报":
+                        break;
+                    default:
+                        break;
+                }
+                supplier.setContactName(data[i][15].toString());
+                supplier.setPhone(data[i][16].toString());
+                supplier.setMobile(data[i][17].toString());
+                supplier.setEmail(data[i][18].toString());
+                supplier.setIndustry(data[i][19].toString());
+                supplier.setProduct(data[i][20].toString());
+                // 供应商类型
+                switch (data[i][21].toString()) {
+                    case "次生处置供方":
+                        supplier.setSupplierType(SupplierType.DeriveDisposal);
+                        break;
+                    case "运输类供方":
+                        supplier.setSupplierType(SupplierType.Transport);
+                        break;
+                    case "采购供方":
+                        supplier.setSupplierType(SupplierType.Purchase);
+                        break;
+                    case "其他供方":
+                        supplier.setSupplierType(SupplierType.Others);
+                        break;
+                    default:
+                        break;
+                }
+                // 审核状态
+                switch (data[i][22].toString()) {
+                    case "审批中":
+                        supplier.setCheckState(CheckState.Examining);
+                        break;
+                    case "待提交":
+                        supplier.setCheckState(CheckState.ToSubmit);
+                        break;
+                    case "已完成":
+                        supplier.setCheckState(CheckState.Finished);
+                        break;
+                    case "已驳回":
+                        supplier.setCheckState(CheckState.Backed);
+                        break;
+                    case "待审批":
+                        supplier.setCheckState(CheckState.ToExamine);
+                        break;
+                    default:
+                        break;
+                }
+                // 账号状态
+                switch (data[i][23].toString()) {
+                    case "已启用":
+                        supplier.setSupplierState(ClientState.Enabled);
+                        break;
+                    case "已禁用":
+                        supplier.setSupplierState(ClientState.Disabled);
+                        break;
+                    default:
+                        break;
+                }
+                // 税号、注册资本
+                supplier.setTaxNumber(data[i][24].toString());
+                supplier.setRegisteredCapital(data[i][25].toString());
+                supplier.setCreateDate(DateUtil.getDateFromStr(data[i][26].toString()));
+                supplier.setBusinessLimit(data[i][27].toString());
+                supplier.setTransportLicense(data[i][28].toString());
+                supplier.setExpirationDate(DateUtil.getDateFromStr(data[i][29].toString()));
+                supplier.setBankName(data[i][30].toString());
+                supplier.setBankAccount(data[i][31].toString());
+                // 开票税率
+                switch (data[i][32].toString()) {
+                    case "增值税专用发票16%":
+                        supplier.setTicketRate(TicketRate1.Rate1);
+                        break;
+                    case "增值税专用发票3%":
+                        supplier.setTicketRate(TicketRate1.Rate2);
+                        break;
+                    default:
+                        break;
+                }
 
+                supplierService.add(supplier);
             }
             res.put("status", "success");
             res.put("message", "导入成功");

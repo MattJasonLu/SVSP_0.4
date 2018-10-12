@@ -97,6 +97,7 @@ function viewEquipment1(data) {
         var clonedTr = tr.clone();
         // 赋值
         clonedTr.find("td[name='documentNumber']").text(index+1);//index + 1
+        if (obj.equipment != null)
         clonedTr.find("td[name='equipment']").text(obj.equipment.name);
         clonedTr.find("td[name='runningTime']").text(obj.runningTime);
         clonedTr.find("td[name='stopTime']").text(obj.stopTime);
@@ -782,4 +783,72 @@ function loadPages(totalRecord, count) {
         return totalRecord / count;
     else
         return parseInt(totalRecord / count) + 1;
+}
+
+/**
+ * 导入excel文件
+ */
+function importExcel() {
+    document.getElementById("idExcel").click();
+    document.getElementById("idExcel").addEventListener("change", function () {
+        var eFile = document.getElementById("idExcel").files[0];
+        var formFile = new FormData();
+        formFile.append("excelFile", eFile);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "importEquipmentExcel",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: formFile,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                if (result != undefined) {
+                    console.log(result);
+                    if (result.status == "success") {
+                        alert(result.message);
+                        window.location.reload();         //刷新
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    });
+}
+
+/**
+ * 导入模态框
+ * */
+function importExcelChoose() {
+    $("#importExcelModal").modal('show');
+}
+
+/**
+ * 下载模板
+ * */
+function downloadModal() {
+    var filePath = 'Files/Templates/设备管理导入模板.xlsx';
+    var r = confirm("是否下载模板?");
+    if (r) {
+        window.open('downloadFile?filePath=' + filePath);
+    }
+}
+
+/**
+ * 导出excel
+ */
+function exportExcel() {
+    var checkedItems = $("input[type='checkbox']:checked");
+    if (checkedItems.length == 0) alert("未勾选任何项");
+    checkedItems.each(function () {
+        var id = $(this).parent().parent().parent().find("td[name='documentNumber']").text();
+        var name = 't_pl_inboundorder';
+        var sqlWords = "select equipment, runningTime, stopTime, stopResult from t_rp_equipmentchild where documentNumber='" + id + "';";
+        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    });
+
 }
