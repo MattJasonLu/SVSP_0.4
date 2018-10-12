@@ -1576,6 +1576,15 @@ function searchMaterialRequire() {
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
     var keywords = $.trim($("#searchContent").val());
+    if(keywords=='待提交'){
+        keywords='ToSubmit'
+    }
+    if(keywords=='已作废'){
+        keywords='Invalid'
+    }
+    if(keywords=='审批通过'){
+        keywords='Approval'
+    }
     data1 = {
         page: page,
         keywords: keywords
