@@ -1141,27 +1141,27 @@ function totalPage() {
         })
 
 
-        $('#proportionTotal').html(proportionTotal);
+        $('#proportionTotal').html(proportionTotal.toFixed(2));
 
-        $('#dailyRatioTotal').html(dailyRatioTotal);
+        $('#dailyRatioTotal').html(dailyRatioTotal.toFixed(2));
 
-        $('#weeklyDemandTotalAdd').html(weeklyDemandTotalAdd);
+        $('#weeklyDemandTotalAdd').html(weeklyDemandTotalAdd.toFixed(2));
 
-        $('#calorificTotal').html(calorificTotal);
+        $('#calorificTotal').html(calorificTotal.toFixed(2));
 
-        $('#ashTotal').html(ashTotal);
+        $('#ashTotal').html(ashTotal.toFixed(2));
 
-        $('#waterTotal').html(waterTotal);
+        $('#waterTotal').html(waterTotal.toFixed(2));
 
-        $('#clTotal').html(clTotal);
+        $('#clTotal').html(clTotal.toFixed(2));
 
-        $('#sTotal').html(sTotal);
+        $('#sTotal').html(sTotal.toFixed(2));
 
-        $('#pTotal').html(pTotal);
+        $('#pTotal').html(pTotal.toFixed(2));
 
-        $('#fTotal').html(fTotal);
+        $('#fTotal').html(fTotal.toFixed(2));
 
-        $('#phTotal').html(phTotal);
+        $('#phTotal').html(phTotal.toFixed(2));
 
     }
 
@@ -1480,7 +1480,7 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
             }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
                 searchCompatibility();      //
             }
-        },400);
+        },600);
     });
 });
 
@@ -1501,6 +1501,9 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
         }
         if(keywords=='审批通过'){
             keywords='Approval'
+        }
+        if(keywords=='待审批'){
+            keywords='ToExamine'
         }
         data1 = {
             page: page,

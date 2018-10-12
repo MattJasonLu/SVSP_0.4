@@ -625,12 +625,12 @@ function searchMedicalWastes() {
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
             //console.log(this);
-            if(!($(this).children('td').eq(1).text().indexOf(date)!=-1&&$(this).children('td').eq(3).text().indexOf(person)!=-1
+            if(!($(this).children('td').eq(2).text().indexOf(date)!=-1&&$(this).children('td').eq(4).text().indexOf(person)!=-1
               &&$(this).children('td').text().indexOf(text)!=-1
             )){
                 $(this).hide();
             }
-            if(($(this).children('td').eq(1).text().indexOf(date)!=-1&&$(this).children('td').eq(3).text().indexOf(person)!=-1
+            if(($(this).children('td').eq(2).text().indexOf(date)!=-1&&$(this).children('td').eq(4).text().indexOf(person)!=-1
                 &&$(this).children('td').text().indexOf(text)!=-1
             )){
                 array1.push($(this));
