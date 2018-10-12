@@ -946,7 +946,7 @@ function importExcel() {
  * */
 
 function downloadModal() {
-    var filePath = 'model/materialDemand.xlsx';
+    var filePath ='Files/Templates/2017常州应急购置申请表.xls';
     var r = confirm("是否下载模板?");
     if (r == true) {
         window.open('downloadFile?filePath=' + filePath);

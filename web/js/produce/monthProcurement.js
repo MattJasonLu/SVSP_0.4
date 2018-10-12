@@ -1028,7 +1028,7 @@ function importExcel() {
  * */
 
 function downloadModal() {
-    var filePath = 'model/materialDemand.xlsx';
+    var filePath = 'Files/Templates/2018年月度采购申请单03.xls';
     var r = confirm("是否下载模板?");
     if (r == true) {
         window.open('downloadFile?filePath=' + filePath);
