@@ -18,17 +18,6 @@ function updateVersion(versionId) {
 }
 
 /**
- * 重置
- */
-function reset() {
-    // $("#searchContent").val("");
-    // $("#senior").find("input").val("");
-    // $("#senior").find("select").each(function () {
-    //     $(this).get(0).selectedIndex = -1;
-    // });
-    window.location.reload();//只要刷新即可，刷新时数据会自动消失，因为有些界面没有下拉框，会报错==>JackYang
-}
-/**
  * 通过字符串获取处置类别
  * @param handleCategory
  * @returns {*}
@@ -208,12 +197,12 @@ function convertStrToWastesName(str) {
     return name;
 }
 
-// /**
-//  * 重置页面功能
-//  */
-// function reset() {
-//     window.location.reload();
-// }
+/**
+ * 重置页面功能
+ */
+function reset() {
+    window.location.reload();
+}
 
 /**
  * 回车跳转（输入页数回车跳转页面）
@@ -254,4 +243,32 @@ function addPageClass(pageNumber){
  */
 function backLastPage(){
     history.back();
+}
+
+/**
+ * 获取当前登陆用户数据
+ */
+function getCurrentUserData(){
+    var data = null;
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getCurrentUserInfo",              // url
+        cache: false,
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                data = eval(result.data);
+                console.log(data);
+                // 各下拉框数据填充
+        // return result.data;
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+    return data;
 }

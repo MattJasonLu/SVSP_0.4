@@ -986,10 +986,10 @@ function updateAppointBySampleId() {
         var $i = i;
         if (data.wastesList[i] != null) {
             wastes.id = data.wastesList[i].id;
-            wastes.ph = 1;
+        //    wastes.ph = 1;
         } else {
             wastes.id = wastesId;
-            wastes.ph = 0;
+       //     wastes.ph = 0;
             var num1 = parseInt(wastesId) + 1;
             wastesId = num1 + "";
         }

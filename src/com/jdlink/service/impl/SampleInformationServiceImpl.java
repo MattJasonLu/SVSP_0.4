@@ -66,4 +66,7 @@ public class SampleInformationServiceImpl implements SampleInformationService {
 
     @Override
     public List<SampleInformation> getSampleInfoByClientId(String id){ return sampleInformationMapper.getSampleInfoByClientId(id); }
+
+    @Override
+    public void deleteById(String id){ sampleInformationMapper.deleteById(id);}
 }

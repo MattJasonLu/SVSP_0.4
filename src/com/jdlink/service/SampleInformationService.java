@@ -24,4 +24,5 @@ public interface SampleInformationService {
     List<Wastes> listWastes();
     List<Client> listClient();
     List<SampleInformation> getSampleInfoByClientId(String id);
+    void deleteById(String id);
 }
