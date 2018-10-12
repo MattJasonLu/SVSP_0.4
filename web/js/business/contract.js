@@ -904,17 +904,7 @@ function setContractList(result) {
                         break;
                     // 合同名称
                     case (3):
-                        if (obj.contractVersion != null) {
-                            if (obj.contractVersion.name == "公司合同") {
-                                $(this).html(obj.contractName);
-                            }
-                            if (obj.contractVersion.name == "产废单位合同") {
-                                $(this).html(obj.contractName + obj.contractType.name);
-                            }
-                        }
-                        else {
-                            $(this).html("");
-                        }
+                        $(this).html(obj.contractName);
                         break;
                     // 状态
                     case (4):
@@ -1486,10 +1476,16 @@ function loadWastesContractSelectList() {
         size: 4
     });
 //取得下拉菜单的选项
-    var contractType=$('#contractType');
-    contractType.hide();
+//     var contractType=$('#contractType');
+//     contractType.hide();
+
+    $('#supplier').hide();//供应商隐藏
+    $('#client').show();//产废单位显示
+    $('#name').text('产废单位')
     var contractName1=$('#contractName1');
-    contractName1.hide();
+    contractName1.hide();//默认公司合同 隐藏掉客户合同
+
+
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getContractList",                  // url
@@ -1497,11 +1493,17 @@ function loadWastesContractSelectList() {
         data:{"key":"危废"},
         success: function (result) {
             if (result != undefined) {
-               // console.log(result);
+                console.log(result);
                 var data = eval(result);
+
+                //赋值合同编号
+                    $('#contractId').html(data.contractId);
                 // 各下拉框数据填充
+
                 var contractType1 = $("#contractType1");//模板名称下拉框
+
                 contractType1.children().remove();
+
                 $.each(data.modelNameList, function (index, item) {
                     if(item!=null&&item.modelName!=""){
                         //console.log(item);
@@ -1510,66 +1512,69 @@ function loadWastesContractSelectList() {
                         option.text(item.modelName);
                         contractType1.append(option);}
                 });
+
                 contractType1.get(0).selectedIndex = -1;
-                var province = $("#province");
-                province.children().remove();
-                $.each(data.provinceStrList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    province.append(option);
-                });
-                $('.selectpicker').selectpicker('refresh');
-                //获取相应的市级
-                $.ajax({
-                    type: "POST",                            // 方法类型
-                    url: "getCityList",                  // url
-                    dataType: "json",
-                    data:{
-                        'provinceId': 1
-                    },
-                    success: function (result) {
-                        if (result != undefined) {
-                            var data = eval(result);
-                            //console.log(data);
-                            //var contractName = $("#contractName");
-                            //下拉框填充
-                            var city=$("#city");
-                            city.children().remove();
-                            cityIndex="";
-                            $.each(data, function (index, item) {
-                                //  console.log(item);
-                                var option1 = $('<option />');
-                                option1.val(item.cityname);
-                                option1.text(item.cityname);
-                                if(item.cityname=='${contract.city}'){
-                                    cityIndex=index;
-                                }
-                                city.append(option1);
-                            });
-                            $('.selectpicker').selectpicker('refresh');
+                // var province = $("#province");
+                //                 // province.children().remove();
+                //                 // $.each(data.provinceStrList, function (index, item) {
+                //                 //     var option = $('<option />');
+                //                 //     option.val(index);
+                //                 //     option.text(item.name);
+                //                 //     province.append(option);
+                //                 // });
+                //                 // $('.selectpicker').selectpicker('refresh');
+                //                 // //获取相应的市级
+                //                 // $.ajax({
+                //                 //     type: "POST",                            // 方法类型
+                //                 //     url: "getCityList",                  // url
+                //                 //     dataType: "json",
+                //                 //     data:{
+                //                 //         'provinceId': 1
+                //                 //     },
+                //                 //     success: function (result) {
+                //                 //         if (result != undefined) {
+                //                 //             var data = eval(result);
+                //                 //             //console.log(data);
+                //                 //             //var contractName = $("#contractName");
+                //                 //             //下拉框填充
+                //                 //             var city=$("#city");
+                //                 //             city.children().remove();
+                //                 //             cityIndex="";
+                //                 //             $.each(data, function (index, item) {
+                //                 //                 //  console.log(item);
+                //                 //                 var option1 = $('<option />');
+                //                 //                 option1.val(item.cityname);
+                //                 //                 option1.text(item.cityname);
+                //                 //                 if(item.cityname=='${contract.city}'){
+                //                 //                     cityIndex=index;
+                //                 //                 }
+                //                 //                 city.append(option1);
+                //                 //             });
+                //                 //             $('.selectpicker').selectpicker('refresh');
+                //                 //
+                //                 //
+                //                 //         } else {
+                //                 //             //console.log(result);
+                //                 //         }
+                //                 //     },
+                //                 //     error:function (result) {
+                //                 //         console.log(result);
+                //                 //     }
+                //                 // });
 
+                var clientName=$('#companyName');//产废单位
 
-                        } else {
-                            //console.log(result);
-                        }
-                    },
-                    error:function (result) {
-                        console.log(result);
-                    }
-                });
-                var clientName=$('#companyName');
                 clientName.children().remove();
+
                 $.each(data.companyNameList, function (index, item) {
                     var option = $('<option />');
                     option.val(item.clientId);
                     option.text(item.companyName);
                     clientName.append(option);
                 });
-                //clientName.get(0).selectedIndex = -1;
+
                 $('.selectpicker').selectpicker('refresh');
-                var options1=$("#companyName option:selected").val(); //获取选中的项
-                //console.log(options1);
+
                 $.ajax({
                     type: "POST",                       // 方法类型
                     url: "getClientListById",                  // url
@@ -1581,7 +1586,6 @@ function loadWastesContractSelectList() {
                         if (result != undefined && result.status == "success") {
                            // console.log(result);
                             var company=result.client;//取得被选中处置单位的信息
-                            //console.log(company);
                             var taxRate1=$('#taxRate1');
                             i="";
                             taxRate1.children().remove();
@@ -1628,8 +1632,9 @@ function loadWastesContractSelectList() {
                         alert("服务器异常！");
                     }
                 });
+
+
             } else {
-                //console.log(result);
             }
         },
         error:function (result) {
@@ -1725,6 +1730,457 @@ function loadWastesContractSelectList() {
     });
 }
 
+//根据合同类型选择模板
+  function findModel() {
+
+      var contractType = ($('#contractType option:selected').text()).substring(0, 2);
+
+      console.log(contractType)
+
+      if(contractType=='物流'){
+          $('#supplier').show();//供应商显示
+          $('#client').hide();//产废单位隐藏
+          $('#name').text('处置单位名称')
+          //取得下拉菜单的选项
+          $.ajax({
+              type: "POST",                            // 方法类型
+              url: "getContractList",                  // url
+              dataType: "json",
+              data:{"key":contractType},
+              success: function (result) {
+                  if (result != undefined) {
+                      var data = eval(result);
+                      //console.log(data);
+                      //1赋值
+                      // $('#contacts').prop("value",obj.contactName);//联系人
+                      // $('#telephone').prop("value",obj.phone);//联系电话
+                      // 各下拉框数据填充
+                      var contractType1 = $("#contractType1");
+                      contractType1.children().remove();
+                      $.each(data.modelNameList, function (index, item) {
+                          var option = $('<option />');
+                          option.val(item.modelName);
+                          option.text(item.modelName);
+                          contractType1.append(option);
+                      });
+                      contractType1.get(0).selectedIndex = -1;
+                      // var province = $("#province");
+                      // province.children().remove();
+                      // $.each(data.provinceStrList, function (index, item) {
+                      //     var option = $('<option />');
+                      //     option.val(index);
+                      //     option.text(item.name);
+                      //     province.append(option);
+                      // });
+                      // province.get(0).selectedIndex = -1;
+                      $('.selectpicker').selectpicker('refresh');
+                      //获取相应的市级
+                      // $.ajax({
+                      //     type: "POST",                            // 方法类型
+                      //     url: "getCityList",                  // url
+                      //     dataType: "json",
+                      //     data:{
+                      //         'provinceId': 1
+                      //     },
+                      //     success: function (result) {
+                      //         if (result != undefined) {
+                      //             var data = eval(result);
+                      //             //console.log(data);
+                      //             //var contractName = $("#contractName");
+                      //             //下拉框填充
+                      //             var city=$("#city");
+                      //             city.children().remove();
+                      //             cityIndex="";
+                      //             $.each(data, function (index, item) {
+                      //                 //  console.log(item);
+                      //                 var option1 = $('<option />');
+                      //                 option1.val(item.cityname);
+                      //                 option1.text(item.cityname);
+                      //                 if(item.cityname=='${contract.city}'){
+                      //                     cityIndex=index;
+                      //                 }
+                      //                 city.append(option1);
+                      //             });
+                      //             $('.selectpicker').selectpicker('refresh');
+                      //
+                      //
+                      //         } else {
+                      //             console.log(result);
+                      //         }
+                      //     },
+                      //     error:function (result) {
+                      //         console.log(result);
+                      //     }
+                      // });
+                      var suppier=$('#suppier');
+                      suppier.children().remove();
+                      $.each(data.supplierNameList, function (index, item) {
+                          var option = $('<option />');
+                          option.val(item.supplierId);
+                          option.text(item.companyName);
+                          suppier.append(option);
+                      });
+                      $('.selectpicker').selectpicker('refresh');
+                      //2赋值
+                      //开票税率下拉框
+                      //开票税率1下拉框
+                      $.ajax({
+                          type: "POST",                       // 方法类型
+                          url: "getSupplierListById",                  // url
+                          data:{'supplierId':$("#suppier option:selected").val()},
+                          async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                          dataType: "json",
+                          //contentType: "application/json; charset=utf-8",
+                          success:function (result) {
+                              if (result != undefined && result.status == "success") {
+                                  // console.log(result);
+                                  var suppier=result.supplier;//取得被选中处置单位的信息
+                                  var taxRate1=$('#taxRate1');
+                                  i="";
+                                  taxRate1.children().remove();
+                                  $.each(data.ticketRateStrList1, function (index, item) {
+                                      // console.log(item);
+                                      var option = $('<option />');
+                                      option.val(index);
+                                      option.text(item.name);
+                                      if(suppier.ticketRate!=null){
+                                          if(suppier.ticketRate.name==item.name){
+                                              i=index;
+                                          }
+                                      }
+                                      else {
+                                          i=-1;
+                                      }
+                                      taxRate1.append(option);
+                                  });
+                                  taxRate1.get(0).selectedIndex = i;
+                                  $('#contactName').prop("value",suppier.contactName);
+                                  //赋值联系方式
+                                  $("#telephone").prop("value",suppier.phone);//赋值联系电话
+                                  $("#contactName").prop("value",suppier.contactName);//赋值联系人
+                                  //console.log(suppier.companyName);
+                                  $("#suppierName").val(suppier.companyName);//赋值处置单位名称
+                                  $('#bankName').prop("value",suppier.bankName);
+                                  //赋值开户行账号
+                                  $('#bankAccount').prop("value",suppier.bankAccount);
+                                  $('#company1').prop("value",suppier.companyName);
+                              }
+                              else {
+                                  alert(result.message);
+                              }
+                          },
+                          error:function (result) {
+                              alert("服务器异常！");
+                          }
+                      });
+                      // var suppier=data.supplierNameList[options1];//取得被选中处置单位的信息
+                      // var taxRate1=$('#taxRate1');
+                      // index1=""
+                      // taxRate1.children().remove();
+                      // $.each(data.ticketRateStrList1, function (index, item) {
+                      //     console.log(data.ticketRateStrList1);
+                      //     var option = $('<option />');
+                      //     if(suppier.ticketRate!=null){
+                      //         if(suppier.ticketRate.name==item.name){
+                      //             index1=index;
+                      //         }
+                      //     }
+                      //     else {
+                      //         index1=-1;
+                      //     }
+                      //     option.val(index);
+                      //     option.text(item.name);
+                      //     taxRate1.append(option);
+                      // });
+                      // taxRate1.get(0).selectedIndex = index1;
+                      // //开票税率2下拉框
+                      // // var taxRate2=$('#taxRate2');
+                      // // taxRate2.children().remove();
+                      // // $.each(data.ticketRateStrList2, function (index, item) {
+                      // //    // console.log(item);
+                      // //     var option = $('<option />');
+                      // //     option.val(index);
+                      // //     option.text(item.name);
+                      // //     taxRate2.append(option);
+                      // // });
+                      // // taxRate2.get(0).selectedIndex = -1;
+                      // $("#telephone").prop("value",suppier.phone);//赋值联系电话
+                      // $("#contactName").prop("value",suppier.contactName);//赋值联系人
+                      // //console.log(suppier.companyName);
+                      // $("#suppierName").val(suppier.companyName);//赋值处置单位名称
+                  } else {
+                      //console.log(result);
+                  }
+              },
+              error:function (result) {
+                  console.log(result);
+              }
+          });
+
+
+      }
+      if(contractType!='物流') {
+          $('#supplier').hide();//供应商隐藏
+          $('#client').show();//产废单位显示
+          $('#name').text('产废单位')
+
+          $.ajax({
+              type: "POST",                            // 方法类型
+              url: "getContractList",                  // url
+              dataType: "json",
+              data:{"key":contractType},
+              success: function (result) {
+                  if (result != undefined) {
+                      console.log(result);
+                      var data = eval(result);
+
+                      //赋值合同编号
+                      $('#contractId').html(data.contractId);
+                      // 各下拉框数据填充
+
+                      var contractType1 = $("#contractType1");//模板名称下拉框
+
+                      contractType1.children().remove();
+
+                      $.each(data.modelNameList, function (index, item) {
+                          if(item!=null&&item.modelName!=""){
+                              //console.log(item);
+                              var option = $('<option />');
+                              option.val(item.modelName);
+                              option.text(item.modelName);
+                              contractType1.append(option);}
+                      });
+
+                      contractType1.get(0).selectedIndex = -1;
+                      // var province = $("#province");
+                      //                 // province.children().remove();
+                      //                 // $.each(data.provinceStrList, function (index, item) {
+                      //                 //     var option = $('<option />');
+                      //                 //     option.val(index);
+                      //                 //     option.text(item.name);
+                      //                 //     province.append(option);
+                      //                 // });
+                      //                 // $('.selectpicker').selectpicker('refresh');
+                      //                 // //获取相应的市级
+                      //                 // $.ajax({
+                      //                 //     type: "POST",                            // 方法类型
+                      //                 //     url: "getCityList",                  // url
+                      //                 //     dataType: "json",
+                      //                 //     data:{
+                      //                 //         'provinceId': 1
+                      //                 //     },
+                      //                 //     success: function (result) {
+                      //                 //         if (result != undefined) {
+                      //                 //             var data = eval(result);
+                      //                 //             //console.log(data);
+                      //                 //             //var contractName = $("#contractName");
+                      //                 //             //下拉框填充
+                      //                 //             var city=$("#city");
+                      //                 //             city.children().remove();
+                      //                 //             cityIndex="";
+                      //                 //             $.each(data, function (index, item) {
+                      //                 //                 //  console.log(item);
+                      //                 //                 var option1 = $('<option />');
+                      //                 //                 option1.val(item.cityname);
+                      //                 //                 option1.text(item.cityname);
+                      //                 //                 if(item.cityname=='${contract.city}'){
+                      //                 //                     cityIndex=index;
+                      //                 //                 }
+                      //                 //                 city.append(option1);
+                      //                 //             });
+                      //                 //             $('.selectpicker').selectpicker('refresh');
+                      //                 //
+                      //                 //
+                      //                 //         } else {
+                      //                 //             //console.log(result);
+                      //                 //         }
+                      //                 //     },
+                      //                 //     error:function (result) {
+                      //                 //         console.log(result);
+                      //                 //     }
+                      //                 // });
+
+                      var clientName=$('#companyName');//产废单位
+
+                      clientName.children().remove();
+
+                      $.each(data.companyNameList, function (index, item) {
+                          var option = $('<option />');
+                          option.val(item.clientId);
+                          option.text(item.companyName);
+                          clientName.append(option);
+                      });
+
+                      $('.selectpicker').selectpicker('refresh');
+
+                      $.ajax({
+                          type: "POST",                       // 方法类型
+                          url: "getClientListById",                  // url
+                          data:{'clientId':$("#companyName option:selected").val()},
+                          async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                          dataType: "json",
+                          //contentType: "application/json; charset=utf-8",
+                          success:function (result) {
+                              if (result != undefined && result.status == "success") {
+                                  // console.log(result);
+                                  var company=result.client;//取得被选中处置单位的信息
+                                  var taxRate1=$('#taxRate1');
+                                  i="";
+                                  taxRate1.children().remove();
+                                  $.each(data.ticketRateStrList1, function (index, item) {
+                                      // console.log(item);
+                                      var option = $('<option />');
+                                      option.val(index);
+                                      option.text(item.name);
+                                      if(company.ticketType!=null){
+                                          if(company.ticketType.name==item.name){
+                                              i=index;
+                                          }
+                                      }
+                                      else {
+                                          i=-1;
+                                      }
+                                      taxRate1.append(option);
+                                  });
+                                  taxRate1.get(0).selectedIndex = i;
+                                  $('#contactName').prop("value",company.contactName);
+                                  //赋值联系方式
+                                  if(company.mobile!=""&&company.phone==""){
+                                      $('#telephone').prop("value",company.mobile);
+                                  }
+                                  if(company.mobile==""&&company.phone!=""){
+                                      $('#telephone').prop("value",company.phone);
+                                  }
+                                  if(company.mobile==""&&company.phone==""){
+                                      $('#telephone').prop("value","");
+                                  }
+                                  if(company.mobile!=""&&company.phone!="") {
+                                      $('#telephone').prop("value", company.mobile);
+                                  }
+                                  $('#bankName').prop("value",company.bankName);
+                                  //赋值开户行账号
+                                  $('#bankAccount').prop("value",company.bankAccount);
+                                  $('#company1').prop("value",company.companyName);
+                              }
+                              else {
+                                  alert(result.message);
+                              }
+                          },
+                          error:function (result) {
+                              alert("服务器异常！");
+                          }
+                      });
+
+
+                      var suppier=$('#suppier');
+                      suppier.children().remove();
+                      $.each(data.supplierNameList, function (index, item) {
+                          var option = $('<option />');
+                          option.val(item.supplierId);
+                          option.text(item.companyName);
+                          suppier.append(option);
+                      });
+                      $('.selectpicker').selectpicker('refresh');
+                      //2赋值
+                      //开票税率下拉框
+                      //开票税率1下拉框
+                      $.ajax({
+                          type: "POST",                       // 方法类型
+                          url: "getSupplierListById",                  // url
+                          data:{'supplierId':$("#suppier option:selected").val()},
+                          async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                          dataType: "json",
+                          //contentType: "application/json; charset=utf-8",
+                          success:function (result) {
+                              if (result != undefined && result.status == "success") {
+                                  // console.log(result);
+                                  var suppier=result.supplier;//取得被选中处置单位的信息
+                                  var taxRate1=$('#taxRate1');
+                                  i="";
+                                  taxRate1.children().remove();
+                                  $.each(data.ticketRateStrList1, function (index, item) {
+                                      // console.log(item);
+                                      var option = $('<option />');
+                                      option.val(index);
+                                      option.text(item.name);
+                                      if(suppier.ticketType!=null){
+                                          if(suppier.ticketType.name==item.name){
+                                              i=index;
+                                          }
+                                      }
+                                      else {
+                                          i=-1;
+                                      }
+                                      taxRate1.append(option);
+                                  });
+                                  taxRate1.get(0).selectedIndex = i;
+                                  $('#contactName').prop("value",suppier.contactName);
+                                  //赋值联系方式
+                                  $("#telephone").prop("value",suppier.phone);//赋值联系电话
+                                  $("#contactName").prop("value",suppier.contactName);//赋值联系人
+                                  //console.log(suppier.companyName);
+                                  $("#suppierName").val(suppier.companyName);//赋值处置单位名称
+                                  $('#bankName').prop("value",suppier.bankName);
+                                  //赋值开户行账号
+                                  $('#bankAccount').prop("value",suppier.bankAccount);
+                                  $('#company1').prop("value",suppier.companyName);
+                              }
+                              else {
+                                  alert(result.message);
+                              }
+                          },
+                          error:function (result) {
+                              alert("服务器异常！");
+                          }
+                      });
+
+                  } else {
+                  }
+              },
+              error:function (result) {
+                  console.log(result);
+              }
+          });
+
+      }
+
+      $.ajax({
+          type: "POST",                            // 方法类型
+          url: "getContractList",                  // url
+          dataType: "json",
+          data:{"key":contractType},
+          success: function (result) {
+              if (result != undefined) {
+                  // console.log(result);
+                  var data = eval(result);
+                  // 各下拉框数据填充
+                  var contractType1 = $("#contractType1");//模板名称下拉框
+                  contractType1.children().remove();
+                  $.each(data.modelNameList, function (index, item) {
+                      if(item!=null&&item.modelName!=""){
+                          var option = $('<option />');
+                          option.val(item.modelName);
+                          option.text(item.modelName);
+                          contractType1.append(option);}
+                  });
+                  contractType1.get(0).selectedIndex = -1;
+
+              } else {
+              }
+          },
+          error:function (result) {
+              console.log(result);
+          }
+      });
+
+
+
+  }
+
+
+
+
+
 //计算总价
 function calculateTotalPrice(item) {
     var unitPrice=$(item).parent().parent().children('td').eq(5).children('input').val();
@@ -1740,7 +2196,7 @@ function warning(item) {
         $(item).parent().next('span').remove();
     }
 }
-//保存危废合同
+//保存合同
 function contractWastesSave() {
     var addType = $("input[name='addType']:checked").val();
     if($('#beginTime').val().length==0||$('#endTime').val().length==0){
@@ -1766,6 +2222,7 @@ function contractWastesSave() {
             if($('#beginTime').val().length>0&&$('#endTime').val().length>0&&$('#contractName').val().length>0){
             var data={
                 client:{clientId:$('#companyName').selectpicker('val')},
+                supplier:{supplierId:$('#suppier').selectpicker('val')},
                 contractVersion:$('input[name="contractVersion"]:checked').val(),
                 beginTime:$('#beginTime').val(),
                 endTime:$('#endTime').val(),
@@ -1778,7 +2235,7 @@ function contractWastesSave() {
                 ticketRate1:$('#taxRate1').val(),
                 contractType:$('#contractType').val(),
             };
-            //console.log(data);
+            console.log(data);
             $.ajax({
                 type: "POST",                            // 方法类型
                 url: "saveContract",                       // url
@@ -1858,6 +2315,7 @@ function contractWastesSave() {
         if ($('#beginTime').val().length > 0 && $('#endTime').val().length > 0 && $('#contractType1').val().length > 0) {
             var data = {
                 client: {clientId: $('#companyName').selectpicker('val')},
+                supplier:{supplierId:$('#suppier').selectpicker('val')},
                 contractVersion: $('input[name="contractVersion"]:checked').val(),
                 beginTime: $('#beginTime').val(),
                 endTime: $('#endTime').val(),
@@ -2678,8 +3136,6 @@ function loadLogicContractSelectList() {
                 //2赋值
                 //开票税率下拉框
                 //开票税率1下拉框
-                var options1=$("#suppier option:selected").val(); //获取选中的项
-                //根据供应商编号查询信息
                 $.ajax({
                     type: "POST",                       // 方法类型
                     url: "getSupplierListById",                  // url
@@ -2892,8 +3348,8 @@ function findSuppier() {
                                 var option = $('<option />');
                                 option.val(index);
                                 option.text(item.name);
-                                if(suppier.ticketType!=null){
-                                    if(suppier.ticketType.name==item.name){
+                                if(suppier.ticketRate!=null){
+                                    if(suppier.ticketRate.name==item.name){
                                         i=index;
                                     }
                                 }
@@ -3765,8 +4221,18 @@ function loadContractSelectList() {
  */
 function contractAdjustSave() {
     if($('input[name="contractVersion"]:checked').val()=='customerContract'){
+        var contractType1;
+        if($('#contractType').val()=='应急处置合同'){
+            contractType1='Emergency';
+        }
+        if($('#contractType').val()=='危废合同'){
+            contractType1='Wastes';
+        }
+        if($('#contractType').val()=='物流合同'){
+            contractType1='Logistics';
+        }
         var data={
-            contractId:$('#contractId').val(),
+            contractId:$('#contractId').html(),
             client:{clientId:$('#companyName').selectpicker('val')} ,
             contractVersion:$('input[name="contractVersion"]:checked').val(),
             beginTime:$('#beginTime').val(),
@@ -3778,7 +4244,7 @@ function contractAdjustSave() {
             telephone:$('#telephone').val(),
             contactName:$('#contactName').val(),
             ticketRate1:$('#taxRate1').val(),
-            contractType:$('#contractType').val(),
+            contractType:contractType1,
         };
         console.log(data);
         $.ajax({
@@ -3792,7 +4258,7 @@ function contractAdjustSave() {
                     console.log(result);
                     $('.myclass').each(function(){
                         var quotationItemData={
-                            contractId:$('#contractId').val(),
+                            contractId:$('#contractId').html(),
                             client:{clientId:$('#companyName').selectpicker('val')} ,
                             wastesCode:$(this).children('td').eq(1).children('div').find('button').attr('title'),
                             wastesName:$(this).children('td').eq(2).children('input').val(),
@@ -3827,8 +4293,8 @@ function contractAdjustSave() {
                     });
                     alert("修改成功!");
                     $(location).attr('href', 'contractManage.html');
-                    //location.href="contractManage.html";
-                    localStorage.name="Wastes";
+
+                    localStorage.name=contractType1;
                 }
                 else {
                     alert(result.message);
@@ -3840,9 +4306,22 @@ function contractAdjustSave() {
             }
         });
     }
+
+
+
     if($('input[name="contractVersion"]:checked').val()=='companyContract'){
+        var contractType1;
+        if($('#contractType').val()=='应急处置合同'){
+            contractType1='Emergency';
+        }
+        if($('#contractType').val()=='危废合同'){
+            contractType1='Wastes';
+        }
+        if($('#contractType').val()=='物流合同'){
+            contractType1='Logistics';
+        }
         var data={
-            contractId:$('#contractId').val(),
+            contractId:$('#contractId').html(),
             client:{clientId:$('#companyName').selectpicker('val')},
             contractVersion:$('input[name="contractVersion"]:checked').val(),
             beginTime:$('#beginTime').val(),
@@ -3854,7 +4333,7 @@ function contractAdjustSave() {
             telephone:$('#telephone').val(),
             contactName:$('#contactName').val(),
             ticketRate1:$('#taxRate1').val(),
-            contractType:$('#contractType').val(),
+            contractType:contractType1,
         };
         console.log(data);
         $.ajax({
@@ -3867,7 +4346,7 @@ function contractAdjustSave() {
                 if (result != undefined && result.status == "success"){
                     $('.myclass').each(function(){
                         var quotationItemData={
-                            contractId:$('#contractId').val(),
+                            contractId:$('#contractId').html(),
                             client:{clientId:$('#companyName').selectpicker('val')} ,
                             wastesCode:$(this).children('td').eq(1).children('div').find('button').attr('title'),
                             wastesName:$(this).children('td').eq(2).children('input').val(),
@@ -3904,7 +4383,7 @@ function contractAdjustSave() {
                     alert("修改成功!");
                     $(location).attr('href', 'contractManage.html');
                     //location.href="contractManage.html";
-                    localStorage.name="Wastes";
+                    localStorage.name=contractType1;
                 }
                 else {
                     alert(result.message);
@@ -4031,314 +4510,7 @@ function loadContractSelectList() {
     //取得下拉菜单的选项
     $('#contractId').prop("value",contractId);
 
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "getContractId1",                  // url
-        dataType: "json",
-        data:{'contractId':contractId,"key":'应急'},//key是查询危废类别的模板
-        success: function (result) {
-            var data=eval(result);
-            var contract= data.contract;
-            console.log(contract);
-            $.ajax({
-                type: "POST",                            // 方法类型
-                url: "getContractBymodelName1",                  // url
-                dataType: "json",
-                data:{'modelName':contract.modelName},//如果是公司合同就会有合同模板名称作为合同名称
-                success:function (result) {
-                    var obj=eval(result);
-                    if(obj!=null){
-                        $('#content').val(obj.contractContent);//获得模板的内容
-                    }
 
-                },
-                error:function (result) {
-                    alert("服务器异常！")
-
-                }
-            });
-            if(contract.beginTime!=null){
-                $("#beginTime").prop("value",getTime(contract.beginTime));
-            }
-            else {
-                $("#beginTime").prop("value","");
-            }
-            //赋值截止时间
-            if(contract.endTime!=null){
-                $("#endTime").prop("value",getTime(contract.endTime));
-            }
-            else {
-                $("#endTime").prop("value","");
-            }
-            //赋值是否包含运费
-            var freight=contract.freight;
-            if(freight=="false"||freight==false){
-                $('#isFreight').removeAttr("checked");
-                $('#isFreight').prop("checked",false);
-                $('#isFreight').prop("value",false);
-            }
-            if(freight==true||freight=="true"){
-                $('#isFreight').removeAttr("checked");
-                $('#isFreight').prop("checked",true);
-                $('#isFreight').prop("value",true);
-            }
-            //赋值合同版本
-            var contractVersion=contract.contractVersion.name;
-            if(contractVersion=='公司合同'){
-                contractVersion='companyContract'
-                //赋值合同名称
-                $('#contractName').prop("value",contract.contractName);
-            }
-            if(contractVersion=='产废单位合同'){
-                contractVersion='customerContract'
-                $('#contractName').prop("value",contract.contractName);
-            }
-            $(":radio[name='contractVersion'][value='" +contractVersion+"']").prop("checked", "checked");
-            if(contractVersion=="companyContract"){
-                //执行方法
-                $('#contractVersion').click();
-            }
-            if(contractVersion=="customerContract"){
-                //执行方法
-                $('#contractVersion2').click();
-            }
-
-            //赋值联系人
-            $('#contactName').prop("value",contract.contactName);
-            //赋值开户行名称
-            $('#bankName').prop("value",contract.bankName);
-            //赋值开户行账号
-            $('#bankAccount').prop("value",contract.bankAccount);
-            //联系电话
-            $('#telephone').prop("value",contract.telephone);
-            if (result != undefined) {
-                // 各下拉框数据填充
-                //省级填充
-                // index1="";
-                // var province = $("#province");
-                // province.children().remove();
-                // $.each(data.provinceStrList, function (index, item) {
-                //     var option = $('<option />');
-                //     option.val(index);
-                //     option.text(item.name);
-                //     if(data.province!=null){
-                //         if(item.name==contract.province.name){
-                //             index1=index;
-                //         }
-                //     }else {
-                //         index1=-1;
-                //     }
-                //
-                //     province.append(option);
-                // });
-                // province.get().selectedIndex=index1;
-                // $('.selectpicker').selectpicker('refresh');
-                // console.log(provinceId);//省市ID
-                //获取相应的市级
-                // provinceId=contract.province.index;
-                // $.ajax({
-                //     type: "POST",                            // 方法类型
-                //     url: "getCityList",                  // url
-                //     dataType: "json",
-                //     data:{
-                //         'provinceId': provinceId
-                //     },
-                //     success: function (result) {
-                //         if (result != undefined) {
-                //             var data = eval(result);
-                //             //console.log(data);
-                //             //var contractName = $("#contractName");
-                //             //下拉框填充
-                //             var city=$("#city");
-                //             city.children().remove();
-                //             cityIndex="";
-                //             $.each(data, function (index, item) {
-                //                 //  console.log(item);
-                //                 var option1 = $('<option />');
-                //                 option1.val(item.cityname);
-                //                 option1.text(item.cityname);
-                //                 if(data.city==item.cityname){
-                //                     cityIndex=index;
-                //                 }
-                //                 city.append(option1);
-                //             });
-                //             $('.selectpicker').selectpicker('refresh');
-                //             city.get(0).selectedIndex = cityIndex;
-                //         } else {
-                //             console.log(result);
-                //         }
-                //     },
-                //     error:function (result) {
-                //         console.log(result);
-                //     }
-                // });
-                //产废单位名称下拉框
-                //赋值产废单位名称
-                //处置单位名称
-                var clientName=$('#companyName');
-                clientName.children().remove();
-                index2="";
-                $.each(data.companyNameList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(item.clientId);
-                    option.text(item.companyName);
-                    if(item.companyName==contract.client.companyName){
-                        index2=index;
-                    }
-                    clientName.append(option);
-                });
-                clientName.get(0).selectedIndex =index2;
-                $('.selectpicker').selectpicker('refresh');
-                // $.ajax({
-                //     type: "POST",                       // 方法类型
-                //     url: "getClientListById",                  // url
-                //     data:{'clientId':$("#companyName option:selected").val()},
-                //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                //     dataType: "json",
-                //     //contentType: "application/json; charset=utf-8",
-                //     success:function (result) {
-                //         if (result != undefined && result.status == "success") {
-                //             // console.log(result);
-                //             var company=result.client;//取得被选中处置单位的信息
-                //             //console.log(company);
-                //             var taxRate1=$('#taxRate1');
-                //             i="";
-                //             taxRate1.children().remove();
-                //             $.each(data.ticketRateStrList1, function (index, item) {
-                //                 // console.log(item);
-                //                 var option = $('<option />');
-                //                 option.val(index);
-                //                 option.text(item.name);
-                //                 if(company.ticketType!=null){
-                //                     if(company.ticketType.name==item.name){
-                //                         i=index;
-                //                     }
-                //                 }
-                //                 else {
-                //                     i=-1;
-                //                 }
-                //                 taxRate1.append(option);
-                //             });
-                //             taxRate1.get(0).selectedIndex = i;
-                //             $('#contactName').prop("value",company.contactName);
-                //             //赋值联系方式
-                //             if(company.mobile!=""&&company.phone==""){
-                //                 $('#telephone').prop("value",company.mobile);
-                //             }
-                //             if(company.mobile==""&&company.phone!=""){
-                //                 $('#telephone').prop("value",company.phone);
-                //             }
-                //             if(company.mobile==""&&company.phone==""){
-                //                 $('#telephone').prop("value","");
-                //             }
-                //             if(company.mobile!=""&&company.phone!="") {
-                //                 $('#telephone').prop("value", company.mobile);
-                //             }
-                //             $('#bankName').prop("value",company.bankName);
-                //             //赋值开户行账号
-                //             $('#bankAccount').prop("value",company.bankAccount);
-                //             $('#company1').prop("value",company.companyName);
-                //         }
-                //         else {
-                //             alert(result.message);
-                //         }
-                //     },
-                //     error:function (result) {
-                //         alert("服务器异常！");
-                //     }
-                // });
-
-                // if(contract.company1!=""){
-                //     $('#company1').prop("value",contract.company1);
-                // }
-                // else {
-                //     var options1=$("#companyName option:selected").val(); //获取选中的项
-                //     //  console.log(options1);
-                //     var company=data.companyNameList[options1];//取得被选中处置单位的信息
-                //     $('#company1').prop("value",company.companyName);
-                // }
-                //赋值模板列表
-                var contractType1=$('#contractType1');
-                contractType1.children().remove();
-                index3="";
-                $.each(data.modelNameList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(item.modelName);
-                    option.text(item.modelName);
-                    if(item.modelName==contract.modelName){
-                        index3=index;
-                    }
-                    contractType1.append(option);
-                });
-                contractType1.get(0).selectedIndex =index3;
-                //开票税率1下拉框
-                var ticketRate1=$('#taxRate1');
-                ticketRate1.children().remove();
-                index4="";
-                $.each(data.ticketRateStrList1, function (index, item) {
-                    //看具体的item 在指定val
-                    //console.log(item);
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    if(contract.ticketRate1!=null){
-                        if(contract.ticketRate1.name==item.name){
-                            index4=index;
-                        }
-                    }
-                    else index4=-1;
-                    ticketRate1.append(option);
-                });
-                ticketRate1.get(0).selectedIndex=index4;
-                //开票税率2下拉框
-                $.each(contract.quotationItemList,function (index,item) {
-                    $('.selectpicker').selectpicker( {
-                        language: 'zh_CN',
-                        // style: 'btn-info',
-                        size: 4
-                    });//下拉框样式
-                    var tr=$('#cloneTr1');
-                    // tr.siblings().remove();
-                    var cloneTr=tr.clone();
-                    cloneTr.attr('class','myclass');
-                    cloneTr.show();
-                    var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
-                    cloneTr.children('td').eq(0).html(parseInt(contract.quotationItemList.length)-index);
-                    cloneTr.children("td:eq(0)").append(delBtn);
-                    cloneTr.children('td').eq(2).children('input').val(item.wastesName);
-                    cloneTr.children('td').eq(4).children('input').val(item.util);
-                    cloneTr.children('td').eq(5).children('input').val(item.unitPriceTax);
-                    cloneTr.children('td').eq(6).children('input').val(item.contractAmount);
-                    cloneTr.children('td').eq(7).children('input').val(item.totalPrice);
-                    if(item.packageType!=null){
-                        cloneTr.children('td').eq(3).children('select').val(item.packageType.index);
-                    }
-                    if(item.transport!=null){
-                        cloneTr.children('td').eq(8).children('select').val(item.transport.index);
-                    }
-                    cloneTr.children('td').eq(1).find('select').selectpicker('val',item.wastesCode);
-                    cloneTr.removeAttr('id');
-                    cloneTr.insertAfter(tr);
-                    $('.selectpicker').data('selectpicker', null);
-                    $('.bootstrap-select').find("button:first").remove();
-                    $('.selectpicker').selectpicker();
-                    $('.selectpicker').selectpicker('refresh');
-                    tr.hide();
-                    tr.removeAttr('class');
-
-                });
-
-
-
-            }
-            else {
-                console.log(result);
-            }
-        },
-        error:function (result) {
-            console.log(result);
-        }
-    });
 
 
 }
@@ -5083,3 +5255,955 @@ function contractLogAdjustSave() {
     }
 }
 
+//修改合同 最新版
+function adjust(item) {
+
+
+
+    var contractId=$(item).parent().parent().children('td').eq(1).html();
+
+    localStorage.contractId = contractId;
+    window.location.href = "wastesContractInfoChange.html";
+    
+}
+//合同修改页面初始化
+function adjustNewContract() {
+   //赋值合同编号
+    var contractId = localStorage['contractId'];
+    $('#contractId').html(contractId);
+
+    //危废编码赋值
+    $.ajax({
+        type:'POST',
+        url:"getWastesInfoList",
+        //data:JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success: function (result){
+            if (result != undefined && result.status == "success"){
+                // console.log(result);
+                var obj=eval(result);
+                var wastesCode=$('#wastesCode');
+                wastesCode.children().remove();
+                $.each(obj.data,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(item.code);
+                    option.text(item.code);
+                    wastesCode.append(option);
+                });
+                wastesCode.removeAttr('id');
+                $('.selectpicker').selectpicker('refresh');
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
+    });
+
+    //运输方式
+    $.ajax({
+        type:'POST',
+        url:"getTransportTypeList",
+        //data:JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success: function (result){
+            if (result != undefined && result.status == "success"){
+                // console.log(result);
+                var transportType=$('#transportType');
+                transportType.children().remove();
+                $.each(result.transportTypeList,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(item.index);
+                    option.text(item.name);
+                    transportType.append(option);
+                });
+                transportType.get(0).selectedIndex=0;
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
+    });
+
+    //包装类型
+    $.ajax({
+        type:'POST',
+        url:"getFormTypeAndPackageType",
+        //data:JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success: function (result){
+            if (result != undefined){
+                // console.log(result);
+                var packageType=$('#packageType');
+                packageType.children().remove();
+                $.each(result.packageTypeList,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(item.index);
+                    option.text(item.name);
+                    packageType.append(option);
+                });
+                packageType.get(0).selectedIndex=0;
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
+
+    });
+
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 4
+    });
+    //赋值
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getByContractId",                  // url
+        dataType: "json",
+        data:{'contractId':contractId},//key是查询危废类别的模板
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+
+                console.log(result)
+
+                var data = eval(result);
+
+                var contract = data.contract;
+
+                console.log(contract);
+
+                $('#contractType').val(contract.contractType.name);
+
+                //赋值合同版本
+                var contractVersion = contract.contractVersion.name;
+
+                if (contractVersion == '公司合同') {
+                    contractVersion = 'companyContract'
+                    //赋值合同名称
+                    $('#contractName').prop("value", contract.contractName);
+                }
+
+                if (contractVersion == '产废单位合同') {
+                    contractVersion = 'customerContract'
+                    $('#contractName').prop("value", contract.contractName);
+                }
+
+                $(":radio[name='contractVersion'][value='" + contractVersion + "']").prop("checked", "checked");
+
+                if (contractVersion == "companyContract") {
+                    //执行方法
+                    $('#contractVersion').click();
+                }
+
+                if (contractVersion == "customerContract") {
+                    //执行方法
+                    $('#contractVersion2').click();
+                }
+
+
+                if(contract.contractType.name=='物流合同'){
+                    $('#client').hide();
+                    $('#supplier').show();
+                    $('#name').text("处置单位");
+
+                    if (result != undefined) {
+                        // 各下拉框数据填充
+                        //省级填充
+                        // index1="";
+                        // var province = $("#province");
+                        // province.children().remove();
+                        // $.each(data.provinceStrList, function (index, item) {
+                        //     var option = $('<option />');
+                        //     option.val(index);
+                        //     option.text(item.name);
+                        //     if(data.province!=null){
+                        //         if(item.name==contract.province.name){
+                        //             index1=index;
+                        //         }
+                        //     }else {
+                        //         index1=-1;
+                        //     }
+                        //
+                        //     province.append(option);
+                        // });
+                        // province.get().selectedIndex=index1;
+                        // $('.selectpicker').selectpicker('refresh');
+                        // console.log(provinceId);//省市ID
+                        //获取相应的市级
+                        // provinceId=contract.province.index;
+                        // $.ajax({
+                        //     type: "POST",                            // 方法类型
+                        //     url: "getCityList",                  // url
+                        //     dataType: "json",
+                        //     data:{
+                        //         'provinceId': provinceId
+                        //     },
+                        //     success: function (result) {
+                        //         if (result != undefined) {
+                        //             var data = eval(result);
+                        //             //console.log(data);
+                        //             //var contractName = $("#contractName");
+                        //             //下拉框填充
+                        //             var city=$("#city");
+                        //             city.children().remove();
+                        //             cityIndex="";
+                        //             $.each(data, function (index, item) {
+                        //                 //  console.log(item);
+                        //                 var option1 = $('<option />');
+                        //                 option1.val(item.cityname);
+                        //                 option1.text(item.cityname);
+                        //                 if(data.city==item.cityname){
+                        //                     cityIndex=index;
+                        //                 }
+                        //                 city.append(option1);
+                        //             });
+                        //             $('.selectpicker').selectpicker('refresh');
+                        //             city.get(0).selectedIndex = cityIndex;
+                        //         } else {
+                        //             console.log(result);
+                        //         }
+                        //     },
+                        //     error:function (result) {
+                        //         console.log(result);
+                        //     }
+                        // });
+                        //产废单位名称下拉框
+                        //赋值产废单位名称
+                        //处置单位名称
+                        var supplier=$('#suppier');
+                        supplier.children().remove();
+                        index2="";
+                        $.each(data.supplierNameList, function (index, item) {
+                            var option = $('<option />');
+                            option.val(item.supplierId);
+                            option.text(item.companyName);
+                            if(item.companyName==contract.supplier.companyName){
+                                index2=index;
+                            }
+                            supplier.append(option);
+                        });
+                        supplier.get(0).selectedIndex =index2;
+                        $('.selectpicker').selectpicker('refresh');
+
+                        //赋值模板列表
+                        $.ajax({
+                            type: "POST",                            // 方法类型
+                            url: "getModelByContractId",                  // url
+                            dataType: "json",
+                            data: {'key': (contract.contractType.name).substring(0,2)},//如果是公司合同就会有合同模板名称作为合同名称
+                            success:function (result) {
+                                if (result != undefined && result.status == "success") {
+                                    console.log(result)
+                                    var contractType1 = $('#contractType1');
+                                    contractType1.children().remove();
+                                    index3 = "";
+                                    $.each(result.modelNameList, function (index, item) {
+                                        var option = $('<option />');
+                                        option.val(item.modelName);
+                                        option.text(item.modelName);
+                                        if (item.modelName == contract.contractName) {
+                                            index3 = index;
+                                        }
+                                        contractType1.append(option);
+                                    });
+                                    contractType1.get(0).selectedIndex = index3;
+                                }
+
+                            },
+                            error:function (result) {
+
+                            }
+                        })
+
+                        //开票税率1下拉框
+                        var ticketRate1=$('#taxRate1');
+                        ticketRate1.children().remove();
+                        index4="";
+                        $.each(data.ticketRateStrList1, function (index, item) {
+                            //看具体的item 在指定val
+                            //console.log(item);
+                            var option = $('<option />');
+                            option.val(index);
+                            option.text(item.name);
+                            if(contract.ticketRate1!=null){
+                                if(contract.ticketRate1.name==item.name){
+                                    index4=index;
+                                }
+                            }
+                            else index4=-1;
+                            ticketRate1.append(option);
+                        });
+                        ticketRate1.get(0).selectedIndex=index4;
+                        //开票税率2下拉框
+                        $.each(contract.quotationItemList,function (index,item) {
+                            $('.selectpicker').selectpicker( {
+                                language: 'zh_CN',
+                                // style: 'btn-info',
+                                size: 4
+                            });//下拉框样式
+                            var tr=$('#cloneTr1');
+                            // tr.siblings().remove();
+                            var cloneTr=tr.clone();
+                            cloneTr.attr('class','myclass');
+                            cloneTr.show();
+                            var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+                            cloneTr.children('td').eq(0).html(parseInt(contract.quotationItemList.length)-index);
+                            cloneTr.children("td:eq(0)").append(delBtn);
+                            cloneTr.children('td').eq(2).children('input').val(item.wastesName);
+                            cloneTr.children('td').eq(4).children('input').val(item.util);
+                            cloneTr.children('td').eq(5).children('input').val(item.unitPriceTax);
+                            cloneTr.children('td').eq(6).children('input').val(item.contractAmount);
+                            cloneTr.children('td').eq(7).children('input').val(item.totalPrice);
+                            if(item.packageType!=null){
+                                cloneTr.children('td').eq(3).children('select').val(item.packageType.index);
+                            }
+                            if(item.transport!=null){
+                                cloneTr.children('td').eq(8).children('select').val(item.transport.index);
+                            }
+                            cloneTr.children('td').eq(1).find('select').selectpicker('val',item.wastesCode);
+                            cloneTr.removeAttr('id');
+                            cloneTr.insertAfter(tr);
+                            $('.selectpicker').data('selectpicker', null);
+                            $('.bootstrap-select').find("button:first").remove();
+                            $('.selectpicker').selectpicker();
+                            $('.selectpicker').selectpicker('refresh');
+                            tr.hide();
+                            tr.removeAttr('class');
+
+                        });
+
+
+
+                    }
+
+
+                }
+                else {
+                    $('#client').show();
+                    $('#supplier').hide();
+                    $('#name').text("产废单位");
+                    if (result != undefined) {
+                        // 各下拉框数据填充
+                        //省级填充
+                        // index1="";
+                        // var province = $("#province");
+                        // province.children().remove();
+                        // $.each(data.provinceStrList, function (index, item) {
+                        //     var option = $('<option />');
+                        //     option.val(index);
+                        //     option.text(item.name);
+                        //     if(data.province!=null){
+                        //         if(item.name==contract.province.name){
+                        //             index1=index;
+                        //         }
+                        //     }else {
+                        //         index1=-1;
+                        //     }
+                        //
+                        //     province.append(option);
+                        // });
+                        // province.get().selectedIndex=index1;
+                        // $('.selectpicker').selectpicker('refresh');
+                        // console.log(provinceId);//省市ID
+                        //获取相应的市级
+                        // provinceId=contract.province.index;
+                        // $.ajax({
+                        //     type: "POST",                            // 方法类型
+                        //     url: "getCityList",                  // url
+                        //     dataType: "json",
+                        //     data:{
+                        //         'provinceId': provinceId
+                        //     },
+                        //     success: function (result) {
+                        //         if (result != undefined) {
+                        //             var data = eval(result);
+                        //             //console.log(data);
+                        //             //var contractName = $("#contractName");
+                        //             //下拉框填充
+                        //             var city=$("#city");
+                        //             city.children().remove();
+                        //             cityIndex="";
+                        //             $.each(data, function (index, item) {
+                        //                 //  console.log(item);
+                        //                 var option1 = $('<option />');
+                        //                 option1.val(item.cityname);
+                        //                 option1.text(item.cityname);
+                        //                 if(data.city==item.cityname){
+                        //                     cityIndex=index;
+                        //                 }
+                        //                 city.append(option1);
+                        //             });
+                        //             $('.selectpicker').selectpicker('refresh');
+                        //             city.get(0).selectedIndex = cityIndex;
+                        //         } else {
+                        //             console.log(result);
+                        //         }
+                        //     },
+                        //     error:function (result) {
+                        //         console.log(result);
+                        //     }
+                        // });
+                        //产废单位名称下拉框
+                        //赋值产废单位名称
+                        //处置单位名称
+                        var clientName = $('#companyName');
+
+                        clientName.children().remove();
+
+                        index2 = "";
+
+                        $.each(data.companyNameList, function (index, item) {
+                            var option = $('<option />');
+                            option.val(item.clientId);
+                            option.text(item.companyName);
+                            if (item.companyName == contract.client.companyName) {
+                                index2 = index;
+                            }
+                            clientName.append(option);
+                        });
+                        clientName.get(0).selectedIndex = index2;
+                        $('.selectpicker').selectpicker('refresh');
+                        //赋值模板列表
+                        $.ajax({
+                            type: "POST",                            // 方法类型
+                            url: "getModelByContractId",                  // url
+                            dataType: "json",
+                            data: {'key': (contract.contractType.name).substring(0,2)},//如果是公司合同就会有合同模板名称作为合同名称
+                            success:function (result) {
+                                if (result != undefined && result.status == "success") {
+                                    console.log(result)
+                                    var contractType1 = $('#contractType1');
+                                    contractType1.children().remove();
+                                    index3 = "";
+                                    $.each(result.modelNameList, function (index, item) {
+                                        var option = $('<option />');
+                                        option.val(item.modelName);
+                                        option.text(item.modelName);
+                                        if (item.modelName == contract.contractName) {
+                                            index3 = index;
+                                        }
+                                        contractType1.append(option);
+                                    });
+                                    contractType1.get(0).selectedIndex = index3;
+                                }
+
+                            },
+                            error:function (result) {
+
+                            }
+                        })
+
+                        //开票税率1下拉框
+                        var ticketRate1 = $('#taxRate1');
+
+                        ticketRate1.children().remove();
+
+                        index4 = "";
+                        $.each(data.ticketRateStrList1, function (index, item) {
+                            //看具体的item 在指定val
+                            //console.log(item);
+                            var option = $('<option />');
+                            option.val(index);
+                            option.text(item.name);
+                            if (contract.ticketRate1 != null) {
+                                if (contract.ticketRate1.name == item.name) {
+                                    index4 = index;
+                                }
+                            }
+                            else index4 = -1;
+                            ticketRate1.append(option);
+                        });
+                        ticketRate1.get(0).selectedIndex = index4;
+                        //开票税率2下拉框
+                        $.each(contract.quotationItemList, function (index, item) {
+                            $('.selectpicker').selectpicker({
+                                language: 'zh_CN',
+                                // style: 'btn-info',
+                                size: 4
+                            });//下拉框样式
+                            var tr = $('#cloneTr1');
+                            // tr.siblings().remove();
+                            var cloneTr = tr.clone();
+                            cloneTr.attr('class', 'myclass');
+                            cloneTr.show();
+                            var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+                            cloneTr.children('td').eq(0).html(parseInt(contract.quotationItemList.length) - index);
+                            cloneTr.children("td:eq(0)").append(delBtn);
+                            cloneTr.children('td').eq(2).children('input').val(item.wastesName);
+                            cloneTr.children('td').eq(4).children('input').val(item.util);
+                            cloneTr.children('td').eq(5).children('input').val(item.unitPriceTax);
+                            cloneTr.children('td').eq(6).children('input').val(item.contractAmount);
+                            cloneTr.children('td').eq(7).children('input').val(item.totalPrice);
+                            if (item.packageType != null) {
+                                cloneTr.children('td').eq(3).children('select').val(item.packageType.index);
+                            }
+                            if (item.transport != null) {
+                                cloneTr.children('td').eq(8).children('select').val(item.transport.index);
+                            }
+                            cloneTr.children('td').eq(1).find('select').selectpicker('val', item.wastesCode);
+                            cloneTr.removeAttr('id');
+                            cloneTr.insertAfter(tr);
+                            $('.selectpicker').data('selectpicker', null);
+                            $('.bootstrap-select').find("button:first").remove();
+                            $('.selectpicker').selectpicker();
+                            $('.selectpicker').selectpicker('refresh');
+                            tr.hide();
+                            tr.removeAttr('class');
+
+                        });
+                    }
+                }
+
+
+
+                $.ajax({
+                    type: "POST",                            // 方法类型
+                    url: "getContractBymodelName1",                  // url
+                    dataType: "json",
+                    data: {'modelName': contract.modelName},//如果是公司合同就会有合同模板名称作为合同名称
+                    success: function (result) {
+                        var obj = eval(result);
+                        if (obj != null) {
+                            $('#content').val(obj.contractContent);//获得模板的内容
+                        }
+
+                    },
+                    error: function (result) {
+                        alert("服务器异常！")
+
+                    }
+                });
+
+                if (contract.beginTime != null) {
+                    $("#beginTime").prop("value", getDateStr(contract.beginTime));
+                }
+                //赋值截止时间
+                if (contract.endTime != null) {
+                    $("#endTime").prop("value", getDateStr(contract.endTime));
+                }
+
+                // //赋值是否包含运费
+                // var freight = contract.freight;
+                // if (freight == "false" || freight == false) {
+                //     $('#isFreight').removeAttr("checked");
+                //     $('#isFreight').prop("checked", false);
+                //     $('#isFreight').prop("value", false);
+                // }
+                // if (freight == true || freight == "true") {
+                //     $('#isFreight').removeAttr("checked");
+                //     $('#isFreight').prop("checked", true);
+                //     $('#isFreight').prop("value", true);
+                // }
+
+                //赋值联系人
+                $('#contactName').prop("value", contract.contactName);
+                //赋值开户行名称
+                $('#bankName').prop("value", contract.bankName);
+                //赋值开户行账号
+                $('#bankAccount').prop("value", contract.bankAccount);
+                //联系电话
+                $('#telephone').prop("value", contract.telephone);
+
+            }
+            else {
+                console.log(result);
+            }
+
+        },
+        error:function (result) {
+            console.log(result);
+        }
+    });
+
+}
+
+//作废
+function cancel(item) {
+    //查看合同编号
+    var contractId = item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+    var name1 = item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
+    var r = confirm("是否作废该合同？");
+    if (r == true) {
+        $.ajax({
+            type: "POST",
+            url: "cancelContract",
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {"contractId": contractId},
+            success: function (result) {
+                var obj = eval(result);
+                if (obj.state == "success") {
+                    alert("作废成功！");
+                    if (name1.indexOf("物流") != -1) {
+                        var name2 = "Logistics";
+                    }
+                    if (name1.indexOf("危废") != -1) {
+                        var name2 = "Wastes";
+                    }
+                    if (name1.indexOf("次生") != -1) {
+                        var name2 = "Derive";
+                    }
+                    if (name1.indexOf("采购") != -1) {
+                        var name2 = "Purchase";
+                    }
+                    if (name1.indexOf("应急") != -1) {
+                        var name2 = "Emergency";
+                    }
+                    $(location).attr('href', 'contractManage.html');
+                    localStorage.name = name2;
+                    location.href = "contractManage.html";
+
+
+                }
+                else {
+                    alert("作废失败")
+                }
+            },
+            error: function (result) {
+                alert("服务器异常！")
+            }
+        });
+    }
+    else {
+    }
+}
+
+
+//审批
+function approval(item) {
+    //出现模态框和查看一个效果
+    contractId = item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+    name1 = item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
+    // $.ajax({
+    //     type: "POST",                       // 方法类型
+    //     url: "getContractId",                   // url
+    //     async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     dataType: "json",
+    //     data: {
+    //         'contractId': contractId
+    //     },
+    //     success: function (result) {
+    //         // console.log(result);
+    //         if (result != undefined) {
+    //             var data = eval(result);
+    //             console.log(data);
+    //             if (data.beginTime != null) {
+    //                 var begin = gettime(data.beginTime);
+    //             }
+    //             else {
+    //                 var begin = "";
+    //             }
+    //             if (data.endTime != null) {
+    //                 var end = gettime(data.endTime);
+    //             }
+    //             else {
+    //                 var end = "";
+    //             }
+    //             $("#modal3_contractName").text(data.contractName + data.contractType.name);//合同名称
+    //             $("#modal3_contractState").text(data.checkState.name);
+    //             $("#modal3_contractVersion").text(data.contractVersion.name);
+    //             //$("#modal3_companyName").text(data.companyName);
+    //             $("#modal3_contactName").text(data.contactName);
+    //             $("#modal3_contractId").text(data.contractId);
+    //             $("#modal3_beginTime").text(begin);
+    //             $("#modal3_endTime").text(end);
+    //             //$("#modal3_area").text(data.province.name + "" + data.city);
+    //             $("#modal3_telephone").text(data.telephone);
+    //             $("#modal3_order").text(data.order1);
+    //             if (data.contractType.name == '物流合同') {
+    //                 $('#name1').html("处置单位名称&nbsp;&nbsp;");
+    //                 $("#modal3_suppierName").text(data.suppierName);
+    //             }
+    //             else {
+    //                 $('#name1').html("产废单位名称&nbsp;&nbsp;");
+    //                 $("#modal3_companyName").text(data.company1);//公司名称
+    //             }
+    //             //开票税率1
+    //             if (data.ticketRate1 == null) {
+    //                 $('#modal3_ticketRate1').text(" ");
+    //             }
+    //             else {
+    //                 $('#modal3_ticketRate1').text(data.ticketRate1.name);
+    //             }
+    //             $('#modal3_bankName').text(data.bankName);
+    //             //开户行账号
+    //             $('#modal3_bankAccout').text(data.bankAccount);
+    //             if (data.freight == true) {//需要运费
+    //                 $('#modal3_freight').removeAttr("checked");
+    //                 $('#modal3_freight').prop("checked", true);
+    //             }
+    //             if (data.freight == false) {//不需要运费
+    //                 $('#modal3_freight').removeAttr("checked");
+    //             }
+    //             $('#advice').text(data.opinion);
+    //             $('#backContent').text(data.backContent);
+    //         } else {
+    //             $("#modal3_contactName").text("");
+    //             $("#modal3_contractState").text("");
+    //             $("#modal3_contractVersion").text("");
+    //             $("#modal3_companyName").text("");
+    //             $("#modal3_contactName").text("");
+    //             $("#modal3_contractId").text("");
+    //             $("#modal3_beginTime").text("");
+    //             $("#modal3_endTime").text("");
+    //             $("#modal3_area").text("");
+    //             $("#modal3_telephone").text("");
+    //             $("#modal3_order").text("");
+    //         }
+    //     },
+    //     error: function (result) {
+    //         console.log(result);
+    //
+    //     }
+    // });
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getContractId",                   // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {
+            'contractId': contractId
+        },
+        success: function (result) {
+            //console.log(result);
+            if (result != undefined) {
+                console.log(result);
+                var data = eval(result);
+                //开始日期
+                if (data.beginTime != null) {
+                    var begin = gettime(data.beginTime);
+                }
+                else {
+                    var begin = "";
+                }
+                //截止日期
+                if (data.endTime != null) {
+                    var end = gettime(data.endTime);
+                }
+                else {
+                    var end = "";
+                }
+                //合同状态
+                if (data.checkState != null) {
+                    $("#modal3_contractState").text(data.checkState.name);
+                }
+                else {
+                    $("#modal3_contractState").text("");
+                }
+
+                //合同版本
+                $("#modal3_contractVersion").text(data.contractVersion.name);//合同版本
+                // $("#modal3_companyName").text(data.companyName);
+                if (data.contractVersion.name == "公司合同") {
+                    $("#modal3_contractName").text(data.modelName);//合同名称
+                }
+                if (data.contractVersion.name == "产废单位合同") {
+                    $("#modal3_contractName").text(data.contractName + data.contractType.name);//合同名称
+                }
+                //联系人
+                $("#modal3_contactName").text(data.contactName);
+                //合同编号
+                $("#modal3_contractId").text(data.contractId);
+                $("#modal3_beginTime").text(begin);
+                $("#modal3_endTime").text(end);
+                //  $("#modal3_area").text(data.province.name+""+data.city);
+                //联系方式
+                $("#modal3_telephone").text(data.telephone);
+                //预计处置费
+                $("#modal3_order").text(data.order1);
+                if (data.contractType.name == '物流合同') {
+                    $('#name1').html("处置单位名称&nbsp;&nbsp;");
+                    //$("#modal3_suppierName").text(data.suppierName);
+                    //供用商姓名
+                    if(data.supplier!=null){
+                        $('#modal3_suppierName').text(data.supplier.companyName);
+                    }
+
+                }
+                if (data.contractType.name != '物流合同') {
+                    $('#name1').html("产废单位名称&nbsp;&nbsp;");
+                    if(data.client!=null){
+                        $("#modal3_suppierName").text(data.client.companyName);//公司名称
+                    }
+
+
+                }
+
+                //开票税率1
+                if (data.ticketRate1 == null) {
+                    $('#modal3_ticketRate1').text(" ");
+                }
+                else {
+                    $('#modal3_ticketRate1').text(data.ticketRate1.name);
+                }
+                //开票税率2
+                // if(data.ticketRate2==null){
+                //     $('#modal3_ticketRate2').text(" ");
+                // }
+                // else {
+                //     $('#modal3_ticketRate2').text(data.ticketRate2.name);
+                // }
+                //资质开始日期
+                // if(data.beginQualification==null){
+                //     $('#modal3_beginQualification').text(" ");
+                // }
+                // else {
+                //     var begin1=gettime(data.beginQualification);
+                //     $('#modal3_beginQualification').text(begin1);
+                // }
+                //资质结束日期
+                // if(data.endQualification==null){
+                //     $('#modal3_endQualification').text(" ");
+                // }
+                // else {
+                //     var end1=gettime(data.endQualification);
+                //     $('#modal3_endQualification').text(end1);
+                // }
+                //物流公司资质
+                //  $('#modal3_logisticsQualification').text(data.logisticsQualification);
+                //开户行名称
+                $('#modal3_bankName').text(data.bankName);
+                //开户行账号
+                $('#modal3_bankAccout').text(data.bankAccount);
+                if (data.freight == true) {//需要运费
+                    $('#modal3_freight').removeAttr("checked");
+                    $('#modal3_freight').prop("checked", true);
+                }
+                if (data.freight == false) {//不需要运费
+                    $('#modal3_freight').removeAttr("checked");
+                }
+
+                //赋值报价单明细
+                if(data.quotationItemList!=null){
+                    setContractListModal(data.quotationItemList);
+                }
+
+
+
+
+
+
+                $('#search').prop("readonly", false);
+            } else {
+                $("#modal3_contactName").text("");
+                $("#modal3_contractState").text("");
+                $("#modal3_contractVersion").text("");
+                $("#modal3_companyName").text("");
+                $("#modal3_contactName").text("");
+                $("#modal3_contractId").text("");
+                $("#modal3_beginTime").text("");
+                $("#modal3_endTime").text("");
+                $("#modal3_area").text("");
+                $("#modal3_telephone").text("");
+                $("#modal3_order").text("");
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+    $('#close').show();
+    $('#back').show();//驳回显示
+    $('#btn').show()//审批显示
+    $('#back').text('驳回');//设置驳回字样
+    $('#print').hide();//打印隐藏
+    $('#contractInfoForm').modal('show');//出现第一个模态框
+}
+
+
+//把按钮功能分出来做这个是审批
+function confirm1() {
+    opinion = $('#advice').val();
+    //console.log(opinion);
+    //1获取文本框的值
+    $.ajax({
+        type: "POST",
+        url: "approvalContract",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'contractId': contractId, 'opinion': opinion,},
+        success: function (result) {
+            var obj = eval(result);
+            if (obj.state == "success") {
+                alert("审批成功!")
+                if (name1.indexOf("物流") != -1) {
+                    var name2 = "Logistics";
+                }
+                if (name1.indexOf("危废") != -1) {
+                    var name2 = "Wastes";
+                }
+                if (name1.indexOf("次生") != -1) {
+                    var name2 = "Derive";
+                }
+                if (name1.indexOf("采购") != -1) {
+                    var name2 = "Purchase";
+                }
+                if (name1.indexOf('应急') != -1) {
+                    var name2 = "Emergency";
+                }
+                $(location).attr('href', 'contractManage.html');
+                localStorage.name = name2;
+                location.href = "contractManage.html";
+            }
+            else {
+                alert("审批失败")
+            }
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+    });
+}
+
+function back1() {
+    backContent = $('#backContent').val();
+    //设置状态驳回
+    $.ajax({
+        type: "POST",
+        url: "backContract",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'contractId': contractId, 'backContent': backContent},
+        success: function (result) {
+            var obj = eval(result);
+            if (obj.state == "success") {
+                alert("已驳回！");
+                if (name1.indexOf("物流") != -1) {
+                    var name2 = "Logistics";
+                }
+                if (name1.indexOf("危废") != -1) {
+                    var name2 = "Wastes";
+                }
+                if (name1.indexOf("次生") != -1) {
+                    var name2 = "Derive";
+                }
+                if (name1.indexOf("采购") != -1) {
+                    var name2 = "Purchase";
+                }
+                if (name1.indexOf('应急') != -1) {
+                    var name2 = "Emergency";
+                }
+                $(location).attr('href', 'contractManage.html');
+                localStorage.name = name2;
+                location.href = "contractManage.html";
+            }
+            else {
+                alert("审批失败")
+            }
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+    });
+}

@@ -16,12 +16,17 @@ function updateVersion(versionId) {
     if (isNaN(num)) return "V1.0";
     return "V" + num;
 }
-// function reset() {
-//     $("#senior").find("input").val("");
-//     $("#senior").find("select").each(function () {
-//         $(this).get(0).selectedIndex = -1;
-//     });
-// }
+
+/**
+ * 重置
+ */
+function reset() {
+    $("#searchContent").val("");
+    $("#senior").find("input").val("");
+    $("#senior").find("select").each(function () {
+        $(this).get(0).selectedIndex = -1;
+    });
+}
 /**
  * 通过字符串获取处置类别
  * @param handleCategory
@@ -202,12 +207,12 @@ function convertStrToWastesName(str) {
     return name;
 }
 
-/**
- * 重置页面功能
- */
-function reset() {
-    window.location.reload();
-}
+// /**
+//  * 重置页面功能
+//  */
+// function reset() {
+//     window.location.reload();
+// }
 
 /**
  * 回车跳转（输入页数回车跳转页面）
@@ -241,4 +246,11 @@ function addPageClass(pageNumber){
             $(item).addClass("oldPageClass");
         }
     });
+}
+
+/**
+ * 返回上一页
+ */
+function backLastPage(){
+    history.back();
 }

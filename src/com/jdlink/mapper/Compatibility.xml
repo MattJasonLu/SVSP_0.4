@@ -40,7 +40,7 @@
     </select>
     <!--查找配伍编号-->
     <select id="check" resultType="String">
-        select compatibilityId from  t_pr_pw order by compatibilityId desc ;
+        select compatibilityId from  t_pr_pw order by (CAST(compatibilityId AS SIGNED) ) desc ;
     </select>
     <select id="check1" resultType="String">
         select compatibilityId from  t_pr_pw  where nowTime!="" order by nowTime desc ;
@@ -336,7 +336,7 @@
 
     <!--找出最新的物料编号-->
 <select id="getNewestMaterialRequireId" resultType="String">
-    select materialRequireId from  t_pr_materialrequire order by materialRequireId desc;
+    select materialRequireId from  t_pr_materialrequire order by (CAST(materialRequireId AS SIGNED) ) desc;
 </select>
 <!--添加物料需求明细-->
     <insert id="addMaterialRequireItem" parameterType="MaterialRequireItem">

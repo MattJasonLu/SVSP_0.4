@@ -336,113 +336,113 @@ function setWasteIntoList(result) {
             var obj = eval(item);
             switch (inner_index) {
                 // 序号
-                case (0):
+                case (1):
                     $(this).html(index+1);
                     break;
                 // 收样日期
-                case (1):
+                case (2):
                     if(obj.laboratoryTest!=null){
                         $(this).html(getDateStr(obj.laboratoryTest.samplingDate));
                     }
                     break;
                 // 联单号码
-                case (2):
+                case (3):
                     $(this).html(obj.transferDraftId);
                     break;
                 // 产废单位
-                case (3):
+                case (4):
                     if(obj.client!=null){
                         $(this).html(obj.client.companyName);
                     }
 
                     break;
                 // 废物名称
-                case (4):
+                case (5):
                     if(obj.laboratoryTest!=null){
                         $(this).html(obj.laboratoryTest.wastesName);
 
                     }
                     break;
                 // 废物类别
-                case (5):
+                case (6):
                         $(this).html(obj.wastesCategory);
                     break;
                 // 废物形态
-                case (6):
+                case (7):
                     if(obj.handleCategory!=null){
                         $(this).html(obj.handleCategory.name);
                     }
                     break;
                     //PH
-                case (7):
+                case (8):
                     if(obj.laboratoryTest!=null){
                         $(this).html(obj.laboratoryTest.phAverage);
                     }
 
                     break;
                     //热值
-                case (8):
+                case (9):
                     if(obj.laboratoryTest!=null){
                         $(this).html(obj.laboratoryTest.heatAverage);
                     }
                     break;
                     //水分
-                case (9):
+                case (10):
                     if(obj.laboratoryTest!=null){
                         $(this).html(obj.laboratoryTest.waterContentAverage);
                     }
                     break;
                     //灰分
-                case (10):
+                case (11):
                     if(obj.laboratoryTest!=null) {
                         $(this).html(obj.laboratoryTest.ashAverage);
                     }
                     break;
                     //氟含量
 
-                case (11):
+                case (12):
                     if(obj.laboratoryTest!=null) {
                         $(this).html(obj.laboratoryTest.fluorineContentAverage);
                     }
                     break;
                     //氯含量
-                case (12):
+                case (13):
                     if(obj.laboratoryTest!=null) {
                         $(this).html(obj.laboratoryTest.chlorineContentAverage);
                     }
                     break;
                     //硫含量
-                case (13):
+                case (14):
                     if(obj.laboratoryTest!=null) {
                         $(this).html(obj.laboratoryTest.sulfurContentAverage);
                     }
                     break;
                     //磷含量
-                case (14):
+                case (15):
                     if(obj.laboratoryTest!=null) {
                         $(this).html(obj.laboratoryTest.phosphorusContentAverage);
                     }
                     break;
                     //闪点
-                case (15):
+                case (16):
                     if(obj.laboratoryTest!=null) {
                         $(this).html(obj.laboratoryTest.flashPointAverage);
                     }
                     break;
                     //粘度
-                case (16):
+                case (17):
                     if(obj.laboratoryTest!=null) {
                         $(this).html(obj.laboratoryTest.viscosityAverage);
                     }
                     break;
                     //熔融温度
-                case (17):
+                case (18):
                     if(obj.laboratoryTest!=null) {
                         $(this).html(obj.laboratoryTest.meltingPointAverage);
                     }
                     break;
                     //备注
-                case (18):
+                case (19):
                     $(this).html(obj.remarks);
                     break;
             }

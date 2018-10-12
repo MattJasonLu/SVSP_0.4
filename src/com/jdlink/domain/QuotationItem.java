@@ -132,6 +132,17 @@ public class QuotationItem {
      */
     private float totalPrice;
 
+    //编号 更新用
+    private int t_quotationitem;
+
+    public int getT_quotationitem() {
+        return t_quotationitem;
+    }
+
+    public void setT_quotationitem(int t_quotationitem) {
+        this.t_quotationitem = t_quotationitem;
+    }
+
     public float getTotalPrice() {
         return totalPrice;
     }

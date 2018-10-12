@@ -300,6 +300,14 @@ function addNewLine() {
 function delLine(e) {
     var tr = e.parentElement.parentElement;
     tr.parentNode.removeChild(tr);
+    var i=0
+    //2018/10/11更新 请勿修改！
+ $('.myclass').each(function (index,item) {
+
+     $(this).children('td').eq(0).html("<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;"+(parseInt(index)+1).toString());
+
+ })
+
 }
 //保存月季采购方法
 function saveMonth() {
@@ -443,49 +451,49 @@ function setMonthProcurementList(result) {
                     // 根据索引为部分td赋值
                     switch (inner_index) {
                         // 申请单编号
-                        case (0):
+                        case (1):
                             $(this).html(obj.receiptNumber);
                             break;
                         // 申请月份
-                        case (1):
+                        case (2):
                             $(this).html(obj.applyMouth);
                             break;
                         // 需求时间
-                        case (2):
+                        case (3):
                             $(this).html((obj.demandTime));
                             break;
                         // 申请部门
-                        case (3):
+                        case (4):
                             $(this).html(obj.applyDepartment);
                             break;
                         // 申购部门负责人
-                        case (4):
+                        case (5):
                             $(this).html(obj.proposer);
                             break;
                         // 申购部门分管领导
-                        case (5):
+                        case (6):
                             $(this).html(obj.divisionHead);
                             break;
                         // 采购部门负责人
-                        case (6):
+                        case (7):
                             $(this).html(obj.purchasingDirector);
                             break;
                         //采购部门分管领导
-                        case (7):
+                        case (8):
                             $(this).html(obj.purchasingHead);
                             break;
                         //总经理
-                        case (8):
+                        case (9):
                             $(this).html(obj.generalManager);
                             break;
                         //状态
-                        case (9):
+                        case (10):
                             if(obj.state!=null){
                                 $(this).html(obj.state.name);
                             }
                             break;
                             //创建日期
-                        case (10):
+                        case (11):
                             if(obj.createDate!=null){
                                 $(this).html(getDateStr(obj.createDate));
                             }
@@ -757,20 +765,20 @@ function searchProcurement() {
             if(endDate.toString()=='Invalid Date'){
                 endDate=new Date();
             }
-            if(!($(this).children('td').eq(1).text().indexOf(data.applyMouth)!=-1&&$(this).children('td').eq(3).text().indexOf(data.applyDepartment)!=-1
-                &&$(this).children('td').eq(4).text().indexOf(data.proposer)!=-1&&$(this).children('td').eq(5).text().indexOf(data.divisionHead)!=-1&&$(this).children('td').text().indexOf(text)!=-1
-                &&$(this).children('td').eq(6).text().indexOf(data.purchasingDirector)!=-1 &&$(this).children('td').eq(7).text().indexOf(data.purchasingHead)!=-1
-                &&$(this).children('td').eq(8).text().indexOf(data.generalManager)!=-1
-                &&(getDateByStr($(this).children('td').eq(10).text())<=endDate&&getDateByStr($(this).children('td').eq(10).text())>=startDate)
+            if(!($(this).children('td').eq(2).text().indexOf(data.applyMouth)!=-1&&$(this).children('td').eq(4).text().indexOf(data.applyDepartment)!=-1
+                &&$(this).children('td').eq(5).text().indexOf(data.proposer)!=-1&&$(this).children('td').eq(6).text().indexOf(data.divisionHead)!=-1&&$(this).children('td').text().indexOf(text)!=-1
+                &&$(this).children('td').eq(7).text().indexOf(data.purchasingDirector)!=-1 &&$(this).children('td').eq(8).text().indexOf(data.purchasingHead)!=-1
+                &&$(this).children('td').eq(9).text().indexOf(data.generalManager)!=-1
+                &&(getDateByStr($(this).children('td').eq(11).text())<=endDate&&getDateByStr($(this).children('td').eq(11).text())>=startDate)
 
             )){
                 $(this).hide();
             }
-            if(($(this).children('td').eq(1).text().indexOf(data.applyMouth)!=-1&&$(this).children('td').eq(3).text().indexOf(data.applyDepartment)!=-1
-                &&$(this).children('td').eq(4).text().indexOf(data.proposer)!=-1&&$(this).children('td').eq(5).text().indexOf(data.divisionHead)!=-1&&$(this).children('td').text().indexOf(text)!=-1
-                &&$(this).children('td').eq(6).text().indexOf(data.purchasingDirector)!=-1 &&$(this).children('td').eq(7).text().indexOf(data.purchasingHead)!=-1
-                &&$(this).children('td').eq(8).text().indexOf(data.generalManager)!=-1
-                &&(getDateByStr($(this).children('td').eq(10).text())<=endDate&&getDateByStr($(this).children('td').eq(10).text())>=startDate)
+            if(($(this).children('td').eq(2).text().indexOf(data.applyMouth)!=-1&&$(this).children('td').eq(4).text().indexOf(data.applyDepartment)!=-1
+                &&$(this).children('td').eq(5).text().indexOf(data.proposer)!=-1&&$(this).children('td').eq(6).text().indexOf(data.divisionHead)!=-1&&$(this).children('td').text().indexOf(text)!=-1
+                &&$(this).children('td').eq(7).text().indexOf(data.purchasingDirector)!=-1 &&$(this).children('td').eq(8).text().indexOf(data.purchasingHead)!=-1
+                &&$(this).children('td').eq(9).text().indexOf(data.generalManager)!=-1
+                &&(getDateByStr($(this).children('td').eq(11).text())<=endDate&&getDateByStr($(this).children('td').eq(11).text())>=startDate)
             )){
                 array1.push($(this));
             }

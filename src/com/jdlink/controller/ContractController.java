@@ -186,8 +186,6 @@ public class ContractController {
         res.put("provinceStrList", array2);
         JSONArray array3 = JSONArray.fromArray(TicketRate1.values());
         res.put("ticketRateStrList1", array3);
-//        JSONArray array4 = JSONArray.fromArray(TicketRate2.values());
-//        res.put("ticketRateStrList2", array4);
         //查询客户list形式返回
               List client= clientService.list();
               JSONArray json=JSONArray.fromObject(client);
@@ -199,10 +197,10 @@ public class ContractController {
               //查询模板名称
         List modelName=contractService.modelName(key);
         List list1=  removeDuplicate(modelName);
-       // HashSet h= new  HashSet(modelName);
-       // modelName.clear();
-       // modelName.addAll(h);
-       // System.out.println(modelName);
+
+        //查询最新的合同编号
+        List<String> contractIdList=contractService.getNewestContractId1();
+         res.put("contractId",String.valueOf ((Integer.parseInt(contractIdList.get(0))+1)) ) ;
         JSONArray json1=JSONArray.fromObject(list1);
         res.put("modelNameList",json1);
         return res.toString();
@@ -1114,6 +1112,64 @@ public class ContractController {
 
 
         return  res.toString();
+    }
+
+    //根据合同编号获取合同信息
+    @RequestMapping("getByContractId")
+    @ResponseBody
+    public String getByContractId(String contractId){
+        JSONObject res=new JSONObject();
+        try {
+
+            Contract contract=contractService.getByContractId(contractId);
+            JSONArray array3 = JSONArray.fromArray(TicketRate1.values());
+            res.put("ticketRateStrList1", array3);
+            //查询客户list形式返回
+            List client= clientService.list();
+            JSONArray json=JSONArray.fromObject(client);
+            res.put("companyNameList",json);
+            List supplier=supplierService.list();
+            JSONArray json3=JSONArray.fromObject(supplier);
+            res.put("supplierNameList",json3);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("contract", contract);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+
+
+        return  res.toString();
+
+    }
+
+    //根据合同类型查找模板
+    @RequestMapping("getModelByContractId")
+    @ResponseBody
+    public String getModelByContractId(String key){
+        JSONObject res=new JSONObject();
+        try{
+
+            List modelName=contractService.modelName(key);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("modelNameList", modelName);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+
+
+        }
+
+
+        return  res.toString();
+
+
     }
 }
 
