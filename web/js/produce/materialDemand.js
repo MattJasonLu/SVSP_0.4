@@ -1626,18 +1626,18 @@ function searchMa() {
     page.start = (pageNumber - 1) * page.count;
 
     data1={
-        materialRequireId:$('#search-materialRequireId').val(),
-        handleCategory:$("#search-handleCategory").val(),
-        formType:$("#search-formType").val(),
-        packageType:$("#search-packageType").val(),
-        weeklyDemandBeg:$("#search-weeklyDemandBeg").val(),
-        weeklyDemandEnd:$("#search-weeklyDemandEnd").val(),
-        currentInventoryBeg:$("#search-currentInventoryBeg").val(),
-        currentInventoryEnd:$("#search-currentInventoryEnd").val(),
-        safetyBeg:$("#search-safetyBeg").val(),
-        safetyEnd:$("#search-safetyEnd").val(),
-        marketPurchasesBeg:$("#search-marketPurchasesBeg").val(),
-        marketPurchasesEnd:$("#search-marketPurchasesEnd").val(),
+        materialRequireId:$.trim($('#search-materialRequireId').val()),
+        handleCategory:($("#search-handleCategory").val()),
+        formType:($("#search-formType").val()),
+        packageType:($("#search-packageType").val()),
+        weeklyDemandBeg:$.trim($("#search-weeklyDemandBeg").val()),
+        weeklyDemandEnd:$.trim($("#search-weeklyDemandEnd").val()),
+        currentInventoryBeg:$.trim($("#search-currentInventoryBeg").val()),
+        currentInventoryEnd:$.trim($("#search-currentInventoryEnd").val()),
+        safetyBeg:$.trim($("#search-safetyBeg").val()),
+        safetyEnd:$.trim($("#search-safetyEnd").val()),
+        marketPurchasesBeg:$.trim($("#search-marketPurchasesBeg").val()),
+        marketPurchasesEnd:$.trim($("#search-marketPurchasesEnd").val()),
         page: page,
     };
     if (data1 == null) alert("请点击'查询设置'输入查询内容!");
@@ -1663,6 +1663,15 @@ function searchMa() {
                 alert("服务器错误！");
             }
         });
+    }
+}
+
+/**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchMa();      //
     }
 }
 

@@ -174,7 +174,7 @@
                                 <label for="search-modelName" class="col-sm-4 control-label">模板名称</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-modelName" name="search-modelName"
-                                           placeholder="">
+                                           placeholder="" onkeyup="enterSearch()">
                                 </div>
                             </div>
                         </div>
@@ -196,7 +196,7 @@
                             <div class="form-group">
                                 <label for="search-contractType" class="col-sm-4 control-label">合同类型</label>
                                 <div class="col-xs-7">
-                                    <select class="form-control" id="search-contractType" name="search-contractType"></select>
+                                    <select class="form-control" id="search-contractType" name="search-contractType" onchange="searchModel()"></select>
                                 </div>
                             </div>
                         </div>
@@ -204,9 +204,9 @@
                             <div class="form-group" style="margin-left: -10px;">
                                 <label class="col-sm-3 control-label">年份 </label>
                                 <div class="input-group">
-                                    <input type="date" class="input-sm form-control" id="search-beginTime" title=""/>
+                                    <input type="number" class="input-sm form-control" id="search-beginTime" title="" onkeyup="enterSearch()"/>
                                     <span class="input-group-addon">-</span>
-                                    <input type="date" class="input-sm form-control" id="search-endTime" title=""/>
+                                    <input type="number" class="input-sm form-control" id="search-endTime" title="" onkeyup="enterSearch()"/>
                                 </div>
                             </div>
                         </div>
@@ -302,7 +302,7 @@
                                 <div class="form-group">
                                     <label for="modal3_modelName" class="col-sm-4 control-label">模板名称 </label>
                                     <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_modelName" name="modelName"style="box-shadow:none">
+                                        <input type="text" class="form-control focus" id="modal3_modelName" name="modelName"style="box-shadow:none" >
                                     </div>
                                 </div>
                                 <div class="form-group" >

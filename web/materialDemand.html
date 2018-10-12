@@ -166,7 +166,7 @@
                         <div class="form-group">
                             <label for="search-materialRequireId" class="col-sm-4 control-label">物料需求单号</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-materialRequireId" name="search-materialRequireId" placeholder="">
+                                <input type="text" class="form-control" id="search-materialRequireId" name="search-materialRequireId" placeholder="" onkeyup="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -174,7 +174,7 @@
                         <div class="form-group">
                             <label for="search-formType" class="col-sm-4 control-label">形态</label>
                             <div class="col-xs-7">
-                                <select class="form-control" name="search-formType" id="search-formType">
+                                <select class="form-control" name="search-formType" id="search-formType" onchange="searchMa()">
                                 </select>
                             </div>
                         </div>
@@ -196,7 +196,7 @@
                         <div class="form-group">
                             <label for="search-handleCategory" class="col-sm-4 control-label">进料方式</label>
                             <div class="col-xs-7">
-                                <select class="form-control" name="search-handleCategory" id="search-handleCategory">
+                                <select class="form-control" name="search-handleCategory" id="search-handleCategory" onchange="searchMa()">
                                 </select>
                             </div>
                         </div>
@@ -223,7 +223,7 @@
                         <div class="form-group">
                             <label for="search-packageType" class="col-sm-4 control-label">包装方式</label>
                             <div class="col-xs-7">
-                                <select class="form-control" name="search-packageType" id="search-packageType">
+                                <select class="form-control" name="search-packageType" id="search-packageType" onchange="searchMa()">
                                 </select>
                             </div>
                         </div>
@@ -252,9 +252,9 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label" style="margin-left: -95px">周生产计划量范围 </label>
                             <div class="input-group">
-                                <input type="number" class="input-sm form-control" id="search-weeklyDemandBeg" title="" onkeydown=""/>
+                                <input type="number" class="input-sm form-control" id="search-weeklyDemandBeg" title="" onkeydown="" onkeyup="enterSearch()"/>
                                 <span class="input-group-addon">-</span>
-                                <input type="number" class="input-sm form-control" id="search-weeklyDemandEnd" title="" onkeydown=""/>
+                                <input type="number" class="input-sm form-control" id="search-weeklyDemandEnd" title="" onkeydown="" onkeyup="enterSearch()"/>
                             </div>
                         </div>
 
@@ -264,9 +264,9 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label" style="margin-left: -95px">目前库存量范围 </label>
                             <div class="input-group">
-                                <input type="number" class="input-sm form-control" id="search-currentInventoryBeg" title="" onkeydown=""/>
+                                <input type="number" class="input-sm form-control" id="search-currentInventoryBeg" title="" onkeydown="" onkeyup="enterSearch()"/>
                                 <span class="input-group-addon">-</span>
-                                <input type="number" class="input-sm form-control" id="search-currentInventoryEnd" title="" onkeydown=""/>
+                                <input type="number" class="input-sm form-control" id="search-currentInventoryEnd" title="" onkeydown="" onkeyup="enterSearch()"/>
                             </div>
                         </div>
 
@@ -278,9 +278,9 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label" style="margin-left: -95px">安全库存量范围 </label>
                             <div class="input-group">
-                                <input type="number" class="input-sm form-control" id="search-safetyBeg" title="" onkeydown=""/>
+                                <input type="number" class="input-sm form-control" id="search-safetyBeg" title="" onkeydown="" onkeyup="enterSearch()"/>
                                 <span class="input-group-addon">-</span>
-                                <input type="number" class="input-sm form-control" id="search-safetyEnd" title="" onkeydown=""/>
+                                <input type="number" class="input-sm form-control" id="search-safetyEnd" title="" onkeydown="" onkeyup="enterSearch()"/>
                             </div>
                         </div>
 
@@ -290,9 +290,9 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label" style="margin-left: -95px">市场采购量范围 </label>
                             <div class="input-group">
-                                <input type="number" class="input-sm form-control" id="search-marketPurchasesBeg" title="" onkeydown=""/>
+                                <input type="number" class="input-sm form-control" id="search-marketPurchasesBeg" title="" onkeydown="" onkeyup="enterSearch()"/>
                                 <span class="input-group-addon">-</span>
-                                <input type="number" class="input-sm form-control" id="search-marketPurchasesEnd" title="" onkeydown=""/>
+                                <input type="number" class="input-sm form-control" id="search-marketPurchasesEnd" title="" onkeydown="" onkeyup="enterSearch()"/>
                             </div>
                         </div>
 
