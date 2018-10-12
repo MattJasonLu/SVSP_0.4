@@ -909,7 +909,7 @@ public class ProductionDailyController {
         List<OutboundOrder> outboundOrderThirdList = outboundOrderService.getOutBoundByDateAndEquipment(now, "ThirdPhasePretreatmentSystem");
         productionDaily.setOutboundOrderThirdList(outboundOrderThirdList);
 
-
+        // 次生
         float secondSlag = 0f;
         float secondAsh = 0f;
         for (OutboundOrder outboundOrder : outboundThirdOrderList) {
