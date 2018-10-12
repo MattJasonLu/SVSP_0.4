@@ -236,6 +236,16 @@ function  batchingList() {
     });
     //加载高级查询数据
     setSeniorSelectedList();
+
+    //自动赋值
+    $('#date').val(dateToString(new Date()));
+    $('#createDate').val(dateToString(new Date()))
+   var data= getCurrentUserData();
+    console.log(data)
+    if(data!=null){
+        $('#creator').val(data.username);
+    }
+
 }
 
 

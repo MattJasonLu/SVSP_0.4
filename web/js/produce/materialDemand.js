@@ -534,6 +534,25 @@ function loadPageMaterialList() {
         },
     });
 
+    //获取最新的物料信息
+    $.ajax({
+        type:"POST",
+        url:"getNewMaterialRequire",
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:JSON.stringify(page),
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+            }
+        },
+        error:function (result) {
+
+        }
+
+    })
+
 
 }
 /*加载表格数据*/
