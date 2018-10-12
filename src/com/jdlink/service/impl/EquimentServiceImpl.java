@@ -9,6 +9,7 @@ import com.jdlink.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -76,6 +77,32 @@ public class EquimentServiceImpl implements  EquipmentService {
     @Override
     public void deleteEquipment(String documentNumber) {
         equipmentMapper.deleteEquipment(documentNumber);
+    }
+
+    @Override
+    public String getDocumentNumber() {
+        //得到一个NumberFormat的实例
+        NumberFormat nf = NumberFormat.getInstance();
+        //设置是否使用分组
+        nf.setGroupingUsed(false);
+        //设置最大整数位数
+        nf.setMaximumIntegerDigits(4);
+        //设置最小整数位数
+        nf.setMinimumIntegerDigits(4);
+        // 获取最新编号
+        String id;
+        int index = count();
+        // 获取唯一的编号
+        do {
+            index += 1;
+            id = nf.format(index);
+        } while (getEquipmentByDocumentNumber(id) != null);
+        return id;
+    }
+
+    @Override
+    public Equipment getEquipmentByDocumentNumber(String documentNumber) {
+        return equipmentMapper.getEquipmentByDocumentNumber(documentNumber);
     }
 
 }
