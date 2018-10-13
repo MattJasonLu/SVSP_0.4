@@ -250,9 +250,7 @@ function inputSwitchPage() {
 
 
 function reset() {
-    $('#searchContent').val(" ");
-    $('#senior').find('input').val('');
-    getMontnProcurement();
+    window.location.reload();
 }
 
 
@@ -436,7 +434,7 @@ function setMonthProcurementList(result) {
     //$('.myclass').hide();
     var tr = $("#cloneTr");
     tr.siblings().remove();
-    // console.log(result.data);
+    console.log(result.data);
     tr.attr('class','myclass');
         $.each(result.data, function (index, item) {
             //console.log(item);
@@ -460,7 +458,7 @@ function setMonthProcurementList(result) {
                             break;
                         // 需求时间
                         case (3):
-                            $(this).html((obj.demandTime));
+                            $(this).html(getDateStr(obj.demandTime));
                             break;
                         // 申请部门
                         case (4):

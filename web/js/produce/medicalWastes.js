@@ -17,11 +17,7 @@ function countValue() {
 
 //重置
 function reset() {
-    isSearch = false;
-    $("#senior").find("input").val("");
-    $("#searchContent").val("");
-    //$("#senior").find("select").get(0).selectedIndex = -1;
-    loadMedicalWastesList();
+    window.location.reload();
 }
 
 /**
