@@ -15,7 +15,7 @@
     <script src="js/util.js"></script>
     <script src="js/produce/stock.js"></script>
 </head>
-<body onload="loadPageStocktList()">
+<body onload="loadPageStocktList();keyLogin()">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -146,7 +146,7 @@
                 <div class="input-group col-md-4 pull-right">
                     <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                     <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="searchStock();"><span class="glyphicon glyphicon-search" aria-hidden="true" ></span> 查询</a>
+                            <a class="btn btn-default" id="input1" onclick="searchStock();"><span class="glyphicon glyphicon-search" aria-hidden="true" ></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
                         <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
 
@@ -161,20 +161,20 @@
                 <div class="row">
                     <div class="form-horizontal col-md-3">
                         <!--<div class="form-group">-->
-                            <!--<label for="search-stockId" class="col-sm-4 control-label">库存编号</label>-->
+                            <!--<label for="search-stockId" class="col-sm-5 control-label">库存编号</label>-->
                             <!--<div class="col-xs-7">-->
                                 <!--<input type="text" class="form-control" id="search-stockId" name="search-stockId"-->
                                        <!--placeholder="">-->
                             <!--</div>-->
                         <!--</div>-->
                         <div class="form-group">
-                            <label for="search-checkState" class="col-sm-4 control-label">审核状态</label>
+                            <label for="search-checkState" class="col-sm-5 control-label">审核状态</label>
                             <div class="col-xs-7">
                                 <select class="form-control" id="search-checkState" name="search-checkState" onchange="searchStock()"></select>
                             </div>
                         </div>
                         <!--<div class="form-group">-->
-                            <!--<label for="search-transportTelephone" class="col-sm-4 control-label">公司联系电话</label>-->
+                            <!--<label for="search-transportTelephone" class="col-sm-5 control-label">公司联系电话</label>-->
                             <!--<div class="col-xs-7">-->
                                 <!--<input type="text" class="form-control" id="search-transportTelephone" name="search-transportTelephone"-->
                                        <!--placeholder="">-->
@@ -183,14 +183,14 @@
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-proContactName" class="col-sm-5 control-label">产废单位联系人</label>
+                            <label for="search-proContactName" class="col-sm-5 control-label">联系人</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-proContactName"
                                        name="search-proContactName" placeholder="" onkeyup="enterSearch()">
                             </div>
                         </div>
                         <!--<div class="form-group">-->
-                            <!--<label for="search-plateNumber" class="col-sm-4 control-label">运输车车牌号</label>-->
+                            <!--<label for="search-plateNumber" class="col-sm-5 control-label">运输车车牌号</label>-->
                             <!--<div class="col-xs-7">-->
                                 <!--<input type="text" class="form-control" id="search-plateNumber"-->
                                 <!--name="search-plateNumber" placeholder="">-->
@@ -201,7 +201,7 @@
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
                             <label for="search-proTelephone"
-                                   class="col-sm-4 control-label">单位联系电话</label>
+                                   class="col-sm-5 control-label">联系电话</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-proTelephone"
                                        name="search-proTelephone" placeholder="" onkeyup="enterSearch()">
@@ -211,7 +211,7 @@
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-transport" class="col-sm-4 control-label">运输公司</label>
+                            <label for="search-transport" class="col-sm-5 control-label">运输公司</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-transport" name="search-transport"
                                        placeholder="" onkeyup="enterSearch()">
