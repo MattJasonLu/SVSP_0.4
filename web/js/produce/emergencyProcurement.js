@@ -495,7 +495,7 @@ function saveEmer() {
         $('.myclass').each(function () {
             var suppliesName=$(this).children('td').eq(1).children('div').find('button').attr('title');
             var specifications=$(this).children('td').eq(2).children('input').val();
-            var unit=$(this).children('td').eq(3).children('input').val();
+            var unit=$(this).children('td').eq(3).children('select').get(0).selectedIndex;
             var inventory=$(this).children('td').eq(4).children('input').val();
             var demandQuantity=$(this).children('td').eq(5).children('input').val();
             var purchaseQuantity=$(this).children('td').eq(6).children('input').val();
@@ -702,7 +702,10 @@ function setEmProcurementListModal(result) {
                     break;
                 // 单位
                 case (2):
-                    $(this).html(obj.unit);
+                    if(obj.unit!=null){
+                        $(this).html(obj.unit.name);
+                    }
+
                     break;
                 // 库存量
                 case (3):

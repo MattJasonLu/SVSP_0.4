@@ -1,6 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.Inventory.WareHouse;
+import com.jdlink.domain.Unit;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class Material {
     /**
      * 单位(应急同)
      */
-    private String unit;
+    private Unit unit;
     /**
      * 库存量(应急同)
      */
@@ -111,11 +112,11 @@ public class Material {
         this.specifications = specifications;
     }
 
-    public String getUnit() {
+    public Unit getUnit() {
         return unit;
     }
 
-    public void setUnit(String unit) {
+    public void setUnit(Unit unit) {
         this.unit = unit;
     }
 

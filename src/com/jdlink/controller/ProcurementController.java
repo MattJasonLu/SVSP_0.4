@@ -3,6 +3,7 @@ package com.jdlink.controller;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Material;
 import com.jdlink.domain.Produce.Procurement;
+import com.jdlink.domain.Unit;
 import com.jdlink.service.ProcurementService;
 import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONArray;
@@ -376,10 +377,12 @@ public class ProcurementController {
              }//设置规格型号
 
              if(String.valueOf(data.get(i)[j][11])!="null"){
-                 material.setUnit(String.valueOf(data.get(i)[j][11]));
+                 material.setUnit(Unit.getUnit(data.get(i)[j][11].toString()));
+
+
              }
              if(String.valueOf(data.get(i)[j][11])=="null"){
-                 material.setUnit(" ");
+                 material.setUnit(null);
              }//设置单位
 
              if(String.valueOf(data.get(i)[j][12])!="null"){
@@ -525,10 +528,11 @@ public class ProcurementController {
                                material.setSpecifications(" ");
                            }//设置规格型号
                            if(String.valueOf(data.get(i)[j][6])!="null"){
-                               material.setUnit(String.valueOf(data.get(i)[j][6]));
+
+                               material.setUnit( Unit.getUnit(String.valueOf(data.get(i)[j][6])));
                            }
                            if(String.valueOf(data.get(i)[j][6])=="null"){
-                               material.setUnit(" ");
+                               material.setUnit(null);
                            }//设置单位
                            if(String.valueOf(data.get(i)[j][8])!="null"){
                                material.setInventory(Float.parseFloat(data.get(i)[j][8].toString()));

@@ -348,7 +348,7 @@ function saveMonth() {
     $('.myclass').each(function () {
    var suppliesName=$(this).children('td').eq(1).children('div').find('button').attr('title');
    var specifications=$(this).children('td').eq(2).children('input').val();
-   var unit=$(this).children('td').eq(3).children('input').val();
+   var unit=$(this).children('td').eq(3).children('select').get(0).selectedIndex;
    var inventory=$(this).children('td').eq(4).children('input').val();
    var demandQuantity=$(this).children('td').eq(5).children('input').val();
    var note=$(this).children('td').eq(6).children('input').val();
@@ -673,7 +673,9 @@ function setMonthProcurementListModal(result) {
                         break;
                     // 单位
                     case (2):
-                        $(this).html(obj.unit);
+                        if(obj.unit!=null){
+                            $(this).html(obj.unit.name);
+                        }
                         break;
                     // 库存量
                     case (3):
@@ -877,7 +879,68 @@ function getIngredientsList() {
             alert("服务器异常！");
         }
     });
+
+    //单位
+    $.ajax({
+        type:'POST',
+        url:"getUnitList",
+        //data:JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success: function (result){
+            if (result != undefined){
+                // console.log(result);
+                var unit=$('#unit');
+                unit.children().remove();
+                $.each(result.unitList,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(index+1);
+                    option.text(item.name);
+                    unit.append(option);
+                });
+                unit.get(0).selectedIndex=0;
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
+
+    });
     $('#applyDate').val(dateToString(new Date()));
+
+
+    //单位
+    $.ajax({
+        type:'POST',
+        url:"getUnitList",
+        //data:JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success: function (result){
+            if (result != undefined){
+                // console.log(result);
+                var unit=$('#unit');
+                unit.children().remove();
+                $.each(result.unitList,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(index+1);
+                    option.text(item.name);
+                    unit.append(option);
+                });
+                unit.get(0).selectedIndex=0;
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
+
+    });
     var data=getCurrentUserData();
 }
 

@@ -1288,11 +1288,17 @@ function setContractListModal(result) {
                     break;
                 // 库存量
                 case (3):
-                    $(this).html(obj.packageType.name);
+                    if(obj.packageType!=null){
+                        $(this).html(obj.packageType.name);
+                    }
+
                     break;
                 // 需求数量
                 case (4):
-                    $(this).html(obj.util);
+                    if(obj.util!=null){
+                        $(this).html(obj.util.name);
+                    }
+
                     break;
                 // 备注
                 case (5):
@@ -1305,7 +1311,10 @@ function setContractListModal(result) {
                     $(this).html(obj.totalPrice);
                     break;
                 case (8):
-                    $(this).html(obj.transport.name);
+                    if(obj.transport!=null){
+                        $(this).html(obj.transport.name);
+                    }
+
                     break;
             }
         });
@@ -1732,6 +1741,36 @@ function loadWastesContractSelectList() {
                     packageType.append(option);
                 });
                 packageType.get(0).selectedIndex=0;
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
+
+    });
+
+    //单位
+    $.ajax({
+        type:'POST',
+        url:"getUnitList",
+        //data:JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success: function (result){
+            if (result != undefined){
+                // console.log(result);
+                var unit=$('#unit');
+                unit.children().remove();
+                $.each(result.unitList,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(index+1);
+                    option.text(item.name);
+                    unit.append(option);
+                });
+                unit.get(0).selectedIndex=0;
             }
             else {
                 alert(result.message);
@@ -2275,9 +2314,12 @@ function contractWastesSave() {
                     client:{clientId:$('#companyName').selectpicker('val')} ,
                     wastesCode:$(this).children('td').eq(1).children('div').find('button').attr('title'),
                     wastesName:$(this).children('td').eq(2).children('input').val(),
-                    packageType:$(this).children('td').eq(3).children('select').val(),
-                    transport:$(this).children('td').eq(8).children('select').val(),
-                    util:$(this).children('td').eq(4).children('input').val(),
+                    // packageType:$(this).children('td').eq(3).children('select').val(),
+                    // transport:$(this).children('td').eq(8).children('select').val(),
+                    // util:$(this).children('td').eq(4).children('select').val(),
+                    packageType: $(this).children('td').eq(3).children('select').get(0).selectedIndex,
+                    transport:$(this).children('td').eq(8).children('select').get(0).selectedIndex,
+                    util:$(this).children('td').eq(4).children('select').get(0).selectedIndex,
                     unitPriceTax:$(this).children('td').eq(5).children('input').val(),
                     contractAmount:$(this).children('td').eq(6).children('input').val(),
                     totalPrice:$(this).children('td').eq(7).children('input').val(),
@@ -2367,9 +2409,12 @@ function contractWastesSave() {
                     client: {clientId: $('#companyName').selectpicker('val')},
                     wastesCode: $(this).children('td').eq(1).children('div').find('button').attr('title'),
                     wastesName: $(this).children('td').eq(2).children('input').val(),
-                    packageType: $(this).children('td').eq(3).children('select').val(),
-                    transport: $(this).children('td').eq(8).children('select').val(),
-                    util: $(this).children('td').eq(4).children('input').val(),
+                    packageType: $(this).children('td').eq(3).children('select').get(0).selectedIndex,
+                    transport:$(this).children('td').eq(8).children('select').get(0).selectedIndex,
+                    util:$(this).children('td').eq(4).children('select').get(0).selectedIndex,
+                    // packageType: $(this).children('td').eq(3).children('select').val(),
+                    // transport: $(this).children('td').eq(8).children('select').val(),
+                    // util: $(this).children('td').eq(4).children('select').val(),
                     unitPriceTax: $(this).children('td').eq(5).children('input').val(),
                     contractAmount: $(this).children('td').eq(6).children('input').val(),
                     totalPrice: $(this).children('td').eq(7).children('input').val(),
@@ -4278,7 +4323,7 @@ function contractAdjustSave() {
                             wastesName:$(this).children('td').eq(2).children('input').val(),
                             packageType: $(this).children('td').eq(3).children('select').get(0).selectedIndex,
                             transport:$(this).children('td').eq(8).children('select').get(0).selectedIndex,
-                            util:$(this).children('td').eq(4).children('input').val(),
+                            util:$(this).children('td').eq(4).children('select').get(0).selectedIndex,
                             unitPriceTax:$(this).children('td').eq(5).children('input').val(),
                             contractAmount:$(this).children('td').eq(6).children('input').val(),
                             totalPrice:$(this).children('td').eq(7).children('input').val(),
@@ -4366,7 +4411,7 @@ function contractAdjustSave() {
                             wastesName:$(this).children('td').eq(2).children('input').val(),
                             packageType:$(this).children('td').eq(3).children('select').get(0).selectedIndex,
                             transport:$(this).children('td').eq(8).children('select').get(0).selectedIndex,
-                            util:$(this).children('td').eq(4).children('input').val(),
+                            util:$(this).children('td').eq(4).children('select').get(0).selectedIndex,
                             unitPriceTax:$(this).children('td').eq(5).children('input').val(),
                             contractAmount:$(this).children('td').eq(6).children('input').val(),
                             totalPrice:$(this).children('td').eq(7).children('input').val(),
@@ -5376,6 +5421,36 @@ function adjustNewContract() {
 
     });
 
+    //单位
+    $.ajax({
+        type:'POST',
+        url:"getUnitList",
+        //data:JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success: function (result){
+            if (result != undefined){
+                // console.log(result);
+                var unit=$('#unit');
+                unit.children().remove();
+                $.each(result.unitList,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(item.index);
+                    option.text(item.name);
+                    unit.append(option);
+                });
+                unit.get(0).selectedIndex=0;
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
+
+    });
+
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
         size: 4
@@ -5575,12 +5650,15 @@ function adjustNewContract() {
                             cloneTr.children('td').eq(0).html(parseInt(contract.quotationItemList.length)-index);
                             cloneTr.children("td:eq(0)").append(delBtn);
                             cloneTr.children('td').eq(2).children('input').val(item.wastesName);
-                            cloneTr.children('td').eq(4).children('input').val(item.util);
+                            // cloneTr.children('td').eq(4).children('input').val(item.util);
                             cloneTr.children('td').eq(5).children('input').val(item.unitPriceTax);
                             cloneTr.children('td').eq(6).children('input').val(item.contractAmount);
                             cloneTr.children('td').eq(7).children('input').val(item.totalPrice);
                             if(item.packageType!=null){
                                 cloneTr.children('td').eq(3).children('select').val(item.packageType.index);
+                            }
+                            if(item.util!=null){
+                                cloneTr.children('td').eq(4).children('select').val(item.util.index);
                             }
                             if(item.transport!=null){
                                 cloneTr.children('td').eq(8).children('select').val(item.transport.index);
@@ -5755,7 +5833,7 @@ function adjustNewContract() {
                             cloneTr.children('td').eq(0).html(parseInt(contract.quotationItemList.length) - index);
                             cloneTr.children("td:eq(0)").append(delBtn);
                             cloneTr.children('td').eq(2).children('input').val(item.wastesName);
-                            cloneTr.children('td').eq(4).children('input').val(item.util);
+                            // cloneTr.children('td').eq(4).children('input').val(item.util);
                             cloneTr.children('td').eq(5).children('input').val(item.unitPriceTax);
                             cloneTr.children('td').eq(6).children('input').val(item.contractAmount);
                             cloneTr.children('td').eq(7).children('input').val(item.totalPrice);
@@ -5764,6 +5842,9 @@ function adjustNewContract() {
                             }
                             if (item.transport != null) {
                                 cloneTr.children('td').eq(8).children('select').val(item.transport.index);
+                            }
+                            if(item.util!=null){
+                                cloneTr.children('td').eq(4).children('select').val(item.util.index);
                             }
                             cloneTr.children('td').eq(1).find('select').selectpicker('val', item.wastesCode);
                             cloneTr.removeAttr('id');
@@ -5839,6 +5920,9 @@ function adjustNewContract() {
             console.log(result);
         }
     });
+
+
+
 
 }
 
