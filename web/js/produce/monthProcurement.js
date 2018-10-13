@@ -208,6 +208,7 @@ function inputSwitchPage() {
             $("#endPage").removeClass("disabled");
         }
         currentPage = pageNumber;
+        addPageClass(pageNumber);
         var page = {};
         page.count = countValue();//可选
         page.pageNumber = pageNumber;
