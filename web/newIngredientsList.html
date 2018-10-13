@@ -131,40 +131,45 @@
             <div class="panel panel-default" id="senior" style="display: none;">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="search-inboundDate" class="col-sm-4 control-label">入库日期</label>
-                                <div class="col-xs-7">
-                                    <input type="date" class="form-control" id="search-inboundDate" name="search-inboundDate"
-                                           placeholder="">
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group" style="margin-left: -10px;">
+                                <label class="col-sm-3 control-label">入库日期 </label>
+                                <div class="input-group">
+                                    <input type="date" class="input-sm form-control" id="search-inDate" title="" onkeyup="enterSearch1()"/>
+                                    <span class="input-group-addon">-</span>
+                                    <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeyup="enterSearch1()"/>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-horizontal col-md-3">
+                        <div class="form-horizontal col-md-5">
                             <div class="form-group">
                                 <label for="search-handelCategory" class="col-sm-4 control-label">进料方式</label>
                                 <div class="col-xs-7">
-                                    <select class="form-control" id="search-handelCategory" name="search-handelCategory"></select>
+                                    <select class="form-control" id="search-handelCategory" name="search-handelCategory" onchange="searchInventory()"></select>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-horizontal col-md-3">
+                    </div>
+                    <div class="row">
+                        <div class="form-horizontal col-md-5">
                             <div class="form-group">
                                 <label for="search-companyName"
                                        class="col-sm-4 control-label">产废单位</label>
                                 <div class="col-xs-7">
-                                    <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="search-companyName" id="search-companyName"></select>
+                                    <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="search-companyName" id="search-companyName" onchange="searchInventory()"></select>
                                 </div>
                             </div>
+
                         </div>
-                        <div class="form-horizontal col-md-3">
+                        <div class="form-horizontal col-md-7">
                             <div class="form-group">
                                 <label for="search-wasteId" class="col-sm-4 control-label">危废代码</label>
                                 <div class="col-xs-7">
-                                    <input class="form-control"  name="search-wasteId" id="search-wasteId">
+                                    <input class="form-control"  name="search-wasteId" id="search-wasteId" onkeyup="enterSearch1()">
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -226,7 +231,7 @@
             <div >
                 <h4 class="sub-header">危废库存列表</h4>
             </div>
-            <form method="post" id="infoForm" enctype="multipart/form-data">
+            <div style="height:500px; overflow-y:scroll; ">
                 <table class="table table-bordered" id="J_tab_fam">
                     <thead>
                     <tr>
@@ -274,6 +279,7 @@
                 <div class="row text-center">
                     <a class="btn btn-primary" onclick="batching(this);">确认</a>
                 </div>
+            </div>
                 <br>
                 <h4>配料单</h4>
                 <hr class="simple" color="#6f5499" />
@@ -393,7 +399,8 @@
                     <a class="btn btn-primary" onclick="submit();">提交</a>
                     <a class="btn btn-danger" href="ingredientsList.html">返回</a>
                 </div>
-            </form>
+
+
         </div>
     </div>
     <div id="embed"></div>

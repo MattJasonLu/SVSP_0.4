@@ -20,6 +20,7 @@
     <!--加载采购列表-->
     <resultMap id="ProcurementRM" type="Procurement" autoMapping="true">
         <result property="receiptNumber" column="receiptNumber" javaType="String"></result>
+        <result property="unit" column="unit" javaType="Unit"></result>
         <collection property="materialList" column="receiptNumber" select="getMaterial" ofType="Material"></collection>
     </resultMap>
     <!--获取所有的物料信息-->

@@ -309,7 +309,10 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
             if(last-event.timeStamp==0){
                 searchStock1();
             }
-        },400);
+            else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchStock1();      //
+            }
+        },600);
     });
 });
 
@@ -400,8 +403,6 @@ function  searchStock1() {
 }
 
 function reset() {
-    $('#searchContent').val(" ");
-    $('#senior').find('input').val(" ");
     window.location.reload();
 }
 
@@ -494,7 +495,7 @@ function saveEmer() {
         $('.myclass').each(function () {
             var suppliesName=$(this).children('td').eq(1).children('div').find('button').attr('title');
             var specifications=$(this).children('td').eq(2).children('input').val();
-            var unit=$(this).children('td').eq(3).children('input').val();
+            var unit=$(this).children('td').eq(3).children('select').get(0).selectedIndex;
             var inventory=$(this).children('td').eq(4).children('input').val();
             var demandQuantity=$(this).children('td').eq(5).children('input').val();
             var purchaseQuantity=$(this).children('td').eq(6).children('input').val();
@@ -531,6 +532,8 @@ function saveEmer() {
             });
 
         });
+        alert("添加成功！")
+        window.location.href="emergencyProcurement.html"
     }
     else {
         $('#applyDate').next('span').remove();
@@ -580,7 +583,7 @@ function setEmProcurementList(result) {
                         break;
                     // 需用时间
                     case (3):
-                        $(this).html((obj.demandTime));
+                        $(this).html(getDateStr(obj.demandTime));
                         break;
                     // 申请部门
                     case (4):
@@ -699,7 +702,10 @@ function setEmProcurementListModal(result) {
                     break;
                 // 单位
                 case (2):
-                    $(this).html(obj.unit);
+                    if(obj.unit!=null){
+                        $(this).html(obj.unit.name);
+                    }
+
                     break;
                 // 库存量
                 case (3):
@@ -903,8 +909,33 @@ function enterSearch() {
 function exportExcel() {
     console.log("export");
     var name = 't_pl_procurement';
-    var sqlWords = "select t_pl_procurement.*,t_pl_material.* from t_pl_procurement left join t_pl_material on t_pl_procurement.receiptNumber=t_pl_material.receiptNumber and t_pl_procurement.procurementCategory='0';";
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    var idArry = [];//存放主键
+    var items = $("input[name='select']:checked");//判断复选框是否选中
+    if (items.length <= 0) { //如果不勾选
+        var sqlWords = "select t_pl_procurement.*,t_pl_material.* from t_pl_procurement left join t_pl_material on t_pl_procurement.receiptNumber=t_pl_material.receiptNumber and t_pl_procurement.procurementCategory='0';";
+
+        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+
+    }
+
+    if (items.length > 0) {
+        $.each(items, function (index, item) {
+            if ($(this).parent().parent().next().html().length > 0) {
+                idArry.push($(this).parent().parent().next().html());        // 将选中项的编号存到集合中
+            }
+        });
+        var sql = ' in (';
+        if (idArry.length > 0) {
+            for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+                if (i < idArry.length - 1) sql += idArry[i] + ",";
+                else if (i == idArry.length - 1) sql += idArry[i] + ");"
+            }
+            var sqlWords = "select t_pl_procurement.*,t_pl_material.* from t_pl_procurement left join t_pl_material on t_pl_procurement.receiptNumber=t_pl_material.receiptNumber and t_pl_procurement.procurementCategory='0' where t_pl_procurement.receiptNumber"+sql;
+
+
+        }
+        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    }
 }
 
 /**

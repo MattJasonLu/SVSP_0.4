@@ -17,6 +17,11 @@ function countValue() {
     return mySelect.options[index].text;
 }
 
+function keyLogin(){
+    if (event.keyCode==13)  //回车键的键值为13
+        document.getElementById("input1").click(); //调用登录按钮的登录事件
+}
+
 //重置
 function reset() {
     isSearch = false;

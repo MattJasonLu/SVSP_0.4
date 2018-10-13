@@ -111,6 +111,68 @@
                 </ol>
             </div>
             <h4 class="sub-header">领料单列表</h4>
+            <div class="row">
+                <div>
+                    <!--操作按钮-->
+                    <div class="pull-left col-md-6"></div>
+                    <!--查询框-->
+                    <div class="input-group col-md-4 pull-right" >
+                        <input type="text" class="form-control" placeholder="搜索..." id="searchContentAdd">
+                        <span class="input-group-btn">
+                            <a class="btn btn-default" onclick="searchMaterialRe1();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick="reset1()"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default" id="senior" style="display: none;">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group" style="margin-left: -10px;">
+                                <div class="form-group">
+                                    <label for="search-company" class="col-sm-4 control-label">	厂家</label>
+                                    <div class="col-xs-7">
+                                        <input class="form-control" id="search-company" name="search-company" onkeyup="enterSearch1()">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group">
+                                <label for="search-wastesName" class="col-sm-4 control-label">危废名称</label>
+                                <div class="col-xs-7">
+                                    <input class="form-control" id="search-wastesName" name="search-wastesName" onchange="" onkeyup="enterSearch1()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group">
+                                <label for="search-wastesCode"
+                                       class="col-sm-4 control-label">危废代码</label>
+                                <div class="col-xs-7">
+                                    <input class=" form-control"   name="search-wastesCode" id="search-wastesCode" onkeyup="enterSearch1()">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group">
+                                <label for="search-wastesCategory" class="col-sm-4 control-label">危废类别</label>
+                                <div class="col-xs-7">
+                                    <input class="form-control"  name="search-wastesCategory" id="search-wastesCategory" onkeyup="enterSearch1()">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div style="height:500px; overflow-y:scroll; ">
             <form method="post" id="infoForm" enctype="multipart/form-data">
                 <table class="table table-bordered">
                     <tbody>
@@ -163,6 +225,7 @@
                 <hr class="simple" color="#6f5499" />
                 <br>
             </form>
+            </div>
             <form class="cmxform" id="commentForm" method="Post">
                 <div class="row">
                     <div class="form-horizontal col-md-3">
@@ -217,7 +280,7 @@
                         <div class="form-group">
                             <label for="creator" class="col-sm-4 control-label">制单人</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="creator" name="creator" placeholder="">
+                                <input type="text" class="form-control" id="creator" name="creator" placeholder="" readonly>
                             </div>
                         </div>
                     </div>

@@ -17,11 +17,7 @@ function countValue() {
 
 //重置
 function reset() {
-    isSearch = false;
-    $("#senior").find("input").val("");
-    $("#searchContent").val("");
-    //$("#senior").find("select").get(0).selectedIndex = -1;
-    loadMedicalWastesList();
+    window.location.reload();
 }
 
 /**
@@ -430,6 +426,7 @@ function getNewestId() {
         }
 
     });
+    $('#date').val(dateToString(new Date()))
 
 
 
@@ -618,20 +615,58 @@ function searchMedicalWastes() {
 
     var text= $.trim($('#searchContent').val());
 
-    var date=$.trim($('#search-dateTime').val());
-
     var person=$.trim($('#search-departmentName').val());
+
+    var beginTime=$.trim($('#search-storageDate').val());
+
+    var endTime=$.trim($('#search-endDate').val());
+
+    var startDate=getDateByStr(beginTime);
+
+    var endDate=getDateByStr(endTime);
+
+    var arraydate=[];
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            arraydate.push(($(this).children('td').eq(2).text()))
+        });
+    }
+
+    var dateMin=(arraydate[0]);
+    var dateMax=(arraydate[0]);
+
+    for(var i=0;i<arraydate.length;i++){
+        if(new Date(arraydate[i]).getTime()<new Date(dateMin)||dateMin.length==0){
+            dateMin=(arraydate[i]);
+        }
+        if(new Date(arraydate[i]).getTime()>new Date(dateMax)||dateMax.length==0){
+            dateMax=(arraydate[i]);
+        }
+
+    }
+console.log(dateMin+dateMax)
 
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
             //console.log(this);
-            if(!($(this).children('td').eq(2).text().indexOf(date)!=-1&&$(this).children('td').eq(4).text().indexOf(person)!=-1
+            if(startDate.toString()=='Invalid Date'){
+                startDate=dateMin;
+            }
+            if(endDate.toString()=='Invalid Date'){
+                endDate=dateMax;
+            }
+            console.log(startDate+endDate)
+            // console.log($(this).children('td').eq(2).text())
+            if(!($(this).children('td').eq(4).text().indexOf(person)!=-1
               &&$(this).children('td').text().indexOf(text)!=-1
+                &&(new Date($(this).children('td').eq(2).text()).getTime()>=new Date(startDate).getTime() &&new Date($(this).children('td').eq(2).text()).getTime()<=new Date(endDate).getTime())
+
             )){
                 $(this).hide();
             }
-            if(($(this).children('td').eq(2).text().indexOf(date)!=-1&&$(this).children('td').eq(4).text().indexOf(person)!=-1
+            if(($(this).children('td').eq(4).text().indexOf(person)!=-1
                 &&$(this).children('td').text().indexOf(text)!=-1
+                &&(new Date($(this).children('td').eq(2).text()).getTime()>=new Date(startDate).getTime() &&new Date($(this).children('td').eq(2).text()).getTime()<=new Date(endDate).getTime())
             )){
                 array1.push($(this));
             }
@@ -802,6 +837,39 @@ function cancelMedicalWastes(item) {
 //导入数据
 function importExcelChoose() {
     $("#importExcelModal").modal('show');
+}
+
+//导出数据
+function exportExcel() {
+    console.log("export");
+    var name = 't_pl_medicalwastes';
+    var idArry = [];//存放主键
+    var items = $("input[name='select']:checked");//判断复选框是否选中
+    if (items.length <= 0) { //如果不勾选
+        var sqlWords = "select * from t_pl_medicalwastes;";
+
+        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+
+    }
+
+    if (items.length > 0) {
+        $.each(items, function (index, item) {
+            if ($(this).parent().parent().next().html().length > 0) {
+                idArry.push($(this).parent().parent().next().html());        // 将选中项的编号存到集合中
+            }
+        });
+        var sql = ' in (';
+        if (idArry.length > 0) {
+            for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+                if (i < idArry.length - 1) sql += idArry[i] + ",";
+                else if (i == idArry.length - 1) sql += idArry[i] + ");"
+            }
+            var sqlWords = "select * from t_pl_medicalwastes where medicalWastesId"+sql;
+
+
+        }
+        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    }
 }
 
 function importExcel() {
