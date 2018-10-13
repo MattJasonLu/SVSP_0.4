@@ -534,6 +534,25 @@ function loadPageMaterialList() {
         },
     });
 
+    //获取最新的物料信息
+    $.ajax({
+        type:"POST",
+        url:"getNewMaterialRequire",
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:JSON.stringify(page),
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+            }
+        },
+        error:function (result) {
+
+        }
+
+    })
+
 
 }
 /*加载表格数据*/
@@ -666,7 +685,7 @@ function importExcel() {
  * 下载模板
  * */
 function downloadModal() {
-    var filePath = 'model/materialDemand.xlsx';
+    var filePath ='Files/Templates/物料需求导入模板.xlsx';
     var r = confirm("是否下载模板?");
     if (r == true) {
         window.open('downloadFile?filePath=' + filePath);
@@ -1626,18 +1645,18 @@ function searchMa() {
     page.start = (pageNumber - 1) * page.count;
 
     data1={
-        materialRequireId:$('#search-materialRequireId').val(),
-        handleCategory:$("#search-handleCategory").val(),
-        formType:$("#search-formType").val(),
-        packageType:$("#search-packageType").val(),
-        weeklyDemandBeg:$("#search-weeklyDemandBeg").val(),
-        weeklyDemandEnd:$("#search-weeklyDemandEnd").val(),
-        currentInventoryBeg:$("#search-currentInventoryBeg").val(),
-        currentInventoryEnd:$("#search-currentInventoryEnd").val(),
-        safetyBeg:$("#search-safetyBeg").val(),
-        safetyEnd:$("#search-safetyEnd").val(),
-        marketPurchasesBeg:$("#search-marketPurchasesBeg").val(),
-        marketPurchasesEnd:$("#search-marketPurchasesEnd").val(),
+        materialRequireId:$.trim($('#search-materialRequireId').val()),
+        handleCategory:($("#search-handleCategory").val()),
+        formType:($("#search-formType").val()),
+        packageType:($("#search-packageType").val()),
+        weeklyDemandBeg:$.trim($("#search-weeklyDemandBeg").val()),
+        weeklyDemandEnd:$.trim($("#search-weeklyDemandEnd").val()),
+        currentInventoryBeg:$.trim($("#search-currentInventoryBeg").val()),
+        currentInventoryEnd:$.trim($("#search-currentInventoryEnd").val()),
+        safetyBeg:$.trim($("#search-safetyBeg").val()),
+        safetyEnd:$.trim($("#search-safetyEnd").val()),
+        marketPurchasesBeg:$.trim($("#search-marketPurchasesBeg").val()),
+        marketPurchasesEnd:$.trim($("#search-marketPurchasesEnd").val()),
         page: page,
     };
     if (data1 == null) alert("请点击'查询设置'输入查询内容!");
@@ -1663,6 +1682,15 @@ function searchMa() {
                 alert("服务器错误！");
             }
         });
+    }
+}
+
+/**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchMa();      //
     }
 }
 

@@ -170,7 +170,7 @@
                         <div class="form-group">
                             <label for="search-checkState" class="col-sm-4 control-label">审核状态</label>
                             <div class="col-xs-7">
-                                <select class="form-control" id="search-checkState" name="search-checkState"></select>
+                                <select class="form-control" id="search-checkState" name="search-checkState" onchange="searchStock()"></select>
                             </div>
                         </div>
                         <!--<div class="form-group">-->
@@ -186,7 +186,7 @@
                             <label for="search-proContactName" class="col-sm-5 control-label">产废单位联系人</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-proContactName"
-                                       name="search-proContactName" placeholder="">
+                                       name="search-proContactName" placeholder="" onkeyup="enterSearch()">
                             </div>
                         </div>
                         <!--<div class="form-group">-->
@@ -204,7 +204,7 @@
                                    class="col-sm-4 control-label">单位联系电话</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-proTelephone"
-                                       name="search-proTelephone" placeholder="">
+                                       name="search-proTelephone" placeholder="" onkeyup="enterSearch()">
                             </div>
                         </div>
 
@@ -214,7 +214,7 @@
                             <label for="search-transport" class="col-sm-4 control-label">运输公司</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-transport" name="search-transport"
-                                       placeholder="">
+                                       placeholder="" onkeyup="enterSearch()">
                             </div>
                         </div>
 

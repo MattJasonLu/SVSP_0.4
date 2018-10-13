@@ -112,7 +112,7 @@
     </update>
 
     <!--根据编号查看物料主表信息-->
-    <select id="getMaterialRequireByMaterialRequireId" parameterType="String" resultType="MaterialRequire">
+    <select id="getMaterialRequireByMaterialRequireId" parameterType="String" resultMap="MaterialList">
         select * from t_pr_materialrequire where materialRequireId=#{materialRequireId};
     </select>
 

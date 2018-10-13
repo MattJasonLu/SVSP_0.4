@@ -97,6 +97,7 @@
             <ol class="breadcrumb">
                 <li><a href="storageManagement.html">次生管理</a></li>
                 <li><a href="#">次生客村查询</a></li>
+            </ol>
         </div>
         <h4 class="sub-header">次生库存查询</h4>
         <div class="row">
@@ -141,7 +142,7 @@
                         <div class="form-group">
                             <label for="search-client" class="col-sm-4 control-label">产废单位</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-client" name="search-client" placeholder="">
+                                <input type="text" class="form-control" id="search-client" name="search-client" placeholder="" onkeyup="enterSearch()">
                             </div>
                         </div>
 
@@ -150,7 +151,7 @@
                         <div class="form-group">
                             <label for="search-type" class="col-sm-4 control-label">进料方式</label>
                             <div class="col-xs-7">
-                                <select class="form-control" name="search-wastesName" id="search-type">
+                                <select class="form-control" name="search-wastesName" id="search-type" onchange="searchSec()">
                                 </select>
                             </div>
                         </div>
@@ -173,7 +174,7 @@
                         <div class="form-group">
                             <label for="search-inDate" class="col-sm-4 control-label">危废名称</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-wastesName" name="search-wastesName" placeholder="">
+                                <input type="text" class="form-control" id="search-wastesName" name="search-wastesName" placeholder="" onkeyup="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -184,9 +185,9 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label" style="margin-left: 40px">入库日期 </label>
                             <div class="input-group">
-                                <input type="date" class="input-sm form-control" id="search-inDate" title="" onkeydown=""/>
+                                <input type="date" class="input-sm form-control" id="search-inDate" title="" onkeydown="" onkeyup="enterSearch()"/>
                                 <span class="input-group-addon">-</span>
-                                <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown=""/>
+                                <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown="" onkeyup="enterSearch()"/>
                             </div>
                         </div>
                     </div>

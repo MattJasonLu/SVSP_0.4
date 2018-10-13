@@ -32,4 +32,6 @@ public interface WasteInventoryMapper {
     List<Date> getNewestInBoundDate();
     List<Date> getNewestInBoundDateSec();
 
+   void  updateInventoryCount(Float count,String inboundOrderItemId );
+
 }

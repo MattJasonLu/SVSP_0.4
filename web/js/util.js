@@ -107,6 +107,31 @@ function getPackageTypeFromStr(packageType) {
     return res;
 }
 
+/*通过字符串获取运输方式*/
+function getTransportTypeFromStr(transportType) {
+    var res;
+    switch (transportType) {
+        case "铁路":
+            res = "Railway";
+            break;
+        case "公路":
+            res = "Highway";
+            break;
+        case "水路":
+            res = "Waterway";
+            break;
+        case "航空":
+            res = "Aviation";
+            break;
+        default:
+            res = "";
+            break;
+
+    }
+    return res;
+
+}
+
 /**
  * 通过字符串获取处理方式
  * @param formType

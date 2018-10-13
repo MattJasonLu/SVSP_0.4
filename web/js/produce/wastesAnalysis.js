@@ -521,17 +521,17 @@ function searchWasteInto() {
                 date=startDate;
             }
 
-            if(!($(this).children('td').eq(3).text().indexOf(companyName)!=-1 &&$(this).children('td').eq(6).text().indexOf(hangelCategory)!=-1
-                &&$(this).children('td').eq(2).text().indexOf(number)!=-1 &&$(this).children('td').text().indexOf(text)!=-1
-                &&$(this).children('td').eq(4).text().indexOf(wastesName)!=-1 &&$(this).children('td').eq(5).text().indexOf(wastesCategory)!=-1
+            if(!($(this).children('td').eq(4).text().indexOf(companyName)!=-1 &&$(this).children('td').eq(7).text().indexOf(hangelCategory)!=-1
+                &&$(this).children('td').eq(3).text().indexOf(number)!=-1 &&$(this).children('td').text().indexOf(text)!=-1
+                &&$(this).children('td').eq(5).text().indexOf(wastesName)!=-1 &&$(this).children('td').eq(6).text().indexOf(wastesCategory)!=-1
                 &&(new Date(date).getTime()<=new Date(endDate).getTime()&&new Date(date).getTime()>=new Date(startDate).getTime())
             )){
                 $(this).hide();
             }
             if(
-                ($(this).children('td').eq(3).text().indexOf(companyName)!=-1 &&$(this).children('td').eq(6).text().indexOf(hangelCategory)!=-1
-                    &&$(this).children('td').eq(2).text().indexOf(number)!=-1 &&$(this).children('td').text().indexOf(text)!=-1
-                    &&$(this).children('td').eq(4).text().indexOf(wastesName)!=-1 &&$(this).children('td').eq(5).text().indexOf(wastesCategory)!=-1
+                ($(this).children('td').eq(4).text().indexOf(companyName)!=-1 &&$(this).children('td').eq(7).text().indexOf(hangelCategory)!=-1
+                    &&$(this).children('td').eq(3).text().indexOf(number)!=-1 &&$(this).children('td').text().indexOf(text)!=-1
+                    &&$(this).children('td').eq(5).text().indexOf(wastesName)!=-1 &&$(this).children('td').eq(6).text().indexOf(wastesCategory)!=-1
                     &&(new Date(date).getTime()<=new Date(endDate).getTime()&&new Date(date).getTime()>=new Date(startDate).getTime())
                 )
             ){
@@ -589,6 +589,15 @@ function searchWasteInto() {
 
 
 
+}
+
+/**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchWasteInto();      //
+    }
 }
 
 //粗查询

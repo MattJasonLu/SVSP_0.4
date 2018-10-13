@@ -478,7 +478,7 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
             } else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
                 searchStock1();      //
             }
-        }, 400);
+        }, 600);
     });
 });
 
@@ -565,6 +565,16 @@ function searchStock() {
     }
 
 }
+
+/**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchStock();      //
+    }
+}
+
 
 //粗查询
 function searchStock1() {
@@ -1442,8 +1452,9 @@ function viewStock(item) {
 
 //添加危废列表新行
 function addWastesNewLine() {
-    $("#body2").children().last().clone().remove();
-    var tr = $("#body2").children().last();
+    // $("#body2").children().last().clone().remove();
+    var tr = $("#body2").children('tr').first();
+    tr.siblings().remove();
     // 克隆tr，每次遍历都可以产生新的tr
     var clonedTr = tr.clone();
     // 获取编号

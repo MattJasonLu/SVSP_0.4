@@ -148,7 +148,7 @@ public class WastesInfoController {
         return res.toString();
     }
     /**
-     * 仓库借口
+     * 仓库接口
      */
     @RequestMapping("getWareHouseList")
     @ResponseBody
@@ -190,6 +190,27 @@ public class WastesInfoController {
          return  res.toString();
     }
 
+
+    /**
+     * 获取单位
+     */
+  @RequestMapping("getUnitList")
+  @ResponseBody
+  public String getUnitList(){
+      JSONObject res = new JSONObject();
+      try {
+          JSONArray unitList = JSONArray.fromArray(Unit.values());
+          res.put("unitList",unitList);
+          res.put("status", "success");
+          res.put("message", "获取单位成功");
+      }
+      catch (Exception e){
+          res.put("status", "fail");
+          res.put("message", "获取单位失败");
+      }
+
+      return res.toString();
+  }
 
     /**
      * 你可以url中打love试下
