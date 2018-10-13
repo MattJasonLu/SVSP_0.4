@@ -112,7 +112,7 @@
     </update>
 
     <!--根据编号查看物料主表信息-->
-    <select id="getMaterialRequireByMaterialRequireId" parameterType="String" resultType="MaterialRequire">
+    <select id="getMaterialRequireByMaterialRequireId" parameterType="String" resultMap="MaterialList">
         select * from t_pr_materialrequire where materialRequireId=#{materialRequireId};
     </select>
 
@@ -134,6 +134,7 @@
                   or  pAvg  like "%"#{keywords}"%"
                   or  fAvg  like "%"#{keywords}"%"
                   or  phAvg  like "%"#{keywords}"%"
+                  or checkState like "%"#{keywords}"%"
               </if>
           </where>
         order by nowTime desc
@@ -160,6 +161,7 @@
                 or  pAvg  like "%"#{keywords}"%"
                 or  fAvg  like "%"#{keywords}"%"
                 or  phAvg  like "%"#{keywords}"%"
+                or checkState like "%"#{keywords}"%"
             </if>
         </where>
     </select>

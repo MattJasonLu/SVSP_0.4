@@ -306,17 +306,17 @@ function setSecIntoList(result) {
             var obj = eval(item);
             switch (inner_index) {
                 // 序号
-                case (0):
+                case (1):
                     $(this).html(index+1);
                     break;
                 // 收样日期
-                case (1):
+                case (2):
                     if(obj.laboratoryTest!=null){
                         $(this).html(getDateStr(obj.laboratoryTest.samplingDate));
                     }
                     break;
                 // 废物名称
-                case (2):
+                case (3):
                     if(obj.laboratoryTest!=null){
                         if(obj.laboratoryTest.wastesName=='slag'){
                             $(this).html('炉渣');
@@ -331,20 +331,20 @@ function setSecIntoList(result) {
 
                     break;
                 // 热灼减率%
-                case (3):
+                case (4):
                     if(obj.laboratoryTest!=null){
                         $(this).html(obj.laboratoryTest.heatAverage);
                     }
                     break;
                 // 水分%
-                case (4):
+                case (5):
                     if(obj.laboratoryTest!=null){
                         $(this).html(obj.laboratoryTest.waterContentAverage);
                     }
 
                     break;
                 // 备注
-                case (5):
+                case (6):
                     $(this).html(obj.remarks);
                     break;
             }
@@ -423,13 +423,13 @@ function searchSecInto() {
                 date=startDate;
             }
 
-            if(!($(this).children('td').eq(2).text().indexOf(wastesName)!=-1
+            if(!($(this).children('td').eq(3).text().indexOf(wastesName)!=-1
                 &&$(this).children('td').text().indexOf(text)!=-1
                 &&(new Date(date).getTime()>=new Date(startDate).getTime())&&(new Date(date).getTime()<=new Date(endDate).getTime())
             )){
                 $(this).hide();
             }
-            if(($(this).children('td').eq(2).text().indexOf(wastesName)!=-1
+            if(($(this).children('td').eq(3).text().indexOf(wastesName)!=-1
                &&$(this).children('td').text().indexOf(text)!=-1
                 &&(new Date(date).getTime()>=new Date(startDate).getTime())&&(new Date(date).getTime()<=new Date(endDate).getTime())))
             {
@@ -489,6 +489,16 @@ function searchSecInto() {
 
 
 }
+
+/**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchSecInto();      //
+    }
+}
+
 
 //粗查询
 $(document).ready(function () {//页面载入是就会进行加载里面的内容

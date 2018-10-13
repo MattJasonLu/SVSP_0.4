@@ -19,7 +19,6 @@
     <script language="javascript" src="js/bootstrap/printThis.js"></script>
     <link href="css/a.css" rel="stylesheet">
     <script language="javascript" src="js/canvas2image.js"></script>
-    <script language="javascript" src="js/util.js"></script>
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <script language="javascript" src="js/business/contract.js"></script>
     <script src="js/util.js"></script>
@@ -546,7 +545,7 @@
                             <div class="form-group">
                                 <label for="search-checkState" class="col-sm-4 control-label">审核状态</label>
                                 <div class="col-xs-7">
-                                    <select class="form-control" id="search-checkState" name="search-checkState"></select>
+                                    <select class="form-control" id="search-checkState" name="search-checkState" onchange="searchContract()"></select>
                                 </div>
                             </div>
                         </div>
@@ -554,7 +553,7 @@
                             <div class="form-group">
                                 <label for="search-companyName" class="col-sm-4 control-label">产废单位名称</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="">
+                                    <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="" onkeyup="enterSearch()">
                                 </div>
                             </div>
                             <!--<div class="form-group">-->
@@ -568,9 +567,9 @@
                             <div class="form-group" style="margin-right: 40px">
                                 <label class="col-sm-3 control-label">签订日期 </label>
                                 <div class="input-group">
-                                    <input type="date" class="input-sm form-control" id="beginTime" title=""/>
+                                    <input type="date" class="input-sm form-control" id="beginTime" title="" onkeyup="enterSearch()"/>
                                     <span class="input-group-addon">-</span>
-                                    <input type="date" class="input-sm form-control" id="endTime" title=""/>
+                                    <input type="date" class="input-sm form-control" id="endTime" title="" onkeyup="enterSearch()"/>
                                 </div>
                             </div>
                         </div>
@@ -580,7 +579,7 @@
                             <div class="form-group">
                                 <label for="search-contactName" class="col-sm-4 control-label">联&nbsp;&nbsp;系&nbsp;&nbsp;人</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-contactName" name="search-contactName" placeholder="">
+                                    <input type="text" class="form-control" id="search-contactName" name="search-contactName" placeholder="" onkeyup="enterSearch()">
                                 </div>
                             </div>
                             <!--<div class="form-group">-->
@@ -753,8 +752,8 @@
                             <!--  <p class="text-left"><b>开票税率2&nbsp;&nbsp;</b><span id="modal3_ticketRate2"></span></p>-->
                             <p class="text-left"><b>联系人&nbsp;&nbsp;</b><span id="modal3_contactName"></span></p>
                             <!--<p class="text-left"><b>物流公司资质&nbsp;&nbsp;</b><span id="modal3_logisticsQualification"></span></p>-->
-                            <p class="text-left"><b>是否包含运费&nbsp;&nbsp;</b> <input type="checkbox" id="modal3_freight"
-                                                                                  disabled="disabled"></p>
+                            <!--<p class="text-left"><b>是否包含运费&nbsp;&nbsp;</b> <input type="checkbox" id="modal3_freight"-->
+                                                                                  <!--disabled="disabled"></p>-->
                             <!--<div class="form-group">
                                 <label for="modal3_freight" class="col-sm-4 control-label">是否包含运费 </label>
                                    <div class="col-xs-8">

@@ -106,4 +106,9 @@
     <delete id="deleteEquipment" parameterType="EquipmentDate" >
         delete from t_rp_equipment where documentNumber = #{documentNumber}
     </delete>
+
+    <!--通过编号获取-->
+    <select id="getEquipmentByDocumentNumber" resultType="EquipmentDate">
+        select * from t_rp_equipment where documentNumber=#{documentNumber} limit 0, 1;
+    </select>
 </mapper>

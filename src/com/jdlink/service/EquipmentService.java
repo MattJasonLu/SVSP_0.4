@@ -79,4 +79,13 @@ public interface EquipmentService {
      * 删除设备
      */
     void deleteEquipment(String documentNumber);
+
+    /**
+     * 获取编号
+     * @return 编号
+     */
+    String getDocumentNumber();
+
+
+    Equipment getEquipmentByDocumentNumber(String documentNumber);
 }

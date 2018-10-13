@@ -213,6 +213,7 @@
                 or  weeklyDemandTotalAggregate   like "%"#{keywords}"%"
                 or  fAvg  like "%"#{keywords}"%"
                 or  pAvg  like "%"#{keywords}"%"
+                or  checkState like "%"#{keywords}"%"
             </if>
         </where>
         order by nowTime desc
@@ -325,6 +326,7 @@
                 or  weeklyDemandTotalAggregate   like "%"#{keywords}"%"
                 or  format(fAvg,1)  like "%"#{keywords}"%"
                 or  format(pAvg,1)  like "%"#{keywords}"%"
+                or  checkState like "%"#{keywords}"%"
             </if>
         </where>
 

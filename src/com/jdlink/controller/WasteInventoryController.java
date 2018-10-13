@@ -184,12 +184,9 @@ public class WasteInventoryController {
         //添加完更新当前的配料对象
         List<BatchingOrder> batchingOrderList=  wasteInventoryService.getBatchingOrderList();
         wasteInventoryService.updateBatching(batchingOrderList.get(0));
-        List<WasteInventory> wasteInventoryList= wasteInventoryService.list1();
-        for (int i=0;i<wasteInventoryList.size();i++){
-            //更新库存的数量
-            wasteInventoryService.batchingNumber(wasteInventoryList.get(i));
-        }
 
+       //最后同步更新库存的数量(需要配料的数量和入库单明细编号即可)
+           wasteInventoryService.updateInventoryCount(batchingOrder.getBatchingNumber(),batchingOrder.getInboundOrderItemId());
         res.put("status", "success");
         res.put("message", "添加成功");
     }

@@ -887,6 +887,15 @@ console.log(array1)
 }
 
 /**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchEm();      //
+    }
+}
+
+/**
  *
  * 导出
  * @returns {string}
@@ -946,7 +955,7 @@ function importExcel() {
  * */
 
 function downloadModal() {
-    var filePath = 'model/materialDemand.xlsx';
+    var filePath ='Files/Templates/2017常州应急购置申请表.xls';
     var r = confirm("是否下载模板?");
     if (r == true) {
         window.open('downloadFile?filePath=' + filePath);

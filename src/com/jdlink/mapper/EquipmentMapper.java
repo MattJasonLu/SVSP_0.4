@@ -79,4 +79,6 @@ public interface EquipmentMapper {
      * 删除设备
      */
     void deleteEquipment(String documentNumber);
+
+    Equipment getEquipmentByDocumentNumber(String documentNumber);
 }

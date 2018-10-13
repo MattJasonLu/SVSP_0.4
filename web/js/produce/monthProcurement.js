@@ -598,7 +598,7 @@ function cancel(item) {
 }
 //查询
 function view1(item) {
-    var receiptNumber=$(item).parent().parent().children('td').eq(0).text();
+    var receiptNumber=$(item).parent().parent().children('td').eq(1).text();
     //console.log(receiptNumber);
     $.ajax({
         type: "POST",                       // 方法类型
@@ -624,7 +624,7 @@ function view1(item) {
 }
 //双击查询
 function view(item) {
-    var receiptNumber=$(item).children().get(0).innerHTML;
+    var receiptNumber=$(item).children().get(1).innerHTML;
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getProcurementListById",          // url
@@ -833,6 +833,15 @@ function searchProcurement() {
 
 
 }
+
+/**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchProcurement();      //
+    }
+}
 //加载辅料列表
 function getIngredientsList() {
     $('.selectpicker').selectpicker({
@@ -882,7 +891,10 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
             if(last-event.timeStamp==0){
                 searchWastesAnalysis();
             }
-        },400);
+            else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchWastesAnalysis();      //
+            }
+        },600);
     });
 });
 
@@ -1028,7 +1040,7 @@ function importExcel() {
  * */
 
 function downloadModal() {
-    var filePath = 'model/materialDemand.xlsx';
+    var filePath = 'Files/Templates/2018年月度采购申请单03.xls';
     var r = confirm("是否下载模板?");
     if (r == true) {
         window.open('downloadFile?filePath=' + filePath);

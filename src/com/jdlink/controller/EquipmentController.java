@@ -5,6 +5,8 @@ import com.jdlink.domain.Produce.Equipment;
 import com.jdlink.domain.Produce.EquipmentDate;
 import com.jdlink.domain.Produce.EquipmentItem;
 import com.jdlink.service.EquipmentService;
+import com.jdlink.util.DateUtil;
+import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -250,6 +254,62 @@ public class EquipmentController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "操作失败");
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("importEquipmentExcel")
+    @ResponseBody
+    public String importEquipmentExcel(MultipartFile excelFile) {
+        JSONObject res = new JSONObject();
+        try {
+            // 获取危废入库的表格数据
+            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+            EquipmentDate equipmentDate = new EquipmentDate();
+            equipmentDate.setDocumentNumber(equipmentService.getDocumentNumber());
+            equipmentDate.setDayTime(DateUtil.getDateFromStr(data[1][5].toString()));
+            equipmentDate.setEditTime(new Date());
+            List<EquipmentItem> equipmentItemList = new ArrayList<>();
+            for (int i = 1; i < data.length; i++) {
+                EquipmentItem equipmentItem = new EquipmentItem();
+                equipmentItem.setDocumentNumber(equipmentDate.getDocumentNumber());
+                switch (data[i][1].toString()) {
+                    case "医疗蒸煮系统":
+                        equipmentItem.setEquipment(Equipment.MedicalCookingSystem);
+                        break;
+                    case "A2":
+                        equipmentItem.setEquipment(Equipment.A2);
+                        break;
+                    case "B2":
+                        equipmentItem.setEquipment(Equipment.B2);
+                        break;
+                    case "二期二燃室":
+                        equipmentItem.setEquipment(Equipment.SecondaryTwoCombustionChamber);
+                        break;
+                    case "三期预处理系统":
+                        equipmentItem.setEquipment(Equipment.ThirdPhasePretreatmentSystem);
+                        break;
+                    case "备2":
+                        equipmentItem.setEquipment(Equipment.Prepare2);
+                        break;
+                    default: break;
+                }
+                equipmentItem.setRunningTime(Float.parseFloat(data[i][2].toString()));
+                equipmentItem.setStopTime(Float.parseFloat(data[i][3].toString()));
+                equipmentItem.setStopResult(data[i][4].toString());
+                equipmentItemList.add(equipmentItem);
+            }
+            equipmentDate.setEquipmentItemList(equipmentItemList);
+            equipmentService.addEquipment(equipmentDate);
+            for (EquipmentItem equipmentItem : equipmentItemList) {
+                equipmentService.addEquipmentItem(equipmentItem);
+            }
+            res.put("status", "success");
+            res.put("message", "导入成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导入失败");
         }
         return res.toString();
     }

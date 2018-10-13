@@ -1149,6 +1149,17 @@ function downloadModal() {
 }
 
 /**
+ * 导出excel
+ */
+function exportExcel() {
+    var checkedItems = $("input[type='checkbox']:checked");
+    checkedItems.each(function () {
+        var id = $(this).parent().parent().parent().find("td[name='id']").text();
+        window.open('exportLaboratoryTestExcel?id=' + id);
+    });
+}
+
+/**
  * 延时搜索及回车搜索功能
  */
 $(document).ready(function () {//页面载入是就会进行加载里面的内容

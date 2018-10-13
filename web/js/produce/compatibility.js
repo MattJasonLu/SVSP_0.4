@@ -99,7 +99,7 @@ function importExcel() {
  * 下载模板
  * */
 function downloadModal() {
-    var filePath = 'Files/Templates/配伍周导入模板.xlsx';
+    var filePath = 'Files/Templates/配伍计划导入模板.xlsx';
     var r = confirm("是否下载模板?");
     if (r == true) {
         window.open('downloadFile?filePath=' + filePath);
@@ -1141,27 +1141,27 @@ function totalPage() {
         })
 
 
-        $('#proportionTotal').html(proportionTotal);
+        $('#proportionTotal').html(proportionTotal.toFixed(2));
 
-        $('#dailyRatioTotal').html(dailyRatioTotal);
+        $('#dailyRatioTotal').html(dailyRatioTotal.toFixed(2));
 
-        $('#weeklyDemandTotalAdd').html(weeklyDemandTotalAdd);
+        $('#weeklyDemandTotalAdd').html(weeklyDemandTotalAdd.toFixed(2));
 
-        $('#calorificTotal').html(calorificTotal);
+        $('#calorificTotal').html(calorificTotal.toFixed(2));
 
-        $('#ashTotal').html(ashTotal);
+        $('#ashTotal').html(ashTotal.toFixed(2));
 
-        $('#waterTotal').html(waterTotal);
+        $('#waterTotal').html(waterTotal.toFixed(2));
 
-        $('#clTotal').html(clTotal);
+        $('#clTotal').html(clTotal.toFixed(2));
 
-        $('#sTotal').html(sTotal);
+        $('#sTotal').html(sTotal.toFixed(2));
 
-        $('#pTotal').html(pTotal);
+        $('#pTotal').html(pTotal.toFixed(2));
 
-        $('#fTotal').html(fTotal);
+        $('#fTotal').html(fTotal.toFixed(2));
 
-        $('#phTotal').html(phTotal);
+        $('#phTotal').html(phTotal.toFixed(2));
 
     }
 
@@ -1480,7 +1480,7 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
             }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
                 searchCompatibility();      //
             }
-        },400);
+        },600);
     });
 });
 
@@ -1493,6 +1493,18 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
         page.count = countValue();
         page.start = (pageNumber - 1) * page.count;
         var keywords = $.trim($("#searchContent").val());
+        if(keywords=='已失效'){
+            keywords='Disabled'
+        }
+        if(keywords=='待提交'){
+            keywords='ToSubmit'
+        }
+        if(keywords=='审批通过'){
+            keywords='Approval'
+        }
+        if(keywords=='待审批'){
+            keywords='ToExamine'
+        }
         data1 = {
             page: page,
             keywords: keywords
@@ -1610,4 +1622,13 @@ function searchPw() {
         });
     }
 console.log(data1)
+}
+
+/**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchPw();      //
+    }
 }

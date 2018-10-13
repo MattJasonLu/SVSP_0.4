@@ -236,21 +236,19 @@ function  batchingList() {
     });
     //加载高级查询数据
     setSeniorSelectedList();
-}
 
-/**
- * 重置搜索数据
- */
-function reset() {
-    isSearch=false;
-    $("#senior").find("input").val("");
-    $("#senior").find("select").get(0).selectedIndex = -1;
-    $("select[name='search-companyName']").selectpicker('val',' ');
-     $('#searchContentAdd').val('');
-     window.location.reload();
-
+    //自动赋值
+    $('#date').val(dateToString(new Date()));
+    $('#createDate').val(dateToString(new Date()))
+   var data= getCurrentUserData();
+    console.log(data)
+    if(data!=null){
+        $('#creator').val(data.username);
+    }
 
 }
+
+
 
 function resetList() {
     isSearch=false;
@@ -402,6 +400,15 @@ function searchBatchOrder() {
 
 }
 
+/**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchBatchOrder();      //
+    }
+}
+
 /**设置库存列表数据
  */
 function setWasteInventoryList(result) {
@@ -499,6 +506,10 @@ function setWasteInventoryList(result) {
 
 /*配料*/
 function batching() {
+    //1确认前删除行元素==>已下拉的
+$('#cloneTr2').siblings().remove();
+
+
     var items = $("input[name='select']:checked");//判断复选框是否选中
     items.each(function () {
         //获得库存Id
@@ -536,7 +547,7 @@ function setBatchingWList(result) {
     var tr = $("#cloneTr2");
     tr.attr('class','myclass2');
     //tr.siblings().remove();
-    //console.log(result);
+    console.log(result);
     $.each(result, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
@@ -557,15 +568,21 @@ function setBatchingWList(result) {
                     break;
                 //产废单位
                 case (2):
-                    $(this).html(obj.produceCompany.companyName);
+                    if(obj.produceCompany!=null){
+                        $(this).html(obj.produceCompany.companyName);
+                    }
                     break;
                 // 危废名称
                 case (3):
-                    $(this).html(obj.laboratoryTest.wastesName);
+                    if(obj.laboratoryTest!=null){
+                        $(this).html(obj.laboratoryTest.wastesName);
+                    }
                     break;
                 // 危废代码
                 case (4):
-                    $(this).html(obj.laboratoryTest.wastesCode);
+                    if(obj.laboratoryTest=null){
+                        $(this).html(obj.laboratoryTest.wastesCode);
+                    }
                     break;
                 // 产废类别
                 case (5):
@@ -573,12 +590,16 @@ function setBatchingWList(result) {
                     break;
                 // 进料方式
                 case (6):
-                    $(this).html(obj.handleCategory.name);
+                    if(obj.handleCategory!=null){
+                        $(this).html(obj.handleCategory.name);
+                    }
                     break;
                 //数量
                 case (7):
                     break;
+                    //剩余数量
                 case (8):
+                    $(this).html(obj.actualCount);
                     break;
                 case (9):
                     $(this).html(obj.remarks);
@@ -787,7 +808,7 @@ function save() {
             // //  // name:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,
             //      },
             // wasteType:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,
-            batchingNumber:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.value,
+            batchingNumber:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.value,//配料的数量
             remarks:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,
             batchingDate:$("#date").val(),//配料日期
             createDate:$("#createDate").val(),//创建日期
@@ -1340,7 +1361,10 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
             if(last-event.timeStamp==0){
                 searchBatchingList();
             }
-        },400);
+            else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchBatchingList();      //
+            }
+        },600);
     });
 });
 
@@ -1482,4 +1506,63 @@ function exportExcel() {
     var name = 't_pl_batchingorder';
     var sqlWords = "select * from t_pl_batchingorder;";
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+}
+
+
+//延迟进行计算
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#input1').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp==0){
+                CalRemainQuantities();
+            }
+        },600);
+    });
+});
+
+//实时计算剩余数量
+
+function CalRemainQuantities(item) {
+ var count=$(item).val();//需要的数量
+    if(count.length==0){
+         count=0;
+    }
+ //    var residual1=parseFloat($(item).parent().next().html());//最早的配料数量
+ //     var residual=residual1-parseFloat(count);
+ //
+ // if(parseFloat(residual)>0){
+ //     $(item).parent().next().html(residual)
+ // }
+ // else {
+ //     alert("配料数量超出最大数额！重新配料")
+ // }
+var inboundOrderItemId=$(item).parent().parent().children('td').eq(10).html();
+console.log(inboundOrderItemId)
+$('.myclass').each(function () {
+    if($(this).children('td').eq(12).html()==inboundOrderItemId){
+        var total= parseFloat($(this).children('td').eq(9).html());
+        console.log(total)
+        //剩余数量
+             var residual=total-parseFloat(count);
+        if(parseFloat(residual)>0){
+            $(item).parent().next().html(residual)
+            $(this).children('td').eq(10).html(residual)//同步到上面的剩余数量
+
+        }
+        else {
+            alert("配料数量超出最大数额！重新配料")
+        }
+
+
+    }
+
+})
+
+
+
+
+
+
 }
