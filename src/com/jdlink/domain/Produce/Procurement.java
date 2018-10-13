@@ -25,7 +25,7 @@ public class Procurement {
     /**
      * 需求时间(应急同)
      */
-    private String demandTime;
+    private Date demandTime;
     /**
      * 申请日期
      */
@@ -136,11 +136,11 @@ public class Procurement {
     }
 
 
-    public String getDemandTime() {
+    public Date getDemandTime() {
         return demandTime;
     }
 
-    public void setDemandTime(String demandTime) {
+    public void setDemandTime(Date demandTime) {
         this.demandTime = demandTime;
     }
 

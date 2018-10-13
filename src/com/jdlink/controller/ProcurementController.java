@@ -313,10 +313,13 @@ public class ProcurementController {
             }
 
             if(String.valueOf(data.get(i)[3][7])!="null"){
-                procurement.setDemandTime(String.valueOf(data.get(i)[3][7]));//需求时间
+                System.out.println(data.get(i)[3][7]+"123");
+                 SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+                 Date date=simpleDateFormat.parse(  data.get(i)[3][7].toString().replace("/","-"));
+                procurement.setDemandTime(date);//需求时间
             }
             if(String.valueOf(data.get(i)[3][7])=="null"){
-                procurement.setDemandTime(" ");//需求时间
+                procurement.setDemandTime(null);//需求时间
             }
             if(String.valueOf(data.get(i)[3][13])!="null"){
                 procurement.setApplyDepartment(String.valueOf(data.get(i)[3][13]));//申请部门
@@ -448,10 +451,7 @@ public class ProcurementController {
                 procurement.setReceiptNumber(receiptNumber);//注入
                 procurement.setProcurementCategory(false);
                 if(String.valueOf(data.get(i)[2][0])!="null"){
-                    String s=String.valueOf(data.get(i)[2][0]).replace("申请日期：           ","").trim();
-                   String s1=s.replace(".","-");
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    procurement.setApplyDate( sdf.parse(s1));
+                    procurement.setApplyDate(new Date());
 
                 }
 
@@ -465,10 +465,12 @@ public class ProcurementController {
                     procurement.setSuppliesCategory("");//物资类别
                 }
                 if(String.valueOf(data.get(i)[3][10])!="null"){
-                    procurement.setDemandTime(String.valueOf(data.get(i)[3][10]));
+                    SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+                    Date date=simpleDateFormat.parse(data.get(i)[3][10].toString().replace("/","-"));
+                    procurement.setDemandTime(date);
                 }
                 if(String.valueOf(data.get(i)[3][10])=="null"){
-                    procurement.setDemandTime("");
+                    procurement.setDemandTime(null);
                 }
 
                 if(String.valueOf(data.get(i)[data.get(i).length-4][3])!="null"){
