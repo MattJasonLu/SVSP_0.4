@@ -2,10 +2,7 @@
  * 危废入场分析日报
  * */
 function reset() {
-    isSearch=false;
-    $("#senior").find("input").val("");
-    $("#searchContent").val("");
-    loadWasteIntoList();
+    window.location.reload();
 }
 var currentPage = 1;                          //当前页数
 var isSearch = false;
@@ -201,6 +198,7 @@ function inputSwitchPage()  {
             $("#endPage").removeClass("disabled");
         }
         currentPage = pageNumber;
+        addPageClass(pageNumber);           // 设置页码标蓝
         var page = {};
         page.count = countValue();//可选
         page.pageNumber = pageNumber;
@@ -216,7 +214,7 @@ function inputSwitchPage()  {
                 success: function (result) {
                     if (result != undefined) {
                         console.log(result);
-                        setWasteIntoList(result.data);
+                        setWasteIntoList(result);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -444,6 +442,9 @@ function setWasteIntoList(result) {
                     //备注
                 case (19):
                     $(this).html(obj.remarks);
+                    break;
+                case (20):
+                    $(this).html(obj.id);
                     break;
             }
         })
@@ -710,7 +711,30 @@ function searchWastesAnalysis() {
 function exportExcel() {
     console.log("export");
     var name = 't_pl_wasteinto';
-    var sqlWords = "select * from  t_pl_wasteinto;";
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    var idArry = [];//存放主键
+    var items = $("input[name='select']:checked");//判断复选框是否选中
+    if (items.length <= 0) { //如果不勾选
+        var sqlWords = "select * from  t_pl_wasteinto;";
+        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    }
+
+    if (items.length > 0) {
+        $.each(items, function (index, item) {
+            if ($(this).parent().parent().parent().children('td').eq(20).html().length > 0) {
+                idArry.push($(this).parent().parent().parent().children('td').eq(20).html());        // 将选中项的编号存到集合中
+            }
+        });
+        var sql = ' in (';
+        if (idArry.length > 0) {
+            for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+                if (i < idArry.length - 1) sql += idArry[i] + ",";
+                else if (i == idArry.length - 1) sql += idArry[i] + ");"
+            }
+            var sqlWords = "select * from  t_pl_wasteinto where id "+sql;
+
+        }
+        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    }
+
 }
 

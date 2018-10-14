@@ -186,7 +186,7 @@
                 <div class="row">
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-transferId" class="col-sm-4 control-label">转移联单号</label>
+                            <label for="search-transferId" class="col-sm-4 control-label">联单号</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-transferId"
                                        name="search-transferId" placeholder="" onkeydown="enterSearch()">
@@ -227,14 +227,15 @@
                             <label for="search-state" class="col-sm-4 control-label">状态</label>
                             <div class="col-xs-7">
                                 <select class="form-control" id="search-state" name="search-state"
-                                        placeholder="" onchange="searchPounds()"></select>
-                                <option value="0"></option>
+                                        onchange="searchPounds()">
+                                    <option value="0"></option>
+                                </select>
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-4">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label" style="margin-left: 10px">创建日期 </label>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group" style="width: 450px">
+                            <label class="col-sm-3 control-label" style="margin-left: -30px;">创建日期 </label>
                             <div class="input-group">
                                 <input type="date" class="input-sm form-control" id="search-startDate" title="" onkeydown="enterSearch()"/>
                                 <span class="input-group-addon">-</span>

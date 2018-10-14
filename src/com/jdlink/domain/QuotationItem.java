@@ -114,7 +114,7 @@ public class QuotationItem {
     /**
      * 计量单位
      */
-    private String util;
+    private Unit util;
     /**
      *
      * @return
@@ -167,14 +167,13 @@ public class QuotationItem {
         this.supplier = supplier;
     }
 
-    public String getUtil() {
+    public Unit getUtil() {
         return util;
     }
 
-    public void setUtil(String util) {
+    public void setUtil(Unit util) {
         this.util = util;
     }
-
 
     public float getTotalPriec() {
         return totalPriec;

@@ -16,6 +16,15 @@ function countValue(){
 }
 
 /**
+ * 回车查询
+ */
+function keyLogin(){
+    if (event.keyCode==13)  //回车键的键值为13
+        document.getElementById("input1").click(); //调用登录按钮的登录事件
+}
+
+
+/**
  * 计算总页数
  * */
 function totalPage() {

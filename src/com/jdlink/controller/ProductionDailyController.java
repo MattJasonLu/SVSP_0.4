@@ -29,6 +29,7 @@ import sun.plugin2.os.windows.FLASHWINFO;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -196,7 +197,13 @@ public class ProductionDailyController {
     public String generateProductionDaily() {
         JSONObject res = new JSONObject();
         // 获取当天日期
+        DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
         Date now = new Date();
+        try{ // 测试
+           now = dateFormat1.parse("2018-10-12");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         // 创建一个新的生产日报
         ProductionDaily productionDaily = new ProductionDaily();
         // 设置公司为常州北控
@@ -896,9 +903,165 @@ public class ProductionDailyController {
         productionDaily.setTodayEquipmentSecondaryRunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getTodayEquipmentSecondaryRunningTime(), productionDaily.getTodayEquipmentSecondaryStopTime())));
         productionDaily.setTodayEquipmentThirdRunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getTodayEquipmentThirdRunningTime(), productionDaily.getTodayEquipmentThirdStopTime())));
 
+        // 辅材、能源入库
+        List<Ingredients> ingredientsList1 = ingredientsService.getIngredientsInItemByRange(now,now,Equipment.MedicalCookingSystem);
+        List<Ingredients> ingredientsList2 = ingredientsService.getIngredientsInItemByRange(now,now,Equipment.A2);
+        List<Ingredients> ingredientsList3 = ingredientsService.getIngredientsInItemByRange(now,now,Equipment.B2);
+        List<Ingredients> ingredientsList4 = ingredientsService.getIngredientsInItemByRange(now,now,Equipment.SecondaryTwoCombustionChamber);
+        List<Ingredients> ingredientsList5 = ingredientsService.getIngredientsInItemByRange(now,now,Equipment.ThirdPhasePretreatmentSystem);
+        List<Ingredients> ingredientsList6 = ingredientsService.getIngredientsInItemByRange(now,now,Equipment.Prepare2);
+        List<Ingredients> ingredientsList = new ArrayList<>();
+        ingredientsList.addAll(ingredientsList1);
+        ingredientsList.addAll(ingredientsList2);
+        ingredientsList.addAll(ingredientsList3);
+        ingredientsList.addAll(ingredientsList4);
+        ingredientsList.addAll(ingredientsList5);
+        ingredientsList.addAll(ingredientsList6);
+        float todayInboundAuxiliaryCalcareousLime = 0f;
+        float todayInboundAuxiliaryCommonActivatedCarbon = 0f;
+        float todayInboundAuxiliaryActivatedCarbon = 0f;
+        float todayInboundAuxiliaryActivatedCarbonParticles = 0f;
+        float todayInboundAuxiliaryLye = 0f;
+        float todayInboundAuxiliaryCausticSoda = 0f;
+        float todayInboundAuxiliaryUrea = 0f;
+        float todayInboundAuxiliaryHydrochloricAcid = 0f;
+        float todayInboundAuxiliaryNahco3 = 0f;
+        float todayInboundAuxiliaryFlour = 0f;
+        float todayInboundAuxiliaryDefoamer = 0f;
+        float todayInboundAuxiliaryFlocculant = 0f;
+        float todayInboundAuxiliarySoftWaterReducingAgent = 0f;
+        float todayInboundAuxiliarySoftWaterScaleInhibitor = 0f;
+        float todayInboundAuxiliaryAmmonia = 0f;
+        float todayInboundAuxiliaryWaterReducingAgent = 0f;
+        float todayInboundAuxiliaryWaterScaleInhibitor = 0f;
+        float todayInboundAuxiliaryNaclo = 0f;
+        float todayInboundAuxiliaryDeodorant = 0f;
+        float todayInboundAuxiliarySalt = 0f;
+        float todayInboundAuxiliarySlagBag = 0f;
+        float todayInboundAuxiliaryFlyAshBag = 0f;
+        float todayInboundAuxiliaryMedicalWastesBag = 0f;
+        float todayInboundAuxiliaryMedicalPackingPlasticBag = 0f;
+        float todayInboundAuxiliaryCollectionBox = 0f;
+        float todayInboundAuxiliaryStandardBox = 0f;
+        float todayInboundAuxiliaryWoodenPallets = 0f;
+        float todayInboundAuxiliaryStandardTray_1m = 0f;
+        float todayInboundAuxiliaryStandardTray_1_2m = 0f;
+        float todayInboundAuxiliaryTonBox = 0f;
+        float todayInboundAuxiliarySteam = 0f;
+        float todayInboundAuxiliaryDieselOil = 0f;
+        float todayInboundAuxiliaryNaturalGas = 0f;
+        float todayInboundAuxiliaryElectricQuantity = 0f;
+        float todayInboundAuxiliaryIndustrialWater = 0f;
+        float todayInboundAuxiliaryTapWaterQuantity = 0f;
+        for(Ingredients ingredients : ingredientsList){
+            switch(ingredients.getName()){
+                case "消石灰": todayInboundAuxiliaryCalcareousLime += ingredients.getAmount();break;
+                case "普通活性碳粉": todayInboundAuxiliaryCommonActivatedCarbon += ingredients.getAmount();break;
+                case "高活性碳粉": todayInboundAuxiliaryActivatedCarbon += ingredients.getAmount();break;
+                case "活性炭颗粒": todayInboundAuxiliaryActivatedCarbonParticles += ingredients.getAmount();break;
+                case "碱液": todayInboundAuxiliaryLye += ingredients.getAmount();break;
+                case "片碱": todayInboundAuxiliaryCausticSoda += ingredients.getAmount();break;
+                case "尿素": todayInboundAuxiliaryUrea += ingredients.getAmount();break;
+                case "盐酸": todayInboundAuxiliaryHydrochloricAcid += ingredients.getAmount();break;
+                case "小苏打(NaHCO3)": todayInboundAuxiliaryNahco3 += ingredients.getAmount();break;
+                case "面粉": todayInboundAuxiliaryFlour += ingredients.getAmount();break;
+                case "消泡剂": todayInboundAuxiliaryDefoamer += ingredients.getAmount();break;
+                case "絮凝剂(聚丙烯酰胺)": todayInboundAuxiliaryFlocculant += ingredients.getAmount();break;
+                case "软水用还原剂": todayInboundAuxiliarySoftWaterReducingAgent += ingredients.getAmount();break;
+                case "软水用阻垢剂": todayInboundAuxiliarySoftWaterScaleInhibitor += ingredients.getAmount();break;
+                case "氨水(PH调节剂)": todayInboundAuxiliaryAmmonia += ingredients.getAmount();break;
+                case "污水用还原剂": todayInboundAuxiliaryWaterReducingAgent += ingredients.getAmount();break;
+                case "污水用阻垢剂": todayInboundAuxiliaryWaterScaleInhibitor += ingredients.getAmount();break;
+                case "消毒液": todayInboundAuxiliaryNaclo += ingredients.getAmount();break;
+                case "除臭剂": todayInboundAuxiliaryDeodorant += ingredients.getAmount();break;
+                case "盐": todayInboundAuxiliarySalt += ingredients.getAmount();break;
+                case "炉渣用吨袋": todayInboundAuxiliarySlagBag += ingredients.getAmount();break;
+                case "飞灰用吨袋": todayInboundAuxiliaryFlyAshBag += ingredients.getAmount();break;
+                case "医废用吨袋": todayInboundAuxiliaryMedicalWastesBag += ingredients.getAmount();break;
+                case "医废包装塑料袋": todayInboundAuxiliaryMedicalPackingPlasticBag += ingredients.getAmount();break;
+                case "收集转运箱": todayInboundAuxiliaryCollectionBox += ingredients.getAmount();break;
+                case "标准箱": todayInboundAuxiliaryStandardBox += ingredients.getAmount();break;
+                case "木托盘": todayInboundAuxiliaryWoodenPallets += ingredients.getAmount();break;
+                case "1m标准托盘": todayInboundAuxiliaryStandardTray_1m += ingredients.getAmount();break;
+                case "1.2m标准托盘": todayInboundAuxiliaryStandardTray_1_2m += ingredients.getAmount();break;
+                case "吨箱": todayInboundAuxiliaryTonBox += ingredients.getAmount();break;
+                case "蒸汽": todayInboundAuxiliarySteam += ingredients.getAmount();break;
+                case "柴油": todayInboundAuxiliaryDieselOil += ingredients.getAmount();break;
+                case "天然气": todayInboundAuxiliaryNaturalGas += ingredients.getAmount();break;
+                case "电量": todayInboundAuxiliaryElectricQuantity += ingredients.getAmount();break;
+                case "工业水量": todayInboundAuxiliaryIndustrialWater += ingredients.getAmount();break;
+                case "自来水量": todayInboundAuxiliaryTapWaterQuantity += ingredients.getAmount();break;
+            }
+        }
+        productionDaily.setTodayInboundAuxiliaryCalcareousLime(todayInboundAuxiliaryCalcareousLime);
+        productionDaily.setTodayInboundAuxiliaryCommonActivatedCarbon(todayInboundAuxiliaryCommonActivatedCarbon);
+        productionDaily.setTodayInboundAuxiliaryActivatedCarbon(todayInboundAuxiliaryActivatedCarbon);
+        productionDaily.setTodayInboundAuxiliaryActivatedCarbonParticles(todayInboundAuxiliaryActivatedCarbonParticles);
+        productionDaily.setTodayInboundAuxiliaryLye(todayInboundAuxiliaryLye);
+        productionDaily.setTodayInboundAuxiliaryCausticSoda(todayInboundAuxiliaryCausticSoda);
+        productionDaily.setTodayInboundAuxiliaryUrea(todayInboundAuxiliaryUrea);
+        productionDaily.setTodayInboundAuxiliaryHydrochloricAcid(todayInboundAuxiliaryHydrochloricAcid);
+        productionDaily.setTodayInboundAuxiliaryNahco3(todayInboundAuxiliaryNahco3);
+        productionDaily.setTodayInboundAuxiliaryFlour(todayInboundAuxiliaryFlour);
+        productionDaily.setTodayInboundAuxiliaryDefoamer(todayInboundAuxiliaryDefoamer);
+        productionDaily.setTodayInboundAuxiliaryFlocculant(todayInboundAuxiliaryFlocculant);
+        productionDaily.setTodayInboundAuxiliarySoftWaterReducingAgent(todayInboundAuxiliarySoftWaterReducingAgent);
+        productionDaily.setTodayInboundAuxiliarySoftWaterScaleInhibitor(todayInboundAuxiliarySoftWaterScaleInhibitor);
+        productionDaily.setTodayInboundAuxiliaryAmmonia(todayInboundAuxiliaryAmmonia);
+        productionDaily.setTodayInboundAuxiliaryWaterReducingAgent(todayInboundAuxiliaryWaterReducingAgent);
+        productionDaily.setTodayInboundAuxiliaryWaterScaleInhibitor(todayInboundAuxiliaryWaterScaleInhibitor);
+        productionDaily.setTodayInboundAuxiliaryNaclo(todayInboundAuxiliaryNaclo);
+        productionDaily.setTodayInboundAuxiliaryDeodorant(todayInboundAuxiliaryDeodorant);
+        productionDaily.setTodayInboundAuxiliarySalt(todayInboundAuxiliarySalt);
+        productionDaily.setTodayInboundAuxiliarySlagBag(todayInboundAuxiliarySlagBag);
+        productionDaily.setTodayInboundAuxiliaryFlyAshBag(todayInboundAuxiliaryFlyAshBag);
+        productionDaily.setTodayInboundAuxiliaryMedicalWastesBag(todayInboundAuxiliaryMedicalWastesBag);
+        productionDaily.setTodayInboundAuxiliaryMedicalPackingPlasticBag(todayInboundAuxiliaryMedicalPackingPlasticBag);
+        productionDaily.setTodayInboundAuxiliaryCollectionBox(todayInboundAuxiliaryCollectionBox);
+        productionDaily.setTodayInboundAuxiliaryStandardBox(todayInboundAuxiliaryStandardBox);
+        productionDaily.setTodayInboundAuxiliaryWoodenPallets(todayInboundAuxiliaryWoodenPallets);
+        productionDaily.setTodayInboundAuxiliaryStandardTray_1m(todayInboundAuxiliaryStandardTray_1m);
+        productionDaily.setTodayInboundAuxiliaryStandardTray_1_2m(todayInboundAuxiliaryStandardTray_1_2m);
+        productionDaily.setTodayInboundAuxiliaryTonBox(todayInboundAuxiliaryTonBox);
+        productionDaily.setTodayInboundAuxiliarySteam(todayInboundAuxiliarySteam);
+        productionDaily.setTodayInboundAuxiliaryDieselOil(todayInboundAuxiliaryDieselOil);
+        productionDaily.setTodayInboundAuxiliaryNaturalGas(todayInboundAuxiliaryNaturalGas);
+        productionDaily.setTodayInboundAuxiliaryElectricQuantity(todayInboundAuxiliaryElectricQuantity);
+        productionDaily.setTodayInboundAuxiliaryIndustrialWater(todayInboundAuxiliaryIndustrialWater);
+        productionDaily.setTodayInboundAuxiliaryTapWaterQuantity(todayInboundAuxiliaryTapWaterQuantity);
+
         // 获取当天的危废入库信息
         List<InboundOrderItem> inboundOrderItemList = inboundService.getInboundOrderItemByRange(now, now);
         productionDaily.setInboundOrderItemList(inboundOrderItemList);
+        // 工废
+        float todayInboundWastesBulk = 0f;
+        float todayInboundWastesCrushing = 0f;
+        float todayInboundWastesSludge = 0f;
+        float todayInboundWastesDistillation = 0f;
+        float todayInboundWastesSuspension = 0f;
+        float todayInboundWastesWasteLiquid = 0f;
+        float todayInboundWastesTotal = 0f;         // 工费合计
+        for(InboundOrderItem inboundOrderItem : inboundOrderItemList){
+            switch (inboundOrderItem.getHandleCategory().getName()){
+                case("污泥"): todayInboundWastesSludge += inboundOrderItem.getWastesAmount(); break;
+                case("废液"): todayInboundWastesWasteLiquid += inboundOrderItem.getWastesAmount(); break;
+                case("散装料"): todayInboundWastesBulk += inboundOrderItem.getWastesAmount(); break;
+                case("破碎料"): todayInboundWastesCrushing += inboundOrderItem.getWastesAmount(); break;
+                case("精馏残渣"): todayInboundWastesDistillation += inboundOrderItem.getWastesAmount(); break;
+                case("悬挂连"): todayInboundWastesSuspension += inboundOrderItem.getWastesAmount(); break;
+            }
+            todayInboundWastesTotal += inboundOrderItem.getTotalPrice();
+
+
+        }
+        productionDaily.setTodayInboundWastesBulk(todayInboundWastesBulk);
+        productionDaily.setTodayInboundWastesCrushing(todayInboundWastesCrushing);
+        productionDaily.setTodayInboundWastesSludge(todayInboundWastesSludge);
+        productionDaily.setTodayInboundWastesDistillation(todayInboundWastesDistillation);
+        productionDaily.setTodayInboundWastesSuspension(todayInboundWastesSuspension);
+        productionDaily.setTodayInboundWastesWasteLiquid(todayInboundWastesWasteLiquid);
+        productionDaily.setTodayInboundWastesTotal(todayInboundWastesTotal);
+
         // 获取当天出库的危废
         List<OutboundOrder> outboundOrderA2List = outboundOrderService.getOutBoundByDateAndEquipment(now, "A2");
         productionDaily.setOutboundOrderA2List(outboundOrderA2List);

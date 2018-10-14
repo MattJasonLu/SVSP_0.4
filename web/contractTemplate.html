@@ -27,7 +27,7 @@
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');
 </script>
-<body onload="loadPageContractTemplateList()">
+<body onload="loadPageContractTemplateList();keyLogin()">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -158,7 +158,7 @@
                     <div class="input-group col-md-4 pull-right">
                         <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                         <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="searchModel();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" id="input1" onclick="searchModel();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
                             <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
                         </span>
@@ -201,7 +201,7 @@
                             </div>
                         </div>
                         <div class="form-horizontal col-md-4">
-                            <div class="form-group" style="margin-left: -10px;">
+                            <div class="form-group" style="margin-left: -10px;width: 250px">
                                 <label class="col-sm-3 control-label">年份 </label>
                                 <div class="input-group">
                                     <input type="number" class="input-sm form-control" id="search-beginTime" title="" onkeyup="enterSearch()"/>
@@ -277,7 +277,7 @@
                     </li>
                     <li ><a id="totalPage"></a></li>
                     <li ><a href="#" onclick="inputSwitchPage()">跳转</a></li>
-                    <li ><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;" id="pageNumber"></li>
+                    <li ><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;" id="pageNumber" onkeydown="enterSwitchPage();"></li>
                     <li class="showLi">每页显示:</li>
                     <li class="selectLi">
                         <select id="count" onchange="loadPageContractTemplateList();">

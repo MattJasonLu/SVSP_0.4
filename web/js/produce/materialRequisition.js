@@ -604,6 +604,11 @@ function loadRequisitionList() {
     }
     /*加载出库类别下拉框
      */
+    var data=getCurrentUserData();
+    console.log(data)
+    if(data!=null){
+     $('#creator').val(data.username)
+    }
 
     localStorage.clear();
 }
@@ -911,19 +916,150 @@ function searchMaterialRequisition() {
 
 }
 
-//重置
-function reset() {
-    isSearch=false;
-    $("#senior").find("input").val("");
-    $("#searchContent").val("");
-  //  $("#senior").find("select").get(0).selectedIndex = -1;
-    LoadMaterialRequisitionOrder();
-}
+
 
 //导出
 function exportExcel() {
     console.log("export");
     var name = 't_pl_materialrequisitionorder';
-    var sqlWords = "select * from t_pl_materialrequisitionorder;";
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    var idArry = [];//存放主键
+
+    var items = $("input[name='select']:checked");//判断复选框是否选中
+    if (items.length <= 0) { //如果不勾选
+        var sqlWords = "select * from t_pl_materialrequisitionorder;";
+        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    }
+
+    if (items.length > 0) {
+        $.each(items, function (index, item) {
+            if ($(this).parent().parent().next().next().html().length > 0) {
+                idArry.push($(this).parent().parent().next().next().html());        // 将选中项的编号存到集合中
+            }
+        });
+        var sql = ' in (';
+        if (idArry.length > 0) {
+            for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+                if (i < idArry.length - 1) sql += idArry[i] + ",";
+                else if (i == idArry.length - 1) sql += idArry[i] + ");"
+            }
+            var sqlWords = "select * from t_pl_materialrequisitionorder  where  materialRequisitionId" + sql;
+
+        }
+        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    }
+
+}
+
+
+
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContentAdd').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp==0){
+                searchMaterialRe();
+            }
+            else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchMaterialRe();      //
+            }
+        },600);
+    });
+});
+
+//出库单新增页面粗查询
+function searchMaterialRe() {
+    $('.myclass').each(function () {
+        $(this).show();
+    })
+    //1分页模糊查询
+    array.length=0;//清空数组
+    array1.length=0;
+    array.push($('.myclass'));
+    var text=$.trim($('#searchContentAdd').val());
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            //console.log(this);
+            if(($(this).children('td').text().indexOf(text)==-1)){
+                $(this).hide();
+            }
+            if($(this).children('td').text().indexOf(text)!=-1){
+                array1.push($(this));
+            }
+        });
+    }
+    for(var i=0;i<array1.length;i++){
+        $.each(array1[i],function () {
+            $('#tbody1').append(this) ;
+        });
+    }
+
+    if(text.length<=0){
+        $('.myclass').each(function () {
+            $(this).show();
+        })
+    }
+}
+
+//出库单新增页面高级查询
+function searchMaterialRe1() {
+    array.length=0;//清空数组
+    array1.length=0;//清空数组
+
+    $('.myclass').each(function () {
+        $(this).show();
+        array.push($(this));
+    });
+
+    var text=$.trim($('#searchContentAdd').val());
+
+    var companyName=$.trim($('#search-company').val());
+
+    var wastesName=$.trim($('#search-wastesName').val());
+
+    var wastesCode=$.trim($('#search-wastesCode').val());
+
+    var wastesCategory=$.trim($('#search-wastesCategory').val());
+
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            if(!($(this).children('td').eq(2).text().indexOf(companyName)!=-1&&$(this).children('td').eq(5).text().indexOf(wastesCategory)!=-1
+                &&$(this).children('td').eq(3).text().indexOf(wastesName)!=-1&&$(this).children('td').eq(4).text().indexOf(wastesCode)!=-1&&$(this).children('td').text().indexOf(text)!=-1
+
+            )){
+                $(this).hide();
+            }
+            if($(this).children('td').eq(2).text().indexOf(companyName)!=-1&&$(this).children('td').eq(5).text().indexOf(wastesCategory)!=-1
+                &&$(this).children('td').eq(3).text().indexOf(wastesName)!=-1&&$(this).children('td').eq(4).text().indexOf(wastesCode)!=-1&&$(this).children('td').text().indexOf(text)!=-1
+
+            ){
+                array1.push($(this));
+            }
+        });
+    }
+
+    for(var i=0;i<array1.length;i++){
+        $.each(array1[i],function () {
+            $('#tbody1').append(this) ;
+        });
+    }
+
+}
+
+//新增页面重置
+function reset1() {
+    $('#searchContentAdd').val("");
+    $('#senior :input').val("");
+    $('.myclass').each(function () {
+        $(this).show();
+    })
+}
+
+/**
+ * 回车查询
+ */
+function enterSearch1() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchMaterialRe1();      //
+    }
 }

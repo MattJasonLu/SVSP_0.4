@@ -168,9 +168,9 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-horizontal col-md-4">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label" style="margin-left: 15px">出库日期 </label>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group" style="width: 450px">
+                            <label class="col-sm-3 control-label" style="margin-left: -30px">出库日期 </label>
                             <div class="input-group">
                                 <input type="date" class="input-sm form-control" id="search-storageDate" title="" onkeydown="" onkeyup="enterSearch()"/>
                                 <span class="input-group-addon">-</span>
@@ -267,7 +267,7 @@
                 <li><a id="totalPage"></a></li>
                 <li><a href="#" onclick="inputSwitchPage();">跳转</a></li>
                 <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
-                           id="pageNumber" title=""></li>
+                           id="pageNumber" title="" onkeydown="enterSwitchPage();"></li>
                 <li class="showLi">每页显示:</li>
                 <li class="selectLi">
                     <select id="count" onchange="onLoadSecondary()" title="">

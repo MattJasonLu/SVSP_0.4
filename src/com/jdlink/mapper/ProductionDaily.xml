@@ -281,7 +281,8 @@
         todayDisposalMedicalWastesAfterCooking, todayDisposalMedicalWastesAfterCookingInbound, todayDisposalMedicalWastesAfterCookingSend,
         todayDisposalMedicalWastesErrorNumber, todayDisposalMedicalWastesWetNumber, todayInboundMedicalWastes, todayInboundMedicalWastesCooking,
         todayInboundMedicalWastesErrorNumber, todayInboundMedicalWastesAfterCooking, todayInboundMedicalWastesAfterCookingInbound, todayInboundMedicalWastesWetNumber,
-        todayOutboundMedicalWastes, todayOutboundMedicalWastesDirectDisposal, todayOutboundMedicalWastesCooking, todayOutboundMedicalWastesAfterCooking,
+        todayInboundWastesBulk,todayInboundWastesCrushing,todayInboundWastesSludge,todayInboundWastesDistillation,todayInboundWastesSuspension,todayInboundWastesWasteLiquid,
+        todayInboundWastesTotal,monthInboundWastesDistillation,yearInboundWastesDistillation,todayOutboundMedicalWastes, todayOutboundMedicalWastesDirectDisposal, todayOutboundMedicalWastesCooking, todayOutboundMedicalWastesAfterCooking,
         todayOutboundA2WastesBulk, todayOutboundA2WastesCrushing, todayOutboundA2WastesSludge, todayOutboundA2WastesDistillation, todayOutboundA2WastesSuspension,
         todayOutboundA2WastesWasteLiquid, todayOutboundA2MedicalWastes, todayOutboundPrepare2WastesBulk, todayOutboundPrepare2WastesCrushing, todayOutboundPrepare2WastesSludge,
         todayOutboundPrepare2WastesSuspension, todayOutboundPrepare2WastesWasteLiquid, todayOutboundPrepare2MedicalWastes, todayOutboundB2WastesBulk, todayOutboundB2WastesCrushing,
@@ -311,14 +312,22 @@
         todayEquipmentA2RunningTime, todayEquipmentB2RunningTime, todayEquipmentPrepare2RunningTime, todayEquipmentSecondaryRunningTime, todayEquipmentThirdRunningTime,
         todayEquipmentA2StopTime, todayEquipmentB2StopTime, todayEquipmentPrepare2StopTime, todayEquipmentSecondaryStopTime, todayEquipmentThirdStopTime, todayEquipmentA2RunningRate,
         todayEquipmentB2RunningRate, todayEquipmentPrepare2RunningRate, todayEquipmentSecondaryRunningRate, todayEquipmentThirdRunningRate, todayDisposalSecondarySlag, todayDisposalSecondaryAsh,
-        todayDisposalThirdSlag, todayDisposalThirdAsh, todayInboundSecondWastesSlag, todayInboundSecondWastesAsh, clientId, companyName)
+        todayDisposalThirdSlag, todayDisposalThirdAsh, todayInboundSecondWastesSlag, todayInboundSecondWastesAsh, clientId, companyName,todayInboundAuxiliaryCalcareousLime,
+        todayInboundAuxiliaryCommonActivatedCarbon,todayInboundAuxiliaryActivatedCarbon,todayInboundAuxiliaryActivatedCarbonParticles,todayInboundAuxiliaryLye,todayInboundAuxiliaryCausticSoda,
+        todayInboundAuxiliaryUrea,todayInboundAuxiliaryHydrochloricAcid,todayInboundAuxiliaryNahco3,todayInboundAuxiliaryFlour,todayInboundAuxiliaryDefoamer,todayInboundAuxiliaryFlocculant,
+        todayInboundAuxiliarySoftWaterReducingAgent,todayInboundAuxiliarySoftWaterScaleInhibitor,todayInboundAuxiliaryAmmonia,todayInboundAuxiliaryWaterReducingAgent,todayInboundAuxiliaryWaterScaleInhibitor,
+        todayInboundAuxiliaryNaclo,todayInboundAuxiliaryDeodorant,todayInboundAuxiliarySalt,todayInboundAuxiliarySlagBag,todayInboundAuxiliaryFlyAshBag,todayInboundAuxiliaryMedicalWastesBag,
+        todayInboundAuxiliaryMedicalPackingPlasticBag,todayInboundAuxiliaryCollectionBox,todayInboundAuxiliaryStandardBox,todayInboundAuxiliaryWoodenPallets,todayInboundAuxiliaryStandardTray_1m,
+        todayInboundAuxiliaryStandardTray_1_2m,todayInboundAuxiliaryTonBox,todayInboundAuxiliarySteam,todayInboundAuxiliaryDieselOil,todayInboundAuxiliaryNaturalGas,todayInboundAuxiliaryElectricQuantity,
+        todayInboundAuxiliaryIndustrialWater,todayInboundAuxiliaryTapWaterQuantity)
         VALUES (#{id}, #{date}, #{checkState}, #{todayDisposalMedicalWastes},
         #{todayDisposalMedicalWastesDisposalDirect}, #{todayDisposalMedicalWastesCooking}, #{todayDisposalMedicalWastesAfterCooking},
         #{todayDisposalMedicalWastesAfterCookingInbound}, #{todayDisposalMedicalWastesAfterCookingSend}, #{todayDisposalMedicalWastesErrorNumber},
         #{todayDisposalMedicalWastesWetNumber}, #{todayInboundMedicalWastes}, #{todayInboundMedicalWastesCooking}, #{todayInboundMedicalWastesErrorNumber},
-        #{todayInboundMedicalWastesAfterCooking}, #{todayInboundMedicalWastesAfterCookingInbound}, #{todayInboundMedicalWastesWetNumber}, #{todayOutboundMedicalWastes},
-        #{todayOutboundMedicalWastesDirectDisposal}, #{todayOutboundMedicalWastesCooking}, #{todayOutboundMedicalWastesAfterCooking}, #{todayOutboundA2WastesBulk},
-        #{todayOutboundA2WastesCrushing}, #{todayOutboundA2WastesSludge}, #{todayOutboundA2WastesDistillation}, #{todayOutboundA2WastesSuspension},
+        #{todayInboundMedicalWastesAfterCooking}, #{todayInboundMedicalWastesAfterCookingInbound}, #{todayInboundMedicalWastesWetNumber},#{todayInboundWastesBulk},
+        #{todayInboundWastesCrushing},#{todayInboundWastesSludge},#{todayInboundWastesDistillation},#{todayInboundWastesSuspension},#{todayInboundWastesWasteLiquid},
+        #{todayInboundWastesTotal},#{monthInboundWastesDistillation},#{yearInboundWastesDistillation},#{todayOutboundMedicalWastes},#{todayOutboundMedicalWastesDirectDisposal}, #{todayOutboundMedicalWastesCooking}, #{todayOutboundMedicalWastesAfterCooking},
+        #{todayOutboundA2WastesBulk},#{todayOutboundA2WastesCrushing}, #{todayOutboundA2WastesSludge}, #{todayOutboundA2WastesDistillation}, #{todayOutboundA2WastesSuspension},
         #{todayOutboundWastesWasteLiquid}, #{todayOutboundA2MedicalWastes}, #{todayOutboundPrepare2WastesBulk}, #{todayOutboundPrepare2WastesCrushing},
         #{todayOutboundPrepare2WastesSludge}, #{todayOutboundPrepare2WastesSuspension}, #{todayOutboundPrepare2WastesWasteLiquid}, #{todayOutboundPrepare2MedicalWastes},
         #{todayOutboundB2WastesBulk}, #{todayOutboundB2WastesCrushing}, #{todayOutboundB2WastesSludge}, #{todayOutboundB2WastesDistillation}, #{todayOutboundB2WastesSuspension},
@@ -351,7 +360,14 @@
         #{todayEquipmentA2StopTime}, #{todayEquipmentB2StopTime}, #{todayEquipmentPrepare2StopTime}, #{todayEquipmentSecondaryStopTime}, #{todayEquipmentThirdStopTime},
         #{todayEquipmentA2RunningRate}, #{todayEquipmentB2RunningRate}, #{todayEquipmentPrepare2RunningRate}, #{todayEquipmentSecondaryRunningRate}, #{todayEquipmentThirdRunningRate},
         #{todayDisposalSecondarySlag}, #{todayDisposalSecondaryAsh}, #{todayDisposalThirdSlag}, #{todayDisposalThirdAsh}, #{todayInboundSecondWastesSlag}, #{todayInboundSecondWastesAsh},
-        #{client.clientId}, #{client.companyName});
+        #{client.clientId}, #{client.companyName},#{todayInboundAuxiliaryCalcareousLime},#{todayInboundAuxiliaryCommonActivatedCarbon},#{todayInboundAuxiliaryActivatedCarbon},
+        #{todayInboundAuxiliaryActivatedCarbonParticles},#{todayInboundAuxiliaryLye},#{todayInboundAuxiliaryCausticSoda},#{todayInboundAuxiliaryUrea},#{todayInboundAuxiliaryHydrochloricAcid},
+        #{todayInboundAuxiliaryNahco3},#{todayInboundAuxiliaryFlour},#{todayInboundAuxiliaryDefoamer},#{todayInboundAuxiliaryFlocculant},#{todayInboundAuxiliarySoftWaterReducingAgent},
+        #{todayInboundAuxiliarySoftWaterScaleInhibitor},#{todayInboundAuxiliaryAmmonia},#{todayInboundAuxiliaryWaterReducingAgent},#{todayInboundAuxiliaryWaterScaleInhibitor},
+        #{todayInboundAuxiliaryNaclo},#{todayInboundAuxiliaryDeodorant},#{todayInboundAuxiliarySalt},#{todayInboundAuxiliarySlagBag},#{todayInboundAuxiliaryFlyAshBag},#{todayInboundAuxiliaryMedicalWastesBag},
+        #{todayInboundAuxiliaryMedicalPackingPlasticBag},#{todayInboundAuxiliaryCollectionBox},#{todayInboundAuxiliaryStandardBox},#{todayInboundAuxiliaryWoodenPallets},#{todayInboundAuxiliaryStandardTray_1m},
+        #{todayInboundAuxiliaryStandardTray_1_2m},#{todayInboundAuxiliaryTonBox},#{todayInboundAuxiliarySteam},#{todayInboundAuxiliaryDieselOil},#{todayInboundAuxiliaryNaturalGas},#{todayInboundAuxiliaryElectricQuantity},
+        #{todayInboundAuxiliaryIndustrialWater},#{todayInboundAuxiliaryTapWaterQuantity});
 
         <if test="inboundOrderItemList.size() > 0">
             <foreach collection="inboundOrderItemList" item="inboundOrderItem" index="index">

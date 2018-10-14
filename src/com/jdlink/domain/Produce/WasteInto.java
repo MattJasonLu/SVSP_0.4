@@ -53,6 +53,17 @@ public class WasteInto {
      */
     private Page page;
 
+    //用于导出
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public Page getPage() {
         return page;
     }
