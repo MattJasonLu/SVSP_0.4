@@ -112,7 +112,7 @@
                 <div class="pull-left col-md-6">
                     <a class="btn btn-primary btn-xs" href="newMedicalWastes.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                     <a class="btn btn-primary btn-xs" onclick="importExcelChoose();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                    <!--<a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>-->
+                    <a class="btn btn-primary btn-xs" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     <!--<a class="btn btn-primary btn-xs" onclick="view1()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 属性调整</a>-->
                 </div>
                 <!--查询框-->
@@ -271,7 +271,7 @@
                 <li><a id="totalPage"></a></li>
                 <li><a href="#" onclick="inputSwitchPage();">跳转</a></li>
                 <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
-                           id="pageNumber" title=""></li>
+                           id="pageNumber" title="" onkeydown="enterSwitchPage();"></li>
                 <li class="showLi">每页显示:</li>
                 <li class="selectLi">
                     <select id="count" onchange="loadMedicalWastesList()" title="">

@@ -585,6 +585,7 @@ function loadData() {
         $("#todayOutboundSecondWastesBucket").text(obj.todayOutboundSecondWastesBucket);
         $("#todayInventorySecondWastesBucket").text(obj.todayInventorySecondWastesBucket);
         $("#todayDisposalSecondaryAuxiliaryIndustrialWater").text(obj.todayDisposalSecondaryAuxiliaryIndustrialWater);
+        $("#todayDisposalSecondaryAuxiliaryIndustrialWater").text(obj.todayDisposalSecondaryAuxiliaryIndustrialWater);
         $("#limitDisposalSecondaryAuxiliaryIndustrialWater").text(obj.limitDisposalSecondaryAuxiliaryIndustrialWater);
         $("#todayDisposalSecondaryAuxiliaryWoodenPallets").text(obj.todayDisposalSecondaryAuxiliaryWoodenPallets);
         $("#limitDisposalSecondaryAuxiliaryWoodenPallets").text(obj.limitDisposalSecondaryAuxiliaryWoodenPallets);

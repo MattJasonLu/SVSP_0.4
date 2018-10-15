@@ -1590,13 +1590,13 @@ function exportExcel() {
 //延迟进行计算
 $(document).ready(function () {//页面载入是就会进行加载里面的内容
     var last;
-    $('#input1').keyup(function (event) { //给Input赋予onkeyup事件
+    $("#input[name='count']").keyup(function (event) { //给Input赋予onkeyup事件
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
             if(last-event.timeStamp==0){
                 CalRemainQuantities();
             }
-        },600);
+        },1000);
     });
 });
 
@@ -1607,36 +1607,37 @@ function CalRemainQuantities(item) {
     if(count.length==0){
          count=0;
     }
- //    var residual1=parseFloat($(item).parent().next().html());//最早的配料数量
- //     var residual=residual1-parseFloat(count);
- //
- // if(parseFloat(residual)>0){
- //     $(item).parent().next().html(residual)
- // }
- // else {
- //     alert("配料数量超出最大数额！重新配料")
- // }
-var inboundOrderItemId=$(item).parent().parent().children('td').eq(10).html();
-console.log(inboundOrderItemId)
-$('.myclass').each(function () {
-    if($(this).children('td').eq(12).html()==inboundOrderItemId){
-        var total= parseFloat($(this).children('td').eq(9).html());
-        console.log(total)
-        //剩余数量
-             var residual=total-parseFloat(count);
-        if(parseFloat(residual)>0){
-            $(item).parent().next().html(residual)
-            $(this).children('td').eq(10).html(residual)//同步到上面的剩余数量
-
-        }
-        else {
-            alert("配料数量超出最大数额！重新配料")
-        }
-
-
+    if(　isNaN(count)){
+          alert("请输入数字!")
     }
 
-})
+    if(　!isNaN(count)){
+        var inboundOrderItemId=$(item).parent().parent().children('td').eq(10).html();
+        console.log(inboundOrderItemId)
+        $('.myclass').each(function () {
+            if($(this).children('td').eq(12).html()==inboundOrderItemId){
+                var total= parseFloat($(this).children('td').eq(9).html());
+                console.log(total)
+                //剩余数量
+                var residual=total-parseFloat(count);
+                if(parseFloat(residual)>=0){
+                    $(item).parent().next().html(residual)
+                    $(this).children('td').eq(10).html(residual)//同步到上面的剩余数量
+
+                }
+                else {
+                    alert("配料数量超出最大数额！重新配料")
+                }
+
+
+            }
+
+        })
+    }
+
+
+
+
 
 
 
