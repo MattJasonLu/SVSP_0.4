@@ -105,8 +105,8 @@ public class CompatibilityServiceImpl implements CompatibilityService
     }
 
     @Override
-    public void approvalCompatibility(String compatibilityId) {
-        compatibilityMapper.approvalCompatibility(compatibilityId);
+    public void approvalCompatibility(String compatibilityId,String opinion) {
+        compatibilityMapper.approvalCompatibility(compatibilityId,opinion);
     }
 
     @Override
