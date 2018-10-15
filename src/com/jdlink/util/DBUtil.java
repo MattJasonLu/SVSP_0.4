@@ -71,7 +71,7 @@ public class DBUtil {
             //设置表头信息
             for (int i = 1; i <= colnum; i++) {
              //   String columnName = rsmd.getColumnLabel(i);               // 获取数据库表头别名
-                String columnName = rsmd.getColumnName(i);                  // 获取数据库表头原名
+                String columnName = rsmd.getColumnLabel(i);   //中文表头               // 获取数据库表头原名
          //       System.out.println("别名：" + columnName);
                 // 单元格
                 org.apache.poi.ss.usermodel.Cell cell = row1.createCell(i - 1);
