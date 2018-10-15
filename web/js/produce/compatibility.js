@@ -843,32 +843,64 @@ function totalPage() {
      */
     function approval(item) {
         var compatibilityId = $(item).parent().parent().children('td').eq(2).text();
-        if (confirm("确认审批?")) {
-            $.ajax({
-                type: "POST",
-                url: "approvalCompatibility",                  // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                dataType: "json",
-                data: {'compatibilityId': compatibilityId},
-                //contentType: "application/json; charset=utf-8",
-                success: function (result) {
-                    if (result != undefined && result.status == "success") {
-                        alert(result.message);
-                        window.location.reload();
-                    }
-                    else {
-                        alert(result.message);
-                    }
-                },
-                error: function (result) {
-                    alert("服务器异常！")
+
+        $.ajax({
+            type: "POST",
+            url: "getByCompatibilityId",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'compatibilityId': compatibilityId},
+            //contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result);
+                    //赋值配伍单号
+                    $("#remarks").val(result.data.approvalContent);
+                    $('#compatibilityId').text(result.data.compatibilityId)
                 }
+                else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                alert("服务器异常！")
+            }
 
-            });
-        }
+        });
 
+
+
+        $('#contractInfoForm2').modal('show');
     }
 
+//把按钮功能分出来做这个是审批
+function confirmCompatibilityId() {
+    var compatibilityId=$('#compatibilityId').text();
+    var opinion=$('#remarks').val();
+        $.ajax({
+            type: "POST",
+            url: "approvalCompatibility",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'compatibilityId': compatibilityId,"opinion":opinion},
+            //contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    alert(result.message);
+                    window.location.reload();
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                alert("服务器异常！")
+            }
+
+        });
+
+
+}
 
     /**
      * 设置高级检索的下拉框数据
