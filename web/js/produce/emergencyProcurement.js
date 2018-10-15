@@ -217,7 +217,7 @@ function inputSwitchPage() {
             $("#endPage").removeClass("disabled");
         }
         currentPage = pageNumber;
-        //addPageClass(pageNumber);           // 设置页码标蓝
+        addPageClass(pageNumber);           // 设置页码标蓝
         var page = {};
         page.count = countValue();//可选
         page.pageNumber = pageNumber;

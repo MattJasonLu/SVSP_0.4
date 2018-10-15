@@ -10,7 +10,9 @@
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
+    <script src="js/util.js"></script>
     <script src="js/produce/emergencyProcurement.js"></script>
+
 </head>
 <body onload="getEmProcurement()">
     <!--导航条-->
@@ -267,7 +269,7 @@
                 </li>
                 <li ><a id="totalPage"></a></li>
                 <li ><a href="#" onclick="inputSwitchPage()">跳转</a></li>
-                <li ><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;" id="pageNumber"></li>
+                <li ><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;" id="pageNumber" onkeydown="enterSwitchPage();"></li>
                 <li class="showLi">每页显示:</li>
                 <li class="selectLi">
                     <select id="count" onchange="getEmProcurement();">
