@@ -43,16 +43,6 @@ function deleteEquipment(item) {
     }
 }
 
-/**
- * 重置搜索数据
- */
-function reset() {
-    $("#senior").find("input").val("");
-    $("#searchContent").val("");
-    window.location.reload();
-    //$("#senior").find("select").get(0).selectedIndex = -1;
-}
-
 function getDocNumber(e) {
     return e.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
 }
@@ -358,22 +348,21 @@ function searchData() {
     // 精确查询
     if ($("#senior").is(':visible')) {
         data = {
-            documentNumber: $("#search-documentNumber").val(),//单据号
-            creator: $("#search-creator").val(),//创建人
-            createDept: $("#search-createDept").val(),//创建部门
-            editor: $("#search-editor").val(),//修改人
+            documentNumber: $.trim($("#search-documentNumber").val()),//单据号
+            creator: $.trim($("#search-creator").val()),//创建人
+            createDept: $.trim($("#search-createDept").val()),//创建部门
+            editor: $.trim($("#search-editor").val()),//修改人
             page: page
         };
-        //console.log(data);
     }
     // 模糊查询
     else {
         data = {
-            keyword: $("#searchContent").val(),
+            keyword: $.trim($("#searchContent").val()),
             page: page
         };
-        console.log(data);
     }
+    console.log(data);
     $.ajax({
         type: "POST",                       // 方法类型
         url: "searchEquipment",             // url
@@ -627,7 +616,7 @@ function setDataList(result) {
                     $(this).html(obj.creator);
                     break;
                 case (3):
-                    $(this).html(getTimeStr(obj.dayTime));
+                    $(this).html(getDateStr(obj.dayTime));
                     break;
                 case (4):
                     $(this).html(obj.createDept);
@@ -842,13 +831,23 @@ function downloadModal() {
  * 导出excel
  */
 function exportExcel() {
-    var checkedItems = $("input[type='checkbox']:checked");
-    if (checkedItems.length == 0) alert("未勾选任何项");
-    checkedItems.each(function () {
-        var id = $(this).parent().parent().parent().find("td[name='documentNumber']").text();
-        var name = 't_pl_inboundorder';
-        var sqlWords = "select equipment, runningTime, stopTime, stopResult from t_rp_equipmentchild where documentNumber='" + id + "';";
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    var name = 't_rp_equipment';
+    // 获取勾选项
+    var idArry = [];
+    $.each($("input[name='select']:checked"),function(index,item){
+        idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
     });
-
+    var sqlWords = '';
+    var sql = ' in (';
+    if (idArry.length > 0) {
+        for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+            if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
+            else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
+        }
+        sqlWords = "select * from t_rp_equipment as a join t_rp_equipmentchild as b where a.documentNumber = b.documentNumber and a.documentNumber" + sql;
+    }else {          // 若无勾选项则导出全部
+        sqlWords = "select * from t_rp_equipment as a join t_rp_equipmentchild as b where a.documentNumber = b.documentNumber;";
+    }
+    console.log("sql:"+sqlWords);
+    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
