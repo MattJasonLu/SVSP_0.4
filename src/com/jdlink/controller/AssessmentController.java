@@ -2,14 +2,8 @@ package com.jdlink.controller;
 
 
 import com.jdlink.domain.*;
-import com.jdlink.domain.Produce.Assessment;
-import com.jdlink.domain.Produce.LaboratoryTest;
-import com.jdlink.domain.Produce.WayBill;
-import com.jdlink.domain.Produce.WayBillItem;
-import com.jdlink.service.ClientService;
-import com.jdlink.service.ContractService;
-import com.jdlink.service.LaboratoryTestService;
-import com.jdlink.service.WayBillService;
+import com.jdlink.domain.Produce.*;
+import com.jdlink.service.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +24,9 @@ public class AssessmentController {
     ClientService clientService;
     @Autowired
     WayBillService wayBillService;
+    @Autowired
+    ContractPercentageService contractPercentageService;
+
 
     /**
      * 获取各月份合同数据
@@ -166,21 +163,17 @@ public class AssessmentController {
      * @return
      */
     public double calculateTotalCommission(float wayBillTotalWastesAmount) {
+        // 获取合同提成比例
+        List<ContractPercentage> contractPercentageList = contractPercentageService.list();
         double totalCommission = 0;
-        if (wayBillTotalWastesAmount < 10) {
-            totalCommission = 0;
-        } else if (wayBillTotalWastesAmount >= 10 && wayBillTotalWastesAmount < 50) {
-            totalCommission = wayBillTotalWastesAmount * 0.004;
-        } else if (wayBillTotalWastesAmount >= 50 && wayBillTotalWastesAmount < 200) {
-            totalCommission = wayBillTotalWastesAmount * 0.01;
-        } else if (wayBillTotalWastesAmount >= 200 && wayBillTotalWastesAmount < 500) {
-            totalCommission = wayBillTotalWastesAmount * 0.013;
-        } else if (wayBillTotalWastesAmount >= 500 && wayBillTotalWastesAmount < 2000) {
-            totalCommission = wayBillTotalWastesAmount * 0.02;
-        } else if (wayBillTotalWastesAmount >= 2000 && wayBillTotalWastesAmount < 5000) {
-            totalCommission = wayBillTotalWastesAmount * 0.025;
-        } else if (wayBillTotalWastesAmount >= 5000) {
-            totalCommission = wayBillTotalWastesAmount * 0.035;
+        for(ContractPercentage contractPercentage : contractPercentageList) {
+           if(contractPercentage.getContractAmountMax() == 0){
+                    if(contractPercentage.getContractAmountMin() <= wayBillTotalWastesAmount)
+                        totalCommission = wayBillTotalWastesAmount * contractPercentage.getCommissionRatio();
+           }else {
+               if(contractPercentage.getContractAmountMin() <= wayBillTotalWastesAmount && wayBillTotalWastesAmount < contractPercentage.getContractAmountMax())
+                   totalCommission = wayBillTotalWastesAmount * contractPercentage.getCommissionRatio();
+           }
         }
         return totalCommission;
     }
