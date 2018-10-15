@@ -65,8 +65,8 @@
         update t_pr_pw set checkState='ToExamine',nowTime=NOW() where compatibilityId=#{compatibilityId}
     </update>
 
-    <update id="approvalCompatibility" parameterType="String">
-        update t_pr_pw set checkState='Approval',nowTime=NOW() where compatibilityId=#{compatibilityId}
+    <update id="approvalCompatibility" >
+        update t_pr_pw set checkState='Approval',nowTime=NOW(),approvalContent=#{1} where compatibilityId=#{0} ;
     </update>
 
     <select id="search" parameterType="Compatibility" resultMap="CompatibilityRM">

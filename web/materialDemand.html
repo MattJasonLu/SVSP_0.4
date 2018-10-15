@@ -249,24 +249,29 @@
                 </div>
                 <div class="row">
                     <div class="form-horizontal col-md-6">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label" style="margin-left: -95px">周生产计划量范围 </label>
-                            <div class="input-group">
-                                <input type="number" class="input-sm form-control" id="search-weeklyDemandBeg" title="" onkeydown="" onkeyup="enterSearch()"/>
+                        <div class="form-group form-inline">
+                            <label class="col-sm-3 control-label" style="margin-left: -35px">周生产计划量范围 </label>
+                            <div class="input-group ">
+                                <input type="number" class="input-sm form-control" id="search-weeklyDemandBeg" title="" onkeydown="" autocomplete="off"  onkeyup="enterSearch()" />
                                 <span class="input-group-addon">-</span>
-                                <input type="number" class="input-sm form-control" id="search-weeklyDemandEnd" title="" onkeydown="" onkeyup="enterSearch()"/>
+                                <input type="number" class="input-sm form-control" id="search-weeklyDemandEnd" title="" onkeydown="" autocomplete="off"  onkeyup="enterSearch()"/>
+                                <!--<div class="fl "><input type="text" class="input-sm form-control" autocomplete="off" style="color:#ccc" value="¥"></div>-->
+                                <!--&lt;!&ndash;<em>-</em>&ndash;&gt;-->
+                                <!--<span class="input-group-addon">-</span>-->
+                                <!--<div class="fl"><input type="text" class="input-sm form-control" autocomplete="off" style="color:#ccc" value="¥"></div>-->
+
                             </div>
                         </div>
 
                     </div>
 
                     <div class="form-horizontal col-md-6">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label" style="margin-left: -95px">目前库存量范围 </label>
+                        <div class="form-group form-inline">
+                            <label class="col-sm-3 control-label" style="margin-left: -20px">目前库存量范围 </label>
                             <div class="input-group">
-                                <input type="number" class="input-sm form-control" id="search-currentInventoryBeg" title="" onkeydown="" onkeyup="enterSearch()"/>
+                                <input type="number" class="input-sm form-control" id="search-currentInventoryBeg" title="" onkeydown="" autocomplete="off" onkeyup="enterSearch()" style="width: 150px"/>
                                 <span class="input-group-addon">-</span>
-                                <input type="number" class="input-sm form-control" id="search-currentInventoryEnd" title="" onkeydown="" onkeyup="enterSearch()"/>
+                                <input type="number" class="input-sm form-control" id="search-currentInventoryEnd" title="" onkeydown=""  autocomplete="off" onkeyup="enterSearch()"/>
                             </div>
                         </div>
 
@@ -275,8 +280,8 @@
                 </div>
                 <div class="row">
                     <div class="form-horizontal col-md-6">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label" style="margin-left: -95px">安全库存量范围 </label>
+                        <div class="form-group form-inline">
+                            <label class="col-sm-3 control-label" style="margin-left: -35px">安全库存量范围 </label>
                             <div class="input-group">
                                 <input type="number" class="input-sm form-control" id="search-safetyBeg" title="" onkeydown="" onkeyup="enterSearch()"/>
                                 <span class="input-group-addon">-</span>
@@ -287,8 +292,8 @@
                     </div>
 
                     <div class="form-horizontal col-md-6">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label" style="margin-left: -95px">市场采购量范围 </label>
+                        <div class="form-group form-inline">
+                            <label class="col-sm-3 control-label" style="margin-left: -20px">市场采购量范围 </label>
                             <div class="input-group">
                                 <input type="number" class="input-sm form-control" id="search-marketPurchasesBeg" title="" onkeydown="" onkeyup="enterSearch()"/>
                                 <span class="input-group-addon">-</span>

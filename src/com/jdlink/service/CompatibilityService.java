@@ -26,7 +26,7 @@ public interface CompatibilityService {
     List<Compatibility>getWeekPlanList(Page page);
     List<CompatibilityItem>getWeekById(String compatibilityId);
     void submit(String compatibilityId);
-    void approvalCompatibility(String compatibilityId);
+    void approvalCompatibility(String compatibilityId,String opinion);
     void  updateCompatibilityItem(CompatibilityItem compatibilityItem);
     void updateCompatibility(Compatibility compatibility);
     List<Compatibility> searchCompatibility(Compatibility compatibility);

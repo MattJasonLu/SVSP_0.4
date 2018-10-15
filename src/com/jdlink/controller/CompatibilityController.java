@@ -378,12 +378,12 @@ public String importCompatibilityExcel(MultipartFile excelFile){
     //审批配伍周计划
     @RequestMapping("approvalCompatibility")
     @ResponseBody
-    public String approvalCompatibility(String compatibilityId){
+    public String approvalCompatibility(String compatibilityId,String opinion){
 
         JSONObject res=new JSONObject();
 
         try {
-            compatibilityService.approvalCompatibility(compatibilityId);
+            compatibilityService.approvalCompatibility(compatibilityId,opinion);
             res.put("status", "success");
             res.put("message", "审批成功!");
         }
@@ -823,6 +823,31 @@ public String importCompatibilityExcel(MultipartFile excelFile){
 
 
         return res.toString();
+    }
+
+    //根据配伍单号查询配伍信息
+    @RequestMapping("getByCompatibilityId")
+    @ResponseBody
+    public String getByCompatibilityId(String compatibilityId){
+        JSONObject res=new JSONObject();
+
+        try {
+            Compatibility compatibility=compatibilityService.getByCompatibilityId(compatibilityId);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", compatibility);
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+
+
+
+        return res.toString();
+
     }
 
     //获取最后一位四位编号
