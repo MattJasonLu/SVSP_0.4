@@ -582,7 +582,13 @@ function setMedicalWastesList(result) {
                 case (14):
                     $(this).html(obj.wetNumber);
                     break;
+                    //处置设备
                 case (15):
+                    if(obj.equipment!=null){
+                        $(this).html(obj.equipment.name);
+                    }
+                    break;
+                case (16):
                     if(obj.checkState!=null){
                         $(this).html(obj.checkState.name);
                     }
