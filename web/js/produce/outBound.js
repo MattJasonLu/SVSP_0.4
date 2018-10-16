@@ -839,7 +839,7 @@ function exportExcel() {
     var items = $("input[name='select']:checked");//判断复选框是否选中
 
     if (items.length <= 0) { //如果不勾选
-        var sqlWords = "select * from t_pl_outboundorder join t_pr_laboratorytest where t_pl_outboundorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber;";
+        var sqlWords = "select t_pl_outboundorder.outboundOrderId 出库单号,t_pl_outboundorder.outboundDate 出库日期 ,t_pl_outboundorder.creator  创建人,t_pl_outboundorder.auditor 审核人, t_pl_outboundorder.outboundNumber   出库数量,t_pl_outboundorder.handelCategory 进料方式, t_pl_outboundorder.processWay 处置方式,t_pl_outboundorder.wasteCategory 危废类别,t_pl_outboundorder.wastesCode 危废编码,t_pl_outboundorder.guardian 保管员,  t_pl_outboundorder.unitPriceTax 单价,  t_pl_outboundorder.packageType 包装形式,t_pl_outboundorder.formType   物质形态  from t_pl_outboundorder join t_pr_laboratorytest where t_pl_outboundorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber;";
         window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
     }
 
@@ -856,7 +856,7 @@ function exportExcel() {
                 if (i < idArry.length - 1) sql += idArry[i] + ",";
                 else if (i == idArry.length - 1) sql += idArry[i] + ");"
             }
-            var sqlWords = "select * from t_pl_outboundorder join t_pr_laboratorytest where t_pl_outboundorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber and outboundOrderId" + sql;
+            var sqlWords = "select t_pl_outboundorder.outboundOrderId 出库单号,t_pl_outboundorder.outboundDate 出库日期 ,t_pl_outboundorder.creator  创建人,t_pl_outboundorder.auditor 审核人, t_pl_outboundorder.outboundNumber   出库数量,t_pl_outboundorder.handelCategory 进料方式, t_pl_outboundorder.processWay 处置方式,t_pl_outboundorder.wasteCategory 危废类别,t_pl_outboundorder.wastesCode 危废编码,t_pl_outboundorder.guardian 保管员,  t_pl_outboundorder.unitPriceTax 单价,  t_pl_outboundorder.packageType 包装形式,t_pl_outboundorder.formType   物质形态 from t_pl_outboundorder join t_pr_laboratorytest where t_pl_outboundorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber and outboundOrderId" + sql;
 
         }
         window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
@@ -910,42 +910,50 @@ function view1(item){
                 }
                 // //包装形式
                 $('#packageType').text("");
-                //热值/KCal/Kg最大
-                $('#kCalMax').text(result.data[0].laboratoryTest.heatMaximum);
-                $('#kCalAvg').text(result.data[0].laboratoryTest.heatAverage);
-                $('#kCalMin').text(result.data[0].laboratoryTest.heatMinimum);
-                // //PH
-                $('#phMax').text(result.data[0].laboratoryTest.phMaximum);
-                $('#phAvg').text(result.data[0].laboratoryTest.phAverage);
-                $('#phMin').text(result.data[0].laboratoryTest.phMaximum);
-                //灰分/%
-                $('#ashMax').text(result.data[0].laboratoryTest.ashMaximum);
-                $('#ashAvg').text(result.data[0].laboratoryTest.ashAverage);
-                $('#ashMin').text(result.data[0].laboratoryTest.ashMinimum);
-                //水分
-                $('#waterMax').text(result.data[0].laboratoryTest.waterContentMaximum);
-                $('#waterAvg').text(result.data[0].laboratoryTest.waterContentAverage);
-                $('#waterMin').text(result.data[0].laboratoryTest.waterContentMinimum);
-                //硫含量
-                $('#sMax').text(result.data[0].laboratoryTest.sulfurContentMaximum);
-                $('#sAvg').text(result.data[0].laboratoryTest.sulfurContentAverage);
-                $('#sMin').text(result.data[0].laboratoryTest.sulfurContentMinimum);
-                //氯含量
-                $('#clMax').text(result.data[0].laboratoryTest.chlorineContentMaximum);
-                $('#clAvg').text(result.data[0].laboratoryTest.chlorineContentAverage);
-                $('#clMin').text(result.data[0].laboratoryTest.chlorineContentMinimum);
-                //磷含量
-                $('#pMax').text(result.data[0].laboratoryTest.phosphorusContentMaximum);
-                $('#pAvg').text(result.data[0].laboratoryTest.phosphorusContentAverage);
-                $('#pMin').text(result.data[0].laboratoryTest.phosphorusContentMinimum);
-                //氟含量
-                $('#fMax').text(result.data[0].laboratoryTest.fluorineContentMaximum);
-                $('#fAvg').text(result.data[0].laboratoryTest.fluorineContentAverage);
-                $('#fMin').text(result.data[0].laboratoryTest.fluorineContentMinimum);
-                //处理方式
-                $('#processingMethod').text(result.data[0].processWay.name);
-                //进料方式
-                $('#handelCategory').text(result.data[0].handelCategory.name);
+                if(result.data[0].laboratoryTest!=null) {
+
+
+                    //热值/KCal/Kg最大
+                    $('#kCalMax').text(result.data[0].laboratoryTest.heatMaximum);
+                    $('#kCalAvg').text(result.data[0].laboratoryTest.heatAverage);
+                    $('#kCalMin').text(result.data[0].laboratoryTest.heatMinimum);
+                    // //PH
+                    $('#phMax').text(result.data[0].laboratoryTest.phMaximum);
+                    $('#phAvg').text(result.data[0].laboratoryTest.phAverage);
+                    $('#phMin').text(result.data[0].laboratoryTest.phMaximum);
+                    //灰分/%
+                    $('#ashMax').text(result.data[0].laboratoryTest.ashMaximum);
+                    $('#ashAvg').text(result.data[0].laboratoryTest.ashAverage);
+                    $('#ashMin').text(result.data[0].laboratoryTest.ashMinimum);
+                    //水分
+                    $('#waterMax').text(result.data[0].laboratoryTest.waterContentMaximum);
+                    $('#waterAvg').text(result.data[0].laboratoryTest.waterContentAverage);
+                    $('#waterMin').text(result.data[0].laboratoryTest.waterContentMinimum);
+                    //硫含量
+                    $('#sMax').text(result.data[0].laboratoryTest.sulfurContentMaximum);
+                    $('#sAvg').text(result.data[0].laboratoryTest.sulfurContentAverage);
+                    $('#sMin').text(result.data[0].laboratoryTest.sulfurContentMinimum);
+                    //氯含量
+                    $('#clMax').text(result.data[0].laboratoryTest.chlorineContentMaximum);
+                    $('#clAvg').text(result.data[0].laboratoryTest.chlorineContentAverage);
+                    $('#clMin').text(result.data[0].laboratoryTest.chlorineContentMinimum);
+                    //磷含量
+                    $('#pMax').text(result.data[0].laboratoryTest.phosphorusContentMaximum);
+                    $('#pAvg').text(result.data[0].laboratoryTest.phosphorusContentAverage);
+                    $('#pMin').text(result.data[0].laboratoryTest.phosphorusContentMinimum);
+                    //氟含量
+                    $('#fMax').text(result.data[0].laboratoryTest.fluorineContentMaximum);
+                    $('#fAvg').text(result.data[0].laboratoryTest.fluorineContentAverage);
+                    $('#fMin').text(result.data[0].laboratoryTest.fluorineContentMinimum);
+                }
+                if(result.data[0].processWay!=null){
+                    //处理方式
+                    $('#processingMethod').text(result.data[0].processWay.name);
+                }
+                if(result.data[0].handelCategory!=null){
+                    //进料方式
+                    $('#handelCategory').text(result.data[0].handelCategory.name);
+                }
                 //入库单号
                 $("#outboundOrderId").val(result.data[0].outboundOrderId);
                 //处置设备

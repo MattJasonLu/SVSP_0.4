@@ -611,7 +611,7 @@ function exportExcel() {
     var items = $("input[name='select']:checked");//判断复选框是否选中
 
     if (items.length <= 0) { //如果不勾选
-        var sqlWords = "select * from  t_pl_secondaryinto;";
+        var sqlWords = "select id 序号 ,wastesCode 危废编码,handleCategory 进料方式,processWay 处置方式,packageType 包装类型,remarks 备注,wastesCategory 危废类别 from  t_pl_secondaryinto;";
         window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
     }
 
@@ -628,7 +628,7 @@ function exportExcel() {
                 if (i < idArry.length - 1) sql += idArry[i] + ",";
                 else if (i == idArry.length - 1) sql += idArry[i] + ");"
             }
-            var sqlWords = "select * from  t_pl_secondaryinto where id"+sql;
+            var sqlWords = "select id 序号 ,wastesCode 危废编码,handleCategory 进料方式,processWay 处置方式,packageType 包装类型,remarks 备注,wastesCategory 危废类别 from  t_pl_secondaryinto where id"+sql;
 
         }
         window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);

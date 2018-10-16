@@ -764,7 +764,7 @@ function exportExcel() {
     var idArry = [];//存放主键
     var items = $("input[name='select']:checked");//判断复选框是否选中
     if (items.length <= 0) { //如果不勾选
-        var sqlWords = "select * from t_pl_wasteinventory left join t_pr_laboratorytest on t_pl_wasteinventory.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber;";
+        var sqlWords = "select t_pl_wasteinventory.inboundOrderId 入库单号,t_pl_wasteinventory.wastesCategory 危废类别,t_pl_wasteinventory.totalPrice 总价,t_pl_wasteinventory.departmentId 部门,t_pl_wasteinventory.createtor 创建人,t_pl_wasteinventory.creatorDate 创建日期,t_pl_wasteinventory.actualCount 实际数量, t_pl_wasteinventory.wastesCode 危废编码,t_pl_wasteinventory.processWay 处置方式,t_pl_wasteinventory.handleCategory 进料方式,t_pl_wasteinventory.formType 物质形态, t_pl_wasteinventory.packageType 包装方式, t_pl_wasteinventory.wastesName 危废名称          from t_pl_wasteinventory left join t_pr_laboratorytest on t_pl_wasteinventory.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber;";
         window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
     }
 

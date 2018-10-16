@@ -554,7 +554,7 @@ public class LaboratoryTestController {
     }
 
     private void makeLaboratoryTestExcel(LaboratoryTest laboratoryTest) {
-        String filePath = "Files/Templates/生产日报模板.xlsx";
+        String filePath = "Files/Templates/化验单导入模板.xlsx";
         try {
             FileInputStream excelFileInputStream = new FileInputStream(filePath);
             XSSFWorkbook xwb = new XSSFWorkbook(excelFileInputStream);
@@ -579,7 +579,7 @@ public class LaboratoryTestController {
                 else cell.setCellValue("");
             }
             // 写入文件
-            FileOutputStream excelFileOutPutStream = new FileOutputStream("Files/Out/生产日报导出文件.xlsx");//写数据到这个路径上		workbook.write(excelFileOutPutStream);		excelFileOutPutStream.flush();		excelFileOutPutStream.close();
+            FileOutputStream excelFileOutPutStream = new FileOutputStream("Files/Out/化验单导出文件.xlsx");//写数据到这个路径上		workbook.write(excelFileOutPutStream);		excelFileOutPutStream.flush();		excelFileOutPutStream.close();
             xwb.write(excelFileOutPutStream);
             excelFileOutPutStream.flush();
             excelFileOutPutStream.close();

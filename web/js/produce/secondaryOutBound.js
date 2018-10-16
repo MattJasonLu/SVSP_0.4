@@ -1102,7 +1102,7 @@ function exportExcel() {
     var idArry = [];//存放主键
     var items = $("input[name='select']:checked");//判断复选框是否选中
     if (items.length <= 0) { //如果不勾选
-        var sqlWords = "select * from t_pl_outboundorder  join t_pr_laboratorytest where t_pl_outboundorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber and t_pl_outboundorder.boundType='SecondaryOutbound';";
+        var sqlWords = "select t_pl_outboundorder.outboundOrderId 出库单号,t_pl_outboundorder.outboundDate 出库日期 ,t_pl_outboundorder.creator  创建人,t_pl_outboundorder.auditor 审核人, t_pl_outboundorder.outboundNumber   出库数量,t_pl_outboundorder.handelCategory 进料方式, t_pl_outboundorder.processWay 处置方式,t_pl_outboundorder.wasteCategory 危废类别,t_pl_outboundorder.wastesCode 危废编码,t_pl_outboundorder.guardian 保管员,  t_pl_outboundorder.unitPriceTax 单价,  t_pl_outboundorder.packageType 包装形式,t_pl_outboundorder.formType   物质形态 from t_pl_outboundorder  join t_pr_laboratorytest where t_pl_outboundorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber and t_pl_outboundorder.boundType='SecondaryOutbound';";
         window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
     }
 
@@ -1118,7 +1118,7 @@ function exportExcel() {
                 if (i < idArry.length - 1) sql += idArry[i] + ",";
                 else if (i == idArry.length - 1) sql += idArry[i] + ");"
             }
-            var sqlWords = "select * from t_pl_outboundorder  join t_pr_laboratorytest where t_pl_outboundorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber and t_pl_outboundorder.boundType='SecondaryOutbound' and outboundOrderId"+sql;
+            var sqlWords = "select t_pl_outboundorder.outboundOrderId 出库单号,t_pl_outboundorder.outboundDate 出库日期 ,t_pl_outboundorder.creator  创建人,t_pl_outboundorder.auditor 审核人, t_pl_outboundorder.outboundNumber   出库数量,t_pl_outboundorder.handelCategory 进料方式, t_pl_outboundorder.processWay 处置方式,t_pl_outboundorder.wasteCategory 危废类别,t_pl_outboundorder.wastesCode 危废编码,t_pl_outboundorder.guardian 保管员,  t_pl_outboundorder.unitPriceTax 单价,  t_pl_outboundorder.packageType 包装形式,t_pl_outboundorder.formType   物质形态 from t_pl_outboundorder  join t_pr_laboratorytest where t_pl_outboundorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber and t_pl_outboundorder.boundType='SecondaryOutbound' and outboundOrderId"+sql;
 
         }
         window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);

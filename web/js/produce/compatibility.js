@@ -116,7 +116,7 @@ function downloadModal() {
     var idArry = [];//存放主键
     var items = $("input[name='select']:checked");//判断复选框是否选中
     if (items.length <= 0) { //如果不勾选
-        var sqlWords = "select * from t_pr_pw;";
+        var sqlWords = "select  compatibilityId as '配伍编号' ,totalDailyAmount  as '比例总计',calorificAvg 热值平均,ashAvg 灰分平均,waterAvg 水分平均,clAvg 氯平均,sAvg 硫平均,phAvg 酸碱度平均,weeklyDemandTotalAggregate 周产量总和,fAvg 氟平均,pAvg 磷平均 from t_pr_pw;";
         window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
     }
     if (items.length > 0) {
@@ -131,7 +131,7 @@ function downloadModal() {
                 if (i < idArry.length - 1) sql += idArry[i] + ",";
                 else if (i == idArry.length - 1) sql += idArry[i] + ");"
             }
-            var sqlWords = "select  *  from t_pr_pw where  compatibilityId" + sql;
+            var sqlWords = "select  compatibilityId as '配伍编号' ,totalDailyAmount  as '比例总计',calorificAvg 热值平均,ashAvg 灰分平均,waterAvg 水分平均,clAvg 氯平均,sAvg 硫平均,phAvg 酸碱度平均,weeklyDemandTotalAggregate 周产量总和,fAvg 氟平均,pAvg 磷平均  from t_pr_pw where  compatibilityId" + sql;
 
         }
         window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);

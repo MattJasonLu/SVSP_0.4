@@ -239,7 +239,7 @@ public class EquipmentController {
     }
 
     /**
-     * 删除设备
+     * 删除设备(通用)
      */
     @RequestMapping("deleteEquipment")
     @ResponseBody

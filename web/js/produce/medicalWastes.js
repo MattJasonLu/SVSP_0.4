@@ -582,7 +582,13 @@ function setMedicalWastesList(result) {
                 case (14):
                     $(this).html(obj.wetNumber);
                     break;
+                    //处置设备
                 case (15):
+                    if(obj.equipment!=null){
+                        $(this).html(obj.equipment.name);
+                    }
+                    break;
+                case (16):
                     if(obj.checkState!=null){
                         $(this).html(obj.checkState.name);
                     }
@@ -847,7 +853,7 @@ function exportExcel() {
     var idArry = [];//存放主键
     var items = $("input[name='select']:checked");//判断复选框是否选中
     if (items.length <= 0) { //如果不勾选
-        var sqlWords = "select * from t_pl_medicalwastes;";
+        var sqlWords = "select medicalWastesId 序号,department 部门,adjustName 修改人,adjustDate 修改日期,thisMonthWastes 本日进厂危废, directDisposal 本日直接转外处置量,cookingWastes 本日蒸煮医废,afterCookingNumber 蒸煮后重量,afterCookingInbound 蒸煮后入库量,thisMonthSendCooking 本日蒸煮后外送量,errorNumber 误差量,wetNumber 水分含量,equipment 处置设备     from t_pl_medicalwastes;";
 
         window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 
@@ -865,7 +871,7 @@ function exportExcel() {
                 if (i < idArry.length - 1) sql += idArry[i] + ",";
                 else if (i == idArry.length - 1) sql += idArry[i] + ");"
             }
-            var sqlWords = "select * from t_pl_medicalwastes where medicalWastesId"+sql;
+            var sqlWords = "select medicalWastesId 序号,department 部门,adjustName 修改人,adjustDate 修改日期,thisMonthWastes 本日进厂危废, directDisposal 本日直接转外处置量,cookingWastes 本日蒸煮医废,afterCookingNumber 蒸煮后重量,afterCookingInbound 蒸煮后入库量,thisMonthSendCooking 本日蒸煮后外送量,errorNumber 误差量,wetNumber 水分含量,equipment 处置设备 from t_pl_medicalwastes where medicalWastesId"+sql;
 
 
         }
