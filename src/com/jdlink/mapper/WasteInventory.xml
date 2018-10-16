@@ -293,4 +293,10 @@
     <select id="updateInventoryCount" >
         update t_pl_wasteinventory set actualCount=actualCount-#{0},leftNumeber=(actualCount-#{0})  where inboundOrderItemId=#{1};
     </select>
+
+
+    <!--根据入库单的明细 查找用户编号以及危废的信息-->
+    <select id="declareGenerationById" parameterType="String" resultMap="InboundOrderItemIdRM">
+        select  * from t_pl_wasteinventory where inboundOrderItemId=#{inboundOrderItemId}
+    </select>
 </mapper>

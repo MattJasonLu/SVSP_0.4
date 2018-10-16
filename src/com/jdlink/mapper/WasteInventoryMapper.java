@@ -35,4 +35,7 @@ public interface WasteInventoryMapper {
 
    void  updateInventoryCount(Float count,String inboundOrderItemId );
 
+    WasteInventory declareGenerationById(String inboundOrderItemId);
+
+
 }

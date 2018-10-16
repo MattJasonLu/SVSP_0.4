@@ -144,5 +144,10 @@ public class WasteInventoryServiceImpl implements WasteInventoryService {
         return wasteInventoryMapper.list3();
     }
 
+    @Override
+    public WasteInventory declareGenerationById(String inboundOrderItemId) {
+        return wasteInventoryMapper.declareGenerationById(inboundOrderItemId);
+    }
+
 
 }

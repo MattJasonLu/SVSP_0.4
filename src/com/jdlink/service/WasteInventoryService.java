@@ -33,4 +33,5 @@ public interface WasteInventoryService {
     List<Date> getNewestInBoundDateSec();
     void  updateInventoryCount(Float count,String inboundOrderItemId );
     List<WasteInventory> list3();
+    WasteInventory declareGenerationById(String inboundOrderItemId);
 }

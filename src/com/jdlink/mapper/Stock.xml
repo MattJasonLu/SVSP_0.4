@@ -29,7 +29,7 @@
     </select>
     <insert id="add" parameterType="Stock">
 insert into t_pr_stock(stockId,proContactName,proTelephone,transport,transportTelephone,plateNumber,selfEmployed,nowTime,checkState,proWasteCompany,clientId,supplierId)
-values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTelephone},#{plateNumber},#{selfEmployed},NOW(),#{checkState},#{proWasteCompany},#{client.clientId},#{supplier.supplierId});
+values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTelephone},#{plateNumber},#{selfEmployed},NOW(),'ToSubmit',#{proWasteCompany},#{client.clientId},#{supplier.supplierId});
 </insert>
     <select id="getStockIdList" resultType="String">
         select  stockId from  t_pr_stock order by (CAST(stockId AS SIGNED)) desc;
