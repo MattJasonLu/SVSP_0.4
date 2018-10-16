@@ -15,7 +15,12 @@
         <collection property="wastesList" select="getWastes" column="stockId" ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
         <collection property="client" column="clientId" select="getClient"></collection>
         <collection property="supplier" column="supplierId" select="getSupplier"></collection>
+        <collection property="stockItemList" column="stockId" select="getStockItem"></collection>
+
     </resultMap>
+    <select id="getStockItem" resultType="StockItem" parameterType="String">
+        select  * from t_pr_stockitem where stockId=#{stockId}
+    </select>
     <select id="getSupplier" resultType="Supplier">
         select * from t_supplier where supplierId=#{supplierId};
     </select>
@@ -25,12 +30,9 @@
     <insert id="add" parameterType="Stock">
 insert into t_pr_stock(stockId,proContactName,proTelephone,transport,transportTelephone,plateNumber,selfEmployed,nowTime,checkState,proWasteCompany,clientId,supplierId)
 values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTelephone},#{plateNumber},#{selfEmployed},NOW(),#{checkState},#{proWasteCompany},#{client.clientId},#{supplier.supplierId});
-        <foreach collection="wastesList"  item="wastes" index="index">
-       insert into t_wastes(id,name,code,wasteAmount,component,remarks,stockId) values (#{wastes.id},#{wastes.name},#{wastes.code},#{wastes.wasteAmount},#{wastes.component},#{wastes.remarks},#{stockId});
-        </foreach>
 </insert>
     <select id="getStockIdList" resultType="String">
-        select  stockId from  t_pr_stock;
+        select  stockId from  t_pr_stock order by (CAST(stockId AS SIGNED)) desc;
     </select>
     <select id="list" resultMap="StockRM">
     select * from t_pr_stock order by nowTime desc
@@ -157,4 +159,18 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
     <update id="time1" parameterType="Stock">
         update t_pr_stock set nowTime=NOW() where stockId=#{stockId};
     </update>
+
+    <!--添加库存申报-->
+    <insert id="addStockItem" parameterType="StockItem">
+        insert into t_pr_stockitem(stockId, wastesName, wastesCode, number, content) values
+        (#{stockId},#{wastesName},#{wastesCode},#{number},#{content})
+    </insert>
+
+    <!--更新库存申报明细-->
+    <update id="updateStockItem" parameterType="StockItem">
+        update t_pr_stockitem set wastesName=#{wastesName},wastesCode=#{wastesCode},
+        number=#{number},content=#{content} where id=#{id};
+
+    </update>
+
  </mapper>

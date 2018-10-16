@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.Stock;
+import com.jdlink.domain.Produce.StockItem;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.StockService;
 import com.jdlink.service.SupplierService;
@@ -28,7 +29,7 @@ public class StockController {
     ClientService clientService;
     @Autowired
     SupplierService supplierService;
-    //添加申报信息
+    //添加申报信息==>主表
     @RequestMapping("addStock")
     @ResponseBody
     public String addStock(@RequestBody Stock stock) {
@@ -51,14 +52,46 @@ public class StockController {
             stock.setStockId(newId);
         }
         stock.setCheckState(CheckState.ToSubmit);//设置为待提交
-        // 设置每个危废的编码,唯一
-        for (Wastes wastesList : stock.getWastesList()) {
-            wastesList.setId(RandomUtil.getRandomEightNumber());
-            wastesList.setStockId(stock.getStockId());
-        }
         stockService.add(stock);
         return res.toString();
     }
+
+    //添加申报信息==>明细
+    @RequestMapping("addStockItem")
+    @ResponseBody
+    public String addStockItem(@RequestBody StockItem stockItem){
+        JSONObject res=new JSONObject();
+        try{
+            List<String> list= stockService.getStockIdList();//合同id集合
+            if(list.size()<=0){
+                stockItem.setStockId("1");
+            }
+            else {
+                stockItem.setStockId(list.get(0));
+            }
+
+           stockService.addStockItem(stockItem);
+            res.put("status", "success");
+            res.put("message", "字表添加成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "字表添加失败");
+
+        }
+
+
+
+        return  res.toString();
+
+
+
+    }
+
+
+
+
 //获取所欲申报信息
     @RequestMapping("loadPageStocktList")
     @ResponseBody
@@ -106,24 +139,12 @@ public class StockController {
         }
      return  res.toString();
     }
-    //修改申报信息
+    //修改申报信息==>主表
     @RequestMapping("adjust1Stock")
     @ResponseBody
     public String adjustStock(@RequestBody Stock stock) {
         JSONObject res=new JSONObject();
         try {
-            //1数据更新
-            //总体思想 删除旧列表，新增新列表
-            //获取旧列表 将其删除
-            List<Wastes> oldWastesList = stockService.getById(stock.getStockId()).getWastesList();
-            System.out.println("旧列表" + oldWastesList);
-            stockService.delete(stock);//删除旧列表
-            List<Wastes> newWastesList = stock.getWastesList();
-            for (int i=0;i<newWastesList.size(); i++) {
-                newWastesList.get(i).setId(RandomUtil.getRandomEightNumber());//给新列表赋值ID
-            }
-            System.out.println("新列表" + newWastesList);
-            stockService.addList(stock);//添加新列表
             //更新stock字段
             stockService.updateStock(stock);
             //stockService.time1(stock);
@@ -139,6 +160,28 @@ public class StockController {
         }
         return res.toString();
     }
+
+    //修改申报信息==>明细表
+    @RequestMapping("updateStockItem")
+    @ResponseBody
+    public String updateStockItem(@RequestBody StockItem stockItem){
+        JSONObject res=new JSONObject();
+
+        try {
+
+        }
+        catch (Exception e){
+
+        }
+
+
+
+        return res.toString();
+
+
+    }
+
+
     //提交申报信息
     @RequestMapping("submitStock")
     @ResponseBody

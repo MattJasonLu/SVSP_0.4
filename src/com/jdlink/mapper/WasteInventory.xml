@@ -42,6 +42,14 @@
             limit #{start}, #{count}
         </if>
     </select>
+    <!--查询危废库存信息==》配料单新增-->
+    <select id="list3" resultMap="WasteInventoryRM">
+        select * from t_pl_wasteinventory where boundType='WasteInbound' and actualCount>0 order by inboundDate
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
     <!--查看次生库存信息-->
     <select id="list2" resultMap="WasteInventoryRM">
         select * from t_pl_wasteinventory where boundType='SecondaryInbound' order by nowTime desc
