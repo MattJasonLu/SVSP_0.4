@@ -131,7 +131,7 @@ function downloadModal() {
                 if (i < idArry.length - 1) sql += idArry[i] + ",";
                 else if (i == idArry.length - 1) sql += idArry[i] + ");"
             }
-            var sqlWords = "select  *  from t_pr_pw where  compatibilityId" + sql;
+            var sqlWords = "select  compatibilityId as '配伍编号' ,totalDailyAmount  as '比例总计'  from t_pr_pw where  compatibilityId" + sql;
 
         }
         window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
