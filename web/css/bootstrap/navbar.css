@@ -37,7 +37,7 @@ li {
 }
 .focus {
     outline: none;
-    border: 0px;
+    border: 0;
 }
 .navbar-brand > img {
     width: 165px;
@@ -65,7 +65,7 @@ li {
     text-overflow:ellipsis;   /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
 }
 #navbar1{
-    margin-bottom: 0px;
+    margin-bottom: 0;
     border-radius: 5px;
     background: rgb(0,51,102);
     height: 50px;
@@ -86,7 +86,7 @@ li {
     margin-right: 10px;
 }
 .sidebar{
-    margin-bottom: 0px;
+    margin-bottom: 0;
     border-radius: 5px;
     background: rgb(17,79,142);
 }
@@ -181,6 +181,7 @@ li {
 .sidenav > li > a:hover{
     border-left: 2px solid rgb(229,229,229); background: rgb(17,79,142); text-decoration: none;color: rgb(229,229,229);
 }
+.sidenav > li > a:after{color: rgb(17,79,142);background-color: rgb(229,229,229)}
 .sidenav {
     text-align: center;
 }
@@ -191,11 +192,15 @@ li {
 .sidebar-dropdown > li > a{display: block; padding: 10px 0 10px 36px;}
 
 /*伸缩侧边css代码*/
+.sidebar-collapse {
+    text-align: center;
+}
 .sidebar-collapse .main{margin-left: 155px;}
 .sidebar-collapse .sidebar{width: 50px;}
 .sidebar-collapse .sidenav > li{position: relative; z-index: 9999; text-align: center;}
 .sidebar-collapse .sidenav > li:hover > a{border-left: 2px solid rgb(229,229,229); background: rgb(17,79,142); text-decoration: none;}
 .sidebar-collapse .sidenav > li:hover .sidebar-dropdown{display: block!important;}
+.sidebar-collapse .sidenav > li:after > a{color: rgb(17,79,142);background-color: rgb(229,229,229)}
 .sidebar-collapse .cover > b{font-size: 12px;}
 .sidebar-collapse .cover > p,
 .sidebar-collapse .sidespan,

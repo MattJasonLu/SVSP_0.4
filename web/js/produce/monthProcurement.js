@@ -1053,8 +1053,34 @@ function searchWastesAnalysis() {
 function exportExcel() {
     console.log("export");
     var name = 't_pl_procurement';
-    var sqlWords = "select t_pl_procurement.*,t_pl_material.* from t_pl_procurement left join t_pl_material on t_pl_procurement.receiptNumber=t_pl_material.receiptNumber and t_pl_procurement.procurementCategory!='0';";
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    var idArry = [];//存放主键
+    var items = $("input[name='select']:checked");//判断复选框是否选中
+
+    if (items.length <= 0) { //如果不勾选
+        var sqlWords = "select t_pl_procurement.*,t_pl_material.* from t_pl_procurement left join t_pl_material on t_pl_procurement.receiptNumber=t_pl_material.receiptNumber and t_pl_procurement.procurementCategory!='0';";
+        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    }
+
+    if (items.length > 0) {
+        $.each(items, function (index, item) {
+            if ($(this).parent().parent().next().html().length > 0) {
+                idArry.push($(this).parent().parent().next().html());        // 将选中项的编号存到集合中
+            }
+        });
+        console.log(idArry)
+        var sql = ' in (';
+        if (idArry.length > 0) {
+            for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+                if (i < idArry.length - 1) sql += idArry[i] + ",";
+                else if (i == idArry.length - 1) sql += idArry[i] + ");"
+            }
+            var sqlWords = "select t_pl_procurement.*,t_pl_material.* from t_pl_procurement left join t_pl_material on t_pl_procurement.receiptNumber=t_pl_material.receiptNumber and t_pl_procurement.procurementCategory!='0'  where t_pl_procurement.receiptNumber"+sql;
+            window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+        }
+
+    }
+
+
 }
 /**
  *
