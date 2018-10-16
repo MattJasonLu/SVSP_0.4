@@ -22,7 +22,8 @@ public class PRSampleInfoController {
 
     @Autowired
     SampleInformationService sampleInformationService;
-
+    @Autowired
+    ClientService clientService;
 
 
     /**
@@ -309,7 +310,7 @@ public class PRSampleInfoController {
     public String getClientAndWastesCodeSelectedList(){
         JSONObject res = new JSONObject();
         try {
-            List<Client> client = sampleInformationService.listClient();
+            List<Client> client = clientService.list();
             System.out.println(client);
             JSONArray companyList = JSONArray.fromArray(client.toArray(new Client[client.size()]));
             List<Wastes> wastes = sampleInformationService.listWastes();

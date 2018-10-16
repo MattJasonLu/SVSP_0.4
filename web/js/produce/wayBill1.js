@@ -296,7 +296,7 @@ function loadPageWayBillList() {
             if (result != undefined && result.status == "success") {
                 console.log(result);
                 setPageClone(result.data);
-                setPageCloneAfter(pageNumber);      // 大于规定页数时省略显示页码
+                setPageCloneAfter(pageNumber);      //
             } else {
                 console.log(result.message);
             }

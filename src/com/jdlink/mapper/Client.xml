@@ -213,7 +213,7 @@
 
     <select id="list" resultMap="ClientRM">
         select client.*, salesman.name, salesman.age, salesman.sex from client LEFT JOIN salesman ON client.salesmanId = salesman.salesmanId order by nowTime desc
-        <if test="start != null and count != null">
+        <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
     </select>
