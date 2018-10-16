@@ -243,10 +243,12 @@ function enterSwitchPage(){
  * @param item
  */
 function addAndRemoveClass(item){
-    $(".oldPageClass").removeClass("active");
+    $(".oldPageClass").removeClass("active");         // 将之前标蓝的页码取消
     $(".oldPageClass").removeClass("oldPageClass");
-    $(item).parent().addClass("active");
+    console.log($(item).parent());
+    $(item).parent().addClass("active");            // 将当前页面标蓝
     $(item).parent().addClass("oldPageClass");
+    console.log($(item).parent());
 }
 
 /**
@@ -261,6 +263,66 @@ function addPageClass(pageNumber){
             $(item).addClass("oldPageClass");
         }
     });
+}
+
+
+/**
+ * 省略显示页码
+ */
+function setPageCloneAfter(currentPageNumber) {
+    var total = totalPage();
+    var pageNumber = 5;         // 页码数
+    if (total > pageNumber) { // 大于5页时省略显示
+        $(".beforeClone").remove();          // 删除之前克隆页码
+        $("#next").prev().hide();            // 将页码克隆模板隐藏
+        if (currentPageNumber <= (parseInt(pageNumber/2) + 1)) {   // 如果pageNumber = 5,当前页小于3显示前五页
+            for (var i = 0; i < pageNumber; i++) {
+                var li = $("#next").prev();
+                var clonedLi = li.clone();
+                clonedLi.show();
+                clonedLi.find('a:first-child').text(i + 1);          // 页数赋值
+                clonedLi.find('a:first-child').click(function () {    // 设置点击事件
+                    var num = $(this).text();
+                    switchPage(num);        // 跳转页面
+                });
+                clonedLi.addClass("beforeClone");
+                clonedLi.removeAttr("id");
+                clonedLi.insertAfter(li);
+            }
+        } else if(currentPageNumber <= total - parseInt(pageNumber/2)){  // 如果pageNumber = 5,大于3时显示其前后两页
+            for (var i = currentPage - parseInt(pageNumber/2); i <= parseInt(currentPage) + parseInt(pageNumber/2); i++) {
+                var li = $("#next").prev();
+                var clonedLi = li.clone();
+                clonedLi.show();
+                clonedLi.find('a:first-child').text(i);          // 页数赋值
+                clonedLi.find('a:first-child').click(function () {    // 设置点击事件
+                    var num = $(this).text();
+                    switchPage(num);        // 跳转页面
+                });
+                clonedLi.addClass("beforeClone");
+                clonedLi.removeAttr("id");
+                clonedLi.insertAfter(li);
+            }
+        } else if(currentPageNumber > total - parseInt(pageNumber/2)){    // 如果pageNumber = 5,显示最后五页
+            for (var i = total - pageNumber + 1; i <= total; i++) {
+                var li = $("#next").prev();
+                var clonedLi = li.clone();
+                clonedLi.show();
+                clonedLi.find('a:first-child').text(i);          // 页数赋值
+                clonedLi.find('a:first-child').click(function () {    // 设置点击事件
+                    var num = $(this).text();
+                    switchPage(num);        // 跳转页面
+                });
+                clonedLi.addClass("beforeClone");
+                clonedLi.removeAttr("id");
+                clonedLi.insertAfter(li);
+            }
+        }
+    }
+    if(currentPageNumber == 1){
+        $("#previous").next().next().eq(0).addClass("oldPageClass");
+        $("#previous").next().next().eq(0).addClass("active");       // 将首页页码标蓝
+    }
 }
 
 /**
