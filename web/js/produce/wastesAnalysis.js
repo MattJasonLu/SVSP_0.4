@@ -714,7 +714,7 @@ function exportExcel() {
     var idArry = [];//存放主键
     var items = $("input[name='select']:checked");//判断复选框是否选中
     if (items.length <= 0) { //如果不勾选
-        var sqlWords = "select * from  t_pl_wasteinto;";
+        var sqlWords = "select id 序号,wastesCode 危废代码,querynumber 联单号,handleCategory 进料方式,processWay 处置类别, packageType 包装方式, remarks 备注,wastesCategory 危废类别                                                               from  t_pl_wasteinto;";
         window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
     }
 
@@ -730,7 +730,7 @@ function exportExcel() {
                 if (i < idArry.length - 1) sql += idArry[i] + ",";
                 else if (i == idArry.length - 1) sql += idArry[i] + ");"
             }
-            var sqlWords = "select * from  t_pl_wasteinto where id "+sql;
+            var sqlWords = "select id 序号,wastesCode 危废代码,querynumber 联单号,handleCategory 进料方式,processWay 处置类别, packageType 包装方式, remarks 备注,wastesCategory 危废类别 from  t_pl_wasteinto where id "+sql;
 
         }
         window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
