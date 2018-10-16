@@ -149,5 +149,15 @@ public class WasteInventoryServiceImpl implements WasteInventoryService {
         return wasteInventoryMapper.declareGenerationById(inboundOrderItemId);
     }
 
+    @Override
+    public void rollback(String outboundOrderId) {
+        wasteInventoryMapper.rollback(outboundOrderId);
+    }
+
+    @Override
+    public void returnNumber(String inboundOrderItemId, float outboundNumber) {
+        wasteInventoryMapper.returnNumber(inboundOrderItemId, outboundNumber);
+    }
+
 
 }

@@ -299,4 +299,15 @@
     <select id="declareGenerationById" parameterType="String" resultMap="InboundOrderItemIdRM">
         select  * from t_pl_wasteinventory where inboundOrderItemId=#{inboundOrderItemId}
     </select>
+
+
+    <!--更细出库单的状态为退库-->
+    <update id="rollback" parameterType="String">
+        update t_pl_outboundorder set checkState='Retired',nowTime=NOW() where outboundOrderId=#{outboundOrderId};
+    </update>
+    <!--更新库存的配料量-->
+    <update id="returnNumber">
+        update t_pl_wasteinventory set actualCount=actualCount+#{1} where inboundOrderItemId=#{0};
+
+    </update>
 </mapper>

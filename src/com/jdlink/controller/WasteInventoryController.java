@@ -1194,4 +1194,30 @@ catch (Exception e){
         return res.toString();
     }
 
+    //危废出库退库
+    @RequestMapping("rollback")
+    @ResponseBody
+    public String rollback(String inboundOrderItemId,String outboundOrderId,float outboundNumber){
+        JSONObject res=new JSONObject();
+        try{
+            //1显示更新出库单的状态
+            wasteInventoryService.rollback(outboundOrderId);
+            //2 更新库存的数据
+            wasteInventoryService.returnNumber(inboundOrderItemId,outboundNumber);
+            res.put("status", "success");
+            res.put("message", "退库成功!");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "退库失败!");
+        }
+
+
+        return res.toString();
+
+
+    }
+
 }

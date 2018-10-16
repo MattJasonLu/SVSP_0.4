@@ -37,5 +37,8 @@ public interface WasteInventoryMapper {
 
     WasteInventory declareGenerationById(String inboundOrderItemId);
 
+    void rollback(String outboundOrderId);
+    void  returnNumber(String inboundOrderItemId,float outboundNumber);
+
 
 }
