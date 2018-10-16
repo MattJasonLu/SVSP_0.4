@@ -34,7 +34,15 @@
             <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
                 <ul class="nav navbar-nav">
                     <li><a href="procurementManagement.html">首页</a></li>
-                    <li class="active"><a href="monthProcurement.html">月度采购</a></li>
+                    <li><a href="monthProcurement.html">采购计划</a></li>
+                    <li class="active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">采购申请<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="monthProcurement.html">月度采购</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="emergencyProcurement.html">应急采购</a></li>
+                        </ul>
+                    </li>
                     <li>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">辅料/备件管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -43,9 +51,10 @@
                             <li><a href="ingredientsReceive.html">辅料/备件领用</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="ingredientsOut.html">辅料/备件出库</a></li>   <!--辅料领料单-->
+                            <li role="separator" class="divider"></li>
+                            <li><a href="ingredientsWarehouse.html">辅料/备件库存</a></li>   <!--辅料领料单-->
                         </ul>
                     </li>
-                    <li><a href="emergencyProcurement.html">应急采购</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
