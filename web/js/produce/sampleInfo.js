@@ -14,6 +14,13 @@ function countValue() {
 }
 
 /**
+ * 测试
+ */
+function show11() {
+    $("#modal").modal('show')
+}
+
+/**
  * 计算总页数
  * */
 function totalPage() {

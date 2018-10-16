@@ -197,13 +197,13 @@ public class ProductionDailyController {
     public String generateProductionDaily() {
         JSONObject res = new JSONObject();
         // 获取当天日期
-        DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+    //    DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
         Date now = new Date();
-        try{ // 测试
-           now = dateFormat1.parse("2018-10-12");
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+//        try{ // 测试
+//           now = dateFormat1.parse("2018-10-12");
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
         // 创建一个新的生产日报
         ProductionDaily productionDaily = new ProductionDaily();
         // 设置公司为常州北控
