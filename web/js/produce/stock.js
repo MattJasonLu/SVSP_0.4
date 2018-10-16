@@ -908,11 +908,42 @@ function save() {
         data: JSON.stringify(data),
         contentType: "application/json;charset=utf-8",
         success: function (result) {
-
             if (result != null) {
                 console.log(result)
-                // alert("添加成功!");
-                // location.href = "stockManage.html";
+                $('.myclass').each(function () {
+                    var stockItem={
+                        wastesName:$(this).children('td').eq(1).children('input').val(),
+                        wastesCode:$(this).children('td').eq(2).children('div').find('button').attr('title'),
+                        number:$(this).children('td').eq(3).children('input').val(),
+                        content:$(this).children('td').eq(4).children('input').val(),
+                        remarks:$(this).children('td').eq(5).children('input').val(),
+                    };
+                    $.ajax({
+                        type: 'POST',
+                        url: "addStockItem",
+                        data: JSON.stringify(stockItem),
+                        contentType: "application/json;charset=utf-8",
+                        success: function (result) {
+                            if (result !=null) {
+                                console.log(result)
+                            }
+                            else {
+                                alert("添加失败")
+                            }
+                        },
+                        error: function (result) {
+                        }
+                    });
+                });
+                alert("添加成功!");
+                var addType = $("input[name='addType']:checked").val();
+                console.log(addType)
+                if(addType=='continue'){
+                    window.location.reload();
+                }
+                if(addType=='break') {
+                    location.href = "stockManage.html";
+                }
 
             }
             else {
@@ -923,48 +954,6 @@ function save() {
 
         }
     });
-
-
-    $('.myclass').each(function () {
-        var stockItem={
-            wastesName:$(this).children('td').eq(1).children('input').val(),
-            wastesCode:$(this).children('td').eq(2).children('div').find('button').attr('title'),
-            number:$(this).children('td').eq(3).children('input').val(),
-            content:$(this).children('td').eq(4).children('input').val(),
-            remarks:$(this).children('td').eq(5).children('input').val(),
-        };
-        $.ajax({
-            type: 'POST',
-            url: "addStockItem",
-            data: JSON.stringify(stockItem),
-            contentType: "application/json;charset=utf-8",
-            success: function (result) {
-
-                if (result != null) {
-                    console.log(result)
-                    //  alert("添加成功!");
-                    // location.href = "stockManage.html";
-
-                }
-                else {
-                    alert("添加失败")
-                }
-            },
-            error: function (result) {
-
-            }
-        });
-
-
-
-    });
-
-
-
-
-
-
-
 
 
 
@@ -1268,6 +1257,42 @@ function adjustStock1() {
         contentType: 'application/json;charset=utf-8',
         success: function (result) {
             if (result != null) {
+                $('.myclass').each(function () {
+                    var stockItem = {
+                        wastesName: $(this).children('td').eq(1).children('input').val(),
+                        wastesCode: $(this).children('td').eq(2).children('div').find('button').attr('title'),
+                        number: $(this).children('td').eq(3).children('input').val(),
+                        content: $(this).children('td').eq(4).children('input').val(),
+                        remarks: $(this).children('td').eq(5).children('input').val(),
+                        id: $(this).children('td').eq(6).html(),
+                        stockId: $("#stockId").val(),//库存编号
+                    };
+
+                    console.log(stockItem)
+                    $.ajax({
+                        type: 'POST',
+                        url: "addStockItem1",
+                        data: JSON.stringify(stockItem),
+                        contentType: "application/json;charset=utf-8",
+                        success: function (result) {
+
+                            if (result != null) {
+                                console.log(result)
+                                //  alert("添加成功!");
+                                // location.href = "stockManage.html";
+
+                            }
+                            else {
+                                alert("添加失败")
+                            }
+                        },
+                        error: function (result) {
+
+                        }
+                    });
+
+
+                });
                 alert("修改成功!");
                 location.href = "stockManage.html";
 
@@ -1282,41 +1307,7 @@ function adjustStock1() {
     });
 
 
-    $('.myclass').each(function () {
-        var stockItem = {
-            wastesName: $(this).children('td').eq(1).children('input').val(),
-            wastesCode: $(this).children('td').eq(2).children('div').find('button').attr('title'),
-            number: $(this).children('td').eq(3).children('input').val(),
-            content: $(this).children('td').eq(4).children('input').val(),
-            remarks: $(this).children('td').eq(5).children('input').val(),
-            id: $(this).children('td').eq(6).html(),
-        };
 
-        console.log(stockItem)
-        $.ajax({
-            type: 'POST',
-            url: "updateStockItem",
-            data: JSON.stringify(stockItem),
-            contentType: "application/json;charset=utf-8",
-            success: function (result) {
-
-                if (result != null) {
-                    console.log(result)
-                    //  alert("添加成功!");
-                    // location.href = "stockManage.html";
-
-                }
-                else {
-                    alert("添加失败")
-                }
-            },
-            error: function (result) {
-
-            }
-        });
-
-
-    });
 
 
 
@@ -1489,15 +1480,59 @@ function viewStock(item) {
                     $('#proWasteCompany').text(obj.client.companyName);
                 }
 
-                for (var i = 0; i < obj.wastesList.length; i++) {
-                    if (i > 0) addWastesNewLine();
-                    var $i = i;
-                    $("input[name='wastesList[" + $i + "].name']").val(obj.wastesList[i].name);//废物名称
-                    $("input[name='wastesList[" + $i + "].code']").val(obj.wastesList[i].code);//废物编码
-                    $("input[name='wastesList[" + $i + "].wasteAmount']").val(obj.wastesList[i].wasteAmount);//废物数量
-                    $("input[name='wastesList[" + $i + "].component']").val(obj.wastesList[i].component);//成分
-                    $("input[name='wastesList[" + $i + "].remarks']").val(obj.wastesList[i].remarks);//备注
-                }
+               if(obj.stockItemList!=null){
+                   var tr = $("#cloneTr1");
+                   tr.siblings().remove();
+                   $.each(obj.stockItemList, function (index, item) {
+                       var obj=eval(item);
+                       // 克隆tr，每次遍历都可以产生新的tr
+                       var clonedTr = tr.clone();
+                       clonedTr.show();
+                       // 循环遍历cloneTr的每一个td元素，并赋值
+                       clonedTr.children("td").each(function (inner_index) {
+                           //1生成领料单号
+                           var obj = eval(item);
+                           // 根据索引为部分td赋值
+                           switch (inner_index) {
+                               // 序号
+                               case (0):
+                                   $(this).html(index+1);
+                                   break;
+                               // 危险废物的名称
+                               case (1):
+                                   $(this).html(obj.wastesName);
+                                   break;
+                               // 危废编码
+                               case (2):
+                                   $(this).html(obj.wastesCode);
+                                   break;
+                               // 数量(公斤)
+                               case (3):
+                                   $(this).html(obj.number);
+                                   break;
+                               // 成分
+                               case (4):
+
+                                   $(this).html(obj.content);
+                                   break;
+                               // 备注
+                               case (5):
+                                   $(this).html(obj.remarks);
+                                   break;
+                           }
+                       });
+                       // 把克隆好的tr追加到原来的tr前面
+                       clonedTr.removeAttr("id");
+                       clonedTr.insertBefore(tr);
+
+
+                   });
+                   // 隐藏无数据的tr
+                   tr.hide();
+                   tr.removeAttr('class');
+
+               }
+
             } else {
                 alert(result.message);
                 $("#modal3_contactName").text("");

@@ -110,5 +110,10 @@ public class StockServiceImpl implements StockService  {
         stockMapper.updateStockItem(stockItem);
     }
 
+    @Override
+    public void deleteStockItem(String stockId) {
+        stockMapper.deleteStockItem(stockId);
+    }
+
 
 }
