@@ -15,23 +15,23 @@ public class Stock {
      */
     private  String stockId;
     /**
-     *产废公司名称
+     *产废公司名称(已不用)
      */
     private String proWasteCompany;
     /**
-     *产废联系人
+     *产废联系人(已不用)
      */
      private String proContactName;
     /**
-     *产废联系电话
+     *产废联系电话(已不用)
      */
      private String proTelephone;
     /**
-     *运输公司
+     *运输公司(已不用)
      */
      private  String transport;
     /**
-     *运输公司联系电话
+     *运输公司联系电话(已不用)
      */
     private  String transportTelephone;
     /**
@@ -70,9 +70,21 @@ public class Stock {
      * 状态
      */
     private CheckState checkState;
+    /**
+     * 申报明细
+     */
+    List<StockItem> stockItemList=new ArrayList<>();
 
     private Page page;
     private String keyword;
+
+    public List<StockItem> getStockItemList() {
+        return stockItemList;
+    }
+
+    public void setStockItemList(List<StockItem> stockItemList) {
+        this.stockItemList = stockItemList;
+    }
 
     public Supplier getSupplier() {
         return supplier;

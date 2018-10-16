@@ -71,7 +71,7 @@ function totalPage() {
  */
 function loadPages(totalRecord, count) {
     if (totalRecord == 0) {
-        window.alert("总记录数为0，请检查！");
+      console.log("总记录数为0，请检查！");
         return 0;
     }
     else if (totalRecord % count == 0)
@@ -866,27 +866,27 @@ function judge1() {
 //删除行方法
 function delLine(e) {
     var tr = e.parentElement.parentElement;
-    // tr.parentNode.removeChild(tr);
-    // $('.myclass').each(function (index,item) {
-    //     $(this).children('td').eq(0).html("<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>"+(parseInt(index)+1).toString());
-    // });
-    var length = $(tr.parentNode).children().length - 2;         // 行数
-    var tBody = $(tr.parentNode);                                  // 删除前获取父节点
     tr.parentNode.removeChild(tr);
-    console.log("length:" + length);
-    for (var i = 2; i < length; i++) {             // 更新序号
-        tBody.children().eq(i).children().eq(0).get(0).innerHTML = i;     // 更新序号
-        // 重新加上减行按钮
-        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
-        tBody.children().eq(i).children("td:eq(0)").prepend(delBtn);
-        // 更新name
-        tBody.children().eq(i).children("td:not(0)").find("input,select").each(function () {
-            var name = $(this).prop('name');
-            var newName = name.replace(/[0-9]\d*/, i - 1);
-            //console.log(newName);
-            $(this).prop('name', newName);
-        });
-    }
+    $('.myclass').each(function (index,item) {
+        $(this).children('td').eq(0).html((parseInt(index)+1).toString()+"<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>");
+    });
+   //var length = $(tr.parentNode).children().length - 2;         // 行数
+    // var tBody = $(tr.parentNode);                                  // 删除前获取父节点
+    // tr.parentNode.removeChild(tr);
+    // console.log("length:" + length);
+    // for (var i = 2; i < length; i++) {             // 更新序号
+    //     tBody.children().eq(i).children().eq(0).get(0).innerHTML = i;     // 更新序号
+    //     // 重新加上减行按钮
+    //     var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+    //     tBody.children().eq(i).children("td:eq(0)").prepend(delBtn);
+    //     // 更新name
+    //     tBody.children().eq(i).children("td:not(0)").find("input,select").each(function () {
+    //         var name = $(this).prop('name');
+    //         var newName = name.replace(/[0-9]\d*/, i - 1);
+    //         //console.log(newName);
+    //         $(this).prop('name', newName);
+    //     });
+    // }
 
 }
 
@@ -901,19 +901,7 @@ function save() {
         'selfEmployed': $('#selfEmployed').prop('checked'),
         supplier: {supplierId: $('#transport').selectpicker('val')}
     };
-    data['wastesList'] = [];
-    // 危废的数量
-    var wastesListCount = $("input[name^='wastesList'][name$='name']").length;
-    for (var i = 0; i < wastesListCount; i++) {
-        var $i = i;
-        var wastes = {};
-        wastes.name = $("input[name='wastesList[" + $i + "].name']").val();
-        wastes.code = $("select[name='wastesList[" + $i + "].code']").selectpicker('val');
-        wastes.wasteAmount = $("input[name='wastesList[" + $i + "].wasteAmount']").val();
-        wastes.component = $("input[name='wastesList[" + $i + "].component']").val();
-        wastes.remarks = $("input[name='wastesList[" + $i + "].remarks']").val();
-        data['wastesList'].push(wastes);
-    }
+
     $.ajax({
         type: 'POST',
         url: "addStock",
@@ -922,8 +910,9 @@ function save() {
         success: function (result) {
 
             if (result != null) {
-                alert("添加成功!");
-                location.href = "stockManage.html";
+                console.log(result)
+                // alert("添加成功!");
+                // location.href = "stockManage.html";
 
             }
             else {
@@ -934,6 +923,51 @@ function save() {
 
         }
     });
+
+
+    $('.myclass').each(function () {
+        var stockItem={
+            wastesName:$(this).children('td').eq(1).children('input').val(),
+            wastesCode:$(this).children('td').eq(2).children('div').find('button').attr('title'),
+            number:$(this).children('td').eq(3).children('input').val(),
+            content:$(this).children('td').eq(4).children('input').val(),
+            remarks:$(this).children('td').eq(5).children('input').val(),
+        };
+        $.ajax({
+            type: 'POST',
+            url: "addStockItem",
+            data: JSON.stringify(stockItem),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+
+                if (result != null) {
+                    console.log(result)
+                    //  alert("添加成功!");
+                    // location.href = "stockManage.html";
+
+                }
+                else {
+                    alert("添加失败")
+                }
+            },
+            error: function (result) {
+
+            }
+        });
+
+
+
+    });
+
+
+
+
+
+
+
+
+
+
 
 
 }
@@ -1120,32 +1154,6 @@ function loadAdjustStock() {
                 });
                 // wastesInfoList.removeAttr('id');
                 $('.selectpicker').selectpicker('refresh');
-
-                for (var i = 0; i < obj.wastesList.length; i++) {
-                    console.log(obj.wastesList[i].code);
-                    // if(i==0){
-                    //     var wastesInfoList = $("#code");
-                    //     // 清空遗留元素
-                    //     index3="";
-                    //     wastesInfoList.children().remove();
-                    //     $.each(data, function (index, item) {
-                    //         var option = $('<option />');
-                    //         option.val(item.code);
-                    //         option.text(item.code);
-                    //         wastesInfoList.append(option);
-                    //     });
-                    // }
-                    if (i > 0)
-                        addNewLine1();
-                    var $i = i;
-                    $("input[name='wastesList[" + $i + "].name']").val(obj.wastesList[i].name);//危险废物的名称
-                    $("input[name='wastesList[" + $i + "].wasteAmount']").val(obj.wastesList[i].wasteAmount);//危废数量
-                    $("input[name='wastesList[" + $i + "].component']").val(obj.wastesList[i].component);//成分
-                    $("input[name='wastesList[" + $i + "].remarks']").val(obj.wastesList[i].remarks);//备注
-                    $(".selectpicker[name='wastesList[" + $i + "].code']").selectpicker('val', obj.wastesList[i].code);//默认选中
-                    $('.selectpicker').selectpicker('refresh');
-                }
-
                 var client = $('#proWasteCompany');
                 client.children().remove();
                 $.each(result.clientList, function (index, item) {
@@ -1192,7 +1200,38 @@ function loadAdjustStock() {
                     });
                 }
 
+                //库存明细赋值
+                $.each(result.stock.stockItemList,function (index,item) {
+                    $('.selectpicker').selectpicker( {
+                        language: 'zh_CN',
+                        // style: 'btn-info',
+                        size: 4
+                    });//下拉框样式
 
+                    var tr=$('#cloneTr1');
+                    // tr.siblings().remove();
+                    var cloneTr=tr.clone();
+                    cloneTr.attr('class','myclass');
+                    cloneTr.show();
+                    var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+                    cloneTr.children('td').eq(0).html(parseInt(result.stock.stockItemList.length)-index);
+                    cloneTr.children("td:eq(0)").append(delBtn);
+                    cloneTr.children('td').eq(1).children('input').val(item.wastesName);
+                    cloneTr.children('td').eq(2).find('select').selectpicker('val',item.wastesCode);
+                    cloneTr.children('td').eq(3).children('input').val(item.number);
+                    cloneTr.children('td').eq(4).children('input').val(item.content);
+                    cloneTr.children('td').eq(5).children('input').val(item.remarks);
+                    cloneTr.children('td').eq(6).html(item.id);
+                    cloneTr.removeAttr('id');
+                    cloneTr.insertAfter(tr);
+                    $('.selectpicker').data('selectpicker', null);
+                    $('.bootstrap-select').find("button:first").remove();
+                    $('.selectpicker').selectpicker();
+                    $('.selectpicker').selectpicker('refresh');
+                    tr.hide();
+                    tr.removeAttr('class');
+
+                })
             }
             else {
                 alert(result.message);
@@ -1220,19 +1259,6 @@ function adjustStock1() {
         // 'proWasteCompany':$('#proWasteCompany').val(),
         supplier: {supplierId: $('#transport').selectpicker('val')}
     };
-    data['wastesList'] = [];
-    var wastesListCount = $("input[name^='wastesList'][name$='name']").length;
-    for (var i = 0; i < wastesListCount; i++) {
-        var $i = i;
-        var wastes = {};
-        wastes.name = $("input[name='wastesList[" + $i + "].name']").val();
-        wastes.code = $("select[name='wastesList[" + $i + "].code']").selectpicker('val');
-        // console.log(wastes.code);
-        wastes.wasteAmount = $("input[name='wastesList[" + $i + "].wasteAmount']").val();
-        wastes.component = $("input[name='wastesList[" + $i + "].component']").val();
-        wastes.remarks = $("input[name='wastesList[" + $i + "].remarks']").val();
-        data['wastesList'].push(wastes);
-    }
     $.ajax({
         type: 'POST',
         url: "adjust1Stock",
@@ -1254,6 +1280,46 @@ function adjustStock1() {
 
         }
     });
+
+
+    $('.myclass').each(function () {
+        var stockItem = {
+            wastesName: $(this).children('td').eq(1).children('input').val(),
+            wastesCode: $(this).children('td').eq(2).children('div').find('button').attr('title'),
+            number: $(this).children('td').eq(3).children('input').val(),
+            content: $(this).children('td').eq(4).children('input').val(),
+            remarks: $(this).children('td').eq(5).children('input').val(),
+            id: $(this).children('td').eq(6).html(),
+        };
+
+        console.log(stockItem)
+        $.ajax({
+            type: 'POST',
+            url: "updateStockItem",
+            data: JSON.stringify(stockItem),
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+
+                if (result != null) {
+                    console.log(result)
+                    //  alert("添加成功!");
+                    // location.href = "stockManage.html";
+
+                }
+                else {
+                    alert("添加失败")
+                }
+            },
+            error: function (result) {
+
+            }
+        });
+
+
+    });
+
+
+
 }
 
 function allSelect1() {

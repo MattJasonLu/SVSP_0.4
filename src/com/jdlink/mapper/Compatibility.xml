@@ -52,7 +52,7 @@
         update t_pr_pw set checkState='Keeping',approvalContent=#{1},nowTime=NOW() where pwId=#{0};
     </update>
     <update id="back" >
-        update t_pr_pw set checkState='Backed',backContent=#{1},nowTime=NOW() where pwId=#{0};
+        update t_pr_pw set checkState='Backed',backContent=#{1},nowTime=NOW() where compatibilityId=#{0};
     </update>
     <select id="getByPwId1" resultMap="CompatibilityRM" parameterType="String">
         select * from t_pr_pw where pwId=#{pwId};

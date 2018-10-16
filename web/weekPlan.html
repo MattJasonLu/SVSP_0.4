@@ -320,6 +320,8 @@
                                                                                      aria-hidden="true"></span> </a>
                                 <a title="审批" href="#" onclick="approval(this)"><span class="glyphicon glyphicon-floppy-saved"
                                                                                           aria-hidden="true"></span> </a>
+                                <a title="驳回" href="#" onclick="back(this)"><span class="glyphicon glyphicon-triangle-left"
+                                                                                      aria-hidden="true"></span> </a>
                                 <a title="作废" href="#" onclick="cancelPw(this);"><span class="glyphicon glyphicon-remove-sign"
                                                                                       aria-hidden="true"></span> </a>
                             </td>
@@ -366,6 +368,11 @@
                 <div class="modal-header">
                     <h5 class="sub-header text-center">驳回意见</h5>
                 </div>
+                <div class="row form-inline">
+                    <div class="form-horizontal col-md-6 form-inline">
+                        <p class="text-left"><b>配伍编号&nbsp;&nbsp;</b><span id="compatibilityId3"></span></p>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="form-horizontal col-md-12">
                         <textarea class="form-control" rows="5" id="backContent" style="min-width: 70%"></textarea>
@@ -373,7 +380,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" id="back1" data-dismiss="modal" onclick="back1()">确认驳回
+                    <button type="button" class="btn btn-danger" id="back1" data-dismiss="modal" onclick="back1()">确认驳回
                     </button>
                 </div>
             </div>

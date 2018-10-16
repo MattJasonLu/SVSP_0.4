@@ -68,23 +68,20 @@ function totalPage() {
  * 设置克隆页码
  * */
 function setPageClone(result) {
-    $(".beforeClone").remove();
-    setWayBillList(result);
-    var total = totalPage();
+    $(".beforeClone").remove();          // 删除之前克隆页码
+    setWayBillList(result);             // 设置数据
     $("#next").prev().hide();            // 将页码克隆模板隐藏
+    var total = totalPage();
     var st = "共" + total + "页";
     $("#totalPage").text(st);
-    var myArray = new Array();
     for (var i = 0; i < total; i++) {
         var li = $("#next").prev();
-        myArray[i] = i + 1;
         var clonedLi = li.clone();
         clonedLi.show();
-        clonedLi.find('a:first-child').text(myArray[i]);
-        clonedLi.find('a:first-child').click(function () {
+        clonedLi.find('a:first-child').text(i + 1);          // 页数赋值
+        clonedLi.find('a:first-child').click(function () {    // 设置点击事件
             var num = $(this).text();
-            switchPage(num);
-            addAndRemoveClass(this);
+            switchPage(num);        // 跳转页面
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -100,7 +97,7 @@ function setPageClone(result) {
  * */
 function switchPage(pageNumber) {
     console.log("当前页：" + pageNumber);
-    if(pageNumber > totalPage()){
+    if (pageNumber > totalPage()) {
         pageNumber = totalPage();
     }
     if (pageNumber == 0) {                 //首页
@@ -134,12 +131,12 @@ function switchPage(pageNumber) {
         $("#next").removeClass("disabled");
         $("#endPage").removeClass("disabled");
     }
-    addPageClass(pageNumber);           // 设置页码标蓝
     var page = {};
     page.count = countValue();                        //可选
     page.pageNumber = pageNumber;
     currentPage = pageNumber;          //当前页面
-    //addClass("active");
+    setPageCloneAfter(pageNumber);        // 重新设置页码
+    addPageClass(currentPage);           // 设置页码标蓝
     page.start = (pageNumber - 1) * page.count;
     if (!isSearch) {
         $.ajax({
@@ -189,7 +186,7 @@ function switchPage(pageNumber) {
  * */
 function inputSwitchPage() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
-    if(pageNumber > totalPage()){
+    if (pageNumber > totalPage()) {
         pageNumber = totalPage();
     }
     $("#current").find("a").text("当前页：" + pageNumber);
@@ -217,6 +214,7 @@ function inputSwitchPage() {
             $("#endPage").removeClass("disabled");
         }
         currentPage = pageNumber;
+        setPageCloneAfter(pageNumber);
         addPageClass(pageNumber);           // 设置页码标蓝
         var page = {};
         page.count = countValue();//可选
@@ -234,6 +232,7 @@ function inputSwitchPage() {
                     if (result != undefined) {
                         console.log(result);
                         setWayBillList(result.data);
+
                     } else {
                         console.log("fail: " + result);
                     }
@@ -272,6 +271,7 @@ function inputSwitchPage() {
  * */
 function loadPageWayBillList() {
     var pageNumber = 1;               // 显示首页
+    currentPage = pageNumber;
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
@@ -296,6 +296,7 @@ function loadPageWayBillList() {
             if (result != undefined && result.status == "success") {
                 console.log(result);
                 setPageClone(result.data);
+                setPageCloneAfter(pageNumber);      // 大于规定页数时省略显示页码
             } else {
                 console.log(result.message);
             }
@@ -436,7 +437,7 @@ function exportExcel() {
     var name = 't_pr_waybill';
     // 获取勾选项
     var idArry = [];
-    $.each($("input[name='select']:checked"),function(index,item){
+    $.each($("input[name='select']:checked"), function (index, item) {
         idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
     });
     var sqlWords = '';
@@ -447,10 +448,10 @@ function exportExcel() {
             else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
         }
         sqlWords = "select id,produceCompanyName,total,freight,founder,wayBillDate,remarks,produceCompanyOperator,state from t_pr_waybill where id" + sql;
-    }else {          // 若无勾选项则导出全部
+    } else {          // 若无勾选项则导出全部
         sqlWords = "select id,produceCompanyName,total,freight,founder,wayBillDate,remarks,produceCompanyOperator,state from t_pr_waybill;";
     }
-    console.log("sql:"+sqlWords);
+    console.log("sql:" + sqlWords);
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 
@@ -509,7 +510,7 @@ function importExcel() {
 /**
  * 回车查询
  */
-function enterSearch(){
+function enterSearch() {
     if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
         searchWayBill();      //
     }
@@ -523,12 +524,12 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
     $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
-            if(last-event.timeStamp=== 0){
+            if (last - event.timeStamp === 0) {
                 searchWayBill();
-            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+            } else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
                 searchWayBill();      //
             }
-        },600);
+        }, 600);
     });
 });
 
@@ -545,13 +546,13 @@ function searchWayBill() {
     var state = null;
     if ($("#search-wayBillState").val() === 0) state = "NewBuild";//新建
     if ($("#search-wayBillState").val() === 1) state = "ToExamine";//待审批
-    if ($("#search-wayBillState").val() === 2)state = "Examining";//审批中
+    if ($("#search-wayBillState").val() === 2) state = "Examining";//审批中
     if ($("#search-wayBillState").val() === 3) state = "Approval";//审批通过
     if ($("#search-wayBillState").val() === 4) state = "Backed";//驳回
     if ($("#senior").is(':visible')) {
         data = {
             id: $.trim($("#search-id").val()),
-            produceCompanyName:  $.trim($("#search-companyName").val()),
+            produceCompanyName: $.trim($("#search-companyName").val()),
             total: $.trim($("#search-total").val()),
             freight: $.trim($("#search-freight").val()),
             founder: $.trim($("#search-founder").val()),
@@ -561,24 +562,48 @@ function searchWayBill() {
             state: state,
             page: page
         };
-    }else{
+    } else {
         var keywords = $.trim($("#searchContent").val());
-        switch (keywords){
-            case("新建"): keywords = "NewBuild";break;
-            case("待审批"): keywords = "ToExamine";break;
-            case("审批中"): keywords = "Examining";break;
-            case("审批通过"): keywords = "Approval";break;
-            case("已驳回"): keywords = "Backed";break;
-            case("驳回"): keywords = "Backed";break;
-            case("已作废"): keywords = "Invalid";break;
-            case("作废"): keywords = "Invalid";break;
-            case("已确认"): keywords = "Confirm";break;
-            case("确认"): keywords = "Confirm";break;
-            case ("已出库"): keywords = "OutBounded";break;
-            case ("出库"): keywords = "OutBounded";break;
+        switch (keywords) {
+            case("新建"):
+                keywords = "NewBuild";
+                break;
+            case("待审批"):
+                keywords = "ToExamine";
+                break;
+            case("审批中"):
+                keywords = "Examining";
+                break;
+            case("审批通过"):
+                keywords = "Approval";
+                break;
+            case("已驳回"):
+                keywords = "Backed";
+                break;
+            case("驳回"):
+                keywords = "Backed";
+                break;
+            case("已作废"):
+                keywords = "Invalid";
+                break;
+            case("作废"):
+                keywords = "Invalid";
+                break;
+            case("已确认"):
+                keywords = "Confirm";
+                break;
+            case("确认"):
+                keywords = "Confirm";
+                break;
+            case ("已出库"):
+                keywords = "OutBounded";
+                break;
+            case ("出库"):
+                keywords = "OutBounded";
+                break;
         }
-        data={
-            page:page,
+        data = {
+            page: page,
             keywords: keywords
         }
     }
@@ -829,7 +854,7 @@ function getcurrentDaydate() {
 /**
  * 获取接运单id
  */
-function getCurrentWayBillId(){
+function getCurrentWayBillId() {
     $.ajax({
         type: "POST",
         url: "getCurrentWayBillId",
@@ -837,7 +862,7 @@ function getCurrentWayBillId(){
         dataType: "json",
         success: function (result) {
             if (result != null) {
-                 wayBillId = result.id;
+                wayBillId = result.id;
             }
         },
         error: function (result) {
@@ -846,11 +871,12 @@ function getCurrentWayBillId(){
         }
     });
 }
+
 /**
  * 显示接运单新增页面
  */
-function addWayBillModal(){
-    window.location.href="wayBillAdd.html";
+function addWayBillModal() {
+    window.location.href = "wayBillAdd.html";
 }
 
 /**
@@ -873,7 +899,7 @@ function showAddData() {
                 // 各下拉框数据填充
                 $("#modal-founder").val(data.username);  // 将创建人设置为当前登陆用户
             } else {
-                 console.log(result.message);
+                console.log(result.message);
             }
         },
         error: function (result) {
@@ -994,7 +1020,7 @@ $(document).ready(function () {
                     var wastesCode = $("#modal" + $i + "-wastesCode");
                     $.each(data.wastesCodeList, function (index, item) {
                         var option = $('<option />');
-                        option.val(parseInt(item.code.replace(/[^0-9]/ig,"")));
+                        option.val(parseInt(item.code.replace(/[^0-9]/ig, "")));
                         option.text(item.code);
                         wastesCode.append(option);
                     });
@@ -1024,19 +1050,19 @@ function addNewItemLine() {
     clonedTr.children().find("select").selectpicker('val', '');
     // 获取编号
     var serialNumber = $("#plusBtn").prev().children().get(0).innerHTML;
-    var id1=(serialNumber.replace(/[^0-9]/ig,""));
+    var id1 = (serialNumber.replace(/[^0-9]/ig, ""));
     var num = parseInt(id1);
     num++;
     clonedTr.children().get(0).innerHTML = num;    // 设置序号
     clonedTr.children().find("input,select,span").each(function () {
         //id更新
         var id = $(this).prop('id');
-        var newId = id.replace(/[0-9]\d*/, num-1);
+        var newId = id.replace(/[0-9]\d*/, num - 1);
         $(this).prop('id', newId);
     });
     clonedTr.addClass("newLine");
     clonedTr.insertAfter(tr);
-   // tr.hide();
+    // tr.hide();
     var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
     clonedTr.children("td:eq(0)").prepend(delBtn);
     $('.form_datetime').datetimepicker({
@@ -1082,7 +1108,7 @@ function delLine(e) {
 /**
  * 确认新增-将数据存到数据库
  */
-function addWayBill(){
+function addWayBill() {
     //获取数据
     var wayBill = {};
     wayBill.produceCompanyName = $("#modal-produceCompanyName option:selected").text();
@@ -1097,7 +1123,7 @@ function addWayBill(){
     var wayBillItemList = [];
     var ItemId = getCurrentItemId();
     var wastesId = parseInt(getCurrentWastesId());
-    for(var i = 0; i < lineCount; i++){
+    for (var i = 0; i < lineCount; i++) {
         var $i = i;
         var wayBillItem = {};
         wayBillItem.salesmanName = $("#modal" + $i + "-salesman option:selected").text();
@@ -1135,9 +1161,9 @@ function addWayBill(){
             if (result != undefined) {
                 var data = eval(result);
                 if (data.status == "success") {
-                    if(confirm("添加成功，是否返回主页?")){
-                        window.location.href="wayBill1.html";
-                    }else window.location.reload();
+                    if (confirm("添加成功，是否返回主页?")) {
+                        window.location.href = "wayBill1.html";
+                    } else window.location.reload();
                 } else {
                     alert(data.message);
                 }
@@ -1223,11 +1249,12 @@ function getCurrentWastesId() {
     });
     return id;
 }
+
 /**
-* 规范wastesId格式
-* @param id
-* @returns {string}
-*/
+ * 规范wastesId格式
+ * @param id
+ * @returns {string}
+ */
 function conversionIdFormat(id) {
     var aid = "";
     $.ajax({

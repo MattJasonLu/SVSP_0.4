@@ -522,13 +522,13 @@ public class MaterialRequireController {
 
         return res.toString();
     }
-    //审批物料
+    //驳回物料
     @RequestMapping("backMa")
     @ResponseBody
-    public String backMa(String id,String remarks){
+    public String backMa(String materialRequireId,String opinion){
         JSONObject res=new JSONObject();
         try {
-            materialRequireService.back(id,remarks);
+            materialRequireService.back(materialRequireId,opinion);
             res.put("status", "success");
             res.put("message", "驳回通过!");
         }
@@ -539,7 +539,7 @@ public class MaterialRequireController {
         }
         return res.toString();
     }
-    //驳回物料
+    //审批
     @RequestMapping("approvalMa")
     @ResponseBody
     public String approvalMa(String materialRequireId,String opinion){
