@@ -325,10 +325,10 @@ public String importCompatibilityExcel(MultipartFile excelFile){
     //驳回配伍计划
     @RequestMapping("backPw")
     @ResponseBody
-    public String backPw(String pwId,String backContent){
+    public String backPw(String compatibilityId,String opinion){
         JSONObject res=new JSONObject();
         try {
-            compatibilityService.back(pwId,backContent);
+            compatibilityService.back(compatibilityId,opinion);
             res.put("status", "success");
             res.put("message", "驳回通过!");
         }

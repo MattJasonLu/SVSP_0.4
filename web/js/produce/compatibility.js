@@ -709,8 +709,40 @@ function totalPage() {
     /**
      * 出现具体驳回的模态框
      */
-    function backModal() {
-        $("#contractInfoForm3").modal('show');
+    function back(item) {
+        var compatibilityId = $(item).parent().parent().children('td').eq(2).text();
+
+        $.ajax({
+            type: "POST",
+            url: "getByCompatibilityId",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'compatibilityId': compatibilityId},
+            //contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result);
+                    //赋值配伍单号
+                    $("#backContent").val(result.data.backContent);
+                    $('#compatibilityId3').text(result.data.compatibilityId)
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                alert("服务器异常！")
+            }
+
+        });
+
+
+
+        $('#contractInfoForm3').modal('show');
+
+
+
+
     }
 
 //把按钮功能分出来做这个是审批
@@ -742,28 +774,30 @@ function totalPage() {
 
 //把按钮功能分出来做这个是驳回
     function back1() {
-        backContent = $('#backContent').val();
-        //设置状态驳回
+        var compatibilityId=$('#compatibilityId3').text();
+        var opinion=$('#backContent').val();
         $.ajax({
             type: "POST",
-            url: "backPw",
+            url: "backPw",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
-            data: {'pwId': pwId, 'backContent': backContent},
+            data: {'compatibilityId': compatibilityId,"opinion":opinion},
+            //contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     alert(result.message);
-                    console.log(result);
                     window.location.reload();
                 }
                 else {
-                    alert(result.message)
+                    alert(result.message);
                 }
             },
             error: function (result) {
                 alert("服务器异常！")
             }
+
         });
+
     }
 
 //序号变成四位
@@ -1221,10 +1255,15 @@ function confirmCompatibilityId() {
 
     function adjust(item) {
 
-        var compatibilityId = $(item).parent().parent().children('td').eq(2).text();
+        if($(item).parent().parent().children('td').eq(13).text()!="审批通过"){
+            var compatibilityId = $(item).parent().parent().children('td').eq(2).text();
 
-        localStorage.compatibilityId = compatibilityId;
-        window.location.href = "adjustCompatibility.html";
+            localStorage.compatibilityId = compatibilityId;
+            window.location.href = "adjustCompatibility.html";
+        }
+        if($(item).parent().parent().children('td').eq(13).text()=="审批通过") {
+            alert("审批通过，无法修改,请驳回后修改！")
+        }
 
 
     }

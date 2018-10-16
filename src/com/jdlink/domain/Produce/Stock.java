@@ -70,9 +70,21 @@ public class Stock {
      * 状态
      */
     private CheckState checkState;
+    /**
+     * 申报明细
+     */
+    List<StockItem> stockItemList=new ArrayList<>();
 
     private Page page;
     private String keyword;
+
+    public List<StockItem> getStockItemList() {
+        return stockItemList;
+    }
+
+    public void setStockItemList(List<StockItem> stockItemList) {
+        this.stockItemList = stockItemList;
+    }
 
     public Supplier getSupplier() {
         return supplier;

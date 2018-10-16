@@ -139,5 +139,10 @@ public class WasteInventoryServiceImpl implements WasteInventoryService {
         wasteInventoryMapper.updateInventoryCount(count,inboundOrderItemId);
     }
 
+    @Override
+    public List<WasteInventory> list3() {
+        return wasteInventoryMapper.list3();
+    }
+
 
 }
