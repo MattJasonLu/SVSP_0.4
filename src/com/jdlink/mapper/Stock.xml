@@ -162,10 +162,15 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
 
     <!--添加库存申报-->
     <insert id="addStockItem" parameterType="StockItem">
-        insert into t_pr_stockitem(stockId, wastesName, wastesCode, number, content) values
-        (#{stockId},#{wastesName},#{wastesCode},#{number},#{content})
+        insert into t_pr_stockitem(stockId, wastesName, wastesCode, number, content,remarks) values
+        (#{stockId},#{wastesName},#{wastesCode},#{number},#{content},#{remarks})
     </insert>
 
+
+    <!--更新前删除所有的明细-->
+    <delete id="deleteStockItem" parameterType="String">
+        delete from  t_pr_stockitem where stockId=#{stockId};
+    </delete>
     <!--更新库存申报明细-->
     <update id="updateStockItem" parameterType="StockItem">
         update t_pr_stockitem set wastesName=#{wastesName},wastesCode=#{wastesCode},

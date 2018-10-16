@@ -28,4 +28,5 @@ public interface StockService {
     void time1(Stock stock);
     void addStockItem(StockItem stockItem);
     void updateStockItem(StockItem stockItem);
+    void deleteStockItem(String stockId);
 }
