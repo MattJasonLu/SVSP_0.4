@@ -92,6 +92,8 @@ public class StockController {
 
 
 
+
+
 //获取所欲申报信息
     @RequestMapping("loadPageStocktList")
     @ResponseBody
@@ -124,7 +126,7 @@ public class StockController {
             List<WastesInfo> wastesInfoList = wastesInfoService.list();
             JSONArray data = JSONArray.fromArray(wastesInfoList.toArray(new WastesInfo[wastesInfoList.size()]));
             List<Client> clientList = clientService.list();
-           List<Supplier> supplierList=supplierService.transportList();
+            List<Supplier> supplierList=supplierService.transportList();
             res.put("supplierList",supplierList);
             res.put("clientList",clientList);
              res.put("data", data);
@@ -149,6 +151,8 @@ public class StockController {
             stockService.updateStock(stock);
             //stockService.time1(stock);
             JSONObject json = JSONObject.fromBean(stock);
+
+            stockService.deleteStockItem(stock.getStockId());
             res.put("stock1", json);
             res.put("status", "success");
             res.put("message", "更新成功");
@@ -162,19 +166,21 @@ public class StockController {
     }
 
     //修改申报信息==>明细表
-    @RequestMapping("updateStockItem")
+    @RequestMapping("addStockItem1")
     @ResponseBody
-    public String updateStockItem(@RequestBody StockItem stockItem){
+    public String addStockItem1(@RequestBody StockItem stockItem){
         JSONObject res=new JSONObject();
 
         try {
-
+           stockService.addStockItem(stockItem);
+            res.put("status", "success");
+            res.put("message", "字表更新成功");
         }
         catch (Exception e){
-
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "字表更新失败");
         }
-
-
 
         return res.toString();
 
