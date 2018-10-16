@@ -33,7 +33,15 @@
             <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
                 <ul class="nav navbar-nav">
                     <li><a href="procurementManagement.html">首页</a></li>
-                    <li><a href="monthProcurement.html">月度采购</a></li>
+                    <li><a href="monthProcurement.html">采购计划</a></li>
+                    <li class="active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">采购申请<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="monthProcurement.html">月度采购</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="emergencyProcurement.html">应急采购</a></li>
+                        </ul>
+                    </li>
                     <li>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">辅料/备件管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -42,9 +50,10 @@
                             <li><a href="ingredientsReceive.html">辅料/备件领用</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="ingredientsOut.html">辅料/备件出库</a></li>   <!--辅料领料单-->
+                            <li role="separator" class="divider"></li>
+                            <li><a href="ingredientsWarehouse.html">辅料/备件库存</a></li>   <!--辅料领料单-->
                         </ul>
                     </li>
-                    <li class="active"><a href="emergencyProcurement.html">应急采购</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -94,7 +103,7 @@
             <div class="row">
                 <div>
                     <ol class="breadcrumb">
-                        <li><a href="businessModel.html">采购管理</a></li>
+                        <li><a href="procurementManagement.html">采购管理</a></li>
                         <li class="active">月度采购</li>
                     </ol>
                     <p class="text-center pull-right"><b></b><span class="id"></span></p>
@@ -186,7 +195,7 @@
                     <div class="row">
                         <div class="form-horizontal col-md-4">
                             <div class="form-group" style="margin-left: -10px;">
-                                <label class="col-sm-3 control-label" style="margin-left: 31px">申&nbsp;&nbsp;&nbsp;请&nbsp;&nbsp;&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;&nbsp;期 </label>
+                                <label class="col-sm-3 control-label" style="margin-left: 31px">申&nbsp;&nbsp;&nbsp;请&nbsp;&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;期 </label>
                                 <div class="input-group">
                                     <input type="date" class="input-sm form-control" id="search-inDate" title="" onkeyup="enterSearch()"/>
                                     <span class="input-group-addon">-</span>
