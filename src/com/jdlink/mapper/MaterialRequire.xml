@@ -71,7 +71,7 @@
         update t_pr_materialrequire set checkState='Invalid',nowTime=NOW() where materialRequireId=#{materialRequireId};
     </update>
     <update id="back" parameterType="String">
-        update t_pr_materialrequire set checkState='Backed',remarks=#{1},nowTime=NOW() where id=#{0};
+        update t_pr_materialrequire set checkState='Backed',remarks=#{1},nowTime=NOW() where materialRequireId=#{0};
     </update>
     <update id="updatemarketPurchases" >
         update  t_pr_materialrequire set marketPurchasesTotal=#{1} where

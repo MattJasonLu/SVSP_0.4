@@ -221,6 +221,47 @@ li {
 .sidebar-collapse .sidebar-dropdown > li > a{padding-left: 0; }
 .sidebar-collapse .sidebar-dropdown > li > a:hover{background: rgb(229,229,229); text-decoration: none; color: rgb(229,229,229);}
 .sidebar-collapse .cover > h2 img{margin-left: 0; border: none;}
+.sidebar-collapse .sidenav > li > a:after {color: rgb(229,229,229);background-color: rgb(17,79,142)}
+.sidebar-collapse .sidenav > li > a:visited{
+    color: rgb(229,229,229);
+    background-color: #0088cc;
+}
+.sidebar-collapse .sidenav > li > a:hover {
+    color: rgb(229,229,229);
+    background-color: #0088cc;
+}
+.sidebar-collapse .sidenav > li > a:active{
+    color: rgb(229,229,229);
+    background-color: #0088cc;
+}
+.sidebar-collapse .sidenav > li > a:after{
+    color: rgb(229,229,229);
+    background-color: #0088cc;
+}
+
+
+
+.sidebar .sidenav > li > a:after {color: rgb(229,229,229);background-color: rgb(17,79,142)}
+.sidebar .sidenav > li > a:visited{
+    color: rgb(229,229,229);
+    background-color: #0088cc;
+}
+.sidebar .sidenav > li > a:hover {
+    color: rgb(229,229,229);
+    background-color: #0088cc;
+}
+.sidebar .sidenav > li > a:active{
+    color: rgb(229,229,229);
+    background-color: #3719cc;
+}
+.sidebar .sidenav > li > a:after{
+    color: rgb(229,229,229);
+    background-color: #0088cc;
+}
+.sidenav .active {
+    color: rgb(229,229,229);
+    background-color: #0088cc;
+}
 /* main
  ---------------------------------------- */
 .main{overflow: hidden; margin-left: 215px; transition: all .3s ease; padding-top: 50px; width: 85%}

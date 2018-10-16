@@ -781,70 +781,47 @@ function approvalMa(item){
     $('#contractInfoForm2').modal('show');
 
 
-    // $.ajax({
-    //     type: "POST",
-    //     url: "backMa",
-    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-    //     dataType: "json",
-    //     data: {'id': id, 'remarks': remarks,},
-    //     success: function (result) {
-    //         if(result != undefined && result.status == "success"){
-    //             alert(result.message);
-    //             console.log(result);
-    //             window.location.reload();
-    //         }
-    //         else {
-    //             alert(result.message)
-    //         }
-    //     },
-    //     error: function (result) {
-    //         alert("服务器异常！")
-    //     }
-    // });
+
 
 
 }
 
+
+
 /*驳回*/
-function backMa() {
-    id=arrayId[0];
-    $("#back1").show();
-    $("#confirm").hide();
-    if(arrayId.length==1){
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getByMrId",         // url
-            // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {"id":id.toString()},
-            dataType: "json",
-            //contentType: 'application/json;charset=utf-8',
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
-                    console.log(result);
-                    var obj=result.data;
-                    console.log(obj);
-                    //赋值
-                    //物料编号
-                    $("#materialRequireId").text(obj.materialRequireId);
-                    //序号
-                    $("#id").text(obj.id);
-                    $('#advice').text(obj.approvalContent);
-                    //驳回意见
-                    $("#remarks").text(obj.remarks);
-                    $("#contractInfoForm2").modal('show');
-                }
-                else {
-                    alert(result.message);
-                }
-            },
-            error:function (result) {
-                alert("服务器异常！")
+function back(item) {
+
+    $.ajax({
+        type: "POST",
+        url: "getMaterialRequireByMaterialRequireId",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'materialRequireId': $(item).parent().parent().children('td').eq(2).html()},
+        //contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                //赋值配伍单号
+                $("#remarks1").val(result.data.opinion);
             }
-        });
-    }
-    else {
-        alert("请选择数据！")
-    }
+            else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+
+    });
+
+    $('#materialRequireId2').text($(item).parent().parent().children('td').eq(2).html())
+
+
+
+    $('#contractInfoForm3').modal('show');
+
+
+
 }
 
 //把按钮功能分出来做这个是审批
@@ -877,13 +854,15 @@ function confirm2() {
 
 //把按钮功能分出来做这个是驳回
 function back2() {
-    remarks = $('#remarks').val();
+
+    var materialRequireId=$('#materialRequireId2').text();
+    var opinion=$('#remarks1').val();
     $.ajax({
         type: "POST",
         url: "backMa",
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data: {'id': id, 'remarks': remarks,},
+        data: {'materialRequireId': materialRequireId, 'opinion': opinion,},
         success: function (result) {
             if(result != undefined && result.status == "success"){
                 alert(result.message);
@@ -898,7 +877,6 @@ function back2() {
             alert("服务器异常！")
         }
     });
-
 }
 
 /*时间显示*/
@@ -1313,10 +1291,18 @@ function setCompatibilityModal(result) {
 
 //修改功能
 function adjust(item) {
-var materialRequireId=$(item).parent().parent().children('td').eq(2).html();
+    if($(item).parent().parent().children('td').eq(15).html()!="审批通过"){
+        var materialRequireId=$(item).parent().parent().children('td').eq(2).html();
 
-    localStorage.materialRequireId = materialRequireId;
-    window.location.href = "adjustMaterialDemand.html";
+        localStorage.materialRequireId = materialRequireId;
+        window.location.href = "adjustMaterialDemand.html";
+    }
+    if($(item).parent().parent().children('td').eq(15).html()=="审批通过"){
+        alert("审批通过，无法修改，请驳回!")
+    }
+
+
+
 }
 
 

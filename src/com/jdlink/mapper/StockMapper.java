@@ -3,6 +3,7 @@ package com.jdlink.mapper;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Stock;
+import com.jdlink.domain.Produce.StockItem;
 import com.jdlink.domain.Wastes;
 
 import java.util.List;
@@ -42,5 +43,7 @@ public interface StockMapper {
     void delete(Stock stock);
     void addList(Stock stock);
     void time1(Stock stock);
+    void addStockItem(StockItem stockItem);
+    void updateStockItem(StockItem stockItem);
 
 }

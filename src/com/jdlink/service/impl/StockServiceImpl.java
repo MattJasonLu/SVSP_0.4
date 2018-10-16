@@ -2,6 +2,7 @@ package com.jdlink.service.impl;
 
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Stock;
+import com.jdlink.domain.Produce.StockItem;
 import com.jdlink.domain.Wastes;
 import com.jdlink.mapper.StockMapper;
 import com.jdlink.service.StockService;
@@ -97,6 +98,16 @@ public class StockServiceImpl implements StockService  {
     @Override
     public void time1(Stock stock) {
         stockMapper.time1( stock);
+    }
+
+    @Override
+    public void addStockItem(StockItem stockItem) {
+        stockMapper.addStockItem(stockItem);
+    }
+
+    @Override
+    public void updateStockItem(StockItem stockItem) {
+        stockMapper.updateStockItem(stockItem);
     }
 
 
