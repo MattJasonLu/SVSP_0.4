@@ -423,6 +423,10 @@ function setOutBoundList(result) {
                     case (12):
                         $(this).html(obj.remarks);
                         break;
+                        //入库单明细编号
+                    case (13):
+                        $(this).html(obj.inboundOrderItemId);
+                        break;
                     //转移联单号
                     // case (17):
                     //     $(this).html(obj.picker);
@@ -1510,6 +1514,51 @@ function searchSecondaryOuntBound() {
     if(text.length<=0){
         onLoadSecondary();
     }
+
+
+}
+
+//退库
+function rollback(item) {
+    //获取 inboundOrderItemId 和 outboundOrderId 和 outboundNumber
+
+    var inboundOrderItemId=$(item).parent().parent().children('td').eq(13).html();
+
+    var outboundOrderId=$(item).parent().parent().children('td').eq(5).html();
+
+    var outboundNumber=$(item).parent().parent().children('td').eq(8).html();
+
+    if($(item).parent().parent().children('td').eq(11).html()!='已退库'){
+        if(confirm("确定退库?")){
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "rollback",                  // url
+                data:{'inboundOrderItemId':inboundOrderItemId,'outboundOrderId':outboundOrderId,'outboundNumber':outboundNumber},
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                //data:{'outboundOrderId':outboundOrderId},
+                dataType: "json",
+                // contentType: "application/json; charset=utf-8",
+                success:function (result) {
+                    if (result != undefined && result.status == "success"){
+                        alert(result.message)
+                        window.location.reload();
+                    }
+                    else {
+                        alert(result.message);
+                    }
+                },
+                error:function (result) {
+                    alert("服务器异常！");
+                }
+
+            });
+        }
+    }
+    else {
+        alert("已退库，无法再次退库！")
+    }
+
+
 
 
 }
