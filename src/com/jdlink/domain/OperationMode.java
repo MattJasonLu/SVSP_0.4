@@ -7,7 +7,8 @@ import com.jdlink.util.CodeBaseEnum;
  */
 public enum OperationMode implements CodeBaseEnum {
     Comprehensive("综合", 1),
-    Collect("收集", 2),;
+    Collect("收集", 2),
+    Production("生产", 3),;
 
     private String name;
     private int index;

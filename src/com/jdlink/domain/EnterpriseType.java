@@ -11,6 +11,8 @@ public enum EnterpriseType implements CodeBaseEnum {
     CollectiveEnterprise("集体企业", 2),
     JointStockByStateOwnedEnterprises("国有企业改组的股份合作企业", 3),
     JointStockByCollectiveEnterprise("集体企业改组的股份合作企业", 4),
+    LimitedLiabilityCompany("有限责任公司", 5),
+    ThePrivateEnterprise("私营企业", 6),
 ;
     private String name;
     private int index;
