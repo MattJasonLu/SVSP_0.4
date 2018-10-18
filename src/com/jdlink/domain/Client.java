@@ -144,6 +144,14 @@ public class Client {
      */
     private String bankAccount;
     /**
+     * 开票地址
+     */
+    private String taxAddress;
+    /**
+     * 开票电话
+     */
+    private String taxMobile;
+    /**
      * 税号
      */
     private String taxNumber;
@@ -454,6 +462,22 @@ public class Client {
 
     public void setTaxNumber(String taxNumber) {
         this.taxNumber = taxNumber;
+    }
+
+    public String getTaxAddress() {
+        return taxAddress;
+    }
+
+    public void setTaxAddress(String taxAddress) {
+        this.taxAddress = taxAddress;
+    }
+
+    public String getTaxMobile() {
+        return taxMobile;
+    }
+
+    public void setTaxMobile(String taxMobile) {
+        this.taxMobile = taxMobile;
     }
 
     public TicketRate1 getTicketType() {

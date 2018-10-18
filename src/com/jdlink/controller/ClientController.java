@@ -626,13 +626,18 @@ public class ClientController {
                     case "集体企业改组的股份合作企业":
                         client.setEnterpriseType(EnterpriseType.JointStockByCollectiveEnterprise);
                         break;
+                    case "有限责任公司":
+                        client.setEnterpriseType(EnterpriseType.LimitedLiabilityCompany);
+                        break;
+                    case "私营企业":
+                        client.setEnterpriseType(EnterpriseType.ThePrivateEnterprise);
                     default:
                         break;
                 }
                 // 设置经营方式
                 switch (data[i][5].toString()) {
                     case "生产":
-
+                        client.setOperationMode(OperationMode.Production);
                         break;
                     case "综合":
                         client.setOperationMode(OperationMode.Comprehensive);
