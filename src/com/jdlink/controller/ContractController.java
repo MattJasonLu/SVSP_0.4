@@ -6,6 +6,7 @@ import com.jdlink.domain.Produce.LaboratoryTest;
 import com.jdlink.domain.Produce.WayBill;
 import com.jdlink.domain.Produce.WayBillItem;
 import com.jdlink.service.*;
+import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
 import com.jdlink.util.UpdateVersion;
 import net.sf.json.JSONArray;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
@@ -22,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.jdlink.util.DateUtil.getDateStr;
+import static com.jdlink.util.UppercaseToNumber.Splicing;
 
 /**
  * Created by matt on 2018/5/18.
@@ -1169,6 +1172,29 @@ public class ContractController {
 
         return  res.toString();
 
+
+    }
+
+    //导入费用明细
+    @RequestMapping("importQuotationItemExcel")
+    @ResponseBody
+    public String importQuotationItemExcel(MultipartFile excelFile){
+        JSONObject res=new JSONObject();
+        Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+        try {
+           for(int i=0;i<data.length;i++){
+               System.out.println(Splicing(data[i][5].toString())+"1232");
+           }
+        }
+        catch (Exception e){
+
+
+
+        }
+
+
+
+        return res.toString();
 
     }
 }
