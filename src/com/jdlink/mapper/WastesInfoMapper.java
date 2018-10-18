@@ -8,4 +8,5 @@ import java.util.List;
 public interface WastesInfoMapper {
     List<WareHouse>getWareHouseList();
     List<WastesInfo> list();
+   String getWastesNameByCode(String code);
 }

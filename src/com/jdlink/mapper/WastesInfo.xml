@@ -11,4 +11,9 @@
     <select id="getWareHouseList" resultType="WareHouse">
         select * from t_pl_warehouse;
     </select>
+
+    <!--根据危废编码获取危废名称-->
+    <select id="getWastesNameByCode" parameterType="String" resultType="String">
+        select name from t_wastescategory where code=(select  category from t_wasteslist where t_wasteslist.code=#{code} limit 0,1);
+    </select>
 </mapper>
