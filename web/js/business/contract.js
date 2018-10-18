@@ -1673,7 +1673,7 @@ function loadWastesContractSelectList() {
         contentType: "application/json;charset=utf-8",
         success: function (result){
             if (result != undefined && result.status == "success"){
-               // console.log(result);
+               console.log(result);
                 var obj=eval(result);
               var wastesCode=$('#wastesCode');
               wastesCode.children().remove();
@@ -2230,6 +2230,34 @@ function loadWastesContractSelectList() {
 
   }
 
+  //根据编码查找名称
+function findWastesName(item) {
+
+ var code=$(item).prev().prev().attr('title');
+
+ //根据危废编码获取危废名称
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getWastesNameByCode",                  // url
+        dataType: "json",
+        data:{"code":code},
+        //contentType: "application/json;charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log($(item).parents('td'))
+                $(item).parents('td').next().children('input').val(result.wastesName)
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    })
+
+}
+
 
 
 
@@ -2619,7 +2647,14 @@ function delLine(e) {
     tr.parentNode.removeChild(tr);
     var i=0
     $('.myclass').each(function (index,item) {
-        $(this).children('td').eq(0).html((parseInt(index)+1).toString()+"<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>");
+        console.log(index)
+            if((parseInt(index)+1)!=1) {
+                $(this).children('td').eq(0).html((parseInt(index) + 1).toString() + "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>");
+            }
+        if((parseInt(index)+1)==1){
+            $(this).children('td').eq(0).html((parseInt(index) + 1).toString());
+        }
+
     });
 }
 
@@ -5648,7 +5683,11 @@ function adjustNewContract() {
                             cloneTr.show();
                             var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
                             cloneTr.children('td').eq(0).html(parseInt(contract.quotationItemList.length)-index);
-                            cloneTr.children("td:eq(0)").append(delBtn);
+                             console.log(index+1)
+                            if((parseInt(index+1)!=1)){
+                               cloneTr.children("td:eq(0)").append(delBtn);
+                           }
+
                             cloneTr.children('td').eq(2).children('input').val(item.wastesName);
                             // cloneTr.children('td').eq(4).children('input').val(item.util);
                             cloneTr.children('td').eq(5).children('input').val(item.unitPriceTax);
@@ -6304,4 +6343,9 @@ function back1() {
             alert("服务器异常！")
         }
     });
+}
+
+//导入报价单明细
+function importExcelChoose() {
+    $("#importExcelModal").modal('show');
 }

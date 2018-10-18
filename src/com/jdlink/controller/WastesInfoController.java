@@ -340,4 +340,27 @@ public class WastesInfoController {
         return love.toString();
     }
 
+    /**
+     * 根据危废编码获取危废名称
+     */
+    @RequestMapping("getWastesNameByCode")
+    @ResponseBody
+    public String getWastesNameByCode(String code){
+        JSONObject res=new JSONObject();
+        try{
+       String wastesName=wastesInfoService.getWastesNameByCode(code);
+            res.put("status", "success");
+            res.put("message", "危废名称成功");
+            res.put("wastesName", wastesName);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "危废名称失败");
+        }
+
+        return res.toString();
+
+    }
+
 }

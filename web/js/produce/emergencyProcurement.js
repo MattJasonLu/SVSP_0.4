@@ -453,8 +453,11 @@ function delLine(e) {
     var tr = e.parentElement.parentElement;
     tr.parentNode.removeChild(tr);
     //2018/10/11更新 请勿修改！
-    $(this).children('td').eq(0).html("<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;"+(parseInt(index)+1).toString());
-
+    $('.myclass').each(function (index,item) {
+    if((index+1)!=1) {
+        $(this).children('td').eq(0).html("<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;" + (parseInt(index) + 1).toString());
+    }
+});
 }
 
 //保存应急采购方法

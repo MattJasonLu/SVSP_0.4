@@ -23,4 +23,9 @@ public class WastesInfoServiceImpl implements WastesInfoService {
     public List<WareHouse> getWareHouseList() {
         return wastesInfoMapper.getWareHouseList();
     }
+
+    @Override
+    public String getWastesNameByCode(String code) {
+        return wastesInfoMapper.getWastesNameByCode(code);
+    }
 }
