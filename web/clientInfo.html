@@ -69,11 +69,11 @@
             },
             rules: {
                 materialAttachment: {
-                    required: true,
+                    required: false,
                     accept: "application/*,image/*"
                 },
                 processAttachment: {
-                    required: true,
+                    required: false,
                     accept: "application/*,image/*"
                 },
                 mobile: {   //手机
@@ -86,9 +86,9 @@
                   required:true,
                    isFixMobile: true
                 },
-                email: {
-                    email: true
-                }
+                // email: {
+                //     email: true
+                // }
             },
             message: {
                 materialAttachment: {
@@ -751,7 +751,7 @@
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="materialAttachment" class="col-sm-4 control-label">原辅材料 <sup>*</sup></label>
+                            <label for="materialAttachment" class="col-sm-4 control-label">原辅材料 </label>
                             <div class="col-xs-5">
                                 <input type="file"  id="materialAttachment" name="materialAttachment" placeholder="">
                             </div>
@@ -759,7 +759,7 @@
                     </div>
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="processAttachment" class="col-sm-4 control-label">工艺流程图 <sup>*</sup></label>
+                            <label for="processAttachment" class="col-sm-4 control-label">工艺流程图 </label>
                             <div class="col-xs-5">
                                 <input type="file"  id="processAttachment" name="processAttachment" placeholder="">
                             </div>
@@ -807,7 +807,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="email" class="col-sm-4 control-label">邮箱 <sup>*</sup></label>
+                            <label for="email" class="col-sm-4 control-label">邮箱 </label>
                             <div class="col-xs-5">
                                 <input type="email" class="form-control" id="email" name="email" placeholder="">
                             </div>
@@ -831,9 +831,15 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="mobile" class="col-sm-4 control-label">开户行账号 <sup>*</sup></label>
+                            <label for="bankAccount" class="col-sm-4 control-label">开户行账号 <sup>*</sup></label>
                             <div class="col-xs-5">
                                 <input type="text" class="form-control" id="bankAccount" name="bankAccount" placeholder="" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="address" class="col-sm-4 control-label">地址 <sup>*</sup></label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="address" name="address" placeholder="" >
                             </div>
                         </div>
                         <div class="form-group">
@@ -861,6 +867,12 @@
                             <label for="mobile" class="col-sm-4 control-label">开票类型 <sup>*</sup></label>
                             <div class="col-xs-5">
                                 <select class="form-control" id="ticketType" name="ticketType"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" class="col-sm-4 control-label">电话 <sup>*</sup></label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="mobilePhone" name="phone" placeholder="" >
                             </div>
                         </div>
                     </div>
