@@ -293,4 +293,21 @@
     <select id="updateInventoryCount" >
         update t_pl_wasteinventory set actualCount=actualCount-#{0},leftNumeber=(actualCount-#{0})  where inboundOrderItemId=#{1};
     </select>
+
+
+    <!--根据入库单的明细 查找用户编号以及危废的信息-->
+    <select id="declareGenerationById" parameterType="String" resultMap="InboundOrderItemIdRM">
+        select  * from t_pl_wasteinventory where inboundOrderItemId=#{inboundOrderItemId}
+    </select>
+
+
+    <!--更细出库单的状态为退库-->
+    <update id="rollback" parameterType="String">
+        update t_pl_outboundorder set checkState='Retired',nowTime=NOW() where outboundOrderId=#{outboundOrderId};
+    </update>
+    <!--更新库存的配料量-->
+    <update id="returnNumber">
+        update t_pl_wasteinventory set actualCount=actualCount+#{1} where inboundOrderItemId=#{0};
+
+    </update>
 </mapper>

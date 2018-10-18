@@ -751,8 +751,25 @@ function setWasteInventoryList1(result) {
                     case (11):
                         $(this).html(getDateStr(obj.creatorDate));
                         break;
+                        //入库单明细编号
                     case (12):
                         $(this).html(obj.inboundOrderItemId);
+                        break;
+                        //客户编号
+                    case (13):
+                        if(obj.produceCompany!=null){
+                            $(this).html(obj.produceCompany.clientId);
+                        }
+                        break;
+                        //危废编码
+                    case (14):
+                        if(obj.laboratoryTest!=null){
+                            $(this).html(obj.laboratoryTest.wastesCode);
+                        }
+                        break;
+                        //备注
+                    case (15):
+                        $(this).html(obj.remarks);
                         break;
                 }
             });
@@ -793,5 +810,75 @@ function exportExcel() {
         }
         window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
     }
+
+}
+
+//生成次生库存申报
+function DeclareGeneration() {
+    var items = $("input[name='select']:checked");//判断复选框是否选中
+   $.each(items,function () {
+       // var inboundOrderItemId=$(this).parent().parent().parent().children('td').eq(12).html();
+
+        var clientId=$(this).parent().parent().parent().children('td').eq(13).html();
+        var wastesCode=$(this).parent().parent().parent().children('td').eq(14).html();
+        var remarks=$(this).parent().parent().parent().children('td').eq(15).html();
+        var number=$(this).parent().parent().parent().children('td').eq(8).html();
+        var wasteName=$(this).parent().parent().parent().children('td').eq(7).html();
+
+        var stockData={
+                client:{clientId:clientId},
+        };
+       //直接生成库存信息==》添加主表
+       $.ajax({
+           type: "POST",                       // 方法类型
+           url: "declareGeneration",                  // url 计算数据库的总条数
+           data:JSON.stringify(stockData),
+           async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+           dataType: "json",
+           contentType: 'application/json;charset=utf-8',
+           success:function (result) {
+
+           },
+           error:function (result) {
+
+           }
+       })
+        var stockItem={
+                wastesCode:wastesCode,
+                number:number,
+                wastesName:wasteName,
+                remarks:remarks,
+
+        };
+       //直接生成库存信息==》添加字表
+       $.ajax({
+           type: "POST",                       // 方法类型
+           url: "declareGeneration1",                  // url 计算数据库的总条数
+           data:JSON.stringify(stockItem),
+           async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+           dataType: "json",
+           contentType: 'application/json;charset=utf-8',
+           success:function (result) {
+
+           },
+           error:function (result) {
+
+           }
+       })
+
+
+
+
+
+
+
+   })
+
+    alert("生成次生库存申报成功！")
+    if(confirm("是否跳转至库存申报页面?")){
+        window.location.href="stockManage.html";
+    }
+
+
 
 }

@@ -109,6 +109,8 @@
                     <!--<a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>-->
                     <a class="btn btn-primary btn-xs" onclick="exportExcel(); "><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     <!--<a class="btn btn-primary btn-xs" onclick="view2()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 属性调整</a>-->
+                    <!--<a href="#" onclick="rollback(this);" title="退库"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a>-->
+
                 </div>
                 <!--查询框-->
                 <div class="input-group col-md-4 pull-right" >
@@ -229,13 +231,15 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-
+                    <td class="text-center hidden"></td>
                     <td class="text-center">
                         <a href="#" onclick="view1(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                         <a href="#" onclick="cancel(this);" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
                         <!--<a href="#" onclick="submit();" title="提交"><span class="glyphicon glyphicon-export" aria-hidden="true"></span></a>-->
                         <!--<a href="#" onclick="signIn();" title="签收"><span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>-->
                         <!--<a href="#" onclick="view2();" title="属性调整"><span class="" aria-hidden="true"></span></a>-->
+                        <a href="#" onclick="rollback(this);" title="退库"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a>
+
                     </td>
                 </tr>
                 </tbody>
