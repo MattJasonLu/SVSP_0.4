@@ -346,11 +346,42 @@
     </select>
 
     <select id="getInventoryList" resultType="Ingredients">
-        select * from t_pr_ingredients_inventory;
+        select * from t_pr_ingredients_inventory
+        <if test="start != null and count != null and count != 0">
+            limit #{start}, #{count};
+        </if>
+    </select>
+
+    <select id="countInventory" resultType="int">
+        select count(*) from t_pr_ingredients_inventory where amount != 0;
     </select>
 
     <select id="getInventoryByNameAndWare" resultType="Ingredients">
         select * from t_pr_ingredients_inventory where name = #{name} and wareHouseName = #{wareHouseName};
+    </select>
+
+    <select id="searchInventoryCount" parameterType="Ingredients" resultType="int">
+        select count(*) from t_pr_ingredients_inventory
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or itemId = #{keywords}
+                or name like "%"#{keywords}"%"
+                or wareHouseName like "%"#{keywords}"%"
+                or amount = #{keywords}
+                or unit like "%"#{keywords}"%"
+                or ingredientState like "%"#{keywords}"%"
+                or specification like "%"#{keywords}"%"
+            </if>
+            <if test="wareHouseName != null and wareHouseName != ''">
+                wareHouseName like "%"#{wareHouseName}"%"
+            </if>
+            <if test="name != null and name != ''">
+                name like "%"#{name}"%"
+            </if>
+            <if test="amount != null and amount != ''">
+                amount = #{amount}
+            </if>
+        </where>
     </select>
 
     <select id="searchInventory" resultType="Ingredients">
@@ -375,6 +406,9 @@
                 amount = #{amount}
             </if>
         </where>
+        <if test="page != null and page.start != null and page.count != null and page.count != 0">
+            limit #{page.start}, #{page.count};
+        </if>
     </select>
 
     <update id="invalidReceive" parameterType="String">

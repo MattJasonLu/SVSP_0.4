@@ -639,12 +639,12 @@ public class PRIngredientsController {
      * 获取物品库存列表
      * @return
      */
-    @RequestMapping("getIngredientsInventoryList")
+    @RequestMapping("LoadPageIngredientsInventoryList")
     @ResponseBody
-    public String getIngredientsInventoryList() {
+    public String LoadPageIngredientsInventoryList(@RequestBody Page page) {
         JSONObject res = new JSONObject();
         try {
-            List<Ingredients> ingredientsList = ingredientsService.getInventoryList();
+            List<Ingredients> ingredientsList = ingredientsService.getInventoryList(page);
             JSONArray data = JSONArray.fromArray(ingredientsList.toArray(new Ingredients[ingredientsList.size()]));
             res.put("data",data);
             res.put("status", "success");
@@ -655,6 +655,38 @@ public class PRIngredientsController {
             res.put("message", "获取失败");
         }
         return res.toString();
+    }
+
+    /**
+     * 获取查询记录数
+     *
+     * @return
+     */
+    @RequestMapping("searchIngredientInventoryTotal")
+    @ResponseBody
+    public int searchIngredientInventoryTotal(@RequestBody Ingredients ingredients) {
+        try {
+            return ingredientsService.searchInventoryCount(ingredients);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 获取总记录数
+     *
+     * @return
+     */
+    @RequestMapping("totalIngredientInventoryRecord")
+    @ResponseBody
+    public int totalIngredientInventoryRecord() {
+        try {
+            return ingredientsService.countInventory();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     /**

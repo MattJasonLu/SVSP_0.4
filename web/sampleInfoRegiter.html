@@ -571,100 +571,98 @@
                 </div>
             </div>
         </div>
-        <!-- 查看预约信息模态框 -->
-        <div class="modal fade" id="viewAppointModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content" id="viewModal">
-                    <form method="post" enctype="multipart/form-data">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel1">登记单信息</h4>
-                        </div>
-                        <div class="modal-body">
-                            <table class="table table-bordered" style="border:none">
-                                <thead style="border:none">
-                                <tr>
-                                    <th class="text-center" style="border: none">公司代码</th>
-                                    <td class="text-center" style="border: none"><span id="model1-companyCode" ></span></td>
-                                    <th class="text-center" style="border: none">签收人</th>
-                                    <td class="text-center" style="border: none"><span id="model1-signer" ></span></td>
-                                </tr>
-                                <tr>
-                                    <th class="text-center">序号</th>
-                                    <th class="text-center">危废代码</th>
-                                    <th class="text-center">基础项目</th>
-                                    <th class="text-center">增加项目</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr id="addClone1">
-                                    <td class="text-center">1</td>
-                                    <td class="text-center"><span id="model[0].wastesCode"></span></td>
-                                    <td class="text-center"><span id="model[0].basicItems"></span></td>
-                                    <td class="text-center"><span id="model[0].addItems"></span></td>
-                                </tr>
-                                <tr id="end" style="display: none;">
-                                    <td class="text-center"></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-center"></td>
-                                </tr>
-                                </tbody>
-
-                            </table>
-                        </div>
-                        <div class="modal-footer" id="footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" class="btn btn-primary" onclick="print();">打印</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
         <!-- 确认模态框 确认收样-->
         <div class="modal fade" id="checkModal" tabindex="-1" role="dialog" aria-labelledby="checkModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title" id="checkModalLabel">样品信息登记</h4>
+                        <img src="image/logo1.png">
+                        <div style="display:inline-block;">
+                            <h3 class="modal-title text-center" id="model1" style="font-family: '楷体'">
+                                北控安耐得环保科技发展常州有限公司</h3>
+                            <br>
+                            <h4 class="modal-title1 text-center" id="model4">危险废弃物数据评估表</h4>
+                        </div>
                     </div>
                     <div class="modal-body">
-                        <table class="table table-bordered" style="border: none">
-                            <thead style="border:none">
+                        <table class="table table-bordered">
                             <tr>
-                                <th class="text-center" style="border: none">公司代码</th>
-                                <td class="text-center" style="border: none"><span id="model2-companyCode" ></span></td>
-                                <th class="text-center" style="border: none">签收人</th>
-                                <td class="text-center" style="border: none"><span id="model2-signer" ></span></td>
+                                <td rowspan="2" class="text-center">公司代码</td>
+                                <td rowspan="2" class="text-center">废物代码</td>
+                                <td colspan="2" class="text-center">检测项目</td>
+                                <td rowspan="2" class="text-center">化验室签收</td>
                             </tr>
                             <tr>
-                                <th class="text-center">序号</th>
-                                <th class="text-center">危废代码</th>
-                                <th class="text-center">基础项目</th>
-                                <th class="text-center">增加项目</th>
+                                <td class="text-center">基础检测项目</td>
+                                <td class="text-center">增加项目</td>
                             </tr>
-                            </thead>
-                            <tbody>
                             <tr id="addClone2">
-                                <td class="text-center">1</td>
-                                <td class="text-center"><span id="checkModel[0].wastesCode"></span></td>
-                                <td class="text-center"><span id="checkModel[0].basicItems"></span></td>
-                                <td class="text-center"><span id="checkModel[0].addItems"></span></td>
+                                <td class="text-center"><span id="checkModel0-companyCode"></span></td>
+                                <td class="text-center"><span id="checkModel0-wastesCode"></span></td>
+                                <td class="text-center"><span id="checkModel0-basicItems"></span></td>
+                                <td class="text-center"><span id="checkModel0-addItems"></span></td>
+                                <td class="text-center"><span id="checkModel0-signer"></span></td>
                             </tr>
                             <tr id="end1" style="display: none;">
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
+                                <td class="text-center"></td>
                             </tr>
-                            </tbody>
                         </table>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                         <button type="button" class="btn btn-primary" onclick="confirmCheck();">确认登记</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 查看预约信息模态框-->
+        <div class="modal fade" id="viewAppointModal" tabindex="-1" role="dialog" aria-labelledby="checkModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <img src="image/logo1.png">
+                        <div style="display:inline-block;">
+                            <h3 class="modal-title text-center" id="model2" style="font-family: '楷体'">
+                                北控安耐得环保科技发展常州有限公司</h3>
+                            <br>
+                            <h4 class="modal-title1 text-center" id="model3">危险废弃物数据评估表</h4>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td rowspan="2" class="text-center">公司代码</td>
+                                <td rowspan="2" class="text-center">废物代码</td>
+                                <td colspan="2" class="text-center">检测项目</td>
+                                <td rowspan="2" class="text-center">化验室签收</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">基础检测项目</td>
+                                <td class="text-center">增加项目</td>
+                            </tr>
+                            <tr id="addClone1">
+                                <td class="text-center"><span id="model0-companyCode"></span></td>
+                                <td class="text-center"><span id="model0-wastesCode"></span></td>
+                                <td class="text-center"><span id="model0-basicItems"></span></td>
+                                <td class="text-center"><span id="model0-addItems"></span></td>
+                                <td class="text-center"><span id="model0-signer"></span></td>
+                            </tr>
+                            <tr id="end" style="display: none;">
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer" id="footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" onclick="print();">打印</button>
                     </div>
                 </div>
             </div>

@@ -10,6 +10,11 @@
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
+    <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
     <script src="js/bootstrap/navbar.js"></script>
     <script language="javascript" src="js/bootstrap/printThis.js"></script>
     <script type="text/javascript" src="js/html2canvas.js"></script>
@@ -25,7 +30,7 @@
         resize: none;
     }
 </style>
-<body onload="loadPoundsItems();">
+<body onload="loadPoundsAdd();">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -152,189 +157,136 @@
             <div>
                 <ol class="breadcrumb">
                     <li><a href="#">库存管理</a></li>
-                    <li class="active" ><a href="singlePoundsManage1.html">磅单管理</a></li>
+                    <li class="active"><a href="singlePoundsManage1.html">磅单管理</a></li>
                 </ol>
-                <p class="text-right"><b>转移联单号:</b><span id="Id"></span></p>
             </div>
         </div>
-        <div class="row">
-            <div>
-                <!--操作按钮-->
-                <div class="pull-left col-md-6">
-                    <!--//  <a class="btn btn-primary btn-xs" onclick="exportItems();"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>-->
-                    <a class="btn btn-primary btn-xs" id="printBtn" onclick="showPrintModal();"><span
-                            class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 打印</a>
-                </div>
-            </div>
-        </div>
+        <h4 class="sub-header">磅单新增</h4>
         <br>
         <form method="post" id="poundsForm" enctype="multipart/form-data">
             <h3 class="text-center focus">北控安耐得环保科技发展常州有限公司 称重磅单</h3>
             <div class="row">
                 <div class="form-horizontal col-md-12">
-                    <table style="width: 100%" >
+                    <table style="width: 100%">
                         <tr>
-                            <td>出厂时间：<span type="text" id="modal1_outTime" class="focus" title=""></span></td>
-                            <td></td>
-                            <td></td>
+                            <td>出厂时间：</td>
+                            <td>
+                                <div class="input-group date form_datetime1 col-xs-6" name="add_outTime">
+                                    <input class="form-control focus" type="text" value="" id="add_outTime"
+                                           name="add_outTime" title="" readonly>
+                                    <span class="input-group-addon"><span
+                                            class="glyphicon glyphicon-remove"></span></span>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                                </div>
+                            </td>
+                            <td>创建人：<input class="focus" id="add_founder"></td>
                             <td style="width: 250px;">单位:千克</td>
                         </tr>
                     </table>
                     <table class="table table-bordered">
                         <tr>
                             <td class="text-center" style="width: 150px;">入厂车号</td>
-                            <td class="text-center"><span id="modal1_enterLicencePlate"></span></td>
+                            <td class="text-center"><input class="focus" style="width:100%" id="add_enterLicencePlate"></td>
                             <td class="text-center" style="width: 150px;">出厂车号</td>
-                            <td class="text-center"><span id="modal1_outLicencePlate"></span></td>
+                            <td class="text-center"><input class="focus" style="width:100%" id="add_outLicencePlate"></td>
                         </tr>
                         <tr>
                             <td class="text-center" style="width: 150px;">货物名称</td>
-                            <td class="text-center"><span id="modal1_goodsName"></span></td>
+                            <td class="text-center"><input class="focus" style="width:100%" id="add_goodsName"></td>
                             <td class="text-center" style="width: 150px;">毛重</td>
-                            <td class="text-center"><span id="modal1_grossWeight"></span></td>
+                            <td class="text-center"><input class="focus" style="width:100%" type="number" id="add_grossWeight"></td>
                         </tr>
                         <tr>
                             <td class="text-center" style="width: 150px;">危废代码</td>
-                            <td class="text-center"><span id="modal1_wastesCode"></span></td>
+                            <td class="text-center">
+                                <select class="focus selectpicker input-xlarge form-control" data-live-search="true"
+                                        data-live-search-placeholder="搜索..." id="add_wastesCode"
+                                        name="add_wastesCode" title="未选择">
+                                </select>
+                            </td>
                             <td class="text-center" style="width: 150px;">皮重</td>
-                            <td class="text-center"><span id="modal1_tare"></span></td>
+                            <td class="text-center"><input class="focus" style="width:100%" type="number" id="add_tare" onkeyup="calculateWeight()"></td>
                         </tr>
                         <tr>
                             <td class="text-center" style="width: 150px;">发货单位</td>
-                            <td class="text-center"><span id="modal1_deliveryCompany"></span></td>
+                            <td class="text-center">
+                                <select class="focus selectpicker input-xlarge form-control" data-live-search="true"
+                                        data-live-search-placeholder="搜索..." id="add_deliveryCompany"
+                                        name="add_deliveryCompany" title="未选择">
+                                </select>
+                            </td>
                             <td class="text-center" style="width: 150px;">净重</td>
-                            <td class="text-center"><span id="modal1_netWeight"></span></td>
+                            <td class="text-center"><input class="focus" style="width:100%" id="add_netWeight"></td>
                         </tr>
                         <tr>
                             <td class="text-center" style="width: 150px;">收货单位</td>
-                            <td class="text-center"><span id="modal1_receiveCompany"></span></td>
+                            <td class="text-center">
+                                <select class="focus selectpicker input-xlarge form-control" data-live-search="true"
+                                        data-live-search-placeholder="搜索..." id="add_receiveCompany"
+                                        name="add_receiveCompany" title="未选择">
+                                </select>
+                            </td>
                             <td class="text-center" style="width: 150px;">进厂时间</td>
-                            <td class="text-center"><span id="modal1_enterTime"></span></td>
+                            <td class="text-center">
+                                <div class="input-group date form_datetime1 col-xs-6" name="add_enterTime">
+                                    <input class="form-control focus" type="text" value="" id="add_enterTime"
+                                           name="add_enterTime" title="" readonly>
+                                    <span class="input-group-addon"><span
+                                            class="glyphicon glyphicon-remove"></span></span>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                                </div>
+                            </td>
                         </tr>
                         <tr>
                             <td class="text-center" style="width: 150px;">业务类型</td>
-                            <td class="text-center"><span id="modal1_businessType"></span></td>
+                            <td class="text-center"><input class="focus" style="width:100%" id="add_businessType"></td>
                             <td class="text-center" style="width: 150px;">司机</td>
-                            <td class="text-center"><span id="modal1_driver"></span></td>
+                            <td class="text-center"><input class="focus" style="width:100%" id="add_driver"></td>
                         </tr>
                         <tr>
                             <td class="text-center" style="width: 150px;">司磅员</td>
-                            <td class="text-center"><span id="modal1_weighman"></span></td>
-                            <td class="text-center" style="width: 150px;">签字</td>
-                            <td class="text-center"><span></span></td>
-                        </tr>
-                        <tr>
+                            <td class="text-center"><input class="focus" style="width:100%" id="add_weighman"></td>
                             <td class="text-center" style="width: 150px;">备注</td>
-                            <td class="text-center" ><span id="modal1_remarks"></span></td>
-                            <td class="text-center" style="width: 150px;"></td>
-                            <td class="text-center" ></span></td>
+                            <td class="text-center"><input class="focus" style="width:100%" id="add_remarks"></td>
                         </tr>
-                    </table>
-                    <table style="width: 100%;border: 0;">
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td style="width: 250px;">打印时间：<span type="text" class="focus" id="modal1_printTime" title="" maxlength="12"></span></td>
+                            <td class="text-center" style="width: 150px;">转移联单号</td>
+                            <td class="text-center"><input class="focus" style="width:100%" id="add_transferId"></td>
+                            <td class="text-center" style="width: 150px;"></td>
+                            <td class="text-center"></td>
                         </tr>
                     </table>
                     <div class="row text-center">
-                    <a class="btn btn-danger hidden-print" href="singlePoundsManage1.html">返回</a>
+                        <a class="btn btn-success" onclick="addPounds();">保存</a>
+                        <a class="btn btn-danger" href="singlePoundsManage1.html">返回</a>
                     </div>
                 </div>
             </div>
         </form>
         <!--分页-->
-    </div>
-    <!--打印模态框-->
-    <div class="modal fade bs-example-modal-lg" id="printModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content" id="print1">
-                <form method="post" id="modal2-poundsForm" enctype="multipart/form-data">
-                    <h3 class="text-center focus">北控安耐得环保科技发展常州有限公司 称重磅单</h3>
-                    <div class="row">
-                        <div class="form-horizontal col-md-12">
-                            <table style="width: 100%;border: 0;" >
-                                <tr>
-                                    <td>出厂时间：<span type="text" id="modal2_outTime" class="focus" title=""></span></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td style="width: 250px;">单位:千克</td>
-                                </tr>
-                            </table>
-                            <table class="table table-bordered">
-                                <tr>
-                                    <td class="text-center" style="width: 150px;">入厂车号</td>
-                                    <td class="text-center"><span id="modal2_enterLicencePlate"></span></td>
-                                    <td class="text-center" style="width: 150px;">出厂车号</td>
-                                    <td class="text-center"><span id="modal2_outLicencePlate"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center" style="width: 150px;">货物名称</td>
-                                    <td class="text-center"><span id="modal2_goodsName"></span></td>
-                                    <td class="text-center" style="width: 150px;">毛重</td>
-                                    <td class="text-center"><span id="modal2_grossWeight"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center" style="width: 150px;">危废代码</td>
-                                    <td class="text-center"><span id="modal2_wastesCode"></span></td>
-                                    <td class="text-center" style="width: 150px;">皮重</td>
-                                    <td class="text-center"><span id="modal2_tare"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center" style="width: 150px;">发货单位</td>
-                                    <td class="text-center"><span id="modal2_deliveryCompany"></span></td>
-                                    <td class="text-center" style="width: 150px;">净重</td>
-                                    <td class="text-center"><span id="modal2_netWeight"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center" style="width: 150px;">收货单位</td>
-                                    <td class="text-center"><span id="modal2_receiveCompany"></span></td>
-                                    <td class="text-center" style="width: 150px;">进厂时间</td>
-                                    <td class="text-center"><span id="modal2_enterTime"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center" style="width: 150px;">业务类型</td>
-                                    <td class="text-center"><span id="modal2_businessType"></span></td>
-                                    <td class="text-center" style="width: 150px;">司机</td>
-                                    <td class="text-center"><span id="modal2_driver"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center" style="width: 150px;">司磅员</td>
-                                    <td class="text-center"><span id="modal2_weighman"></span></td>
-                                    <td class="text-center" style="width: 150px;">签字</td>
-                                    <td class="text-center"><span></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center" style="width: 150px;">备注</td>
-                                    <td class="text-center"><span id="modal2_remarks"></span></td>
-                                    <td class="text-center" style="width: 150px;"></td>
-                                    <td class="text-center" ></span></td>
-                                </tr>
-                            </table>
-                            <table style="width: 100%;border: 0;">
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td style="width: 250px;">打印时间：<span type="text" class="focus" id="modal2_printTime" title="" maxlength="12"></span></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </form>
-                <div class="modal-footer center" id="footer">
-                    <button type="button" class="btn btn-primary" id="print" onclick="print();">确认打印</button>
-                    <button type="button" class="btn btn-default" id="cancel" onclick="cancel();">取消</button>
-                </div>
-            </div>
-        </div>
+
     </div>
 </div>
 <div id="embed"></div>
-<div id="pic" style="border: 0;">
 </div>
 </body>
+<script>
+    /**
+     * 设置时间格式
+     */
+    $('.form_datetime1').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii:ss',
+        language: 'zh-CN',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 0,
+        minuteStep: 1,
+        forceParse: 0
+    });
+</script>
 <style>
 
 </style>

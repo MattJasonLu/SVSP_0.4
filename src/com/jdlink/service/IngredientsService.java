@@ -34,7 +34,9 @@ public interface IngredientsService {
     void invalidReceive(String id);
     void updateReceive(IngredientsReceive ingredientsReceive);
     Ingredients getAmountAndReceive(Ingredients ingredients);
-    List<Ingredients> getInventoryList();
+    List<Ingredients> getInventoryList(Page page);
+    int searchInventoryCount(Ingredients ingredients);
+    int countInventory();
     List<Ingredients> searchInventory(Ingredients ingredients);
     void updateReceiveState(String id);
     Ingredients getInventoryByNameAndWare(Ingredients ingredients);

@@ -443,5 +443,21 @@ public class PRPoundsController {
         return res.toString();
     }
 
+    @RequestMapping("addPounds")
+    @ResponseBody
+    public String addPounds(@RequestBody Pounds pounds){
+        JSONObject res = new JSONObject();
+        try{
+            poundsService.add(pounds);
+            res.put("status","success");
+            res.put("message","新增成功！");
+        }catch (Exception e){
+            res.put("status","fail");
+            res.put("message","新增失败！");
+        }
+        return res.toString();
+    }
+
+
 }
 
