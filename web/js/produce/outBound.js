@@ -658,6 +658,11 @@ function setOutBoundList(result) {
                     case (17):
                         $(this).html(obj.transferDraftId);
                         break;
+                        //入库点明细编号
+                    case (18):
+                        $(this).html(obj.inboundOrderItemId);
+                        break;
+
 
                     //
                 }
@@ -1239,6 +1244,52 @@ function searchOutBound() {
     if(text.length<=0){
         loadOutBoundList();
     }
+
+
+}
+
+
+//退库
+function rollback(item) {
+    //获取 inboundOrderItemId 和 outboundOrderId 和 outboundNumber
+
+    var inboundOrderItemId=$(item).parent().parent().children('td').eq(18).html();
+
+    var outboundOrderId=$(item).parent().parent().children('td').eq(5).html();
+
+    var outboundNumber=$(item).parent().parent().children('td').eq(12).html();
+
+  if($(item).parent().parent().children('td').eq(15).html()!='已退库'){
+      if(confirm("确定退库?")){
+          $.ajax({
+              type: "POST",                       // 方法类型
+              url: "rollback",                  // url
+              data:{'inboundOrderItemId':inboundOrderItemId,'outboundOrderId':outboundOrderId,'outboundNumber':outboundNumber},
+              async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+              //data:{'outboundOrderId':outboundOrderId},
+              dataType: "json",
+              // contentType: "application/json; charset=utf-8",
+              success:function (result) {
+                  if (result != undefined && result.status == "success"){
+                      alert(result.message)
+                      window.location.reload();
+                  }
+                  else {
+                      alert(result.message);
+                  }
+              },
+              error:function (result) {
+                  alert("服务器异常！");
+              }
+
+          });
+      }
+  }
+   else {
+      alert("已退库，无法再次退库！")
+  }
+
+
 
 
 }

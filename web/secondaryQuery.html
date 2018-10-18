@@ -107,7 +107,7 @@
                     <!--<a class="btn btn-primary btn-xs" href="newSecondaryOut.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>-->
                     <!--<a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>-->
                     <a class="btn btn-primary btn-xs" onclick="exportExcel();"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
-                    <!--<a class="btn btn-primary btn-xs" onclick="view1()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 属性调整</a>-->
+                    <a class="btn btn-primary btn-xs" onclick="DeclareGeneration()"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 生成次生库存申报</a>
                 </div>
                 <!--<div class="input-group col-md-3">-->
                     <!--<input type="text" name="" id="input" value="" placeholder="请输入查询关键字" onkeyup="search1()"/>-->
@@ -237,8 +237,12 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center hidden"></td>
-                    <td class="text-center">
+                    <td class="text-center hidden"></td><!--入库单明细编号-->
+                    <td class="text-center hidden"></td><!--客户编号-->
+                    <td class="text-center hidden"></td><!--危废编码-->
+                    <td class="text-center hidden"></td><!--备注-->
+
+                    <td class="text-center"><!--操作-->
                         <a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                         <!--<a href="#" onclick="cancel();" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>-->
                         <!--<a href="#" onclick="submit();" title="提交"><span class="glyphicon glyphicon-export" aria-hidden="true"></span></a>-->

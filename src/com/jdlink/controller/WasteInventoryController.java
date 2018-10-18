@@ -4,9 +4,12 @@ import com.jdlink.domain.*;
 import com.jdlink.domain.Inventory.*;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.MaterialRequire;
+import com.jdlink.domain.Produce.Stock;
+import com.jdlink.domain.Produce.StockItem;
 import com.jdlink.service.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,6 +39,8 @@ public class WasteInventoryController {
     OutboundOrderService outboundOrderService;
     @Autowired
     QuotationService quotationService;
+    @Autowired
+    StockService stockService;
    //获得库存信息==》危废（无参数）
     @RequestMapping("getWasteInventoryList")
     @ResponseBody
@@ -1142,5 +1147,77 @@ catch (Exception e){
         return  res.toString();
     }
 
+    //根据入库单的明细 查找用户编号以及危废的信息 添加到库存主表和库存明细中
+    @RequestMapping("declareGeneration")
+    @ResponseBody
+    public String declareGeneration(@RequestBody Stock stock){
+        JSONObject res=new JSONObject();
+        try {
+            List<String> list = stockService.getStockIdList();//合同id集合
+            Client client=new Client();
+            client.setClientId(stock.getClient().getClientId());
+            if (list.size() <= 0) {
+                stock.setStockId("1");
+            }
+            if (list.size() > 0) {
+                stock.setStockId(String.valueOf(Integer.parseInt(list.get(0))+1));
+            }
+            stock.setClient(client);
+            stockService.add(stock);
+            res.put("status", "success");
+            res.put("message", "添加主表成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "添加主表失败");
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("declareGeneration1")
+    @ResponseBody
+    public String declareGeneration1(@RequestBody StockItem stockItem){
+        JSONObject res=new JSONObject();
+        try {
+            List<String> list = stockService.getStockIdList();//合同id集合
+            stockItem.setStockId(list.get(0));
+            stockService.addStockItem(stockItem);
+            res.put("status", "success");
+            res.put("message", "添加子表成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "添加子表失败");
+        }
+        return res.toString();
+    }
+
+    //危废出库退库
+    @RequestMapping("rollback")
+    @ResponseBody
+    public String rollback(String inboundOrderItemId,String outboundOrderId,float outboundNumber){
+        JSONObject res=new JSONObject();
+        try{
+            //1显示更新出库单的状态
+            wasteInventoryService.rollback(outboundOrderId);
+            //2 更新库存的数据
+            wasteInventoryService.returnNumber(inboundOrderItemId,outboundNumber);
+            res.put("status", "success");
+            res.put("message", "退库成功!");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "退库失败!");
+        }
+
+
+        return res.toString();
+
+
+    }
 
 }

@@ -231,10 +231,11 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
+                        <td class="text-center hidden"></td>
                         <td class="text-center">
                             <a href="#" onclick="view1(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                             <a href="#" onclick="cancel(this);" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
-                            <!--<a href="#" onclick="submit();" title="提交"><span class="glyphicon glyphicon-export" aria-hidden="true"></span></a>-->
+                            <a href="#" onclick="rollback(this);" title="退库"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a>
                             <!--<a href="#" onclick="signIn();" title="签收"><span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>-->
                             <!--<a href="#" onclick="view2();" title="属性调整"><span class="" aria-hidden="true"></span></a>-->
                         </td>
@@ -266,7 +267,7 @@
                         <a href='#' onclick="switchPage(-2)">尾 页</a>
                     </li>
                     <li><a id="totalPage"></a></li>
-                    <li><a href="#" onclick="();">跳转</a></li>
+                    <li><a href="#" onkeydown="enterSwitchPage();">跳转</a></li>
                     <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
                                id="pageNumber" title="" onkeydown="enterSwitchPage();"></li>
                     <li class="showLi">每页显示:</li>
