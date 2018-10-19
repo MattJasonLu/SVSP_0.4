@@ -18,6 +18,7 @@ public class DateUtil {
      * @return 时间对象
      */
     public static Date getDateFromStr(String dateStr) {
+        dateStr = dateStr.trim();
         SimpleDateFormat dateFormat;
         if (dateStr.contains("/")) dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         else dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -36,6 +37,7 @@ public class DateUtil {
      * @return 时间对象
      */
     public static Date getDateTimeFromStr(String dataTimeStr){
+        dataTimeStr = dataTimeStr.trim();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = null;
         try{
