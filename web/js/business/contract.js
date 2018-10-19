@@ -1752,6 +1752,36 @@ function loadWastesContractSelectList() {
 
     });
 
+    //进料方式
+    $.ajax({
+        type:'POST',
+        url:"getHandleCategory",
+        //data:JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success: function (result){
+            if (result != undefined){
+                // console.log(result);
+                var handelCategory=$('#handelCategory');
+                handelCategory.children().remove();
+                $.each(result.handleCategoryList,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(index+1);
+                    option.text(item.name);
+                    handelCategory.append(option);
+                });
+                handelCategory.get(0).selectedIndex=0;
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
+
+    });
+
     //单位
     $.ajax({
         type:'POST',
@@ -2259,15 +2289,59 @@ function findWastesName(item) {
 }
 
 
+//导入数据
+function importExcelChoose() {
+    $("#importExcelModal").modal('show');
+}
+/*导入费用明细*/
+function importExcel() {
+    document.getElementById("idExcel").click();
+    document.getElementById("idExcel").addEventListener("change", function () {
+        var eFile = document.getElementById("idExcel").files[0];
+        var formFile = new FormData();
+        formFile.append("excelFile", eFile);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "importQuotationItemExcel",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: formFile,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                if (result != undefined) {
+                    console.log(result);
+                    if (result.status == "success") {
+                        alert(result.message);
+                        window.location.reload();         //刷新
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    });
+}
+
+
 
 
 
 //计算总价
 function calculateTotalPrice(item) {
     var unitPrice=$(item).parent().parent().children('td').eq(5).children('input').val();
+    if(unitPrice.length==0){
+        unitPrice=0;
+    }
     var contractAmount=$(item).parent().parent().children('td').eq(6).children('input').val();
-    //console.log(unitPrice+"=="+contractAmount);
-    $(item).parent().parent().children('td').eq(7).children('input').val((parseFloat(unitPrice)*parseInt(contractAmount)).toFixed(2));
+    if(contractAmount.length==0){
+        contractAmount=0;
+    }
+    console.log(unitPrice+"=="+contractAmount);
+    $(item).parent().parent().children('td').eq(7).children('input').val((parseFloat(unitPrice)*parseFloat(contractAmount)).toFixed(2));
 }
 function warning(item) {
     // if($('#beginTime').val().length>0&&$('#endTime').val().length>0){
@@ -5375,7 +5449,7 @@ function adjustNewContract() {
         contentType: "application/json;charset=utf-8",
         success: function (result){
             if (result != undefined && result.status == "success"){
-                // console.log(result);
+                console.log(result);
                 var obj=eval(result);
                 var wastesCode=$('#wastesCode');
                 wastesCode.children().remove();
@@ -5671,6 +5745,7 @@ function adjustNewContract() {
                         ticketRate1.get(0).selectedIndex=index4;
                         //开票税率2下拉框
                         $.each(contract.quotationItemList,function (index,item) {
+                            console.log(item)
                             $('.selectpicker').selectpicker( {
                                 language: 'zh_CN',
                                 // style: 'btn-info',
@@ -5687,8 +5762,8 @@ function adjustNewContract() {
                             if((parseInt(index+1)!=1)){
                                cloneTr.children("td:eq(0)").append(delBtn);
                            }
-
-                            cloneTr.children('td').eq(2).children('input').val(item.wastesName);
+                            cloneTr.children('td').eq(1).find('select').selectpicker('val', item.wastesCode);
+                            // cloneTr.children('td').eq(2).children('input').val(item.wastesName);
                             // cloneTr.children('td').eq(4).children('input').val(item.util);
                             cloneTr.children('td').eq(5).children('input').val(item.unitPriceTax);
                             cloneTr.children('td').eq(6).children('input').val(item.contractAmount);
@@ -5702,7 +5777,40 @@ function adjustNewContract() {
                             if(item.transport!=null){
                                 cloneTr.children('td').eq(8).children('select').val(item.transport.index);
                             }
-                            cloneTr.children('td').eq(1).find('select').selectpicker('val',item.wastesCode);
+
+
+                            //危废编码赋值
+                            $.ajax({
+                                type:'POST',
+                                url:"getWastesInfoList",
+                                //data:JSON.stringify(data),
+                                dataType: "json",
+                                contentType: "application/json;charset=utf-8",
+                                success: function (result){
+                                    if (result != undefined && result.status == "success"){
+                                        console.log(result);
+                                        var obj=eval(result);
+                                        var wastesCode= cloneTr.children('td').eq(1).find('select');
+                                        wastesCode.children().remove();
+                                        $.each(obj.data,function (index,item) {
+                                            var option=$('<option/>');
+                                            option.val(item.code);
+                                            option.text(item.code);
+                                            wastesCode.append(option);
+                                        });
+                                        wastesCode.selectpicker('val',item.code);
+                                        wastesCode.removeAttr('id');
+                                        $('.selectpicker').selectpicker('refresh');
+                                    }
+                                    else {
+                                        alert(result.message);
+                                    }
+                                },
+                                error:function (result) {
+                                    console.log(result);
+                                }
+                            });
+
                             cloneTr.removeAttr('id');
                             cloneTr.insertAfter(tr);
                             $('.selectpicker').data('selectpicker', null);
@@ -5871,6 +5979,7 @@ function adjustNewContract() {
                             var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
                             cloneTr.children('td').eq(0).html(parseInt(contract.quotationItemList.length) - index);
                             cloneTr.children("td:eq(0)").append(delBtn);
+
                             cloneTr.children('td').eq(2).children('input').val(item.wastesName);
                             // cloneTr.children('td').eq(4).children('input').val(item.util);
                             cloneTr.children('td').eq(5).children('input').val(item.unitPriceTax);
@@ -5885,7 +5994,39 @@ function adjustNewContract() {
                             if(item.util!=null){
                                 cloneTr.children('td').eq(4).children('select').val(item.util.index);
                             }
-                            cloneTr.children('td').eq(1).find('select').selectpicker('val', item.wastesCode);
+                            //危废编码赋值
+                            $.ajax({
+                                type:'POST',
+                                url:"getWastesInfoList",
+                                //data:JSON.stringify(data),
+                                dataType: "json",
+                                contentType: "application/json;charset=utf-8",
+                                success: function (result){
+                                    if (result != undefined && result.status == "success"){
+                                        console.log(result);
+                                        var obj=eval(result);
+                                        var wastesCode= cloneTr.children('td').eq(1).find('select');
+                                        wastesCode.children().remove();
+                                        $.each(obj.data,function (index,item) {
+                                            var option=$('<option/>');
+                                            option.val(item.code);
+                                            option.text(item.code);
+                                            wastesCode.append(option);
+                                        });
+                                        cloneTr.children('td').eq(1).find('select').selectpicker('val',item.wastesCode);
+                                        wastesCode.removeAttr('id');
+                                        $('.selectpicker').selectpicker('refresh');
+                                    }
+                                    else {
+                                        alert(result.message);
+                                    }
+                                },
+                                error:function (result) {
+                                    console.log(result);
+                                }
+                            });
+
+
                             cloneTr.removeAttr('id');
                             cloneTr.insertAfter(tr);
                             $('.selectpicker').data('selectpicker', null);

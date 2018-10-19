@@ -335,7 +335,7 @@ $.ajax({
                     <td class="text-center" ><input class="focus" title="" readonly></td>
                     <td class="text-center"><select class="focus" title="" id="packageType"></select></td>
                     <td class="text-center"><select class="focus" title="" id="unit"></select></td>
-                    <td class="text-center"><input class="focus" title=""></td>
+                    <td class="text-center"><input class="focus" title="" onkeyup="calculateTotalPrice(this)"></td>
                     <td class="text-center"><input class="focus" title="" onkeyup="calculateTotalPrice(this)" ></td>
                     <td class="text-center"><input class="focus" title=""readonly></td>
                     <td class="text-center">
@@ -347,6 +347,7 @@ $.ajax({
                 </tr>
                 <tr id="plusBtn">
                     <td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -526,6 +527,9 @@ $.ajax({
         </div>
     </div>
 </div>
+<!--导入-->
+<input type="file" name="excelPath" id="idExcel" style="display:none">
+
 <script>
     $('#embed').load('embed/loginLogModal.html');
     CKEDITOR.replace('modal3_contractContent',{toolbarCanCollapse: true, toolbarStartupExpanded: false});
