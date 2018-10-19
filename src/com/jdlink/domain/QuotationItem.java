@@ -1,5 +1,7 @@
 package com.jdlink.domain;
 
+import com.jdlink.domain.Produce.HandleCategory;
+
 import java.util.Date;
 
 /**
@@ -128,6 +130,17 @@ public class QuotationItem {
 
     //编号 更新用
     private int t_quotationitem;
+
+    //进料方式
+    private HandleCategory handleCategory;
+
+    public HandleCategory getHandleCategory() {
+        return handleCategory;
+    }
+
+    public void setHandleCategory(HandleCategory handleCategory) {
+        this.handleCategory = handleCategory;
+    }
 
     public int getT_quotationitem() {
         return t_quotationitem;

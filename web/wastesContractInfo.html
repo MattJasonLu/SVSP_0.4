@@ -311,7 +311,7 @@ $.ajax({
                 <thead>
                 <tr>
                     <td colspan="13" class="text-center"><h3>费用明细</h3></td>
-                    <a class="btn btn-primary btn-xs" onclick="importExcelChoose();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                    <a class="btn btn-primary btn-xs" onclick="importQuExcelChoose();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                 </tr>
                 <tr>
                     <th class="text-center">序号</th>
@@ -323,16 +323,16 @@ $.ajax({
                     <th class="text-center">合同量</th>
                     <th class="text-center">处置金额</th>
                     <th class="text-center">运输方式</th>
-                    <th class="text-center">进料方式</th>
+                    <!--<th class="text-center">状态</th>-->
                 </tr>
                 </thead>
                 <tbody>
                 <tr id="cloneTr1" class="myclass">
                     <td class="text-center">1</td>
                     <td class="text-center" >
-                        <select title="" class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="wastesCode" id="wastesCode" onchange="findWastesName(this)"></select>
+                        <select title="" class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="wastesCode" id="wastesCode"></select>
                     </td>
-                    <td class="text-center" ><input class="focus" title="" readonly></td>
+                    <td class="text-center" ><input class="focus" title=""></td>
                     <td class="text-center"><select class="focus" title="" id="packageType"></select></td>
                     <td class="text-center"><select class="focus" title="" id="unit"></select></td>
                     <td class="text-center"><input class="focus" title="" onkeyup="calculateTotalPrice(this)"></td>
@@ -343,7 +343,7 @@ $.ajax({
                             <option value="0">0</option>
                         </select>
                     </td>
-                    <td class="text-center"><select class="focus" title="" id="handelCategory"></select></td>
+                    <!--<td class="text-center"><select class="focus" title="" id="handelCategory"></select></td>-->
                 </tr>
                 <tr id="plusBtn">
                     <td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
@@ -355,7 +355,7 @@ $.ajax({
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
+                    <!--<td></td>-->
                 </tr>
                 </tbody>
             </table>
