@@ -1749,7 +1749,7 @@ function loadWastesContractSelectList() {
                     option.text(item.name);
                     transportType.append(option);
                 });
-                transportType.get(0).selectedIndex=1;
+                transportType.get(0).selectedIndex=0;
             }
             else {
                 alert(result.message);
@@ -2282,6 +2282,97 @@ function importExcel() {
                     if (result.status == "success") {
                         console.log(result);
                         // window.location.reload();         //刷新
+                        $('.selectpicker').selectpicker({
+                            language: 'zh_CN',
+                            // style: 'btn-info',
+                            size: 4
+                        });//下拉框样式
+
+                        //费用明细明细赋值
+
+                        $.each(result.data,function (index,item) {
+                            $('.selectpicker').selectpicker( {
+                                language: 'zh_CN',
+                                // style: 'btn-info',
+                                size: 4
+                            });//下拉框样式
+
+                            var tr=$('#cloneTr1');
+                            // tr.siblings().remove();
+                            var cloneTr=tr.clone();
+                            cloneTr.attr('class','myclass');
+                            cloneTr.show();
+                            var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+                            cloneTr.children('td').eq(0).html(parseInt(result.data.length)-index);
+                            console.log(index+1)
+                            if((parseInt(result.data.length)-index)!=1){
+                                cloneTr.children("td:eq(0)").append(delBtn);
+                            }
+                            // cloneTr.children('td').eq(1).find('select').selectpicker('val', item.wastesCode);
+                            cloneTr.children('td').eq(2).children('input').val(item.wastesName);
+                            // cloneTr.children('td').eq(4).children('input').val(item.util);
+                            cloneTr.children('td').eq(5).children('input').val(item.unitPriceTax);
+                            cloneTr.children('td').eq(6).children('input').val(item.contractAmount);
+                            cloneTr.children('td').eq(7).children('input').val(item.totalPrice);
+                            if(item.packageType!=null){
+                                cloneTr.children('td').eq(3).children('select').val(item.packageType.index);
+                            }
+                            if(item.util!=null){
+                                cloneTr.children('td').eq(4).children('select').val(item.util.index);
+                            }
+                            if(item.transport!=null){
+                                cloneTr.children('td').eq(8).children('select').val(item.transport.index);
+                            }
+
+
+                            $.ajax({
+                                type:'POST',
+                                url:"getWastesInfoList",
+                                //data:JSON.stringify(data),
+                                dataType: "json",
+                                contentType: "application/json;charset=utf-8",
+                                success: function (result){
+                                    if (result != undefined && result.status == "success"){
+                                        // console.log(result);
+                                        var obj=eval(result);
+                                        var wastesCode= cloneTr.children('td').eq(1).find('select');
+                                        wastesCode.children().remove();
+                                        $.each(obj.data,function (index,item) {
+                                            var option=$('<option/>');
+                                            option.val(item.code);
+                                            option.text(item.code);
+                                            wastesCode.append(option);
+                                        });
+                                        wastesCode.selectpicker('val',item.wastesCode);
+                                        wastesCode.removeAttr('id');
+                                        $('.selectpicker').selectpicker('refresh');
+                                    }
+                                    else {
+                                        alert(result.message);
+                                    }
+                                },
+                                error:function (result) {
+                                    console.log(result);
+                                }
+                            });
+
+
+
+
+                            cloneTr.removeAttr('id');
+                            cloneTr.insertAfter(tr);
+                            $('.selectpicker').data('selectpicker', null);
+                            $('.bootstrap-select').find("button:first").remove();
+                            $('.selectpicker').selectpicker();
+                            $('.selectpicker').selectpicker('refresh');
+                            tr.hide();
+                            tr.removeAttr('class');
+
+                        })
+
+
+
+
                     } else {
                         alert(result.message);
                     }
