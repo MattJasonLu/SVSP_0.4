@@ -75,7 +75,7 @@ public class UppercaseToNumber {
             String Number2 = Number.substring(index + 1, Number.length());//小数
             float num1 = cnNumericToArabic(Number1, true);
             float num2 = cnNumericToArabic(Number2, true) * ((float) Math.pow(10, -Number2.length()));
-            System.out.println(num1 + "==>" + num2);
+//            System.out.println(num1 + "==>" + num2);
             return num1 + num2;
 
         }

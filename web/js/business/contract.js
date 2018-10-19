@@ -1685,31 +1685,28 @@ function loadWastesContractSelectList() {
               var wastesCode=$('#wastesCode');
               wastesCode.children().remove();
               $.each(obj.data,function (index,item) {
-                  if(index==0){
-                      code=item.code;
-                      //根据危废编码获取危废名称==》页面加载
-                      $.ajax({
-                          type: "POST",                            // 方法类型
-                          url: "getWastesNameByCode",                  // url
-                          dataType: "json",
-                          data:{"code":code},
-                          //contentType: "application/json;charset=utf-8",
-                          success:function (result) {
-                              if (result != undefined && result.status == "success"){
-                                  console.log(result)
-                                  console.log($("select[name='wastesCode']").parents())
-
-                                  $("select[name='wastesCode']").parents('td').next().children('input').val(result.wastesName)
-                              }
-                              else {
-                                  alert(result.message);
-                              }
-                          },
-                          error:function (result) {
-                              alert("服务器异常!")
-                          }
-                      })
-                  }
+                  // if(index==0){
+                  //     code=item.code;
+                  //     //根据危废编码获取危废名称==》页面加载
+                  //     $.ajax({
+                  //         type: "POST",                            // 方法类型
+                  //         url: "getWastesNameByCode",                  // url
+                  //         dataType: "json",
+                  //         data:{"code":code},
+                  //         //contentType: "application/json;charset=utf-8",
+                  //         success:function (result) {
+                  //             if (result != undefined && result.status == "success"){
+                  //                 $("select[name='wastesCode']").parents('td').next().children('input').val(result.wastesName)
+                  //             }
+                  //             else {
+                  //                 alert(result.message);
+                  //             }
+                  //         },
+                  //         error:function (result) {
+                  //             alert("服务器异常!")
+                  //         }
+                  //     })
+                  // }
                   var option=$('<option/>');
                   option.val(item.code);
                   option.text(item.code);
@@ -1752,7 +1749,7 @@ function loadWastesContractSelectList() {
                     option.text(item.name);
                     transportType.append(option);
                 });
-                transportType.get(0).selectedIndex=0;
+                transportType.get(0).selectedIndex=1;
             }
             else {
                 alert(result.message);
@@ -1793,34 +1790,34 @@ function loadWastesContractSelectList() {
     });
 
     //进料方式
-    $.ajax({
-        type:'POST',
-        url:"getHandleCategory",
-        //data:JSON.stringify(data),
-        dataType: "json",
-        contentType: "application/json;charset=utf-8",
-        success: function (result){
-            if (result != undefined){
-                // console.log(result);
-                var handelCategory=$('#handelCategory');
-                handelCategory.children().remove();
-                $.each(result.handleCategoryList,function (index,item) {
-                    var option=$('<option/>');
-                    option.val(index+1);
-                    option.text(item.name);
-                    handelCategory.append(option);
-                });
-                handelCategory.get(0).selectedIndex=0;
-            }
-            else {
-                alert(result.message);
-            }
-        },
-        error:function (result) {
-            console.log(result);
-        }
-
-    });
+    // $.ajax({
+    //     type:'POST',
+    //     url:"getHandleCategory",
+    //     //data:JSON.stringify(data),
+    //     dataType: "json",
+    //     contentType: "application/json;charset=utf-8",
+    //     success: function (result){
+    //         if (result != undefined){
+    //             // console.log(result);
+    //             var handelCategory=$('#handelCategory');
+    //             handelCategory.children().remove();
+    //             $.each(result.handleCategoryList,function (index,item) {
+    //                 var option=$('<option/>');
+    //                 option.val(index+1);
+    //                 option.text(item.name);
+    //                 handelCategory.append(option);
+    //             });
+    //             handelCategory.get(0).selectedIndex=0;
+    //         }
+    //         else {
+    //             alert(result.message);
+    //         }
+    //     },
+    //     error:function (result) {
+    //         console.log(result);
+    //     }
+    //
+    // });
 
     //单位
     $.ajax({
@@ -2282,10 +2279,9 @@ function importExcel() {
             contentType: false,
             success: function (result) {
                 if (result != undefined) {
-                    console.log(result);
                     if (result.status == "success") {
-                        alert(result.message);
-                        window.location.reload();         //刷新
+                        console.log(result);
+                        // window.location.reload();         //刷新
                     } else {
                         alert(result.message);
                     }
@@ -2295,6 +2291,7 @@ function importExcel() {
                 console.log(result);
             }
         });
+        alert("导入成功！");
     });
 }
 
@@ -2702,62 +2699,58 @@ function addNewLine() {
     $('.selectpicker').data('selectpicker', null);
     $('.bootstrap-select').find("button:first").remove();
     $('.selectpicker').selectpicker();
-    //危废编码赋值
-    code="";
-    $.ajax({
-        type:'POST',
-        url:"getWastesInfoList",
-        //data:JSON.stringify(data),
-        dataType: "json",
-        contentType: "application/json;charset=utf-8",
-        success: function (result){
-            if (result != undefined && result.status == "success"){
-                console.log(result);
-                var obj=eval(result);
-                var wastesCode=$('#wastesCode');
-                wastesCode.children().remove();
-                $.each(obj.data,function (index,item) {
-                    if(index==0){
-                        code=item.code;
-                        //根据危废编码获取危废名称==》页面加载
-                        $.ajax({
-                            type: "POST",                            // 方法类型
-                            url: "getWastesNameByCode",                  // url
-                            dataType: "json",
-                            data:{"code":code},
-                            //contentType: "application/json;charset=utf-8",
-                            success:function (result) {
-                                if (result != undefined && result.status == "success"){
-                                    console.log(result)
-                                    console.log($("select[name='wastesCode']").parents())
-
-                                    $("select[name='wastesCode']").parents('td').next().children('input').val(result.wastesName)
-                                }
-                                else {
-                                    alert(result.message);
-                                }
-                            },
-                            error:function (result) {
-                                alert("服务器异常!")
-                            }
-                        })
-                    }
-                    var option=$('<option/>');
-                    option.val(item.code);
-                    option.text(item.code);
-                    wastesCode.append(option);
-                });
-                wastesCode.removeAttr('id');
-                $('.selectpicker').selectpicker('refresh');
-            }
-            else {
-                alert(result.message);
-            }
-        },
-        error:function (result) {
-            console.log(result);
-        }
-    });
+    // //危废编码赋值
+    // code="";
+    // $.ajax({
+    //     type:'POST',
+    //     url:"getWastesInfoList",
+    //     //data:JSON.stringify(data),
+    //     dataType: "json",
+    //     contentType: "application/json;charset=utf-8",
+    //     success: function (result){
+    //         if (result != undefined && result.status == "success"){
+    //             var obj=eval(result);
+    //             var wastesCode=$('#wastesCode');
+    //             wastesCode.children().remove();
+    //             $.each(obj.data,function (index,item) {
+    //                 if(index==0){
+    //                     code=item.code;
+    //                     //根据危废编码获取危废名称==》页面加载
+    //                     $.ajax({
+    //                         type: "POST",                            // 方法类型
+    //                         url: "getWastesNameByCode",                  // url
+    //                         dataType: "json",
+    //                         data:{"code":code},
+    //                         //contentType: "application/json;charset=utf-8",
+    //                         success:function (result) {
+    //                             if (result != undefined && result.status == "success"){
+    //                                 $("select[name='wastesCode']").parents('td').next().children('input').val(result.wastesName)
+    //                             }
+    //                             else {
+    //                                 alert(result.message);
+    //                             }
+    //                         },
+    //                         error:function (result) {
+    //                             alert("服务器异常!")
+    //                         }
+    //                     })
+    //                 }
+    //                 var option=$('<option/>');
+    //                 option.val(item.code);
+    //                 option.text(item.code);
+    //                 wastesCode.append(option);
+    //             });
+    //             wastesCode.removeAttr('id');
+    //             $('.selectpicker').selectpicker('refresh');
+    //         }
+    //         else {
+    //             alert(result.message);
+    //         }
+    //     },
+    //     error:function (result) {
+    //         console.log(result);
+    //     }
+    // });
 
 
 }
@@ -6344,7 +6337,7 @@ function back1() {
 }
 
 //导入报价单明细
-function importExcelChoose() {
+function importQuExcelChoose() {
     $("#importExcelModal").modal('show');
 }
 

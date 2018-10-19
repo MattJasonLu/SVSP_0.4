@@ -1,10 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
-import com.jdlink.domain.Produce.Assessment;
-import com.jdlink.domain.Produce.LaboratoryTest;
-import com.jdlink.domain.Produce.WayBill;
-import com.jdlink.domain.Produce.WayBillItem;
+import com.jdlink.domain.Produce.*;
 import com.jdlink.service.*;
 import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
@@ -24,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.jdlink.util.DateUtil.getDateStr;
+import static com.jdlink.util.UppercaseToNumber.transformation;
 
 
 /**
@@ -1182,12 +1180,30 @@ public class ContractController {
         JSONObject res=new JSONObject();
         Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
         try {
-           for(int i=0;i<data.length;i++){
-//               System.out.println(Splicing(data[i][5].toString())+"1232");
+            List<QuotationItem> quotationItemList=new ArrayList<>();
+           for(int i=1;i<data.length;i++){
+             //创建报价单的明细
+               QuotationItem quotationItem=new QuotationItem();
+               //1危废名称
+               quotationItem.setWastesName(data[i][1].toString());
+               //包装
+               quotationItem.setPackageType(PackageType.getPackageType(data[i][2].toString()));
+              //进料方式
+               quotationItem.setHandleCategory(HandleCategory.getHandleCategory(data[i][3].toString()));
+               //代码
+               quotationItem.setWastesCode(data[i][4].toString());
+               //合约量
+               quotationItem.setContractAmount(transformation(data[i][5].toString()));
+               quotationItemList.add(quotationItem);
            }
+            res.put("status", "success");
+            res.put("message", "费用明细导入成功");
+            res.put("data", quotationItemList);
         }
         catch (Exception e){
-
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "费用明细失败");
 
 
         }
