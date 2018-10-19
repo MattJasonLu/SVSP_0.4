@@ -263,7 +263,7 @@ function loadPages(totalRecord, count) {
  *加载危废数据
  */
 function loadWasteInventoryList() {
-    var pageNumber = 1;               // 显示首页
+    //var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
