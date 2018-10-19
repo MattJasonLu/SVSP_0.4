@@ -311,6 +311,7 @@ function loadPageList() {
  * 设置高级查询的审核状态数据
  */
 function getSelectedInfo() {
+    // 设置校验状态
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getCheckState",                  // url
@@ -339,7 +340,7 @@ function getSelectedInfo() {
             console.log("error: " + result);
         }
     });
-
+    // 设置记录状态
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getRecordState",                  // url
@@ -683,6 +684,60 @@ function delLine(e) {
  */
 function setSelectList() {
     // 设置下拉列表
+    // 设置次生类别
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSecondaryCategory",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var wastesName = $("select[name='wastesName']");
+                wastesName.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.code);
+                    option.text(item.name);
+                    wastesName.append(option);
+                });
+                wastesName.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    // 设置危废代码
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getWastesInfoList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var wastesCode = $("select[name='wastesCode']");
+                wastesCode.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.code);
+                    option.text(item.code);
+                    wastesCode.append(option);
+                });
+                wastesCode.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getFormTypeAndPackageType",                  // url

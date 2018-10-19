@@ -30,7 +30,13 @@
     <bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="typeAliasesPackage" value="com.jdlink.domain"/>
         <property name="dataSource" ref="dataSource"/>
-        <property name="mapperLocations" value="classpath:com/jdlink/mapper/*.xml"/>
+        <!--<property name="mapperLocations" value="classpath:com/jdlink/mapper/*.xml"/>-->
+        <property name="mapperLocations">
+            <array>
+                <value>classpath*:com/jdlink/mapper/*.xml</value>
+                <value>classpath*:com/jdlink/mapper/dictionary/*.xml</value>
+            </array>
+        </property>
     </bean>
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
