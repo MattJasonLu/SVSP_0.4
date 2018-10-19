@@ -21,6 +21,18 @@ function show11() {
 }
 
 /**
+ * 拒收框
+ */
+function rejection() {
+    $("#rejection1").modal('show')
+}
+/**
+ * 确认拒收
+ */
+function rejection1() {
+    $()
+}
+/**
  * 计算总页数
  * */
 function totalPage() {
