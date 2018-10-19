@@ -38,7 +38,7 @@ public class QuotationItem {
     /**
      * 合约量
      */
-    private int contractAmount;
+    private float contractAmount;
     /**
      * 含税单价
      */
@@ -241,11 +241,11 @@ public class QuotationItem {
         this.wastesCode = wastesCode;
     }
 
-    public int getContractAmount() {
+    public float getContractAmount() {
         return contractAmount;
     }
 
-    public void setContractAmount(int contractAmount) {
+    public void setContractAmount(float contractAmount) {
         this.contractAmount = contractAmount;
     }
 
