@@ -497,7 +497,7 @@ function importExcelChoose() {
  * 下载模板
  * */
 function downloadModal() {
-    var filePath = 'Files/Templates/磅单模板.xls';
+    var filePath = 'Files/Templates/磅单模板.xlsx';
     if (confirm("是否下载模板?")) {
         window.open('downloadFile?filePath=' + filePath);
     }
