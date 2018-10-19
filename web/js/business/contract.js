@@ -1496,7 +1496,7 @@ function adjustContract(item) {
 function loadWastesContractSelectList() {
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
-        size: 4
+        size:6
     });
 //取得下拉菜单的选项
 //     var contractType=$('#contractType');
@@ -2285,7 +2285,7 @@ function importExcel() {
                         $('.selectpicker').selectpicker({
                             language: 'zh_CN',
                             // style: 'btn-info',
-                            size: 4
+                            size: 6
                         });//下拉框样式
 
                         //费用明细明细赋值
@@ -2766,7 +2766,7 @@ function addNewLine() {
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
         //style: 'btn-info',
-        size: 4
+        size: 6
     });//下拉框样式
     // // 获取id为cloneTr的tr元素
     var tr = $("#plusBtn").prev();
@@ -2892,7 +2892,7 @@ function loadEmSelectList() {
     };
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
-        size: 4
+        size: 6
     });
   //取得下拉菜单的选项
     var contractType=$('#contractType');
@@ -3353,7 +3353,7 @@ function loadLogicContractSelectList() {
     contractName1.hide();
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
-        size: 4
+        size: 6
     });
 //取得下拉菜单的选项
     $.ajax({
@@ -4196,7 +4196,7 @@ function loadContractSelectList() {
 
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
-        size: 4
+        size: 6
     });
 
     //接收传过来的合同编号
@@ -4803,7 +4803,7 @@ function loadContractSelectList() {
 
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
-        size: 4
+        size: 6
     });
 
     //接收传过来的合同编号
@@ -5077,7 +5077,7 @@ function loadLogContractSelectList() {
 
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
-        size: 4
+        size: 6
     });
 
     //接收传过来的合同编号
@@ -5696,7 +5696,7 @@ function adjustNewContract() {
 
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
-        size: 4
+        size:6
     });
 
 
@@ -5992,7 +5992,7 @@ function adjustNewContract() {
                             $('.selectpicker').selectpicker({
                                 language: 'zh_CN',
                                 // style: 'btn-info',
-                                size: 4
+                                size: 6
                             });//下拉框样式
                             var tr = $('#cloneTr1');
                             // tr.siblings().remove();
