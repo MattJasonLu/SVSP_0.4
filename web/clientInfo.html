@@ -181,6 +181,8 @@
                 bankName: $("#bankName").val(),
                 bankAccount: $("#bankAccount").val(),
                 taxNumber: $("#taxNumber").val(),
+                taxAddress: $("#taxAddress").val(),
+                taxMobile: $("#taxMobile").val(),
                 ticketType: $("#ticketType").val(),
                 isDisposal: $("input[name='isDisposal']:checked").val()
             };
@@ -240,6 +242,8 @@
                 bankName: $("#bankName").val(),
                 bankAccount: $("#bankAccount").val(),
                 taxNumber: $("#taxNumber").val(),
+                taxAddress: $("#taxAddress").val(),
+                taxMobile: $("#taxMobile").val(),
                 ticketType: $("#ticketType").val(),
                 isDisposal: $("input[name='isDisposal']:checked").val()
             };
@@ -837,9 +841,15 @@
                             </div>
                         </div>
                         <div class="form-group">
+
                             <label for="address" class="col-sm-4 control-label">地址 <sup>*</sup></label>
                             <div class="col-xs-5">
                                 <input type="text" class="form-control" id="address" name="address" placeholder="" >
+
+                            <label for="taxAddress" class="col-sm-4 control-label">开票地址 <sup>*</sup></label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="taxAddress" name="taxAddress" placeholder="" >
+
                             </div>
                         </div>
                         <div class="form-group">
@@ -870,9 +880,15 @@
                             </div>
                         </div>
                         <div class="form-group">
+
                             <label for="phone" class="col-sm-4 control-label">电话 <sup>*</sup></label>
                             <div class="col-xs-5">
                                 <input type="text" class="form-control" id="mobilePhone" name="phone" placeholder="" >
+
+                            <label for="taxMobile" class="col-sm-4 control-label">开票电话 <sup>*</sup></label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="taxMobile" name="taxMobile" placeholder="" >
+
                             </div>
                         </div>
                     </div>

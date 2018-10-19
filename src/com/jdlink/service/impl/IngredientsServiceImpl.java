@@ -94,7 +94,13 @@ public class IngredientsServiceImpl implements IngredientsService {
     public Ingredients getAmountAndReceive(Ingredients ingredients){ return ingredientsMapper.getAmountAndReceive(ingredients); }
 
     @Override
-    public List<Ingredients> getInventoryList(){ return ingredientsMapper.getInventoryList(); }
+    public List<Ingredients> getInventoryList(Page page){ return ingredientsMapper.getInventoryList(page); }
+
+    @Override
+    public int searchInventoryCount(Ingredients ingredients){ return ingredientsMapper.searchInventoryCount(ingredients);}
+
+    @Override
+    public int countInventory(){ return ingredientsMapper.countInventory(); }
 
     @Override
     public  List<Ingredients> searchInventory(Ingredients ingredients){ return ingredientsMapper.searchInventory(ingredients); }

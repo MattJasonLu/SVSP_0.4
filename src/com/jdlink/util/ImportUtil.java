@@ -4,6 +4,7 @@ import com.mysql.jdbc.Connection;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
+import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.ss.usermodel.CellType;
@@ -166,7 +167,9 @@ public class ImportUtil {
                                             default:
                                                 break;
                                         }
-
+                                    } else {
+                                        cellStyle.setCellType(HSSFCell.CELL_TYPE_STRING);
+                                        obj[j] = cellStyle.getStringCellValue();
                                     }
                                 }
                                 if (cat.equals("STRING")) {

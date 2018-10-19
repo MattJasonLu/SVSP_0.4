@@ -1,5 +1,7 @@
 package com.jdlink.domain;
 
+import com.jdlink.domain.Produce.HandleCategory;
+
 import java.util.Date;
 
 /**
@@ -38,7 +40,7 @@ public class QuotationItem {
     /**
      * 合约量
      */
-    private int contractAmount;
+    private float contractAmount;
     /**
      * 含税单价
      */
@@ -50,7 +52,7 @@ public class QuotationItem {
     /**
      * 处置金额
      */
-    private float totalPriec;
+    private float totalPrice;
     /**
      * 税率
      */
@@ -102,7 +104,6 @@ public class QuotationItem {
 
     /**
      * 包装类型
-     * @return
      */
     private PackageType packageType;
 
@@ -127,13 +128,19 @@ public class QuotationItem {
      */
     private Supplier supplier;
 
-    /**
-     * 处置金额
-     */
-    private float totalPrice;
-
     //编号 更新用
     private int t_quotationitem;
+
+    //进料方式
+    private HandleCategory handleCategory;
+
+    public HandleCategory getHandleCategory() {
+        return handleCategory;
+    }
+
+    public void setHandleCategory(HandleCategory handleCategory) {
+        this.handleCategory = handleCategory;
+    }
 
     public int getT_quotationitem() {
         return t_quotationitem;
@@ -173,14 +180,6 @@ public class QuotationItem {
 
     public void setUtil(Unit util) {
         this.util = util;
-    }
-
-    public float getTotalPriec() {
-        return totalPriec;
-    }
-
-    public void setTotalPriec(float totalPriec) {
-        this.totalPriec = totalPriec;
     }
 
     public PackageType getPackageType() {
@@ -255,11 +254,11 @@ public class QuotationItem {
         this.wastesCode = wastesCode;
     }
 
-    public int getContractAmount() {
+    public float getContractAmount() {
         return contractAmount;
     }
 
-    public void setContractAmount(int contractAmount) {
+    public void setContractAmount(float contractAmount) {
         this.contractAmount = contractAmount;
     }
 

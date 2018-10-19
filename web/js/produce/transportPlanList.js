@@ -1099,127 +1099,127 @@ function addData() {
 
                 switch (inner_index) {
                     //序号
-                    case (0):
+                    case (1):
                         $(this).html(index + 1);
                         break;
 
                     //进料方式
-                    case (1):
+                    case (2):
                         if (obj.handleCategory != null) {
                             $(this).html(obj.handleCategory.name);
                         }
                         break;
 
                     //物质形态
-                    case (2):
+                    case (3):
                         if (obj.formType != null) {
                             $(this).html(obj.formType.name);
                         }
                         break;
                     //包装方式
-                    case (3):
+                    case (4):
                         if(obj.packageType!=null){
                             $(this).html(obj.packageType.name);
                         }
 
                         break;
                     //周生产计划量
-                    case (4):
+                    case (5):
                         $(this).html(obj.weeklyDemand.toFixed(1));
                         weeklyDemandTotal+=parseFloat(obj.weeklyDemand)
                         break;
                     //目前库存量
-                    case (5):
+                    case (6):
                         $(this).html(obj.currentInventory.toFixed(1));
                         currentInventoryTotal+=parseFloat(obj.currentInventory)
                         break;
                     //安全库存量
-                    case (6):
+                    case (7):
                         $(this).html(obj.safety.toFixed(1));
                         safetyTotal+=parseFloat(obj.safety)
                         break;
                     //市场采购量
-                    case (7):
+                    case (8):
                         $(this).html(obj.marketPurchases.toFixed(1));
                         marketPurchasesTotal+=parseFloat(obj.marketPurchases)
                         break;
                     //热值Max
-                    case (8):
+                    case (9):
                         $(this).html(obj.calorificMax.toFixed(1));
                         calorificMaxTotal+=parseFloat(obj.calorificMax)
                         break;
                     //热值Min
-                    case (9):
+                    case (10):
                         $(this).html(obj.calorificMin.toFixed(1));
                         calorificMinTotal+=parseFloat(obj.calorificMin)
                         break;
                     //灰分Max
-                    case (10):
+                    case (11):
                         $(this).html(obj.ashMax.toFixed(1));
                         ashMaxTotal+=parseFloat(obj.ashMax)
                         break;
                     //灰分Min
-                    case (11):
+                    case (12):
                         $(this).html(obj.ashMin.toFixed(1));
                         ashMinTotal+=parseFloat(obj.ashMin)
                         break;
                     //水分Max
-                    case (12):
+                    case (13):
                         $(this).html(obj.waterMax.toFixed(1));
                         waterMaxTotal+=parseFloat(obj.waterMax)
                         break;
                     //水分Min
-                    case (13):
+                    case (14):
                         $(this).html(obj.waterMin.toFixed(1));
                         waterMinTotal+=parseFloat(obj.waterMin)
                         break;
                     //氯Max
-                    case (14):
+                    case (15):
                         $(this).html(obj.clMax.toFixed(1));
                         clMaxTotal+=parseFloat(obj.clMax)
                         break;
                     //氯Min
-                    case (15):
+                    case (16):
                         $(this).html(obj.clMin.toFixed(1));
                         clMinTotal+=parseFloat(obj.clMin)
                         break;
                     //硫Max
-                    case (16):
+                    case (17):
                         $(this).html(obj.sMax.toFixed(1));
                         sMaxTotal+=parseFloat(obj.sMax)
                         break;
                     //硫Min
-                    case (17):
+                    case (18):
                         $(this).html(obj.sMin.toFixed(1));
                         sMinTotal+=parseFloat(obj.sMin)
                         break;
                     //磷Max
-                    case (18):
+                    case (19):
                         $(this).html(obj.pMax.toFixed(1));
                         pMaxTotal+=parseFloat(obj.pMax)
                         break;
                     //磷Min
-                    case (19):
+                    case (20):
                         $(this).html(obj.pMin.toFixed(1));
                         pMinTotal+=parseFloat(obj.pMin)
                         break;
                     //氟Max
-                    case (20):
+                    case (21):
                         $(this).html(obj.fMax.toFixed(1));
                         fMaxTotal+=parseFloat(obj.fMax)
                         break;
                     //氟Min
-                    case (21):
+                    case (22):
                         $(this).html(obj.fMin.toFixed(1));
                         fMinTotal+=parseFloat(obj.fMin)
                         break;
                     //酸碱度Max
-                    case (22):
+                    case (23):
                         $(this).html(obj.phMax.toFixed(1));
                         phMaxTotal+=parseFloat(obj.phMax)
                         break;
                     //酸碱度MaxMin
-                    case (23):
+                    case (24):
                         $(this).html(obj.phMin.toFixed(1));
                         phMinTotal+=parseFloat(obj.phMin);
                         break;
@@ -1326,10 +1326,10 @@ function setWastesData() {
                             $(this).html(obj.client.companyName);
                         break;
                     case (2):
-                        $(this).html(obj.name);
+                        $(this).html(obj.wastesName);
                         break;
                     case (3):
-                        $(this).html(obj.wastesId);
+                        $(this).html(obj.wastesCode);
                         break;
                     case (4):
                         if (obj.formType != null)
@@ -1340,28 +1340,28 @@ function setWastesData() {
                             $(this).html(obj.packageType.name);
                         break;
                     case (6):
-                        $(this).html(obj.calorific);
+                        $(this).html(obj.heat);
                         break;
                     case (7):
                         $(this).html(obj.ph);
                         break;
                     case (8):
-                        $(this).html(obj.ashPercentage);
+                        $(this).html(obj.ash);
                         break;
                     case (9):
-                        $(this).html(obj.wetPercentage);
+                        $(this).html(obj.waterContent);
                         break;
                     case (10):
-                        $(this).html(obj.chlorinePercentage);
+                        $(this).html(obj.chlorineContent);
                         break;
                     case (11):
-                        $(this).html(obj.sulfurPercentage);
+                        $(this).html(obj.sulfurContent);
                         break;
                     case (12):
-                        $(this).html(obj.phosphorusPercentage);
+                        $(this).html(obj.phosphorusContent);
                         break;
                     case (13):
-                        $(this).html(obj.fluorinePercentage);
+                        $(this).html(obj.fluorineContent);
                         break;
                     case (14):
                         $(this).html(obj.id);
@@ -1567,6 +1567,9 @@ function viewData(e) {
                     case (0):
                         $(this).html(index+1);
                         break;
+                    case (1):
+                        $(this).html(obj.transportDraftId);
+                        break;
                     case (2):
                         if (obj.produceCompany != null)
                             $(this).html(obj.produceCompany.companyName);
@@ -1579,64 +1582,52 @@ function viewData(e) {
                         $(this).html(getDateStr(obj.approachTime));
                         break;
                     case (5):
-                        if (obj.wastes != null)
-                        $(this).html(obj.wastes.name);
+                        $(this).html(obj.wastesName);
                         break;
                     case (6):
-                        if (obj.wastes != null)
-                        $(this).html(obj.wastes.wastesId);
+                        $(this).html(obj.wastesCode);
                         break;
                     case (7):
-                        if (obj.wastes != null)
-                        $(this).html(obj.wastes.wasteAmount);
+                        $(this).html(obj.wastesAmount);
                         break;
                     case (8):
-                        if (obj.wastes != null)
-                        $(this).html(obj.wastes.unit);
+                        $(this).html(obj.unit);
                         break;
                     case (9):
-                        if (obj.wastes != null && obj.wastes.formType != null)
-                            $(this).html(obj.wastes.formType.name);
+                        if (obj.formType != null)
+                            $(this).html(obj.formType.name);
                         break;
                     case (10):
-                        if (obj.wastes != null && obj.wastes.packageType != null)
-                            $(this).html(obj.wastes.packageType.name);
+                        if (obj.packageType != null)
+                            $(this).html(obj.packageType.name);
                         break;
                     case (11):
-                        if (obj.wastes != null)
-                        $(this).html(obj.wastes.calorific);
+                        $(this).html(obj.heat);
                         break;
                     case (12):
-                        if (obj.wastes != null)
-                        $(this).html(obj.wastes.ph);
+                        $(this).html(obj.ph);
                         break;
                     case (13):
-                        if (obj.wastes != null)
-                        $(this).html(obj.wastes.ashPercentage);
+                        $(this).html(obj.ash);
                         break;
                     case (14):
-                        if (obj.wastes != null)
-                        $(this).html(obj.wastes.wetPercentage);
+                        $(this).html(obj.waterContent);
                         break;
                     case (15):
-                        if (obj.wastes != null)
-                        $(this).html(obj.wastes.chlorinePercentage);
+                        $(this).html(obj.chlorineContent);
                         break;
                     case (16):
-                        if (obj.wastes != null)
-                        $(this).html(obj.wastes.sulfurPercentage);
+                        $(this).html(obj.sulfurContent);
                         break;
                     case (17):
-                        if (obj.wastes != null)
-                        $(this).html(obj.wastes.phosphorusPercentage);
+                        $(this).html(obj.phosphorusContent);
                         break;
                     case (18):
-                        if (obj.wastes != null)
-                        $(this).html(obj.wastes.fluorinePercentage);
+                        $(this).html(obj.fluorineContent);
                         break;
                     case (19):
-                        if (obj.wastes != null && obj.wastes.processWay != null)
-                            $(this).html(obj.wastes.processWay.name);
+                        if (obj.processWay != null)
+                            $(this).html(obj.processWay.name);
                         break;
                     case (20):
                         $(this).html(obj.id);

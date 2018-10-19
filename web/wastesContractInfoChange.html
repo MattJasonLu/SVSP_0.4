@@ -325,12 +325,12 @@ $.ajax({
                 <tr id="cloneTr1" class="myclass">
                     <td class="text-center">1</td>
                     <td class="text-center" >
-                        <select title="" class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="wastesCode" id="wastesCode" onchange="findWastesName(this)"></select>
+                        <select title="" class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="wastesCode" id="wastesCode" ></select>
                     </td>
                     <td class="text-center" ><input class="focus" title=""></td>
                     <td class="text-center"><select class="focus" title="" id="packageType"></select></td>
                     <td class="text-center"><select class="focus" title="" id="unit"></select></td>
-                    <td class="text-center"><input class="focus" title=""></td>
+                    <td class="text-center"><input class="focus" title="" onkeyup="calculateTotalPrice(this)"></td>
                     <td class="text-center"><input class="focus" title="" onkeyup="calculateTotalPrice(this)" ></td>
                     <td class="text-center"><input class="focus" title=""readonly></td>
                     <td class="text-center">
@@ -492,9 +492,19 @@ $.ajax({
     });
 
     $('#back').click(function () {
+        var contractType1;
+        if($('#contractType').val()=='应急处置合同'){
+            contractType1='Emergency';
+        }
+        if($('#contractType').val()=='危废合同'){
+            contractType1='Wastes';
+        }
+        if($('#contractType').val()=='物流合同'){
+            contractType1='Logistics';
+        }
         localStorage.clear();
         $(location).attr('href', 'contractManage.html');
-        localStorage.name="Wastes";
+        localStorage.name=contractType1;
         location.href="contractManage.html";
     });
 

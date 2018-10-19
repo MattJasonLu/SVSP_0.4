@@ -4,6 +4,7 @@ import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.Pounds;
 import com.jdlink.domain.Produce.WayBill;
 import com.jdlink.domain.Produce.WayBillItem;
+import com.jdlink.service.ClientService;
 import com.jdlink.service.PoundsService;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
@@ -41,6 +42,8 @@ public class PRPoundsController {
 
     @Autowired
     PoundsService poundsService;
+    @Autowired
+    ClientService clientService;
 
     /**
      * 获取总记录数
@@ -125,53 +128,68 @@ public class PRPoundsController {
         JSONObject res = new JSONObject();
         try {
             Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
-            for (int i = 0; i < data.length; i++) {
-                System.out.println();
-                for (int j = 0; j < data[0].length; j++) {
-                    System.out.print(data[i][j].toString() + ',');
-                }
-            }
+
             for (int i = 1; i < data.length; i++) {
                 Pounds pounds = new Pounds();
                 pounds.setId(poundsService.getCurrentPoundsId());
                 pounds.setTransferId(data[i][0].toString());
+                // 入库车牌
                 pounds.setEnterLicencePlate(data[i][1].toString());
+                // 出库车牌
+                pounds.setOutLicencePlate(data[i][1].toString());
                 pounds.setGoodsName(data[i][2].toString());
                 pounds.setWastesCode(data[i][3].toString());
+                // 毛重
                 pounds.setGrossWeight(Float.parseFloat(data[i][4].toString()));
-                pounds.setNetWeight(Float.parseFloat(data[i][5].toString()));
-                pounds.setTare(Float.parseFloat(data[i][6].toString()));
-                Client deliveryCompany = new Client();
-                deliveryCompany.setClientId(poundsService.getClientIdByName(data[i][7].toString()));
+                // 皮重
+                pounds.setTare(Float.parseFloat(data[i][5].toString()));
+                // 净重
+                pounds.setNetWeight(Float.parseFloat(data[i][6].toString()));
+                // 发货单位
+                Client deliveryCompany = null;
+                deliveryCompany = clientService.getByName(data[i][7].toString());
+                if (deliveryCompany == null) {
+                    deliveryCompany = new Client();
+                    deliveryCompany.setCompanyName(data[i][7].toString());
+                    deliveryCompany.setClientId(clientService.getCurrentId());
+                    clientService.add(deliveryCompany);
+                }
                 pounds.setDeliveryCompany(deliveryCompany);
-                Client receiveCompany = new Client();
-                receiveCompany.setClientId(poundsService.getClientIdByName(data[i][8].toString()));
+                // 收货单位
+                Client receiveCompany = null;
+                receiveCompany = clientService.getByName(data[i][8].toString());
+                if (receiveCompany == null) {
+                    receiveCompany = new Client();
+                    receiveCompany.setCompanyName(data[i][8].toString());
+                    receiveCompany.setClientId(clientService.getCurrentId());
+                    clientService.add(receiveCompany);
+                }
                 pounds.setReceiveCompany(receiveCompany);
+                // 业务类型
                 pounds.setBusinessType(data[i][9].toString());
                 pounds.setEnterTime(DateUtil.getDateTimeFromStr(data[i][10].toString()));
                 pounds.setOutTime(DateUtil.getDateTimeFromStr(data[i][11].toString()));
                 pounds.setDriver(data[i][12].toString());
                 pounds.setWeighman(data[i][13].toString());
-                pounds.setRemarks(data[i][14].toString());
-                pounds.setOutLicencePlate(data[i][15].toString());
-                pounds.setFounder(data[i][16].toString());
+                pounds.setRemarks(data[i][14].toString().equals("null") ? null : data[i][14].toString());
+                pounds.setFounder(data[i][15].toString());
                 pounds.setCreationDate(new Date());
-                Pounds pounds1 = poundsService.getByTransferId(pounds.getTransferId());
-                if (pounds1 != null) {
-                    NumberFormat nf = NumberFormat.getInstance();
-                    //设置是否使用分组
-                    nf.setGroupingUsed(false);
-                    //设置最大整数位数
-                    nf.setMaximumIntegerDigits(4);
-                    //设置最小整数位数
-                    nf.setMinimumIntegerDigits(4);
-                    int index = Integer.parseInt(pounds.getTransferId());
-                    // 获取唯一的编号
-                    do {
-                        index += 1;
-                        pounds.setTransferId(nf.format(index));
-                    } while (poundsService.getByTransferId(pounds.getTransferId()) != null);
-                }
+//                Pounds pounds1 = poundsService.getByTransferId(pounds.getTransferId());
+//                if (pounds1 != null) {
+//                    NumberFormat nf = NumberFormat.getInstance();
+//                    //设置是否使用分组
+//                    nf.setGroupingUsed(false);
+//                    //设置最大整数位数
+//                    nf.setMaximumIntegerDigits(4);
+//                    //设置最小整数位数
+//                    nf.setMinimumIntegerDigits(4);
+//                    int index = Integer.parseInt(pounds.getTransferId());
+//                    // 获取唯一的编号
+//                    do {
+//                        index += 1;
+//                        pounds.setTransferId(nf.format(index));
+//                    } while (poundsService.getByTransferId(pounds.getTransferId()) != null);
+//                }
                 poundsService.add(pounds);
             }
             res.put("status", "success");
@@ -442,6 +460,22 @@ public class PRPoundsController {
         }
         return res.toString();
     }
+
+    @RequestMapping("addPounds")
+    @ResponseBody
+    public String addPounds(@RequestBody Pounds pounds){
+        JSONObject res = new JSONObject();
+        try{
+            poundsService.add(pounds);
+            res.put("status","success");
+            res.put("message","新增成功！");
+        }catch (Exception e){
+            res.put("status","fail");
+            res.put("message","新增失败！");
+        }
+        return res.toString();
+    }
+
 
 }
 

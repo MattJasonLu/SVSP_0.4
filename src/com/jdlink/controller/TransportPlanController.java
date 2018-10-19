@@ -2,10 +2,7 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.*;
-import com.jdlink.service.ClientService;
-import com.jdlink.service.TransportPlanService;
-import com.jdlink.service.WastesService;
-import com.jdlink.service.WayBillService;
+import com.jdlink.service.*;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
@@ -36,6 +33,10 @@ public class TransportPlanController {
     ClientService clientService;
     @Autowired
     WayBillService wayBillService;
+    @Autowired
+    ContractService contractService;
+    @Autowired
+    StockService stockService;
 
     /**
      * 增加运输计划
@@ -148,8 +149,47 @@ public class TransportPlanController {
     public String getTransportPlanWastesList() {
         JSONObject res = new JSONObject();
         try {
-            List<Wastes> wastesList = wastesService.list();
-            JSONArray data = JSONArray.fromArray(wastesList.toArray(new Wastes[wastesList.size()]));
+            List<TransportPlanItem> transportPlanItemList = new ArrayList<>();
+            // 取出危废合同的所有信息
+            List<Contract> contractList = contractService.listPageManege(null);
+            // 所有危废合同
+            for (Contract contract : contractList) {
+                List<QuotationItem> quotationItemList = contract.getQuotationItemList();
+                for (QuotationItem quotationItem : quotationItemList) {
+                    // 创建运输计划条目明细
+                    TransportPlanItem transportPlanItem = new TransportPlanItem();
+                    transportPlanItem.setProduceCompany(contract.getClient());
+                    transportPlanItem.setWastesName(quotationItem.getWastesName());
+                    transportPlanItem.setWastesCode(quotationItem.getWastesCode());
+                    transportPlanItem.setFormType(quotationItem.getFormType());
+                    transportPlanItem.setPackageType(quotationItem.getPackageType());
+                    transportPlanItem.setHeat(quotationItem.getHeat());
+                    transportPlanItem.setPh(quotationItem.getPh());
+                    transportPlanItem.setAsh(quotationItem.getAsh());
+                    transportPlanItem.setWaterContent(quotationItem.getWaterContent());
+                    transportPlanItem.setChlorineContent(quotationItem.getChlorineContent());
+                    transportPlanItem.setSulfurContent(quotationItem.getSulfurContent());
+                    transportPlanItem.setPhosphorusContent(quotationItem.getPhosphorusContent());
+                    transportPlanItem.setFluorineContent(quotationItem.getFluorineContent());
+                    transportPlanItem.setWastesAmount(quotationItem.getContractAmount());
+                    transportPlanItemList.add(transportPlanItem);
+                }
+            }
+            // 获取所有库存申报的数据
+            List<Stock> stockList = stockService.list();
+            for (Stock stock : stockList) {
+                List<StockItem> stockItemList = stock.getStockItemList();
+                for (StockItem stockItem : stockItemList) {
+                    // 创建运输计划单条目
+                    TransportPlanItem transportPlanItem = new TransportPlanItem();
+                    transportPlanItem.setProduceCompany(stock.getClient());
+                    transportPlanItem.setWastesName(stockItem.getWastesName());
+                    transportPlanItem.setWastesCode(stockItem.getWastesCode());
+                    transportPlanItem.setWastesAmount(stockItem.getNumber());
+                    transportPlanItemList.add(transportPlanItem);
+                }
+            }
+            JSONArray data = JSONArray.fromArray(transportPlanItemList.toArray(new TransportPlanItem[transportPlanItemList.size()]));
             res.put("status", "success");
             res.put("message", "获取成功");
             res.put("data", data);

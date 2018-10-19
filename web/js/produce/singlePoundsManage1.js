@@ -497,7 +497,7 @@ function importExcelChoose() {
  * 下载模板
  * */
 function downloadModal() {
-    var filePath = 'Files/Templates/磅单模板.xls';
+    var filePath = 'Files/Templates/磅单模板.xlsx';
     if (confirm("是否下载模板?")) {
         window.open('downloadFile?filePath=' + filePath);
     }
@@ -726,7 +726,7 @@ function invalid(item) {
     }
 }
 
-//---------------------------------------------
+//----------------------查看页面-----------------------
 function loadPoundsItems() {
     $.ajax({
         type: "POST",                       // 方法类型
@@ -740,6 +740,7 @@ function loadPoundsItems() {
             if (result != undefined && result.status == "success") {
                 console.log(result.data);
                 var data = eval(result.data);
+                $("#Id").text(data.transferId);
                 $("#modal1_outTime").text(getTimeStr(data.outTime));
                 $("#modal1_enterLicencePlate").text(data.enterLicencePlate);
                 $("#modal1_outLicencePlate").text(data.outLicencePlate);
@@ -888,5 +889,170 @@ function cancel() {
         }
     });
 }
+
+
+/////////////////新增页面//////////////////////////
+/**
+ * 初始化数据
+ */
+function loadPoundsAdd(){
+    setSelectedListAdd();  // 填充下拉框数据
+    if(getCurrentUserData() != null)
+    $("#add_founder").val(getCurrentUserData().username);   // 创建人赋值
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        // style: 'btn-info',
+        size: 4
+    });//下拉框样式
+}
+
+/**
+ * 设置下拉框数据
+ */
+function setSelectedListAdd(){
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getClientAndWastesCodeSelectedList",              // url
+        cache: false,
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                console.log(data);
+                // 各下拉框数据填充
+                // 发货单位
+                var clientList = $("#add_deliveryCompany");
+                // 清空遗留元素
+                clientList.children().first().siblings().remove();
+                $.each(data.companyCodeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.clientId);
+                    option.text(item.companyName);
+                    clientList.append(option);
+                });
+                $('.selectpicker').selectpicker('refresh');
+                // 收货单位
+                var clientList1 = $("#add_receiveCompany");
+                // 清空遗留元素
+                clientList1.children().first().siblings().remove();
+                $.each(data.companyCodeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.clientId);
+                    option.text(item.companyName);
+                    clientList1.append(option);
+                });
+                $('.selectpicker').selectpicker('refresh');
+                // 危废代码
+                var wastesCode = $("#add_wastesCode");
+                wastesCode.children().first().siblings().remove();
+                $.each(data.wastesCodeList, function (index, item) {
+                    var option = $('<option />');
+                    if (item != null) {
+                        option.val(parseInt(item.code.replace(/[^0-9]/ig, "")));
+                        option.text(item.code);
+                        wastesCode.append(option);
+                    }
+                });
+                $('.selectpicker').selectpicker('refresh');
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+}
+
+function getCurrentPoundsId(){
+    var id = null;
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getCurrentPoundsId",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != null) {
+                id = result.id;
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+            console.log("服务器错误！");
+        }
+    });
+    return id;
+}
+
+/**
+ * 新增功能
+ */
+function addPounds(){
+    var pounds = {};
+    pounds.id = getCurrentPoundsId();
+    pounds.outTime = getStdTimeStr($("#add_outTime").val());
+    pounds.transferId = $("#add_transferId").val();
+    pounds.enterLicencePlate = $("#add_enterLicencePlate").val();
+    pounds.outLicencePlate = $("#add_outLicencePlate").val();
+    pounds.goodsName = $("#add_goodsName").val();
+    pounds.wastesCode = $("#add_wastesCode option:selected").text();
+    var deliveryCompany = {};
+    deliveryCompany.companyName = $("#add_deliveryCompany option:selected").text();
+    deliveryCompany.clientId = $("#add_deliveryCompany option:selected").val();
+    pounds.deliveryCompany = deliveryCompany;
+    var receiveCompany = {};
+    receiveCompany.companyName = $("#add_receiveCompany option:selected").text();
+    receiveCompany.clientId = $("#add_receiveCompany option:selected").val();
+    pounds.receiveCompany = receiveCompany;
+    pounds.netWeight = $("#add_netWeight").val();
+    pounds.tare = $("#add_tare").val();
+    pounds.grossWeight = $("#add_grossWeight").val();
+    pounds.enterTime = getStdTimeStr($("#add_enterTime").val());
+    pounds.businessType = $("#add_businessType").val();
+    pounds.driver = $("#add_driver").val();
+    pounds.weighman = $("#add_weighman").val();
+    pounds.remarks = $("#add_remarks").val();
+    pounds.founder = $("#add_founder").val();
+    pounds.creationDate = dateToString(new Date());
+    console.log(pounds);
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "addPounds",         // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(pounds),
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
+        success: function (result) {
+            console.log(result);
+            if (result.data != undefined || result.status == "success") {
+                if(confirm("保存成功，是否返回主页?")){
+                    window.location.href = 'singlePoundsManage1.html';
+                } else {
+                    window.location.reload();
+                }
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器错误！");
+        }
+    });
+}
+
+/**
+ * 自动计算净重
+ */
+function calculateWeight(){
+    var tare = $("#add_tare").val();
+    var grossWeight = $("#add_grossWeight").val();
+    if (grossWeight != null && grossWeight != '' && tare != null && tare != ''){
+        $("#add_netWeight").val(parseFloat(grossWeight) - parseFloat(tare));
+    }
+}
+
 
 
