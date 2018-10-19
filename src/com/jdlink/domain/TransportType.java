@@ -1,8 +1,8 @@
 package com.jdlink.domain;
 
 public enum TransportType {
-    Railway("铁路",1),
-    Highway("公路",2),
+    Highway("公路",1),
+    Railway("铁路",2),
     Waterway("水路",3),
     Aviation("航空",4);
     private String name;
