@@ -19,6 +19,7 @@
     <!--入库单映射集-->
     <resultMap id="InboundOrderRM" type="InboundOrder" autoMapping="true">
         <id column="inboundOrderId" property="inboundOrderId"/>
+        <association column="warehouseId" property="wareHouse" select="getWarehouse"/>
         <collection property="inboundOrderItemList" column="inboundOrderId" select="getInboundOrderItemList"
                     ofType="com.jdlink.domain.Inventory.InboundOrderItem" javaType="ArrayList"/>
     </resultMap>
@@ -33,6 +34,10 @@
         </association>
         <association property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"/>
     </resultMap>
+
+    <select id="getWarehouse" resultType="WareHouse">
+        select * from t_pl_warehouse where warehouseId=#{wareHouseId};
+    </select>
 
     <select id="listInboundPlanOrder" resultMap="InboundPlanOrderRM">
         SELECT * FROM t_pl_inboundplanorder;
