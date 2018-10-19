@@ -492,9 +492,19 @@ $.ajax({
     });
 
     $('#back').click(function () {
+        var contractType1;
+        if($('#contractType').val()=='应急处置合同'){
+            contractType1='Emergency';
+        }
+        if($('#contractType').val()=='危废合同'){
+            contractType1='Wastes';
+        }
+        if($('#contractType').val()=='物流合同'){
+            contractType1='Logistics';
+        }
         localStorage.clear();
         $(location).attr('href', 'contractManage.html');
-        localStorage.name="Wastes";
+        localStorage.name=contractType1;
         location.href="contractManage.html";
     });
 

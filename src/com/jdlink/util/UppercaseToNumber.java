@@ -3,15 +3,15 @@ package com.jdlink.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.jdlink.util.CNNMFilter.cnNumericToArabic;
+
 public class UppercaseToNumber {
     //1大写数字转化数字
     public static void main(String[] args) {
-
-        System.out.println(Splicing("伍拾伍点伍"));
-
+        System.out.println(transformation("伍佰零陆点零陆"));
     }
 
-    //讲中文转化为数字
+
     public static float conversion(String Number) {
         float number = 0;
         switch (Number) {
@@ -64,45 +64,31 @@ public class UppercaseToNumber {
 
     }
 
-    //遍历大写字母 进行数字拼接
-    public static float Splicing(String Number) {
-        float number = 0;
-        List<String> list=new ArrayList<>();
-        //遍历获取数组
-        for (int i = 0; i < Number.length(); i++) {
-            list.add(Number.substring(i,i+1));
+    //讲中文转化为数字
+    public static float transformation(String Number) {
+        if (Number.indexOf("点") == -1) {
+            return cnNumericToArabic(Number, true);
+        }
+        if (Number.indexOf("点") != -1) {
+            int index = Number.indexOf("点");
+            String Number1 = Number.substring(0, index);//整数
+            String Number2 = Number.substring(index + 1, Number.length());//小数
+            float num1 = cnNumericToArabic(Number1, true);
+            float num2 = cnNumericToArabic(Number2, true) * ((float) Math.pow(10, -Number2.length()));
+            System.out.println(num1 + "==>" + num2);
+            return num1 + num2;
 
         }
-
-        System.out.println(list);
-        //从后往前遍历
-        for(int i=list.size()-1;i>=0;i--){
-            if(list.get(i).equals("点")){
-               number+=conversion(list.get(i+1))*0.1;
-               list.remove(i);
-               list.remove(i);
-               continue;
-            }
-            System.out.println(list);
-            if(list.get(i).equals("拾")){
-                number+=conversion(list.get(i-1))*10;//
-                list.remove(i);
-                list.remove(i);
-            }
-            System.out.println(list);
-            if(list.get(i).equals("佰")){
-                number+=conversion(list.get(i-1))*100;//
-                list.remove(i);
-                list.remove(i);
-            }
-            else {
-                number+=conversion(list.get(i));
-            }
+        else {
+            return 0;
         }
 
-
-
-                return number;
     }
 
 }
+
+
+
+
+
+

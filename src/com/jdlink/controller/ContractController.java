@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.jdlink.util.DateUtil.getDateStr;
-import static com.jdlink.util.UppercaseToNumber.Splicing;
+
 
 /**
  * Created by matt on 2018/5/18.
@@ -1183,7 +1183,7 @@ public class ContractController {
         Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
         try {
            for(int i=0;i<data.length;i++){
-               System.out.println(Splicing(data[i][5].toString())+"1232");
+//               System.out.println(Splicing(data[i][5].toString())+"1232");
            }
         }
         catch (Exception e){
