@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface WasteInventoryMapper {
-    List<WasteInventory> list3();
+    List<WasteInventory> list3(Page page);
    List<WasteInventory> list(Page page);
     List<WasteInventory> list1();
     List<WasteInventory> list2(Page page);

@@ -44,12 +44,12 @@ public class WasteInventoryController {
    //获得库存信息==》危废（无参数）
     @RequestMapping("getWasteInventoryList")
     @ResponseBody
-    public String getWasteInventoryList(){
+    public String getWasteInventoryList(@RequestBody Page page){
         JSONObject res=new JSONObject();
         try{
             wasteInventoryService.updateLeftNumber();
 
-            List<WasteInventory> wasteInventoryList= wasteInventoryService.list3();
+            List<WasteInventory> wasteInventoryList= wasteInventoryService.list3(page);
             JSONArray arrray=JSONArray.fromObject(wasteInventoryList);
            // Quotation quotation=quotationService.getQuotationByWastesCodeAndClientId(wastesCode, clientId);
             //更新剩余库存量

@@ -140,8 +140,8 @@ public class WasteInventoryServiceImpl implements WasteInventoryService {
     }
 
     @Override
-    public List<WasteInventory> list3() {
-        return wasteInventoryMapper.list3();
+    public List<WasteInventory> list3(Page page) {
+        return wasteInventoryMapper.list3(page);
     }
 
     @Override
