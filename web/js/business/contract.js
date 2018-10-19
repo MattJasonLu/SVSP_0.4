@@ -1302,13 +1302,13 @@ function setContractListModal(result) {
                     break;
                 // 备注
                 case (5):
-                    $(this).html(obj.unitPriceTax);
+                    $(this).html(obj.unitPriceTax.toFixed(2));
                     break;
                 case (6):
-                    $(this).html(obj.contractAmount);
+                    $(this).html(obj.contractAmount.toFixed(2));
                     break;
                 case (7):
-                    $(this).html(obj.totalPrice);
+                    $(this).html(obj.totalPrice.toFixed(2));
                     break;
                 case (8):
                     if(obj.transport!=null){
@@ -2289,7 +2289,7 @@ function importExcel() {
                         });//下拉框样式
 
                         //费用明细明细赋值
-
+                          classNumber=$('.myclass').length;
                         $.each(result.data,function (index,item) {
                             $('.selectpicker').selectpicker( {
                                 language: 'zh_CN',
@@ -2302,18 +2302,12 @@ function importExcel() {
                             var cloneTr=tr.clone();
                             cloneTr.attr('class','myclass');
                             cloneTr.show();
-                            var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
-                            cloneTr.children('td').eq(0).html(parseInt(result.data.length)-index);
-                            console.log(index+1)
-                            if((parseInt(result.data.length)-index)!=1){
-                                cloneTr.children("td:eq(0)").append(delBtn);
-                            }
                             // cloneTr.children('td').eq(1).find('select').selectpicker('val', item.wastesCode);
                             cloneTr.children('td').eq(2).children('input').val(item.wastesName);
                             // cloneTr.children('td').eq(4).children('input').val(item.util);
-                            cloneTr.children('td').eq(5).children('input').val(item.unitPriceTax);
-                            cloneTr.children('td').eq(6).children('input').val(item.contractAmount);
-                            cloneTr.children('td').eq(7).children('input').val(item.totalPrice);
+                            cloneTr.children('td').eq(5).children('input').val(item.unitPriceTax.toFixed(2));
+                            cloneTr.children('td').eq(6).children('input').val(item.contractAmount.toFixed(2));
+                            cloneTr.children('td').eq(7).children('input').val(item.totalPrice.toFixed(2));
                             if(item.packageType!=null){
                                 cloneTr.children('td').eq(3).children('select').val(item.packageType.index);
                             }
@@ -2370,6 +2364,14 @@ function importExcel() {
 
                         })
 
+                        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+                        $('.myclass').each(function (index,item) {
+                            $(this).children('td').eq(0).html(index+1);
+                            if((classNumber+index)!=1){
+                                $(this).children('td').eq(0).append(delBtn);
+                            }
+                        })
+
 
 
 
@@ -2383,6 +2385,7 @@ function importExcel() {
             }
         });
         alert("导入成功！");
+       // $('#importExcelModal').hide();
     });
 }
 
@@ -5842,9 +5845,9 @@ function adjustNewContract() {
                             // cloneTr.children('td').eq(1).find('select').selectpicker('val', item.wastesCode);
                             cloneTr.children('td').eq(2).children('input').val(item.wastesName);
                             // cloneTr.children('td').eq(4).children('input').val(item.util);
-                            cloneTr.children('td').eq(5).children('input').val(item.unitPriceTax);
-                            cloneTr.children('td').eq(6).children('input').val(item.contractAmount);
-                            cloneTr.children('td').eq(7).children('input').val(item.totalPrice);
+                            cloneTr.children('td').eq(5).children('input').val(item.unitPriceTax.toFixed(2));
+                            cloneTr.children('td').eq(6).children('input').val(item.contractAmount.toFixed(2));
+                            cloneTr.children('td').eq(7).children('input').val(item.totalPrice.toFixed(2));
                             if(item.packageType!=null){
                                 cloneTr.children('td').eq(3).children('select').val(item.packageType.index);
                             }
@@ -6004,9 +6007,9 @@ function adjustNewContract() {
                             }
                             cloneTr.children('td').eq(2).children('input').val(item.wastesName);
                             // cloneTr.children('td').eq(4).children('input').val(item.util);
-                            cloneTr.children('td').eq(5).children('input').val(item.unitPriceTax);
-                            cloneTr.children('td').eq(6).children('input').val(item.contractAmount);
-                            cloneTr.children('td').eq(7).children('input').val(item.totalPrice);
+                            cloneTr.children('td').eq(5).children('input').val(item.unitPriceTax.toFixed(2));
+                            cloneTr.children('td').eq(6).children('input').val(item.contractAmount.toFixed(2));
+                            cloneTr.children('td').eq(7).children('input').val(item.totalPrice.toFixed(2));
                             if (item.packageType != null) {
                                 cloneTr.children('td').eq(3).children('select').val(item.packageType.index);
                             }
