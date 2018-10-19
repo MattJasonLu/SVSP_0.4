@@ -234,7 +234,7 @@ $.ajax({
                             </select>
                         </div>
                     </td>
-                    <
+
                 </tr>
                 <tr>
                     <td class="text-center" >合同版本</td>     <!--时间，精确到秒 下同-->
@@ -315,7 +315,7 @@ $.ajax({
                     <th class="text-center">危废名称</th>
                     <th class="text-center">包装类型</th>
                     <th class="text-center">单位</th>
-                    <th class="text-center">处置单价</th>
+                    <th class="text-center hidden">处置单价</th>
                     <th class="text-center">合同量</th>
                     <th class="text-center">处置金额</th>
                     <th class="text-center">运输方式</th>
@@ -330,8 +330,8 @@ $.ajax({
                     <td class="text-center" ><input class="focus" title=""></td>
                     <td class="text-center"><select class="focus" title="" id="packageType"></select></td>
                     <td class="text-center"><select class="focus" title="" id="unit"></select></td>
-                    <td class="text-center"><input class="focus" title="" onkeyup="calculateTotalPrice(this)"></td>
-                    <td class="text-center"><input class="focus" title="" onkeyup="calculateTotalPrice(this)" ></td>
+                    <td class="text-center hidden"><input class="focus hidden" title="" ></td>
+                    <td class="text-center"><input class="focus" title=""></td>
                     <td class="text-center"><input class="focus" title=""readonly></td>
                     <td class="text-center">
                         <select class="focus" title="" id="transportType" >

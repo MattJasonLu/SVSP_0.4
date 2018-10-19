@@ -207,7 +207,7 @@ $.ajax({
                 <li><a href="contractManage.html">合同列表</a></li>
             </ol>
         </div>
-        <h4 class="sub-header">经营合同/h4>
+        <h4 class="sub-header"><h4>经营合同</h4>
         <form class="cmxform" id="commentForm" method="Post">
             <table class="table table-bordered">
             <tbody>
@@ -234,7 +234,7 @@ $.ajax({
                             </select>
                     </div>
                         </td>
-<
+
                 </tr>
                 <tr>
                     <td class="text-center" >合同版本</td>     <!--时间，精确到秒 下同-->
@@ -319,7 +319,7 @@ $.ajax({
                     <th class="text-center">危废名称</th>
                     <th class="text-center">包装类型</th>
                     <th class="text-center">单位</th>
-                    <th class="text-center">处置单价</th>
+                    <th class="text-center hidden">处置单价</th>
                     <th class="text-center">合同量</th>
                     <th class="text-center">处置金额</th>
                     <th class="text-center">运输方式</th>
@@ -335,9 +335,9 @@ $.ajax({
                     <td class="text-center" ><input class="focus" title=""></td>
                     <td class="text-center"><select class="focus" title="" id="packageType"></select></td>
                     <td class="text-center"><select class="focus" title="" id="unit"></select></td>
-                    <td class="text-center"><input class="focus" title="" onkeyup="calculateTotalPrice(this)"></td>
-                    <td class="text-center"><input class="focus" title="" onkeyup="calculateTotalPrice(this)" ></td>
-                    <td class="text-center"><input class="focus" title=""readonly></td>
+                    <td class="text-center hidden"><input class="focus hidden" title="" onkeyup="calculateTotalPrice(this)"></td>
+                    <td class="text-center"><input class="focus" title="" ></td>
+                    <td class="text-center"><input class="focus" title=""></td>
                     <td class="text-center">
                         <select class="focus" title="" id="transportType" >
                             <option value="0">0</option>
@@ -418,6 +418,7 @@ $.ajax({
                 </div>
             </div>
         </form>
+
         <!-- 日志模态框 -->
         <div class="modal fade" id="logModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
@@ -448,6 +449,7 @@ $.ajax({
                 </div>
             </div>
         </div>
+        </h4>
     </div>
 </div>
 <div class="modal fade bs-example-modal-lg" id="modelInfoForm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -528,6 +530,7 @@ $.ajax({
     </div>
 </div>
 <!--导入-->
+
 <input type="file" name="excelPath" id="idExcel" style="display:none">
 
 <script>

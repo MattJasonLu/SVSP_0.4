@@ -500,6 +500,14 @@
             }
         });
     }
+
+    /**
+     * 自动赋值
+     */
+    function automatic(item) {
+       $('#organizationCode').val($(item).val())
+        $('#taxNumber').val($(item).val())
+    }
 </script>
 <style>
     sup {
@@ -644,9 +652,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="organizationCode" class="col-sm-4 control-label">组织机构代码 <sup>*</sup></label>
+                            <label for="organizationCode" class="col-sm-4 control-label">组织机构代码</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="organizationCode" name="organizationCode" placeholder="" >
+                                <input type="text" class="form-control" id="organizationCode" name="organizationCode" placeholder="" readonly>
                             </div>
                         </div>
                         <div class="form-group">
@@ -694,9 +702,9 @@
                     </div>
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="licenseCode" class="col-sm-4 control-label">营业执照注册号 <sup>*</sup></label>
+                            <label for="licenseCode" class="col-sm-4 control-label">营业执照注册号<sup>*</sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="licenseCode" name="licenseCode" placeholder="" >
+                                <input type="text" class="form-control" id="licenseCode" name="licenseCode" placeholder="" onkeyup="automatic(this)">
                             </div>
                         </div>
                         <div class="form-group">
@@ -841,9 +849,15 @@
                             </div>
                         </div>
                         <div class="form-group">
+
+                            <label for="address" class="col-sm-4 control-label">地址 <sup>*</sup></label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="address" name="address" placeholder="" >
+
                             <label for="taxAddress" class="col-sm-4 control-label">开票地址 <sup>*</sup></label>
                             <div class="col-xs-5">
                                 <input type="text" class="form-control" id="taxAddress" name="taxAddress" placeholder="" >
+
                             </div>
                         </div>
                         <div class="form-group">
@@ -862,9 +876,9 @@
                     </div>
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="mobile" class="col-sm-4 control-label">税号 <sup>*</sup></label>
+                            <label for="mobile" class="col-sm-4 control-label">税号</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="taxNumber" name="taxNumber" placeholder="" >
+                                <input type="text" class="form-control" id="taxNumber" name="taxNumber" placeholder="" readonly>
                             </div>
                         </div>
                         <div class="form-group">
@@ -874,9 +888,15 @@
                             </div>
                         </div>
                         <div class="form-group">
+
+                            <label for="phone" class="col-sm-4 control-label">电话 <sup>*</sup></label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="mobilePhone" name="phone" placeholder="" >
+
                             <label for="taxMobile" class="col-sm-4 control-label">开票电话 <sup>*</sup></label>
                             <div class="col-xs-5">
                                 <input type="text" class="form-control" id="taxMobile" name="taxMobile" placeholder="" >
+
                             </div>
                         </div>
                     </div>
