@@ -65,6 +65,23 @@ function totalPage() {
 }
 
 /**
+ * 计算分页总页数
+ * @param totalRecord
+ * @param count
+ * @returns {number}
+ */
+function loadPages(totalRecord, count) {
+    if (totalRecord == 0) {
+        console.log("总记录数为0，请检查！");
+        return 0;
+    }
+    else if (totalRecord % count == 0)
+        return totalRecord / count;
+    else
+        return parseInt(totalRecord / count) + 1;
+}
+
+/**
  * 设置克隆页码
  * */
 function setPageClone(result) {
@@ -296,7 +313,7 @@ function loadPageWayBillList() {
             if (result != undefined && result.status == "success") {
                 console.log(result);
                 setPageClone(result.data);
-                setPageCloneAfter(pageNumber);      // 大于规定页数时省略显示页码
+                setPageCloneAfter(pageNumber);      //
             } else {
                 console.log(result.message);
             }
@@ -309,23 +326,6 @@ function loadPageWayBillList() {
     // 设置高级检索的下拉框数据
     setSeniorSelectedList();
     isSearch = false;
-}
-
-/**
- * 计算分页总页数
- * @param totalRecord
- * @param count
- * @returns {number}
- */
-function loadPages(totalRecord, count) {
-    if (totalRecord == 0) {
-        console.log("总记录数为0，请检查！");
-        return 0;
-    }
-    else if (totalRecord % count == 0)
-        return totalRecord / count;
-    else
-        return parseInt(totalRecord / count) + 1;
 }
 
 function setWayBillList(result) {

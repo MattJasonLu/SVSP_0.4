@@ -1,5 +1,7 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.Page;
+
 import java.util.Arrays;
 import java.util.Date;
 
@@ -83,6 +85,18 @@ public class Ingredients {
      * 处置设备
      */
     private Equipment equipment;
+    /**
+     * 分页
+     */
+    private Page page;
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
 
     public Equipment getEquipment() {
         return equipment;

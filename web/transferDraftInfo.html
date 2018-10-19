@@ -17,6 +17,7 @@
     <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
     <script src="js/bootstrap/bootstrap-select.min.js"></script>
     <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
+    <link href="css/dropdown-submenu.css" rel="stylesheet">
     <script src="js/produce/transferDraft.js"></script>
 </head>
 <body onload="loadData();">
@@ -62,7 +63,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="warehouseManage.html">危废入库</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="#">次生入库</a></li>
+                                <li><a href="secondWarehouseManage.html">次生入库</a></li>
                             </ul>
                         </li>
                         <li role="separator" class="divider"></li>
@@ -292,6 +293,9 @@
                             </label>
                             <label>
                                 <input type="checkbox" name="outwardIsDeal" id="outwardIsDeal" value="true">处理
+                            </label>
+                            <label>
+                                <input type="checkbox" name="cleaning" id="cleaning" value="true">清洗
                             </label>
                             <label>
                                 <input type="checkbox" name="outwardIsDispose" id="outwardIsDispose" value="true">处置

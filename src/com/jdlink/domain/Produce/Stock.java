@@ -39,7 +39,7 @@ public class Stock {
      */
     private  String plateNumber;
     /**
-    * 危废列表
+    * 危废列表(已不用)
      */
     private List<Wastes> wastesList=new ArrayList<>();
     /**

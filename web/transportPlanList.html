@@ -433,6 +433,7 @@
                     <h2 class="text-center">运输计划</h2>
                 </div>
                 <div class="modal-body">
+                    <div style="height:500px; overflow-x: visible; overflow-y:scroll;">
                     <table class="table table-bordered">
                         <thead>
                         <tr>
@@ -440,11 +441,12 @@
                                 <!--<span id="weekDate2">2018年8月第1周</span></th>-->
                         </tr>
                         <tr>
+                            <th class="text-center" rowspan="2">操作</th>
                             <th class="text-center" colspan="4">本周需求物料</th>
                             <th class="text-center" rowspan="2">周生产计划量(T)</th>
                             <th class="text-center" rowspan="2">目前库存量(T)</th>
                             <th class="text-center" rowspan="2">安全库存量(T)</th>
-                            <th class="text-center" rowspan="2" style="width: 100px;">市场采购量</th>
+                            <th class="text-center" rowspan="2">市场采购量</th>
                             <th class="text-center" colspan="2">热值</th>
                             <th class="text-center" colspan="2">灰分</th>
                             <th class="text-center" colspan="2">水分</th>
@@ -453,7 +455,7 @@
                             <th class="text-center" colspan="2">P</th>
                             <th class="text-center" colspan="2">F</th>
                             <th class="text-center" colspan="2">PH</th>
-                            <th class="text-center" rowspan="2">操作</th>
+
                         </tr>
                         <tr>
                             <th class="text-center" style="width: 60px;">序号</th>
@@ -480,6 +482,7 @@
                         </thead>
                         <tbody>
                         <tr id="cloneTr1" class="myclass">
+                            <td class="text-center"><input type="button" value="分配" onclick="view2(this);"></td>
                             <td class="text-center"></td><!--序号-->
                             <td class="text-center" name="handleCategory"></td>
                             <td class="text-center"></td>
@@ -504,9 +507,9 @@
                             <td class="text-center"></td>
                             <td class="text-center"></td>
                             <td class="text-center"></td>
-                            <td class="text-center"><input type="button" value="分配" onclick="view2(this);"></td>
                         </tr>
                         <tr>
+                            <td class="text-center"></td>
                             <td class="text-center">合计</td>
                             <td class="text-center"></td>
                             <td class="text-center"></td>
@@ -531,11 +534,10 @@
                             <td class="text-center" id="fminTotal"></td><!--弗最小总量-->
                             <td class="text-center" id="phmaxTotal"></td><!--PH最大总量-->
                             <td class="text-center" id="phminTotal"></td><!--PH最小总量-->
-                            <td class="text-center"></td>
                         </tr>
-
                         </tbody>
                     </table>
+                    </div>
                     <table class="table table-bordered">
                         <thead>
                         <tr>
@@ -618,7 +620,8 @@
                     <h2 class="text-center">危废明细</h2>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-bordered">
+                    <div style="height:500px; overflow-y:scroll;">
+                        <table class="table table-bordered">
                         <thead>
                         <tr>
                             <th>
@@ -667,6 +670,7 @@
                         </tr>
                         </tbody>
                     </table>
+                    </div>
                     <div class="row text-center">
                         <a class="btn btn-primary" id="saveBtn2">保存</a>
                         <a class="btn btn-danger" data-dismiss="modal">关闭</a>

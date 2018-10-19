@@ -1078,16 +1078,6 @@ function save() {
 }
 
 /**
- * 重置功能
- */
-function reset1() {
-    // $("#senior1").find("input").val("");
-    // // $("#senior1").find("select").get(0).selectedIndex = -1;
-    // $("#searchContent1").val("");
-    window.location.reload();
-}
-
-/**
  * 回车查询
  */
 function enterSearch1(){

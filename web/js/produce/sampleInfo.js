@@ -603,17 +603,17 @@ function view(sampleId) {
             if (result != undefined) {
                 var data = eval(result.data);
                 if (result.status == "success") {
-                    $("#model1-companyCode").text(data.companyCode);
-                    $("#model1-signer").text(data.laboratorySigner);
                     console.log(data.wastesList);
                     num = 1;
-                    for (var i = 0; i < data.wastesList.length; i++) {
+                    for (var i = 0; i < data.wastesList.length; i++) {  // 设置数据
                         if (i > 0) addLine();
                         var $i = i;
-                        $("span[id='model[" + $i + "].wastesCode']").text(data.wastesList[i].code);
-                        $("span[id='model[" + $i + "].basicItems']").text(basicItems(data.wastesList[i]));
-                        $("span[id='model[" + $i + "].addItems']").text(addItems(data.wastesList[i]));
+                        $("span[id='model" + $i + "-wastesCode']").text(data.wastesList[i].code);
+                        $("span[id='model" + $i + "-basicItems']").text(basicItems(data.wastesList[i]));
+                        $("span[id='model" + $i + "-addItems']").text(addItems(data.wastesList[i]));
                     }
+                    $("#model0-companyCode").text(data.companyCode);
+                    $("#model0-signer").text(data.laboratorySigner);
                     // 显示框体
                     $('#viewAppointModal').modal('show');
                 } else {
@@ -636,7 +636,6 @@ function addLine() {
     var clonedTr = tr.clone();
     // 克隆后清空新克隆出的行数据
     clonedTr.children().find("span").text("");
-    clonedTr.children().get(0).innerHTML = num;    // 设置序号
     clonedTr.children().find("span").each(function () {
         var id = $(this).prop('id');
         var newId = id.replace(/[0-9]\d*/, num - 1);
@@ -817,17 +816,17 @@ function checkModal(menu) {
             if (result != undefined) {
                 if (result.status == "success") {
                     var data = eval(result.data);
-                    $("#model2-companyCode").text(data.companyCode);
-                    $("#model2-signer").text(data.laboratorySigner);
                     console.log(data.wastesList);
                     num = 1;
                     for (var i = 0; i < data.wastesList.length; i++) {
                         if (i > 0) addNextLine();
                         var $i = i;
-                        $("span[id='checkModel[" + $i + "].wastesCode']").text(data.wastesList[i].code);
-                        $("span[id='checkModel[" + $i + "].basicItems']").text(basicItems(data.wastesList[i]));
-                        $("span[id='checkModel[" + $i + "].addItems']").text(addItems(data.wastesList[i]));
+                        $("span[id='checkModel" + $i + "-wastesCode']").text(data.wastesList[i].code);
+                        $("span[id='checkModel" + $i + "-basicItems']").text(basicItems(data.wastesList[i]));
+                        $("span[id='checkModel" + $i + "-addItems']").text(addItems(data.wastesList[i]));
                     }
+                    $("#checkModel0-companyCode").text(data.companyCode);
+                    $("#checkModel0-signer").text(data.laboratorySigner);
                 }
                 else {
                     alert(result.message);
@@ -853,7 +852,6 @@ function addNextLine() {
     var clonedTr = tr.clone();
     // 克隆后清空新克隆出的行数据
     clonedTr.children().find("span").text("");
-    clonedTr.children().get(0).innerHTML = num;    // 设置序号
     clonedTr.children().find("span").each(function () {
         var id = $(this).prop('id');
         var newId = id.replace(/[0-9]\d*/, num - 1);
@@ -1369,7 +1367,7 @@ function exportExcel(e) {
 function print() {
     //打印模态框
     $("#footer").hide();
-    $("#viewModal").printThis({
+    $("#viewAppointModal").printThis({
         // debug: false,             // 调试模式下打印文本的渲染状态
         // importCSS: false,       // 为打印文本引入外部样式link标签 ["<link rel='stylesheet' href='/static/jquery/forieprint.css' media='print'>","",""]
         // importStyle: false,      // 为打印把文本书写内部样式 ["<style>#ceshi{}</style>","",""]

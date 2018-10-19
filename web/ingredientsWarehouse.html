@@ -13,7 +13,7 @@
     <script src="js/util.js"></script>
     <script src="js/produce/ingredientsWarehouse.js"></script>
 </head>
-<body onload="loadPageIngredientsInList();">
+<body onload="loadInventoryList();">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -34,7 +34,8 @@
                 <li><a href="procurementManagement.html">首页</a></li>
                 <li><a href="monthProcurement.html">采购计划</a></li>
                 <li>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">采购申请<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">采购申请<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="monthProcurement.html">月度采购</a></li>
                         <li role="separator" class="divider"></li>
@@ -42,7 +43,8 @@
                     </ul>
                 </li>
                 <li class="active">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">辅料/备件管理<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">辅料/备件管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="ingredientsIn.html">辅料/备件入库</a></li>
                         <li role="separator" class="divider"></li>
@@ -60,7 +62,8 @@
         <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
         <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
         <li class="dropdown">
-            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+               aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
             <ul class="dropdown-menu">
                 <li><a href="#">个人信息</a></li>
                 <li><a href="#">待办事项</a></li>
@@ -138,239 +141,207 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" href="#" onclick="exportInExcel();"><span class="glyphicon glyphicon-arrow-up"
-                                                                     aria-hidden="true" ></span> 导出</a>
+                    <a class="btn btn-primary btn-xs" href="#" onclick="exportExcel();"><span
+                            class="glyphicon glyphicon-arrow-up"
+                            aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
-                <div class="input-group col-md-4 pull-right">
-                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent" onkeydown="enterSearch()">
-                    <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="searchIngredientIn();"><span class="glyphicon glyphicon-search"
-                                                                                 aria-hidden="true"></span> 查询</a>
-                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span
-                                    class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                <div class="row">
+                    <!--查询框-->
+                    <div class="input-group col-md-4 pull-right">
+                        <input type="text" class="form-control" placeholder="搜索..." id="searchContent1"
+                               onkeydown="enterSearch1()">
+                        <span class="input-group-btn">
+                            <a class="btn btn-default" onclick="search1();"><span
+                                    class="glyphicon glyphicon-search"
+                                    aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior1').toggle();"><span
+                                    class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询设置</a>
                             <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog"
                                                                                 aria-hidden="true"></span> 重置</a>
                         </span>
-                </div>
-            </div>
-        </div>
-        <br>
-        <!--高级查询-->
-        <div class="panel panel-default" id="senior" style="display: none;">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <label for="search-Id" class="col-sm-4 control-label">入库单号</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-Id" name="search-Id" placeholder="" onkeydown="enterSearch()">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <label for="search-companyName" class="col-sm-4 control-label">单位名</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-companyName"
-                                       name="search-companyName" placeholder="" onkeydown="enterSearch()">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <label for="search-state" class="col-sm-4 control-label">状态</label>
-                            <div class="col-xs-7">
-                                <select class="form-control" id="search-state" name="search-state" onchange="searchIngredientIn()">
-                                    <option value="0"></option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <label for="search-warehouse" class="col-sm-4 control-label">仓库</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-warehouse" name="search-warehouse" onkeydown="enterSearch()">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <label for="search-wastesName" class="col-sm-4 control-label">危废名称</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-wastesName" name="search-wastesName" onkeydown="enterSearch()">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-horizontal col-md-4">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">创建日期 </label>
-                            <div class="input-group">
-                                <input type="date" class="input-sm form-control" id="search-startDate" title="" onkeydown="enterSearch()"/>
-                                <span class="input-group-addon">-</span>
-                                <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown="enterSearch()"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-horizontal col-md-2"></div>
-                    <div class="form-horizontal col-md-3">
-                        <button title="汇总查询" href="#" onclick="totalSearch(this)" style="margin-left: 20%"><span
-                                class="glyphicon glyphicon-search" aria-hidden="true"></span> </button>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="form-horizontal col-md-12">
-                <table class="table table-striped table-hover table-condensed">
-                    <thead>
-                    <tr>
-                        <th class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
-                            </label>
-                        </th>
-                        <th class="text-center">入库单号</th>
-                        <th class="text-center">单位名称</th>
-                        <th class="text-center">创建日期</th>
-                        <th class="text-center">物品名称</th>
-                        <th class="text-center">规格</th>
-                        <th class="text-center">单位</th>
-                        <th class="text-center">总数量</th>
-                        <th class="text-center">仓库</th>
-                        <th class="text-center">状态</th>
-                        <th class="text-center">附注</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr id="clone" ondblclick="toViewIngredientsIn1(this)">
-                        <td class="text-center">
-                            <label>
-                                <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <!--自动提示后隐藏-->
-        <div >
-            <input type="hidden" id="hidvalue" value="作废成功！" />
-        </div>
-        <!--分页-->
-        <nav aria-label="Page navigation" class="text-center">
-            <ol class="pagination" style="width: 800px;">
-                <li id="current" style="display: none"><a>当前页：</a>
-                <li id="firstPage">
-                    <a href='#' onclick="switchPage(0)">首 页</a>
-                </li>
-                <li id="previous">
-                    <a href="#" aria-label="Previous" onclick="switchPage(parseInt(currentPage)-1);">
-                        <span aria-hidden="true"><span class="glyphicon glyphicon-backward"
-                                                       aria-hidden="true"></span></span>
-                    </a>
-                </li>
-                <li><a href="#">1</a></li>
-                <li id="next">
-                    <a href="#" aria-label="Next" onclick="switchPage(parseInt(currentPage)+1);">
-                        <span aria-hidden="true"><span class="glyphicon glyphicon-forward"
-                                                       aria-hidden="true"></span></span>
-                    </a>
-                </li>
-                <li id="endPage">
-                    <a href='#' onclick="switchPage(-2)">尾 页</a>
-                </li>
-                <li><a id="totalPage"></a></li>
-                <li><a href="#" onclick="inputSwitchPage();">跳转</a></li>
-                <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
-                           id="pageNumber" title="" onkeydown="enterSwitchPage();"></li>
-                <li class="showLi">每页显示:</li>
-                <li class="selectLi">
-                    <select id="count" onchange="loadPageIngredientsInList();" title="">
-                        <option>5</option>
-                        <option selected>15</option>
-                        <option>50</option>
-                    </select>
-                </li>
-            </ol>
-        </nav>
-        <!--导入模态框-->
-        <div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="TitleMyModalLabel">导入表格数据</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form id="modelAssign" method="post">
+            <br>
+            <!--高级查询-->
+            <div class="panel panel-default" id="senior1" style="display: none;">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-horizontal col-md-4">
                             <div class="form-group">
-                                <font size="+2">提示：</font>
-                                <font size="+1" class="text-center">请按照模板格式导入数据！</font>
+                                <label for="search1-wareHouseName" class="col-sm-4 control-label">仓库</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search1-wareHouseName"
+                                           name="search1-wareHouseName"
+                                           placeholder="" onkeydown="enterSearch1()">
+                                </div>
                             </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer center">
-                        <button type="button" class="btn btn-default" onclick="downloadInModal()">下载模板</button>
-                        <button type="button" class="btn btn-primary" onclick="importInExcel()">导入数据</button>
+                        </div>
+                        <div class="form-horizontal col-md-4">
+                            <div class="form-group">
+                                <label for="search1-name" class="col-sm-4 control-label">物品名称</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search1-name"
+                                           name="search1-name"
+                                           placeholder="" onkeydown="enterSearch1()">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-4">
+                            <div class="form-group">
+                                <label for="search1-amount" class="col-sm-4 control-label">库存量</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search1-amount"
+                                           name="search1-amount" placeholder="" onkeydown="enterSearch1()">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!--查看模态框-->
-        <div class="modal fade bs-example-modal-lg" id="viewModal" tabindex="-1" role="dialog"
-             aria-labelledby="myModalLabel">
-            <div class="modal-dialog modal-lg" role="document" style="width: 90%">
-                <div class="modal-content">
-                    <br>
-                    <!--<div class="text-center"><span id="creationDate"></span>&nbsp;&nbsp;&nbsp;&nbsp;预处理单</div>-->
-                    <h4 class="modal-title text-center" >辅料/备件明细</h4>
-                    <br>
-                    <table class="table table-bordered" style="border:none">
-                        <thead style="border:none">
+            <div class="row">
+                <div class="form-horizontal col-md-12">
+                    <table class="table table-striped table-hover table-condensed">
+                        <thead>
                         <tr>
-                            <p class="text-center pull-right"><b>NO.</b><span id="view-id" class="text-left"></span></p>
+                            <th class="text-center">
+                                <label>
+                                    <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
+                                </label>
+                            </th>
+                            <th class="text-center">编号</th>
+                            <th class="text-center">物品名称</th>
+                            <th class="text-center">所在仓库</th>
+                            <th class="text-center">库存量</th>
+                            <th class="text-center">单位</th>
+                            <th class="text-center">规格</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td class="text-center">危废名称</td>
-                            <td class="text-center">货架位置</td>
-                            <td class="text-center">总数量</td>
-                            <td class="text-center">仓库号</td>
-                        </tr>
-                        <tr id="viewClone">
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
+                        <tbody id="ingredientsInventoryData">
+                        <tr id="cloneTr1">
+                            <td class="text-center">
+                                <label>
+                                    <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                                </label>
+                            </td>
+                            <td class="text-center" name="itemId"></td>
+                            <td class="text-center" name="name"></td>
+                            <td class="text-center" name="wareHouseName"></td>
+                            <td class="text-center" name="amount"></td>
+                            <td class="text-center" name="unit"></td>
+                            <td class="text-center" name="specification"></td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
+            <!--自动提示后隐藏-->
+            <div>
+                <input type="hidden" id="hidvalue" value="作废成功！"/>
+            </div>
+            <!--分页-->
+            <nav aria-label="Page navigation" class="text-center">
+                <ol class="pagination" style="width: 800px;">
+                    <li id="current" style="display: none"><a>当前页：</a>
+                    <li id="firstPage">
+                        <a href='#' onclick="switchPage(0)">首 页</a>
+                    </li>
+                    <li id="previous">
+                        <a href="#" aria-label="Previous" onclick="switchPage(parseInt(currentPage)-1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-backward"
+                                                       aria-hidden="true"></span></span>
+                        </a>
+                    </li>
+                    <li><a href="#">1</a></li>
+                    <li id="next">
+                        <a href="#" aria-label="Next" onclick="switchPage(parseInt(currentPage)+1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-forward"
+                                                       aria-hidden="true"></span></span>
+                        </a>
+                    </li>
+                    <li id="endPage">
+                        <a href='#' onclick="switchPage(-2)">尾 页</a>
+                    </li>
+                    <li><a id="totalPage"></a></li>
+                    <li><a href="#" onclick="inputSwitchPage();">跳转</a></li>
+                    <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
+                               id="pageNumber" title="" onkeydown="enterSwitchPage();"></li>
+                    <li class="showLi">每页显示:</li>
+                    <li class="selectLi">
+                        <select id="count" onchange="loadInventoryList();" title="">
+                            <option>5</option>
+                            <option selected>15</option>
+                            <option>50</option>
+                        </select>
+                    </li>
+                </ol>
+            </nav>
+            <!--导入模态框-->
+            <div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="TitleMyModalLabel">导入表格数据</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="modelAssign" method="post">
+                                <div class="form-group">
+                                    <font size="+2">提示：</font>
+                                    <font size="+1" class="text-center">请按照模板格式导入数据！</font>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer center">
+                            <button type="button" class="btn btn-default" onclick="downloadInModal()">下载模板</button>
+                            <button type="button" class="btn btn-primary" onclick="importInExcel()">导入数据</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--查看模态框-->
+            <div class="modal fade bs-example-modal-lg" id="viewModal" tabindex="-1" role="dialog"
+                 aria-labelledby="myModalLabel">
+                <div class="modal-dialog modal-lg" role="document" style="width: 90%">
+                    <div class="modal-content">
+                        <br>
+                        <!--<div class="text-center"><span id="creationDate"></span>&nbsp;&nbsp;&nbsp;&nbsp;预处理单</div>-->
+                        <h4 class="modal-title text-center">辅料/备件明细</h4>
+                        <br>
+                        <table class="table table-bordered" style="border:none">
+                            <thead style="border:none">
+                            <tr>
+                                <p class="text-center pull-right"><b>NO.</b><span id="view-id" class="text-left"></span>
+                                </p>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="text-center">危废名称</td>
+                                <td class="text-center">货架位置</td>
+                                <td class="text-center">总数量</td>
+                                <td class="text-center">仓库号</td>
+                            </tr>
+                            <tr id="viewClone">
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!---->
         </div>
-       <!---->
     </div>
+    <!--导入-->
+    <input type="file" name="excelPath" id="idExcel" style="display:none">
+    <div id="embed"></div>
 </div>
-<!--导入-->
-<input type="file" name="excelPath" id="idExcel" style="display:none">
-<div id="embed"></div>
 </body>
 <script>
     $('#embed').load('embed/loginLogModal.html');

@@ -50,7 +50,7 @@ public class QuotationItem {
     /**
      * 处置金额
      */
-    private float totalPriec;
+    private float totalPrice;
     /**
      * 税率
      */
@@ -102,7 +102,6 @@ public class QuotationItem {
 
     /**
      * 包装类型
-     * @return
      */
     private PackageType packageType;
 
@@ -126,11 +125,6 @@ public class QuotationItem {
      * @return
      */
     private Supplier supplier;
-
-    /**
-     * 处置金额
-     */
-    private float totalPrice;
 
     //编号 更新用
     private int t_quotationitem;
@@ -173,14 +167,6 @@ public class QuotationItem {
 
     public void setUtil(Unit util) {
         this.util = util;
-    }
-
-    public float getTotalPriec() {
-        return totalPriec;
-    }
-
-    public void setTotalPriec(float totalPriec) {
-        this.totalPriec = totalPriec;
     }
 
     public PackageType getPackageType() {
