@@ -19,13 +19,16 @@ public class DateUtil {
      */
     public static Date getDateFromStr(String dateStr) {
         dateStr = dateStr.trim();
+        dateStr = dateStr.replace("\"", "");
         SimpleDateFormat dateFormat;
-        if (dateStr.contains("/")) dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        else dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
         try {
+            if (dateStr.contains("/")) dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            else if (dateStr.contains("-")) dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            else if (dateStr.contains("年")) dateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+            else throw new Exception("时间格式异常");
             date = dateFormat.parse(dateStr);
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return date;

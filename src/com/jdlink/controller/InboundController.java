@@ -535,13 +535,7 @@ public class InboundController {
             inboundOrder.setModifyDate(new Date());
             // 创建入库单条目列表
             List<InboundOrderItem> inboundOrderItemList = new ArrayList<>();
-//            System.out.println("数据如下：");
             for (int i = 1; i < data.length; i++) {
-//                for (int j = 0; j < data[0].length; j++) {
-//                    System.out.print(data[i][j].toString());
-//                    System.out.print(",");
-//                }
-//                System.out.println();
                 // 创建入库单条目
                 InboundOrderItem inboundOrderItem = new InboundOrderItem();
                 // 设置入库单条目编号
@@ -581,27 +575,18 @@ public class InboundController {
                         break;
                 }
                 // 设置进料方式
-                switch (data[i][11].toString()) {
-                    case "污泥":
-                        inboundOrderItem.setHandleCategory(HandleCategory.Sludge);
-                        break;
-                    case "废液":
-                        inboundOrderItem.setHandleCategory(HandleCategory.WasteLiquid);
-                        break;
-                    case "散装料":
-                        inboundOrderItem.setHandleCategory(HandleCategory.Bulk);
-                        break;
-                    case "破碎料":
-                        inboundOrderItem.setHandleCategory(HandleCategory.Crushing);
-                        break;
-                    case "精馏残渣":
-                        inboundOrderItem.setHandleCategory(HandleCategory.Distillation);
-                        break;
-                    case "悬挂连":
-                        inboundOrderItem.setHandleCategory(HandleCategory.Suspension);
-                        break;
-                    default:
-                        break;
+                if (data[i][11].toString().contains("污泥")) {
+                    inboundOrderItem.setHandleCategory(HandleCategory.Sludge);
+                } else if (data[i][11].toString().contains("废液")) {
+                    inboundOrderItem.setHandleCategory(HandleCategory.WasteLiquid);
+                } else if (data[i][11].toString().contains("散料")) {
+                    inboundOrderItem.setHandleCategory(HandleCategory.Bulk);
+                } else if (data[i][11].toString().contains("破碎")) {
+                    inboundOrderItem.setHandleCategory(HandleCategory.Crushing);
+                } else if (data[i][11].toString().contains("悬挂")) {
+                    inboundOrderItem.setHandleCategory(HandleCategory.Suspension);
+                } else if (data[i][11].toString().contains("精馏")) {
+                    inboundOrderItem.setHandleCategory(HandleCategory.Distillation);
                 }
                 inboundOrderItem.setRemarks(data[i][12].toString());
                 inboundOrderItem.setWarehouseArea(data[i][13].toString());

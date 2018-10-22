@@ -645,7 +645,7 @@ function setInboundOrderDataList(result) {
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.find("td[name='inboundOrderId']").text(data.inboundOrderId);
         clonedTr.find("td[name='inboundDate']").text(getDateStr(data.inboundDate));
-        if (data.wareHouseName != null)
+        if (data.wareHouse != null)
         clonedTr.find("td[name='wareHouseName']").text(data.wareHouse.wareHouseName);
         if (data.boundType != null)
         clonedTr.find("td[name='creatorId']").text(data.creatorId);
@@ -863,7 +863,7 @@ function viewData(e) {
                 clonedTr.find("td[name='wastesName']").text(data.wastes.name);
                 clonedTr.find("td[name='wastesCode']").text(data.wastes.wastesId);
             }
-            clonedTr.find("td[name='wastesAmount']").text(data.wastesAmount);
+            clonedTr.find("td[name='wastesAmount']").text(parseFloat(data.wastesAmount).toFixed(3));
             clonedTr.find("td[name='unitPriceTax']").text(data.unitPriceTax);
             clonedTr.find("td[name='totalPrice']").text(data.totalPrice);
             if (data.processWay != null)
