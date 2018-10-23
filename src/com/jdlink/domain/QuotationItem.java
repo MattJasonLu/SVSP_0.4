@@ -133,7 +133,7 @@ public class QuotationItem {
     //编号 更新用
     private int t_quotationitem;
 
-    //进料方式
+    //进料方式1
     private HandleCategory handleCategory;
 
     //包装方式多选

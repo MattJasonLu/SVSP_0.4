@@ -548,3 +548,144 @@ function searchSewage() {
     }
 }
 
+
+/**
+ * 预约登记-显示预约框
+ */
+function appointModal() {
+    // 显示框体
+    setSelectList();
+    $('#appointModal').modal('show');
+
+}
+
+
+
+
+
+/**
+ * 为公司代码和危废代码下拉框填充数据
+ */
+function setSelectList() {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getClientAndWastesCodeSelectedList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status === "success") {
+                var data = eval(result);
+                console.log("下拉数据为：");
+                console.log(data);
+                // 下拉框数据填充
+                var companyCode = $("#model-companyCode");
+                $.each(data.companyCodeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(parseInt(item.clientId));
+                    option.text(item.clientId);
+                    companyCode.append(option);
+                });
+                var wastesCode = $("#wastesList0-wastesCode");
+                $.each(data.wastesCodeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(parseInt(item.code.replace(/[^0-9]/ig, "")));
+                    option.text(item.code);
+                    wastesCode.append(option);
+                });
+                // 下拉框数据填充
+                var companyCode1 = $("#model3-companyCode");
+                $.each(data.companyCodeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(parseInt(item.clientId));
+                    option.text(item.clientId);
+                    companyCode1.append(option);
+                });
+                var wastesCode1 = $("#wastes0-wastesCode");
+                $.each(data.wastesCodeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(parseInt(item.code.replace(/[^0-9]/ig, "")));
+                    option.text(item.code);
+                    wastesCode1.append(option);
+                });
+                //刷新下拉数据
+                $('.selectpicker').selectpicker('refresh');
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+}
+
+
+var num = 1;
+
+/**
+ * 预约登记/修改-新增样品1
+ */
+function addNewLine(item) {
+    num++;
+    // 获取id为plusBtn的tr元素
+    //var tr = $("#plusBtn").prev();
+    var tr = null;
+    if (item != null)
+        tr = $(item).parent().parent().prev();
+    else tr = $("#addBtn3").prev();
+    // 克隆tr，每次遍历都可以产生新的tr
+    var clonedTr = tr.clone();
+    // 克隆后清空新克隆出的行数据
+    //clonedTr.children().find("input:first-child").prop('name').charAt(11);
+    clonedTr.children().find("input").val("");
+    clonedTr.children().find("input:checkbox").prop('checked', false);
+    clonedTr.children().find("select").selectpicker('val', '');
+    clonedTr.children().get(0).innerHTML = num;    // 设置序号
+    clonedTr.children().find("input,select").each(function () {
+        var name = $(this).prop('name');
+        var newName = name.replace(/[0-9]\d*/, num - 1);
+        $(this).prop('name', newName);
+        var id = $(this).prop('id');
+        var newId = id.replace(/[0-9]\d*/, num - 1);
+        $(this).prop('id', newId);
+    });
+    clonedTr.addClass("newLine");
+    clonedTr.insertAfter(tr);
+    clonedTr.removeAttr("id");
+    //清空数据为重新初始化selectpicker
+    $('.selectpicker').data('selectpicker', null);
+    $('.bootstrap-select').find("button:first").remove();
+    $('.selectpicker').selectpicker();
+    if (clonedTr.children().get(0).innerHTML != 1) {     // 将非第一行的所有行加上减行号
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        clonedTr.children("td:eq(0)").prepend(delBtn);
+    }
+}
+
+/**
+ * 删除行
+ */
+function delLine(item) {
+    var tr = item.parentElement.parentElement;
+    var length = $(tr.parentNode).children().length - 2;         // 行数
+    var tBody = $(tr.parentNode);                                  // 删除前获取父节点
+    tr.parentNode.removeChild(tr);
+    console.log(tr);
+    console.log("length:" + length);
+    for (var i = 1; i < length; i++) {             // 更新序号
+        tBody.children().eq(i).children().eq(0).get(0).innerHTML = i + 1;     // 更新序号
+        // 重新加上减行按钮
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        tBody.children().eq(i).children("td:eq(0)").prepend(delBtn);
+        tBody.children().eq(i).children().find("input,select").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/[0-9]\d*/, i);
+            $(this).prop('name', newName);
+            var id = $(this).prop('id');
+            var newId = id.replace(/[0-9]\d*/, i);
+            $(this).prop('id', newId);
+        });
+    }
+    num--;
+}
+

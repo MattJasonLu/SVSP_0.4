@@ -685,7 +685,7 @@ function confirmCheck() {
 }
 
 /**
- * 为公司代码和危废代码下拉框填充数据
+ * 为公司代码和危废代码下拉框填充数据1
  */
 function setSelectList() {
     $.ajax({

@@ -1,5 +1,5 @@
 /**
- * 获取首页内容
+ * 获取首页内容1
  * */
 function loadPageWayBillDetailList() {
     $('.selectpicker').selectpicker({
