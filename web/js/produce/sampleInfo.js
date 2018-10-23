@@ -14,6 +14,18 @@ function countValue() {
 }
 
 /**
+ * 拒收框
+ */
+function rejection() {
+    $("#rejection1").modal('show')
+}
+/**
+ * 确认拒收
+ */
+function rejection1() {
+    $()
+}
+/**
  * 测试
  */
 function show11() {
