@@ -12,7 +12,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/testResults.js"></script>
+    <script src="js/produce/sewageAnalysis.js"></script>
 </head>
 <body onload="loadPageList()">
     <!--导航条-->
@@ -254,14 +254,12 @@
                                 <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
                             </label>
                         </th>
-                        <th class="text-center">化验单号</th>
-                        <th class="text-center">查询号</th>
-                        <th class="text-center">企业名称</th>
-                        <th class="text-center">填报人</th>
-                        <th class="text-center">化验人</th>
-                        <th class="text-center">化验日期</th>
-                        <th class="text-center">化验公司</th>
-                        <th class="text-center">单据状态</th>
+                        <th class="text-center">样品代码</th>
+                        <th class="text-center">采样点</th>
+                        <th class="text-center">检测项目</th>
+                        <th class="text-center">送样人</th>
+                        <th class="text-center">签收人</th>
+                        <th class="text-center">备注</th>
                         <th class="text-center">操作</th>
                     </tr>
                     </thead>
@@ -272,19 +270,17 @@
                                 <input name="select" class="checkbox" type="checkbox" value="option1" aria-label="...">
                             </label>
                         </td>
-                        <td class="text-center" name="id">Q10000001</td>
-                        <td class="text-center">1456</td>
-                        <td class="text-center">安耐得环保常州分公司</td>
-                        <td class="text-center">张三</td>
-                        <td class="text-center">李四</td>
-                        <td class="text-center">2018-7-31</td>
-                        <td class="text-center">安耐得环保常州分公司</td>
-                        <td class="text-center">待签收</td>
+                        <td class="text-center" name="id"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
                         <td class="text-center">
                             <a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                            <a href="#" onclick="setInvalid(this);" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
-                            <a href="#" onclick="setSubmit(this);" title="提交"><span class="glyphicon glyphicon-export" aria-hidden="true"></span></a>
-                            <a href="#" onclick="setConfirm(this);" title="签收"><span class="glyphicon glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>
+                            <a href="#" onclick="setInvalid(this);" title="作废"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span></a>
+                            <a href="#" onclick="setSubmit(this);" title="确认收样"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
+                            <a href="#" onclick="setConfirm(this);" title="拒收"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
                         </td>
                     </tr>
                     </tbody>
