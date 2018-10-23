@@ -215,7 +215,7 @@ function  batchingList() {
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getWasteInventoryList",                  // url
-        // data:JSON.stringify(page),
+        data:JSON.stringify(page),
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         contentType: "application/json; charset=utf-8",

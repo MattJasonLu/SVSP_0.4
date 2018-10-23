@@ -1,11 +1,13 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Dictionary.SecondaryCategory;
 import com.jdlink.domain.Inventory.RecordState;
 import com.jdlink.domain.Inventory.WareHouse;
 import com.jdlink.domain.Produce.Equipment;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.ProcessWay;
+import com.jdlink.service.SecondaryCategoryService;
 import com.jdlink.service.WastesInfoService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -22,6 +24,8 @@ public class WastesInfoController {
 
     @Autowired
     WastesInfoService wastesInfoService;
+    @Autowired
+    SecondaryCategoryService secondaryCategoryService;
 
     /**
      * 获取危废编码集合
@@ -190,13 +194,12 @@ public class WastesInfoController {
          return  res.toString();
     }
 
-
     /**
      * 获取单位
      */
-  @RequestMapping("getUnitList")
-  @ResponseBody
-  public String getUnitList(){
+    @RequestMapping("getUnitList")
+    @ResponseBody
+    public String getUnitList(){
       JSONObject res = new JSONObject();
       try {
           JSONArray unitList = JSONArray.fromArray(Unit.values());
@@ -211,134 +214,6 @@ public class WastesInfoController {
 
       return res.toString();
   }
-
-    /**
-     * 你可以url中打love试下
-     * @param response
-     * @throws Exception
-     */
-    @RequestMapping("love")
-    @ResponseBody
-    public void getLove(HttpServletResponse response) throws Exception {
-        response.setContentType("text/html;charset=utf-8");
-        String data = printLove();
-        for (int i = 0; i < data.length(); i++) {
-            write(response,data.charAt(i) + "");
-            Thread.sleep(10);
-        }
-
-        response.getWriter().close();
-    }
-
-    private void write(HttpServletResponse response,String content) throws Exception {
-        response.getWriter().write(content);
-        response.flushBuffer();
-        response.getWriter().flush();
-    }
-
-    public String printLove() {
-        StringBuilder love = new StringBuilder();
-        // 分三个大部分 上中下
-        for (int i = 0, k = 0; i < 14; i++) {// 打印行
-
-            // 上部分 上分为 四个部分
-
-            if (i < 3) {
-
-                for (int j = 0; j < 5 - 2 * i; j++) {// 1、空心
-
-//                    System.out.print(" ");
-                    love.append("&nbsp;&nbsp;");
-
-                }
-
-                if (i == 2) {// 2、*
-
-                    for (int j = 0; j < 6 + 4 * i - 1; j++) {
-
-//                        System.out.print("*");
-                        love.append("*");
-                    }
-
-                    for (int j = 0; j < 7 - 4 * i + 2; j++) {// 3、空心
-
-                        love.append("&nbsp;&nbsp;");
-
-                    }
-
-                    for (int j = 0; j < 6 + 4 * i - 1; j++) {// 4、*
-
-                        love.append("*");
-
-                    }
-
-                } else {
-
-                    for (int j = 0; j < 6 + 4 * i; j++) {// 2、*
-
-                        love.append("*");
-
-                    }
-
-                    for (int j = 0; j < 7 - 4 * i; j++) {// 3、空心
-
-                        love.append("&nbsp;&nbsp;");
-
-                    }
-
-                    for (int j = 0; j < 6 + 4 * i; j++) {// 4、*
-
-                        love.append("*");
-
-                    }
-
-                }
-
-            } else if (i < 6) {// 中间
-
-                for (int j = 0; j < 29; j++) {
-
-                    love.append("*");
-
-                }
-
-            } else {// 下部分 6
-
-                if (i == 13) {
-
-                    for (int j = 0; j < 2 * (i - 6); j++) {// 打印空格
-
-                        love.append("&nbsp;&nbsp;");
-
-                    }
-
-                    love.append("*");
-
-                } else {
-
-                    for (int j = 0; j < 2 * (i - 6) + 1; j++) {// 打印空格
-
-                        love.append("&nbsp;&nbsp;");
-
-                    }
-
-                    for (int j = 1; j < 28 - 4 * k; j++) {
-
-                        love.append("*");
-
-                    }
-
-                    k++;
-
-                }
-
-            }
-
-            love.append("<br>");
-
-        }
-        return love.toString();
-    }
 
     /**
      * 根据危废编码获取危废名称
@@ -361,6 +236,25 @@ public class WastesInfoController {
 
         return res.toString();
 
+    }
+
+    @RequestMapping("getSecondaryCategory")
+    @ResponseBody
+    public String getSecondaryCategory() {
+        JSONObject res = new JSONObject();
+        try {
+            List<SecondaryCategory> secondaryCategoryList = secondaryCategoryService.list();
+            JSONArray data = JSONArray.fromArray(secondaryCategoryList.toArray());
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "获取单位成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取单位失败");
+        }
+        return res.toString();
     }
 
 }

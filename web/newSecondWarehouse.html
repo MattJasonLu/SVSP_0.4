@@ -168,6 +168,7 @@
                     <th class="text-center small">危废名称</th>
                     <th class="text-center small">危废代码</th>
                     <th class="text-center small">危废数量</th>
+                    <th class="text-center small">单位</th>
                     <th class="text-center small">单价</th>
                     <th class="text-center small">金额</th>
                     <th class="text-center small">处理方式</th>
@@ -184,23 +185,20 @@
                 <tr id="inboundClonedTr">
                     <td class="text-center small" name="index">1</td>
                     <td class="text-center small" name="produceCompanyName">北控安耐得环保科技发展常州有限公司</td>
-                    <td class="text-center small"><select name="wastesName">
-                        <option value="slag">炉渣</option>
-                        <option value="ash">飞灰</option>
-                        <option value="bucket">桶</option>
-                    </select></td>
-                    <td class="text-center small"><input name="wastesCode"></td>
-                    <td class="text-center small"><input name="wastesAmount" style="width: 30px"></td>
-                    <td class="text-center small"><input name="unitPriceTax" style="width: 30px"></td>
+                    <td class="text-center small"><select name="wastesName" class="form-control"></select></td>
+                    <td class="text-center small"><select class="form-control" name="wastesCode"></select></td>
+                    <td class="text-center small"><input class="form-control" name="wastesAmount" style="width: 30px"></td>
+                    <td class="text-center small"><input class="form-control" name="unit" style="width: 30px"></td>
+                    <td class="text-center small"><input class="form-control" name="unitPriceTax" style="width: 30px"></td>
                     <td class="text-center small" name="totalPrice"></td>
-                    <td class="text-center small"><select name="processWay"></select></td>
-                    <td class="text-center small"><select name="handleCategory"></select></td>
-                    <td class="text-center small"><select name="formType"></select></td>
-                    <td class="text-center small"><select name="packageType"></select></td>
-                    <td class="text-center small"><input name="heat" style="width: 30px"></td>
-                    <td class="text-center small"><input name="waterContent" style="width: 30px"></td>
-                    <td class="text-center small"><input name="remarks" style="width: 30px"></td>
-                    <td class="text-center small"><input name="warehouseArea" style="width: 30px"></td>
+                    <td class="text-center small"><select name="processWay" class="form-control"></select></td>
+                    <td class="text-center small"><select name="handleCategory" class="form-control"></select></td>
+                    <td class="text-center small"><select name="formType" class="form-control"></select></td>
+                    <td class="text-center small"><select name="packageType" class="form-control"></select></td>
+                    <td class="text-center small"><input class="form-control" name="heat" style="width: 50px"></td>
+                    <td class="text-center small"><input class="form-control" name="waterContent" style="width: 30px"></td>
+                    <td class="text-center small"><input class="form-control" name="remarks" style="width: 30px"></td>
+                    <td class="text-center small"><input class="form-control" name="warehouseArea" style="width: 30px"></td>
                 </tr>
                 <tr id="plus">
                     <td class="text-center"><a class="btn btn-default btn-xs" onclick="addNewLine();" id="plusBtn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>

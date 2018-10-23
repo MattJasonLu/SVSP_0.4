@@ -1127,7 +1127,7 @@ function addWayBill() {
         var $i = i;
         var wayBillItem = {};
         wayBillItem.salesmanName = $("#modal" + $i + "-salesman option:selected").text();
-        wayBillItem.receiveCompanyName = $("#modal" + $i + "-receiveCompany option:selected").text();
+        wayBillItem.receiveCompanyName = $("#modal" + $i + "-receiveCompany").val();
         wayBillItem.wastesId = conversionIdFormat(wastesId);
         wayBillItem.wastesName = $("#modal" + $i + "-wastesName").val();
         wayBillItem.wastesAmount = $("#modal" + $i + "-wasteAmount").val();

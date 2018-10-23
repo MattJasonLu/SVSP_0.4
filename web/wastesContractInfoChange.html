@@ -277,10 +277,10 @@ $.ajax({
                 </tr>
                 <tr>
                     <td class="text-center" style="width: 150px;">联系电话</td>
-                    <td class="text-left" colspan="2"> <input title="" type="text" class="focus" id="telephone" name="telephone" readonly></td>
+                    <td class="text-left" colspan="2"> <input title="" type="text" class="focus" id="telephone" name="telephone"></td>
                     <td class="text-center">联系人</td>
                     <td class="text-left" colspan="2">
-                        <input type="text" class="focus" id="contactName" name="contactName" placeholder="" readonly>
+                        <input type="text" class="focus" id="contactName" name="contactName" placeholder="">
                     </td>
                 </tr>
                 <!--<tr>-->
@@ -311,13 +311,13 @@ $.ajax({
                 </tr>
                 <tr>
                     <th class="text-center">序号</th>
-                    <th class="text-center">八位码</th>
+                    <th class="text-center" style="width: 100px">八位码</th>
                     <th class="text-center">危废名称</th>
                     <th class="text-center">包装类型</th>
                     <th class="text-center">单位</th>
-                    <th class="text-center hidden">处置单价</th>
-                    <th class="text-center">合同量</th>
-                    <th class="text-center">处置金额</th>
+                    <th class="text-center">处置单价</th>
+                    <th class="text-center" style="width: 100px">合同量</th>
+                    <th class="text-center" style="width: 100px">处置金额</th>
                     <th class="text-center">运输方式</th>
                 </tr>
                 </thead>
@@ -327,12 +327,12 @@ $.ajax({
                     <td class="text-center" >
                         <select title="" class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="wastesCode" id="wastesCode" ></select>
                     </td>
-                    <td class="text-center" ><input class="focus" title=""></td>
+                    <td class="text-left" ><input class="focus" title="" style="width: 100%"></td>
                     <td class="text-center"><select class="focus" title="" id="packageType"></select></td>
                     <td class="text-center"><select class="focus" title="" id="unit"></select></td>
-                    <td class="text-center hidden"><input class="focus hidden" title="" ></td>
-                    <td class="text-center"><input class="focus" title=""></td>
-                    <td class="text-center"><input class="focus" title=""readonly></td>
+                    <td class="text-center"><input class="focus " title="" onkeyup="calculateTotalPrice(this)"></td>
+                    <td class="text-center"><input class="focus" title="" style="width: 100%" onkeyup="calculateTotalPrice(this)"></td>
+                    <td class="text-center"><input class="focus" title="" style="width: 100%"></td>
                     <td class="text-center">
                         <select class="focus" title="" id="transportType" >
                             <option value="0">0</option>
@@ -358,10 +358,10 @@ $.ajax({
                 </tr>
                 <tr>
                     <td class="text-center">开户行名称</td>
-                    <td class="text-center"><input type="text" class="focus" id="bankName" name="bankName" placeholder=""readonly></td>
+                    <td class="text-center"><input type="text" class="focus" id="bankName" name="bankName" placeholder=""></td>
                     <td class="text-center">开户行账号</td>
                     <td class="text-center">
-                        <input type="text" class="focus" id="bankAccount" name="bankAccount" placeholder="" readonly>
+                        <input type="text" class="focus" id="bankAccount" name="bankAccount" placeholder="">
                     </td>
                 </tr>
                 <tr>

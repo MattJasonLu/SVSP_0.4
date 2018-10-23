@@ -45,7 +45,7 @@
     </select>
 <!--通过报价单查询危废信息-->
     <select id="getQuotationItem" resultType="QuotationItem">
-        select * from t_quotationitem where t_quotationitem.contractId=#{contractId};
+        select * from t_quotationitem where t_quotationitem.contractId=#{contractId} order by wastesCode;
 
     </select>
     <insert id="add" parameterType="Contract">
@@ -79,7 +79,7 @@
     select content from t_contract where contractId=#{contractId};
 </select>
     <select id="getByContractId" parameterType="String" resultMap="ContractRM">
-        SELECT * FROM t_contract WHERE contractId = #{contractId};
+        SELECT * FROM t_contract WHERE contractId = #{contractId} ;
     </select>
     <select id="getModel" parameterType="String" resultMap="ContractRM">
         select * from t_contract where contractId=#{contractId};
@@ -362,8 +362,8 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     </select>
     <!--添加合同中的报价单明细-->
     <insert id="addQuotationItem" parameterType="QuotationItem">
-        insert into t_quotationitem(contractId,clientId,wastesCode,wastesName,packageType,util,unitPriceTax,contractAmount,totalPrice,transport,supplierId) values
-         (#{contractId},#{client.clientId},#{wastesCode},#{wastesName},#{packageType},#{util},#{unitPriceTax},#{contractAmount},#{totalPrice},#{transport},#{supplier.supplierId});
+        insert into t_quotationitem(contractId,clientId,wastesCode,wastesName,packageType,util,unitPriceTax,contractAmount,totalPrice,transport,supplierId,packageTypeList) values
+         (#{contractId},#{client.clientId},#{wastesCode},#{wastesName},#{packageType},#{util},#{unitPriceTax},#{contractAmount},#{totalPrice},#{transport},#{supplier.supplierId},#{packageTypeList});
     </insert>
     <!--根据供应商编号查询供应商-->
     <select id="getSupplierListById" parameterType="String" resultType="Supplier">
