@@ -251,13 +251,13 @@
                         <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
                     </label>
                 </th>
-                <th class="text-center">相对碱度</th>
-                <th class="text-center">溶解固形物</th>
-                <th class="text-center">HP</th>
-                <th class="text-center">碱度</th>
-                <th class="text-center">硬度</th>
-                <th class="text-center">电导率</th>
+                <th class="text-center">样品代码</th>
+                <th class="text-center">采样点</th>
+                <th class="text-center">检测项目</th>
+                <th class="text-center">送样人</th>
+                <th class="text-center">签收人</th>
                 <th class="text-center">备注</th>
+                <th class="text-center">操作</th>
             </tr>
             </thead>
             <tbody>
@@ -273,7 +273,12 @@
                 <td class="text-center"></td>
                 <td class="text-center"></td>
                 <td class="text-center"></td>
-                <td class="text-center"></td>
+                <td class="text-center">
+                    <a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                    <a href="#" onclick="setInvalid(this);" title="作废"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span></a>
+                    <a href="#" onclick="setSubmit(this);" title="确认收样"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
+                    <a href="#" onclick="setConfirm(this);" title="拒收"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                </td>
             </tr>
             </tbody>
         </table>
