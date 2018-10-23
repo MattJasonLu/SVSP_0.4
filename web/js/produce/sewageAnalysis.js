@@ -559,6 +559,67 @@ function appointModal() {
 
 }
 
+/**
+ * 添加预约登记单
+ */
+function addAppoint() {
+
+//主表
+   var  data={
+        client:{clientId:$('#model-companyCode').selectpicker('val')},
+        laboratorySignatory:$('#laboratorySignatory').val(),
+        sendingPerson:$('#sendingPerson').val(),
+        water:true
+    };
+    console.log(data)
+   //添加主表
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "addSewaGeregistration",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: JSON.stringify(data),
+        processData: false,
+        contentType: 'application/json;charset=utf-8',
+        success: function (result) {
+            if (result != undefined && result.status == "success"){
+                $('.myclass').each(function () {
+                    var   dataItem={
+                        wastesCode:$(this).children('td').eq(1).find("button").attr('title'),
+                        wastesName:$(this).children('td').eq(2).find("input").val(),
+                        isPH:$(this).children('td').eq(3).find('label').eq(0).find("input").prop('checked'),
+                        isCOD:$(this).children('td').eq(3).find('label').eq(1).find("input").prop('checked'),
+                        isBOD5:$(this).children('td').eq(3).find('label').eq(2).find("input").prop('checked'),
+                        isO2:$(this).children('td').eq(3).find('label').eq(3).find("input").prop('checked'),
+                        isN2:$(this).children('td').eq(3).find('label').eq(4).find("input").prop('checked'),
+                        isLye:$(this).children('td').eq(3).find('label').eq(5).find("input").prop('checked'),
+                    };
+                    console.log(dataItem)
+                    $.ajax({
+                        type: "POST",                       // 方法类型
+                        url: "addSewaGeregistrationItem",              // url
+                        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                        dataType: "json",
+                        data: JSON.stringify(dataItem),
+                        processData: false,
+                        contentType: 'application/json;charset=utf-8',
+                    })
+
+
+                })
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+
+
+
+
+
+}
+
 
 
 
@@ -581,34 +642,23 @@ function setSelectList() {
                 var companyCode = $("#model-companyCode");
                 $.each(data.companyCodeList, function (index, item) {
                     var option = $('<option />');
-                    option.val(parseInt(item.clientId));
-                    option.text(item.clientId);
+                    option.val((item.clientId));
+                    option.text(item.companyName);
                     companyCode.append(option);
                 });
-                var wastesCode = $("#wastesList0-wastesCode");
+
+                var wastesCode = $("#wastesCode");
                 $.each(data.wastesCodeList, function (index, item) {
                     var option = $('<option />');
-                    option.val(parseInt(item.code.replace(/[^0-9]/ig, "")));
+                    option.val(item.code);
                     option.text(item.code);
                     wastesCode.append(option);
                 });
-                // 下拉框数据填充
-                var companyCode1 = $("#model3-companyCode");
-                $.each(data.companyCodeList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(parseInt(item.clientId));
-                    option.text(item.clientId);
-                    companyCode1.append(option);
-                });
-                var wastesCode1 = $("#wastes0-wastesCode");
-                $.each(data.wastesCodeList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(parseInt(item.code.replace(/[^0-9]/ig, "")));
-                    option.text(item.code);
-                    wastesCode1.append(option);
-                });
                 //刷新下拉数据
                 $('.selectpicker').selectpicker('refresh');
+
+             $('#addClone').siblings().not($('#plusBtn')).remove();
+
             } else {
                 console.log("fail: " + result);
             }
@@ -626,7 +676,6 @@ var num = 1;
  * 预约登记/修改-新增样品1
  */
 function addNewLine(item) {
-    num++;
     // 获取id为plusBtn的tr元素
     //var tr = $("#plusBtn").prev();
     var tr = null;
@@ -635,31 +684,36 @@ function addNewLine(item) {
     else tr = $("#addBtn3").prev();
     // 克隆tr，每次遍历都可以产生新的tr
     var clonedTr = tr.clone();
+    clonedTr.children('td').eq(0).html(($('.myclass').length)+1);
+    if (clonedTr.children('td').eq(0).html() != 1) {     // 将非第一行的所有行加上减行号
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        clonedTr.children('td').eq(0).prepend(delBtn);
+    }
+
     // 克隆后清空新克隆出的行数据
     //clonedTr.children().find("input:first-child").prop('name').charAt(11);
     clonedTr.children().find("input").val("");
     clonedTr.children().find("input:checkbox").prop('checked', false);
     clonedTr.children().find("select").selectpicker('val', '');
-    clonedTr.children().get(0).innerHTML = num;    // 设置序号
-    clonedTr.children().find("input,select").each(function () {
-        var name = $(this).prop('name');
-        var newName = name.replace(/[0-9]\d*/, num - 1);
-        $(this).prop('name', newName);
-        var id = $(this).prop('id');
-        var newId = id.replace(/[0-9]\d*/, num - 1);
-        $(this).prop('id', newId);
-    });
-    clonedTr.addClass("newLine");
+    // clonedTr.children().find("input,select").each(function () {
+    //     var name = $(this).prop('name');
+    //     var newName = name.replace(/[0-9]\d*/, num - 1);
+    //     $(this).prop('name', newName);
+    //     var id = $(this).prop('id');
+    //     var newId = id.replace(/[0-9]\d*/, num - 1);
+    //     $(this).prop('id', newId);
+    // });
+   // clonedTr.addClass("newLine");
+
+   
+   
     clonedTr.insertAfter(tr);
     clonedTr.removeAttr("id");
     //清空数据为重新初始化selectpicker
     $('.selectpicker').data('selectpicker', null);
     $('.bootstrap-select').find("button:first").remove();
     $('.selectpicker').selectpicker();
-    if (clonedTr.children().get(0).innerHTML != 1) {     // 将非第一行的所有行加上减行号
-        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
-        clonedTr.children("td:eq(0)").prepend(delBtn);
-    }
+
 }
 
 /**

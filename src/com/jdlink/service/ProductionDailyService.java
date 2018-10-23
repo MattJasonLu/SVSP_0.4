@@ -2,9 +2,7 @@ package com.jdlink.service;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
-import com.jdlink.domain.Produce.ProductionDaily;
-import com.jdlink.domain.Produce.Sewage;
-import com.jdlink.domain.Produce.SoftWater;
+import com.jdlink.domain.Produce.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -98,4 +96,10 @@ public interface ProductionDailyService {
      * @return 数量
      */
     int searchProductionDailyCount(ProductionDaily productionDaily);
+
+    void addSewaGeregistration(Sewageregistration sewageregistration);
+
+    List<Integer> getNewestId();
+
+    void addSewaGeregistrationItem(SewageregistrationItem sewageregistrationItem);
 }

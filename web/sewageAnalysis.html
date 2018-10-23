@@ -345,7 +345,7 @@
 </div>
 <!-- 预约登记模态框 新增-->
 <div class="modal fade bs-example-modal-lg" id="appointModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog" role="document" style="width: 35%">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -355,20 +355,31 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="form-group col-md-5">
-                        <label for="model-companyCode" class="col-sm-5 control-label">公司代码</label>
-                        <div class="col-sm-7">
+                    <div class="form-group col-md-6">
+                        <label for="model-companyCode" class="col-sm-6 control-label">公司代码</label>
+                        <div class="col-sm-6">
                             <select class="selectpicker form-control" data-live-search="true"
                                     data-live-search-placeholder="搜索..." id="model-companyCode"
                                     name="model-companyCode">
                             </select>
                         </div>
                     </div>
-                    <div class="form-group col-md-7">
-                        <label for="model-signer" class="col-sm-5 control-label">化验室签收人</label>
-                        <div class="col-sm-7">
-                            <input type="text" class="form-control" id="model-signer" name="signer" required>
+                    <div class="form-group col-md-6">
+                        <label for="laboratorySignatory" class="col-sm-6 control-label">化验室签收人</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="laboratorySignatory" name="signer">
                         </div>
+                    </div>
+
+
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label for="sendingPerson" class="col-sm-6 control-label">送样人</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="sendingPerson" name="signer" required>
+                        </div>
+
                     </div>
                 </div>
                 <table class="table table-bordered">
@@ -376,57 +387,50 @@
                     <tr>
                         <th class="text-center">序号</th>
                         <th class="text-center">危废代码</th>
+                        <th class="text-center">危废名称</th>
                         <th class="text-center">检测项目</th>
                         <!--<th class="text-center">增加项目</th>-->
                     </tr>
                     </thead>
                     <tbody>
-                    <tr id="addClone">
+                    <tr id="addClone" class="myclass">
                         <td class="text-center">1</td>
                         <td class="text-center"><select  class="selectpicker form-control" data-live-search="true"
-                                                         data-live-search-placeholder="搜索..." id="wastesList0-wastesCode"
-                                                         name="wastesList[0].wastesCode">
+                                                         data-live-search-placeholder="搜索..." id="wastesCode"
+                                                         name="wastesCode">
                         </select></td>
-                        <td class="text-center"><label>
+                        <td class="text-center"><input class="form-control"></td>
+                        <td class="text-center">
+                            <label>
                             <input type="checkbox" name="wastesList[0].isPH"
                                    value="true">PH
                         </label>
                             <label>
                                 <input type="checkbox" name="wastesList[0].isAsh"
-                                       value="true">灰分
+                                       value="true">COD
                             </label>
                             <label>
                                 <input type="checkbox" name="wastesList[0].isWater"
-                                       id="wastesList[0].isWater" value="true">水分
+                                       id="wastesList[0].isBOD5" value="true">BOD5
                             </label>
+
                             <label>
-                                <input type="checkbox" name="wastesList[0].isHeat"
-                                       value="true">热值
+                                <input type="checkbox" name="wastesList[0].isWater"
+                                       id="wastesList[0].isO2" value="true">氧
                             </label>
+
                             <label>
-                                <input type="checkbox" name="wastesList[0].isS"
-                                       value="true">硫
+                                <input type="checkbox" name="wastesList[0].isWater"
+                                       id="wastesList[0].isN2" value="true">氮
                             </label>
+
                             <label>
-                                <input type="checkbox" name="wastesList[0].isCl"
-                                       value="true">氯
+                                <input type="checkbox" name="wastesList[0].isWater"
+                                       id="wastesList[0].isLye" value="true">碱液
                             </label>
-                            <label>
-                                <input type="checkbox" name="wastesList[0].isF"
-                                       value="true">氟
-                            </label>
-                            <label>
-                                <input type="checkbox" name="wastesList[0].isP"
-                                       value="true">磷
-                            </label>
-                            <label>
-                                <input type="checkbox" name="wastesList[0].isFlashPoint"
-                                       value="true">闪点
-                            </label>
-                            <label>
-                                <input type="checkbox" name="wastesList[0].isViscosity"
-                                       value="true">黏度
-                            </label></td>
+
+
+                            </td>
                     </tr>
                     <tr id="plusBtn">
                         <td>
@@ -434,7 +438,7 @@
                         </td>
                         <td></td>
                         <td></td>
-                        <!--<td></td>-->
+                        <td></td>
                     </tr>
                     </tbody>
                 </table>
