@@ -319,7 +319,7 @@ function saveMonth() {
         suppliesCategory:$('#suppliesCategory').val(),
         applyMouth:$('#applyMonth option:selected').text()+"月份",
         demandTime:($('#demandTime').val()).toString(),
-        applyDepartment:$('#applyDepartment').val(),
+        applyDepartment:$('#applyDepartment :optional').text(),
         proposer:$('#proposer').val(),
         divisionHead:$('#divisionHead').val(),
         purchasingDirector:$('#purchasingDirector').val(),

@@ -687,4 +687,24 @@
         delete from t_rp_productiondaily_inbounditem where productionDailyId=#{id};
         delete from t_rp_productiondaily_outbounditem where productionDailyId=#{id};
     </delete>
+
+    <!--添加污水登记主表-->
+    <insert id="addSewaGeregistration" parameterType="Sewageregistration">
+        insert into  t_pr_sewageregistration(laboratorySignatory,sendingPerson,nowTime,water)
+        values
+        (#{laboratorySignatory},#{sendingPerson},NOW(),#{water})
+    </insert>
+
+    <!--获得主表最新的主键-->
+    <select id="getNewestId" resultType="int">
+        select id from t_pr_sewageregistration order by nowTime desc;
+    </select>
+
+    <!--添加污水登记子表-->
+    <insert id="addSewaGeregistrationItem" parameterType="sewageregistrationItem">
+        insert into  t_pr_sewageregistrationitem(wastesCode, wastesName, simpleinformationId, isPH, isCOD, isBOD5, isO2, isLye, isN2) values
+        (#{wastesCode},#{wastesName},#{sampleinformationId},#{isPH},#{isCOD},#{isBOD5},#{isO2},#{isLye},#{isN2})
+    </insert>
+
+
 </mapper>

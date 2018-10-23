@@ -260,4 +260,56 @@ public class PRProductionDailyController {
         }
         return res.toString();
     }
+
+
+    //添加污水登记主表
+    @RequestMapping("addSewaGeregistration")
+    @ResponseBody
+    public String addSewaGeregistration(@RequestBody Sewageregistration sewageregistration){
+        JSONObject res=new JSONObject();
+
+        try {
+            productionDailyService.addSewaGeregistration(sewageregistration);
+            res.put("status", "success");
+            res.put("message", "添加主表成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "success");
+            res.put("message", "添加主表失败");
+
+        }
+
+        return res.toString();
+
+    }
+
+
+    //添加污水登记子表
+    @RequestMapping("addSewaGeregistrationItem")
+    @ResponseBody
+    public String addSewaGeregistrationItem(@RequestBody SewageregistrationItem sewageregistrationItem){
+        JSONObject res=new JSONObject();
+
+
+        try {
+            int id=productionDailyService.getNewestId().get(0);
+            sewageregistrationItem.setSampleinformationId(id);
+            productionDailyService.addSewaGeregistrationItem(sewageregistrationItem);
+
+            res.put("status", "success");
+            res.put("message", "字表添加成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "字表添加失败");
+
+        }
+
+        return res.toString();
+
+
+    }
+
 }
