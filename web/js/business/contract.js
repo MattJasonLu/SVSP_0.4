@@ -1257,7 +1257,7 @@ function viewContract(item) {
     $('#print').show();//打印显示
 }
 
-//设置克隆行的数据合同查看功能
+//设置克隆行的数据合同查看功能1
 function setContractListModal(result) {
     //$('.myclass1').hide();
     var tr = $("#cloneTr");

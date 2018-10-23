@@ -623,7 +623,7 @@ function setSelectList() {
 var num = 1;
 
 /**
- * 预约登记/修改-新增样品
+ * 预约登记/修改-新增样品1
  */
 function addNewLine(item) {
     num++;

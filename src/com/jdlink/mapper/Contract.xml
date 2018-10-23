@@ -360,7 +360,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <select id="getNewestContractId" resultType="String">
         select contractId from  t_contract where  content is null order by nowTime desc;
     </select>
-    <!--添加合同中的报价单明细-->
+    <!--添加合同中的报价单明细1223-->
     <insert id="addQuotationItem" parameterType="QuotationItem">
         insert into t_quotationitem(contractId,clientId,wastesCode,wastesName,packageType,util,unitPriceTax,contractAmount,totalPrice,transport,supplierId,packageTypeList) values
          (#{contractId},#{client.clientId},#{wastesCode},#{wastesName},#{packageType},#{util},#{unitPriceTax},#{contractAmount},#{totalPrice},#{transport},#{supplier.supplierId},#{packageTypeList});

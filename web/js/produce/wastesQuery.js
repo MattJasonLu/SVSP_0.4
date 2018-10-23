@@ -1,5 +1,5 @@
 /**
- * 重置搜索数据
+ * 重置搜索数据1
  */
 function reset() {
     window.location.reload();

@@ -164,7 +164,7 @@ function allSelect() {
     if (isChecked) $("input[name='select']").prop('checked', true);
     else $("input[name='select']").prop('checked', false);
 }
-
+///
 /**
  * 校验权限
  * @param e 要进入的功能
