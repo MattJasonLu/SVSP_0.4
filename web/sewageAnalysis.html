@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <title>污水分析</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <link href="css/bootstrap/bootstrap-datetimepicker.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
     <script src="js/data-format.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/dropdown-submenu.css" rel="stylesheet">
@@ -14,9 +17,21 @@
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
     <script src="js/produce/sewageAnalysis.js"></script>
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
+    <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');     //当前页数
+
+    $(window).on('load', function () {
+        // 中文重写select 查询为空提示信息
+        $('.selectpicker').selectpicker({
+            language: 'zh_CN',
+            size: 4,
+            title: '请选择'
+        });
+    });
+
 </script>
 <body onload="loadPageSewageList();">
 <!--导航条-->
@@ -166,6 +181,9 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
+                    <a class="btn btn-primary btn-xs" href="#" onclick="appointModal();"><span
+                            class="glyphicon glyphicon-plus" aria-hidden="true"></span> 预约登记</a>
+
                     <a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose();"><span
                             class="glyphicon glyphicon-arrow-down"
                             aria-hidden="true"></span> 导入</a>
@@ -324,6 +342,109 @@
     <!--导入-->
     <input type="file" name="excelPath" id="idExcel" style="display:none">
     <div id="embed"></div>
+</div>
+<!-- 预约登记模态框 新增-->
+<div class="modal fade bs-example-modal-lg" id="appointModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">预约登记</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-md-5">
+                        <label for="model-companyCode" class="col-sm-5 control-label">公司代码</label>
+                        <div class="col-sm-7">
+                            <select class="selectpicker form-control" data-live-search="true"
+                                    data-live-search-placeholder="搜索..." id="model-companyCode"
+                                    name="model-companyCode">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-7">
+                        <label for="model-signer" class="col-sm-5 control-label">化验室签收人</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="model-signer" name="signer" required>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-bordered">
+                    <thead style="border:none">
+                    <tr>
+                        <th class="text-center">序号</th>
+                        <th class="text-center">危废代码</th>
+                        <th class="text-center">检测项目</th>
+                        <!--<th class="text-center">增加项目</th>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr id="addClone">
+                        <td class="text-center">1</td>
+                        <td class="text-center"><select  class="selectpicker form-control" data-live-search="true"
+                                                         data-live-search-placeholder="搜索..." id="wastesList0-wastesCode"
+                                                         name="wastesList[0].wastesCode">
+                        </select></td>
+                        <td class="text-center"><label>
+                            <input type="checkbox" name="wastesList[0].isPH"
+                                   value="true">PH
+                        </label>
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isAsh"
+                                       value="true">灰分
+                            </label>
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isWater"
+                                       id="wastesList[0].isWater" value="true">水分
+                            </label>
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isHeat"
+                                       value="true">热值
+                            </label>
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isS"
+                                       value="true">硫
+                            </label>
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isCl"
+                                       value="true">氯
+                            </label>
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isF"
+                                       value="true">氟
+                            </label>
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isP"
+                                       value="true">磷
+                            </label>
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isFlashPoint"
+                                       value="true">闪点
+                            </label>
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isViscosity"
+                                       value="true">黏度
+                            </label></td>
+                    </tr>
+                    <tr id="plusBtn">
+                        <td>
+                            <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <!--<td></td>-->
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="addAppoint();">预约</button>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

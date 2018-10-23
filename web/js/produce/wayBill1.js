@@ -906,13 +906,17 @@ function showAddData() {
             console.log(result);
         }
     });
+
+
 }
+
 
 /**
  * 页面准备完成后载入新增模态框下拉框信息
  */
 $(document).ready(function () {
-    var lineCount = $("select[id^='modal'][id$='receiveCompany']").length;
+
+    var lineCount = $("select[id^='modal'][id$='salesman']").length;
     //添加产废单位信息
     $.ajax({
         type: "POST",                       // 方法类型
@@ -943,9 +947,10 @@ $(document).ready(function () {
             console.log(result);
         }
     });
+
     for (var i = 0; i < lineCount; i++) {
         var $i = i;
-        // 添加单位信息
+        //添加单位信息
         $.ajax({
             type: "POST",                       // 方法类型
             url: "getAllClients",              // url
@@ -975,6 +980,7 @@ $(document).ready(function () {
                 console.log(result);
             }
         });
+
         // 添加业务员信息
         $.ajax({
             type: "POST",                       // 方法类型
@@ -985,6 +991,7 @@ $(document).ready(function () {
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined) {
+                    console.log(1323)
                     var data = eval(result);
                     // 各下拉框数据填充
                     var clientList = $("#modal" + $i + "-salesman");
@@ -1005,6 +1012,9 @@ $(document).ready(function () {
                 console.log(result);
             }
         });
+
+
+
         // 添加危废代码信息
         $.ajax({
             type: "POST",                       // 方法类型
@@ -1035,6 +1045,7 @@ $(document).ready(function () {
             }
         });
     }
+
 });
 
 /**
@@ -1276,3 +1287,12 @@ function conversionIdFormat(id) {
     });
     return aid;
 }
+
+$(window).on('load', function () {
+    // 中文重写select 查询为空提示信息
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 4,
+        title: '请选择'
+    });
+});
