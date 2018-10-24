@@ -40,234 +40,256 @@ public class CompatibilityController {
 public String importCompatibilityExcel(MultipartFile excelFile){
     JSONObject res = new JSONObject();
     String fileName = excelFile.getOriginalFilename();
-    Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+   List<Object[][]> data= ImportUtil.getInstance().getExcelFileData(excelFile);
+    System.out.println(data.size()+"长度");
     try{
-        //        //配伍对象
-        Calendar cal = Calendar.getInstance();
-        //获取年
-        String year=String.valueOf(cal.get(Calendar.YEAR));
-        //获取月
-        String mouth= getMouth(String.valueOf(cal.get(Calendar.MONTH)+1));
-        //序列号
-        String number = "001";
-        //先查看数据库的配伍编号
-        List<String> compatibilityIList= compatibilityService.check();
-        if(compatibilityIList.size()==0){
-            number="001";
-        }
-        if(compatibilityIList.size()>0) {
-            String s= compatibilityIList.get(0);//原字符串
-            String s2=s.substring(s.length()-3,s.length());//最后一个3字符
-           number=getString3(String.valueOf( Integer.parseInt(s2)+1));
-        }
-        //配伍编号
-       String compatibilityId=year+mouth+number;
-        //创建配伍对象
-        Compatibility compatibility=new Compatibility();
+        for(int i=0;i<data.size();i++){                 //一页遍历
+            //配伍对象
+            Calendar cal = Calendar.getInstance();
+            //获取年
+            String year=String.valueOf(cal.get(Calendar.YEAR));
+            //获取月
+            String mouth= getMouth(String.valueOf(cal.get(Calendar.MONTH)+1));
+            //序列号
+            String number = "001";
 
-        compatibility.setCompatibilityId(compatibilityId);//设置配伍的主键
-
-        //每日配比量合计
-
-        float totalDailyAmount=0;
-
-        //周需求合计
-
-        float  weeklyDemandTotalAggregate=0;
-
-        //热值总量
-
-        float calorificSum=0;
-
-        //灰分总量
-
-        float  ashSum=0;
-
-        //水分总量
-
-        float  waterSum=0;
-
-        //氯总量
-
-        float   clSum=0;
-
-        //硫总量
-
-        float  sSum=0;
-
-        //磷总量
-
-        float pSum=0;
-
-        //氟总量
-
-        float fSum=0;
-
-        //酸碱度总量
-
-        float phSum=0;
-
-
-        for(int i=1;i<data.length;i++){
-
-
-            CompatibilityItem compatibilityItem=new CompatibilityItem();
-
-            //配伍主表的序号绑定
-            compatibilityItem.setCompatibilityId(compatibilityId);
-
-            //第二列是处理类别
-
-            if(data[i][1].toString()!="null"){
-                    HandleCategory handleCategory =(HandleCategory.getHandleCategory(data[i][1].toString()));
-                compatibilityItem.setHandleCategory(handleCategory);//射入
-               }
-            if(data[i][1]=="null"){
-                compatibilityItem.setHandleCategory(null);//射入
+            //先查看数据库的配伍编号
+            List<String> compatibilityIList= compatibilityService.check();
+            if(compatibilityIList.size()==0){
+                number="001";
             }
+            if(compatibilityIList.size()>0) {
+                String s= compatibilityIList.get(0);//原字符串
+                String s2=s.substring(s.length()-3,s.length());//最后一个3字符
+                number=getString3(String.valueOf( Integer.parseInt(s2)+1));
+            }
+            //配伍编号
+            String compatibilityId=year+mouth+number;
 
-            //第三列是物质形态
+            //创建配伍对象
+            Compatibility compatibility=new Compatibility();
 
-                if(data[i][2].toString()!="null"){
-                    FormType formType=FormType.getFormType(data[i][2].toString());
-                    compatibilityItem.setFormType(formType);
-                }
-                if(data[i][2]=="null"){
-                    compatibilityItem.setFormType(null);
-                }
+            compatibility.setCompatibilityId(compatibilityId);//设置配伍的主键
 
-            //第四列是比例
+            //每日配比量合计
 
-           if(data[i][5].toString()!="null"&&data[i][4].toString()!="null"){
-                compatibilityItem.setProportion(Float.parseFloat(data[i][4].toString())/Float.parseFloat(data[i][5].toString()));
-           }
-           else {
-               compatibilityItem.setProportion(0);
-           }
+            float totalDailyAmount=0;
+
+            //周需求合计
+
+            float  weeklyDemandTotalAggregate=0;
+
+            //热值总量
+
+            float calorificSum=0;
+
+            //灰分总量
+
+            float  ashSum=0;
+
+            //水分总量
+
+            float  waterSum=0;
+
+            //氯总量
+
+            float   clSum=0;
+
+            //硫总量
+
+            float  sSum=0;
+
+            //磷总量
+
+            float pSum=0;
+
+            //氟总量
+
+            float fSum=0;
+
+            //酸碱度总量
+
+            float phSum=0;
+
+
+            for (int j=1;j<data.get(i).length;j++){
+                System.out.println(data.get(i)[j][0].toString()+"长度");
+                 if(data.get(i)[j][0].toString()!="null") {
+
+
+                     CompatibilityItem compatibilityItem = new CompatibilityItem();
+
+                     //配伍主表的序号绑定
+                     compatibilityItem.setCompatibilityId(compatibilityId);
+
+                     //第二列是处理类别
+
+                     if (data.get(i)[j][1].toString() != "null") {
+                         HandleCategory handleCategory = (HandleCategory.getHandleCategory(data.get(i)[j][1].toString()));
+                         compatibilityItem.setHandleCategory(handleCategory);//射入
+                     }
+
+                     if (data.get(i)[j][1] == "null") {
+                         compatibilityItem.setHandleCategory(null);//射入
+                     }
+
+                     //第三列是物质形态
+
+                     if (data.get(i)[j][2].toString() != "null") {
+                         FormType formType = FormType.getFormType(data.get(i)[j][2].toString());
+                         compatibilityItem.setFormType(formType);
+                     }
+                     if (data.get(i)[j][2] == "null") {
+                         compatibilityItem.setFormType(null);
+                     }
 
 
 
-            //第五列是每日配置量
-                if(data[i][4].toString()!="null"){
-                    compatibilityItem.setDailyRatio(Float.parseFloat(data[i][4].toString()));
-                    totalDailyAmount+=Float.parseFloat(data[i][4].toString());
-                }
-                if(data[i][4].toString()=="null")
-                    compatibilityItem.setDailyRatio(0);
+                     for(int k=1;k<data.get(i).length;k++){
+                         if (data.get(i)[k][5].toString() != "null") {
+                             System.out.println(data.get(i)[k][5].toString()+"1232");
+                             totalDailyAmount += Float.parseFloat(data.get(i)[k][5].toString());
+                         }
+                     }
+
+                     //第四列是比例==>当天周需求总量/周需求总量总数
+                     if(data.get(i)[j][5].toString()!="null"){
+                         compatibilityItem.setProportion(Float.parseFloat(data.get(i)[j][5].toString())/totalDailyAmount);
+                     }
+                     else {
+                         compatibilityItem.setProportion(0);
+                     }
 
 
+                     //第五列是每日配置量==》周需求总量/7
+                     if (data.get(i)[j][5].toString() != "null") {
+                         compatibilityItem.setDailyRatio(Float.parseFloat(data.get(i)[j][5].toString())/7);
+                     }
+                     if (data.get(i)[j][5].toString()  == "null")
+                         compatibilityItem.setDailyRatio(0);
 
 
-
-            //第六列是周需求总量
-                if(data[i][5].toString()!="null"){
-                    compatibilityItem.setWeeklyDemandTotal(Float.parseFloat(data[i][5].toString()));
-                    weeklyDemandTotalAggregate+=Float.parseFloat(data[i][5].toString());
-                }
-                if(data[i][5].toString()=="null")
-                    compatibilityItem.setWeeklyDemandTotal(0);
-
+                     //第六列是周需求总量
+                     if (data.get(i)[j][5].toString() != "null") {
+                         compatibilityItem.setWeeklyDemandTotal(Float.parseFloat(data.get(i)[j][5].toString()));
+                         weeklyDemandTotalAggregate += Float.parseFloat(data.get(i)[j][5].toString());
+                     }
+                     if (data.get(i)[j][5].toString() == "null")
+                         compatibilityItem.setWeeklyDemandTotal(0);
 
 
-            //第七列是热值
-            if(data[i][6].toString()!="null"){
-                compatibilityItem.setCalorific(Float.parseFloat(data[i][6].toString()));
-                calorificSum+=Float.parseFloat(data[i][6].toString());
-                }
-                if(data[i][6].toString()=="null")
-                    compatibilityItem.setCalorific(0);
+                     //第七列是热值
+                     if (data.get(i)[j][6].toString() != "null") {
+                         compatibilityItem.setCalorific(Float.parseFloat(data.get(i)[j][6].toString()));
+                         calorificSum += Float.parseFloat(data.get(i)[j][6].toString());
+                     }
+                     if (data.get(i)[j][6].toString() == "null")
+                         compatibilityItem.setCalorific(0);
 
-               //第八列是灰分
-                if(data[i][7]!="null"){
-                    compatibilityItem.setAsh(Float.parseFloat(data[i][7].toString()));
-                    ashSum+=Float.parseFloat(data[i][7].toString());
-                }
-                if(data[i][7]=="null")
-                    compatibilityItem.setAsh(0);
+                     //第八列是灰分
+                     if (data.get(i)[j][7] != "null") {
+                         compatibilityItem.setAsh(Float.parseFloat(data.get(i)[j][7].toString()));
+                         ashSum += Float.parseFloat(data.get(i)[j][7].toString());
+                     }
+                     if (data.get(i)[j][7] == "null")
+                         compatibilityItem.setAsh(0);
 
-            //第九列是水分
+                     //第九列是水分
 
-            if(data[i][8]!="null"){
-                compatibilityItem.setWater(Float.parseFloat(data[i][8].toString()));
-                    waterSum+=Float.parseFloat(data[i][8].toString());
-                }
-                if(data[i][8]=="null")
-                    compatibilityItem.setWater(0);
+                     if (data.get(i)[j][8] != "null") {
+                         compatibilityItem.setWater(Float.parseFloat(data.get(i)[j][8].toString()));
+                         waterSum += Float.parseFloat(data.get(i)[j][8].toString());
+                     }
+                     if (data.get(i)[j][8] == "null")
+                         compatibilityItem.setWater(0);
 
-            //第十列是氯
+                     //第十列是氯
 
-            if(data[i][9].toString()!="null"){
-                compatibilityItem.setCl(Float.parseFloat(data[i][9].toString()));
-                clSum+=Float.parseFloat(data[i][9].toString());
-                }
-                if(data[i][9].toString()=="null")
-                    compatibilityItem.setCl(0);
+                     if (data.get(i)[j][9].toString() != "null") {
+                         compatibilityItem.setCl(Float.parseFloat(data.get(i)[j][9].toString()));
+                         clSum += Float.parseFloat(data.get(i)[j][9].toString());
+                     }
+                     if (data.get(i)[j][9].toString() == "null")
+                         compatibilityItem.setCl(0);
 
-            //硫 11
-                if(data[i][10].toString()!="null"){
-                    compatibilityItem.setS(Float.parseFloat(data[i][10].toString()));
-                    sSum+=Float.parseFloat(data[i][10].toString());
-                }
-                if(data[i][10].toString()=="null")
-                    compatibilityItem.setS(0);
+                     //硫 11
+                     if (data.get(i)[j][10].toString() != "null") {
+                         compatibilityItem.setS(Float.parseFloat(data.get(i)[j][10].toString()));
+                         sSum += Float.parseFloat(data.get(i)[j][10].toString());
+                     }
+                     if (data.get(i)[j][10].toString() == "null")
+                         compatibilityItem.setS(0);
 
-            //磷 12
-                if(data[i][11].toString()!="null"){
-                    compatibilityItem.setP(Float.parseFloat(data[i][11].toString()));
-                   pSum+=Float.parseFloat(data[i][11].toString());
-                }
-                if(data[i][11].toString()=="null")
-                    compatibilityItem.setP(0);
+                     //磷 12
+                     if (data.get(i)[j][11].toString() != "null") {
+                         compatibilityItem.setP(Float.parseFloat(data.get(i)[j][11].toString()));
+                         pSum += Float.parseFloat(data.get(i)[j][11].toString());
+                     }
+                     if (data.get(i)[j][11].toString() == "null")
+                         compatibilityItem.setP(0);
 
-            //弗 13
-                if(data[i][12].toString()!="null"){
-                    compatibilityItem.setF(Float.parseFloat(data[i][12].toString()));
-                      fSum+=Float.parseFloat(data[i][12].toString());
-                }
-                if(data[i][12].toString()=="null")
-                    compatibilityItem.setF(0);
+                     //弗 13
+                     if (data.get(i)[j][12].toString() != "null") {
+                         compatibilityItem.setF(Float.parseFloat(data.get(i)[j][12].toString()));
+                         fSum += Float.parseFloat(data.get(i)[j][12].toString());
+                     }
+                     if (data.get(i)[j][12].toString() == "null")
+                         compatibilityItem.setF(0);
 
-            //PH 14
-                if(data[i][13].toString()!="null"){
-                    compatibilityItem.setPh(Float.parseFloat(data[i][13].toString()));
-                    phSum+=Float.parseFloat(data[i][13].toString());
-                }
-                if(data[i][13].toString()=="null")
-                    compatibilityItem.setPh(0);
-                compatibilityService.addCompatibilityItem(compatibilityItem);
+                     //PH 14
+                     if (data.get(i)[j][13].toString() != "null") {
+                         compatibilityItem.setPh(Float.parseFloat(data.get(i)[j][13].toString()));
+                         phSum += Float.parseFloat(data.get(i)[j][13].toString());
+                     }
+                     if (data.get(i)[j][13].toString() == "null") {
+                         compatibilityItem.setPh(0);
+                     }
+
+                     compatibilityService.addCompatibilityItem(compatibilityItem);//添加字表
+                 }
+             }
+            //设置每日配比量合计
+            compatibility.setTotalDailyAmount(totalDailyAmount);
+
+            //设置周需求总量
+            compatibility.setWeeklyDemandTotalAggregate(weeklyDemandTotalAggregate);
+
+            //设置平均热值
+            compatibility.setCalorificAvg(calorificSum/(data.get(i).length-1));
+
+            //设置平均灰分
+            compatibility.setAshAvg(ashSum/(data.get(i).length-1));
+
+            //设置水分平均
+            compatibility.setWaterAvg(waterSum/(data.get(i).length-1));
+
+            //设置cl平均
+            compatibility.setClAvg(clSum/(data.get(i).length-1));
+
+            //设置硫平均
+            compatibility.setsAvg(sSum/(data.get(i).length-1));
+
+            //设置磷平均
+            compatibility.setpAvg(pSum/(data.get(i).length-1));
+
+            //设置氟平均
+            compatibility.setfAvg(fSum/(data.get(i).length-1));
+
+            //设置ph平均
+            compatibility.setPhAvg(phSum/(data.get(i).length-1));
+            //添加主表
+            compatibilityService.addCompatibility(compatibility);
 
         }
-        //设置每日配比量合计
-        compatibility.setTotalDailyAmount(totalDailyAmount);
 
-        //设置周需求总量
-        compatibility.setWeeklyDemandTotalAggregate(weeklyDemandTotalAggregate);
 
-        //设置平均热值
-        compatibility.setCalorificAvg(calorificSum/(data.length-1));
 
-        //设置平均灰分
-        compatibility.setAshAvg(ashSum/(data.length-1));
 
-        //设置水分平均
-        compatibility.setWaterAvg(waterSum/(data.length-1));
 
-        //设置cl平均
-        compatibility.setClAvg(clSum/(data.length-1));
 
-        //设置硫平均
-        compatibility.setsAvg(sSum/(data.length-1));
 
-        //设置磷平均
-        compatibility.setpAvg(pSum/(data.length-1));
 
-        //设置氟平均
-        compatibility.setfAvg(fSum/(data.length-1));
 
-        //设置ph平均
-        compatibility.setPhAvg(phSum/(data.length-1));
-        //添加主表
-        compatibilityService.addCompatibility(compatibility);
         res.put("status", "success");
         res.put("message", "导入配伍周计划成功!");
 

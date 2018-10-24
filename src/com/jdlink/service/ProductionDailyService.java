@@ -102,4 +102,12 @@ public interface ProductionDailyService {
     List<Integer> getNewestId();
 
     void addSewaGeregistrationItem(SewageregistrationItem sewageregistrationItem);
+
+    void addSoftGeregistration(Sewageregistration sewageregistration);
+
+    void addSoftGeregistrationItem(SewageregistrationItem sewageregistrationItem);
+
+    List<Sewageregistration> sewageList(Page page);
+
+    List<Sewageregistration> softList(Page page);
 }

@@ -12,7 +12,8 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class ProductionDailyServiceImpl implements ProductionDailyService {
+public class ProductionDailyServiceImpl implements ProductionDailyService
+{
     @Autowired
     ProductionDailyMapper productionDailyMapper;
 
@@ -115,5 +116,25 @@ public class ProductionDailyServiceImpl implements ProductionDailyService {
     @Override
     public void addSewaGeregistrationItem(SewageregistrationItem sewageregistrationItem) {
         productionDailyMapper.addSewaGeregistrationItem(sewageregistrationItem);
+    }
+
+    @Override
+    public void addSoftGeregistration(Sewageregistration sewageregistration) {
+        productionDailyMapper.addSoftGeregistration(sewageregistration);
+    }
+
+    @Override
+    public void addSoftGeregistrationItem(SewageregistrationItem sewageregistrationItem) {
+        productionDailyMapper.addSoftGeregistrationItem(sewageregistrationItem);
+    }
+
+    @Override
+    public List<Sewageregistration> sewageList(Page page) {
+        return productionDailyMapper.sewageList(page);
+    }
+
+    @Override
+    public List<Sewageregistration> softList(Page page) {
+        return productionDailyMapper.softList(page);
     }
 }

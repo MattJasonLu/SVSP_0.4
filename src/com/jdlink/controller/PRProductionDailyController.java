@@ -31,8 +31,8 @@ public class PRProductionDailyController {
     public String loadPageSewageList(@RequestBody Page page) {
         JSONObject res = new JSONObject();
         try {
-            List<Sewage> sewageList = productionDailyService.listPageSewage(page);
-            JSONArray data = JSONArray.fromArray(sewageList.toArray(new Sewage[sewageList.size()]));
+            List<Sewageregistration> sewageList = productionDailyService.sewageList(page);
+           JSONArray data = JSONArray.fromArray(sewageList.toArray(new Sewageregistration[sewageList.size()]));
             res.put("data", data);
             res.put("status", "success");
             res.put("message", "分页数据获取成功!");
@@ -149,9 +149,9 @@ public class PRProductionDailyController {
     public String loadPageSoftWaterList(@RequestBody Page page) {
         JSONObject res = new JSONObject();
         try {
-            List<SoftWater> softWaterList = productionDailyService.listPageSoftWater(page);
-            JSONArray data = JSONArray.fromArray(softWaterList.toArray(new SoftWater[softWaterList.size()]));
-            res.put("data", data);
+            List<Sewageregistration> softWaterList = productionDailyService.softList(page);
+           // JSONArray data = JSONArray.fromArray(softWaterList.toArray(new SoftWater[softWaterList.size()]));
+            res.put("data", softWaterList);
             res.put("status", "success");
             res.put("message", "分页数据获取成功!");
         } catch (Exception e) {
@@ -312,4 +312,49 @@ public class PRProductionDailyController {
 
     }
 
+    //添加软水登记主表
+    @RequestMapping("addSoftGeregistration")
+    @ResponseBody
+    public String addSoftGeregistration(@RequestBody Sewageregistration sewageregistration){
+        JSONObject res=new JSONObject();
+
+        try {
+            productionDailyService.addSoftGeregistration(sewageregistration);
+            res.put("status", "success");
+            res.put("message", "添加主表成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "success");
+            res.put("message", "添加主表失败");
+        }
+
+        return res.toString();
+
+
+    }
+
+    //添加软水登记子表
+    @RequestMapping("addSoftGeregistrationItem")
+    @ResponseBody
+    public String addSoftGeregistrationItem(@RequestBody SewageregistrationItem sewageregistrationItem){
+        JSONObject res=new JSONObject();
+        try{
+            int id=productionDailyService.getNewestId().get(0);
+            sewageregistrationItem.setSampleinformationId(id);
+            productionDailyService.addSoftGeregistrationItem(sewageregistrationItem);
+            res.put("status", "success");
+            res.put("message", "字表添加成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "字表添加失败");
+
+        }
+
+        return res.toString();
+
+
+    }
 }

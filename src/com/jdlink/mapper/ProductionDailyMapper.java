@@ -104,4 +104,14 @@ public interface ProductionDailyMapper {
 
     //添加污水登记子表
     void addSewaGeregistrationItem(SewageregistrationItem sewageregistrationItem);
+
+    //添加软水登记主表
+    void addSoftGeregistration(Sewageregistration sewageregistration);
+
+       //添加软水登记字表表
+    void addSoftGeregistrationItem(SewageregistrationItem sewageregistrationItem);
+
+    List<Sewageregistration> sewageList(Page page);
+
+    List<Sewageregistration> softList(Page page);
 }

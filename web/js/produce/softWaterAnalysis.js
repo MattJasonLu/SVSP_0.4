@@ -345,45 +345,81 @@ function setSoftWaterList(result) {
             // 根据索引为部分td赋值
             switch (inner_index) {
                 case (1):
-                    // 序号
+                    //预约单号
                     $(this).html(serialNumber);
                     break;
                 case (2):
-                    // 软水接收日期
-                    $(this).html(getDateStr(obj.receiveDate));
+                    // 采样点
+                    $(this).html((obj.address));
                     break;
                 case (3):
-                    // 软水名称
-                    $(this).html(obj.name);
+                    // 检测项目
+                    project="";
+                    if(obj.sewageregistrationItemList!=null){
+                        $.each(obj.sewageregistrationItemList,function (index,item) {
+                            if(item.cod==1){
+                                project+="COD ";
+                            }
+                            if(item.bod5==1){
+                                project+="BOD5 ";
+                            }
+                            if(item.ph==1){
+                                project+="PH ";
+                            }
+                            if(item.dissolvedSolidForm==1){
+                                project+="溶解固形物 ";
+                            }
+                            if(item.electricalConductivity==1){
+                                project+="电导率 ";
+                            }
+                            if(item.hardness==1){
+                                project+="硬度 ";
+                            }
+                            if(item.lye==1){
+                                project+="碱度 ";
+                            }
+                            if(item.n2==1){
+                                project+="氮气 ";
+                            }
+                            if(item.o2==1){
+                                project+="氧气 ";
+                            }
+                            if(item.relativeAlkalinity==1){
+                                project+="相对碱度 ";
+                            }
+                        })
+
+                    }
+                    $(this).html(project);
                     break;
                 case (4):
-                    // 相对碱度
-                    $(this).html(obj.relativeAlkalinity);
+                    // 送样人
+                    $(this).html(obj.sendingPerson);
                     break;
                 case (5):
-                    // 溶解固形物
-                    $(this).html(obj.dissolvedSolidForm);
+                    // 签收人
+                    $(this).html(obj.laboratorySignatory);
                     break;
                 case (6):
-                    // PH
-                    $(this).html(obj.ph);
-                    break;
-                case (7):
-                    // 碱度
-                    $(this).html(obj.alkalinity);
-                    break;
-                case (8):
-                    // 硬度
-                    $(this).html(obj.hardness);
-                    break;
-                case (9):
-                    // 电导率
-                    $(this).html(obj.electricalConductivity);
-                    break;
-                case (10):
                     // 备注
-                    $(this).html(obj.remarks);
+                    $(this).html("");
                     break;
+                // case (7):
+                //     // 氮
+                //     $(this).html(obj.nitrogen);
+                //     break;
+                // case (8):
+                //     // 碱液
+                //     $(this).html(obj.lye);
+                //     break;
+                // case (9):
+                //     // PH
+                //     $(this).html(obj.ph);
+                //     break;
+                // case (10):
+                //     // 备注
+                //     $(this).html(obj.remarks);
+                //     break;
             }
         });
         // 把克隆好的tr追加到原来的tr前面
@@ -549,4 +585,208 @@ function searchSoftWater() {
         });
     }
 }
+
+
+
+/**
+ * 预约登记-显示预约框
+ */
+function appointModal() {
+    // 显示框体
+    setSelectList();
+    $('#appointModal').modal('show');
+
+}
+
+
+/**
+ * 为公司代码和危废代码下拉框填充数据
+ */
+function setSelectList() {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getClientAndWastesCodeSelectedList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status === "success") {
+                var data = eval(result);
+                console.log("下拉数据为：");
+                console.log(data);
+                // 下拉框数据填充
+                var companyCode = $("#model-companyCode");
+                $.each(data.companyCodeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val((item.clientId));
+                    option.text(item.companyName);
+                    companyCode.append(option);
+                });
+
+                var wastesCode = $("#wastesCode");
+                $.each(data.wastesCodeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.code);
+                    option.text(item.code);
+                    wastesCode.append(option);
+                });
+                //刷新下拉数据
+                $('.selectpicker').selectpicker('refresh');
+
+                $('#addClone').siblings().not($('#plusBtn')).remove();
+
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+}
+
+
+/**
+ * 预约登记/修改-新增样品1
+ */
+function addNewLine(item) {
+    // 获取id为plusBtn的tr元素
+    //var tr = $("#plusBtn").prev();
+    var tr = null;
+    if (item != null)
+        tr = $(item).parent().parent().prev();
+    else tr = $("#addBtn3").prev();
+    // 克隆tr，每次遍历都可以产生新的tr
+    var clonedTr = tr.clone();
+    clonedTr.children('td').eq(0).html(($('.myclass').length)+1);
+    if (clonedTr.children('td').eq(0).html() != 1) {     // 将非第一行的所有行加上减行号
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        clonedTr.children('td').eq(0).prepend(delBtn);
+    }
+
+    // 克隆后清空新克隆出的行数据
+    //clonedTr.children().find("input:first-child").prop('name').charAt(11);
+    clonedTr.children().find("input").val("");
+    clonedTr.children().find("input:checkbox").prop('checked', false);
+    clonedTr.children().find("select").selectpicker('val', '');
+    // clonedTr.children().find("input,select").each(function () {
+    //     var name = $(this).prop('name');
+    //     var newName = name.replace(/[0-9]\d*/, num - 1);
+    //     $(this).prop('name', newName);
+    //     var id = $(this).prop('id');
+    //     var newId = id.replace(/[0-9]\d*/, num - 1);
+    //     $(this).prop('id', newId);
+    // });
+    // clonedTr.addClass("newLine");
+
+
+
+    clonedTr.insertAfter(tr);
+    clonedTr.removeAttr("id");
+    //清空数据为重新初始化selectpicker
+    $('.selectpicker').data('selectpicker', null);
+    $('.bootstrap-select').find("button:first").remove();
+    $('.selectpicker').selectpicker();
+
+}
+
+
+/**
+ * 添加预约登记单
+ */
+function addAppoint() {
+
+//主表
+    var  data={
+        client:{clientId:$('#model-companyCode').selectpicker('val')},
+        laboratorySignatory:$('#laboratorySignatory').val(),
+        sendingPerson:$('#sendingPerson').val(),
+        water:false
+    };
+    console.log(data)
+    //添加主表
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "addSoftGeregistration",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: JSON.stringify(data),
+        processData: false,
+        contentType: 'application/json;charset=utf-8',
+        success: function (result) {
+            if (result != undefined && result.status == "success"){
+                $('.myclass').each(function () {
+
+                    var relativeAlkalinity;
+                    if($(this).children('td').eq(3).find('label').eq(0).find("input").prop('checked')==true){
+                        relativeAlkalinity=1;
+                    }
+                    else
+                        relativeAlkalinity=0;
+                    var dissolvedSolidForm;
+                    if($(this).children('td').eq(3).find('label').eq(1).find("input").prop('checked')==true){
+                        dissolvedSolidForm=1;
+                    }
+                    else
+                        dissolvedSolidForm=0;
+                    var ph;
+                    if($(this).children('td').eq(3).find('label').eq(2).find("input").prop('checked')==true){
+                        ph=1;
+                    }
+                    else
+                        ph=0;
+                    var lye;
+                    if($(this).children('td').eq(3).find('label').eq(3).find("input").prop('checked')==true){
+                        lye=1;
+                    }
+                    else
+                        lye=0;
+                    var hardness;
+                    if($(this).children('td').eq(3).find('label').eq(4).find("input").prop('checked')==true){
+                        hardness=1;
+                    }
+                    else
+                        hardness=0;
+                    var electricalConductivity;
+                    if($(this).children('td').eq(3).find('label').eq(5).find("input").prop('checked')==true){
+                        electricalConductivity=1;
+                    }
+                    else
+                        electricalConductivity=0;
+                    var   dataItem={
+                        wastesCode:$(this).children('td').eq(1).find("button").attr('title'),
+                        wastesName:$(this).children('td').eq(2).find("input").val(),
+                        relativeAlkalinity:relativeAlkalinity,
+                        dissolvedSolidForm:dissolvedSolidForm,
+                        ph:ph,
+                        lye:lye,
+                        hardness:hardness,
+                        electricalConductivity:electricalConductivity,
+                    };
+                    console.log(dataItem)
+                    $.ajax({
+                        type: "POST",                       // 方法类型
+                        url: "addSoftGeregistrationItem",              // url
+                        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                        dataType: "json",
+                        data: JSON.stringify(dataItem),
+                        processData: false,
+                        contentType: 'application/json;charset=utf-8',
+                    })
+                })
+            }
+            alert("预约登记成功！")
+            window.location.reload();
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+
+
+
+
+
+}
+
+
 

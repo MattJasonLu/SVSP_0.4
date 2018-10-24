@@ -343,45 +343,81 @@ function setSewageList(result) {
             // 根据索引为部分td赋值
             switch (inner_index) {
                 case (1):
-                    // 序号
+                    //预约单号
                     $(this).html(serialNumber);
                     break;
                 case (2):
-                    // 污水接收日期
-                    $(this).html(getDateStr(obj.receiveDate));
+                    // 采样点
+                    $(this).html((obj.address));
                     break;
                 case (3):
-                    // 污水名称
-                    $(this).html(obj.name);
+                    // 检测项目
+                    project="";
+                    if(obj.sewageregistrationItemList!=null){
+                        $.each(obj.sewageregistrationItemList,function (index,item) {
+                            if(item.cod==1){
+                                project+="COD ";
+                            }
+                            if(item.bod5==1){
+                                project+="BOD5 ";
+                            }
+                            if(item.ph==1){
+                                project+="PH ";
+                            }
+                            if(item.dissolvedSolidForm==1){
+                                project+="溶解固形物 ";
+                            }
+                            if(item.electricalConductivity==1){
+                                project+="电导率 ";
+                            }
+                            if(item.hardness==1){
+                                project+="硬度 ";
+                            }
+                            if(item.lye==1){
+                                project+="碱度 ";
+                            }
+                            if(item.n2==1){
+                                project+="氮气 ";
+                            }
+                            if(item.o2==1){
+                                project+="氧气 ";
+                            }
+                            if(item.relativeAlkalinity==1){
+                                project+="相对碱度 ";
+                            }
+                        })
+
+                    }
+                    $(this).html(project);
                     break;
                 case (4):
-                    // COD
-                    $(this).html(obj.cod);
+                    // 送样人
+                    $(this).html(obj.sendingPerson);
                     break;
                 case (5):
-                    // BOD5
-                    $(this).html(obj.bod5);
+                    // 签收人
+                    $(this).html(obj.laboratorySignatory);
                     break;
                 case (6):
-                    // 氧
-                    $(this).html(obj.oxygen);
-                    break;
-                case (7):
-                    // 氮
-                    $(this).html(obj.nitrogen);
-                    break;
-                case (8):
-                    // 碱液
-                    $(this).html(obj.lye);
-                    break;
-                case (9):
-                    // PH
-                    $(this).html(obj.ph);
-                    break;
-                case (10):
                     // 备注
-                    $(this).html(obj.remarks);
+                    $(this).html("");
                     break;
+                // case (7):
+                //     // 氮
+                //     $(this).html(obj.nitrogen);
+                //     break;
+                // case (8):
+                //     // 碱液
+                //     $(this).html(obj.lye);
+                //     break;
+                // case (9):
+                //     // PH
+                //     $(this).html(obj.ph);
+                //     break;
+                // case (10):
+                //     // 备注
+                //     $(this).html(obj.remarks);
+                //     break;
             }
         });
         // 把克隆好的tr追加到原来的tr前面
@@ -569,7 +605,8 @@ function addAppoint() {
         client:{clientId:$('#model-companyCode').selectpicker('val')},
         laboratorySignatory:$('#laboratorySignatory').val(),
         sendingPerson:$('#sendingPerson').val(),
-        water:true
+        water:true,
+        address:$('#address').val(),
     };
     console.log(data)
    //添加主表
@@ -584,15 +621,54 @@ function addAppoint() {
         success: function (result) {
             if (result != undefined && result.status == "success"){
                 $('.myclass').each(function () {
+                    var isPH;
+                    if($(this).children('td').eq(3).find('label').eq(0).find("input").prop('checked')==true){
+                        isPH=1;
+                    }
+                    else
+                        isPH=0;
+                    var isCOD;
+                    if($(this).children('td').eq(3).find('label').eq(1).find("input").prop('checked')==true){
+                        isCOD=1;
+                    }
+                    else
+                        isCOD=0;
+                    var isBOD5;
+                    if($(this).children('td').eq(3).find('label').eq(2).find("input").prop('checked')==true){
+                        isBOD5=1;
+                    }
+                    else
+                        isBOD5=0;
+                    var isO2;
+                    if($(this).children('td').eq(3).find('label').eq(3).find("input").prop('checked')==true){
+                        isO2=1;
+                    }
+                    else
+                        isO2=0;
+                    var isN2;
+                    if($(this).children('td').eq(3).find('label').eq(4).find("input").prop('checked')==true){
+                        isN2=1;
+                    }
+                    else
+                        isN2=0;
+                    var isLye;
+                    if($(this).children('td').eq(3).find('label').eq(5).find("input").prop('checked')==true){
+                        isLye=1;
+                    }
+                    else
+                        isLye=0;
+
+
+
                     var   dataItem={
                         wastesCode:$(this).children('td').eq(1).find("button").attr('title'),
                         wastesName:$(this).children('td').eq(2).find("input").val(),
-                        isPH:$(this).children('td').eq(3).find('label').eq(0).find("input").prop('checked'),
-                        isCOD:$(this).children('td').eq(3).find('label').eq(1).find("input").prop('checked'),
-                        isBOD5:$(this).children('td').eq(3).find('label').eq(2).find("input").prop('checked'),
-                        isO2:$(this).children('td').eq(3).find('label').eq(3).find("input").prop('checked'),
-                        isN2:$(this).children('td').eq(3).find('label').eq(4).find("input").prop('checked'),
-                        isLye:$(this).children('td').eq(3).find('label').eq(5).find("input").prop('checked'),
+                        ph:isPH,
+                        cod:isCOD,
+                        bod5:isBOD5,
+                        o2:isO2,
+                        n2:isN2,
+                        lye:isLye
                     };
                     console.log(dataItem)
                     $.ajax({
@@ -607,6 +683,8 @@ function addAppoint() {
 
 
                 })
+                alert("预约登记成功！")
+                window.location.reload();
             }
         },
         error: function (result) {
