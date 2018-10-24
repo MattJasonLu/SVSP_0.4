@@ -604,10 +604,10 @@ function setItemDataList(result) {
             clonedTr.find("td[name='wastesName']").text(convertStrToWastesName(data.wastes.name));
             clonedTr.find("td[name='wastesCode']").text(data.wastes.wastesId);
         }
-        clonedTr.find("td[name='wastesAmount']").text(data.wastesAmount);
+        clonedTr.find("td[name='wastesAmount']").text(parseFloat(data.wastesAmount).toFixed(3));
         clonedTr.find("td[name='wastesUnit']").text(data.wastesUnit);
-        clonedTr.find("td[name='unitPriceTax']").text(data.unitPriceTax);
-        clonedTr.find("td[name='totalPrice']").text(data.totalPrice);
+        clonedTr.find("td[name='unitPriceTax']").text(parseFloat(data.unitPriceTax).toFixed(3));
+        clonedTr.find("td[name='totalPrice']").text(parseFloat(data.totalPrice).toFixed(3));
         if (data.processWay != null) clonedTr.find("td[name='processWay']").text(data.processWay.name);
         if (data.handleCategory != null) clonedTr.find("td[name='handleCategory']").text(data.handleCategory.name);
         if (data.formType != null) clonedTr.find("td[name='formType']").text(data.formType.name);
