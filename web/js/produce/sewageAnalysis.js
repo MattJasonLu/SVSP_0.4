@@ -848,7 +848,7 @@ function view(item) {
                 console.log(result)
             //赋值
               // 公司名称
-                if(result.data.client=null){
+                if(result.data.client!=null){
                     $('#companyName').val(result.data.client.companyName);
                 }
                  //化验室签收人
@@ -1067,7 +1067,10 @@ $.ajax({
     data:{"id":id},
     //contentType: 'application/json;charset=utf-8',
     success:function (result) {
-
+        if (result != undefined && result.status == "success"){
+            alert("已收样!")
+            window.location.reload();
+        }
     },
     error:function (result) {
 
@@ -1080,3 +1083,60 @@ $.ajax({
 }
 
 
+/**
+ * 拒收框
+ */
+function rejection(item) {
+    var id=$(item).parent().parent().children('td').eq(1).html();
+    $('#id1').text(id);
+    $("#rejection1").modal('show')
+
+    //根据编号查找
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSewaGeregistrationById",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{"id":id},
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                $('#advice').val(result.data.advice);
+
+            }
+            else {
+
+            }
+        },
+        error:function (result) {
+
+        }
+    });
+}
+
+//真正的拒收方法
+function rejection1() {
+    var id=  $('#id1').text();;
+    var advice=   $('#advice').val();
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "rejectSewaGeregistrationById",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{"id":id,"advice":advice},
+        success:function (result) {
+            if (result != undefined && result.status == "success") {
+                alert(result.message)
+                window.location.reload();
+            }
+
+            },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+    })
+
+
+}

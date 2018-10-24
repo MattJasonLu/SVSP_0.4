@@ -1159,6 +1159,12 @@ function saveData() {
             case(4):
                 formType = 'HalfSolid';
                 break;
+            case(5):
+                formType = 'Liquid1';
+                break;
+            case(6):
+                formType = 'Solid1';
+                break;
         }
         threshold.thresholdId = $("#thresholdId" + $i).text();
         threshold.handleCategory = handleCategory;
@@ -1223,36 +1229,36 @@ function selectAuto(e) {
     // 设置选中项，删除多余项
     switch (parseInt(handleCategory)) {
         case(1): {
-            item.empty();
-            option.val(4);
-            option.text('半固态');
-            item.append(option);
+            // item.empty();
+            // option.val(4);
+            // option.text('半固态');
+            // item.append(option);
         }
             break; // 污泥--半固体
         case(2): {
-            item.empty();
-            option.val(2);
-            option.text('液体');
-            item.append(option);
+            // item.empty();
+            // option.val(2);
+            // option.text('液体');
+            // item.append(option);
         }
             break; // 废液--液体
         case(3): {
-            item.empty();
-            option.val(3);
-            option.text('固体');
-            item.append(option);
+            // item.empty();
+            // option.val(3);
+            // option.text('固体');
+            // item.append(option);
         }
             break;  // 散装料--固体
         case(4): {
-            item.empty();
-            option.val(4);
-            option.text('半固态');
-            item.append(option);
+            // item.empty();
+            // option.val(4);
+            // option.text('半固态');
+            // item.append(option);
         }
             break;  // 破碎料--半固体
         case(5): {
-            item.find("option[value='1']").remove();
-            item.get(0).selectedIndex = -1; // 初始化
+            // item.find("option[value='1']").remove();
+            // item.get(0).selectedIndex = -1; // 初始化
             break;  // 精馏残渣--半固体/固体/液体
         }
         case(6):

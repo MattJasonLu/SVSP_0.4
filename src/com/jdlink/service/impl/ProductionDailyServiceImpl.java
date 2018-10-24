@@ -142,4 +142,14 @@ public class ProductionDailyServiceImpl implements ProductionDailyService
     public Sewageregistration getSewaGeregistrationById(String id) {
         return productionDailyMapper.getSewaGeregistrationById(id);
     }
+
+    @Override
+    public void confirmSewaGeregistrationById(String id) {
+        productionDailyMapper.confirmSewaGeregistrationById(id);
+    }
+
+    @Override
+    public void rejectSewaGeregistrationById(String id, String advice) {
+        productionDailyMapper.rejectSewaGeregistrationById(id,advice);
+    }
 }
