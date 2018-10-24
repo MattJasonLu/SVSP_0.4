@@ -383,4 +383,45 @@ public class PRProductionDailyController {
 
     }
 
+    //确认送样
+    @RequestMapping("confirmSewaGeregistrationById")
+    @ResponseBody
+    public String confirmSewaGeregistrationById(String id){
+        JSONObject res=new JSONObject();
+        try {
+            productionDailyService.confirmSewaGeregistrationById(id);
+            res.put("status", "success");
+            res.put("message", "收样成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "收样失败");
+
+        }
+
+        return  res.toString();
+
+
+    }
+
+    //拒收
+    @RequestMapping("rejectSewaGeregistrationById")
+    @ResponseBody
+    public String rejectSewaGeregistrationById(String id,String advice){
+        JSONObject res=new JSONObject();
+        try {
+      productionDailyService.rejectSewaGeregistrationById(id,advice);
+            res.put("status", "success");
+            res.put("message", "已拒收");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "拒收失败");
+        }
+
+        return res.toString();
+    }
+
 }

@@ -29,7 +29,7 @@ public enum CheckState implements CodeBaseEnum{
     Locked("已锁定", 21),
     ToGenerated("待生成物料", 21),
     Retired("已退库",22),
-    ToCollected("代收样",23),
+    ToCollected("待收样",23),
     Collected("已收样",24),
     Rejected("已拒收",25),
     ;
