@@ -112,4 +112,8 @@ public interface ProductionDailyService {
     List<Sewageregistration> softList(Page page);
 
     Sewageregistration  getSewaGeregistrationById(String id);
+
+    void confirmSewaGeregistrationById(String id);
+
+    void rejectSewaGeregistrationById(String id,String advice);
 }

@@ -111,6 +111,13 @@ public String importCompatibilityExcel(MultipartFile excelFile){
 
             float phSum=0;
 
+            for(int k=1;k<data.get(i).length;k++){
+                if (data.get(i)[k][5].toString() != "null") {
+                    System.out.println(data.get(i)[k][5].toString()+"1232");
+                    weeklyDemandTotalAggregate += Float.parseFloat(data.get(i)[k][5].toString());//周需求总量
+                }
+            }
+
 
             for (int j=1;j<data.get(i).length;j++){
                 System.out.println(data.get(i)[j][0].toString()+"长度");
@@ -145,16 +152,11 @@ public String importCompatibilityExcel(MultipartFile excelFile){
 
 
 
-                     for(int k=1;k<data.get(i).length;k++){
-                         if (data.get(i)[k][5].toString() != "null") {
-                             System.out.println(data.get(i)[k][5].toString()+"1232");
-                             totalDailyAmount += Float.parseFloat(data.get(i)[k][5].toString());
-                         }
-                     }
 
                      //第四列是比例==>当天周需求总量/周需求总量总数
                      if(data.get(i)[j][5].toString()!="null"){
-                         compatibilityItem.setProportion(Float.parseFloat(data.get(i)[j][5].toString())/totalDailyAmount);
+                         compatibilityItem.setProportion(Float.parseFloat(data.get(i)[j][5].toString())/weeklyDemandTotalAggregate);
+                         totalDailyAmount+=Float.parseFloat(data.get(i)[j][5].toString())/weeklyDemandTotalAggregate;
                      }
                      else {
                          compatibilityItem.setProportion(0);
@@ -172,7 +174,6 @@ public String importCompatibilityExcel(MultipartFile excelFile){
                      //第六列是周需求总量
                      if (data.get(i)[j][5].toString() != "null") {
                          compatibilityItem.setWeeklyDemandTotal(Float.parseFloat(data.get(i)[j][5].toString()));
-                         weeklyDemandTotalAggregate += Float.parseFloat(data.get(i)[j][5].toString());
                      }
                      if (data.get(i)[j][5].toString() == "null")
                          compatibilityItem.setWeeklyDemandTotal(0);

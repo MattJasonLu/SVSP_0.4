@@ -745,4 +745,13 @@
     <select id="getSewaGeregistrationById" resultMap="SewageregistrationRM" parameterType="String">
            select * from t_pr_sewageregistration where id=#{id};
     </select>
+<!--确认送样-->
+<update id="confirmSewaGeregistrationById" parameterType="String">
+    update t_pr_sewageregistration set checkState='Collected',nowTime=NOW() where id=#{id};
+</update>
+    <!--拒收-->
+    <update id="rejectSewaGeregistrationById" >
+        update t_pr_sewageregistration set  checkState='Rejected',advice=#{1},nowTime=NOW() where id=#{0};
+    </update>
+
 </mapper>
