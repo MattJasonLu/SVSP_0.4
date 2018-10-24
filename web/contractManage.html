@@ -97,7 +97,7 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">供应商管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="supplierBackup.html" id="function_15" onclick="checkAuthority($(this))">处置单位备案</a></li>
+                        <li><a href="supplierBackup.html" id="function_15" onclick="checkAuthority($(this))">供应商备案</a></li>
                     </ul>
                 </li>
                 <li class="dropdown active">
@@ -211,7 +211,7 @@
                                 </div>
                             </div>
                             <!--<div class="form-group">-->
-                                <!--<label for="search-suppierName" class="col-sm-4 control-label">处置单位名称</label>-->
+                                <!--<label for="search-suppierName" class="col-sm-4 control-label">供应商名称</label>-->
                                 <!--<div class="col-xs-7">-->
                                     <!--<input type="text" class="form-control" id="search-suppierName" name="search-suppierName" placeholder="">-->
                                 <!--</div>-->
@@ -293,7 +293,7 @@
                                     </label>
                                 </th>
                                 <th class="text-center">合同编号</th>
-                                <th class="text-center" id="toggleName" style="width: 300px;">处置单位名称</th><!--相当于公司名称-->
+                                <th class="text-center" id="toggleName" style="width: 300px;">供应商名称</th><!--相当于公司名称-->
                                 <th class="text-center">合同名称</th>
                                 <th class="text-center">
                                     <div class="form-inline">
@@ -326,7 +326,7 @@
                                     </label>
                                 </td>
                                 <td class="text-center"></td><!--合同编号-->
-                                <td class="text-center"></td><!--处置单位名称-->
+                                <td class="text-center"></td><!--供应商名称-->
                                 <td class="text-center"></td><!--合同名称-->
                                 <td class="text-center"></td>
                                 <td class="text-center hidden"></td>
@@ -417,7 +417,7 @@
                         </div>
                         <div class="form-horizontal col-md-6 form-inline">
                             <p class="text-left"><b>合同编号&nbsp;&nbsp;</b><span id="modal3_contractId"></span></p>
-                            <p class="text-left"><b id="name1">处置单位名称&nbsp;&nbsp;</b><span
+                            <p class="text-left"><b id="name1">供应商名称&nbsp;&nbsp;</b><span
                                     id="modal3_suppierName"></span></p>
                             <p class="text-left"><b>签订日期&nbsp;&nbsp;</b><span id="modal3_beginTime"></span></p>
                             <p class="text-left"><b>截止日期&nbsp;&nbsp;</b><span id="modal3_endTime"></span></p>
@@ -879,7 +879,7 @@
                     }
                     // 供用商姓名
                     if (obj.contractType.name == '物流合同') {
-                        $('#name1').html("处置单位名称&nbsp;&nbsp;");
+                        $('#name1').html("供应商名称&nbsp;&nbsp;");
                         $("#modal3_suppierName").text(obj.suppierName);
                     }
                     else {
