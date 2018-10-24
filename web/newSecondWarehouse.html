@@ -46,27 +46,54 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">化验管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li class="dropdown-submenu">
-                            <a href="">仓储部预约送样</a>
+                            <a href="">送样登记</a>
                             <ul class="dropdown-menu">
-                                <li><a href="sampleInfoRegiter.html">仓储部送样</a></li>
+                                <li><a href="receiveSampleInfo.html">市场部送样</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="">水质送样</a></li>
+                                <li><a href="sampleInfoRegiter.html">仓储部送样</a></li>
+                                <li role="separator" class="divider"></li><!---->
+                                <li class="dropdown-submenu">
+                                    <a href="">生产工艺控制送样</a>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-submenu"><a href="">水质送样</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="sewageAnalysis.html">污水送样</a></li>
+                                                <li role="separator" class="divider"></li>
+                                                <li><a href="softWaterAnalysis.html">软水送样</a></li>
+                                            </ul>
+                                        </li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="secondaryAnalysis.html">次生送样</a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="">其他</a></li>
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
                         <li role="separator" class="divider"></li>
                         <li class="dropdown-submenu">
-                            <a href="testResults.html">化验结果</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="">预准入分析</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="">入场分析</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="">污水</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="">软水</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="">次生</a></li>
-                            </ul>
+                            <a href="testResults.html">化验结果</a><ul class="dropdown-menu">
+                            <li><a href="testResultsSampleInfo.html">市场部化验</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="sampleInfoAnalysis.html">仓储部化验</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="dropdown-submenu">
+                                <a href="">生产工艺控制化验</a>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-submenu"><a href="">水质化验</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="sewageTestResults.html">污水化验</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="softWaterTestResults.html">软水化验</a></li>
+                                        </ul>
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="secondaryTestResults.html">次生化验</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="">其他</a></li>
+                                </ul>
+                            </li>
+                        </ul>
                         </li>
                     </ul>
                 </li>
@@ -173,7 +200,7 @@
                         <th class="text-center small">单价</th>
                         <th class="text-center small">金额</th>
                         <th class="text-center small">处理方式</th>
-                        <th class="text-center small">进料方式</th>
+                        <!--<th class="text-center small">进料方式</th>-->
                         <th class="text-center small">物质形态</th>
                         <th class="text-center small">包装方式</th>
                         <th class="text-center small" style="width: 70px">热酌减率</th>
@@ -193,7 +220,7 @@
                         <td class="text-center small"><input class="form-control" name="unitPriceTax" style="width: 30px"></td>
                         <td class="text-center small" name="totalPrice"></td>
                         <td class="text-center small"><select name="processWay" class="form-control"></select></td>
-                        <td class="text-center small"><select name="handleCategory" class="form-control"></select></td>
+                        <!--<td class="text-center small"><select name="handleCategory" class="form-control"></select></td>-->
                         <td class="text-center small"><select name="formType" class="form-control"></select></td>
                         <td class="text-center small"><select name="packageType" class="form-control"></select></td>
                         <td class="text-center small"><input class="form-control" name="heat" style="width: 50px"></td>

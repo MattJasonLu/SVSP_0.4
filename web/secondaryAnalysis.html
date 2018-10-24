@@ -17,6 +17,19 @@
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');     //当前页数
+
+    /**
+     * 拒收框
+     */
+    function rejection() {
+        $("#rejection1").modal('show')
+    }
+    /**
+     * 确认拒收
+     */
+    function rejection1() {
+        $()
+    }
 </script>
 <body onload="secondaryAnalysis();" >
     <!--导航条-->
@@ -78,7 +91,7 @@
                                 <a href="testResults.html">化验结果</a><ul class="dropdown-menu">
                                 <li><a href="testResultsSampleInfo.html">市场部化验</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="sampleInfoRegiter.html">仓储部化验</a></li>
+                                <li><a href="sampleInfoAnalysis.html">仓储部化验</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li class="dropdown-submenu">
                                     <a href="">生产工艺控制化验</a>
@@ -163,10 +176,12 @@
                         <li><a href="#">次生送样</a></li>
                     </ol>
                 </div>
-                <h4 class="sub-header"><span class="months"></span>次生废物分析</h4>
+                <h4 class="sub-header"><span class="months"></span>次生废物送样</h4>
             </div>
             <!--操作-->
             <div class="pull-left col-md-6">
+                <a class="btn btn-primary btn-xs" href="#" onclick="appointModal();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 预约登记</a>
+                <a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                 <!--<a class="btn btn-primary btn-xs" href="#" onclick=""><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>-->
                 <a class="btn btn-primary btn-xs" href="#" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
             </div>
@@ -220,8 +235,7 @@
                                 <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
                             </label>
                         </th>
-                        <th class="text-center">样品代码</th>
-                        <th class="text-center">采样点</th>
+                        <th class="text-center">预约单号</th>
                         <th class="text-center">检测项目</th>
                         <th class="text-center">送样人</th>
                         <th class="text-center">签收人</th>
@@ -242,12 +256,11 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
-                        <td class="text-center"></td>
                         <td class="text-center">
                             <a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                             <a href="#" onclick="setInvalid(this);" title="作废"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span></a>
                             <a href="#" onclick="setSubmit(this);" title="确认收样"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
-                            <a href="#" onclick="setConfirm(this);" title="拒收"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                            <a href="#" onclick="rejection(this);" title="拒收"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
                         </td>
                     </tr>
                 </tbody>
@@ -293,5 +306,133 @@
         </ol>
     </nav>
     <div id="embed"></div>
+    <!--拒收页面-->
+    <div class="modal fade" id="rejection1" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="sub-header text-center">拒收原因</h5>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-12">
+                        <textarea class="form-control" rows="5" id="advice" style="min-width: 70%"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="confirm" data-dismiss="modal" onclick="rejection1()">
+                        确认拒收
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 预约登记模态框 新增-->
+    <div class="modal fade bs-example-modal-lg" id="appointModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 35%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">预约登记</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="model-companyCode" class="col-sm-6 control-label">公司代码</label>
+                            <div class="col-sm-6">
+                                <select class="selectpicker form-control" data-live-search="true"
+                                        data-live-search-placeholder="搜索..." id="model-companyCode"
+                                        name="model-companyCode">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="laboratorySignatory" class="col-sm-6 control-label">化验室签收人</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="laboratorySignatory" name="signer">
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="sendingPerson" class="col-sm-6 control-label">送样人</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="sendingPerson" name="signer" required>
+                            </div>
+
+                        </div>
+                    </div>
+                    <table class="table table-bordered">
+                        <thead style="border:none">
+                        <tr>
+                            <th class="text-center">序号</th>
+                            <th class="text-center">危废代码</th>
+                            <th class="text-center">危废名称</th>
+                            <th class="text-center">检测项目</th>
+                            <!--<th class="text-center">增加项目</th>-->
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr id="addClone" class="myclass">
+                            <td class="text-center">1</td>
+                            <td class="text-center"><select  class="selectpicker form-control" data-live-search="true"
+                                                             data-live-search-placeholder="搜索..." id="wastesCode"
+                                                             name="wastesCode">
+                            </select></td>
+                            <td class="text-center"><input class="form-control"></td>
+                            <td class="text-center">
+                                <label>
+                                    <input type="checkbox" name="wastesList[0].isPH"
+                                           value="true">PH
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="wastesList[0].isAsh"
+                                           value="true">COD
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="wastesList[0].isWater"
+                                           id="wastesList[0].isBOD5" value="true">BOD5
+                                </label>
+
+                                <label>
+                                    <input type="checkbox" name="wastesList[0].isWater"
+                                           id="wastesList[0].isO2" value="true">氧
+                                </label>
+
+                                <label>
+                                    <input type="checkbox" name="wastesList[0].isWater"
+                                           id="wastesList[0].isN2" value="true">氮
+                                </label>
+
+                                <label>
+                                    <input type="checkbox" name="wastesList[0].isWater"
+                                           id="wastesList[0].isLye" value="true">碱液
+                                </label>
+
+
+                            </td>
+                        </tr>
+                        <tr id="plusBtn">
+                            <td>
+                                <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="addAppoint();">预约</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
