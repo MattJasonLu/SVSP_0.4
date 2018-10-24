@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Dictionary.SecondaryCategory;
 import com.jdlink.domain.Inventory.*;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.LaboratoryTest;
@@ -43,6 +44,8 @@ public class InboundController {
     LaboratoryTestService laboratoryTestService;
     @Autowired
     WareHouseService wareHouseService;
+    @Autowired
+    SecondaryCategoryService secondaryCategoryService;
 
     /**
      * 列出所有入库计划单信息
@@ -356,6 +359,14 @@ public class InboundController {
         JSONObject res = new JSONObject();
         try {
             InboundOrder inboundOrder = inboundService.getInboundOrderById(inboundOrderId);
+            if (inboundOrder.getBoundType().equals(BoundType.SecondaryInbound)) {
+                for (InboundOrderItem inboundOrderItem : inboundOrder.getInboundOrderItemList()) {
+                    if (inboundOrderItem.getWastes() != null) {
+                        SecondaryCategory secondaryCategory = secondaryCategoryService.getByCode(inboundOrderItem.getWastes().getName());
+                        if (secondaryCategory != null) inboundOrderItem.getWastes().setName(secondaryCategory.getName());
+                    }
+                }
+            }
             JSONObject data = JSONObject.fromBean(inboundOrder);
             res.put("status", "success");
             res.put("message", "获取信息成功");
