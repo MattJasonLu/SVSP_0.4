@@ -359,7 +359,7 @@ function setWayBillList(result) {
                     //减去总运费
                     obj.total = total - obj.freight;
                 }
-                    $(this).html(obj.total);
+                    $(this).html(obj.total.toFixed(3));
                     break;
                 case (4):
                     //总运费
@@ -991,7 +991,7 @@ $(document).ready(function () {
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined) {
-                    console.log(1323)
+                    // console.log(1323)
                     var data = eval(result);
                     // 各下拉框数据填充
                     var clientList = $("#modal" + $i + "-salesman");
@@ -1059,6 +1059,7 @@ function addNewItemLine() {
     // 克隆后清空新克隆出的行数据
     clonedTr.children().find("input").val("");
     clonedTr.children().find("select").selectpicker('val', '');
+    clonedTr.children().find("input[id^='modal'][id$='receiveCompany']").val("北控安耐得环保科技发展常州有限公司");
     // 获取编号
     var serialNumber = $("#plusBtn").prev().children().get(0).innerHTML;
     var id1 = (serialNumber.replace(/[^0-9]/ig, ""));
@@ -1089,7 +1090,13 @@ function addNewItemLine() {
     });
     $('.selectpicker').data('selectpicker', null);
     $('.bootstrap-select').find("button:first").remove();
-    $('.selectpicker').selectpicker();
+    // 中文重写select 查询为空提示信息
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 4,
+        title: '请选择',
+        dropupAuto:false
+    });
     $('.selectpicker').selectpicker('refresh');
 }
 
@@ -1129,7 +1136,8 @@ function addWayBill() {
     wayBill.freight = $("#modal-freight").val();
     wayBill.produceCompanyOperator = $("#modal-produceCompanyOperator").val();
     wayBill.remarks = $("#modal-remarks").val();
-    var lineCount = $("select[id^='modal'][id$='receiveCompany']").length;
+    var lineCount = $("input[id^='modal'][id$='receiveCompany']").length;
+    console.log(lineCount);
     var total = 0;
     var wayBillItemList = [];
     var ItemId = getCurrentItemId();
@@ -1137,21 +1145,22 @@ function addWayBill() {
     for (var i = 0; i < lineCount; i++) {
         var $i = i;
         var wayBillItem = {};
-        wayBillItem.salesmanName = $("#modal" + $i + "-salesman option:selected").text();
-        wayBillItem.receiveCompanyName = $("#modal" + $i + "-receiveCompany").val();
+        wayBillItem.salesmanName = $("select[id='modal" + $i + "-salesman']option:selected").text();
+        wayBillItem.receiveCompanyName = $("input[id='modal" + $i + "-receiveCompany']").val();
         wayBillItem.wastesId = conversionIdFormat(wastesId);
-        wayBillItem.wastesName = $("#modal" + $i + "-wastesName").val();
-        wayBillItem.wastesAmount = $("#modal" + $i + "-wasteAmount").val();
-        wayBillItem.wastesCode = $("#modal" + $i + "-wastesCode option:selected").text();
-        wayBillItem.wastesPrice = $("#modal" + $i + "-wastesPrice").val();
+        wayBillItem.wastesName = $("input[id='modal" + $i + "-wastesName']").val();
+        wayBillItem.wastesAmount = $("input[id='modal" + $i + "-wasteAmount']").val();
+        wayBillItem.wastesCode = $("select[id='modal" + $i + "-wastesCode']option:selected").text();
+        wayBillItem.wastesPrice = $("input[id='modal" + $i + "-wastesPrice']").val();
         wayBillItem.wastesTotalPrice = parseFloat(wayBillItem.wastesAmount) * parseFloat(wayBillItem.wastesPrice);
         wayBillItem.itemId = ItemId.toString();
-        wayBillItem.invoiceDate = $("#modal" + $i + "-invoiceDate").val();
-        wayBillItem.receiveDate = $("#modal" + $i + "-receiveDate").val();
-        wayBillItem.invoiceNumber = $("#modal" + $i + "-invoiceNumber").val();
-        wayBillItem.receiveCompanyOperator = $("#modal" + $i + "-receiveCompanyOperator").val();
+        wayBillItem.invoiceDate = $("input[id='modal" + $i + "-invoiceDate']").val();
+        wayBillItem.receiveDate = $("input[id='modal" + $i + "-receiveDate']").val();
+        wayBillItem.invoiceNumber = $("input[id='modal" + $i + "-invoiceNumber']").val();
+        wayBillItem.receiveCompanyOperator = $("input[id='modal" + $i + "-receiveCompanyOperator']").val();
         wayBillItem.wayBillId = $("#modal-id").text();
         wayBillItemList.push(wayBillItem);
+        console.log(wayBillItem);
         wastesId++;
         ItemId++;
         total += wayBillItem.wastesTotalPrice;
@@ -1293,6 +1302,7 @@ $(window).on('load', function () {
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
         size: 4,
-        title: '请选择'
+        title: '请选择',
+        dropupAuto:false
     });
 });

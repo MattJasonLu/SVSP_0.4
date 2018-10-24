@@ -279,12 +279,12 @@
                         <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
                     </label>
                 </th>
-                <th class="text-center">样品代码</th>
+                <th class="text-center">预约单号</th>
                 <th class="text-center">采样点</th>
                 <th class="text-center">检测项目</th>
                 <th class="text-center">送样人</th>
                 <th class="text-center">签收人</th>
-                <th class="text-center">备注</th>
+                <th class="text-center">状态</th>
                 <th class="text-center">操作</th>
             </tr>
             </thead>
@@ -389,7 +389,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label for="model-companyCode" class="col-sm-6 control-label">公司代码</label>
+                        <label for="model-companyCode" class="col-sm-4 control-label">公司代码</label>
                         <div class="col-sm-6">
                             <select class="selectpicker form-control" data-live-search="true"
                                     data-live-search-placeholder="搜索..." id="model-companyCode"
@@ -412,8 +412,17 @@
                         <div class="col-sm-6">
                             <input type="text" class="form-control" id="sendingPerson" name="signer" required>
                         </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="sendingPerson" class="col-sm-6 control-label">采样点</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="address" name="signer" >
+                        </div>
+                    </div>
+
 
                     </div>
+
                 </div>
                 <table class="table table-bordered">
                     <thead style="border:none">
@@ -475,13 +484,97 @@
                     </tr>
                     </tbody>
                 </table>
-            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 <button type="button" class="btn btn-primary" onclick="addAppoint();">预约</button>
             </div>
+            </div>
+
         </div>
     </div>
 </div>
+
+<!--查看-->
+<div class="modal fade bs-example-modal-lg" id="appointModa2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width: 35%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">预约登记</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="model-companyCode" class="col-sm-6 control-label">公司代码</label>
+                        <div class="col-sm-6">
+
+                            <input class="form-control focus" id="companyName">
+                            </input>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="laboratorySignatory" class="col-sm-6 control-label">化验室签收人</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="signer" id="signer">
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label for="sendingPerson" class="col-sm-6 control-label">送样人</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="sendingPerson2" name="signer" required>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="sendingPerson" class="col-sm-6 control-label">采样点</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="address2" name="signer" >
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="sendingPerson" class="col-sm-6 control-label">预约单号</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="id" >
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <table class="table table-bordered">
+                <thead style="border:none">
+                <tr>
+                    <th class="text-center">序号</th>
+                    <th class="text-center">危废代码</th>
+                    <th class="text-center">危废名称</th>
+                    <th class="text-center">检测项目</th>
+                    <!--<th class="text-center">增加项目</th>-->
+                </tr>
+                </thead>
+                <tbody>
+                <tr id='clonrTr' class="myclass1">
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="confirm" onclick="confirmSample()">确认收样</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+
+
+</div
 </body>
 </html>
