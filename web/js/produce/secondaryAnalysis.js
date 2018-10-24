@@ -482,13 +482,6 @@ function searchSecInto() {
         $(array1[i]).show();
         $('#tbody1').append((array1[i]));
     }
-
-
-
-
-
-
-
 }
 
 /**
@@ -500,6 +493,18 @@ function enterSearch() {
     }
 }
 
+/**
+ * 拒收框
+ */
+function rejection() {
+    $("#rejection1").modal('show')
+}
+/**
+ * 确认拒收
+ */
+function rejection1() {
+    $()
+}
 
 //粗查询
 $(document).ready(function () {//页面载入是就会进行加载里面的内容
@@ -634,5 +639,20 @@ function exportExcel() {
         window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
     }
 
+
+}
+
+/**
+ *
+ * ***************************************************************次生废物送样
+ *
+ */
+/**
+ * 预约登记-显示预约框
+ */
+function appointModal() {
+    // 显示框体
+    setSelectList();
+    $('#appointModal').modal('show');
 
 }
