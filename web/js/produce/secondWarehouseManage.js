@@ -919,7 +919,7 @@ function calculateTotalPrice(e) {
     var unitPriceTax = parseFloat(tr.find("input[name='unitPriceTax']").val());
     var wastesAmount = parseFloat(tr.find("input[name='wastesAmount']").val());
     var total = unitPriceTax * wastesAmount;
-    tr.find("td[name='totalPrice']").text(total.toFixed(3));
+    if (!isNaN(total)) tr.find("td[name='totalPrice']").text(total.toFixed(3));
 }
 
 $(window).on('load', function () {
