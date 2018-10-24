@@ -137,4 +137,9 @@ public class ProductionDailyServiceImpl implements ProductionDailyService
     public List<Sewageregistration> softList(Page page) {
         return productionDailyMapper.softList(page);
     }
+
+    @Override
+    public Sewageregistration getSewaGeregistrationById(String id) {
+        return productionDailyMapper.getSewaGeregistrationById(id);
+    }
 }
