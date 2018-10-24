@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>化验结果</title>
+    <title>软水化验单</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -44,9 +44,56 @@
                     <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">化验管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="sampleInfoRegiter.html">送样登记</a></li>
+                            <li class="dropdown-submenu">
+                                <a href="">送样登记</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="receiveSampleInfo.html">市场部送样</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="sampleInfoRegiter.html">仓储部送样</a></li>
+                                    <li role="separator" class="divider"></li><!---->
+                                    <li class="dropdown-submenu">
+                                        <a href="">生产工艺控制送样</a>
+                                        <ul class="dropdown-menu">
+                                            <li class="dropdown-submenu"><a href="">水质送样</a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="sewageAnalysis.html">污水送样</a></li>
+                                                    <li role="separator" class="divider"></li>
+                                                    <li><a href="softWaterAnalysis.html">软水送样</a></li>
+                                                </ul>
+                                            </li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="secondaryAnalysis.html">次生送样</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="">其他</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="testResults.html">化验结果</a></li>
+                            <li class="dropdown-submenu">
+                                <a href="testResults.html">化验结果</a><ul class="dropdown-menu">
+                                <li><a href="testResultsSampleInfo.html">市场部化验</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="sampleInfoRegiter.html">仓储部化验</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li class="dropdown-submenu">
+                                    <a href="">生产工艺控制化验</a>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-submenu"><a href="">水质化验</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="sewageTestResults.html">污水化验</a></li>
+                                                <li role="separator" class="divider"></li>
+                                                <li><a href="softWaterTestResults.html">软水化验</a></li>
+                                            </ul>
+                                        </li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="secondaryTestResults.html">次生化验</a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="">其他</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            </li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -106,11 +153,13 @@
             <div class="row">
                 <ol class="breadcrumb">
                     <li><a href="receiveManagement.html">接收管理</a></li>
-                    <li><a href="#">化验管理</a></li>
-                    <li class="active">化验结果</li>
+                    <li><a href="#">化验结果</a></li>
+                    <li><a href="#">生产工艺控制化验</a></li>
+                    <li><a href="#">水质化验</a></li>
+                    <li class="active">软水化验结果</li>
                 </ol>
             </div>
-            <h4 class="sub-header">化验单</h4>
+            <h4 class="sub-header">软水化验单</h4>
             <div class="row">
                 <div>
                     <!--操作按钮-->
