@@ -194,7 +194,7 @@
         <div id="mainData">
             <br>
             <div class="row" style="overflow: scroll">
-                <table class="table table-bordered">
+                <table class="table table-bordered" style="width: 150%">
                     <thead>
                     <tr>
                         <th class="text-center small">序号</th>
@@ -219,22 +219,22 @@
                     <tr id="inboundClonedTr">
                         <td class="text-center small" name="index">1</td>
                         <td class="text-center small" name="produceCompanyName" style="width: 200px;">北控安耐得环保科技发展常州有限公司</td>
-                        <td class="text-center small"><select name="wastesName" class="form-control" style="width: 100px;"></select></td>
+                        <td class="text-center small"><select name="wastesName" class="form-control" style="width: 65px;"></select></td>
                         <td class="text-center small">
-                            <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="wastesCode" title="未选择"></select>
+                            <select style="width: 100px" class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="wastesCode" title="未选择"></select>
                         </td>
-                        <td class="text-center small"><input class="form-control" name="wastesAmount" onkeyup="calculateTotalPrice(this);"></td>
-                        <td class="text-center small"><input class="form-control" name="wastesUnit"></td>
-                        <td class="text-center small"><input class="form-control" name="unitPriceTax" onkeyup="calculateTotalPrice(this);"></td>
-                        <td class="text-center small" name="totalPrice" style="width: 50px"></td>
-                        <td class="text-center small"><select name="processWay" class="form-control" style="width: 100px;"></select></td>
+                        <td class="text-center small"><input style="width: 100%;height: 100%" class="form-control focus" name="wastesAmount" onkeyup="calculateTotalPrice(this);"></td>
+                        <td class="text-center small"><input style="width: 100%;height: 100%" class="form-control focus" name="wastesUnit"></td>
+                        <td class="text-center small"><input style="width: 100%;height: 100%" class="form-control focus" name="unitPriceTax" onkeyup="calculateTotalPrice(this);"></td>
+                        <td class="text-center small" name="totalPrice" style="width: 65px"></td>
+                        <td class="text-center small"><select name="processWay" class="form-control" style="width: 65px;"></select></td>
                         <!--<td class="text-center small"><select name="handleCategory" class="form-control"></select></td>-->
-                        <td class="text-center small"><select name="formType" class="form-control" style="width: 100px;"></select></td>
-                        <td class="text-center small"><select name="packageType" class="form-control" style="width: 100px;"></select></td>
-                        <td class="text-center small"><input class="form-control" name="heat" style="width: 50px"></td>
-                        <td class="text-center small"><input class="form-control" name="waterContent" style="width: 50px"></td>
-                        <td class="text-center small"><input class="form-control" name="remarks"></td>
-                        <td class="text-center small"><input class="form-control" name="warehouseArea"></td>
+                        <td class="text-center small"><select name="formType" class="form-control" style="width: 65px;"></select></td>
+                        <td class="text-center small"><select name="packageType" class="form-control" style="width: 65px;"></select></td>
+                        <td class="text-center small"><input class="form-control focus" name="heat" style="width: 65px"></td>
+                        <td class="text-center small"><input class="form-control focus" name="waterContent" style="width: 65px"></td>
+                        <td class="text-center small"><input class="form-control focus" name="remarks"></td>
+                        <td class="text-center small"><input class="form-control focus" name="warehouseArea"></td>
                     </tr>
                     <tr id="plus">
                         <td class="text-center"><a class="btn btn-default btn-xs" onclick="addNewLine();" id="plusBtn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
