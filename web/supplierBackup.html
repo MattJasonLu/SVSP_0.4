@@ -24,7 +24,7 @@
         return mySelect.options[index].text;
     }
     /**
-     * 计算分页总页数
+     * 计算分页总页数供应商
      * @param totalRecord
      * @param count
      * @returns {number}
@@ -770,7 +770,7 @@
                     <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">供应商管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="supplierBackup.html" id="function_15" onclick="checkAuthority($(this))">处置单位备案</a></li>
+                            <li><a href="supplierBackup.html" id="function_15" onclick="checkAuthority($(this))">供应商备案</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -837,10 +837,10 @@
                 <ol class="breadcrumb">
                     <li><a href="businessModel.html">商务管理</a></li>
                     <li><a href="#">供应商管理</a></li>
-                    <li class="active">处置单位备案</li>
+                    <li class="active">供应商备案</li>
                 </ol>
             </div>
-            <h4 class="sub-header">处置单位列表</h4>
+            <h4 class="sub-header">供应商列表</h4>
             <div class="row">
                 <div>
                     <!--操作按钮-->
@@ -1494,7 +1494,7 @@
      * 下载模板
      * */
     function downloadModal() {
-        var filePath = 'Files/Templates/处置单位导入模板.xlsx';
+        var filePath = 'Files/Templates/供应商导入模板.xlsx';
         var r = confirm("是否下载模板?");
         if (r) {
             window.open('downloadFile?filePath=' + filePath);
