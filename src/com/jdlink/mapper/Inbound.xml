@@ -175,15 +175,17 @@
                 produceCompanyId, processWay, handleCategory,
                 remarks, warehouseArea, recordState, isQualified, wastesName, wastesCode, wastesCategory, wastesAmount,
                 unitPriceTax,
-                totalPrice, laboratoryTestId, category, formType, packageType) VALUES (#{inboundOrderItem.inboundOrderItemId}, #{inboundOrderItem.transferDraftId},
+                totalPrice, laboratoryTestId, category, formType, packageType, wastesUnit, laborityTestHeat, laborityTestWater) VALUES (#{inboundOrderItem.inboundOrderItemId}, #{inboundOrderItem.transferDraftId},
                 #{inboundOrderId},
                 #{inboundOrderItem.produceCompany.clientId}, #{inboundOrderItem.processWay},
                 #{inboundOrderItem.handleCategory}, #{inboundOrderItem.remarks},
                 #{inboundOrderItem.warehouseArea}, #{inboundOrderItem.recordState}, #{inboundOrderItem.isQualified},
                 #{inboundOrderItem.wastes.name},
                 #{inboundOrderItem.wastes.wastesId}, #{inboundOrderItem.wastes.category},
-                #{inboundOrderItem.wastesAmount}, #{inboundOrderItem.unitPriceTax}, #{inboundOrderItem.totalPrice},
-                #{inboundOrderItem.laboratoryTest.laboratoryTestNumber}, 1, #{inboundOrderItem.formType}, #{inboundOrderItem.packageType});
+                #{inboundOrderItem.wastesAmount}, #{inboundOrderItem.unitPriceTax},
+                #{inboundOrderItem.totalPrice},
+                #{inboundOrderItem.laboratoryTest.laboratoryTestNumber}, 1, #{inboundOrderItem.formType}, #{inboundOrderItem.packageType},
+                #{inboundOrderItem.wastesUnit}, #{inboundOrderItem.laboratoryTest.heatAverage}, #{inboundOrderItem.laboratoryTest.waterContentAverage});
 
                 INSERT INTO t_pr_laboratorytest (laboratorytestnumber, clientId, wastesName, wastesCode, heatAverage, phAverage, ashAverage, waterContentAverage, chlorineContentAverage,
                 sulfurContentAverage, phosphorusContentAverage, fluorineContentAverage,samplingDate) VALUES (#{inboundOrderItem.laboratoryTest.laboratoryTestNumber},

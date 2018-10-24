@@ -4,15 +4,21 @@
     <meta charset="UTF-8">
     <title>接收管理</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
-    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <link href="css/bootstrap/bootstrap-datetimepicker.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
     <link href="css/dashboard.css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script src="js/bootstrap/3.3.6/bootstrap.js"></script>
+    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
+    <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/page.js"></script>
     <script src="js/produce/secondWarehouseManage.js"></script>
 </head>
 <body onload="setSelectList();">
@@ -192,7 +198,7 @@
                     <thead>
                     <tr>
                         <th class="text-center small">序号</th>
-                        <th class="text-center small">产废单位</th>
+                        <th class="text-center small" style="width: 100%;">产废单位</th>
                         <th class="text-center small">危废名称</th>
                         <th class="text-center small">危废代码</th>
                         <th class="text-center small">危废数量</th>
@@ -204,7 +210,7 @@
                         <th class="text-center small">物质形态</th>
                         <th class="text-center small">包装方式</th>
                         <th class="text-center small" style="width: 70px">热酌减率</th>
-                        <th class="text-center small">水分/%</th>
+                        <th class="text-center small" style="width: 70px">水分/%</th>
                         <th class="text-center small">备注</th>
                         <th class="text-center small">库区</th>
                     </tr>
@@ -212,21 +218,23 @@
                     <tbody id="inboundOrderData">
                     <tr id="inboundClonedTr">
                         <td class="text-center small" name="index">1</td>
-                        <td class="text-center small" name="produceCompanyName">北控安耐得环保科技发展常州有限公司</td>
-                        <td class="text-center small"><select name="wastesName" class="form-control"></select></td>
-                        <td class="text-center small"><select class="form-control" name="wastesCode"></select></td>
-                        <td class="text-center small"><input class="form-control" name="wastesAmount" style="width: 30px"></td>
-                        <td class="text-center small"><input class="form-control" name="unit" style="width: 30px"></td>
-                        <td class="text-center small"><input class="form-control" name="unitPriceTax" style="width: 30px"></td>
-                        <td class="text-center small" name="totalPrice"></td>
-                        <td class="text-center small"><select name="processWay" class="form-control"></select></td>
+                        <td class="text-center small text-oneLine-ellipsis" name="produceCompanyName">北控安耐得环保科技发展常州有限公司</td>
+                        <td class="text-center small"><select name="wastesName" class="form-control" style="width: 100px;"></select></td>
+                        <td class="text-center small">
+                            <select style="width: 100px" class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="wastesCode" title="未选择"></select>
+                        </td>
+                        <td class="text-center small"><input style="width: 65px" class="form-control focus" name="wastesAmount" onkeyup="calculateTotalPrice(this);"></td>
+                        <td class="text-center small"><input style="width: 65px" class="form-control focus" name="wastesUnit"></td>
+                        <td class="text-center small"><input style="width: 65px" class="form-control focus" name="unitPriceTax" onkeyup="calculateTotalPrice(this);"></td>
+                        <td class="text-center small" name="totalPrice" style="width: 65px"></td>
+                        <td class="text-center small"><select name="processWay" class="form-control" style="width: 100px;"></select></td>
                         <!--<td class="text-center small"><select name="handleCategory" class="form-control"></select></td>-->
-                        <td class="text-center small"><select name="formType" class="form-control"></select></td>
-                        <td class="text-center small"><select name="packageType" class="form-control"></select></td>
-                        <td class="text-center small"><input class="form-control" name="heat" style="width: 50px"></td>
-                        <td class="text-center small"><input class="form-control" name="waterContent" style="width: 30px"></td>
-                        <td class="text-center small"><input class="form-control" name="remarks" style="width: 30px"></td>
-                        <td class="text-center small"><input class="form-control" name="warehouseArea" style="width: 30px"></td>
+                        <td class="text-center small"><select name="formType" class="form-control" style="width: 100px;"></select></td>
+                        <td class="text-center small"><select name="packageType" class="form-control" style="width: 100px;"></select></td>
+                        <td class="text-center small"><input class="form-control focus" name="heat" style="width: 65px"></td>
+                        <td class="text-center small"><input class="form-control focus" name="waterContent" style="width: 65px"></td>
+                        <td class="text-center small"><input class="form-control focus" name="remarks" style="width: 65px" ></td>
+                        <td class="text-center small"><input class="form-control focus" name="warehouseArea" style="width: 65px" ></td>
                     </tr>
                     <tr id="plus">
                         <td class="text-center"><a class="btn btn-default btn-xs" onclick="addNewLine();" id="plusBtn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>

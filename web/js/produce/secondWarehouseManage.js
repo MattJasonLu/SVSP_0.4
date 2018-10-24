@@ -469,32 +469,29 @@ function addData(state) {
         var tr = $(trs[i]);
         var item = {
             produceCompany: {
-                companyName: tr.find("input[name='produceCompanyName']").val()
+                companyName: tr.find("td[name='produceCompanyName']").text()
             },
             wastes: {
                 name: tr.find("select[name='wastesName']").val(),
-                wastesId: tr.find("input[name='wastesCode']").val()
+                wastesId: tr.find("select[name='wastesCode']").val()
             },
             wastesAmount: tr.find("input[name='wastesAmount']").val(),
+            wastesUnit: tr.find("input[name='wastesUnit']").val(),
             unitPriceTax: tr.find("input[name='unitPriceTax']").val(),
-            totalPrice: tr.find("input[name='totalPrice']").val(),
+            totalPrice: tr.find("td[name='totalPrice']").text(),
             processWay: tr.find("select[name='processWay']").val(),
             handleCategory: tr.find("select[name='handleCategory']").val(),
             formType: tr.find("select[name='formType']").val(),
             packageType: tr.find("select[name='packageType']").val(),
             laboratoryTest: {
                 heatAverage: tr.find("input[name='heat']").val(),
-                phAverage: tr.find("input[name='ph']").val(),
-                ashAverage: tr.find("input[name='ash']").val(),
                 waterContentAverage: tr.find("input[name='waterContent']").val(),
-                chlorineContentAverage: tr.find("input[name='chlorineContent']").val(),
-                sulfurContentAverage: tr.find("input[name='sulfurContentAverage']").val(),
-                phosphorusContentAverage: tr.find("input[name='phosphorusContentAverage']").val(),
-                fluorineContentAverage: tr.find("input[name='fluorineContent']").val()
             },
             remarks: tr.find("input[name='remarks']").val(),
             warehouseArea: tr.find("input[name='warehouseArea']").val()
         };
+        console.log(item.wastes);
+        // console.log(item);
         data.inboundOrderItemList.push(item);
     }
     // 上传用户数据
@@ -522,8 +519,8 @@ function addData(state) {
             alert("服务器异常!");
         }
     });
-}
 
+}
 
 /**
  * 作废转移联单
@@ -607,9 +604,10 @@ function setItemDataList(result) {
             clonedTr.find("td[name='wastesName']").text(convertStrToWastesName(data.wastes.name));
             clonedTr.find("td[name='wastesCode']").text(data.wastes.wastesId);
         }
-        clonedTr.find("td[name='wastesAmount']").text(data.wastesAmount);
-        clonedTr.find("td[name='unitPriceTax']").text(data.unitPriceTax);
-        clonedTr.find("td[name='totalPrice']").text(data.totalPrice);
+        clonedTr.find("td[name='wastesAmount']").text(parseFloat(data.wastesAmount).toFixed(3));
+        clonedTr.find("td[name='wastesUnit']").text(data.wastesUnit);
+        clonedTr.find("td[name='unitPriceTax']").text(parseFloat(data.unitPriceTax).toFixed(3));
+        clonedTr.find("td[name='totalPrice']").text(parseFloat(data.totalPrice).toFixed(3));
         if (data.processWay != null) clonedTr.find("td[name='processWay']").text(data.processWay.name);
         if (data.handleCategory != null) clonedTr.find("td[name='handleCategory']").text(data.handleCategory.name);
         if (data.formType != null) clonedTr.find("td[name='formType']").text(data.formType.name);
@@ -671,6 +669,17 @@ function addNewLine() {
     var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine($(this));id1--;'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
     clonedTr.children("td:eq(0)").prepend(delBtn);
     clonedTr.insertAfter(tr);
+
+    $('.selectpicker').data('selectpicker', null);
+    $('.bootstrap-select').find("button:first").remove();
+    // 中文重写select 查询为空提示信息
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 4,
+        title: '请选择',
+        dropupAuto:false
+    });
+    $('.selectpicker').selectpicker('refresh');
 }
 /**
  * 删除行操作
@@ -729,7 +738,9 @@ function setSelectList() {
                     option.text(item.code);
                     wastesCode.append(option);
                 });
-                wastesCode.get(0).selectedIndex = -1;
+                // wastesCode.get(0).selectedIndex = -1;
+                //刷新下拉数据
+                $('.selectpicker').selectpicker('refresh');
             } else {
                 console.log("fail: " + result);
             }
@@ -791,28 +802,28 @@ function setSelectList() {
 
         }
     });
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "getHandleCategory",                  // url
-        dataType: "json",
-        success: function (result) {
-            if (result != undefined) {
-                var data = eval(result);
-                var handleCategory = $("select[name='handleCategory']");
-                handleCategory.children().remove();
-                $.each(data.handleCategoryList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    handleCategory.append(option);
-                });
-                handleCategory.get(0).selectedIndex = -1;
-            }
-        },
-        error: function (result) {
-
-        }
-    });
+    // $.ajax({
+    //     type: "POST",                            // 方法类型
+    //     url: "getHandleCategory",                  // url
+    //     dataType: "json",
+    //     success: function (result) {
+    //         if (result != undefined) {
+    //             var data = eval(result);
+    //             var handleCategory = $("select[name='handleCategory']");
+    //             handleCategory.children().remove();
+    //             $.each(data.handleCategoryList, function (index, item) {
+    //                 var option = $('<option />');
+    //                 option.val(index);
+    //                 option.text(item.name);
+    //                 handleCategory.append(option);
+    //             });
+    //             handleCategory.get(0).selectedIndex = -1;
+    //         }
+    //     },
+    //     error: function (result) {
+    //
+    //     }
+    // });
     $("select[name='wastesName']").get(0).selectedIndex = -1;
 }
 
@@ -897,3 +908,26 @@ function importExcel() {
         });
     });
 }
+
+/**
+ * 计算总价
+ * @param e
+ */
+function calculateTotalPrice(e) {
+    var tr = $(e).parent().parent();
+    // 单价
+    var unitPriceTax = parseFloat(tr.find("input[name='unitPriceTax']").val());
+    var wastesAmount = parseFloat(tr.find("input[name='wastesAmount']").val());
+    var total = unitPriceTax * wastesAmount;
+    if (!isNaN(total)) tr.find("td[name='totalPrice']").text(total.toFixed(3));
+}
+
+$(window).on('load', function () {
+    // 中文重写select 查询为空提示信息
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 4,
+        title: '请选择',
+        dropupAuto:false
+    });
+});
