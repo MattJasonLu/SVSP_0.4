@@ -9,7 +9,7 @@
     </select>
 
     <select id="getByCode" resultType="com.jdlink.domain.Dictionary.SecondaryCategory">
-        select * from d_secondarycategory where code=#{code} limit 0, 1;
+        select * from d_secondarycategory where code=#{code};
     </select>
 
 </mapper>
