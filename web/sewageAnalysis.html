@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>污水分析</title>
+    <title>污水分析</title><!---->
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <link href="css/bootstrap/bootstrap-datetimepicker.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
     <script src="js/data-format.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/dropdown-submenu.css" rel="stylesheet">
@@ -14,9 +17,21 @@
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
     <script src="js/produce/sewageAnalysis.js"></script>
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
+    <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');     //当前页数
+
+    $(window).on('load', function () {
+        // 中文重写select 查询为空提示信息
+        $('.selectpicker').selectpicker({
+            language: 'zh_CN',
+            size: 4,
+            title: '请选择'
+        });
+    });
+
 </script>
 <body onload="loadPageSewageList();">
 <!--导航条-->
@@ -154,10 +169,11 @@
         <div class="row">
             <div>
                 <ol class="breadcrumb">
-                    <li><a href="#">接收管理</a></li>
-                    <li>化验管理</li>
-                    <li>化验结果</li>
-                    <li class="active">污水分析</li>
+                    <li><a href="receiveManagement.html">接收管理</a></li>
+                    <li><a href="#">送样登记</a></li>
+                    <li><a href="#">生产工艺控制送样</a></li>
+                    <li><a href="#">水质送样</a></li>
+                    <li class="active">污水送样</li>
                 </ol>
             </div>
             <h4 class="sub-header"><span class="months"></span>污水分析</h4>
@@ -166,6 +182,9 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
+                    <a class="btn btn-primary btn-xs" href="#" onclick="appointModal();"><span
+                            class="glyphicon glyphicon-plus" aria-hidden="true"></span> 预约登记</a>
+
                     <a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose();"><span
                             class="glyphicon glyphicon-arrow-down"
                             aria-hidden="true"></span> 导入</a>
@@ -233,16 +252,13 @@
                         <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
                     </label>
                 </th>
-                <th class="text-center">序号</th>
-                <th class="text-center">污水接收日期</th>
-                <th class="text-center">污水名称</td>
-                <th class="text-center">COD mg/l</th>
-                <th class="text-center">BOD5 mg/l</th>
-                <th class="text-center">氧 mg/l</th>
-                <th class="text-center">氮 mg/l</th>
-                <th class="text-center">碱液</th>
-                <th class="text-center">PH </th>
+                <th class="text-center">样品代码</th>
+                <th class="text-center">采样点</th>
+                <th class="text-center">检测项目</th>
+                <th class="text-center">送样人</th>
+                <th class="text-center">签收人</th>
                 <th class="text-center">备注</th>
+                <th class="text-center">操作</th>
             </tr>
             </thead>
             <tbody>
@@ -258,10 +274,12 @@
                 <td class="text-center"></td>
                 <td class="text-center"></td>
                 <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
+                <td class="text-center">
+                    <a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                    <a href="#" onclick="setInvalid(this);" title="作废"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span></a>
+                    <a href="#" onclick="setSubmit(this);" title="确认收样"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
+                    <a href="#" onclick="setConfirm(this);" title="拒收"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -330,6 +348,113 @@
     <!--导入-->
     <input type="file" name="excelPath" id="idExcel" style="display:none">
     <div id="embed"></div>
+</div>
+<!-- 预约登记模态框 新增-->
+<div class="modal fade bs-example-modal-lg" id="appointModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width: 35%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">预约登记</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="model-companyCode" class="col-sm-6 control-label">公司代码</label>
+                        <div class="col-sm-6">
+                            <select class="selectpicker form-control" data-live-search="true"
+                                    data-live-search-placeholder="搜索..." id="model-companyCode"
+                                    name="model-companyCode">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="laboratorySignatory" class="col-sm-6 control-label">化验室签收人</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="laboratorySignatory" name="signer">
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label for="sendingPerson" class="col-sm-6 control-label">送样人</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="sendingPerson" name="signer" required>
+                        </div>
+
+                    </div>
+                </div>
+                <table class="table table-bordered">
+                    <thead style="border:none">
+                    <tr>
+                        <th class="text-center">序号</th>
+                        <th class="text-center">危废代码</th>
+                        <th class="text-center">危废名称</th>
+                        <th class="text-center">检测项目</th>
+                        <!--<th class="text-center">增加项目</th>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr id="addClone" class="myclass">
+                        <td class="text-center">1</td>
+                        <td class="text-center"><select  class="selectpicker form-control" data-live-search="true"
+                                                         data-live-search-placeholder="搜索..." id="wastesCode"
+                                                         name="wastesCode">
+                        </select></td>
+                        <td class="text-center"><input class="form-control"></td>
+                        <td class="text-center">
+                            <label>
+                            <input type="checkbox" name="wastesList[0].isPH"
+                                   value="true">PH
+                        </label>
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isAsh"
+                                       value="true">COD
+                            </label>
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isWater"
+                                       id="wastesList[0].isBOD5" value="true">BOD5
+                            </label>
+
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isWater"
+                                       id="wastesList[0].isO2" value="true">氧
+                            </label>
+
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isWater"
+                                       id="wastesList[0].isN2" value="true">氮
+                            </label>
+
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isWater"
+                                       id="wastesList[0].isLye" value="true">碱液
+                            </label>
+
+
+                            </td>
+                    </tr>
+                    <tr id="plusBtn">
+                        <td>
+                            <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="addAppoint();">预约</button>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

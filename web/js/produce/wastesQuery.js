@@ -1,5 +1,5 @@
 /**
- * 重置搜索数据
+ * 重置搜索数据1
  */
 function reset() {
     window.location.reload();
@@ -263,7 +263,7 @@ function loadPages(totalRecord, count) {
  *加载危废数据
  */
 function loadWasteInventoryList() {
-    //var pageNumber = 1;               // 显示首页
+    var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
@@ -390,7 +390,7 @@ function setWasteInventoryList(result) {
                         break;
                     //数量
                     case (9):
-                        $(this).html(obj.actualCount);
+                        $(this).html(obj.actualCount.toFixed(2));
                         break;
                     //单价
                     case (10):

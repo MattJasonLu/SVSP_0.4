@@ -1257,7 +1257,7 @@ function viewContract(item) {
     $('#print').show();//打印显示
 }
 
-//设置克隆行的数据合同查看功能
+//设置克隆行的数据合同查看功能1
 function setContractListModal(result) {
     //$('.myclass1').hide();
     var tr = $("#cloneTr");
@@ -1759,6 +1759,8 @@ function loadWastesContractSelectList() {
             console.log(result);
         }
     });
+
+
     //包装类型
     $.ajax({
         type:'POST',
@@ -1768,16 +1770,17 @@ function loadWastesContractSelectList() {
         contentType: "application/json;charset=utf-8",
         success: function (result){
             if (result != undefined){
-               // console.log(result);
+               console.log(result);
                 var packageType=$('#packageType');
                 packageType.children().remove();
                 $.each(result.packageTypeList,function (index,item) {
                     var option=$('<option/>');
-                    option.val(index+1);
+                    option.val(getPackageTypeFromStr(item.name));
                     option.text(item.name);
                     packageType.append(option);
                 });
-                packageType.get(0).selectedIndex=0;
+               // $('.selectpicker').selectpicker('val', clientList1);//默认选中
+                $('.selectpicker').selectpicker('refresh');
             }
             else {
                 alert(result.message);
@@ -2417,13 +2420,18 @@ function warning(item) {
 //保存合同
 function contractWastesSave() {
     var addType = $("input[name='addType']:checked").val();
-    if($('#beginTime').val().length==0||$('#endTime').val().length==0){
+
+        if($('#beginTime').val().length==0||$('#endTime').val().length==0){
         $('#endTime').parent().next('span').remove();
         var span=$('<span>');
         span.text("请输入日期！");
         span.css('color','red');
         $('#endTime').parent().after($(span));
     }
+
+
+
+
 
         if($('input[name="contractVersion"]:checked').val()=='customerContract'){
                   if( $('#contractName').val().length==0){
@@ -2475,7 +2483,7 @@ function contractWastesSave() {
                                 client: {clientId: $('#companyName').selectpicker('val')},
                                 wastesCode: $(this).children('td').eq(1).children('div').find('button').attr('title'),
                                 wastesName: $(this).children('td').eq(2).children('input').val(),
-                                packageType: $(this).children('td').eq(3).children('select').get(0).selectedIndex,
+                                packageTypeList: $(this).children('td').eq(3).find('select').selectpicker('val').join(','),
                                 transport:$(this).children('td').eq(8).children('select').get(0).selectedIndex,
                                 util:$(this).children('td').eq(4).children('select').get(0).selectedIndex,
                                 // packageType: $(this).children('td').eq(3).children('select').val(),
@@ -2531,7 +2539,11 @@ function contractWastesSave() {
         }
     }
 
-    if($('input[name="contractVersion"]:checked').val()=='companyContract') {
+
+
+
+
+         if($('input[name="contractVersion"]:checked').val()=='companyContract') {
 
         if($('#contractType1').val()==null){
             $('#contractType1').parent().next('span').remove();
@@ -2566,7 +2578,8 @@ function contractWastesSave() {
                 ticketRate1: $('#taxRate1').val(),
                 contractType: $('#contractType').val(),
             };
-            //(data);
+
+
             $.ajax({
                 type: "POST",                            // 方法类型
                 url: "saveContract",                       // url
@@ -2582,7 +2595,7 @@ function contractWastesSave() {
                                 client: {clientId: $('#companyName').selectpicker('val')},
                                 wastesCode: $(this).children('td').eq(1).children('div').find('button').attr('title'),
                                 wastesName: $(this).children('td').eq(2).children('input').val(),
-                                packageType: $(this).children('td').eq(3).children('select').get(0).selectedIndex,
+                                packageTypeList: $(this).children('td').eq(3).find('select').selectpicker('val').join(','),
                                 transport:$(this).children('td').eq(8).children('select').get(0).selectedIndex,
                                 util:$(this).children('td').eq(4).children('select').get(0).selectedIndex,
                                 // packageType: $(this).children('td').eq(3).children('select').val(),
@@ -2592,7 +2605,7 @@ function contractWastesSave() {
                                 contractAmount: $(this).children('td').eq(6).children('input').val(),
                                 totalPrice: $(this).children('td').eq(7).children('input').val(),
                             };
-                            //console.log(quotationItemData);
+                            console.log(quotationItemData);
                             //1添加报价单明细
                             $.ajax({
                                 type: 'POST',
@@ -2636,6 +2649,8 @@ function contractWastesSave() {
             }
         }
     }
+
+
 
 
 
@@ -2765,9 +2780,8 @@ function contractWastesSubmit(){
 function addNewLine() {
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
-        //style: 'btn-info',
-        size: 6
-    });//下拉框样式
+        size:6
+    });
     // // 获取id为cloneTr的tr元素
     var tr = $("#plusBtn").prev();
     // 克隆tr，每次遍历都可以产生新的tr
@@ -2792,7 +2806,11 @@ function addNewLine() {
     clonedTr.children("td:eq(0)").append(delBtn);
     $('.selectpicker').data('selectpicker', null);
     $('.bootstrap-select').find("button:first").remove();
-    $('.selectpicker').selectpicker();
+   // $('.selectpicker').selectpicker();
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size:6
+    });
     // //危废编码赋值
     // code="";
     // $.ajax({
@@ -2856,12 +2874,12 @@ function delLine(e) {
     var i=0
     $('.myclass').each(function (index,item) {
         console.log(index)
-            if((parseInt(index)+1)!=1) {
+
                 $(this).children('td').eq(0).html((parseInt(index) + 1).toString() + "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>");
-            }
-        if((parseInt(index)+1)==1){
-            $(this).children('td').eq(0).html((parseInt(index) + 1).toString());
-        }
+
+
+            // $(this).children('td').eq(0).html((parseInt(index) + 1).toString());
+
 
     });
 }
@@ -5829,7 +5847,7 @@ function adjustNewContract() {
                             $('.selectpicker').selectpicker( {
                                 language: 'zh_CN',
                                 // style: 'btn-info',
-                                size: 4
+                                size: 6
                             });//下拉框样式
                             var tr=$('#cloneTr1');
                             // tr.siblings().remove();
@@ -5839,9 +5857,10 @@ function adjustNewContract() {
                             var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
                             cloneTr.children('td').eq(0).html(parseInt(contract.quotationItemList.length)-index);
                              console.log(index+1)
-                            if((parseInt(contract.quotationItemList.length)-index)!=1){
-                               cloneTr.children("td:eq(0)").append(delBtn);
-                           }
+                           //  if((parseInt(contract.quotationItemList.length)-index)!=1){
+                           //
+                           // }
+                            cloneTr.children("td:eq(0)").append(delBtn);
                             // cloneTr.children('td').eq(1).find('select').selectpicker('val', item.wastesCode);
                             cloneTr.children('td').eq(2).children('input').val(item.wastesName);
                             // cloneTr.children('td').eq(4).children('input').val(item.util);
@@ -5895,8 +5914,13 @@ function adjustNewContract() {
                             cloneTr.insertAfter(tr);
                             $('.selectpicker').data('selectpicker', null);
                             $('.bootstrap-select').find("button:first").remove();
-                            $('.selectpicker').selectpicker();
+                            // $('.selectpicker').selectpicker();
+                            $('.selectpicker').selectpicker({
+                                language: 'zh_CN',
+                                size:6
+                            });
                             $('.selectpicker').selectpicker('refresh');
+
                             tr.hide();
                             tr.removeAttr('class');
 
@@ -6002,9 +6026,10 @@ function adjustNewContract() {
                             var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
                             cloneTr.children('td').eq(0).html(parseInt(contract.quotationItemList.length) - index);
                             //cloneTr.children("td:eq(0)").append(delBtn);
-                            if((parseInt(contract.quotationItemList.length)-index)!=1){
-                                cloneTr.children("td:eq(0)").append(delBtn);
-                            }
+                            // if((parseInt(contract.quotationItemList.length)-index)!=1){
+                            //     cloneTr.children("td:eq(0)").append(delBtn);
+                            // }
+                            cloneTr.children("td:eq(0)").append(delBtn);
                             cloneTr.children('td').eq(2).children('input').val(item.wastesName);
                             // cloneTr.children('td').eq(4).children('input').val(item.util);
                             cloneTr.children('td').eq(5).children('input').val(item.unitPriceTax.toFixed(2));
@@ -6056,7 +6081,11 @@ function adjustNewContract() {
                             cloneTr.insertAfter(tr);
                             $('.selectpicker').data('selectpicker', null);
                             $('.bootstrap-select').find("button:first").remove();
-                            $('.selectpicker').selectpicker();
+                            // $('.selectpicker').selectpicker();
+                            $('.selectpicker').selectpicker({
+                                language: 'zh_CN',
+                                size:6
+                            });
                             $('.selectpicker').selectpicker('refresh');
                             tr.hide();
                             tr.removeAttr('class');

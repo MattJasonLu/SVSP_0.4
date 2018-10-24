@@ -14,6 +14,18 @@ function countValue() {
 }
 
 /**
+ * 拒收框
+ */
+function rejection() {
+    $("#rejection1").modal('show')
+}
+/**
+ * 确认拒收
+ */
+function rejection1() {
+    $()
+}
+/**
  * 测试
  */
 function show11() {
@@ -673,7 +685,7 @@ function confirmCheck() {
 }
 
 /**
- * 为公司代码和危废代码下拉框填充数据
+ * 为公司代码和危废代码下拉框填充数据1
  */
 function setSelectList() {
     $.ajax({
@@ -690,17 +702,27 @@ function setSelectList() {
                 var companyCode = $("#model-companyCode");
                 $.each(data.companyCodeList, function (index, item) {
                     var option = $('<option />');
-                    option.val(parseInt(item.clientId));
+                    option.val((item.clientId));
                     option.text(item.clientId);
                     companyCode.append(option);
                 });
+                companyCode.get(0).selectedIndex=0;
+                //刷新下拉数据
+                $('.selectpicker').selectpicker('refresh');
+
                 var wastesCode = $("#wastesList0-wastesCode");
                 $.each(data.wastesCodeList, function (index, item) {
+                    console.log(item)
                     var option = $('<option />');
-                    option.val(parseInt(item.code.replace(/[^0-9]/ig, "")));
-                    option.text(item.code);
+                    if(item!=null){
+                        option.val(item.code);
+                        option.text(item.code);
+                    }
                     wastesCode.append(option);
                 });
+                wastesCode.get(0).selectedIndex=0;
+                //刷新下拉数据
+                $('.selectpicker').selectpicker('refresh');
                 // 下拉框数据填充
                 var companyCode1 = $("#model3-companyCode");
                 $.each(data.companyCodeList, function (index, item) {
@@ -712,10 +734,13 @@ function setSelectList() {
                 var wastesCode1 = $("#wastes0-wastesCode");
                 $.each(data.wastesCodeList, function (index, item) {
                     var option = $('<option />');
-                    option.val(parseInt(item.code.replace(/[^0-9]/ig, "")));
-                    option.text(item.code);
+                    if(item!=null){
+                        option.val(item.code);
+                        option.text(item.code);
+                    }
                     wastesCode1.append(option);
                 });
+                wastesCode1.get(0).selectedIndex=0;
                 //刷新下拉数据
                 $('.selectpicker').selectpicker('refresh');
             } else {

@@ -2,9 +2,7 @@ package com.jdlink.service.impl;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
-import com.jdlink.domain.Produce.ProductionDaily;
-import com.jdlink.domain.Produce.Sewage;
-import com.jdlink.domain.Produce.SoftWater;
+import com.jdlink.domain.Produce.*;
 import com.jdlink.mapper.ProductionDailyMapper;
 import com.jdlink.service.ProductionDailyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,5 +100,20 @@ public class ProductionDailyServiceImpl implements ProductionDailyService {
     @Override
     public int searchProductionDailyCount(ProductionDaily productionDaily) {
         return productionDailyMapper.searchProductionDailyCount(productionDaily);
+    }
+
+    @Override
+    public void addSewaGeregistration(Sewageregistration sewageregistration) {
+        productionDailyMapper.addSewaGeregistration(sewageregistration);
+    }
+
+    @Override
+    public List<Integer> getNewestId() {
+        return productionDailyMapper.getNewestId();
+    }
+
+    @Override
+    public void addSewaGeregistrationItem(SewageregistrationItem sewageregistrationItem) {
+        productionDailyMapper.addSewaGeregistrationItem(sewageregistrationItem);
     }
 }

@@ -2,7 +2,9 @@ package com.jdlink.domain;
 
 import com.jdlink.domain.Produce.HandleCategory;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by matt on 2018/9/3.
@@ -131,8 +133,19 @@ public class QuotationItem {
     //编号 更新用
     private int t_quotationitem;
 
-    //进料方式
+    //进料方式1
     private HandleCategory handleCategory;
+
+    //包装方式多选
+    private String packageTypeList;
+
+    public String getPackageTypeList() {
+        return packageTypeList;
+    }
+
+    public void setPackageTypeList(String packageTypeList) {
+        this.packageTypeList = packageTypeList;
+    }
 
     public HandleCategory getHandleCategory() {
         return handleCategory;
