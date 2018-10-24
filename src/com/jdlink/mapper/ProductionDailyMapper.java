@@ -114,4 +114,6 @@ public interface ProductionDailyMapper {
     List<Sewageregistration> sewageList(Page page);
 
     List<Sewageregistration> softList(Page page);
+
+    Sewageregistration  getSewaGeregistrationById(String id);
 }

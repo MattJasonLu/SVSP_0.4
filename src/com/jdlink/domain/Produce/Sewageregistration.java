@@ -1,5 +1,7 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.ApplyState;
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Page;
 
@@ -22,6 +24,18 @@ public class Sewageregistration {
     private Page page;
 
     private int id;
+
+    //登记状态
+    private CheckState checkState;
+
+    public CheckState getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(CheckState checkState) {
+        this.checkState = checkState;
+    }
+
 
     private List<SewageregistrationItem> sewageregistrationItemList=new ArrayList<>();
 

@@ -357,4 +357,30 @@ public class PRProductionDailyController {
 
 
     }
+
+  //根据编号获取污水登记信息
+    @RequestMapping("getSewaGeregistrationById")
+    @ResponseBody
+    public String getSewaGeregistrationById(String id){
+        JSONObject res=new JSONObject();
+        System.out.println(id+"89");
+        try {
+            Sewageregistration sewageregistration=productionDailyService.getSewaGeregistrationById(id);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", sewageregistration);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+
+        }
+
+
+        return res.toString();
+
+
+    }
+
 }
