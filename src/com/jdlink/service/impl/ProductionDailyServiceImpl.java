@@ -152,4 +152,9 @@ public class ProductionDailyServiceImpl implements ProductionDailyService
     public void rejectSewaGeregistrationById(String id, String advice) {
         productionDailyMapper.rejectSewaGeregistrationById(id,advice);
     }
+
+    @Override
+    public int countById(String id) {
+        return productionDailyMapper.countById(id);
+    }
 }

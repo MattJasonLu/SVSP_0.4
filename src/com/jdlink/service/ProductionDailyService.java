@@ -116,4 +116,6 @@ public interface ProductionDailyService {
     void confirmSewaGeregistrationById(String id);
 
     void rejectSewaGeregistrationById(String id,String advice);
+
+    int countById(String id);
 }
