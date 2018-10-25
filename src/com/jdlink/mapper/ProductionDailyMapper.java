@@ -100,7 +100,7 @@ public interface ProductionDailyMapper {
     void addSewaGeregistration(Sewageregistration sewageregistration);
 
     //获得主表最新的主键
-    List<Integer> getNewestId();
+    List<String> getNewestId();
 
     //添加污水登记子表
     void addSewaGeregistrationItem(SewageregistrationItem sewageregistrationItem);
@@ -115,9 +115,13 @@ public interface ProductionDailyMapper {
 
     List<Sewageregistration> softList(Page page);
 
-    Sewageregistration  getSewaGeregistrationById(String id);
+    Sewageregistration  getSewaGeregistrationById( String id);
 
     void confirmSewaGeregistrationById(String id);
 
     void rejectSewaGeregistrationById(String id,String advice);
+
+    int countById(String id);
+    int countByIdSew(String id);
+
 }

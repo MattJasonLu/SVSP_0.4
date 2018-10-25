@@ -18,6 +18,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static com.jdlink.util.NumberToDate.double2Date;
+
 @Controller
 public class MedicalWastesController {
     @Autowired
@@ -253,54 +255,103 @@ public class MedicalWastesController {
 
                  medicalWastes.setMedicalWastesId(medicalWastesId);
 
-                 //登记部门
-                medicalWastes.setDepartment(data[i][1].toString());
-
-                //登记人
-                medicalWastes.setDepartmentName(data[i][2].toString());
-
-                //修改人
-                medicalWastes.setAdjustName(data[i][3].toString());
-
-                //修改时间
-
-                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-                Date date=simpleDateFormat.parse( data[i][4].toString().replace("/","-"));
-                medicalWastes.setAdjustDate(date);
+                 //日期
+                if(data[i][0]!="null"){
+          String datestr=data[i][0].toString().replace("年","-").replace("月","-").replace("日","");
+          SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+                  medicalWastes.setDateTime(simpleDateFormat.parse(datestr));
+                }
+                if(data[i][0]=="null"){
+                    medicalWastes.setDateTime(null);
+                }
 
                 //本日进厂危废
-                medicalWastes.setThisMonthWastes(Float.parseFloat(data[i][5].toString()));
+                if(data[i][1]!="null"){
+                    medicalWastes.setThisMonthWastes(Float.parseFloat(data[i][1].toString()));
+                }
+                if(data[i][1]=="null"){
+                    medicalWastes.setThisMonthWastes(0);
+                }
+
 
                 //本日直接转外处置量
-                medicalWastes.setDirectDisposal(Float.parseFloat(data[i][6].toString()));
+                if(data[i][2]!="null"){
+                    medicalWastes.setDirectDisposal(Float.parseFloat(data[i][2].toString()));
+                }
+                if(data[i][2]=="null"){
+                    medicalWastes.setDirectDisposal(0);
+                }
 
                 //本日蒸煮医废(过磅)
-                medicalWastes.setCookingWastes(Float.parseFloat(data[i][7].toString()));
+                if(data[i][3]!="null"){
+                    medicalWastes.setCookingWastes(Float.parseFloat(data[i][3].toString()));
+                }
+                if(data[i][3]=="null"){
+                    medicalWastes.setCookingWastes(0);
+                }
 
                 //蒸煮后重量
-                medicalWastes.setAfterCookingNumber(Float.parseFloat(data[i][8].toString()));
+                if(data[i][4]!="null"){
+                    medicalWastes.setAfterCookingNumber(Float.parseFloat(data[i][4].toString()));
+                }
+                if(data[i][4]=="null"){
+                    medicalWastes.setAfterCookingNumber(0);
+                }
+
 
                 //蒸煮后入库量
-                medicalWastes.setAfterCookingInbound(Float.parseFloat(data[i][9].toString()));
+                if(data[i][5]!="null"){
+                    medicalWastes.setAfterCookingInbound(Float.parseFloat(data[i][5].toString()));
+                }
 
-                //本日蒸煮后外送量
-                medicalWastes.setThisMonthSendCooking(Float.parseFloat(data[i][10].toString()));
+                if(data[i][5]=="null"){
+                    medicalWastes.setAfterCookingInbound(0);
+                }
 
-                //误差量
-                medicalWastes.setErrorNumber(Float.parseFloat(data[i][5].toString())-Float.parseFloat(data[i][6].toString())-Float.parseFloat(data[i][7].toString()));
+                //本月蒸煮后外送量
+                if(data[i][6]!="null"){
+                    medicalWastes.setThisMonthSendCooking(Float.parseFloat(data[i][6].toString()));
+                }
+                if(data[i][6]=="null"){
+                    medicalWastes.setThisMonthSendCooking(0);
+                }
+
+                //焚烧量
+                if(data[i][7]!="null"){
+                    medicalWastes.setIncineration(Float.parseFloat(data[i][7].toString()));
+                }
+                if(data[i][7]=="null"){
+                    medicalWastes.setIncineration(0);
+                }
+
+                if(data[i][8]!="null"){
+                    //接运单与称重差KG(误差)
+                    medicalWastes.setErrorNumber(Float.parseFloat(data[i][8].toString()));
+                }
+                if(data[i][8]=="null"){
+                    medicalWastes.setErrorNumber(0);
+                }
 
                 //水分含量
-                medicalWastes.setWetNumber(Float.parseFloat(data[i][7].toString())-Float.parseFloat(data[i][8].toString()));
+
+                if(data[i][4]=="null"){
+                    data[i][4]=0;
+                }
+                if(data[i][5]=="null"){
+                    data[i][5]=0;
+                }
+
+                medicalWastes.setWetNumber(Float.parseFloat(data[i][4].toString())-Float.parseFloat(data[i][5].toString()));
 
 
                 //处置设备
-                medicalWastes.setEquipment(Equipment.getEquipment((data[i][11].toString())));
+                //medicalWastes.setEquipment(Equipment.getEquipment((data[i][11].toString())));
 
                 medicalWastesService.addMedicalWastes(medicalWastes);
-                res.put("status", "success");
-                res.put("message", "导入成功");
-            }
 
+            }
+            res.put("status", "success");
+            res.put("message", "导入成功");
         }
         catch (Exception e){
             e.printStackTrace();

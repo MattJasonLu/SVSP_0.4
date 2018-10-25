@@ -32,7 +32,52 @@
         select count(*) from t_pl_wasteinto;
     </select>
     <select id="countSec" resultType="int">
-        select count(*) from t_pl_secondaryinto;
+        select count(*) from t_pr_secondarysample;
+    </select>
+    <select id="countById" resultType="int" parameterType="String">
+    select count(*) from t_pr_secondarysample where id like "%"#{id}"%";
+</select>
+    <resultMap id="SecondarysampleRM" type="Secondarysample">
+        <result property="id" column="id"></result>
+        <collection property="client" column="clientId" select="getClient"></collection>
+        <collection property="secondarySampleItemList" column="id" select="getSecondarysampleItem"></collection>
+    </resultMap>
+    <select id="getSecondarysampleItem" resultType="SecondarySampleItem">
+        select  * from t_pr_secondarysampleitem where sampleinformationId=#{id};
+    </select>
+<!--根据编号获取对象-->
+    <select id="getSecondarysampleById" parameterType="String" resultMap="SecondarysampleRM">
+        select * from t_pr_secondarysample where id=#{id};
+    </select>
+    <!--添加次生废物送样主表-->
+    <insert id="addSecondarySample" parameterType="SecondarySample">
+        insert into t_pr_secondarysample(id, clientId, laboratorySignatory, sendingPerson, address, checkState, advice,nowTime) values
+        (#{id},#{client.clientId},#{laboratorySignatory},#{sendingPerson},#{address},'ToCollected',#{advice},NOW());
+    </insert>
+    <!--添加次生废物送样子表-->
+    <insert id="addSecondarySampleItem" parameterType="SecondarySampleItem">
+        insert into t_pr_secondarysampleitem (wastesCode, wastesName, sampleinformationId, water, scorchingRate) values
+        (#{wastesCode},#{wastesName},#{sampleinformationId},#{water},#{scorchingRate});
+    </insert>
+    <!--寻找最新的危废送样登记编号-->
+    <select id="getNewestId"  resultType="String">
+        select id from t_pr_secondarysample order  by  nowTime desc;
     </select>
 
+    <!--查询次生废物送样-->
+    <select id="getSecondarysample" resultMap="SecondarysampleRM">
+        select * from t_pr_secondarysample order by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <!--确认登记-->
+    <update id="confirmSecondarySampleById" parameterType="String">
+        update t_pr_secondarysample set  checkState='Collected',nowTime=NOW() where id=#{id};
+    </update>
+    <!--拒收-->
+    <update id="rejectSecondarySampleById" >
+        update t_pr_secondarysample set checkState='Rejected',advice=#{1} ,nowTime=NOW() where id=#{id}
+    </update>
 </mapper>

@@ -77,6 +77,17 @@ public class MedicalWastes {
      */
     private CheckState checkState;
 
+    //焚烧量
+    private float incineration;
+
+    public float getIncineration() {
+        return incineration;
+    }
+
+    public void setIncineration(float incineration) {
+        this.incineration = incineration;
+    }
+
     public CheckState getCheckState() {
 
         return checkState;

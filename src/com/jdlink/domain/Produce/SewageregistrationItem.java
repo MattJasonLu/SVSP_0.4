@@ -6,7 +6,7 @@ public class SewageregistrationItem {
 
     private String wastesName;//名称
 
-    private int sampleinformationId;//主表编号
+    private String sampleinformationId;//主表编号
 
     private int ph; // PH值
 
@@ -128,11 +128,11 @@ public class SewageregistrationItem {
         this.wastesName = wastesName;
     }
 
-    public int getSampleinformationId() {
+    public String getSampleinformationId() {
         return sampleinformationId;
     }
 
-    public void setSampleinformationId(int sampleinformationId) {
+    public void setSampleinformationId(String sampleinformationId) {
         this.sampleinformationId = sampleinformationId;
     }
 

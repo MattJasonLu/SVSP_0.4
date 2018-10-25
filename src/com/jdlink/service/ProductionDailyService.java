@@ -99,7 +99,7 @@ public interface ProductionDailyService {
 
     void addSewaGeregistration(Sewageregistration sewageregistration);
 
-    List<Integer> getNewestId();
+    List<String> getNewestId();
 
     void addSewaGeregistrationItem(SewageregistrationItem sewageregistrationItem);
 
@@ -116,4 +116,8 @@ public interface ProductionDailyService {
     void confirmSewaGeregistrationById(String id);
 
     void rejectSewaGeregistrationById(String id,String advice);
+
+    int countById(String id);
+
+    int countByIdSew(String id);
 }

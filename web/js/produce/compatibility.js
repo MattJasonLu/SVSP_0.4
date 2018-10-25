@@ -989,38 +989,59 @@ function confirmCompatibilityId() {
         var items = $("input[name='select']:checked");//判断复选框是否选中
         if(items.length>0){
             if(confirm("是否生成物料需求?")){
+                var Array=[];
                 $.each(items,function (index) {
-
-                    if  ($(this).parent().parent().next().next().html().length > 0&&$(this).parent().parent().parent().children('td').eq(13).html()!='已失效') {
-                        var compatibilityId = $(this).parent().parent().next().next().html();//配伍单号
-                        $.ajax({
-                            type: "POST",
-                            url: "generateSheet",                  // url
-                            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                            data: {"compatibilityId": compatibilityId},
-                            dataType: "json",
-                           // contentType: "application/json; charset=utf-8",
-                            success: function (result) {
-                                if (result != undefined && result.status == "success"){
-
-                                }
-                                else {
-                                    alert(result.message);
-
-                                }
-                            },
-                            error: function (result) {
-                                alert("服务器异常！");
-                            },
-
-
-                        });
-                    }
+                    Array.push($(this).parent().parent().parent().children('td').eq(13).html())
                 });
-                alert("生成物料需求单成功！")
-                if(confirm("是否跳转到物料需求页面?")){
-                    window.location.href="materialDemand.html"
-                }
+                 if(Array.indexOf("生效中")!=-1){
+                     alert("请勿勾选生成过的数据！请重新勾选")
+                 }
+                 if(Array.indexOf("生效中")==-1){
+                        var checkState=[];
+                     $.each(items,function (index) {
+                         checkState.push($(this).parent().parent().parent().children('td').eq(13).html())
+                     });
+                     console.log(checkState)
+                     if(!(checkState.indexOf("审批通过")==-1)){
+                         $.each(items,function (index) {
+                             if  ($(this).parent().parent().next().next().html().length > 0&&$(this).parent().parent().parent().children('td').eq(13).html()=='审批通过') {
+                                 var compatibilityId = $(this).parent().parent().next().next().html();//配伍单号
+                                 $.ajax({
+                                     type: "POST",
+                                     url: "generateSheet",                  // url
+                                     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                                     data: {"compatibilityId": compatibilityId},
+                                     dataType: "json",
+                                     // contentType: "application/json; charset=utf-8",
+                                     success: function (result) {
+                                         if (result != undefined && result.status == "success"){
+
+                                         }
+                                         else {
+                                             alert(result.message);
+
+                                         }
+                                     },
+                                     error: function (result) {
+                                         alert("服务器异常！");
+                                     },
+
+
+                                 });
+
+                             }
+                         });
+                         alert("生成物料需求单成功！")
+                         if(confirm("是否跳转到物料需求页面?")){
+                             window.location.href="materialDemand.html"
+                         }
+                     }
+                     else {
+                         alert("不能勾选审批未通过的数据！")
+                     }
+
+
+                 }
 
 
 
