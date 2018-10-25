@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.Page;
+import com.jdlink.domain.Produce.SecondarySample;
 import com.jdlink.domain.Produce.WasteInto;
 import com.jdlink.service.WasteIntoService;
 import net.sf.json.JSONObject;
@@ -94,6 +95,25 @@ public class WasteIntoController {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    /**
+     * 添加次生登记主表
+     */
+    @RequestMapping("addSecondarySample")
+    @ResponseBody
+    public String addSecondarySample(@RequestBody SecondarySample secondarySample){
+        JSONObject res=new JSONObject();
+        try {
+            //找到最新的预约单号
+        }
+        catch (Exception e){
+
+
+        }
+
+
+        return res.toString();
     }
 
 }

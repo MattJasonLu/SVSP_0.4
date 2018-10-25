@@ -11,8 +11,8 @@ public enum PackageType implements CodeBaseEnum {
     Ton("吨箱",3),
     Pouch("小袋",4),
     Iron("铁桶",5),
-    Ibc("吨桶",6)
-
+    Ibc("吨桶",6),
+    Plastic("塑料桶",7)
     ;
 
 
