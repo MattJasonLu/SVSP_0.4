@@ -11,9 +11,10 @@ public interface SampleInformationService {
     void add(SampleInformation sampleInformation);
     int count();
     int wastesCount();
+    int countById(String id);
     List<SampleInformation> listPage(Page page);
     SampleInformation getById(String sampleId);
-    void confirmCheck(String sampleId);
+    void confirmCheck(String sampleId,String sendingPerson);
     void update(SampleInformation sampleInformation);
     List<SampleInformation> listByKeyword(String keyword);
     void updateSampleInfo(String sampleId);

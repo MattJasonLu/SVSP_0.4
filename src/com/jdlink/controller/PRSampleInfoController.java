@@ -4,6 +4,7 @@ import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.SampleInformation;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.SampleInformationService;
+import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.ibatis.annotations.Param;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -50,30 +53,29 @@ public class PRSampleInfoController {
         return res.toString();
     }
 
+
     @RequestMapping("getCurrentSampleInformationId")
     @ResponseBody
-    public String getCurrentSampleInformationId() {
-       // 得到一个NumberFormat的实例
-        NumberFormat nf = NumberFormat.getInstance();
-        //设置是否使用分组
-        nf.setGroupingUsed(false);
-        //设置最大整数位数
-        nf.setMaximumIntegerDigits(4);
-        //设置最小整数位数
-        nf.setMinimumIntegerDigits(4);
-        // 获取最新编号
-        String id;
-        int index = sampleInformationService.count();
-        // 获取唯一的编号
-        do {
+    public String getCurrentSampleInformationId(String companyCode) {
+        // 生成预约号
+        Date date = new Date();   //获取当前时间
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        String prefix = simpleDateFormat.format(date) + companyCode;
+        int count = sampleInformationService.countById(prefix) + 1;
+        String suffix;
+        if (count <= 9) suffix = "0" + count;
+        else suffix = count + "";
+        String id = RandomUtil.getAppointId(prefix, suffix);
+        // 确保编号唯一
+        while (sampleInformationService.getBySampleInformationId(id) != null) {
+            int index = Integer.parseInt(id);
             index += 1;
-            id = nf.format(index);
-        } while (sampleInformationService.getBySampleInformationId(id) != null);
+            id = index + "";
+        }
         JSONObject res = new JSONObject();
         res.put("id", id);
         return res.toString();
     }
-
     /**
      * 整数成规范8位字符
      * @param number
@@ -187,10 +189,10 @@ public class PRSampleInfoController {
 
     @RequestMapping("confirmSampleInformationCheck")
     @ResponseBody
-    public String confirmSampleInformationCheck(String sampleId){
+    public String confirmSampleInformationCheck(String sampleId,String sendingPerson){
         JSONObject res = new JSONObject();
         try{
-            sampleInformationService.confirmCheck(sampleId);
+            sampleInformationService.confirmCheck(sampleId,sendingPerson);
             res.put("status","success");
             res.put("message","确认登记成功！");
         }catch (Exception e){
