@@ -4,7 +4,6 @@ import com.mysql.jdbc.Connection;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.ss.usermodel.CellType;
@@ -96,25 +95,25 @@ public class ImportUtil {
                 rwb = Workbook.getWorkbook(is);
                 Sheet[] sheets = rwb.getSheets();//获取总页数
 
-               for(int k=0;k<sheets.length;k++){
-                   Sheet sht = rwb.getSheet(k);// 得到第一个表d
-                   int col = sht.getColumns(); // 获得Excel列
-                   int row = sht.getRows();    // 获得Excel行
-                   Cell c1;
-                   param = new Object[row][col];
-                   for (int i = 0; i < row; i++) {
-                       obj = new Object[col];
-                       for (int j = 0; j < col; j++) {
-                           c1 = sht.getCell(j, i);
-                           obj[j] = c1.getContents();
-                           //System.out.println(obj[j]+"==>");
-                           if (obj[j]==""||obj[j]==null)
-                               obj[j] = "null";
-                           param[i][j] = obj[j];
-                       }
-                   }
-                   list.add(param);
-               }
+                for(int k=0;k<sheets.length;k++){
+                    Sheet sht = rwb.getSheet(k);// 得到第一个表d
+                    int col = sht.getColumns(); // 获得Excel列
+                    int row = sht.getRows();    // 获得Excel行
+                    Cell c1;
+                    param = new Object[row][col];
+                    for (int i = 0; i < row; i++) {
+                        obj = new Object[col];
+                        for (int j = 0; j < col; j++) {
+                            c1 = sht.getCell(j, i);
+                            obj[j] = c1.getContents();
+                            //System.out.println(obj[j]+"==>");
+                            if (obj[j]==""||obj[j]==null)
+                                obj[j] = "null";
+                            param[i][j] = obj[j];
+                        }
+                    }
+                    list.add(param);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -136,12 +135,16 @@ public class ImportUtil {
                     param = new Object[row][col];
                     for (int i = 0; i < row; i++) {
                         XSSFRow row1 = xSheet.getRow(i);
+                       if(row1!=null){
+
+
                         obj = new Object[col];
                         for (int j = 0; j < col; j++) {
                             XSSFCell cellStyle = row1.getCell(j);
                             // System.out.println(cellStyle+"====>");
                             //System.out.println(cellStyle+"==>");
                             if (cellStyle != null) {
+//                                System.out.println(cellStyle+"++>");
                                 String cat = cellStyle.getCellTypeEnum().toString();
                                 if (cat.equals("NUMERIC")) {
                                     obj[j] = cellStyle.getNumericCellValue();
@@ -167,9 +170,7 @@ public class ImportUtil {
                                             default:
                                                 break;
                                         }
-                                    } else {
-                                        cellStyle.setCellType(HSSFCell.CELL_TYPE_STRING);
-                                        obj[j] = cellStyle.getStringCellValue();
+
                                     }
                                 }
                                 if (cat.equals("STRING")) {
@@ -183,6 +184,7 @@ public class ImportUtil {
                                 obj[j] ="null";
                             param[i][j] = obj[j];
                         }
+                       }
                     }
                     list.add(param);
                 }

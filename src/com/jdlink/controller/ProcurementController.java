@@ -19,6 +19,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static com.jdlink.util.NumberToDate.double2Date;
+
 /**
  * 采购控制器
  * create By JackYang on 2018/9/1
@@ -305,6 +307,7 @@ public class ProcurementController {
           }
             procurement.setReceiptNumber(receiptNumber);//注入
             procurement.setProcurementCategory(true);
+
              if(String.valueOf(data.get(i)[3][2])!="null"){
                  procurement.setApplyMouth(String.valueOf(data.get(i)[3][2]));//申请月份
              }
@@ -314,10 +317,16 @@ public class ProcurementController {
             }
 
             if(String.valueOf(data.get(i)[3][7])!="null"){
-                System.out.println(data.get(i)[3][7]+"123");
-                 SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-                 Date date=simpleDateFormat.parse(  data.get(i)[3][7].toString().replace("/","-"));
-                procurement.setDemandTime(date);//需求时间
+                 if(data.get(i)[3][7].toString().indexOf("-")!=-1){
+                     SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+                     Date date=simpleDateFormat.parse(  data.get(i)[3][7].toString().replace("/","-"));
+                     procurement.setDemandTime(date);//需求时间
+                 }
+                 if(data.get(i)[3][7].toString().indexOf("-")==-1){
+                   Date t=  double2Date(Double.parseDouble(data.get(i)[3][7].toString()));
+                     procurement.setDemandTime(t);//需求时间
+                 }
+
             }
             if(String.valueOf(data.get(i)[3][7])=="null"){
                 procurement.setDemandTime(null);//需求时间
@@ -358,60 +367,65 @@ public class ProcurementController {
             if(String.valueOf(data.get(i)[4][15])=="null"){
                 procurement.setGeneralManager(" ");//总经理
             }
-         for(int j=7;j<data.get(i).length-3;j++){
-             //创建物资对象
-             Material material=new Material();
-             material.setReceiptNumber(receiptNumber);//设置申请单编号
-             if(String.valueOf(data.get(i)[j][1])!="null"){
+         for(int j=7;j<data.get(i).length-3;j++) {
+
+//             System.out.println(data.get(i)[j][1].toString()+"第二列");
+             if (data.get(i)[j][1].toString() != "null"&&data.get(i)[j][1]!=null) {
+                 //创建物资对象
+                 Material material = new Material();
+                 material.setReceiptNumber(receiptNumber);//设置申请单编号
+             if (String.valueOf(data.get(i)[j][1]) != "null") {
                  material.setSuppliesName(String.valueOf(data.get(i)[j][1]));
              }
-             if(String.valueOf(data.get(i)[j][1])=="null"){
+             if (String.valueOf(data.get(i)[j][1]) == "null") {
                  material.setSuppliesName(" ");
              }//设置物资名称
 
-             if(String.valueOf(data.get(i)[j][6])!="null"){
+             if (String.valueOf(data.get(i)[j][6]) != "null") {
                  material.setSpecifications(String.valueOf(data.get(i)[j][6]));
              }
-             if(String.valueOf(data.get(i)[j][6])=="null"){
+             if (String.valueOf(data.get(i)[j][6]) == "null") {
                  material.setSpecifications(" ");
              }//设置规格型号
 
-             if(String.valueOf(data.get(i)[j][11])!="null"){
+             if (String.valueOf(data.get(i)[j][11]) != "null") {
                  material.setUnit(Unit.getUnit(data.get(i)[j][11].toString()));
 
 
              }
-             if(String.valueOf(data.get(i)[j][11])=="null"){
+             if (String.valueOf(data.get(i)[j][11]) == "null") {
                  material.setUnit(null);
              }//设置单位
 
-             if(String.valueOf(data.get(i)[j][12])!="null"){
+             if (String.valueOf(data.get(i)[j][12]) != "null") {
                  material.setInventory(Float.parseFloat(data.get(i)[j][12].toString()));
              }
-             if(String.valueOf(data.get(i)[j][12])=="null"){
+             if (String.valueOf(data.get(i)[j][12]) == "null") {
                  material.setInventory(0);
              }//设置库存量
 
-             if(String.valueOf(data.get(i)[j][13])!="null"){
+             if (String.valueOf(data.get(i)[j][13]) != "null") {
                  material.setDemandQuantity(Float.parseFloat(data.get(i)[j][13].toString()));
              }
-             if(String.valueOf(data.get(i)[j][13])=="null"){
+             if (String.valueOf(data.get(i)[j][13]) == "null") {
                  material.setDemandQuantity(0);
              }//设置需求数量
 
-             if(String.valueOf(data.get(i)[j][14])!="null"){
+             if (String.valueOf(data.get(i)[j][14]) != "null") {
                  material.setNote(String.valueOf(data.get(i)[j][14]));
              }
-             if(String.valueOf(data.get(i)[j][14])=="null"){
+             if (String.valueOf(data.get(i)[j][14]) == "null") {
                  material.setNote(" ");
-             }//设置备注
-             //首先添加主表
-             //再添加字表
-             procurementService.addMaterial(material);
+             }
+                 //设置备注
+                 //首先添加主表
+                 //再添加字表
+                 procurementService.addMaterial(material);
+         }
+
          }
        //进行添加
             procurementService.add(procurement);
-
       }
             res.put("status", "success");
             res.put("message", "导入成功");

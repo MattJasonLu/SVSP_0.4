@@ -290,6 +290,8 @@ function secondaryAnalysis() {
             alert("服务器异常！")
         }
     });
+
+
 }
 
 //设置次生入场日报数据
@@ -342,12 +344,12 @@ function setSecIntoList(result) {
 
                     break;
                 // 备注
-                case (6):
-                    $(this).html(obj.remarks);
-                    break;
-                case (7):
-                    $(this).html(obj.id);
-                    break;
+                // case (6):
+                //     $(this).html("");
+                //     break;
+                // case (7):
+                //     $(this).html(obj.id);
+                //     break;
             }
         })
         // 把克隆好的tr追加到原来的tr前面
@@ -654,5 +656,323 @@ function appointModal() {
     // 显示框体
     // setSelectList();
     $('#appointModal').modal('show');
+    setSelectList()
+}
+
+/**
+ * 为公司代码和危废代码下拉框填充数据
+ */
+function setSelectList() {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getClientAndWastesCodeSelectedList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status === "success") {
+                var data = eval(result);
+                console.log("下拉数据为：");
+                console.log(data);
+                // 下拉框数据填充
+                var companyCode = $("#model-companyCode");
+                $.each(data.companyCodeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val((item.clientId));
+                    option.text(item.companyName);
+                    companyCode.append(option);
+                });
+
+                var wastesCode = $("#wastesCode");
+                $.each(data.wastesCodeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.code);
+                    option.text(item.code);
+                    wastesCode.append(option);
+                });
+                //刷新下拉数据
+                $('.selectpicker').selectpicker('refresh');
+
+                $('#addClone').siblings().not($('#plusBtn')).remove();
+
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+}
+
+/**
+ * 添加预约登记单
+ */
+function addAppoint() {
+
+//主表
+    var  data={
+        client:{clientId:$('#model-companyCode').selectpicker('val')},
+        laboratorySignatory:$('#laboratorySignatory').val(),
+        sendingPerson:$('#sendingPerson').val(),
+        address:$('#address').val(),
+    };
+    console.log(data)
+    //添加主表
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "addSecondarySample",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: JSON.stringify(data),
+        processData: false,
+        contentType: 'application/json;charset=utf-8',
+        success: function (result) {
+            if (result != undefined && result.status == "success"){
+                $('.myclass').each(function () {
+                    var water;
+                    if($(this).children('td').eq(3).find('label').eq(0).find("input").prop('checked')==true){
+                         water=1;
+                    }
+                    else
+                        water=0;
+                    var scorchingRate;
+                    if($(this).children('td').eq(3).find('label').eq(1).find("input").prop('checked')==true){
+                        scorchingRate=1;
+                    }
+                    else
+                        scorchingRate=0;
+
+                    var   dataItem={
+                        wastesCode:$(this).children('td').eq(1).find("button").attr('title'),
+                        wastesName:$(this).children('td').eq(2).find("input").val(),
+                        water:water,
+                        scorchingRate:scorchingRate,
+                    };
+                    console.log(dataItem)
+                    $.ajax({
+                        type: "POST",                       // 方法类型
+                        url: "addSecondarySampleItem",              // url
+                        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                        dataType: "json",
+                        data: JSON.stringify(dataItem),
+                        processData: false,
+                        contentType: 'application/json;charset=utf-8',
+                    })
+
+
+                })
+                alert("预约登记成功！")
+                window.location.reload();
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+
+
+
+
+
+}
+
+
+//确认收样
+function setSubmit(item) {
+    var id=$(item).parent().parent().children('td').eq(1).html();
+    console.log(id)
+    $("#appointModa2").modal('show');
+    $('#confirm').show();
+    //根据编号查找
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSecondarySampleById",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{"id":id},
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                //赋值
+                // 公司名称
+                if(result.data.client=null){
+                    $('#companyName').val(result.data.client.companyName);
+                }
+                //化验室签收人
+                $('#signer').val(result.data.laboratorySignatory)
+
+                //送样人
+                $('#sendingPerson2').val(result.data.sendingPerson)
+
+                //采样点
+                $('#address2').val(result.data.address)
+
+                //预约单号
+                $("#id").val(result.data.id)
+
+                if(result.data.sewageregistrationItemList!=null){
+
+                    var tr=$('#clonrTr');
+                    tr.siblings().remove();
+
+                    $.each(result.data.sewageregistrationItemList,function (index,item) {
+
+                        var clonedTr = tr.clone();
+
+                        clonedTr.show();
+
+                        var obj = eval(item);
+
+
+                        clonedTr.children('td').eq(0).html(index + 1);
+                        clonedTr.children('td').eq(1).html(obj.wastesCode);
+                        clonedTr.children('td').eq(2).html(obj.wastesName);
+                        project = "";
+                        if (obj.cod == 1) {
+                            project += "COD ";
+                        }
+                        if (obj.bod5 == 1) {
+                            project += "BOD5 ";
+                        }
+                        if (obj.ph == 1) {
+                            project += "PH ";
+                        }
+                        if (obj.dissolvedSolidForm == 1) {
+                            project += "溶解固形物 ";
+                        }
+                        if (obj.electricalConductivity == 1) {
+                            project += "电导率 ";
+                        }
+                        if (obj.hardness == 1) {
+                            project += "硬度 ";
+                        }
+                        if (obj.lye == 1) {
+                            project += "碱度 ";
+                        }
+                        if (obj.n2 == 1) {
+                            project += "氮气 ";
+                        }
+                        if (obj.o2 == 1) {
+                            project += "氧气 ";
+                        }
+                        if (obj.relativeAlkalinity == 1) {
+                            project += "相对碱度 ";
+                        }
+                        clonedTr.children('td').eq(3).html(project);
+
+                        clonedTr.removeAttr("id");
+                        clonedTr.insertBefore(tr);
+
+                    });
+
+                    // 隐藏无数据的tr
+                    tr.hide();
+                    tr.removeAttr('class');
+
+
+
+                }
+
+
+
+
+
+
+
+            }
+            else {
+
+            }
+        },
+        error:function (result) {
+
+        }
+    });
+}
+
+//确认送样方法==>真正的方法
+function confirmSample() {
+    var id=$("#id").val();
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "confirmSecondarySampleById",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{"id":id},
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                alert("已收样!")
+                window.location.reload();
+            }
+        },
+        error:function (result) {
+
+
+        }
+
+    });
+
+
+}
+
+
+/**
+ * 拒收框
+ */
+function rejection(item) {
+    var id=$(item).parent().parent().children('td').eq(1).html();
+    $('#id1').text(id);
+    $("#rejection1").modal('show')
+
+    //根据编号查找
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSecondarySampleById",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{"id":id},
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                $('#advice').val(result.data.advice);
+
+            }
+            else {
+
+            }
+        },
+        error:function (result) {
+
+        }
+    });
+}
+
+//真正的拒收方法
+function rejection1() {
+    var id=  $('#id1').text();;
+    var advice=   $('#advice').val();
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "rejectSecondarySampleById",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{"id":id,"advice":advice},
+        success:function (result) {
+            if (result != undefined && result.status == "success") {
+                alert(result.message)
+                window.location.reload();
+            }
+
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+    })
+
 
 }
