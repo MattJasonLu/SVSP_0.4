@@ -717,18 +717,8 @@ function setWasteInventoryList1(result) {
                         break;
                     // 危废名称
                     case (7):
-
-                        if(obj.laboratoryTest!=null){
-                            if(obj.laboratoryTest.wastesName=='slag'){
-                                $(this).html('炉渣');
-                            }
-                            if(obj.laboratoryTest.wastesName=='ash'){
-                                $(this).html('飞灰');
-                            }
-                            if(obj.laboratoryTest.wastesName=='bucket'){
-                                $(this).html('桶');
-                            }
-
+                        if(obj.laboratoryTest!=null) {
+                            $(this).html(obj.laboratoryTest.wastesName);
                         }
                         break;
                     //危废类型
@@ -737,7 +727,7 @@ function setWasteInventoryList1(result) {
                     //     break;
                     //数量
                     case (8):
-                        $(this).html(obj.actualCount);
+                        $(this).html(parseFloat(obj.actualCount).toFixed(3));
                         break;
                     //单价
                     case (9):
