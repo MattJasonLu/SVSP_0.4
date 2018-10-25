@@ -61,7 +61,7 @@
     </select>
 
     <select id="countSewage" resultType="int">
-          select count(*) from t_pr_sewage;
+          select count(*) from t_pr_sewageregistration where water="1";
     </select>
 
     <select id="listPageSewage" resultType="Sewage">
@@ -157,7 +157,7 @@
     </insert>
 
     <select id="countSoftWater" resultType="int">
-          select count(*) from t_pr_softwater;
+          select count(*) from t_pr_sewageregistration where water='0' ;
     </select>
 
     <select id="listPageSoftWater" resultType="SoftWater">

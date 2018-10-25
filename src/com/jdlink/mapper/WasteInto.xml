@@ -32,7 +32,7 @@
         select count(*) from t_pl_wasteinto;
     </select>
     <select id="countSec" resultType="int">
-        select count(*) from t_pl_secondaryinto;
+        select count(*) from t_pr_secondarysample;
     </select>
     <select id="countById" resultType="int" parameterType="String">
     select count(*) from t_pr_secondarysample where id like "%"#{id}"%";

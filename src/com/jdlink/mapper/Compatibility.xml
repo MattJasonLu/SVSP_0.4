@@ -351,6 +351,6 @@
         (#{materialRequireId},#{currentInventoryTotal},#{marketPurchasesTotal},#{compatibilityId},#{remarks},NOW(),'ToSubmit',#{weeklyDemandTotal},#{safetyTotal},#{calorificAvg},#{ashAvg},#{waterAvg},#{clAvg},#{sAvg},#{pAvg},#{fAvg},#{phAvg});
     </insert>
     <update id="disabledMaterialRequire" parameterType="String">
-        update t_pr_pw set checkState='Disabled' where  compatibilityId=#{compatibilityId};
+        update t_pr_pw set checkState='Enabled' where  compatibilityId=#{compatibilityId};
     </update>
 </mapper>
