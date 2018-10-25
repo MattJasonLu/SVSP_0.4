@@ -830,14 +830,19 @@ function getcurrentDaydate() {
     return year + "年" + month + "月" + day + "日";
 }
 
-function loadInventoryList() {
+function loadInventoryListData() {
     $("#view-id").text(getCurrentIngredientsReceiveId());
     $("#creationDate").text(getcurrentDaydate());
+    var page = {};
+    page.count = 0;                                 // 可选
+    page.start = 0;
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getIngredientsInventoryList",          // url
+        url: "LoadPageIngredientsInventoryList",          // url
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(page),
         dataType: "json",
+        contentType: 'application/json;charset=utf-8',
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 setInventoryList(result.data);
