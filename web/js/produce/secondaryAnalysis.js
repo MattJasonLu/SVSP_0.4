@@ -652,7 +652,7 @@ function exportExcel() {
  */
 function appointModal() {
     // 显示框体
-    setSelectList();
+    // setSelectList();
     $('#appointModal').modal('show');
 
 }
