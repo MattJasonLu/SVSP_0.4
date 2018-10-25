@@ -15,6 +15,12 @@ function countValue() {
 }
 
 /**
+ * 修改
+ */
+function modify() {
+    // alert();
+}
+/**
  * 计算总页数
  * */
 function totalPage() {
