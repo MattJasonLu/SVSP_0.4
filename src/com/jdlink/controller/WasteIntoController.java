@@ -107,7 +107,7 @@ public class WasteIntoController {
         Date date = new Date();   //获取当前时间
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         String prefix = simpleDateFormat.format(date) + companyCode;
-        int count =wasteIntoService.countById(prefix) + 1;
+        int count =wasteIntoService.countById((prefix)) + 1;
         String suffix;
         if (count <= 9) suffix = "0" + count;
         else suffix = count + "";
@@ -134,18 +134,21 @@ public class WasteIntoController {
             Date date = new Date();   //获取当前时间
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
             String prefix = simpleDateFormat.format(date) + secondarySample.getClient().getClientId();
-            int count =wasteIntoService.countById(prefix) + 1;
+            System.out.println("前缀"+prefix);
+            int count =(wasteIntoService.countById((prefix))) + 1;
+            System.out.println("数量"+count);
             String suffix;
             if (count <= 9) suffix = "0" + count;
             else suffix = count + "";
             String id = RandomUtil.getAppointId(prefix, suffix);
-            // 确保编号唯一
+             //确保编号唯一
             while (wasteIntoService.getSecondarysampleById(id) != null) {
                 int index = Integer.parseInt(id);
                 index += 1;
-                id = index + "";
+                id =String.valueOf(index);
             }
-            //找到最新的预约单号==>年月日+公司代码+两位数
+
+            //找到最新的预约单号==>年月日++公司代码+两位数
             secondarySample.setId(id);
             wasteIntoService.addSecondarySample(secondarySample);
             res.put("status", "success");
