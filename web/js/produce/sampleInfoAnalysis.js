@@ -1151,25 +1151,25 @@ function importExcelChoose() {
  * 下载模板
  * */
 function downloadModal() {
-    var filePath = 'Files/Templates/转移联单_320046201703310001(模板).pdf';
+    var filePath = 'Files/Templates/仓储部化验结果模板.xlsx';
     var r = confirm("是否下载模板?");
-    if (r == true) {
+    if (r) {
         window.open('downloadFile?filePath=' + filePath);
     }
 }
 
 /**
- * 导入pdf
+ * 导入
  */
 function importExcel() {
     document.getElementById("idExcel").click();
     document.getElementById("idExcel").addEventListener("change", function () {
         var eFile = document.getElementById("idExcel").files[0];
         var formFile = new FormData();
-        formFile.append("pdfFile", eFile);
+        formFile.append("excelFile", eFile);
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "importTransferDraft",              // url
+            url: "importSampleInfoAnalysis",              // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             data: formFile,

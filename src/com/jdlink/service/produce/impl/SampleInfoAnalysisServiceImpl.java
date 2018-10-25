@@ -24,4 +24,9 @@ public class SampleInfoAnalysisServiceImpl implements SampleInfoAnalysisService 
     public int count(SampleInfoAnalysis sampleInfoAnalysis) {
         return sampleInfoAnalysisMapper.count(sampleInfoAnalysis);
     }
+
+    @Override
+    public void add(SampleInfoAnalysis sampleInfoAnalysis) {
+        sampleInfoAnalysisMapper.add(sampleInfoAnalysis);
+    }
 }

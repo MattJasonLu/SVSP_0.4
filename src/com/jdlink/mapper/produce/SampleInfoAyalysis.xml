@@ -4,8 +4,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jdlink.mapper.produce.SampleInfoAnalysisMapper" >
 
+    <resultMap id="SampleInfoAnalysisRM" type="SampleInfoAnalysis" autoMapping="true">
+        <id property="id" column="id"/>
+        <association property="produceCompany" column="produceCompanyId" select="getProduceCompany"/>
+    </resultMap>
+
+    <select id="getProduceCompany" resultType="Client">
+        select * from client where clientId=#{produceCompanyId};
+    </select>
+
     <!--获取仓储部化验单-->
-    <select id="get" resultType="SampleInfoAnalysis">
+    <select id="get" resultMap="SampleInfoAnalysisRM">
         SELECT * FROM t_pr_sampleinfoanalysis
         <where>
             <if test="sampleInfoAnalysis != null and sampleInfoAnalysis.keyword != null and sampleInfoAnalysis.keyword != ''">
@@ -45,5 +54,16 @@
 
         </where>
     </select>
+
+    <!--增加仓储部化验单-->
+    <insert id="add">
+        insert into t_pr_sampleinfoanalysis (id, sampleId, transferDraftId, produceCompanyId,
+        wastesName, wastesCode, handleCategory, formType, PH, ash, water, heat, sulfur,
+        chlorine, phosphorus, flashPoint, viscosity, hotMelt, sender, signer, signDate,
+        remark) values (#{id}, #{sampleId}, #{transferDraftId}, #{produceCompany.clientId},
+        #{wastesName}, #{wastesCode}, #{handleCategory}, #{formType}, #{PH}, #{ash},
+        #{water}, #{heat}, #{sulfur}, #{chlorine}, #{phosphorus}, #{flashPoint}, #{viscosity},
+        #{hotMelt}, #{sender}, #{signer}, #{signDate}, #{remark});
+    </insert>
 
 </mapper>

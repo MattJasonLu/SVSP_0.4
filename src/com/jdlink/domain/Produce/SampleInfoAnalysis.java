@@ -4,6 +4,8 @@ import com.jdlink.domain.Client;
 import com.jdlink.domain.FormType;
 import com.jdlink.domain.Page;
 
+import java.util.Date;
+
 /**
  * 仓储部化验单
  */
@@ -12,6 +14,10 @@ public class SampleInfoAnalysis {
      * 编号
      */
     private String id;
+    /**
+     * 样品编号
+     */
+    private String sampleId;
     /**
      * 联单编号
      */
@@ -28,6 +34,10 @@ public class SampleInfoAnalysis {
      * 危废代码
      */
     private String wastesCode;
+    /**
+     * 类别
+     */
+    private HandleCategory handleCategory;
     /**
      * 物质形态
      */
@@ -49,17 +59,17 @@ public class SampleInfoAnalysis {
      */
     private float heat;
     /**
-     * 硫
+     * 氟
      */
-    private float sulfur;
+    private float fluorine;
     /**
      * 氯
      */
     private float chlorine;
     /**
-     * 氟
+     * 硫
      */
-    private float fluorine;
+    private float sulfur;
     /**
      * 磷
      */
@@ -73,9 +83,21 @@ public class SampleInfoAnalysis {
      */
     private float viscosity;
     /**
+     * 热融试验
+     */
+    private float hotMelt;
+    /**
+     * 送样人
+     */
+    private String sender;
+    /**
      * 签收人
      */
     private String signer;
+    /**
+     * 签收日期
+     */
+    private Date signDate;
     /**
      * 备注
      */
@@ -95,6 +117,14 @@ public class SampleInfoAnalysis {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getSampleId() {
+        return sampleId;
+    }
+
+    public void setSampleId(String sampleId) {
+        this.sampleId = sampleId;
     }
 
     public String getTransferDraftId() {
@@ -127,6 +157,14 @@ public class SampleInfoAnalysis {
 
     public void setWastesCode(String wastesCode) {
         this.wastesCode = wastesCode;
+    }
+
+    public HandleCategory getHandleCategory() {
+        return handleCategory;
+    }
+
+    public void setHandleCategory(HandleCategory handleCategory) {
+        this.handleCategory = handleCategory;
     }
 
     public FormType getFormType() {
@@ -169,12 +207,12 @@ public class SampleInfoAnalysis {
         this.heat = heat;
     }
 
-    public float getSulfur() {
-        return sulfur;
+    public float getFluorine() {
+        return fluorine;
     }
 
-    public void setSulfur(float sulfur) {
-        this.sulfur = sulfur;
+    public void setFluorine(float fluorine) {
+        this.fluorine = fluorine;
     }
 
     public float getChlorine() {
@@ -185,12 +223,12 @@ public class SampleInfoAnalysis {
         this.chlorine = chlorine;
     }
 
-    public float getFluorine() {
-        return fluorine;
+    public float getSulfur() {
+        return sulfur;
     }
 
-    public void setFluorine(float fluorine) {
-        this.fluorine = fluorine;
+    public void setSulfur(float sulfur) {
+        this.sulfur = sulfur;
     }
 
     public float getPhosphorus() {
@@ -217,12 +255,36 @@ public class SampleInfoAnalysis {
         this.viscosity = viscosity;
     }
 
+    public float getHotMelt() {
+        return hotMelt;
+    }
+
+    public void setHotMelt(float hotMelt) {
+        this.hotMelt = hotMelt;
+    }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
     public String getSigner() {
         return signer;
     }
 
     public void setSigner(String signer) {
         this.signer = signer;
+    }
+
+    public Date getSignDate() {
+        return signDate;
+    }
+
+    public void setSignDate(Date signDate) {
+        this.signDate = signDate;
     }
 
     public String getRemark() {

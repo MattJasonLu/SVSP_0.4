@@ -21,4 +21,10 @@ public interface SampleInfoAnalysisMapper {
       * @return 仓储部化验单的数量
       */
      int count(SampleInfoAnalysis sampleInfoAnalysis);
+
+     /**
+      * 增加仓储部化验单
+      * @param sampleInfoAnalysis 仓储部化验单
+      */
+     void add(SampleInfoAnalysis sampleInfoAnalysis);
 }

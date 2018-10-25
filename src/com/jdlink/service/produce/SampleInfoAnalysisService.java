@@ -22,4 +22,10 @@ public interface SampleInfoAnalysisService {
      */
     int count(SampleInfoAnalysis sampleInfoAnalysis);
 
+    /**
+     * 增加仓储部化验单
+     * @param sampleInfoAnalysis 仓储部化验单
+     */
+    void add(SampleInfoAnalysis sampleInfoAnalysis);
+
 }
