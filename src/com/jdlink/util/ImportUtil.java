@@ -137,8 +137,6 @@ public class ImportUtil {
                     for (int i = 0; i < row; i++) {
                         XSSFRow row1 = xSheet.getRow(i);
                        if(row1!=null){
-
-
                         obj = new Object[col];
                         for (int j = 0; j < col; j++) {
                             XSSFCell cellStyle = row1.getCell(j);
