@@ -343,45 +343,88 @@ function setSewageList(result) {
             // 根据索引为部分td赋值
             switch (inner_index) {
                 case (1):
-                    // 序号
-                    $(this).html(serialNumber);
+                    //预约单号
+                    $(this).html(obj.id);
                     break;
                 case (2):
-                    // 污水接收日期
-                    $(this).html(getDateStr(obj.receiveDate));
+                    // 采样点
+                    $(this).html((obj.address));
                     break;
                 case (3):
-                    // 污水名称
-                    $(this).html(obj.name);
+                    // 检测项目
+                    project="";
+                    if(obj.sewageregistrationItemList!=null){
+                        $.each(obj.sewageregistrationItemList,function (index,item) {
+                            if(index<1) {
+
+
+                                if (item.cod == 1) {
+                                    project += "COD ";
+                                }
+                                if (item.bod5 == 1) {
+                                    project += "BOD5 ";
+                                }
+                                if (item.ph == 1) {
+                                    project += "PH ";
+                                }
+                                if (item.dissolvedSolidForm == 1) {
+                                    project += "溶解固形物 ";
+                                }
+                                if (item.electricalConductivity == 1) {
+                                    project += "电导率 ";
+                                }
+                                if (item.hardness == 1) {
+                                    project += "硬度 ";
+                                }
+                                if (item.lye == 1) {
+                                    project += "碱度 ";
+                                }
+                                if (item.n2 == 1) {
+                                    project += "氮气 ";
+                                }
+                                if (item.o2 == 1) {
+                                    project += "氧气 ";
+                                }
+                                if (item.relativeAlkalinity == 1) {
+                                    project += "相对碱度 ";
+                                }
+                            }
+                        })
+
+                    }
+                    $(this).html(project);
                     break;
                 case (4):
-                    // COD
-                    $(this).html(obj.cod);
+                    // 送样人
+                    $(this).html(obj.sendingPerson);
                     break;
                 case (5):
-                    // BOD5
-                    $(this).html(obj.bod5);
+                    // 签收人
+                    $(this).html(obj.laboratorySignatory);
                     break;
                 case (6):
-                    // 氧
-                    $(this).html(obj.oxygen);
-                    break;
-                case (7):
-                    // 氮
-                    $(this).html(obj.nitrogen);
-                    break;
-                case (8):
-                    // 碱液
-                    $(this).html(obj.lye);
-                    break;
-                case (9):
-                    // PH
-                    $(this).html(obj.ph);
-                    break;
-                case (10):
                     // 备注
-                    $(this).html(obj.remarks);
+                    if(obj.checkState!=null){
+                        $(this).html(obj.checkState.name);
+                    }
+
                     break;
+                // case (7):
+                //     // 氮
+                //     $(this).html(obj.nitrogen);
+                //     break;
+                // case (8):
+                //     // 碱液
+                //     $(this).html(obj.lye);
+                //     break;
+                // case (9):
+                //     // PH
+                //     $(this).html(obj.ph);
+                //     break;
+                // case (10):
+                //     // 备注
+                //     $(this).html(obj.remarks);
+                //     break;
             }
         });
         // 把克隆好的tr追加到原来的tr前面
@@ -548,3 +591,552 @@ function searchSewage() {
     }
 }
 
+
+/**
+ * 预约登记-显示预约框
+ */
+function appointModal() {
+    // 显示框体
+    setSelectList();
+    $('#appointModal').modal('show');
+
+}
+
+/**
+ * 添加预约登记单
+ */
+function addAppoint() {
+
+//主表
+   var  data={
+        client:{clientId:$('#model-companyCode').selectpicker('val')},
+        laboratorySignatory:$('#laboratorySignatory').val(),
+        sendingPerson:$('#sendingPerson').val(),
+        water:true,
+        address:$('#address').val(),
+    };
+    console.log(data)
+   //添加主表
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "addSewaGeregistration",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: JSON.stringify(data),
+        processData: false,
+        contentType: 'application/json;charset=utf-8',
+        success: function (result) {
+            if (result != undefined && result.status == "success"){
+                $('.myclass').each(function () {
+                    var isPH;
+                    if($(this).children('td').eq(3).find('label').eq(0).find("input").prop('checked')==true){
+                        isPH=1;
+                    }
+                    else
+                        isPH=0;
+                    var isCOD;
+                    if($(this).children('td').eq(3).find('label').eq(1).find("input").prop('checked')==true){
+                        isCOD=1;
+                    }
+                    else
+                        isCOD=0;
+                    var isBOD5;
+                    if($(this).children('td').eq(3).find('label').eq(2).find("input").prop('checked')==true){
+                        isBOD5=1;
+                    }
+                    else
+                        isBOD5=0;
+                    var isO2;
+                    if($(this).children('td').eq(3).find('label').eq(3).find("input").prop('checked')==true){
+                        isO2=1;
+                    }
+                    else
+                        isO2=0;
+                    var isN2;
+                    if($(this).children('td').eq(3).find('label').eq(4).find("input").prop('checked')==true){
+                        isN2=1;
+                    }
+                    else
+                        isN2=0;
+                    var isLye;
+                    if($(this).children('td').eq(3).find('label').eq(5).find("input").prop('checked')==true){
+                        isLye=1;
+                    }
+                    else
+                        isLye=0;
+
+
+
+                    var   dataItem={
+                        wastesCode:$(this).children('td').eq(1).find("button").attr('title'),
+                        wastesName:$(this).children('td').eq(2).find("input").val(),
+                        ph:isPH,
+                        cod:isCOD,
+                        bod5:isBOD5,
+                        o2:isO2,
+                        n2:isN2,
+                        lye:isLye
+                    };
+                    console.log(dataItem)
+                    $.ajax({
+                        type: "POST",                       // 方法类型
+                        url: "addSewaGeregistrationItem",              // url
+                        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                        dataType: "json",
+                        data: JSON.stringify(dataItem),
+                        processData: false,
+                        contentType: 'application/json;charset=utf-8',
+                    })
+
+
+                })
+                alert("预约登记成功！")
+                window.location.reload();
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+
+
+
+
+
+}
+
+
+
+
+
+/**
+ * 为公司代码和危废代码下拉框填充数据
+ */
+function setSelectList() {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getClientAndWastesCodeSelectedList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status === "success") {
+                var data = eval(result);
+                console.log("下拉数据为：");
+                console.log(data);
+                // 下拉框数据填充
+                var companyCode = $("#model-companyCode");
+                $.each(data.companyCodeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val((item.clientId));
+                    option.text(item.companyName);
+                    companyCode.append(option);
+                });
+
+                var wastesCode = $("#wastesCode");
+                $.each(data.wastesCodeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.code);
+                    option.text(item.code);
+                    wastesCode.append(option);
+                });
+                //刷新下拉数据
+                $('.selectpicker').selectpicker('refresh');
+
+             $('#addClone').siblings().not($('#plusBtn')).remove();
+
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+}
+
+
+var num = 1;
+
+/**
+ * 预约登记/修改-新增样品1
+ */
+function addNewLine(item) {
+    // 获取id为plusBtn的tr元素
+    //var tr = $("#plusBtn").prev();
+    var tr = null;
+    if (item != null)
+        tr = $(item).parent().parent().prev();
+    else tr = $("#addBtn3").prev();
+    // 克隆tr，每次遍历都可以产生新的tr
+    var clonedTr = tr.clone();
+    clonedTr.children('td').eq(0).html(($('.myclass').length)+1);
+    if (clonedTr.children('td').eq(0).html() != 1) {     // 将非第一行的所有行加上减行号
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        clonedTr.children('td').eq(0).prepend(delBtn);
+    }
+
+    // 克隆后清空新克隆出的行数据
+    //clonedTr.children().find("input:first-child").prop('name').charAt(11);
+    clonedTr.children().find("input").val("");
+    clonedTr.children().find("input:checkbox").prop('checked', false);
+    clonedTr.children().find("select").selectpicker('val', '');
+    // clonedTr.children().find("input,select").each(function () {
+    //     var name = $(this).prop('name');
+    //     var newName = name.replace(/[0-9]\d*/, num - 1);
+    //     $(this).prop('name', newName);
+    //     var id = $(this).prop('id');
+    //     var newId = id.replace(/[0-9]\d*/, num - 1);
+    //     $(this).prop('id', newId);
+    // });
+   // clonedTr.addClass("newLine");
+
+   
+   
+    clonedTr.insertAfter(tr);
+    clonedTr.removeAttr("id");
+    //清空数据为重新初始化selectpicker
+    $('.selectpicker').data('selectpicker', null);
+    $('.bootstrap-select').find("button:first").remove();
+    $('.selectpicker').selectpicker();
+
+}
+
+/**
+ * 删除行
+ */
+function delLine(item) {
+    var tr = item.parentElement.parentElement;
+    var length = $(tr.parentNode).children().length - 2;         // 行数
+    var tBody = $(tr.parentNode);                                  // 删除前获取父节点
+    tr.parentNode.removeChild(tr);
+    console.log(tr);
+    console.log("length:" + length);
+    for (var i = 1; i < length; i++) {             // 更新序号
+        tBody.children().eq(i).children().eq(0).get(0).innerHTML = i + 1;     // 更新序号
+        // 重新加上减行按钮
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        tBody.children().eq(i).children("td:eq(0)").prepend(delBtn);
+        tBody.children().eq(i).children().find("input,select").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/[0-9]\d*/, i);
+            $(this).prop('name', newName);
+            var id = $(this).prop('id');
+            var newId = id.replace(/[0-9]\d*/, i);
+            $(this).prop('id', newId);
+        });
+    }
+    num--;
+}
+
+
+//查看
+function view(item) {
+  var id=$(item).parent().parent().children('td').eq(1).html();
+  console.log(id)
+    $("#appointModa2").modal('show');
+  $('#confirm').hide();
+  //根据编号查找
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSewaGeregistrationById",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{"id":id},
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+            //赋值
+              // 公司名称
+                if(result.data.client!=null){
+                    $('#companyName').val(result.data.client.companyName);
+                }
+                 //化验室签收人
+                $('#signer').val(result.data.laboratorySignatory)
+
+                //送样人
+                $('#sendingPerson2').val(result.data.sendingPerson)
+
+                //采样点
+                $('#address2').val(result.data.address)
+
+
+                 if(result.data.sewageregistrationItemList!=null){
+
+                     var tr=$('#clonrTr');
+                     tr.siblings().remove();
+                     
+                 $.each(result.data.sewageregistrationItemList,function (index,item) {
+
+                     var clonedTr = tr.clone();
+
+                     clonedTr.show();
+
+                     var obj = eval(item);
+
+
+                     clonedTr.children('td').eq(0).html(index + 1);
+                     clonedTr.children('td').eq(1).html(obj.wastesCode);
+                     clonedTr.children('td').eq(2).html(obj.wastesName);
+                     project = "";
+                     if (obj.cod == 1) {
+                         project += "COD ";
+                     }
+                     if (obj.bod5 == 1) {
+                         project += "BOD5 ";
+                     }
+                     if (obj.ph == 1) {
+                         project += "PH ";
+                     }
+                     if (obj.dissolvedSolidForm == 1) {
+                         project += "溶解固形物 ";
+                     }
+                     if (obj.electricalConductivity == 1) {
+                         project += "电导率 ";
+                     }
+                     if (obj.hardness == 1) {
+                         project += "硬度 ";
+                     }
+                     if (obj.lye == 1) {
+                         project += "碱度 ";
+                     }
+                     if (obj.n2 == 1) {
+                         project += "氮气 ";
+                     }
+                     if (obj.o2 == 1) {
+                         project += "氧气 ";
+                     }
+                     if (obj.relativeAlkalinity == 1) {
+                         project += "相对碱度 ";
+                     }
+                     clonedTr.children('td').eq(3).html(project);
+
+                     clonedTr.removeAttr("id");
+                     clonedTr.insertBefore(tr);
+
+                 });
+
+                     // 隐藏无数据的tr
+                     tr.hide();
+                     tr.removeAttr('class');
+
+
+
+                 }
+
+
+
+
+
+
+
+            }
+            else {
+
+            }
+        },
+        error:function (result) {
+
+        }
+    });
+
+}
+
+//确认收样
+function setSubmit(item) {
+    var id=$(item).parent().parent().children('td').eq(1).html();
+    console.log(id)
+    $("#appointModa2").modal('show');
+    $('#confirm').show();
+    //根据编号查找
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSewaGeregistrationById",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{"id":id},
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                //赋值
+                // 公司名称
+                if(result.data.client=null){
+                    $('#companyName').val(result.data.client.companyName);
+                }
+                //化验室签收人
+                $('#signer').val(result.data.laboratorySignatory)
+
+                //送样人
+                $('#sendingPerson2').val(result.data.sendingPerson)
+
+                //采样点
+                $('#address2').val(result.data.address)
+
+                 //预约单号
+                $("#id").val(result.data.id)
+
+                if(result.data.sewageregistrationItemList!=null){
+
+                    var tr=$('#clonrTr');
+                    tr.siblings().remove();
+
+                    $.each(result.data.sewageregistrationItemList,function (index,item) {
+
+                        var clonedTr = tr.clone();
+
+                        clonedTr.show();
+
+                        var obj = eval(item);
+
+
+                        clonedTr.children('td').eq(0).html(index + 1);
+                        clonedTr.children('td').eq(1).html(obj.wastesCode);
+                        clonedTr.children('td').eq(2).html(obj.wastesName);
+                        project = "";
+                        if (obj.cod == 1) {
+                            project += "COD ";
+                        }
+                        if (obj.bod5 == 1) {
+                            project += "BOD5 ";
+                        }
+                        if (obj.ph == 1) {
+                            project += "PH ";
+                        }
+                        if (obj.dissolvedSolidForm == 1) {
+                            project += "溶解固形物 ";
+                        }
+                        if (obj.electricalConductivity == 1) {
+                            project += "电导率 ";
+                        }
+                        if (obj.hardness == 1) {
+                            project += "硬度 ";
+                        }
+                        if (obj.lye == 1) {
+                            project += "碱度 ";
+                        }
+                        if (obj.n2 == 1) {
+                            project += "氮气 ";
+                        }
+                        if (obj.o2 == 1) {
+                            project += "氧气 ";
+                        }
+                        if (obj.relativeAlkalinity == 1) {
+                            project += "相对碱度 ";
+                        }
+                        clonedTr.children('td').eq(3).html(project);
+
+                        clonedTr.removeAttr("id");
+                        clonedTr.insertBefore(tr);
+
+                    });
+
+                    // 隐藏无数据的tr
+                    tr.hide();
+                    tr.removeAttr('class');
+
+
+
+                }
+
+
+
+
+
+
+
+            }
+            else {
+
+            }
+        },
+        error:function (result) {
+
+        }
+    });
+}
+//确认送样方法==>真正的方法
+function confirmSample() {
+var id=$("#id").val();
+
+$.ajax({
+    type: "POST",                       // 方法类型
+    url: "confirmSewaGeregistrationById",              // url
+    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    dataType: "json",
+    data:{"id":id},
+    //contentType: 'application/json;charset=utf-8',
+    success:function (result) {
+        if (result != undefined && result.status == "success"){
+            alert("已收样!")
+            window.location.reload();
+        }
+    },
+    error:function (result) {
+
+
+    }
+
+});
+
+
+}
+
+
+/**
+ * 拒收框
+ */
+function rejection(item) {
+    var id=$(item).parent().parent().children('td').eq(1).html();
+    $('#id1').text(id);
+    $("#rejection1").modal('show')
+
+    //根据编号查找
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSewaGeregistrationById",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{"id":id},
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                $('#advice').val(result.data.advice);
+
+            }
+            else {
+
+            }
+        },
+        error:function (result) {
+
+        }
+    });
+}
+
+//真正的拒收方法
+function rejection1() {
+    var id=  $('#id1').text();;
+    var advice=   $('#advice').val();
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "rejectSewaGeregistrationById",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{"id":id,"advice":advice},
+        success:function (result) {
+            if (result != undefined && result.status == "success") {
+                alert(result.message)
+                window.location.reload();
+            }
+
+            },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+    })
+
+
+}

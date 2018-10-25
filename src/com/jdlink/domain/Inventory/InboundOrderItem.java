@@ -44,6 +44,10 @@ public class InboundOrderItem {
      */
     private float wastesAmount;
     /**
+     * 单位
+     */
+    private String wastesUnit;
+    /**
      * 单价
      */
     private float unitPriceTax;
@@ -210,6 +214,14 @@ public class InboundOrderItem {
 
     public void setWastesAmount(float wastesAmount) {
         this.wastesAmount = wastesAmount;
+    }
+
+    public String getWastesUnit() {
+        return wastesUnit;
+    }
+
+    public void setWastesUnit(String wastesUnit) {
+        this.wastesUnit = wastesUnit;
     }
 
     public float getUnitPriceTax() {

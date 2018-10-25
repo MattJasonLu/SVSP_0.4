@@ -302,8 +302,10 @@ function delLine(e) {
     var i=0
     //2018/10/11更新 请勿修改！
  $('.myclass').each(function (index,item) {
+    if((index+1)!=1){
+        $(this).children('td').eq(0).html("<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;"+(parseInt(index)+1).toString());
 
-     $(this).children('td').eq(0).html("<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;"+(parseInt(index)+1).toString());
+    }
 
  })
 
@@ -317,7 +319,7 @@ function saveMonth() {
         suppliesCategory:$('#suppliesCategory').val(),
         applyMouth:$('#applyMonth option:selected').text()+"月份",
         demandTime:($('#demandTime').val()).toString(),
-        applyDepartment:$('#applyDepartment').val(),
+        applyDepartment:$('#applyDepartment :optional').text(),
         proposer:$('#proposer').val(),
         divisionHead:$('#divisionHead').val(),
         purchasingDirector:$('#purchasingDirector').val(),

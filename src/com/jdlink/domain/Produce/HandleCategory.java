@@ -7,7 +7,8 @@ public enum HandleCategory {
     Bulk("散装料",3),
     Crushing("破碎料",4),
     Distillation("精馏残渣",5),
-    Suspension("悬挂连",6);
+    Suspension("悬挂链",6),
+    Jelly("果冻状",7);
     private String name;
     private int index;
     HandleCategory(String name, int index) {

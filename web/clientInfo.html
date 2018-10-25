@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html><!---->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -69,11 +69,11 @@
             },
             rules: {
                 materialAttachment: {
-                    required: true,
+                    required: false,
                     accept: "application/*,image/*"
                 },
                 processAttachment: {
-                    required: true,
+                    required: false,
                     accept: "application/*,image/*"
                 },
                 mobile: {   //手机
@@ -86,9 +86,9 @@
                   required:true,
                    isFixMobile: true
                 },
-                email: {
-                    email: true
-                }
+                // email: {
+                //     email: true
+                // }
             },
             message: {
                 materialAttachment: {
@@ -181,6 +181,8 @@
                 bankName: $("#bankName").val(),
                 bankAccount: $("#bankAccount").val(),
                 taxNumber: $("#taxNumber").val(),
+                taxAddress: $("#taxAddress").val(),
+                taxMobile: $("#taxMobile").val(),
                 ticketType: $("#ticketType").val(),
                 isDisposal: $("input[name='isDisposal']:checked").val()
             };
@@ -240,6 +242,8 @@
                 bankName: $("#bankName").val(),
                 bankAccount: $("#bankAccount").val(),
                 taxNumber: $("#taxNumber").val(),
+                taxAddress: $("#taxAddress").val(),
+                taxMobile: $("#taxMobile").val(),
                 ticketType: $("#ticketType").val(),
                 isDisposal: $("input[name='isDisposal']:checked").val()
             };
@@ -496,6 +500,14 @@
             }
         });
     }
+
+    /**
+     * 自动赋值
+     */
+    function automatic(item) {
+       $('#organizationCode').val($(item).val())
+        $('#taxNumber').val($(item).val())
+    }
 </script>
 <style>
     sup {
@@ -640,9 +652,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="organizationCode" class="col-sm-4 control-label">组织机构代码 <sup>*</sup></label>
+                            <label for="organizationCode" class="col-sm-4 control-label">组织机构代码</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="organizationCode" name="organizationCode" placeholder="" required>
+                                <input type="text" class="form-control" id="organizationCode" name="organizationCode" placeholder="" readonly>
                             </div>
                         </div>
                         <div class="form-group">
@@ -690,15 +702,15 @@
                     </div>
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="licenseCode" class="col-sm-4 control-label">营业执照注册号 <sup>*</sup></label>
+                            <label for="licenseCode" class="col-sm-4 control-label">营业执照注册号<sup>*</sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="licenseCode" name="licenseCode" placeholder="" required>
+                                <input type="text" class="form-control" id="licenseCode" name="licenseCode" placeholder="" onkeyup="automatic(this)">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="postCode" class="col-sm-4 control-label">工商注册地邮编 <sup>*</sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="postCode" name="postCode" placeholder="" required>
+                                <input type="text" class="form-control" id="postCode" name="postCode" placeholder="" >
                             </div>
                         </div>
                         <div class="form-group">
@@ -710,7 +722,7 @@
                         <div class="form-group">
                             <label for="operationMode" class="col-sm-4 control-label">经营方式 <sup>*</sup></label>
                             <div class="col-xs-5">
-                                <select class="form-control" name="operationMode" id="operationMode" required></select>
+                                <select class="form-control" name="operationMode" id="operationMode" ></select>
                             </div>
                         </div>
                         <div class="form-group hidden">
@@ -751,7 +763,7 @@
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="materialAttachment" class="col-sm-4 control-label">原辅材料 <sup>*</sup></label>
+                            <label for="materialAttachment" class="col-sm-4 control-label">原辅材料 </label>
                             <div class="col-xs-5">
                                 <input type="file"  id="materialAttachment" name="materialAttachment" placeholder="">
                             </div>
@@ -759,7 +771,7 @@
                     </div>
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="processAttachment" class="col-sm-4 control-label">工艺流程图 <sup>*</sup></label>
+                            <label for="processAttachment" class="col-sm-4 control-label">工艺流程图 </label>
                             <div class="col-xs-5">
                                 <input type="file"  id="processAttachment" name="processAttachment" placeholder="">
                             </div>
@@ -807,7 +819,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="email" class="col-sm-4 control-label">邮箱 <sup>*</sup></label>
+                            <label for="email" class="col-sm-4 control-label">邮箱 </label>
                             <div class="col-xs-5">
                                 <input type="email" class="form-control" id="email" name="email" placeholder="">
                             </div>
@@ -825,15 +837,21 @@
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="contactName" class="col-sm-4 control-label">开户行名称 <sup>*</sup></label>
+                            <label for="contactName" class="col-sm-4 control-label">开户行名称 </label>
                             <div class="col-xs-5">
                                 <input type="text" class="form-control" id="bankName" name="bankName" placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="mobile" class="col-sm-4 control-label">开户行账号 <sup>*</sup></label>
+                            <label for="bankAccount" class="col-sm-4 control-label">开户行账号 </label>
                             <div class="col-xs-5">
                                 <input type="text" class="form-control" id="bankAccount" name="bankAccount" placeholder="" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="taxAddress" class="col-sm-4 control-label">开票地址 </label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="taxAddress" name="taxAddress" placeholder="" >
                             </div>
                         </div>
                         <div class="form-group">
@@ -852,15 +870,21 @@
                     </div>
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="mobile" class="col-sm-4 control-label">税号 <sup>*</sup></label>
+                            <label for="mobile" class="col-sm-4 control-label">税号</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="taxNumber" name="taxNumber" placeholder="" >
+                                <input type="text" class="form-control" id="taxNumber" name="taxNumber" placeholder="" readonly>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="mobile" class="col-sm-4 control-label">开票类型 <sup>*</sup></label>
+                            <label for="mobile" class="col-sm-4 control-label">开票类型 </label>
                             <div class="col-xs-5">
                                 <select class="form-control" id="ticketType" name="ticketType"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="taxMobile" class="col-sm-4 control-label">开票电话 </label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="taxMobile" name="taxMobile" placeholder="" >
                             </div>
                         </div>
                     </div>

@@ -79,10 +79,61 @@ public class SampleInformation {
     private boolean isFlashPoint;  // 闪点
 
     private boolean isViscosity;  // 粘度
+
+    private boolean isCOD;
+
+    private boolean isBOD5;
+
+    private boolean isO2;
+
+    private boolean isLye;
+
+    private  boolean isN2;
+
     /**
      * 分页
      */
     private Page page;
+
+    public boolean getIsN2() {
+        return isN2;
+    }
+
+    public void setIsN2(boolean N2) {
+        isN2 = N2;
+    }
+
+    public boolean getIsCOD() {
+        return isCOD;
+    }
+
+    public void setIsCOD(boolean COD) {
+        isCOD = COD;
+    }
+
+    public boolean getIsBOD5() {
+        return isBOD5;
+    }
+
+    public void setIsBOD5(boolean BOD5) {
+        isBOD5 = BOD5;
+    }
+
+    public boolean getIsO2() {
+        return isO2;
+    }
+
+    public void setIsO2(boolean O2) {
+        isO2 = O2;
+    }
+
+    public boolean getIsLye() {
+        return isLye;
+    }
+
+    public void setIsLye(boolean Lye) {
+        isLye = Lye;
+    }
 
     public String getInboundPlanOrderId() {
         return inboundPlanOrderId;

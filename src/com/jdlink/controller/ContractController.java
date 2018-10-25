@@ -1,11 +1,9 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
-import com.jdlink.domain.Produce.Assessment;
-import com.jdlink.domain.Produce.LaboratoryTest;
-import com.jdlink.domain.Produce.WayBill;
-import com.jdlink.domain.Produce.WayBillItem;
+import com.jdlink.domain.Produce.*;
 import com.jdlink.service.*;
+import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
 import com.jdlink.util.UpdateVersion;
 import net.sf.json.JSONArray;
@@ -15,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
@@ -22,6 +21,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.jdlink.util.DateUtil.getDateStr;
+import static com.jdlink.util.UppercaseToNumber.transformation;
+
 
 /**
  * Created by matt on 2018/5/18.
@@ -1169,6 +1170,47 @@ public class ContractController {
 
         return  res.toString();
 
+
+    }
+
+    //导入费用明细
+    @RequestMapping("importQuotationItemExcel")
+    @ResponseBody
+    public String importQuotationItemExcel(MultipartFile excelFile){
+        JSONObject res=new JSONObject();
+        Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+        try {
+            List<QuotationItem> quotationItemList=new ArrayList<>();
+           for(int i=1;i<data.length;i++){
+             //创建报价单的明细
+               QuotationItem quotationItem=new QuotationItem();
+               //1危废名称
+               quotationItem.setWastesName(data[i][1].toString());
+               //包装
+               quotationItem.setPackageType(PackageType.getPackageType(data[i][2].toString()));
+              //进料方式
+               quotationItem.setHandleCategory(HandleCategory.getHandleCategory(data[i][3].toString()));
+               //代码
+               quotationItem.setWastesCode(data[i][4].toString());
+               //合约量
+               quotationItem.setContractAmount(transformation(data[i][5].toString()));
+               quotationItemList.add(quotationItem);
+           }
+            res.put("status", "success");
+            res.put("message", "费用明细导入成功");
+            res.put("data", quotationItemList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "费用明细失败");
+
+
+        }
+
+
+
+        return res.toString();
 
     }
 }

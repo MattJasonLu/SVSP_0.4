@@ -2,9 +2,7 @@ package com.jdlink.mapper;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
-import com.jdlink.domain.Produce.ProductionDaily;
-import com.jdlink.domain.Produce.Sewage;
-import com.jdlink.domain.Produce.SoftWater;
+import com.jdlink.domain.Produce.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -97,4 +95,29 @@ public interface ProductionDailyMapper {
      * @return 数量
      */
     int searchProductionDailyCount(ProductionDaily productionDaily);
+
+    //添加污水登记主表
+    void addSewaGeregistration(Sewageregistration sewageregistration);
+
+    //获得主表最新的主键
+    List<Integer> getNewestId();
+
+    //添加污水登记子表
+    void addSewaGeregistrationItem(SewageregistrationItem sewageregistrationItem);
+
+    //添加软水登记主表
+    void addSoftGeregistration(Sewageregistration sewageregistration);
+
+       //添加软水登记字表表
+    void addSoftGeregistrationItem(SewageregistrationItem sewageregistrationItem);
+
+    List<Sewageregistration> sewageList(Page page);
+
+    List<Sewageregistration> softList(Page page);
+
+    Sewageregistration  getSewaGeregistrationById(String id);
+
+    void confirmSewaGeregistrationById(String id);
+
+    void rejectSewaGeregistrationById(String id,String advice);
 }

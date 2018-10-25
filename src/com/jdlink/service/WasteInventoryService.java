@@ -32,5 +32,8 @@ public interface WasteInventoryService {
     int  total1();
     List<Date> getNewestInBoundDateSec();
     void  updateInventoryCount(Float count,String inboundOrderItemId );
-    List<WasteInventory> list3();
+    List<WasteInventory> list3(Page page);
+    WasteInventory declareGenerationById(String inboundOrderItemId);
+    void rollback(String outboundOrderId);
+    void  returnNumber(String inboundOrderItemId,float outboundNumber);
 }

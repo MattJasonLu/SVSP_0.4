@@ -31,14 +31,14 @@
           operationType, contingencyPlan, operationRecord, location, street, applicationStatus,
           materialAttachmentUrl, processAttachmentUrl, processDesp, contactName, phone, mobile,
           email, state, industry, product, checkState, bankName, bankAccount, taxNumber, ticketType,
-           isDisposal, clientType, nowTime)
+           isDisposal, clientType, nowTime, taxAddress, taxMobile)
         values (#{clientId}, #{groupId}, #{companyName},
           #{organizationCode}, #{licenseCode}, #{representative}, #{postCode}, #{enterpriseType},
           #{operationMode}, #{operationType}, #{contingencyPlan}, #{operationRecord}, #{location},
           #{street}, #{applicationStatus}, #{materialAttachmentUrl}, #{processAttachmentUrl},
           #{processDesp}, #{contactName}, #{phone}, #{mobile}, #{email}, #{clientState}, #{industry},
           #{product}, #{checkState}, #{bankName}, #{bankAccount}, #{taxNumber}, #{ticketType}, #{isDisposal},
-          #{clientType}, NOW());
+          #{clientType}, NOW(), #{taxAddress}, #{taxMobile});
           INSERT INTO t_document (clientId, filePath, documentType) VALUES (#{clientId}, #{materialAttachmentUrl}, 'EIA');
           INSERT INTO t_document (clientId, filePath, documentType) VALUES (#{clientId}, #{processAttachmentUrl}, 'EIA');
     </insert>
@@ -167,7 +167,8 @@
          contingencyPlan=#{contingencyPlan}, operationRecord=#{operationRecord}, location=#{location},
          street=#{street}, applicationStatus=#{applicationStatus}, processDesp=#{processDesp}, contactName=#{contactName},
          phone=#{phone}, mobile=#{mobile}, email=#{email}, industry=#{industry}, product=#{product}, bankName=#{bankName},
-         bankAccount=#{bankAccount}, taxNumber=#{taxNumber}, ticketType=#{ticketType}, isDisposal=#{isDisposal},nowTime=NOW()
+         bankAccount=#{bankAccount}, taxNumber=#{taxNumber}, ticketType=#{ticketType}, isDisposal=#{isDisposal},nowTime=NOW(),
+         taxAddress=#{taxAddress}, taxMobile=#{taxMobile}
          WHERE clientId=#{clientId} order by nowTime desc;
     </update>
 

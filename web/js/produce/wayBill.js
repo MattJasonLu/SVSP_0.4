@@ -1,5 +1,5 @@
 /**
- * 获取首页内容
+ * 获取首页内容1
  * */
 function loadPageWayBillDetailList() {
     $('.selectpicker').selectpicker({
@@ -87,7 +87,7 @@ function setWayBillItemList(result) {
                     break;
                 case (2):
                     //接收单位
-                    $(this).find("select").selectpicker('val', obj.receiveCompanyName);
+                    $(this).find("input").val(obj.receiveCompanyName);
                     break;
                 case (3):
                     //接收单位经手人
@@ -111,16 +111,16 @@ function setWayBillItemList(result) {
                     break;
                 case (8):
                     //危废数量
-                    $(this).find("input").val(obj.wastesAmount);
+                    $(this).find("input").val(obj.wastesAmount.toFixed(3));
                     break;
                 case (9):
                     //危废含税单价
-                    $(this).find("input").val(obj.wastesPrice);
+                    $(this).find("input").val(obj.wastesPrice.toFixed(3));
                     break;
                 case(10):
                     //危废单个合计
                     var total = obj.wastesPrice * obj.wastesAmount;
-                    $(this).find("span").text(total);
+                    $(this).find("span").text(total.toFixed(3));
                     break;
                 case(11):
                     //开票日期

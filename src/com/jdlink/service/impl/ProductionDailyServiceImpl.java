@@ -2,9 +2,7 @@ package com.jdlink.service.impl;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
-import com.jdlink.domain.Produce.ProductionDaily;
-import com.jdlink.domain.Produce.Sewage;
-import com.jdlink.domain.Produce.SoftWater;
+import com.jdlink.domain.Produce.*;
 import com.jdlink.mapper.ProductionDailyMapper;
 import com.jdlink.service.ProductionDailyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,8 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class ProductionDailyServiceImpl implements ProductionDailyService {
+public class ProductionDailyServiceImpl implements ProductionDailyService
+{
     @Autowired
     ProductionDailyMapper productionDailyMapper;
 
@@ -102,5 +101,55 @@ public class ProductionDailyServiceImpl implements ProductionDailyService {
     @Override
     public int searchProductionDailyCount(ProductionDaily productionDaily) {
         return productionDailyMapper.searchProductionDailyCount(productionDaily);
+    }
+
+    @Override
+    public void addSewaGeregistration(Sewageregistration sewageregistration) {
+        productionDailyMapper.addSewaGeregistration(sewageregistration);
+    }
+
+    @Override
+    public List<Integer> getNewestId() {
+        return productionDailyMapper.getNewestId();
+    }
+
+    @Override
+    public void addSewaGeregistrationItem(SewageregistrationItem sewageregistrationItem) {
+        productionDailyMapper.addSewaGeregistrationItem(sewageregistrationItem);
+    }
+
+    @Override
+    public void addSoftGeregistration(Sewageregistration sewageregistration) {
+        productionDailyMapper.addSoftGeregistration(sewageregistration);
+    }
+
+    @Override
+    public void addSoftGeregistrationItem(SewageregistrationItem sewageregistrationItem) {
+        productionDailyMapper.addSoftGeregistrationItem(sewageregistrationItem);
+    }
+
+    @Override
+    public List<Sewageregistration> sewageList(Page page) {
+        return productionDailyMapper.sewageList(page);
+    }
+
+    @Override
+    public List<Sewageregistration> softList(Page page) {
+        return productionDailyMapper.softList(page);
+    }
+
+    @Override
+    public Sewageregistration getSewaGeregistrationById(String id) {
+        return productionDailyMapper.getSewaGeregistrationById(id);
+    }
+
+    @Override
+    public void confirmSewaGeregistrationById(String id) {
+        productionDailyMapper.confirmSewaGeregistrationById(id);
+    }
+
+    @Override
+    public void rejectSewaGeregistrationById(String id, String advice) {
+        productionDailyMapper.rejectSewaGeregistrationById(id,advice);
     }
 }

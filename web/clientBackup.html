@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html><!---->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -816,7 +816,7 @@
                     $("#modal4_taxNumber").text(data.taxNumber);
                     $("#modal4_ticketType").text(data.ticketType);
                     $("#advice").text(data.advice);
-                    $("#advice1").val(data.advice)
+                    $("#advice1").val(data.advice);
                     $("#backContent").val(data.advice);
                     $("#modal4_approvalState").text(data.checkState.name);
                     $("#modal4_approvalDate").text(getTimeStr(data.nowTime));
@@ -901,6 +901,10 @@
                     $("#modal3_mobile").text(data.mobile);
                     $("#modal3_phone").text(data.phone);
                     $("#modal3_email").text(data.email);
+                    $("#modal3_bankName").text(data.bankName);
+                    $("#modal3_bankAccount").text(data.bankAccount);
+                    $("#modal3_taxNumber").text(data.taxNumber);
+                    if (data.ticketType != null) $("#modal4_ticketType").text(data.ticketType.name);
                     $("#modal3_materialAttachment").click(function () {
                         if (data.materialAttachmentUrl != null && data.materialAttachmentUrl != "") {
                             window.open('downloadFile?filePath=' + data.materialAttachmentUrl);
@@ -915,10 +919,7 @@
                             alert("未上传文件");
                         }
                     });
-                    $("#modal4_bankName").text(data.bankName);
-                    $("#modal4_bankAccount").text(data.bankAccount);
-                    $("#modal4_taxNumber").text(data.taxNumber);
-                    $("#modal4_ticketType").text(data.ticketType);
+
                 } else {
                     $("#modal3_companyName").text("");
                     $("#modal3_organizationCode").text("");
@@ -1158,39 +1159,56 @@
             },
             success: function (result) {
                 if (result != undefined) {
-                    console.log("success: " + result);
+                    var obj=eval(result);
+                    // console.log(result);
                     $("#model-clientId").val(result.clientId);
                     $("#model-companyName").val(result.companyName);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-            }
-        });
-        // 添加业务员信息
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "listSalesman",              // url
-            cache: false,
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                if (result != undefined) {
-                    console.log("success: " + result);
-                    var data = eval(result);
-                    // 各下拉框数据填充
-                    var salesmanList = $("#model-salesmanList");
-                    // 清空遗留元素
-                    salesmanList.children().first().siblings().remove();
-                    $.each(data, function (index, item) {
-                        var option = $('<option />');
-                        option.val(item.salesmanId);
-                        option.text(item.name);
-                        salesmanList.append(option);
+
+                    // 添加业务员信息
+                    $.ajax({
+                        type: "POST",                       // 方法类型
+                        url: "listSalesman",              // url
+                        cache: false,
+                        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (result) {
+                            if (result != undefined) {
+                                console.log(result);
+                                console.log(obj)
+                                var data = eval(result);
+                                // 各下拉框数据填充
+                                var salesmanList = $("#model-salesmanList");
+                                // 清空遗留元素
+                                salesmanList.children().first().siblings().remove();
+                                index1="";
+                                $.each(data, function (index, item) {
+                                    var option = $('<option />');
+                                    option.val(item.salesmanId);
+                                    option.text(item.name);
+                                    salesmanList.append(option);
+                                    if(obj.salesman!=null){
+                                        if(obj.salesman.salesmanId==item.salesmanId){
+                                            index1=index;
+                                        }
+                                    }
+
+                                    if(obj.salesman==null){
+                                        index1=0;
+                                    }
+                                });
+                                console.log(index1)
+                                salesmanList.get(0).selectedIndex=index1+1;
+                            } else {
+                                console.log("fail: " + result);
+                            }
+                        },
+                        error: function (result) {
+                            console.log("error: " + result);
+                        }
                     });
+
+
                 } else {
                     console.log("fail: " + result);
                 }
@@ -1199,6 +1217,7 @@
                 console.log("error: " + result);
             }
         });
+
         $('#myModal').modal('show');
 
     }
@@ -1396,16 +1415,15 @@
                 }
             });
         });
-
     }
 
     /**
      * 下载模板
      * */
     function downloadModal() {
-        var filePath = 'Files/Templates/client模板.xls';
+        var filePath = 'Files/Templates/产废单位导入模板.xlsx';
         var r = confirm("是否下载模板?");
-        if (r == true) {
+        if (r) {
             window.open('downloadFile?filePath=' + filePath);
         }
     }

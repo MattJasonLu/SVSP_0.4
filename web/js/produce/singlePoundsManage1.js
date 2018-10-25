@@ -497,7 +497,7 @@ function importExcelChoose() {
  * 下载模板
  * */
 function downloadModal() {
-    var filePath = 'Files/Templates/磅单模板.xls';
+    var filePath = 'Files/Templates/磅单模板.xlsx';
     if (confirm("是否下载模板?")) {
         window.open('downloadFile?filePath=' + filePath);
     }
@@ -899,6 +899,11 @@ function loadPoundsAdd(){
     setSelectedListAdd();  // 填充下拉框数据
     if(getCurrentUserData() != null)
     $("#add_founder").val(getCurrentUserData().username);   // 创建人赋值
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        // style: 'btn-info',
+        size: 4
+    });//下拉框样式
 }
 
 /**
@@ -944,9 +949,11 @@ function setSelectedListAdd(){
                 wastesCode.children().first().siblings().remove();
                 $.each(data.wastesCodeList, function (index, item) {
                     var option = $('<option />');
-                    option.val(parseInt(item.code.replace(/[^0-9]/ig, "")));
-                    option.text(item.code);
-                    wastesCode.append(option);
+                    if (item != null) {
+                        option.val(parseInt(item.code.replace(/[^0-9]/ig, "")));
+                        option.text(item.code);
+                        wastesCode.append(option);
+                    }
                 });
                 $('.selectpicker').selectpicker('refresh');
             } else {

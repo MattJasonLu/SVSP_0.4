@@ -1,4 +1,4 @@
-/**加载库存的数据
+/**加载库存的数据1
  * 
  */
 
@@ -215,7 +215,7 @@ function  batchingList() {
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getWasteInventoryList",                  // url
-        // data:JSON.stringify(page),
+        data:JSON.stringify(page),
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         contentType: "application/json; charset=utf-8",
@@ -745,14 +745,16 @@ function searchInventory() {
             if(endDate.toString()=='Invalid Date'){
                 endDate=dateMax;
             }
+            console.log($(this).children('td').eq(6).text().toString())
+            var code=($(this).children('td').eq(6).text().toString()).substring($(this).children('td').eq(6).text().length-2,$(this).children('td').eq(6).text().length);
             if(!($(this).children('td').eq(8).text().indexOf(hangdeCategory)!=-1
-                &&$(this).children('td').eq(4).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(wastesCode)!=-1&&$(this).children('td').text().indexOf(text)!=-1
+                &&$(this).children('td').eq(4).text().indexOf(companyName)!=-1&&code.indexOf(wastesCode)!=-1&&$(this).children('td').text().indexOf(text)!=-1
                 &&(new Date($(this).children('td').eq(2).text()).getTime()>=new Date(startDate).getTime() &&new Date($(this).children('td').eq(2).text()).getTime()<=new Date(endDate).getTime())
             )){
                 $(this).hide();
             }
             if($(this).children('td').eq(8).text().indexOf(hangdeCategory)!=-1
-                &&$(this).children('td').eq(4).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(wastesCode)!=-1&&$(this).children('td').text().indexOf(text)!=-1
+                &&$(this).children('td').eq(4).text().indexOf(companyName)!=-1&&code.indexOf(text)!=-1
                 &&(new Date($(this).children('td').eq(2).text()).getTime()>=new Date(startDate).getTime() &&new Date($(this).children('td').eq(2).text()).getTime()<=new Date(endDate).getTime())){
                 array1.push($(this));
             }

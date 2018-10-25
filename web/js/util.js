@@ -100,6 +100,9 @@ function getPackageTypeFromStr(packageType) {
         case "铁桶":
             res = "Iron";
             break;
+        case "吨桶":
+            res = "Ibc";
+            break;
         default:
             res = "";
             break;
@@ -161,11 +164,11 @@ function allSelect() {
     if (isChecked) $("input[name='select']").prop('checked', true);
     else $("input[name='select']").prop('checked', false);
 }
-
+///
 /**
  * 校验权限
  * @param e 要进入的功能
- */
+//  */
 function checkAuthority(e) {
     var flag = false;
     // 获取功能编号

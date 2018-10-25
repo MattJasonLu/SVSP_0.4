@@ -1,5 +1,5 @@
 /**
- * 重置搜索数据
+ * 重置搜索数据1
  */
 function reset() {
     window.location.reload();
@@ -390,7 +390,7 @@ function setWasteInventoryList(result) {
                         break;
                     //数量
                     case (9):
-                        $(this).html(obj.actualCount);
+                        $(this).html(obj.actualCount.toFixed(2));
                         break;
                     //单价
                     case (10):

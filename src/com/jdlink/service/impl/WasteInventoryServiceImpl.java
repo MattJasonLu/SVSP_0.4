@@ -140,8 +140,23 @@ public class WasteInventoryServiceImpl implements WasteInventoryService {
     }
 
     @Override
-    public List<WasteInventory> list3() {
-        return wasteInventoryMapper.list3();
+    public List<WasteInventory> list3(Page page) {
+        return wasteInventoryMapper.list3(page);
+    }
+
+    @Override
+    public WasteInventory declareGenerationById(String inboundOrderItemId) {
+        return wasteInventoryMapper.declareGenerationById(inboundOrderItemId);
+    }
+
+    @Override
+    public void rollback(String outboundOrderId) {
+        wasteInventoryMapper.rollback(outboundOrderId);
+    }
+
+    @Override
+    public void returnNumber(String inboundOrderItemId, float outboundNumber) {
+        wasteInventoryMapper.returnNumber(inboundOrderItemId, outboundNumber);
     }
 
 

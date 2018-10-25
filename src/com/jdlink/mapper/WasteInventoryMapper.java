@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface WasteInventoryMapper {
-    List<WasteInventory> list3();
+    List<WasteInventory> list3(Page page);
    List<WasteInventory> list(Page page);
     List<WasteInventory> list1();
     List<WasteInventory> list2(Page page);
@@ -34,5 +34,11 @@ public interface WasteInventoryMapper {
     List<Date> getNewestInBoundDateSec();
 
    void  updateInventoryCount(Float count,String inboundOrderItemId );
+
+    WasteInventory declareGenerationById(String inboundOrderItemId);
+
+    void rollback(String outboundOrderId);
+    void  returnNumber(String inboundOrderItemId,float outboundNumber);
+
 
 }

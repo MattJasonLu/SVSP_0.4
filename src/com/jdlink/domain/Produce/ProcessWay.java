@@ -7,6 +7,7 @@ package com.jdlink.domain.Produce;
 public enum ProcessWay {
     Burning("焚烧", 1),
     Landfill("填埋",2),
+    Clean("清洗",3)
     ;
 
     private String name;

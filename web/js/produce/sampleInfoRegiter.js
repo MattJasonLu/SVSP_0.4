@@ -21,6 +21,18 @@ function show11() {
 }
 
 /**
+ * 拒收框
+ */
+function rejection() {
+    $("#rejection1").modal('show')
+}
+/**
+ * 确认拒收
+ */
+function rejection1() {
+    $()
+}
+/**
  * 计算总页数
  * */
 function totalPage() {
@@ -731,7 +743,7 @@ function setSelectList() {
 var num = 1;
 
 /**
- * 预约登记/修改-新增样品
+ * 预约登记/修改-新增样品1
  */
 function addNewLine(item) {
     num++;
@@ -740,7 +752,7 @@ function addNewLine(item) {
     var tr = null;
     if (item != null)
         tr = $(item).parent().parent().prev();
-    else tr = $("#addBtn3").prev();end
+    else tr = $("#addBtn3").prev();
     // 克隆tr，每次遍历都可以产生新的tr
     var clonedTr = tr.clone();
     // 克隆后清空新克隆出的行数据

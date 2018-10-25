@@ -4,15 +4,21 @@
     <meta charset="UTF-8">
     <title>接收管理</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
-    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <link href="css/bootstrap/bootstrap-datetimepicker.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
     <link href="css/dashboard.css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script src="js/bootstrap/3.3.6/bootstrap.js"></script>
+    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
+    <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/page.js"></script>
     <script src="js/produce/secondWarehouseManage.js"></script>
 </head>
 <body onload="setSelectList();">
@@ -35,26 +41,70 @@
             <ul class="nav navbar-nav">
                 <li><a href="receiveManagement.html">首页</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">转移管理<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">转移管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="transportPlan.html">运输计划单</a></li>
+                        <li><a href="transportPlanList.html">运输计划单</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="transferDraft.html">转移联单</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">化验管理<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">化验管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="sampleInfoRegiter.html">送样登记</a></li>
+                        <li class="dropdown-submenu">
+                            <a href="">送样登记</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="receiveSampleInfo.html">市场部送样</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="sampleInfoRegiter.html">仓储部送样</a></li>
+                                <li role="separator" class="divider"></li><!---->
+                                <li class="dropdown-submenu">
+                                    <a href="">生产工艺控制送样</a>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-submenu"><a href="">水质送样</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="sewageAnalysis.html">污水送样</a></li>
+                                                <li role="separator" class="divider"></li>
+                                                <li><a href="softWaterAnalysis.html">软水送样</a></li>
+                                            </ul>
+                                        </li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="secondaryAnalysis.html">次生送样</a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="">其他</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="testResults.html">化验结果</a></li>
+                        <li class="dropdown-submenu">
+                            <a href="testResults.html">化验结果</a><ul class="dropdown-menu">
+                            <li><a href="testResultsSampleInfo.html">市场部化验</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="sampleInfoAnalysis.html">仓储部化验</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="dropdown-submenu">
+                                <a href="">生产工艺控制化验</a>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-submenu"><a href="">水质化验</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="sewageTestResults.html">污水化验</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="softWaterTestResults.html">软水化验</a></li>
+                                        </ul>
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="secondaryTestResults.html">次生化验</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="">其他</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        </li>
                     </ul>
                 </li>
                 <li class="dropdown active">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">库存管理<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">库存管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li class="dropdown-submenu">
                             <a href="#">入库管理</a>
@@ -75,8 +125,7 @@
         <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
         <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
         <li class="dropdown">
-            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-               aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
             <ul class="dropdown-menu">
                 <li><a href="#">个人信息</a></li>
                 <li><a href="#">待办事项</a></li>
@@ -144,66 +193,56 @@
         <h4 class="sub-header">次生入库单明细</h4>
         <div id="mainData">
             <br>
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th class="text-center small">序号</th>
-                    <th class="text-center small">产废单位</th>
-                    <th class="text-center small">危废名称</th>
-                    <th class="text-center small">危废代码</th>
-                    <th class="text-center small">危废数量</th>
-                    <th class="text-center small">单价</th>
-                    <th class="text-center small">金额</th>
-                    <th class="text-center small">处理方式</th>
-                    <th class="text-center small">进料方式</th>
-                    <th class="text-center small">物质形态</th>
-                    <th class="text-center small">包装方式</th>
-                    <th class="text-center small" style="width: 30px">热值<br>KCal/Kg</th>
-                    <th class="text-center small">ph</th>
-                    <th class="text-center small">灰分/%</th>
-                    <th class="text-center small">水分/%</th>
-                    <th class="text-center small">氯含量/%</th>
-                    <th class="text-center small">硫含量/%</th>
-                    <th class="text-center small">磷含量/%</th>
-                    <th class="text-center small">氟含量/%</th>
-                    <th class="text-center small">备注</th>
-                    <th class="text-center small">库区</th>
-                </tr>
-                </thead>
-                <tbody id="inboundOrderData">
-                <tr id="inboundClonedTr">
-                    <td class="text-center small" name="index">1</td>
-                    <td class="text-center small"><input name="produceCompanyName" style="width: 100px"></td>
-                    <td class="text-center small"><select name="wastesName">
-                        <option value="slag">炉渣</option>
-                        <option value="ash">飞灰</option>
-                        <option value="bucket">桶</option>
-                    </select></td>
-                    <td class="text-center small"><input name="wastesCode" style="width: 80px"></td>
-                    <td class="text-center small"><input name="wastesAmount" style="width: 30px"></td>
-                    <td class="text-center small"><input name="unitPriceTax" style="width: 30px"></td>
-                    <td class="text-center small" name="totalPrice"></td>
-                    <td class="text-center small"><select name="processWay" style="width: 30px"></select></td>
-                    <td class="text-center small"><select name="handleCategory" style="width: 30px"></select></td>
-                    <td class="text-center small"><select name="formType" style="width: 30px"></select></td>
-                    <td class="text-center small"><select name="packageType" style="width: 30px"></select></td>
-                    <td class="text-center small"><input name="heat" style="width: 30px"></td>
-                    <td class="text-center small"><input name="ph" style="width: 30px"></td>
-                    <td class="text-center small"><input name="ash" style="width: 30px"></td>
-                    <td class="text-center small"><input name="waterContent" style="width: 30px"></td>
-                    <td class="text-center small"><input name="chlorineContent" style="width: 30px"></td>
-                    <td class="text-center small"><input name="sulfurContent" style="width: 30px"></td>
-                    <td class="text-center small"><input name="phosphorusContent" style="width: 30px"></td>
-                    <td class="text-center small"><input name="fluorineContent" style="width: 30px"></td>
-                    <td class="text-center small"><input name="remarks" style="width: 30px"></td>
-                    <td class="text-center small"><input name="warehouseArea" style="width: 30px"></td>
-                </tr>
-                <tr id="plus">
-                    <td class="text-center"><a class="btn btn-default btn-xs" onclick="addNewLine();" id="plusBtn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
-                    <td class="text-center" colspan="20"></td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="row" style="overflow: scroll">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th class="text-center small">序号</th>
+                        <th class="text-center small" style="width: 100%;">产废单位</th>
+                        <th class="text-center small">危废名称</th>
+                        <th class="text-center small">危废代码</th>
+                        <th class="text-center small">危废数量</th>
+                        <th class="text-center small">单位</th>
+                        <th class="text-center small">单价</th>
+                        <th class="text-center small">金额</th>
+                        <th class="text-center small">处理方式</th>
+                        <!--<th class="text-center small">进料方式</th>-->
+                        <th class="text-center small">物质形态</th>
+                        <th class="text-center small">包装方式</th>
+                        <th class="text-center small" style="width: 70px">热酌减率</th>
+                        <th class="text-center small" style="width: 70px">水分/%</th>
+                        <th class="text-center small">备注</th>
+                        <th class="text-center small">库区</th>
+                    </tr>
+                    </thead>
+                    <tbody id="inboundOrderData">
+                    <tr id="inboundClonedTr">
+                        <td class="text-center small" name="index">1</td>
+                        <td class="text-center small text-oneLine-ellipsis" name="produceCompanyName">北控安耐得环保科技发展常州有限公司</td>
+                        <td class="text-center small"><select name="wastesName" class="form-control" style="width: 100px;"></select></td>
+                        <td class="text-center small">
+                            <select style="width: 100px" class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="wastesCode" title="未选择"></select>
+                        </td>
+                        <td class="text-center small"><input style="width: 65px" class="form-control focus" name="wastesAmount" onkeyup="calculateTotalPrice(this);"></td>
+                        <td class="text-center small"><input style="width: 65px" class="form-control focus" name="wastesUnit"></td>
+                        <td class="text-center small"><input style="width: 65px" class="form-control focus" name="unitPriceTax" onkeyup="calculateTotalPrice(this);"></td>
+                        <td class="text-center small" name="totalPrice" style="width: 65px"></td>
+                        <td class="text-center small"><select name="processWay" class="form-control" style="width: 100px;"></select></td>
+                        <!--<td class="text-center small"><select name="handleCategory" class="form-control"></select></td>-->
+                        <td class="text-center small"><select name="formType" class="form-control" style="width: 100px;"></select></td>
+                        <td class="text-center small"><select name="packageType" class="form-control" style="width: 100px;"></select></td>
+                        <td class="text-center small"><input class="form-control focus" name="heat" style="width: 65px"></td>
+                        <td class="text-center small"><input class="form-control focus" name="waterContent" style="width: 65px"></td>
+                        <td class="text-center small"><input class="form-control focus" name="remarks" style="width: 65px" ></td>
+                        <td class="text-center small"><input class="form-control focus" name="warehouseArea" style="width: 65px" ></td>
+                    </tr>
+                    <tr id="plus">
+                        <td class="text-center"><a class="btn btn-default btn-xs" onclick="addNewLine();" id="plusBtn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                        <td class="text-center" colspan="20"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
             <div class="row text-center">
                 <a class="btn btn-success" onclick="addData('save');">保存</a>
                 <a class="btn btn-primary" onclick="addData('submit');">提交</a>

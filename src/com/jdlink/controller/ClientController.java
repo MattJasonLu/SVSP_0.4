@@ -7,6 +7,7 @@ import com.jdlink.domain.Inventory.OutboundOrder;
 import com.jdlink.domain.Produce.SampleInformation;
 import com.jdlink.service.*;
 import com.jdlink.util.DBUtil;
+import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -592,8 +593,129 @@ public class ClientController {
     public String importClientExcel(MultipartFile excelFile,String tableName,String id){
         JSONObject res = new JSONObject();
         try {
-            DBUtil db=new DBUtil();
-            db.importExcel(excelFile, tableName, id);
+//            DBUtil db=new DBUtil();
+//            db.importExcel(excelFile, tableName, id);
+            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+            for (int i = 1; i < data.length; i++) {
+                Client client = new Client();
+                // 设置编号
+                client.setClientId(clientService.getCurrentId());
+                client.setClientType(ClientType.EnquiryClient);
+                client.setCheckState(CheckState.Finished);
+                client.setClientState(ClientState.Enabled);
+                client.setApplicationStatus(ApplicationStatus.Declared);
+                client.setCompanyName(data[i][0].toString());
+                // 三证合一
+                client.setOrganizationCode(data[i][1].toString());
+                client.setLicenseCode(data[i][1].toString());
+                client.setTaxNumber(data[i][1].toString());
+                client.setRepresentative(data[i][2].toString());
+                client.setPostCode(data[i][3].toString());
+
+                // 设置企业类型
+                switch (data[i][4].toString()) {
+                    case "国有企业":
+                        client.setEnterpriseType(EnterpriseType.StateOwnedEnterprises);
+                        break;
+                    case "集体企业":
+                        client.setEnterpriseType(EnterpriseType.CollectiveEnterprise);
+                        break;
+                    case "国有企业改组的股份合作企业":
+                        client.setEnterpriseType(EnterpriseType.JointStockByStateOwnedEnterprises);
+                        break;
+                    case "集体企业改组的股份合作企业":
+                        client.setEnterpriseType(EnterpriseType.JointStockByCollectiveEnterprise);
+                        break;
+                    case "有限责任公司":
+                        client.setEnterpriseType(EnterpriseType.LimitedLiabilityCompany);
+                        break;
+                    case "私营企业":
+                        client.setEnterpriseType(EnterpriseType.ThePrivateEnterprise);
+                    default:
+                        break;
+                }
+                // 设置经营方式
+                switch (data[i][5].toString()) {
+                    case "生产":
+                        client.setOperationMode(OperationMode.Production);
+                        break;
+                    case "综合":
+                        client.setOperationMode(OperationMode.Comprehensive);
+                        break;
+                    case "收集":
+                        client.setOperationMode(OperationMode.Collect);
+                        break;
+                    default:
+                        break;
+                }
+                // 经营单位类别
+                switch (data[i][6].toString()) {
+                    case "利用处置危险废物及医疗废物":
+                        client.setOperationType(OperationType.WasteAndClinical);
+                        break;
+                    case "只从事收集活动":
+                        client.setOperationType(OperationType.CollectOnly);
+                        break;
+                    case "只利用处置危险废物":
+                        client.setOperationType(OperationType.WasteOnly);
+                        break;
+                    case "只处置医疗废物":
+                        client.setOperationType(OperationType.ClinicalOnly);
+                        break;
+                    default:
+                        break;
+                }
+                // 事故防范和应急预案
+                switch (data[i][7].toString()) {
+                    case "制定并确定了应急协调人":
+                        client.setContingencyPlan(ContingencyPlan.Identify);
+                        break;
+                    case "已制定":
+                        client.setContingencyPlan(ContingencyPlan.Developed);
+                        break;
+                    case "未制定":
+                        client.setContingencyPlan(ContingencyPlan.Undeveloped);
+                        break;
+                    default:
+                        break;
+                }
+                // 建立危废经营记录情况
+                switch (data[i][8].toString()) {
+                    case "已建立":
+                        client.setOperationRecord(OperationRecord.Established);
+                        break;
+                    case "未建立":
+                        client.setOperationRecord(OperationRecord.Unestablished);
+                        break;
+                    default:
+                        break;
+                }
+                client.setLocation(data[i][9].toString());
+                client.setStreet(data[i][10].toString());
+                client.setProcessDesp(data[i][11].toString().equals("null") ? null : data[i][11].toString());
+                client.setContactName(data[i][12].toString());
+                client.setMobile(data[i][14].toString());
+                client.setPhone(data[i][13].toString().equals("null") ? client.getMobile() : data[i][13].toString());
+                client.setEmail(data[i][15].toString());
+                client.setIndustry(data[i][16].toString());
+                client.setProduct(data[i][17].toString());
+                client.setBankName(data[i][18].toString());
+                client.setBankAccount(data[i][19].toString());
+                // 开票税率
+                switch (data[i][20].toString()) {
+                    case "增值税专用发票16%":
+                        client.setTicketType(TicketRate1.Rate1);
+                        break;
+                    case "增值税专用发票3%":
+                        client.setTicketType(TicketRate1.Rate2);
+                        break;
+                    default:
+                        break;
+                }
+                // 是否为北控
+                client.setIsDisposal(data[i][21].toString().equals("是"));
+                clientService.add(client);
+            }
             res.put("status", "success");
             res.put("message", "导入成功");
         } catch (Exception e) {

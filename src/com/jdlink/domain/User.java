@@ -27,7 +27,7 @@ public class User {
     /**
      * 是否是客户账户
      */
-    private boolean isClient;
+//    private boolean isClient;
     /**
      * 部门
      */
@@ -60,10 +60,6 @@ public class User {
      * 角色
      */
     private Role  role;
-    /**
-     * 当前时间
-     */
-    private Date nowTime;
 
     public int getId() {
         return id;
@@ -95,14 +91,6 @@ public class User {
 
     public void setClientId(String clientId) {
         this.clientId = clientId;
-    }
-
-    public boolean getIsClient() {
-        return isClient;
-    }
-
-    public void setIsClient(boolean client) {
-        isClient = client;
     }
 
     public String getDepartment() {
@@ -169,30 +157,5 @@ public class User {
         this.role = role;
     }
 
-    public Date getNowTime() {
-        return nowTime;
-    }
 
-    public void setNowTime(Date nowTime) {
-        this.nowTime = nowTime;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", clientId='" + clientId + '\'' +
-                ", isClient=" + isClient +
-                ", department='" + department + '\'' +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", sex=" + sex +
-                ", job='" + job + '\'' +
-                ", level=" + level +
-                ", canAllocate=" + canAllocate +
-                ", nowTime=" + nowTime +
-                '}';
-    }
 }

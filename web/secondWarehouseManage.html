@@ -4,15 +4,21 @@
     <meta charset="UTF-8">
     <title>产废服务平台</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
-    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <link href="css/bootstrap/bootstrap-datetimepicker.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
     <link href="css/dashboard.css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script src="js/bootstrap/3.3.6/bootstrap.js"></script>
+    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
+    <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/page.js"></script>
     <script src="js/produce/secondWarehouseManage.js"></script>
 </head>
 <body onload="loadPageList();">
@@ -45,9 +51,56 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">化验管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="sampleInfoRegiter.html">送样登记</a></li>
+                            <li class="dropdown-submenu">
+                                <a href="">送样登记</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="receiveSampleInfo.html">市场部送样</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="sampleInfoRegiter.html">仓储部送样</a></li>
+                                    <li role="separator" class="divider"></li><!---->
+                                    <li class="dropdown-submenu">
+                                        <a href="">生产工艺控制送样</a>
+                                        <ul class="dropdown-menu">
+                                            <li class="dropdown-submenu"><a href="">水质送样</a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="sewageAnalysis.html">污水送样</a></li>
+                                                    <li role="separator" class="divider"></li>
+                                                    <li><a href="softWaterAnalysis.html">软水送样</a></li>
+                                                </ul>
+                                            </li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="secondaryAnalysis.html">次生送样</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="">其他</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="testResults.html">化验结果</a></li>
+                            <li class="dropdown-submenu">
+                                <a href="testResults.html">化验结果</a><ul class="dropdown-menu">
+                                <li><a href="testResultsSampleInfo.html">市场部化验</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="sampleInfoAnalysis.html">仓储部化验</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li class="dropdown-submenu">
+                                    <a href="">生产工艺控制化验</a>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-submenu"><a href="">水质化验</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="sewageTestResults.html">污水化验</a></li>
+                                                <li role="separator" class="divider"></li>
+                                                <li><a href="softWaterTestResults.html">软水化验</a></li>
+                                            </ul>
+                                        </li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="secondaryTestResults.html">次生化验</a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="">其他</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            </li>
                         </ul>
                     </li>
                     <li class="dropdown active">
@@ -58,7 +111,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="warehouseManage.html">危废入库</a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="#">次生入库</a></li>
+                                    <li><a href="secondWarehouseManage.html">次生入库</a></li>
                                 </ul>
                             </li>
                             <li role="separator" class="divider"></li>
@@ -323,7 +376,7 @@
             <div class="modal fade bs-example-modal-lg" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
-                        <div class="modal-header">入库单明细</div>
+                        <div class="modal-header">次生入库单明细</div>
                         <div class="modal-body">
                             <table class="table table-bordered">
                                 <thead>
@@ -334,20 +387,15 @@
                                     <th class="text-center small">危废名称</th>
                                     <th class="text-center small">危废代码</th>
                                     <th class="text-center small">危废数量</th>
+                                    <th class="text-center small">单位</th>
                                     <th class="text-center small">单价</th>
                                     <th class="text-center small">金额</th>
                                     <th class="text-center small">处理方式</th>
                                     <th class="text-center small">进料方式</th>
                                     <th class="text-center small">物质形态</th>
                                     <th class="text-center small">包装方式</th>
-                                    <th class="text-center small" style="width: 30px">热值<br>KCal/Kg</th>
-                                    <th class="text-center small">ph</th>
-                                    <th class="text-center small">灰分/%</th>
+                                    <th class="text-center small">热酌减率</th>
                                     <th class="text-center small">水分/%</th>
-                                    <th class="text-center small">氯含量/%</th>
-                                    <th class="text-center small">硫含量/%</th>
-                                    <th class="text-center small">磷含量/%</th>
-                                    <th class="text-center small">氟含量/%</th>
                                     <th class="text-center small">备注</th>
                                     <th class="text-center small">库区</th>
                                     <th class="text-center small">操作</th>
@@ -361,6 +409,7 @@
                                     <td class="text-center small" name="wastesName"></td>
                                     <td class="text-center small" name="wastesCode"></td>
                                     <td class="text-center small" name="wastesAmount"></td>
+                                    <td class="text-center small" name="wastesUnit"></td>
                                     <td class="text-center small" name="unitPriceTax"></td>
                                     <td class="text-center small" name="totalPrice"></td>
                                     <td class="text-center small" name="processWay"></td>
@@ -368,13 +417,7 @@
                                     <td class="text-center small" name="formType"></td>
                                     <td class="text-center small" name="packageType"></td>
                                     <td class="text-center small" name="heatAverage"></td>
-                                    <td class="text-center small" name="phAverage"></td>
-                                    <td class="text-center small" name="ashAverage"></td>
                                     <td class="text-center small" name="waterContentAverage"></td>
-                                    <td class="text-center small" name="chlorineContentAverage"></td>
-                                    <td class="text-center small" name="sulfurContentAverage"></td>
-                                    <td class="text-center small" name="phosphorusContentAverage"></td>
-                                    <td class="text-center small" name="fluorineContentAverage"></td>
                                     <td class="text-center small" name="remarks"></td>
                                     <td class="text-center small" name="warehouseArea"></td>
                                     <td class="text-right">

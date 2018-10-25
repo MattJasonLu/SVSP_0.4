@@ -52,13 +52,13 @@ public class Pounds {
      */
     private Float grossWeight;
     /**
-     * 净重
-     */
-    private Float netWeight;
-    /**
      * 皮重
      */
     private Float tare;
+    /**
+     * 净重
+     */
+    private Float netWeight;
     /**
      * 发货单位
      */

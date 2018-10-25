@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>次生化验单</title>
+    <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <link href="css/dashboard.css" rel="stylesheet">
+    <link href="css/dropdown-submenu.css" rel="stylesheet">
+    <link href="css/bootstrap/navbar.css" rel="stylesheet">
+    <script src="js/bootstrap/navbar.js"></script>
+    <script src="js/time.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/produce/testResults.js"></script>
+</head>
+<body onload="loadPageList()">
+    <!--导航条-->
+    <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
+        <div class="main-title">
+            <ul class="nav navbar-nav navbar-left navbar-side">
+                <li>
+                    <a href="#" onclick="$('body').toggleClass('sidebar-collapse');" style="width: 50px">
+                        <span class="glyphicon glyphicon-menu-hamburger"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="container navbar-left" style="width: 800px;">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
+                <ul class="nav navbar-nav">
+                    <li><a href="receiveManagement.html">首页</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">转移管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="transportPlanList.html">运输计划单</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="transferDraft.html">转移联单</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">化验管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-submenu">
+                                <a href="">送样登记</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="receiveSampleInfo.html">市场部送样</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="sampleInfoRegiter.html">仓储部送样</a></li>
+                                    <li role="separator" class="divider"></li><!---->
+                                    <li class="dropdown-submenu">
+                                        <a href="">生产工艺控制送样</a>
+                                        <ul class="dropdown-menu">
+                                            <li class="dropdown-submenu"><a href="">水质送样</a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="sewageAnalysis.html">污水送样</a></li>
+                                                    <li role="separator" class="divider"></li>
+                                                    <li><a href="softWaterAnalysis.html">软水送样</a></li>
+                                                </ul>
+                                            </li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="secondaryAnalysis.html">次生送样</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="">其他</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li class="dropdown-submenu">
+                                <a href="testResults.html">化验结果</a><ul class="dropdown-menu">
+                                <li><a href="testResultsSampleInfo.html">市场部化验</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="sampleInfoAnalysis.html">仓储部化验</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li class="dropdown-submenu">
+                                    <a href="">生产工艺控制化验</a>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-submenu"><a href="">水质化验</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="sewageTestResults.html">污水化验</a></li>
+                                                <li role="separator" class="divider"></li>
+                                                <li><a href="softWaterTestResults.html">软水化验</a></li>
+                                            </ul>
+                                        </li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="secondaryTestResults.html">次生化验</a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="">其他</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">库存管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-submenu">
+                                <a href="#">入库管理</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="warehouseManage.html">危废入库</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="secondWarehouseManage.html">次生入库</a></li>
+                                </ul>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="singlePoundsManage1.html">磅单管理</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
+            <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+            <li class="dropdown">
+                <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">个人信息</a></li>
+                    <li><a href="#">待办事项</a></li>
+                    <li><a href="#" onclick="showLog();">登录日志</a></li>
+                    <li><a href="index.html">注销</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="sidebar">
+                <ul class="sidenav animated fadeInUp">
+                    <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
+                    <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
+                    <li><a class="withripple" href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="compatibilityPlan.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li class="active"><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="storageManagement.html"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="preprocessingManagement.html"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="dispositionManagement.html"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="secondaryManagement.html"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="procurementManagement.html"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="reportManagement.html"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="basicData.html"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="row">
+                <ol class="breadcrumb">
+                    <li><a href="receiveManagement.html">接收管理</a></li>
+                    <li><a href="#">化验结果</a></li>
+                    <li><a href="#">生产工艺控制化验</a></li>
+                    <li><a href="#">次生化验</a></li>
+                </ol>
+            </div>
+            <h4 class="sub-header">次生化验单</h4>
+            <div class="row">
+                <div>
+                    <!--操作按钮-->
+                    <div class="pull-left col-md-6">
+                        <a class="btn btn-primary btn-xs" onclick="importExcelChoose();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                        <a class="btn btn-primary btn-xs" onclick="setInvalidMulti();"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 作废</a>
+                        <a class="btn btn-primary btn-xs disabled" onclick=""><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 化验</a>
+                        <a class="btn btn-primary btn-xs" onclick="setSubmitMulti();"><span class="glyphicon glyphicon-share" aria-hidden="true"></span> 提交</a>
+                        <a class="btn btn-primary btn-xs" onclick="setConfirmMulti();"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 签收</a>
+                        <a class="btn btn-primary btn-xs" onclick="exportExcel();"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                    </div>
+                    <!--查询框-->
+                    <div class="input-group col-md-4 pull-right">
+                        <input type="text" class="form-control" placeholder="搜索..." id="searchContent" >
+                        <span class="input-group-btn">
+                            <a class="btn btn-default" onclick="searchData();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="panel panel-default" id="senior" style="display: none;">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-laboratoryTestNumber" class="col-sm-4 control-label">化验单号</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-laboratoryTestNumber" name="search-laboratoryTestNumber" placeholder="" onkeyup="searchData();">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="search-laboratory" class="col-sm-4 control-label">化&nbsp;&nbsp;验&nbsp;&nbsp;人</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-laboratory" name="search-laboratory" placeholder="" onkeyup="searchData();">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-queryNumber" class="col-sm-4 control-label">查&nbsp;&nbsp;询&nbsp;&nbsp;号</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-queryNumber" name="search-queryNumber" placeholder="" onkeyup="searchData();">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="search-laboratoryDate" class="col-sm-4 control-label">化验日期</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-laboratoryDate" name="search-laboratoryDate" placeholder="" onkeyup="searchData();">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-companyName" class="col-sm-4 control-label">企业名称</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="" onkeyup="searchData();">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="search-laboratoryCompany" class="col-sm-4 control-label">化验公司</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-laboratoryCompany" name="search-laboratoryCompany" placeholder="" onkeyup="searchData();">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-record" class="col-sm-4 control-label">填&nbsp;&nbsp;报&nbsp;&nbsp;人</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-record" name="search-record" placeholder="" onkeyup="searchData();">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="search-checkState" class="col-sm-4 control-label">单据状态</label>
+                                <div class="col-xs-7">
+                                    <select class="form-control" name="search-checkState" id="search-checkState" onchange="searchData();"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table">
+                <table class="table table-striped table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th class="text-center">
+                            <label>
+                                <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
+                            </label>
+                        </th>
+                        <th class="text-center">预约单号</th>
+                        <th class="text-center">采样点</th>
+                        <th class="text-center">检测项目</th>
+                        <th class="text-center">送样人</th>
+                        <th class="text-center">签收人</th>
+                        <th class="text-center">备注</th>
+                        <th class="text-center">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr id="cloneTr">
+                        <td class="text-center">
+                            <label>
+                                <input name="select" class="checkbox" type="checkbox" value="option1" aria-label="...">
+                            </label>
+                        </td>
+                        <td class="text-center" name="id">Q10000001</td>
+                        <td class="text-center">张三</td>
+                        <td class="text-center">李四</td>
+                        <td class="text-center">2018-7-31</td>
+                        <td class="text-center">安耐得环保常州分公司</td>
+                        <td class="text-center">待签收</td>
+                        <td class="text-center">
+                            <a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                            <a href="#" onclick="setInvalid(this);" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                            <a href="#" onclick="setSubmit(this);" title="提交"><span class="glyphicon glyphicon-export" aria-hidden="true"></span></a>
+                            <a href="#" onclick="setConfirm(this);" title="签收"><span class="glyphicon glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!--分页1-->
+            <nav aria-label="Page navigation" class="text-center">
+                <ol class="pagination" style="width: 800px;">
+                    <li id="current" class="hidden"><a href='#'>当前页:</a>
+                    <li id="firstPage">
+                        <a href='#' onclick="switchPage(0)">首 页</a>
+                    </li>
+                    <li id="previous">
+                        <a href="#" aria-label="Previous" onclick="switchPage(parseInt(currentPage)-1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-backward"
+                                                       aria-hidden="true"></span></span>
+                        </a>
+                    </li>
+                    <li><a href="#">1</a></li>
+                    <li id="next">
+                        <a href="#" aria-label="Next" onclick="switchPage(parseInt(currentPage)+1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-forward"
+                                                       aria-hidden="true"></span></span>
+                        </a>
+                    </li>
+                    <li id="endPage">
+                        <a href='#' onclick="switchPage(-2)">尾 页</a>
+                    </li>
+                    <li><a id="totalPage"></a></li>
+                    <li><a href="#" onclick="inputSwitchPage();">跳转</a></li>
+                    <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
+                               id="pageNumber"></li>
+                    <li class="showLi">每页显示:</li>
+                    <li class="selectLi">
+                        <select id="count" onchange="loadPageList()">
+                            <option>5</option>
+                            <option selected>15</option>
+                            <option>50</option>
+                        </select>
+                    </li>
+                </ol>
+            </nav>
+            <!--查看模态框-->
+            <div class="modal fade bs-example-modal-lg" id="viewExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="text-center">化验单明细</h2>
+                        </div>
+                        <div class="modal-body">
+                            <h4><b>1.危废产生单位基本信息</b></h4>
+                            <form id="model-unitInformation" method="post">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td style="width: 150px;">企业名称:</td>
+                                        <td><p class="text-left"><span id="modal1_companyName"></span></p></td>
+                                        <td style="width: 150px;">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址:</td>
+                                        <td><p class="text-left"><span id="modal1_address"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px;">联&nbsp;&nbsp;系&nbsp;&nbsp;人:</td>
+                                        <td><p class="text-left"><span id="modal1_contacts"></span></p></td>
+                                        <td style="width: 150px;">联系电话:</td>
+                                        <td><p class="text-left"><span id="modal1_phone"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px;">所属行业:</td>
+                                        <td><p class="text-left"><span id="modal1_industry"></span></p></td>
+                                        <td style="width: 150px;">主要产品:</td>
+                                        <td><p class="text-left"><span id="modal1_product"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px;">填&nbsp;&nbsp;报&nbsp;&nbsp;人:</td>
+                                        <td><p class="text-left"><span id="modal1_laboratory"></span></p></td>
+                                        <td style="width: 150px;">化验日期:</td>
+                                        <td><p class="text-left"><span id="modal1_laboratoryDate"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150px;">化验公司:</td>
+                                        <td><p class="text-left"><span id="modal1_laboratoryCompany"></span></p></td>
+                                    </tr>
+                                </table>
+                            </form>
+                            <h4><b>2.危废取样信息</b></h4>
+                            <form id="model-information" method="post">
+                                <table class="table table-bordered">
+                                    <thead style="background-color: yellow" valign="middle">
+                                    <tr>
+                                        <th class="text-center" rowspan="2" style="width: 50px;">序号</th>
+                                        <th class="text-center" rowspan="2">取样日期</th>
+                                        <th class="text-center" rowspan="2">危废名称</th>
+                                        <th class="text-center" rowspan="2">危废代码</th>
+                                        <th class="text-center" rowspan="2">取样号</th>
+                                        <th class="text-center" colspan="2">取样方式</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center">生产线上取</th>
+                                        <th class="text-center">储存区取样</th>
+                                    </tr>
+                                    </thead>
+                                    <tr>
+                                        <td>1</td>
+                                        <td><p class="text-left"><span id="samplingDate">2018-08-08</span></p></td>
+                                        <td><p class="text-left"><span id="wastesName">物品01</span></p></td>
+                                        <td><p class="text-left"><span id="wastesCode">823-987-09</span></p></td>
+                                        <td><p class="text-left"><span id="samplingNumber_1">0001</span></p></td>
+                                        <td><p class="text-center"><input type="checkbox" id="isProductionLine"/></td>
+                                        <td><p class="text-center"><input type="checkbox" id="isStorageArea"/></td>
+                                    </tr>
+                                    <tr id="hiddenTr" class="hidden"></tr>
+                                </table>
+                            </form>
+                            <h4><b>3.危废焚烧参数及敏感重金属检测</b></h4>
+                            <form id="model-handle" method="post">
+                                <table class="table table-bordered">
+                                    <thead style="background-color: yellow">
+                                    <tr style="background-color: white">
+                                        <td colspan="5">取&nbsp;&nbsp;样&nbsp;&nbsp;号:<span id="samplingNumber_2"></span></td>
+                                        <td colspan="5">检测日期:<span id="testDate"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <th rowspan="2" style="width: 50px;">序号</th>
+                                        <th rowspan="2" style="width: 110px;">参数</th>
+                                        <th colspan="3">范围</th>
+                                        <th rowspan="2">序号</th>
+                                        <th rowspan="2" style="width: 140px;">参数</th>
+                                        <th colspan="3">范围</th>
+                                    </tr>
+                                    <tr>
+                                        <th>最低</th>
+                                        <th>平均</th>
+                                        <th>最高</th>
+                                        <th>最低</th>
+                                        <th>平均</th>
+                                        <th>最高</th>
+                                    </tr>
+                                    </thead>
+                                    <tr>
+                                        <td>1</td>
+                                        <td><input type="checkbox" id="isViscosity">粘度</td>
+                                        <td><p class="text-left"><span id="viscosityMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="viscosityAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="viscosityMaximum"></span></p></td>
+                                        <td>9</td>
+                                        <td><input type="checkbox" id="isWaterContent">含水率</td>
+                                        <td><p class="text-left"><span id="waterContentMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="waterContentAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="waterContentMaximum"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td><input type="checkbox" id="isDensity">密度</td>
+                                        <td><p class="text-left"><span id="densityMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="densityAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="densityMaximum"></span></p></td>
+                                        <td>10</td>
+                                        <td><input type="checkbox" id="isSolidSubstanceContent">固体物质含量</td>
+                                        <td><p class="text-left"><span id="solidSubstanceContentMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="solidSubstanceContentAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="solidSubstanceContentMaximum"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td><input type="checkbox" id="isPH">酸碱度</td>
+                                        <td><p class="text-left"><span id="phMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="phAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="phMaximum"></span></p></td>
+                                        <td>11</td>
+                                        <td><input type="checkbox" id="isSulfurContent">硫含量</td>
+                                        <td><p class="text-left"><span id="sulfurContentMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="sulfurContentAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="sulfurContentMaximum"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td><input type="checkbox" id="isHeat">热值</td>
+                                        <td><p class="text-left"><span id="heatMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="heatAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="heatMaximum"></span></p></td>
+                                        <td>12</td>
+                                        <td><input type="checkbox" id="isChlorineContent">氯含量</td>
+                                        <td><p class="text-left"><span id="chlorineContentMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="chlorineContentAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="chlorineContentMaximum"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td><input type="checkbox" id="isAsh">灰分含量</td>
+                                        <td><p class="text-left"><span id="ashMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="ashAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="ashMaximum"></span></p></td>
+                                        <td>13</td>
+                                        <td><input type="checkbox" id="isFluorineContent">氟含量</td>
+                                        <td><p class="text-left"><span id="fluorineContentMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="fluorineContentAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="fluorineContentMaximum"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td><input type="checkbox" id="isFlashPoint">闪点</td>
+                                        <td><p class="text-left"><span id="flashPointMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="flashPointAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="flashPointMaximum"></span></p></td>
+                                        <td>14</td>
+                                        <td>其他1:<input type="text" class="focus" style="width: 70px;" id="otherParameter1"></td>
+                                        <td><p class="text-left"><span id="parameter1Minimum"></span></p></td>
+                                        <td><p class="text-left"><span id="parameter1Average"></span></p></td>
+                                        <td><p class="text-left"><span id="parameter1Maximum"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td><input type="checkbox" id="isMeltingPoint">熔点</td>
+                                        <td><p class="text-left"><span id="meltingPointMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="meltingPointAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="meltingPointMaximum"></span></p></td>
+                                        <td>15</td>
+                                        <td>其他2:<input type="text" class="focus" style="width: 70px;" id="otherParameter2"></td>
+                                        <td><p class="text-left"><span id="parameter2Minimum"></span></p></td>
+                                        <td><p class="text-left"><span id="parameter2Average"></span></p></td>
+                                        <td><p class="text-left"><span id="parameter2Maximum"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>8</td>
+                                        <td><input type="checkbox" id="isBoilingPoint">沸点</td>
+                                        <td><p class="text-left"><span id="boilingPointMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="boilingPointAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="boilingPointMaximum"></span></p></td>
+                                        <td>16</td>
+                                        <td>其他3:<input type="text" class="focus" style="width: 70px;" id="otherParameter3"></td>
+                                        <td><p class="text-left"><span id="parameter3Minimum"></span></p></td>
+                                        <td><p class="text-left"><span id="parameter3Average"></span></p></td>
+                                        <td><p class="text-left"><span id="parameter3Maximum"></span></p></td>
+                                    </tr>
+                                </table>
+                                <table class="table table-bordered">
+                                    <thead style="background-color: yellow;vertical-align: center">
+                                    <tr>
+                                        <th class="text-center" rowspan="2" style="width: 50px;">序号</th>
+                                        <th class="text-center" rowspan="2" style="width: 110px;">重金属</th>
+                                        <th class="text-center" colspan="3">范围</th>
+                                        <th class="text-center" rowspan="2">序号</th>
+                                        <th class="text-center" rowspan="2" style="width: 110px;">重金属</th>
+                                        <th class="text-center" colspan="3">范围</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center">最低</th>
+                                        <th class="text-center">平均</th>
+                                        <th class="text-center">最高</th>
+                                        <th class="text-center">最低</th>
+                                        <th class="text-center">平均</th>
+                                        <th class="text-center">最高</th>
+                                    </tr>
+                                    </thead>
+                                    <tr>
+                                        <td>1</td>
+                                        <td><input type="checkbox" id="isHg">汞Hg</td>
+                                        <td><p class="text-left"><span id="HgMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="HgAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="HgMaximum"></span></p></td>
+                                        <td>16</td>
+                                        <td><input type="checkbox" id="isK">钾K</td>
+                                        <td><p class="text-left"><span id="KMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="KAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="KMaximum"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td><input type="checkbox" id="isNa">钠Na</td>
+                                        <td><p class="text-left"><span id="NaMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="NaAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="NaMaximum"></span></p></td>
+                                        <td>17</td>
+                                        <td><input type="checkbox" id="isMn">锰Mn</td>
+                                        <td><p class="text-left"><span id="MnMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="MnAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="MnMaximum"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td><input type="checkbox" id="isCu">铜Cu</td>
+                                        <td><p class="text-left"><span id="CuMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="CuAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="CuMaximum"></span></p></td>
+                                        <td>18</td>
+                                        <td><input type="checkbox" id="isCo">钴Co</td>
+                                        <td><p class="text-left"><span id="CoMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="CoAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="CoMaximum"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td><input type="checkbox" id="isTi">钛Ti</td>
+                                        <td><p class="text-left"><span id="TiMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="TiAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="TiMaximum"></span></p></td>
+                                        <td>19</td>
+                                        <td><input type="checkbox" id="isMg">镁Mg</td>
+                                        <td><p class="text-left"><span id="MgMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="MgAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="MgMaximum"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td><input type="checkbox" id="isLi">锂Li</td>
+                                        <td><p class="text-left"><span id="LiMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="LiAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="LiMaximum"></span></p></td>
+                                        <td>20</td>
+                                        <td><input type="checkbox" id="isAl">铝Al</td>
+                                        <td><p class="text-left"><span id="AlMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="AlAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="AlMaximum"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td><input type="checkbox" id="isSe">硒Se</td>
+                                        <td><p class="text-left"><span id="SeMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="SeAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="SeMaximum"></span></p></td>
+                                        <td>21</td>
+                                        <td><input type="checkbox" id="isAs">砷As</td>
+                                        <td><p class="text-left"><span id="AsMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="AsAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="AsMaximum"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td><input type="checkbox" id="isSb">锑Sb</td>
+                                        <td><p class="text-left"><span id="SbMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="SbAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="SbMaximum"></span></p></td>
+                                        <td>22</td>
+                                        <td><input type="checkbox" id="isSi">硅Si</td>
+                                        <td><p class="text-left"><span id="SiMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="SiAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="SiMaximum"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>8</td>
+                                        <td><input type="checkbox" id="isCa">钙Ca</td>
+                                        <td><p class="text-left"><span id="CaMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="CaAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="CaMaximum"></span></p></td>
+                                        <td>23</td>
+                                        <td><input type="checkbox" id="isTu">钍Tu</td>
+                                        <td><p class="text-left"><span id="TuMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="TuAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="TuMaximum"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>9</td>
+                                        <td><input type="checkbox" id="isFe">铁Fe</td>
+                                        <td><p class="text-left"><span id="FeMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="FeAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="FeMaximum"></span></p></td>
+                                        <td>24</td>
+                                        <td><input type="checkbox" id="isNi">镍Ni</td>
+                                        <td><p class="text-left"><span id="NiMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="NiAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="NiMaximum"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>10</td>
+                                        <td><input type="checkbox" id="isPb">铅Pb</td>
+                                        <td><p class="text-left"><span id="PbMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="PbAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="PbMaximum"></span></p></td>
+                                        <td>25</td>
+                                        <td><input type="checkbox" id="isSn">锡Sn</td>
+                                        <td><p class="text-left"><span id="SnMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="SnAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="SnMaximum"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>11</td>
+                                        <td><input type="checkbox" id="isCr">铬Cr</td>
+                                        <td><p class="text-left"><span id="CrMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="CrAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="CrMaximum"></span></p></td>
+                                        <td>26</td>
+                                        <td><input type="checkbox" id="isTl">铊Tl</td>
+                                        <td><p class="text-left"><span id="TlMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="TlAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="TlMaximum"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>12</td>
+                                        <td><input type="checkbox" id="isV">钒V</td>
+                                        <td><p class="text-left"><span id="VMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="VAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="VMaximum"></span></p></td>
+                                        <td>27</td>
+                                        <td>其他1:<input type="text" class="focus" style="width: 45px;" id="otherMetal1"></td>
+                                        <td><p class="text-left"><span id="metal1Minimum"></span></p></td>
+                                        <td><p class="text-left"><span id="metal1Average"></span></p></td>
+                                        <td><p class="text-left"><span id="metal1Maximum"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>13</td>
+                                        <td><input type="checkbox" id="isTe">碲Te</td>
+                                        <td><p class="text-left"><span id="TeMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="TeAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="TeMaximum"></span></p></td>
+                                        <td>28</td>
+                                        <td>其他2:<input type="text" class="focus" style="width: 45px;" id="otherMetal2"></td>
+                                        <td><p class="text-left"><span id="metal2Minimum"></span></p></td>
+                                        <td><p class="text-left"><span id="metal2Average"></span></p></td>
+                                        <td><p class="text-left"><span id="metal2Maximum"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>14</td>
+                                        <td><input type="checkbox" id="isZn">锌Zn</td>
+                                        <td><p class="text-left"><span id="ZnMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="ZnAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="ZnMaximum"></span></p></td>
+                                        <td>29</td>
+                                        <td>其他3:<input type="text" class="focus" style="width: 45px;" id="otherMetal3"></td>
+                                        <td><p class="text-left"><span id="metal3Minimum"></span></p></td>
+                                        <td><p class="text-left"><span id="metal3Average"></span></p></td>
+                                        <td><p class="text-left"><span id="metal3Maximum"></span></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>15</td>
+                                        <td><input type="checkbox" id="isCd">镉Cd</td>
+                                        <td><p class="text-left"><span id="CdMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="CdAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="CdMaximum"></span></p></td>
+                                        <td>30</td>
+                                        <td>其他4:<input type="text" class="focus" style="width: 45px;" id="otherMetal4"></td>
+                                        <td><p class="text-left"><span id="metal4Minimum"></span></p></td>
+                                        <td><p class="text-left"><span id="metal4Average"></span></p></td>
+                                        <td><p class="text-left"><span id="metal4Maximum"></span></p></td>
+                                    </tr>
+                                </table>
+                            </form>
+                            <div class="hidden" id="hiddenTr2"></div>
+                        </div>
+                        <div class="modal-footer center"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--导入模态框-->
+    <div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="TitleMyModalLabel">导入表格数据</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="modelAssign" method="post">
+                        <div class="form-group">
+                            <font size="+2">提示：</font>
+                            <font size="+1" class="text-center">请按照模板格式导入数据！</font>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer center">
+                    <button type="button" class="btn btn-default" onclick="downloadModal()">下载模板</button>
+                    <button type="button" class="btn btn-primary" onclick="importExcel()">导入数据</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--导入-->
+    <input type="file" name="excelPath" id="idExcel" class="hidden">
+    <div id="embed"></div>
+</body>
+<style>
+    th {
+        text-align:center;
+        vertical-align: middle;
+    }
+    .pagination > li {
+        display: inline;
+    }
+    .inputText { float:left;
+    }
+    .showLi{
+        float: left;
+        height: 38px;
+        line-height: 38px;
+    }
+    .selectLi{
+        float: left;
+        height: 38px;
+        line-height: 38px;
+    }
+</style>
+
+<script>
+
+    $('#embed').load('embed/loginLogModal.html');
+
+</script>
+</html>

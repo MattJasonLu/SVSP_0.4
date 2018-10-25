@@ -868,7 +868,12 @@ function delLine(e) {
     var tr = e.parentElement.parentElement;
     tr.parentNode.removeChild(tr);
     $('.myclass').each(function (index,item) {
-        $(this).children('td').eq(0).html((parseInt(index)+1).toString()+"<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>");
+        if((parseInt(index)+1)!=1){
+            $(this).children('td').eq(0).html((parseInt(index)+1).toString()+"<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>");
+        }
+        if((parseInt(index)+1)==1){
+            $(this).children('td').eq(0).html((parseInt(index)+1).toString());
+        }
     });
    //var length = $(tr.parentNode).children().length - 2;         // 行数
     // var tBody = $(tr.parentNode);                                  // 删除前获取父节点
