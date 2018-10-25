@@ -125,13 +125,14 @@ public class ImportUtil {
                 XSSFWorkbook xwb = new XSSFWorkbook(is);
                 int sheets = xwb.getNumberOfSheets();//获取总页数
 //                System.out.println(sheets+"1233");
-                XSSFSheet xSheet = xwb.getSheetAt(sheetIndex);
-                // 获得总列数
-                int col = xSheet.getRow(0).getPhysicalNumberOfCells();
-                // 原来为：int row = xSheet.getLastRowNum();
-                // 修改为 获得总行数
-                int row = xSheet.getPhysicalNumberOfRows();
+
                 for(int k=0;k<sheets;k++){
+                    XSSFSheet xSheet = xwb.getSheetAt(k);
+                    // 获得总列数
+                    int col = xSheet.getRow(0).getPhysicalNumberOfCells();
+                    // 原来为：int row = xSheet.getLastRowNum();
+                    // 修改为 获得总行数
+                    int row = xSheet.getPhysicalNumberOfRows();
                     param = new Object[row][col];
                     for (int i = 0; i < row; i++) {
                         XSSFRow row1 = xSheet.getRow(i);

@@ -369,8 +369,9 @@ public class ProcurementController {
             }
          for(int j=7;j<data.get(i).length-3;j++) {
 
-//             System.out.println(data.get(i)[j][1].toString()+"第二列");
-             if (data.get(i)[j][1].toString() != "null"&&data.get(i)[j][1]!=null) {
+             if (data.get(i)[j][1] != "null"&&data.get(i)[j][1]!=null) {
+
+                 System.out.println(data.get(i)[j][1]+"第二列");
                  //创建物资对象
                  Material material = new Material();
                  material.setReceiptNumber(receiptNumber);//设置申请单编号
