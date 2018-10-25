@@ -23,7 +23,7 @@ public class Sewageregistration {
 
     private Page page;
 
-    private int id;
+    private String id;
 
     //登记状态
     private CheckState checkState;
@@ -66,11 +66,11 @@ public class Sewageregistration {
         this.page = page;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

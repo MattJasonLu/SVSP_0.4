@@ -34,8 +34,8 @@
     <select id="countSec" resultType="int">
         select count(*) from t_pl_secondaryinto;
     </select>
-    <select id="countById" resultType="int">
-    select count(*) from t_pr_sampleinformation where id like "%"#{id}"%";
+    <select id="countById" resultType="int" parameterType="String">
+    select count(*) from t_pr_secondarysample where id like "%"#{id}"%";
 </select>
     <resultMap id="SecondarysampleRM" type="Secondarysample">
         <result property="id" column="id"></result>
@@ -77,7 +77,7 @@
         update t_pr_secondarysample set  checkState='Collected',nowTime=NOW() where id=#{id};
     </update>
     <!--拒收-->
-    <update id="rejectSecondarySampleById">
-        update t_pr_secondarysample set checkState='Rejected',advice=#{1},nowTime=NOW() where id=#{0};
+    <update id="rejectSecondarySampleById" >
+        update t_pr_secondarysample set checkState='Rejected',advice=#{1} ,nowTime=NOW() where id=#{id}
     </update>
 </mapper>

@@ -690,13 +690,13 @@
 
     <!--添加污水登记主表-->
     <insert id="addSewaGeregistration" parameterType="Sewageregistration">
-        insert into  t_pr_sewageregistration(laboratorySignatory,sendingPerson,nowTime,water,address,clientId,checkState)
+        insert into  t_pr_sewageregistration(id,laboratorySignatory,sendingPerson,nowTime,water,address,clientId,checkState)
         values
-        (#{laboratorySignatory},#{sendingPerson},NOW(),#{water},#{address},#{client.clientId},'ToCollected')
+        (#{id},#{laboratorySignatory},#{sendingPerson},NOW(),#{water},#{address},#{client.clientId},'ToCollected')
     </insert>
 
     <!--获得主表最新的主键-->
-    <select id="getNewestId" resultType="int">
+    <select id="getNewestId" resultType="String">
         select id from t_pr_sewageregistration order by nowTime desc;
     </select>
 
@@ -708,9 +708,9 @@
 
     <!--添加软水登记主表-->
     <insert id="addSoftGeregistration" parameterType="Sewageregistration">
-         insert into  t_pr_sewageregistration(laboratorySignatory,sendingPerson,nowTime,water,address,clientId,checkState)
+         insert into  t_pr_sewageregistration(id,laboratorySignatory,sendingPerson,nowTime,water,address,clientId,checkState)
         values
-        (#{laboratorySignatory},#{sendingPerson},NOW(),#{water},#{address},#{client.clientId},'ToCollected')
+        (#{id},#{laboratorySignatory},#{sendingPerson},NOW(),#{water},#{address},#{client.clientId},'ToCollected')
     </insert>
     <!--添加软水登记字表表-->
     <insert id="addSoftGeregistrationItem" parameterType="SewageregistrationItem">
@@ -756,5 +756,9 @@
     <select id="countById" resultType="int">
     select count(*) from t_pr_sampleinformation where id like "%"#{id}"%";
    </select>
+
+    <select id="countByIdSew" resultType="int" parameterType="String">
+    select count(*) from t_pr_sewageregistration where id like "%"#{id}"%";
+  </select>
 
 </mapper>
