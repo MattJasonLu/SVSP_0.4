@@ -753,5 +753,8 @@
     <update id="rejectSewaGeregistrationById" >
         update t_pr_sewageregistration set  checkState='Rejected',advice=#{1},nowTime=NOW() where id=#{0};
     </update>
+    <select id="countById" resultType="int">
+    select count(*) from t_pr_sampleinformation where id like "%"#{id}"%";
+   </select>
 
 </mapper>

@@ -120,4 +120,7 @@ public interface ProductionDailyMapper {
     void confirmSewaGeregistrationById(String id);
 
     void rejectSewaGeregistrationById(String id,String advice);
+
+    int countById(String id);
+
 }

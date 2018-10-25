@@ -279,7 +279,7 @@ function secondaryAnalysis() {
         success:function (result) {
             if (result != undefined && result.status == "success"){
                 console.log(result);
-                setPageClone(result);
+                setPageClone(result.data);
             }
             else {
                 alert(result.message);
@@ -299,65 +299,110 @@ function secondaryAnalysis() {
 function setSecIntoList(result) {
     var tr = $("#cloneTr");
     tr.siblings().remove();
-    $.each(result.data,function (index,item) {
+    $.each(result, function (index, item) {
+        // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
         clonedTr.show();
+        // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
             var obj = eval(item);
+            // 根据索引为部分td赋值
             switch (inner_index) {
-                // 序号
                 case (1):
-                    $(this).html(index+1);
+                    //预约单号
+                    $(this).html(obj.id);
                     break;
-                // 收样日期
-                case (2):
-                    if(obj.laboratoryTest!=null){
-                        $(this).html(getDateStr(obj.laboratoryTest.samplingDate));
-                    }
-                    break;
-                // 废物名称
-                case (3):
-                    if(obj.laboratoryTest!=null){
-                        if(obj.laboratoryTest.wastesName=='slag'){
-                            $(this).html('炉渣');
-                        }
-                        if(obj.laboratoryTest.wastesName=='ash'){
-                            $(this).html('飞灰');
-                        }
-                        if(obj.laboratoryTest.wastesName=='bucket'){
-                            $(this).html('桶');
-                        }
-                    }
-
-                    break;
-                // 热灼减率%
-                case (4):
-                    if(obj.laboratoryTest!=null){
-                        $(this).html(obj.laboratoryTest.heatAverage);
-                    }
-                    break;
-                // 水分%
-                case (5):
-                    if(obj.laboratoryTest!=null){
-                        $(this).html(obj.laboratoryTest.waterContentAverage);
-                    }
-
-                    break;
-                // 备注
-                // case (6):
-                //     $(this).html("");
+                // case (2):
+                //     // 采样点
+                //     $(this).html((obj.address));
                 //     break;
+                case (2):
+                    // 检测项目
+                    project="";
+                    if(obj.secondarySampleItemList!=null){
+                        $.each(obj.secondarySampleItemList,function (index,item) {
+                            if(index<1) {
+                                if (item.cod == 1) {
+                                    project += "COD ";
+                                }
+                                if (item.bod5 == 1) {
+                                    project += "BOD5 ";
+                                }
+                                if (item.ph == 1) {
+                                    project += "PH ";
+                                }
+                                if (item.dissolvedSolidForm == 1) {
+                                    project += "溶解固形物 ";
+                                }
+                                if (item.electricalConductivity == 1) {
+                                    project += "电导率 ";
+                                }
+                                if (item.hardness == 1) {
+                                    project += "硬度 ";
+                                }
+                                if (item.lye == 1) {
+                                    project += "碱度 ";
+                                }
+                                if (item.n2 == 1) {
+                                    project += "氮气 ";
+                                }
+                                if (item.o2 == 1) {
+                                    project += "氧气 ";
+                                }
+                                if (item.relativeAlkalinity == 1) {
+                                    project += "相对碱度 ";
+                                }
+                                if (item.scorchingRate == 1) {
+                                    project += "热灼减率 ";
+                                }
+                                if (item.water == 1) {
+                                    project += "水分 ";
+                                }
+
+                            }
+                        })
+
+                    }
+                    $(this).html(project);
+                    break;
+                case (3):
+                    // 送样人
+                    $(this).html(obj.sendingPerson);
+                    break;
+                case (4):
+                    // 签收人
+                    $(this).html(obj.laboratorySignatory);
+                    break;
+                case (5):
+                    // 备注
+                    if(obj.checkState!=null){
+                        $(this).html(obj.checkState.name);
+                    }
+
+                    break;
                 // case (7):
-                //     $(this).html(obj.id);
+                //     // 氮
+                //     $(this).html(obj.nitrogen);
+                //     break;
+                // case (8):
+                //     // 碱液
+                //     $(this).html(obj.lye);
+                //     break;
+                // case (9):
+                //     // PH
+                //     $(this).html(obj.ph);
+                //     break;
+                // case (10):
+                //     // 备注
+                //     $(this).html(obj.remarks);
                 //     break;
             }
-        })
+        });
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
         clonedTr.insertBefore(tr);
-        tr.hide();
     });
-
+    tr.hide();
 }
 array=[];//存放所有的tr
 array1=[];//存放目标的tr
@@ -495,18 +540,7 @@ function enterSearch() {
     }
 }
 
-/**
- * 拒收框
- */
-function rejection() {
-    $("#rejection1").modal('show')
-}
-/**
- * 确认拒收
- */
-function rejection1() {
-    $()
-}
+
 
 //粗查询
 $(document).ready(function () {//页面载入是就会进行加载里面的内容
@@ -704,6 +738,78 @@ function setSelectList() {
     });
 }
 
+var num = 1;
+/**
+ * 预约登记/修改-新增样品1
+ */
+function addNewLine(item) {
+    // 获取id为plusBtn的tr元素
+    //var tr = $("#plusBtn").prev();
+    var tr = null;
+    if (item != null)
+        tr = $(item).parent().parent().prev();
+    else tr = $("#addBtn3").prev();
+    // 克隆tr，每次遍历都可以产生新的tr
+    var clonedTr = tr.clone();
+    clonedTr.children('td').eq(0).html(($('.myclass').length)+1);
+    if (clonedTr.children('td').eq(0).html() != 1) {     // 将非第一行的所有行加上减行号
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        clonedTr.children('td').eq(0).prepend(delBtn);
+    }
+
+    // 克隆后清空新克隆出的行数据
+    //clonedTr.children().find("input:first-child").prop('name').charAt(11);
+    clonedTr.children().find("input").val("");
+    clonedTr.children().find("input:checkbox").prop('checked', false);
+    clonedTr.children().find("select").selectpicker('val', '');
+    // clonedTr.children().find("input,select").each(function () {
+    //     var name = $(this).prop('name');
+    //     var newName = name.replace(/[0-9]\d*/, num - 1);
+    //     $(this).prop('name', newName);
+    //     var id = $(this).prop('id');
+    //     var newId = id.replace(/[0-9]\d*/, num - 1);
+    //     $(this).prop('id', newId);
+    // });
+    // clonedTr.addClass("newLine");
+
+
+
+    clonedTr.insertAfter(tr);
+    clonedTr.removeAttr("id");
+    //清空数据为重新初始化selectpicker
+    $('.selectpicker').data('selectpicker', null);
+    $('.bootstrap-select').find("button:first").remove();
+    $('.selectpicker').selectpicker();
+
+}
+
+/**
+ * 删除行
+ */
+function delLine(item) {
+    var tr = item.parentElement.parentElement;
+    var length = $(tr.parentNode).children().length - 2;         // 行数
+    var tBody = $(tr.parentNode);                                  // 删除前获取父节点
+    tr.parentNode.removeChild(tr);
+    console.log(tr);
+    console.log("length:" + length);
+    for (var i = 1; i < length; i++) {             // 更新序号
+        tBody.children().eq(i).children().eq(0).get(0).innerHTML = i + 1;     // 更新序号
+        // 重新加上减行按钮
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        tBody.children().eq(i).children("td:eq(0)").prepend(delBtn);
+        tBody.children().eq(i).children().find("input,select").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/[0-9]\d*/, i);
+            $(this).prop('name', newName);
+            var id = $(this).prop('id');
+            var newId = id.replace(/[0-9]\d*/, i);
+            $(this).prop('id', newId);
+        });
+    }
+    num--;
+}
+
 /**
  * 添加预约登记单
  */
@@ -777,16 +883,17 @@ function addAppoint() {
 }
 
 
-//确认收样
-function setSubmit(item) {
+//查看
+function view(item) {
     var id=$(item).parent().parent().children('td').eq(1).html();
     console.log(id)
+    $("#id").val(id);
     $("#appointModa2").modal('show');
-    $('#confirm').show();
+    $('#confirm').hide();
     //根据编号查找
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getSecondarySampleById",              // url
+        url: "getSecondarysampleById",              // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         data:{"id":id},
@@ -796,7 +903,7 @@ function setSubmit(item) {
                 console.log(result)
                 //赋值
                 // 公司名称
-                if(result.data.client=null){
+                if(result.data.client!=null){
                     $('#companyName').val(result.data.client.companyName);
                 }
                 //化验室签收人
@@ -808,15 +915,13 @@ function setSubmit(item) {
                 //采样点
                 $('#address2').val(result.data.address)
 
-                //预约单号
-                $("#id").val(result.data.id)
 
-                if(result.data.sewageregistrationItemList!=null){
+                if(result.data.secondarySampleItemList!=null){
 
                     var tr=$('#clonrTr');
                     tr.siblings().remove();
 
-                    $.each(result.data.sewageregistrationItemList,function (index,item) {
+                    $.each(result.data.secondarySampleItemList,function (index,item) {
 
                         var clonedTr = tr.clone();
 
@@ -859,6 +964,13 @@ function setSubmit(item) {
                         if (obj.relativeAlkalinity == 1) {
                             project += "相对碱度 ";
                         }
+                        if (obj.scorchingRate == 1) {
+                            project += "热灼减率 ";
+                        }
+                        if (obj.water == 1) {
+                            project += "水分 ";
+                        }
+
                         clonedTr.children('td').eq(3).html(project);
 
                         clonedTr.removeAttr("id");
@@ -874,11 +986,119 @@ function setSubmit(item) {
 
                 }
 
+            }
+            else {
+
+            }
+        },
+        error:function (result) {
+
+        }
+    });
+
+}
+
+//确认收样
+function setSubmit(item)  {
+    var id=$(item).parent().parent().children('td').eq(1).html();
+    $("#id").val(id);
+    $("#appointModa2").modal('show');
+    $('#confirm').show();
+    //根据编号查找
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSecondarysampleById",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{"id":id},
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                //赋值
+                // 公司名称
+                if(result.data.client!=null){
+                    $('#companyName').val(result.data.client.companyName);
+                }
+                //化验室签收人
+                $('#signer').val(result.data.laboratorySignatory)
+
+                //送样人
+                $('#sendingPerson2').val(result.data.sendingPerson)
+
+                //采样点
+                $('#address2').val(result.data.address)
+
+
+                if(result.data.secondarySampleItemList!=null){
+
+                    var tr=$('#clonrTr');
+                    tr.siblings().remove();
+
+                    $.each(result.data.secondarySampleItemList,function (index,item) {
+
+                        var clonedTr = tr.clone();
+
+                        clonedTr.show();
+
+                        var obj = eval(item);
+
+
+                        clonedTr.children('td').eq(0).html(index + 1);
+                        clonedTr.children('td').eq(1).html(obj.wastesCode);
+                        clonedTr.children('td').eq(2).html(obj.wastesName);
+                        project = "";
+                        if (obj.cod == 1) {
+                            project += "COD ";
+                        }
+                        if (obj.bod5 == 1) {
+                            project += "BOD5 ";
+                        }
+                        if (obj.ph == 1) {
+                            project += "PH ";
+                        }
+                        if (obj.dissolvedSolidForm == 1) {
+                            project += "溶解固形物 ";
+                        }
+                        if (obj.electricalConductivity == 1) {
+                            project += "电导率 ";
+                        }
+                        if (obj.hardness == 1) {
+                            project += "硬度 ";
+                        }
+                        if (obj.lye == 1) {
+                            project += "碱度 ";
+                        }
+                        if (obj.n2 == 1) {
+                            project += "氮气 ";
+                        }
+                        if (obj.o2 == 1) {
+                            project += "氧气 ";
+                        }
+                        if (obj.relativeAlkalinity == 1) {
+                            project += "相对碱度 ";
+                        }
+                        if (obj.scorchingRate == 1) {
+                            project += "热灼减率 ";
+                        }
+                        if (obj.water == 1) {
+                            project += "水分 ";
+                        }
+
+                        clonedTr.children('td').eq(3).html(project);
+
+                        clonedTr.removeAttr("id");
+                        clonedTr.insertBefore(tr);
+
+                    });
+
+                    // 隐藏无数据的tr
+                    tr.hide();
+                    tr.removeAttr('class');
 
 
 
-
-
+                }
 
             }
             else {
@@ -889,6 +1109,7 @@ function setSubmit(item) {
 
         }
     });
+
 }
 
 //确认送样方法==>真正的方法
@@ -904,7 +1125,7 @@ function confirmSample() {
         //contentType: 'application/json;charset=utf-8',
         success:function (result) {
             if (result != undefined && result.status == "success"){
-                alert("已收样!")
+                alert(result.message)
                 window.location.reload();
             }
         },
@@ -924,13 +1145,14 @@ function confirmSample() {
  */
 function rejection(item) {
     var id=$(item).parent().parent().children('td').eq(1).html();
+    console.log(id)
     $('#id1').text(id);
     $("#rejection1").modal('show')
 
     //根据编号查找
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getSecondarySampleById",              // url
+        url: "getSecondarysampleById",              // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         data:{"id":id},
@@ -976,3 +1198,4 @@ function rejection1() {
 
 
 }
+

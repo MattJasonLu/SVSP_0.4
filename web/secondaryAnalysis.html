@@ -23,18 +23,6 @@
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');     //当前页数
 
-    /**
-     * 拒收框
-     */
-    function rejection() {
-        $("#rejection1").modal('show')
-    }
-    /**
-     * 确认拒收
-     */
-    function rejection1() {
-        $()
-    }
 </script>
 <body onload="secondaryAnalysis();" >
     <!--导航条-->
@@ -339,6 +327,7 @@
                             <label for="sendingPerson" class="col-sm-6 control-label">送样人</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control" id="sendingPerson" name="signer" required>
+                                <input type="text" id="sampleId" hidden>
                             </div>
                         </div>
                         <div class="form-group col-md-6">
@@ -423,8 +412,6 @@
                                 <input type="text" class="form-control" name="signer" id="signer">
                             </div>
                         </div>
-
-
                     </div>
                     <div class="row">
                         <div class="form-group col-md-4">
@@ -446,7 +433,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <table class="table table-bordered">
                     <thead style="border:none">
@@ -484,7 +470,7 @@
                 <div class="modal-header">
                     <h5 class="sub-header text-center">拒收原因</h5>
                 </div>
-                联单编号 <span id="id1"></span>
+                预约单号 <span id="id1"></span>
                 <div class="row">
                     <div class="form-horizontal col-md-12">
                         <textarea class="form-control" rows="5" id="advice" style="min-width: 70%"></textarea>
