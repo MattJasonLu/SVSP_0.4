@@ -11,9 +11,9 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/ingredientsWarehouse.js"></script>
+    <script src="js/produce/ingredientsReceive.js"></script>
 </head>
-<body onload="loadInventoryList();">
+<body onload="loadInventoryListData();">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -191,8 +191,7 @@
                 <thead>
                 <tr>
                     <th class="text-center" style="width: 40px">
-                        <input class="checkbox" type="checkbox" id="allSel" onclick="allSelect();"
-                               >
+                        <input class="checkbox" type="checkbox" id="allSel" onclick="allSelect();">
                     </th>
                     <th class="text-center">编号</th>
                     <th class="text-center">物品名称</th>
