@@ -28,9 +28,19 @@ public class SampleInformation {
      */
     private String companyCode;
     /**
+     * 公司名称
+     */
+    private String companyName;
+    /**
+     * 送样人
+     */
+    private String sendingPerson;
+    /**
      * 危废代码
      */
     private String wastesCode;
+
+    private String wastesCategory;
     /**
      * 化验室签收人
      */
@@ -94,6 +104,14 @@ public class SampleInformation {
      * 分页
      */
     private Page page;
+
+    public String getWastesCategory() {
+        return wastesCategory;
+    }
+
+    public void setWastesCategory(String wastesCategory) {
+        this.wastesCategory = wastesCategory;
+    }
 
     public boolean getIsN2() {
         return isN2;
@@ -315,6 +333,22 @@ public class SampleInformation {
 
     public void setSamplingDate(Date samplingDate) {
         this.samplingDate = samplingDate;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getSendingPerson() {
+        return sendingPerson;
+    }
+
+    public void setSendingPerson(String sendingPerson) {
+        this.sendingPerson = sendingPerson;
     }
 
     @Override

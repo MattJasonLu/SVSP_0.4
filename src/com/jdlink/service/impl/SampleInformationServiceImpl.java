@@ -29,13 +29,16 @@ public class SampleInformationServiceImpl implements SampleInformationService {
     public int wastesCount(){ return sampleInformationMapper.wastesCount(); }
 
     @Override
+    public int countById(String id){ return sampleInformationMapper.countById(id);}
+
+    @Override
     public List<SampleInformation> listPage(Page page){ return sampleInformationMapper.listPage(page); }
 
     @Override
     public SampleInformation getById(String sampleId){ return sampleInformationMapper.getById(sampleId); }
 
     @Override
-    public void confirmCheck(String sampleId){ sampleInformationMapper.confirmCheck(sampleId); }
+    public void confirmCheck(String sampleId,String sendingPerson){ sampleInformationMapper.confirmCheck(sampleId,sendingPerson); }
 
     @Override
     public void update(SampleInformation sampleInformation){ sampleInformationMapper.update(sampleInformation); }
