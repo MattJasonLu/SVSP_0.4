@@ -12,9 +12,10 @@ public interface SampleInformationMapper {
     void add(SampleInformation sampleInformation);
     int count();
     int wastesCount();
+    int countById(String id);
     List<SampleInformation> listPage(Page page);
     SampleInformation getById(String sampleId);
-    void confirmCheck(String sampleId);
+    void confirmCheck(@Param("sampleId") String sampleId,@Param("sendingPerson") String sendingPerson);
     void update(SampleInformation sampleInformation);
     List<SampleInformation> listByKeyword(@Param(value="keyword") String keyword);
     void updateSampleInfo(String sampleId);

@@ -20,7 +20,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/sampleInfoRegiter.js"></script>
+    <script src="js/produce/sampleInfoAnalysis.js"></script>
 </head>
 <script>
     $(window).on('load', function () {
@@ -32,7 +32,7 @@
         });
     });
 </script>
-<body onload="loadPageSampleInformationList();">
+<body onload="loadPageList();">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -141,7 +141,7 @@
                 <li><a href="#">个人信息</a></li>
                 <li><a href="#">待办事项</a></li>
                 <li><a href="#" onclick="showLog();">登录日志</a></li>
-                <li><a href="index.html">注销</a></li>
+                <li><a href="admin.html">注销</a></li>
             </ul>
         </li>
     </ul>
@@ -150,12 +150,6 @@
 <div class="container-fluid">
     <div class="row">
         <div class="sidebar">
-            <!--<h4>博客管理系统(四月)</h4>-->
-            <!--<div class="cover">-->
-            <!--<h4><img class="img-circle" src="image/icons.png"/></h4>-->
-            <!--<b>Hi~ 小主</b>-->
-            <!--<p>超级管理员</p>-->
-            <!--</div>-->
             <ul class="sidenav animated fadeInUp">
                 <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
                 <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list"
@@ -205,8 +199,8 @@
             <ol class="breadcrumb">
                 <li><a href="receiveManagement.html">接收管理</a></li>
                 <li><a href="#">化验管理</a></li>
-                <li><a href="#">送样登记</a></li>
-                <li class="active">仓储部送样</li>
+                <li><a href="#">化验结果</a></li>
+                <li class="active">仓储部化验</li>
             </ol>
         </div>
         <h4 class="sub-header">仓储部化验（化验室签收表）</h4>
@@ -214,9 +208,9 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" href="#" onclick="appointModal();"><span
-                            class="glyphicon glyphicon-plus" aria-hidden="true"></span> 预约登记</a>
-                    <a class="btn btn-primary btn-xs" onclick="inportExcel()"><span
+                    <a class="btn btn-primary btn-xs" href="#" onclick="alert('功能开发中');"><span
+                            class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                    <a class="btn btn-primary btn-xs" onclick="importExcelChoose()"><span
                             class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                     <a class="btn btn-primary btn-xs" onclick="exportExcel()"><span
                             class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
@@ -225,7 +219,7 @@
                 <div class="input-group col-md-4 pull-right">
                     <input type="text" class="form-control" placeholder="搜索..." id="searchContent" onkeydown="enterSearch()">
                     <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="searchSampleInfo();"><span
+                            <a class="btn btn-default" onclick="searchData();"><span
                                     class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span
                                     class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
@@ -338,13 +332,22 @@
                             <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
                         </label>
                     </th>
+                    <th class="text-center hidden">ID</th>
                     <th class="text-center">联单编号</th>
                     <th class="text-center">产废单位</th>
                     <th class="text-center">危废名称</th>
-                    <th class="text-center">危废类别</th>
+                    <th class="text-center">危废代码</th>
                     <th class="text-center">危废形态</th>
-                    <th class="text-center">检测项目</th>
-                    <th class="text-center">送样人</th>
+                    <th class="text-center">PH</th>
+                    <th class="text-center">灰分</th>
+                    <th class="text-center">水分</th>
+                    <th class="text-center">热值</th>
+                    <th class="text-center">硫</th>
+                    <th class="text-center">氯</th>
+                    <th class="text-center">氟</th>
+                    <th class="text-center">磷</th>
+                    <th class="text-center">闪点</th>
+                    <th class="text-center">粘度</th>
                     <th class="text-center">签收人</th>
                     <th class="text-center">备注</th>
                     <th class="text-center">操作</th>
@@ -357,15 +360,24 @@
                             <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
                         </label>
                     </td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center hidden" name="id"></td>
+                    <td class="text-center" name="transferDraftId"></td>
+                    <td class="text-center" name="produceCompanyName"></td>
+                    <td class="text-center" name="wastesName"></td>
+                    <td class="text-center" name="wastesCode"></td>
+                    <td class="text-center" name="formType"></td>
+                    <td class="text-center" name="PH"></td>
+                    <td class="text-center" name="ash"></td>
+                    <td class="text-center" name="water"></td>
+                    <td class="text-center" name="heat"></td>
+                    <td class="text-center" name="sulfur"></td>
+                    <td class="text-center" name="chlorine"></td>
+                    <td class="text-center" name="fluorine"></td>
+                    <td class="text-center" name="phosphorus"></td>
+                    <td class="text-center" name="flashPoint"></td>
+                    <td class="text-center" name="viscosity"></td>
+                    <td class="text-center" name="signer"></td>
+                    <td class="text-center" name="remark"></td>
                     <td class="text-center">
                         <a href="#" onclick="viewSample(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                         <a href="#" onclick="adjustSample(this);" title="修改信息"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>

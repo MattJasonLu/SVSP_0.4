@@ -759,18 +759,18 @@ public class InboundController {
                 LaboratoryTest laboratoryTest = new LaboratoryTest();
                 laboratoryTest.setLaboratoryTestNumber(RandomUtil.getRandomEightNumber());
                 laboratoryTest.setHeatAverage(Float.parseFloat(data[i][13].toString()));
-                laboratoryTest.setPhAverage(Float.parseFloat(data[i][14].toString()));
-                laboratoryTest.setAshAverage(Float.parseFloat(data[i][15].toString()));
-                laboratoryTest.setWaterContentAverage(Float.parseFloat(data[i][16].toString()));
-                laboratoryTest.setChlorineContentAverage(Float.parseFloat(data[i][17].toString()));
-                laboratoryTest.setSulfurContentAverage(Float.parseFloat(data[i][18].toString()));
-                laboratoryTest.setPhosphorusContentAverage(Float.parseFloat(data[i][19].toString()));
-                laboratoryTest.setFluorineContentAverage(Float.parseFloat(data[i][20].toString()));
+//                laboratoryTest.setPhAverage(Float.parseFloat(data[i][14].toString()));
+//                laboratoryTest.setAshAverage(Float.parseFloat(data[i][15].toString()));
+                laboratoryTest.setWaterContentAverage(Float.parseFloat(data[i][14].toString()));
+//                laboratoryTest.setChlorineContentAverage(Float.parseFloat(data[i][17].toString()));
+//                laboratoryTest.setSulfurContentAverage(Float.parseFloat(data[i][18].toString()));
+//                laboratoryTest.setPhosphorusContentAverage(Float.parseFloat(data[i][19].toString()));
+//                laboratoryTest.setFluorineContentAverage(Float.parseFloat(data[i][20].toString()));
 
                 inboundOrderItem.setLaboratoryTest(laboratoryTest);
 
-                inboundOrderItem.setRemarks(data[i][21].toString());
-                inboundOrderItem.setWarehouseArea(data[i][22].toString());
+                inboundOrderItem.setRemarks(data[i][15].toString());
+                inboundOrderItem.setWarehouseArea(data[i][16].toString());
 
                 inboundOrderItemList.add(inboundOrderItem);
             }

@@ -355,7 +355,7 @@ function setOutBoundList(result) {
                         break;
                     // 业务员
                     case (3):
-                        if(obj.client.salesman!=null){
+                        if(obj.client != null && obj.client.salesman != null){
                             $(this).html(obj.client.salesman.name);
                         }
 
@@ -592,15 +592,14 @@ function setWasteInventoryList(result) {
                         if(obj.handleCategory!=null){
                             $(this).html(obj.handleCategory.name);
                         }
-
                         break;
                     //数量
                     case (8):
-                        $(this).html(obj.actualCount);
+                        $(this).html(parseFloat(obj.actualCount).toFixed(3));
                         break;
                     //剩余数量
                     case (9):
-                        $(this).html(obj.leftNumeber);
+                        $(this).html(parseFloat(obj.leftNumeber).toFixed(3));
                         break;
                     case (10):
                         $(this).html(obj.remarks);

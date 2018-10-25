@@ -62,16 +62,14 @@ public class WasteInventoryController {
             res.put("status", "fail");
             res.put("message", "分页数据获取失败！");
         }
-
-
         return res.toString();
     }
     //获得库存信息==》次生（无参数）
     @RequestMapping("getSecondaryInventoryList")
     @ResponseBody
-    public String getSecondaryInventoryList(@RequestBody Page page){
+    public String getSecondaryInventoryList(@RequestBody Page page) {
         JSONObject res=new JSONObject();
-        try{
+        try {
             wasteInventoryService.updateLeftNumber();
 
             List<WasteInventory> wasteInventoryList= wasteInventoryService.list2(page);
