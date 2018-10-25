@@ -54,6 +54,49 @@ public class PRSampleInfoAnalysisController {
     }
 
     /**
+     * 通过编号获取仓储部化验单
+     * @param id
+     * @return
+     */
+    @RequestMapping("getSampleInfoAnalysisById")
+    @ResponseBody
+    public String getSampleInfoAnalysisById(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            SampleInfoAnalysis sampleInfoAnalysis = sampleInfoAnalysisService.getById(id);
+            res.put("status", "success");
+            res.put("message", "仓储部化验单获取数据成功");
+            res.put("data", sampleInfoAnalysis);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "仓储部化验单获取数据失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 更新仓储部化验单
+     * @param sampleInfoAnalysis
+     * @return
+     */
+    @RequestMapping("updateSampleInfoAnalysisById")
+    @ResponseBody
+    public String updateSampleInfoAnalysisById(SampleInfoAnalysis sampleInfoAnalysis) {
+        JSONObject res = new JSONObject();
+        try {
+            sampleInfoAnalysisService.update(sampleInfoAnalysis);
+            res.put("status", "success");
+            res.put("message", "仓储部化验单更新成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "仓储部化验单更新失败");
+        }
+        return res.toString();
+    }
+
+    /**
      * 获取仓储部化验单的数量
      * @param sampleInfoAnalysis 仓储部化验单的查询参数
      * @return 仓储部化验单的数量

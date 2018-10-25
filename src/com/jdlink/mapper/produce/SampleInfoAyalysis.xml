@@ -36,6 +36,21 @@
         </if>
     </select>
 
+    <!--通过编号获取仓储部化验单-->
+    <select id="getById" resultMap="SampleInfoAnalysisRM">
+        select * from t_pr_sampleinfoanalysis where id=#{id};
+    </select>
+
+    <!--更新仓储部化验单-->
+    <update id="update">
+        update t_pr_sampleinfoanalysis set sampleId=#{sampleId}, transferDraftId=#{transferDraftId},
+        produceCompanyId=#{produceCompany.clientId}, wastesName=#{wastesName}, wastesCode=#{wastesCode},
+        handleCategory=#{handleCategory}, formType=#{formType}, PH=#{PH}, ash=#{ash}, water=#{water},
+        heat=#{heat}, sulfur=#{sulfur}, chlorine=#{chlorine}, phosphorus=#{phosphorus}, flashPoint=#{flashPoint},
+        viscosity=#{viscosity}, hotMelt=#{hotMelt}, sender=#{sender}, signer=#{signer}, signDate=#{signDate},
+        remark=#{remark} where id=#{id};
+    </update>
+
     <!--获取仓储部化验单数量-->
     <select id="count" resultType="int">
         SELECT count(*) FROM t_pr_sampleinfoanalysis

@@ -928,7 +928,7 @@ function viewData(e) {
     var id = getIdByMenu(e);
     $.ajax({
         type: "POST",
-        url: "getTransferDraftById",
+        url: "getSampleInfoAnalysisById",
         async: false,
         dataType: "json",
         data: {

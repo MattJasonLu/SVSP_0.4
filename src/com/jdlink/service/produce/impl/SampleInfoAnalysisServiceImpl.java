@@ -21,6 +21,16 @@ public class SampleInfoAnalysisServiceImpl implements SampleInfoAnalysisService 
     }
 
     @Override
+    public SampleInfoAnalysis getById(String id) {
+        return sampleInfoAnalysisMapper.getById(id);
+    }
+
+    @Override
+    public void update(SampleInfoAnalysis sampleInfoAnalysis) {
+        sampleInfoAnalysisMapper.update(sampleInfoAnalysis);
+    }
+
+    @Override
     public int count(SampleInfoAnalysis sampleInfoAnalysis) {
         return sampleInfoAnalysisMapper.count(sampleInfoAnalysis);
     }
