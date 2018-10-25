@@ -378,19 +378,23 @@ function setSampleList(result) {
                 case (2):
                     $(this).html(obj.companyCode);
                     break;
-                //危废代码
+                // 联单编号
                 case (3):
+                    $(this).html(obj.id);
+                    break;
+                //危废代码
+                case (4):
                     $(this).html(obj.wastesCode);
                     break;
                 // 样品状态
-                case (4):
+                case (5):
                     if (obj.applyState != null) {
                         obj.name = obj.applyState.name;
                     }
                     $(this).html(obj.name);
                     break;
                 //基础检测项目
-                case (5): {
+                case (6): {
                     var list = [];
                     if (obj.isPH === true) list.push("PH");
                     if (obj.isAsh === true) list.push("灰");
@@ -416,7 +420,7 @@ function setSampleList(result) {
                     $(this).html(obj.basicItems);
                     break;
                 // 增加检测项目
-                case (6): {
+                case (7): {
                     var list1 = [];
                     if (obj.isFlashPoint === true) list1.push("闪点");
                     if (obj.isViscosity === true) list1.push("黏度");
@@ -435,10 +439,10 @@ function setSampleList(result) {
                     $(this).html(obj.addItems);
                     break;
                 // 签收人
-                case (7):
+                case (8):
                     $(this).html(obj.laboratorySigner);
                     break;
-                case (8):
+                case (9):
                     // console.log(getDateStr(obj.samplingDate));
                     $(this).html(getDateStr(obj.samplingDate));
                     break;
