@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.jdlink.mapper.SampleInformationMapper">
+<mapper namespace="com.jdlink.mapper.SampleInfoWareHouseMapper">
     <resultMap id="SampleInformationRM" type="SampleInformation" autoMapping="true">
         <id property="id" column="id"/>
         <result property="companyCode" column="companyCode"/>
@@ -14,18 +14,17 @@
     </resultMap>
 
     <insert id="add" parameterType="SampleInformation">
-        INSERT INTO t_pr_sampleinformation (id,companyCode,companyName,wastesCode,wastesName,wastesFormType,applyState,sendingPerson,laboratorySigner,isPH,isAsh,
+        INSERT INTO t_pr_sampleinfowarehouse (id,companyCode,companyName,wastesCode,wastesName,wastesFormType,applyState,sendingPerson,laboratorySigner,isPH,isAsh,
         isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity,isHotMelt,nowTime,creationDate)
         VALUES (#{id},#{companyCode},#{companyName},#{wastesList[0].code},#{wastesList[0].name},#{wastesList[0].formType},'Appointed',#{sendingPerson},#{laboratorySigner},#{wastesList[0].isPH},
-        #{wastesList[0].isAsh}, #{wastesList[0].isWater}, #{wastesList[0].isHeat},
-        #{wastesList[0].isSulfur}, #{wastesList[0].isChlorine}, #{wastesList[0].isFluorine},
-        #{wastesList[0].isPhosphorus}, #{wastesList[0].isFlashPoint}, #{wastesList[0].isViscosity},#{wastesList[0].isHotMelt}, NOW(),NOW());
+        #{wastesList[0].isAsh},#{wastesList[0].isWater}, #{wastesList[0].isHeat},#{wastesList[0].isSulfur}, #{wastesList[0].isChlorine}, #{wastesList[0].isFluorine},
+        #{wastesList[0].isPhosphorus},#{wastesList[0].isFlashPoint},#{wastesList[0].isViscosity},#{wastesList[0].isHotMelt},NOW(),#{creationDate});
         <if test="wastesList.size() > 0">
             <foreach collection="wastesList" item="wastes" index="index">
-                INSERT INTO t_pr_sampleinformationitem
-                (id,sampleId,code,name,category,formType,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity,isHotMelt)
+                INSERT INTO t_pr_sampleinfowarehouseitem
+                (id,transferId,sampleId,code,name,formType,category,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity,isHotMelt)
                 VALUES
-                (#{wastes.id}, #{id}, #{wastes.code},#{wastes.name},#{wastes.category},#{wastes.formType},#{wastes.isPH}, #{wastes.isAsh}, #{wastes.isWater},
+                (#{wastes.id},#{wastes.transferId}, #{id}, #{wastes.code},#{wastes.name},#{wastes.formType},#{wastes.category},#{wastes.isPH}, #{wastes.isAsh}, #{wastes.isWater},
                 #{wastes.isHeat},#{wastes.isSulfur}, #{wastes.isChlorine}, #{wastes.isFluorine}, #{wastes.isPhosphorus},
                 #{wastes.isFlashPoint}, #{wastes.isViscosity}, #{wastes.isHotMelt});
             </foreach>
@@ -33,34 +32,34 @@
     </insert>
 
     <select id="listPage" resultType="SampleInformation">
-        select * from t_pr_sampleinformation ORDER BY nowTime DESC
+        select * from t_pr_sampleinfowarehouse ORDER BY nowTime DESC
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
     </select>
 
     <select id="count" resultType="int">
-        select count(*) from t_pr_sampleinformation;
+        select count(*) from t_pr_sampleinfowarehouse;
     </select>
 
     <select id="wastesCountById" resultType="int">
-        select count(*) from t_pr_sampleinformationitem where id like "%"#{id}"%";
+        select count(*) from t_pr_sampleinfowarehouseitem where id like "%"#{id}"%";
     </select>
 
     <select id="getByWastesId" parameterType="String" resultType="Wastes">
-        SELECT * FROM t_pr_sampleinformationitem WHERE id = #{id}
+        SELECT * FROM t_pr_sampleinfowarehouseitem WHERE id = #{id}
     </select>
 
     <select id="getBySampleInformationId" parameterType="String" resultMap="SampleInformationRM">
-        SELECT * FROM t_pr_sampleinformation WHERE id = #{id}
+        SELECT * FROM t_pr_sampleinfowarehouse WHERE id = #{id}
     </select>
 
     <select id="getById" resultMap="SampleInformationRM">
-        select * from t_pr_sampleinformation WHERE id = #{sampleId} ORDER BY nowTime DESC;
+        select * from t_pr_sampleinfowarehouse WHERE id = #{sampleId} ORDER BY nowTime DESC;
     </select>
 
     <select id="listByKeyword" parameterType="String" resultType="SampleInformation">
-        select * from t_pr_sampleinformation
+        select * from t_pr_sampleinfowarehouse
         <where>
             <if test='1 == 1'>
                 companyCode LIKE "%"#{keyword}"%" or wastesCode like "%"#{keyword}"%" or laboratorySigner like
@@ -86,7 +85,7 @@
     </select>
 
     <select id="searchCount" parameterType="SampleInformation" resultType="int">
-        SELECT COUNT(*) FROM t_pr_sampleinformation
+        SELECT COUNT(*) FROM t_pr_sampleinfowarehouse
         <where>
             <if test="keywords != null and keywords != ''">
                 or companyCode LIKE "%"#{keywords}"%"
@@ -167,7 +166,7 @@
     </select>
 
     <select id="search" parameterType="SampleInformation" resultType="SampleInformation">
-        SELECT * FROM t_pr_sampleinformation
+        SELECT * FROM t_pr_sampleinfowarehouse
         <where>
             <if test="keywords != null and keywords != ''">
                 or companyCode LIKE "%"#{keywords}"%"
@@ -252,13 +251,13 @@
     </select>
 
     <select id="getSampleInfoByClientId" parameterType="String" resultMap="SampleInformationRM">
-        select * from t_pr_sampleinformation
+        select * from t_pr_sampleinfowarehouse
         where
         companyCode =#{id}
     </select>
 
     <select id="getWastes" resultType="Wastes" parameterType="String">
-        SELECT * FROM t_pr_sampleinformationitem WHERE sampleId=#{id}
+        SELECT * FROM t_pr_sampleinfowarehouseitem WHERE sampleId=#{id}
     </select>
 
     <select id="listWastes" resultType="Wastes">
@@ -270,18 +269,18 @@
     </select>
 
     <select id="countById" resultType="int">
-        select count(*) from t_pr_sampleinformation where id like "%"#{id}"%";
+        select count(*) from t_pr_sampleinfowarehouse where id like "%"#{id}"%";
     </select>
 
     <update id="confirmCheck">
-        UPDATE t_pr_sampleinformation
+        UPDATE t_pr_sampleinfowarehouse
         SET
         applyState = 'Received',laboratorySigner=#{laboratorySigner},nowTime = NOW(),samplingDate = NOW()
         WHERE id = #{sampleId};
     </update>
 
     <update id="update" parameterType="SampleInformation">
-        UPDATE t_pr_sampleinformation
+        UPDATE t_pr_sampleinfowarehouse
         SET
         companyCode=#{companyCode },wastesCode =#{wastesList[0].code},
         sendingPerson = #{sendingPerson},isPH = #{wastesList[0].isPH},isAsh = #{wastesList[0].isAsh},
@@ -289,26 +288,26 @@
         isChlorine = #{wastesList[0].isChlorine},isFluorine = #{wastesList[0].isFluorine},isPhosphorus =#{wastesList[0].isPhosphorus},
         isFlashPoint =#{wastesList[0].isFlashPoint},isViscosity = #{wastesList[0].isViscosity},wastesFormType=#{wastesList[0].formType},
         nowTime = NOW()
-        WHERE t_pr_sampleinformation.id =#{id};
+        WHERE t_pr_sampleinfowarehouse.id =#{id};
         <foreach collection="wastesList" item="wastes" index="index">
-            insert into t_pr_sampleinformationitem
-            (id,sampleId,code,name,formType,category,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity)
+            insert into t_pr_sampleinfowarehouseitem
+            (id,transferId,sampleId,code,name,category,formType,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity)
             values
-            (#{wastes.id},#{id},#{wastes.code},#{wastes.name},#{wastes.formType},#{wastes.category},#{wastes.isPH},#{wastes.isAsh},#{wastes.isWater},#{wastes.isHeat},#{wastes.isSulfur},#{wastes.isChlorine},#{wastes.isFluorine},#{wastes.isPhosphorus},
+            (#{wastes.id},#{wastes.transferId},#{id},#{wastes.code},#{wastes.name},#{wastes.category},#{wastes.formType},#{wastes.isPH},#{wastes.isAsh},#{wastes.isWater},#{wastes.isHeat},#{wastes.isSulfur},#{wastes.isChlorine},#{wastes.isFluorine},#{wastes.isPhosphorus},
             #{wastes.isFlashPoint},#{wastes.isViscosity});
         </foreach>
     </update>
 
     <update id="updateSampleInfo" parameterType="String">
-        update t_pr_sampleinformation set applyState = 'Invalid' where id = #{sampleId}
+        update t_pr_sampleinfowarehouse set applyState = 'Invalid' where id = #{sampleId}
     </update>
 
     <update id="rejectSampleInfoById" >
-        update t_pr_sampleinformation set applyState = 'Rejected',advice=#{advice} where id = #{sampleId}
+        update t_pr_sampleinfowarehouse set applyState = 'Rejected',advice=#{advice} where id = #{sampleId}
     </update>
 
     <delete id="deleteById" parameterType="String">
-        delete from t_pr_sampleinformationitem where sampleId =#{id};
+        delete from t_pr_sampleinfowarehouseitem where sampleId =#{id};
     </delete>
 
 

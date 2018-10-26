@@ -597,8 +597,7 @@ function view(sampleId) {
                         $("span[id='model" + $i + "-wastesName']").text(data.wastesList[i].name);
                         if(data.wastesList[i].formType != null)
                             $("span[id='model" + $i + "-wastesFormType']").text(data.wastesList[i].formType.name);
-                        if(data.wastesList[i].handleCategory != null)
-                            $("span[id='model" + $i + "-wastesHandleCategory']").text(data.wastesList[i].handleCategory.name);
+                        $("span[id='model" + $i + "-wastesHandleCategory']").text(data.wastesList[i].category);
                         $("span[id='model" + $i + "-basicItems']").text(basicItems(data.wastesList[i]));
                         $("span[id='model" + $i + "-addItems']").text(addItems(data.wastesList[i]));
                     }
@@ -760,7 +759,7 @@ function setSelectList() {
 
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getFormTypeAndPackageType",                  // url
+        url: "getSampleFormType",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
@@ -884,8 +883,7 @@ function checkModal(menu) {
                         $("span[id='checkModel" + $i + "-wastesName']").text(data.wastesList[i].name);
                         if(data.wastesList[i].formType != null)
                         $("span[id='checkModel" + $i + "-wastesFormType']").text(data.wastesList[i].formType.name);
-                        if(data.wastesList[i].handleCategory != null)
-                            $("span[id='checkModel" + $i + "-wastesHandleCategory']").text(data.wastesList[i].handleCategory.name);
+                        $("span[id='checkModel" + $i + "-wastesHandleCategory']").text(data.wastesList[i].category);
                         $("span[id='checkModel" + $i + "-basicItems']").text(basicItems(data.wastesList[i]));
                         $("span[id='checkModel" + $i + "-addItems']").text(addItems(data.wastesList[i]));
                     }
@@ -951,6 +949,7 @@ function adjustSample(menu) {
                 if (result.status == "success") {
                     $("#model3-companyName").selectpicker('val',data.companyCode);
                     $("#model3-sendingPerson").val(data.sendingPerson);
+                    $("#model3-id").val(sampleId);
                     num = 1; // 重新计数
                     for (var i = 0; i < data.wastesList.length; i++) {
                         if (i > 0) addNewLine(null);
@@ -959,8 +958,7 @@ function adjustSample(menu) {
                         $("input[name='wastes[" + $i + "].wastesName']").val(data.wastesList[i].name);
                         if(data.wastesList[i].formType != null)
                             $("select[id='wastes[" + $i + "].wastesFormType']").val(data.wastesList[i].formType.index);
-                        if(data.wastesList[i].handleCategory != null)
-                            $("select[id='wastes[" + $i + "].wastesHandleCategory']").val(data.wastesList[i].handleCategory.index);
+                        $("input[id='wastes[" + $i + "].wastesHandleCategory']").val(data.wastesList[i].category);
                         $("input[name='wastes[" + $i + "].isPH']").prop('checked', data.wastesList[i].isPH);
                         $("input[name='wastes[" + $i + "].isAsh']").prop('checked', data.wastesList[i].isAsh);
                         $("input[name='wastes[" + $i + "].isWater']").prop('checked', data.wastesList[i].isWater);
@@ -993,7 +991,11 @@ function adjustSample(menu) {
  */
 function updateAppointBySampleId() {
     var sampleInformation = {};
-    sampleInformation.id = sampleId;
+    if($("#model3-id").val() != "" || $("#model3-id").val() != null){
+        sampleInformation.id = $("#model3-id").val();
+    }else{
+        sampleInformation.id = sampleId;
+    }
     sampleInformation.companyName = $("#model3-companyName").find("option:selected").text();
     sampleInformation.companyCode = $("#model3-companyName").find("option:selected").val();
     sampleInformation.sendingPerson = $("#model3-sendingPerson").val();
@@ -1052,8 +1054,15 @@ function updateAppointBySampleId() {
         }
         wastes.code = $("select[name='wastes[" + $i + "].wastesCode']").find("option:selected").text();
         wastes.name = $("input[name='wastes[" + $i + "].wastesName']").val();
-        wastes.formType = $("select[id='wastes[" + $i + "].wastesFormType']").find("option:selected").val();
-        wastes.handleCategory = $("select[id='wastes[" + $i + "].wastesHandleCategory']").find("option:selected").val();
+        var formType = $("select[id='wastes[" + $i + "].wastesFormType']").find("option:selected").val();
+        switch(parseInt(formType)){
+            case 4 : formType = "HalfSolid";break;
+            case 5 : formType = "Liquid1";break;
+            case 6 : formType = "Solid1";break;
+        }
+        wastes.formType = formType;
+        //wastes.formType = $("select[id='wastes[" + $i + "].wastesFormType']").find("option:selected").val();
+        wastes.category = $("input[id='wastes[" + $i + "].wastesHandleCategory']").val();
         wastes.isPH = $("input[name='wastes[" + $i + "].isPH']").prop('checked');
         wastes.isAsh = $("input[name='wastes[" + $i + "].isAsh']").prop('checked');
         wastes.isWater = $("input[name='wastes[" + $i + "].isWater']").prop('checked');
@@ -1259,6 +1268,7 @@ function searchSampleInfo() {
 function addAppoint() {
     var sampleInformation = {};
     var companyCode = $("#model-companyName").val();   // 获取公司代码
+    if($("#model-id").val() === "" || $("#model-id").val() == null){
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getCurrentSampleInformationId",                 // url
@@ -1276,6 +1286,9 @@ function addAppoint() {
             console.log(result);
         }
     });
+    }else {
+        sampleInformation.id = $("#model-id").val();
+    }
     sampleInformation.companyName = $("#model-companyName").find("option:selected").text();
     sampleInformation.companyCode = $("#model-companyName").find("option:selected").val();
     sampleInformation.sendingPerson = $("#model-sendingPerson").val();
@@ -1311,8 +1324,15 @@ function addAppoint() {
         wastes.id = id2;
         wastes.code = $("select[name='wastesList[" + $i + "].wastesCode']").find("option:selected").text();
         wastes.name = $("input[name='wastesList[" + $i + "].wastesName']").val();
-        wastes.formType = $("select[id='wastesList[" + $i + "].wastesFormType']").find("option:selected").val();
-        wastes.handleCategory = $("select[id='wastesList[" + $i + "].wastesHandleCategory']").find("option:selected").val();
+        var formType = $("select[id='wastesList[" + $i + "].wastesFormType']").find("option:selected").val();
+        switch(parseInt(formType)){
+            case 4 : formType = "HalfSolid";break;
+            case 5 : formType = "Liquid1";break;
+            case 6 : formType = "Solid1";break;
+        }
+        wastes.formType = formType;
+        //wastes.formType = $("select[id='wastesList[" + $i + "].wastesFormType']").find("option:selected").val();
+        wastes.category = $("input[id='wastesList[" + $i + "].wastesHandleCategory']").val();
         wastes.isPH = $("input[name='wastesList[" + $i + "].isPH']").prop('checked');
         wastes.isAsh = $("input[name='wastesList[" + $i + "].isAsh']").prop('checked');
         wastes.isWater = $("input[name='wastesList[" + $i + "].isWater']").prop('checked');
@@ -1497,5 +1517,19 @@ function rejection1() {
             alert("服务器异常！")
         }
     })
+}
+/**
+ * 自动匹配危废类别
+ * @param item
+ */
+function autoSetCategory(item){
+    var code = $(item).find("option:selected").text();
+    console.log("code:"+code);
+    if(code != "" || code != null){
+        code ="HW" + code.substring(code.length,code.length-2); //截取最后两位
+        console.log("code:"+code);
+        console.log($(item).parent().parent().nextAll().find("input[name$='wastesHandleCategory']"));
+        $(item).parent().parent().nextAll().find("input[name$='wastesHandleCategory']").val(code);  // 以wastesHandleCategory结尾的
+    }
 }
 

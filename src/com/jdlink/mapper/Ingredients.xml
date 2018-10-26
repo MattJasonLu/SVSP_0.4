@@ -357,7 +357,7 @@
     </select>
 
     <select id="getInventoryByNameAndWare" resultType="Ingredients">
-        select * from t_pr_ingredients_inventory where name = #{name} and wareHouseName = #{wareHouseName};
+        select * from t_pr_ingredients_inventory where name = #{name} and wareHouseName = #{wareHouseName} and specification=#{specification};
     </select>
 
     <select id="searchInventoryCount" parameterType="Ingredients" resultType="int">
