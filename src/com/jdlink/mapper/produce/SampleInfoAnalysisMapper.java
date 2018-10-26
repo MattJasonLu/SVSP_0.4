@@ -1,5 +1,6 @@
 package com.jdlink.mapper.produce;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.SampleInfoAnalysis;
 import org.apache.ibatis.annotations.Param;
@@ -40,4 +41,10 @@ public interface SampleInfoAnalysisMapper {
       * @param sampleInfoAnalysis 仓储部化验单
       */
      void add(SampleInfoAnalysis sampleInfoAnalysis);
+
+     /**
+      * 设置状态
+      * @param checkState 状态
+      */
+     void setState(@Param("id") String id, @Param("checkState") CheckState checkState, @Param("newId") String newId);
 }

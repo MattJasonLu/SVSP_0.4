@@ -1,5 +1,6 @@
 package com.jdlink.service.produce;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.SampleInfoAnalysis;
 
@@ -40,5 +41,11 @@ public interface SampleInfoAnalysisService {
      * @param sampleInfoAnalysis 仓储部化验单
      */
     void add(SampleInfoAnalysis sampleInfoAnalysis);
+
+    /**
+     * 设置状态
+     * @param checkState 状态
+     */
+    void setState(String id, CheckState checkState);
 
 }

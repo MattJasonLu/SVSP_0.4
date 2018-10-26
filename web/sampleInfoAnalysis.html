@@ -208,7 +208,7 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" href="#" onclick="alert('功能开发中');"><span
+                    <a class="btn btn-primary btn-xs" href="#" onclick="alert('功能调整中，请下载导入模板后导入数据');"><span
                             class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                     <a class="btn btn-primary btn-xs" onclick="importExcelChoose()"><span
                             class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
@@ -379,11 +379,11 @@
                     <!--<td class="text-center" name="signer"></td>-->
                     <!--<td class="text-center" name="remark"></td>-->
                     <td class="text-center">
-                        <a href="#" onclick="viewSample(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                        <a href="#" onclick="adjustSample(this);" title="修改信息"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                        <a href="#" onclick="deleteSample(this);" title="作废"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
-                        <a href="#" onclick="checkModal(this);" title="确认收样"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
-                        <a href="#" onclick="rejection();" title="拒收"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                        <a href="#" onclick="viewData(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                        <a href="#" onclick="adjustData(this);" title="修改信息"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                        <a href="#" onclick="setInvalid(this);" title="作废"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
+                        <!--<a href="#" onclick="checkModal(this);" title="确认收样"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>-->
+                        <!--<a href="#" onclick="rejection();" title="拒收"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>-->
                     </td>
                 </tr>
                 </tbody>
@@ -643,35 +643,64 @@
                         </div>
                         <div class="modal-body">
                             <table class="table table-bordered" style="border:none">
-                                <thead style="border:none">
+                                <!--<thead style="border:none">-->
+                                <tbody id="viewTable">
                                 <tr>
-                                    <th class="text-center" style="border: none">公司代码</th>
-                                    <td class="text-center" style="border: none"><span id="model1-companyCode" ></span></td>
-                                    <th class="text-center" style="border: none">签收人</th>
-                                    <td class="text-center" style="border: none"><span id="model1-signer" ></span></td>
+                                    <th>联单号码</th>
+                                    <th>产废单位</th>
+                                    <th>废物名称</th>
+                                    <th>废物代码</th>
+                                    <th>废物类别</th>
+                                    <th>废物形态</th>
+                                    <th>备注</th>
                                 </tr>
                                 <tr>
-                                    <th class="text-center">序号</th>
-                                    <th class="text-center">危废代码</th>
-                                    <th class="text-center">基础项目</th>
-                                    <th class="text-center">增加项目</th>
+                                    <td name="transferDraftId"></td>
+                                    <td name="produceCompanyName"></td>
+                                    <td name="wastesName"></td>
+                                    <td name="wastesCode"></td>
+                                    <td name="wastesCategory"></td>
+                                    <td name="formType"></td>
+                                    <td name="remark"></td>
                                 </tr>
-                                </thead>
-                                <tbody>
-                                <tr id="addClone1">
-                                    <td class="text-center">1</td>
-                                    <td class="text-center"><span id="model[0].wastesCode"></span></td>
-                                    <td class="text-center"><span id="model[0].basicItems"></span></td>
-                                    <td class="text-center"><span id="model[0].addItems"></span></td>
+                                <tr>
+                                    <th>PH</th>
+                                    <th>热值kal/kg</th>
+                                    <th>灰分%</th>
+                                    <th>水分%</th>
+                                    <th>氟含量%</th>
+                                    <th>氯含量%</th>
+                                    <th>硫含量%</th>
                                 </tr>
-                                <tr id="end" style="display: none;">
-                                    <td class="text-center"></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-center"></td>
+                                <!--</thead>-->
+                                <tr>
+                                    <td name="PH"></td>
+                                    <td name="ash"></td>
+                                    <td name="water"></td>
+                                    <td name="heat"></td>
+                                    <td name="fluorine"></td>
+                                    <td name="chlorine"></td>
+                                    <td name="sulfur"></td>
+                                </tr>
+                                <tr>
+                                    <th>磷含量%</th>
+                                    <th>闪点&#176;C</th>
+                                    <th>粘度mpa*s</th>
+                                    <th>热融试验120&#176;C</th>
+                                    <th>送样人</th>
+                                    <th>签收人</th>
+                                    <th>签收日期</th>
+                                </tr>
+                                <tr>
+                                    <td name="phosphorus"></td>
+                                    <td name="flashPoint"></td>
+                                    <td name="viscosity"></td>
+                                    <td name="hotMelt"></td>
+                                    <td name="sender"></td>
+                                    <td name="signer"></td>
+                                    <td name="signDate"></td>
                                 </tr>
                                 </tbody>
-
                             </table>
                         </div>
                         <div class="modal-footer" id="footer">

@@ -37,6 +37,9 @@
     <select id="countById" resultType="int" parameterType="String">
     select count(*) from t_pr_secondarysample where id like "%"#{id}"%";
 </select>
+    <select id="wastesCountById" resultType="int" parameterType="String">
+        select count(*) from t_pr_secondarysampleitem where id like "%"#{id}"%";
+    </select>
     <resultMap id="SecondarysampleRM" type="Secondarysample">
         <result property="id" column="id"></result>
         <collection property="client" column="clientId" select="getClient"></collection>
@@ -49,6 +52,9 @@
     <select id="getSecondarysampleById" parameterType="String" resultMap="SecondarysampleRM">
         select * from t_pr_secondarysample where id=#{id};
     </select>
+    <select id="getByWastesId" parameterType="String" resultType="SecondarysampleItem">
+        select * from t_pr_secondarysampleitem where id=#{id};
+    </select>
     <!--添加次生废物送样主表-->
     <insert id="addSecondarySample" parameterType="SecondarySample">
         insert into t_pr_secondarysample(id, clientId, laboratorySignatory, sendingPerson, address, checkState, advice,nowTime) values
@@ -56,8 +62,8 @@
     </insert>
     <!--添加次生废物送样子表-->
     <insert id="addSecondarySampleItem" parameterType="SecondarySampleItem">
-        insert into t_pr_secondarysampleitem (wastesCode, wastesName, sampleinformationId, water, scorchingRate) values
-        (#{wastesCode},#{wastesName},#{sampleinformationId},#{water},#{scorchingRate});
+        insert into t_pr_secondarysampleitem (id,wastesCode, wastesName, sampleinformationId, water, scorchingRate) values
+        (#{id},#{wastesCode},#{wastesName},#{sampleinformationId},#{water},#{scorchingRate});
     </insert>
     <!--寻找最新的危废送样登记编号-->
     <select id="getNewestId"  resultType="String">

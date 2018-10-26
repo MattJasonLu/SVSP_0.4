@@ -1,5 +1,6 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.FormType;
 import com.jdlink.domain.Page;
@@ -12,6 +13,7 @@ import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -142,51 +144,73 @@ public class PRSampleInfoAnalysisController {
                 sampleInfoAnalysis.setProduceCompany(produceCompany);
                 sampleInfoAnalysis.setWastesName(data[i][3].toString());
                 sampleInfoAnalysis.setWastesCode(data[i][4].toString());
+                sampleInfoAnalysis.setWastesCategory(data[i][5].toString());
                 // 设置进料方式
-                if (data[i][4].toString().contains("污泥")) {
-                    sampleInfoAnalysis.setHandleCategory(HandleCategory.Sludge);
-                } else if (data[i][4].toString().contains("废液")) {
-                    sampleInfoAnalysis.setHandleCategory(HandleCategory.WasteLiquid);
-                } else if (data[i][4].toString().contains("散料")) {
-                    sampleInfoAnalysis.setHandleCategory(HandleCategory.Bulk);
-                } else if (data[i][4].toString().contains("破碎")) {
-                    sampleInfoAnalysis.setHandleCategory(HandleCategory.Crushing);
-                } else if (data[i][4].toString().contains("悬挂")) {
-                    sampleInfoAnalysis.setHandleCategory(HandleCategory.Suspension);
-                } else if (data[i][4].toString().contains("精馏")) {
-                    sampleInfoAnalysis.setHandleCategory(HandleCategory.Distillation);
-                }
+//                if (data[i][5].toString().contains("污泥")) {
+//                    sampleInfoAnalysis.setHandleCategory(HandleCategory.Sludge);
+//                } else if (data[i][5].toString().contains("废液")) {
+//                    sampleInfoAnalysis.setHandleCategory(HandleCategory.WasteLiquid);
+//                } else if (data[i][5].toString().contains("散料")) {
+//                    sampleInfoAnalysis.setHandleCategory(HandleCategory.Bulk);
+//                } else if (data[i][5].toString().contains("破碎")) {
+//                    sampleInfoAnalysis.setHandleCategory(HandleCategory.Crushing);
+//                } else if (data[i][5].toString().contains("悬挂")) {
+//                    sampleInfoAnalysis.setHandleCategory(HandleCategory.Suspension);
+//                } else if (data[i][5].toString().contains("精馏")) {
+//                    sampleInfoAnalysis.setHandleCategory(HandleCategory.Distillation);
+//                }
                 // 设置废物形态
-                if (data[i][5].toString().contains("固") && !data[i][5].toString().contains("不")) {
+                if (data[i][6].toString().contains("固") && !data[i][6].toString().contains("不")) {
                     sampleInfoAnalysis.setFormType(FormType.Solid);
-                } else if (data[i][5].toString().contains("半固")) {
+                } else if (data[i][6].toString().contains("半固")) {
                     sampleInfoAnalysis.setFormType(FormType.HalfSolid);
-                } else if (data[i][5].toString().contains("液")) {
+                } else if (data[i][6].toString().contains("液")) {
                     sampleInfoAnalysis.setFormType(FormType.Liquid);
                 }
-                sampleInfoAnalysis.setSender(data[i][6].toString());
-                sampleInfoAnalysis.setSigner(data[i][7].toString());
-                sampleInfoAnalysis.setPH(Float.parseFloat(data[i][8].toString()));
-                sampleInfoAnalysis.setHeat(Float.parseFloat(data[i][9].toString()));
-                sampleInfoAnalysis.setAsh(Float.parseFloat(data[i][10].toString()));
-                sampleInfoAnalysis.setWater(Float.parseFloat(data[i][11].toString()));
-                sampleInfoAnalysis.setFluorine(Float.parseFloat(data[i][12].toString()));
-                sampleInfoAnalysis.setChlorine(Float.parseFloat(data[i][13].toString()));
-                sampleInfoAnalysis.setSulfur(Float.parseFloat(data[i][14].toString()));
-                sampleInfoAnalysis.setPhosphorus(Float.parseFloat(data[i][15].toString()));
-                sampleInfoAnalysis.setFlashPoint(Float.parseFloat(data[i][16].toString()));
-                sampleInfoAnalysis.setViscosity(Float.parseFloat(data[i][17].toString()));
-                sampleInfoAnalysis.setHotMelt(Float.parseFloat(data[i][18].toString()));
-                sampleInfoAnalysis.setSignDate(DateUtil.getDateFromStr(data[i][19].toString()));
-                sampleInfoAnalysis.setRemark(data[i][20].toString());
+                sampleInfoAnalysis.setSender(data[i][7].toString());
+                sampleInfoAnalysis.setSigner(data[i][8].toString());
+                sampleInfoAnalysis.setPH(Float.parseFloat(data[i][9].toString()));
+                sampleInfoAnalysis.setHeat(Float.parseFloat(data[i][10].toString()));
+                sampleInfoAnalysis.setAsh(Float.parseFloat(data[i][11].toString()));
+                sampleInfoAnalysis.setWater(Float.parseFloat(data[i][12].toString()));
+                sampleInfoAnalysis.setFluorine(Float.parseFloat(data[i][13].toString()));
+                sampleInfoAnalysis.setChlorine(Float.parseFloat(data[i][14].toString()));
+                sampleInfoAnalysis.setSulfur(Float.parseFloat(data[i][15].toString()));
+                sampleInfoAnalysis.setPhosphorus(Float.parseFloat(data[i][16].toString()));
+                sampleInfoAnalysis.setFlashPoint(Float.parseFloat(data[i][17].toString()));
+                sampleInfoAnalysis.setViscosity(Float.parseFloat(data[i][18].toString()));
+                sampleInfoAnalysis.setHotMelt(Float.parseFloat(data[i][19].toString()));
+                sampleInfoAnalysis.setSignDate(DateUtil.getDateFromStr(data[i][20].toString()));
+                sampleInfoAnalysis.setRemark(data[i][21].toString());
+                sampleInfoAnalysis.setCheckState(CheckState.NewBuild);
                 sampleInfoAnalysisService.add(sampleInfoAnalysis);
             }
             res.put("status", "success");
             res.put("message", "导入成功");
+        } catch (DuplicateKeyException e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "编号重复，导入失败");
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "导入失败");
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("setSampleInfoAnalysisInvalid")
+    @ResponseBody
+    public String setSampleInfoAnalysisInvalid(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            sampleInfoAnalysisService.setState(id, CheckState.Invalid);
+            res.put("status", "success");
+            res.put("message", "作废成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "success");
+            res.put("message", "作废失败");
         }
         return res.toString();
     }
