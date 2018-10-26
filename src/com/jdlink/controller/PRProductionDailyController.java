@@ -270,22 +270,22 @@ public class PRProductionDailyController {
 
         try {
             // 生成预约号
-            Date date = new Date();   //获取当前时间
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-            String prefix = simpleDateFormat.format(date) + sewageregistration.getClient().getClientId();
-            System.out.println("前缀"+prefix);
-            int count =productionDailyService.countByIdSew(prefix) + 1;
-            String suffix;
-            if (count <= 9) suffix = "0" + count;
-            else suffix = count + "";
-            String id = RandomUtil.getAppointId(prefix, suffix);
-            // 确保编号唯一
-            while (productionDailyService.getSewaGeregistrationById(id) != null) {
-                int index = Integer.parseInt(id);
-                index += 1;
-                id =String.valueOf(index);
-            }
-            sewageregistration.setId(id);
+//            Date date = new Date();   //获取当前时间
+//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+//            String prefix = simpleDateFormat.format(date) + sewageregistration.getClient().getClientId();
+//            System.out.println("前缀"+prefix);
+//            int count =productionDailyService.countByIdSew(prefix) + 1;
+//            String suffix;
+//            if (count <= 9) suffix = "0" + count;
+//            else suffix = count + "";
+//            String id = RandomUtil.getAppointId(prefix, suffix);
+//            // 确保编号唯一
+//            while (productionDailyService.getSewaGeregistrationById(id) != null) {
+//                int index = Integer.parseInt(id);
+//                index += 1;
+//                id =String.valueOf(index);
+//            }
+//            sewageregistration.setId(id);
             productionDailyService.addSewaGeregistration(sewageregistration);
             res.put("status", "success");
             res.put("message", "添加主表成功");
@@ -310,21 +310,18 @@ public class PRProductionDailyController {
 
         try {
             String id1;
-            String sampleId=productionDailyService.getNewestId().get(0);
-            int index = productionDailyService.wastesCountById(sampleId);
+            int index = productionDailyService.wastesCountById(sewageregistrationItem.getSampleinformationId());
             do {
                 index += 1;
                 String index1 = index + "";
                 if(index < 10) index1 = "000" + index;
                 else if(index < 100) index1 = "00" + index;
                 else if(index < 1000) index1 = "0" + index;
-                id1 = sampleId + index1;
+                id1 = sewageregistrationItem.getSampleinformationId() + index1;
             } while (productionDailyService.getByWastesId(id1) != null);
             sewageregistrationItem.setId(id1);
             String id=productionDailyService.getNewestId().get(0);
-            sewageregistrationItem.setSampleinformationId(id);
             productionDailyService.addSewaGeregistrationItem(sewageregistrationItem);
-
             res.put("status", "success");
             res.put("message", "字表添加成功");
         }

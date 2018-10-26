@@ -702,8 +702,8 @@
 
     <!--添加污水登记子表-->
     <insert id="addSewaGeregistrationItem" parameterType="SewageregistrationItem">
-        insert into  t_pr_sewageregistrationitem(id,wastesCode, wastesName, sampleinformationId, ph, cod, bod5, o2, lye, n2) values
-        (#{id},#{wastesCode},#{wastesName},#{sampleinformationId},#{ph},#{cod},#{bod5},#{o2},#{lye},#{n2})
+        insert into  t_pr_sewageregistrationitem(id,wastesCode, wastesName, sampleinformationId, ph, cod, bod5, o2, lye, n2,alkalinity,bicarbonate,nitrogen,phosphorus,turbidity,basicity,phenolphthalein,remarks,identifie) values
+        (#{id},#{wastesCode},#{wastesName},#{sampleinformationId},#{ph},#{cod},#{bod5},#{o2},#{lye},#{n2},#{alkalinity},#{bicarbonate},#{nitrogen},#{phosphorus},#{turbidity},#{basicity},#{phenolphthalein},#{remarks},#{identifie})
     </insert>
 
     <!--添加软水登记主表-->
@@ -714,8 +714,8 @@
     </insert>
     <!--添加软水登记字表表-->
     <insert id="addSoftGeregistrationItem" parameterType="SewageregistrationItem">
-        insert into t_pr_sewageregistrationitem(id,wastesCode, wastesName, sampleinformationId, ph, cod, bod5, o2, lye, n2, relativeAlkalinity, dissolvedSolidForm, hardness, electricalConductivity)values
-        (#{id},#{wastesCode},#{wastesName},#{sampleinformationId},#{ph},#{cod},#{bod5},#{o2},#{lye},#{n2},#{relativeAlkalinity},#{dissolvedSolidForm},#{hardness},#{electricalConductivity})
+      insert into  t_pr_sewageregistrationitem(id,wastesCode, wastesName, sampleinformationId, ph, cod, bod5, o2, lye, n2,alkalinity,bicarbonate,nitrogen,phosphorus,turbidity,basicity,phenolphthalein,remarks) values
+        (#{id},#{wastesCode},#{wastesName},#{sampleinformationId},#{ph},#{cod},#{bod5},#{o2},#{lye},#{n2},#{alkalinity},#{bicarbonate},#{nitrogen},#{phosphorus},#{turbidity},#{basicity},#{phenolphthalein},#{remarks})
     </insert>
 
     <resultMap id="SewageregistrationRM" type="Sewageregistration" autoMapping="true">

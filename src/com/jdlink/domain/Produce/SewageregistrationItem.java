@@ -22,6 +22,9 @@ public class SewageregistrationItem {
 
     private  int n2;//氨氮
 
+    private String identifie;//联单编号
+
+
     private int relativeAlkalinity;//相对碱度
 
     private int dissolvedSolidForm;//溶解固形物
@@ -30,8 +33,96 @@ public class SewageregistrationItem {
 
     private int electricalConductivity;//电导率
 
+    private  int alkalinity;//硝酸盐碱度
 
-//    public boolean getIsPH() {
+    private  int bicarbonate;//重碳酸盐碱度
+
+    private  int nitrogen;//总氮
+
+    private  int phosphorus;//总磷
+
+    private int turbidity;//浊度
+
+    private int  basicity;//全碱度
+
+    private int phenolphthalein;//酚酞碱度
+
+    private String remarks;
+
+    public String getIdentifie() {
+        return identifie;
+    }
+
+    public void setIdentifie(String identifie) {
+        this.identifie = identifie;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public int getTurbidity() {
+        return turbidity;
+    }
+
+    public void setTurbidity(int turbidity) {
+        this.turbidity = turbidity;
+    }
+
+    public int getBasicity() {
+        return basicity;
+    }
+
+    public void setBasicity(int basicity) {
+        this.basicity = basicity;
+    }
+
+    public int getPhenolphthalein() {
+        return phenolphthalein;
+    }
+
+    public void setPhenolphthalein(int phenolphthalein) {
+        this.phenolphthalein = phenolphthalein;
+    }
+
+    public int getAlkalinity() {
+        return alkalinity;
+    }
+
+    public void setAlkalinity(int alkalinity) {
+        this.alkalinity = alkalinity;
+    }
+
+    public int getBicarbonate() {
+        return bicarbonate;
+    }
+
+    public void setBicarbonate(int bicarbonate) {
+        this.bicarbonate = bicarbonate;
+    }
+
+    public int getNitrogen() {
+        return nitrogen;
+    }
+
+    public void setNitrogen(int nitrogen) {
+        this.nitrogen = nitrogen;
+    }
+
+    public int getPhosphorus() {
+        return phosphorus;
+    }
+
+    public void setPhosphorus(int phosphorus) {
+        this.phosphorus = phosphorus;
+    }
+
+
+    //    public boolean getIsPH() {
 //        return isPH;
 //    }
 //

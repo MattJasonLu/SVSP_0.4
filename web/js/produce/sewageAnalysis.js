@@ -379,14 +379,21 @@ function setSewageList(result) {
                                 if (item.lye == 1) {
                                     project += "碱度 ";
                                 }
-                                if (item.n2 == 1) {
-                                    project += "氮气 ";
+                                if (item.relativeAlkalinity == 1) {
+                                    project += "相对碱度 ";
                                 }
-                                if (item.o2 == 1) {
-                                    project += "氧气 ";
+
+                                if (item.n2 == 1) {
+                                    project += '氨氮 ';
                                 }
                                 if (item.relativeAlkalinity == 1) {
                                     project += "相对碱度 ";
+                                }
+                                if (item.nitrogen == 1) {
+                                    project += "总氮 ";
+                                }
+                                if (item.phosphorus == 1) {
+                                    project += "总磷 ";
                                 }
                             }
                         })
@@ -609,11 +616,12 @@ function addAppoint() {
 
 //主表
    var  data={
-        client:{clientId:$('#model-companyCode').selectpicker('val')},
+       // client:{clientId:$('#model-companyCode').selectpicker('val')},
         laboratorySignatory:$('#laboratorySignatory').val(),
         sendingPerson:$('#sendingPerson').val(),
         water:true,
-        address:$('#address').val(),
+         address:$('#address').val(),
+         id:$('#reservationId').val(),
     };
     console.log(data)
    //添加主表
@@ -629,53 +637,66 @@ function addAppoint() {
             if (result != undefined && result.status == "success"){
                 $('.myclass').each(function () {
                     var isPH;
-                    if($(this).children('td').eq(3).find('label').eq(0).find("input").prop('checked')==true){
+                    if($(this).children('td').eq(2).find('label').eq(0).find("input").prop('checked')==true){
                         isPH=1;
                     }
                     else
                         isPH=0;
                     var isCOD;
-                    if($(this).children('td').eq(3).find('label').eq(1).find("input").prop('checked')==true){
+                    if($(this).children('td').eq(2).find('label').eq(1).find("input").prop('checked')==true){
                         isCOD=1;
                     }
                     else
                         isCOD=0;
                     var isBOD5;
-                    if($(this).children('td').eq(3).find('label').eq(2).find("input").prop('checked')==true){
+                    if($(this).children('td').eq(2).find('label').eq(2).find("input").prop('checked')==true){
                         isBOD5=1;
                     }
                     else
                         isBOD5=0;
-                    var isO2;
-                    if($(this).children('td').eq(3).find('label').eq(3).find("input").prop('checked')==true){
-                        isO2=1;
-                    }
-                    else
-                        isO2=0;
+                    // var alkalinity;
+                    // if($(this).children('td').eq(3).find('label').eq(3).find("input").prop('checked')==true){
+                    //     isO2=1;
+                    // }
+                    // else
+                    //     alkalinity=0;
                     var isN2;
-                    if($(this).children('td').eq(3).find('label').eq(4).find("input").prop('checked')==true){
+                    if($(this).children('td').eq(2).find('label').eq(3).find("input").prop('checked')==true){
                         isN2=1;
                     }
                     else
                         isN2=0;
-                    var isLye;
-                    if($(this).children('td').eq(3).find('label').eq(5).find("input").prop('checked')==true){
-                        isLye=1;
+                    // var bicarbonate;
+                    // if($(this).children('td').eq(3).find('label').eq(5).find("input").prop('checked')==true){
+                    //     isLye=1;
+                    // }
+                    // else
+                    //     bicarbonate=0;
+                    var nitrogen;
+                    if($(this).children('td').eq(2).find('label').eq(4).find("input").prop('checked')==true){
+                        nitrogen=1;
                     }
                     else
-                        isLye=0;
-
+                        nitrogen=0;
+                    var phosphorus;
+                    if($(this).children('td').eq(2).find('label').eq(5).find("input").prop('checked')==true){
+                        phosphorus=1;
+                    }
+                    else
+                        phosphorus=0;
 
 
                     var   dataItem={
-                        wastesCode:$(this).children('td').eq(1).find("button").attr('title'),
-                        wastesName:$(this).children('td').eq(2).find("input").val(),
+                        // wastesCode:$(this).children('td').eq(1).find("button").attr('title'),
+                        // wastesName:$(this).children('td').eq(2).find("input").val(),
                         ph:isPH,
                         cod:isCOD,
                         bod5:isBOD5,
-                        o2:isO2,
                         n2:isN2,
-                        lye:isLye
+                        nitrogen:nitrogen,
+                        phosphorus:phosphorus,
+                        identifie:$(this).children('td').eq(1).find("input").val(),
+                        sampleinformationId:$('#reservationId').val(),
                     };
                     console.log(dataItem)
                     $.ajax({
@@ -833,6 +854,7 @@ function delLine(item) {
 function view(item) {
   var id=$(item).parent().parent().children('td').eq(1).html();
   console.log(id)
+    $("#reservationId1").text(id)
     $("#appointModa2").modal('show');
   $('#confirm').hide();
   //根据编号查找
@@ -852,13 +874,13 @@ function view(item) {
                     $('#companyName').val(result.data.client.companyName);
                 }
                  //化验室签收人
-                $('#signer').val(result.data.laboratorySignatory)
+                $('#laboratorySignatory1').text(result.data.laboratorySignatory)
 
                 //送样人
-                $('#sendingPerson2').val(result.data.sendingPerson)
+                $('#sendingPerson1').text(result.data.sendingPerson)
 
                 //采样点
-                $('#address2').val(result.data.address)
+                $('#address1').text(result.data.address)
 
 
                  if(result.data.sewageregistrationItemList!=null){
@@ -876,8 +898,8 @@ function view(item) {
 
 
                      clonedTr.children('td').eq(0).html(index + 1);
-                     clonedTr.children('td').eq(1).html(obj.wastesCode);
-                     clonedTr.children('td').eq(2).html(obj.wastesName);
+                     clonedTr.children('td').eq(1).html(obj.identifie);
+                     // clonedTr.children('td').eq(2).html(obj.wastesName);
                      project = "";
                      if (obj.cod == 1) {
                          project += "COD ";
@@ -901,15 +923,22 @@ function view(item) {
                          project += "碱度 ";
                      }
                      if (obj.n2 == 1) {
-                         project += '氨氮';
-                     }
-                     if (obj.o2 == 1) {
-                         project += "氧气 ";
+                         project += '氨氮 ';
                      }
                      if (obj.relativeAlkalinity == 1) {
                          project += "相对碱度 ";
                      }
-                     clonedTr.children('td').eq(3).html(project);
+                     if (obj.nitrogen == 1) {
+                         project += "总氮 ";
+                     }
+                     if (obj.phosphorus == 1) {
+                         project += "总磷 ";
+                     }
+
+
+
+
+                     clonedTr.children('td').eq(2).html(project);
 
                      clonedTr.removeAttr("id");
                      clonedTr.insertBefore(tr);
@@ -946,6 +975,7 @@ function view(item) {
 function setSubmit(item) {
     var id=$(item).parent().parent().children('td').eq(1).html();
     console.log(id)
+    $("#reservationId1").text(id)
     $("#appointModa2").modal('show');
     $('#confirm').show();
     //根据编号查找
@@ -965,16 +995,13 @@ function setSubmit(item) {
                     $('#companyName').val(result.data.client.companyName);
                 }
                 //化验室签收人
-                $('#signer').val(result.data.laboratorySignatory)
+                $('#laboratorySignatory1').text(result.data.laboratorySignatory)
 
                 //送样人
-                $('#sendingPerson2').val(result.data.sendingPerson)
+                $('#sendingPerson1').text(result.data.sendingPerson)
 
                 //采样点
-                $('#address2').val(result.data.address)
-
-                 //预约单号
-                $("#id").val(result.data.id)
+                $('#address1').text(result.data.address)
 
                 if(result.data.sewageregistrationItemList!=null){
 
@@ -991,8 +1018,8 @@ function setSubmit(item) {
 
 
                         clonedTr.children('td').eq(0).html(index + 1);
-                        clonedTr.children('td').eq(1).html(obj.wastesCode);
-                        clonedTr.children('td').eq(2).html(obj.wastesName);
+                        clonedTr.children('td').eq(1).html(obj.identifie);
+                        // clonedTr.children('td').eq(2).html(obj.wastesName);
                         project = "";
                         if (obj.cod == 1) {
                             project += "COD ";
@@ -1016,7 +1043,7 @@ function setSubmit(item) {
                             project += "碱度 ";
                         }
                         if (obj.n2 == 1) {
-                            project += "氮气 ";
+                            project += "氨氮 ";
                         }
                         if (obj.o2 == 1) {
                             project += "氧气 ";
@@ -1024,7 +1051,15 @@ function setSubmit(item) {
                         if (obj.relativeAlkalinity == 1) {
                             project += "相对碱度 ";
                         }
-                        clonedTr.children('td').eq(3).html(project);
+
+                        if (obj.nitrogen == 1) {
+                            project += "总氮 ";
+                        }
+                        if (obj.phosphorus == 1) {
+                            project += "总磷 ";
+                        }
+
+                        clonedTr.children('td').eq(2).html(project);
 
                         clonedTr.removeAttr("id");
                         clonedTr.insertBefore(tr);
@@ -1057,7 +1092,7 @@ function setSubmit(item) {
 }
 //确认送样方法==>真正的方法
 function confirmSample() {
-var id=$("#id").val();
+var id=$("#reservationId1").text();
 
 $.ajax({
     type: "POST",                       // 方法类型

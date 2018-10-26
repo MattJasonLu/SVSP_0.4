@@ -405,24 +405,7 @@ function setSoftWaterList(result) {
                     if(obj.checkState!=null){
                         $(this).html(obj.checkState.name);
                     }
-
                     break;
-                // case (7):
-                //     // 氮
-                //     $(this).html(obj.nitrogen);
-                //     break;
-                // case (8):
-                //     // 碱液
-                //     $(this).html(obj.lye);
-                //     break;
-                // case (9):
-                //     // PH
-                //     $(this).html(obj.ph);
-                //     break;
-                // case (10):
-                //     // 备注
-                //     $(this).html(obj.remarks);
-                //     break;
             }
         });
         // 把克隆好的tr追加到原来的tr前面
@@ -703,7 +686,9 @@ function addAppoint() {
         client:{clientId:$('#model-companyCode').selectpicker('val')},
         laboratorySignatory:$('#laboratorySignatory').val(),
         sendingPerson:$('#sendingPerson').val(),
-        water:false
+        water:false,
+        address:$('#address').val(),
+
     };
     console.log(data)
     //添加主表
@@ -720,44 +705,44 @@ function addAppoint() {
                 $('.myclass').each(function () {
 
                     var relativeAlkalinity;
-                    if($(this).children('td').eq(3).find('label').eq(0).find("input").prop('checked')==true){
+                    if($(this).children('td').eq(1).find('label').eq(0).find("input").prop('checked')==true){
                         relativeAlkalinity=1;
                     }
                     else
                         relativeAlkalinity=0;
                     var dissolvedSolidForm;
-                    if($(this).children('td').eq(3).find('label').eq(1).find("input").prop('checked')==true){
+                    if($(this).children('td').eq(1).find('label').eq(1).find("input").prop('checked')==true){
                         dissolvedSolidForm=1;
                     }
                     else
                         dissolvedSolidForm=0;
                     var ph;
-                    if($(this).children('td').eq(3).find('label').eq(2).find("input").prop('checked')==true){
+                    if($(this).children('td').eq(1).find('label').eq(2).find("input").prop('checked')==true){
                         ph=1;
                     }
                     else
                         ph=0;
                     var lye;
-                    if($(this).children('td').eq(3).find('label').eq(3).find("input").prop('checked')==true){
+                    if($(this).children('td').eq(1).find('label').eq(3).find("input").prop('checked')==true){
                         lye=1;
                     }
                     else
                         lye=0;
                     var hardness;
-                    if($(this).children('td').eq(3).find('label').eq(4).find("input").prop('checked')==true){
+                    if($(this).children('td').eq(1).find('label').eq(4).find("input").prop('checked')==true){
                         hardness=1;
                     }
                     else
                         hardness=0;
                     var electricalConductivity;
-                    if($(this).children('td').eq(3).find('label').eq(5).find("input").prop('checked')==true){
+                    if($(this).children('td').eq(1).find('label').eq(5).find("input").prop('checked')==true){
                         electricalConductivity=1;
                     }
                     else
                         electricalConductivity=0;
                     var   dataItem={
-                        wastesCode:$(this).children('td').eq(1).find("button").attr('title'),
-                        wastesName:$(this).children('td').eq(2).find("input").val(),
+                        // wastesCode:$(this).children('td').eq(1).find("button").attr('title'),
+                        // wastesName:$(this).children('td').eq(2).find("input").val(),
                         relativeAlkalinity:relativeAlkalinity,
                         dissolvedSolidForm:dissolvedSolidForm,
                         ph:ph,
