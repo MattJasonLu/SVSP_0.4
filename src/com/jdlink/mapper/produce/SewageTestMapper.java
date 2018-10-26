@@ -1,6 +1,9 @@
 package com.jdlink.mapper.produce;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.SewageTest;
+
+import java.util.List;
 
 public interface SewageTestMapper {
     /**
@@ -9,4 +12,6 @@ public interface SewageTestMapper {
     void addSewageTest(SewageTest sewageTest);
     SewageTest getSewageTestById(String id);
     void updateSewageTestById(SewageTest sewageTest);
+    List<SewageTest> loadSewageTestResultsList(Page page);
+    int totalSewageTestRecord();
 }

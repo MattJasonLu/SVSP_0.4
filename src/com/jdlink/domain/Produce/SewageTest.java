@@ -1,4 +1,7 @@
 package com.jdlink.domain.Produce;
+
+import com.jdlink.domain.Page;
+
 //污水化验
 public class SewageTest {
 
@@ -25,6 +28,17 @@ public class SewageTest {
     private String remarks;//备注
 
     private String sampleId;//预约单号
+
+    //分页
+    private Page page;
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
 
     public String getId() {
         return id;

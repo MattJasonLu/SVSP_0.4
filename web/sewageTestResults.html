@@ -12,7 +12,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/sewageAnalysis.js"></script>
+    <script src="js/produce/sewageTestResults.js"></script>
 </head>
 <body onload="loadPageList()">
     <!--导航条-->
@@ -269,7 +269,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr id="cloneTr">
+                    <tr id="clone">
                         <td class="text-center">
                             <label>
                                 <input name="select" class="checkbox" type="checkbox" value="option1" aria-label="...">
@@ -287,10 +287,10 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center">
-                            <a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                            <a href="#" onclick="setInvalid(this);" title="作废"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span></a>
-                            <a href="#" onclick="setSubmit(this);" title="确认收样"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
-                            <a href="#" onclick="setConfirm(this);" title="拒收"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                            <!--<a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>-->
+                            <a href="#" onclick="setInvalid(this);" title="修改"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span></a>
+                            <!--<a href="#" onclick="setSubmit(this);" title="确认收样"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>-->
+                            <a href="#" onclick="setConfirm(this);" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
                         </td>
                     </tr>
                     </tbody>

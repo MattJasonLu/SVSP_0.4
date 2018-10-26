@@ -17,6 +17,18 @@
         where id=#{id};
     </update>
 
+    <!--加载初始化页面-->
+    <select id="loadSewageTestResultsList" resultType="SewageTest">
+        select  * from t_pr_sewagetest order by nowTime desc
+        <if test="start != null and count != null and count != 0">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+  <!--计算总数-->
+    <select id="totalSewageTestRecord" resultType="int">
+    select count(*) from t_pr_sewagetest;
+    </select>
 </mapper>
 
 

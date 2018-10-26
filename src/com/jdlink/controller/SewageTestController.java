@@ -1,11 +1,13 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.SewageTest;
 import com.jdlink.service.SewageTestService;
 import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -138,6 +140,41 @@ public class SewageTestController {
         return res.toString();
 
 
+    }
+
+    /**
+     * 加载初始化页面
+     */
+    @RequestMapping("loadSewageTestResultsList")
+    @ResponseBody
+    public String loadSewageTestResultsList(@RequestBody Page page){
+        JSONObject res=new JSONObject();
+        try {
+        List<SewageTest> sewageTestList=sewageTestService.loadSewageTestResultsList(page);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", sewageTestList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+
+
+
+        return res.toString();
+    }
+
+    /**
+     * 获取总数
+     *
+     */
+    @RequestMapping("totalSewageTestRecord")
+    @ResponseBody
+    public  int totalSewageTestRecord(){
+
+        return sewageTestService.totalSewageTestRecord();
     }
 
 }
