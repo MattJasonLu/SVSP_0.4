@@ -28,12 +28,19 @@
             <if test="receiveSampleAnalysis != null and receiveSampleAnalysis.produceCompany != null and receiveSampleAnalysis.produceCompany.companyName != null and receiveSampleAnalysis.produceCompany.companyName != ''">
                 and produceCompanyName LIKE "%"#{receiveSampleAnalysis.produceCompany.companyName}"%"
             </if>
-
+            <if test="true">
+                and checkState != 'Invalid'
+            </if>
         </where>
         order by createTime desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
+    </select>
+
+    <!--通过编号获取-->
+    <select id="getById" resultMap="ReceiveSampleAnalysisRM">
+        select * from t_pr_receivesampleanalysis where id=#{id};
     </select>
 
     <!--获取市场部化验单数量-->
@@ -51,7 +58,9 @@
             <if test="produceCompany != null and produceCompany.companyName != null and produceCompany.companyName != ''">
                 and produceCompanyName LIKE "%"#{produceCompany.companyName}"%"
             </if>
-
+            <if test="true">
+                and checkState != 'Invalid'
+            </if>
         </where>
     </select>
 
