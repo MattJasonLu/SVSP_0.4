@@ -29,6 +29,38 @@
     <select id="totalSewageTestRecord" resultType="int">
     select count(*) from t_pr_sewagetest;
     </select>
+
+
+    <!--添加软水化验单-->
+    <select id="addSoftTest" parameterType="SoftTest">
+        insert into t_pr_softest (id, address, remarks, sampleId, turbidity, hardness, PH, electricalConductivity, basicity, phenolphthalein, nowTime) values
+        (#{id},#{address},#{remarks},#{sampleId},#{turbidity},#{hardness},#{PH},#{electricalConductivity},#{basicity},#{phenolphthalein},NOW());
+    </select>
+
+    <!--根据编号获取软水化验单信息-->
+    <select id="getSoftTestById" parameterType="String" resultType="SoftTest">
+        select * from t_pr_softest where id=#{id};
+    </select>
+    <!--更新软水化验单-->
+    <update id="updateSoftTest" parameterType="SoftTest">
+        update t_pr_softest set address=#{address},remarks=#{remarks},sampleId=#{sampleId},
+        turbidity=#{turbidity},hardness=#{hardness},PH=#{PH},electricalConductivity=#{electricalConductivity},
+        basicity=#{basicity},phenolphthalein=#{phenolphthalein},nowTime=NOW() where id=#{id}
+
+    </update>
+
+    <!--软水化验的总数-->
+    <select id="totalSoftTestRecord" resultType="int">
+        select count(*) from t_pr_softest;
+    </select>
+
+    <!--软水化验单初始化-->
+    <select id="loadSoftTestResultsList" resultType="SoftTest">
+        select * from t_pr_softest order  by  nowTime desc
+        <if test="start != null and count != null and count != 0">
+            limit #{start}, #{count}
+        </if>
+    </select>
 </mapper>
 
 
