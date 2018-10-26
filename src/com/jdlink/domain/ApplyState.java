@@ -19,6 +19,7 @@ public enum ApplyState implements CodeBaseEnum {
     Examining("审批中", 10),
     Finished("已完成", 11),
     Rejected("已拒收",12),
+    Received("已收样",13)
     ;
 
     @Override

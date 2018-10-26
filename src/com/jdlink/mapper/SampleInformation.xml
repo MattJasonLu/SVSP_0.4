@@ -273,10 +273,10 @@
         select count(*) from t_pr_sampleinformation where id like "%"#{id}"%";
     </select>
 
-    <update id="confirmCheck" >
+    <update id="confirmCheck">
         UPDATE t_pr_sampleinformation
         SET
-        applyState = 'SampleTaked',laboratorySigner=#{laboratorySigner},nowTime = NOW(),samplingDate = NOW()
+        applyState = 'Received',laboratorySigner=#{laboratorySigner},nowTime = NOW(),samplingDate = NOW()
         WHERE id = #{sampleId};
     </update>
 
