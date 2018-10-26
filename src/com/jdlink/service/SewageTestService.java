@@ -15,4 +15,6 @@ public interface SewageTestService {
     void addSoftTest(SoftTest softTest);
     void updateSoftTest(SoftTest softTest);
     SoftTest getSoftTestById(String id);
+    int totalSoftTestRecord();
+    List<SoftTest> loadSoftTestResultsList(Page page);
 }

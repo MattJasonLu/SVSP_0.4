@@ -22,7 +22,7 @@ function totalPage() {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "totalSewageTestRecord",                  // url
+            url: "totalSoftTestRecord",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
@@ -90,7 +90,7 @@ function loadPages(totalRecord, count) {
  * */
 function setPageClone(result) {
     $(".beforeClone").remove();
-    setSewageTestList(result);
+    setSoftTestList(result);
     var total = totalPage();
     $("#next").prev().hide();
     var st = "共" + total + "页";
@@ -309,7 +309,7 @@ function loadPageList() {
     page.start = (pageNumber - 1) * page.count;
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "loadSewageTestResultsList",          // url
+        url: "loadSoftTestResultsList",          // url
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
         data: JSON.stringify(page),
         dataType: "json",
@@ -337,7 +337,7 @@ function loadPageList() {
 /**
  * 设置化验单数据
  */
-function setSewageTestList(result) {
+function setSoftTestList(result) {
     // 获取id为cloneTr的tr元素
     var tr = $("#clone");
     tr.siblings().remove();
@@ -359,39 +359,31 @@ function setSewageTestList(result) {
                     // 采样点
                     $(this).html((obj.address));
                     break;
-                //PH
+                //浊度FTU
                 case (3):
-                    $(this).html((obj.ph));
+                    $(this).html((obj.basicity));
                     break;
                 case (4):
-                    // COD
-                    $(this).html(obj.COD);
+                    // 硬度
+                    $(this).html(obj.hardness);
                     break;
                 case (5):
-                    // BOD5
-                    $(this).html(obj.BOD5);
+                    // ph
+                    $(this).html(obj.PH);
                     break;
                 case (6):
-                    // 氨氮
-                    $(this).html(obj.n2);
+                    // 电导率
+                    $(this).html(obj.electricalConductivity);
                     break;
                 case (7):
-                    // 碳酸盐碱度
-                    $(this).html(obj.alkalinity);
+                    // 全碱度
+                    $(this).html(obj.basicity);
                     break;
                 case (8):
-                    // 重碳酸盐碱度
-                    $(this).html(obj.bicarbonate);
+                    // 酚酞碱度
+                    $(this).html(obj.phenolphthalein);
                     break;
                 case (9):
-                    // 总氮
-                    $(this).html(obj.nitrogen);
-                    break;
-                case (10):
-                    // 总磷
-                    $(this).html(obj.phosphorus);
-                    break;
-                case (11):
                     // 备注
                     $(this).html(obj.remarks);
                     break;

@@ -48,6 +48,19 @@
         basicity=#{basicity},phenolphthalein=#{phenolphthalein},nowTime=NOW() where id=#{id}
 
     </update>
+
+    <!--软水化验的总数-->
+    <select id="totalSoftTestRecord" resultType="int">
+        select count(*) from t_pr_softest;
+    </select>
+
+    <!--软水化验单初始化-->
+    <select id="loadSoftTestResultsList" resultType="SoftTest">
+        select * from t_pr_softest order  by  nowTime desc
+        <if test="start != null and count != null and count != 0">
+            limit #{start}, #{count}
+        </if>
+    </select>
 </mapper>
 
 

@@ -57,4 +57,14 @@ public class SewageTestImpl implements SewageTestService {
     public SoftTest getSoftTestById(String id) {
         return sewageTestMapper.getSoftTestById(id);
     }
+
+    @Override
+    public int totalSoftTestRecord() {
+        return sewageTestMapper.totalSoftTestRecord();
+    }
+
+    @Override
+    public List<SoftTest> loadSoftTestResultsList(Page page) {
+        return sewageTestMapper.loadSoftTestResultsList(page);
+    }
 }

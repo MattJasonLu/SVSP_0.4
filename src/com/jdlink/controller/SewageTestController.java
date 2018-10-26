@@ -223,7 +223,7 @@ public class SewageTestController {
                             softTest.setPH(Float.parseFloat(data.get(i)[j][5].toString()));
                         }
 
-                        if(data.get(i)[j][5]!="null"){
+                        if(data.get(i)[j][5]=="null"){
                             softTest.setPH(0);
                         }
 
@@ -246,7 +246,7 @@ public class SewageTestController {
                         if(data.get(i)[j][8]!="null"){
                             softTest.setPhenolphthalein(Float.parseFloat(data.get(i)[j][8].toString()));
                         }
-                        if(data.get(i)[j][8]!="null"){
+                        if(data.get(i)[j][8]=="null"){
                             softTest.setPhenolphthalein(0);
                         }
                         //备注
@@ -284,6 +284,39 @@ public class SewageTestController {
         }
         return res.toString();
 
+
+    }
+
+    /**
+     * 软水化验的总数
+     */
+    @RequestMapping("totalSoftTestRecord")
+    @ResponseBody
+    public int totalSoftTestRecord(){
+
+        return sewageTestService.totalSoftTestRecord();
+    }
+
+    /**
+     * 软食化验单初始化数据
+     */
+    @RequestMapping("loadSoftTestResultsList")
+    @ResponseBody
+    public String loadSoftTestResultsList(@RequestBody Page page){
+        JSONObject res=new JSONObject();
+        try {
+            List<SoftTest> softTestList=sewageTestService.loadSoftTestResultsList(page);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", softTestList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+
+        return res.toString();
 
     }
 
