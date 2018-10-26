@@ -22,4 +22,10 @@ public interface ReceiveSampleAnalysisMapper {
       * @return 市场部化验单的数量
       */
      int count(ReceiveSampleAnalysis receiveSampleAnalysis);
+
+     /**
+      * 增加市场部化验单
+      * @param receiveSampleAnalysis 化验单
+      */
+     void add(ReceiveSampleAnalysis receiveSampleAnalysis);
 }
