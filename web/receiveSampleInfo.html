@@ -397,7 +397,7 @@
                                 class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
                         <a href="#" onclick="checkModal(this);" title="确认收样"><span class="glyphicon glyphicon-log-out"
                                                                                    aria-hidden="true"></span></a>
-                        <a href="#" onclick="rejection();" title="拒收"><span class="glyphicon glyphicon-ban-circle"
+                        <a href="#" onclick="rejection(this);" title="拒收"><span class="glyphicon glyphicon-ban-circle"
                                                                             aria-hidden="true"></span></a>
                     </td>
                 </tr>
@@ -476,18 +476,20 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="form-group col-md-5">
-                                <label for="model-companyName" class="col-sm-5 control-label">公司名称</label>
-                                <div class="col-sm-7">
+                            <div class="form-group col-md-12">
+                                <label for="model-companyName" class="col-sm-2 control-label">公司名称</label>
+                                <div class="col-sm-10">
                                     <select class="selectpicker form-control" data-live-search="true"
                                             data-live-search-placeholder="搜索..." id="model-companyName"
                                             name="model-companyName">
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group col-md-7">
-                                <label for="model-sendingPerson" class="col-sm-5 control-label">送样人</label>
-                                <div class="col-sm-7">
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label for="model-sendingPerson" class="col-sm-2 control-label">送样人</label>
+                                <div class="col-sm-10">
                                     <input type="text" class="form-control" id="model-sendingPerson"
                                            name="sendingPerson" required>
                                 </div>
@@ -499,6 +501,7 @@
                                 <th class="text-center">序号</th>
                                 <th class="text-center">危废代码</th>
                                 <th class="text-center">危废名称</th>
+                                <th class="text-center">危废类别</th>
                                 <th class="text-center">危废形态</th>
                                 <th class="text-center">检测项目</th>
                             </tr>
@@ -514,11 +517,11 @@
                                 </select></td>
                                 <td class="text-center"><input class="focus" name="wastesList[0].wastesName"
                                                                id="wastesList[0].wastesName"></td>
-                                <td class="text-center"><select class="focus" name="wastesList[0].wastesFormType"
+                                <td class="text-center"><select class="focus" name="modal-wastesHandleCategory"
+                                                                id="wastesList[0].wastesHandleCategory">
+                                </select></td>
+                                <td class="text-center"><select class="focus" name="modal-wastesFormType"
                                                                 id="wastesList[0].wastesFormType">
-                                                 <option>固态</option>
-                                                 <option>半固态</option>
-                                                 <option>液态</option>
                                         </select>
                                 </td>
                                 <td class="text-center">
@@ -559,19 +562,22 @@
                                                value="true">闪点
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="wastesList[0].isFlashPoint"
-                                               value="true">闪点
-                                    </label>
-                                    <label>
                                         <input type="checkbox" name="wastesList[0].isViscosity"
                                                value="true">黏度
-                                    </label></td>
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isHotMelt"
+                                               value="true">热融
+                                    </label>
+                                </td>
                             </tr>
                             <tr id="plusBtn">
                                 <td>
                                     <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span
                                             class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
                                 </td>
+                                <td></td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -600,8 +606,8 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="form-group col-md-12">
-                                <label for="model3-companyName" class="col-sm-5 control-label">公司名称</label>
-                                <div class="col-sm-7">
+                                <label for="model3-companyName" class="col-sm-3 control-label">公司名称</label>
+                                <div class="col-sm-9">
                                     <select class="selectpicker form-control" data-live-search="true"
                                             data-live-search-placeholder="搜索..." id="model3-companyName"
                                             name="model-companyName">
@@ -611,8 +617,8 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-md-6">
-                                <label for="model3-sendingPerson" class="col-sm-5 control-label">送样人</label>
-                                <div class="col-sm-7">
+                                <label for="model3-sendingPerson" class="col-sm-3 control-label">送样人</label>
+                                <div class="col-sm-9">
                                     <input type="text" class="form-control" id="model3-sendingPerson"
                                            name="sendingPerson" required>
                                 </div>
@@ -624,6 +630,7 @@
                                 <th class="text-center">序号</th>
                                 <th class="text-center">危废代码</th>
                                 <th class="text-center">危废名称</th>
+                                <th class="text-center">危废类别</th>
                                 <th class="text-center">危废形态</th>
                                 <th class="text-center">检测项目</th>
                             </tr>
@@ -638,24 +645,26 @@
                                                                 name="wastes[0].wastesCode">
                                 </select></td>
                                 <td class="text-center"><input class="focus" name="wastes[0].wastesName"
-                                                               id="wastes0-wastesName"></td>
-                                <td class="text-center"><select name="wastes[0].wastesFormType"
-                                                                id="wastes0-wastesFormType">
-                                    <option value="固态">固态</option>
-                                    <option value="半固态">半固态</option>
-                                    <option value="液态">液态</option>
+                                                               id="wastes[0].wastesName"></td>
+                                <td class="text-center"><select class="focus" name="modal-wastesHandleCategory"
+                                                                id="wastes[0].wastesHandleCategory">
+                                </select>
+                                </td>
+                                <td class="text-center"><select name="modal-wastesFormType"
+                                                                id="wastes[0].wastesFormType">
                                 </select></td>
-                                <td class="text-center"><label>
-                                    <input type="checkbox" name="wastes[0].isPH"
+                                <td class="text-center">
+                                    <label>
+                                        <input type="checkbox" name="wastes[0].isPH"
                                            value="true">PH
-                                </label>
+                                    </label>
                                     <label>
                                         <input type="checkbox" name="wastes[0].isAsh"
                                                value="true">灰分
                                     </label>
                                     <label>
                                         <input type="checkbox" name="wastes[0].isWater"
-                                               id="wastes[0].isWater" value="true">水分
+                                               value="true">水分
                                     </label>
                                     <label>
                                         <input type="checkbox" name="wastes[0].isHeat"
@@ -684,13 +693,19 @@
                                     <label>
                                         <input type="checkbox" name="wastes[0].isViscosity"
                                                value="true">黏度
-                                    </label></td>
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="wastes[0].isHotMelt"
+                                               value="true">热融
+                                    </label>
+                                </td>
                             </tr>
                             <tr id="addBtn3">
                                 <td>
                                     <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span
                                             class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
                                 </td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -722,12 +737,13 @@
                     <div class="modal-body">
                         <table class="table table-bordered">
                             <tr>
-                                <td rowspan="2" class="text-center">公司代码</td>
+                                <td rowspan="2" class="text-center">公司名称</td>
                                 <td rowspan="2" class="text-center">废物代码</td>
                                 <td rowspan="2" class="text-center">危废名称</td>
+                                <td rowspan="2" class="text-center">危废类别</td>
                                 <td rowspan="2" class="text-center">危废形态</td>
                                 <td colspan="2" class="text-center">检测项目</td>
-                                <td colspan="2" class="text-center">送样人</td>
+                                <td rowspan="2" class="text-center">送样人</td>
                                 <td rowspan="2" class="text-center">化验室签收人</td>
                             </tr>
                             <tr>
@@ -735,9 +751,10 @@
                                 <td class="text-center">增加项目</td>
                             </tr>
                             <tr id="addClone2">
-                                <td class="text-center"><span id="checkModel0-companyCode"></span></td>
+                                <td class="text-center"><span id="checkModel0-companyName"></span></td>
                                 <td class="text-center"><span id="checkModel0-wastesCode"></span></td>
                                 <td class="text-center"><span id="checkModel0-wastesName"></span></td>
+                                <td class="text-center"><span id="checkModel0-wastesHandleCategory"></span></td>
                                 <td class="text-center"><span id="checkModel0-wastesFormType"></span></td>
                                 <td class="text-center"><span id="checkModel0-basicItems"></span></td>
                                 <td class="text-center"><span id="checkModel0-addItems"></span></td>
@@ -745,6 +762,8 @@
                                 <td class="text-center"><input id="checkModel0-signer"></td>
                             </tr>
                             <tr id="end1" style="display: none;">
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
@@ -781,6 +800,7 @@
                                 <th rowspan="2" class="text-center">公司名称</th>
                                 <th rowspan="2" class="text-center">废物代码</th>
                                 <th rowspan="2" class="text-center">危废名称</th>
+                                <th rowspan="2" class="text-center">危废类别</th>
                                 <th rowspan="2" class="text-center">危废形态</th>
                                 <th colspan="2" class="text-center">检测项目</th>
                                 <th rowspan="2" class="text-center">送样人</th>
@@ -794,6 +814,7 @@
                                 <td class="text-center"><span id="model0-companyName"></span></td>
                                 <td class="text-center"><span id="model0-wastesCode"></span></td>
                                 <td class="text-center"><span id="model0-wastesName"></span></td>
+                                <td class="text-center"><span id="model0-wastesHandleCategory"></span></td>
                                 <td class="text-center"><span id="model0-wastesFormType"></span></td>
                                 <td class="text-center"><span id="model0-basicItems"></span></td>
                                 <td class="text-center"><span id="model0-addItems"></span></td>
@@ -801,6 +822,7 @@
                                 <td class="text-center"><span id="model0-signer"></span></td>
                             </tr>
                             <tr id="end" style="display: none;">
+                                <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>

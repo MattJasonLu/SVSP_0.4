@@ -1,6 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.ApplyState;
+import com.jdlink.domain.FormType;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Wastes;
 
@@ -39,8 +40,10 @@ public class SampleInformation {
      * 危废代码
      */
     private String wastesCode;
-
-    private String wastesCategory;
+    /**
+     * 危废形态
+     */
+    private FormType wastesFormType;
     /**
      * 化验室签收人
      */
@@ -69,6 +72,10 @@ public class SampleInformation {
      * 创建日期
      */
     private Date creationDate;
+    /**
+     * 拒收理由
+     */
+    private String advice;
 
     private boolean isPH; // PH值
 
@@ -90,6 +97,8 @@ public class SampleInformation {
 
     private boolean isViscosity;  // 粘度
 
+    private boolean isHotMelt;   // 热融试验
+
     private boolean isCOD;
 
     private boolean isBOD5;
@@ -105,12 +114,28 @@ public class SampleInformation {
      */
     private Page page;
 
-    public String getWastesCategory() {
-        return wastesCategory;
+    public String getAdvice() {
+        return advice;
     }
 
-    public void setWastesCategory(String wastesCategory) {
-        this.wastesCategory = wastesCategory;
+    public void setAdvice(String advice) {
+        this.advice = advice;
+    }
+
+    public FormType getWastesFormType() {
+        return wastesFormType;
+    }
+
+    public void setWastesFormType(FormType wastesFormType) {
+        this.wastesFormType = wastesFormType;
+    }
+
+    public boolean getIsHotMelt() {
+        return isHotMelt;
+    }
+
+    public void setIsHotMelt(boolean HotMelt) {
+        isHotMelt = HotMelt;
     }
 
     public boolean getIsN2() {

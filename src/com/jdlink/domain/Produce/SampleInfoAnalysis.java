@@ -1,5 +1,6 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.FormType;
 import com.jdlink.domain.Page;
@@ -35,7 +36,11 @@ public class SampleInfoAnalysis {
      */
     private String wastesCode;
     /**
-     * 类别
+     * 危废类别
+     */
+    private String wastesCategory;
+    /**
+     * 进料方式
      */
     private HandleCategory handleCategory;
     /**
@@ -103,6 +108,10 @@ public class SampleInfoAnalysis {
      */
     private String remark;
     /**
+     * 状态
+     */
+    private CheckState checkState;
+    /**
      * 分页
      */
     private Page page;
@@ -157,6 +166,14 @@ public class SampleInfoAnalysis {
 
     public void setWastesCode(String wastesCode) {
         this.wastesCode = wastesCode;
+    }
+
+    public String getWastesCategory() {
+        return wastesCategory;
+    }
+
+    public void setWastesCategory(String wastesCategory) {
+        this.wastesCategory = wastesCategory;
     }
 
     public HandleCategory getHandleCategory() {
@@ -293,6 +310,14 @@ public class SampleInfoAnalysis {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public CheckState getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(CheckState checkState) {
+        this.checkState = checkState;
     }
 
     public Page getPage() {

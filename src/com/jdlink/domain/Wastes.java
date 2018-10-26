@@ -189,6 +189,8 @@ public class Wastes {
 
     private boolean isViscosity;  // 黏度
 
+    private boolean isHotMelt;   // 热融试验
+
     /**
      * 取样日期
      */
@@ -689,6 +691,14 @@ public class Wastes {
 
     public void setTransportPlanItemId(String transportPlanItemId) {
         this.transportPlanItemId = transportPlanItemId;
+    }
+
+    public boolean getIsHotMelt() {
+        return isHotMelt;
+    }
+
+    public void setIsHotMelt(boolean HotMelt) {
+        isHotMelt = HotMelt;
     }
 
     @Override
