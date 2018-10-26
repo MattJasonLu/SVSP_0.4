@@ -81,4 +81,14 @@ public class WasteIntoServiceImpl implements WasteIntoService {
     public void rejectSecondarySampleById(String id, String advice) {
         wasteIntoMapper.rejectSecondarySampleById(id,advice);
     }
+
+    @Override
+    public int wastesCountById(String id) {
+        return wasteIntoMapper.wastesCountById(id);
+    }
+
+    @Override
+    public SecondarySampleItem getByWastesId(String id) {
+        return wasteIntoMapper.getByWastesId(id);
+    }
 }

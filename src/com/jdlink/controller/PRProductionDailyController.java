@@ -308,8 +308,19 @@ public class PRProductionDailyController {
     public String addSewaGeregistrationItem(@RequestBody SewageregistrationItem sewageregistrationItem){
         JSONObject res=new JSONObject();
 
-
         try {
+            String id1;
+            String sampleId=productionDailyService.getNewestId().get(0);
+            int index = productionDailyService.wastesCountById(sampleId);
+            do {
+                index += 1;
+                String index1 = index + "";
+                if(index < 10) index1 = "000" + index;
+                else if(index < 100) index1 = "00" + index;
+                else if(index < 1000) index1 = "0" + index;
+                id1 = sampleId + index1;
+            } while (productionDailyService.getByWastesId(id1) != null);
+            sewageregistrationItem.setId(id1);
             String id=productionDailyService.getNewestId().get(0);
             sewageregistrationItem.setSampleinformationId(id);
             productionDailyService.addSewaGeregistrationItem(sewageregistrationItem);
@@ -374,6 +385,19 @@ public class PRProductionDailyController {
     public String addSoftGeregistrationItem(@RequestBody SewageregistrationItem sewageregistrationItem){
         JSONObject res=new JSONObject();
         try{
+            String id1;
+            String sampleId=productionDailyService.getNewestId().get(0);
+            int index = productionDailyService.wastesCountById(sampleId);
+            do {
+                index += 1;
+                String index1 = index + "";
+                if(index < 10) index1 = "000" + index;
+                else if(index < 100) index1 = "00" + index;
+                else if(index < 1000) index1 = "0" + index;
+                id1 = sampleId + index1;
+            } while (productionDailyService.getByWastesId(id1) != null);
+            sewageregistrationItem.setId(id1);
+            sewageregistrationItem.setId(id1);
             String id=productionDailyService.getNewestId().get(0);
             sewageregistrationItem.setSampleinformationId(id);
             productionDailyService.addSoftGeregistrationItem(sewageregistrationItem);
