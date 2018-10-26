@@ -130,26 +130,26 @@ public class WasteIntoController {
     public String addSecondarySample(@RequestBody SecondarySample secondarySample){
         JSONObject res=new JSONObject();
         try {
-            // 生成预约号
-            Date date = new Date();   //获取当前时间
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-            String prefix = simpleDateFormat.format(date) + secondarySample.getClient().getClientId();
-            System.out.println("前缀"+prefix);
-            int count =(wasteIntoService.countById((prefix))) + 1;
-            System.out.println("数量"+count);
-            String suffix;
-            if (count <= 9) suffix = "0" + count;
-            else suffix = count + "";
-            String id = RandomUtil.getAppointId(prefix, suffix);
-             //确保编号唯一
-            while (wasteIntoService.getSecondarysampleById(id) != null) {
-                int index = Integer.parseInt(id);
-                index += 1;
-                id =String.valueOf(index);
-            }
-
-            //找到最新的预约单号==>年月日++公司代码+两位数
-            secondarySample.setId(id);
+//            // 生成预约号
+//            Date date = new Date();   //获取当前时间
+//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+//            String prefix = simpleDateFormat.format(date) + secondarySample.getClient().getClientId();
+//            System.out.println("前缀"+prefix);
+//            int count =(wasteIntoService.countById((prefix))) + 1;
+//            System.out.println("数量"+count);
+//            String suffix;
+//            if (count <= 9) suffix = "0" + count;
+//            else suffix = count + "";
+//            String id = RandomUtil.getAppointId(prefix, suffix);
+//             //确保编号唯一
+//            while (wasteIntoService.getSecondarysampleById(id) != null) {
+//                int index = Integer.parseInt(id);
+//                index += 1;
+//                id =String.valueOf(index);
+//            }
+//
+//            //找到最新的预约单号==>年月日++公司代码+两位数
+//            secondarySample.setId(id);
             wasteIntoService.addSecondarySample(secondarySample);
             res.put("status", "success");
             res.put("message", "主表添加成功");
@@ -175,8 +175,8 @@ public class WasteIntoController {
 
         try {
             String id;
-            String sampleId=wasteIntoService.getNewestId().get(0);
-            int index = wasteIntoService.wastesCountById(sampleId);
+
+            int index = wasteIntoService.wastesCountById(secondarySampleItem.getSampleinformationId());
             // 获取唯一的编号
             do {
                 index += 1;
@@ -184,12 +184,10 @@ public class WasteIntoController {
                 if(index < 10) index1 = "000" + index;
                 else if(index < 100) index1 = "00" + index;
                 else if(index < 1000) index1 = "0" + index;
-                id = sampleId + index1;
+                id = secondarySampleItem.getSampleinformationId() + index1;
             } while (wasteIntoService.getByWastesId(id) != null);
 
-           List<String> idList=wasteIntoService.getNewestId();
            secondarySampleItem.setId(id);
-           secondarySampleItem.setSampleinformationId(idList.get(0));
            wasteIntoService.addSecondarySampleItem(secondarySampleItem);
             res.put("status", "success");
             res.put("message", "子表添加成功");

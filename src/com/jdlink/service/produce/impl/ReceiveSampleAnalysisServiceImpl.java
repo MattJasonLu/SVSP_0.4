@@ -24,4 +24,9 @@ public class ReceiveSampleAnalysisServiceImpl implements ReceiveSampleAnalysisSe
     public int count(ReceiveSampleAnalysis receiveSampleAnalysis) {
         return receiveSampleAnalysisMapper.count(receiveSampleAnalysis);
     }
+
+    @Override
+    public void add(ReceiveSampleAnalysis receiveSampleAnalysis) {
+        receiveSampleAnalysisMapper.add(receiveSampleAnalysis);
+    }
 }

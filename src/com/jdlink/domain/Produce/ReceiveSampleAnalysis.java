@@ -1,5 +1,6 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.FormType;
 import com.jdlink.domain.Page;
@@ -14,6 +15,10 @@ public class ReceiveSampleAnalysis {
      * 编号
      */
     private String id;
+    /**
+     * 联单编号
+     */
+    private String transferDraftId;
     /**
      * 送样单编号
      */
@@ -35,7 +40,11 @@ public class ReceiveSampleAnalysis {
      */
     private String wastesCode;
     /**
-     * 废物类别
+     * 危废类别
+     */
+    private String wastesCategory;
+    /**
+     * 进料方式
      */
     private HandleCategory handleCategory;
     /**
@@ -95,6 +104,10 @@ public class ReceiveSampleAnalysis {
      */
     private String remark;
     /**
+     * 校验状态
+     */
+    private CheckState checkState;
+    /**
      * 分页
      */
     private Page page;
@@ -109,6 +122,14 @@ public class ReceiveSampleAnalysis {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getTransferDraftId() {
+        return transferDraftId;
+    }
+
+    public void setTransferDraftId(String transferDraftId) {
+        this.transferDraftId = transferDraftId;
     }
 
     public String getSampleId() {
@@ -149,6 +170,14 @@ public class ReceiveSampleAnalysis {
 
     public void setWastesCode(String wastesCode) {
         this.wastesCode = wastesCode;
+    }
+
+    public String getWastesCategory() {
+        return wastesCategory;
+    }
+
+    public void setWastesCategory(String wastesCategory) {
+        this.wastesCategory = wastesCategory;
     }
 
     public HandleCategory getHandleCategory() {
@@ -285,5 +314,13 @@ public class ReceiveSampleAnalysis {
 
     public void setKeyword(String keyword) {
         this.keyword = keyword;
+    }
+
+    public CheckState getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(CheckState checkState) {
+        this.checkState = checkState;
     }
 }

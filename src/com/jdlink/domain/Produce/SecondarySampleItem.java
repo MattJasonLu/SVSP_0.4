@@ -15,6 +15,17 @@ public class SecondarySampleItem {
 
     private int scorchingRate;
 
+    //联单编号
+    private String identifie;
+
+    public String getIdentifie() {
+        return identifie;
+    }
+
+    public void setIdentifie(String identifie) {
+        this.identifie = identifie;
+    }
+
     public String getId() {
         return id;
     }
