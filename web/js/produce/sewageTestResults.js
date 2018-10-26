@@ -448,7 +448,7 @@ function importExcelChoose() {
  * 下载模板
  * */
 function downloadModal() {
-    var filePath = 'Files/Templates/污水分析日报模板.xls';
+    var filePath = 'Files/Templates/污水化验结果模板.xlsx';
     var r = confirm("是否下载模板?");
     if (r == true) {
         window.open('downloadFile?filePath=' + filePath);
