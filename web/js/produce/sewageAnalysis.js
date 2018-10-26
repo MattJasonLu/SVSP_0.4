@@ -901,7 +901,7 @@ function view(item) {
                          project += "碱度 ";
                      }
                      if (obj.n2 == 1) {
-                         project += "氮气 ";
+                         project += '氨氮';
                      }
                      if (obj.o2 == 1) {
                          project += "氧气 ";

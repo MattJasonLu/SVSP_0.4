@@ -124,4 +124,7 @@ public interface ProductionDailyMapper {
     int countById(String id);
     int countByIdSew(String id);
 
+    int wastesCountById(String id);
+
+    SewageregistrationItem getByWastesId(String id);
 }
