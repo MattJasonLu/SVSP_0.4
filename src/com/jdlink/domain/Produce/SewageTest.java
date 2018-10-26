@@ -124,7 +124,7 @@ public class SewageTest {
 
     @Override
     public String toString() {
-        return "SewageTest{" +
+        return "SewageTestService{" +
                 "id='" + id + '\'' +
                 ", address='" + address + '\'' +
                 ", ph=" + ph +
