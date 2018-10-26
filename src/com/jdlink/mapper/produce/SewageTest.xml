@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdlink.mapper.produce.SewageTestMapper">
+<insert id="addSewageTest" parameterType="SewageTest">
+    insert into t_pr_sewagetest(id, address, ph, COD, BOD5, N2, alkalinity, bicarbonate, nitrogen, phosphorus, remarks, sampleId,nowTime)
+    values
+    (#{id},#{address},#{ph},#{COD},#{BOD5},#{N2},#{alkalinity},#{bicarbonate},#{nitrogen},#{phosphorus},#{remarks},#{sampleId},NOW());
+</insert>
+    <select id="getSewageTestById" parameterType="String" resultType="SewageTest">
+      select * from t_pr_sewagetest where id=#{id};
+    </select>
+    <update id="updateSewageTestById" parameterType="SewageTest">
+        update t_pr_sewagetest set address=#{address},ph=#{ph},COD=#{COD},BOD5=#{BOD5},N2=#{N2},alkalinity=#{alkalinity},
+        bicarbonate=#{bicarbonate},nitrogen=#{nitrogen},phosphorus=#{phosphorus},remarks=#{remarks},sampleId=#{sampleId},nowTime=NOW()
+        where id=#{id};
+    </update>
+
+    <!--加载初始化页面-->
+    <select id="loadSewageTestResultsList" resultType="SewageTest">
+        select  * from t_pr_sewagetest order by nowTime desc
+        <if test="start != null and count != null and count != 0">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+  <!--计算总数-->
+    <select id="totalSewageTestRecord" resultType="int">
+    select count(*) from t_pr_sewagetest;
+    </select>
+
+
+    <!--添加软水化验单-->
+    <select id="addSoftTest" parameterType="SoftTest">
+        insert into t_pr_softest (id, address, remarks, sampleId, turbidity, hardness, PH, electricalConductivity, basicity, phenolphthalein, nowTime) values
+        (#{id},#{address},#{remarks},#{sampleId},#{turbidity},#{hardness},#{PH},#{electricalConductivity},#{basicity},#{phenolphthalein},NOW());
+    </select>
+
+    <!--根据编号获取软水化验单信息-->
+    <select id="getSoftTestById" parameterType="String" resultType="SoftTest">
+        select * from t_pr_softest where id=#{id};
+    </select>
+    <!--更新软水化验单-->
+    <update id="updateSoftTest" parameterType="SoftTest">
+        update t_pr_softest set address=#{address},remarks=#{remarks},sampleId=#{sampleId},
+        turbidity=#{turbidity},hardness=#{hardness},PH=#{PH},electricalConductivity=#{electricalConductivity},
+        basicity=#{basicity},phenolphthalein=#{phenolphthalein},nowTime=NOW() where id=#{id}
+
+    </update>
+
+    <!--软水化验的总数-->
+    <select id="totalSoftTestRecord" resultType="int">
+        select count(*) from t_pr_softest;
+    </select>
+
+    <!--软水化验单初始化-->
+    <select id="loadSoftTestResultsList" resultType="SoftTest">
+        select * from t_pr_softest order  by  nowTime desc
+        <if test="start != null and count != null and count != 0">
+            limit #{start}, #{count}
+        </if>
+    </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

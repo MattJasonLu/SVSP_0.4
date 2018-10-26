@@ -57,13 +57,13 @@
     </select>
     <!--添加次生废物送样主表-->
     <insert id="addSecondarySample" parameterType="SecondarySample">
-        insert into t_pr_secondarysample(id, clientId, laboratorySignatory, sendingPerson, address, checkState, advice,nowTime) values
-        (#{id},#{client.clientId},#{laboratorySignatory},#{sendingPerson},#{address},'ToCollected',#{advice},NOW());
+        insert into t_pr_secondarysample(id,laboratorySignatory, sendingPerson, address, checkState, advice,nowTime) values
+        (#{id},#{laboratorySignatory},#{sendingPerson},#{address},'ToCollected',#{advice},NOW());
     </insert>
     <!--添加次生废物送样子表-->
     <insert id="addSecondarySampleItem" parameterType="SecondarySampleItem">
-        insert into t_pr_secondarysampleitem (id,wastesCode, wastesName, sampleinformationId, water, scorchingRate) values
-        (#{id},#{wastesCode},#{wastesName},#{sampleinformationId},#{water},#{scorchingRate});
+        insert into t_pr_secondarysampleitem (id,wastesCode, wastesName, sampleinformationId, water, scorchingRate,identifie) values
+        (#{id},#{wastesCode},#{wastesName},#{sampleinformationId},#{water},#{scorchingRate},#{identifie});
     </insert>
     <!--寻找最新的危废送样登记编号-->
     <select id="getNewestId"  resultType="String">
@@ -84,6 +84,6 @@
     </update>
     <!--拒收-->
     <update id="rejectSecondarySampleById" >
-        update t_pr_secondarysample set checkState='Rejected',advice=#{1} ,nowTime=NOW() where id=#{id}
+        update t_pr_secondarysample set checkState='Rejected',advice=#{1} ,nowTime=NOW() where id=#{0}
     </update>
 </mapper>

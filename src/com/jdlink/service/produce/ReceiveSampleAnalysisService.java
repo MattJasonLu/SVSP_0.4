@@ -23,4 +23,9 @@ public interface ReceiveSampleAnalysisService {
      */
     int count(ReceiveSampleAnalysis receiveSampleAnalysis);
 
+    /**
+     * 增加市场部化验单
+     * @param receiveSampleAnalysis 化验单
+     */
+    void add(ReceiveSampleAnalysis receiveSampleAnalysis);
 }
