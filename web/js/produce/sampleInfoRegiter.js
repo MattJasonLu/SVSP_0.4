@@ -1448,9 +1448,9 @@ function exportExcel(e) {
             if (i < idArry.length - 1) sql += idArry[i] + ",";
             else if (i == idArry.length - 1) sql += idArry[i] + ");"
         }
-        sqlWords = "select companyCode,wastesCode,applyState,laboratorySigner,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity from t_pr_sampleinformation where id " + sql;
+        sqlWords = "select b.transferId,a.companyName,b.name,b.code,b.category,b.formType,a.sendingPerson,b.isPH,b.isHeat,b.isAsh,b.isWater,b.isFluorine,b.isChlorine,b.isSulfur,b.isPhosphorus,b.isFlashPoint,b.isViscosity,b.isHotMelt,b.id from t_pr_sampleinfowarehouse as a join t_pr_sampleinfowarehouseitem as b where a.id=b.sampleId and a.id " + sql;
     } else {
-        sqlWords = "select companyCode,wastesCode,applyState,laboratorySigner,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity from t_pr_sampleinformation;";
+        sqlWords = "select b.transferId,a.companyName,b.name,b.code,b.category,b.formType,a.sendingPerson,b.isPH,b.isHeat,b.isAsh,b.isWater,b.isFluorine,b.isChlorine,b.isSulfur,b.isPhosphorus,b.isFlashPoint,b.isViscosity,b.isHotMelt,b.id from t_pr_sampleinfowarehouse as a join t_pr_sampleinfowarehouseitem as b where a.id=b.sampleId;";
     }
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
