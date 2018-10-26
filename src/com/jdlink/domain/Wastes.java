@@ -228,6 +228,18 @@ public class Wastes {
      * 运输计划单编号
      */
     private String transportPlanItemId;
+    /**
+     * 转移联单编号（送样用）
+     */
+    private String transferId;
+
+    public String getTransferId() {
+        return transferId;
+    }
+
+    public void setTransferId(String transferId) {
+        this.transferId = transferId;
+    }
 
     public String getId1() {
         return id1;

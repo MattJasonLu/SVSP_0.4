@@ -20,6 +20,10 @@ public class IngredientsOut {
      */
     private String companyName;
     /**
+     * 部门
+     */
+    private String departmentName;
+    /**
      * 出库单创建日期
      */
     private Date creationDate;
@@ -226,6 +230,14 @@ public class IngredientsOut {
 
     public void setTotalAmount(float totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
 
     @Override
