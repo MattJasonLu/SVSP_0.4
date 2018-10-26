@@ -387,6 +387,16 @@ function setSoftWaterList(result) {
                             if(item.relativeAlkalinity==1){
                                 project+="相对碱度 ";
                             }
+
+                            if (item.turbidity == 1) {
+                                project += "浊度 ";
+                            }
+                            if (item.basicity == 1) {
+                                project += "全碱度 ";
+                            }
+                            if (item.phenolphthalein == 1) {
+                                project += "酚酞碱度 ";
+                            }
                         })
 
                     }
@@ -683,7 +693,8 @@ function addAppoint() {
 
 //主表
     var  data={
-        client:{clientId:$('#model-companyCode').selectpicker('val')},
+        //client:{clientId:$('#model-companyCode').selectpicker('val')},
+        id:$('#reservationId').val(),
         laboratorySignatory:$('#laboratorySignatory').val(),
         sendingPerson:$('#sendingPerson').val(),
         water:false,
@@ -704,38 +715,38 @@ function addAppoint() {
             if (result != undefined && result.status == "success"){
                 $('.myclass').each(function () {
 
-                    var relativeAlkalinity;
-                    if($(this).children('td').eq(1).find('label').eq(0).find("input").prop('checked')==true){
-                        relativeAlkalinity=1;
+                    var turbidity;
+                    if($(this).children('td').eq(2).find('label').eq(0).find("input").prop('checked')==true){
+                        turbidity=1;
                     }
                     else
-                        relativeAlkalinity=0;
-                    var dissolvedSolidForm;
-                    if($(this).children('td').eq(1).find('label').eq(1).find("input").prop('checked')==true){
-                        dissolvedSolidForm=1;
-                    }
-                    else
-                        dissolvedSolidForm=0;
-                    var ph;
-                    if($(this).children('td').eq(1).find('label').eq(2).find("input").prop('checked')==true){
-                        ph=1;
-                    }
-                    else
-                        ph=0;
-                    var lye;
-                    if($(this).children('td').eq(1).find('label').eq(3).find("input").prop('checked')==true){
-                        lye=1;
-                    }
-                    else
-                        lye=0;
+                        turbidity=0;
                     var hardness;
-                    if($(this).children('td').eq(1).find('label').eq(4).find("input").prop('checked')==true){
+                    if($(this).children('td').eq(2).find('label').eq(1).find("input").prop('checked')==true){
                         hardness=1;
                     }
                     else
                         hardness=0;
+                    var ph;
+                    if($(this).children('td').eq(2).find('label').eq(2).find("input").prop('checked')==true){
+                        ph=1;
+                    }
+                    else
+                        ph=0;
+                    var phenolphthalein;
+                    if($(this).children('td').eq(2).find('label').eq(3).find("input").prop('checked')==true){
+                        phenolphthalein=1;
+                    }
+                    else
+                        phenolphthalein=0;
+                    var basicity;
+                    if($(this).children('td').eq(2).find('label').eq(4).find("input").prop('checked')==true){
+                        basicity=1;
+                    }
+                    else
+                        basicity=0;
                     var electricalConductivity;
-                    if($(this).children('td').eq(1).find('label').eq(5).find("input").prop('checked')==true){
+                    if($(this).children('td').eq(2).find('label').eq(5).find("input").prop('checked')==true){
                         electricalConductivity=1;
                     }
                     else
@@ -743,12 +754,14 @@ function addAppoint() {
                     var   dataItem={
                         // wastesCode:$(this).children('td').eq(1).find("button").attr('title'),
                         // wastesName:$(this).children('td').eq(2).find("input").val(),
-                        relativeAlkalinity:relativeAlkalinity,
-                        dissolvedSolidForm:dissolvedSolidForm,
-                        ph:ph,
-                        lye:lye,
+                        sampleinformationId:$('#reservationId').val(),
+                        identifie:$(this).children('td').eq(1).find("input").val(),
+                        turbidity:turbidity,
                         hardness:hardness,
+                        phenolphthalein:phenolphthalein,
+                        basicity:basicity,
                         electricalConductivity:electricalConductivity,
+                        ph:ph,
                     };
                     console.log(dataItem)
                     $.ajax({
@@ -785,6 +798,7 @@ function view(item) {
     console.log(id)
     $("#appointModa2").modal('show');
     $('#confirm').hide();
+    $('#reservationId1').text(id)
     //根据编号查找
     $.ajax({
         type: "POST",                       // 方法类型
@@ -802,13 +816,13 @@ function view(item) {
                     $('#companyName').val(result.data.client.companyName);
                 }
                 //化验室签收人
-                $('#signer').val(result.data.laboratorySignatory)
+                $('#laboratorySignatory1').text(result.data.laboratorySignatory)
 
                 //送样人
-                $('#sendingPerson2').val(result.data.sendingPerson)
+                $('#sendingPerson1').text(result.data.sendingPerson)
 
                 //采样点
-                $('#address2').val(result.data.address)
+                $('#address1').text(result.data.address)
 
 
                 if(result.data.sewageregistrationItemList!=null){
@@ -826,8 +840,8 @@ function view(item) {
 
 
                         clonedTr.children('td').eq(0).html(index + 1);
-                        clonedTr.children('td').eq(1).html(obj.wastesCode);
-                        clonedTr.children('td').eq(2).html(obj.wastesName);
+                        clonedTr.children('td').eq(1).html(obj.identifie);
+                        // clonedTr.children('td').eq(2).html(obj.wastesName);
                         project = "";
                         if (obj.cod == 1) {
                             project += "COD ";
@@ -837,9 +851,6 @@ function view(item) {
                         }
                         if (obj.ph == 1) {
                             project += "PH ";
-                        }
-                        if (obj.dissolvedSolidForm == 1) {
-                            project += "溶解固形物 ";
                         }
                         if (obj.electricalConductivity == 1) {
                             project += "电导率 ";
@@ -853,13 +864,20 @@ function view(item) {
                         if (obj.n2 == 1) {
                             project += "氮气 ";
                         }
-                        if (obj.o2 == 1) {
-                            project += "氧气 ";
+
+                        if (obj.turbidity == 1) {
+                            project += "浊度 ";
                         }
-                        if (obj.relativeAlkalinity == 1) {
-                            project += "相对碱度 ";
+                        if (obj.basicity == 1) {
+                            project += "全碱度 ";
                         }
-                        clonedTr.children('td').eq(3).html(project);
+                        if (obj.phenolphthalein == 1) {
+                            project += "酚酞碱度 ";
+                        }
+
+
+
+                        clonedTr.children('td').eq(2).html(project);
 
                         clonedTr.removeAttr("id");
                         clonedTr.insertBefore(tr);
@@ -898,6 +916,7 @@ function setSubmit(item) {
     console.log(id)
     $("#appointModa2").modal('show');
     $('#confirm').show();
+    $('#reservationId1').text(id)
     //根据编号查找
     $.ajax({
         type: "POST",                       // 方法类型
@@ -915,16 +934,13 @@ function setSubmit(item) {
                     $('#companyName').val(result.data.client.companyName);
                 }
                 //化验室签收人
-                $('#signer').val(result.data.laboratorySignatory)
+                $('#laboratorySignatory').text(result.data.laboratorySignatory)
 
                 //送样人
-                $('#sendingPerson2').val(result.data.sendingPerson)
+                $('#sendingPerson1').text(result.data.sendingPerson)
 
                 //采样点
-                $('#address2').val(result.data.address)
-
-                //预约单号
-                $("#id").val(result.data.id)
+                $('#address1').text(result.data.address)
 
                 if(result.data.sewageregistrationItemList!=null){
 
@@ -941,8 +957,8 @@ function setSubmit(item) {
 
 
                         clonedTr.children('td').eq(0).html(index + 1);
-                        clonedTr.children('td').eq(1).html(obj.wastesCode);
-                        clonedTr.children('td').eq(2).html(obj.wastesName);
+                        clonedTr.children('td').eq(1).html(obj.identifie);
+                        //clonedTr.children('td').eq(2).html(obj.wastesName);
                         project = "";
                         if (obj.cod == 1) {
                             project += "COD ";
@@ -974,7 +990,16 @@ function setSubmit(item) {
                         if (obj.relativeAlkalinity == 1) {
                             project += "相对碱度 ";
                         }
-                        clonedTr.children('td').eq(3).html(project);
+                        if (obj.turbidity == 1) {
+                            project += "浊度 ";
+                        }
+                        if (obj.basicity == 1) {
+                            project += "全碱度 ";
+                        }
+                        if (obj.phenolphthalein == 1) {
+                            project += "酚酞碱度 ";
+                        }
+                        clonedTr.children('td').eq(2).html(project);
 
                         clonedTr.removeAttr("id");
                         clonedTr.insertBefore(tr);
@@ -1007,7 +1032,7 @@ function setSubmit(item) {
 }
 //确认送样方法==>真正的方法
 function confirmSample() {
-    var id=$("#id").val();
+    var id=$("#reservationId1").text();
 
     $.ajax({
         type: "POST",                       // 方法类型

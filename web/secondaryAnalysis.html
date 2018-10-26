@@ -312,26 +312,28 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="form-group col-md-8">
-                            <label for="model-companyCode" class="col-sm-6 control-label">公司名称</label>
+                        <div class="form-group col-md-6">
+                            <label for="reservationId" class="col-sm-4 control-label">预约单号</label>
                             <div class="col-sm-6">
-                                <select class="selectpicker form-control" data-live-search="true"
-                                        data-live-search-placeholder="搜索..." id="model-companyCode"
-                                        name="model-companyCode">
-                                </select>
+                                <input type="text" class="form-control" id="reservationId"  name="signer" required>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="sendingPerson" class="col-sm-4 control-label">送样人</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="sendingPerson" name="signer" required>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-md-4">
-                            <label for="sendingPerson" class="col-sm-6 control-label">送样人</label>
+                        <div class="form-group col-md-6">
+                            <label for="sendingPerson" class="col-sm-4 control-label">采样点</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" id="sendingPerson" name="signer" required>
-                                <input type="text" id="sampleId" hidden>
+                                <input type="text" class="form-control" id="address" name="signer" title="">
                             </div>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="laboratorySignatory" class="col-sm-6 control-label">化验室签收人</label>
+                            <label for="laboratorySignatory" class="col-sm-4 control-label">化验室签收人</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control" id="laboratorySignatory" name="signer">
                             </div>
@@ -343,6 +345,7 @@
                             <th class="text-center">序号</th>
                             <th class="text-center">危废代码</th>
                             <th class="text-center">危废名称</th>
+                            <th class="text-center">联单编号</th>
                             <th class="text-center">检测项目</th>
                             <!--<th class="text-center">增加项目</th>-->
                         </tr>
@@ -354,6 +357,7 @@
                                                              data-live-search-placeholder="搜索..." id="wastesCode"
                                                              name="wastesCode">
                             </select></td>
+                            <td class="text-center"><input class="form-control"></td>
                             <td class="text-center"><input class="form-control"></td>
                             <td class="text-center">
                                 <label>
@@ -371,6 +375,7 @@
                             <td>
                                 <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
                             </td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -399,37 +404,27 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-md-6">
-                            <label for="model-companyCode" class="col-sm-6 control-label">公司代码</label>
-                            <div class="col-sm-6">
-
-                                <input class="form-control focus" id="companyName">
-                                </input>
-                            </div>
+                            <label for="reservationId" class="col-sm-4 control-label">预约单号</label>
+                            <span id="reservationId1"></span>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="laboratorySignatory" class="col-sm-6 control-label">化验室签收人</label>
+                            <label for="sendingPerson" class="col-sm-4 control-label">送样人</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" name="signer" id="signer">
+                                <span id="sendingPerson1"></span>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-md-4">
-                            <label for="sendingPerson" class="col-sm-6 control-label">送样人</label>
+                        <div class="form-group col-md-6">
+                            <label for="sendingPerson" class="col-sm-4 control-label">采样点</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" id="sendingPerson2" name="signer" required>
+                                <span id="address1"></span>
                             </div>
                         </div>
-                        <div class="form-group col-md-4">
-                            <label for="sendingPerson" class="col-sm-6 control-label">采样点</label>
+                        <div class="form-group col-md-6">
+                            <label for="laboratorySignatory" class="col-sm-4 control-label">化验室签收人</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" id="address2" name="signer" >
-                            </div>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="sendingPerson" class="col-sm-6 control-label">预约单号</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control" id="id" >
+                                <span id="laboratorySignatory1"></span>
                             </div>
                         </div>
                     </div>
@@ -440,12 +435,14 @@
                         <th class="text-center">序号</th>
                         <th class="text-center">危废代码</th>
                         <th class="text-center">危废名称</th>
+                        <th class="text-center">联单编号</th>
                         <th class="text-center">检测项目</th>
                         <!--<th class="text-center">增加项目</th>-->
                     </tr>
                     </thead>
                     <tbody>
                     <tr id='clonrTr' class="myclass1">
+                        <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>

@@ -817,7 +817,8 @@ function addAppoint() {
 
 //主表
     var  data={
-        client:{clientId:$('#model-companyCode').selectpicker('val')},
+        // client:{clientId:$('#model-companyCode').selectpicker('val')}
+        id:$('#reservationId').val(),
         laboratorySignatory:$('#laboratorySignatory').val(),
         sendingPerson:$('#sendingPerson').val(),
         address:$('#address').val(),
@@ -836,23 +837,25 @@ function addAppoint() {
             if (result != undefined && result.status == "success"){
                 $('.myclass').each(function () {
                     var water;
-                    if($(this).children('td').eq(3).find('label').eq(0).find("input").prop('checked')==true){
+                    if($(this).children('td').eq(4).find('label').eq(0).find("input").prop('checked')==true){
                          water=1;
                     }
                     else
                         water=0;
                     var scorchingRate;
-                    if($(this).children('td').eq(3).find('label').eq(1).find("input").prop('checked')==true){
+                    if($(this).children('td').eq(4).find('label').eq(1).find("input").prop('checked')==true){
                         scorchingRate=1;
                     }
                     else
                         scorchingRate=0;
 
                     var   dataItem={
+                        sampleinformationId:$('#reservationId').val(),
                         wastesCode:$(this).children('td').eq(1).find("button").attr('title'),
                         wastesName:$(this).children('td').eq(2).find("input").val(),
                         water:water,
                         scorchingRate:scorchingRate,
+                        identifie:$(this).children('td').eq(3).find("input").val(),
                     };
                     console.log(dataItem)
                     $.ajax({
@@ -887,7 +890,7 @@ function addAppoint() {
 function view(item) {
     var id=$(item).parent().parent().children('td').eq(1).html();
     console.log(id)
-    $("#id").val(id);
+    $('#reservationId1').text(id)
     $("#appointModa2").modal('show');
     $('#confirm').hide();
     //根据编号查找
@@ -907,13 +910,13 @@ function view(item) {
                     $('#companyName').val(result.data.client.companyName);
                 }
                 //化验室签收人
-                $('#signer').val(result.data.laboratorySignatory)
+                $('#laboratorySignatory1').text(result.data.laboratorySignatory)
 
                 //送样人
-                $('#sendingPerson2').val(result.data.sendingPerson)
+                $('#sendingPerson1').text(result.data.sendingPerson)
 
                 //采样点
-                $('#address2').val(result.data.address)
+                $('#address1').text(result.data.address)
 
 
                 if(result.data.secondarySampleItemList!=null){
@@ -970,8 +973,9 @@ function view(item) {
                         if (obj.water == 1) {
                             project += "水分 ";
                         }
+                        clonedTr.children('td').eq(4).html(project);
+                        clonedTr.children('td').eq(3).html(obj.identifie);
 
-                        clonedTr.children('td').eq(3).html(project);
 
                         clonedTr.removeAttr("id");
                         clonedTr.insertBefore(tr);
@@ -1001,7 +1005,7 @@ function view(item) {
 //确认收样
 function setSubmit(item)  {
     var id=$(item).parent().parent().children('td').eq(1).html();
-    $("#id").val(id);
+    $('#reservationId1').text(id)
     $("#appointModa2").modal('show');
     $('#confirm').show();
     //根据编号查找
@@ -1021,13 +1025,13 @@ function setSubmit(item)  {
                     $('#companyName').val(result.data.client.companyName);
                 }
                 //化验室签收人
-                $('#signer').val(result.data.laboratorySignatory)
+                $('#laboratorySignatory1').text(result.data.laboratorySignatory)
 
                 //送样人
-                $('#sendingPerson2').val(result.data.sendingPerson)
+                $('#sendingPerson1').text(result.data.sendingPerson)
 
                 //采样点
-                $('#address2').val(result.data.address)
+                $('#address1').text(result.data.address)
 
 
                 if(result.data.secondarySampleItemList!=null){
@@ -1084,8 +1088,9 @@ function setSubmit(item)  {
                         if (obj.water == 1) {
                             project += "水分 ";
                         }
+                        clonedTr.children('td').eq(3).html(obj.identifie);
 
-                        clonedTr.children('td').eq(3).html(project);
+                        clonedTr.children('td').eq(4).html(project);
 
                         clonedTr.removeAttr("id");
                         clonedTr.insertBefore(tr);
@@ -1114,7 +1119,7 @@ function setSubmit(item)  {
 
 //确认送样方法==>真正的方法
 function confirmSample() {
-    var id=$("#id").val();
+    var id=  $('#reservationId1').text()
 
     $.ajax({
         type: "POST",                       // 方法类型
