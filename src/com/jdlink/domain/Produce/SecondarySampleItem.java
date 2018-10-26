@@ -2,6 +2,9 @@ package com.jdlink.domain.Produce;
 
 public class SecondarySampleItem {
 
+
+    private String id;
+
     private String wastesCode;//代码
 
     private String wastesName;//名称
@@ -12,6 +15,13 @@ public class SecondarySampleItem {
 
     private int scorchingRate;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getWastesCode() {
         return wastesCode;

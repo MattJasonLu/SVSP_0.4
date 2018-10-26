@@ -174,7 +174,21 @@ public class WasteIntoController {
         JSONObject res=new JSONObject();
 
         try {
+            String id;
+            String sampleId=wasteIntoService.getNewestId().get(0);
+            int index = wasteIntoService.wastesCountById(sampleId);
+            // 获取唯一的编号
+            do {
+                index += 1;
+                String index1 = index + "";
+                if(index < 10) index1 = "000" + index;
+                else if(index < 100) index1 = "00" + index;
+                else if(index < 1000) index1 = "0" + index;
+                id = sampleId + index1;
+            } while (wasteIntoService.getByWastesId(id) != null);
+
            List<String> idList=wasteIntoService.getNewestId();
+           secondarySampleItem.setId(id);
            secondarySampleItem.setSampleinformationId(idList.get(0));
            wasteIntoService.addSecondarySampleItem(secondarySampleItem);
             res.put("status", "success");

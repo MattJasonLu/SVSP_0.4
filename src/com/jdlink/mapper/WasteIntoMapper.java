@@ -14,6 +14,7 @@ public interface WasteIntoMapper {
    int countWaste();
    int countSec();
    int countById(String id);
+   int wastesCountById(String id);
    SecondarySample getSecondarysampleById(String id);
    void addSecondarySample(SecondarySample secondarySample);
    void addSecondarySampleItem(SecondarySampleItem secondarySampleItem);
@@ -23,4 +24,7 @@ public interface WasteIntoMapper {
 
    void confirmSecondarySampleById(String id);
    void rejectSecondarySampleById(String id,String advice);
+
+   SecondarySampleItem getByWastesId(String id);
+
 }

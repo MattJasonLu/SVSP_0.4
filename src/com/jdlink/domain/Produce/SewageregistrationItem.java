@@ -2,6 +2,8 @@ package com.jdlink.domain.Produce;
 //污水/软水登记明细
 public class SewageregistrationItem {
 
+    private String id;
+
     private String wastesCode;//代码
 
     private String wastesName;//名称
@@ -18,7 +20,7 @@ public class SewageregistrationItem {
 
     private int lye;//碱度
 
-    private  int n2;
+    private  int n2;//氨氮
 
     private int relativeAlkalinity;//相对碱度
 
@@ -111,6 +113,14 @@ public class SewageregistrationItem {
 //        isElectricalConductivity = ElectricalConductivity;
 //    }
 
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getWastesCode() {
         return wastesCode;

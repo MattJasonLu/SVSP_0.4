@@ -163,4 +163,14 @@ public class ProductionDailyServiceImpl implements ProductionDailyService
     public int countByIdSew(String id) {
         return productionDailyMapper.countByIdSew(id);
     }
+
+    @Override
+    public int wastesCountById(String id) {
+        return productionDailyMapper.wastesCountById(id);
+    }
+
+    @Override
+    public SewageregistrationItem getByWastesId(String id) {
+        return productionDailyMapper.getByWastesId(id);
+    }
 }
