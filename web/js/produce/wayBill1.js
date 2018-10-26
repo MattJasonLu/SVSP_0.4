@@ -1169,6 +1169,7 @@ function addWayBill() {
     wayBill.wayBillItemList = wayBillItemList;
     console.log("添加的数据为：");
     console.log(wayBill);
+    item;
     $.ajax({
         type: "POST",                            // 方法类型
         url: "addWayBill",                 // url

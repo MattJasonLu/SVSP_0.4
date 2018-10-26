@@ -39,7 +39,7 @@ public class PRSampleInfoController {
     public String addSampleAppoint(@RequestBody SampleInformation sampleInformation) {
         JSONObject res = new JSONObject();
         try {
-            sampleInformation.setApplyState(ApplyState.Appointed);
+           // sampleInformation.setApplyState(ApplyState.Appointed);
             // 添加预约登记表
             sampleInformationService.add(sampleInformation);
             res.put("status", "success");
@@ -100,13 +100,17 @@ public class PRSampleInfoController {
 
     @RequestMapping("getCurrentWastesId")
     @ResponseBody
-    public String getCurrentWastesId() {
+    public String getCurrentWastesId(String sampleId) {
         String id;
-        int index = sampleInformationService.wastesCount();
+        int index = sampleInformationService.wastesCountById(sampleId);
         // 获取唯一的编号
         do {
             index += 1;
-            id = index + "";
+            String index1 = index + "";
+            if(index < 10) index1 = "000" + index;
+                else if(index < 100) index1 = "00" + index;
+                    else if(index < 1000) index1 = "0" + index;
+            id = sampleId + index1;
         } while (sampleInformationService.getByWastesId(id) != null);
         JSONObject res = new JSONObject();
         res.put("id", id);
@@ -189,10 +193,10 @@ public class PRSampleInfoController {
 
     @RequestMapping("confirmSampleInformationCheck")
     @ResponseBody
-    public String confirmSampleInformationCheck(String sampleId,String sendingPerson){
+    public String confirmSampleInformationCheck(String sampleId,String laboratorySigner){
         JSONObject res = new JSONObject();
         try{
-            sampleInformationService.confirmCheck(sampleId,sendingPerson);
+            sampleInformationService.confirmCheck(sampleId,laboratorySigner);
             res.put("status","success");
             res.put("message","确认登记成功！");
         }catch (Exception e){
@@ -329,4 +333,29 @@ public class PRSampleInfoController {
         }
         return res.toString();
     }
+
+    /**
+     * 拒收功能
+     * @param id
+     * @param advice
+     * @return
+     */
+    @RequestMapping("rejectSampleInfoById")
+    @ResponseBody
+    public String rejectSampleInfoById(String id,String advice){
+        JSONObject res=new JSONObject();
+        try {
+            sampleInformationService.rejectSampleInfoById(id,advice);
+            res.put("status", "success");
+            res.put("message", "拒收成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "拒收失败");
+        }
+        return res.toString();
+    }
+
+
 }
