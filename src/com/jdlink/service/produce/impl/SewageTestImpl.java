@@ -2,6 +2,7 @@ package com.jdlink.service.produce.impl;
 
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.SewageTest;
+import com.jdlink.domain.Produce.SoftTest;
 import com.jdlink.mapper.produce.SewageTestMapper;
 import com.jdlink.service.SewageTestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,20 @@ public class SewageTestImpl implements SewageTestService {
     @Override
     public int totalSewageTestRecord() {
         return sewageTestMapper.totalSewageTestRecord();
+    }
+
+    @Override
+    public void addSoftTest(SoftTest softTest) {
+        sewageTestMapper.addSoftTest(softTest);
+    }
+
+    @Override
+    public void updateSoftTest(SoftTest softTest) {
+        sewageTestMapper.updateSoftTest(softTest);
+    }
+
+    @Override
+    public SoftTest getSoftTestById(String id) {
+        return sewageTestMapper.getSoftTestById(id);
     }
 }
