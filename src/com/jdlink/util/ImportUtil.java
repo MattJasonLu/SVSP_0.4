@@ -128,15 +128,16 @@ public class ImportUtil {
 
                 for(int k=0;k<sheets;k++){
                     XSSFSheet xSheet = xwb.getSheetAt(k);
-                    // 获得总列数
-                    int col = xSheet.getRow(0).getPhysicalNumberOfCells();
                     // 原来为：int row = xSheet.getLastRowNum();
                     // 修改为 获得总行数
                     int row = xSheet.getPhysicalNumberOfRows();
+                    // 获得总列数
+                    if (xSheet.getRow(0) == null) break;
+                    int col = xSheet.getRow(0).getPhysicalNumberOfCells();
                     param = new Object[row][col];
                     for (int i = 0; i < row; i++) {
                         XSSFRow row1 = xSheet.getRow(i);
-                       if(row1!=null){
+                       if(row1!=null) {
                         obj = new Object[col];
                         for (int j = 0; j < col; j++) {
                             XSSFCell cellStyle = row1.getCell(j);
