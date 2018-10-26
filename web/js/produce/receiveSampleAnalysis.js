@@ -22,7 +22,7 @@ function totalPage() {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "countSampleInfoAnalysis",                  // url
+            url: "countReceiveSampleAnalysis",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
@@ -43,7 +43,7 @@ function totalPage() {
     } else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "countSampleInfoAnalysis",                  // url
+            url: "countReceiveSampleAnalysis",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: data,
             dataType: "json",
@@ -163,7 +163,7 @@ function switchPage(pageNumber) {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "getSampleInfoAnalysis",         // url
+            url: "getReceiveSampleAnalysis",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: page,
             dataType: "json",
@@ -182,7 +182,7 @@ function switchPage(pageNumber) {
         data['page'] = page;
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "getSampleInfoAnalysis",         // url
+            url: "getReceiveSampleAnalysis",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: data,
             dataType: "json",
@@ -241,7 +241,7 @@ function inputSwitchPage() {
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "getSampleInfoAnalysis",         // url
+                url: "getReceiveSampleAnalysis",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: page,
                 dataType: "json",
@@ -261,7 +261,7 @@ function inputSwitchPage() {
             data['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "getSampleInfoAnalysis",         // url
+                url: "getReceiveSampleAnalysis",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: data,
                 dataType: "json",
@@ -297,7 +297,7 @@ function loadPageList() {
     page.start = (pageNumber - 1) * page.count;
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getSampleInfoAnalysis",   // url
+        url: "getReceiveSampleAnalysis",   // url
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
         data: page,
         dataType: "json",
@@ -315,7 +315,7 @@ function loadPageList() {
         }
     });
     isSearch = false;
-    getCheckState();
+    // getCheckState();
 }
 
 /**
@@ -333,21 +333,24 @@ function setDataList(result) {
         clonedTr.show();
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.find("td[name='id']").text(obj.id);
-        clonedTr.find("td[name='transferDraftId']").text(obj.transferDraftId);
+        clonedTr.find("td[name='finishDate']").text(getDateStr(obj.finishDate));
         if (obj.produceCompany != null) clonedTr.find("td[name='produceCompanyName']").text(obj.produceCompany.companyName);
         clonedTr.find("td[name='wastesName']").text(obj.wastesName);
         clonedTr.find("td[name='wastesCode']").text(obj.wastesCode);
-        clonedTr.find("td[name='formType']").text(obj.formType.name);
+        if (obj.formType != null) clonedTr.find("td[name='formType']").text(obj.formType.name);
+        if (obj.handleCategory != null) clonedTr.find("td[name='handleCategory']").text(obj.handleCategory.name);
+        clonedTr.find("td[name='sender']").text(obj.sender);
         clonedTr.find("td[name='PH']").text(parseFloat(obj.PH).toFixed(3));
+        clonedTr.find("td[name='heat']").text(parseFloat(obj.heat).toFixed(3));
         clonedTr.find("td[name='ash']").text(parseFloat(obj.ash).toFixed(3));
         clonedTr.find("td[name='water']").text(parseFloat(obj.water).toFixed(3));
-        clonedTr.find("td[name='heat']").text(parseFloat(obj.heat).toFixed(3));
-        clonedTr.find("td[name='sulfur']").text(parseFloat(obj.sulfur).toFixed(3));
-        clonedTr.find("td[name='chlorine']").text(parseFloat(obj.chlorine).toFixed(3));
         clonedTr.find("td[name='fluorine']").text(parseFloat(obj.fluorine).toFixed(3));
+        clonedTr.find("td[name='chlorine']").text(parseFloat(obj.chlorine).toFixed(3));
+        clonedTr.find("td[name='sulfur']").text(parseFloat(obj.sulfur).toFixed(3));
         clonedTr.find("td[name='phosphorus']").text(parseFloat(obj.phosphorus).toFixed(3));
         clonedTr.find("td[name='flashPoint']").text(parseFloat(obj.flashPoint).toFixed(3));
         clonedTr.find("td[name='viscosity']").text(parseFloat(obj.viscosity).toFixed(3));
+        clonedTr.find("td[name='hotMelt']").text(parseFloat(obj.hotMelt).toFixed(3));
         clonedTr.find("td[name='signer']").text(obj.signer);
         clonedTr.find("td[name='remark']").text(obj.remark);
         // 把克隆好的tr追加到原来的tr前面
@@ -396,7 +399,7 @@ function searchData() {
     }
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getSampleInfoAnalysis",                  // url
+        url: "getReceiveSampleAnalysis",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         data: data,
         dataType: "json",
@@ -928,7 +931,7 @@ function viewData(e) {
     var id = getIdByMenu(e);
     $.ajax({
         type: "POST",
-        url: "getSampleInfoAnalysisById",
+        url: "getTransferDraftById",
         async: false,
         dataType: "json",
         data: {
@@ -1151,25 +1154,25 @@ function importExcelChoose() {
  * 下载模板
  * */
 function downloadModal() {
-    var filePath = 'Files/Templates/仓储部化验结果模板.xlsx';
+    var filePath = 'Files/Templates/转移联单_320046201703310001(模板).pdf';
     var r = confirm("是否下载模板?");
-    if (r) {
+    if (r == true) {
         window.open('downloadFile?filePath=' + filePath);
     }
 }
 
 /**
- * 导入
+ * 导入pdf
  */
 function importExcel() {
     document.getElementById("idExcel").click();
     document.getElementById("idExcel").addEventListener("change", function () {
         var eFile = document.getElementById("idExcel").files[0];
         var formFile = new FormData();
-        formFile.append("excelFile", eFile);
+        formFile.append("pdfFile", eFile);
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "importSampleInfoAnalysis",              // url
+            url: "importTransferDraft",              // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             data: formFile,

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdlink.mapper.produce.ReceiveSampleAnalysisMapper" >
+
+    <!--获取仓储部化验单-->
+    <select id="get" resultType="ReceiveSampleAnalysis">
+        SELECT * FROM t_pr_receivesampleanalysis
+        <where>
+            <if test="receiveSampleAnalysis != null and receiveSampleAnalysis.keyword != null and receiveSampleAnalysis.keyword != ''">
+                and id LIKE "%"#{receiveSampleAnalysis.keyword}"%" or dispatcher like "%"#{receiveSampleAnalysis.keyword}"%" or destination like "%"#{receiveSampleAnalysis.keyword}"%"
+                or transferTime like binary "%"#{receiveSampleAnalysis.keyword}"%" or produceCompanyName like "%"#{receiveSampleAnalysis.keyword}"%"
+                or transportCompanyName like "%"#{receiveSampleAnalysis.keyword}"%" or acceptCompanyName like "%"#{receiveSampleAnalysis.keyword}"%"
+            </if>
+            <if test="receiveSampleAnalysis != null and receiveSampleAnalysis.id != null and receiveSampleAnalysis.id != ''">
+                and id LIKE "%"#{receiveSampleAnalysis.id}"%"
+            </if>
+            <if test="receiveSampleAnalysis != null and receiveSampleAnalysis.produceCompany != null and receiveSampleAnalysis.produceCompany.companyName != null and receiveSampleAnalysis.produceCompany.companyName != ''">
+                and produceCompanyName LIKE "%"#{receiveSampleAnalysis.produceCompany.companyName}"%"
+            </if>
+
+        </where>
+        order by createTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--获取仓储部化验单数量-->
+    <select id="count" resultType="int">
+        SELECT count(*) FROM t_pr_receivesampleanalysis
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and id LIKE "%"#{keyword}"%" or dispatcher like "%"#{keyword}"%" or destination like "%"#{keyword}"%"
+                or transferTime like binary "%"#{keyword}"%" or produceCompanyName like "%"#{keyword}"%"
+                or transportCompanyName like "%"#{keyword}"%" or acceptCompanyName like "%"#{keyword}"%"
+            </if>
+            <if test="id != null and id != ''">
+                and id LIKE "%"#{id}"%"
+            </if>
+            <if test="produceCompany != null and produceCompany.companyName != null and produceCompany.companyName != ''">
+                and produceCompanyName LIKE "%"#{produceCompany.companyName}"%"
+            </if>
+
+        </where>
+    </select>
+
+</mapper>

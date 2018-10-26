@@ -7,21 +7,21 @@ import com.jdlink.domain.Page;
 import java.util.Date;
 
 /**
- * 仓储部化验单
+ * 市场部化验单
  */
-public class SampleInfoAnalysis {
+public class ReceiveSampleAnalysis {
     /**
      * 编号
      */
     private String id;
     /**
-     * 样品编号
+     * 送样单编号
      */
     private String sampleId;
     /**
-     * 联单编号
+     * 完成日期
      */
-    private String transferDraftId;
+    private Date finishDate;
     /**
      * 产废单位
      */
@@ -35,7 +35,7 @@ public class SampleInfoAnalysis {
      */
     private String wastesCode;
     /**
-     * 类别
+     * 废物类别
      */
     private HandleCategory handleCategory;
     /**
@@ -43,9 +43,17 @@ public class SampleInfoAnalysis {
      */
     private FormType formType;
     /**
+     * 送样人
+     */
+    private String sender;
+    /**
      * PH
      */
     private float PH;
+    /**
+     * 热值
+     */
+    private float heat;
     /**
      * 灰分
      */
@@ -54,10 +62,6 @@ public class SampleInfoAnalysis {
      * 水分
      */
     private float water;
-    /**
-     * 热值
-     */
-    private float heat;
     /**
      * 氟
      */
@@ -83,21 +87,9 @@ public class SampleInfoAnalysis {
      */
     private float viscosity;
     /**
-     * 热融试验
+     * 热熔试验
      */
     private float hotMelt;
-    /**
-     * 送样人
-     */
-    private String sender;
-    /**
-     * 签收人
-     */
-    private String signer;
-    /**
-     * 签收日期
-     */
-    private Date signDate;
     /**
      * 备注
      */
@@ -127,12 +119,12 @@ public class SampleInfoAnalysis {
         this.sampleId = sampleId;
     }
 
-    public String getTransferDraftId() {
-        return transferDraftId;
+    public Date getFinishDate() {
+        return finishDate;
     }
 
-    public void setTransferDraftId(String transferDraftId) {
-        this.transferDraftId = transferDraftId;
+    public void setFinishDate(Date finishDate) {
+        this.finishDate = finishDate;
     }
 
     public Client getProduceCompany() {
@@ -175,12 +167,28 @@ public class SampleInfoAnalysis {
         this.formType = formType;
     }
 
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
     public float getPH() {
         return PH;
     }
 
     public void setPH(float PH) {
         this.PH = PH;
+    }
+
+    public float getHeat() {
+        return heat;
+    }
+
+    public void setHeat(float heat) {
+        this.heat = heat;
     }
 
     public float getAsh() {
@@ -197,14 +205,6 @@ public class SampleInfoAnalysis {
 
     public void setWater(float water) {
         this.water = water;
-    }
-
-    public float getHeat() {
-        return heat;
-    }
-
-    public void setHeat(float heat) {
-        this.heat = heat;
     }
 
     public float getFluorine() {
@@ -261,30 +261,6 @@ public class SampleInfoAnalysis {
 
     public void setHotMelt(float hotMelt) {
         this.hotMelt = hotMelt;
-    }
-
-    public String getSender() {
-        return sender;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
-
-    public String getSigner() {
-        return signer;
-    }
-
-    public void setSigner(String signer) {
-        this.signer = signer;
-    }
-
-    public Date getSignDate() {
-        return signDate;
-    }
-
-    public void setSignDate(Date signDate) {
-        this.signDate = signDate;
     }
 
     public String getRemark() {
