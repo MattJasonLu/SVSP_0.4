@@ -147,7 +147,7 @@
 
     <select id="getAmountItems" parameterType="Ingredients" resultType="int">
         select count(*) from t_pr_ingredients_inventory
-        where name = #{name} and wareHouseName = #{wareHouseName};
+        where name = #{name} and wareHouseName = #{wareHouseName} and specification=#{specification};
     </select>
 
     <update id="invalidIn" parameterType="String">
@@ -186,7 +186,7 @@
         (id,companyName,creationDate,fileId,totalPrice,bookkeeper,approver,keeper,
         acceptor,handlers,state,nowTime)
         values
-        (#{id},#{companyName},NOW(),#{fileId},#{totalPrice},#{bookkeeper},#{approver},#{keeper},
+        (#{id},#{companyName},#{creationDate},#{fileId},#{totalPrice},#{bookkeeper},#{approver},#{keeper},
         #{acceptor},#{handlers},'NewBuild',NOW());
         <if test="ingredientsList != null and ingredientsList.size() > 0">
             <foreach collection="ingredientsList" item="ingredients" index="index">
@@ -207,7 +207,7 @@
                         update t_pr_ingredients_inventory
                         set
                         amount = amount + #{ingredients.amount}
-                        where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName};
+                        where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName} and specification=#{ingredients.specification};
                     </otherwise>
                 </choose>
             </foreach>
@@ -627,10 +627,10 @@
 
     <insert id="addOut" parameterType="IngredientsOut">
         insert into t_pr_ingredients_out
-        (id, companyName,creationDate,fileId,totalPrice,totalAmount,bookkeeper,approver,keeper,
+        (id,departmentName,creationDate,fileId,totalPrice,totalAmount,bookkeeper,approver,keeper,
         handlers,state,nowTime)
         values
-        (#{id},#{companyName},NOW(),#{fileId},#{totalPrice},#{totalAmount},#{bookkeeper},#{approver},#{keeper},
+        (#{id},#{departmentName},#{creationDate},#{fileId},#{totalPrice},#{totalAmount},#{bookkeeper},#{approver},#{keeper},
         #{handlers},'NewBuild',NOW());
         <if test="ingredientsList.size() > 0">
             <foreach collection="ingredientsList" item="ingredients" index="index">
