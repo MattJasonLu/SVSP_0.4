@@ -1,9 +1,11 @@
 package com.jdlink.service.produce.impl;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.SampleInfoAnalysis;
 import com.jdlink.mapper.produce.SampleInfoAnalysisMapper;
 import com.jdlink.service.produce.SampleInfoAnalysisService;
+import com.jdlink.util.RandomUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,5 +40,11 @@ public class SampleInfoAnalysisServiceImpl implements SampleInfoAnalysisService 
     @Override
     public void add(SampleInfoAnalysis sampleInfoAnalysis) {
         sampleInfoAnalysisMapper.add(sampleInfoAnalysis);
+    }
+
+    @Override
+    public void setState(String id, CheckState checkState) {
+        String newId = RandomUtil.getRandomEightNumber();
+        sampleInfoAnalysisMapper.setState(id, checkState, newId);
     }
 }
