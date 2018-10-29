@@ -140,7 +140,7 @@ $('.form_datetime2').datetimepicker({
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" href="#" onclick="addData();"><span
+                        <a class="btn btn-primary btn-xs" href="#" onclick="showDateModal();"><span
                                 class="glyphicon glyphicon-plus"
                                 aria-hidden="true"></span> 生成日报</a>
                         <!--<a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose();"><span-->
@@ -268,6 +268,40 @@ $('.form_datetime2').datetimepicker({
                     </li>
                 </ol>
             </nav>
+        </div>
+        <!--时间选择-->
+        <div class="modal fade" id="dateChooseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">选择日期</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row form-horizontal">
+                            <div class=" form-group">
+                                <label for="reportDate" class="col-sm-2 control-label">日报时间</label>
+                                <div class="col-xs-10">
+                                    <input type="date" class="form-control" id="reportDate" style="width: 400px;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-horizontal">
+                            <div class="form-group">
+                                <label for="reportDate" class="col-sm-2 control-label">日报范围</label>
+                                <div class="col-xs-10">
+                                    <input type="date" class="form-control" id="reportDateStart" style="width: 150px;">-<input type="date" class="form-control" id="reportDateEnd" style="width: 150px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer center">
+                        <button type="button" class="btn btn-primary" onclick="addData()">确定</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
         </div>
         <!--导入模态框-->
         <div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
