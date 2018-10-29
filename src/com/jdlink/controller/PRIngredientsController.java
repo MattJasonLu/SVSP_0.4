@@ -188,7 +188,7 @@ public class PRIngredientsController {
                         Date date = new Date();
                         String year1 = sdf.format(date).substring(0, 2); // 获取当前世纪 20
                         String date1 = year1 + data[i][17].toString();
-                        System.out.print(data[i][17].toString()+" ");
+                        System.out.print(data[i][17].toString() + " ");
                         map.get(id).setCreationDate(DateUtil.getDateFromStr(date1));   // 设置入库日期
                     }
                     //新存储一个id对象时，将以下两个累计数据清零
@@ -200,11 +200,11 @@ public class PRIngredientsController {
                 Ingredients ingredients = new Ingredients();
                 ingredients.setSerialNumber(serialNumber + "");
                 ingredients.setName(data[i][8].toString());
-                String price = data[i][9].toString().replaceAll(",","");  // 删除所有,
-                price = price.replaceAll("，","");
+                String price = data[i][9].toString().replaceAll(",", "");  // 删除所有,
+                price = price.replaceAll("，", "");
                 ingredients.setUnitPrice(Float.parseFloat(price));
-                String amount = data[i][10].toString().replaceAll(",","");  // 删除所有,
-                amount = amount.replaceAll("，","");
+                String amount = data[i][10].toString().replaceAll(",", "");  // 删除所有,
+                amount = amount.replaceAll("，", "");
                 ingredients.setAmount(Float.parseFloat(amount));
                 ingredients.setWareHouseName(data[i][11].toString());
                 ingredients.setPost(data[i][12].toString());
@@ -251,7 +251,7 @@ public class PRIngredientsController {
             for (String key : map.keySet()) {
                 IngredientsIn ingredientsIn1 = ingredientsService.getInById(map.get(key).getId());
                 IngredientsIn ingredientsIn = map.get(key);
-                for(Ingredients ingredients : ingredientsIn.getIngredientsList()){
+                for (Ingredients ingredients : ingredientsIn.getIngredientsList()) {
                     // 更新库存数量
                     if (ingredientsService.getAmountItems(ingredients) > 0) ingredients.setAid("exist");  //查询是否存在该物品
                     else ingredients.setAid("notExist");
@@ -916,7 +916,9 @@ public class PRIngredientsController {
                         Date date = new Date();
                         String year1 = sdf.format(date).substring(0, 2); // 获取当前世纪 20
                         String date1 = year1 + data[i][16].toString();
-                        System.out.print(data[i][16].toString()+" ");
+                        System.out.print("日期:");
+                        System.out.print(data[i][16].toString() + " ");
+                        System.out.println(date1 + ".");
                         map.get(id).setCreationDate(DateUtil.getDateFromStr(date1));   // 设置入库日期
                     }
                     //新存储一个id对象时，将以下两个累计数据清零
@@ -989,30 +991,44 @@ public class PRIngredientsController {
                 map.get(id).setTotalAmount(totalAmount);
                 map.get(id).setTotalPrice(totalPrice);
             }
+            String message = "";
+            boolean out = true;   // 默认正常出库
             for (String key : map.keySet()) {
                 IngredientsOut ingredientsOut = map.get(key);
                 //计算每单每个物品在各个仓库的领料数是否小于库存量
                 for (Ingredients ingredients : ingredientsOut.getIngredientsList()) {
                     //通过仓库名和物品名查询库存量
                     Ingredients ingredients1 = ingredientsService.getInventoryByNameAndWare(ingredients);
-                    float amount = ingredients1.getAmount(); // 获取库存量
-                    if (ingredients.getReceiveAmount() > amount) {
-                        res.put("status", "fail");
-                        res.put("message", ingredients.getWareHouseName() + "中" + ingredients.getName() + "出库数大于库存量,请重新确认出库数量！");
-                        return res.toString();
+                    if (ingredients1 == null) {
+                        //res.put("status", "fail");
+                        message = message + ingredients.getWareHouseName() + "中" + "没有" + ingredients.getName() + "\n";
+                        out = false; // 没有库存时出库失败
+                    } else {
+                        float amount = ingredients1.getAmount(); // 获取库存量
+                        if (ingredients.getReceiveAmount() > amount) {
+                            message = message + ingredients.getWareHouseName() + "中" + ingredients.getName() + "出库数大于库存量" + "\n";
+                            out = false;  // 库存不足时出库失败
+                        }
                     }
                 }
-                IngredientsOut ingredientsOut1 = ingredientsService.getOutById(map.get(key).getId());
-                if (ingredientsOut1 == null) {
-                    //插入新数据
-                    ingredientsService.addOut(ingredientsOut);
-                } else {
-                    //根据id更新数据
-                    ingredientsService.updateOut(ingredientsOut);
+                if (out) {     // 如果Out为true则正常更新添加
+                    IngredientsOut ingredientsOut1 = ingredientsService.getOutById(map.get(key).getId());
+                    if (ingredientsOut1 == null) {
+                        //插入新数据
+                        ingredientsService.addOut(ingredientsOut);
+                    } else {
+                        //根据id更新数据
+                        ingredientsService.updateOut(ingredientsOut);
+                    }
                 }
             }
-            res.put("status", "success");
-            res.put("message", "导入成功");
+            if (out) {
+                res.put("status", "success");
+                res.put("message", "导入成功");
+            } else {
+                res.put("status", "fail");
+                res.put("message", "部分导入失败\n" + message + "请重新检查！");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");

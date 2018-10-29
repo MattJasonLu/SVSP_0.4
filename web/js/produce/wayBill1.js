@@ -814,27 +814,28 @@ function reject1() {
  */
 function invalidWayBill(item) {
     var id = getWayBillId(item);
-    $.ajax({
-        type: "POST",
-        url: "invalidWayBill",
-        async: false,
-        data: {
-            id: id
-        },
-        dataType: "json",
-        success: function (result) {
-            if (result.status == "success") {
-                alert("作废成功！");
-                window.location.reload();
-            } else {
-                alert(result.message);
+    if (confirm("确定作废？"))
+        $.ajax({
+            type: "POST",
+            url: "invalidWayBill",
+            async: false,
+            data: {
+                id: id
+            },
+            dataType: "json",
+            success: function (result) {
+                if (result.status == "success") {
+                    alert("作废成功！");
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常!");
             }
-        },
-        error: function (result) {
-            console.log(result);
-            alert("服务器异常!");
-        }
-    });
+        });
 }
 
 /**
@@ -1014,7 +1015,6 @@ $(document).ready(function () {
         });
 
 
-
         // 添加危废代码信息
         $.ajax({
             type: "POST",                       // 方法类型
@@ -1095,7 +1095,7 @@ function addNewItemLine() {
         language: 'zh_CN',
         size: 4,
         title: '请选择',
-        dropupAuto:false
+        dropupAuto: false
     });
     $('.selectpicker').selectpicker('refresh');
 }
@@ -1145,7 +1145,7 @@ function addWayBill() {
     for (var i = 0; i < lineCount; i++) {
         var $i = i;
         var wayBillItem = {};
-        wayBillItem.salesmanName = $("select[id='modal" + $i + "-salesman']option:selected").text();
+        wayBillItem.salesmanName = $("select[id='modal" + $i + "-salesman']").find("option:selected").text();
         wayBillItem.receiveCompanyName = $("input[id='modal" + $i + "-receiveCompany']").val();
         wayBillItem.wastesId = conversionIdFormat(wastesId);
         wayBillItem.wastesName = $("input[id='modal" + $i + "-wastesName']").val();
@@ -1169,7 +1169,6 @@ function addWayBill() {
     wayBill.wayBillItemList = wayBillItemList;
     console.log("添加的数据为：");
     console.log(wayBill);
-    item;
     $.ajax({
         type: "POST",                            // 方法类型
         url: "addWayBill",                 // url
@@ -1304,6 +1303,6 @@ $(window).on('load', function () {
         language: 'zh_CN',
         size: 4,
         title: '请选择',
-        dropupAuto:false
+        dropupAuto: false
     });
 });

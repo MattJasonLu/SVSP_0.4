@@ -8,6 +8,7 @@ import com.jdlink.service.ProductionDailyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -50,7 +51,12 @@ public class ProductionDailyServiceImpl implements ProductionDailyService
 
     @Override
     public int getProductionDailyId() {
-        return productionDailyMapper.getProductionDailyId() + 1;
+        int index = getProductionDailyCount();
+        // 获取唯一的编号
+        do {
+            index += 1;
+        } while (getProductionDailyById(index) != null);
+        return index;
     }
 
     @Override
