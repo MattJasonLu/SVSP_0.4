@@ -362,3 +362,16 @@ function getCurrentUserData(){
     });
     return data;
 }
+
+/**
+ * 数组去重
+ * */
+function unique1(arr){
+    var hash=[];
+    for (var i = 0; i < arr.length; i++) {
+        if(hash.indexOf(arr[i])==-1){
+            hash.push(arr[i]);
+        }
+    }
+    return hash;
+}

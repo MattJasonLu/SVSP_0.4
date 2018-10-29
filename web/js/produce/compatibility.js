@@ -614,7 +614,7 @@ function totalPage() {
 
                     //周需求总量
                     case (4):
-                        $(this).html(data.weeklyDemandTotalAggregate);
+                        $(this).html(data.weeklyDemandTotalAggregate.toFixed(1));
                         break;
 
                     // 平均热值
