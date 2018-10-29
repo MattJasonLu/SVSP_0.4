@@ -157,7 +157,7 @@
     </select>
 
     <select id="getByName" parameterType="String" resultMap="ClientRM">
-        SELECT * FROM client WHERE companyName=#{companyName}
+        SELECT * FROM client WHERE companyName=#{companyName} and state != 'Disabled';
     </select>
 
     <update id="update" parameterType="Client">
