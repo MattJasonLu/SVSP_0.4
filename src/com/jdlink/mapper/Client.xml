@@ -36,7 +36,7 @@
           #{organizationCode}, #{licenseCode}, #{representative}, #{postCode}, #{enterpriseType},
           #{operationMode}, #{operationType}, #{contingencyPlan}, #{operationRecord}, #{location},
           #{street}, #{applicationStatus}, #{materialAttachmentUrl}, #{processAttachmentUrl},
-          #{processDesp}, #{contactName}, #{phone}, #{mobile}, #{email}, #{clientState}, #{industry},
+          #{processDesp}, #{contactName}, #{phone}, #{mobile}, #{email}, 'Enabled', #{industry},
           #{product}, #{checkState}, #{bankName}, #{bankAccount}, #{taxNumber}, #{ticketType}, #{isDisposal},
           #{clientType}, NOW(), #{taxAddress}, #{taxMobile});
           INSERT INTO t_document (clientId, filePath, documentType) VALUES (#{clientId}, #{materialAttachmentUrl}, 'EIA');
@@ -157,7 +157,7 @@
     </select>
 
     <select id="getByName" parameterType="String" resultMap="ClientRM">
-        SELECT * FROM client WHERE companyName=#{companyName}
+        SELECT * FROM client WHERE companyName=#{companyName} and state != 'Disabled';
     </select>
 
     <update id="update" parameterType="Client">

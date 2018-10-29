@@ -136,13 +136,15 @@ function searchData() {
  */
 function setDataList(result) {
     // 设置企业数据
-    if (result.clientList[0] != null) {
-        $("#companyName").text(result.clientList[0].companyName);
-        $("#companyId").text(result.clientList[0].clientId);
-        $("#companyArea").text(result.clientList[0].location);
-        $("#location").text(result.clientList[0].location);
-        $("#contactName").text(result.clientList[0].contactName);
-        //  $("#carArea").text();
+    for(var i = 0;i < result.clientList.length;i++){
+        if(result.clientList[i] != null && result.clientList[i].state.name != "已禁用"){
+            $("#companyName").text(result.clientList[0].companyName);
+            $("#companyId").text(result.clientList[0].clientId);
+            $("#companyArea").text(result.clientList[0].location);
+            $("#location").text(result.clientList[0].location);
+            $("#contactName").text(result.clientList[0].contactName);
+        }
+
     }
     // 设置接运单数据
     $("#sendSampleNumber").text(result.sampleInfoList.length);

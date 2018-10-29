@@ -375,12 +375,13 @@ function setList(result) {
                     $(this).html(obj.id);
                     break;
                 case (2):
-                    // 单位
-                    $(this).html(obj.companyName);
+                    // 部门
+                    $(this).html(obj.departmentName);
                     break;
                 case (3):
                     //出库单状态
-                    $(this).html(obj.state.name);
+                    if(obj.state != null)
+                       $(this).html(obj.state.name);
                     break;
                 case (4):
                     // 总数量
@@ -407,7 +408,7 @@ function setList(result) {
                     $(this).html(obj.handlers);
                     break;
                 case (10):
-                    // 创建日期
+                    // 出库日期
                     $(this).html(getDateStr(obj.creationDate));
                     break;
             }
@@ -1448,7 +1449,7 @@ function save() {
     }
     ingredientsOut.totalPrice = totalPrice;
     ingredientsOut.totalAmount = totalAmount;
-    ingredientsOut.companyName = $("#companyName").val();
+    ingredientsOut.departmentName = $("#departmentName").val();
     ingredientsOut.fileId = $("#fileId").val();
     ingredientsOut.bookkeeper = $("#bookkeeper").val();
     ingredientsOut.approver = $("#approver").val();

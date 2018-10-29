@@ -6,6 +6,7 @@ import com.jdlink.domain.Wastes;
 import com.jdlink.service.ProductionDailyService;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
+import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.math.BigInteger;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 public class PRProductionDailyController {
@@ -269,6 +269,23 @@ public class PRProductionDailyController {
         JSONObject res=new JSONObject();
 
         try {
+            // 生成预约号
+//            Date date = new Date();   //获取当前时间
+//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+//            String prefix = simpleDateFormat.format(date) + sewageregistration.getClient().getClientId();
+//            System.out.println("前缀"+prefix);
+//            int count =productionDailyService.countByIdSew(prefix) + 1;
+//            String suffix;
+//            if (count <= 9) suffix = "0" + count;
+//            else suffix = count + "";
+//            String id = RandomUtil.getAppointId(prefix, suffix);
+//            // 确保编号唯一
+//            while (productionDailyService.getSewaGeregistrationById(id) != null) {
+//                int index = Integer.parseInt(id);
+//                index += 1;
+//                id =String.valueOf(index);
+//            }
+//            sewageregistration.setId(id);
             productionDailyService.addSewaGeregistration(sewageregistration);
             res.put("status", "success");
             res.put("message", "添加主表成功");
@@ -291,12 +308,20 @@ public class PRProductionDailyController {
     public String addSewaGeregistrationItem(@RequestBody SewageregistrationItem sewageregistrationItem){
         JSONObject res=new JSONObject();
 
-
         try {
-            int id=productionDailyService.getNewestId().get(0);
-            sewageregistrationItem.setSampleinformationId(id);
+            String id1;
+            int index = productionDailyService.wastesCountById(sewageregistrationItem.getSampleinformationId());
+            do {
+                index += 1;
+                String index1 = index + "";
+                if(index < 10) index1 = "000" + index;
+                else if(index < 100) index1 = "00" + index;
+                else if(index < 1000) index1 = "0" + index;
+                id1 = sewageregistrationItem.getSampleinformationId() + index1;
+            } while (productionDailyService.getByWastesId(id1) != null);
+            sewageregistrationItem.setId(id1);
+            String id=productionDailyService.getNewestId().get(0);
             productionDailyService.addSewaGeregistrationItem(sewageregistrationItem);
-
             res.put("status", "success");
             res.put("message", "字表添加成功");
         }
@@ -340,8 +365,18 @@ public class PRProductionDailyController {
     public String addSoftGeregistrationItem(@RequestBody SewageregistrationItem sewageregistrationItem){
         JSONObject res=new JSONObject();
         try{
-            int id=productionDailyService.getNewestId().get(0);
-            sewageregistrationItem.setSampleinformationId(id);
+            String id1;
+            int index = productionDailyService.wastesCountById(sewageregistrationItem.getSampleinformationId());
+            do {
+                index += 1;
+                String index1 = index + "";
+                if(index < 10) index1 = "000" + index;
+                else if(index < 100) index1 = "00" + index;
+                else if(index < 1000) index1 = "0" + index;
+                id1 = sewageregistrationItem.getSampleinformationId() + index1;
+            } while (productionDailyService.getByWastesId(id1) != null);
+            sewageregistrationItem.setId(id1);
+            String id=productionDailyService.getNewestId().get(0);
             productionDailyService.addSoftGeregistrationItem(sewageregistrationItem);
             res.put("status", "success");
             res.put("message", "字表添加成功");

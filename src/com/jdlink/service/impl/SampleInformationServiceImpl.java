@@ -26,7 +26,10 @@ public class SampleInformationServiceImpl implements SampleInformationService {
     public int count(){ return sampleInformationMapper.count(); }
 
     @Override
-    public int wastesCount(){ return sampleInformationMapper.wastesCount(); }
+    public int wastesCountById(String id){ return sampleInformationMapper.wastesCountById(id); }
+
+    @Override
+    public int countById(String id){ return sampleInformationMapper.countById(id);}
 
     @Override
     public List<SampleInformation> listPage(Page page){ return sampleInformationMapper.listPage(page); }
@@ -35,7 +38,7 @@ public class SampleInformationServiceImpl implements SampleInformationService {
     public SampleInformation getById(String sampleId){ return sampleInformationMapper.getById(sampleId); }
 
     @Override
-    public void confirmCheck(String sampleId){ sampleInformationMapper.confirmCheck(sampleId); }
+    public void confirmCheck(String sampleId,String laboratorySigner){ sampleInformationMapper.confirmCheck(sampleId,laboratorySigner); }
 
     @Override
     public void update(SampleInformation sampleInformation){ sampleInformationMapper.update(sampleInformation); }
@@ -69,4 +72,7 @@ public class SampleInformationServiceImpl implements SampleInformationService {
 
     @Override
     public void deleteById(String id){ sampleInformationMapper.deleteById(id);}
+
+    @Override
+    public void rejectSampleInfoById(String sampleId,String advice){ sampleInformationMapper.rejectSampleInfoById(sampleId,advice);}
 }

@@ -90,7 +90,7 @@
                         <li role="separator" class="divider"></li>
                         <li class="dropdown-submenu">
                             <a href="testResults.html">化验结果</a><ul class="dropdown-menu">
-                            <li><a href="testResultsSampleInfo.html">市场部化验</a></li>
+                            <li><a href="receiveSampleAnalysis.html">市场部化验</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="sampleInfoAnalysis.html">仓储部化验</a></li>
                             <li role="separator" class="divider"></li>
@@ -209,21 +209,20 @@
                 <li class="active">仓储部送样</li>
             </ol>
         </div>
-        <h4 class="sub-header">仓储部送样（化验室签收表）</h4>
+        <h4 class="sub-header">仓储部送样</h4>
         <div class="row">
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
                     <a class="btn btn-primary btn-xs" href="#" onclick="appointModal();"><span
                             class="glyphicon glyphicon-plus" aria-hidden="true"></span> 预约登记</a>
-                    <a class="btn btn-primary btn-xs" onclick="inportExcel()"><span
-                            class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                     <a class="btn btn-primary btn-xs" onclick="exportExcel()"><span
                             class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
                 <div class="input-group col-md-4 pull-right">
-                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent" onkeydown="enterSearch()">
+                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent"
+                           onkeydown="enterSearch()">
                     <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchSampleInfo();"><span
                                     class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
@@ -234,7 +233,6 @@
                         </span>
                 </div>
             </div>
-
         </div><!--高级查询-->
         <br>
         <div class="panel panel-default" id="senior" style="display: none;">
@@ -284,28 +282,36 @@
                             <div class="col-xs-7">
                                 <div class="checkbox" id="search-basicItems">
                                     <label>
-                                        <input type="checkbox" name="isPH1" id="isPH1" value="true" onchange="searchSampleInfo()">PH
+                                        <input type="checkbox" name="isPH1" id="isPH1" value="true"
+                                               onchange="searchSampleInfo()">PH
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="isAsh1" id="isAsh1" value="true" onchange="searchSampleInfo()">灰分
+                                        <input type="checkbox" name="isAsh1" id="isAsh1" value="true"
+                                               onchange="searchSampleInfo()">灰分
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="isWater1" id="isWater1" value="true" onchange="searchSampleInfo()">水分
+                                        <input type="checkbox" name="isWater1" id="isWater1" value="true"
+                                               onchange="searchSampleInfo()">水分
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="isHeat1" id="isHeat1" value="true" onchange="searchSampleInfo()">热值
+                                        <input type="checkbox" name="isHeat1" id="isHeat1" value="true"
+                                               onchange="searchSampleInfo()">热值
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="isS1" id="isS1" value="true" onchange="searchSampleInfo()">硫
+                                        <input type="checkbox" name="isS1" id="isS1" value="true"
+                                               onchange="searchSampleInfo()">硫
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="isCl1" id="isCl1" value="true" onchange="searchSampleInfo()">氯
+                                        <input type="checkbox" name="isCl1" id="isCl1" value="true"
+                                               onchange="searchSampleInfo()">氯
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="isF1" id="isF1" value="true" onchange="searchSampleInfo()">氟
+                                        <input type="checkbox" name="isF1" id="isF1" value="true"
+                                               onchange="searchSampleInfo()">氟
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="isP1" id="isP1" value="true" onchange="searchSampleInfo()">磷
+                                        <input type="checkbox" name="isP1" id="isP1" value="true"
+                                               onchange="searchSampleInfo()">磷
                                     </label>
                                 </div>
                             </div>
@@ -313,9 +319,10 @@
                     </div>
                     <div class="form-horizontal col-md-4">
                         <div class="form-group">
-                            <label for="search-state" class="col-sm-4 control-label">样&nbsp;&nbsp;&nbsp;品&nbsp;&nbsp;状&nbsp;&nbsp;&nbsp;态</label>
+                            <label for="search-state" class="col-sm-4 control-label">样&nbsp;&nbsp;&nbsp;品&nbsp;&nbsp;&nbsp;状&nbsp;&nbsp;态</label>
                             <div class="col-xs-7">
-                                <select class="form-control" name="search-state" id="search-state" onchange="searchSampleInfo()"></select>
+                                <select class="form-control" name="search-state" id="search-state"
+                                        onchange="searchSampleInfo()"></select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -335,18 +342,18 @@
                 <tr>
                     <th class="text-center">
                         <label>
-                            <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
+                            <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel"
+                                   id="allSel" onclick="allSelect()">
                         </label>
                     </th>
-                    <th class="text-center">联单编号</th>
+                    <th class="text-center">预约单号</th>
                     <th class="text-center">产废单位</th>
                     <th class="text-center">危废名称</th>
-                    <th class="text-center">危废类别</th>
                     <th class="text-center">危废形态</th>
                     <th class="text-center">检测项目</th>
                     <th class="text-center">送样人</th>
                     <th class="text-center">签收人</th>
-                    <th class="text-center">备注</th>
+                    <th class="text-center">状态</th>
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>
@@ -354,7 +361,8 @@
                 <tr id="cloneTr" ondblclick="viewSample1(this);">
                     <td class="text-center">
                         <label>
-                            <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                            <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1"
+                                   aria-label="...">
                         </label>
                     </td>
                     <td class="text-center"></td>
@@ -365,13 +373,17 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
                     <td class="text-center">
-                        <a href="#" onclick="viewSample(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                        <a href="#" onclick="adjustSample(this);" title="修改信息"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                        <a href="#" onclick="deleteSample(this);" title="作废"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
-                        <a href="#" onclick="checkModal(this);" title="确认收样"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
-                        <a href="#" onclick="rejection();" title="拒收"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                        <a href="#" onclick="viewSample(this);" title="查看"><span class="glyphicon glyphicon-search"
+                                                                                 aria-hidden="true"></span></a>
+                        <a href="#" onclick="adjustSample(this);" title="修改信息"><span class="glyphicon glyphicon-pencil"
+                                                                                     aria-hidden="true"></span></a>
+                        <a href="#" onclick="deleteSample(this);" title="作废"><span
+                                class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
+                        <a href="#" onclick="checkModal(this);" title="确认收样"><span class="glyphicon glyphicon-log-out"
+                                                                                   aria-hidden="true"></span></a>
+                        <a href="#" onclick="rejection(this);" title="拒收"><span class="glyphicon glyphicon-ban-circle"
+                                                                                aria-hidden="true"></span></a>
                     </td>
                 </tr>
                 </tbody>
@@ -414,9 +426,32 @@
                 </li>
             </ol>
         </nav>
-        <!-- 预约登记模态框 新增-->
-        <div class="modal fade bs-example-modal-lg" id="appointModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <!--拒收页面-->
+        <div class="modal fade" id="rejection1" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
             <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="sub-header text-center">拒收原因</h5>
+                    </div>
+                    <div class="row">
+                        <div class="form-horizontal col-md-12">
+                            <textarea class="form-control" rows="5" id="advice" style="min-width: 70%"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" id="confirm" data-dismiss="modal"
+                                onclick="rejection1()">
+                            确认拒收
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 预约登记模态框 新增-->
+        <div class="modal fade bs-example-modal-lg" id="appointModal" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -426,19 +461,29 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="form-group col-md-5">
-                                <label for="model-companyCode" class="col-sm-5 control-label">公司名称</label>
-                                <div class="col-sm-7">
+                            <div class="form-group col-md-12">
+                                <label for="model-companyName" class="col-sm-2 control-label">公司名称</label>
+                                <div class="col-sm-10">
                                     <select class="selectpicker form-control" data-live-search="true"
-                                            data-live-search-placeholder="搜索..." id="model-companyCode"
-                                            name="model-companyCode">
+                                            data-live-search-placeholder="搜索..." id="model-companyName"
+                                            name="model-companyName">
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group col-md-7">
-                                <label for="model-signer" class="col-sm-5 control-label">化验室送样人</label>
-                                <div class="col-sm-7">
-                                    <input type="text" class="form-control" id="model-signer" name="signer" required>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="model-sendingPerson" class="col-sm-4 control-label">送样人</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="model-sendingPerson"
+                                           name="sendingPerson" required>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="model-id" class="col-sm-4 control-label">预约单号</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="model-id"
+                                           name="id" required>
                                 </div>
                             </div>
                         </div>
@@ -447,21 +492,36 @@
                             <tr>
                                 <th class="text-center">序号</th>
                                 <th class="text-center">危废代码</th>
-                                <th class="text-center">检测项目</th>
-                                <!--<th class="text-center">增加项目</th>-->
+                                <th class="text-center">危废名称</th>
+                                <th class="text-center" width="10%">危废类别</th>
+                                <th class="text-center" width="10%">危废形态</th>
+                                <th class="text-center" width="40%">检测项目</th>
+                                <th class="text-center">联单编号</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr id="addClone">
                                 <td class="text-center">1</td>
-                                <td class="text-center"><select  class="selectpicker form-control" data-live-search="true"
-                                                                 data-live-search-placeholder="搜索..." id="wastesList0-wastesCode"
-                                                                 name="wastesList[0].wastesCode">
+                                <td class="text-center"><select onchange="autoSetCategory(this)" class="selectpicker form-control"
+                                                                data-live-search="true"
+                                                                data-live-search-placeholder="搜索..."
+                                                                id="wastesList0-wastesCode"
+                                                                name="wastesList[0].wastesCode">
                                 </select></td>
-                                <td class="text-center"><label>
-                                    <input type="checkbox" name="wastesList[0].isPH"
-                                           value="true">PH
-                                </label>
+                                <td class="text-center" ><input class="focus" name="wastesList[0].wastesName"
+                                                                id="wastesList[0].wastesName"></td>
+                                <td class="text-center" width="10%"><input class="focus" name="modal-wastesHandleCategory"
+                                                                 id="wastesList[0].wastesHandleCategory">
+                                </td>
+                                <td class="text-center" width="10%"><select class="focus" name="modal-wastesFormType"
+                                                                 id="wastesList[0].wastesFormType">
+                                </select>
+                                </td>
+                                <td class="text-center" width="40%">
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isPH"
+                                               value="true">PH
+                                    </label>
                                     <label>
                                         <input type="checkbox" name="wastesList[0].isAsh"
                                                value="true">灰分
@@ -491,21 +551,32 @@
                                                value="true">磷
                                     </label>
                                     <label>
-                                    <input type="checkbox" name="wastesList[0].isFlashPoint"
-                                           value="true">闪点
-                                </label>
+                                        <input type="checkbox" name="wastesList[0].isFlashPoint"
+                                               value="true">闪点
+                                    </label>
                                     <label>
                                         <input type="checkbox" name="wastesList[0].isViscosity"
                                                value="true">黏度
-                                    </label></td>
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isHotMelt"
+                                               value="true">热融
+                                    </label>
+                                </td>
+                                <td class="text-center" ><input class="focus" name="wastesList[0].transferId"
+                                                                id="wastesList[0].transferId"></td>
                             </tr>
                             <tr id="plusBtn">
                                 <td>
-                                    <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                                    <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span
+                                            class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
                                 </td>
                                 <td></td>
                                 <td></td>
-                                <!--<td></td>-->
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                             </tbody>
                         </table>
@@ -518,8 +589,9 @@
             </div>
         </div>
         <!-- 修改模态框-->
-        <div class="modal fade bs-example-modal-lg" id="adjustModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
+        <div class="modal fade bs-example-modal-lg" id="adjustModal" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -529,19 +601,29 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="form-group col-md-5">
-                                <label for="model-companyCode" class="col-sm-5 control-label">公司代码</label>
-                                <div class="col-sm-7">
+                            <div class="form-group col-md-12">
+                                <label for="model3-companyName" class="col-sm-3 control-label">公司名称</label>
+                                <div class="col-sm-9">
                                     <select class="selectpicker form-control" data-live-search="true"
-                                            data-live-search-placeholder="搜索..." id="model3-companyCode"
-                                            name="model3-companyCode">
+                                            data-live-search-placeholder="搜索..." id="model3-companyName"
+                                            name="model-companyName">
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group col-md-7">
-                                <label for="model-signer" class="col-sm-5 control-label">化验室签收人</label>
-                                <div class="col-sm-7">
-                                    <input type="text" class="form-control" id="model3-signer" name="signer" required>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="model3-sendingPerson" class="col-sm-3 control-label">送样人</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="model3-sendingPerson"
+                                           name="sendingPerson" required>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="model3-sendingPerson" class="col-sm-3 control-label">预约单号</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="model3-id"
+                                           name="id" required>
                                 </div>
                             </div>
                         </div>
@@ -550,27 +632,42 @@
                             <tr>
                                 <th class="text-center">序号</th>
                                 <th class="text-center">危废代码</th>
+                                <th class="text-center">危废名称</th>
+                                <th class="text-center">危废类别</th>
+                                <th class="text-center">危废形态</th>
                                 <th class="text-center">检测项目</th>
+                                <th class="text-center">联单编号</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr id="addClone3">
                                 <td class="text-center">1</td>
-                                <td class="text-center"><select class="selectpicker form-control" data-live-search="true"
-                                                                data-live-search-placeholder="搜索..." id="wastes0-wastesCode"
+                                <td class="text-center"><select class="selectpicker form-control"
+                                                                data-live-search="true"
+                                                                data-live-search-placeholder="搜索..."
+                                                                id="wastes0-wastesCode"
                                                                 name="wastes[0].wastesCode">
                                 </select></td>
-                                <td class="text-center" ><label>
-                                    <input type="checkbox" name="wastes[0].isPH"
-                                           value="true">PH
-                                </label>
+                                <td class="text-center"><input class="focus" name="wastes[0].wastesName"
+                                                               id="wastes[0].wastesName"></td>
+                                <td class="text-center"><input class="focus" name="modal-wastesHandleCategory"
+                                                                id="wastes[0].wastesHandleCategory">
+                                </td>
+                                <td class="text-center"><select name="modal-wastesFormType"
+                                                                id="wastes[0].wastesFormType">
+                                </select></td>
+                                <td class="text-center">
+                                    <label>
+                                        <input type="checkbox" name="wastes[0].isPH"
+                                               value="true">PH
+                                    </label>
                                     <label>
                                         <input type="checkbox" name="wastes[0].isAsh"
                                                value="true">灰分
                                     </label>
                                     <label>
                                         <input type="checkbox" name="wastes[0].isWater"
-                                               id="wastes[0].isWater" value="true">水分
+                                               value="true">水分
                                     </label>
                                     <label>
                                         <input type="checkbox" name="wastes[0].isHeat"
@@ -600,12 +697,23 @@
                                         <input type="checkbox" name="wastes[0].isViscosity"
                                                value="true">黏度
                                     </label>
+                                    <label>
+                                        <input type="checkbox" name="wastes[0].isHotMelt"
+                                               value="true">热融
+                                    </label>
                                 </td>
+                                <td class="text-center"><input class="focus" name="wastes[0].transferId"
+                                                               id="wastes[0].transferId"></td>
                             </tr>
                             <tr id="addBtn3">
                                 <td>
-                                    <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                                    <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span
+                                            class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
                                 </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -619,97 +727,60 @@
                 </div>
             </div>
         </div>
-        <!-- 查看预约信息模态框 -->
-        <div class="modal fade" id="viewAppointModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content" id="viewModal">
-                    <form method="post" enctype="multipart/form-data">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel1">登记单信息</h4>
-                        </div>
-                        <div class="modal-body">
-                            <table class="table table-bordered" style="border:none">
-                                <thead style="border:none">
-                                <tr>
-                                    <th class="text-center" style="border: none">公司代码</th>
-                                    <td class="text-center" style="border: none"><span id="model1-companyCode" ></span></td>
-                                    <th class="text-center" style="border: none">签收人</th>
-                                    <td class="text-center" style="border: none"><span id="model1-signer" ></span></td>
-                                </tr>
-                                <tr>
-                                    <th class="text-center">序号</th>
-                                    <th class="text-center">危废代码</th>
-                                    <th class="text-center">基础项目</th>
-                                    <th class="text-center">增加项目</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr id="addClone1">
-                                    <td class="text-center">1</td>
-                                    <td class="text-center"><span id="model[0].wastesCode"></span></td>
-                                    <td class="text-center"><span id="model[0].basicItems"></span></td>
-                                    <td class="text-center"><span id="model[0].addItems"></span></td>
-                                </tr>
-                                <tr id="end" style="display: none;">
-                                    <td class="text-center"></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-center"></td>
-                                </tr>
-                                </tbody>
-
-                            </table>
-                        </div>
-                        <div class="modal-footer" id="footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" class="btn btn-primary" onclick="print();">打印</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
         <!-- 确认模态框 确认收样-->
         <div class="modal fade" id="checkModal" tabindex="-1" role="dialog" aria-labelledby="checkModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title" id="checkModalLabel">样品信息登记</h4>
+                        <img src="image/logo1.png">
+                        <div style="display:inline-block;">
+                            <h3 class="modal-title text-center" id="model1" style="font-family: '楷体'">
+                                北控安耐得环保科技发展常州有限公司</h3>
+                            <br>
+                            <h4 class="modal-title1 text-center" id="model4">危险废弃物数据评估表</h4>
+                        </div>
                     </div>
                     <div class="modal-body">
-                        <table class="table table-bordered" style="border: none">
-                            <thead style="border:none">
+                        <table class="table table-bordered">
                             <tr>
-                                <th class="text-center" style="border: none">公司代码</th>
-                                <td class="text-center" style="border: none"><input title="" id="model2-companyCode" ></td>
-                                <th class="text-center" style="border: none">签收人</th>
-                                <td class="text-center" style="border: none"><input title="" id="model2-signer" ></td>
+                                <td rowspan="2" class="text-center">公司名称</td>
+                                <td rowspan="2" class="text-center">废物代码</td>
+                                <td rowspan="2" class="text-center">危废名称</td>
+                                <td rowspan="2" class="text-center">危废类别</td>
+                                <td rowspan="2" class="text-center">危废形态</td>
+                                <td colspan="2" class="text-center">检测项目</td>
+                                <td rowspan="2" class="text-center">联单编号</td>
+                                <td rowspan="2" class="text-center">送样人</td>
+                                <td rowspan="2" class="text-center">化验室签收人</td>
                             </tr>
                             <tr>
-                                <th class="text-center">序号</th>
-                                <th class="text-center">危废代码</th>
-                                <th class="text-center">联单编号</th>
-                                <th class="text-center">基础项目</th>
-                                <th class="text-center">增加项目</th>
+                                <td class="text-center">基础检测项目</td>
+                                <td class="text-center">增加项目</td>
                             </tr>
-                            </thead>
-                            <tbody>
                             <tr id="addClone2">
-                                <td class="text-center">1</td>
-                                <td class="text-center"><span id="checkModel[0].wastesCode"></span></td>
-                                <td class="text-center"><span id="checkModel[0].id"></span></td>
-                                <td class="text-center"><span id="checkModel[0].basicItems"></span></td>
-                                <td class="text-center"><span id="checkModel[0].addItems"></span></td>
+                                <td class="text-center"><span id="checkModel0-companyName"></span></td>
+                                <td class="text-center"><span id="checkModel0-wastesCode"></span></td>
+                                <td class="text-center"><span id="checkModel0-wastesName"></span></td>
+                                <td class="text-center"><span id="checkModel0-wastesHandleCategory"></span></td>
+                                <td class="text-center"><span id="checkModel0-wastesFormType"></span></td>
+                                <td class="text-center"><span id="checkModel0-basicItems"></span></td>
+                                <td class="text-center"><span id="checkModel0-addItems"></span></td>
+                                <td class="text-center"><span id="checkModel0-transferId"></span></td>
+                                <td class="text-center"><span id="checkModel0-sendingPerson"></span></td>
+                                <td class="text-center"><input id="checkModel0-signer"></td>
                             </tr>
                             <tr id="end1" style="display: none;">
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
                             </tr>
-                            </tbody>
                         </table>
                     </div>
                     <div class="modal-footer">
@@ -719,23 +790,65 @@
                 </div>
             </div>
         </div>
-        <!--拒收页面-->
-        <div class="modal fade" id="rejection1" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <!-- 查看预约信息模态框-->
+        <div class="modal fade" id="viewAppointModal" tabindex="-1" role="dialog" aria-labelledby="checkModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="sub-header text-center">拒收原因</h5>
-                    </div>
-                    <div class="row">
-                        <div class="form-horizontal col-md-12">
-                            <textarea class="form-control" rows="5" id="advice" style="min-width: 70%"></textarea>
+                        <img src="image/logo1.png">
+                        <div style="display:inline-block;">
+                            <h3 class="modal-title text-center" id="model2" style="font-family: '楷体'">
+                                北控安耐得环保科技发展常州有限公司</h3>
+                            <br>
+                            <h4 class="modal-title1 text-center" id="model3">危险废弃物数据评估表</h4>
                         </div>
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-body">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th rowspan="2" class="text-center">公司名称</th>
+                                <th rowspan="2" class="text-center">废物代码</th>
+                                <th rowspan="2" class="text-center">危废名称</th>
+                                <th rowspan="2" class="text-center">危废类别</th>
+                                <th rowspan="2" class="text-center">危废形态</th>
+                                <th colspan="2" class="text-center">检测项目</th>
+                                <th rowspan="2" class="text-center">联单编号</th>
+                                <th rowspan="2" class="text-center">送样人</th>
+                                <th rowspan="2" class="text-center">化验室签收</th>
+                            </tr>
+                            <tr>
+                                <th class="text-center">基础检测项目</th>
+                                <th class="text-center">增加项目</th>
+                            </tr>
+                            <tr id="addClone1">
+                                <td class="text-center"><span id="model0-companyName"></span></td>
+                                <td class="text-center"><span id="model0-wastesCode"></span></td>
+                                <td class="text-center"><span id="model0-wastesName"></span></td>
+                                <td class="text-center"><span id="model0-wastesHandleCategory"></span></td>
+                                <td class="text-center"><span id="model0-wastesFormType"></span></td>
+                                <td class="text-center"><span id="model0-basicItems"></span></td>
+                                <td class="text-center"><span id="model0-addItems"></span></td>
+                                <td class="text-center"><span id="model0-transferId"></span></td>
+                                <td class="text-center"><span id="model0-sendingPerson"></span></td>
+                                <td class="text-center"><span id="model0-signer"></span></td>
+                            </tr>
+                            <tr id="end" style="display: none;">
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer" id="footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" id="confirm" data-dismiss="modal" onclick="rejection1()">
-                            确认拒收
-                        </button>
+                        <button type="button" class="btn btn-primary" onclick="print();">打印</button>
                     </div>
                 </div>
             </div>

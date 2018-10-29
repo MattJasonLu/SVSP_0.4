@@ -79,7 +79,7 @@
                         <li role="separator" class="divider"></li>
                         <li class="dropdown-submenu">
                             <a href="testResults.html">化验结果</a><ul class="dropdown-menu">
-                            <li><a href="testResultsSampleInfo.html">市场部化验</a></li>
+                            <li><a href="receiveSampleAnalysis.html">市场部化验</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="sampleInfoAnalysis.html">仓储部化验</a></li>
                             <li role="separator" class="divider"></li>
@@ -381,24 +381,27 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label for="model-companyCode" class="col-sm-6 control-label">公司代码</label>
+                        <label for="reservationId" class="col-sm-4 control-label">预约单号</label>
                         <div class="col-sm-6">
-                            <select class="selectpicker form-control" data-live-search="true"
-                                    data-live-search-placeholder="搜索..." id="model-companyCode"
-                                    name="model-companyCode">
-                            </select>
+                            <input type="text" class="form-control" id="reservationId"  name="signer" required>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-4">
-                        <label for="sendingPerson" class="col-sm-6 control-label">送样人</label>
+                    <div class="form-group col-md-6">
+                        <label for="sendingPerson" class="col-sm-4 control-label">送样人</label>
                         <div class="col-sm-6">
                             <input type="text" class="form-control" id="sendingPerson" name="signer" required>
                         </div>
                     </div>
-                    <div class="form-group col-md-4">
-                        <label for="laboratorySignatory" class="col-sm-6 control-label">化验室签收人</label>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="sendingPerson" class="col-sm-4 control-label">采样点</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="address" name="signer" title="">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="laboratorySignatory" class="col-sm-4 control-label">化验室签收人</label>
                         <div class="col-sm-6">
                             <input type="text" class="form-control" id="laboratorySignatory" name="signer">
                         </div>
@@ -408,8 +411,9 @@
                     <thead style="border:none">
                     <tr>
                         <th class="text-center">序号</th>
-                        <th class="text-center">危废代码</th>
-                        <th class="text-center">危废名称</th>
+                        <!--<th class="text-center">危废代码</th>-->
+                        <!--<th class="text-center">危废名称</th>-->
+                        <th class="text-center hidden">联单编号</th>
                         <th class="text-center">检测项目</th>
                         <!--<th class="text-center">增加项目</th>-->
                     </tr>
@@ -417,19 +421,21 @@
                     <tbody>
                     <tr id="addClone" class="myclass">
                         <td class="text-center">1</td>
-                        <td class="text-center"><select  class="selectpicker form-control" data-live-search="true"
-                                                         data-live-search-placeholder="搜索..." id="wastesCode"
-                                                         name="wastesCode">
-                        </select></td>
-                        <td class="text-center"><input class="form-control"></td>
+                        <td class="text-center hidden"><input class="form-control" id="identifie"></td>
+                        <!--<td class="text-center"><select  class="selectpicker form-control" data-live-search="true"-->
+                                                         <!--data-live-search-placeholder="搜索..." id="wastesCode"-->
+                                                         <!--name="wastesCode">-->
+                        <!--</select></td>-->
+                        <!--<td class="text-center"><input class="form-control"></td>-->
                         <td class="text-center">
                             <label>
                                 <input type="checkbox" name="wastesList[0].isPH"
-                                       value="true">相对碱度
+                                       value="true">浊度
+
                             </label>
                             <label>
                                 <input type="checkbox" name="wastesList[0].isAsh"
-                                       value="true">溶解固形物
+                                       value="true">硬度
                             </label>
                             <label>
                                 <input type="checkbox" name="wastesList[0].isWater"
@@ -438,12 +444,12 @@
 
                             <label>
                                 <input type="checkbox" name="wastesList[0].isWater"
-                                       id="wastesList[0].isO2" value="true">碱度
+                                       id="wastesList[0].isO2" value="true">酚酞碱度
                             </label>
 
                             <label>
                                 <input type="checkbox" name="wastesList[0].isWater"
-                                       id="wastesList[0].isN2" value="true">硬度
+                                       id="wastesList[0].isN2" value="true">全碱度
                             </label>
 
                             <label>
@@ -460,7 +466,7 @@
                         </td>
                         <td></td>
                         <td></td>
-                        <td></td>
+                        <!--<td></td>-->
                     </tr>
                     </tbody>
                 </table>
@@ -486,50 +492,38 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label for="model-companyCode" class="col-sm-6 control-label">公司代码</label>
+                        <label for="reservationId" class="col-sm-4 control-label">预约单号</label>
+                        <span id="reservationId1"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="sendingPerson" class="col-sm-4 control-label">送样人</label>
                         <div class="col-sm-6">
-
-                            <input class="form-control focus" id="companyName">
-                            </input>
+                            <span id="sendingPerson1"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="sendingPerson" class="col-sm-4 control-label">采样点</label>
+                        <div class="col-sm-6">
+                            <span id="address1"></span>
                         </div>
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="laboratorySignatory" class="col-sm-6 control-label">化验室签收人</label>
+                        <label for="laboratorySignatory" class="col-sm-4 control-label">化验室签收人</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" name="signer" id="signer">
-                        </div>
-                    </div>
-
-
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-4">
-                        <label for="sendingPerson" class="col-sm-6 control-label">送样人</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="sendingPerson2" name="signer" required>
-                        </div>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="sendingPerson" class="col-sm-6 control-label">采样点</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="address2" name="signer" >
-                        </div>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="sendingPerson" class="col-sm-6 control-label">预约单号</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="id" >
+                            <span id="laboratorySignatory1"></span>
                         </div>
                     </div>
                 </div>
-
             </div>
             <table class="table table-bordered">
                 <thead style="border:none">
                 <tr>
                     <th class="text-center">序号</th>
-                    <th class="text-center">危废代码</th>
-                    <th class="text-center">危废名称</th>
+                    <!--<th class="text-center">危废代码</th>-->
+                    <!--<th class="text-center">危废名称</th>-->
+                    <th class="text-center hidden">联单编号</th>
                     <th class="text-center">检测项目</th>
                     <!--<th class="text-center">增加项目</th>-->
                 </tr>
@@ -537,8 +531,8 @@
                 <tbody>
                 <tr id='clonrTr' class="myclass1">
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center hidden"></td>
+                    <!--<td class="text-center"></td>-->
                     <td class="text-center"></td>
                 </tr>
                 </tbody>

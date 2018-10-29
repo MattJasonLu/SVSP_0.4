@@ -139,6 +139,17 @@ public class QuotationItem {
     //包装方式多选
     private String packageTypeList;
 
+    //备注
+    private  String remarks;
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
     public String getPackageTypeList() {
         return packageTypeList;
     }

@@ -6,8 +6,8 @@ package com.jdlink.domain;
  */
 public enum FormType {
     Gas("气体", 1),
-    Liquid("液体", 2),
-    Solid("固体", 3),
+    Liquid("液态", 2),
+    Solid("固态", 3),
     HalfSolid("半固态", 4),
     Liquid1("液态", 5),
     Solid1("固态", 6),

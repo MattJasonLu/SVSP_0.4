@@ -4,6 +4,7 @@ import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.SampleInformation;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.SampleInformationService;
+import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.ibatis.annotations.Param;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -36,7 +39,7 @@ public class PRSampleInfoController {
     public String addSampleAppoint(@RequestBody SampleInformation sampleInformation) {
         JSONObject res = new JSONObject();
         try {
-            sampleInformation.setApplyState(ApplyState.Appointed);
+           // sampleInformation.setApplyState(ApplyState.Appointed);
             // 添加预约登记表
             sampleInformationService.add(sampleInformation);
             res.put("status", "success");
@@ -50,30 +53,29 @@ public class PRSampleInfoController {
         return res.toString();
     }
 
+
     @RequestMapping("getCurrentSampleInformationId")
     @ResponseBody
-    public String getCurrentSampleInformationId() {
-       // 得到一个NumberFormat的实例
-        NumberFormat nf = NumberFormat.getInstance();
-        //设置是否使用分组
-        nf.setGroupingUsed(false);
-        //设置最大整数位数
-        nf.setMaximumIntegerDigits(4);
-        //设置最小整数位数
-        nf.setMinimumIntegerDigits(4);
-        // 获取最新编号
-        String id;
-        int index = sampleInformationService.count();
-        // 获取唯一的编号
-        do {
+    public String getCurrentSampleInformationId(String companyCode) {
+        // 生成预约号
+        Date date = new Date();   //获取当前时间
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        String prefix = simpleDateFormat.format(date) + companyCode;
+        int count = sampleInformationService.countById(prefix) + 1;
+        String suffix;
+        if (count <= 9) suffix = "0" + count;
+        else suffix = count + "";
+        String id = RandomUtil.getAppointId(prefix, suffix);
+        // 确保编号唯一
+        while (sampleInformationService.getBySampleInformationId(id) != null) {
+            int index = Integer.parseInt(id);
             index += 1;
-            id = nf.format(index);
-        } while (sampleInformationService.getBySampleInformationId(id) != null);
+            id = index + "";
+        }
         JSONObject res = new JSONObject();
         res.put("id", id);
         return res.toString();
     }
-
     /**
      * 整数成规范8位字符
      * @param number
@@ -98,13 +100,17 @@ public class PRSampleInfoController {
 
     @RequestMapping("getCurrentWastesId")
     @ResponseBody
-    public String getCurrentWastesId() {
+    public String getCurrentWastesId(String sampleId) {
         String id;
-        int index = sampleInformationService.wastesCount();
+        int index = sampleInformationService.wastesCountById(sampleId);
         // 获取唯一的编号
         do {
             index += 1;
-            id = index + "";
+            String index1 = index + "";
+            if(index < 10) index1 = "000" + index;
+                else if(index < 100) index1 = "00" + index;
+                    else if(index < 1000) index1 = "0" + index;
+            id = sampleId + index1;
         } while (sampleInformationService.getByWastesId(id) != null);
         JSONObject res = new JSONObject();
         res.put("id", id);
@@ -187,10 +193,10 @@ public class PRSampleInfoController {
 
     @RequestMapping("confirmSampleInformationCheck")
     @ResponseBody
-    public String confirmSampleInformationCheck(String sampleId){
+    public String confirmSampleInformationCheck(String sampleId,String laboratorySigner){
         JSONObject res = new JSONObject();
         try{
-            sampleInformationService.confirmCheck(sampleId);
+            sampleInformationService.confirmCheck(sampleId,laboratorySigner);
             res.put("status","success");
             res.put("message","确认登记成功！");
         }catch (Exception e){
@@ -327,4 +333,43 @@ public class PRSampleInfoController {
         }
         return res.toString();
     }
+
+    /**
+     * 拒收功能
+     * @param id
+     * @param advice
+     * @return
+     */
+    @RequestMapping("rejectSampleInfoById")
+    @ResponseBody
+    public String rejectSampleInfoById(String id,String advice){
+        JSONObject res=new JSONObject();
+        try {
+            sampleInformationService.rejectSampleInfoById(id,advice);
+            res.put("status", "success");
+            res.put("message", "拒收成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "拒收失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 获取危废物质形态
+     * @return 物质形态
+     */
+    @RequestMapping("getSampleFormType")
+    @ResponseBody
+    public String getSampleFormType() {
+        JSONObject res = new JSONObject();
+        //JSONArray formTypeList = JSONArray.fromArray(FormType.values());
+        FormType[] states = new FormType[]{FormType.Solid1, FormType.HalfSolid,FormType.HalfSolid.Liquid1};
+        JSONArray formTypeList = JSONArray.fromArray(states);
+        res.put("formTypeList", formTypeList);
+        return res.toString();
+    }
+
 }

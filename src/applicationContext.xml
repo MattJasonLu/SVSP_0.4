@@ -35,6 +35,7 @@
             <array>
                 <value>classpath*:com/jdlink/mapper/*.xml</value>
                 <value>classpath*:com/jdlink/mapper/dictionary/*.xml</value>
+                <value>classpath*:com/jdlink/mapper/produce/*.xml</value>
             </array>
         </property>
     </bean>

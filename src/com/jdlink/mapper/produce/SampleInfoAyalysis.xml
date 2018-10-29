@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdlink.mapper.produce.SampleInfoAnalysisMapper" >
+
+    <resultMap id="SampleInfoAnalysisRM" type="SampleInfoAnalysis" autoMapping="true">
+        <id property="id" column="id"/>
+        <association property="produceCompany" column="produceCompanyId" select="getProduceCompany"/>
+    </resultMap>
+
+    <select id="getProduceCompany" resultType="Client">
+        select * from client where clientId=#{produceCompanyId};
+    </select>
+
+    <!--获取仓储部化验单-->
+    <select id="get" resultMap="SampleInfoAnalysisRM">
+        SELECT * FROM t_pr_sampleinfoanalysis
+        <where>
+            <if test="sampleInfoAnalysis != null and sampleInfoAnalysis.keyword != null and sampleInfoAnalysis.keyword != ''">
+                and id LIKE "%"#{sampleInfoAnalysis.keyword}"%" or dispatcher like "%"#{sampleInfoAnalysis.keyword}"%" or destination like "%"#{sampleInfoAnalysis.keyword}"%"
+                or transferTime like binary "%"#{sampleInfoAnalysis.keyword}"%" or produceCompanyName like "%"#{sampleInfoAnalysis.keyword}"%"
+                or transportCompanyName like "%"#{sampleInfoAnalysis.keyword}"%" or acceptCompanyName like "%"#{sampleInfoAnalysis.keyword}"%"
+            </if>
+            <if test="sampleInfoAnalysis != null and sampleInfoAnalysis.id != null and sampleInfoAnalysis.id != ''">
+                and id LIKE "%"#{sampleInfoAnalysis.id}"%"
+            </if>
+            <if test="sampleInfoAnalysis != null and sampleInfoAnalysis.produceCompany != null and sampleInfoAnalysis.produceCompany.companyName != null and sampleInfoAnalysis.produceCompany.companyName != ''">
+                and produceCompanyName LIKE "%"#{sampleInfoAnalysis.produceCompany.companyName}"%"
+            </if>
+            <if test="true">
+                and checkState != 'Invalid'
+            </if>
+        </where>
+        order by createTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--通过编号获取仓储部化验单-->
+    <select id="getById" resultMap="SampleInfoAnalysisRM">
+        select * from t_pr_sampleinfoanalysis where id=#{id};
+    </select>
+
+    <!--更新仓储部化验单-->
+    <update id="update">
+        update t_pr_sampleinfoanalysis set sampleId=#{sampleId}, transferDraftId=#{transferDraftId},
+        produceCompanyId=#{produceCompany.clientId}, wastesName=#{wastesName}, wastesCode=#{wastesCode},
+        wastesCategory=#{wastesCategory} ,handleCategory=#{handleCategory}, formType=#{formType}, PH=#{PH}, ash=#{ash}, water=#{water},
+        heat=#{heat}, sulfur=#{sulfur}, chlorine=#{chlorine}, phosphorus=#{phosphorus}, flashPoint=#{flashPoint},
+        viscosity=#{viscosity}, hotMelt=#{hotMelt}, sender=#{sender}, signer=#{signer}, signDate=#{signDate},
+        remark=#{remark} where id=#{id};
+    </update>
+
+    <!--获取仓储部化验单数量-->
+    <select id="count" resultType="int">
+        SELECT count(*) FROM t_pr_sampleinfoanalysis
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and id LIKE "%"#{keyword}"%" or dispatcher like "%"#{keyword}"%" or destination like "%"#{keyword}"%"
+                or transferTime like binary "%"#{keyword}"%" or produceCompanyName like "%"#{keyword}"%"
+                or transportCompanyName like "%"#{keyword}"%" or acceptCompanyName like "%"#{keyword}"%"
+            </if>
+            <if test="id != null and id != ''">
+                and id LIKE "%"#{id}"%"
+            </if>
+            <if test="produceCompany != null and produceCompany.companyName != null and produceCompany.companyName != ''">
+                and produceCompanyName LIKE "%"#{produceCompany.companyName}"%"
+            </if>
+            <if test="true">
+                and checkState != 'Invalid'
+            </if>
+        </where>
+    </select>
+
+    <!--增加仓储部化验单-->
+    <insert id="add">
+        insert into t_pr_sampleinfoanalysis (id, sampleId, transferDraftId, produceCompanyId,
+        wastesName, wastesCode, wastesCategory, handleCategory, formType, PH, ash, water, heat, sulfur,
+        chlorine, phosphorus, flashPoint, viscosity, hotMelt, sender, signer, signDate,
+        remark, checkState) values (#{id}, #{sampleId}, #{transferDraftId}, #{produceCompany.clientId},
+        #{wastesName}, #{wastesCode}, #{wastesCategory}, #{handleCategory}, #{formType}, #{PH}, #{ash},
+        #{water}, #{heat}, #{sulfur}, #{chlorine}, #{phosphorus}, #{flashPoint}, #{viscosity},
+        #{hotMelt}, #{sender}, #{signer}, #{signDate}, #{remark}, #{checkState});
+    </insert>
+
+    <!--设置状态-->
+    <update id="setState">
+        update t_pr_sampleinfoanalysis set checkState=#{checkState}, id=concat(#{id}, #{newId}) where id=#{id};
+    </update>
+
+</mapper>

@@ -109,7 +109,7 @@ public class ProductionDailyServiceImpl implements ProductionDailyService
     }
 
     @Override
-    public List<Integer> getNewestId() {
+    public List<String> getNewestId() {
         return productionDailyMapper.getNewestId();
     }
 
@@ -143,6 +143,7 @@ public class ProductionDailyServiceImpl implements ProductionDailyService
         return productionDailyMapper.getSewaGeregistrationById(id);
     }
 
+
     @Override
     public void confirmSewaGeregistrationById(String id) {
         productionDailyMapper.confirmSewaGeregistrationById(id);
@@ -151,5 +152,25 @@ public class ProductionDailyServiceImpl implements ProductionDailyService
     @Override
     public void rejectSewaGeregistrationById(String id, String advice) {
         productionDailyMapper.rejectSewaGeregistrationById(id,advice);
+    }
+
+    @Override
+    public int countById(String id) {
+        return productionDailyMapper.countById(id);
+    }
+
+    @Override
+    public int countByIdSew(String id) {
+        return productionDailyMapper.countByIdSew(id);
+    }
+
+    @Override
+    public int wastesCountById(String id) {
+        return productionDailyMapper.wastesCountById(id);
+    }
+
+    @Override
+    public SewageregistrationItem getByWastesId(String id) {
+        return productionDailyMapper.getByWastesId(id);
     }
 }

@@ -61,7 +61,7 @@
     </select>
 
     <select id="countSewage" resultType="int">
-          select count(*) from t_pr_sewage;
+          select count(*) from t_pr_sewageregistration where water="1";
     </select>
 
     <select id="listPageSewage" resultType="Sewage">
@@ -157,7 +157,7 @@
     </insert>
 
     <select id="countSoftWater" resultType="int">
-          select count(*) from t_pr_softwater;
+          select count(*) from t_pr_sewageregistration where water='0' ;
     </select>
 
     <select id="listPageSoftWater" resultType="SoftWater">
@@ -690,32 +690,32 @@
 
     <!--添加污水登记主表-->
     <insert id="addSewaGeregistration" parameterType="Sewageregistration">
-        insert into  t_pr_sewageregistration(laboratorySignatory,sendingPerson,nowTime,water,address,clientId,checkState)
+        insert into  t_pr_sewageregistration(id,laboratorySignatory,sendingPerson,nowTime,water,address,clientId,checkState)
         values
-        (#{laboratorySignatory},#{sendingPerson},NOW(),#{water},#{address},#{client.clientId},'ToCollected')
+        (#{id},#{laboratorySignatory},#{sendingPerson},NOW(),#{water},#{address},#{client.clientId},'ToCollected')
     </insert>
 
     <!--获得主表最新的主键-->
-    <select id="getNewestId" resultType="int">
+    <select id="getNewestId" resultType="String">
         select id from t_pr_sewageregistration order by nowTime desc;
     </select>
 
     <!--添加污水登记子表-->
     <insert id="addSewaGeregistrationItem" parameterType="SewageregistrationItem">
-        insert into  t_pr_sewageregistrationitem(wastesCode, wastesName, sampleinformationId, ph, cod, bod5, o2, lye, n2) values
-        (#{wastesCode},#{wastesName},#{sampleinformationId},#{ph},#{cod},#{bod5},#{o2},#{lye},#{n2})
+        insert into  t_pr_sewageregistrationitem(id,wastesCode, wastesName, sampleinformationId, ph, cod, bod5, o2, lye, n2,alkalinity,bicarbonate,nitrogen,phosphorus,turbidity,basicity,phenolphthalein,remarks,identifie) values
+        (#{id},#{wastesCode},#{wastesName},#{sampleinformationId},#{ph},#{cod},#{bod5},#{o2},#{lye},#{n2},#{alkalinity},#{bicarbonate},#{nitrogen},#{phosphorus},#{turbidity},#{basicity},#{phenolphthalein},#{remarks},#{identifie})
     </insert>
 
     <!--添加软水登记主表-->
     <insert id="addSoftGeregistration" parameterType="Sewageregistration">
-         insert into  t_pr_sewageregistration(laboratorySignatory,sendingPerson,nowTime,water,address,clientId,checkState)
+         insert into  t_pr_sewageregistration(id,laboratorySignatory,sendingPerson,nowTime,water,address,clientId,checkState)
         values
-        (#{laboratorySignatory},#{sendingPerson},NOW(),#{water},#{address},#{client.clientId},'ToCollected')
+        (#{id},#{laboratorySignatory},#{sendingPerson},NOW(),#{water},#{address},#{client.clientId},'ToCollected')
     </insert>
     <!--添加软水登记字表表-->
     <insert id="addSoftGeregistrationItem" parameterType="SewageregistrationItem">
-        insert into t_pr_sewageregistrationitem(wastesCode, wastesName, sampleinformationId, ph, cod, bod5, o2, lye, n2, relativeAlkalinity, dissolvedSolidForm, hardness, electricalConductivity)values
-        (#{wastesCode},#{wastesName},#{sampleinformationId},#{ph},#{cod},#{bod5},#{o2},#{lye},#{n2},#{relativeAlkalinity},#{dissolvedSolidForm},#{hardness},#{electricalConductivity})
+      insert into  t_pr_sewageregistrationitem(id,wastesCode, wastesName, sampleinformationId, ph, cod, bod5, o2, lye, n2,alkalinity,bicarbonate,nitrogen,phosphorus,turbidity,basicity,phenolphthalein,remarks,identifie,hardness,electricalConductivity,relativeAlkalinity,dissolvedSolidForm) values
+        (#{id},#{wastesCode},#{wastesName},#{sampleinformationId},#{ph},#{cod},#{bod5},#{o2},#{lye},#{n2},#{alkalinity},#{bicarbonate},#{nitrogen},#{phosphorus},#{turbidity},#{basicity},#{phenolphthalein},#{remarks},#{identifie},#{hardness},#{electricalConductivity},#{relativeAlkalinity},#{dissolvedSolidForm})
     </insert>
 
     <resultMap id="SewageregistrationRM" type="Sewageregistration" autoMapping="true">
@@ -738,20 +738,41 @@
             limit #{start}, #{count}
         </if>
     </select>
+
     <select id="getSewageregistrationItem" parameterType="String" resultType="SewageregistrationItem">
         select  * from t_pr_sewageregistrationitem where sampleinformationId=#{id};
     </select>
-<!--根据编号获取污水登记信息-->
+
+    <!--根据编号获取污水登记信息-->
     <select id="getSewaGeregistrationById" resultMap="SewageregistrationRM" parameterType="String">
            select * from t_pr_sewageregistration where id=#{id};
     </select>
-<!--确认送样-->
+
+
+    <!--确认送样-->
 <update id="confirmSewaGeregistrationById" parameterType="String">
     update t_pr_sewageregistration set checkState='Collected',nowTime=NOW() where id=#{id};
 </update>
+
     <!--拒收-->
     <update id="rejectSewaGeregistrationById" >
         update t_pr_sewageregistration set  checkState='Rejected',advice=#{1},nowTime=NOW() where id=#{0};
     </update>
+
+    <select id="countById" resultType="int">
+    select count(*) from t_pr_sampleinformation where id like "%"#{id}"%";
+   </select>
+
+    <select id="countByIdSew" resultType="int" parameterType="String">
+    select count(*) from t_pr_sewageregistration where id like "%"#{id}"%";
+  </select>
+
+    <select id="wastesCountById" resultType="int" parameterType="String">
+    select count(*) from t_pr_sewageregistrationitem where id like "%"#{id}"%";
+  </select>
+
+    <select id="getByWastesId" resultType="SewageregistrationItem" parameterType="String">
+        select  * from t_pr_sewageregistrationitem where id=#{id};
+    </select>
 
 </mapper>

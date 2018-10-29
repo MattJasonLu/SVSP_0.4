@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpSession;
 import java.text.Normalizer;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -522,8 +523,20 @@ public class InboundController {
             // 设置入库单编号
             inboundOrder.setInboundOrderId(inboundService.getInboundOrderId());
             // 设置入库日期
-            inboundOrder.setInboundDate(DateUtil.getDateFromStr(data[1][0].toString()));
+            // 如果时间格式不符合需求是18-9-1格式的添加为2018-9-1
+//            if (data[1][0].toString().substring(0, 3).replaceAll("\\d+", "") != null ||
+//                    data[1][0].toString().substring(0, 3).replaceAll("\\d+", "") != "") {
+//                SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+//                Date date = new Date();
+//                String year1 = sdf.format(date).substring(0, 2); // 获取当前世纪 20
+//                String date1 = year1 + data[1][0].toString();
+//                System.out.print(data[1][0].toString()+" ");
+//                inboundOrder.setInboundDate(DateUtil.getDateFromStr(date1));   // 设置入库日期
+//            }else {
+//                inboundOrder.setInboundDate(DateUtil.getDateFromStr(data[1][0].toString()));
+//            }
 
+            inboundOrder.setInboundDate(DateUtil.getDateFromStr(data[1][0].toString()));
             // 通过仓库名称获取仓库
             WareHouse wareHouse = wareHouseService.getWareHouseByName(data[1][1].toString());
             if (wareHouse == null) {
@@ -534,7 +547,6 @@ public class InboundController {
             }
             // 设置仓库
             inboundOrder.setWareHouse(wareHouse);
-
             // 设置入库类别
             inboundOrder.setBoundType(BoundType.WasteInbound);
             // 设置状态
@@ -547,6 +559,7 @@ public class InboundController {
             // 创建入库单条目列表
             List<InboundOrderItem> inboundOrderItemList = new ArrayList<>();
             for (int i = 1; i < data.length; i++) {
+                if (data[i][3].toString().equals("null")) break;
                 // 创建入库单条目
                 InboundOrderItem inboundOrderItem = new InboundOrderItem();
                 // 设置入库单条目编号
@@ -557,15 +570,14 @@ public class InboundController {
                 inboundOrderItem.setInboundDate(DateUtil.getDateFromStr(data[i][0].toString()));
                 inboundOrderItem.setTransferDraftId(data[i][3].toString());
                 // 设置客户信息
-                Client client = clientService.getByName(data[i][4].toString());
-                if (client != null) inboundOrderItem.setProduceCompany(client);
-                else {
+                Client client = clientService.getByName(data[i][4].toString().trim());
+                if (client == null) {
                     client = new Client();
                     client.setClientId(clientService.getCurrentId());
-                    client.setCompanyName(data[i][4].toString());
+                    client.setCompanyName(data[i][4].toString().trim());
                     clientService.add(client);
-                    inboundOrderItem.setProduceCompany(client);
                 }
+                inboundOrderItem.setProduceCompany(client);
                 // 设置危废信息
                 Wastes wastes = new Wastes();
                 wastes.setName(data[i][5].toString());      // 危废名称
@@ -759,18 +771,18 @@ public class InboundController {
                 LaboratoryTest laboratoryTest = new LaboratoryTest();
                 laboratoryTest.setLaboratoryTestNumber(RandomUtil.getRandomEightNumber());
                 laboratoryTest.setHeatAverage(Float.parseFloat(data[i][13].toString()));
-                laboratoryTest.setPhAverage(Float.parseFloat(data[i][14].toString()));
-                laboratoryTest.setAshAverage(Float.parseFloat(data[i][15].toString()));
-                laboratoryTest.setWaterContentAverage(Float.parseFloat(data[i][16].toString()));
-                laboratoryTest.setChlorineContentAverage(Float.parseFloat(data[i][17].toString()));
-                laboratoryTest.setSulfurContentAverage(Float.parseFloat(data[i][18].toString()));
-                laboratoryTest.setPhosphorusContentAverage(Float.parseFloat(data[i][19].toString()));
-                laboratoryTest.setFluorineContentAverage(Float.parseFloat(data[i][20].toString()));
+//                laboratoryTest.setPhAverage(Float.parseFloat(data[i][14].toString()));
+//                laboratoryTest.setAshAverage(Float.parseFloat(data[i][15].toString()));
+                laboratoryTest.setWaterContentAverage(Float.parseFloat(data[i][14].toString()));
+//                laboratoryTest.setChlorineContentAverage(Float.parseFloat(data[i][17].toString()));
+//                laboratoryTest.setSulfurContentAverage(Float.parseFloat(data[i][18].toString()));
+//                laboratoryTest.setPhosphorusContentAverage(Float.parseFloat(data[i][19].toString()));
+//                laboratoryTest.setFluorineContentAverage(Float.parseFloat(data[i][20].toString()));
 
                 inboundOrderItem.setLaboratoryTest(laboratoryTest);
 
-                inboundOrderItem.setRemarks(data[i][21].toString());
-                inboundOrderItem.setWarehouseArea(data[i][22].toString());
+                inboundOrderItem.setRemarks(data[i][15].toString());
+                inboundOrderItem.setWarehouseArea(data[i][16].toString());
 
                 inboundOrderItemList.add(inboundOrderItem);
             }
