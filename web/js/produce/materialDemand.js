@@ -1343,37 +1343,37 @@ function adjustMater() {
 
                     cloneTr.children('td').eq(7).children('input').val(obj.marketPurchases);
 
-                    cloneTr.children('td').eq(8).children('input').val(obj.calorificMax);
-
-                    cloneTr.children('td').eq(9).children('input').val(obj.calorificMin);
-
-                    cloneTr.children('td').eq(10).children('input').val(obj.ashMax);
-
-                    cloneTr.children('td').eq(11).children('input').val(obj.ashMin);
-
-                    cloneTr.children('td').eq(12).children('input').val(obj.waterMax);
-
-                    cloneTr.children('td').eq(13).children('input').val(obj.waterMin);
-
-                    cloneTr.children('td').eq(14).children('input').val(obj.clMax);
-
-                    cloneTr.children('td').eq(15).children('input').val(obj.clMin);
-
-                    cloneTr.children('td').eq(16).children('input').val(obj.sMax);
-
-                    cloneTr.children('td').eq(17).children('input').val(obj.sMin);
-
-                    cloneTr.children('td').eq(18).children('input').val(obj.pMax);
-
-                    cloneTr.children('td').eq(19).children('input').val(obj.pMin);
-
-                    cloneTr.children('td').eq(20).children('input').val(obj.fMax);
-
-                    cloneTr.children('td').eq(21).children('input').val(obj.fMin);
-
-                    cloneTr.children('td').eq(22).children('input').val(obj.phMax);
-
-                    cloneTr.children('td').eq(23).children('input').val(obj.phMin);
+                    // cloneTr.children('td').eq(8).children('input').val(obj.calorificMax);
+                    //
+                    // cloneTr.children('td').eq(9).children('input').val(obj.calorificMin);
+                    //
+                    // cloneTr.children('td').eq(10).children('input').val(obj.ashMax);
+                    //
+                    // cloneTr.children('td').eq(11).children('input').val(obj.ashMin);
+                    //
+                    // cloneTr.children('td').eq(12).children('input').val(obj.waterMax);
+                    //
+                    // cloneTr.children('td').eq(13).children('input').val(obj.waterMin);
+                    //
+                    // cloneTr.children('td').eq(14).children('input').val(obj.clMax);
+                    //
+                    // cloneTr.children('td').eq(15).children('input').val(obj.clMin);
+                    //
+                    // cloneTr.children('td').eq(16).children('input').val(obj.sMax);
+                    //
+                    // cloneTr.children('td').eq(17).children('input').val(obj.sMin);
+                    //
+                    // cloneTr.children('td').eq(18).children('input').val(obj.pMax);
+                    //
+                    // cloneTr.children('td').eq(19).children('input').val(obj.pMin);
+                    //
+                    // cloneTr.children('td').eq(20).children('input').val(obj.fMax);
+                    //
+                    // cloneTr.children('td').eq(21).children('input').val(obj.fMin);
+                    //
+                    // cloneTr.children('td').eq(22).children('input').val(obj.phMax);
+                    //
+                    // cloneTr.children('td').eq(23).children('input').val(obj.phMin);
 
                     if(obj.handleCategory != null){
                         $.ajax({
@@ -1471,7 +1471,7 @@ function adjustMater() {
                         });
                     }
 
-                    cloneTr.children('td').eq(24).html(obj.id);
+                    cloneTr.children('td').eq(8).html(obj.id);
 
                     cloneTr.insertBefore(tr);
                     tr.removeAttr('class');
@@ -1513,7 +1513,7 @@ function adjustConfirm() {
             currentInventory:$(this).children('td').eq(5).children('input').val(),
             safety:$(this).children('td').eq(6).children('input').val(),
             marketPurchases:$(this).children('td').eq(7).children('input').val(),
-            id:$(this).children('td').eq(24).html(),
+            id:$(this).children('td').eq(8).html(),
         };
         //物料明细的更新
         $.ajax({

@@ -312,16 +312,24 @@ function setSecIntoList(result) {
                     //预约单号
                     $(this).html(obj.id);
                     break;
-                // case (2):
-                //     // 采样点
-                //     $(this).html((obj.address));
-                //     break;
                 case (2):
+                    // 危废名称
+                    wastesName="";
+                    var array=[];
+                    if(obj.secondarySampleItemList!=null) {
+                        $.each(obj.secondarySampleItemList,function (index,item) {
+                               array.push(item.wastesName);
+                        })
+                    }
+                   var hash=unique1(array).join(" ");
+                    $(this).html(hash.toString());
+                    break;
+                case (3):
                     // 检测项目
                     project="";
                     if(obj.secondarySampleItemList!=null){
                         $.each(obj.secondarySampleItemList,function (index,item) {
-                            if(index<1) {
+
                                 if (item.cod == 1) {
                                     project += "COD ";
                                 }
@@ -330,9 +338,6 @@ function setSecIntoList(result) {
                                 }
                                 if (item.ph == 1) {
                                     project += "PH ";
-                                }
-                                if (item.dissolvedSolidForm == 1) {
-                                    project += "溶解固形物 ";
                                 }
                                 if (item.electricalConductivity == 1) {
                                     project += "电导率 ";
@@ -346,56 +351,40 @@ function setSecIntoList(result) {
                                 if (item.n2 == 1) {
                                     project += "氮气 ";
                                 }
-                                if (item.o2 == 1) {
-                                    project += "氧气 ";
-                                }
-                                if (item.relativeAlkalinity == 1) {
-                                    project += "相对碱度 ";
-                                }
                                 if (item.scorchingRate == 1) {
                                     project += "热灼减率 ";
                                 }
                                 if (item.water == 1) {
                                     project += "水分 ";
                                 }
-
-                            }
                         })
 
                     }
-                    $(this).html(project);
+                    var projectArray=project.split(" ");
+
+                    console.log(projectArray)
+                    var array=unique1(projectArray).join(" ")
+                    $(this).html(array.toString());
                     break;
-                case (3):
+                case (4):
                     // 送样人
                     $(this).html(obj.sendingPerson);
                     break;
-                case (4):
+                case (5):
                     // 签收人
                     $(this).html(obj.laboratorySignatory);
                     break;
-                case (5):
+                case (6):
+                    // 签收人
+                    $(this).html(obj.address);
+                    break;
+                case (7):
                     // 备注
                     if(obj.checkState!=null){
                         $(this).html(obj.checkState.name);
                     }
 
                     break;
-                // case (7):
-                //     // 氮
-                //     $(this).html(obj.nitrogen);
-                //     break;
-                // case (8):
-                //     // 碱液
-                //     $(this).html(obj.lye);
-                //     break;
-                // case (9):
-                //     // PH
-                //     $(this).html(obj.ph);
-                //     break;
-                // case (10):
-                //     // 备注
-                //     $(this).html(obj.remarks);
-                //     break;
             }
         });
         // 把克隆好的tr追加到原来的tr前面

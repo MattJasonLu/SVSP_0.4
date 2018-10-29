@@ -2,6 +2,7 @@ package com.jdlink.mapper.produce;
 
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.SewageTest;
+import com.jdlink.domain.Produce.Sewageregistration;
 import com.jdlink.domain.Produce.SoftTest;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface SewageTestMapper {
     SoftTest getSoftTestById(String id);
     int totalSoftTestRecord();
    List<SoftTest> loadSoftTestResultsList(Page page);
+   void updateSewaGeregistration(Sewageregistration sewageregistration);
+   void deleteSewaGeregistrationById(String id);
 }

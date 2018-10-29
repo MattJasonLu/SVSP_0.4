@@ -2,8 +2,9 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.SewageTest;
+import com.jdlink.domain.Produce.Sewageregistration;
 import com.jdlink.domain.Produce.SoftTest;
-import com.jdlink.service.SewageTestService;
+import com.jdlink.service.produce.SewageTestService;
 import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -317,6 +318,31 @@ public class SewageTestController {
         }
 
         return res.toString();
+
+    }
+
+    //修改污水信息
+    @RequestMapping("updateSewaGeregistration")
+    @ResponseBody
+    public String updateSewaGeregistration(@RequestBody Sewageregistration sewageregistration){
+        JSONObject res=new JSONObject();
+        try {
+            //1更新主表
+            sewageTestService.updateSewaGeregistration(sewageregistration);
+            //2删除字表
+            sewageTestService.deleteSewaGeregistrationById(sewageregistration.getId());
+            res.put("status", "success");
+            res.put("message", "主表更新成功,字表删除成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "主表更新失败,字表删除失败");
+        }
+
+
+        return res.toString();
+
 
     }
 

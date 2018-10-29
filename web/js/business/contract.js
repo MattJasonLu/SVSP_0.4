@@ -1775,12 +1775,13 @@ function loadWastesContractSelectList() {
                 packageType.children().remove();
                 $.each(result.packageTypeList,function (index,item) {
                     var option=$('<option/>');
-                    option.val(getPackageTypeFromStr(item.name));
+                    option.val(index);
                     option.text(item.name);
                     packageType.append(option);
                 });
+
                // $('.selectpicker').selectpicker('val', clientList1);//默认选中
-                $('.selectpicker').selectpicker('refresh');
+                //$('.selectpicker').selectpicker('refresh');
             }
             else {
                 alert(result.message);
@@ -2483,7 +2484,7 @@ function contractWastesSave() {
                                 client: {clientId: $('#companyName').selectpicker('val')},
                                 wastesCode: $(this).children('td').eq(1).children('div').find('button').attr('title'),
                                 wastesName: $(this).children('td').eq(2).children('input').val(),
-                                packageTypeList: $(this).children('td').eq(3).find('select').selectpicker('val').join(','),
+                                packageTypeList: $(this).children('td').eq(3).find('select').get(0).selectedIndex,
                                 transport:$(this).children('td').eq(8).children('select').get(0).selectedIndex,
                                 util:$(this).children('td').eq(4).children('select').get(0).selectedIndex,
                                 // packageType: $(this).children('td').eq(3).children('select').val(),
@@ -2492,6 +2493,7 @@ function contractWastesSave() {
                                 unitPriceTax: $(this).children('td').eq(5).children('input').val(),
                                 contractAmount: $(this).children('td').eq(6).children('input').val(),
                                 totalPrice: $(this).children('td').eq(7).children('input').val(),
+                                remarks: $(this).children('td').eq(9).children('input').val(),
                             };
                             //console.log(quotationItemData);
                             //1添加报价单明细
@@ -2595,7 +2597,7 @@ function contractWastesSave() {
                                 client: {clientId: $('#companyName').selectpicker('val')},
                                 wastesCode: $(this).children('td').eq(1).children('div').find('button').attr('title'),
                                 wastesName: $(this).children('td').eq(2).children('input').val(),
-                                packageTypeList: $(this).children('td').eq(3).find('select').selectpicker('val').join(','),
+                                packageTypeList: $(this).children('td').eq(3).find('select').get(0).selectedIndex,
                                 transport:$(this).children('td').eq(8).children('select').get(0).selectedIndex,
                                 util:$(this).children('td').eq(4).children('select').get(0).selectedIndex,
                                 // packageType: $(this).children('td').eq(3).children('select').val(),
@@ -2604,6 +2606,7 @@ function contractWastesSave() {
                                 unitPriceTax: $(this).children('td').eq(5).children('input').val(),
                                 contractAmount: $(this).children('td').eq(6).children('input').val(),
                                 totalPrice: $(this).children('td').eq(7).children('input').val(),
+                                remarks: $(this).children('td').eq(9).children('input').val(),
                             };
                             console.log(quotationItemData);
                             //1添加报价单明细
