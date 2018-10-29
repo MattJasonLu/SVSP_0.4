@@ -29,6 +29,8 @@ public interface ClientService {
 
     List<Client> list();
 
+    List<Client> listAll();
+
     List<Client> listAllocated();
 
     List<Client> listUnallocated();

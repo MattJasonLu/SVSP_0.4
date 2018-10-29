@@ -144,4 +144,7 @@ public class WayBillServiceImpl implements WayBillService {
     @Override
     public void deleteItem(String id){ wayBillMapper.deleteItem(id);}
 
+    @Override
+    public void updateSalesmanNameByCompanyName(String salesmanName,String companyName){ wayBillMapper.updateSalesmanNameByCompanyName(salesmanName,companyName);}
+
 }
