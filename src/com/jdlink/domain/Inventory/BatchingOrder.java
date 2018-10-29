@@ -12,39 +12,58 @@ import java.util.List;
  * 配料单
  */
 public class BatchingOrder {
+
     /*配料单号*/
     private String batchingOrderId;
+
     /*配料日期*/
     private Date  batchingDate;
-    /*创建人*/
+
+    /*配料人*/
     private String creator;
+
     /*创建日期*/
     private Date createDate;
+
     /*备注*/
     private String remarks;
+
     /*仓库*/
     private WareHouse wareHouse;
+
     /*产废单位*/
     private Client produceCompany;
+
     /*接收单位*/
     private Client acceptCompany;
+
     /*联单号*/
     private  String transferDraftId;
+
     /*创建部门*/
     private String departmentId;
+
     /*创建公司*/
     private String companyId;
+
     /*修改人*/
     private String modifierId;
+
     /*业务员 来自产废单位的业务员*/
 //    private Salesman salesman;
     private Wastes wastes;
+
     private String inboundOrderItemId;
+
     private PackageType packageType;
+
     private FormType formType;
+
     private String time;
-    /*领料状态*/
+
+    /*状态*/
     private CheckState checkState;
+
     /*记录状态*/
     private  RecordState recordState;
     /*危废库存*/
@@ -55,11 +74,126 @@ public class BatchingOrder {
      * 页码
      */
     private Page page;
+
     /*配料数量*/
     private HandleCategory handelCategory;
+
     private ProcessWay processWay;
+
     private float batchingNumber;
+
     private LaboratoryTest laboratoryTest;
+
+    //废物名称
+    private String wastesName;
+
+    //类别
+    private String wasteCategory;
+
+    //1号入库量
+    private float storage1;
+
+    //2号入库量
+    private float storage2;
+
+    //智能库入库量
+    private float intelligent;
+
+    //1号库配料量
+    private float storage1Batch;
+
+    //2号库配料量
+    private float storage2Batch;
+
+    //智能库配料量
+    private float intelligentBatch;
+
+    //余量
+    private float allowance;
+
+    //入库日期
+    private Date inboundOrderDate;
+
+    public Date getInboundOrderDate() {
+        return inboundOrderDate;
+    }
+
+    public void setInboundOrderDate(Date inboundOrderDate) {
+        this.inboundOrderDate = inboundOrderDate;
+    }
+
+    public String getWastesName() {
+        return wastesName;
+    }
+
+    public void setWastesName(String wastesName) {
+        this.wastesName = wastesName;
+    }
+
+
+    public String getWasteCategory() {
+        return wasteCategory;
+    }
+
+    public void setWasteCategory(String wasteCategory) {
+        this.wasteCategory = wasteCategory;
+    }
+
+    public float getStorage1() {
+        return storage1;
+    }
+
+    public void setStorage1(float storage1) {
+        this.storage1 = storage1;
+    }
+
+    public float getStorage2() {
+        return storage2;
+    }
+
+    public void setStorage2(float storage2) {
+        this.storage2 = storage2;
+    }
+
+    public float getIntelligent() {
+        return intelligent;
+    }
+
+    public void setIntelligent(float intelligent) {
+        this.intelligent = intelligent;
+    }
+
+    public float getStorage1Batch() {
+        return storage1Batch;
+    }
+
+    public void setStorage1Batch(float storage1Batch) {
+        this.storage1Batch = storage1Batch;
+    }
+
+    public float getStorage2Batch() {
+        return storage2Batch;
+    }
+
+    public void setStorage2Batch(float storage2Batch) {
+        this.storage2Batch = storage2Batch;
+    }
+
+    public float getIntelligentBatch() {
+        return intelligentBatch;
+    }
+
+    public void setIntelligentBatch(float intelligentBatch) {
+        this.intelligentBatch = intelligentBatch;
+    }
+
+    public float getAllowance() {
+        return allowance;
+    }
+
+    public void setAllowance(float allowance) {
+        this.allowance = allowance;
+    }
 
     public String getTime() {
         return time;
@@ -312,9 +446,28 @@ public class BatchingOrder {
                 ", departmentId='" + departmentId + '\'' +
                 ", companyId='" + companyId + '\'' +
                 ", modifierId='" + modifierId + '\'' +
+                ", wastes=" + wastes +
+                ", inboundOrderItemId='" + inboundOrderItemId + '\'' +
+                ", packageType=" + packageType +
+                ", formType=" + formType +
+                ", time='" + time + '\'' +
                 ", checkState=" + checkState +
                 ", recordState=" + recordState +
+                ", inboundOrder=" + inboundOrder +
+                ", page=" + page +
+                ", handelCategory=" + handelCategory +
+                ", processWay=" + processWay +
                 ", batchingNumber=" + batchingNumber +
+                ", laboratoryTest=" + laboratoryTest +
+                ", wastesName='" + wastesName + '\'' +
+                ", wasteCategory='" + wasteCategory + '\'' +
+                ", storage1=" + storage1 +
+                ", storage2=" + storage2 +
+                ", intelligent=" + intelligent +
+                ", storage1Batch=" + storage1Batch +
+                ", storage2Batch=" + storage2Batch +
+                ", intelligentBatch=" + intelligentBatch +
+                ", allowance=" + allowance +
                 '}';
     }
 }

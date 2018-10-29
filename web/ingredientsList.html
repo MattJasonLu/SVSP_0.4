@@ -115,6 +115,8 @@
                     <div class="pull-left col-md-6">
                         <a class="btn btn-primary btn-xs" href="newIngredientsList.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                         <a class="btn btn-primary btn-xs" onclick="generateRequisition()"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> 生成领料单</a>
+                        <a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose();"><span class="glyphicon glyphicon-arrow-down"
+                                                                                                        aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary btn-xs" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
                     <!--查询框-->
@@ -178,16 +180,19 @@
                                     <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
                                 </label>
                             </th>
-                            <th class="text-center">序号</th>
                             <th class="text-center">配料单号</th>
-                            <th class="text-center">危废名称</th>
-                            <th class="text-center">处理类别</th>
-                            <th class="text-center">数量</th>
-                            <th class="text-center">计量单位</th>
+                            <th class="text-center">入库时间</th>
                             <th class="text-center">产废单位</th>
-                            <th class="text-center">创建人</th>
-                            <th class="text-center">创建日期</th>
-                            <th class="text-center">备注</th>
+                            <th class="text-center">废物名称</th>
+                            <th class="text-center">类别</th>
+                            <th class="text-center">1号库入库数量（KG)</th>
+                            <th class="text-center">2号库入库数量（KG)</th>
+                            <th class="text-center">智能库入库数量（KG)</th>
+                            <th class="text-center">1号库配料数量（KG)</th>
+                            <th class="text-center">2号库配料数量（KG)</th>
+                            <th class="text-center">智能库配料数量（KG)</th>
+                            <th class="text-center">余量（KG)</th>
+                            <th class="text-center">进料方式</th>
                             <th class="text-center">状态</th>
                             <!--<th class="text-center">操作</th>-->
                         </tr>
@@ -199,8 +204,11 @@
                                     <input class="checkbox" type="checkbox" value="option1" name="select">
                                 </label>
                             </td>
-                            <td class="text-center"></td><!--序号-->
-                            <td class="text-center"></td><!--配料单号-->
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
                             <td class="text-center"></td>
                             <td class="text-center"></td>
                             <td class="text-center"></td>
@@ -281,5 +289,31 @@
         </ol>
     </nav>
     <div id="embed"></div>
+    <!--导入模态框-->
+    <div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="TitleMyModalLabel">导入表格数据</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="modelAssign" method="post">
+                        <div class="form-group">
+                            <font size="+2">提示：</font>
+                            <font size="+1" class="text-center">请按照模板格式导入数据！</font>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer center">
+                    <button type="button" class="btn btn-default" onclick="downloadModal()">下载模板</button>
+                    <button type="button" class="btn btn-primary" onclick="importExcel()">导入数据</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--导入-->
+    <input type="file" name="excelPath" id="idExcel" style="display:none">
 </body>
 </html>

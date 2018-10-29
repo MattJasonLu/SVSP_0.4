@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.sql.DriverManager;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -133,7 +134,12 @@ public class ImportUtil {
                     int row = xSheet.getPhysicalNumberOfRows();
                     // 获得总列数
                     if (xSheet.getRow(0) == null) break;
-                    int col = xSheet.getRow(0).getPhysicalNumberOfCells();
+                   // int col = xSheet.getRow(1).getPhysicalNumberOfCells();
+                    List<Integer> numberList=new ArrayList<>();//存放列数的列表
+                    for(int x=0;x<row;x++){
+                        numberList.add((int) xSheet.getRow(x).getLastCellNum());
+                    }
+                    int col = Collections.max(numberList);//获取最大的列数
                     param = new Object[row][col];
                     for (int i = 0; i < row; i++) {
                         XSSFRow row1 = xSheet.getRow(i);
