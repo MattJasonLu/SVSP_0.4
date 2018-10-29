@@ -429,6 +429,14 @@ function searchData() {
 }
 
 /**
+ * 显示日期选择模态框
+ */
+function showDateModal() {
+    $("#dateChooseModal").find('input').val('');
+    $("#dateChooseModal").modal('show');
+}
+
+/**
  * 生成日报并添加
  */
 function addData() {
@@ -436,6 +444,11 @@ function addData() {
         type: "POST",                       // 方法类型
         url: "generateProductionDaily",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            dateStr: $("#reportDate").val(),
+            dateStrStart: $("#reportDateStart").val(),
+            dateStrEnd: $("#reportDateEnd").val()
+        },
         dataType: "json",
         success: function (result) {
             if (result != undefined && result.status == "success") {

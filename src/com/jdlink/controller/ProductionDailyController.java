@@ -194,16 +194,15 @@ public class ProductionDailyController {
      */
     @RequestMapping("generateProductionDaily")
     @ResponseBody
-    public String generateProductionDaily() {
+    public String generateProductionDaily(String dateStr, String dateStrStart, String dateStrEnd) {
         JSONObject res = new JSONObject();
-        // 获取当天日期
-    //    DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
-        Date now = new Date();
-//        try{ // 测试
-//           now = dateFormat1.parse("2018-10-12");
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
+
+        // update by ljc: 2018-10-29 14:10:25 修改为获取用户输入的时间
+        Date now = DateUtil.getDateFromStr(dateStr);
+        Date start = DateUtil.getDateFromStr(dateStrStart);
+        Date end = DateUtil.getDateFromStr(dateStrEnd);
+//        Date now = new Date(); // 获取当天日期
+
         // 创建一个新的生产日报
         ProductionDaily productionDaily = new ProductionDaily();
         // 设置公司为常州北控
@@ -213,6 +212,9 @@ public class ProductionDailyController {
         productionDaily.setId(productionDailyService.getProductionDailyId());
         // 设置时间
         productionDaily.setDate(now);
+        // 设置起始和结束时间
+        productionDaily.setStartDate(start);
+        productionDaily.setEndDate(end);
         try {
             // 对日报进行计算
             calculateProductionDaily(now, productionDaily);
@@ -1181,24 +1183,46 @@ public class ProductionDailyController {
         Date yearFirstDay = DateUtil.getDateFromStr(year + "-01-01");
         Date yearEndDay = DateUtil.getDateFromStr(year + "-12-31");
         // 月份
-        SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
-        String month = monthFormat.format(now);
-        Date monthFirstDay = DateUtil.getDateFromStr(year + "-" + month + "-01");
-        int endDay = DateUtil.getDaysOfMonth(monthFirstDay);
-        Date monthEndDay = DateUtil.getDateFromStr(year + "-" + month + "-" + endDay);
+//        SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
+//        String month = monthFormat.format(now);
+//        Date monthFirstDay = DateUtil.getDateFromStr(year + "-" + month + "-01");
+//        int endDay = DateUtil.getDaysOfMonth(monthFirstDay);
+//        Date monthEndDay = DateUtil.getDateFromStr(year + "-" + month + "-" + endDay);
+        Date monthFirstDay = productionDaily.getStartDate();
+        Date monthEndDay = productionDaily.getEndDate();
 
         // 获取日报所在月份的所有日报
-        List<ProductionDaily> productionDailyMonthList = productionDailyService.getProductionDailyByDateRange(monthFirstDay, monthEndDay, null);
-
+//        List<ProductionDaily> productionDailyMonthList = productionDailyService.getProductionDailyByDateRange(monthFirstDay, monthEndDay, null);
+        List<MedicalWastes> monthMedicalWastesList = medicalWastesService.getMedicalWastesByRange(monthFirstDay, monthEndDay);
         // 月份的初始数据
-        float monthInboundMedicalWastes = 0f;
-        float monthInboundMedicalWastesDirectDisposal = 0f;
-        float monthInboundMedicalWastesCooking = 0f;
-        float monthInboundMedicalWastesErrorNumber = 0f;
-        float monthInboundMedicalWastesAfterCooking = 0f;
-        float monthInboundMedicalWastesAfterCookingSend = 0f;
-        float monthInboundMedicalWastesAfterCookingInbound = 0f;
-        float monthInboundMedicalWastesWetNumber = 0f;
+        float monthDisposalMedicalWastes = 0f;
+        float monthDisposalMedicalWastesDisposalDirect = 0f;
+        float monthDisposalMedicalWastesCooking = 0f;
+        float monthDisposalMedicalWastesAfterCooking = 0f;
+        float monthDisposalMedicalWastesAfterCookingInbound = 0f;
+        float monthDisposalMedicalWastesAfterCookingSend = 0f;
+        for (MedicalWastes medicalWastes : medicalWastesList) {
+            // 本日进厂医废
+            monthDisposalMedicalWastes += medicalWastes.getThisMonthWastes();
+            monthDisposalMedicalWastesDisposalDirect += medicalWastes.getDirectDisposal();
+            monthDisposalMedicalWastesCooking += medicalWastes.getCookingWastes();
+            monthDisposalMedicalWastesAfterCooking += medicalWastes.getAfterCookingNumber();
+            monthDisposalMedicalWastesAfterCookingInbound += medicalWastes.getAfterCookingInbound();
+            monthDisposalMedicalWastesAfterCookingSend += medicalWastes.getThisMonthSendCooking();
+        }
+        // 危废废物进厂（产生）量
+        productionDaily.setMonthInboundMedicalWastes(monthDisposalMedicalWastes);
+        productionDaily.setMonthInboundMedicalWastesCooking(monthDisposalMedicalWastesCooking);
+        productionDaily.setMonthInboundMedicalWastesErrorNumber(monthDisposalMedicalWastes-monthDisposalMedicalWastesDisposalDirect-monthDisposalMedicalWastesCooking);
+        productionDaily.setMonthInboundMedicalWastesAfterCooking(monthDisposalMedicalWastesAfterCooking);
+        productionDaily.setMonthInboundMedicalWastesAfterCookingInbound(monthDisposalMedicalWastesAfterCookingInbound);
+        productionDaily.setMonthInboundMedicalWastesWetNumber(monthDisposalMedicalWastesCooking-monthDisposalMedicalWastesAfterCooking);
+        // 危废废物处置（转移）量
+        productionDaily.setMonthOutboundMedicalWastes(monthDisposalMedicalWastesDisposalDirect + monthDisposalMedicalWastesCooking + productionDaily.getMonthInboundMedicalWastesErrorNumber());
+        productionDaily.setMonthOutboundMedicalWastesDirectDisposal(monthDisposalMedicalWastesDisposalDirect);
+        productionDaily.setMonthOutboundMedicalWastesCooking(monthDisposalMedicalWastesCooking + productionDaily.getMonthInboundMedicalWastesErrorNumber());
+        productionDaily.setMonthOutboundMedicalWastesAfterCooking(monthDisposalMedicalWastesAfterCooking);
+
         float monthInboundWastesBulk = 0f;
         float monthInboundWastesCrushing = 0f;
         float monthInboundWastesSludge = 0f;
@@ -1405,220 +1429,6 @@ public class ProductionDailyController {
         float monthDisposalThirdSlag = 0f;
         float monthDisposalThirdAsh = 0f;
 
-        // 遍历月份信息
-        for (ProductionDaily daily : productionDailyMonthList) {
-            monthInboundMedicalWastes += daily.getTodayInboundMedicalWastes();
-            monthInboundMedicalWastesDirectDisposal += daily.getTodayInboundMedicalWastesDirectDisposal();
-            monthInboundMedicalWastesCooking += daily.getTodayInboundMedicalWastesCooking();
-            monthInboundMedicalWastesErrorNumber += daily.getTodayInboundMedicalWastesCooking();
-            monthInboundMedicalWastesAfterCooking += daily.getTodayInboundMedicalWastesAfterCooking();
-            monthInboundMedicalWastesAfterCookingSend += daily.getTodayInboundMedicalWastesAfterCookingSend();
-            monthInboundMedicalWastesAfterCookingInbound += daily.getTodayInboundMedicalWastesAfterCookingInbound();
-            monthInboundMedicalWastesWetNumber += daily.getTodayInboundMedicalWastesWetNumber();
-            monthInboundWastesBulk += daily.getTodayInboundWastesBulk();
-            monthInboundWastesCrushing += daily.getTodayInboundWastesCrushing();
-            monthInboundWastesSludge += daily.getTodayInboundWastesSludge();
-            monthInboundWastesDistillation += daily.getTodayInboundWastesDistillation();
-            monthInboundWastesSuspension += daily.getTodayInboundWastesSuspension();
-            monthInboundWastesWasteLiquid += daily.getTodayInboundWastesWasteLiquid();
-            monthInboundWastesTotal += daily.getTodayInboundWastesTotal();
-            monthInboundSecondWastesSlag += daily.getTodayInboundSecondWastesSlag();
-            monthInboundSecondWastesAsh += daily.getTodayInboundSecondWastesAsh();
-            monthInboundSecondWastesBucket += daily.getTodayInboundSecondWastesBucket();
-            monthOutboundMedicalWastes += daily.getTodayOutboundMedicalWastes();
-            monthOutboundMedicalWastesDirectDisposal += daily.getTodayOutboundMedicalWastesDirectDisposal();
-            monthOutboundMedicalWastesCooking += daily.getTodayOutboundMedicalWastesCooking();
-            monthOutboundMedicalWastesErrorNumber += daily.getTodayOutboundMedicalWastesErrorNumber();
-            monthOutboundMedicalWastesAfterCooking += daily.getTodayOutboundMedicalWastesAfterCooking();
-            monthOutboundMedicalWastesAfterCookingSend += daily.getTodayOutboundMedicalWastesAfterCookingSend();
-            monthOutboundMedicalWastesAfterCookingInbound += daily.getTodayOutboundMedicalWastesAfterCookingInbound();
-            monthOutboundMedicalWastesWetNumber += daily.getTodayOutboundMedicalWastesWetNumber();
-            monthOutboundWastesBulk += daily.getTodayOutboundWastesBulk();
-            monthOutboundWastesCrushing += daily.getTodayOutboundWastesCrushing();
-            monthOutboundWastesSludge += daily.getTodayOutboundWastesSludge();
-            monthOutboundWastesDistillation += daily.getTodayOutboundWastesDistillation();
-            monthOutboundWastesSuspension += daily.getTodayOutboundWastesSuspension();
-            monthOutboundWastesWasteLiquid += daily.getTodayOutboundWastesWasteLiquid();
-            monthOutboundWastesTotal += daily.getTodayOutboundWastesTotal();
-            monthOutboundSecondWastesSlag += daily.getTodayOutboundSecondWastesSlag();
-            monthOutboundSecondWastesAsh += daily.getTodayOutboundSecondWastesAsh();
-            monthOutboundSecondWastesBucket += daily.getTodayOutboundSecondWastesBucket();
-            monthInboundAuxiliaryCalcareousLime += daily.getTodayInboundAuxiliaryCalcareousLime();
-            monthInboundAuxiliaryCommonActivatedCarbon += daily.getTodayInboundAuxiliaryCommonActivatedCarbon();
-            monthInboundAuxiliaryActivatedCarbon += daily.getTodayInboundAuxiliaryActivatedCarbon();
-            monthInboundAuxiliaryActivatedCarbonParticles += daily.getTodayInboundAuxiliaryActivatedCarbonParticles();
-            monthInboundAuxiliaryNahco3 += daily.getTodayInboundAuxiliaryNahco3();
-            monthInboundAuxiliaryFlour += daily.getTodayInboundAuxiliaryFlour();
-            monthInboundAuxiliaryDefoamer += daily.getTodayInboundAuxiliaryDefoamer();
-            monthInboundAuxiliaryFlocculant += daily.getTodayInboundAuxiliaryFlocculant();
-            monthInboundAuxiliarySoftWaterReducingAgent += daily.getTodayInboundAuxiliarySoftWaterReducingAgent();
-            monthInboundAuxiliarySoftWaterScaleInhibitor += daily.getTodayInboundAuxiliaryWaterScaleInhibitor();
-            monthInboundAuxiliaryAmmonia += daily.getTodayInboundAuxiliaryAmmonia();
-            monthInboundAuxiliaryWaterReducingAgent += daily.getTodayInboundAuxiliaryWaterReducingAgent();
-            monthInboundAuxiliaryWaterScaleInhibitor += daily.getTodayInboundAuxiliaryWaterScaleInhibitor();
-            monthInboundAuxiliaryNaclo += daily.getTodayInboundAuxiliaryNaclo();
-            monthInboundAuxiliaryDeodorant += daily.getTodayInboundAuxiliaryDeodorant();
-            monthInboundAuxiliarySalt += daily.getTodayInboundAuxiliarySalt();
-            monthInboundAuxiliaryFlyAshBag += daily.getTodayInboundAuxiliaryFlyAshBag();
-            monthInboundAuxiliaryMedicalWastesBag += daily.getTodayInboundAuxiliaryMedicalWastesBag();
-            monthInboundAuxiliaryMedicalPackingPlasticBag += daily.getTodayInboundAuxiliaryMedicalPackingPlasticBag();
-            monthInboundAuxiliaryCollectionBox += daily.getTodayInboundAuxiliaryCollectionBox();
-            monthInboundAuxiliaryStandardBox += daily.getTodayInboundAuxiliaryWoodenPallets();
-            monthInboundAuxiliaryStandardTray_1m += daily.getTodayInboundAuxiliaryStandardTray_1m();
-            monthInboundAuxiliaryStandardTray_1_2m += daily.getTodayInboundAuxiliaryStandardTray_1_2m();
-            monthInboundAuxiliaryTonBox += daily.getTodayInboundAuxiliaryTonBox();
-            monthInboundAuxiliarySteam += daily.getTodayInboundAuxiliarySteam();
-            monthInboundAuxiliaryDieselOil += daily.getTodayInboundAuxiliaryDieselOil();
-            monthInboundAuxiliaryNaturalGas += daily.getTodayInboundAuxiliaryNaturalGas();
-            monthInboundAuxiliaryElectricQuantity += daily.getTodayInboundAuxiliaryElectricQuantity();
-            monthInboundAuxiliaryIndustrialWater += daily.getTodayInboundAuxiliaryIndustrialWater();
-            monthInboundAuxiliaryTapWaterQuantity += daily.getTodayInboundAuxiliaryTapWaterQuantity();
-            monthOutboundAuxiliaryCalcareousLime += daily.getTodayOutboundAuxiliaryCalcareousLime();
-            monthOutboundAuxiliaryCommonActivatedCarbon += daily.getTodayOutboundAuxiliaryCommonActivatedCarbon();
-            monthOutboundAuxiliaryActivatedCarbon += daily.getTodayOutboundAuxiliaryActivatedCarbon();
-            monthOutboundAuxiliaryActivatedCarbonParticles += daily.getTodayOutboundAuxiliaryActivatedCarbonParticles();
-            monthOutboundAuxiliaryLye += daily.getTodayOutboundAuxiliaryLye();
-            monthOutboundAuxiliaryCausticSoda += daily.getTodayOutboundAuxiliaryCausticSoda();
-            monthOutboundAuxiliaryUrea += daily.getTodayOutboundAuxiliaryUrea();
-            monthOutboundAuxiliaryHydrochloricAcid += daily.getTodayOutboundAuxiliaryHydrochloricAcid();
-            monthOutboundAuxiliaryNahco3 += daily.getTodayOutboundAuxiliaryNahco3();
-            monthOutboundAuxiliaryFlour += daily.getTodayOutboundAuxiliaryFlour();
-            monthOutboundAuxiliaryDefoamer += daily.getTodayOutboundAuxiliaryDefoamer();
-            monthOutboundAuxiliaryFlocculant += daily.getTodayOutboundAuxiliaryFlocculant();
-            monthOutboundAuxiliarySoftWaterReducingAgent += daily.getTodayOutboundAuxiliarySoftWaterReducingAgent();
-            monthOutboundAuxiliarySoftWaterScaleInhibitor += daily.getTodayOutboundAuxiliarySoftWaterScaleInhibitor();
-            monthOutboundAuxiliaryAmmonia += daily.getTodayOutboundAuxiliaryAmmonia();
-            monthOutboundAuxiliaryWaterReducingAgent += daily.getTodayOutboundAuxiliaryWaterReducingAgent();
-            monthOutboundAuxiliaryWaterScaleInhibitor += daily.getTodayOutboundAuxiliaryWaterScaleInhibitor();
-            monthOutboundAuxiliaryNaclo += daily.getTodayOutboundAuxiliaryNaclo();
-            monthOutboundAuxiliaryDeodorant += daily.getTodayOutboundAuxiliaryDeodorant();
-            monthOutboundAuxiliarySalt += daily.getTodayOutboundAuxiliarySalt();
-            monthOutboundAuxiliarySlagBag += daily.getTodayOutboundAuxiliarySlagBag();
-            monthOutboundAuxiliaryFlyAshBag += daily.getTodayOutboundAuxiliaryFlyAshBag();
-            monthOutboundAuxiliaryMedicalWastesBag += daily.getTodayOutboundAuxiliaryMedicalPackingPlasticBag();
-            monthOutboundAuxiliaryCollectionBox += daily.getTodayOutboundAuxiliaryCollectionBox();
-            monthOutboundAuxiliaryStandardBox += daily.getTodayOutboundAuxiliaryStandardBox();
-            monthOutboundAuxiliaryWoodenPallets += daily.getTodayOutboundAuxiliaryWoodenPallets();
-            monthOutboundAuxiliaryStandardTray_1m += daily.getTodayOutboundAuxiliaryStandardTray_1m();
-            monthOutboundAuxiliaryStandardTray_1_2m += daily.getTodayOutboundAuxiliaryStandardTray_1_2m();
-            monthOutboundAuxiliaryTonBox += daily.getTodayOutboundAuxiliaryTonBox();
-            monthOutboundAuxiliarySteam += daily.getTodayOutboundAuxiliarySteam();
-            monthOutboundAuxiliaryDieselOil += daily.getTodayOutboundAuxiliaryDieselOil();
-            monthOutboundAuxiliaryNaturalGas += daily.getTodayOutboundAuxiliaryNaturalGas();
-            monthOutboundAuxiliaryElectricQuantity += daily.getTodayOutboundAuxiliaryElectricQuantity();
-            monthOutboundAuxiliaryIndustrialWater += daily.getTodayOutboundAuxiliaryIndustrialWater();
-            monthOutboundAuxiliaryTapWaterQuantity += daily.getTodayOutboundAuxiliaryTapWaterQuantity();
-            monthDisposalMedicalAuxiliaryNaclo += daily.getTodayDisposalMedicalAuxiliaryNaclo();
-            monthDisposalMedicalAuxiliaryDeodorant += daily.getTodayDisposalMedicalAuxiliaryDeodorant();
-            monthDisposalMedicalAuxiliaryMedicalWastesBag += daily.getTodayDisposalMedicalAuxiliaryMedicalWastesBag();
-            monthDisposalMedicalAuxiliaryMedicalPackingPlasticBag += daily.getTodayDisposalMedicalAuxiliaryMedicalPackingPlasticBag();
-            monthDisposalMedicalAuxiliaryCollectionBox += daily.getTodayDisposalMedicalAuxiliaryCollectionBox();
-            monthDisposalMedicalAuxiliarySteam += daily.getTodayDisposalMedicalAuxiliarySteam();
-            monthDisposalMedicalAuxiliaryIndustrialWater += daily.getTodayDisposalMedicalAuxiliaryIndustrialWater();
-            monthDisposalMedicalAuxiliaryElectricQuantity += daily.getTodayDisposalMedicalAuxiliaryElectricQuantity();
-            monthDisposalSecondaryAuxiliaryCalcareousLime += daily.getTodayDisposalSecondaryAuxiliaryCalcareousLime();
-            monthDisposalSecondaryAuxiliaryCommonActivatedCarbon += daily.getTodayDisposalSecondaryAuxiliaryCommonActivatedCarbon();
-            monthDisposalSecondaryAuxiliaryActivatedCarbon += daily.getTodayDisposalSecondaryAuxiliaryActivatedCarbon();
-            monthDisposalSecondaryAuxiliaryActivatedCarbonParticles += daily.getTodayDisposalSecondaryAuxiliaryActivatedCarbonParticles();
-            monthDisposalSecondaryAuxiliaryLye += daily.getTodayDisposalSecondaryAuxiliaryLye();
-            monthDisposalSecondaryAuxiliarySalt += daily.getTodayDisposalSecondaryAuxiliarySalt();
-            monthDisposalSecondaryAuxiliarySlagBag += daily.getTodayDisposalSecondaryAuxiliarySlagBag();
-            monthDisposalSecondaryAuxiliaryFlyAshBag += daily.getTodayDisposalSecondaryAuxiliaryFlyAshBag();
-            monthDisposalSecondaryAuxiliaryDieselOil += daily.getTodayDisposalSecondaryAuxiliaryDieselOil();
-            monthDisposalSecondaryAuxiliaryIndustrialWater += daily.getTodayDisposalSecondaryAuxiliaryIndustrialWater();
-            monthDisposalSecondaryAuxiliaryElectricQuantity += daily.getTodayDisposalSecondaryAuxiliaryElectricQuantity();
-            monthDisposalSecondaryAuxiliaryWoodenPallets += daily.getTodayDisposalSecondaryAuxiliaryWoodenPallets();
-            monthDisposalThirdAuxiliaryCalcareousLime += daily.getTodayDisposalThirdAuxiliaryCalcareousLime();
-            monthDisposalThirdAuxiliaryCommonActivatedCarbon += daily.getTodayDisposalThirdAuxiliaryCommonActivatedCarbon();
-            monthDisposalThirdAuxiliaryActivatedCarbon += daily.getTodayDisposalThirdAuxiliaryActivatedCarbon();
-            monthDisposalThirdAuxiliaryActivatedCarbonParticles += daily.getTodayDisposalThirdAuxiliaryActivatedCarbonParticles();
-            monthDisposalThirdAuxiliaryLye += daily.getTodayDisposalThirdAuxiliaryLye();
-            monthDisposalThirdAuxiliaryCausticSoda += daily.getTodayDisposalThirdAuxiliaryCausticSoda();
-            monthDisposalThirdAuxiliaryUrea += daily.getTodayDisposalThirdAuxiliaryUrea();
-            monthDisposalThirdAuxiliaryHydrochloricAcid += daily.getTodayDisposalThirdAuxiliaryHydrochloricAcid();
-            monthDisposalThirdAuxiliaryNahco3 += daily.getTodayDisposalThirdAuxiliaryNahco3();
-            monthDisposalThirdAuxiliaryFlour += daily.getTodayDisposalThirdAuxiliaryFlour();
-            monthDisposalThirdAuxiliaryDefoamer += daily.getTodayDisposalThirdAuxiliaryDefoamer();
-            monthDisposalThirdAuxiliaryFlocculant += daily.getTodayDisposalThirdAuxiliaryFlocculant();
-            monthDisposalThirdAuxiliarySoftWaterReducingAgent += daily.getTodayDisposalThirdAuxiliarySoftWaterReducingAgent();
-            monthDisposalThirdAuxiliarySoftWaterScaleInhibitor += daily.getTodayDisposalThirdAuxiliarySoftWaterScaleInhibitor();
-            monthDisposalThirdAuxiliaryAmmonia += daily.getTodayDisposalThirdAuxiliaryAmmonia();
-            monthDisposalThirdAuxiliaryWaterReducingAgent += daily.getTodayDisposalThirdAuxiliaryWaterReducingAgent();
-            monthDisposalThirdAuxiliaryWaterScaleInhibitor += daily.getTodayDisposalThirdAuxiliaryWaterScaleInhibitor();
-            monthDisposalThirdAuxiliaryNaclo += daily.getTodayDisposalThirdAuxiliaryNaclo();
-            monthDisposalThirdAuxiliaryStandardBox += daily.getTodayDisposalThirdAuxiliaryStandardBox();
-            monthDisposalThirdAuxiliaryWoodenPallets += daily.getTodayDisposalThirdAuxiliaryWoodenPallets();
-            monthDisposalThirdAuxiliaryStandardTray_1m += daily.getTodayDisposalThirdAuxiliaryStandardTray_1m();
-            monthDisposalThirdAuxiliaryStandardTray_1_2m += daily.getTodayDisposalThirdAuxiliaryStandardTray_1_2m();
-            monthDisposalThirdAuxiliarySlagBag += daily.getTodayDisposalThirdAuxiliarySlagBag();
-            monthDisposalThirdAuxiliaryFlyAshBag += daily.getTodayDisposalThirdAuxiliaryFlyAshBag();
-            monthDisposalThirdAuxiliaryTonBox += daily.getTodayDisposalThirdAuxiliaryTonBox();
-            monthDisposalThirdAuxiliarySteam += daily.getTodayDisposalThirdAuxiliarySteam();
-            monthDisposalThirdAuxiliaryDieselOil += daily.getTodayDisposalThirdAuxiliaryDieselOil();
-            monthDisposalThirdAuxiliaryNaturalGas += daily.getTodayDisposalThirdAuxiliaryNaturalGas();
-            monthDisposalThirdAuxiliaryIndustrialWater += daily.getTodayDisposalThirdAuxiliaryIndustrialWater();
-            monthDisposalThirdAuxiliaryElectricQuantity += daily.getTodayDisposalThirdAuxiliaryElectricQuantity();
-            monthDisposalThirdAuxiliaryTapWaterQuantity += daily.getTodayDisposalThirdAuxiliaryTapWaterQuantity();
-            monthDisposalTowerElectricQuantity += daily.getTodayDisposalTowerElectricQuantity();
-
-            monthOutboundA2WastesBulk += daily.getTodayOutboundA2WastesBulk();
-            monthOutboundA2WastesCrushing += daily.getTodayOutboundA2WastesCrushing();
-            monthOutboundA2WastesSludge += daily.getTodayOutboundA2WastesSludge();
-            monthOutboundA2WastesDistillation += daily.getTodayOutboundA2WastesDistillation();
-            monthOutboundA2WastesSuspension += daily.getTodayOutboundA2WastesSuspension();
-            monthOutboundA2WastesWasteLiquid += daily.getTodayOutboundA2WastesWasteLiquid();
-            monthOutboundA2MedicalWastes += daily.getTodayOutboundA2MedicalWastes();
-
-            monthOutboundPrepare2WastesBulk += daily.getTodayOutboundPrepare2WastesBulk();
-            monthOutboundPrepare2WastesCrushing += daily.getTodayOutboundPrepare2WastesCrushing();
-            monthOutboundPrepare2WastesSludge += daily.getTodayOutboundPrepare2WastesSludge();
-            monthOutboundPrepare2WastesDistillation += daily.getTodayOutboundPrepare2WastesDistillation();
-            monthOutboundPrepare2WastesSuspension += daily.getTodayOutboundPrepare2WastesSuspension();
-            monthOutboundPrepare2WastesWasteLiquid += daily.getTodayOutboundPrepare2WastesWasteLiquid();
-            monthOutboundPrepare2MedicalWastes += daily.getTodayOutboundPrepare2MedicalWastes();
-
-            monthOutboundB2WastesBulk += daily.getTodayOutboundB2WastesBulk();
-            monthOutboundB2WastesCrushing += daily.getTodayOutboundB2WastesCrushing();
-            monthOutboundB2WastesSludge += daily.getTodayOutboundB2WastesSludge();
-            monthOutboundB2WastesDistillation += daily.getTodayOutboundB2WastesDistillation();
-            monthOutboundB2WastesSuspension += daily.getTodayOutboundB2WastesSuspension();
-            monthOutboundB2WastesWasteLiquid += daily.getTodayOutboundB2WastesWasteLiquid();
-            monthOutboundB2MedicalWastes += daily.getTodayOutboundB2MedicalWastes();
-
-            monthOutboundThirdPretreatmentSystemWastesBulk += daily.getTodayOutboundThirdPretreatmentSystemWastesBulk();
-            monthOutboundThirdPretreatmentSystemWastesCrushing += daily.getTodayOutboundThirdPretreatmentSystemWastesCrushing();
-            monthOutboundThirdPretreatmentSystemWastesSludge += daily.getTodayOutboundThirdPretreatmentSystemWastesSludge();
-            monthOutboundThirdPretreatmentSystemWastesDistillation += daily.getTodayOutboundThirdPretreatmentSystemWastesDistillation();
-            monthOutboundThirdPretreatmentSystemWastesSuspension += daily.getTodayOutboundThirdPretreatmentSystemWastesSuspension();
-            monthOutboundThirdPretreatmentSystemWastesWasteLiquid += daily.getTodayOutboundThirdPretreatmentSystemWastesWasteLiquid();
-            monthOutboundThirdPretreatmentSystemMedicalWastes += daily.getTodayOutboundThirdPretreatmentSystemMedicalWastes();
-
-            monthEquipmentA2StopTime += daily.getTodayEquipmentA2StopTime();
-            monthEquipmentB2StopTime += daily.getTodayEquipmentB2StopTime();
-            monthEquipmentPrepare2StopTime += daily.getTodayEquipmentPrepare2StopTime();
-            monthEquipmentSecondaryStopTime += daily.getTodayEquipmentSecondaryStopTime();
-            monthEquipmentThirdStopTime += daily.getTodayEquipmentThirdStopTime();
-
-            monthEquipmentA2RunningTime += daily.getTodayEquipmentA2RunningTime();
-            monthEquipmentB2RunningTime += daily.getTodayEquipmentB2RunningTime();
-            monthEquipmentPrepare2RunningTime += daily.getTodayEquipmentPrepare2RunningTime();
-            monthEquipmentSecondaryRunningTime += daily.getTodayEquipmentSecondaryRunningTime();
-            monthEquipmentThirdRunningTime += daily.getTodayEquipmentThirdRunningTime();
-
-            monthDisposalSecondarySlag += daily.getTodayDisposalSecondarySlag();
-            monthDisposalSecondaryAsh += daily.getTodayDisposalSecondaryAsh();
-            monthDisposalThirdSlag += daily.getTodayDisposalThirdSlag();
-            monthDisposalThirdAsh += daily.getTodayDisposalThirdAsh();
-        }
-        // 设置月份的数值
-        productionDaily.setMonthInboundMedicalWastes(monthInboundMedicalWastes);
-        productionDaily.setMonthInboundMedicalWastesDirectDisposal(monthInboundMedicalWastesDirectDisposal);
-        productionDaily.setMonthInboundMedicalWastesCooking(monthInboundMedicalWastesCooking);
-        productionDaily.setMonthInboundMedicalWastesErrorNumber(monthInboundMedicalWastesErrorNumber);
-        productionDaily.setMonthInboundMedicalWastesAfterCooking(monthInboundMedicalWastesAfterCooking);
-        productionDaily.setMonthInboundMedicalWastesAfterCookingSend(monthInboundMedicalWastesAfterCookingSend);
-        productionDaily.setMonthInboundMedicalWastesAfterCookingInbound(monthInboundMedicalWastesAfterCookingInbound);
-        productionDaily.setMonthInboundMedicalWastesWetNumber(monthInboundMedicalWastesWetNumber);
         productionDaily.setMonthInboundWastesBulk(monthInboundWastesBulk);
         productionDaily.setMonthInboundWastesCrushing(monthInboundWastesCrushing);
         productionDaily.setMonthInboundWastesSludge(monthInboundWastesSludge);
