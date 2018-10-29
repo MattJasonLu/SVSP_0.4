@@ -623,11 +623,14 @@ function searchWastesAnalysis() {
     if(text.length<=0){
         secondaryAnalysis();
     }
-
-
-
 }
 
+/**
+ * 查看页面
+ */
+function view() {
+    $("#viewModal").modal('show')
+}
 
 /**
  *
