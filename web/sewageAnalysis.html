@@ -303,7 +303,9 @@
                 <td class="text-center"></td>
                 <td class="text-center">
                     <a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                    <a href="#" onclick="setInvalid(this);" title="作废"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span></a>
+                    <a title="修改" href="#" onclick="adjust(this)"><span class="glyphicon glyphicon-pencil"
+                                                                        aria-hidden="true"></span> </a>
+                    <!--<a href="#" onclick="setInvalid(this);" title="作废"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span></a>-->
                     <a href="#" onclick="setSubmit(this);" title="确认收样"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
                     <a href="#" onclick="rejection(this);" title="拒收"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
                 </td>
@@ -422,7 +424,7 @@
                         <th class="text-center">序号</th>
                         <!--<th class="text-center">危废代码</th>-->
                         <!--<th class="text-center">危废名称</th>-->
-                        <th class="text-center">联单编号</th>
+                        <th class="text-center" hidden>联单编号</th>
                         <th class="text-center">检测项目</th>
                         <!--<th class="text-center">增加项目</th>-->
                     </tr>
@@ -430,7 +432,7 @@
                     <tbody>
                     <tr id="addClone" class="myclass">
                         <td class="text-center">1</td>
-                        <td class="text-center"><input class="form-control"></td>
+                        <td class="text-center" hidden><input class="form-control"></td>
                         <!--<td class="text-center"><select  class="selectpicker form-control" data-live-search="true"-->
                                                          <!--data-live-search-placeholder="搜索..." id="wastesCode"-->
                                                          <!--name="wastesCode">-->
@@ -469,6 +471,10 @@
                                 <input type="checkbox" name="wastesList[0].isWater"
                                        value="true">总磷
                             </label>
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isWater"
+                                       value="true">碱度
+                            </label>
                             </td>
                     </tr>
                     <tr id="plusBtn">
@@ -489,6 +495,124 @@
 
         </div>
     </div>
+</div>
+<!-- 预约登记模态框 修改-->
+<div class="modal fade bs-example-modal-lg" id="appointModa3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width: 35%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">预约登记修改</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="reservationId" class="col-sm-4 control-label">预约单号</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="reservationId2"  name="signer" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="sendingPerson" class="col-sm-4 control-label">送样人</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="sendingPerson2" name="signer" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="sendingPerson" class="col-sm-4 control-label">采样点</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="address2" name="signer" title="">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="laboratorySignatory" class="col-sm-4 control-label">化验室签收人</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="laboratorySignatory2" name="signer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-bordered">
+                <thead style="border:none">
+                <tr>
+                    <th class="text-center">序号</th>
+                    <!--<th class="text-center">危废代码</th>-->
+                    <!--<th class="text-center">危废名称</th>-->
+                    <th class="text-center" hidden>联单编号</th>
+                    <th class="text-center">检测项目</th>
+                    <!--<th class="text-center">增加项目</th>-->
+                </tr>
+                </thead>
+                <tbody>
+                <tr id="addClone1" class="myclass2">
+                    <td class="text-center">1</td>
+                    <td class="text-center" hidden><input class="form-control"></td>
+                    <!--<td class="text-center"><select  class="selectpicker form-control" data-live-search="true"-->
+                    <!--data-live-search-placeholder="搜索..." id="wastesCode"-->
+                    <!--name="wastesCode">-->
+                    <!--</select></td>-->
+                    <!--<td class="text-center"><input class="form-control"></td>-->
+                    <td class="text-center">
+                        <label>
+                            <input type="checkbox" name="wastesList[0].isPH"
+                                   value="true">PH
+                        </label>
+                        <label>
+                            <input type="checkbox" name="wastesList[0].isAsh"
+                                   value="true">COD
+                        </label>
+                        <label>
+                            <input type="checkbox" name="wastesList[0].isWater"
+                                   value="true">BOD5
+                        </label>
+                        <!--<label>-->
+                        <!--<input type="checkbox" name="wastesList[0].isWater"-->
+                        <!--id="wastesList[0].isO2" value="true">碳酸盐碱度-->
+                        <!--</label>-->
+                        <label>
+                            <input type="checkbox" name="wastesList[0].isWater"
+                                   value="true">氨氮
+                        </label>
+                        <!--<label>-->
+                        <!--<input type="checkbox" name="wastesList[0].isWater"-->
+                        <!--id="wastesList[0].isLye" value="true">重碳酸盐碱度-->
+                        <!--</label>-->
+                        <label>
+                            <input type="checkbox" name="wastesList[0].isWater"
+                                   value="true">总氮
+                        </label>
+                        <label>
+                            <input type="checkbox" name="wastesList[0].isWater"
+                                   value="true">总磷
+                        </label>
+                        <label>
+                            <input type="checkbox" name="wastesList[0].isWater"
+                                   value="true">碱度
+                        </label>
+                    </td>
+                </tr>
+                <tr id="plusBtn1">
+                    <td>
+                        <a class="btn btn-default btn-xs" onclick="addNewLine1(this);"><span class="glyphicon glyphicon-plus"></span></a>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <!--<td></td>-->
+                </tr>
+                </tbody>
+            </table>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="adjustConfir();">确认修改</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 </div>
 
 <!--查看-->
@@ -535,7 +659,7 @@
                     <th class="text-center">序号</th>
                     <!--<th class="text-center">危废代码</th>-->
                     <!--<th class="text-center">危废名称</th>-->
-                    <th class="text-center">联单编号</th>
+                    <th class="text-center hidden">联单编号</th>
                     <th class="text-center">检测项目</th>
                     <!--<th class="text-center">增加项目</th>-->
                 </tr>
@@ -543,7 +667,7 @@
                 <tbody>
                 <tr id='clonrTr' class="myclass1">
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center hidden"></td>
                     <!--<td class="text-center"></td>-->
                     <!--<td class="text-center"></td>-->
                     <td class="text-center"></td>

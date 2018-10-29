@@ -685,6 +685,14 @@ function addAppoint() {
                     else
                         phosphorus=0;
 
+                    var  lye;
+                      if($(this).children('td').eq(2).find('label').eq(6).find("input").prop('checked')==true){
+                          lye=1;
+                      }
+                      else
+                          lye=0;
+
+
 
                     var   dataItem={
                         // wastesCode:$(this).children('td').eq(1).find("button").attr('title'),
@@ -695,6 +703,7 @@ function addAppoint() {
                         n2:isN2,
                         nitrogen:nitrogen,
                         phosphorus:phosphorus,
+                        lye:lye,
                         identifie:$(this).children('td').eq(1).find("input").val(),
                         sampleinformationId:$('#reservationId').val(),
                     };
@@ -779,7 +788,7 @@ function setSelectList() {
 var num = 1;
 
 /**
- * 预约登记/修改-新增样品1
+ * 预约登记==>新增
  */
 function addNewLine(item) {
     // 获取id为plusBtn的tr元素
@@ -813,6 +822,50 @@ function addNewLine(item) {
 
    
    
+    clonedTr.insertAfter(tr);
+    clonedTr.removeAttr("id");
+    //清空数据为重新初始化selectpicker
+    $('.selectpicker').data('selectpicker', null);
+    $('.bootstrap-select').find("button:first").remove();
+    $('.selectpicker').selectpicker();
+
+}
+
+/**
+ * 预约登记==>修改
+ */
+function addNewLine1(item) {
+    // 获取id为plusBtn的tr元素
+    //var tr = $("#plusBtn").prev();
+    var tr = null;
+    if (item != null)
+        tr = $(item).parent().parent().prev().prev();
+    // 克隆tr，每次遍历都可以产生新的tr
+    var clonedTr = tr.clone();
+     clonedTr.show();
+    clonedTr.children('td').eq(0).html(($('.myclass2 ').length)+1);
+    if (clonedTr.children('td').eq(0).html() != 1) {     // 将非第一行的所有行加上减行号
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        clonedTr.children('td').eq(0).prepend(delBtn);
+    }
+
+    // 克隆后清空新克隆出的行数据
+    //clonedTr.children().find("input:first-child").prop('name').charAt(11);
+    clonedTr.children().find("input").val("");
+    clonedTr.children().find("input:checkbox").prop('checked', false);
+    clonedTr.children().find("select").selectpicker('val', '');
+    // clonedTr.children().find("input,select").each(function () {
+    //     var name = $(this).prop('name');
+    //     var newName = name.replace(/[0-9]\d*/, num - 1);
+    //     $(this).prop('name', newName);
+    //     var id = $(this).prop('id');
+    //     var newId = id.replace(/[0-9]\d*/, num - 1);
+    //     $(this).prop('id', newId);
+    // });
+    // clonedTr.addClass("newLine");
+
+
+
     clonedTr.insertAfter(tr);
     clonedTr.removeAttr("id");
     //清空数据为重新初始化selectpicker
@@ -1172,6 +1225,261 @@ function rejection1() {
             alert("服务器异常！")
         }
     })
+
+
+}
+
+//修改
+function adjust(item) {
+    $('#addClone1').siblings().not($('#plusBtn1')).remove();
+    var id=$(item).parent().parent().children('td').eq(1).html();
+    $("#reservationId2").val(id)
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSewaGeregistrationById",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{"id":id},
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                //赋值
+                // 公司名称
+                if(result.data.client!=null){
+                    $('#companyName').val(result.data.client.companyName);
+                }
+                //化验室签收人
+                $('#laboratorySignatory2').val(result.data.laboratorySignatory)
+
+                //送样人
+                $('#sendingPerson2').val(result.data.sendingPerson)
+
+                //采样点
+                $('#address2').val(result.data.address)
+
+
+                if(result.data.sewageregistrationItemList!=null){
+
+                    var tr=$('#addClone1');
+
+                    //tr.siblings().not($('#plusBtn1')).remove();
+
+                    $.each(result.data.sewageregistrationItemList,function (index,item) {
+
+                        var clonedTr = tr.clone();
+
+                        clonedTr.show();
+                        clonedTr.attr("class","myclass2");
+                        var obj = eval(item);
+
+                        if((index + 1)!=1){
+                            var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+                            clonedTr.children('td').eq(0).html(delBtn);
+                            clonedTr.children("td:eq(0)").append(index+1);
+                        }
+                        if((index + 1)==1){
+                            clonedTr.children('td').eq(0).html(index + 1);
+                        }
+
+
+                        var ph;
+
+                        if(item.ph==1){
+                            clonedTr.children('td').eq(2).children("label").eq(0).find("input").prop('checked',true)
+                        }
+                        if(item.ph==0){
+                            clonedTr.children('td').eq(2).children("label").eq(0).find("input").prop('checked',false)
+                        }
+
+                        if(item.cod==1){
+                            clonedTr.children('td').eq(2).children("label").eq(1).find("input").prop('checked',true)
+                        }
+                        if(item.cod==0){
+                            clonedTr.children('td').eq(2).children("label").eq(1).find("input").prop('checked',false)
+                        }
+
+                        if(item.bod5==1){
+                            clonedTr.children('td').eq(2).children("label").eq(2).find("input").prop('checked',true)
+                        }
+                        if(item.bod5==0){
+                            clonedTr.children('td').eq(2).children("label").eq(2).find("input").prop('checked',false)
+                        }
+
+                        if(item.n2==1){
+                            clonedTr.children('td').eq(2).children("label").eq(3).find("input").prop('checked',true)
+                        }
+                        if(item.n2==0){
+                            clonedTr.children('td').eq(2).children("label").eq(3).find("input").prop('checked',false)
+                        }
+
+                        if(item.nitrogen==1){
+                            clonedTr.children('td').eq(2).children("label").eq(4).find("input").prop('checked',true)
+                        }
+                        if(item.nitrogen==0){
+                            clonedTr.children('td').eq(2).children("label").eq(4).find("input").prop('checked',false)
+                        }
+
+                        if(item.phosphorus==1){
+                            clonedTr.children('td').eq(2).children("label").eq(5).find("input").prop('checked',true)
+                        }
+                        if(item.phosphorus==0){
+                            clonedTr.children('td').eq(2).children("label").eq(5).find("input").prop('checked',false)
+                        }
+
+                        if(item.lye==1){
+                            clonedTr.children('td').eq(2).children("label").eq(6).find("input").prop('checked',true)
+                        }
+                        if(item.lye==0){
+                            clonedTr.children('td').eq(2).children("label").eq(6).find("input").prop('checked',false)
+                        }
+
+
+                        clonedTr.removeAttr("id");
+                        clonedTr.insertBefore(tr);
+
+                    });
+
+                    // 隐藏无数据的tr
+                    tr.hide();
+                  tr.removeAttr('class');
+
+
+
+                }
+
+
+
+
+
+
+
+            }
+            else {
+
+            }
+        },
+        error:function (result) {
+
+        }
+    });
+
+
+$("#appointModa3").modal('show');
+}
+
+//确认修改
+function adjustConfir() {
+
+    var data={
+        id:$('#reservationId2').val(),
+        sendingPerson:$('#sendingPerson2').val(),
+        address:$('#address2').val(),
+        laboratorySignatory:$('#laboratorySignatory2').val(),
+    };
+    //更新主表后删除字表数据
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "updateSewaGeregistration",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: JSON.stringify(data),
+        processData: false,
+        contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+            }
+        },
+        error:function (result) {
+
+        }
+    })
+    
+    
+    
+    console.log(data)
+    $('.myclass2').each(function () {
+        var isPH;
+        if($(this).children('td').eq(2).find('label').eq(0).find("input").prop('checked')==true){
+            isPH=1;
+        }
+        else
+            isPH=0;
+        var isCOD;
+        if($(this).children('td').eq(2).find('label').eq(1).find("input").prop('checked')==true){
+            isCOD=1;
+        }
+        else
+            isCOD=0;
+        var isBOD5;
+        if($(this).children('td').eq(2).find('label').eq(2).find("input").prop('checked')==true){
+            isBOD5=1;
+        }
+        else
+            isBOD5=0;
+        // var alkalinity;
+        // if($(this).children('td').eq(3).find('label').eq(3).find("input").prop('checked')==true){
+        //     isO2=1;
+        // }
+        // else
+        //     alkalinity=0;
+        var isN2;
+        if($(this).children('td').eq(2).find('label').eq(3).find("input").prop('checked')==true){
+            isN2=1;
+        }
+        else
+            isN2=0;
+        // var bicarbonate;
+        // if($(this).children('td').eq(3).find('label').eq(5).find("input").prop('checked')==true){
+        //     isLye=1;
+        // }
+        // else
+        //     bicarbonate=0;
+        var nitrogen;
+        if($(this).children('td').eq(2).find('label').eq(4).find("input").prop('checked')==true){
+            nitrogen=1;
+        }
+        else
+            nitrogen=0;
+        var phosphorus;
+        if($(this).children('td').eq(2).find('label').eq(5).find("input").prop('checked')==true){
+            phosphorus=1;
+        }
+        else
+            phosphorus=0;
+
+        var  lye;
+        if($(this).children('td').eq(2).find('label').eq(6).find("input").prop('checked')==true){
+            lye=1;
+        }
+        else
+            lye=0;
+        var dataItem={
+            sampleinformationId:$('#reservationId2').val(),
+            ph:isPH,
+            cod:isCOD,
+            bod5:isBOD5,
+            n2:isN2,
+            nitrogen:nitrogen,
+            phosphorus:phosphorus,
+            lye:lye,
+        };
+        console.log(dataItem)
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "addSewaGeregistrationItem",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: JSON.stringify(dataItem),
+            processData: false,
+            contentType: 'application/json;charset=utf-8',
+        })
+    })
+    //添加子表数据
+    alert("修改成功！")
+    window.location.reload();
+
 
 
 }

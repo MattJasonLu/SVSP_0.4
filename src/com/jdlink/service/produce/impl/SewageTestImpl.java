@@ -2,9 +2,10 @@ package com.jdlink.service.produce.impl;
 
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.SewageTest;
+import com.jdlink.domain.Produce.Sewageregistration;
 import com.jdlink.domain.Produce.SoftTest;
 import com.jdlink.mapper.produce.SewageTestMapper;
-import com.jdlink.service.SewageTestService;
+import com.jdlink.service.produce.SewageTestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import java.util.List;
  * 水质化验的实现类
  */
 @Service
-public class SewageTestImpl implements SewageTestService {
+public class SewageTestImpl implements SewageTestService{
     @Autowired
     SewageTestMapper sewageTestMapper;
 
@@ -66,5 +67,15 @@ public class SewageTestImpl implements SewageTestService {
     @Override
     public List<SoftTest> loadSoftTestResultsList(Page page) {
         return sewageTestMapper.loadSoftTestResultsList(page);
+    }
+
+    @Override
+    public void updateSewaGeregistration(Sewageregistration sewageregistration) {
+        sewageTestMapper.updateSewaGeregistration(sewageregistration);
+    }
+
+    @Override
+    public void deleteSewaGeregistrationById(String id) {
+        sewageTestMapper.deleteSewaGeregistrationById(id);
     }
 }

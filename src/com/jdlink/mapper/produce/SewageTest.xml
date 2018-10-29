@@ -61,6 +61,18 @@
             limit #{start}, #{count}
         </if>
     </select>
+
+
+    <!--更新污水主表-->
+    <update id="updateSewaGeregistration" parameterType="SewaGeregistration">
+        update t_pr_sewageregistration set sendingPerson=#{sendingPerson},address=#{address},
+        laboratorySignatory=#{laboratorySignatory},nowTime=NOW() where id=#{id}
+    </update>
+
+    <!--更新后做删除字表-->
+    <delete id="deleteSewaGeregistrationById" parameterType="String">
+        delete from t_pr_sewageregistrationitem where sampleinformationId=#{id};
+    </delete>
 </mapper>
 
 

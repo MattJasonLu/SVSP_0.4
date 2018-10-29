@@ -753,50 +753,50 @@ public String importCompatibilityExcel(MultipartFile excelFile){
                 materialRequireItem.setCalorificMax(compatibilityItemList.get(i).getCalorific()+threshold.getCalorificMax());
                 calorificMaxSum+=compatibilityItemList.get(i).getCalorific()+threshold.getCalorificMax();
                 //热值最小
-                materialRequireItem.setCalorificMin(compatibilityItemList.get(i).getCalorific()-threshold.getCalorificMin());
-               calorificMinSum+=compatibilityItemList.get(i).getCalorific()-threshold.getCalorificMin();
+                materialRequireItem.setCalorificMin(compatibilityItemList.get(i).getCalorific()+threshold.getCalorificMin());
+               calorificMinSum+=compatibilityItemList.get(i).getCalorific()+threshold.getCalorificMin();
                 //灰分最大
                 materialRequireItem.setAshMax(compatibilityItemList.get(i).getAsh()+threshold.getAshMax());
                  ashMaxSum+=compatibilityItemList.get(i).getAsh()+threshold.getAshMax();
                 //灰分最小
-                materialRequireItem.setAshMin(compatibilityItemList.get(i).getAsh()-threshold.getAshMin());
-                  ashMinSum+=compatibilityItemList.get(i).getAsh()-threshold.getAshMin();
+                materialRequireItem.setAshMin(compatibilityItemList.get(i).getAsh()+threshold.getAshMin());
+                  ashMinSum+=compatibilityItemList.get(i).getAsh()+threshold.getAshMin();
                 //水分最大
                 materialRequireItem.setWaterMax(compatibilityItemList.get(i).getWater()+threshold.getWaterMax());
                 waterMaxSum+=compatibilityItemList.get(i).getWater()+threshold.getWaterMax();
                 //水分最小
-                materialRequireItem.setWaterMin(compatibilityItemList.get(i).getWater()-threshold.getWaterMin());
-                 waterMinSum+=compatibilityItemList.get(i).getWater()-threshold.getWaterMin();
+                materialRequireItem.setWaterMin(compatibilityItemList.get(i).getWater()+threshold.getWaterMin());
+                 waterMinSum+=compatibilityItemList.get(i).getWater()+threshold.getWaterMin();
                 //氯最大
                 materialRequireItem.setClMax(compatibilityItemList.get(i).getCl()+threshold.getClMax());
                clMaxSum+=compatibilityItemList.get(i).getCl()+threshold.getClMax();
                 //氯最小
-                materialRequireItem.setClMin(compatibilityItemList.get(i).getCl()-threshold.getClMin());
-               clMinSum+=compatibilityItemList.get(i).getCl()-threshold.getClMin();
+                materialRequireItem.setClMin(compatibilityItemList.get(i).getCl()+threshold.getClMin());
+               clMinSum+=compatibilityItemList.get(i).getCl()+threshold.getClMin();
                 //硫最大
                 materialRequireItem.setsMax(compatibilityItemList.get(i).getS()+threshold.getsMax());
                 sMaxSum+=compatibilityItemList.get(i).getS()+threshold.getsMax();
                 //硫最小
-                materialRequireItem.setsMin(compatibilityItemList.get(i).getS()-threshold.getsMin());
-                sMinSum+=compatibilityItemList.get(i).getS()-threshold.getsMin();
+                materialRequireItem.setsMin(compatibilityItemList.get(i).getS()+threshold.getsMin());
+                sMinSum+=compatibilityItemList.get(i).getS()+threshold.getsMin();
                 //磷最大
                 materialRequireItem.setpMax(compatibilityItemList.get(i).getP()+threshold.getpMax());
                 pMaxSum+=compatibilityItemList.get(i).getP()+threshold.getpMax();
                 //磷最小
-                materialRequireItem.setpMin(compatibilityItemList.get(i).getP()-threshold.getpMin());
-                pMinSum+=compatibilityItemList.get(i).getP()-threshold.getpMin();
+                materialRequireItem.setpMin(compatibilityItemList.get(i).getP()+threshold.getpMin());
+                pMinSum+=compatibilityItemList.get(i).getP()+threshold.getpMin();
                 //氟最大
                 materialRequireItem.setfMax(compatibilityItemList.get(i).getF()+threshold.getfMax());
                fMaxSum+=compatibilityItemList.get(i).getF()+threshold.getfMax();
                 //氟最小
-                materialRequireItem.setfMin(compatibilityItemList.get(i).getF()-threshold.getfMin());
-               fMinSum+=compatibilityItemList.get(i).getF()-threshold.getfMin();
+                materialRequireItem.setfMin(compatibilityItemList.get(i).getF()+threshold.getfMin());
+               fMinSum+=compatibilityItemList.get(i).getF()+threshold.getfMin();
                 //ph最大
                 materialRequireItem.setPhMax(compatibilityItemList.get(i).getPh()+threshold.getPhMax());
               phMaxSum+=compatibilityItemList.get(i).getPh()+threshold.getPhMax();
                 //ph最小
-                materialRequireItem.setPhMin(compatibilityItemList.get(i).getPh()-threshold.getPhMin());
-               phMinSum+=compatibilityItemList.get(i).getPh()-threshold.getPhMin();
+                materialRequireItem.setPhMin(compatibilityItemList.get(i).getPh()+threshold.getPhMin());
+               phMinSum+=compatibilityItemList.get(i).getPh()+threshold.getPhMin();
               compatibilityService.addMaterialRequireItem(materialRequireItem);
             }
             //主表添加数据
