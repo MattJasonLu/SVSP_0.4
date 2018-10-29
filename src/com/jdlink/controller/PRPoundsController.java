@@ -224,19 +224,6 @@ public class PRPoundsController {
         }
     }
 
-//    @RequestMapping("getClientIdByName")
-//    @ResponseBody
-//    public String getClientIdByName(String name){
-//        JSONObject res = new JSONObject();
-//        try{
-//            String id = poundsService.getClientIdByName(name);
-//            res.put("id",id);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        return res.toString();
-//    }
-
     /**
      * 查询功能
      *

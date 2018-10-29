@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpSession;
 import java.text.Normalizer;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -517,13 +518,30 @@ public class InboundController {
         try {
             // 获取危废入库的表格数据
             Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+            System.out.println("数据为");
+            for(int i = 0; i < data.length; i++){
+                for(int j = 0; j < data[0].length; j++){
+                    System.out.print(data[i][j]+" ");
+                }
+                System.out.println();
+            }
             // 创建入库单对象
             InboundOrder inboundOrder = new InboundOrder();
             // 设置入库单编号
             inboundOrder.setInboundOrderId(inboundService.getInboundOrderId());
             // 设置入库日期
-            inboundOrder.setInboundDate(DateUtil.getDateFromStr(data[1][0].toString()));
-
+            // 如果时间格式不符合需求是18-9-1格式的添加为2018-9-1
+            if (data[1][0].toString().substring(0, 3).replaceAll("\\d+", "") != null ||
+                    data[1][0].toString().substring(0, 3).replaceAll("\\d+", "") != "") {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+                Date date = new Date();
+                String year1 = sdf.format(date).substring(0, 2); // 获取当前世纪 20
+                String date1 = year1 + data[1][0].toString();
+                System.out.print(data[1][0].toString()+" ");
+                inboundOrder.setInboundDate(DateUtil.getDateFromStr(date1));   // 设置入库日期
+            }else {
+                inboundOrder.setInboundDate(DateUtil.getDateFromStr(data[1][0].toString()));
+            }
             // 通过仓库名称获取仓库
             WareHouse wareHouse = wareHouseService.getWareHouseByName(data[1][1].toString());
             if (wareHouse == null) {
@@ -534,7 +552,6 @@ public class InboundController {
             }
             // 设置仓库
             inboundOrder.setWareHouse(wareHouse);
-
             // 设置入库类别
             inboundOrder.setBoundType(BoundType.WasteInbound);
             // 设置状态

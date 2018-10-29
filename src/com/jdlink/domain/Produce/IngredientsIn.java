@@ -28,6 +28,10 @@ public class IngredientsIn {
      */
     private Date creationDate;
     /**
+     * 入库日期
+     */
+    private Date inDate;
+    /**
      * 日期模糊查询
      */
     private String date;
@@ -122,6 +126,14 @@ public class IngredientsIn {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Date getInDate() {
+        return inDate;
+    }
+
+    public void setInDate(Date inDate) {
+        this.inDate = inDate;
     }
 
     public String getCompanyName() {

@@ -55,6 +55,28 @@ public class PRReceiveSampleAnalysisController {
     }
 
     /**
+     * 通过编号获取化验单
+     * @param id 编号
+     * @return 化验单数据
+     */
+    @RequestMapping("getReceiveSampleAnalysisById")
+    @ResponseBody
+    public String getReceiveSampleAnalysisById(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            ReceiveSampleAnalysis receiveSampleAnalysis = receiveSampleAnalysisService.getById(id);
+            res.put("status", "success");
+            res.put("message", "市场部化验单获取数据成功");
+            res.put("data", receiveSampleAnalysis);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "市场部化验单获取数据失败");
+        }
+        return res.toString();
+    }
+
+    /**
      * 获取市场部化验单的数量
      * @param receiveSampleAnalysis 市场部化验单的查询参数
      * @return 市场部化验单的数量
@@ -70,7 +92,7 @@ public class PRReceiveSampleAnalysisController {
             res.put("data", count);
         } catch (Exception e) {
             e.printStackTrace();
-            res.put("status", "success");
+            res.put("status", "fail");
             res.put("message", "市场部化验单获取数据失败");
         }
         return res.toString();
@@ -142,6 +164,22 @@ public class PRReceiveSampleAnalysisController {
             res.put("message", "导入失败");
         }
             return res.toString();
+    }
+
+    @RequestMapping("setReceiveSampleAnalysisInvalid")
+    @ResponseBody
+    public String setReceiveSampleAnalysisInvalid(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            receiveSampleAnalysisService.setState(id, CheckState.Invalid);
+            res.put("status", "success");
+            res.put("message", "作废成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
         }
+        return res.toString();
+    }
 
 }

@@ -6,6 +6,7 @@ import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.domain.Wastes;
 import com.jdlink.service.IngredientsService;
+import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
@@ -96,6 +97,7 @@ public class PRIngredientsController {
     public String addIngredientsIn(@RequestBody IngredientsIn ingredientsIn) {
         JSONObject res = new JSONObject();
         try {
+            ingredientsIn.setCreationDate(new Date()); // 设置入库日期为当前日期
             ingredientsService.addIn(ingredientsIn);
             res.put("status", "success");
             res.put("message", "新建入库单成功");
@@ -179,6 +181,16 @@ public class PRIngredientsController {
                     map.get(id).setKeeper(data[i][5].toString());
                     map.get(id).setAcceptor(data[i][6].toString());
                     map.get(id).setHandlers(data[i][7].toString());
+                    // 如果时间格式不符合需求是18-9-1格式的添加为2018-9-1
+                    if (data[i][17].toString().substring(0, 3).replaceAll("\\d+", "") != null ||
+                            data[i][17].toString().substring(0, 3).replaceAll("\\d+", "") != "") {
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+                        Date date = new Date();
+                        String year1 = sdf.format(date).substring(0, 2); // 获取当前世纪 20
+                        String date1 = year1 + data[i][17].toString();
+                        System.out.print(data[i][17].toString()+" ");
+                        map.get(id).setCreationDate(DateUtil.getDateFromStr(date1));   // 设置入库日期
+                    }
                     //新存储一个id对象时，将以下两个累计数据清零
                     totalPrice = 0;
                     ingredientsList = new ArrayList<>();
@@ -188,14 +200,18 @@ public class PRIngredientsController {
                 Ingredients ingredients = new Ingredients();
                 ingredients.setSerialNumber(serialNumber + "");
                 ingredients.setName(data[i][8].toString());
-                ingredients.setUnitPrice(Float.parseFloat(data[i][9].toString()));
-                ingredients.setAmount(Float.parseFloat(data[i][10].toString()));
+                String price = data[i][9].toString().replaceAll(",","");  // 删除所有,
+                price = price.replaceAll("，","");
+                ingredients.setUnitPrice(Float.parseFloat(price));
+                String amount = data[i][10].toString().replaceAll(",","");  // 删除所有,
+                amount = amount.replaceAll("，","");
+                ingredients.setAmount(Float.parseFloat(amount));
                 ingredients.setWareHouseName(data[i][11].toString());
                 ingredients.setPost(data[i][12].toString());
                 ingredients.setSpecification(data[i][13].toString());
                 ingredients.setUnit(data[i][14].toString());
                 ingredients.setRemarks(data[i][15].toString());
-                switch (data[i][16].toString()){
+                switch (data[i][16].toString()) {
                     case ("医疗蒸煮系统"):
                         ingredients.setEquipment(Equipment.MedicalCookingSystem);
                         break;
@@ -227,8 +243,6 @@ public class PRIngredientsController {
                 float total = Float.parseFloat(data[i][9].toString()) * Float.parseFloat(data[i][10].toString());
                 ingredients.setTotalPrice(total);
                 ingredients.setId(id);
-                if(ingredientsService.getAmountItems(ingredients) > 0)ingredients.setAid("exist");
-                else ingredients.setAid("notExist");
                 ingredientsList.add(ingredients);
                 map.get(id).setIngredientsList(ingredientsList);
                 totalPrice += total;
@@ -237,6 +251,11 @@ public class PRIngredientsController {
             for (String key : map.keySet()) {
                 IngredientsIn ingredientsIn1 = ingredientsService.getInById(map.get(key).getId());
                 IngredientsIn ingredientsIn = map.get(key);
+                for(Ingredients ingredients : ingredientsIn.getIngredientsList()){
+                    // 更新库存数量
+                    if (ingredientsService.getAmountItems(ingredients) > 0) ingredients.setAid("exist");  //查询是否存在该物品
+                    else ingredients.setAid("notExist");
+                }
                 if (ingredientsIn1 == null) {
                     //插入新数据
                     ingredientsService.addIn(ingredientsIn);
@@ -328,7 +347,7 @@ public class PRIngredientsController {
     public String getIngredientsInSeniorSelectedList() {
         JSONObject res = new JSONObject();
         // 获取枚举
-        CheckState[] states = new CheckState[]{CheckState.NewBuild, CheckState.Invalid,CheckState.OutBounded};
+        CheckState[] states = new CheckState[]{CheckState.NewBuild, CheckState.Invalid, CheckState.OutBounded};
         JSONArray stateList = JSONArray.fromArray(states);
         res.put("stateList", stateList);
         return res.toString();
@@ -345,19 +364,19 @@ public class PRIngredientsController {
     public String getItemsAmoutsExist(@RequestBody Ingredients ingredients) {
         JSONObject res = new JSONObject();
         // 获取枚举
-       try{
-           int count = ingredientsService.getAmountItems(ingredients);
-           res.put("status","success");
-           res.put("message","获取成功！");
-           res.put("data",count);
-       }catch (Exception e){
-           e.printStackTrace();
-           res.put("status","fail");
-           res.put("message","获取失败！");
-       }
+        try {
+            int count = ingredientsService.getAmountItems(ingredients);
+            res.put("status", "success");
+            res.put("message", "获取成功！");
+            res.put("data", count);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取失败！");
+        }
         return res.toString();
     }
-     /////////////领料单//////////////////////
+    /////////////领料单//////////////////////
 
     /**
      * 获取当前领料单编号
@@ -474,6 +493,7 @@ public class PRIngredientsController {
 
     /**
      * 导入
+     *
      * @param excelFile
      * @return
      */
@@ -527,10 +547,10 @@ public class PRIngredientsController {
                 //通过仓库名和物品名查询库存量
                 Ingredients ingredients1 = ingredientsService.getAmountAndReceive(ingredients);
                 float amount = ingredients1.getAmount();
-                if(ingredients.getReceiveAmount() == amount){
+                if (ingredients.getReceiveAmount() == amount) {
                     //设置可领料数为0，代表全部领取
                     ingredients.setNotReceiveAmount(0);
-                }else if(ingredients.getReceiveAmount() < amount){
+                } else if (ingredients.getReceiveAmount() < amount) {
                     //设置可领料数为1，代表部分领取
                     ingredients.setNotReceiveAmount(1);
                 }
@@ -542,14 +562,14 @@ public class PRIngredientsController {
             for (String key : map.keySet()) {
                 IngredientsReceive ingredientsReceive = map.get(key);
                 //计算每单每个物品在各个仓库的领料数是否小于库存量
-                for(Ingredients ingredients : ingredientsReceive.getIngredientsList()){
+                for (Ingredients ingredients : ingredientsReceive.getIngredientsList()) {
                     //计算该物品在该仓库的总入库数和总已领取数
                     //通过仓库名和物品名查询库存量
                     Ingredients ingredients1 = ingredientsService.getAmountAndReceive(ingredients);
                     float amount = ingredients1.getAmount();
-                    if(ingredients.getReceiveAmount() > amount){
+                    if (ingredients.getReceiveAmount() > amount) {
                         res.put("status", "fail");
-                        res.put("message", ingredients.getWareHouseName()+"中"+ingredients.getName()+"库存不足,请重新确认领料数量！");
+                        res.put("message", ingredients.getWareHouseName() + "中" + ingredients.getName() + "库存不足,请重新确认领料数量！");
                         return res.toString();
                     }
                 }
@@ -637,6 +657,7 @@ public class PRIngredientsController {
 
     /**
      * 获取物品库存列表
+     *
      * @return
      */
     @RequestMapping("LoadPageIngredientsInventoryList")
@@ -646,7 +667,7 @@ public class PRIngredientsController {
         try {
             List<Ingredients> ingredientsList = ingredientsService.getInventoryList(page);
             JSONArray data = JSONArray.fromArray(ingredientsList.toArray(new Ingredients[ingredientsList.size()]));
-            res.put("data",data);
+            res.put("data", data);
             res.put("status", "success");
             res.put("message", "获取成功");
         } catch (Exception e) {
@@ -691,17 +712,18 @@ public class PRIngredientsController {
 
     /**
      * 查询库存数据(新增页面查询功能)
+     *
      * @param ingredients
      * @return
      */
     @RequestMapping("searchIngredientsInventory")
     @ResponseBody
-    public String searchIngredientsInventory(@RequestBody Ingredients ingredients){
+    public String searchIngredientsInventory(@RequestBody Ingredients ingredients) {
         JSONObject res = new JSONObject();
         try {
             List<Ingredients> ingredientsList = ingredientsService.searchInventory(ingredients);
             JSONArray data = JSONArray.fromArray(ingredientsList.toArray(new Ingredients[ingredientsList.size()]));
-            res.put("data",data);
+            res.put("data", data);
             res.put("status", "success");
             res.put("message", "查询成功");
         } catch (Exception e) {
@@ -714,6 +736,7 @@ public class PRIngredientsController {
 
     /**
      * 更新领料单状态为已出库
+     *
      * @param id
      * @return
      */
@@ -802,6 +825,7 @@ public class PRIngredientsController {
     public String addIngredientsOut(@RequestBody IngredientsOut ingredientsOut) {
         JSONObject res = new JSONObject();
         try {
+            ingredientsOut.setCreationDate(new Date());
             ingredientsService.addOut(ingredientsOut);
             res.put("status", "success");
             res.put("message", "新建成功");
@@ -850,6 +874,7 @@ public class PRIngredientsController {
 
     /**
      * 导入
+     *
      * @param excelFile
      * @return
      */
@@ -878,12 +903,22 @@ public class PRIngredientsController {
                 if (!map.keySet().contains(id)) {
                     map.put(id, new IngredientsOut());
                     map.get(id).setId(id);
-                    map.get(id).setCompanyName(data[i][1].toString());
+                    map.get(id).setDepartmentName(data[i][1].toString());
                     map.get(id).setFileId(data[i][2].toString());
                     map.get(id).setApprover(data[i][3].toString());
                     map.get(id).setKeeper(data[i][4].toString());
                     map.get(id).setHandlers(data[i][5].toString());
                     map.get(id).setBookkeeper(data[i][6].toString());
+                    // 如果时间格式不符合需求是18-9-1格式的添加为2018-9-1
+                    if (data[i][16].toString().substring(0, 3).replaceAll("\\d+", "") != null ||
+                            data[i][16].toString().substring(0, 3).replaceAll("\\d+", "") != "") {
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+                        Date date = new Date();
+                        String year1 = sdf.format(date).substring(0, 2); // 获取当前世纪 20
+                        String date1 = year1 + data[i][16].toString();
+                        System.out.print(data[i][16].toString()+" ");
+                        map.get(id).setCreationDate(DateUtil.getDateFromStr(date1));   // 设置入库日期
+                    }
                     //新存储一个id对象时，将以下两个累计数据清零
                     totalAmount = 0;
                     totalPrice = 0;
@@ -901,7 +936,7 @@ public class PRIngredientsController {
                 ingredients.setSpecification(data[i][12].toString());
                 ingredients.setUnit(data[i][13].toString());
                 ingredients.setRemarks(data[i][14].toString());
-                switch (data[i][15].toString()){
+                switch (data[i][15].toString()) {
                     case ("医疗蒸煮系统"):
                         ingredients.setEquipment(Equipment.MedicalCookingSystem);
                         break;
@@ -934,16 +969,16 @@ public class PRIngredientsController {
                 ingredients.setTotalPrice(total);
                 ingredients.setId(id);
                 Ingredients ingredients1 = ingredientsService.getInventoryByNameAndWare(ingredients);
-                if(ingredients1 == null){
+                if (ingredients1 == null) {
                     res.put("status", "fail");
-                    res.put("message", ingredients.getWareHouseName()+"中"+"没有"+ingredients.getName()+",请重新确认!");
+                    res.put("message", ingredients.getWareHouseName() + "中" + "没有" + ingredients.getName() + ",请重新确认!");
                     return res.toString();
                 }
                 float amount = ingredients1.getAmount(); // 获取库存量
-                if(ingredients.getReceiveAmount() == amount){
+                if (ingredients.getReceiveAmount() == amount) {
                     //设置可领料数为0，代表全部出库
                     ingredients.setNotReceiveAmount(0);
-                }else if(ingredients.getReceiveAmount() < amount){
+                } else if (ingredients.getReceiveAmount() < amount) {
                     //设置可领料数为1，代表部分出库
                     ingredients.setNotReceiveAmount(1);
                 }
@@ -957,15 +992,15 @@ public class PRIngredientsController {
             for (String key : map.keySet()) {
                 IngredientsOut ingredientsOut = map.get(key);
                 //计算每单每个物品在各个仓库的领料数是否小于库存量
-                for(Ingredients ingredients : ingredientsOut.getIngredientsList()){
+                for (Ingredients ingredients : ingredientsOut.getIngredientsList()) {
                     //通过仓库名和物品名查询库存量
                     Ingredients ingredients1 = ingredientsService.getInventoryByNameAndWare(ingredients);
                     float amount = ingredients1.getAmount(); // 获取库存量
-                    if(ingredients.getReceiveAmount() > amount){
+                    if (ingredients.getReceiveAmount() > amount) {
                         res.put("status", "fail");
-                        res.put("message", ingredients.getWareHouseName()+"中"+ingredients.getName()+"出库数大于库存量,请重新确认出库数量！");
+                        res.put("message", ingredients.getWareHouseName() + "中" + ingredients.getName() + "出库数大于库存量,请重新确认出库数量！");
                         return res.toString();
-                }
+                    }
                 }
                 IngredientsOut ingredientsOut1 = ingredientsService.getOutById(map.get(key).getId());
                 if (ingredientsOut1 == null) {
@@ -1029,6 +1064,7 @@ public class PRIngredientsController {
 
     /**
      * 作废功能
+     *
      * @param id
      * @return
      */
