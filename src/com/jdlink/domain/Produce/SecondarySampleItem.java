@@ -11,7 +11,7 @@ public class SecondarySampleItem {
 
     private String sampleinformationId;//主表编号
 
-    private int water; // PH值
+    private int water;
 
     private int scorchingRate;
 
