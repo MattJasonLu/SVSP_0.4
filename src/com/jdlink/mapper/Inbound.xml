@@ -133,10 +133,10 @@
                 #{inboundOrderItem.remarks},NOW(),#{inboundOrderItem.transferDraftId},#{inboundOrderItem.wastes.category},#{inboundOrderItem.laboratoryTest.laboratoryTestNumber});
 
                 insert  into t_pl_wasteinventory
-                (inboundOrderId,actualCount,unitPriceTax,wastesName,wareHouseId,clientId,wastesCode,inboundDate,processWay,handleCategory,creatorDate,boundType,transferDraftId,inboundOrderItemId,laboratoryTestId)
+                (inboundOrderId,actualCount,unitPriceTax,wastesName,wareHouseId,clientId,wastesCode,inboundDate,processWay,handleCategory,creatorDate,boundType,transferDraftId,inboundOrderItemId,laboratoryTestId,processWay)
                 values
                 (#{inboundOrderItem.inboundOrderId},#{inboundOrderItem.wastesAmount},#{inboundOrderItem.unitPriceTax},#{inboundOrderItem.wastes.name},#{wareHouse.wareHouseId}, #{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},#{inboundDate}
-                ,#{inboundOrderItem.processWay}, #{inboundOrderItem.handleCategory},#{createDate},#{boundType},#{inboundOrderItem.transferDraftId},#{inboundOrderItem.inboundOrderItemId},#{inboundOrderItem.laboratoryTest.laboratoryTestNumber});
+                ,#{inboundOrderItem.processWay}, #{inboundOrderItem.handleCategory},#{createDate},#{boundType},#{inboundOrderItem.transferDraftId},#{inboundOrderItem.inboundOrderItemId},#{inboundOrderItem.laboratoryTest.laboratoryTestNumber},#{inboundOrderItem.processWay});
             </foreach>
         </if>
     </insert>
