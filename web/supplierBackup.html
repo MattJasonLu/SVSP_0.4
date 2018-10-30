@@ -354,6 +354,8 @@
         page.count = countValue();                        //可选
         page.pageNumber = pageNumber;
         currentPage = pageNumber;          //当前页面
+        setPageCloneAfter(pageNumber);        // 重新设置页码
+        addPageClass(pageNumber);           // 设置页码标蓝
         //addClass("active");
         page.start = (pageNumber - 1) * page.count;
         if (!isSearch) {
@@ -434,6 +436,7 @@
                 $("#endPage").removeClass("disabled");
             }
             currentPage = pageNumber;
+            setPageCloneAfter(pageNumber);        // 重新设置页码
             addPageClass(pageNumber);           // 设置页码标蓝
             var page = {};
             page.count = countValue();//可选
@@ -512,6 +515,7 @@
                 if (result != undefined && result.status == "success") {
                     console.log(result);
                     setSupplierPageClone(result.data);
+                    setPageCloneAfter(pageNumber);        // 重新设置页码
                 } else {
                     console.log(result.message);
                 }
@@ -803,7 +807,7 @@
                     <li><a href="#">个人信息</a></li>
                     <li><a href="#">待办事项</a></li>
                     <li><a href="#" onclick="showLog();">登录日志</a></li>
-                    <li><a href="index.html">注销</a></li>
+                    <li><a href="admin.html">注销</a></li>
                 </ul>
             </li>
         </ul>

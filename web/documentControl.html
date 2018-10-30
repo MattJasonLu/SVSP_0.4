@@ -12,6 +12,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script src="js/produce/document.js"></script>
 </head>
 <body>
 <!--导航条-->
@@ -61,7 +62,7 @@
             <ul class="dropdown-menu">
                 <li><a href="#">个人信息</a></li>
                 <li><a href="#">待办事项</a></li>
-                <li><a href="index.html">注销</a></li>
+                <li><a href="admin.html">注销</a></li>
             </ul>
         </li>
     </ul>
@@ -97,27 +98,28 @@
         <div class="row">
             <div>
                 <ol class="breadcrumb">
-                    <li><a href="businessModel.html">处置管理</a></li>
-                    <li class="active">设备运行情况</li>
+                    <li><a href="businessModel.html">基础管理</a></li>
+                    <li class="active">受控文档表</li>
                 </ol>
             </div>
-            <h4 class="sub-header">设备管理</h4>
+            <h4 class="sub-header">受控文档表</h4>
         </div>
         <div class="row">
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" href="#" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                    <a class="btn btn-primary btn-xs" href="#" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 编辑</a>
+                    <a class="btn btn-primary btn-xs" href="#" onclick="newDocument()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                    <a class="btn btn-primary btn-xs" href="#" onclick="editDocument()"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 编辑</a>
+                    <a class="btn btn-primary btn-xs" href="#" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
                 <div class="input-group col-md-4 pull-right">
                     <input type="text" class="form-control" placeholder="搜索..." id="searchContent" onkeyup="">
                     <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="searchData();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
-                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
-                            <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
-                        </span>
+                        <a class="btn btn-default" onclick="searchData();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                        <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                        <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
+                    </span>
                 </div>
             </div>
         </div>
@@ -127,7 +129,7 @@
                 <div class="row">
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="1" class="col-sm-4 control-label"></label>
+                            <label for="1" class="col-sm-4 control-label">受控文档编号</label>
                             <div class="col-xs-7">
                                 <input type="text" onkeyup="" class="form-control" id="1" name="" placeholder="">
                             </div>
@@ -135,7 +137,7 @@
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="2" class="col-sm-4 control-label"></label>
+                            <label for="2" class="col-sm-4 control-label">系统关联代码</label>
                             <div class="col-xs-7">
                                 <input type="text" onkeyup="" class="form-control" id="2" name="" placeholder="">
                             </div>
@@ -143,7 +145,7 @@
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="3" class="col-sm-4 control-label"></label>
+                            <label for="3" class="col-sm-4 control-label">文档名称</label>
                             <div class="col-xs-7">
                                 <input type="text" onkeyup="" class="form-control" id="3" name="" placeholder="">
                             </div>
@@ -151,7 +153,7 @@
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="4" class="col-sm-4 control-label"></label>
+                            <label for="4" class="col-sm-4 control-label">所属公司</label>
                             <div class="col-xs-7">
                                 <input type="text" onkeyup="" class="form-control" id="4" name="" placeholder="">
                             </div>
@@ -170,14 +172,15 @@
                                 <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
                             </label>
                         </th>
-                        <th class="text-center"></th>
-                        <th class="text-center"></th>
-                        <th class="text-center"></th>
-                        <th class="text-center"></th>
-                        <th class="text-center"></th>
-                        <th class="text-center"></th>
-                        <th class="text-center"></th>
-                        <th class="text-center"></th>
+                        <th class="text-center">受控文档编号</th>
+                        <th class="text-center">文档名称</th>
+                        <th class="text-center">系统关联代码</th>
+                        <th class="text-center">所属公司</th>
+                        <th class="text-center">创建人</th>
+                        <th class="text-center">创建日期</th>
+                        <th class="text-center">生效否</th>
+                        <th class="text-center">备注</th>
+                        <th class="text-center">操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -194,9 +197,11 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
+                        <td class="text-center"></td>
                         <td class="text-center">
-                            <a href="#" id="function_299" onclick="" title=""><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                            <a href="#" id="function_353" onclick="" title=""><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
+                            <a href="#" onclick="viewDocument()" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                            <a href="#" onclick="" title="生效"><span class="glyphicon glyphicon-saved" aria-hidden="true"></span></a>
+                            <a href="#" onclick="" title="作废"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                         </td>
                     </tr>
                     </tbody>
@@ -206,6 +211,145 @@
     </div>
 </div>
 <div id="embed"></div>
+<!--查看模态框-->
+<div class="modal fade bs-example-modal-lg" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document" style="height: 80%">
+        <div class="modal-content">
+            <div class="modal-header">文档查看</div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="id" class="col-sm-4 control-label">受控文档编号</label>
+                            <div class="col-xs-7">
+                                <input type="text" onkeyup="" class="form-control focus" id="id" name="id" readonly placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="code" class="col-sm-4 control-label">系统关联代码</label>
+                            <div class="col-xs-7">
+                                <input type="text" onkeyup="" class="form-control focus" id="code" name="code" readonly placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="name" class="col-sm-4 control-label">文档名称</label>
+                            <div class="col-xs-7">
+                                <input type="text" onkeyup="" class="form-control focus" id="name" name="name" readonly placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="company" class="col-sm-4 control-label">所属公司</label>
+                            <div class="col-xs-7">
+                                <input type="text" onkeyup="" class="form-control focus" id="company" name="company" readonly placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input class="text-center" type="radio" name="radio" title="生效">生效
+                <input class="text-center" type="radio" name="radio" title="作废">作废
+                <textarea placeholder="备注" title="备注" style="resize: none;width: 100%;height: 100%" readonly></textarea>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary hidden-print" onclick="">保存</a>
+                <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--新增模态框-->
+<div class="modal fade bs-example-modal-lg" id="newModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document" style="height: 80%">
+        <div class="modal-content">
+            <div class="modal-header">文档查看</div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="id1" class="col-sm-4 control-label">受控文档编号</label>
+                            <div class="col-xs-7">
+                                <input type="text" onkeyup="" class="form-control focus" id="id1" name="id1" required placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="code1" class="col-sm-4 control-label">系统关联代码</label>
+                            <div class="col-xs-7">
+                                <input type="text" onkeyup="" class="form-control focus" id="code1" name="code1" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="name1" class="col-sm-4 control-label">文档名称</label>
+                            <div class="col-xs-7">
+                                <input type="text" onkeyup="" class="form-control focus" id="name1" name="name1" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="company1" class="col-sm-4 control-label">所属公司</label>
+                            <div class="col-xs-7">
+                                <input type="text" onkeyup="" class="form-control focus" id="company1" name="company1" required placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <textarea placeholder="备注" title="备注" style="resize: none;width: 100%;height: 100%"></textarea>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary hidden-print" onclick="" id="save1">保存</a>
+                <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--编辑模态框-->
+<div class="modal fade bs-example-modal-lg" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document" style="height: 80%">
+        <div class="modal-content">
+            <div class="modal-header">文档查看</div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="id2" class="col-sm-4 control-label">受控文档编号</label>
+                            <div class="col-xs-7">
+                                <input type="text" onkeyup="" class="form-control focus" id="id2" name="id2" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="code2" class="col-sm-4 control-label">系统关联代码</label>
+                            <div class="col-xs-7">
+                                <input type="text" onkeyup="" class="form-control focus" id="code2" name="code2" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="name2" class="col-sm-4 control-label">文档名称</label>
+                            <div class="col-xs-7">
+                                <input type="text" onkeyup="" class="form-control focus" id="name2" name="name2" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="company2" class="col-sm-4 control-label">所属公司</label>
+                            <div class="col-xs-7">
+                                <input type="text" onkeyup="" class="form-control focus" id="company2" name="company2" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input class="text-center" type="radio" name="radio" title="生效">生效
+                <input class="text-center" type="radio" name="radio" title="作废">作废
+                <textarea placeholder="备注" title="备注" style="resize: none;width: 100%;height: 100%"></textarea>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary hidden-print" onclick="" id="save2">保存</a>
+                <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script>
     $('#embed').load('embed/loginLogModal.html');

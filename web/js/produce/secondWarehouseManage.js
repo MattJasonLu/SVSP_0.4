@@ -154,6 +154,8 @@ function switchPage(pageNumber) {
     page.count = countValue();                        //可选
     page.pageNumber = pageNumber;
     currentPage = pageNumber;          //当前页面
+    setPageCloneAfter(pageNumber);        // 重新设置页码
+    addPageClass(pageNumber);           // 设置页码标蓝
     //addClass("active");
     page.start = (pageNumber - 1) * page.count;
     if (!isSearch) {
@@ -228,6 +230,8 @@ function inputSwitchPage() {
             $("#endPage").removeClass("disabled");
         }
         currentPage = pageNumber;
+        setPageCloneAfter(pageNumber);        // 重新设置页码
+        addPageClass(pageNumber);           // 设置页码标蓝
         var page = {};
         page.count = countValue();//可选
         page.pageNumber = pageNumber;
@@ -300,6 +304,7 @@ function loadPageList() {
             if (result !== undefined && result.status === "success") {
                 console.log(result);
                 setPageClone(result.data);
+                setPageCloneAfter(pageNumber);        // 重新设置页码
             } else {
                 console.log("fail: " + result);
             }
