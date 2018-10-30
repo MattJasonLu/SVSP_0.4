@@ -16,7 +16,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/sewageAnalysis.js"></script>
+    <script src="js/produce/sewageTestResults.js"></script>
     <script src="js/bootstrap/bootstrap-select.min.js"></script>
     <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
 </head>
@@ -33,7 +33,7 @@
     });
 
 </script>
-<body onload="loadPageSewageList();">
+<body onload="loadPageList();">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -146,8 +146,6 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" href="#" onclick="appointModal();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 预约登记</a>
-                    <a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                     <a class="btn btn-primary btn-xs" href="#" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
@@ -207,7 +205,6 @@
                     </label>
                 </th>
                 <th class="text-center">序号</th>
-                <th class="text-center">收样日期</th>
                 <th class="text-center">采样点</th>
                 <th class="text-center">pH</th>
                 <th class="text-center">CODCr mg/l</th>
@@ -215,7 +212,6 @@
                 <th class="text-center">氨氮 mg/l</th>
                 <th class="text-center">碳酸盐碱度</th>
                 <th class="text-center">备注</th>
-                <th class="text-center">操作</th>
             </tr>
             </thead>
             <tbody>
@@ -233,13 +229,6 @@
                 <td class="text-center"></td>
                 <td class="text-center"></td>
                 <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center">
-                    <a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                    <a href="#" onclick="setInvalid(this);" title="作废"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span></a>
-                    <a href="#" onclick="setSubmit(this);" title="确认收样"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
-                    <a href="#" onclick="rejection(this);" title="拒收"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
-                </td>
             </tr>
             </tbody>
         </table>
