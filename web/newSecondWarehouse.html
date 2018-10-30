@@ -224,7 +224,12 @@
                             <select style="width: 100px" class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="wastesCode" title="未选择"></select>
                         </td>
                         <td class="text-center small"><input style="width: 65px" class="form-control focus" name="wastesAmount" onkeyup="calculateTotalPrice(this);"></td>
-                        <td class="text-center small"><input style="width: 65px" class="form-control focus" name="wastesUnit"></td>
+                        <td class="text-center small">
+                            <select name="wastesUnit" title="">
+                                <option value="1">千克</option>
+                                <option value="2">吨</option>
+                            </select>
+                        </td>
                         <td class="text-center small"><input style="width: 65px" class="form-control focus" name="unitPriceTax" onkeyup="calculateTotalPrice(this);"></td>
                         <td class="text-center small" name="totalPrice" style="width: 65px"></td>
                         <td class="text-center small"><select name="processWay" class="form-control" style="width: 100px;"></select></td>
