@@ -127,8 +127,8 @@
         </if>
         <if test="inboundOrderItemList.size() > 0">
         <foreach collection="inboundOrderItemList" item="inboundOrderItem" index="index">
-            insert  into t_pl_wasteinventory(inboundOrderId,actualCount,clientId,wastesCode,inboundDate,processWay,handleCategory,creatorDate,boundType,transferDraftId,inboundOrderItemId,remarks,laboratoryTestId,formType,packageType)
-            values (#{inboundOrderItem.inboundOrderId},#{inboundOrderItem.wastesAmount}, #{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},#{inboundDate}
+            insert  into t_pl_wasteinventory(inboundOrderId,actualCount,unitPriceTax,wastesName,warseHouseId,clientId,wastesCode,inboundDate,processWay,handleCategory,creatorDate,boundType,transferDraftId,inboundOrderItemId,remarks,laboratoryTestId,formType,packageType)
+            values (#{inboundOrderItem.inboundOrderId},#{inboundOrderItem.wastesAmount},#{inboundOrderItem.unitPriceTax},#{inboundOrderItem.wastes.name},#{wareHouse.wareHouseId}, #{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},#{inboundDate}
             ,#{inboundOrderItem.processWay}, #{inboundOrderItem.handleCategory},#{createDate},#{boundType},#{inboundOrderItem.transferDraftId},#{inboundOrderItem.inboundOrderItemId},#{inboundOrderItem.remarks},#{inboundOrderItem.laboratoryTest.laboratoryTestNumber}, #{inboundOrderItem.formType}, #{inboundOrderItem.packageType});
         </foreach>
         </if>
@@ -347,5 +347,9 @@
         select t_pl_inboundorderitem.*,t_pl_inboundorder.inboundDate from t_pl_inboundorderitem join t_pl_inboundorder
         where
         t_pl_inboundorderitem.produceCompanyId =#{id} and  t_pl_inboundorderitem.inboundOrderId=t_pl_inboundorder.inboundOrderId;
+    </select>
+    
+    <select id="getInventoryByWastesNameAndWareHouse" resultType="int">
+        select count(*) from t_pl_wasteinventory where wastesName=#{wastesName} and warseHouseId in (select warseHouseId from t_pl_warehouse where warehouseName =#{wareHouseName});
     </select>
 </mapper>

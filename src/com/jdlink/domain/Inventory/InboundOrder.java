@@ -106,6 +106,18 @@ public class InboundOrder {
      * 关键字
      */
     private String keyword;
+    /**
+     * 检查库存是否存在
+     */
+    private String aid;
+
+    public String getAid() {
+        return aid;
+    }
+
+    public void setAid(String aid) {
+        this.aid = aid;
+    }
 
     public String getInboundOrderId() {
         return inboundOrderId;

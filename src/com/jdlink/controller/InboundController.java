@@ -621,6 +621,13 @@ public class InboundController {
             for (String key : map.keySet()) {
                 InboundOrder inboundOrder = map.get(key);
                 // 增加入库单
+//                for(InboundOrderItem inboundOrderItem : inboundOrder.getInboundOrderItemList()){
+//                    if(inboundService.getInventoryByWastesNameAndWareHouse(inboundOrderItem.getWastes().getName(),inboundOrder.getWareHouse().getWareHouseName()) > 0){
+//                         inboundOrder.setAid("exist");
+//                    }else{
+//                        inboundOrder.setAid("notExist");
+//                    }
+//                }
                 inboundService.addInboundOrder(inboundOrder);
             }
             res.put("status", "success");
