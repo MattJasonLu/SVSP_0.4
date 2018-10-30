@@ -148,6 +148,8 @@ function switchPage(pageNumber) {
     page.count = countValue();                        //可选
     page.pageNumber = pageNumber;
     currentPage = pageNumber;                   //当前页面
+    setPageCloneAfter(pageNumber);        // 重新设置页码
+    addPageClass(pageNumber);           // 设置页码标蓝
     page.contractIndex = contractIndex;
     //addClass("active");
     page.start = (pageNumber - 1) * page.count;
@@ -221,6 +223,7 @@ function inputSwitchPage() {
             $("#endPage").removeClass("disabled");
         }
         currentPage = pageNumber;
+        setPageCloneAfter(pageNumber);        // 重新设置页码
         addPageClass(pageNumber);           // 设置页码标蓝
         var page = {};
         page.count = countValue();//可选
@@ -317,6 +320,7 @@ function loadPageContractManageList() {
             if (result != undefined && result.status == "success") {
                 console.log(result);
                 setPageClone(result);
+                setPageCloneAfter(pageNumber);        // 重新设置页码
             } else {
                 console.log(result.message);
             }
