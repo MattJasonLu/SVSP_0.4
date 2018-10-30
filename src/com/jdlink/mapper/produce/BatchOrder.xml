@@ -32,9 +32,13 @@
     <select id="getwareHouse" resultType="WareHouse">
         select * from t_pl_warehouse where wareHouseId=#{wareHouseId};
     </select>
-    <!--配料单新增页面获取仓储信息-->
+    <!--配料单新增页面获取危废仓储信息-->
     <select id="getWasteInventoryListBat" resultMap="WasteInventoryListBatRM">
-        select * from t_pl_wasteinventory;
+        select * from t_pl_wasteinventory where boundType='WasteInbound';
+    </select>
+
+    <select id="getSecInventoryListBat" resultMap="WasteInventoryListBatRM">
+        select * from t_pl_wasteinventory where boundType='SecondaryInbound';
     </select>
 
     <select id="getWasteInventoryByInboundOrderId" resultMap="WasteInventoryListBatRM" parameterType="String">
@@ -88,13 +92,19 @@
         select * from t_pl_materialrequisitionorder where materialRequisitionId=#{materialRequisitionId}
     </select>
 
-    <!--添加出库信息-->
+    <!--添加出库信息==》危废-->
     <insert id="addOutBoundOrder" parameterType="OutboundOrder">
-        insert into  t_pl_outboundorder (outboundOrderId,clientId,wareHouseId,transferDraftId,wastesName,wasteCategory,outboundDate,creator,auditor,outboundNumber,equipment,nowTime,checkState)
+        insert into  t_pl_outboundorder (outboundOrderId,clientId,wareHouseId,transferDraftId,wastesName,wasteCategory,outboundDate,creator,auditor,outboundNumber,equipment,nowTime,checkState,boundType)
         values
-        (#{outboundOrderId},#{client.clientId},#{wareHouse.wareHouseId},#{transferDraftId},#{wastesName},#{wasteCategory},#{outboundDate},#{creator},#{auditor},#{outboundNumber},#{equipment},NOW(),'OutBounded')
+        (#{outboundOrderId},#{client.clientId},#{wareHouse.wareHouseId},#{transferDraftId},#{wastesName},#{wasteCategory},#{outboundDate},#{creator},#{auditor},#{outboundNumber},#{equipment},NOW(),'OutBounded','WasteOutbound')
     </insert>
 
+    <!--添加出库信息==》次生-->
+    <insert id="addSecondary" parameterType="OutboundOrder">
+        insert into  t_pl_outboundorder (outboundOrderId,clientId,wareHouseId,transferDraftId,wastesName,wasteCategory,outboundDate,creator,auditor,outboundNumber,equipment,nowTime,checkState,boundType,processWay,handelCategory)
+        values
+        (#{outboundOrderId},#{client.clientId},#{wareHouse.wareHouseId},#{transferDraftId},#{wastesName},#{wasteCategory},#{outboundDate},#{creator},#{auditor},#{outboundNumber},#{equipment},NOW(),'OutBounded','SecondaryOutbound',#{processWay},#{handelCategory})
+    </insert>
 
     <resultMap id="WastesOutBoundRM" type="OutboundOrder">
         <association property="client" column="clientId" select="getClientMar"></association>

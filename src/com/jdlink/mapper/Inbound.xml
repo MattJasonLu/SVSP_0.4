@@ -200,14 +200,10 @@
                 #{inboundOrderItem.laboratoryTest.fluorineContentAverage},NOW());
 
                 insert  into t_pl_wasteinventory
-                (inboundOrderId,actualCount,clientId,wastesName, wastesCode,inboundDate,processWay,handleCategory,
-                creatorDate,boundType,transferDraftId,inboundOrderItemId,laboratoryTestId,wastesCategory,unitPriceTax)
+                (inboundOrderId,actualCount,unitPriceTax,wastesName,wareHouseId,clientId,wastesCode,inboundDate,processWay,handleCategory,creatorDate,boundType,transferDraftId,inboundOrderItemId,laboratoryTestId)
                 values
-                (#{inboundOrderId},#{inboundOrderItem.wastesAmount}, #{inboundOrderItem.produceCompany.clientId},
-                #{inboundOrderItem.wastes.name}, #{inboundOrderItem.wastes.wastesId},NOW(),#{inboundOrderItem.processWay},
-                #{inboundOrderItem.handleCategory},NOW(),#{boundType},#{inboundOrderItem.transferDraftId},
-                #{inboundOrderItem.inboundOrderItemId},#{inboundOrderItem.laboratoryTest.laboratoryTestNumber},
-                #{inboundOrderItem.laboratoryTest.wastesName},#{inboundOrderItem.unitPriceTax});
+                (#{inboundOrderItem.inboundOrderId},#{inboundOrderItem.wastesAmount},#{inboundOrderItem.unitPriceTax},#{inboundOrderItem.wastes.name},#{wareHouse.wareHouseId}, #{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},#{inboundDate}
+                ,#{inboundOrderItem.processWay}, #{inboundOrderItem.handleCategory},#{createDate},#{boundType},#{inboundOrderItem.transferDraftId},#{inboundOrderItem.inboundOrderItemId},#{inboundOrderItem.laboratoryTest.laboratoryTestNumber});
 
                 insert into t_pl_secondaryinto
                 (clientId,wastesCode,handleCategory,processWay,remarks,nowTime,transferDraftId,wastesCategory,laboratoryTestId)
