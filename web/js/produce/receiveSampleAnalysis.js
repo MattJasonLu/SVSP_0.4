@@ -305,6 +305,7 @@ function loadPageList() {
             if (result !== undefined && result.status === "success") {
                 console.log(result);
                 setPageClone(result.data);
+                setPageCloneAfter(pageNumber);        // 重新设置页码
             } else {
                 console.log("fail: " + result);
             }

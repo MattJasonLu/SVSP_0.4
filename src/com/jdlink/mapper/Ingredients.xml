@@ -139,10 +139,6 @@
                and equipment = #{equipment};
             </if>
         </where>
-
-        SELECT * FROM t_pr_ingredients_in
-            <![CDATA[WHERE DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')
-            AND DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')]]>
     </select>
 
     <select id="getAmountItems" parameterType="Ingredients" resultType="int">

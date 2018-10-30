@@ -139,6 +139,8 @@ function switchPage(pageNumber) {
     page.count = countValue();                        //可选
     page.pageNumber = pageNumber;
     currentPage = pageNumber;          //当前页面
+    setPageCloneAfter(pageNumber);        // 重新设置页码
+    addPageClass(pageNumber);           // 设置页码标蓝
     //addClass("active");
     page.start = (pageNumber - 1) * page.count;
     if (!isSearch) { //分页用的
@@ -208,7 +210,8 @@ function inputSwitchPage() {
             $("#endPage").removeClass("disabled");
         }
         currentPage = pageNumber;
-        addPageClass(pageNumber);
+        setPageCloneAfter(pageNumber);        // 重新设置页码
+        addPageClass(pageNumber);           // 设置页码标蓝
         var page = {};
         page.count = countValue();//可选
         page.pageNumber = pageNumber;
@@ -418,10 +421,9 @@ function getMontnProcurement() {
                // console.log(result)
                 //设置月度采购申请表数据
                 setPageClone(result);
-
+                setPageCloneAfter(pageNumber);        // 重新设置页码
             }
             else {
-
                 alert(result.message);
             }
         },

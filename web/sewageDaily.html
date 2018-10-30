@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>污水送样</title><!---->
+    <title>污水分析日报</title> <!---->
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
@@ -45,93 +45,32 @@
             </li>
         </ul>
     </div>
-    <div class="container navbar-left" style="width: 800px;">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
-            <ul class="nav navbar-nav">
-                <li><a href="receiveManagement.html">首页</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">转移管理<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="transportPlanList.html">运输计划单</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="transferDraft.html">转移联单</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown active">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">化验管理<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-submenu">
-                            <a href="">送样登记</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="receiveSampleInfo.html">市场部送样</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="sampleInfoRegiter.html">仓储部送样</a></li>
-                                <li role="separator" class="divider"></li><!---->
-                                <li class="dropdown-submenu">
-                                    <a href="">生产工艺控制送样</a>
-                                    <ul class="dropdown-menu">
-                                        <li class="dropdown-submenu"><a href="">水质送样</a>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="sewageAnalysis.html">污水送样</a></li>
-                                                <li role="separator" class="divider"></li>
-                                                <li><a href="softWaterAnalysis.html">软水送样</a></li>
-                                            </ul>
-                                        </li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a href="secondaryAnalysis.html">次生送样</a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a href="">其他</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li role="separator" class="divider"></li>
-                        <li class="dropdown-submenu">
-                            <a href="testResults.html">化验结果</a><ul class="dropdown-menu">
-                            <li><a href="receiveSampleAnalysis.html">市场部化验</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="sampleInfoAnalysis.html">仓储部化验</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li class="dropdown-submenu">
-                                <a href="">生产工艺控制化验</a>
-                                <ul class="dropdown-menu">
-                                    <li class="dropdown-submenu"><a href="">水质化验</a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="sewageTestResults.html">污水化验</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="softWaterTestResults.html">软水化验</a></li>
-                                        </ul>
-                                    </li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="secondaryTestResults.html">次生化验</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="">其他</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">库存管理<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-submenu">
-                            <a href="#">入库管理</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="warehouseManage.html">危废入库</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="secondWarehouseManage.html">次生入库</a></li>
-                            </ul>
-                        </li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="singlePoundsManage1.html">磅单管理</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div><!--/.nav-collapse -->
+    <div class="container navbar-left" style="width: 920px;">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
+        <ul class="nav navbar-nav">
+            <li><a href="reportManagement.html">首页</a></li>
+            <li><a href="productionDaily.html">生产日报</a></li>
+            <li class="dropdown active">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">质量日报<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="wastesDaily.html">危废入场分析日报</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="secondaryDaily.html">次生废物分析日报</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="sewageDaily.html">污水分析日报</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="softWaterDaily.html">软水分析日报</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="summaryTable.html">危废预准入分析汇总表</a></li>
+                </ul>
+            </li>
+            <li><a href="assessment.html">业务员考核</a></li>
+            <li><a href="salesmanContract1.html" id="function_56" onclick="checkAuthority($(this))">业务员管理报表</a></li>
+        </ul>
+    </div><!--/.nav-collapse -->
     </div>
     <ul class="nav navbar-nav navbar-right">
         <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
@@ -162,7 +101,7 @@
                 <li><a class="withripple" href="compatibilityPlan.html"><span class="glyphicon glyphicon-list"
                                                                               aria-hidden="true"></span><span
                         class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li class="active"><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in"
+                <li><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in"
                                                                               aria-hidden="true"></span><span
                         class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
                 <li><a class="withripple" href="storageManagement.html"><span class="glyphicon glyphicon-save"
@@ -180,7 +119,7 @@
                 <li><a class="withripple" href="procurementManagement.html"><span
                         class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span
                         class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="reportManagement.html"><span
+                <li class="active"><a class="withripple" href="reportManagement.html"><span
                         class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span
                         class="iright pull-right">&gt;</span></a></li>
                 <li><a class="withripple" href="basicData.html"><span class="glyphicon glyphicon-signal"
@@ -196,40 +135,28 @@
         <div class="row">
             <div>
                 <ol class="breadcrumb">
-                    <li><a href="receiveManagement.html">接收管理</a></li>
-                    <li><a href="#">送样登记</a></li>
-                    <li><a href="#">生产工艺控制送样</a></li>
-                    <li><a href="#">水质送样</a></li>
-                    <li class="active">污水送样</li>
+                    <li><a href="reportManagement.html">报表管理</a></li>
+                    <li><a href="#">质量日报</a></li>
+                    <li class="active">污水分析日报</li>
                 </ol>
             </div>
-            <h4 class="sub-header"><span class="months"></span>污水送样</h4>
+            <h4 class="sub-header"><span class="months"></span>污水分析日报</h4>
         </div>
         <div class="row">
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" href="#" onclick="appointModal();"><span
-                            class="glyphicon glyphicon-plus" aria-hidden="true"></span> 预约登记</a>
-
-                    <a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose();"><span
-                            class="glyphicon glyphicon-arrow-down"
-                            aria-hidden="true"></span> 导入</a>
-                    <a class="btn btn-primary btn-xs" href="#" onclick="exportExcel()"><span
-                            class="glyphicon glyphicon-arrow-up"
-                            aria-hidden="true"></span> 导出</a>
+                    <a class="btn btn-primary btn-xs" href="#" onclick="appointModal();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 预约登记</a>
+                    <a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                    <a class="btn btn-primary btn-xs" href="#" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
                 <div class="input-group col-md-4 pull-right" style="margin-right: 23px;">
                     <input type="text" class="form-control" placeholder="搜索..." id="searchContent" onkeydown="enterSearch()">
                     <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="searchSewage();"><span
-                                    class="glyphicon glyphicon-search"
-                                    aria-hidden="true"></span> 查询</a>
-                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span
-                                    class="glyphicon glyphicon-search" aria-hidden="true"></span> 高级查询</a>
-                            <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog"
-                                                                                aria-hidden="true"></span> 重置</a>
+                        <a class="btn btn-default" onclick="searchSewage();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                        <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 高级查询</a>
+                        <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
                     </span>
                 </div>
             </div>
@@ -279,12 +206,15 @@
                         <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
                     </label>
                 </th>
-                <th class="text-center">预约单号</th>
+                <th class="text-center">序号</th>
+                <th class="text-center">收样日期</th>
                 <th class="text-center">采样点</th>
-                <th class="text-center">检测项目</th>
-                <th class="text-center">送样人</th>
-                <th class="text-center">签收人</th>
-                <th class="text-center">状态</th>
+                <th class="text-center">pH</th>
+                <th class="text-center">CODCr mg/l</th>
+                <th class="text-center">BOD5 mg/l</th>
+                <th class="text-center">氨氮 mg/l</th>
+                <th class="text-center">碳酸盐碱度</th>
+                <th class="text-center">备注</th>
                 <th class="text-center">操作</th>
             </tr>
             </thead>
@@ -301,11 +231,12 @@
                 <td class="text-center"></td>
                 <td class="text-center"></td>
                 <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
                 <td class="text-center">
                     <a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                    <a title="修改" href="#" onclick="adjust(this)"><span class="glyphicon glyphicon-pencil"
-                                                                        aria-hidden="true"></span> </a>
-                    <!--<a href="#" onclick="setInvalid(this);" title="作废"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span></a>-->
+                    <a href="#" onclick="setInvalid(this);" title="作废"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span></a>
                     <a href="#" onclick="setSubmit(this);" title="确认收样"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
                     <a href="#" onclick="rejection(this);" title="拒收"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
                 </td>
@@ -391,27 +322,30 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label for="reservationId" class="col-sm-4 control-label">预约单号</label>
+                        <label for="model-companyCode" class="col-sm-4 control-label">公司名称</label>
                         <div class="col-sm-6">
-                       <input type="text" class="form-control" id="reservationId"  name="signer" required>
-                        </div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="sendingPerson" class="col-sm-4 control-label">送样人</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="sendingPerson" name="signer" required>
+                            <select class="selectpicker form-control" data-live-search="true"
+                                    data-live-search-placeholder="搜索..." id="model-companyCode"
+                                    name="model-companyCode">
+                            </select>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-6">
-                        <label for="sendingPerson" class="col-sm-4 control-label">采样点</label>
+                    <div class="form-group col-md-4">
+                        <label for="sendingPerson" class="col-sm-5 control-label">送样人</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="sendingPerson" name="signer" required>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="sendingPerson" class="col-sm-5 control-label">采样点</label>
                         <div class="col-sm-6">
                             <input type="text" class="form-control" id="address" name="signer" title="">
                         </div>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="laboratorySignatory" class="col-sm-4 control-label">化验室签收人</label>
+                    <div class="form-group col-md-4">
+                        <label for="laboratorySignatory" class="col-sm-6 control-label">化验室签收人</label>
                         <div class="col-sm-6">
                             <input type="text" class="form-control" id="laboratorySignatory" name="signer">
                         </div>
@@ -422,9 +356,8 @@
                     <thead style="border:none">
                     <tr>
                         <th class="text-center">序号</th>
-                        <!--<th class="text-center">危废代码</th>-->
-                        <!--<th class="text-center">危废名称</th>-->
-                        <th class="text-center" hidden>联单编号</th>
+                        <th class="text-center">危废代码</th>
+                        <th class="text-center">危废名称</th>
                         <th class="text-center">检测项目</th>
                         <!--<th class="text-center">增加项目</th>-->
                     </tr>
@@ -432,12 +365,11 @@
                     <tbody>
                     <tr id="addClone" class="myclass">
                         <td class="text-center">1</td>
-                        <td class="text-center" hidden><input class="form-control"></td>
-                        <!--<td class="text-center"><select  class="selectpicker form-control" data-live-search="true"-->
-                                                         <!--data-live-search-placeholder="搜索..." id="wastesCode"-->
-                                                         <!--name="wastesCode">-->
-                        <!--</select></td>-->
-                        <!--<td class="text-center"><input class="form-control"></td>-->
+                        <td class="text-center"><select  class="selectpicker form-control" data-live-search="true"
+                                                         data-live-search-placeholder="搜索..." id="wastesCode"
+                                                         name="wastesCode">
+                        </select></td>
+                        <td class="text-center"><input class="form-control"></td>
                         <td class="text-center">
                             <label>
                             <input type="checkbox" name="wastesList[0].isPH"
@@ -451,30 +383,23 @@
                                 <input type="checkbox" name="wastesList[0].isWater"
                                        id="wastesList[0].isBOD5" value="true">BOD5
                             </label>
-                            <!--<label>-->
-                                <!--<input type="checkbox" name="wastesList[0].isWater"-->
-                                       <!--id="wastesList[0].isO2" value="true">碳酸盐碱度-->
-                            <!--</label>-->
+
                             <label>
                                 <input type="checkbox" name="wastesList[0].isWater"
-                                       id="wastesList[0].isN2" value="true">氨氮
+                                       id="wastesList[0].isO2" value="true">氧
                             </label>
-                            <!--<label>-->
-                                <!--<input type="checkbox" name="wastesList[0].isWater"-->
-                                       <!--id="wastesList[0].isLye" value="true">重碳酸盐碱度-->
-                            <!--</label>-->
+
                             <label>
                                 <input type="checkbox" name="wastesList[0].isWater"
-                                       value="true">总氮
+                                       id="wastesList[0].isN2" value="true">氮
                             </label>
+
                             <label>
                                 <input type="checkbox" name="wastesList[0].isWater"
-                                       value="true">总磷
+                                       id="wastesList[0].isLye" value="true">碱液
                             </label>
-                            <label>
-                                <input type="checkbox" name="wastesList[0].isWater"
-                                       value="true">碱度
-                            </label>
+
+
                             </td>
                     </tr>
                     <tr id="plusBtn">
@@ -483,7 +408,7 @@
                         </td>
                         <td></td>
                         <td></td>
-                        <!--<td></td>-->
+                        <td></td>
                     </tr>
                     </tbody>
                 </table>
@@ -495,124 +420,6 @@
 
         </div>
     </div>
-</div>
-<!-- 预约登记模态框 修改-->
-<div class="modal fade bs-example-modal-lg" id="appointModa3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document" style="width: 35%">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">预约登记修改</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label for="reservationId" class="col-sm-4 control-label">预约单号</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="reservationId2"  name="signer" readonly>
-                        </div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="sendingPerson" class="col-sm-4 control-label">送样人</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="sendingPerson2" name="signer" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label for="sendingPerson" class="col-sm-4 control-label">采样点</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="address2" name="signer" title="">
-                        </div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="laboratorySignatory" class="col-sm-4 control-label">化验室签收人</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="laboratorySignatory2" name="signer">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <table class="table table-bordered">
-                <thead style="border:none">
-                <tr>
-                    <th class="text-center">序号</th>
-                    <!--<th class="text-center">危废代码</th>-->
-                    <!--<th class="text-center">危废名称</th>-->
-                    <th class="text-center" hidden>联单编号</th>
-                    <th class="text-center">检测项目</th>
-                    <!--<th class="text-center">增加项目</th>-->
-                </tr>
-                </thead>
-                <tbody>
-                <tr id="addClone1" class="myclass2">
-                    <td class="text-center">1</td>
-                    <td class="text-center" hidden><input class="form-control"></td>
-                    <!--<td class="text-center"><select  class="selectpicker form-control" data-live-search="true"-->
-                    <!--data-live-search-placeholder="搜索..." id="wastesCode"-->
-                    <!--name="wastesCode">-->
-                    <!--</select></td>-->
-                    <!--<td class="text-center"><input class="form-control"></td>-->
-                    <td class="text-center">
-                        <label>
-                            <input type="checkbox" name="wastesList[0].isPH"
-                                   value="true">PH
-                        </label>
-                        <label>
-                            <input type="checkbox" name="wastesList[0].isAsh"
-                                   value="true">COD
-                        </label>
-                        <label>
-                            <input type="checkbox" name="wastesList[0].isWater"
-                                   value="true">BOD5
-                        </label>
-                        <!--<label>-->
-                        <!--<input type="checkbox" name="wastesList[0].isWater"-->
-                        <!--id="wastesList[0].isO2" value="true">碳酸盐碱度-->
-                        <!--</label>-->
-                        <label>
-                            <input type="checkbox" name="wastesList[0].isWater"
-                                   value="true">氨氮
-                        </label>
-                        <!--<label>-->
-                        <!--<input type="checkbox" name="wastesList[0].isWater"-->
-                        <!--id="wastesList[0].isLye" value="true">重碳酸盐碱度-->
-                        <!--</label>-->
-                        <label>
-                            <input type="checkbox" name="wastesList[0].isWater"
-                                   value="true">总氮
-                        </label>
-                        <label>
-                            <input type="checkbox" name="wastesList[0].isWater"
-                                   value="true">总磷
-                        </label>
-                        <label>
-                            <input type="checkbox" name="wastesList[0].isWater"
-                                   value="true">碱度
-                        </label>
-                    </td>
-                </tr>
-                <tr id="plusBtn1">
-                    <td>
-                        <a class="btn btn-default btn-xs" onclick="addNewLine1(this);"><span class="glyphicon glyphicon-plus"></span></a>
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <!--<td></td>-->
-                </tr>
-                </tbody>
-            </table>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" onclick="adjustConfir();">确认修改</button>
-            </div>
-        </div>
-
-    </div>
-</div>
 </div>
 
 <!--查看-->
@@ -628,27 +435,35 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label for="reservationId" class="col-sm-4 control-label">预约单号</label>
-                       <span id="reservationId1"></span>
-                        </div>
-                    <div class="form-group col-md-6">
-                        <label for="sendingPerson" class="col-sm-4 control-label">送样人</label>
+                        <label for="model-companyCode" class="col-sm-6 control-label">公司名称</label>
                         <div class="col-sm-6">
-                            <span id="sendingPerson1"></span>
+                            <input class="form-control focus" id="companyName">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="laboratorySignatory" class="col-sm-6 control-label">化验室签收人</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="signer" id="signer">
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-6">
-                        <label for="sendingPerson" class="col-sm-4 control-label">采样点</label>
+                    <div class="form-group col-md-4">
+                        <label for="sendingPerson" class="col-sm-6 control-label">送样人</label>
                         <div class="col-sm-6">
-                            <span id="address1"></span>
+                            <input type="text" class="form-control" id="sendingPerson2" name="signer" required>
                         </div>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="laboratorySignatory" class="col-sm-4 control-label">化验室签收人</label>
+                    <div class="form-group col-md-4">
+                        <label for="sendingPerson" class="col-sm-6 control-label">采样点</label>
                         <div class="col-sm-6">
-                            <span id="laboratorySignatory1"></span>
+                            <input type="text" class="form-control" id="address2" name="signer" >
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="sendingPerson" class="col-sm-6 control-label">预约单号</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="id" >
                         </div>
                     </div>
                 </div>
@@ -657,9 +472,8 @@
                 <thead style="border:none">
                 <tr>
                     <th class="text-center">序号</th>
-                    <!--<th class="text-center">危废代码</th>-->
-                    <!--<th class="text-center">危废名称</th>-->
-                    <th class="text-center hidden">联单编号</th>
+                    <th class="text-center">危废代码</th>
+                    <th class="text-center">危废名称</th>
                     <th class="text-center">检测项目</th>
                     <!--<th class="text-center">增加项目</th>-->
                 </tr>
@@ -667,9 +481,8 @@
                 <tbody>
                 <tr id='clonrTr' class="myclass1">
                     <td class="text-center"></td>
-                    <td class="text-center hidden"></td>
-                    <!--<td class="text-center"></td>-->
-                    <!--<td class="text-center"></td>-->
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
                     <td class="text-center"></td>
                 </tr>
                 </tbody>

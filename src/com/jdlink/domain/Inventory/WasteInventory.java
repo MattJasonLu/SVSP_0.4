@@ -68,7 +68,8 @@ public class WasteInventory {
     /**
      * 危废类别
      */
-    private String   wastesCode;
+  
+    private String  wastesCategory;
 
     /**
      * 进料方式

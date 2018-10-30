@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>危废入场分析</title>
+    <title>危废入场分析日报</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -30,64 +30,30 @@
                 </li>
             </ul>
         </div>
-        <div class="container navbar-left" style="width: 800px;">
+        <div class="container navbar-left" style="width: 920px;">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
             </div>
             <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
                 <ul class="nav navbar-nav">
-                    <li><a href="receiveManagement.html">首页</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">转移管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="transportPlanList.html">运输计划单</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="transferDraft.html">转移联单</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="reportManagement.html">首页</a></li>
+                    <li><a href="productionDaily.html">生产日报</a></li>
                     <li class="dropdown active">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">化验管理<span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">质量日报<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li class="dropdown-submenu">
-                                <a href="">仓储部预约送样</a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="sampleInfoRegiter.html">仓储部送样</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="">水质送样</a></li>
-                                </ul>
-                            </li>
+                            <li><a href="wastesDaily.html">危废入场分析日报</a></li>
                             <li role="separator" class="divider"></li>
-                            <li class="dropdown-submenu">
-                                <a href="testResults.html">化验结果</a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="wastesAnalysis1.html">预准入分析</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="wastesAnalysis.html">入场分析</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="sewageAnalysis.html">污水</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="softWaterAnalysis.html">软水</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="secondaryAnalysis.html">次生</a></li>
-                                </ul>
-                            </li>
+                            <li><a href="secondaryDaily.html">次生废物分析日报</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="sewageDaily.html">污水分析日报</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="softWaterDaily.html">软水分析日报</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="summaryTable.html">危废预准入分析汇总表</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">库存管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li class="dropdown-submenu">
-                                <a href="#">入库管理</a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="warehouseManage.html">危废入库</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="secondWarehouseManage.html">次生入库</a></li>
-                                </ul>
-                            </li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="singlePoundsManage1.html">磅单管理</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="assessment.html">业务员考核</a></li>
+                    <li><a href="salesmanContract1.html" id="function_56" onclick="checkAuthority($(this))">业务员管理报表</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -113,13 +79,13 @@
                     <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
                     <li><a class="withripple" href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="compatibilityPlan.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li class="active"><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="storageManagement.html"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="preprocessingManagement.html"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="dispositionManagement.html"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="secondaryManagement.html"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="procurementManagement.html"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li><a class="withripple" href="reportManagement.html"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li class="active"><a class="withripple" href="reportManagement.html"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="basicData.html"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
                 </ul>
@@ -130,13 +96,12 @@
             <div class="row">
                 <div>
                     <ol class="breadcrumb">
-                        <li><a href="#">接收管理</a></li>
-                        <li>化验管理</li>
-                        <li>化验结果</li>
-                        <li class="active">危废入场分析</li>
+                        <li><a href="reportManagement.html">报表管理</a></li>
+                        <li><a href="#">质量日报</a></li>
+                        <li class="active">危废入场分析日报</li>
                     </ol>
                 </div>
-                <h4 class="sub-header"><span class="months"></span>危废入场分析</h4>
+                <h4 class="sub-header"><span class="months"></span>危废入场分析日报</h4>
             </div>
             <!--操作-->
             <div class="pull-left col-md-6">
@@ -194,15 +159,10 @@
                             <div class="form-group">
                                 <label for="search-wastesName" class="col-sm-5 control-label">废物名称</label>
                                 <div class="col-xs-6">
-                                    <input type="text" class="form-control" id="search-wastesName"
-                                           name="search-wastesName" placeholder="" onkeyup="enterSearch()">
+                                    <input type="text" class="form-control" id="search-wastesName" name="search-wastesName" placeholder="" onkeyup="enterSearch()">
                                 </div>
                             </div>
-
                         </div>
-
-
-
                     </div>
                     <div class="row">
                         <div class="form-horizontal col-md-3">
@@ -233,31 +193,32 @@
             <br>
             <table class="table table-striped table-hover table-condensed">
                 <thead>
-                <th class="text-center">
-                    <label>
-                        <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
-                    </label>
-                </th>
-                        <th class="text-center">序号</th>
-                        <th class="text-center">收样日期</th>
-                        <th class="text-center">联单号码</th>
-                        <th class="text-center">产废单位</th>
-                        <th class="text-center">废物名称</th>
-                        <th class="text-center">废物类别</th>
-                        <th class="text-center">进料方式</th>
-                        <th class="text-center">pH</th>
-                        <th class="text-center">热值kal/kg</th>
-                        <th class="text-center">水分%</th>
-                        <th class="text-center">灰分%</th>
-                        <th class="text-center">氟含量%</th>
-                        <th class="text-center">氯含量%</th>
-                        <th class="text-center">硫含量%</th>
-                        <th class="text-center">磷含量%</th>
-                        <th class="text-center">闪点℃</th>
-                        <th class="text-center">粘度mpa·s</th>
-                        <th class="text-center">熔融温度℃</th>
-                        <th class="text-center">备注</th>
-
+                <tr>
+                    <th class="text-center">
+                        <label>
+                            <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
+                        </label>
+                    </th>
+                    <th class="text-center">序号</th>
+                    <th class="text-center">收样日期</th>
+                    <th class="text-center">联单号码</th>
+                    <th class="text-center">产废单位</th>
+                    <th class="text-center">废物名称</th>
+                    <th class="text-center">废物类别</th>
+                    <th class="text-center">废物形态</th>
+                    <th class="text-center">pH</th>
+                    <th class="text-center">热值kal/kg</th>
+                    <th class="text-center">灰分%</th>
+                    <th class="text-center">水分%</th>
+                    <th class="text-center">氟含量%</th>
+                    <th class="text-center">氯含量%</th>
+                    <th class="text-center">硫含量%</th>
+                    <th class="text-center">磷含量%</th>
+                    <th class="text-center">闪点℃</th>
+                    <th class="text-center">粘度mpa·s</th>
+                    <th class="text-center">熔融温度℃</th>
+                    <th class="text-center">备注</th>
+                </tr>
                 </thead>
                 <tbody id="tbody1">
                     <tr id="cloneTr" class="myclass">
