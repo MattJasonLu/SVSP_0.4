@@ -5,6 +5,7 @@ import com.jdlink.domain.Client;
 import com.jdlink.domain.Inventory.BoundType;
 import com.jdlink.domain.Inventory.InboundOrderItem;
 import com.jdlink.domain.Inventory.OutboundOrder;
+import com.jdlink.domain.Inventory.WasteInventory;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.service.*;
@@ -54,6 +55,8 @@ public class ProductionDailyController {
     ProductionDailyService productionDailyService;
     @Autowired
     ClientService clientService;
+    @Autowired
+    WasteInventoryService wasteInventoryService;
 
     /**
      * 获取总记录数
@@ -605,6 +608,8 @@ public class ProductionDailyController {
         productionDaily.setOutboundOrderPrepare2List(outboundOrderTodayPrepare2List);
         productionDaily.setOutboundOrderThirdList(outboundOrderTodayThirdList);
 
+
+
         // 辅料备件消耗
         // 医疗蒸煮
         float disposalNaclo = 0f;
@@ -921,6 +926,37 @@ public class ProductionDailyController {
         productionDaily.setTodayOutboundAuxiliaryElectricQuantity(productionDaily.getTodayDisposalMedicalAuxiliaryElectricQuantity() + productionDaily.getTodayDisposalSecondaryAuxiliaryElectricQuantity() +
                 productionDaily.getTodayDisposalThirdAuxiliaryElectricQuantity() + productionDaily.getTodayDisposalTowerElectricQuantity());
 
+        productionDaily.setLimitDisposalMedicalAuxiliaryNaclo((float) 0.0004);
+        productionDaily.setLimitDisposalMedicalAuxiliaryDeodorant((float) 0.0052);
+        productionDaily.setLimitDisposalMedicalAuxiliaryMedicalWastesBag((float) 2.7561);
+        productionDaily.setLimitDisposalMedicalAuxiliaryMedicalPackingPlasticBag((float) 0.2726);
+        productionDaily.setLimitDisposalMedicalAuxiliaryCollectionBox((float) 0.4089);
+        productionDaily.setLimitDisposalMedicalAuxiliarySteam((float) 0.19);
+        productionDaily.setLimitDisposalMedicalAuxiliaryIndustrialWater((float) 0.18);
+        productionDaily.setLimitDisposalMedicalAuxiliaryElectricQuantity((float) 12.55);
+        productionDaily.setLimitDisposalSecondaryAuxiliaryCalcareousLime((float) 0.03);
+        productionDaily.setLimitDisposalSecondaryAuxiliaryCommonActivatedCarbon((float) 0.0002);
+        productionDaily.setLimitDisposalSecondaryAuxiliaryActivatedCarbon((float) 0.0001);
+        productionDaily.setLimitDisposalSecondaryAuxiliaryLye((float) 0.0585);
+        productionDaily.setLimitDisposalSecondaryAuxiliarySalt((float) 0.0004);
+        productionDaily.setLimitDisposalSecondaryAuxiliarySlagBag((float) 0.2726);
+        productionDaily.setLimitDisposalSecondaryAuxiliaryFlyAshBag((float) 0.1315);
+        productionDaily.setLimitDisposalSecondaryAuxiliaryDieselOil((float) 0.01);
+        productionDaily.setLimitDisposalSecondaryAuxiliaryIndustrialWater((float) 118.5);
+        productionDaily.setLimitDisposalSecondaryAuxiliaryElectricQuantity((float) 3.42);
+        productionDaily.setLimitDisposalSecondaryAuxiliaryWoodenPallets((float) 0.01);
+        productionDaily.setLimitDisposalThirdAuxiliaryCalcareousLime((float) 0.0203);
+        productionDaily.setLimitDisposalThirdAuxiliaryCommonActivatedCarbon((float) 0.0002);
+        productionDaily.setLimitDisposalThirdAuxiliaryActivatedCarbon((float) 0.0021);
+        productionDaily.setLimitDisposalThirdAuxiliaryLye((float) 0.0219);
+        productionDaily.setLimitDisposalThirdAuxiliaryWoodenPallets((float) 0.0055);
+        productionDaily.setLimitDisposalThirdAuxiliarySlagBag((float) 0.2726);
+        productionDaily.setLimitDisposalThirdAuxiliaryFlyAshBag((float) 0.0709);
+        productionDaily.setLimitDisposalThirdAuxiliarySteam((float) 10);
+        productionDaily.setLimitDisposalThirdAuxiliaryElectricQuantity((float) 135);
+        productionDaily.setLimitDisposalThirdAuxiliaryIndustrialWater((float) 2.73);
+
+
         // 运行情况统计
         float equipmentA2RunningTime = 0f;
         float equipmentB2RunningTime = 0f;
@@ -937,13 +973,13 @@ public class ProductionDailyController {
                 case "B2":
                     equipmentB2RunningTime += equipmentItem.getRunningTime();
                     break;
-                case "Prepare2":
+                case "备2":
                     equipmentPrepare2RunningTime += equipmentItem.getRunningTime();
                     break;
-                case "SecondaryTwoCombustionChamber":
+                case "二期二燃室":
                     equipmentSecondRunningTime += equipmentItem.getRunningTime();
                     break;
-                case "ThirdPhasePretreatmentSystem":
+                case "三期预处理系统":
                     equipmentThirdRunningTime += equipmentItem.getRunningTime();
                     break;
             }
@@ -1082,7 +1118,8 @@ public class ProductionDailyController {
         productionDaily.setTodayInboundAuxiliaryIndustrialWater(todayInboundAuxiliaryIndustrialWater);
         productionDaily.setTodayInboundAuxiliaryTapWaterQuantity(todayInboundAuxiliaryTapWaterQuantity);
 
-        List<OutboundOrder> outboundThirdOrderList = outboundOrderService.getOutBoundByDateRangeAndEquipment(now, now, "ThirdPhasePretreatmentSystem");
+
+
 
         // 4. 次生
         // 入库
@@ -2074,11 +2111,11 @@ public class ProductionDailyController {
         productionDaily.setMonthEquipmentSecondaryRunningTime(equipmentMonthSecondRunningTime);
         productionDaily.setMonthEquipmentThirdRunningTime(equipmentMonthThirdRunningTime);
 
-        productionDaily.setMonthEquipmentA2StopTime(24 - productionDaily.getMonthEquipmentA2RunningTime());
-        productionDaily.setMonthEquipmentB2StopTime(24 - productionDaily.getMonthEquipmentB2RunningTime());
-        productionDaily.setMonthEquipmentPrepare2StopTime(24 - productionDaily.getMonthEquipmentPrepare2StopTime());
-        productionDaily.setMonthEquipmentSecondaryStopTime(24 - productionDaily.getMonthEquipmentSecondaryRunningTime());
-        productionDaily.setMonthEquipmentThirdStopTime(24 - productionDaily.getMonthEquipmentThirdRunningTime());
+        productionDaily.setMonthEquipmentA2StopTime(720 - productionDaily.getMonthEquipmentA2RunningTime());
+        productionDaily.setMonthEquipmentB2StopTime(720 - productionDaily.getMonthEquipmentB2RunningTime());
+        productionDaily.setMonthEquipmentPrepare2StopTime(720 - productionDaily.getMonthEquipmentPrepare2StopTime());
+        productionDaily.setMonthEquipmentSecondaryStopTime(720 - productionDaily.getMonthEquipmentSecondaryRunningTime());
+        productionDaily.setMonthEquipmentThirdStopTime(720 - productionDaily.getMonthEquipmentThirdRunningTime());
         // 运转率
         productionDaily.setMonthEquipmentA2RunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getMonthEquipmentA2RunningTime(), productionDaily.getMonthEquipmentA2StopTime())));
         productionDaily.setMonthEquipmentB2RunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getMonthEquipmentB2RunningTime(), productionDaily.getMonthEquipmentB2StopTime())));
@@ -2152,6 +2189,81 @@ public class ProductionDailyController {
         productionDaily.setMonthDisposalThirdAsh(monthSecondOutThirdAsh);
         productionDaily.setMonthDisposalThirdSlag(monthSecondOutThirdSlag);
 
+
+        // 期初结余
+        float monthBalanceWastesBulk = 0f;
+        float monthBalanceWastesCrushing = 0f;
+        float monthBalanceWastesSludge = 0f;
+        float monthBalanceWastesDistillation = 0f;
+        float monthBalanceWastesSuspension = 0f;
+        float monthBalanceWastesWasteLiquid = 0f;
+        float monthBalanceWastesWastesTotal = 0f;
+        float monthBalanceSecondWastesSlag = 0f;
+        float monthBalanceSecondWastesAsh = 0f;
+        float monthBalanceSecondWastesBucket = 0f;
+        List<WasteInventory> wasteInventoryList = wasteInventoryService.list3(null);
+        for (WasteInventory wasteInventory : wasteInventoryList) {
+            if (wasteInventory.getBoundType() != null && wasteInventory.getBoundType().equals(BoundType.WasteInbound)) {
+                if (wasteInventory.getHandleCategory() != null)
+                    switch (wasteInventory.getHandleCategory()) {
+                        case Bulk:
+                            monthBalanceWastesBulk += wasteInventory.getActualCount();
+                            monthBalanceWastesWastesTotal += wasteInventory.getActualCount();
+                            break;
+                        case Crushing:
+                            monthBalanceWastesCrushing += wasteInventory.getActualCount();
+                            monthBalanceWastesWastesTotal += wasteInventory.getActualCount();
+                            break;
+                        case Sludge:
+                            monthBalanceWastesSludge += wasteInventory.getActualCount();
+                            monthBalanceWastesWastesTotal += wasteInventory.getActualCount();
+                            break;
+                        case Suspension:
+                            monthBalanceWastesSuspension += wasteInventory.getActualCount();
+                            monthBalanceWastesWastesTotal += wasteInventory.getActualCount();
+                            break;
+                        case Distillation:
+                            monthBalanceWastesDistillation += wasteInventory.getActualCount();
+                            monthBalanceWastesWastesTotal += wasteInventory.getActualCount();
+                            break;
+                        case WasteLiquid:
+                            monthBalanceWastesWasteLiquid += wasteInventory.getActualCount();
+                            monthBalanceWastesWastesTotal += wasteInventory.getActualCount();
+                            break;
+                        default:
+                            break;
+                    }
+            } else if (wasteInventory.getBoundType() != null && wasteInventory.getBoundType().equals(BoundType.SecondaryInbound)) {
+                if (wasteInventory.getWastesName().contains("飞灰")) {
+                    monthBalanceSecondWastesAsh += wasteInventory.getActualCount();
+                } else if (wasteInventory.getWastesName().contains("炉渣")) {
+                    monthBalanceSecondWastesSlag += wasteInventory.getActualCount();
+                } else if (wasteInventory.getWastesName().contains("桶")) {
+                    monthBalanceSecondWastesBucket += wasteInventory.getActualCount();
+                }
+            }
+        }
+        productionDaily.setMonthBalanceWastesBulk(monthBalanceWastesBulk - monthInboundWastesBulk + monthOutboundWastesBulk);
+        productionDaily.setMonthBalanceWastesCrushing(monthBalanceWastesCrushing - monthInboundWastesCrushing + monthOutboundWastesCrushing);
+        productionDaily.setMonthBalanceWastesSludge(monthBalanceWastesSludge - monthInboundWastesSludge + monthOutboundWastesSludge);
+        productionDaily.setMonthBalanceWastesDistillation(monthBalanceWastesDistillation - monthInboundWastesDistillation + monthOutboundWastesDistillation);
+        productionDaily.setMonthBalanceWastesSuspension(monthBalanceWastesSuspension - monthInboundWastesSuspension + monthOutboundWastesSuspension);
+        productionDaily.setMonthBalanceWastesWasteLiquid(monthBalanceWastesWasteLiquid - monthInboundWastesWasteLiquid + monthOutboundWastesWasteLiquid);
+        productionDaily.setMonthBalanceWastesTotal(monthBalanceWastesWastesTotal - monthInboundWastesTotal + monthOutboundWastesTotal);
+//        productionDaily.setMonthBalanceSecondWastesAsh(monthBalanceSecondWastesAsh - productionDaily.getMonthInboundSecondWastesAsh() + productionDaily.getMonthOutboundSecondWastesAsh());
+//        productionDaily.setMonthBalanceSecondWastesSlag(monthBalanceSecondWastesSlag - productionDaily.getMonthInboundSecondWastesSlag() + productionDaily.getMonthOutboundSecondWastesSlag());
+//        productionDaily.setMonthBalanceSecondWastesBucket(monthBalanceSecondWastesBucket - productionDaily.getMonthInboundSecondWastesBucket() + productionDaily.getMonthOutboundSecondWastesBucket());
+        // 本日库存
+        productionDaily.setTodayInventoryWastesBulk(productionDaily.getMonthBalanceWastesBulk() + todayInboundWastesBulk - todayOutboundWastesBulk);
+        productionDaily.setTodayInventoryWastesCrushing(productionDaily.getMonthBalanceWastesCrushing() + todayInboundWastesCrushing - todayOutboundWastesCrushing);
+        productionDaily.setTodayInventoryWastesSludge(productionDaily.getMonthBalanceWastesSludge() + todayInboundWastesSludge - todayOutboundWastesSludge);
+        productionDaily.setTodayInventoryWastesDistillation(productionDaily.getMonthBalanceWastesDistillation() + todayInboundWastesDistillation - todayOutboundWastesDistillation);
+        productionDaily.setTodayInventoryWastesSuspension(productionDaily.getMonthBalanceWastesSuspension() + todayInboundWastesSuspension - todayOutboundWastesSuspension);
+        productionDaily.setTodayInventoryWastesWasteLiquid(productionDaily.getMonthBalanceWastesWasteLiquid() + todayInboundWastesWasteLiquid - todayOutboundWastesWasteLiquid);
+        productionDaily.setTodayInventoryWastesTotal(productionDaily.getMonthBalanceWastesTotal() + todayInboundWastesTotal - todayOutboundWastesTotal);
+        productionDaily.setTodayInventorySecondWastesAsh(productionDaily.getMonthBalanceSecondWastesAsh() + productionDaily.getTodayInboundSecondWastesAsh() - productionDaily.getTodayOutboundSecondWastesAsh());
+        productionDaily.setTodayInventorySecondWastesAsh(productionDaily.getMonthBalanceSecondWastesSlag() + productionDaily.getTodayInboundSecondWastesSlag() - productionDaily.getTodayOutboundSecondWastesSlag());
+        productionDaily.setTodayInventorySecondWastesAsh(productionDaily.getMonthBalanceSecondWastesBucket() + productionDaily.getTodayInboundSecondWastesBucket() - productionDaily.getTodayOutboundSecondWastesBucket());
 
         // 年份数据
         float yearInboundMedicalWastes = 0f;
