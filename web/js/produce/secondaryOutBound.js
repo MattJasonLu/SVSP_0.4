@@ -500,7 +500,7 @@ function loadSecondaryList() {
         contentType: 'application/json;charset=utf-8',
         success:function (result) {
             if(result != undefined && result.status == "success"){
-                console.log(result);
+               console.log(result);
                 //设置库存列表
                 setWasteInventoryList(result.data);
             }
@@ -566,36 +566,32 @@ function setWasteInventoryList(result) {
                         break;
                     // 仓库号
                     case (2):
-                        $(this).html("");
+                        if(obj.wareHouse!=null){
+                            $(this).html(obj.wareHouse.wareHouseName);
+                        }
                         break;
                     //产废单位
                     case (3):
-                        $(this).html(obj.produceCompany.companyName);
+                        if(obj.produceCompany!=null){
+                            $(this).html(obj.produceCompany.companyName);
+                        }
                         break;
                     // 危废名称
                     case (4):
-                        if(obj.laboratoryTest.wastesName=='slag'){
-                            $(this).html('炉渣');
-                        }
-                        if(obj.laboratoryTest.wastesName=='ash'){
-                            $(this).html('飞灰');
-                        }
-                        if(obj.laboratoryTest.wastesName=='bucket'){
-                            $(this).html('桶');
-                        }
+                        $(this).html(obj.wastesName);
                         break;
                     // 危废代码
                     case (5):
-                        $(this).html(obj.laboratoryTest.wastesCode);
+                        $(this).html(obj.wastesCode);
                         break;
                     // 产废类别
                     case (6):
-                        $(this).html(obj.wastesCategory);
+                        $(this).html(obj.wastesCode);
                         break;
                     // 进料方式
                     case (7):
-                        if(obj.handleCategory!=null){
-                            $(this).html(obj.handleCategory.name);
+                        if(obj.processWay){
+                            $(this).html(obj.processWay.name);
                         }
                         break;
                     //数量
@@ -687,7 +683,10 @@ function setBatchingWList(result) {
                     break;
                 // 仓库号
                 case (1):
-                        $(this).html("");
+                            if(obj.wareHouse!=null){
+                                $(this).html(obj.wareHouse.wareHouseName);
+                            }
+
                     break;
                 //产废单位
                 case (2):
@@ -695,40 +694,36 @@ function setBatchingWList(result) {
                     break;
                 // 危废名称
                 case (3):
-                    if(obj.laboratoryTest.wastesName=='slag'){
-                        $(this).html('炉渣');
-                    }
-                    if(obj.laboratoryTest.wastesName=='ash'){
-                        $(this).html('飞灰');
-                    }
-                    if(obj.laboratoryTest.wastesName=='bucket'){
-                        $(this).html('桶');
-                    }
+                    $(this).html(obj.wastesName);
                     break;
                 // 危废代码
                 case (4):
-                    $(this).html(obj.laboratoryTest.wastesCode);
+                    $(this).html(obj.wastesCode);
                     break;
                 // 产废类别
                 case (5):
-                    $(this).html("");
+                    $(this).html(obj.wastesCode);
                     break;
                 // 进料方式
                 case (6):
-                    if(obj.handleCategory!=null){
-                        $(this).html(obj.handleCategory.name);
+                    if(obj.processWay!=null){
+                        $(this).html(obj.processWay.name);
                     }
-
                     break;
                 //数量
                 case (7):
-                    $(this).html(obj.actualCount);
+                    $(this).html(obj.actualCount.toFixed(2));
                     break;
                 case (8):
                     $(this).html(obj.remarks);
                     break;
+              //入库单明细
                 case (9):
                     $(this).html(obj.inboundOrderItemId);
+                    break;
+                //公司编号
+                case (10):
+                    $(this).html(obj.produceCompany.clientId);
                     break;
             }
         });
@@ -782,11 +777,16 @@ function save() {
             $(".myclass2").each(function () {
                 var data={
                     inboundOrderItemId:$(this).children('td').last().text(),
-                    outboundNumber:$(this).children('td').get(7).innerHTML,
                     outboundDate:$('#date').val(),
                     creator:$('#creator').val(),
                     departmentName:$('#departmentName').val(),
                     equipment:$('#equipment').selectpicker('val'),
+                    outboundOrderId:$(this).children('td').eq(0).html(),
+                    client:{clientId:$(this).children('td').eq(10).html()},
+                    wastesName:$(this).children('td').eq(3).html(),
+                    wasteCategory:$(this).children('td').eq(4).html(),
+                    processWay:getProcessWayFromStr($(this).children('td').eq(6).html()),
+                    outboundNumber:$(this).children('td').eq(7).html(),
                 };
                 console.log(data);
                 $.ajax({

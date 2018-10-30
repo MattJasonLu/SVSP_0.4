@@ -23,4 +23,6 @@ public interface BatchOrderService {
     MaterialRequisitionOrder getByMaterialRequisitionId(String id);
     void addOutBoundOrder(OutboundOrder outboundOrder);
     List<OutboundOrder>loadWastesOutBoundList(Page page);
+    List<WasteInventory> getSecInventoryListBat();
+    void addSecondary(OutboundOrder outboundOrder);
 }
