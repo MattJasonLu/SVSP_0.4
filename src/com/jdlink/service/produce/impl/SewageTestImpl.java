@@ -1,6 +1,7 @@
 package com.jdlink.service.produce.impl;
 
 import com.jdlink.domain.Page;
+import com.jdlink.domain.Produce.SecondaryTest;
 import com.jdlink.domain.Produce.SewageTest;
 import com.jdlink.domain.Produce.Sewageregistration;
 import com.jdlink.domain.Produce.SoftTest;
@@ -77,5 +78,30 @@ public class SewageTestImpl implements SewageTestService{
     @Override
     public void deleteSewaGeregistrationById(String id) {
         sewageTestMapper.deleteSewaGeregistrationById(id);
+    }
+
+    @Override
+    public SecondaryTest getSecondaryTestById(String id) {
+        return sewageTestMapper.getSecondaryTestById(id);
+    }
+
+    @Override
+    public void updateSecondaryTestById(SecondaryTest secondaryTest) {
+        sewageTestMapper.updateSecondaryTestById(secondaryTest);
+    }
+
+    @Override
+    public void addSecondaryTest(SecondaryTest secondaryTest) {
+        sewageTestMapper.addSecondaryTest(secondaryTest);
+    }
+
+    @Override
+    public List<SecondaryTest> loadPageSecondaryTestResultsList(Page page) {
+        return sewageTestMapper.loadPageSecondaryTestResultsList(page);
+    }
+
+    @Override
+    public int totalSecondaryTestRecord() {
+        return sewageTestMapper.totalSecondaryTestRecord();
     }
 }
