@@ -16,8 +16,26 @@ public class BatchingOrder {
     /*配料单号*/
     private String batchingOrderId;
 
+    //入库日期
+    private Date inboundOrderDate;
+
+
+    /*产废单位*/
+    private Client produceCompany;
+
+
+    //废物名称
+    private String wastesName;
+
+    //类别
+    private String wasteCategory;
+
+
     /*配料日期*/
     private Date  batchingDate;
+
+    /*仓库*/
+    private WareHouse wareHouse;
 
     /*配料人*/
     private String creator;
@@ -25,70 +43,32 @@ public class BatchingOrder {
     /*创建日期*/
     private Date createDate;
 
+
     /*备注*/
     private String remarks;
 
-    /*仓库*/
-    private WareHouse wareHouse;
-
-    /*产废单位*/
-    private Client produceCompany;
-
-    /*接收单位*/
-    private Client acceptCompany;
 
     /*联单号*/
     private  String transferDraftId;
 
-    /*创建部门*/
-    private String departmentId;
-
-    /*创建公司*/
-    private String companyId;
-
-    /*修改人*/
-    private String modifierId;
-
-    /*业务员 来自产废单位的业务员*/
-//    private Salesman salesman;
-    private Wastes wastes;
-
-    private String inboundOrderItemId;
-
-    private PackageType packageType;
-
-    private FormType formType;
-
-    private String time;
 
     /*状态*/
     private CheckState checkState;
 
-    /*记录状态*/
-    private  RecordState recordState;
-    /*危废库存*/
-//    private WasteInventory wasteInventory;
-    /*入库单对象*/
-    private InboundOrder inboundOrder;
     /**
      * 页码
      */
     private Page page;
 
-    /*配料数量*/
+   //进料方式
     private HandleCategory handelCategory;
 
+    //处置方式
     private ProcessWay processWay;
 
+    /*配料数量*/
     private float batchingNumber;
 
-    private LaboratoryTest laboratoryTest;
-
-    //废物名称
-    private String wastesName;
-
-    //类别
-    private String wasteCategory;
 
     //1号入库量
     private float storage1;
@@ -111,8 +91,51 @@ public class BatchingOrder {
     //余量
     private float allowance;
 
-    //入库日期
-    private Date inboundOrderDate;
+/********以下数据结构暂时不用************/
+    /*接收单位*/
+    private Client acceptCompany;
+
+
+
+    /*创建部门*/
+    private String departmentId;
+
+    /*创建公司*/
+    private String companyId;
+
+    /*修改人*/
+    private String modifierId;
+
+    /*业务员 来自产废单位的业务员*/
+//    private Salesman salesman;
+    private Wastes wastes;
+
+    private String inboundOrderItemId;
+
+    private PackageType packageType;
+
+    private FormType formType;
+
+    private String time;
+
+
+
+    /*记录状态*/
+    private  RecordState recordState;
+    /*危废库存*/
+//    private WasteInventory wasteInventory;
+    /*入库单对象*/
+    private InboundOrder inboundOrder;
+
+
+
+    private LaboratoryTest laboratoryTest;
+
+
+
+
+
+
 
     public Date getInboundOrderDate() {
         return inboundOrderDate;

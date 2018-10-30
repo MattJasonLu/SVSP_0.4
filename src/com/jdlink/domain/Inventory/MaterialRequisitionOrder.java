@@ -12,52 +12,124 @@ import java.util.Date;
  * 领料单
  */
 public class MaterialRequisitionOrder {
-    /*配料单对象*/
-    private BatchingOrder batchingOrder;
     /*领料单号*/
     private String materialRequisitionId;
-    /*规格*/
-    private  String specification;
-    /*单位*/
-    private  String unit;
-    /*附注*/
-    private String remarks;
-    /*仓库*/
-    private WareHouse wareHouse;
-    /*保管员*/
-    private String  guardian;
-    /*部门*/
-    private String departmentName;
-    /*主管副总经理:*/
-    private  String deputyGeneral;
-    /*仓库部门主管*/
-    private String warehouseManager;
-    /*领料部门主管*/
-    private String materialManager;
-    /*领料人*/
-    private String picker;
+
     /*领料日期*/
     private Date pickerDate;
+
+
+    /*配料单对象*/
+    private BatchingOrder batchingOrder;
+
+    /*产废单位*/
+    private Client client;
+
+    /*废物名称*/
+    private String wastesName;
+
+    /*废物类别*/
+    private String wasteCategory;
+
+    /*配料数量*/
+    private float batchCount;
+
     /*领用数量*/
     private float recipientsNumber;
+
+    /*进料方式*/
+    private HandleCategory handelCategory;
+
+    /**
+     * 单价
+     */
+    private float unitPriceTax;
+
     /*状态*/
     private CheckState checkState;
+
+    /*单位*/
+    private  String unit;
+
+    /*仓库*/
+    private WareHouse wareHouse;
+
+
+    /*规格*/
+    private  String specification;
+
+
+    /*附注*/
+    private String remarks;
+
+
+    /*保管员*/
+    private String  guardian;
+
+    /*部门*/
+    private String departmentName;
+
+    /*主管副总经理:*/
+    private  String deputyGeneral;
+
+    /*仓库部门主管*/
+    private String warehouseManager;
+
+    /*领料部门主管*/
+    private String materialManager;
+
+    /*领料人*/
+    private String picker;
+
+
+    private Page page;
+
+
+    private ProcessWay processWay;
+
+    public String getWastesName() {
+        return wastesName;
+    }
+
+    public void setWastesName(String wastesName) {
+        this.wastesName = wastesName;
+    }
+
+    public float getBatchCount() {
+        return batchCount;
+    }
+
+    public void setBatchCount(float batchCount) {
+        this.batchCount = batchCount;
+    }
+
+    public float getUnitPriceTax() {
+        return unitPriceTax;
+    }
+
+    public void setUnitPriceTax(float unitPriceTax) {
+        this.unitPriceTax = unitPriceTax;
+    }
+
+    /**************以下数据结构暂时不用************************/
+
+
+
     /*危废信息
     *
     * 这里为了好拿数据，不用再xml进行多次迭代
     * 2018-09-28 15:12:52 我觉得不好拿
     * */
     private Wastes wastes;
-    /*产废单位*/
-    private Client client;
+
     private RecordState recordState;
     private PackageType packageType;
     private FormType formType;
-    private Page page;
+
     private LaboratoryTest laboratoryTest;
-    private HandleCategory handelCategory;
-    private ProcessWay processWay;
-    private String wasteCategory;
+
+
+
     private QuotationItem quotationItem;
 
     public Page getPage() {
