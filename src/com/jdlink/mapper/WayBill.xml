@@ -223,6 +223,12 @@
         </foreach>
     </update>
 
+    <update id="updateSalesmanNameByCompanyName" >
+        update t_pr_waybillitem
+        set salesmanName =#{salesmanName}
+        where wayBillId in (select id from t_pr_waybill where produceCompanyName =#{companyName})
+    </update>
+
     <insert id="addItem" parameterType="WayBill">
         <foreach collection="wayBillItemList" index="index" item="wayBillItem">
             insert into t_pr_waybillitem

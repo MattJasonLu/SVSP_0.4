@@ -897,6 +897,7 @@ function cancel() {
  */
 function loadPoundsAdd(){
     setSelectedListAdd();  // 填充下拉框数据
+    $("#add_receiveCompany").val("北控安耐得环保科技发展常州有限公司");  // 收货单位默认为北控
     if(getCurrentUserData() != null)
     $("#add_founder").val(getCurrentUserData().username);   // 创建人赋值
     $('.selectpicker').selectpicker({
@@ -995,7 +996,7 @@ function addPounds(){
     pounds.outTime = getStdTimeStr($("#add_outTime").val());
     pounds.transferId = $("#add_transferId").val();
     pounds.enterLicencePlate = $("#add_enterLicencePlate").val();
-    pounds.outLicencePlate = $("#add_outLicencePlate").val();
+    pounds.outLicencePlate = pounds.enterLicencePlate;
     pounds.goodsName = $("#add_goodsName").val();
     pounds.wastesCode = $("#add_wastesCode option:selected").text();
     var deliveryCompany = {};
@@ -1004,7 +1005,7 @@ function addPounds(){
     pounds.deliveryCompany = deliveryCompany;
     var receiveCompany = {};
     receiveCompany.companyName = $("#add_receiveCompany option:selected").text();
-    receiveCompany.clientId = $("#add_receiveCompany option:selected").val();
+    //receiveCompany.clientId = $("#add_receiveCompany option:selected").val();
     pounds.receiveCompany = receiveCompany;
     pounds.netWeight = $("#add_netWeight").val();
     pounds.tare = $("#add_tare").val();

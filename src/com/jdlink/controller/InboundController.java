@@ -4,6 +4,7 @@ import com.jdlink.domain.*;
 import com.jdlink.domain.Dictionary.SecondaryCategory;
 import com.jdlink.domain.Inventory.*;
 import com.jdlink.domain.Produce.HandleCategory;
+import com.jdlink.domain.Produce.IngredientsIn;
 import com.jdlink.domain.Produce.LaboratoryTest;
 import com.jdlink.domain.Produce.ProcessWay;
 import com.jdlink.service.*;
@@ -24,9 +25,7 @@ import javax.servlet.http.HttpSession;
 import java.text.Normalizer;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by matt on 2018/8/22.
@@ -518,11 +517,7 @@ public class InboundController {
         try {
             // 获取危废入库的表格数据
             Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
-            // 创建入库单对象
-            InboundOrder inboundOrder = new InboundOrder();
-            // 设置入库单编号
-            inboundOrder.setInboundOrderId(inboundService.getInboundOrderId());
-            // 设置入库日期
+            Map<String, InboundOrder> map = new HashMap<>();
             // 如果时间格式不符合需求是18-9-1格式的添加为2018-9-1
 //            if (data[1][0].toString().substring(0, 3).replaceAll("\\d+", "") != null ||
 //                    data[1][0].toString().substring(0, 3).replaceAll("\\d+", "") != "") {
@@ -535,59 +530,65 @@ public class InboundController {
 //            }else {
 //                inboundOrder.setInboundDate(DateUtil.getDateFromStr(data[1][0].toString()));
 //            }
-
-            inboundOrder.setInboundDate(DateUtil.getDateFromStr(data[1][0].toString()));
-            // 通过仓库名称获取仓库
-            WareHouse wareHouse = wareHouseService.getWareHouseByName(data[1][1].toString());
-            if (wareHouse == null) {
-                wareHouse = new WareHouse();
-                wareHouse.setWareHouseId(wareHouseService.getCurrentId());
-                wareHouse.setWareHouseName(data[1][1].toString());
-                wareHouseService.add(wareHouse);
-            }
-            // 设置仓库
-            inboundOrder.setWareHouse(wareHouse);
-            // 设置入库类别
-            inboundOrder.setBoundType(BoundType.WasteInbound);
-            // 设置状态
-            inboundOrder.setCheckState(CheckState.NewBuild);
-            // 设置单据状态
-            inboundOrder.setRecordState(RecordState.Usable);
-            // 设置创建日期
-            inboundOrder.setCreateDate(new Date());
-            inboundOrder.setModifyDate(new Date());
-            // 创建入库单条目列表
-            List<InboundOrderItem> inboundOrderItemList = new ArrayList<>();
             for (int i = 1; i < data.length; i++) {
+                String id = data[i][0].toString();   // 获取入库ID
+                if (!map.keySet().contains(id)) {
+                    map.put(id, new InboundOrder());// 创建入库单对象
+                    // 设置入库单编号
+                    map.get(id).setInboundOrderId(id);
+                    // 设置入库日期
+                    map.get(id).setInboundDate(DateUtil.getDateFromStr(data[i][1].toString()));
+                    // 通过仓库名称获取仓库
+                    WareHouse wareHouse = wareHouseService.getWareHouseByName(data[i][2].toString());
+                    if (wareHouse == null) {
+                        wareHouse = new WareHouse();
+                        wareHouse.setWareHouseId(wareHouseService.getCurrentId());
+                        wareHouse.setWareHouseName(data[i][2].toString());
+                        wareHouseService.add(wareHouse);
+                    }
+                    // 设置仓库
+                    map.get(id).setWareHouse(wareHouse);
+                    // 设置入库类别
+                    map.get(id).setBoundType(BoundType.WasteInbound);
+                    // 设置状态
+                    map.get(id).setCheckState(CheckState.NewBuild);
+                    // 设置单据状态
+                    map.get(id).setRecordState(RecordState.Usable);
+                    // 设置创建日期
+                    map.get(id).setCreateDate(new Date());
+                    map.get(id).setModifyDate(new Date());
+                }
+                // 创建入库单条目列表
+                List<InboundOrderItem> inboundOrderItemList = new ArrayList<>();
                 if (data[i][3].toString().equals("null")) break;
                 // 创建入库单条目
                 InboundOrderItem inboundOrderItem = new InboundOrderItem();
                 // 设置入库单条目编号
                 inboundOrderItem.setInboundOrderItemId(RandomUtil.getRandomEightNumber());
                 // 设置入库单号外键
-                inboundOrderItem.setInboundOrderId(inboundOrder.getInboundOrderId());
+                inboundOrderItem.setInboundOrderId(map.get(id).getInboundOrderId());
                 // 设置入库单日期
-                inboundOrderItem.setInboundDate(DateUtil.getDateFromStr(data[i][0].toString()));
-                inboundOrderItem.setTransferDraftId(data[i][3].toString());
+                inboundOrderItem.setInboundDate(DateUtil.getDateFromStr(data[i][1].toString()));
+                inboundOrderItem.setTransferDraftId(data[i][4].toString());
                 // 设置客户信息
-                Client client = clientService.getByName(data[i][4].toString().trim());
+                Client client = clientService.getByName(data[i][5].toString().trim());
                 if (client == null) {
                     client = new Client();
                     client.setClientId(clientService.getCurrentId());
-                    client.setCompanyName(data[i][4].toString().trim());
+                    client.setCompanyName(data[i][5].toString().trim());
                     clientService.add(client);
                 }
                 inboundOrderItem.setProduceCompany(client);
                 // 设置危废信息
                 Wastes wastes = new Wastes();
-                wastes.setName(data[i][5].toString());      // 危废名称
-                wastes.setWastesId(data[i][6].toString());  // 危废代码
+                wastes.setName(data[i][6].toString());      // 危废名称
+                wastes.setWastesId(data[i][7].toString());  // 危废代码
                 inboundOrderItem.setWastes(wastes);
-                inboundOrderItem.setWastesAmount(Float.parseFloat(data[i][7].toString()));
-                inboundOrderItem.setUnitPriceTax(Float.parseFloat(data[i][8].toString())); // 危废数量
-                inboundOrderItem.setTotalPrice(Float.parseFloat(data[i][9].toString()));   // 危废单价
+                inboundOrderItem.setWastesAmount(Float.parseFloat(data[i][8].toString()));
+                inboundOrderItem.setUnitPriceTax(Float.parseFloat(data[i][9].toString())); // 危废数量
+                inboundOrderItem.setTotalPrice(Float.parseFloat(data[i][10].toString()));   // 危废单价
                 // 设置处置方式
-                switch (data[i][10].toString()) {
+                switch (data[i][11].toString()) {
                     case "焚烧":
                         inboundOrderItem.setProcessWay(ProcessWay.Burning);
                         break;
@@ -598,28 +599,30 @@ public class InboundController {
                         break;
                 }
                 // 设置进料方式
-                if (data[i][11].toString().contains("污泥")) {
+                if (data[i][12].toString().contains("污泥")) {
                     inboundOrderItem.setHandleCategory(HandleCategory.Sludge);
-                } else if (data[i][11].toString().contains("废液")) {
+                } else if (data[i][12].toString().contains("废液")) {
                     inboundOrderItem.setHandleCategory(HandleCategory.WasteLiquid);
-                } else if (data[i][11].toString().contains("散料")) {
+                } else if (data[i][12].toString().contains("散料")) {
                     inboundOrderItem.setHandleCategory(HandleCategory.Bulk);
-                } else if (data[i][11].toString().contains("破碎")) {
+                } else if (data[i][12].toString().contains("破碎")) {
                     inboundOrderItem.setHandleCategory(HandleCategory.Crushing);
-                } else if (data[i][11].toString().contains("悬挂")) {
+                } else if (data[i][12].toString().contains("悬挂")) {
                     inboundOrderItem.setHandleCategory(HandleCategory.Suspension);
-                } else if (data[i][11].toString().contains("精馏")) {
+                } else if (data[i][12].toString().contains("精馏")) {
                     inboundOrderItem.setHandleCategory(HandleCategory.Distillation);
                 }
-                inboundOrderItem.setRemarks(data[i][12].toString());
-                inboundOrderItem.setWarehouseArea(data[i][13].toString());
+                inboundOrderItem.setRemarks(data[i][13].toString());
+                inboundOrderItem.setWarehouseArea(data[i][14].toString());
                 // 增加到集合中
                 inboundOrderItemList.add(inboundOrderItem);
+                map.get(id).setInboundOrderItemList(inboundOrderItemList);// 设置入库条目列表
             }
-            // 设置入库条目列表
-            inboundOrder.setInboundOrderItemList(inboundOrderItemList);
-            // 增加入库单
-            inboundService.addInboundOrder(inboundOrder);
+            for (String key : map.keySet()) {
+                InboundOrder inboundOrder = map.get(key);
+                // 增加入库单
+                inboundService.addInboundOrder(inboundOrder);
+            }
             res.put("status", "success");
             res.put("message", "导入成功");
         } catch (Exception e) {

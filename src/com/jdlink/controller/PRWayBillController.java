@@ -4,6 +4,7 @@ import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.SampleInformation;
 import com.jdlink.domain.Produce.WayBill;
 import com.jdlink.domain.Produce.WayBillItem;
+import com.jdlink.service.ClientService;
 import com.jdlink.service.WayBillService;
 import com.jdlink.util.DBUtil;
 import com.jdlink.util.DateUtil;
@@ -11,6 +12,7 @@ import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +30,8 @@ public class PRWayBillController {
 
     @Autowired
     WayBillService wayBillService;
+    @Autowired
+    ClientService clientService;
 
 
     @RequestMapping("addWayBill")
@@ -181,9 +185,9 @@ public class PRWayBillController {
                 map.get(id.toString()).setWayBillItemList(wayBillItemList);
                 total += wastesTotal;
                 map.get(id.toString()).setTotal(total);
-               // map.get(id.toString()).getWayBillItemList().add(wayBillItem);
+                // map.get(id.toString()).getWayBillItemList().add(wayBillItem);
             }
-            for(String key : map.keySet()) {
+            for (String key : map.keySet()) {
                 WayBill wayBill1 = wayBillService.getById(map.get(key).getId());
                 WayBill wayBill = map.get(key);
                 if (wayBill1 == null) {
@@ -209,7 +213,7 @@ public class PRWayBillController {
     public String getWayBillSeniorSelectedList() {
         JSONObject res = new JSONObject();
         // 获取枚举
-        CheckState[] states = new CheckState[]{CheckState.NewBuild, CheckState.ToExamine, CheckState.Examining, CheckState.Approval, CheckState.Backed,CheckState.Invalid};
+        CheckState[] states = new CheckState[]{CheckState.NewBuild, CheckState.ToExamine, CheckState.Examining, CheckState.Approval, CheckState.Backed, CheckState.Invalid};
         JSONArray stateList = JSONArray.fromArray(states);
         res.put("stateList", stateList);
         return res.toString();
@@ -319,6 +323,7 @@ public class PRWayBillController {
 
     /**
      * 作废
+     *
      * @param id
      * @return
      */
@@ -442,6 +447,40 @@ public class PRWayBillController {
         nf.setMinimumIntegerDigits(8);
         String r = nf.format(id);
         res.put("id", r);
+        return res.toString();
+    }
+
+    /**
+     * 自动设置接运单业务员
+     */
+    @RequestMapping("setSalesmanNameAuto")
+    @ResponseBody
+    public String setSalesmanNameAuto() {
+        JSONObject res = new JSONObject();
+        try {
+            List<Client> clientList = clientService.listAll(); // 获取公司信息
+//            for(int i = 0; i< clientList.size();i++){
+//                System.out.print(clientList.get(i).getCompanyName()+"-"+clientList.get(i).getSalesman().getName()+" ");
+//                if(i%5 == 0) System.out.println();
+//            }
+            if (clientList.size() > 0)
+                for (Client client : clientList) {
+                    String salesmanName = "";
+                    if (client.getSalesman() != null) {
+                        salesmanName = client.getSalesman().getName(); // 获取业务员姓名
+                        String companyName = client.getCompanyName();  // 获取公司名
+                        System.out.print(salesmanName + "," + companyName + " ");
+                        if (salesmanName != null && !salesmanName.equals(""))
+                            wayBillService.updateSalesmanNameByCompanyName(salesmanName, companyName);
+                    }
+                }
+            res.put("status", "success");
+            res.put("message", "设置成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "设置失败！");
+        }
         return res.toString();
     }
 
