@@ -79,7 +79,7 @@
     </select>
 
     <update id="updateMaterialRequisitionOrderOnId" parameterType="MaterialRequisitionOrder">
-        update t_pl_materialrequisitionorder set id=#{batchingOrder.wasteInventory.wastes.id},warseHouseId=#{batchingOrder.wasteInventory.wareHouse.wareHouseId},clientId=#{batchingOrder.wasteInventory.wastes.client.clientId} where batchingOrderId=#{batchingOrder.batchingOrderId};
+        update t_pl_materialrequisitionorder set id=#{batchingOrder.wasteInventory.wastes.id},wareHouseId=#{batchingOrder.wasteInventory.wareHouse.wareHouseId},clientId=#{batchingOrder.wasteInventory.wastes.client.clientId} where batchingOrderId=#{batchingOrder.batchingOrderId};
     </update>
     <!--更新领料单的单号-->
     <update id="updateMaterialRequisitionId" >

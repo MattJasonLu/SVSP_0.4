@@ -71,7 +71,7 @@
                     <li><a href="#">个人信息</a></li>
                     <li><a href="#">待办事项</a></li>
                     <li><a href="#" onclick="showLog();">登录日志</a></li>
-                    <li><a href="index.html">注销</a></li>
+                    <li><a href="admin.html">注销</a></li>
                 </ul>
             </li>
         </ul>
@@ -122,18 +122,18 @@
                         <tr>
                             <th class="text-left" id="department" colspan="4">部门:<input class="focus" type="text" title="部门" maxlength="6" id="departmentName" name="departmentName"></th>
                             <th class="text-left" id="date" colspan="4"><span id="weekDate"></span></th>
-                            <th class="text-left" id="serialNumber">文件编号:M-TD-107-R04<input class="focus" type="text" title="文件编号" maxlength="15"></th>
+                            <!--<th class="text-left" id="serialNumber">文件编号:M-TD-107-R04<input class="focus" type="text" title="文件编号" maxlength="15"></th>-->
                         </tr>
                         <tr>
                             <th class="text-center">领料单号</th>
                             <th class="text-center">厂家</th>
                             <th class="text-center">危废名称</th>
-                            <th class="text-center">危废代码</th>
+                            <th class="text-center hidden">危废代码</th>
                             <th class="text-center">危废类别</th>
-                            <th class="text-center">单位</th>
+                            <th class="text-center">仓库</th>
                             <th class="text-center">配料数量</th>
                             <th class="text-center">领用数量</th>
-                            <th class="text-center">附注</th>
+                            <th class="text-center hidden">附注</th>
                             <th class="text-center hidden ">配料单</th>
                         </tr>
                         </thead>
@@ -142,8 +142,8 @@
                             <td class="text-center"></td>
                             <td class="text-center"></td>
                             <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
+                            <td class="text-center "></td>
+                            <td class="text-center hidden"></td>
                             <td class="text-center"></td>
                             <td class="text-center"></td>
                             <td class="text-center"></td>
@@ -179,7 +179,7 @@
             <br><br><br><br><br><br><br><br><br>
                 <div class="row text-center">
                     <a class="btn btn-success" onclick="updateMaterialRequisitionOrder()">保存</a>
-                    <a class="btn btn-primary" onclick="">提交</a>
+                    <!--<a class="btn btn-primary" onclick="">提交</a>-->
                     <a class="btn btn-danger" href="materialRequisition.html">返回</a>
                 </div>
             <!--分页-->

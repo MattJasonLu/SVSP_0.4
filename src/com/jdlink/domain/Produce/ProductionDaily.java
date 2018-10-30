@@ -3076,7 +3076,7 @@ public class ProductionDaily {
     /**
      * 炉渣用吨袋
      */
-    private float limitDisposalThirdSecondaryAuxiliarySlagBag;
+    private float limitDisposalThirdAuxiliarySlagBag;
     /**
      * 飞灰用吨袋
      */
@@ -9849,12 +9849,12 @@ public class ProductionDaily {
         this.limitDisposalThirdAuxiliaryStandardTray_1_2m = limitDisposalThirdAuxiliaryStandardTray_1_2m;
     }
 
-    public float getLimitDisposalThirdSecondaryAuxiliarySlagBag() {
-        return limitDisposalThirdSecondaryAuxiliarySlagBag;
+    public float getLimitDisposalThirdAuxiliarySlagBag() {
+        return limitDisposalThirdAuxiliarySlagBag;
     }
 
-    public void setLimitDisposalThirdSecondaryAuxiliarySlagBag(float limitDisposalThirdSecondaryAuxiliarySlagBag) {
-        this.limitDisposalThirdSecondaryAuxiliarySlagBag = limitDisposalThirdSecondaryAuxiliarySlagBag;
+    public void setLimitDisposalThirdAuxiliarySlagBag(float limitDisposalThirdAuxiliarySlagBag) {
+        this.limitDisposalThirdAuxiliarySlagBag = limitDisposalThirdAuxiliarySlagBag;
     }
 
     public float getLimitDisposalThirdAuxiliaryFlyAshBag() {

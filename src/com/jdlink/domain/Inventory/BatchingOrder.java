@@ -91,6 +91,8 @@ public class BatchingOrder {
     //余量
     private float allowance;
 
+    private InboundOrder inboundOrder;
+
 /********以下数据结构暂时不用************/
     /*接收单位*/
     private Client acceptCompany;
@@ -125,7 +127,7 @@ public class BatchingOrder {
     /*危废库存*/
 //    private WasteInventory wasteInventory;
     /*入库单对象*/
-    private InboundOrder inboundOrder;
+
 
 
 

@@ -70,7 +70,7 @@
                     <li><a href="#">个人信息</a></li>
                     <li><a href="#">待办事项</a></li>
                     <li><a href="#" onclick="showLog();">登录日志</a></li>
-                    <li><a href="index.html">注销</a></li>
+                    <li><a href="admin.html">注销</a></li>
                 </ul>
             </li>
         </ul>
@@ -174,60 +174,6 @@
                 </div>
             </div>
             <br>
-            <!--<div class="panel panel-default" id="senior" style="display: none;">-->
-                <!--<div class="panel-body">-->
-                    <!--<div class="row">-->
-                        <!--<div class="form-horizontal col-md-4">-->
-                            <!--<div class="form-group">-->
-                                <!--<label for="search-Id" class="col-sm-4 control-label">转移联单号</label>-->
-                                <!--<div class="col-xs-7">-->
-                                    <!--<input type="text" class="form-control" id="search-Id" name="search-Id" placeholder="">-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="form-horizontal col-md-4">-->
-                            <!--<div class="form-group">-->
-                                <!--<label for="search-company" class="col-sm-4 control-label">产废单位</label>-->
-                                <!--<div class="col-xs-7">-->
-                                    <!--<select class="form-control" name="search-company" id="search-company">-->
-                                    <!--</select>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="form-horizontal col-md-4">-->
-                            <!--<div class="form-group">-->
-                                <!--<label for="search-wastesName" class="col-sm-4 control-label">危废名称</label>-->
-                                <!--<div class="col-xs-7">-->
-                                    <!--<select class="form-control" name="search-wastesName" id="search-wastesName">-->
-                                    <!--</select>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="row">-->
-                <!--<div class="form-horizontal col-md-3">-->
-                    <!--<div class="form-group">-->
-                        <!--<label for="wastesName" class="col-sm-4 control-label">危废名称</label>-->
-                        <!--<div class="col-xs-7">-->
-                            <!--<input type="text" class="form-control" id="wastesName" name="wastesName" placeholder="">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="form-horizontal col-md-3">-->
-                    <!--<div class="form-group">-->
-                        <!--<label for="companyName" class="col-sm-4 control-label">产废单位</label>-->
-                        <!--<div class="col-xs-7">-->
-                            <!--<input type="text" class="form-control" id="companyName" name="companyName" placeholder="">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="form-horizontal col-md-3">-->
-                <!--</div>-->
-                <!--<div class="form-horizontal col-md-3">-->
-                <!--</div>-->
-            <!--</div>-->
             <div >
                 <h4 class="sub-header">危废库存列表</h4>
             </div>
@@ -242,15 +188,15 @@
                         </th>
                         <td class="text-center">入库单号</td>
                         <td class="text-center">入库日期</td>
-                        <td class="text-center">仓库号</td>
+                        <td class="text-center">仓库</td>
                         <td class="text-center">产废单位</td>
                         <td class="text-center">危废名称</td>
-                        <td class="text-center">危废代码</td>
+                        <td class="text-center hidden">危废代码</td>
                         <td class="text-center">产废类别</td>
                         <td class="text-center">进料方式</td>
-                        <td class="text-center">数量</td>
+                        <td class="text-center">数量(吨)</td>
                         <td class="text-center">剩余数量</td>
-                        <td class="text-center">备注</td>
+                        <td class="text-center hidden">备注</td>
                         <td class="text-center hidden"></td>
                     </tr>
                     </thead>
@@ -266,13 +212,13 @@
                         <td class="text-left model-wastesName"></td>
                         <td class="text-left model-wastesName"></td>
                         <td class="text-left model-wastesName"></td>
-                        <td class="text-center model-wastesCode"></td>
+                        <td class="text-center model-wastesCode hidden"></td>
                         <td class="text-center model-wastesCode"></td>
                         <td class="text-right modal-weight"></td>
                         <td class="text-right modal-materialForm"></td>
                         <td class="text-right residualQuantity" id="residualQuantity" readonly></td><!--剩余数量-->
-                        <td class="text-right modal-packingType"></td>
                         <td class="text-right modal-packingType hidden"></td>
+                        <td class="text-right modal-packingType hidden"></td><!--入库明细单编号-->
                     </tr>
                     </tbody>
                 </table>
@@ -351,15 +297,15 @@
                     <thead>
                     <tr>
                         <th class="text-center">入库单号</th>
-                        <th class="text-center">仓库号</th>
+                        <th class="text-center">仓库</th>
                         <th class="text-center">产废单位</th>
                         <th class="text-center">危废名称</th>
-                        <th class="text-center">危废代码</th>
+                        <th class="text-center hidden">危废代码</th>
                         <th class="text-center">产废类别</th>
                         <th class="text-center">进料方式</th>
-                        <th class="text-center">数量</th>
+                        <th class="text-center">数量(吨)</th>
                         <th class="text-center">剩余数量</th>
-                        <th class="text-center">备注</th>
+                        <th class="text-center hidden">备注</th>
                         <th class="text-center hidden"></th>
                     </tr>
                     </thead>
@@ -370,15 +316,18 @@
                         <td class="text-center modal-einlass"></td>
                         <td class="text-left model-wastesName"></td>
                         <td class="text-left model-wastesName"></td>
-                        <td class="text-center model-wastesCode"></td>
+                        <td class="text-center model-wastesCode hidden"></td>
                         <td class="text-right modal-weight"></td>
                         <td class="text-right modal-materialForm"></td>
                         <td class="text-right modal-packingType" name="123">
                             <input type='text' style='width: 100px;'  name='count' value="" id='input1' onkeyup="CalRemainQuantities(this)">
                         </td>
                         <td class="text-right modal-packingType"></td>
-                        <td class="text-right modal-packingType"></td>
                         <td class="text-right modal-packingType hidden"></td>
+                        <td class="text-right modal-packingType hidden"></td><!--入库明细单编号-->
+                        <td class="text-right modal-packingType hidden"></td><!--产废单位编号-->
+                        <td class="text-right modal-packingType hidden"></td><!--仓库编号-->
+                        <td class="text-right modal-packingType hidden"></td><!--转移联单-->
                     </tr>
                     <!--<tr  >-->
                         <!--&lt;!&ndash;<td class="text-center modal-companyName"></td>&ndash;&gt;-->
@@ -396,7 +345,7 @@
                 </table>
                 <div class="row text-center">
                     <a class="btn btn-success" onclick="save();">保存</a>
-                    <a class="btn btn-primary" onclick="submit();">提交</a>
+                    <!--<a class="btn btn-primary" onclick="submit();">提交</a>-->
                     <a class="btn btn-danger" href="ingredientsList.html">返回</a>
                 </div>
 

@@ -18,6 +18,9 @@ public class MaterialRequisitionOrder {
     /*领料日期*/
     private Date pickerDate;
 
+    /*联单号*/
+    private  String transferDraftId;
+
 
     /*配料单对象*/
     private BatchingOrder batchingOrder;
@@ -39,6 +42,9 @@ public class MaterialRequisitionOrder {
 
     /*进料方式*/
     private HandleCategory handelCategory;
+
+    private String inboundOrderItemId;
+
 
     /**
      * 单价
@@ -84,6 +90,22 @@ public class MaterialRequisitionOrder {
 
     private Page page;
 
+
+    public String getInboundOrderItemId() {
+        return inboundOrderItemId;
+    }
+
+    public void setInboundOrderItemId(String inboundOrderItemId) {
+        this.inboundOrderItemId = inboundOrderItemId;
+    }
+
+    public String getTransferDraftId() {
+        return transferDraftId;
+    }
+
+    public void setTransferDraftId(String transferDraftId) {
+        this.transferDraftId = transferDraftId;
+    }
 
     private ProcessWay processWay;
 

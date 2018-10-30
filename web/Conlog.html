@@ -62,7 +62,7 @@
             <ul class="dropdown-menu">
                 <li><a href="#">个人信息</a></li>
                 <li><a href="#">待办事项</a></li>
-                <li><a href="index.html">注销</a></li>
+                <li><a href="admin.html">注销</a></li>
             </ul>
         </li>
     </ul>
@@ -96,46 +96,122 @@
     </div>
 
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h4 class="sub-header">登陆日志</h4>
-        <form method="post" id="clientInfoForm" enctype="multipart/form-data">
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th class="text-center">编号</th>
-                    <th class="text-center">登录名</th>
-                    <th class="text-center">ip</th>
-                    <th class="text-center">时间</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr id="clonedTr2">
-                    <td class="text-center">1</td>
-                    <td class="text-center">username</td>
-                    <td class="text-center">ip</td>
-                    <td class="text-center">time</td>
-                </tr>
-                </tbody>
-            </table>
-            <br>
-        </form>
-        <!--分页-->
-        <nav aria-label="Page navigation" class="text-center">
+        <div class="row">
+            <div>
+                <!--操作按钮-->
+                <div class="pull-left col-md-6 boo">
+                    <!--<a class="btn btn-primary btn-xs" id="function_139" href="wastesContractInfo.html" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>-->
+                    <!--<a class="btn btn-primary btn-xs" id="function_140" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; contractSubmit(e)}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>-->
+                    <!--<a class="btn btn-primary btn-xs" id="function_141" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcel(e)}"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>-->
+                    <a class="btn btn-primary btn-xs" id="function_142" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel(contractIndex)}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                    <!--<a class="btn btn-primary btn-xs" id="function_143" href="emergencyContractInfo.html"> 应急处置意向书</a>-->
+                </div>
+                <!--查询框-->
+                <div class="input-group col-md-4 pull-right">
+                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent" >
+                    <span class="input-group-btn">
+                        <a class="btn btn-default"  onclick="searchContract();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                        <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                        <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
+                    </span>
+                </div>
+            </div>
+            <div class="panel panel-default" id="senior" style="display: none;">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-id" class="col-sm-4 control-label">编号</label>
+                                <div class="col-xs-7">
+                                    <select class="form-control" id="search-id" name="search-id" onchange="searchContract()"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-name" class="col-sm-4 control-label">登录名</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-name" name="search-name" placeholder="" onkeyup="enterSearch()">
+                                </div>
+                            </div>
+                            <!--<div class="form-group">-->
+                            <!--<label for="search-suppierName" class="col-sm-4 control-label">供应商名称</label>-->
+                            <!--<div class="col-xs-7">-->
+                            <!--<input type="text" class="form-control" id="search-suppierName" name="search-suppierName" placeholder="">-->
+                            <!--</div>-->
+                            <!--</div>-->
+                        </div>
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group" style="margin-right: 40px">
+                                <label class="col-sm-3 control-label">时间 </label>
+                                <div class="input-group">
+                                    <input type="date" class="input-sm form-control" id="beginTime" title="" onkeyup="enterSearch()"/>
+                                    <span class="input-group-addon">-</span>
+                                    <input type="date" class="input-sm form-control" id="endTime" title="" onkeyup="enterSearch()"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-ip" class="col-sm-4 control-label">ip</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-ip" name="search-ip" placeholder="" onkeyup="enterSearch()">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="search-username" class="col-sm-4 control-label">姓名</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-username" name="search-username" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3"></div>
+                        <div class="form-horizontal col-md-3"></div>
+                    </div>
+                </div>
+            </div>
+            <h4 class="sub-header">登陆日志</h4>
+            <form method="post" id="clientInfoForm" enctype="multipart/form-data">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th class="text-center">编号</th>
+                        <th class="text-center">登录名</th>
+                        <th class="text-center">ip</th>
+                        <th class="text-center">时间</th>
+                        <th class="text-center">姓名</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr id="clonedTr2">
+                        <td class="text-center">1</td>
+                        <td class="text-center">username</td>
+                        <td class="text-center">ip</td>
+                        <td class="text-center">time</td>
+                        <td class="text-center">name</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+            </form>
+            <!--分页-->
+            <nav aria-label="Page navigation" class="text-center">
             <ol class="pagination" style="width: 800px;">
-                <li id="current" style="display: none"><a>当前页：</a>
+                <li id="current" style="display: none"><a>当前页：</a></li>
                 <li id="firstPage">
                     <a href='#' onclick="switchPage(0)">首 页</a>
                 </li>
                 <li id="previous">
                     <a href="#" aria-label="Previous" onclick="switchPage(parseInt(currentPage)-1);">
-                        <span aria-hidden="true"><span class="glyphicon glyphicon-backward"
-                                                       aria-hidden="true"></span></span>
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></span>
                     </a>
                 </li>
                 <li><a href="#">1</a></li>
                 <li id="next">
                     <a href="#" aria-label="Next" onclick="switchPage(parseInt(currentPage)+1);">
-                        <span aria-hidden="true"><span class="glyphicon glyphicon-forward"
-                                                       aria-hidden="true"></span></span>
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></span>
                     </a>
                 </li>
                 <li id="endPage">
@@ -143,8 +219,7 @@
                 </li>
                 <li><a id="totalPage"></a></li>
                 <li><a href="#" onclick="inputSwitchPage();">跳转</a></li>
-                <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
-                           id="pageNumber" title="" onkeydown="enterSwitchPage()"></li>
+                <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;" id="pageNumber" title="" onkeydown="enterSwitchPage()"></li>
                 <li class="showLi">每页显示:</li>
                 <li class="selectLi">
                     <select id="count" onchange="showLog();" title="">
@@ -155,6 +230,7 @@
                 </li>
             </ol>
         </nav>
+        </div>
     </div>
 </div>
 <div id="embed"></div>

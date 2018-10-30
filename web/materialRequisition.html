@@ -69,7 +69,7 @@
                     <li><a href="#">个人信息</a></li>
                     <li><a href="#">待办事项</a></li>
                     <li><a href="#" onclick="showLog();">登录日志</a></li>
-                    <li><a href="index.html">注销</a></li>
+                    <li><a href="admin.html">注销</a></li>
                 </ul>
             </li>
         </ul>
@@ -118,7 +118,7 @@
                 <div class="pull-left col-md-6">
                     <!--<a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>-->
                     <a class="btn btn-primary btn-xs" href="materialRequisition1.html"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 新增</a>
-                    <a class="btn btn-primary btn-xs" href="#" onclick="receive()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true" ></span> 领用</a>
+                    <a class="btn btn-primary btn-xs" href="#" onclick="receive()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true" ></span> 出库</a>
                     <a class="btn btn-primary btn-xs" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     <!--<a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 修改</a>-->
                     <!--<a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 查询</a>-->
@@ -190,17 +190,18 @@
                             <th class="text-center">领料单号</th>
                             <th class="text-center">厂家</th>
                             <th class="text-center">危废名称</th>
-                            <th class="text-center">危废代码</th>
+                            <th class="text-center hidden">危废代码</th>
                             <th class="text-center">危废类别</th>
-                            <th class="text-center">单位</th>
+                            <th class="text-center hidden">单位</th>
                             <th class="text-center">配料数量</th>
                             <th class="text-center">领用数量</th>
-                            <th class="text-center">附注</th>
+                            <th class="text-center hidden">附注</th>
                             <th class="text-center">主管副总经理</th>
                             <th class="text-center">部门仓库主管</th>
                             <th class="text-center">保管员</th>
                             <th class="text-center">领料部门主管</th>
                             <th class="text-center">领料人</th>
+                            <th class="text-center">状态</th>
                         </tr>
                         </thead>
                         <tbody id="tbody1">
@@ -213,11 +214,11 @@
                             <td class="text-center"></td>
                             <td class="text-center"></td>
                             <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
+                            <td class="text-center "></td>
+                            <td class="text-center "></td>
+                            <td class="text-center hidden"></td>
+                            <td class="text-center hidden"></td>
+                            <td class="text-center "></td>
                             <td class="text-center"></td>
                             <td class="text-center"></td>
                             <td class="text-center"></td>

@@ -50,9 +50,13 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">质量日报<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="businessRegistration.html">业务部送样登记</a></li>
+                            <li><a href="wastesDaily.html">危废入场分析日报</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="warehouseRegistration.html">仓储部送样登记</a></li>
+                            <li><a href="secondaryDaily.html">次生废物分析日报</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="sewageDaily.html">污水分析日报</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="softWaterDaily.html">软水分析日报</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="summaryTable.html">危废预准入分析汇总表</a></li>
                         </ul>
@@ -71,7 +75,7 @@
                     <li><a href="#">个人信息</a></li>
                     <li><a href="#">待办事项</a></li>
                     <li><a href="#" onclick="showLog();">登录日志</a></li>
-                    <li><a href="index.html">注销</a></li>
+                    <li><a href="admin.html">注销</a></li>
                 </ul>
             </li>
         </ul>
@@ -109,15 +113,16 @@
                 <h4 class="sub-header"><span class="months"></span>生产日报明细</h4>
             </div>
             <br>
-            <table class="table" style="border: none">
-                <tr>
-                    <td class="text-left">报表单位：常州北控安耐得有限公司</td>
-                    <td class="text-left">报表部门：生产技术部</td>
-                    <td class="text-left">报表产生时间：<span id="date"></span></td>
-                    <td class="text-left"><span id="week"></span></td>
-                </tr>
-            </table>
-            <table class="table table-bordered">
+            <div style="overflow: scroll">
+                <table class="table" style="border: none">
+                    <tr>
+                        <td class="text-left">报表单位：常州北控安耐得有限公司</td>
+                        <td class="text-left">报表部门：生产技术部</td>
+                        <td class="text-left">报表产生时间：<span id="date"></span></td>
+                        <td class="text-left"><span id="week"></span></td>
+                    </tr>
+                </table>
+                <table class="table table-bordered">
                 <thead>
                 <tr>
                     <td class="text-center" colspan="24"><u>北控安耐得环保科技发展常州有限公司生产日报表</u></td>
@@ -959,7 +964,7 @@
                     <td class="text-center" id="yearDisposalThirdAuxiliarySlagBag"></td>
                     <td class="text-center" id="todayAverageDisposalThirdAuxiliarySlagBag"></td>
                     <td class="text-center" id="monthAverageDisposalThirdAuxiliarySlagBag"></td>
-                    <td class="text-center" id="limitDisposalThirdSecondaryAuxiliarySlagBag"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliarySlagBag"></td>
                 </tr>
                 <tr>
                     <td class="text-center">飞灰用吨袋</td>
@@ -2429,7 +2434,7 @@
                 </tr>
                 </tbody>
             </table>
-
+            </div>
             <div class="row text-center">
                 <a class="btn btn-primary" href="#">打印</a>
                 <a class="btn btn-danger" href="productionDaily.html">返回</a>

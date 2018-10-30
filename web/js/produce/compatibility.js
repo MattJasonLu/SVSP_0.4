@@ -327,6 +327,8 @@ function totalPage() {
         page.count = countValue();                        //可选
         page.pageNumber = pageNumber;
         currentPage = pageNumber;          //当前页面
+        setPageCloneAfter(pageNumber);        // 重新设置页码
+        addPageClass(pageNumber);           // 设置页码标蓝
         //addClass("active");
         page.start = (pageNumber - 1) * page.count;
         if (!isSearch) {
@@ -434,6 +436,7 @@ function totalPage() {
                 $("#endPage").removeClass("disabled");
             }
             currentPage = pageNumber;
+            setPageCloneAfter(pageNumber);        // 重新设置页码
             addPageClass(pageNumber);           // 设置页码标蓝
             var page = {};
             page.count = countValue();//可选
@@ -557,8 +560,9 @@ function totalPage() {
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result !== undefined && result.status === "success") {
-                    console.log(result)
+                    console.log(result);
                     setPageClone(result);
+                    setPageCloneAfter(pageNumber);        // 重新设置页码
                 }
                 else {
                     alert(result.message);
@@ -1188,53 +1192,53 @@ function confirmCompatibilityId() {
                         break;
                     //每日配置量
                     case (4):
-                        $(this).html(obj.dailyRatio);
-                        dailyRatioTotal+=parseFloat(obj.dailyRatio);
+                        $(this).html(obj.dailyRatio.toFixed(2));
+                        dailyRatioTotal+=parseFloat(obj.dailyRatio.toFixed(2));
                         break;
                     //周需求总理
                     case (5):
-                        $(this).html(obj.weeklyDemandTotal);
-                        weeklyDemandTotalAdd+=parseFloat(obj.weeklyDemandTotal);
+                        $(this).html(obj.weeklyDemandTotal.toFixed(2));
+                        weeklyDemandTotalAdd+=parseFloat(obj.weeklyDemandTotal.toFixed(2));
                         break;
                     //热值
                     case (6):
-                        $(this).html(obj.calorific);
-                        calorificTotal+=parseFloat(obj.calorific);
+                        $(this).html(obj.calorific.toFixed(2));
+                        calorificTotal+=parseFloat(obj.calorific.toFixed(2));
                         break;
                     //灰分
                     case (7):
-                        $(this).html(obj.ash);
-                        ashTotal+=parseFloat(obj.ash);
+                        $(this).html(obj.ash.toFixed(2));
+                        ashTotal+=parseFloat(obj.ash.toFixed(2));
                         break;
                     //水分
                     case (8):
-                        $(this).html(obj.water);
-                        waterTotal+=parseFloat(obj.water)
+                        $(this).html(obj.water.toFixed(2));
+                        waterTotal+=parseFloat(obj.water.toFixed(2))
                         break;
                     //CL
                     case (9):
-                        $(this).html(obj.cl);
-                        clTotal+=parseFloat(obj.cl)
+                        $(this).html(obj.cl.toFixed(2));
+                        clTotal+=parseFloat(obj.cl.toFixed(2))
                         break;
                     //S
                     case (10):
-                        $(this).html(obj.s);
-                        sTotal+=parseFloat(obj.s);
+                        $(this).html(obj.s.toFixed(2));
+                        sTotal+=parseFloat(obj.s.toFixed(2));
                         break;
                     //P
                     case (11):
-                        $(this).html(obj.p);
-                        pTotal+=parseFloat(obj.p);
+                        $(this).html(obj.p.toFixed(2));
+                        pTotal+=parseFloat(obj.p.toFixed(2));
                         break;
                     //F
                     case (12):
-                        $(this).html(obj.f);
-                        fTotal+=parseFloat(obj.f);
+                        $(this).html(obj.f.toFixed(2));
+                        fTotal+=parseFloat(obj.f.toFixed(2));
                         break;
                     //PH
                     case (13):
-                        $(this).html(obj.ph);
-                        phTotal+=parseFloat(obj.ph);
+                        $(this).html(obj.ph.toFixed(2));
+                        phTotal+=parseFloat(obj.ph.toFixed(2));
                         break;
                 }
                 clonedTr.removeAttr('id');
@@ -1331,21 +1335,21 @@ function confirmCompatibilityId() {
 
                         cloneTr.children('td').eq(5).children('input').val(obj.weeklyDemandTotal.toFixed(2));
 
-                        cloneTr.children('td').eq(6).children('input').val(obj.calorific);
+                        cloneTr.children('td').eq(6).children('input').val(obj.calorific.toFixed(2));
 
-                        cloneTr.children('td').eq(7).children('input').val(obj.ash);
+                        cloneTr.children('td').eq(7).children('input').val(obj.ash.toFixed(2));
 
-                        cloneTr.children('td').eq(8).children('input').val(obj.water);
+                        cloneTr.children('td').eq(8).children('input').val(obj.water.toFixed(2));
 
-                        cloneTr.children('td').eq(9).children('input').val(obj.cl);
+                        cloneTr.children('td').eq(9).children('input').val(obj.cl.toFixed(2));
 
-                        cloneTr.children('td').eq(10).children('input').val(obj.s);
+                        cloneTr.children('td').eq(10).children('input').val(obj.s.toFixed(2));
 
-                        cloneTr.children('td').eq(11).children('input').val(obj.p);
+                        cloneTr.children('td').eq(11).children('input').val(obj.p.toFixed(2));
 
-                        cloneTr.children('td').eq(12).children('input').val(obj.f);
+                        cloneTr.children('td').eq(12).children('input').val(obj.f.toFixed(2));
 
-                        cloneTr.children('td').eq(13).children('input').val(obj.ph);
+                        cloneTr.children('td').eq(13).children('input').val(obj.ph.toFixed(2));
 
                         cloneTr.children('td').eq(14).html(obj.id);
 
@@ -1575,7 +1579,7 @@ function confirmCompatibilityId() {
 
         var dailyRatio = $(item).parent().prev().children('input').val();//每日配置量
 
-        var proportion = ((dailyRatio / weeklyDemandTotal).toFixed(2)) * 100;
+        var proportion = (((dailyRatio / weeklyDemandTotal).toFixed(2)) * 100).toFixed(2);
 
         $(item).parent().prev().prev().children('input').val(proportion);
 
