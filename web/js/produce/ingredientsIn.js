@@ -154,11 +154,12 @@ function switchPage(pageNumber) {
         $("#next").removeClass("disabled");
         $("#endPage").removeClass("disabled");
     }
-    addPageClass(pageNumber);           // 设置页码标蓝
     var page = {};
     page.count = countValue();                        //可选
     page.pageNumber = pageNumber;
     currentPage = pageNumber;          //当前页面
+    setPageCloneAfter(pageNumber);      // 大于5页时页码省略显示
+    addPageClass(pageNumber);           // 设置页码标蓝
     page.start = (pageNumber - 1) * page.count;
     if (!isSearch) {
         $.ajax({
@@ -239,8 +240,9 @@ function inputSwitchPage() {
             $("#next").removeClass("disabled");
             $("#endPage").removeClass("disabled");
         }
-        addPageClass(pageNumber);           // 设置页码标蓝
         currentPage = pageNumber;
+        setPageCloneAfter(pageNumber);      // 大于5页时页码省略显示
+        addPageClass(pageNumber);           // 设置页码标蓝
         var page = {};
         page.count = countValue();//可选
         page.pageNumber = pageNumber;
@@ -319,6 +321,7 @@ function loadPageIngredientsInList() {
             if (result != undefined && result.status == "success") {
                 console.log(result);
                 setPageClone(result.data);
+                setPageCloneAfter(pageNumber);      // 大于5页时页码省略显示
             } else {
                 console.log(result.message);
             }

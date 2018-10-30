@@ -41,6 +41,9 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public  List<Client> listAll(){ return clientMapper.listAll();}
+
+    @Override
     public List<Client> get(Map params) {
         return clientMapper.get(params);
     }

@@ -157,7 +157,7 @@
     </select>
 
     <select id="getByName" parameterType="String" resultMap="ClientRM">
-        SELECT * FROM client WHERE companyName=#{companyName} and state != 'Disabled';
+        SELECT * FROM client WHERE companyName=#{companyName} and state = 'Enabled';
     </select>
 
     <update id="update" parameterType="Client">
@@ -211,6 +211,10 @@
         </if>
 
     </update>
+
+    <select id="listAll" resultMap="ClientRM">
+        SELECT * FROM client WHERE state = 'Enabled';
+    </select>
 
     <select id="list" resultMap="ClientRM">
         select client.*, salesman.name, salesman.age, salesman.sex from client LEFT JOIN salesman ON client.salesmanId = salesman.salesmanId order by nowTime desc
