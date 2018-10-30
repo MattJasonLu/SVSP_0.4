@@ -364,11 +364,11 @@ function setMaterialRequisitionList(result) {
                         break;
                     //配料数量
                     case (8):
-                        $(this).html(obj.recipientsNumber);
+                        $(this).html(obj.recipientsNumber.toFixed(2));
                         break;
                     //领用数量
                     case (9):
-                        $(this).html(obj.recipientsNumber);
+                        $(this).html(obj.recipientsNumber.toFixed(2));
                         break;
                         //附注
                     // case (10):

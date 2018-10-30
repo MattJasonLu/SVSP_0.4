@@ -91,4 +91,9 @@ public class BatchOrderServiceImpl implements BatchOrderService{
     public void addSecondary(OutboundOrder outboundOrder) {
         batchOrderMapper.addSecondary(outboundOrder);
     }
+
+    @Override
+    public List<OutboundOrder> loadSecOutBoundList(Page page) {
+        return batchOrderMapper.loadSecOutBoundList(page);
+    }
 }

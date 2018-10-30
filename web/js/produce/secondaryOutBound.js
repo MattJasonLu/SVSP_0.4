@@ -348,33 +348,33 @@ function setOutBoundList(result) {
                 var obj = eval(item);
                 // 根据索引为部分td赋值
                 switch (inner_index) {
-                    // 仓库号
-                    case (1):
-                        if(obj.wareHouse!=null){
-                            $(this).html(obj.wareHouse.wareHouseId);
-                        }
-                        break;
-                    // 部门
-                    case (2):
-                        $(this).html(obj.departmentName);
-                        break;
-                    // 业务员
-                    case (3):
-                        if(obj.client != null && obj.client.salesman != null){
-                            $(this).html(obj.client.salesman.name);
-                        }
-
-                        break;
+                    // // 仓库号
+                    // case (1):
+                    //     if(obj.wareHouse!=null){
+                    //         $(this).html(obj.wareHouse.wareHouseId);
+                    //     }
+                    //     break;
+                    // // 部门
+                    // case (2):
+                    //     $(this).html(obj.departmentName);
+                    //     break;
+                    // // 业务员
+                    // case (3):
+                    //     if(obj.client != null && obj.client.salesman != null){
+                    //         $(this).html(obj.client.salesman.name);
+                    //     }
+                    //
+                    //     break;
                     // 出库日期
-                    case (4):
+                    case (1):
                         $(this).html(getDateStr(obj.outboundDate));
                         break;
                     // 出库单号
-                    case (5):
+                    case (2):
                         $(this).html(obj.outboundOrderId);
                         break;
                     // 出库类别
-                    case (6):
+                    case (3):
                         if(obj.boundType!=null){
                             $(this).html(obj.boundType.name);
                         }
@@ -397,46 +397,20 @@ function setOutBoundList(result) {
                     //     $(this).html(obj.auditor);
                     //     break;
                     //计划数量
+                    case (4):
+                        $(this).html(obj.outboundNumber.toFixed(2));
+                        break;
+                    case (5):
+                        $(this).html(obj.outboundNumber.toFixed(2));
+                        break;
+                        //处置方式
+                    case (6):
+                        $(this).html(obj.processWay.name);
+                        break
                     case (7):
-                        $(this).html(obj.outboundNumber);
-                        break;
-                    //危废数量
-                    case (8):
-                        $(this).html(obj.outboundNumber);
-                        break;
-                    //进料方式
-                    case (9):
-                        if(obj.handelCategory!=null){
-                            $(this).html(obj.handelCategory.name);
-                        }
-                        break;
-                    //单据状态
-                    case (10):
-                        if(obj.recordState!=null){
-                            $(this).html(obj.recordState.name);
-                        }
+                        $(this).html(obj.checkState.name);
+                        break
 
-                        break;
-                    //审批状态
-                    case (11):
-                        if(obj.checkState!=null){
-                            $(this).html(obj.checkState.name);
-                        }
-
-                        break;
-                    //备注
-                    case (12):
-                        $(this).html(obj.remarks);
-                        break;
-                        //入库单明细编号
-                    case (13):
-                        $(this).html(obj.inboundOrderItemId);
-                        break;
-                    //转移联单号
-                    // case (17):
-                    //     $(this).html(obj.picker);
-                    //     break;
-                    //
                 }
             });
             // 把克隆好的tr追加到原来的tr前面
@@ -731,6 +705,10 @@ function setBatchingWList(result) {
                 case (10):
                     $(this).html(obj.produceCompany.clientId);
                     break;
+                    //转移联单
+                case (12):
+                    $(this).html(obj.wareHouse.wareHouseId);
+                    break;
             }
         });
         // 把克隆好的tr追加到原来的tr前面
@@ -792,7 +770,8 @@ function save() {
                     wastesName:$(this).children('td').eq(3).html(),
                     wasteCategory:$(this).children('td').eq(4).html(),
                     processWay:getProcessWayFromStr($(this).children('td').eq(6).html()),
-                    outboundNumber:$(this).children('td').eq(7).html(),
+                    outboundNumber:$(this).children('td').eq(7).children('input').val(),
+                    wareHouse:{wareHouseId:$(this).children('td').eq(12).html()}
                 };
                 console.log(data);
                 $.ajax({

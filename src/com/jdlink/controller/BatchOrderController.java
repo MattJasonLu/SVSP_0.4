@@ -690,4 +690,25 @@ public class BatchOrderController {
         return  res.toString();
     }
 
+    //加载次生出库
+    @RequestMapping("loadSecOutBoundList")
+    @ResponseBody
+    public  String loadSecOutBoundList(@RequestBody Page page){
+        JSONObject res=new JSONObject();
+        try {
+            List<OutboundOrder> outboundOrderList=batchOrderService.loadSecOutBoundList(page);
+            res.put("data",outboundOrderList);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+
+
+        return  res.toString();
+    }
+
 }
