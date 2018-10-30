@@ -466,9 +466,22 @@ function importExcelChoose() {
  * 下载模板
  * */
 function downloadModal() {
-    var filePath = 'Files/Templates/接运单模板.xlsx';
-    window.open('downloadFile?filePath=' + filePath);
+    // var filePath = 'Files/Templates/接运单模板.xlsx';
+    // window.open('downloadFile?filePath=' + filePath);
+
 }
+
+$("#downloadModal").click(function () {
+    // 打开页面，此处最好使用提示页面
+    console.log("click");
+    var newWin = window.open('loadingPage.html');
+    var filePath = 'Files/Templates/接运单模板.xlsx';
+    ajax().done(function() {
+        // 重定向到目标页面
+        newWin.location.href = 'downloadFile?filePath=' + filePath;
+    });
+});
+
 
 /**
  * 导入excel
