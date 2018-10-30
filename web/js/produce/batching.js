@@ -987,65 +987,77 @@ function setBatchingOrderList(result) {
                     var obj = eval(item);
                     // 根据索引为部分td赋值
                     switch (inner_index) {
-                        // 序号
-                        case (1):
-                            $(this).html(parseInt(index)+1);
-                            break;
                         // 配料单号
-                        case (2):
+                        case (1):
                             $(this).html(obj.batchingOrderId);
                             break;
-                        // 危废名称
-                        case (3):
-                            if(obj.laboratoryTest!=null){
-                                $(this).html(obj.laboratoryTest.wastesName);
-                            }
-                            break;
-                        // 处理类别
-                        case (4):
-                            if(obj.processWay!=null){
-                                $(this).html(obj.processWay.name);
-                            }
-
-                            break;
-                        // 数量
-                        case (5):
-                            $(this).html(obj.batchingNumber);
-                            break;
-                        // 计量单位
-                        case (6):
-                            $(this).html("");
+                        // 入库时间
+                        case (2):
+                            $(this).html(getDateStr(obj.inboundOrderDate));
                             break;
                         // 产废单位
-                        case (7):
+                        case (3):
                             if(obj.produceCompany!=null){
                                 $(this).html(obj.produceCompany.companyName);
                             }
                             break;
-                        //创建人
+                        // 废物名称
+                        case (4):
+
+                                $(this).html(obj.wastesName);
+
+
+                            break;
+                        // 类别
+                        case (5):
+                            $(this).html(obj.wasteCategory);
+                            break;
+                        // 1号库入库数量（KG)
+                        case (6):
+                            $(this).html(obj.storage1.toFixed(2));
+                            break;
+                        // 2号库入库数量（KG)
+                        case (7):
+
+                                $(this).html(obj.storage2.toFixed(2));
+
+                            break;
+                        //智能库入库数量（KG)
                         case (8):
-                            $(this).html(obj.creator);
+                            $(this).html(obj.intelligentBatch.toFixed(2));
                             break;
-                        //创建日期
+                        //1号库配料数量（KG)
                         case (9):
-                            if(obj.createDate!=null){
-                                $(this).html(getDateStr(obj.createDate));
-                            }
-                            else {
-                                $(this).html("");
-                            }
+                                $(this).html((obj.storage1Batch).toFixed(2));
+
                             break;
-                        //备注
+                        //2号库配料数量（KG)
                         case (10):
-                            $(this).html(obj.remarks);
+                            $(this).html(obj.storage2Batch.toFixed(2));
+                            break;
+                        //智能库配料数量（KG)
+                        case (11):
+                            $(this).html(obj.intelligentBatch.toFixed(2));
+
+                            break;
+                        //余量（KG)
+                        case (12):
+                            $(this).html(obj.allowance.toFixed(2));
+
+                            break;
+                        //进料方式
+                        case (13):
+                            if(obj.handelCategory!=null){
+                                $(this).html(obj.handelCategory.name);
+                            }
                             break;
                         //状态
-                        case (11):
+                        case (14):
                             if(obj.checkState!=null){
                                 $(this).html(obj.checkState.name);
                             }
-
                             break;
+
                     }
                 });
                 // 把克隆好的tr追加到原来的tr前面
@@ -1588,6 +1600,58 @@ function exportExcel() {
 
 }
 
+//导入
+function importExcelChoose(){
+    $("#importExcelModal").modal('show');
+
+}
+
+/**
+ * 下载模板
+ * */
+function downloadModal() {
+    var filePath = '/var/local/apache-tomcat-7.0.86/bin/Files/Templates/burnOrderMode.xls';
+    var r = confirm("是否下载模板?");
+    if (r == true) {
+        window.open('downloadFile?filePath=' + filePath);
+    }
+}
+
+/**
+ * 导入excel
+ */
+function importExcel() {
+    document.getElementById("idExcel").click();
+    document.getElementById("idExcel").addEventListener("change", function () {
+        var eFile = document.getElementById("idExcel").files[0];
+        var formFile = new FormData();
+        formFile.append("excelFile", eFile);
+        formFile.append("excelFile", eFile);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "importBatchExcel",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: formFile,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                if (result != undefined) {
+                    console.log(result);
+                    if (result != undefined && result.status == "success") {
+                        alert(result.message);
+                        window.location.reload();         //刷新
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    });
+}
 
 //延迟进行计算
 $(document).ready(function () {//页面载入是就会进行加载里面的内容

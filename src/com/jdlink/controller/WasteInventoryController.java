@@ -7,6 +7,7 @@ import com.jdlink.domain.Produce.MaterialRequire;
 import com.jdlink.domain.Produce.Stock;
 import com.jdlink.domain.Produce.StockItem;
 import com.jdlink.service.*;
+import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.omg.PortableInterceptor.INACTIVE;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -202,26 +204,7 @@ public class WasteInventoryController {
 
         return res.toString();
     }
-    //获得配料单的下拉列表
-    @RequestMapping("getBatchOrderList")
-    @ResponseBody
-    public String getBatchOrderList(@RequestBody Page page){
-        JSONObject res=new JSONObject();
-    try {
-        List<BatchingOrder> batchingOrderList=wasteInventoryService.getBatching(page);
-        JSONArray array=JSONArray.fromObject(batchingOrderList);
-        res.put("status", "success");
-        res.put("message", "分页数据获取成功");
-        res.put("batchingOrderList",array);
-    }
-   catch (Exception e){
-       e.printStackTrace();
-       res.put("status", "fail");
-       res.put("message", "分页数据获取失败");
-   }
 
-        return res.toString();
-    }
     //添加领料单
     @RequestMapping("addRequisition")
     @ResponseBody
@@ -1217,5 +1200,7 @@ catch (Exception e){
 
 
     }
+
+
 
 }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdlink.mapper.produce.BatchOrderMapper">
+<insert id="addBatchList">
+    insert into t_pl_batchingorder(batchingDate,produceCompany,wastesName,wasteCategory,storage1,storage2,intelligent,storage1Batch,storage2Batch,intelligentBatch,allowance,handelCategory,batchingOrderId,inboundOrderDate,checkState) values
+    (#{batchingDate},#{produceCompany.clientId},#{wastesName},#{wasteCategory},#{storage1},#{storage2},#{intelligent},#{storage1Batch},#{storage2Batch},#{intelligentBatch},#{allowance},#{handelCategory},#{batchingOrderId},#{inboundOrderDate},'ToPick')
+</insert>
+    
+<resultMap id="BatchingOrderRM" type="BatchingOrder" autoMapping="true">
+    <collection property="produceCompany" column="produceCompany" select="getClient"></collection>
+</resultMap>
+    <select id="getClient" resultType="Client">
+        select * from client where clientId=#{produceCompany};
+    </select>
+    <select id="BatchList" resultMap="BatchingOrderRM">
+        select * from t_pl_batchingorder order by inboundOrderDate
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+</mapper>

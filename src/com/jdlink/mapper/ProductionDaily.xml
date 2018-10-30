@@ -277,7 +277,7 @@
 
     <!--增加日报-->
     <insert id="addProductionDaily1" parameterType="ProductionDaily">
-        INSERT INTO t_rp_productiondaily (id, date, checkState, todayDisposalMedicalWastes, todayDisposalMedicalWastesDisposalDirect, todayDisposalMedicalWastesCooking,
+        INSERT INTO t_rp_productiondaily (id, date, startDate, endDate, checkState, todayDisposalMedicalWastes, todayDisposalMedicalWastesDisposalDirect, todayDisposalMedicalWastesCooking,
         todayDisposalMedicalWastesAfterCooking, todayDisposalMedicalWastesAfterCookingInbound, todayDisposalMedicalWastesAfterCookingSend,
         todayDisposalMedicalWastesErrorNumber, todayDisposalMedicalWastesWetNumber, todayInboundMedicalWastes, todayInboundMedicalWastesCooking,
         todayInboundMedicalWastesErrorNumber, todayInboundMedicalWastesAfterCooking, todayInboundMedicalWastesAfterCookingInbound, todayInboundMedicalWastesWetNumber,
@@ -350,7 +350,7 @@
         todayInventoryMedicalWastesAfterCookingInbound,todayInventoryMedicalWastesWetNumber,todayInventoryWastesBulk,todayInventoryWastesCrushing,todayInventoryWastesSludge,todayInventoryWastesDistillation,todayInventoryWastesSuspension,
         todayInventoryWastesWasteLiquid,todayInventoryWastesTotal,todayInventorySecondWastesSlag,todayInventorySecondWastesAsh,todayInventorySecondWastesBucket)
         VALUES
-        (#{id}, #{date}, #{checkState}, #{todayDisposalMedicalWastes},
+        (#{id}, #{date}, #{startDate}, #{endDate}, #{checkState}, #{todayDisposalMedicalWastes},
         #{todayDisposalMedicalWastesDisposalDirect}, #{todayDisposalMedicalWastesCooking}, #{todayDisposalMedicalWastesAfterCooking},
         #{todayDisposalMedicalWastesAfterCookingInbound}, #{todayDisposalMedicalWastesAfterCookingSend}, #{todayDisposalMedicalWastesErrorNumber},
         #{todayDisposalMedicalWastesWetNumber}, #{todayInboundMedicalWastes}, #{todayInboundMedicalWastesCooking}, #{todayInboundMedicalWastesErrorNumber},

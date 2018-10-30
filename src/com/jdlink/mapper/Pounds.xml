@@ -185,10 +185,10 @@
 
     <insert id="add" parameterType="Pounds">
         insert into t_pr_pounds
-        (id,transferId,founder,creationDate,enterLicencePlate,outLicencePlate,goodsName,grossWeight,netWeight,tare,
+        (id,transferId,founder,creationDate,enterLicencePlate,goodsName,grossWeight,netWeight,tare,
         deliveryCompanyId,receiveCompanyId,businessType,enterTime,outTime,driver,weighman,remarks,nowTime,state,wastesCode)
         values
-        (#{id},#{transferId},#{founder},#{creationDate},#{enterLicencePlate},#{outLicencePlate},
+        (#{id},#{transferId},#{founder},#{creationDate},#{outLicencePlate},
         #{goodsName},#{grossWeight},#{netWeight},#{tare},#{deliveryCompany.clientId},#{receiveCompany.clientId},
         #{businessType},#{enterTime},#{outTime},#{driver},#{weighman},#{remarks},NOW(),'Confirm',#{wastesCode});
 

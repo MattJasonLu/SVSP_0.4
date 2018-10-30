@@ -25,6 +25,8 @@ public interface ClientMapper {
 
     List<Client> get(Map params);
 
+    List<Client> listAll();
+
     List<Client> get(Client client);
 
     void update(Client client);

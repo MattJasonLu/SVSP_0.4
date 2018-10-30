@@ -313,7 +313,7 @@ function loadPageWayBillList() {
             if (result != undefined && result.status == "success") {
                 console.log(result);
                 setPageClone(result.data);
-                setPageCloneAfter(pageNumber);      //
+                setPageCloneAfter(pageNumber);      // 大于5页时页码省略显示
             } else {
                 console.log(result.message);
             }
@@ -1306,3 +1306,23 @@ $(window).on('load', function () {
         dropupAuto: false
     });
 });
+
+/**
+ * 自动匹配业务员
+ */
+function setSalesmanNameAuto(){
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "setSalesmanNameAuto",             // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            //alert("数据获取成功！");
+            alert(result.message);
+        },
+        error: function (result) {
+            alert("服务器异常!");
+            console.log(result);
+        }
+    });
+}
