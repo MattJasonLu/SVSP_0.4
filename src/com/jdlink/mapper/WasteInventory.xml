@@ -77,7 +77,6 @@
     </select>
     <select id="getBatchingOrderIdList" resultType="String">
         select batchingOrderId from t_pl_batchingorder  order by (CAST(batchingOrderId AS SIGNED) ) desc ;
-
     </select>
     <select id="total" resultType="int">
     select count(*) from t_pl_batchingorder;

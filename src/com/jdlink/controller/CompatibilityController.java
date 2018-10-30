@@ -26,6 +26,9 @@ import java.util.Date;
 import java.util.List;
 
 import static com.jdlink.domain.CheckState.ToExamine;
+import static com.jdlink.domain.FormType.HalfSolid;
+import static com.jdlink.domain.FormType.Liquid;
+import static com.jdlink.domain.FormType.Solid;
 import static com.jdlink.domain.PackageType.*;
 
 @Controller
@@ -143,8 +146,21 @@ public String importCompatibilityExcel(MultipartFile excelFile){
                      //第三列是物质形态
 
                      if (data.get(i)[j][2].toString() != "null") {
-                         FormType formType = FormType.getFormType(data.get(i)[j][2].toString());
-                         compatibilityItem.setFormType(formType);
+
+                         if(data.get(i)[j][2].toString().indexOf("固")!=-1&&data.get(i)[j][2].toString().indexOf("半")==-1){
+                             compatibilityItem.setFormType(Solid);
+                         }
+                        else if(data.get(i)[j][2].toString().indexOf("液")!=-1){
+                             compatibilityItem.setFormType(Liquid);
+                         }
+                         else if(data.get(i)[j][2].toString().indexOf("半")!=-1){
+                             compatibilityItem.setFormType(HalfSolid);
+                         }
+                         else {
+                             FormType formType = FormType.getFormType(data.get(i)[j][2].toString());
+                             compatibilityItem.setFormType(formType);
+                         }
+
                      }
                      if (data.get(i)[j][2] == "null") {
                          compatibilityItem.setFormType(null);

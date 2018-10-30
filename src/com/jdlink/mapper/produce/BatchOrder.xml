@@ -8,16 +8,104 @@
     (#{batchingDate},#{produceCompany.clientId},#{wastesName},#{wasteCategory},#{storage1},#{storage2},#{intelligent},#{storage1Batch},#{storage2Batch},#{intelligentBatch},#{allowance},#{handelCategory},#{batchingOrderId},#{inboundOrderDate},'ToPick')
 </insert>
     
-<resultMap id="BatchingOrderRM" type="BatchingOrder" autoMapping="true">
-    <collection property="produceCompany" column="produceCompany" select="getClient"></collection>
+<resultMap id="BatchingOrderRM" type="BatchingOrder">
+    <association property="produceCompany" column="produceCompany" select="getClient"></association>
+    <association property="wareHouse" column="wareHouseId" select="getwareHouse"></association>
 </resultMap>
     <select id="getClient" resultType="Client">
         select * from client where clientId=#{produceCompany};
     </select>
     <select id="BatchList" resultMap="BatchingOrderRM">
-        select * from t_pl_batchingorder order by inboundOrderDate
+        select * from t_pl_batchingorder order by nowTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
     </select>
+
+    <resultMap id="WasteInventoryListBatRM" type="WasteInventory">
+        <association property="produceCompany" column="clientId" select="getClientBat"></association>
+     <association property="wareHouse" column="wareHouseId" select="getwareHouse"></association>
+    </resultMap>
+    <select id="getClientBat" resultType="Client">
+        select * from client where clientId=#{clientId};
+    </select>
+    <select id="getwareHouse" resultType="WareHouse">
+        select * from t_pl_warehouse where wareHouseId=#{wareHouseId};
+    </select>
+    <!--配料单新增页面获取仓储信息-->
+    <select id="getWasteInventoryListBat" resultMap="WasteInventoryListBatRM">
+        select * from t_pl_wasteinventory;
+    </select>
+
+    <select id="getWasteInventoryByInboundOrderId" resultMap="WasteInventoryListBatRM" parameterType="String">
+        select * from t_pl_wasteinventory where  inboundOrderItemId=#{inboundOrderItemId};
+    </select>
+
+ <!--获得配料单单号列表-->
+    <select id="getBatchingOrderIdList" resultType="String">
+        select batchingOrderId from t_pl_batchingorder  order by (CAST(batchingOrderId AS SIGNED) ) desc ;
+    </select>
+
+    <!--添加配料单-->
+    <insert id="addBatchingOrderBat" parameterType="BatchingOrder">
+        insert into t_pl_batchingorder(batchingOrderId,batchingDate,batchingNumber,createDate,creator,handelCategory,inboundOrderId,inboundOrderItemId,produceCompany,wareHouseId,wasteCategory,wastesName,nowTime,transferDraftId,checkState) values
+        (#{batchingOrderId},#{batchingDate},#{batchingNumber},#{createDate},#{creator},#{handelCategory},#{inboundOrder.inboundOrderId},#{inboundOrderItemId},#{produceCompany.clientId},#{wareHouse.wareHouseId},#{wasteCategory},#{wastesName},NOW(),#{transferDraftId},'ToPick')
+    </insert>
+
+    <!--配料成功后扣减库存-->
+    <update id="deducNumber" >
+        update t_pl_wasteinventory set actualCount=actualCount-#{1} where inboundOrderItemId=#{0};
+    </update>
+
+    <!--添加领料单-->
+    <insert id="addRequisition" parameterType="MaterialRequisitionOrder">
+        insert into t_pl_materialrequisitionorder (materialRequisitionId,wastesName,transferDraftId,wareHouseId,clientId,wasteCategory,recipientsNumber,inboundOrderItemId,nowTime,checkState) values
+        (#{materialRequisitionId},#{wastesName},#{transferDraftId},#{wareHouse.wareHouseId},#{client.clientId},#{wasteCategory},#{recipientsNumber},#{inboundOrderItemId},NOW(),'Picked');
+    </insert>
+
+    <resultMap id="MaterialRequisitionListRM" type="MaterialRequisitionOrder">
+        <association property="client" column="clientId" select="getClientMar"></association>
+        <association property="wareHouse" column="wareHouseId" select="getwareHouse"></association>
+    </resultMap>
+
+    <select id="getClientMar" resultType="Client">
+        select * from client where clientId=#{clientId};
+    </select>
+    <!--查询领料单 新增页面-->
+    <select id="getMaterialRequisitionList" resultMap="MaterialRequisitionListRM">
+        select * from  t_pl_materialrequisitionorder where checkState='Picked'
+    </select>
+
+    <!--更新领料单数据-->
+    <update id="updateMaterialRequisitionOrder" parameterType="MaterialRequisitionOrder">
+        update t_pl_materialrequisitionorder set departmentName=#{departmentName},deputyGeneral=#{deputyGeneral},
+        warehouseManager=#{warehouseManager},guardian=#{guardian},materialManager=#{materialManager},
+        picker=#{picker},pickerDate=NOW(),nowTime=NOW() ,checkState='ToOutbound'where materialRequisitionId=#{materialRequisitionId};
+    </update>
+
+    <!--根据领料编号获取信息-->
+    <select id="getByMaterialRequisitionId" parameterType="String" resultMap="MaterialRequisitionListRM">
+        select * from t_pl_materialrequisitionorder where materialRequisitionId=#{materialRequisitionId}
+    </select>
+
+    <!--添加出库信息-->
+    <insert id="addOutBoundOrder" parameterType="OutboundOrder">
+        insert into  t_pl_outboundorder (outboundOrderId,clientId,wareHouseId,transferDraftId,wastesName,wasteCategory,outboundDate,creator,auditor,outboundNumber,equipment,nowTime,checkState)
+        values
+        (#{outboundOrderId},#{client.clientId},#{wareHouse.wareHouseId},#{transferDraftId},#{wastesName},#{wasteCategory},#{outboundDate},#{creator},#{auditor},#{outboundNumber},#{equipment},NOW(),'OutBounded')
+    </insert>
+
+
+    <resultMap id="WastesOutBoundRM" type="OutboundOrder">
+        <association property="client" column="clientId" select="getClientMar"></association>
+        <association property="wareHouse" column="wareHouseId" select="getwareHouse"></association>
+    </resultMap>
+    <!--加载危废出库-->
+    <select id="loadWastesOutBoundList" resultMap="WastesOutBoundRM">
+        select * from t_pl_outboundorder
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+    
 </mapper>

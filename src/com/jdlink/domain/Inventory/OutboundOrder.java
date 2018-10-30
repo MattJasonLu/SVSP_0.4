@@ -13,6 +13,41 @@ import java.util.List;
  * 出库单
  */
 public class OutboundOrder {
+
+
+    /*出库单编号*/
+    private String outboundOrderId;
+
+    private Client client;
+
+    private String wastesName;
+
+    private String wasteCategory;
+
+    private float outboundNumber;
+
+
+    /*制单人*/
+    private String creator;
+
+    /*审核人*/
+    private String auditor;
+
+    /**
+     * 处置设备
+     */
+    private Equipment equipment;
+
+    /*出库日期*/
+    private Date outboundDate;
+
+    /*转移联单号*/
+    private String transferDraftId;
+
+    /*仓库*/
+    private WareHouse wareHouse;
+
+
     /*领料单对列表
     * 1:N
     * */
@@ -27,18 +62,13 @@ public class OutboundOrder {
 //        this.materialRequisitionOrderList = materialRequisitionOrderList;
 //    }
 
-    /*出库单编号*/
-    private String outboundOrderId;
-    /*出库日期*/
-    private Date outboundDate;
-    /*制单人*/
-    private String creator;
-    /*审核人*/
-    private String auditor;
+
+
+
+
     /*出库类型*/
     private OutboundOrder outboundOrder;
-    /*转移联单号*/
-    private String transferDraftId;
+
     /*部门*/
     //private String departmentId;
     /*业务员 来自产废单位的业务员*/
@@ -48,7 +78,7 @@ public class OutboundOrder {
     /*记录状态*/
     private  RecordState recordState;
     private Wastes wastes;
-    private Client client;
+
     /**
      * 备注信息
      */
@@ -60,21 +90,17 @@ public class OutboundOrder {
      /*次生危废对象*/
     WasteInventory wasteInventory;
     /*出库数量*/
-    /*仓库*/
-    private WareHouse wareHouse;
+
     private LaboratoryTest laboratoryTest;
     private HandleCategory handelCategory;
     private ProcessWay processWay;
-    private String wasteCategory;
+
     private String guardian;
     private String deputyGeneral;
     private String inboundOrderItemId;
     private PackageType packageType;
     private FormType formType;
-    /**
-     * 处置设备
-     */
-    private Equipment equipment;
+
     /**
      * 模糊查询关键字
      */
@@ -88,8 +114,14 @@ public class OutboundOrder {
      */
     private Date endDate;
     private QuotationItem quotationItem;
-    private float outboundNumber;
 
+    public String getWastesName() {
+        return wastesName;
+    }
+
+    public void setWastesName(String wastesName) {
+        this.wastesName = wastesName;
+    }
     public String getKeywords() {
         return keywords;
     }

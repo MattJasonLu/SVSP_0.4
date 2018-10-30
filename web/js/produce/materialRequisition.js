@@ -348,16 +348,11 @@ function setMaterialRequisitionList(result) {
                         break;
                     // 危废名称
                     case (4):
-                        if(obj.laboratoryTest!=null){
-                            $(this).html(obj.laboratoryTest.wastesName);
-                        }
-
+                            $(this).html(obj.wastesName);
                         break;
                     // 危废代码
                     case (5):
-                        if(obj.laboratoryTest!=null) {
-                            $(this).html(obj.laboratoryTest.wastesCode);
-                        }
+                            $(this).html(obj.wasteCategory);
                         break;
                     // 危废类别
                     case (6):
@@ -376,28 +371,35 @@ function setMaterialRequisitionList(result) {
                         $(this).html(obj.recipientsNumber);
                         break;
                         //附注
-                    case (10):
-                        $(this).html(obj.remarks);
-                        break;
+                    // case (10):
+                    //     $(this).html(obj.remarks);
+                    //     break;
                         //主管副总经理
-                    case (11):
+                    case (10):
                         $(this).html(obj.deputyGeneral);
                         break;
                         //部门仓库主管
-                    case (12):
+                    case (11):
                     $(this).html(obj.warehouseManager);
                     break;
                     //保管员
-                    case (13):
+                    case (12):
                     $(this).html(obj.guardian);
                     break;
                     //领料部门主管
-                    case (14):
+                    case (13):
                     $(this).html(obj.materialManager);
                     break;
                     //领料人
-                    case (15):
+                    case (14):
                         $(this).html(obj.picker);
+                        break;
+                        //状态
+                    case (15):
+                        if(obj.checkState!=null){
+
+                        }   $(this).html(obj.checkState.name);
+
                         break;
                 }
             });
@@ -416,7 +418,7 @@ function setMaterialRequisitionList(result) {
 function receive() {
     var items = $("input[name='select']:checked");//判断复选框是否选中
     if(items.length>0){
-        if(confirm("确定领用?")){
+        if(confirm("确定出库?")){
             //点击确定后操作
             items.each(function () {
                 //1获得领料单的编号
@@ -504,41 +506,7 @@ function loadRequisitionList() {
         language: 'zh_CN',
         size: 4
     });
-    // $.ajax({
-    //     type: "POST",                       // 方法类型
-    //     url: "getOutBoundList",                  // url
-    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-    //     dataType: "json",
-    //     contentType: "application/json; charset=utf-8",
-    //     success:function (result ) {
-    //         if (result != undefined && result.status == "success"){
-    //            // console.log(result);
-    //             //1获得下拉列表
-    //             var outboundType=$("#outboundType");
-    //             //2清除子元素
-    //             outboundType.children().remove();
-    //             //3遍历获得项来赋值
-    //             $.each(result.array,function (index,item) {
-    //               //4创建选项元素
-    //                 var option = $('<option />');
-    //                 //5给option赋值
-    //                 option.val(index);
-    //                 option.text(item.name);
-    //                 //6添加到父节点
-    //                 outboundType.append(option);
-    //             });
-    //             //7初始化选项
-    //             outboundType.get(0).selectedIndex=-1;
-    //
-    //         }
-    //         else {
-    //             alert(result.message);
-    //         }
-    //     },
-    //     error:function (result) {
-    //         alert("服务器异常！")
-    //     }
-    // });
+
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getEquipmentNameList",                  // url
@@ -643,15 +611,11 @@ function setRequisitionList(result) {
                         break;
                     // 危废名称
                     case (3):
-                        if(obj.laboratoryTest!=null){
-                            $(this).html(obj.laboratoryTest.wastesName);
-                        }
+                            $(this).html(obj.wastesName);
                         break;
                     // 危废代码
                     case (4):
-                        if(obj.laboratoryTest!=null){
-                            $(this).html(obj.laboratoryTest.wastesCode);
-                        }
+                            $(this).html(obj.wasteCategory);
                         break;
                     // 危废类别
                     case (5):
