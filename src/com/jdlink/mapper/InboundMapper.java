@@ -134,4 +134,6 @@ public interface InboundMapper {
     List<InboundOrderItem> getSecondInboundOrderItemByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
     List<InboundOrderItem> getInboundOrderItemByClientId(String id);
+
+    int getInventoryByWastesNameAndWareHouse(@Param("wastesName")String wastesName,@Param("wareHouseName")String wareHouseName);
 }

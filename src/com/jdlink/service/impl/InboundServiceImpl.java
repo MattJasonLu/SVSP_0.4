@@ -169,4 +169,7 @@ public class InboundServiceImpl implements InboundService {
     @Override
     public List<InboundOrderItem> getInboundOrderItemByClientId(String id){ return inboundMapper.getInboundOrderItemByClientId(id); }
 
+    @Override
+    public int getInventoryByWastesNameAndWareHouse(String wastesName,String wareHouseName){ return inboundMapper.getInventoryByWastesNameAndWareHouse(wastesName,wareHouseName);}
+
 }
