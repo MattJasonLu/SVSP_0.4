@@ -1,6 +1,7 @@
 package com.jdlink.service.produce;
 
 import com.jdlink.domain.Page;
+import com.jdlink.domain.Produce.SecondaryTest;
 import com.jdlink.domain.Produce.SewageTest;
 import com.jdlink.domain.Produce.Sewageregistration;
 import com.jdlink.domain.Produce.SoftTest;
@@ -20,4 +21,9 @@ public interface SewageTestService {
     List<SoftTest> loadSoftTestResultsList(Page page);
     void updateSewaGeregistration(Sewageregistration sewageregistration);
     void deleteSewaGeregistrationById(String id);
+    SecondaryTest getSecondaryTestById(String id);
+    void updateSecondaryTestById(SecondaryTest secondaryTest);
+    void addSecondaryTest(SecondaryTest secondaryTest);
+    List<SecondaryTest> loadPageSecondaryTestResultsList(Page page);
+    int totalSecondaryTestRecord();
 }
