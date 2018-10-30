@@ -1300,6 +1300,8 @@ public class ProductionDailyController {
         productionDaily.setMonthInboundWastesSuspension(monthInboundWastesSuspension);
         productionDaily.setMonthInboundWastesWasteLiquid(monthInboundWastesWasteLiquid);
         productionDaily.setMonthInboundWastesTotal(monthInboundWastesTotal);
+        // 月份入库数据
+        productionDaily.setInboundOrderItemList(inboundOrderItemMonthList);
 
         // 危废出库信息
         float monthOutboundWastesBulk = 0f;
@@ -1335,6 +1337,10 @@ public class ProductionDailyController {
         float monthOutboundWastesThirdWasteLiquid = 0f;
 
         List<OutboundOrder> outboundOrderMonthList = outboundOrderService.getOutBoundByRange(monthFirstDay, monthEndDay);
+        List<OutboundOrder> outboundOrderMonthA2List = new ArrayList<>();
+        List<OutboundOrder> outboundOrderMonthB2List = new ArrayList<>();
+        List<OutboundOrder> outboundOrderMonthPrepareList = new ArrayList<>();
+        List<OutboundOrder> outboundOrderMonthThirdList = new ArrayList<>();
         for (OutboundOrder outboundOrder : outboundOrderMonthList) {
             if (outboundOrder.getBoundType() != null && outboundOrder.getBoundType().equals(BoundType.WasteOutbound)) {
                 if (outboundOrder.getHandelCategory() != null)
@@ -1345,12 +1351,20 @@ public class ProductionDailyController {
                         switch (outboundOrder.getEquipment()) {
                             case A2:
                                 monthOutboundWastesA2Sludge += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthA2List.add(outboundOrder);
+                                break;
                             case B2:
                                 monthOutboundWastesB2Sludge += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthB2List.add(outboundOrder);
+                                break;
                             case Prepare2:
                                 monthOutboundWastesPrepare2Sludge += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             case ThirdPhasePretreatmentSystem:
                                 monthOutboundWastesThirdSludge += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             default:
                                 break;
                         }
@@ -1361,12 +1375,20 @@ public class ProductionDailyController {
                         switch (outboundOrder.getEquipment()) {
                             case A2:
                                 monthOutboundWastesA2WasteLiquid += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthA2List.add(outboundOrder);
+                                break;
                             case B2:
                                 monthOutboundWastesB2WasteLiquid += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthB2List.add(outboundOrder);
+                                break;
                             case Prepare2:
                                 monthOutboundWastesPrepare2WasteLiquid += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             case ThirdPhasePretreatmentSystem:
                                 monthOutboundWastesThirdWasteLiquid += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             default:
                                 break;
                         }
@@ -1377,12 +1399,20 @@ public class ProductionDailyController {
                         switch (outboundOrder.getEquipment()) {
                             case A2:
                                 monthOutboundWastesA2Bulk += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthA2List.add(outboundOrder);
+                                break;
                             case B2:
                                 monthOutboundWastesB2Bulk += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthB2List.add(outboundOrder);
+                                break;
                             case Prepare2:
                                 monthOutboundWastesPrepare2Bulk += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             case ThirdPhasePretreatmentSystem:
                                 monthOutboundWastesThirdBulk += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             default:
                                 break;
                         }
@@ -1393,12 +1423,20 @@ public class ProductionDailyController {
                         switch (outboundOrder.getEquipment()) {
                             case A2:
                                 monthOutboundWastesA2Crushing += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthA2List.add(outboundOrder);
+                                break;
                             case B2:
                                 monthOutboundWastesB2Crushing += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthB2List.add(outboundOrder);
+                                break;
                             case Prepare2:
                                 monthOutboundWastesPrepare2Crushing += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             case ThirdPhasePretreatmentSystem:
                                 monthOutboundWastesThirdCrushing += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             default:
                                 break;
                         }
@@ -1409,12 +1447,20 @@ public class ProductionDailyController {
                         switch (outboundOrder.getEquipment()) {
                             case A2:
                                 monthOutboundWastesA2Distillation += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthA2List.add(outboundOrder);
+                                break;
                             case B2:
                                 monthOutboundWastesB2Distillation += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthB2List.add(outboundOrder);
+                                break;
                             case Prepare2:
                                 monthOutboundWastesPrepare2Distillation += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             case ThirdPhasePretreatmentSystem:
                                 monthOutboundWastesThirdDistillation += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             default:
                                 break;
                         }
@@ -1425,12 +1471,20 @@ public class ProductionDailyController {
                         switch (outboundOrder.getEquipment()) {
                             case A2:
                                 monthOutboundWastesA2Suspension += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthA2List.add(outboundOrder);
+                                break;
                             case B2:
                                 monthOutboundWastesB2Suspension += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthB2List.add(outboundOrder);
+                                break;
                             case Prepare2:
                                 monthOutboundWastesPrepare2Suspension += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             case ThirdPhasePretreatmentSystem:
                                 monthOutboundWastesThirdSuspension += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             default:
                                 break;
                         }
@@ -1469,6 +1523,12 @@ public class ProductionDailyController {
         productionDaily.setMonthOutboundPrepare2WastesDistillation(monthOutboundWastesThirdDistillation);
         productionDaily.setMonthOutboundPrepare2WastesSuspension(monthOutboundWastesThirdSuspension);
         productionDaily.setMonthOutboundPrepare2WastesWasteLiquid(monthOutboundWastesThirdWasteLiquid);
+        // 设置月份的出库列表
+        productionDaily.setOutboundOrderA2List(outboundOrderMonthA2List);
+        productionDaily.setOutboundOrderB2List(outboundOrderMonthB2List);
+        productionDaily.setOutboundOrderPrepare2List(outboundOrderMonthPrepareList);
+        productionDaily.setOutboundOrderThirdList(outboundOrderMonthThirdList);
+
 
         // 3. 辅料能源
         // 辅材、能源入库
