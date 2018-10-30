@@ -12,7 +12,6 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/page.js"></script>
     <script src="js/produce/warehouseManage.js"></script>
 </head>
 <body onload="loadPageList();">
@@ -328,7 +327,7 @@
                                id="pageNumber" title=""></li>
                     <li class="showLi">每页显示:</li>
                     <li class="selectLi">
-                        <select id="count" onchange="loadPageClientList()" title="">
+                        <select id="count" onchange="loadPageList()" title="">
                             <option>5</option>
                             <option selected>15</option>
                             <option>50</option>
