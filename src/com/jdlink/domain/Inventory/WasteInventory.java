@@ -68,7 +68,7 @@ public class WasteInventory {
     /**
      * 危废类别
      */
-    private String   wastesCategory;
+    private String   wastesCode;
 
     /**
      * 进料方式
@@ -188,12 +188,12 @@ public class WasteInventory {
         this.inboundOrderItemId = inboundOrderItemId;
     }
 
-    public String getWastesCategory() {
-        return wastesCategory;
+    public String getWastesCode() {
+        return wastesCode;
     }
 
-    public void setWastesCategory(String wastesCategory) {
-        this.wastesCategory = wastesCategory;
+    public void setWastesCode(String wastesCode) {
+        this.wastesCode = wastesCode;
     }
 
     public HandleCategory getHandleCategory() {
