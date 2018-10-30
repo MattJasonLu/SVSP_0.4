@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.Page;
+import com.jdlink.domain.Produce.SecondaryTest;
 import com.jdlink.domain.Produce.SewageTest;
 import com.jdlink.domain.Produce.Sewageregistration;
 import com.jdlink.domain.Produce.SoftTest;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Controller
@@ -346,4 +348,98 @@ public class SewageTestController {
 
     }
 
+
+    //次生化验导入
+    @RequestMapping("importSecondaryTestResultsExcel")
+    @ResponseBody
+    public String importSecondaryTestResultsExcel(MultipartFile excelFile){
+        JSONObject res=new JSONObject();
+        Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+        try {
+         for(int i=2;i<data.length;i++){
+
+             if(data[i][0]!="null"){
+                 SecondaryTest secondaryTest=new SecondaryTest();
+                 //1化验单号
+                 secondaryTest.setId(data[i][0].toString());
+
+                 //2日期
+                 if(data[i][1].toString().indexOf("/")!=-1){
+                     String  datestr=data[i][1].toString().replace("/","-");
+                     SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+                     secondaryTest.setDateTime(simpleDateFormat.parse(datestr));
+                 }
+
+                 //3废物名称
+                 secondaryTest.setWastesName(data[i][2].toString());
+
+                 //4热灼减率
+                 secondaryTest.setScorchingRate(Float.parseFloat(data[i][3].toString()));
+
+                 //5水分
+                 secondaryTest.setWater(Float.parseFloat(data[i][4].toString()));
+
+                 //6备注
+                 secondaryTest.setRemarks(data[i][5].toString());
+
+                 //更加化验单号查询化验单信息
+                 if(sewageTestService.getSecondaryTestById(data[i][0].toString())!=null){
+                     //更新
+                     sewageTestService.updateSecondaryTestById(secondaryTest);
+                 }
+                 if(sewageTestService.getSecondaryTestById(data[i][0].toString())==null){
+                     //添加
+                     sewageTestService.addSecondaryTest(secondaryTest);
+                 }
+
+
+             }
+
+         }
+            res.put("status", "success");
+            res.put("message", "导入成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导入失败");
+
+        }
+
+
+
+        return res.toString();
+
+    }
+
+    //次生化验显示
+    @RequestMapping("loadPageSecondaryTestResultsList")
+    @ResponseBody
+    public String loadPageSecondaryTestResultsList(@RequestBody Page page){
+        JSONObject res=new JSONObject();
+       try{
+           List<SecondaryTest> secondaryTestList=sewageTestService.loadPageSecondaryTestResultsList(page);
+           res.put("status", "success");
+           res.put("message", "更新成功");
+           res.put("data", secondaryTestList);
+       }
+       catch (Exception e){
+           e.printStackTrace();
+           res.put("status", "fail");
+           res.put("message", "更新失败");
+       }
+
+        return res.toString();
+
+
+    }
+
+    //查询次生化验的数量
+    @RequestMapping("totalSecondaryTestRecord")
+    @ResponseBody
+    public int totalSecondaryTestRecord(){
+
+        return sewageTestService.totalSecondaryTestRecord();
+
+    }
 }

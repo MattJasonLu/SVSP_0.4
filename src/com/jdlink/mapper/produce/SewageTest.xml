@@ -73,6 +73,33 @@
     <delete id="deleteSewaGeregistrationById" parameterType="String">
         delete from t_pr_sewageregistrationitem where sampleinformationId=#{id};
     </delete>
+
+    <!--根据化验单号获取次生化验信息-->
+    <select id="getSecondaryTestById" parameterType="String" resultType="SecondaryTest">
+        select * from t_pr_secondarytest where id=#{id}
+    </select>
+
+    <!--更新次生化验单-->
+    <update id="updateSecondaryTestById" parameterType="SecondaryTest">
+        update t_pr_secondarytest set dateTime=#{dateTime}, wastesName=#{wastesName},
+        scorchingRate=#{scorchingRate},water=#{water},remarks=#{remarks},nowTime=NOW() where id=#{id}
+    </update>
+
+    <!--添加次生化验单-->
+    <insert id="addSecondaryTest" parameterType="SecondaryTest">
+        insert into t_pr_secondarytest (id, dateTime, wastesName, scorchingRate, water, remarks, nowTime) values
+        (#{id},#{dateTime},#{wastesName},#{scorchingRate},#{water},#{remarks},NOW());
+    </insert>
+
+    <select id="loadPageSecondaryTestResultsList" resultType="SecondaryTest">
+        select * from t_pr_secondarytest order  by nowTime desc
+        <if test="start != null and count != null and count != 0">
+            limit #{start}, #{count}
+        </if>
+    </select>
+<select id="totalSecondaryTestRecord" resultType="int">
+    select count(*) from t_pr_secondarytest;
+</select>
 </mapper>
 
 

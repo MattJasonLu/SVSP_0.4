@@ -14,38 +14,72 @@ public class WasteInventory {
      * 入库单号
      */
     private String inboundOrderId;
+
     /**
      * 库存编号
      */
     private String wasteInventoryId;
+
     /**
      * 入库日期
      */
     private Date inboundDate;
+
     /**
      * 产废单位
      */
     private Client produceCompany;
-    /**
-     * 危废信息(危废名称、危废代码、危废类别、危废数量、单价、总价，计量单位，数量,各种元素)
-     */
-    private Wastes wastes;
+
     /**
      * 危废数量
      */
     private float actualCount;
+
     /**
      * 仓库名称
      */
     private WareHouse wareHouse;
+
+
     /**
      * 入库类别
      */
     private BoundType boundType;
+
     /**
-     *部门
+     * 危废名称
      */
-    private String department;
+    private String wastesName;
+
+    /**
+     * 计量单位
+     *
+     */
+    private String unit;
+
+
+    /*转移联单*/
+    private String transferDraftId;
+
+    /**
+     * 含税单价
+     */
+    private float unitPriceTax;
+    /**
+     * 危废类别
+     */
+    private String   wastesCategory;
+
+    /**
+     * 进料方式
+     */
+    private HandleCategory handleCategory;
+
+    /**
+     * 分页
+     */
+    private Page page;
+
     /**
      *创建人
      */
@@ -54,6 +88,20 @@ public class WasteInventory {
      *创建时间
      */
     private Date creatorDate;
+
+    /***************************以下数据结构暂时不用****************/
+
+    /**
+     * 危废信息(危废名称、危废代码、危废类别、危废数量、单价、总价，计量单位，数量,各种元素)
+     */
+    private Wastes wastes;
+
+
+    /**
+     *部门
+     */
+    private String department;
+
     /**
      * 剩余数量
      */
@@ -66,33 +114,39 @@ public class WasteInventory {
      * 化验单对象
      */
     private LaboratoryTest laboratoryTest;
-    /**
-     * 含税单价
-     */
-    private float unitPriceTax;
-    /**
-     * 危废类别
-     */
-    private String   wastesCategory;
-    /**
-     * 进料方式
-     */
-    private HandleCategory handleCategory;
+
+
+
     private String inboundOrderItemId;
     /**
      * 类别（危废、次生）
      */
     private int category;
+
+
     private String remarks;
-    /**
-     * 分页
-     */
-    private Page page;
+
+    public String getWastesName() {
+        return wastesName;
+    }
+
+    public void setWastesName(String wastesName) {
+        this.wastesName = wastesName;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
     /**
      * 可用状态
      */
     private RecordState recordState;
-    private String transferDraftId;
+
 
     public RecordState getRecordState() {
         return recordState;
