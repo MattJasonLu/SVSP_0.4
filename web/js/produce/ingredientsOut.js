@@ -817,10 +817,12 @@ function setViewClone(result) {
                     break;
                 case (17):
                     // 物品状态
+                    if(obj.ingredientState != null)
                     $(this).html(obj.ingredientState.name);
                     break;
                 case (18):
                     // 处置设备
+                    if(obj.equipment != null)
                     $(this).html(obj.equipment.name);
                     break;
             }

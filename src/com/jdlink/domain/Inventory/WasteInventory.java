@@ -189,14 +189,6 @@ public class WasteInventory {
         this.inboundOrderItemId = inboundOrderItemId;
     }
 
-    public String getWastesCode() {
-        return wastesCode;
-    }
-
-    public void setWastesCode(String wastesCode) {
-        this.wastesCode = wastesCode;
-    }
-
     public HandleCategory getHandleCategory() {
         return handleCategory;
     }

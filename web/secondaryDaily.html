@@ -13,7 +13,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/secondaryAnalysis.js"></script>
+    <script src="js/produce/secondaryTestResults.js"></script>
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');     //当前页数
@@ -31,7 +31,7 @@
         $()
     }
 </script>
-<body onload="secondaryAnalysis();" >
+<body onload="loadPageList();" >
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -118,9 +118,6 @@
             </div>
             <!--操作-->
             <div class="pull-left col-md-6">
-                <a class="btn btn-primary btn-xs" href="#" onclick="appointModal();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 预约登记</a>
-                <a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                <!--<a class="btn btn-primary btn-xs" href="#" onclick=""><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>-->
                 <a class="btn btn-primary btn-xs" href="#" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
             </div>
             <!--查询框-->
@@ -179,7 +176,6 @@
                         <th class="text-center">热灼减率 %</th>
                         <th class="text-center">水分 %</th>
                         <th class="text-center">备注</th>
-                        <th class="text-center">操作</th>
                     </tr>
                 </thead>
                 <tbody id="tbody1">
@@ -196,11 +192,6 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
-                        <td class="text-center">
-                            <a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                            <a href="#" onclick="setSubmit(this);" title="确认收样"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
-                            <a href="#" onclick="rejection(this);" title="拒收"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
-                        </td>
                     </tr>
                 </tbody>
             </table>

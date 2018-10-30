@@ -1,4 +1,3 @@
-///////////软水分析日报//
 
 var currentPage = 1;                          //当前页数
 var isSearch = false;
