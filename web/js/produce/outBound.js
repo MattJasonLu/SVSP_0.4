@@ -632,11 +632,11 @@ function setOutBoundList(result) {
                         break;
                     // 计划数量
                     case (7):
-                        $(this).html(obj.outboundNumber);
+                        $(this).html(obj.outboundNumber.toFixed(2));
                         break;
                     //出库数量
                     case (8):
-                        $(this).html(obj.outboundNumber);
+                        $(this).html(obj.outboundNumber.toFixed(2));
                         break;
                     //审批状态
                     case (9):

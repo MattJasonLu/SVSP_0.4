@@ -25,4 +25,6 @@ public interface BatchOrderMapper {
     void addSecondary(OutboundOrder outboundOrder);
 
     List<OutboundOrder>loadWastesOutBoundList(Page page);
+    List<OutboundOrder>loadSecOutBoundList(Page page);
+
 }

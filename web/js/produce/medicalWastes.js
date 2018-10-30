@@ -556,35 +556,35 @@ function setMedicalWastesList(result) {
                     break;
                     //本月进厂危废
                 case (7):
-                    $(this).html(obj.thisMonthWastes);
+                    $(this).html(obj.thisMonthWastes.toFixed(2));
                     break;
                     //本日直接转外处置量
                 case (8):
-                    $(this).html(obj.directDisposal);
+                    $(this).html(obj.directDisposal.toFixed(2));
                     break;
                 //本日蒸煮医废(过磅)
                 case (9):
-                    $(this).html(obj.cookingWastes);
+                    $(this).html(obj.cookingWastes.toFixed(2));
                     break;
                     //蒸煮后重量
                 case (10):
-                    $(this).html(obj.afterCookingNumber);
+                    $(this).html(obj.afterCookingNumber.toFixed(2));
                     break;
                     //蒸煮后入库量
                 case (11):
-                    $(this).html(obj.afterCookingInbound);
+                    $(this).html(obj.afterCookingInbound.toFixed(2));
                     break;
                     //本月蒸煮后外送量
                 case (12):
-                    $(this).html(obj.thisMonthSendCooking);
+                    $(this).html(obj.thisMonthSendCooking.toFixed(2));
                     break;
                     //误差量
                 case (13):
-                    $(this).html(obj.errorNumber);
+                    $(this).html(obj.errorNumber.toFixed(2));
                     break;
                     //水分含量
                 case (14):
-                    $(this).html(obj.wetNumber);
+                    $(this).html(obj.wetNumber.toFixed(2));
                     break;
                     //处置设备
                 case (15):
