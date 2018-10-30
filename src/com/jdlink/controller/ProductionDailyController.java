@@ -1045,16 +1045,31 @@ public class ProductionDailyController {
         float todayInboundWastesTotal = 0f;         // 工费合计
         for(InboundOrderItem inboundOrderItem : inboundOrderItemList){
             switch (inboundOrderItem.getHandleCategory().getName()){
-                case("污泥"): todayInboundWastesSludge += inboundOrderItem.getWastesAmount(); break;
-                case("废液"): todayInboundWastesWasteLiquid += inboundOrderItem.getWastesAmount(); break;
-                case("散装料"): todayInboundWastesBulk += inboundOrderItem.getWastesAmount(); break;
-                case("破碎料"): todayInboundWastesCrushing += inboundOrderItem.getWastesAmount(); break;
-                case("精馏残渣"): todayInboundWastesDistillation += inboundOrderItem.getWastesAmount(); break;
-                case("悬挂连"): todayInboundWastesSuspension += inboundOrderItem.getWastesAmount(); break;
+                case("污泥"):
+                    todayInboundWastesSludge += inboundOrderItem.getWastesAmount();
+                    todayInboundWastesTotal += inboundOrderItem.getWastesAmount();
+                    break;
+                case("废液"):
+                    todayInboundWastesWasteLiquid += inboundOrderItem.getWastesAmount();
+                    todayInboundWastesTotal += inboundOrderItem.getWastesAmount();
+                    break;
+                case("散装料"):
+                    todayInboundWastesBulk += inboundOrderItem.getWastesAmount();
+                    todayInboundWastesTotal += inboundOrderItem.getWastesAmount();
+                    break;
+                case("破碎料"):
+                    todayInboundWastesCrushing += inboundOrderItem.getWastesAmount();
+                    todayInboundWastesTotal += inboundOrderItem.getWastesAmount();
+                    break;
+                case("精馏残渣"):
+                    todayInboundWastesDistillation += inboundOrderItem.getWastesAmount();
+                    todayInboundWastesTotal += inboundOrderItem.getWastesAmount();
+                    break;
+                case("悬挂连"):
+                    todayInboundWastesSuspension += inboundOrderItem.getWastesAmount();
+                    todayInboundWastesTotal += inboundOrderItem.getWastesAmount();
+                    break;
             }
-            todayInboundWastesTotal += inboundOrderItem.getTotalPrice();
-
-
         }
         productionDaily.setTodayInboundWastesBulk(todayInboundWastesBulk);
         productionDaily.setTodayInboundWastesCrushing(todayInboundWastesCrushing);
@@ -1182,19 +1197,15 @@ public class ProductionDailyController {
         String year = yearFormat.format(now);
         Date yearFirstDay = DateUtil.getDateFromStr(year + "-01-01");
         Date yearEndDay = DateUtil.getDateFromStr(year + "-12-31");
-        // 月份
-//        SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
-//        String month = monthFormat.format(now);
-//        Date monthFirstDay = DateUtil.getDateFromStr(year + "-" + month + "-01");
-//        int endDay = DateUtil.getDaysOfMonth(monthFirstDay);
-//        Date monthEndDay = DateUtil.getDateFromStr(year + "-" + month + "-" + endDay);
+
+        // 月份 update: 2018-10-30 09:34:19 修改月份数据计算
         Date monthFirstDay = productionDaily.getStartDate();
         Date monthEndDay = productionDaily.getEndDate();
 
         // 获取日报所在月份的所有日报
-//        List<ProductionDaily> productionDailyMonthList = productionDailyService.getProductionDailyByDateRange(monthFirstDay, monthEndDay, null);
         List<MedicalWastes> monthMedicalWastesList = medicalWastesService.getMedicalWastesByRange(monthFirstDay, monthEndDay);
         // 月份的初始数据
+        // 1. 医废
         float monthDisposalMedicalWastes = 0f;
         float monthDisposalMedicalWastesDisposalDirect = 0f;
         float monthDisposalMedicalWastesCooking = 0f;
@@ -1223,35 +1234,226 @@ public class ProductionDailyController {
         productionDaily.setMonthOutboundMedicalWastesCooking(monthDisposalMedicalWastesCooking + productionDaily.getMonthInboundMedicalWastesErrorNumber());
         productionDaily.setMonthOutboundMedicalWastesAfterCooking(monthDisposalMedicalWastesAfterCooking);
 
+        // 2. 危废
+
+        // 入库
         float monthInboundWastesBulk = 0f;
         float monthInboundWastesCrushing = 0f;
         float monthInboundWastesSludge = 0f;
         float monthInboundWastesDistillation = 0f;
         float monthInboundWastesSuspension = 0f;
         float monthInboundWastesWasteLiquid = 0f;
-        float monthInboundWastesTotal = 0f;
-        float monthInboundSecondWastesSlag = 0f;
-        float monthInboundSecondWastesAsh = 0f;
-        float monthInboundSecondWastesBucket = 0f;
-        float monthOutboundMedicalWastes = 0f;
-        float monthOutboundMedicalWastesDirectDisposal = 0f;
-        float monthOutboundMedicalWastesCooking = 0f;
-        float monthOutboundMedicalWastesErrorNumber = 0f;
-        float monthOutboundMedicalWastesAfterCooking = 0f;
-        float monthOutboundMedicalWastesAfterCookingSend = 0f;
-        float monthOutboundMedicalWastesAfterCookingInbound = 0f;
-        float monthOutboundMedicalWastesWetNumber = 0f;
+        float monthInboundWastesTotal = 0f;         // 工费合计
+
+        List<InboundOrderItem> inboundOrderItemMonthList = inboundService.getInboundOrderItemByRange(monthFirstDay, monthEndDay);
+        for (InboundOrderItem inboundOrderItem : inboundOrderItemMonthList) {
+            if (inboundOrderItem.getHandleCategory() == null) continue;
+            switch (inboundOrderItem.getHandleCategory()) {
+                case Sludge:
+                    monthInboundWastesSludge += inboundOrderItem.getWastesAmount();
+                    monthInboundWastesTotal += inboundOrderItem.getWastesAmount();
+                    break;
+                case WasteLiquid:
+                    monthInboundWastesWasteLiquid += inboundOrderItem.getWastesAmount();
+                    monthInboundWastesTotal += inboundOrderItem.getWastesAmount();
+                    break;
+                case Bulk:
+                    monthInboundWastesBulk += inboundOrderItem.getWastesAmount();
+                    monthInboundWastesTotal += inboundOrderItem.getWastesAmount();
+                    break;
+                case Crushing:
+                    monthInboundWastesCrushing += inboundOrderItem.getWastesAmount();
+                    monthInboundWastesTotal += inboundOrderItem.getWastesAmount();
+                    break;
+                case Distillation:
+                    monthInboundWastesDistillation += inboundOrderItem.getWastesAmount();
+                    monthInboundWastesTotal += inboundOrderItem.getWastesAmount();
+                    break;
+                case Suspension:
+                    monthInboundWastesSuspension += inboundOrderItem.getWastesAmount();
+                    monthInboundWastesTotal += inboundOrderItem.getWastesAmount();
+                    break;
+            }
+        }
+        productionDaily.setMonthInboundWastesBulk(monthInboundWastesBulk);
+        productionDaily.setMonthInboundWastesCrushing(monthInboundWastesCrushing);
+        productionDaily.setMonthInboundWastesSludge(monthInboundWastesSludge);
+        productionDaily.setMonthInboundWastesDistillation(monthInboundWastesDistillation);
+        productionDaily.setMonthInboundWastesSuspension(monthInboundWastesSuspension);
+        productionDaily.setMonthInboundWastesWasteLiquid(monthInboundWastesWasteLiquid);
+        productionDaily.setMonthInboundWastesTotal(monthInboundWastesTotal);
+
+        // 危废出库信息
         float monthOutboundWastesBulk = 0f;
         float monthOutboundWastesCrushing = 0f;
         float monthOutboundWastesSludge = 0f;
         float monthOutboundWastesDistillation = 0f;
         float monthOutboundWastesSuspension = 0f;
         float monthOutboundWastesWasteLiquid = 0f;
-        float monthOutboundWastesTotal = 0f;
-        float monthOutboundSecondWastesSlag = 0f;
-        float monthOutboundSecondWastesAsh = 0f;
-        float monthOutboundSecondWastesBucket = 0f;
-        // 本月辅料进场
+        float monthOutboundWastesTotal = 0f;         // 工费合计
+        float monthOutboundWastesA2Bulk = 0f;
+        float monthOutboundWastesA2Crushing = 0f;
+        float monthOutboundWastesA2Sludge = 0f;
+        float monthOutboundWastesA2Distillation = 0f;
+        float monthOutboundWastesA2Suspension = 0f;
+        float monthOutboundWastesA2WasteLiquid = 0f;
+        float monthOutboundWastesB2Bulk = 0f;
+        float monthOutboundWastesB2Crushing = 0f;
+        float monthOutboundWastesB2Sludge = 0f;
+        float monthOutboundWastesB2Distillation = 0f;
+        float monthOutboundWastesB2Suspension = 0f;
+        float monthOutboundWastesB2WasteLiquid = 0f;
+        float monthOutboundWastesPrepare2Bulk = 0f;
+        float monthOutboundWastesPrepare2Crushing = 0f;
+        float monthOutboundWastesPrepare2Sludge = 0f;
+        float monthOutboundWastesPrepare2Distillation = 0f;
+        float monthOutboundWastesPrepare2Suspension = 0f;
+        float monthOutboundWastesPrepare2WasteLiquid = 0f;
+        float monthOutboundWastesThirdBulk = 0f;
+        float monthOutboundWastesThirdCrushing = 0f;
+        float monthOutboundWastesThirdSludge = 0f;
+        float monthOutboundWastesThirdDistillation = 0f;
+        float monthOutboundWastesThirdSuspension = 0f;
+        float monthOutboundWastesThirdWasteLiquid = 0f;
+
+        List<OutboundOrder> outboundOrderMonthList = outboundOrderService.getOutBoundByRange(monthFirstDay, monthEndDay);
+        for (OutboundOrder outboundOrder : outboundOrderMonthList) {
+            if (outboundOrder.getBoundType().equals(BoundType.WasteOutbound)) {
+                switch (outboundOrder.getHandelCategory()) {
+                    case Sludge:
+                        monthOutboundWastesSludge += outboundOrder.getOutboundNumber();
+                        monthOutboundWastesTotal += outboundOrder.getOutboundNumber();
+                        switch (outboundOrder.getEquipment()) {
+                            case A2:
+                                monthOutboundWastesA2Sludge += outboundOrder.getOutboundNumber();
+                            case B2:
+                                monthOutboundWastesB2Sludge += outboundOrder.getOutboundNumber();
+                            case Prepare2:
+                                monthOutboundWastesPrepare2Sludge += outboundOrder.getOutboundNumber();
+                            case ThirdPhasePretreatmentSystem:
+                                monthOutboundWastesThirdSludge += outboundOrder.getOutboundNumber();
+                            default:
+                                break;
+                        }
+                        break;
+                    case WasteLiquid:
+                        monthOutboundWastesWasteLiquid += outboundOrder.getOutboundNumber();
+                        monthOutboundWastesTotal += outboundOrder.getOutboundNumber();
+                        switch (outboundOrder.getEquipment()) {
+                            case A2:
+                                monthOutboundWastesA2WasteLiquid += outboundOrder.getOutboundNumber();
+                            case B2:
+                                monthOutboundWastesB2WasteLiquid += outboundOrder.getOutboundNumber();
+                            case Prepare2:
+                                monthOutboundWastesPrepare2WasteLiquid += outboundOrder.getOutboundNumber();
+                            case ThirdPhasePretreatmentSystem:
+                                monthOutboundWastesThirdWasteLiquid += outboundOrder.getOutboundNumber();
+                            default:
+                                break;
+                        }
+                        break;
+                    case Bulk:
+                        monthOutboundWastesBulk += outboundOrder.getOutboundNumber();
+                        monthOutboundWastesTotal += outboundOrder.getOutboundNumber();
+                        switch (outboundOrder.getEquipment()) {
+                            case A2:
+                                monthOutboundWastesA2Bulk += outboundOrder.getOutboundNumber();
+                            case B2:
+                                monthOutboundWastesB2Bulk += outboundOrder.getOutboundNumber();
+                            case Prepare2:
+                                monthOutboundWastesPrepare2Bulk += outboundOrder.getOutboundNumber();
+                            case ThirdPhasePretreatmentSystem:
+                                monthOutboundWastesThirdBulk += outboundOrder.getOutboundNumber();
+                            default:
+                                break;
+                        }
+                        break;
+                    case Crushing:
+                        monthOutboundWastesCrushing += outboundOrder.getOutboundNumber();
+                        monthOutboundWastesTotal += outboundOrder.getOutboundNumber();
+                        switch (outboundOrder.getEquipment()) {
+                            case A2:
+                                monthOutboundWastesA2Crushing += outboundOrder.getOutboundNumber();
+                            case B2:
+                                monthOutboundWastesB2Crushing += outboundOrder.getOutboundNumber();
+                            case Prepare2:
+                                monthOutboundWastesPrepare2Crushing += outboundOrder.getOutboundNumber();
+                            case ThirdPhasePretreatmentSystem:
+                                monthOutboundWastesThirdCrushing += outboundOrder.getOutboundNumber();
+                            default:
+                                break;
+                        }
+                        break;
+                    case Distillation:
+                        monthOutboundWastesDistillation += outboundOrder.getOutboundNumber();
+                        monthOutboundWastesTotal += outboundOrder.getOutboundNumber();
+                        switch (outboundOrder.getEquipment()) {
+                            case A2:
+                                monthOutboundWastesA2Distillation += outboundOrder.getOutboundNumber();
+                            case B2:
+                                monthOutboundWastesB2Distillation += outboundOrder.getOutboundNumber();
+                            case Prepare2:
+                                monthOutboundWastesPrepare2Distillation += outboundOrder.getOutboundNumber();
+                            case ThirdPhasePretreatmentSystem:
+                                monthOutboundWastesThirdDistillation += outboundOrder.getOutboundNumber();
+                            default:
+                                break;
+                        }
+                        break;
+                    case Suspension:
+                        monthOutboundWastesSuspension += outboundOrder.getOutboundNumber();
+                        monthOutboundWastesTotal += outboundOrder.getOutboundNumber();
+                        switch (outboundOrder.getEquipment()) {
+                            case A2:
+                                monthOutboundWastesA2Suspension += outboundOrder.getOutboundNumber();
+                            case B2:
+                                monthOutboundWastesB2Suspension += outboundOrder.getOutboundNumber();
+                            case Prepare2:
+                                monthOutboundWastesPrepare2Suspension += outboundOrder.getOutboundNumber();
+                            case ThirdPhasePretreatmentSystem:
+                                monthOutboundWastesThirdSuspension += outboundOrder.getOutboundNumber();
+                            default:
+                                break;
+                        }
+                        break;
+                }
+            }
+        }
+        productionDaily.setMonthOutboundWastesBulk(monthOutboundWastesBulk);
+        productionDaily.setMonthOutboundWastesCrushing(monthOutboundWastesCrushing);
+        productionDaily.setMonthOutboundWastesSludge(monthOutboundWastesSludge);
+        productionDaily.setMonthOutboundWastesDistillation(monthOutboundWastesDistillation);
+        productionDaily.setMonthOutboundWastesSuspension(monthOutboundWastesSuspension);
+        productionDaily.setMonthOutboundWastesWasteLiquid(monthOutboundWastesWasteLiquid);
+        productionDaily.setMonthOutboundWastesTotal(monthOutboundWastesTotal);
+        productionDaily.setMonthOutboundA2WastesBulk(monthOutboundWastesA2Bulk);
+        productionDaily.setMonthOutboundA2WastesCrushing(monthOutboundWastesA2Crushing);
+        productionDaily.setMonthOutboundA2WastesSludge(monthOutboundWastesA2Sludge);
+        productionDaily.setMonthOutboundA2WastesDistillation(monthOutboundWastesA2Distillation);
+        productionDaily.setMonthOutboundA2WastesSuspension(monthOutboundWastesA2Suspension);
+        productionDaily.setMonthOutboundA2WastesWasteLiquid(monthOutboundWastesA2WasteLiquid);
+        productionDaily.setMonthOutboundB2WastesBulk(monthOutboundWastesB2Bulk);
+        productionDaily.setMonthOutboundB2WastesCrushing(monthOutboundWastesB2Crushing);
+        productionDaily.setMonthOutboundB2WastesSludge(monthOutboundWastesB2Sludge);
+        productionDaily.setMonthOutboundB2WastesDistillation(monthOutboundWastesB2Distillation);
+        productionDaily.setMonthOutboundB2WastesSuspension(monthOutboundWastesB2Suspension);
+        productionDaily.setMonthOutboundB2WastesWasteLiquid(monthOutboundWastesB2WasteLiquid);
+        productionDaily.setMonthOutboundPrepare2WastesBulk(monthOutboundWastesPrepare2Bulk);
+        productionDaily.setMonthOutboundPrepare2WastesCrushing(monthOutboundWastesPrepare2Crushing);
+        productionDaily.setMonthOutboundPrepare2WastesSludge(monthOutboundWastesPrepare2Sludge);
+        productionDaily.setMonthOutboundPrepare2WastesDistillation(monthOutboundWastesPrepare2Distillation);
+        productionDaily.setMonthOutboundPrepare2WastesSuspension(monthOutboundWastesPrepare2Suspension);
+        productionDaily.setMonthOutboundPrepare2WastesWasteLiquid(monthOutboundWastesPrepare2WasteLiquid);
+        productionDaily.setMonthOutboundPrepare2WastesBulk(monthOutboundWastesThirdBulk);
+        productionDaily.setMonthOutboundPrepare2WastesCrushing(monthOutboundWastesThirdCrushing);
+        productionDaily.setMonthOutboundPrepare2WastesSludge(monthOutboundWastesThirdSludge);
+        productionDaily.setMonthOutboundPrepare2WastesDistillation(monthOutboundWastesThirdDistillation);
+        productionDaily.setMonthOutboundPrepare2WastesSuspension(monthOutboundWastesThirdSuspension);
+        productionDaily.setMonthOutboundPrepare2WastesWasteLiquid(monthOutboundWastesThirdWasteLiquid);
+
+        // 3. 辅料能源
+        // 辅材、能源入库
+        List<Ingredients> ingredientsInMonthList = ingredientsService.getIngredientsInItemByRange(monthFirstDay, monthEndDay, null);
         float monthInboundAuxiliaryCalcareousLime = 0f;
         float monthInboundAuxiliaryCommonActivatedCarbon = 0f;
         float monthInboundAuxiliaryActivatedCarbon = 0f;
@@ -1288,175 +1490,47 @@ public class ProductionDailyController {
         float monthInboundAuxiliaryElectricQuantity = 0f;
         float monthInboundAuxiliaryIndustrialWater = 0f;
         float monthInboundAuxiliaryTapWaterQuantity = 0f;
-        // 本月辅料备件出库
-        float monthOutboundAuxiliaryCalcareousLime = 0f;
-        float monthOutboundAuxiliaryCommonActivatedCarbon = 0f;
-        float monthOutboundAuxiliaryActivatedCarbon = 0f;
-        float monthOutboundAuxiliaryActivatedCarbonParticles = 0f;
-        float monthOutboundAuxiliaryLye = 0f;
-        float monthOutboundAuxiliaryCausticSoda = 0f;
-        float monthOutboundAuxiliaryUrea = 0f;
-        float monthOutboundAuxiliaryHydrochloricAcid = 0f;
-        float monthOutboundAuxiliaryNahco3 = 0f;
-        float monthOutboundAuxiliaryFlour = 0f;
-        float monthOutboundAuxiliaryDefoamer = 0f;
-        float monthOutboundAuxiliaryFlocculant = 0f;
-        float monthOutboundAuxiliarySoftWaterReducingAgent = 0f;
-        float monthOutboundAuxiliarySoftWaterScaleInhibitor = 0f;
-        float monthOutboundAuxiliaryAmmonia = 0f;
-        float monthOutboundAuxiliaryWaterReducingAgent = 0f;
-        float monthOutboundAuxiliaryWaterScaleInhibitor = 0f;
-        float monthOutboundAuxiliaryNaclo = 0f;
-        float monthOutboundAuxiliaryDeodorant = 0f;
-        float monthOutboundAuxiliarySalt = 0f;
-        float monthOutboundAuxiliarySlagBag = 0f;
-        float monthOutboundAuxiliaryFlyAshBag = 0f;
-        float monthOutboundAuxiliaryMedicalWastesBag = 0f;
-        float monthOutboundAuxiliaryMedicalPackingPlasticBag = 0f;
-        float monthOutboundAuxiliaryCollectionBox = 0f;
-        float monthOutboundAuxiliaryStandardBox = 0f;
-        float monthOutboundAuxiliaryWoodenPallets = 0f;
-        float monthOutboundAuxiliaryStandardTray_1m = 0f;
-        float monthOutboundAuxiliaryStandardTray_1_2m = 0f;
-        float monthOutboundAuxiliaryTonBox = 0f;
-        float monthOutboundAuxiliarySteam = 0f;
-        float monthOutboundAuxiliaryDieselOil = 0f;
-        float monthOutboundAuxiliaryNaturalGas = 0f;
-        float monthOutboundAuxiliaryElectricQuantity = 0f;
-        float monthOutboundAuxiliaryIndustrialWater = 0f;
-        float monthOutboundAuxiliaryTapWaterQuantity = 0f;
-        // 月累计辅料消耗
-        float monthDisposalMedicalAuxiliaryNaclo = 0f;
-        float monthDisposalMedicalAuxiliaryDeodorant = 0f;
-        float monthDisposalMedicalAuxiliaryMedicalWastesBag = 0f;
-        float monthDisposalMedicalAuxiliaryMedicalPackingPlasticBag = 0f;
-        float monthDisposalMedicalAuxiliaryCollectionBox = 0f;
-        float monthDisposalMedicalAuxiliarySteam = 0f;
-        float monthDisposalMedicalAuxiliaryIndustrialWater = 0f;
-        float monthDisposalMedicalAuxiliaryElectricQuantity = 0f;
-        float monthDisposalSecondaryAuxiliaryCalcareousLime = 0f;
-        float monthDisposalSecondaryAuxiliaryCommonActivatedCarbon = 0f;
-        float monthDisposalSecondaryAuxiliaryActivatedCarbon = 0f;
-        float monthDisposalSecondaryAuxiliaryActivatedCarbonParticles = 0f;
-        float monthDisposalSecondaryAuxiliaryLye = 0f;
-        float monthDisposalSecondaryAuxiliarySalt = 0f;
-        float monthDisposalSecondaryAuxiliarySlagBag = 0f;
-        float monthDisposalSecondaryAuxiliaryFlyAshBag = 0f;
-        float monthDisposalSecondaryAuxiliaryDieselOil = 0f;
-        float monthDisposalSecondaryAuxiliaryIndustrialWater = 0f;
-        float monthDisposalSecondaryAuxiliaryElectricQuantity = 0f;
-        float monthDisposalSecondaryAuxiliaryWoodenPallets = 0f;
-        float monthDisposalThirdAuxiliaryCalcareousLime = 0f;
-        float monthDisposalThirdAuxiliaryCommonActivatedCarbon = 0f;
-        float monthDisposalThirdAuxiliaryActivatedCarbon = 0f;
-        float monthDisposalThirdAuxiliaryActivatedCarbonParticles = 0f;
-        float monthDisposalThirdAuxiliaryLye = 0f;
-        float monthDisposalThirdAuxiliaryCausticSoda = 0f;
-        float monthDisposalThirdAuxiliaryUrea = 0f;
-        float monthDisposalThirdAuxiliaryHydrochloricAcid = 0f;
-        float monthDisposalThirdAuxiliaryNahco3 = 0f;
-        float monthDisposalThirdAuxiliaryFlour = 0f;
-        float monthDisposalThirdAuxiliaryDefoamer = 0f;
-        float monthDisposalThirdAuxiliaryFlocculant = 0f;
-        float monthDisposalThirdAuxiliarySoftWaterReducingAgent = 0f;
-        float monthDisposalThirdAuxiliarySoftWaterScaleInhibitor = 0f;
-        float monthDisposalThirdAuxiliaryAmmonia = 0f;
-        float monthDisposalThirdAuxiliaryWaterReducingAgent = 0f;
-        float monthDisposalThirdAuxiliaryWaterScaleInhibitor = 0f;
-        float monthDisposalThirdAuxiliaryNaclo = 0f;
-        float monthDisposalThirdAuxiliaryStandardBox = 0f;
-        float monthDisposalThirdAuxiliaryWoodenPallets = 0f;
-        float monthDisposalThirdAuxiliaryStandardTray_1m = 0f;
-        float monthDisposalThirdAuxiliaryStandardTray_1_2m = 0f;
-        float monthDisposalThirdAuxiliarySlagBag = 0f;
-        float monthDisposalThirdAuxiliaryFlyAshBag = 0f;
-        float monthDisposalThirdAuxiliaryTonBox = 0f;
-        float monthDisposalThirdAuxiliarySteam = 0f;
-        float monthDisposalThirdAuxiliaryDieselOil = 0f;
-        float monthDisposalThirdAuxiliaryNaturalGas = 0f;
-        float monthDisposalThirdAuxiliaryIndustrialWater = 0f;
-        float monthDisposalThirdAuxiliaryElectricQuantity = 0f;
-        float monthDisposalThirdAuxiliaryTapWaterQuantity = 0f;
-        float monthDisposalTowerElectricQuantity = 0f;
+        for(Ingredients ingredients : ingredientsInMonthList) {
+            switch(ingredients.getName()) {
+                case "消石灰": monthInboundAuxiliaryCalcareousLime += ingredients.getAmount();break;
+                case "普通活性碳粉": monthInboundAuxiliaryCommonActivatedCarbon += ingredients.getAmount();break;
+                case "高活性碳粉": monthInboundAuxiliaryActivatedCarbon += ingredients.getAmount();break;
+                case "活性炭颗粒": monthInboundAuxiliaryActivatedCarbonParticles += ingredients.getAmount();break;
+                case "碱液": monthInboundAuxiliaryLye += ingredients.getAmount();break;
+                case "片碱": monthInboundAuxiliaryCausticSoda += ingredients.getAmount();break;
+                case "尿素": monthInboundAuxiliaryUrea += ingredients.getAmount();break;
+                case "盐酸": monthInboundAuxiliaryHydrochloricAcid += ingredients.getAmount();break;
+                case "小苏打(NaHCO3)": monthInboundAuxiliaryNahco3 += ingredients.getAmount();break;
+                case "面粉": monthInboundAuxiliaryFlour += ingredients.getAmount();break;
+                case "消泡剂": monthInboundAuxiliaryDefoamer += ingredients.getAmount();break;
+                case "絮凝剂(聚丙烯酰胺)": monthInboundAuxiliaryFlocculant += ingredients.getAmount();break;
+                case "软水用还原剂": monthInboundAuxiliarySoftWaterReducingAgent += ingredients.getAmount();break;
+                case "软水用阻垢剂": monthInboundAuxiliarySoftWaterScaleInhibitor += ingredients.getAmount();break;
+                case "氨水(PH调节剂)": monthInboundAuxiliaryAmmonia += ingredients.getAmount();break;
+                case "污水用还原剂": monthInboundAuxiliaryWaterReducingAgent += ingredients.getAmount();break;
+                case "污水用阻垢剂": monthInboundAuxiliaryWaterScaleInhibitor += ingredients.getAmount();break;
+                case "消毒液": monthInboundAuxiliaryNaclo += ingredients.getAmount();break;
+                case "除臭剂": monthInboundAuxiliaryDeodorant += ingredients.getAmount();break;
+                case "盐": monthInboundAuxiliarySalt += ingredients.getAmount();break;
+                case "炉渣用吨袋": monthInboundAuxiliarySlagBag += ingredients.getAmount();break;
+                case "飞灰用吨袋": monthInboundAuxiliaryFlyAshBag += ingredients.getAmount();break;
+                case "医废用吨袋": monthInboundAuxiliaryMedicalWastesBag += ingredients.getAmount();break;
+                case "医废包装塑料袋": monthInboundAuxiliaryMedicalPackingPlasticBag += ingredients.getAmount();break;
+                case "收集转运箱": monthInboundAuxiliaryCollectionBox += ingredients.getAmount();break;
+                case "标准箱": monthInboundAuxiliaryStandardBox += ingredients.getAmount();break;
+                case "木托盘": monthInboundAuxiliaryWoodenPallets += ingredients.getAmount();break;
+                case "1m标准托盘": monthInboundAuxiliaryStandardTray_1m += ingredients.getAmount();break;
+                case "1.2m标准托盘": monthInboundAuxiliaryStandardTray_1_2m += ingredients.getAmount();break;
+                case "吨箱": monthInboundAuxiliaryTonBox += ingredients.getAmount();break;
+                case "蒸汽": monthInboundAuxiliarySteam += ingredients.getAmount();break;
+                case "柴油": monthInboundAuxiliaryDieselOil += ingredients.getAmount();break;
+                case "天然气": monthInboundAuxiliaryNaturalGas += ingredients.getAmount();break;
+                case "电量": monthInboundAuxiliaryElectricQuantity += ingredients.getAmount();break;
+                case "工业水量": monthInboundAuxiliaryIndustrialWater += ingredients.getAmount();break;
+                case "自来水量": monthInboundAuxiliaryTapWaterQuantity += ingredients.getAmount();break;
+            }
+        }
 
-        // 工废处置
-        float monthOutboundA2WastesBulk = 0f;
-        float monthOutboundA2WastesCrushing = 0f;
-        float monthOutboundA2WastesSludge = 0f;
-        float monthOutboundA2WastesDistillation = 0f;
-        float monthOutboundA2WastesSuspension = 0f;
-        float monthOutboundA2WastesWasteLiquid = 0f;
-        float monthOutboundA2MedicalWastes = 0f;
-
-        float monthOutboundPrepare2WastesBulk = 0f;
-        float monthOutboundPrepare2WastesCrushing = 0f;
-        float monthOutboundPrepare2WastesSludge = 0f;
-        float monthOutboundPrepare2WastesDistillation = 0f;
-        float monthOutboundPrepare2WastesSuspension = 0f;
-        float monthOutboundPrepare2WastesWasteLiquid = 0f;
-        float monthOutboundPrepare2MedicalWastes = 0f;
-
-        float monthOutboundB2WastesBulk = 0f;
-        float monthOutboundB2WastesCrushing = 0f;
-        float monthOutboundB2WastesSludge = 0f;
-        float monthOutboundB2WastesDistillation = 0f;
-        float monthOutboundB2WastesSuspension = 0f;
-        float monthOutboundB2WastesWasteLiquid = 0f;
-        float monthOutboundB2MedicalWastes = 0f;
-
-        float monthOutboundThirdPretreatmentSystemWastesBulk = 0f;
-        float monthOutboundThirdPretreatmentSystemWastesCrushing = 0f;
-        float monthOutboundThirdPretreatmentSystemWastesSludge = 0f;
-        float monthOutboundThirdPretreatmentSystemWastesDistillation = 0f;
-        float monthOutboundThirdPretreatmentSystemWastesSuspension = 0f;
-        float monthOutboundThirdPretreatmentSystemWastesWasteLiquid = 0f;
-        float monthOutboundThirdPretreatmentSystemMedicalWastes = 0f;
-
-        float monthEquipmentA2StopTime = 0f;
-        float monthEquipmentB2StopTime = 0f;
-        float monthEquipmentPrepare2StopTime = 0f;
-        float monthEquipmentSecondaryStopTime = 0f;
-        float monthEquipmentThirdStopTime = 0f;
-
-        float monthEquipmentA2RunningTime = 0f;
-        float monthEquipmentB2RunningTime = 0f;
-        float monthEquipmentPrepare2RunningTime = 0f;
-        float monthEquipmentSecondaryRunningTime = 0f;
-        float monthEquipmentThirdRunningTime = 0f;
-
-        float monthDisposalSecondarySlag = 0f;
-        float monthDisposalSecondaryAsh = 0f;
-        float monthDisposalThirdSlag = 0f;
-        float monthDisposalThirdAsh = 0f;
-
-        productionDaily.setMonthInboundWastesBulk(monthInboundWastesBulk);
-        productionDaily.setMonthInboundWastesCrushing(monthInboundWastesCrushing);
-        productionDaily.setMonthInboundWastesSludge(monthInboundWastesSludge);
-        productionDaily.setMonthInboundWastesDistillation(monthInboundWastesDistillation);
-        productionDaily.setMonthInboundWastesSuspension(monthInboundWastesSuspension);
-        productionDaily.setMonthInboundWastesWasteLiquid(monthInboundWastesWasteLiquid);
-        productionDaily.setMonthInboundWastesTotal(monthInboundWastesTotal);
-        productionDaily.setMonthInboundSecondWastesSlag(monthInboundSecondWastesSlag);
-        productionDaily.setMonthInboundSecondWastesAsh(monthInboundSecondWastesAsh);
-        productionDaily.setMonthInboundSecondWastesBucket(monthInboundSecondWastesBucket);
-        productionDaily.setMonthOutboundMedicalWastes(monthOutboundMedicalWastes);
-        productionDaily.setMonthOutboundMedicalWastesDirectDisposal(monthOutboundMedicalWastesDirectDisposal);
-        productionDaily.setMonthOutboundMedicalWastesCooking(monthOutboundMedicalWastesCooking);
-        productionDaily.setMonthOutboundMedicalWastesErrorNumber(monthOutboundMedicalWastesErrorNumber);
-        productionDaily.setMonthOutboundMedicalWastesAfterCooking(monthOutboundMedicalWastesAfterCooking);
-        productionDaily.setMonthOutboundMedicalWastesAfterCookingSend(monthOutboundMedicalWastesAfterCookingSend);
-        productionDaily.setMonthOutboundMedicalWastesAfterCookingInbound(monthOutboundMedicalWastesAfterCookingInbound);
-        productionDaily.setMonthOutboundMedicalWastesWetNumber(monthOutboundMedicalWastesWetNumber);
-        productionDaily.setMonthOutboundWastesBulk(monthOutboundWastesBulk);
-        productionDaily.setMonthOutboundWastesCrushing(monthOutboundWastesCrushing);
-        productionDaily.setMonthOutboundWastesSludge(monthOutboundWastesSludge);
-        productionDaily.setMonthOutboundWastesDistillation(monthOutboundWastesDistillation);
-        productionDaily.setMonthOutboundWastesSuspension(monthOutboundWastesSuspension);
-        productionDaily.setMonthOutboundWastesWasteLiquid(monthOutboundWastesWasteLiquid);
-        productionDaily.setMonthOutboundWastesTotal(monthOutboundWastesTotal);
-        productionDaily.setMonthOutboundSecondWastesSlag(monthOutboundSecondWastesSlag);
-        productionDaily.setMonthOutboundSecondWastesAsh(monthOutboundSecondWastesAsh);
-        productionDaily.setMonthOutboundSecondWastesBucket(monthOutboundSecondWastesBucket);
         productionDaily.setMonthInboundAuxiliaryCalcareousLime(monthInboundAuxiliaryCalcareousLime);
         productionDaily.setMonthInboundAuxiliaryCommonActivatedCarbon(monthInboundAuxiliaryCommonActivatedCarbon);
         productionDaily.setMonthInboundAuxiliaryActivatedCarbon(monthInboundAuxiliaryActivatedCarbon);
@@ -1493,6 +1567,363 @@ public class ProductionDailyController {
         productionDaily.setMonthInboundAuxiliaryElectricQuantity(monthInboundAuxiliaryElectricQuantity);
         productionDaily.setMonthInboundAuxiliaryIndustrialWater(monthInboundAuxiliaryIndustrialWater);
         productionDaily.setMonthInboundAuxiliaryTapWaterQuantity(monthInboundAuxiliaryTapWaterQuantity);
+
+        // 辅料能源消耗明细月累计
+        float disposalMonthNaclo = 0f;
+        float disposalMonthDeodorant = 0f;
+        float disposalMonthMedicalWastesBag = 0f;
+        float disposalMonthMedicalPackingPlasticBag = 0f;
+        float disposalMonthCollectionBox = 0f;
+        float disposalMonthSteam = 0f;
+        float disposalMonthIndustrialWater = 0f;
+        float disposalMonthElectricQuantity = 0f;
+        List<Ingredients> ingredientsMedicalMonthList = ingredientsService.getIngredientsOutItemByRange(monthFirstDay, monthEndDay, Equipment.MedicalCookingSystem);
+        for (Ingredients ingredients : ingredientsMedicalMonthList) {
+            switch (ingredients.getName()) {
+                case "消毒液(NaCLO)":
+                    disposalMonthNaclo += ingredients.getReceiveAmount();
+                    break;
+                case "除臭剂":
+                    disposalMonthDeodorant += ingredients.getReceiveAmount();
+                    break;
+                case "医废吨袋":
+                    disposalMonthMedicalWastesBag += ingredients.getReceiveAmount();
+                    break;
+                case "医废包装塑料袋":
+                    disposalMonthMedicalPackingPlasticBag += ingredients.getReceiveAmount();
+                    break;
+                case "收集转运箱":
+                    disposalMonthCollectionBox += ingredients.getReceiveAmount();
+                    break;
+                case "蒸汽":
+                    disposalMonthSteam += ingredients.getReceiveAmount();
+                    break;
+                case "工业水量":
+                    disposalMonthIndustrialWater += ingredients.getReceiveAmount();
+                    break;
+                case "电量":
+                    disposalMonthElectricQuantity += ingredients.getReceiveAmount();
+                    break;
+                default:
+                    break;
+            }
+        }
+        productionDaily.setMonthDisposalMedicalAuxiliaryNaclo(disposalMonthNaclo);
+        productionDaily.setMonthDisposalMedicalAuxiliaryDeodorant(disposalMonthDeodorant);
+        productionDaily.setMonthDisposalMedicalAuxiliaryMedicalWastesBag(disposalMonthMedicalWastesBag);
+        productionDaily.setMonthDisposalMedicalAuxiliaryMedicalPackingPlasticBag(disposalMonthMedicalPackingPlasticBag);
+        productionDaily.setMonthDisposalMedicalAuxiliaryCollectionBox(disposalMonthCollectionBox);
+        productionDaily.setMonthDisposalMedicalAuxiliarySteam(disposalMonthSteam);
+        productionDaily.setMonthDisposalMedicalAuxiliaryIndustrialWater(disposalMonthIndustrialWater);
+        productionDaily.setMonthDisposalMedicalAuxiliaryElectricQuantity(disposalMonthElectricQuantity);
+
+        // 二期
+        float disposalMonthCalcareousLime = 0f;
+        float disposalMonthCommonActivatedCarbon = 0f;
+        float disposalMonthActivatedCarbon = 0f;
+        float disposalMonthLye = 0f;
+        float disposalMonthSalt = 0f;
+        float disposalMonthSlagBag = 0f;
+        float disposalMonthFlyAshBag = 0f;
+        float disposalMonthDieselOil = 0f;
+        disposalMonthIndustrialWater = 0f;
+        disposalMonthElectricQuantity = 0f;
+        float disposalMonthWoodenPallets = 0f;
+
+        List<Ingredients> ingredientsMonthSecondaryList = ingredientsService.getIngredientsOutItemByRange(monthFirstDay, monthEndDay, Equipment.SecondaryTwoCombustionChamber);
+        for (Ingredients ingredients : ingredientsMonthSecondaryList) {
+            switch (ingredients.getName()) {
+                case "消石灰":
+                    disposalMonthCalcareousLime += ingredients.getReceiveAmount();
+                    break;
+                case "普通活性炭粉":
+                    disposalMonthCommonActivatedCarbon += ingredients.getReceiveAmount();
+                    break;
+                case "高活性碳粉":
+                    disposalMonthActivatedCarbon += ingredients.getReceiveAmount();
+                    break;
+                case "碱液":
+                    disposalMonthLye += ingredients.getReceiveAmount();
+                    break;
+                case "盐":
+                    disposalMonthSalt += ingredients.getReceiveAmount();
+                    break;
+                case "炉渣用吨袋":
+                    disposalMonthSlagBag += ingredients.getReceiveAmount();
+                    break;
+                case "飞灰用吨袋":
+                    disposalMonthFlyAshBag += ingredients.getReceiveAmount();
+                    break;
+                case "柴油":
+                    disposalMonthDieselOil += ingredients.getReceiveAmount();
+                    break;
+                case "电量":
+                    disposalMonthElectricQuantity += ingredients.getReceiveAmount();
+                    break;
+                case "工业水量":
+                    disposalMonthIndustrialWater += ingredients.getReceiveAmount();
+                    break;
+                case "木托盘":
+                    disposalMonthWoodenPallets += ingredients.getReceiveAmount();
+                    break;
+                default:
+                    break;
+            }
+        }
+        productionDaily.setMonthDisposalSecondaryAuxiliaryCalcareousLime(disposalMonthCalcareousLime);
+        productionDaily.setMonthDisposalSecondaryAuxiliaryCommonActivatedCarbon(disposalMonthCommonActivatedCarbon);
+        productionDaily.setMonthDisposalSecondaryAuxiliaryActivatedCarbon(disposalMonthActivatedCarbon);
+        productionDaily.setMonthDisposalSecondaryAuxiliaryLye(disposalMonthLye);
+        productionDaily.setMonthDisposalSecondaryAuxiliarySalt(disposalMonthSalt);
+        productionDaily.setMonthDisposalSecondaryAuxiliarySlagBag(disposalMonthSlagBag);
+        productionDaily.setMonthDisposalSecondaryAuxiliaryFlyAshBag(disposalMonthFlyAshBag);
+        productionDaily.setMonthDisposalSecondaryAuxiliaryDieselOil(disposalMonthDieselOil);
+        productionDaily.setMonthDisposalSecondaryAuxiliaryIndustrialWater(disposalMonthIndustrialWater);
+        productionDaily.setMonthDisposalSecondaryAuxiliaryElectricQuantity(disposalMonthElectricQuantity);
+        productionDaily.setMonthDisposalSecondaryAuxiliaryWoodenPallets(disposalMonthWoodenPallets);
+
+        // 三期
+        disposalMonthCalcareousLime = 0f;
+        disposalMonthCommonActivatedCarbon = 0f;
+        disposalMonthActivatedCarbon = 0f;
+        float disposalMonthActivatedCarbonParticles = 0f;
+        disposalMonthLye = 0f;
+        float disposalMonthCausticSoda = 0f;
+        float disposalMonthUrea = 0f;
+        float disposalMonthHydrochloricAcid = 0f;
+        float disposalMonthNahco3 = 0f;
+        float disposalMonthFlour = 0f;
+        float disposalMonthDefoamer = 0f;
+        float disposalMonthFlocculant = 0f;
+        float disposalMonthSoftWaterReducingAgent = 0f;
+        float disposalMonthSoftWaterScaleInhibitor = 0f;
+        float disposalMonthAmmonia = 0f;
+        float disposalMonthWaterReducingAgent = 0f;
+        float disposalMonthWaterScaleInhibitor = 0f;
+        disposalMonthNaclo = 0f;
+        float disposalMonthStandardBox = 0f;
+        disposalMonthWoodenPallets = 0f;
+        float disposalMonthStandardTray_1m = 0f;
+        float disposalMonthStandardTray_1_2m = 0f;
+        float disposalMonthAuxiliarySlagBag = 0f;
+        disposalMonthFlyAshBag = 0f;
+        float disposalMonthTonBox = 0f;
+        disposalMonthSteam = 0f;
+        disposalMonthDieselOil = 0f;
+        float disposalMonthNaturalGas = 0f;
+        disposalMonthIndustrialWater = 0f;
+        disposalMonthElectricQuantity = 0f;
+        float disposalMonthTapWaterQuantity = 0f;
+        List<Ingredients> ingredientsMonthThirdList = ingredientsService.getIngredientsOutItemByRange(monthFirstDay, monthEndDay, Equipment.ThirdPhasePretreatmentSystem);
+        for (Ingredients ingredients : ingredientsMonthThirdList) {
+            switch (ingredients.getName()) {
+                case "消石灰":
+                    disposalMonthCalcareousLime += ingredients.getReceiveAmount();
+                    break;
+                case "普通活性炭粉":
+                    disposalMonthCommonActivatedCarbon += ingredients.getReceiveAmount();
+                    break;
+                case "高活性碳粉":
+                    disposalMonthActivatedCarbon += ingredients.getReceiveAmount();
+                    break;
+                case "活性炭颗粒":
+                    disposalMonthActivatedCarbonParticles += ingredients.getReceiveAmount();
+                    break;
+                case "碱液":
+                    disposalMonthLye += ingredients.getReceiveAmount();
+                    break;
+                case "片碱":
+                    disposalMonthCausticSoda += ingredients.getReceiveAmount();
+                    break;
+                case "尿素":
+                    disposalMonthUrea += ingredients.getReceiveAmount();
+                    break;
+                case "盐酸":
+                    disposalMonthHydrochloricAcid += ingredients.getReceiveAmount();
+                    break;
+                case "小苏打(NaHCO3)":
+                    disposalMonthNahco3 += ingredients.getReceiveAmount();
+                    break;
+                case "面粉":
+                    disposalMonthFlour += ingredients.getReceiveAmount();
+                    break;
+                case "消泡剂":
+                    disposalMonthDefoamer += ingredients.getReceiveAmount();
+                    break;
+                case "絮凝剂(聚丙烯酰胺)":
+                    disposalMonthFlocculant += ingredients.getReceiveAmount();
+                    break;
+                case "软水用还原剂":
+                    disposalMonthSoftWaterReducingAgent += ingredients.getReceiveAmount();
+                    break;
+                case "软水用阻垢剂":
+                    disposalMonthSoftWaterScaleInhibitor += ingredients.getReceiveAmount();
+                    break;
+                case "氨水(PH调节剂)":
+                    disposalMonthAmmonia += ingredients.getReceiveAmount();
+                    break;
+                case "污水用还原剂":
+                    disposalMonthWaterReducingAgent += ingredients.getReceiveAmount();
+                    break;
+                case "污水用阻垢剂":
+                    disposalMonthWaterScaleInhibitor += ingredients.getReceiveAmount();
+                    break;
+                case "消毒液(NaCLO)":
+                    disposalMonthNaclo += ingredients.getReceiveAmount();
+                    break;
+                case "标准箱":
+                    disposalMonthStandardBox += ingredients.getReceiveAmount();
+                    break;
+                case "木托盘":
+                    disposalMonthWoodenPallets += ingredients.getReceiveAmount();
+                    break;
+                case "1m标准托盘":
+                    disposalMonthStandardTray_1m += ingredients.getReceiveAmount();
+                    break;
+                case "1.2m标准托盘":
+                    disposalMonthStandardTray_1_2m += ingredients.getReceiveAmount();
+                    break;
+                case "炉渣用吨袋":
+                    disposalMonthAuxiliarySlagBag += ingredients.getReceiveAmount();
+                    break;
+                case "飞灰用吨袋":
+                    disposalMonthFlyAshBag += ingredients.getReceiveAmount();
+                    break;
+                case "吨箱":
+                    disposalMonthTonBox += ingredients.getReceiveAmount();
+                    break;
+                case "蒸汽":
+                    disposalMonthSteam += ingredients.getReceiveAmount();
+                    break;
+                case "柴油":
+                    disposalMonthDieselOil += ingredients.getReceiveAmount();
+                    break;
+                case "天然气":
+                    disposalMonthNaturalGas += ingredients.getReceiveAmount();
+                    break;
+                case "电量":
+                    disposalMonthElectricQuantity += ingredients.getReceiveAmount();
+                    break;
+                case "工业水量":
+                    disposalMonthIndustrialWater += ingredients.getReceiveAmount();
+                    break;
+                case "自来水量":
+                    disposalMonthTapWaterQuantity += ingredients.getReceiveAmount();
+                    break;
+                default:
+                    break;
+            }
+        }
+        productionDaily.setMonthDisposalThirdAuxiliaryCalcareousLime(disposalMonthCalcareousLime);
+        productionDaily.setMonthDisposalThirdAuxiliaryCommonActivatedCarbon(disposalMonthCommonActivatedCarbon);
+        productionDaily.setMonthDisposalThirdAuxiliaryActivatedCarbon(disposalMonthActivatedCarbon);
+        productionDaily.setMonthDisposalThirdAuxiliaryActivatedCarbonParticles(disposalMonthActivatedCarbonParticles);
+        productionDaily.setMonthDisposalThirdAuxiliaryLye(disposalMonthLye);
+        productionDaily.setMonthDisposalThirdAuxiliaryCausticSoda(disposalMonthCausticSoda);
+        productionDaily.setMonthDisposalThirdAuxiliaryUrea(disposalMonthUrea);
+        productionDaily.setMonthDisposalThirdAuxiliaryHydrochloricAcid(disposalMonthHydrochloricAcid);
+        productionDaily.setMonthDisposalThirdAuxiliaryNahco3(disposalMonthNahco3);
+        productionDaily.setMonthDisposalThirdAuxiliaryFlour(disposalMonthFlour);
+        productionDaily.setMonthDisposalThirdAuxiliaryDefoamer(disposalMonthDefoamer);
+        productionDaily.setMonthDisposalThirdAuxiliaryFlocculant(disposalMonthFlocculant);
+        productionDaily.setMonthDisposalThirdAuxiliarySoftWaterReducingAgent(disposalMonthSoftWaterReducingAgent);
+        productionDaily.setMonthDisposalThirdAuxiliarySoftWaterScaleInhibitor(disposalMonthSoftWaterScaleInhibitor);
+        productionDaily.setMonthDisposalThirdAuxiliaryAmmonia(disposalMonthAmmonia);
+        productionDaily.setMonthDisposalThirdAuxiliaryWaterReducingAgent(disposalMonthWaterReducingAgent);
+        productionDaily.setMonthDisposalThirdAuxiliaryWaterScaleInhibitor(disposalMonthWaterScaleInhibitor);
+        productionDaily.setMonthDisposalThirdAuxiliaryNaclo(disposalMonthNaclo);
+        productionDaily.setMonthDisposalThirdAuxiliaryStandardBox(disposalMonthStandardBox);
+        productionDaily.setMonthDisposalThirdAuxiliaryWoodenPallets(disposalMonthWoodenPallets);
+        productionDaily.setMonthDisposalThirdAuxiliaryStandardTray_1m(disposalMonthStandardTray_1m);
+        productionDaily.setMonthDisposalThirdAuxiliaryStandardTray_1_2m(disposalMonthStandardTray_1_2m);
+        productionDaily.setMonthDisposalThirdAuxiliarySlagBag(disposalMonthAuxiliarySlagBag);
+        productionDaily.setMonthDisposalThirdAuxiliaryFlyAshBag(disposalMonthFlyAshBag);
+        productionDaily.setMonthDisposalThirdAuxiliaryTonBox(disposalMonthTonBox);
+        productionDaily.setMonthDisposalThirdAuxiliarySteam(disposalMonthSteam);
+        productionDaily.setMonthDisposalThirdAuxiliaryDieselOil(disposalMonthDieselOil);
+        productionDaily.setMonthDisposalThirdAuxiliaryNaturalGas(disposalMonthNaturalGas);
+        productionDaily.setMonthDisposalThirdAuxiliaryIndustrialWater(disposalMonthIndustrialWater);
+        productionDaily.setMonthDisposalThirdAuxiliaryElectricQuantity(disposalMonthElectricQuantity);
+        productionDaily.setMonthDisposalThirdAuxiliaryTapWaterQuantity(disposalMonthTapWaterQuantity);
+
+        // 辅料备件消耗
+        List<Ingredients> ingredientsOutMonthList = ingredientsService.getIngredientsOutItemByRange(monthFirstDay, monthEndDay, null);
+        float monthOutboundAuxiliaryCalcareousLime = 0f;
+        float monthOutboundAuxiliaryCommonActivatedCarbon = 0f;
+        float monthOutboundAuxiliaryActivatedCarbon = 0f;
+        float monthOutboundAuxiliaryActivatedCarbonParticles = 0f;
+        float monthOutboundAuxiliaryLye = 0f;
+        float monthOutboundAuxiliaryCausticSoda = 0f;
+        float monthOutboundAuxiliaryUrea = 0f;
+        float monthOutboundAuxiliaryHydrochloricAcid = 0f;
+        float monthOutboundAuxiliaryNahco3 = 0f;
+        float monthOutboundAuxiliaryFlour = 0f;
+        float monthOutboundAuxiliaryDefoamer = 0f;
+        float monthOutboundAuxiliaryFlocculant = 0f;
+        float monthOutboundAuxiliarySoftWaterReducingAgent = 0f;
+        float monthOutboundAuxiliarySoftWaterScaleInhibitor = 0f;
+        float monthOutboundAuxiliaryAmmonia = 0f;
+        float monthOutboundAuxiliaryWaterReducingAgent = 0f;
+        float monthOutboundAuxiliaryWaterScaleInhibitor = 0f;
+        float monthOutboundAuxiliaryNaclo = 0f;
+        float monthOutboundAuxiliaryDeodorant = 0f;
+        float monthOutboundAuxiliarySalt = 0f;
+        float monthOutboundAuxiliarySlagBag = 0f;
+        float monthOutboundAuxiliaryFlyAshBag = 0f;
+        float monthOutboundAuxiliaryMedicalWastesBag = 0f;
+        float monthOutboundAuxiliaryMedicalPackingPlasticBag = 0f;
+        float monthOutboundAuxiliaryCollectionBox = 0f;
+        float monthOutboundAuxiliaryStandardBox = 0f;
+        float monthOutboundAuxiliaryWoodenPallets = 0f;
+        float monthOutboundAuxiliaryStandardTray_1m = 0f;
+        float monthOutboundAuxiliaryStandardTray_1_2m = 0f;
+        float monthOutboundAuxiliaryTonBox = 0f;
+        float monthOutboundAuxiliarySteam = 0f;
+        float monthOutboundAuxiliaryDieselOil = 0f;
+        float monthOutboundAuxiliaryNaturalGas = 0f;
+        float monthOutboundAuxiliaryElectricQuantity = 0f;
+        float monthOutboundAuxiliaryIndustrialWater = 0f;
+        float monthOutboundAuxiliaryTapWaterQuantity = 0f;
+        for(Ingredients ingredients : ingredientsOutMonthList) {
+            switch(ingredients.getName()) {
+                case "消石灰": monthOutboundAuxiliaryCalcareousLime += ingredients.getAmount();break;
+                case "普通活性碳粉": monthOutboundAuxiliaryCommonActivatedCarbon += ingredients.getAmount();break;
+                case "高活性碳粉": monthOutboundAuxiliaryActivatedCarbon += ingredients.getAmount();break;
+                case "活性炭颗粒": monthOutboundAuxiliaryActivatedCarbonParticles += ingredients.getAmount();break;
+                case "碱液": monthOutboundAuxiliaryLye += ingredients.getAmount();break;
+                case "片碱": monthOutboundAuxiliaryCausticSoda += ingredients.getAmount();break;
+                case "尿素": monthOutboundAuxiliaryUrea += ingredients.getAmount();break;
+                case "盐酸": monthOutboundAuxiliaryHydrochloricAcid += ingredients.getAmount();break;
+                case "小苏打(NaHCO3)": monthOutboundAuxiliaryNahco3 += ingredients.getAmount();break;
+                case "面粉": monthOutboundAuxiliaryFlour += ingredients.getAmount();break;
+                case "消泡剂": monthOutboundAuxiliaryDefoamer += ingredients.getAmount();break;
+                case "絮凝剂(聚丙烯酰胺)": monthOutboundAuxiliaryFlocculant += ingredients.getAmount();break;
+                case "软水用还原剂": monthOutboundAuxiliarySoftWaterReducingAgent += ingredients.getAmount();break;
+                case "软水用阻垢剂": monthOutboundAuxiliarySoftWaterScaleInhibitor += ingredients.getAmount();break;
+                case "氨水(PH调节剂)": monthOutboundAuxiliaryAmmonia += ingredients.getAmount();break;
+                case "污水用还原剂": monthOutboundAuxiliaryWaterReducingAgent += ingredients.getAmount();break;
+                case "污水用阻垢剂": monthOutboundAuxiliaryWaterScaleInhibitor += ingredients.getAmount();break;
+                case "消毒液": monthOutboundAuxiliaryNaclo += ingredients.getAmount();break;
+                case "除臭剂": monthOutboundAuxiliaryDeodorant += ingredients.getAmount();break;
+                case "盐": monthOutboundAuxiliarySalt += ingredients.getAmount();break;
+                case "炉渣用吨袋": monthOutboundAuxiliarySlagBag += ingredients.getAmount();break;
+                case "飞灰用吨袋": monthOutboundAuxiliaryFlyAshBag += ingredients.getAmount();break;
+                case "医废用吨袋": monthOutboundAuxiliaryMedicalWastesBag += ingredients.getAmount();break;
+                case "医废包装塑料袋": monthOutboundAuxiliaryMedicalPackingPlasticBag += ingredients.getAmount();break;
+                case "收集转运箱": monthOutboundAuxiliaryCollectionBox += ingredients.getAmount();break;
+                case "标准箱": monthOutboundAuxiliaryStandardBox += ingredients.getAmount();break;
+                case "木托盘": monthOutboundAuxiliaryWoodenPallets += ingredients.getAmount();break;
+                case "1m标准托盘": monthOutboundAuxiliaryStandardTray_1m += ingredients.getAmount();break;
+                case "1.2m标准托盘": monthOutboundAuxiliaryStandardTray_1_2m += ingredients.getAmount();break;
+                case "吨箱": monthOutboundAuxiliaryTonBox += ingredients.getAmount();break;
+                case "蒸汽": monthOutboundAuxiliarySteam += ingredients.getAmount();break;
+                case "柴油": monthOutboundAuxiliaryDieselOil += ingredients.getAmount();break;
+                case "天然气": monthOutboundAuxiliaryNaturalGas += ingredients.getAmount();break;
+                case "电量": monthOutboundAuxiliaryElectricQuantity += ingredients.getAmount();break;
+                case "工业水量": monthOutboundAuxiliaryIndustrialWater += ingredients.getAmount();break;
+                case "自来水量": monthOutboundAuxiliaryTapWaterQuantity += ingredients.getAmount();break;
+            }
+        }
         productionDaily.setMonthOutboundAuxiliaryCalcareousLime(monthOutboundAuxiliaryCalcareousLime);
         productionDaily.setMonthOutboundAuxiliaryCommonActivatedCarbon(monthOutboundAuxiliaryCommonActivatedCarbon);
         productionDaily.setMonthOutboundAuxiliaryActivatedCarbon(monthOutboundAuxiliaryActivatedCarbon);
@@ -1517,9 +1948,9 @@ public class ProductionDailyController {
         productionDaily.setMonthOutboundAuxiliaryFlyAshBag(monthOutboundAuxiliaryFlyAshBag);
         productionDaily.setMonthOutboundAuxiliaryMedicalWastesBag(monthOutboundAuxiliaryMedicalWastesBag);
         productionDaily.setMonthOutboundAuxiliaryMedicalPackingPlasticBag(monthOutboundAuxiliaryMedicalPackingPlasticBag);
-        productionDaily.setMonthOutboundAuxiliaryWoodenPallets(monthOutboundAuxiliaryWoodenPallets);
-        productionDaily.setMonthOutboundAuxiliaryStandardBox(monthOutboundAuxiliaryCollectionBox);
+        productionDaily.setMonthOutboundAuxiliaryCollectionBox(monthOutboundAuxiliaryCollectionBox);
         productionDaily.setMonthOutboundAuxiliaryStandardBox(monthOutboundAuxiliaryStandardBox);
+        productionDaily.setMonthOutboundAuxiliaryWoodenPallets(monthOutboundAuxiliaryWoodenPallets);
         productionDaily.setMonthOutboundAuxiliaryStandardTray_1m(monthOutboundAuxiliaryStandardTray_1m);
         productionDaily.setMonthOutboundAuxiliaryStandardTray_1_2m(monthOutboundAuxiliaryStandardTray_1_2m);
         productionDaily.setMonthOutboundAuxiliaryTonBox(monthOutboundAuxiliaryTonBox);
@@ -1529,113 +1960,52 @@ public class ProductionDailyController {
         productionDaily.setMonthOutboundAuxiliaryElectricQuantity(monthOutboundAuxiliaryElectricQuantity);
         productionDaily.setMonthOutboundAuxiliaryIndustrialWater(monthOutboundAuxiliaryIndustrialWater);
         productionDaily.setMonthOutboundAuxiliaryTapWaterQuantity(monthOutboundAuxiliaryTapWaterQuantity);
-        productionDaily.setMonthDisposalMedicalAuxiliaryNaclo(monthDisposalMedicalAuxiliaryNaclo);
-        productionDaily.setMonthDisposalMedicalAuxiliaryDeodorant(monthDisposalMedicalAuxiliaryDeodorant);
-        productionDaily.setMonthDisposalMedicalAuxiliaryMedicalWastesBag(monthDisposalMedicalAuxiliaryMedicalWastesBag);
-        productionDaily.setMonthDisposalMedicalAuxiliaryMedicalPackingPlasticBag(monthDisposalMedicalAuxiliaryMedicalPackingPlasticBag);
-        productionDaily.setMonthDisposalMedicalAuxiliaryCollectionBox(monthDisposalMedicalAuxiliaryCollectionBox);
-        productionDaily.setMonthDisposalMedicalAuxiliarySteam(monthDisposalMedicalAuxiliarySteam);
-        productionDaily.setMonthDisposalMedicalAuxiliaryIndustrialWater(monthDisposalMedicalAuxiliaryIndustrialWater);
-        productionDaily.setMonthDisposalMedicalAuxiliaryElectricQuantity(monthDisposalMedicalAuxiliaryElectricQuantity);
-        productionDaily.setMonthDisposalSecondaryAuxiliaryCalcareousLime(monthDisposalSecondaryAuxiliaryCalcareousLime);
-        productionDaily.setMonthDisposalSecondaryAuxiliaryCommonActivatedCarbon(monthDisposalSecondaryAuxiliaryCommonActivatedCarbon);
-        productionDaily.setMonthDisposalSecondaryAuxiliaryActivatedCarbon(monthDisposalSecondaryAuxiliaryActivatedCarbon);
-        productionDaily.setMonthDisposalSecondaryAuxiliaryActivatedCarbonParticles(monthDisposalSecondaryAuxiliaryActivatedCarbonParticles);
-        productionDaily.setMonthDisposalSecondaryAuxiliaryLye(monthDisposalSecondaryAuxiliaryLye);
-        productionDaily.setMonthDisposalSecondaryAuxiliarySalt(monthDisposalSecondaryAuxiliarySalt);
-        productionDaily.setMonthDisposalSecondaryAuxiliarySlagBag(monthDisposalSecondaryAuxiliarySlagBag);
-        productionDaily.setMonthDisposalSecondaryAuxiliaryFlyAshBag(monthDisposalSecondaryAuxiliaryFlyAshBag);
-        productionDaily.setMonthDisposalSecondaryAuxiliaryDieselOil(monthDisposalSecondaryAuxiliaryDieselOil);
-        productionDaily.setMonthDisposalSecondaryAuxiliaryIndustrialWater(monthDisposalSecondaryAuxiliaryIndustrialWater);
-        productionDaily.setMonthDisposalSecondaryAuxiliaryElectricQuantity(monthDisposalSecondaryAuxiliaryElectricQuantity);
-        productionDaily.setMonthDisposalSecondaryAuxiliaryWoodenPallets(monthDisposalSecondaryAuxiliaryWoodenPallets);
-        productionDaily.setMonthDisposalThirdAuxiliaryCalcareousLime(monthDisposalThirdAuxiliaryCalcareousLime);
-        productionDaily.setMonthDisposalThirdAuxiliaryCommonActivatedCarbon(monthDisposalThirdAuxiliaryCommonActivatedCarbon);
-        productionDaily.setMonthDisposalThirdAuxiliaryActivatedCarbon(monthDisposalThirdAuxiliaryActivatedCarbon);
-        productionDaily.setMonthDisposalThirdAuxiliaryActivatedCarbonParticles(monthDisposalThirdAuxiliaryActivatedCarbonParticles);
-        productionDaily.setMonthDisposalThirdAuxiliaryLye(monthDisposalThirdAuxiliaryLye);
-        productionDaily.setMonthDisposalThirdAuxiliaryCausticSoda(monthDisposalThirdAuxiliaryCausticSoda);
-        productionDaily.setMonthDisposalThirdAuxiliaryUrea(monthDisposalThirdAuxiliaryUrea);
-        productionDaily.setMonthDisposalThirdAuxiliaryHydrochloricAcid(monthDisposalThirdAuxiliaryHydrochloricAcid);
-        productionDaily.setMonthDisposalThirdAuxiliaryNahco3(monthDisposalThirdAuxiliaryNahco3);
-        productionDaily.setMonthDisposalThirdAuxiliaryFlour(monthDisposalThirdAuxiliaryFlour);
-        productionDaily.setMonthDisposalThirdAuxiliaryDefoamer(monthDisposalThirdAuxiliaryDefoamer);
-        productionDaily.setMonthDisposalThirdAuxiliaryFlocculant(monthDisposalThirdAuxiliaryFlocculant);
-        productionDaily.setMonthDisposalThirdAuxiliarySoftWaterReducingAgent(monthDisposalThirdAuxiliarySoftWaterReducingAgent);
-        productionDaily.setMonthDisposalThirdAuxiliarySoftWaterScaleInhibitor(monthDisposalThirdAuxiliarySoftWaterScaleInhibitor);
-        productionDaily.setMonthDisposalThirdAuxiliaryAmmonia(monthDisposalThirdAuxiliaryAmmonia);
-        productionDaily.setMonthDisposalThirdAuxiliaryWaterReducingAgent(monthDisposalThirdAuxiliaryWaterReducingAgent);
-        productionDaily.setMonthDisposalThirdAuxiliaryWaterScaleInhibitor(monthDisposalThirdAuxiliaryWaterScaleInhibitor);
-        productionDaily.setMonthDisposalThirdAuxiliaryNaclo(monthDisposalThirdAuxiliaryNaclo);
-        productionDaily.setMonthDisposalThirdAuxiliaryStandardBox(monthDisposalThirdAuxiliaryStandardBox);
-        productionDaily.setMonthDisposalThirdAuxiliaryWoodenPallets(monthDisposalThirdAuxiliaryWoodenPallets);
-        productionDaily.setMonthDisposalThirdAuxiliaryStandardTray_1m(monthDisposalThirdAuxiliaryStandardTray_1m);
-        productionDaily.setMonthDisposalThirdAuxiliaryStandardTray_1_2m(monthDisposalThirdAuxiliaryStandardTray_1_2m);
-        productionDaily.setMonthDisposalThirdAuxiliarySlagBag(monthDisposalThirdAuxiliarySlagBag);
-        productionDaily.setMonthDisposalThirdAuxiliaryFlyAshBag(monthDisposalThirdAuxiliaryFlyAshBag);
-        productionDaily.setMonthDisposalThirdAuxiliaryTonBox(monthDisposalThirdAuxiliaryTonBox);
-        productionDaily.setMonthDisposalThirdAuxiliarySteam(monthDisposalThirdAuxiliarySteam);
-        productionDaily.setMonthDisposalThirdAuxiliaryDieselOil(monthDisposalThirdAuxiliaryDieselOil);
-        productionDaily.setMonthDisposalThirdAuxiliaryNaturalGas(monthDisposalThirdAuxiliaryNaturalGas);
-        productionDaily.setMonthDisposalThirdAuxiliaryIndustrialWater(monthDisposalThirdAuxiliaryIndustrialWater);
-        productionDaily.setMonthDisposalThirdAuxiliaryElectricQuantity(monthDisposalThirdAuxiliaryElectricQuantity);
-        productionDaily.setMonthDisposalThirdAuxiliaryTapWaterQuantity(monthDisposalThirdAuxiliaryTapWaterQuantity);
-        productionDaily.setMonthDisposalTowerElectricQuantity(monthDisposalTowerElectricQuantity);
 
-        productionDaily.setMonthOutboundA2WastesBulk(monthOutboundA2WastesBulk);
-        productionDaily.setMonthOutboundA2WastesCrushing(monthOutboundA2WastesCrushing);
-        productionDaily.setMonthOutboundA2WastesSludge(monthOutboundA2WastesSludge);
-        productionDaily.setMonthOutboundA2WastesDistillation(monthOutboundA2WastesDistillation);
-        productionDaily.setMonthOutboundA2WastesSuspension(monthOutboundA2WastesSuspension);
-        productionDaily.setMonthOutboundA2WastesWasteLiquid(monthOutboundA2WastesWasteLiquid);
-        productionDaily.setMonthOutboundA2MedicalWastes(monthOutboundA2MedicalWastes);
+        // 运行情况统计
+        float equipmentMonthA2RunningTime = 0f;
+        float equipmentMonthB2RunningTime = 0f;
+        float equipmentMonthPrepare2RunningTime = 0f;
+        float equipmentMonthSecondRunningTime = 0f;
+        float equipmentMonthThirdRunningTime = 0f;
+        List<EquipmentItem> equipmentDateMonthList = equipmentService.getEquipmentDataByDate(monthFirstDay, monthEndDay);
+        for (EquipmentItem equipmentItem : equipmentDateMonthList) {
+            Equipment equipmentName = equipmentItem.getEquipment();
+            switch (equipmentName.getName()) {
+                case "A2":
+                    equipmentMonthA2RunningTime += equipmentItem.getRunningTime();
+                    break;
+                case "B2":
+                    equipmentMonthB2RunningTime += equipmentItem.getRunningTime();
+                    break;
+                case "Prepare2":
+                    equipmentMonthPrepare2RunningTime += equipmentItem.getRunningTime();
+                    break;
+                case "SecondaryTwoCombustionChamber":
+                    equipmentMonthSecondRunningTime += equipmentItem.getRunningTime();
+                    break;
+                case "ThirdPhasePretreatmentSystem":
+                    equipmentMonthThirdRunningTime += equipmentItem.getRunningTime();
+                    break;
+            }
+        }
+        // 运行时间和停止时间
+        productionDaily.setMonthEquipmentA2RunningTime(equipmentMonthA2RunningTime);
+        productionDaily.setMonthEquipmentB2RunningTime(equipmentMonthB2RunningTime);
+        productionDaily.setMonthEquipmentPrepare2RunningTime(equipmentMonthPrepare2RunningTime);
+        productionDaily.setMonthEquipmentSecondaryRunningTime(equipmentMonthSecondRunningTime);
+        productionDaily.setMonthEquipmentThirdRunningTime(equipmentMonthThirdRunningTime);
 
-        productionDaily.setMonthOutboundPrepare2WastesBulk(monthOutboundPrepare2WastesBulk);
-        productionDaily.setMonthOutboundPrepare2WastesCrushing(monthOutboundPrepare2WastesCrushing);
-        productionDaily.setMonthOutboundPrepare2WastesSludge(monthOutboundPrepare2WastesSludge);
-        productionDaily.setMonthOutboundPrepare2WastesDistillation(monthOutboundPrepare2WastesDistillation);
-        productionDaily.setMonthOutboundPrepare2WastesSuspension(monthOutboundPrepare2WastesSuspension);
-        productionDaily.setMonthOutboundPrepare2WastesWasteLiquid(monthOutboundPrepare2WastesWasteLiquid);
-        productionDaily.setMonthOutboundPrepare2MedicalWastes(monthOutboundPrepare2MedicalWastes);
-
-        productionDaily.setMonthOutboundB2WastesBulk(monthOutboundB2WastesBulk);
-        productionDaily.setMonthOutboundB2WastesCrushing(monthOutboundB2WastesCrushing);
-        productionDaily.setMonthOutboundB2WastesSludge(monthOutboundB2WastesSludge);
-        productionDaily.setMonthOutboundB2WastesDistillation(monthOutboundB2WastesDistillation);
-        productionDaily.setMonthOutboundB2WastesSuspension(monthOutboundB2WastesSuspension);
-        productionDaily.setMonthOutboundB2WastesWasteLiquid(monthOutboundB2WastesWasteLiquid);
-        productionDaily.setMonthOutboundB2MedicalWastes(monthOutboundB2MedicalWastes);
-
-        productionDaily.setMonthOutboundThirdPretreatmentSystemWastesBulk(monthOutboundThirdPretreatmentSystemWastesBulk);
-        productionDaily.setMonthOutboundThirdPretreatmentSystemWastesCrushing(monthOutboundThirdPretreatmentSystemWastesCrushing);
-        productionDaily.setMonthOutboundThirdPretreatmentSystemWastesSludge(monthOutboundThirdPretreatmentSystemWastesSludge);
-        productionDaily.setMonthOutboundThirdPretreatmentSystemWastesDistillation(monthOutboundThirdPretreatmentSystemWastesDistillation);
-        productionDaily.setMonthOutboundThirdPretreatmentSystemWastesSuspension(monthOutboundThirdPretreatmentSystemWastesSuspension);
-        productionDaily.setMonthOutboundThirdPretreatmentSystemWastesWasteLiquid(monthOutboundThirdPretreatmentSystemWastesWasteLiquid);
-        productionDaily.setMonthOutboundThirdPretreatmentSystemMedicalWastes(monthOutboundThirdPretreatmentSystemMedicalWastes);
-
-        productionDaily.setMonthEquipmentA2StopTime(monthEquipmentA2StopTime);
-        productionDaily.setMonthEquipmentB2StopTime(monthEquipmentB2StopTime);
-        productionDaily.setMonthEquipmentPrepare2StopTime(monthEquipmentPrepare2StopTime);
-        productionDaily.setMonthEquipmentSecondaryStopTime(monthEquipmentSecondaryStopTime);
-        productionDaily.setMonthEquipmentThirdStopTime(monthEquipmentThirdStopTime);
-
-        productionDaily.setMonthEquipmentA2RunningTime(monthEquipmentA2RunningTime);
-        productionDaily.setMonthEquipmentB2RunningTime(monthEquipmentB2RunningTime);
-        productionDaily.setMonthEquipmentPrepare2RunningTime(monthEquipmentPrepare2RunningTime);
-        productionDaily.setMonthEquipmentSecondaryRunningTime(monthEquipmentSecondaryRunningTime);
-        productionDaily.setMonthEquipmentThirdRunningTime(monthEquipmentThirdRunningTime);
-
+        productionDaily.setMonthEquipmentA2StopTime(24 - productionDaily.getMonthEquipmentA2RunningTime());
+        productionDaily.setMonthEquipmentB2StopTime(24 - productionDaily.getMonthEquipmentB2RunningTime());
+        productionDaily.setMonthEquipmentPrepare2StopTime(24 - productionDaily.getMonthEquipmentPrepare2StopTime());
+        productionDaily.setMonthEquipmentSecondaryStopTime(24 - productionDaily.getMonthEquipmentSecondaryRunningTime());
+        productionDaily.setMonthEquipmentThirdStopTime(24 - productionDaily.getMonthEquipmentThirdRunningTime());
+        // 运转率
         productionDaily.setMonthEquipmentA2RunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getMonthEquipmentA2RunningTime(), productionDaily.getMonthEquipmentA2StopTime())));
         productionDaily.setMonthEquipmentB2RunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getMonthEquipmentB2RunningTime(), productionDaily.getMonthEquipmentB2StopTime())));
         productionDaily.setMonthEquipmentPrepare2RunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getMonthEquipmentPrepare2RunningTime(), productionDaily.getMonthEquipmentPrepare2StopTime())));
         productionDaily.setMonthEquipmentSecondaryRunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getMonthEquipmentSecondaryRunningTime(), productionDaily.getMonthEquipmentSecondaryStopTime())));
         productionDaily.setMonthEquipmentThirdRunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getMonthEquipmentThirdRunningTime(), productionDaily.getMonthEquipmentThirdStopTime())));
-
-        productionDaily.setMonthDisposalSecondarySlag(monthDisposalSecondarySlag);
-        productionDaily.setMonthDisposalSecondaryAsh(monthDisposalSecondaryAsh);
-        productionDaily.setMonthDisposalThirdSlag(monthDisposalThirdSlag);
-        productionDaily.setMonthDisposalThirdAsh(monthDisposalThirdAsh);
 
 
         // 年份数据
@@ -3245,7 +3615,7 @@ public class ProductionDailyController {
             hashMap.put("X43", productionDaily.getLimitDisposalThirdAuxiliaryWoodenPallets());
             hashMap.put("X44", productionDaily.getLimitDisposalThirdAuxiliaryStandardTray_1m());
             hashMap.put("X45", productionDaily.getLimitDisposalThirdAuxiliaryStandardTray_1_2m());
-            hashMap.put("X46", productionDaily.getLimitDisposalThirdSecondaryAuxiliarySlagBag());
+            hashMap.put("X46", productionDaily.getLimitDisposalThirdAuxiliarySlagBag());
             hashMap.put("X47", productionDaily.getLimitDisposalThirdAuxiliaryFlyAshBag());
             hashMap.put("X48", productionDaily.getLimitDisposalThirdAuxiliaryTonBox());
             hashMap.put("X49", productionDaily.getLimitDisposalThirdAuxiliarySteam());
