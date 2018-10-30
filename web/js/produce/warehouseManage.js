@@ -423,6 +423,7 @@ function setPageClone(result) {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            addAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -1067,6 +1068,7 @@ function importExcel() {
                         window.location.reload();         //刷新
                     } else {
                         alert(result.message);
+                        window.location.reload();
                     }
                 }
             },

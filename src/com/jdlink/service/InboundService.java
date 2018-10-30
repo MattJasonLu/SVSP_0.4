@@ -4,6 +4,7 @@ import com.jdlink.domain.Inventory.InboundOrder;
 import com.jdlink.domain.Inventory.InboundOrderItem;
 import com.jdlink.domain.Inventory.InboundPlanOrder;
 import com.jdlink.domain.Page;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -145,4 +146,12 @@ public interface InboundService {
     List<InboundOrderItem> getSecondInboundOrderItemByRange(Date startDate, Date endDate);
 
     List<InboundOrderItem> getInboundOrderItemByClientId(String id);
+
+    /**
+     * 根据仓库名和物品名查询库存是否存在
+     * @param wastesName
+     * @param wareHouseName
+     * @return
+     */
+    int getInventoryByWastesNameAndWareHouse(String wastesName,String wareHouseName);
 }
