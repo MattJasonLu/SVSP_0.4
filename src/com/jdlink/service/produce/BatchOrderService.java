@@ -25,4 +25,5 @@ public interface BatchOrderService {
     List<OutboundOrder>loadWastesOutBoundList(Page page);
     List<WasteInventory> getSecInventoryListBat();
     void addSecondary(OutboundOrder outboundOrder);
+    List<OutboundOrder>loadSecOutBoundList(Page page);
 }

@@ -38,7 +38,7 @@
     </select>
 
     <select id="getSecInventoryListBat" resultMap="WasteInventoryListBatRM">
-        select * from t_pl_wasteinventory where boundType='SecondaryInbound';
+        select * from t_pl_wasteinventory where boundType='SecondaryInbound' order by inboundDate;
     </select>
 
     <select id="getWasteInventoryByInboundOrderId" resultMap="WasteInventoryListBatRM" parameterType="String">
@@ -112,7 +112,15 @@
     </resultMap>
     <!--加载危废出库-->
     <select id="loadWastesOutBoundList" resultMap="WastesOutBoundRM">
-        select * from t_pl_outboundorder
+        select * from t_pl_outboundorder where  boundType='WasteOutbound'
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <!--加载次生出库-->
+    <select id="loadSecOutBoundList" resultMap="WastesOutBoundRM">
+        select * from t_pl_outboundorder where boundType='SecondaryOutbound'
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
