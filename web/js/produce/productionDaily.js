@@ -1401,7 +1401,7 @@ function loadData() {
         // 出库单A2列表
         for (var i = 0; i < obj.outboundOrderA2List.length; i++) {
             var $i = i;
-            if (obj.outboundOrderA2List[i].laboratoryTest != null) $("td[id='outboundOrderA2List_" + $i + "_wastesName']").text(obj.outboundOrderA2List[i].laboratoryTest.wastesName);
+            $("td[id='outboundOrderA2List_" + $i + "_wastesName']").text(obj.outboundOrderA2List[i].wastesName);
             if (obj.outboundOrderA2List[i].client != null) $("td[id='outboundOrderA2List_" + $i + "_client']").text(obj.outboundOrderA2List[i].client.companyName);
             $("td[id='outboundOrderA2List_" + $i + "_wastesAmount']").text(parseFloat(obj.outboundOrderA2List[i].outboundNumber).toFixed(3));
             if (obj.outboundOrderA2List[i].handelCategory != null) $("td[id='outboundOrderA2List_" + $i + "_handleCategory']").text(obj.outboundOrderA2List[i].handelCategory.name);
@@ -1409,7 +1409,7 @@ function loadData() {
         // 出库单B2列表
         for (var i = 0; i < obj.outboundOrderB2List.length; i++) {
             var $i = i;
-            if (obj.outboundOrderB2List[i].laboratoryTest != null) $("td[id='outboundOrderB2List_" + $i + "_wastesName']").text(obj.outboundOrderB2List[i].laboratoryTest.wastesName);
+            $("td[id='outboundOrderB2List_" + $i + "_wastesName']").text(obj.outboundOrderB2List[i].wastesName);
             if (obj.outboundOrderB2List[i].client != null) $("td[id='outboundOrderB2List_" + $i + "_client']").text(obj.outboundOrderB2List[i].client.companyName);
             $("td[id='outboundOrderB2List_" + $i + "_wastesAmount']").text(parseFloat(obj.outboundOrderB2List[i].outboundNumber).toFixed(3));
             if (obj.outboundOrderB2List[i].handelCategory != null) $("td[id='outboundOrderB2List_" + $i + "_handleCategory']").text(obj.outboundOrderB2List[i].handelCategory.name);
@@ -1417,7 +1417,7 @@ function loadData() {
         // 出库单Prepare2列表
         for (var i = 0; i < obj.outboundOrderB2List.length; i++) {
             var $i = i;
-            if (obj.outboundOrderPrepare2List[i].laboratoryTest != null) $("td[id='outboundOrderPrepare2List_" + $i + "_wastesName']").text(obj.outboundOrderPrepare2List[i].laboratoryTest.wastesName);
+            $("td[id='outboundOrderPrepare2List_" + $i + "_wastesName']").text(obj.outboundOrderPrepare2List[i].wastesName);
             if (obj.outboundOrderPrepare2List[i].client != null) $("td[id='outboundOrderPrepare2List_" + $i + "_client']").text(obj.outboundOrderPrepare2List[i].client.companyName);
             $("td[id='outboundOrderPrepare2List_" + $i + "_wastesAmount']").text(parseFloat(obj.outboundOrderB2List[i].outboundNumber).toFixed(3));
             if (obj.outboundOrderPrepare2List[i].handelCategory != null) $("td[id='outboundOrderPrepare2List_" + $i + "_handleCategory']").text(obj.outboundOrderPrepare2List[i].handelCategory.name);
@@ -1425,7 +1425,7 @@ function loadData() {
         // 出库单三期列表
         for (var i = 0; i < obj.outboundOrderThirdList.length; i++) {
             var $i = i;
-            if (obj.outboundOrderThirdList[i].laboratoryTest != null) $("td[id='outboundOrderThirdList_" + $i + "_wastesName']").text(obj.outboundOrderThirdList[i].laboratoryTest.wastesName);
+            $("td[id='outboundOrderThirdList_" + $i + "_wastesName']").text(obj.outboundOrderThirdList[i].wastesName);
             if (obj.outboundOrderThirdList[i].client != null) $("td[id='outboundOrderThirdList_" + $i + "_client']").text(obj.outboundOrderThirdList[i].client.companyName);
             $("td[id='outboundOrderThirdList_" + $i + "_wastesAmount']").text(parseFloat(obj.outboundOrderThirdList[i].outboundNumber).toFixed(3));
             if (obj.outboundOrderThirdList[i].handelCategory != null) $("td[id='outboundOrderThirdList_" + $i + "_handleCategory']").text(obj.outboundOrderThirdList[i].handelCategory.name);

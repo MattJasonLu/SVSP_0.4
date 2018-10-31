@@ -42,23 +42,23 @@
     </select>
     <!--入库危废列表-->
     <select id="getInboundOrderItemList" resultMap="InboundOrderItemRM">
-        select * from t_rp_productiondaily_inbounditem;
+        select * from t_rp_productiondaily_inbounditem where productionDailyId=#{id};
     </select>
     <!--A2出库列表-->
     <select id="getOutboundOrderA2List" resultMap="OutboundOrderRM">
-        select * from t_rp_productiondaily_outbounditem where disposalEquipment='A2';
+        select * from t_rp_productiondaily_outbounditem where disposalEquipment='A2' and productionDailyId=#{id};
     </select>
     <!--B2出库列表-->
     <select id="getOutboundOrderB2List" resultMap="OutboundOrderRM">
-        select * from t_rp_productiondaily_outbounditem where disposalEquipment='B2';
+        select * from t_rp_productiondaily_outbounditem where disposalEquipment='B2' and productionDailyId=#{id};
     </select>
     <!--备2出库列表-->
     <select id="getOutboundOrderPrepare2List" resultMap="OutboundOrderRM">
-        select * from t_rp_productiondaily_outbounditem where disposalEquipment='Prepare2';
+        select * from t_rp_productiondaily_outbounditem where disposalEquipment='Prepare2' and productionDailyId=#{id};
     </select>
     <!--三期设备出库列表-->
     <select id="getOutboundOrderThirdList" resultMap="OutboundOrderRM">
-        select * from t_rp_productiondaily_outbounditem where disposalEquipment='ThirdPhasePretreatmentSystem';
+        select * from t_rp_productiondaily_outbounditem where disposalEquipment='ThirdPhasePretreatmentSystem' and productionDailyId=#{id};
     </select>
 
     <select id="countSewage" resultType="int">
@@ -479,29 +479,29 @@
 
         <if test="outboundOrderA2List != null and outboundOrderA2List.size() > 0">
             <foreach collection="outboundOrderA2List" item="outboundOrderA2" index="index">
-                INSERT INTO t_rp_productiondaily_outbounditem (productionDailyId, wastesName, wastesCode, clientId, wastesAmount, wastesHandleCategory, disposalEquipment) VALUES
-                (#{id}, #{outboundOrderA2.laboratoryTest.wastesName}, #{outboundOrderA2.laboratoryTest.wastesCode}, #{outboundOrderA2.laboratoryTest.client.clientId},
+                INSERT INTO t_rp_productiondaily_outbounditem (productionDailyId, wastesName, clientId, wastesAmount, wastesHandleCategory, disposalEquipment) VALUES
+                (#{id}, #{outboundOrderA2.wastesName}, #{outboundOrderA2.client.clientId},
                 #{outboundOrderA2.outboundNumber}, #{outboundOrderA2.handelCategory}, #{outboundOrderA2.equipment});
             </foreach>
         </if>
         <if test="outboundOrderB2List != null and outboundOrderB2List.size() > 0">
             <foreach collection="outboundOrderB2List" item="outboundOrderB2" index="index">
-                INSERT INTO t_rp_productiondaily_outbounditem (productionDailyId, wastesName, wastesCode, clientId, wastesAmount, wastesHandleCategory, disposalEquipment) VALUES
-                (#{id}, #{outboundOrderB2.laboratoryTest.wastesName}, #{outboundOrderB2.laboratoryTest.wastesCode}, #{outboundOrderB2.laboratoryTest.client.clientId},
+                INSERT INTO t_rp_productiondaily_outbounditem (productionDailyId, wastesName, clientId, wastesAmount, wastesHandleCategory, disposalEquipment) VALUES
+                (#{id}, #{outboundOrderB2.wastesName}, #{outboundOrderB2.client.clientId},
                 #{outboundOrderB2.outboundNumber}, #{outboundOrderB2.handelCategory}, #{outboundOrderB2.equipment});
             </foreach>
         </if>
         <if test="outboundOrderPrepare2List != null and outboundOrderPrepare2List.size() > 0">
             <foreach collection="outboundOrderPrepare2List" item="outboundOrderPrepare2" index="index">
-                INSERT INTO t_rp_productiondaily_outbounditem (productionDailyId, wastesName, wastesCode, clientId, wastesAmount, wastesHandleCategory, disposalEquipment) VALUES
-                (#{id}, #{outboundOrderPrepare2.laboratoryTest.wastesName}, #{outboundOrderPrepare2.laboratoryTest.wastesCode}, #{outboundOrderPrepare2.laboratoryTest.client.clientId},
+                INSERT INTO t_rp_productiondaily_outbounditem (productionDailyId, wastesName, clientId, wastesAmount, wastesHandleCategory, disposalEquipment) VALUES
+                (#{id}, #{outboundOrderPrepare2.wastesName}, #{outboundOrderPrepare2.client.clientId},
                 #{outboundOrderPrepare2.outboundNumber}, #{outboundOrderPrepare2.handelCategory}, #{outboundOrderPrepare2.equipment});
             </foreach>
         </if>
         <if test="outboundOrderThirdList != null and outboundOrderThirdList.size() > 0">
             <foreach collection="outboundOrderThirdList" item="outboundOrderThird" index="index">
-                INSERT INTO t_rp_productiondaily_outbounditem (productionDailyId, wastesName, wastesCode, clientId, wastesAmount, wastesHandleCategory, disposalEquipment) VALUES
-                (#{id}, #{outboundOrderThird.laboratoryTest.wastesName}, #{outboundOrderThird.laboratoryTest.wastesCode}, #{outboundOrderThird.laboratoryTest.client.clientId},
+                INSERT INTO t_rp_productiondaily_outbounditem (productionDailyId, wastesName, clientId, wastesAmount, wastesHandleCategory, disposalEquipment) VALUES
+                (#{id}, #{outboundOrderThird.wastesName}, #{outboundOrderThird.client.clientId},
                 #{outboundOrderThird.outboundNumber}, #{outboundOrderThird.handelCategory}, #{outboundOrderThird.equipment});
             </foreach>
         </if>
