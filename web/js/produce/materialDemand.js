@@ -1161,102 +1161,102 @@ function setCompatibilityModal(result) {
                 //周生产计划量
                 case (4):
                     $(this).html(obj.weeklyDemand.toFixed(1));
-                    weeklyDemandTotal+=parseFloat(obj.weeklyDemand)
+                    weeklyDemandTotal+=parseFloat(obj.weeklyDemand.toFixed(1))
                     break;
                 //目前库存量
                 case (5):
                     $(this).html(obj.currentInventory.toFixed(1));
-                    currentInventoryTotal+=parseFloat(obj.currentInventory)
+                    currentInventoryTotal+=parseFloat(obj.currentInventory.toFixed(1))
                     break;
                 //安全库存量
                 case (6):
                     $(this).html(obj.safety.toFixed(1));
-                    safetyTotal+=parseFloat(obj.safety)
+                    safetyTotal+=parseFloat(obj.safety.toFixed(1))
                     break;
                 //市场采购量
                 case (7):
                     $(this).html(obj.marketPurchases.toFixed(1));
-                    marketPurchasesTotal+=parseFloat(obj.marketPurchases)
+                    marketPurchasesTotal+=parseFloat(obj.marketPurchases.toFixed(1))
                     break;
                 //热值Max
                 case (8):
                     $(this).html(obj.calorificMax.toFixed(1));
-                    calorificMaxTotal+=parseFloat(obj.calorificMax)
+                    calorificMaxTotal+=parseFloat(obj.calorificMax.toFixed(1))
                     break;
                 //热值Min
                 case (9):
                     $(this).html(obj.calorificMin.toFixed(1));
-                    calorificMinTotal+=parseFloat(obj.calorificMin)
+                    calorificMinTotal+=parseFloat(obj.calorificMin.toFixed(1))
                     break;
                 //灰分Max
                 case (10):
                     $(this).html(obj.ashMax.toFixed(1));
-                    ashMaxTotal+=parseFloat(obj.ashMax)
+                    ashMaxTotal+=parseFloat(obj.ashMax.toFixed(1))
                     break;
                 //灰分Min
                 case (11):
                     $(this).html(obj.ashMin.toFixed(1));
-                    ashMinTotal+=parseFloat(obj.ashMin)
+                    ashMinTotal+=parseFloat(obj.ashMin.toFixed(1))
                     break;
                 //水分Max
                 case (12):
                     $(this).html(obj.waterMax.toFixed(1));
-                    waterMaxTotal+=parseFloat(obj.waterMax)
+                    waterMaxTotal+=parseFloat(obj.waterMax.toFixed(1))
                     break;
                 //水分Min
                 case (13):
                     $(this).html(obj.waterMin.toFixed(1));
-                    waterMinTotal+=parseFloat(obj.waterMin)
+                    waterMinTotal+=parseFloat(obj.waterMin.toFixed(1))
                     break;
                     //氯Max
                 case (14):
                     $(this).html(obj.clMax.toFixed(1));
-                    clMaxTotal+=parseFloat(obj.clMax)
+                    clMaxTotal+=parseFloat(obj.clMax.toFixed(1))
                     break;
                     //氯Min
                 case (15):
                     $(this).html(obj.clMin.toFixed(1));
-                    clMinTotal+=parseFloat(obj.clMin)
+                    clMinTotal+=parseFloat(obj.clMin.toFixed(1))
                     break;
                     //硫Max
                 case (16):
                     $(this).html(obj.sMax.toFixed(1));
-                    sMaxTotal+=parseFloat(obj.sMax)
+                    sMaxTotal+=parseFloat(obj.sMax.toFixed(1))
                     break;
                     //硫Min
                 case (17):
                     $(this).html(obj.sMin.toFixed(1));
-                    sMinTotal+=parseFloat(obj.sMin)
+                    sMinTotal+=parseFloat(obj.sMin.toFixed(1))
                     break;
                     //磷Max
                 case (18):
                     $(this).html(obj.pMax.toFixed(1));
-                    pMaxTotal+=parseFloat(obj.pMax)
+                    pMaxTotal+=parseFloat(obj.pMax.toFixed(1))
                     break;
                     //磷Min
                 case (19):
                     $(this).html(obj.pMin.toFixed(1));
-                    pMinTotal+=parseFloat(obj.pMin)
+                    pMinTotal+=parseFloat(obj.pMin.toFixed(1))
                     break;
                     //氟Max
                 case (20):
                     $(this).html(obj.fMax.toFixed(1));
-                    fMaxTotal+=parseFloat(obj.fMax)
+                    fMaxTotal+=parseFloat(obj.fMax.toFixed(1))
                     break;
                     //氟Min
                 case (21):
                     $(this).html(obj.fMin.toFixed(1));
-                    fMinTotal+=parseFloat(obj.fMin)
+                    fMinTotal+=parseFloat(obj.fMin.toFixed(1))
                     break;
                     //酸碱度Max
                 case (22):
                     $(this).html(obj.phMax.toFixed(1));
-                    phMaxTotal+=parseFloat(obj.phMax)
+                    phMaxTotal+=parseFloat(obj.phMax.toFixed(1))
                     break;
                     //酸碱度MaxMin
                 case (23):
                     $(this).html(obj.phMin.toFixed(1));
-                    phMinTotal+=parseFloat(obj.phMin);
+                    phMinTotal+=parseFloat(obj.phMin.toFixed(1));
                     break;
 
             }
@@ -1339,13 +1339,13 @@ function adjustMater() {
 
                     cloneTr.children('td').eq(0).html(index + 1);
 
-                    cloneTr.children('td').eq(4).children('input').val(obj.weeklyDemand);
+                    cloneTr.children('td').eq(4).children('input').val(obj.weeklyDemand.toFixed(2));
 
-                    cloneTr.children('td').eq(5).children('input').val(obj.currentInventory);
+                    cloneTr.children('td').eq(5).children('input').val(obj.currentInventory.toFixed(2));
 
-                    cloneTr.children('td').eq(6).children('input').val(obj.safety);
+                    cloneTr.children('td').eq(6).children('input').val(obj.safety.toFixed(2));
 
-                    cloneTr.children('td').eq(7).children('input').val(obj.marketPurchases);
+                    cloneTr.children('td').eq(7).children('input').val(obj.marketPurchases.toFixed(2));
 
                     // cloneTr.children('td').eq(8).children('input').val(obj.calorificMax);
                     //

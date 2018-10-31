@@ -127,11 +127,21 @@ public class PRSampleInfoAnalysisController {
         try {
             // 获取危废入库的表格数据
             Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+            System.out.println("数据为");
+            System.out.println("列："+data[0].length+",行："+data.length);
+            for(int i = 0; i < data.length;i++){
+                for(int j = 0; j < data[0].length;j++){
+                    System.out.print(data[i][j].toString()+" ");
+                }
+                System.out.println();
+            }
 
-            for (int i = 2; i < data.length; i++) {
+            for (int i = 1; i < data.length; i++) {
                 SampleInfoAnalysis sampleInfoAnalysis = new SampleInfoAnalysis();
                 // 如果样品编号存在则赋值
-                if (!data[i][18].toString().trim().equals("")) {
+                System.out.println("w:"+data[i][18].toString());
+                if (!data[i][18].toString().trim().equals("") && data[i][18].toString() != null && !data[i][18].toString().equals("null")) {
+                    System.out.println("q:"+data[i][18].toString().trim() );
                     sampleInfoAnalysis.setId(data[i][18].toString() + "R");
                     sampleInfoAnalysis.setSampleId(data[i][18].toString());
                     // 若不存在则赋联单编号

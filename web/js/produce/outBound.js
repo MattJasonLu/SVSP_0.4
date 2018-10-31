@@ -406,7 +406,7 @@ function setOutboutList(result,index) {
                 switch (inner_index) {
                     // 序号
                     case (0):
-                        $(this).html(index+1);
+                        $(this).html(obj.materialRequisitionId);
                         break;
                     // 产废单位
                     case (1):
@@ -416,15 +416,11 @@ function setOutboutList(result,index) {
                         break;
                     // 危废名称
                     case (2):
-                        if(obj.laboratoryTest!=null){
-                            $(this).html(obj.laboratoryTest.wastesName);
-                        }
+                            $(this).html(obj.wastesName);
                         break;
                     // 危废代码
-                    case (3):     if(obj.laboratoryTest!=null){
-                        $(this).html(obj.laboratoryTest.wastesCode);
-                    }
-
+                    case (3):
+                        $(this).html(obj.wasteCategory);
                         break;
                     // 出库数量
                     case (4):
@@ -432,11 +428,11 @@ function setOutboutList(result,index) {
                         break;
                     // 单价
                     case (5):
-                        $(this).html(obj.quotationItem.unitPriceTax);
+                        $(this).html(0);
                         break;
                     // 金额
                     case (6):
-                        $(this).html(parseInt(obj.recipientsNumber)*parseInt(obj.quotationItem.unitPriceTax).toFixed(2));
+                        $(this).html(0);
                         break;
                     //处置方式
                     case (7):
@@ -450,13 +446,27 @@ function setOutboutList(result,index) {
                         break;
                     //库区
                     case (9):
-                        $(this).html("");
+                        if(obj.wareHouse!=null){
+                            $(this).html(obj.wareHouse.wareHouseName);
+                        }
+
                         break;
-                    //领料单号
+                    //客户编号
                     case (10):
-                        $(this).html(obj.materialRequisitionId);
+                        if(obj.client!=null){
+                            $(this).html(obj.client.clientId);
+                        }
                         break;
-                    //
+                    //仓储编号
+                    case (11):
+                        if(obj.wareHouse!=null){
+                            $(this).html(obj.wareHouse.wareHouseId);
+                        }
+                        break;
+                        //转移联单
+                    case (12):
+                            $(this).html(obj.transferDraftId);
+                        break;
                 }
             });
             // 把克隆好的tr追加到原来的tr前面
@@ -479,32 +489,47 @@ function saveOutBound(){
             $('.myclass2').each(function (index) {
                 //1出库日期
                 var outboundDate=$("#outBoundDate").val();
-                //2出库类别
-                var boundType=$("#outboundType").val();
                 //3制单人
                 var  creator=$('#creator').val();
                 //4审核人
                 var auditor=$('#auditor').val();
-                //5领料单号
-                var materialRequisitionId=$(this).children().get(10).innerHTML;
+
                 //6处置设备
                 var equipment=$('#equipment').selectpicker('val')-1;
+
+                var outboundOrderId=$(this).children('td').eq(0).html();
+
+                var clientId=$(this).children('td').eq(10).html();
+
+                var wareHouseId=$(this).children('td').eq(11).html();
+
+                var transferDraftId=$(this).children('td').eq(12).html();
+
+                var wastesName=$(this).children('td').eq(2).html();
+
+                var  wasteCategory=$(this).children('td').eq(3).html();
+
+                var outboundNumber=$(this).children('td').eq(4).html();
+
                 data={
-                    boundType:boundType,
+                    outboundOrderId:outboundOrderId,
+                    client:{clientId:clientId},
+                    wareHouse:{wareHouseId:wareHouseId},
+                    transferDraftId:transferDraftId,
+                    wastesName:wastesName,
+                    wasteCategory:wasteCategory,
                     outboundDate:outboundDate,
                     creator:creator,
                     auditor:auditor,
-                    outboundNumber:$(this).children('td').get(4).innerHTML,
-                    materialRequisitionOrder:{materialRequisitionId:materialRequisitionId},
+                    outboundNumber:outboundNumber,
                     equipment:equipment,
                 }
                 console.log(data);
-                addOutBoundOrder(data);
+               addOutBoundOrder(data);
             });
         }
-        alert("出库成功！");
-       // window.location.href="warehouseManageOut.html";
-      window.location.href="warehouseManageOut.html";
+       alert("出库成功！");
+       window.location.href="warehouseManageOut.html";
 
     }
 
@@ -573,13 +598,15 @@ function setOutBoundList(result) {
                 var obj = eval(item);
                 // 根据索引为部分td赋值
                 switch (inner_index) {
-                    // 仓库号
+                    // 出库单号
                     case (1):
-                        $(this).html("");
+                        $(this).html(obj.outboundOrderId);
                         break;
-                    // 部门
+                    // 仓库
                     case (2):
-                        $(this).html(obj.departmentName);
+                        if(obj.wareHouse!=null){
+                            $(this).html(obj.wareHouse.wareHouseName);
+                        }
                         break;
                     // 业务员
                     case (3):
@@ -589,79 +616,50 @@ function setOutBoundList(result) {
                             }
                         }
 
-
                         break;
                     // 出库日期
                     case (4):
                         $(this).html(getDateStr(obj.outboundDate));
                         break;
-                    // 出库单号
+                    // 制单人
                     case (5):
-                        $(this).html(obj.outboundOrderId);
-                        break;
-                    // 出库类别
-                    case (6):
-                        if(obj.boundType!=null){
-                            $(this).html(obj.boundType.name);
-                        }
-
-                        break;
-                    // 主管
-                    case (7):
-                        $(this).html("");
-                        break;
-                    //制单人
-                    case (8):
                         $(this).html(obj.creator);
                         break;
-                    //保管员
-                    case (9):
-                        $(this).html(obj.guardian);
-                        break;
-                    //审批人
-                    case (10):
-                        $(this).html(obj.auditor);
-                        break;
-                    //计划数量
-                    case (11):
-                        $(this).html(obj.outboundNumber);
-                        break;
-                    //危废数量
-                    case (12):
-                        $(this).html(obj.outboundNumber);
-                        break;
-                    //进料方式
-                    case (13):
-                        if(obj.handelCategory!=null){
-                            $(this).html(obj.handelCategory.name);
-                        }
-                        break;
-                        //单据状态
-                    case (14):
-                        if(obj.recordState!=null){
-                            $(this).html(obj.recordState.name);
-                        }
+                    // 审批人
+                    case (6):
+                            $(this).html(obj.auditor);
 
                         break;
-                        //审批状态
-                    case (15):
+                    // 计划数量
+                    case (7):
+                        $(this).html(obj.outboundNumber.toFixed(2));
+                        break;
+                    //出库数量
+                    case (8):
+                        $(this).html(obj.outboundNumber.toFixed(2));
+                        break;
+                    //审批状态
+                    case (9):
                         if(obj.checkState!=null){
                             $(this).html(obj.checkState.name);
                         }
-
                         break;
-                        //备注
-                    case (16):
-                        $(this).html("");
-                        break;
-                        //转移联单号
-                    case (17):
+                    //转移联单号
+                    case (10):
                         $(this).html(obj.transferDraftId);
                         break;
-                        //入库点明细编号
-                    case (18):
-                        $(this).html(obj.inboundOrderItemId);
-                        break;
+
+
+
+
+
+
+
+
+
+
+
+
 
 
                     //

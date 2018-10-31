@@ -2,6 +2,9 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Inventory.BatchingOrder;
+import com.jdlink.domain.Inventory.MaterialRequisitionOrder;
+import com.jdlink.domain.Inventory.OutboundOrder;
+import com.jdlink.domain.Inventory.WasteInventory;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.service.ClientService;
@@ -19,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import static com.jdlink.domain.Produce.HandleCategory.*;
@@ -30,6 +34,25 @@ public class BatchOrderController {
     BatchOrderService batchOrderService;
 @Autowired
     ClientService clientService;
+
+    //获取两位月数
+    public  static  String getMouth(String mouth){
+        if(mouth.length()!=2){
+            mouth="0"+mouth;
+        }
+        return mouth;
+    }
+
+    //获取3位序列号
+    public static String getString3(String id){
+        while (id.length()!=5){
+            System.out.println(id.length());
+            id="0"+id;
+        }
+        return id;
+    }
+
+
     //配料单导入
     @RequestMapping("importBatchExcel")
     @ResponseBody
@@ -400,4 +423,292 @@ public class BatchOrderController {
 
         return res.toString();
     }
+
+
+    //配料单新增页面获取仓储信息
+    @RequestMapping("getWasteInventoryListBat")
+    @ResponseBody
+    public String getWasteInventoryListBat(){
+        JSONObject res=new JSONObject();
+        try {
+            List<WasteInventory> wasteInventoryList=batchOrderService.getWasteInventoryListBat();
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", wasteInventoryList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+
+
+
+        return res.toString();
+    }
+
+    //获得库存信息(根据入库单明细编号)
+    @RequestMapping("getWasteInventoryByInboundOrderId")
+    @ResponseBody
+    public String getWasteInventoryByInboundOrderId(String inboundOrderItemId){
+        JSONObject res=new JSONObject();
+        try {
+           List<WasteInventory> wasteInventoryList= batchOrderService.getWasteInventoryByInboundOrderId(inboundOrderItemId);
+            JSONArray array=JSONArray.fromObject(wasteInventoryList);
+            res.put("data", array);
+            //res.put("batchingOrderId",batchingOrderId);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+
+        }
+        catch (Exception e ){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询");
+        }
+        return res.toString();
+    }
+
+    //添加配料单
+    @RequestMapping("addBatchingOrderBat")
+    @ResponseBody
+    public String addBatchingOrderBat(@RequestBody BatchingOrder batchingOrder){
+        JSONObject res=new JSONObject();
+
+        Calendar cal = Calendar.getInstance();
+        //获取年
+        String year = String.valueOf(cal.get(Calendar.YEAR));
+        //获取月
+        String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
+
+        //序列号
+        String number = "001";
+
+        List<String> batchingOrderIdList=batchOrderService.getBatchingOrderIdList();
+
+        if(batchingOrderIdList.size()==0){
+            number = "001";
+        }
+        if(batchingOrderIdList.size()>0){
+            String s = batchingOrderIdList.get(0);//原字符串
+            String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
+            number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
+        }
+        String batchingOrderId = year + mouth + number;
+        try {
+            //添加配料单
+               batchingOrder.setBatchingOrderId(batchingOrderId);
+               batchOrderService.addBatchingOrderBat(batchingOrder);
+            //配料完成后扣除库存数据
+            batchOrderService.deducNumber(batchingOrder.getInboundOrderItemId(),batchingOrder.getBatchingNumber());
+            res.put("status", "success");
+            res.put("message", "配料单添加成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "配料单添加失败");
+
+        }
+
+        return res.toString();
+
+    }
+
+    //添加领料单
+    @RequestMapping("addRequisition")
+    @ResponseBody
+    public String addRequisition(@RequestBody MaterialRequisitionOrder materialRequisitionOrder)
+    {
+        JSONObject res=new JSONObject();
+
+        try{
+            batchOrderService.addRequisition(materialRequisitionOrder);
+            res.put("status", "success");
+            res.put("message", "领料单第一次添加成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "领料单第一次添加失败");
+
+        }
+        return res.toString();
+    }
+
+    //领料单新增页面显示
+    @RequestMapping("getMaterialRequisitionList")
+    @ResponseBody
+    public String getMaterialRequisitionList(){
+        JSONObject res=new JSONObject();
+        try {
+            List<MaterialRequisitionOrder> materialRequisitionOrderList=batchOrderService.getMaterialRequisitionList();
+            res.put("status", "success");
+            res.put("message", "新领料查询成功");
+            res.put("jsonArray", materialRequisitionOrderList);
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "新领料查询失败");
+
+
+        }
+
+        return res.toString();
+
+
+    }
+
+    //领料单新增完毕进行更新
+    @RequestMapping("updateMaterialRequisitionOrder")
+    @ResponseBody
+    public String updateMaterialRequisitionOrder(@RequestBody MaterialRequisitionOrder materialRequisitionOrder ){
+        JSONObject res=new JSONObject();
+        try{
+            batchOrderService.updateMaterialRequisitionOrder(materialRequisitionOrder);
+            res.put("status", "success");
+            res.put("message", "领料成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "领料失败");
+        }
+
+
+        return  res.toString();
+    }
+
+    //根据领料编号获取信息
+    @RequestMapping("getByMaterialRequisitionId")
+    @ResponseBody
+    public String getByMaterialRequisitionId(String materialRequisitionId){
+        JSONObject res=new JSONObject();
+        try{
+            MaterialRequisitionOrder materialRequisitionOrder= batchOrderService.getByMaterialRequisitionId(materialRequisitionId);
+            res.put("materialRequisitionOrder",materialRequisitionOrder);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+
+        return res.toString() ;
+    }
+
+    //添加出库单
+    @RequestMapping("addOutBoundOrder")
+    @ResponseBody
+    public  String addOutBoundOrder(@RequestBody OutboundOrder outboundOrder){
+        JSONObject res=new JSONObject();
+
+        try{
+           batchOrderService.addOutBoundOrder(outboundOrder);
+            res.put("status", "success");
+            res.put("message", "出库成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "出库失败");
+
+        }
+
+        return res.toString();
+    }
+
+    //加载危废出库
+    @RequestMapping("loadWastesOutBoundList")
+    @ResponseBody
+    public  String loadWastesOutBoundList(@RequestBody Page page){
+        JSONObject res=new JSONObject();
+        try {
+            List<OutboundOrder> outboundOrderList=batchOrderService.loadWastesOutBoundList(page);
+            res.put("data",outboundOrderList);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+        }
+        catch (Exception e){
+
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+
+
+        return  res.toString();
+    }
+
+    //次生库存查看
+    @RequestMapping("getSecondaryInventoryList")
+    @ResponseBody
+    public String getSecondaryInventoryList(@RequestBody Page page) {
+        JSONObject res=new JSONObject();
+        try {
+            List<WasteInventory> wasteInventoryList= batchOrderService.getSecInventoryListBat();
+            JSONArray arrray=JSONArray.fromObject(wasteInventoryList);
+            // Quotation quotation=quotationService.getQuotationByWastesCodeAndClientId(wastesCode, clientId);
+            //更新剩余库存量
+            res.put("status", "success");
+            res.put("message", "分页数据获取成功!");
+            res.put("data", arrray);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "分页数据获取失败！");
+        }
+
+
+        return res.toString();
+    }
+
+    //添加次生出库单
+    @RequestMapping("addSecondary")
+    @ResponseBody
+    public String addSecondary(@RequestBody OutboundOrder outboundOrder){
+        JSONObject res=new JSONObject();
+
+        try{
+
+           batchOrderService.addSecondary(outboundOrder);
+            res.put("status", "success");
+            res.put("message", "次生出库成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "次生出库失败");
+        }
+
+        return  res.toString();
+    }
+
+    //加载次生出库
+    @RequestMapping("loadSecOutBoundList")
+    @ResponseBody
+    public  String loadSecOutBoundList(@RequestBody Page page){
+        JSONObject res=new JSONObject();
+        try {
+            List<OutboundOrder> outboundOrderList=batchOrderService.loadSecOutBoundList(page);
+            res.put("data",outboundOrderList);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+
+
+        return  res.toString();
+    }
+
 }

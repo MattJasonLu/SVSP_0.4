@@ -3,6 +3,7 @@ package com.jdlink.domain.Inventory;
 import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.LaboratoryTest;
+import com.jdlink.domain.Produce.ProcessWay;
 
 import java.util.Date;
 
@@ -68,7 +69,7 @@ public class WasteInventory {
     /**
      * 危废类别
      */
-    private String  wastesCategory;
+    private String  wastesCode;
 
     /**
      * 进料方式
@@ -88,6 +89,16 @@ public class WasteInventory {
      *创建时间
      */
     private Date creatorDate;
+
+    private ProcessWay processWay;
+
+    public ProcessWay getProcessWay() {
+        return processWay;
+    }
+
+    public void setProcessWay(ProcessWay processWay) {
+        this.processWay = processWay;
+    }
 
     /***************************以下数据结构暂时不用****************/
 
@@ -186,14 +197,6 @@ public class WasteInventory {
 
     public void setInboundOrderItemId(String inboundOrderItemId) {
         this.inboundOrderItemId = inboundOrderItemId;
-    }
-
-    public String getWastesCategory() {
-        return wastesCategory;
-    }
-
-    public void setWastesCategory(String wastesCategory) {
-        this.wastesCategory = wastesCategory;
     }
 
     public HandleCategory getHandleCategory() {

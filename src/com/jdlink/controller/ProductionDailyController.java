@@ -5,6 +5,7 @@ import com.jdlink.domain.Client;
 import com.jdlink.domain.Inventory.BoundType;
 import com.jdlink.domain.Inventory.InboundOrderItem;
 import com.jdlink.domain.Inventory.OutboundOrder;
+import com.jdlink.domain.Inventory.WasteInventory;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.service.*;
@@ -54,6 +55,8 @@ public class ProductionDailyController {
     ProductionDailyService productionDailyService;
     @Autowired
     ClientService clientService;
+    @Autowired
+    WasteInventoryService wasteInventoryService;
 
     /**
      * 获取总记录数
@@ -334,214 +337,279 @@ public class ProductionDailyController {
         productionDaily.setTodayOutboundMedicalWastesAfterCooking(productionDaily.getTodayDisposalMedicalWastesAfterCooking());
 
         // 工废处置系统
-        float disposalBulk = 0f;
-        float disposalCrushing = 0f;
-        float disposalSludge = 0f;
-        float disposalDistillation = 0f;
-        float disposalSuspension = 0f;
-        float disposalWasteLiquid = 0f;
-        float disposalMedicalWastes = 0f;
-        List<OutboundOrder> outboundA2OrderList = outboundOrderService.getOutBoundByDateAndEquipment(now, "A2");
-        for (OutboundOrder outboundOrder : outboundA2OrderList) {
-            if (!outboundOrder.getBoundType().equals(BoundType.WasteOutbound)) continue;
-            HandleCategory handelCategory = outboundOrder.getHandelCategory();
-            switch (handelCategory) {
-                case Bulk:
-                    disposalBulk += outboundOrder.getOutboundNumber();
-                    break;
-                case Crushing:
-                    disposalCrushing += outboundOrder.getOutboundNumber();
-                    break;
+        float todayInboundWastesBulk = 0f;
+        float todayInboundWastesCrushing = 0f;
+        float todayInboundWastesSludge = 0f;
+        float todayInboundWastesDistillation = 0f;
+        float todayInboundWastesSuspension = 0f;
+        float todayInboundWastesWasteLiquid = 0f;
+        float todayInboundWastesTotal = 0f;         // 工费合计
+
+        List<InboundOrderItem> inboundOrderItemTodayList = inboundService.getInboundOrderItemByRange(now, now);
+        for (InboundOrderItem inboundOrderItem : inboundOrderItemTodayList) {
+            if (inboundOrderItem.getHandleCategory() == null) continue;
+            switch (inboundOrderItem.getHandleCategory()) {
                 case Sludge:
-                    disposalSludge += outboundOrder.getOutboundNumber();
-                    break;
-                case Distillation:
-                    disposalDistillation += outboundOrder.getOutboundNumber();
-                    break;
-                case Suspension:
-                    disposalSuspension += outboundOrder.getOutboundNumber();
+                    todayInboundWastesSludge += inboundOrderItem.getWastesAmount();
+                    todayInboundWastesTotal += inboundOrderItem.getWastesAmount();
                     break;
                 case WasteLiquid:
-                    disposalWasteLiquid += outboundOrder.getOutboundNumber();
+                    todayInboundWastesWasteLiquid += inboundOrderItem.getWastesAmount();
+                    todayInboundWastesTotal += inboundOrderItem.getWastesAmount();
+                    break;
+                case Bulk:
+                    todayInboundWastesBulk += inboundOrderItem.getWastesAmount();
+                    todayInboundWastesTotal += inboundOrderItem.getWastesAmount();
+                    break;
+                case Crushing:
+                    todayInboundWastesCrushing += inboundOrderItem.getWastesAmount();
+                    todayInboundWastesTotal += inboundOrderItem.getWastesAmount();
+                    break;
+                case Distillation:
+                    todayInboundWastesDistillation += inboundOrderItem.getWastesAmount();
+                    todayInboundWastesTotal += inboundOrderItem.getWastesAmount();
+                    break;
+                case Suspension:
+                    todayInboundWastesSuspension += inboundOrderItem.getWastesAmount();
+                    todayInboundWastesTotal += inboundOrderItem.getWastesAmount();
                     break;
             }
         }
-        List<MedicalWastes> medicalWastesA2List = medicalWastesService.getMedicalWastesBySimpleDateAndEquipment(now, "A2");
-        for (MedicalWastes medicalWastes : medicalWastesA2List) {
-            disposalMedicalWastes += medicalWastes.getWastesAmount();
-        }
+        productionDaily.setTodayInboundWastesBulk(todayInboundWastesBulk);
+        productionDaily.setTodayInboundWastesCrushing(todayInboundWastesCrushing);
+        productionDaily.setTodayInboundWastesSludge(todayInboundWastesSludge);
+        productionDaily.setTodayInboundWastesDistillation(todayInboundWastesDistillation);
+        productionDaily.setTodayInboundWastesSuspension(todayInboundWastesSuspension);
+        productionDaily.setTodayInboundWastesWasteLiquid(todayInboundWastesWasteLiquid);
+        productionDaily.setTodayInboundWastesTotal(todayInboundWastesTotal);
+        productionDaily.setInboundOrderItemList(inboundOrderItemTodayList);
 
-        productionDaily.setTodayOutboundA2WastesBulk(disposalBulk);
-        productionDaily.setTodayOutboundA2WastesCrushing(disposalCrushing);
-        productionDaily.setTodayOutboundA2WastesSludge(disposalSludge);
-        productionDaily.setTodayOutboundA2WastesDistillation(disposalDistillation);
-        productionDaily.setTodayOutboundA2WastesSuspension(disposalSuspension);
-        productionDaily.setTodayOutboundA2WastesWasteLiquid(disposalWasteLiquid);
-        productionDaily.setTodayOutboundA2MedicalWastes(disposalMedicalWastes);
+        // 危废出库信息
+        float todayOutboundWastesBulk = 0f;
+        float todayOutboundWastesCrushing = 0f;
+        float todayOutboundWastesSludge = 0f;
+        float todayOutboundWastesDistillation = 0f;
+        float todayOutboundWastesSuspension = 0f;
+        float todayOutboundWastesWasteLiquid = 0f;
+        float todayOutboundWastesTotal = 0f;         // 工费合计
+        float todayOutboundWastesA2Bulk = 0f;
+        float todayOutboundWastesA2Crushing = 0f;
+        float todayOutboundWastesA2Sludge = 0f;
+        float todayOutboundWastesA2Distillation = 0f;
+        float todayOutboundWastesA2Suspension = 0f;
+        float todayOutboundWastesA2WasteLiquid = 0f;
+        float todayOutboundWastesB2Bulk = 0f;
+        float todayOutboundWastesB2Crushing = 0f;
+        float todayOutboundWastesB2Sludge = 0f;
+        float todayOutboundWastesB2Distillation = 0f;
+        float todayOutboundWastesB2Suspension = 0f;
+        float todayOutboundWastesB2WasteLiquid = 0f;
+        float todayOutboundWastesPrepare2Bulk = 0f;
+        float todayOutboundWastesPrepare2Crushing = 0f;
+        float todayOutboundWastesPrepare2Sludge = 0f;
+        float todayOutboundWastesPrepare2Distillation = 0f;
+        float todayOutboundWastesPrepare2Suspension = 0f;
+        float todayOutboundWastesPrepare2WasteLiquid = 0f;
+        float todayOutboundWastesThirdBulk = 0f;
+        float todayOutboundWastesThirdCrushing = 0f;
+        float todayOutboundWastesThirdSludge = 0f;
+        float todayOutboundWastesThirdDistillation = 0f;
+        float todayOutboundWastesThirdSuspension = 0f;
+        float todayOutboundWastesThirdWasteLiquid = 0f;
 
-
-        // 备2
-        disposalBulk = 0f;
-        disposalCrushing = 0f;
-        disposalSludge = 0f;
-        disposalDistillation = 0f;
-        disposalSuspension = 0f;
-        disposalWasteLiquid = 0f;
-        disposalMedicalWastes = 0f;
-
-        List<OutboundOrder> outboundPrepare2OrderList = outboundOrderService.getOutBoundByDateAndEquipment(now, "Prepare2");
-        for (OutboundOrder outboundOrder : outboundPrepare2OrderList) {
-            if (!outboundOrder.getBoundType().equals(BoundType.WasteOutbound)) continue;
-            HandleCategory handelCategory = outboundOrder.getHandelCategory();
-            switch (handelCategory) {
-                case Bulk:
-                    disposalBulk += outboundOrder.getOutboundNumber();
-                    break;
-                case Crushing:
-                    disposalCrushing += outboundOrder.getOutboundNumber();
-                    break;
-                case Sludge:
-                    disposalSludge += outboundOrder.getOutboundNumber();
-                    break;
-                case Distillation:
-                    disposalDistillation += outboundOrder.getOutboundNumber();
-                    break;
-                case Suspension:
-                    disposalSuspension += outboundOrder.getOutboundNumber();
-                    break;
-                case WasteLiquid:
-                    disposalWasteLiquid += outboundOrder.getOutboundNumber();
-                    break;
+        List<OutboundOrder> outboundOrderTodayList = outboundOrderService.getOutBoundByDate(now);
+        List<OutboundOrder> outboundOrderTodayA2List = new ArrayList<>();
+        List<OutboundOrder> outboundOrderTodayB2List = new ArrayList<>();
+        List<OutboundOrder> outboundOrderTodayPrepare2List = new ArrayList<>();
+        List<OutboundOrder> outboundOrderTodayThirdList = new ArrayList<>();
+        for (OutboundOrder outboundOrder : outboundOrderTodayList) {
+            if (outboundOrder.getBoundType().equals(BoundType.WasteOutbound)) {
+                if (outboundOrder.getHandelCategory() != null)
+                switch (outboundOrder.getHandelCategory()) {
+                    case Sludge:
+                        todayOutboundWastesSludge += outboundOrder.getOutboundNumber();
+                        todayOutboundWastesTotal += outboundOrder.getOutboundNumber();
+                        switch (outboundOrder.getEquipment()) {
+                            case A2:
+                                todayOutboundWastesA2Sludge += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayA2List.add(outboundOrder);
+                                break;
+                            case B2:
+                                todayOutboundWastesB2Sludge += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayB2List.add(outboundOrder);
+                                break;
+                            case Prepare2:
+                                todayOutboundWastesPrepare2Sludge += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayPrepare2List.add(outboundOrder);
+                                break;
+                            case ThirdPhasePretreatmentSystem:
+                                todayOutboundWastesThirdSludge += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayThirdList.add(outboundOrder);
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case WasteLiquid:
+                        todayOutboundWastesWasteLiquid += outboundOrder.getOutboundNumber();
+                        todayOutboundWastesTotal += outboundOrder.getOutboundNumber();
+                        switch (outboundOrder.getEquipment()) {
+                            case A2:
+                                todayOutboundWastesA2WasteLiquid += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayA2List.add(outboundOrder);
+                                break;
+                            case B2:
+                                todayOutboundWastesB2WasteLiquid += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayB2List.add(outboundOrder);
+                                break;
+                            case Prepare2:
+                                todayOutboundWastesPrepare2WasteLiquid += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayPrepare2List.add(outboundOrder);
+                                break;
+                            case ThirdPhasePretreatmentSystem:
+                                todayOutboundWastesThirdWasteLiquid += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayThirdList.add(outboundOrder);
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case Bulk:
+                        todayOutboundWastesBulk += outboundOrder.getOutboundNumber();
+                        todayOutboundWastesTotal += outboundOrder.getOutboundNumber();
+                        switch (outboundOrder.getEquipment()) {
+                            case A2:
+                                todayOutboundWastesA2Bulk += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayA2List.add(outboundOrder);
+                                break;
+                            case B2:
+                                todayOutboundWastesB2Bulk += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayB2List.add(outboundOrder);
+                                break;
+                            case Prepare2:
+                                todayOutboundWastesPrepare2Bulk += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayPrepare2List.add(outboundOrder);
+                                break;
+                            case ThirdPhasePretreatmentSystem:
+                                todayOutboundWastesThirdBulk += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayThirdList.add(outboundOrder);
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case Crushing:
+                        todayOutboundWastesCrushing += outboundOrder.getOutboundNumber();
+                        todayOutboundWastesTotal += outboundOrder.getOutboundNumber();
+                        switch (outboundOrder.getEquipment()) {
+                            case A2:
+                                todayOutboundWastesA2Crushing += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayA2List.add(outboundOrder);
+                                break;
+                            case B2:
+                                todayOutboundWastesB2Crushing += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayB2List.add(outboundOrder);
+                                break;
+                            case Prepare2:
+                                todayOutboundWastesPrepare2Crushing += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayPrepare2List.add(outboundOrder);
+                                break;
+                            case ThirdPhasePretreatmentSystem:
+                                todayOutboundWastesThirdCrushing += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayThirdList.add(outboundOrder);
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case Distillation:
+                        todayOutboundWastesDistillation += outboundOrder.getOutboundNumber();
+                        todayOutboundWastesTotal += outboundOrder.getOutboundNumber();
+                        switch (outboundOrder.getEquipment()) {
+                            case A2:
+                                todayOutboundWastesA2Distillation += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayA2List.add(outboundOrder);
+                                break;
+                            case B2:
+                                todayOutboundWastesB2Distillation += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayB2List.add(outboundOrder);
+                                break;
+                            case Prepare2:
+                                todayOutboundWastesPrepare2Distillation += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayPrepare2List.add(outboundOrder);
+                                break;
+                            case ThirdPhasePretreatmentSystem:
+                                todayOutboundWastesThirdDistillation += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayThirdList.add(outboundOrder);
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case Suspension:
+                        todayOutboundWastesSuspension += outboundOrder.getOutboundNumber();
+                        todayOutboundWastesTotal += outboundOrder.getOutboundNumber();
+                        switch (outboundOrder.getEquipment()) {
+                            case A2:
+                                todayOutboundWastesA2Suspension += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayA2List.add(outboundOrder);
+                                break;
+                            case B2:
+                                todayOutboundWastesB2Suspension += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayB2List.add(outboundOrder);
+                                break;
+                            case Prepare2:
+                                todayOutboundWastesPrepare2Suspension += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayPrepare2List.add(outboundOrder);
+                                break;
+                            case ThirdPhasePretreatmentSystem:
+                                todayOutboundWastesThirdSuspension += outboundOrder.getOutboundNumber();
+                                outboundOrderTodayThirdList.add(outboundOrder);
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                }
             }
         }
-        List<MedicalWastes> medicalWastesPrepare2List = medicalWastesService.getMedicalWastesBySimpleDateAndEquipment(now, "Prepare2");
-        for (MedicalWastes medicalWastes : medicalWastesPrepare2List) {
-            disposalMedicalWastes += medicalWastes.getWastesAmount();
-        }
-
-        productionDaily.setTodayOutboundPrepare2WastesBulk(disposalBulk);
-        productionDaily.setTodayOutboundPrepare2WastesCrushing(disposalCrushing);
-        productionDaily.setTodayOutboundPrepare2WastesSludge(disposalSludge);
-        productionDaily.setTodayOutboundPrepare2WastesDistillation(disposalDistillation);
-        productionDaily.setTodayOutboundPrepare2WastesSuspension(disposalSuspension);
-        productionDaily.setTodayOutboundPrepare2WastesWasteLiquid(disposalWasteLiquid);
-        productionDaily.setTodayOutboundPrepare2MedicalWastes(disposalMedicalWastes);
-
-        // B2
-        disposalBulk = 0f;
-        disposalCrushing = 0f;
-        disposalSludge = 0f;
-        disposalDistillation = 0f;
-        disposalSuspension = 0f;
-        disposalWasteLiquid = 0f;
-        disposalMedicalWastes = 0f;
-
-        List<OutboundOrder> outboundB2OrderList = outboundOrderService.getOutBoundByDateAndEquipment(now, "B2");
-        for (OutboundOrder outboundOrder : outboundB2OrderList) {
-            if (!outboundOrder.getBoundType().equals(BoundType.WasteOutbound)) continue;
-            HandleCategory handelCategory = outboundOrder.getHandelCategory();
-            switch (handelCategory) {
-                case Bulk:
-                    disposalBulk += outboundOrder.getOutboundNumber();
-                    break;
-                case Crushing:
-                    disposalCrushing += outboundOrder.getOutboundNumber();
-                    break;
-                case Sludge:
-                    disposalSludge += outboundOrder.getOutboundNumber();
-                    break;
-                case Distillation:
-                    disposalDistillation += outboundOrder.getOutboundNumber();
-                    break;
-                case Suspension:
-                    disposalSuspension += outboundOrder.getOutboundNumber();
-                    break;
-                case WasteLiquid:
-                    disposalWasteLiquid += outboundOrder.getOutboundNumber();
-                    break;
-            }
-        }
-        List<MedicalWastes> medicalWastesB2List = medicalWastesService.getMedicalWastesBySimpleDateAndEquipment(now, "B2");
-        for (MedicalWastes medicalWastes : medicalWastesB2List) {
-            disposalMedicalWastes += medicalWastes.getWastesAmount();
-        }
-
-        productionDaily.setTodayOutboundB2WastesBulk(disposalBulk);
-        productionDaily.setTodayOutboundB2WastesCrushing(disposalCrushing);
-        productionDaily.setTodayOutboundB2WastesSludge(disposalSludge);
-        productionDaily.setTodayOutboundB2WastesDistillation(disposalDistillation);
-        productionDaily.setTodayOutboundB2WastesSuspension(disposalSuspension);
-        productionDaily.setTodayOutboundB2WastesWasteLiquid(disposalWasteLiquid);
-        productionDaily.setTodayOutboundB2MedicalWastes(disposalMedicalWastes);
-
-        // 三期
-        disposalBulk = 0f;
-        disposalCrushing = 0f;
-        disposalSludge = 0f;
-        disposalDistillation = 0f;
-        disposalSuspension = 0f;
-        disposalWasteLiquid = 0f;
-        disposalMedicalWastes = 0f;
-
-        List<OutboundOrder> outboundThirdOrderList = outboundOrderService.getOutBoundByDateAndEquipment(now, "ThirdPhasePretreatmentSystem");
-        for (OutboundOrder outboundOrder : outboundThirdOrderList) {
-            if (!outboundOrder.getBoundType().equals(BoundType.WasteOutbound)) continue;
-            HandleCategory handelCategory = outboundOrder.getHandelCategory();
-            switch (handelCategory) {
-                case Bulk:
-                    disposalBulk += outboundOrder.getOutboundNumber();
-                    break;
-                case Crushing:
-                    disposalCrushing += outboundOrder.getOutboundNumber();
-                    break;
-                case Sludge:
-                    disposalSludge += outboundOrder.getOutboundNumber();
-                    break;
-                case Distillation:
-                    disposalDistillation += outboundOrder.getOutboundNumber();
-                    break;
-                case Suspension:
-                    disposalSuspension += outboundOrder.getOutboundNumber();
-                    break;
-                case WasteLiquid:
-                    disposalWasteLiquid += outboundOrder.getOutboundNumber();
-                    break;
-            }
-        }
-        List<MedicalWastes> medicalWastesThirdPhasePretreatmentSystemList = medicalWastesService.getMedicalWastesBySimpleDateAndEquipment(now, "ThirdPhasePretreatmentSystem");
-        for (MedicalWastes medicalWastes : medicalWastesThirdPhasePretreatmentSystemList) {
-            disposalMedicalWastes += medicalWastes.getWastesAmount();
-        }
-
-        productionDaily.setTodayOutboundThirdPretreatmentSystemWastesBulk(disposalBulk);
-        productionDaily.setTodayOutboundThirdPretreatmentSystemWastesCrushing(disposalCrushing);
-        productionDaily.setTodayOutboundThirdPretreatmentSystemWastesSludge(disposalSludge);
-        productionDaily.setTodayOutboundThirdPretreatmentSystemWastesDistillation(disposalDistillation);
-        productionDaily.setTodayOutboundThirdPretreatmentSystemWastesSuspension(disposalSuspension);
-        productionDaily.setTodayOutboundThirdPretreatmentSystemWastesWasteLiquid(disposalWasteLiquid);
-        productionDaily.setTodayOutboundThirdPretreatmentSystemMedicalWastes(disposalMedicalWastes);
+        productionDaily.setTodayOutboundWastesBulk(todayOutboundWastesBulk);
+        productionDaily.setTodayOutboundWastesCrushing(todayOutboundWastesCrushing);
+        productionDaily.setTodayOutboundWastesSludge(todayOutboundWastesSludge);
+        productionDaily.setTodayOutboundWastesDistillation(todayOutboundWastesDistillation);
+        productionDaily.setTodayOutboundWastesSuspension(todayOutboundWastesSuspension);
+        productionDaily.setTodayOutboundWastesWasteLiquid(todayOutboundWastesWasteLiquid);
+        productionDaily.setTodayOutboundWastesTotal(todayOutboundWastesTotal);
+        productionDaily.setTodayOutboundA2WastesBulk(todayOutboundWastesA2Bulk);
+        productionDaily.setTodayOutboundA2WastesCrushing(todayOutboundWastesA2Crushing);
+        productionDaily.setTodayOutboundA2WastesSludge(todayOutboundWastesA2Sludge);
+        productionDaily.setTodayOutboundA2WastesDistillation(todayOutboundWastesA2Distillation);
+        productionDaily.setTodayOutboundA2WastesSuspension(todayOutboundWastesA2Suspension);
+        productionDaily.setTodayOutboundA2WastesWasteLiquid(todayOutboundWastesA2WasteLiquid);
+        productionDaily.setTodayOutboundB2WastesBulk(todayOutboundWastesB2Bulk);
+        productionDaily.setTodayOutboundB2WastesCrushing(todayOutboundWastesB2Crushing);
+        productionDaily.setTodayOutboundB2WastesSludge(todayOutboundWastesB2Sludge);
+        productionDaily.setTodayOutboundB2WastesDistillation(todayOutboundWastesB2Distillation);
+        productionDaily.setTodayOutboundB2WastesSuspension(todayOutboundWastesB2Suspension);
+        productionDaily.setTodayOutboundB2WastesWasteLiquid(todayOutboundWastesB2WasteLiquid);
+        productionDaily.setTodayOutboundPrepare2WastesBulk(todayOutboundWastesPrepare2Bulk);
+        productionDaily.setTodayOutboundPrepare2WastesCrushing(todayOutboundWastesPrepare2Crushing);
+        productionDaily.setTodayOutboundPrepare2WastesSludge(todayOutboundWastesPrepare2Sludge);
+        productionDaily.setTodayOutboundPrepare2WastesDistillation(todayOutboundWastesPrepare2Distillation);
+        productionDaily.setTodayOutboundPrepare2WastesSuspension(todayOutboundWastesPrepare2Suspension);
+        productionDaily.setTodayOutboundPrepare2WastesWasteLiquid(todayOutboundWastesPrepare2WasteLiquid);
+        productionDaily.setTodayOutboundPrepare2WastesBulk(todayOutboundWastesThirdBulk);
+        productionDaily.setTodayOutboundPrepare2WastesCrushing(todayOutboundWastesThirdCrushing);
+        productionDaily.setTodayOutboundPrepare2WastesSludge(todayOutboundWastesThirdSludge);
+        productionDaily.setTodayOutboundPrepare2WastesDistillation(todayOutboundWastesThirdDistillation);
+        productionDaily.setTodayOutboundPrepare2WastesSuspension(todayOutboundWastesThirdSuspension);
+        productionDaily.setTodayOutboundPrepare2WastesWasteLiquid(todayOutboundWastesThirdWasteLiquid);
+        productionDaily.setOutboundOrderA2List(outboundOrderTodayA2List);
+        productionDaily.setOutboundOrderB2List(outboundOrderTodayB2List);
+        productionDaily.setOutboundOrderPrepare2List(outboundOrderTodayPrepare2List);
+        productionDaily.setOutboundOrderThirdList(outboundOrderTodayThirdList);
 
 
-        // 危废处置量
-        productionDaily.setTodayOutboundWastesBulk(productionDaily.getTodayOutboundA2WastesBulk() +
-                productionDaily.getTodayOutboundPrepare2WastesBulk() + productionDaily.getTodayOutboundB2WastesBulk() +
-                productionDaily.getTodayOutboundThirdPretreatmentSystemWastesBulk());
-        productionDaily.setTodayOutboundWastesCrushing(productionDaily.getTodayOutboundA2WastesCrushing() +
-                productionDaily.getTodayOutboundPrepare2WastesCrushing() + productionDaily.getTodayOutboundB2WastesCrushing() +
-                productionDaily.getTodayOutboundThirdPretreatmentSystemWastesCrushing());
-        productionDaily.setTodayOutboundWastesSludge(productionDaily.getTodayOutboundA2WastesSludge() +
-                productionDaily.getTodayOutboundPrepare2WastesSludge() + productionDaily.getTodayOutboundB2WastesSludge() +
-                productionDaily.getTodayOutboundThirdPretreatmentSystemWastesSludge());
-        productionDaily.setTodayOutboundWastesDistillation(productionDaily.getTodayOutboundA2WastesDistillation() +
-                productionDaily.getTodayOutboundPrepare2WastesDistillation() + productionDaily.getTodayOutboundB2RateWastesDistillation() +
-                productionDaily.getTodayOutboundThirdPretreatmentSystemWastesDistillation());
-        productionDaily.setTodayOutboundWastesSuspension(productionDaily.getTodayOutboundA2WastesSuspension() + productionDaily.getTodayOutboundB2WastesSuspension() +
-                productionDaily.getTodayOutboundPrepare2WastesSuspension() + productionDaily.getTodayOutboundThirdPretreatmentSystemWastesSuspension());
-        productionDaily.setTodayOutboundWastesWasteLiquid(productionDaily.getTodayOutboundA2WastesWasteLiquid() + productionDaily.getTodayOutboundB2WastesWasteLiquid() +
-                productionDaily.getTodayOutboundPrepare2WastesWasteLiquid() + productionDaily.getTodayOutboundThirdPretreatmentSystemWastesWasteLiquid());
-        productionDaily.setTodayOutboundWastesTotal(productionDaily.getTodayOutboundWastesBulk() + productionDaily.getTodayOutboundWastesCrushing() +
-                productionDaily.getTodayOutboundWastesSludge() + productionDaily.getTodayOutboundWastesDistillation() + productionDaily.getTodayOutboundWastesSuspension() +
-                productionDaily.getTodayOutboundWastesWasteLiquid());
 
         // 辅料备件消耗
         // 医疗蒸煮
@@ -859,6 +927,37 @@ public class ProductionDailyController {
         productionDaily.setTodayOutboundAuxiliaryElectricQuantity(productionDaily.getTodayDisposalMedicalAuxiliaryElectricQuantity() + productionDaily.getTodayDisposalSecondaryAuxiliaryElectricQuantity() +
                 productionDaily.getTodayDisposalThirdAuxiliaryElectricQuantity() + productionDaily.getTodayDisposalTowerElectricQuantity());
 
+        productionDaily.setLimitDisposalMedicalAuxiliaryNaclo((float) 0.0004);
+        productionDaily.setLimitDisposalMedicalAuxiliaryDeodorant((float) 0.0052);
+        productionDaily.setLimitDisposalMedicalAuxiliaryMedicalWastesBag((float) 2.7561);
+        productionDaily.setLimitDisposalMedicalAuxiliaryMedicalPackingPlasticBag((float) 0.2726);
+        productionDaily.setLimitDisposalMedicalAuxiliaryCollectionBox((float) 0.4089);
+        productionDaily.setLimitDisposalMedicalAuxiliarySteam((float) 0.19);
+        productionDaily.setLimitDisposalMedicalAuxiliaryIndustrialWater((float) 0.18);
+        productionDaily.setLimitDisposalMedicalAuxiliaryElectricQuantity((float) 12.55);
+        productionDaily.setLimitDisposalSecondaryAuxiliaryCalcareousLime((float) 0.03);
+        productionDaily.setLimitDisposalSecondaryAuxiliaryCommonActivatedCarbon((float) 0.0002);
+        productionDaily.setLimitDisposalSecondaryAuxiliaryActivatedCarbon((float) 0.0001);
+        productionDaily.setLimitDisposalSecondaryAuxiliaryLye((float) 0.0585);
+        productionDaily.setLimitDisposalSecondaryAuxiliarySalt((float) 0.0004);
+        productionDaily.setLimitDisposalSecondaryAuxiliarySlagBag((float) 0.2726);
+        productionDaily.setLimitDisposalSecondaryAuxiliaryFlyAshBag((float) 0.1315);
+        productionDaily.setLimitDisposalSecondaryAuxiliaryDieselOil((float) 0.01);
+        productionDaily.setLimitDisposalSecondaryAuxiliaryIndustrialWater((float) 118.5);
+        productionDaily.setLimitDisposalSecondaryAuxiliaryElectricQuantity((float) 3.42);
+        productionDaily.setLimitDisposalSecondaryAuxiliaryWoodenPallets((float) 0.01);
+        productionDaily.setLimitDisposalThirdAuxiliaryCalcareousLime((float) 0.0203);
+        productionDaily.setLimitDisposalThirdAuxiliaryCommonActivatedCarbon((float) 0.0002);
+        productionDaily.setLimitDisposalThirdAuxiliaryActivatedCarbon((float) 0.0021);
+        productionDaily.setLimitDisposalThirdAuxiliaryLye((float) 0.0219);
+        productionDaily.setLimitDisposalThirdAuxiliaryWoodenPallets((float) 0.0055);
+        productionDaily.setLimitDisposalThirdAuxiliarySlagBag((float) 0.2726);
+        productionDaily.setLimitDisposalThirdAuxiliaryFlyAshBag((float) 0.0709);
+        productionDaily.setLimitDisposalThirdAuxiliarySteam((float) 10);
+        productionDaily.setLimitDisposalThirdAuxiliaryElectricQuantity((float) 135);
+        productionDaily.setLimitDisposalThirdAuxiliaryIndustrialWater((float) 2.73);
+
+
         // 运行情况统计
         float equipmentA2RunningTime = 0f;
         float equipmentB2RunningTime = 0f;
@@ -875,13 +974,13 @@ public class ProductionDailyController {
                 case "B2":
                     equipmentB2RunningTime += equipmentItem.getRunningTime();
                     break;
-                case "Prepare2":
+                case "备2":
                     equipmentPrepare2RunningTime += equipmentItem.getRunningTime();
                     break;
-                case "SecondaryTwoCombustionChamber":
+                case "二期二燃室":
                     equipmentSecondRunningTime += equipmentItem.getRunningTime();
                     break;
-                case "ThirdPhasePretreatmentSystem":
+                case "三期预处理系统":
                     equipmentThirdRunningTime += equipmentItem.getRunningTime();
                     break;
             }
@@ -906,19 +1005,7 @@ public class ProductionDailyController {
         productionDaily.setTodayEquipmentThirdRunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getTodayEquipmentThirdRunningTime(), productionDaily.getTodayEquipmentThirdStopTime())));
 
         // 辅材、能源入库
-        List<Ingredients> ingredientsList1 = ingredientsService.getIngredientsInItemByRange(now,now,Equipment.MedicalCookingSystem);
-        List<Ingredients> ingredientsList2 = ingredientsService.getIngredientsInItemByRange(now,now,Equipment.A2);
-        List<Ingredients> ingredientsList3 = ingredientsService.getIngredientsInItemByRange(now,now,Equipment.B2);
-        List<Ingredients> ingredientsList4 = ingredientsService.getIngredientsInItemByRange(now,now,Equipment.SecondaryTwoCombustionChamber);
-        List<Ingredients> ingredientsList5 = ingredientsService.getIngredientsInItemByRange(now,now,Equipment.ThirdPhasePretreatmentSystem);
-        List<Ingredients> ingredientsList6 = ingredientsService.getIngredientsInItemByRange(now,now,Equipment.Prepare2);
-        List<Ingredients> ingredientsList = new ArrayList<>();
-        ingredientsList.addAll(ingredientsList1);
-        ingredientsList.addAll(ingredientsList2);
-        ingredientsList.addAll(ingredientsList3);
-        ingredientsList.addAll(ingredientsList4);
-        ingredientsList.addAll(ingredientsList5);
-        ingredientsList.addAll(ingredientsList6);
+        List<Ingredients> ingredientsList = ingredientsService.getIngredientsInItemByRange(now,now,null);
         float todayInboundAuxiliaryCalcareousLime = 0f;
         float todayInboundAuxiliaryCommonActivatedCarbon = 0f;
         float todayInboundAuxiliaryActivatedCarbon = 0f;
@@ -1032,106 +1119,75 @@ public class ProductionDailyController {
         productionDaily.setTodayInboundAuxiliaryIndustrialWater(todayInboundAuxiliaryIndustrialWater);
         productionDaily.setTodayInboundAuxiliaryTapWaterQuantity(todayInboundAuxiliaryTapWaterQuantity);
 
-        // 获取当天的危废入库信息
-        List<InboundOrderItem> inboundOrderItemList = inboundService.getInboundOrderItemByRange(now, now);
-        productionDaily.setInboundOrderItemList(inboundOrderItemList);
-        // 工废
-        float todayInboundWastesBulk = 0f;
-        float todayInboundWastesCrushing = 0f;
-        float todayInboundWastesSludge = 0f;
-        float todayInboundWastesDistillation = 0f;
-        float todayInboundWastesSuspension = 0f;
-        float todayInboundWastesWasteLiquid = 0f;
-        float todayInboundWastesTotal = 0f;         // 工费合计
-        for(InboundOrderItem inboundOrderItem : inboundOrderItemList){
-            switch (inboundOrderItem.getHandleCategory().getName()){
-                case("污泥"):
-                    todayInboundWastesSludge += inboundOrderItem.getWastesAmount();
-                    todayInboundWastesTotal += inboundOrderItem.getWastesAmount();
-                    break;
-                case("废液"):
-                    todayInboundWastesWasteLiquid += inboundOrderItem.getWastesAmount();
-                    todayInboundWastesTotal += inboundOrderItem.getWastesAmount();
-                    break;
-                case("散装料"):
-                    todayInboundWastesBulk += inboundOrderItem.getWastesAmount();
-                    todayInboundWastesTotal += inboundOrderItem.getWastesAmount();
-                    break;
-                case("破碎料"):
-                    todayInboundWastesCrushing += inboundOrderItem.getWastesAmount();
-                    todayInboundWastesTotal += inboundOrderItem.getWastesAmount();
-                    break;
-                case("精馏残渣"):
-                    todayInboundWastesDistillation += inboundOrderItem.getWastesAmount();
-                    todayInboundWastesTotal += inboundOrderItem.getWastesAmount();
-                    break;
-                case("悬挂连"):
-                    todayInboundWastesSuspension += inboundOrderItem.getWastesAmount();
-                    todayInboundWastesTotal += inboundOrderItem.getWastesAmount();
-                    break;
+
+
+
+        // 4. 次生
+        // 入库
+        float todaySecondInSlag = 0f;
+        float todaySecondInAsh = 0f;
+        float todaySecondInBucket = 0f;
+        List<InboundOrderItem> todaySecondInboundOrderList = inboundService.getSecondInboundOrderItemByRange(now, now);
+        for (InboundOrderItem inboundOrderItem : todaySecondInboundOrderList) {
+            if (inboundOrderItem.getWastes() != null)
+            if (inboundOrderItem.getWastes().getName().contains("飞灰")) {
+                todaySecondInAsh += inboundOrderItem.getWastesAmount();
+            } else if (inboundOrderItem.getWastes().getName().contains("炉渣")) {
+                todaySecondInSlag += inboundOrderItem.getWastesAmount();
+            } else if (inboundOrderItem.getWastes().getName().contains("桶")) {
+                todaySecondInBucket += inboundOrderItem.getWastesAmount();
             }
         }
-        productionDaily.setTodayInboundWastesBulk(todayInboundWastesBulk);
-        productionDaily.setTodayInboundWastesCrushing(todayInboundWastesCrushing);
-        productionDaily.setTodayInboundWastesSludge(todayInboundWastesSludge);
-        productionDaily.setTodayInboundWastesDistillation(todayInboundWastesDistillation);
-        productionDaily.setTodayInboundWastesSuspension(todayInboundWastesSuspension);
-        productionDaily.setTodayInboundWastesWasteLiquid(todayInboundWastesWasteLiquid);
-        productionDaily.setTodayInboundWastesTotal(todayInboundWastesTotal);
-
-        // 获取当天出库的危废
-        List<OutboundOrder> outboundOrderA2List = outboundOrderService.getOutBoundByDateAndEquipment(now, "A2");
-        productionDaily.setOutboundOrderA2List(outboundOrderA2List);
-        List<OutboundOrder> outboundOrderB2List = outboundOrderService.getOutBoundByDateAndEquipment(now, "B2");
-        productionDaily.setOutboundOrderB2List(outboundOrderB2List);
-        List<OutboundOrder> outboundOrderPrepare2List = outboundOrderService.getOutBoundByDateAndEquipment(now, "Prepare2");
-        productionDaily.setOutboundOrderPrepare2List(outboundOrderPrepare2List);
-        List<OutboundOrder> outboundOrderThirdList = outboundOrderService.getOutBoundByDateAndEquipment(now, "ThirdPhasePretreatmentSystem");
-        productionDaily.setOutboundOrderThirdList(outboundOrderThirdList);
-
-        // 次生
-        float secondSlag = 0f;
-        float secondAsh = 0f;
-        for (OutboundOrder outboundOrder : outboundThirdOrderList) {
-            if (!outboundOrder.getBoundType().equals(BoundType.SecondaryOutbound)) continue;
-            String wastesName = outboundOrder.getLaboratoryTest().getWastesName();
-            switch (wastesName) {
-                case "slag":
-                    secondSlag += outboundOrder.getOutboundNumber();
-                    break;
-                case "ash":
-                    secondAsh += outboundOrder.getOutboundNumber();
-                    break;
-                default:
-                    break;
-            }
+        productionDaily.setTodayInboundSecondWastesAsh(todaySecondInAsh);
+        productionDaily.setTodayInboundSecondWastesSlag(todaySecondInSlag);
+        productionDaily.setTodayInboundSecondWastesBucket(todaySecondInBucket);
+        // 出库
+        float todaySecondOutSlag = 0f;
+        float todaySecondOutAsh = 0f;
+        float todaySecondOutBucket = 0f;
+        float todaySecondOutSecondSlag = 0f;
+        float todaySecondOutSecondAsh = 0f;
+        float todaySecondOutThirdSlag = 0f;
+        float todaySecondOutThirdAsh = 0f;
+        List<OutboundOrder> todaySecondOutboundOrderList = outboundOrderService.getOutBoundByDate(now);
+        for (OutboundOrder outboundOrder : todaySecondOutboundOrderList) {
+            if (outboundOrder.getWastes() != null)
+                if (outboundOrder.getWastes().getName().contains("飞灰")) {
+                    todaySecondOutAsh += outboundOrder.getOutboundNumber();
+                    switch (outboundOrder.getEquipment()) {
+                        case SecondaryTwoCombustionChamber:
+                            todaySecondOutSecondAsh += outboundOrder.getOutboundNumber();
+                            break;
+                        case ThirdPhasePretreatmentSystem:
+                            todaySecondOutThirdAsh += outboundOrder.getOutboundNumber();
+                            break;
+                        default:
+                            break;
+                    }
+                } else if (outboundOrder.getWastes().getName().contains("炉渣")) {
+                    todaySecondOutSlag += outboundOrder.getOutboundNumber();
+                    switch (outboundOrder.getEquipment()) {
+                        case SecondaryTwoCombustionChamber:
+                            todaySecondOutSecondAsh += outboundOrder.getOutboundNumber();
+                            break;
+                        case ThirdPhasePretreatmentSystem:
+                            todaySecondOutThirdSlag += outboundOrder.getOutboundNumber();
+                            break;
+                        default:
+                            break;
+                    }
+                } else if (outboundOrder.getWastes().getName().contains("桶")) {
+                    todaySecondOutBucket += outboundOrder.getOutboundNumber();
+                }
         }
-        productionDaily.setTodayDisposalThirdSlag(secondSlag);
-        productionDaily.setTodayDisposalThirdAsh(secondAsh);
+        productionDaily.setTodayOutboundSecondWastesAsh(todaySecondOutAsh);
+        productionDaily.setTodayOutboundSecondWastesSlag(todaySecondOutSlag);
+        productionDaily.setTodayOutboundSecondWastesBucket(todaySecondOutBucket);
+        productionDaily.setTodayDisposalSecondarySlag(todaySecondOutSecondSlag);
+        productionDaily.setTodayDisposalSecondaryAsh(todaySecondOutSecondAsh);
+        productionDaily.setTodayDisposalThirdAsh(todaySecondOutThirdAsh);
+        productionDaily.setTodayDisposalThirdSlag(todaySecondOutThirdSlag);
 
-        secondSlag = 0f;
-        secondAsh = 0f;
-        List<OutboundOrder> outboundOrderList = outboundOrderService.getOutBoundByDateAndEquipment(now, "SecondaryTwoCombustionChamber");
-        for (OutboundOrder outboundOrder : outboundOrderList) {
-            if (!outboundOrder.getBoundType().equals(BoundType.SecondaryOutbound)) continue;
-            if (outboundOrder.getLaboratoryTest() == null) continue;
-            String wastesName = outboundOrder.getLaboratoryTest().getWastesName();
-            switch (wastesName) {
-                case "slag":
-                    secondSlag += outboundOrder.getOutboundNumber();
-                    break;
-                case "ash":
-                    secondAsh += outboundOrder.getOutboundNumber();
-                    break;
-                default:
-                    break;
-            }
-        }
-        productionDaily.setTodayDisposalSecondarySlag(secondSlag);
-        productionDaily.setTodayDisposalSecondaryAsh(secondAsh);
-
-        productionDaily.setTodayInboundSecondWastesSlag(productionDaily.getTodayDisposalSecondarySlag() + productionDaily.getTodayDisposalThirdSlag());
-        productionDaily.setTodayInboundSecondWastesAsh(productionDaily.getTodayDisposalSecondaryAsh() + productionDaily.getTodayDisposalThirdAsh());
 
         // 获取三期消耗
         float todayOutboundThird = productionDaily.getTodayOutboundThirdPretreatmentSystemWastesBulk() + productionDaily.getTodayOutboundThirdPretreatmentSystemWastesCrushing() +
@@ -1282,6 +1338,8 @@ public class ProductionDailyController {
         productionDaily.setMonthInboundWastesSuspension(monthInboundWastesSuspension);
         productionDaily.setMonthInboundWastesWasteLiquid(monthInboundWastesWasteLiquid);
         productionDaily.setMonthInboundWastesTotal(monthInboundWastesTotal);
+        // 月份入库数据
+        productionDaily.setInboundOrderItemList(inboundOrderItemMonthList);
 
         // 危废出库信息
         float monthOutboundWastesBulk = 0f;
@@ -1317,8 +1375,13 @@ public class ProductionDailyController {
         float monthOutboundWastesThirdWasteLiquid = 0f;
 
         List<OutboundOrder> outboundOrderMonthList = outboundOrderService.getOutBoundByRange(monthFirstDay, monthEndDay);
+        List<OutboundOrder> outboundOrderMonthA2List = new ArrayList<>();
+        List<OutboundOrder> outboundOrderMonthB2List = new ArrayList<>();
+        List<OutboundOrder> outboundOrderMonthPrepareList = new ArrayList<>();
+        List<OutboundOrder> outboundOrderMonthThirdList = new ArrayList<>();
         for (OutboundOrder outboundOrder : outboundOrderMonthList) {
-            if (outboundOrder.getBoundType().equals(BoundType.WasteOutbound)) {
+            if (outboundOrder.getBoundType() != null && outboundOrder.getBoundType().equals(BoundType.WasteOutbound)) {
+                if (outboundOrder.getHandelCategory() != null)
                 switch (outboundOrder.getHandelCategory()) {
                     case Sludge:
                         monthOutboundWastesSludge += outboundOrder.getOutboundNumber();
@@ -1326,12 +1389,20 @@ public class ProductionDailyController {
                         switch (outboundOrder.getEquipment()) {
                             case A2:
                                 monthOutboundWastesA2Sludge += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthA2List.add(outboundOrder);
+                                break;
                             case B2:
                                 monthOutboundWastesB2Sludge += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthB2List.add(outboundOrder);
+                                break;
                             case Prepare2:
                                 monthOutboundWastesPrepare2Sludge += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             case ThirdPhasePretreatmentSystem:
                                 monthOutboundWastesThirdSludge += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             default:
                                 break;
                         }
@@ -1342,12 +1413,20 @@ public class ProductionDailyController {
                         switch (outboundOrder.getEquipment()) {
                             case A2:
                                 monthOutboundWastesA2WasteLiquid += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthA2List.add(outboundOrder);
+                                break;
                             case B2:
                                 monthOutboundWastesB2WasteLiquid += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthB2List.add(outboundOrder);
+                                break;
                             case Prepare2:
                                 monthOutboundWastesPrepare2WasteLiquid += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             case ThirdPhasePretreatmentSystem:
                                 monthOutboundWastesThirdWasteLiquid += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             default:
                                 break;
                         }
@@ -1358,12 +1437,20 @@ public class ProductionDailyController {
                         switch (outboundOrder.getEquipment()) {
                             case A2:
                                 monthOutboundWastesA2Bulk += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthA2List.add(outboundOrder);
+                                break;
                             case B2:
                                 monthOutboundWastesB2Bulk += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthB2List.add(outboundOrder);
+                                break;
                             case Prepare2:
                                 monthOutboundWastesPrepare2Bulk += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             case ThirdPhasePretreatmentSystem:
                                 monthOutboundWastesThirdBulk += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             default:
                                 break;
                         }
@@ -1374,12 +1461,20 @@ public class ProductionDailyController {
                         switch (outboundOrder.getEquipment()) {
                             case A2:
                                 monthOutboundWastesA2Crushing += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthA2List.add(outboundOrder);
+                                break;
                             case B2:
                                 monthOutboundWastesB2Crushing += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthB2List.add(outboundOrder);
+                                break;
                             case Prepare2:
                                 monthOutboundWastesPrepare2Crushing += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             case ThirdPhasePretreatmentSystem:
                                 monthOutboundWastesThirdCrushing += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             default:
                                 break;
                         }
@@ -1390,12 +1485,20 @@ public class ProductionDailyController {
                         switch (outboundOrder.getEquipment()) {
                             case A2:
                                 monthOutboundWastesA2Distillation += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthA2List.add(outboundOrder);
+                                break;
                             case B2:
                                 monthOutboundWastesB2Distillation += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthB2List.add(outboundOrder);
+                                break;
                             case Prepare2:
                                 monthOutboundWastesPrepare2Distillation += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             case ThirdPhasePretreatmentSystem:
                                 monthOutboundWastesThirdDistillation += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             default:
                                 break;
                         }
@@ -1406,12 +1509,20 @@ public class ProductionDailyController {
                         switch (outboundOrder.getEquipment()) {
                             case A2:
                                 monthOutboundWastesA2Suspension += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthA2List.add(outboundOrder);
+                                break;
                             case B2:
                                 monthOutboundWastesB2Suspension += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthB2List.add(outboundOrder);
+                                break;
                             case Prepare2:
                                 monthOutboundWastesPrepare2Suspension += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             case ThirdPhasePretreatmentSystem:
                                 monthOutboundWastesThirdSuspension += outboundOrder.getOutboundNumber();
+                                outboundOrderMonthPrepareList.add(outboundOrder);
+                                break;
                             default:
                                 break;
                         }
@@ -1450,6 +1561,12 @@ public class ProductionDailyController {
         productionDaily.setMonthOutboundPrepare2WastesDistillation(monthOutboundWastesThirdDistillation);
         productionDaily.setMonthOutboundPrepare2WastesSuspension(monthOutboundWastesThirdSuspension);
         productionDaily.setMonthOutboundPrepare2WastesWasteLiquid(monthOutboundWastesThirdWasteLiquid);
+        // 设置月份的出库列表
+        productionDaily.setOutboundOrderA2List(outboundOrderMonthA2List);
+        productionDaily.setOutboundOrderB2List(outboundOrderMonthB2List);
+        productionDaily.setOutboundOrderPrepare2List(outboundOrderMonthPrepareList);
+        productionDaily.setOutboundOrderThirdList(outboundOrderMonthThirdList);
+
 
         // 3. 辅料能源
         // 辅材、能源入库
@@ -1977,13 +2094,13 @@ public class ProductionDailyController {
                 case "B2":
                     equipmentMonthB2RunningTime += equipmentItem.getRunningTime();
                     break;
-                case "Prepare2":
+                case "备2":
                     equipmentMonthPrepare2RunningTime += equipmentItem.getRunningTime();
                     break;
-                case "SecondaryTwoCombustionChamber":
+                case "二期二燃室":
                     equipmentMonthSecondRunningTime += equipmentItem.getRunningTime();
                     break;
-                case "ThirdPhasePretreatmentSystem":
+                case "三期预处理系统":
                     equipmentMonthThirdRunningTime += equipmentItem.getRunningTime();
                     break;
             }
@@ -1995,11 +2112,11 @@ public class ProductionDailyController {
         productionDaily.setMonthEquipmentSecondaryRunningTime(equipmentMonthSecondRunningTime);
         productionDaily.setMonthEquipmentThirdRunningTime(equipmentMonthThirdRunningTime);
 
-        productionDaily.setMonthEquipmentA2StopTime(24 - productionDaily.getMonthEquipmentA2RunningTime());
-        productionDaily.setMonthEquipmentB2StopTime(24 - productionDaily.getMonthEquipmentB2RunningTime());
-        productionDaily.setMonthEquipmentPrepare2StopTime(24 - productionDaily.getMonthEquipmentPrepare2StopTime());
-        productionDaily.setMonthEquipmentSecondaryStopTime(24 - productionDaily.getMonthEquipmentSecondaryRunningTime());
-        productionDaily.setMonthEquipmentThirdStopTime(24 - productionDaily.getMonthEquipmentThirdRunningTime());
+        productionDaily.setMonthEquipmentA2StopTime(720 - productionDaily.getMonthEquipmentA2RunningTime());
+        productionDaily.setMonthEquipmentB2StopTime(720 - productionDaily.getMonthEquipmentB2RunningTime());
+        productionDaily.setMonthEquipmentPrepare2StopTime(720 - productionDaily.getMonthEquipmentPrepare2StopTime());
+        productionDaily.setMonthEquipmentSecondaryStopTime(720 - productionDaily.getMonthEquipmentSecondaryRunningTime());
+        productionDaily.setMonthEquipmentThirdStopTime(720 - productionDaily.getMonthEquipmentThirdRunningTime());
         // 运转率
         productionDaily.setMonthEquipmentA2RunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getMonthEquipmentA2RunningTime(), productionDaily.getMonthEquipmentA2StopTime())));
         productionDaily.setMonthEquipmentB2RunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getMonthEquipmentB2RunningTime(), productionDaily.getMonthEquipmentB2StopTime())));
@@ -2007,6 +2124,147 @@ public class ProductionDailyController {
         productionDaily.setMonthEquipmentSecondaryRunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getMonthEquipmentSecondaryRunningTime(), productionDaily.getMonthEquipmentSecondaryStopTime())));
         productionDaily.setMonthEquipmentThirdRunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getMonthEquipmentThirdRunningTime(), productionDaily.getMonthEquipmentThirdStopTime())));
 
+        // 4. 次生
+        // 入库
+        float monthSecondInSlag = 0f;
+        float monthSecondInAsh = 0f;
+        float monthSecondInBucket = 0f;
+        List<InboundOrderItem> monthSecondInboundOrderList = inboundService.getSecondInboundOrderItemByRange(monthFirstDay, monthEndDay);
+        for (InboundOrderItem inboundOrderItem : monthSecondInboundOrderList) {
+            if (inboundOrderItem.getWastes() != null)
+                if (inboundOrderItem.getWastes().getName().contains("飞灰")) {
+                    monthSecondInAsh += inboundOrderItem.getWastesAmount();
+                } else if (inboundOrderItem.getWastes().getName().contains("炉渣")) {
+                    monthSecondInSlag += inboundOrderItem.getWastesAmount();
+                } else if (inboundOrderItem.getWastes().getName().contains("桶")) {
+                    monthSecondInBucket += inboundOrderItem.getWastesAmount();
+                }
+        }
+        productionDaily.setMonthInboundSecondWastesAsh(monthSecondInAsh);
+        productionDaily.setMonthInboundSecondWastesSlag(monthSecondInSlag);
+        productionDaily.setMonthInboundSecondWastesBucket(monthSecondInBucket);
+        // 出库
+        float monthSecondOutSlag = 0f;
+        float monthSecondOutAsh = 0f;
+        float monthSecondOutBucket = 0f;
+        float monthSecondOutSecondSlag = 0f;
+        float monthSecondOutSecondAsh = 0f;
+        float monthSecondOutThirdSlag = 0f;
+        float monthSecondOutThirdAsh = 0f;
+        List<OutboundOrder> monthSecondOutboundOrderList = outboundOrderService.getOutBoundByRange(monthFirstDay, monthEndDay);
+        for (OutboundOrder outboundOrder : monthSecondOutboundOrderList) {
+            if (outboundOrder.getBoundType() != null && outboundOrder.getBoundType().equals(BoundType.SecondaryOutbound) && outboundOrder.getWastes() != null)
+                if (outboundOrder.getWastes().getName().contains("飞灰")) {
+                    monthSecondOutAsh += outboundOrder.getOutboundNumber();
+                    switch (outboundOrder.getEquipment()) {
+                        case SecondaryTwoCombustionChamber:
+                            monthSecondOutSecondAsh += outboundOrder.getOutboundNumber();
+                            break;
+                        case ThirdPhasePretreatmentSystem:
+                            monthSecondOutThirdAsh += outboundOrder.getOutboundNumber();
+                            break;
+                        default:
+                            break;
+                    }
+                } else if (outboundOrder.getWastes().getName().contains("炉渣")) {
+                    monthSecondOutSlag += outboundOrder.getOutboundNumber();
+                    switch (outboundOrder.getEquipment()) {
+                        case SecondaryTwoCombustionChamber:
+                            monthSecondOutSecondAsh += outboundOrder.getOutboundNumber();
+                            break;
+                        case ThirdPhasePretreatmentSystem:
+                            monthSecondOutThirdSlag += outboundOrder.getOutboundNumber();
+                            break;
+                        default:
+                            break;
+                    }
+                } else if (outboundOrder.getWastes().getName().contains("桶")) {
+                    monthSecondOutBucket += outboundOrder.getOutboundNumber();
+                }
+        }
+        productionDaily.setMonthOutboundSecondWastesAsh(monthSecondOutAsh);
+        productionDaily.setMonthOutboundSecondWastesSlag(monthSecondOutSlag);
+        productionDaily.setMonthOutboundSecondWastesBucket(monthSecondOutBucket);
+        productionDaily.setMonthDisposalSecondarySlag(monthSecondOutSecondSlag);
+        productionDaily.setMonthDisposalSecondaryAsh(monthSecondOutSecondAsh);
+        productionDaily.setMonthDisposalThirdAsh(monthSecondOutThirdAsh);
+        productionDaily.setMonthDisposalThirdSlag(monthSecondOutThirdSlag);
+
+
+        // 期初结余
+        float monthBalanceWastesBulk = 0f;
+        float monthBalanceWastesCrushing = 0f;
+        float monthBalanceWastesSludge = 0f;
+        float monthBalanceWastesDistillation = 0f;
+        float monthBalanceWastesSuspension = 0f;
+        float monthBalanceWastesWasteLiquid = 0f;
+        float monthBalanceWastesWastesTotal = 0f;
+        float monthBalanceSecondWastesSlag = 0f;
+        float monthBalanceSecondWastesAsh = 0f;
+        float monthBalanceSecondWastesBucket = 0f;
+        List<WasteInventory> wasteInventoryList = wasteInventoryService.list3(null);
+        for (WasteInventory wasteInventory : wasteInventoryList) {
+            if (wasteInventory.getBoundType() != null && wasteInventory.getBoundType().equals(BoundType.WasteInbound)) {
+                if (wasteInventory.getHandleCategory() != null)
+                    switch (wasteInventory.getHandleCategory()) {
+                        case Bulk:
+                            monthBalanceWastesBulk += wasteInventory.getActualCount();
+                            monthBalanceWastesWastesTotal += wasteInventory.getActualCount();
+                            break;
+                        case Crushing:
+                            monthBalanceWastesCrushing += wasteInventory.getActualCount();
+                            monthBalanceWastesWastesTotal += wasteInventory.getActualCount();
+                            break;
+                        case Sludge:
+                            monthBalanceWastesSludge += wasteInventory.getActualCount();
+                            monthBalanceWastesWastesTotal += wasteInventory.getActualCount();
+                            break;
+                        case Suspension:
+                            monthBalanceWastesSuspension += wasteInventory.getActualCount();
+                            monthBalanceWastesWastesTotal += wasteInventory.getActualCount();
+                            break;
+                        case Distillation:
+                            monthBalanceWastesDistillation += wasteInventory.getActualCount();
+                            monthBalanceWastesWastesTotal += wasteInventory.getActualCount();
+                            break;
+                        case WasteLiquid:
+                            monthBalanceWastesWasteLiquid += wasteInventory.getActualCount();
+                            monthBalanceWastesWastesTotal += wasteInventory.getActualCount();
+                            break;
+                        default:
+                            break;
+                    }
+            } else if (wasteInventory.getBoundType() != null && wasteInventory.getBoundType().equals(BoundType.SecondaryInbound)) {
+                if (wasteInventory.getWastesName().contains("飞灰")) {
+                    monthBalanceSecondWastesAsh += wasteInventory.getActualCount();
+                } else if (wasteInventory.getWastesName().contains("炉渣")) {
+                    monthBalanceSecondWastesSlag += wasteInventory.getActualCount();
+                } else if (wasteInventory.getWastesName().contains("桶")) {
+                    monthBalanceSecondWastesBucket += wasteInventory.getActualCount();
+                }
+            }
+        }
+        productionDaily.setMonthBalanceWastesBulk(monthBalanceWastesBulk - monthInboundWastesBulk + monthOutboundWastesBulk);
+        productionDaily.setMonthBalanceWastesCrushing(monthBalanceWastesCrushing - monthInboundWastesCrushing + monthOutboundWastesCrushing);
+        productionDaily.setMonthBalanceWastesSludge(monthBalanceWastesSludge - monthInboundWastesSludge + monthOutboundWastesSludge);
+        productionDaily.setMonthBalanceWastesDistillation(monthBalanceWastesDistillation - monthInboundWastesDistillation + monthOutboundWastesDistillation);
+        productionDaily.setMonthBalanceWastesSuspension(monthBalanceWastesSuspension - monthInboundWastesSuspension + monthOutboundWastesSuspension);
+        productionDaily.setMonthBalanceWastesWasteLiquid(monthBalanceWastesWasteLiquid - monthInboundWastesWasteLiquid + monthOutboundWastesWasteLiquid);
+        productionDaily.setMonthBalanceWastesTotal(monthBalanceWastesWastesTotal - monthInboundWastesTotal + monthOutboundWastesTotal);
+//        productionDaily.setMonthBalanceSecondWastesAsh(monthBalanceSecondWastesAsh - productionDaily.getMonthInboundSecondWastesAsh() + productionDaily.getMonthOutboundSecondWastesAsh());
+//        productionDaily.setMonthBalanceSecondWastesSlag(monthBalanceSecondWastesSlag - productionDaily.getMonthInboundSecondWastesSlag() + productionDaily.getMonthOutboundSecondWastesSlag());
+//        productionDaily.setMonthBalanceSecondWastesBucket(monthBalanceSecondWastesBucket - productionDaily.getMonthInboundSecondWastesBucket() + productionDaily.getMonthOutboundSecondWastesBucket());
+        // 本日库存
+        productionDaily.setTodayInventoryWastesBulk(productionDaily.getMonthBalanceWastesBulk() + todayInboundWastesBulk - todayOutboundWastesBulk);
+        productionDaily.setTodayInventoryWastesCrushing(productionDaily.getMonthBalanceWastesCrushing() + todayInboundWastesCrushing - todayOutboundWastesCrushing);
+        productionDaily.setTodayInventoryWastesSludge(productionDaily.getMonthBalanceWastesSludge() + todayInboundWastesSludge - todayOutboundWastesSludge);
+        productionDaily.setTodayInventoryWastesDistillation(productionDaily.getMonthBalanceWastesDistillation() + todayInboundWastesDistillation - todayOutboundWastesDistillation);
+        productionDaily.setTodayInventoryWastesSuspension(productionDaily.getMonthBalanceWastesSuspension() + todayInboundWastesSuspension - todayOutboundWastesSuspension);
+        productionDaily.setTodayInventoryWastesWasteLiquid(productionDaily.getMonthBalanceWastesWasteLiquid() + todayInboundWastesWasteLiquid - todayOutboundWastesWasteLiquid);
+        productionDaily.setTodayInventoryWastesTotal(productionDaily.getMonthBalanceWastesTotal() + todayInboundWastesTotal - todayOutboundWastesTotal);
+        productionDaily.setTodayInventorySecondWastesAsh(productionDaily.getMonthBalanceSecondWastesAsh() + productionDaily.getTodayInboundSecondWastesAsh() - productionDaily.getTodayOutboundSecondWastesAsh());
+        productionDaily.setTodayInventorySecondWastesAsh(productionDaily.getMonthBalanceSecondWastesSlag() + productionDaily.getTodayInboundSecondWastesSlag() - productionDaily.getTodayOutboundSecondWastesSlag());
+        productionDaily.setTodayInventorySecondWastesAsh(productionDaily.getMonthBalanceSecondWastesBucket() + productionDaily.getTodayInboundSecondWastesBucket() - productionDaily.getTodayOutboundSecondWastesBucket());
 
         // 年份数据
         float yearInboundMedicalWastes = 0f;

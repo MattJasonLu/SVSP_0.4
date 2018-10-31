@@ -67,51 +67,29 @@ public class WasteInventoryController {
         return res.toString();
     }
     //获得库存信息==》次生（无参数）
-    @RequestMapping("getSecondaryInventoryList")
-    @ResponseBody
-    public String getSecondaryInventoryList(@RequestBody Page page) {
-        JSONObject res=new JSONObject();
-        try {
-            wasteInventoryService.updateLeftNumber();
-
-            List<WasteInventory> wasteInventoryList= wasteInventoryService.list2(page);
-            JSONArray arrray=JSONArray.fromObject(wasteInventoryList);
-            // Quotation quotation=quotationService.getQuotationByWastesCodeAndClientId(wastesCode, clientId);
-            //更新剩余库存量
-            res.put("status", "success");
-            res.put("message", "分页数据获取成功!");
-            res.put("data", arrray);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            res.put("status", "fail");
-            res.put("message", "分页数据获取失败！");
-        }
 
 
-        return res.toString();
-    }
-   //获得库存信息(根据入库单号)
-    @RequestMapping("getWasteInventoryByInboundOrderId")
-    @ResponseBody
-    public String getWasteInventoryByInboundOrderId(String inboundOrderItemId){
-    JSONObject res=new JSONObject();
-     try {
-         List<WasteInventory> wasteInventoryList= wasteInventoryService.getWasteInventoryByInboundOrderId(inboundOrderItemId);
-         JSONArray array=JSONArray.fromObject(wasteInventoryList);
-         res.put("data", array);
-         //res.put("batchingOrderId",batchingOrderId);
-         res.put("status", "success");
-         res.put("message", "查询成功");
-
-     }
-     catch (Exception e ){
-         e.printStackTrace();
-         res.put("status", "fail");
-         res.put("message", "查询");
-     }
-        return res.toString();
-    }
+//   //获得库存信息(根据入库单号)
+//    @RequestMapping("getWasteInventoryByInboundOrderId")
+//    @ResponseBody
+//    public String getWasteInventoryByInboundOrderId(String inboundOrderItemId){
+//    JSONObject res=new JSONObject();
+//     try {
+//         List<WasteInventory> wasteInventoryList= wasteInventoryService.getWasteInventoryByInboundOrderId(inboundOrderItemId);
+//         JSONArray array=JSONArray.fromObject(wasteInventoryList);
+//         res.put("data", array);
+//         //res.put("batchingOrderId",batchingOrderId);
+//         res.put("status", "success");
+//         res.put("message", "查询成功");
+//
+//     }
+//     catch (Exception e ){
+//         e.printStackTrace();
+//         res.put("status", "fail");
+//         res.put("message", "查询");
+//     }
+//        return res.toString();
+//    }
     //高级查询获得下拉列表
     @RequestMapping("getSeniorList")
     @ResponseBody
@@ -205,106 +183,56 @@ public class WasteInventoryController {
         return res.toString();
     }
 
-    //添加领料单
-    @RequestMapping("addRequisition")
-    @ResponseBody
-    public String addRequisition(@RequestBody MaterialRequisitionOrder materialRequisitionOrder){
-        JSONObject res=new JSONObject();
-//       int total= materialRequisitionOrderService.total();
-       //查找最新的领料单号
-//        List<String> materialRequisitionOrderList=materialRequisitionOrderService.getMaterialRequisitionOrderList();
-        Calendar cal = Calendar.getInstance();
-        //获取年
-        String year = String.valueOf(cal.get(Calendar.YEAR));
-        //获取月
-        String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
-        //序列号
-        String number = "00001";
-        //1找到最新的领料单号
-        List<String> materialRequisitionOrderListId = materialRequisitionOrderService.getMaterialRequisitionOrderList();
-        if(materialRequisitionOrderListId.size()==0){
-            number="00001";
-            String materialRequisitionId = year + mouth + number;
-            //设置ID
-            materialRequisitionOrder.setMaterialRequisitionId(materialRequisitionId);
-        }
-        if(materialRequisitionOrderListId.size()>0){
-            String theNewestmaterialRequisitionOrderId = materialRequisitionOrderListId.get(0);
-            String s = theNewestmaterialRequisitionOrderId;//原字符串
-            String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
-            number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
-            String materialRequisitionId = year + mouth + number;
-            materialRequisitionOrder.setMaterialRequisitionId(materialRequisitionId);
-        }
 
-        try{
-            //1添加
-            materialRequisitionOrderService.addMaterialRequisitionOrder(materialRequisitionOrder);
-           List<MaterialRequisitionOrder> materialRequireList=materialRequisitionOrderService.getNew();
-            //更新配料单状态！
-            materialRequisitionOrderService.updateBatchingOrderCheck(materialRequisitionOrder);
-            //更新领料单状态
-            materialRequisitionOrderService.updateMaterialRequisitionOrder(materialRequireList.get(0));
-            res.put("status", "success");
-            res.put("message", "添加成功");
-            }
-        catch (Exception e){
-            e.printStackTrace();
-            res.put("status", "fail");
-            res.put("message", "添加失败");
-
-        }
-        return res.toString();
-    }
     //获取领料单数据列表
-    @RequestMapping("getMaterialRequisitionList")
-    @ResponseBody
-    public  String getMaterialRequisitionList(){
-       JSONObject res=new JSONObject();
-       try{
-          List<MaterialRequisitionOrder> materialRequisitionOrderList= materialRequisitionOrderService.list();
-         //1遍历materialRequisitionOrderList 如果不为空添加
-           List<MaterialRequisitionOrder> list=new ArrayList<>();
-           for (int i=0;i<materialRequisitionOrderList.size();i++){
-               if(materialRequisitionOrderList.get(i).getBatchingOrder()!=null){
-                   list.add(materialRequisitionOrderList.get(i));
-               }
-           }
-           Calendar cal = Calendar.getInstance();
-           //获取年
-           String year = String.valueOf(cal.get(Calendar.YEAR));
-           //获取月
-           String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
-           //序列号
-           String number = "00001";
-          // for (int i=0;i<list.size();i++){
-               //materialRequisitionOrderService.updateMaterialRequisitionOrderOnId(list.get(i));//更新危废主键和仓库编码和库户编号
-               //materialRequisitionOrderService.updateBatchingOrderCheck(list.get(i));//更新配料单的状态
-               //更新仓库编号
-               //materialRequisitionOrderService.updateMaterialRequisitionOrderCheck(list.get(i));//更新领料单的状态
-           //}
-           List<MaterialRequisitionOrder> materialRequisitionOrderList1= materialRequisitionOrderService.list();
-           List<MaterialRequisitionOrder> list2=new ArrayList<>();
-           for (int i=0;i<materialRequisitionOrderList1.size();i++){
-               if(materialRequisitionOrderList1.get(i).getBatchingOrder()!=null){
-                   list2.add(materialRequisitionOrderList1.get(i));
-               }
-           }
-          JSONArray jsonArray=JSONArray.fromObject(list2);
-          res.put("jsonArray",materialRequisitionOrderList);
-           res.put("status", "success");
-           res.put("message", "分页数据获取成功");
-
-       }
-       catch (Exception e){
-           e.printStackTrace();
-           res.put("status", "fail");
-           res.put("message", "分页数据获取失败");
-       }
-
-
-        return res.toString();
-    }
+//    @RequestMapping("getMaterialRequisitionList")
+//    @ResponseBody
+//    public  String getMaterialRequisitionList(){
+//       JSONObject res=new JSONObject();
+//       try{
+//          List<MaterialRequisitionOrder> materialRequisitionOrderList= materialRequisitionOrderService.list();
+//         //1遍历materialRequisitionOrderList 如果不为空添加
+//           List<MaterialRequisitionOrder> list=new ArrayList<>();
+//           for (int i=0;i<materialRequisitionOrderList.size();i++){
+//               if(materialRequisitionOrderList.get(i).getBatchingOrder()!=null){
+//                   list.add(materialRequisitionOrderList.get(i));
+//               }
+//           }
+//           Calendar cal = Calendar.getInstance();
+//           //获取年
+//           String year = String.valueOf(cal.get(Calendar.YEAR));
+//           //获取月
+//           String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
+//           //序列号
+//           String number = "00001";
+//          // for (int i=0;i<list.size();i++){
+//               //materialRequisitionOrderService.updateMaterialRequisitionOrderOnId(list.get(i));//更新危废主键和仓库编码和库户编号
+//               //materialRequisitionOrderService.updateBatchingOrderCheck(list.get(i));//更新配料单的状态
+//               //更新仓库编号
+//               //materialRequisitionOrderService.updateMaterialRequisitionOrderCheck(list.get(i));//更新领料单的状态
+//           //}
+//           List<MaterialRequisitionOrder> materialRequisitionOrderList1= materialRequisitionOrderService.list();
+//           List<MaterialRequisitionOrder> list2=new ArrayList<>();
+//           for (int i=0;i<materialRequisitionOrderList1.size();i++){
+//               if(materialRequisitionOrderList1.get(i).getBatchingOrder()!=null){
+//                   list2.add(materialRequisitionOrderList1.get(i));
+//               }
+//           }
+//          JSONArray jsonArray=JSONArray.fromObject(list2);
+//          res.put("jsonArray",materialRequisitionOrderList);
+//           res.put("status", "success");
+//           res.put("message", "分页数据获取成功");
+//
+//       }
+//       catch (Exception e){
+//           e.printStackTrace();
+//           res.put("status", "fail");
+//           res.put("message", "分页数据获取失败");
+//       }
+//
+//
+//        return res.toString();
+//    }
 //更新领料单单号
     @RequestMapping("updateMaterialRequisitionId")
     @ResponseBody
@@ -379,44 +307,10 @@ public class WasteInventoryController {
         }
         return res.toString();
     }
-    //更新领料单的特有数据结构
-    @RequestMapping("updateMaterialRequisitionOrder")
-    @ResponseBody
-    public String updateMaterialRequisitionOrder(@RequestBody MaterialRequisitionOrder materialRequisitionOrder ){
-        JSONObject res=new JSONObject();
-        try{
-          materialRequisitionOrderService.updateMaterialRequisitionOrder1(materialRequisitionOrder);
-            res.put("status", "success");
-            res.put("message", "更新成功");
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            res.put("status", "fail");
-            res.put("message", "更新失败");
-        }
 
 
-        return  res.toString();
-    }
-//根据领料编号获取信息
-    @RequestMapping("getByMaterialRequisitionId")
-    @ResponseBody
-    public String getByMaterialRequisitionId(String materialRequisitionId){
-        JSONObject res=new JSONObject();
-        try{
-           MaterialRequisitionOrder materialRequisitionOrder= materialRequisitionOrderService.getByMaterialRequisitionId(materialRequisitionId);
-            res.put("materialRequisitionOrder",materialRequisitionOrder);
-           res.put("status", "success");
-            res.put("message", "查询成功");
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            res.put("status", "fail");
-            res.put("message", "查询失败");
-        }
 
-        return res.toString() ;
-    }
+
     //获取最新的出库单号
     @RequestMapping("getOutBoundOrderId")
     @ResponseBody
@@ -456,53 +350,7 @@ public class WasteInventoryController {
 
         return  res.toString();
     }
-    //添加出库单
-    @RequestMapping("addOutBoundOrder")
-    @ResponseBody
-    public  String addOutBoundOrder(@RequestBody OutboundOrder outboundOrder){
-        JSONObject res=new JSONObject();
-        Calendar cal = Calendar.getInstance();
-        //获取年
-        String year = String.valueOf(cal.get(Calendar.YEAR));
-        //获取月
-        String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
-        //序列号
-        String number = "00001";
-       try{
-            //1查找是否存在出库单号 如果有序列号加1 如果没有就为001
-           List<String>  outboundOrderId= outboundOrderService.check();
-           if(outboundOrderId.size()==0){
-               number = "00001";
-           }
-           if(outboundOrderId.size()!=0){
-               String s = outboundOrderId.get(0);//原字符串
-               String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
-               number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
-           }
-           String outboundOrderId1=year+mouth+number;
-            //添加出库单
-            outboundOrder.setOutboundOrderId(outboundOrderId1);
-            //紧接着进行更新对领料单进行更新
-            outboundOrderService.updateMaterialRequisitionOrderCheck1(outboundOrder);
-            materialRequisitionOrderService.addOutboundOrder(outboundOrder);
-            //添加完进行更新操作
-           //找到最近的一个出库单号
-           List<String> outboundOrderId2=outboundOrderService.check();
-           outboundOrderService.updateOutBoundOrder(outboundOrderId2.get(0));
-           // OutboundOrder outboundOrder1=outboundOrderService.getOutBoundByMId(outboundOrder.getMaterialRequisitionOrder().getMaterialRequisitionId());
-           // outboundOrderService.updateOutBoundOrder(outboundOrder1);
-            res.put("status", "success");
-            res.put("message", "添加成功");
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            res.put("status", "fail");
-            res.put("message", "添加失败");
 
-        }
-
-        return res.toString();
-    }
 //加载出库信息列表==>接口口
     @RequestMapping("loadOutBoundList")
     @ResponseBody
@@ -527,48 +375,8 @@ catch (Exception e){
 
         return res.toString();
     }
-    //加载危废出库
-    @RequestMapping("loadWastesOutBoundList")
-    @ResponseBody
-    public  String loadWastesOutBoundList(@RequestBody Page page){
-        JSONObject res=new JSONObject();
-        try {
-            List<OutboundOrder> outboundOrderList=outboundOrderService.loadWastesOutBoundList(page);
-            res.put("data",outboundOrderList);
-            res.put("status", "success");
-            res.put("message", "查询成功");
-        }
-        catch (Exception e){
-
-            e.printStackTrace();
-            res.put("status", "fail");
-            res.put("message", "查询失败");
-        }
 
 
-         return  res.toString();
-    }
-    //加载次生出库
-    @RequestMapping("loadSecOutBoundList")
-    @ResponseBody
-    public  String loadSecOutBoundList(@RequestBody Page page){
-        JSONObject res=new JSONObject();
-        try {
-            List<OutboundOrder> outboundOrderList=outboundOrderService.loadSecOutBoundList(page);
-            res.put("data",outboundOrderList);
-            res.put("status", "success");
-            res.put("message", "查询成功");
-        }
-        catch (Exception e){
-
-            e.printStackTrace();
-            res.put("status", "fail");
-            res.put("message", "查询失败");
-        }
-
-
-        return  res.toString();
-    }
     /**
      * 获取出库总记录数
      * @return
@@ -715,54 +523,7 @@ catch (Exception e){
         }
         return res.toString();
     }
-    //添加次生出库单
-    @RequestMapping("addSecondary")
-    @ResponseBody
-    public String addSecondary(@RequestBody OutboundOrder outboundOrder){
-        JSONObject res=new JSONObject();
-        Calendar cal = Calendar.getInstance();
-        //获取年
-        String year = String.valueOf(cal.get(Calendar.YEAR));
-        //获取月
-        String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
-        //序列号
-        String number = "00001";
-        try{
-            //1查找是否存在出库单号 如果有序列号加1 如果没有就为001
-            List<String>  outboundOrderId= outboundOrderService.check();
-            if(outboundOrderId.size()==0){
-                number = "00001";
-            }
-            if(outboundOrderId.size()!=0){
-                String s = outboundOrderId.get(0);//原字符串
-                String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
-                number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
-            }
-            String outboundOrderId1=year+mouth+number;
-            //添加出库单
-            outboundOrder.setOutboundOrderId(outboundOrderId1);
-            //做添加操作
-            outboundOrderService.addSecondary(outboundOrder);
-            //添加完进行更新操作 根据入库单号
-            //查询后
-             //OutboundOrder outboundOrder1=  outboundOrderService.getOutBoundByInId(outboundOrder.getWasteInventory().getInboundOrderId());
-           //更新危废编号 客户编号 业务员编号 仓库编号
-            List<String> outboundOrderId2=outboundOrderService.check();
-            outboundOrderService.updateSecondart(outboundOrder);
-            //更新危废库存的数量
-            outboundOrderService.upWastesInventoryNumber(outboundOrder);
-            res.put("status", "success");
-            res.put("message", "添加成功");
 
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            res.put("status", "fail");
-            res.put("message", "添加失败");
-        }
-
-        return  res.toString();
-    }
     //获取两位月数
     public  static  String getMouth(String mouth){
         if(mouth.length()!=2){

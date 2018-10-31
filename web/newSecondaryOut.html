@@ -112,6 +112,68 @@
             </ol>
         </div>
         <h4 class="sub-header">次生库存列表</h4>
+        <!--查询框-->
+        <div class="row">
+            <div>
+                <!--操作按钮-->
+                <div class="pull-left col-md-6"></div>
+                <!--查询框-->
+                <div class="input-group col-md-4 pull-right" >
+                    <input type="text" class="form-control" placeholder="搜索..." id="searchContentAdd">
+                    <span class="input-group-btn">
+                            <a class="btn btn-default" onclick="searchInventory();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick="reset()"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
+                        </span>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" id="senior" style="display: none;">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group" style="margin-left: -10px;">
+                            <label class="col-sm-3 control-label">入库日期 </label>
+                            <div class="input-group">
+                                <input type="date" class="input-sm form-control" id="search-inDate" title="" onkeyup="enterSearch1()"/>
+                                <span class="input-group-addon">-</span>
+                                <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeyup="enterSearch1()"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-5">
+                        <div class="form-group">
+                            <label for="search-handelCategory" class="col-sm-4 control-label">进料方式</label>
+                            <div class="col-xs-7">
+                                <select class="form-control" id="search-handelCategory" name="search-handelCategory" onchange="searchInventory()"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-5">
+                        <div class="form-group">
+                            <label for="search-companyName"
+                                   class="col-sm-4 control-label">产废单位</label>
+                            <div class="col-xs-7">
+                                <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="search-companyName" id="search-companyName" onchange="searchInventory()"></select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-horizontal col-md-7">
+                        <div class="form-group">
+                            <label for="search-wasteId" class="col-sm-4 control-label">危废代码(最后2位)</label>
+                            <div class="col-xs-7">
+                                <input class="form-control"  name="search-wasteId" id="search-wasteId" onkeyup="enterSearch1()" style="width: 150px">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <br>
         <form method="post" id="infoForm" enctype="multipart/form-data">
             <table class="table table-bordered" id="J_tab_fam">
                 <tbody>
@@ -122,6 +184,7 @@
                         </label>
                     </th>
                     <td class="text-center">入库单号</td>
+                    <td class="text-center">入库日期</td>
                     <td class="text-center">仓库号</td>
                     <td class="text-center">产废单位</td>
                     <td class="text-center">危废名称</td>
@@ -139,6 +202,7 @@
                         </label>
                     </td>
                     <td class="text-center inboundOrderId"></td><!--入库单号-->
+                    <td class="text-center produceCompany "></td><!--入库日期-->
                     <td class="text-center produceCompany "></td><!--产废单位-->
                     <td class="text-left model-wastesName"></td>
                     <td class="text-left model-wastesName"></td>
@@ -255,7 +319,7 @@
                     <th class="text-center">危废名称</th>
                     <th class="text-center">危废代码</th>
                     <th class="text-center">产废类别</th>
-                    <th class="text-center">进料方式</th>
+                    <th class="text-center">处置方式</th>
                     <th class="text-center">数量</th>
                     <th class="text-center">备注</th>
                 </tr>
@@ -270,10 +334,13 @@
                     <td class="text-right modal-weight"></td>
                     <td class="text-right modal-materialForm"></td>
                     <td class="text-right modal-packingType" name="123">
-                        <input type='text' style='width: 100px;'  name='count' value="" id='input1' onchange='subtraction(this);'>
+                        <input type='text' style='width: 100px;'  name='count' value="" id='input1'>
                     </td>
                     <td class="text-right modal-packingType"></td>
-                    <td class="text-right modal-packingType hidden"></td>
+                    <td class="text-right modal-packingType hidden"></td><!--入库单明细-->
+                    <td class="text-right modal-packingType hidden"></td><!--公司编号-->
+                    <td class="text-right modal-packingType hidden"></td><!--转移联单-->
+                    <td class="text-right modal-packingType hidden"></td><!--仓库编号-->
                 </tr>
                 <!--<tr  >-->
                 <!--&lt;!&ndash;<td class="text-center modal-companyName"></td>&ndash;&gt;-->
