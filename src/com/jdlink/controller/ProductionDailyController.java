@@ -424,6 +424,7 @@ public class ProductionDailyController {
         List<OutboundOrder> outboundOrderTodayThirdList = new ArrayList<>();
         for (OutboundOrder outboundOrder : outboundOrderTodayList) {
             if (outboundOrder.getBoundType().equals(BoundType.WasteOutbound)) {
+                if (outboundOrder.getHandelCategory() != null)
                 switch (outboundOrder.getHandelCategory()) {
                     case Sludge:
                         todayOutboundWastesSludge += outboundOrder.getOutboundNumber();
