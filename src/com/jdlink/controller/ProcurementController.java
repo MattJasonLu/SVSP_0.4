@@ -86,6 +86,29 @@ public class ProcurementController {
     /**
      * 加载月季采购列表
      */
+    @RequestMapping("getProcurementList")
+    @ResponseBody
+    public String getProcurementList(@RequestBody Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            List<Procurement> procurements = procurementService.getProcurementList(page);
+            JSONArray array = JSONArray.fromObject(procurements);
+            res.put("data", array);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+    }
+
+
+    /**
+     * 加载月季物品明细采购列表
+     */
     @RequestMapping("getProcurementItemList")
     @ResponseBody
     public String getProcurementItemList(@RequestBody Page page) {
