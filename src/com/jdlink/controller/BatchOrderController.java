@@ -487,7 +487,7 @@ public class BatchOrderController {
         List<String> batchingOrderIdList=batchOrderService.getBatchingOrderIdList();
 
         if(batchingOrderIdList.size()==0){
-            number = "001";
+            number = "00001";
         }
         if(batchingOrderIdList.size()>0){
             String s = batchingOrderIdList.get(0);//原字符串
