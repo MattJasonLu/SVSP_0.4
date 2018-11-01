@@ -1032,11 +1032,11 @@ function updateAppointBySampleId() {
         var formType = $("select[id='wastes[" + $i + "].wastesFormType']").find("option:selected").val();
         switch(parseInt(formType)){
             case 4 : formType = "HalfSolid";break;
-            case 5 : formType = "Liquid1";break;
-            case 6 : formType = "Solid1";break;
-            case 7 : formType = "Solid1AndHalfSolid";break;
-            case 8 : formType = "HalfSolidAndLiquid1";break;
-            case 9 : formType = "Solid1AndLiquid1";break;
+            case 2 : formType = "Liquid";break;
+            case 3 : formType = "Solid";break;
+            case 5 : formType = "Solid1AndHalfSolid";break;
+            case 6 : formType = "HalfSolidAndLiquid";break;
+            case 7 : formType = "Solid1AndLiquid";break;
         }
         wastes.formType = formType;
         //wastes.formType = $("select[id='wastes[" + $i + "].wastesFormType']").find("option:selected").val();

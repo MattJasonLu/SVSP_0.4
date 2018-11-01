@@ -22,4 +22,7 @@ public interface ProcurementMapper {
     int totalEmc();
     List<Date>getNewestMouth();
     List<Date>getNewestEm();
+    List<Material> getProcurementItemList(Page page);
+    int countProcurementItemList();
+
 }

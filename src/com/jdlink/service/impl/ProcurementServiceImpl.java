@@ -85,4 +85,10 @@ public class ProcurementServiceImpl implements ProcurementService {
     public List<Procurement> getEmergencyProcurementList(Page page) {
         return procurementMapper.getEmergencyProcurementList(page);
     }
+
+    @Override
+    public List<Material> getProcurementItemList(Page page){ return procurementMapper.getProcurementItemList(page);}
+
+    @Override
+    public int countProcurementItemList(){ return procurementMapper.countProcurementItemList();}
 }

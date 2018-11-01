@@ -691,6 +691,8 @@ function viewData5() {
  * 设置危废处置模态框数据
  */
 function setOutBoundList(result) {
+    console.log("出库数据：");
+    console.log(result);
     $(".newLine").remove();                 // 删除旧数据
     // 获取id为cloneTr的tr元素
     var tr = $("#clone5");

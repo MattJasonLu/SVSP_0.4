@@ -22,4 +22,6 @@ public interface ProcurementService {
     List<Date>getNewestMouth();
     List<Date>getNewestEm();
     List<Procurement> getEmergencyProcurementList(Page page);
+    List<Material> getProcurementItemList(Page page);
+    int countProcurementItemList();
 }

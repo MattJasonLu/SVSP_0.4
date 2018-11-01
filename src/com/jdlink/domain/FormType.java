@@ -9,11 +9,9 @@ public enum FormType {
     Liquid("液态", 2),
     Solid("固态", 3),
     HalfSolid("半固态", 4),
-    Liquid1("液态", 5),
-    Solid1("固态", 6),
-    Solid1AndHalfSolid("固态+半固态", 7),
-    HalfSolidAndLiquid1("半固态+液态",8),
-    Solid1AndLiquid1("固态+液态",9),
+    Solid1AndHalfSolid("固态+半固态", 5),
+    HalfSolidAndLiquid("半固态+液态",6),
+    Solid1AndLiquid("固态+液态",7),
     ;
 
     private String name;
