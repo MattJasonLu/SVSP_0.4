@@ -706,7 +706,7 @@ function setSelectList() {
                 //刷新下拉数据
                 $('.selectpicker').selectpicker('refresh');
                 // 下拉框数据填充
-                var companyCode1 = $("#model3-companyCode");
+                var companyCode1 = $("#model3-companyName");
                 $.each(data.companyCodeList, function (index, item) {
                     var option = $('<option />');
                     option.val(parseInt(item.clientId));
@@ -732,35 +732,6 @@ function setSelectList() {
             console.log("error: " + result);
         }
     });
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getHandleCategory",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            if (result != undefined && result.status === "success") {
-                var data = eval(result);
-                console.log("下拉数据为：");
-                console.log(data);
-                // 下拉框数据填充
-                var wastesHandleCategory = $("select[name='modal-wastesHandleCategory']");
-                wastesHandleCategory.children().remove();   //清空之前数据
-                $.each(data.handleCategoryList, function (index, item) {
-                    var option = $('<option />');
-                    option.val((item.index));
-                    option.text(item.name);
-                    wastesHandleCategory.append(option);
-                });
-                wastesHandleCategory.get(0).selectedIndex = 0;
-            } else {
-                console.log("fail: " + result);
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-        }
-    });
-
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getSampleFormType",                  // url
@@ -1063,6 +1034,9 @@ function updateAppointBySampleId() {
             case 4 : formType = "HalfSolid";break;
             case 5 : formType = "Liquid1";break;
             case 6 : formType = "Solid1";break;
+            case 7 : formType = "Solid1AndHalfSolid";break;
+            case 8 : formType = "HalfSolidAndLiquid1";break;
+            case 9 : formType = "Solid1AndLiquid1";break;
         }
         wastes.formType = formType;
         //wastes.formType = $("select[id='wastes[" + $i + "].wastesFormType']").find("option:selected").val();
