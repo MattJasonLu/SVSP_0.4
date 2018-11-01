@@ -1092,6 +1092,8 @@ function setBatchingOrderList(result) {
         tr.hide();
 }
 
+var a=new Array();
+var b=new Array();
 //生成领料单
  function generateRequisition(){
      var items = $("input[name='select']:checked");//判断复选框是否选中
@@ -1100,7 +1102,7 @@ function setBatchingOrderList(result) {
          items.each(function () {
              //获得配料单号
              var batchingOrderId=  $(this).parent().parent().parent().children('td').eq(1).html();
-
+            a.push(batchingOrderId);
              //仓库编号
             var wareHouseId= $(this).parent().parent().parent().children('td').eq(13).html();
 
@@ -1137,8 +1139,9 @@ function setBatchingOrderList(result) {
           };
             console.log(data)
                  //点击确定后操作
-            add(data);
+            //add(data);
          });
+         console.log(a)
          if(confirm("是否跳转到领料单页面?")){
              window.location.href="materialRequisition1.html";
 
@@ -1176,6 +1179,8 @@ function add(data) {
 //领料单新增页面预加载
 function loadMaterialRequisitionList(){
     var page={};
+    $('#cloneTr1').siblings().remove();
+    b=a.join();
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getMaterialRequisitionList",                  // url

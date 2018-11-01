@@ -4,16 +4,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jdlink.mapper.produce.SewageTestMapper">
 <insert id="addSewageTest" parameterType="SewageTest">
-    insert into t_pr_sewagetest(id, address, ph, COD, BOD5, N2, alkalinity, bicarbonate, nitrogen, phosphorus, remarks, sampleId,nowTime)
+    insert into t_pr_sewagetest(id, address, ph, COD, BOD5, N2, alkalinity, bicarbonate, nitrogen, phosphorus, remarks, sampleId,nowTime,alkalinityCaCo3,alkalinityHCO3,bicarbonateCaCo3,bicarbonateHCO3)
     values
-    (#{id},#{address},#{ph},#{COD},#{BOD5},#{N2},#{alkalinity},#{bicarbonate},#{nitrogen},#{phosphorus},#{remarks},#{sampleId},NOW());
+    (#{id},#{address},#{ph},#{COD},#{BOD5},#{N2},#{alkalinity},#{bicarbonate},#{nitrogen},#{phosphorus},#{remarks},#{sampleId},NOW(),#{alkalinityCaCo3},#{alkalinityHCO3},#{bicarbonateCaCo3},#{bicarbonateHCO3});
 </insert>
     <select id="getSewageTestById" parameterType="String" resultType="SewageTest">
       select * from t_pr_sewagetest where id=#{id};
     </select>
     <update id="updateSewageTestById" parameterType="SewageTest">
         update t_pr_sewagetest set address=#{address},ph=#{ph},COD=#{COD},BOD5=#{BOD5},N2=#{N2},alkalinity=#{alkalinity},
-        bicarbonate=#{bicarbonate},nitrogen=#{nitrogen},phosphorus=#{phosphorus},remarks=#{remarks},sampleId=#{sampleId},nowTime=NOW()
+        bicarbonate=#{bicarbonate},nitrogen=#{nitrogen},phosphorus=#{phosphorus},remarks=#{remarks},sampleId=#{sampleId},nowTime=NOW(),alkalinityHCO3=#{alkalinityHCO3},alkalinityCaCo3=#{alkalinityCaCo3},
+        bicarbonateHCO3=#{bicarbonateHCO3},bicarbonateCaCo3=#{bicarbonateCaCo3}
         where id=#{id};
     </update>
 
