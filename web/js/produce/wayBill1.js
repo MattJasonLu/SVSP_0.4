@@ -920,10 +920,7 @@ function showAddData() {
             console.log(result);
         }
     });
-
-
 }
-
 
 /**
  * 页面准备完成后载入新增模态框下拉框信息11
@@ -1111,6 +1108,7 @@ function addNewItemLine() {
         dropupAuto: false
     });
     $('.selectpicker').selectpicker('refresh');
+    $("select[name='salesman']").selectpicker('val', salesman.salesmanId); // 设置业务员信息
 }
 
 /**
@@ -1338,4 +1336,41 @@ function setSalesmanNameAuto(){
             console.log(result);
         }
     });
+}
+
+var salesman;
+
+/**
+ * 选择公司后自动匹配业务员
+ */
+function autoSetSalesman(){
+    var companyName = $("#modal-produceCompanyName").find("option:selected").text(); // 获取选中的公司
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getSalesmanByCompanyName",             // url
+        data:{
+            companyName : companyName
+        },
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            //alert("数据获取成功！");
+            if(result != null && result.status == "success" && result.data != null){
+                console.log(result);
+                salesman = result.data;
+                $("select[name='salesman']").selectpicker('val', salesman.salesmanId); // 设置业务员信息
+            }
+        },
+        error: function (result) {
+            alert("服务器异常!");
+            console.log(result);
+        }
+    });
+}
+
+/**
+ * 选择公司和危废名称后自动匹配危废信息
+ */
+function autoSetWatesInfo(){
+
 }

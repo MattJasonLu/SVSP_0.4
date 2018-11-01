@@ -36,4 +36,6 @@ public interface SalesmanService {
     int count();
     List<String> getClientBySalesId(String salesmanId);
 
+    Salesman getSalesmanByCompanyName(String companyName);
+
 }

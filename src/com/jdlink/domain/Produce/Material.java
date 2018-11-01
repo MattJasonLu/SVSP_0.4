@@ -1,6 +1,8 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Inventory.WareHouse;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Unit;
 
 import java.util.List;
@@ -61,7 +63,42 @@ public class Material {
      * 入库状态
      */
     private IngredientState ingredientState;
+    /**
+     * 查询关键字
+     */
+    private String keywords;
+    /**
+     * 分页
+     */
+    private Page page;
+    /**
+     * 状态
+     */
+    private CheckState state;
 
+    public CheckState getState() {
+        return state;
+    }
+
+    public void setState(CheckState state) {
+        this.state = state;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
 
     public String getReceiptNumber() {
         return receiptNumber;
