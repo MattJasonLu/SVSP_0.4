@@ -5,6 +5,7 @@ import com.jdlink.domain.Produce.SampleInformation;
 import com.jdlink.domain.Produce.WayBill;
 import com.jdlink.domain.Produce.WayBillItem;
 import com.jdlink.service.ClientService;
+import com.jdlink.service.SalesmanService;
 import com.jdlink.service.WayBillService;
 import com.jdlink.util.DBUtil;
 import com.jdlink.util.DateUtil;
@@ -32,7 +33,8 @@ public class PRWayBillController {
     WayBillService wayBillService;
     @Autowired
     ClientService clientService;
-
+    @Autowired
+    SalesmanService salesmanService;
 
     @RequestMapping("addWayBill")
     @ResponseBody
@@ -484,4 +486,23 @@ public class PRWayBillController {
         return res.toString();
     }
 
+    /**
+     * 自动设置接运单业务员
+     */
+    @RequestMapping("getSalesmanByCompanyName")
+    @ResponseBody
+    public String getSalesmanByCompanyName(String companyName) {
+        JSONObject res = new JSONObject();
+        try {
+            Salesman salesman = salesmanService.getSalesmanByCompanyName(companyName);
+            res.put("data",salesman);
+            res.put("status", "success");
+            res.put("message", "获取成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取失败！");
+        }
+        return res.toString();
+    }
 }
