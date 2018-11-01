@@ -74,6 +74,12 @@ public interface InboundMapper {
     void setInboundOrderStateInvalid(String inboundOrderId);
 
     /**
+     * 提交入库单
+     * @param inboundOrderId 入库单编号
+     */
+    void setInboundOrderStateSubmit(String inboundOrderId);
+
+    /**
      * 根据编号获取入库单
      * @param inboundOrderId 入库单号
      * @return 入库单

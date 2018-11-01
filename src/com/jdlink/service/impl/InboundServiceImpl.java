@@ -122,6 +122,11 @@ public class InboundServiceImpl implements InboundService {
     }
 
     @Override
+    public void setInboundOrderStateSubmit(String inboundOrderId) {
+        inboundMapper.setInboundOrderStateSubmit(inboundOrderId);
+    }
+
+    @Override
     public InboundOrder getInboundOrderById(String inboundOrderId) {
         return inboundMapper.getInboundOrderById(inboundOrderId);
     }

@@ -17,9 +17,218 @@ function countValue() {
 /**
  * 修改
  */
-function modify() {
-    // alert();
+function showModify(e) {
+    var id = getIdByMenu(e);
+    setEditSelectList();
+    $.ajax({
+        type: "POST",
+        url: "getInboundOrderById",
+        async: false,
+        dataType: "json",
+        data: {
+            inboundOrderId: id
+        },
+        success: function (result) {
+            if (result !== undefined && result.status === "success") {
+                console.log(result);
+                setEditItemDataList(result.data);
+                // inboundOrderItemList
+                $("#editModal").modal("show");
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
 }
+
+/**
+ * 设置编辑框的下拉数据
+ */
+function setEditSelectList() {
+    // 设置下拉列表
+    // 设置次生类别
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSecondaryCategory",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var wastesName = $("select[name='editWastesName']");
+                wastesName.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.code);
+                    option.text(item.name);
+                    wastesName.append(option);
+                });
+                wastesName.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    // 设置危废代码
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getWastesInfoList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var wastesCode = $("select[name='editWastesCode']");
+                wastesCode.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.code);
+                    option.text(item.code);
+                    wastesCode.append(option);
+                });
+                // wastesCode.get(0).selectedIndex = -1;
+                //刷新下拉数据
+                $('.selectpicker').selectpicker('refresh');
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getFormTypeAndPackageType",                  // url
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                var formType = $("select[name='editFormType']");
+                formType.children().remove();
+                $.each(data.formTypeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    formType.append(option);
+                });
+                formType.get(0).selectedIndex = -1;
+                var packageType = $("select[name='editPackageType']");
+                packageType.children().remove();
+                $.each(data.packageTypeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    packageType.append(option);
+                });
+                packageType.get(0).selectedIndex = -1;
+            }
+        },
+        error: function (result) {
+
+        }
+    });
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getProcessWay",                  // url
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                var processWay = $("select[name='editProcessWay']");
+                processWay.children().remove();
+                $.each(data.processWayList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    processWay.append(option);
+                });
+                processWay.get(0).selectedIndex = -1;
+            }
+        },
+        error: function (result) {
+
+        }
+    });
+
+    // 设置计量单位
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getUnitList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                var wastesUnit = $("select[name='editWastesUnit']");
+                wastesUnit.children().remove();
+                $.each(data.unitList, function (index, item) {
+                    if (item.index == 1 || item.index == 2) {
+                        var option = $('<option />');
+                        option.val(item.index);
+                        option.text(item.name);
+                        wastesUnit.append(option);
+                    }
+                });
+                wastesUnit.get(0).selectedIndex = -1;
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+}
+
+/**
+ * 设置数据
+ * @param result
+ */
+function setEditItemDataList(result) {
+    // 获取id为cloneTr的tr元素
+    var tr = $("#itemEditClonedTr");
+    tr.siblings().remove();
+    $.each(result.inboundOrderItemList, function (index, item) {
+        var data = eval(item);
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        clonedTr.show();
+        // 循环遍历cloneTr的每一个td元素，并赋值
+        clonedTr.find("td[name='editIndex']").text(index + 1);
+        if (data.produceCompany != null) clonedTr.find("span[name='editProduceCompanyName']").text(data.produceCompany.companyName);
+        if (data.wastes != null) {
+            clonedTr.find("select[name='editWastesName']").text(data.wastes.name);
+            clonedTr.find("select[name='editWastesCode']").selectpicker('val', data.wastes.wastesId);
+        }
+        clonedTr.find("input[name='editWastesAmount']").val(parseFloat(data.wastesAmount).toFixed(3));
+        if (data.wastesUnit != null) clonedTr.find("select[name='editWastesUnit']").val(data.wastesUnit.index-1);
+        clonedTr.find("input[name='editUnitPriceTax']").val(parseFloat(data.unitPriceTax).toFixed(3));
+        clonedTr.find("input[name='editTotalPrice']").val(parseFloat(data.totalPrice).toFixed(3));
+        if (data.processWay != null) clonedTr.find("select[name='editProcessWay']").val(data.processWay.index-1);
+        if (data.formType != null) clonedTr.find("select[name='editFormType']").val(data.formType.index);
+        if (data.packageType != null) clonedTr.find("select[name='editPackageType']").val(data.packageType.index-1);
+        if (data.laboratoryTest != null) {
+            clonedTr.find("input[name='editHeatAverage']").val(parseFloat(data.laboratoryTest.heatAverage).toFixed(3));
+            clonedTr.find("input[name='editWaterContentAverage']").val(parseFloat(data.laboratoryTest.waterContentAverage).toFixed(3));
+        }
+        clonedTr.find("input[name='editRemarks']").val(data.remarks);
+        clonedTr.find("input[name='editWarehouseArea']").val(data.warehouseArea);
+
+        // 把克隆好的tr追加到原来的tr前面
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+    });
+    // 隐藏无数据的tr
+    tr.hide();
+}
+
 /**
  * 计算总页数
  * */
@@ -565,6 +774,34 @@ function setInvalid(e) {    //已作废
     }
 }
 
+function setSubmit(e) {
+    var r = confirm("确认提交该入库单吗？");
+    if (r) {
+        var id = getIdByMenu(e);
+        $.ajax({
+            type: "POST",
+            url: "setInboundOrderStateSubmit",
+            async: false,
+            dataType: "json",
+            data: {
+                inboundOrderId: id
+            },
+            success: function (result) {
+                if (result !== undefined && result.status === "success") {
+                    console.log(result);
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    }
+}
+
 /**
  * 查看数据
  * @param e
@@ -592,8 +829,6 @@ function viewData(e) {
         }
     });
     $("#viewModal").modal("show");
-
-
 }
 
 /**
@@ -814,28 +1049,6 @@ function setSelectList() {
 
         }
     });
-    // $.ajax({
-    //     type: "POST",                            // 方法类型
-    //     url: "getHandleCategory",                  // url
-    //     dataType: "json",
-    //     success: function (result) {
-    //         if (result != undefined) {
-    //             var data = eval(result);
-    //             var handleCategory = $("select[name='handleCategory']");
-    //             handleCategory.children().remove();
-    //             $.each(data.handleCategoryList, function (index, item) {
-    //                 var option = $('<option />');
-    //                 option.val(index);
-    //                 option.text(item.name);
-    //                 handleCategory.append(option);
-    //             });
-    //             handleCategory.get(0).selectedIndex = -1;
-    //         }
-    //     },
-    //     error: function (result) {
-    //
-    //     }
-    // });
     $("select[name='wastesName']").get(0).selectedIndex = -1;
 
     // 设置计量单位
@@ -863,6 +1076,12 @@ function setSelectList() {
         error: function (result) {
             console.log("error: " + result);
         }
+    });
+
+    // 中文重写select 查询为空提示信息
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 4
     });
 }
 
