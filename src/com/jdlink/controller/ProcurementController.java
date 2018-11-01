@@ -120,6 +120,41 @@ public class ProcurementController {
         }
     }
 
+    /**
+     * 获取查询物料明细总数
+     * @return
+     */
+    @RequestMapping("searchMaterialTotal")
+    @ResponseBody
+    public int searchMaterialTotal(@RequestBody Material material) {
+        try {
+            return procurementService.searchMaterialTotal(material);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 查询月季采购列表
+     */
+    @RequestMapping("searchMaterial")
+    @ResponseBody
+    public String searchMaterial(@RequestBody Material material) {
+        JSONObject res = new JSONObject();
+        try {
+            List<Material> materialList = procurementService.searchMaterial(material);
+            JSONArray array = JSONArray.fromObject(materialList);
+            res.put("data", array);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+    }
 
     /**
      * 加载应急采购列表
@@ -144,6 +179,26 @@ public class ProcurementController {
 
     }
 
+
+/**
+ * 根据编号获取信息
+ */
+    @RequestMapping("getProcurementItemListById")
+    @ResponseBody
+    public String getProcurementItemListById(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            Material material = procurementService.getMaterialById(id);
+            res.put("data", material);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+    }
 
     /**
      * 根据编号获取信息

@@ -148,7 +148,7 @@
                                     aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior1').toggle();"><span
                                     class="glyphicon glyphicon-search" aria-hidden="true"></span> 高级查询</a>
-                            <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog"
+                            <a class="btn btn-default" onclick="reset1();"><span class="glyphicon glyphicon-cog"
                                                                                 aria-hidden="true"></span> 重置</a>
                         </span>
             </div>
@@ -157,7 +157,7 @@
         <div class="panel panel-default" id="senior1" style="display: none;">
             <div class="panel-body">
                 <div class="row">
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-4">
                         <div class="form-group">
                             <label for="search1-receiptNumber" class="col-sm-4 control-label">申请单编号</label>
                             <div class="col-xs-7">
@@ -167,43 +167,42 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-4">
                         <div class="form-group">
-                            <label for="search1-applyMouth" class="col-sm-4 control-label">申请月份</label>
+                            <label for="search1-suppliesName" class="col-sm-4 control-label">物资名称</label>
                             <div class="col-xs-7">
-                                <select title="" class="months" id="search1-applyMouth" onchange="search1()">
-                                    <option value="0"></option>
-                                    <option value="1">1月</option>
-                                    <option value="1">2月</option>
-                                    <option value="1">3月</option>
-                                    <option value="1">4月</option>
-                                    <option value="1">5月</option>
-                                    <option value="1">6月</option>
-                                    <option value="1">7月</option>
-                                    <option value="1">8月</option>
-                                    <option value="1">9月</option>
-                                    <option value="1">10月</option>
-                                    <option value="1">11月</option>
-                                    <option value="1">12月</option>
-                                </select>
+                                <input type="text" class="form-control" id="search1-suppliesName"
+                                       name="search1-suppliesName"
+                                       placeholder="" onkeydown="enterSearch1()">
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-4">
                         <div class="form-group">
-                            <label for="search1-suppliesCategory" class="col-sm-4 control-label">物资类别</label>
+                            <label for="search1-specifications" class="col-sm-4 control-label">规格型号</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search1-suppliesCategory"
-                                       name="search1-suppliesCategory" placeholder="" onkeydown="enterSearch1()">
+                                <input type="text" class="form-control" id="search1-specifications"
+                                       name="search1-specifications" placeholder="" onkeydown="enterSearch1()">
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-3">
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-4">
                         <div class="form-group">
-                            <label for="search1-applyDepartment" class="col-sm-4 control-label">申请部门</label>
+                            <label for="search1-note" class="col-sm-4 control-label">备注</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search1-applyDepartment"
-                                       name="search1-applyDepartment" placeholder="" onkeydown="enterSearch1()">
+                                <input type="text" class="form-control" id="search1-note"
+                                       name="search1-note" placeholder="" onkeydown="enterSearch1()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-4">
+                        <div class="form-group">
+                            <label for="search1-note" class="col-sm-4 control-label">状态</label>
+                            <div class="col-xs-7">
+                                <select type="text" class="form-control" id="search1-state"
+                                        name="search1-state" onchange="search1()"></select>
                             </div>
                         </div>
                     </div>
@@ -226,6 +225,8 @@
                     <th class="text-center">库存量</th>
                     <th class="text-center">需求数量</th>
                     <th class="text-center">备注</th>
+                    <th class="text-center">状态</th>
+                    <th class="text-center" hidden>物资编号</th>
                 </tr>
                 </thead>
                 <tbody id="ingredientsInData">
@@ -240,6 +241,8 @@
                     <td class="text-center" name="inventory"></td>
                     <td class="text-center" name="demandQuantity"></td>
                     <td class="text-center" name="note"></td>
+                    <td class="text-center" name="state"></td>
+                    <td class="text-center" hidden name="id"></td>
                 </tr>
                 </tbody>
             </table>
@@ -381,7 +384,7 @@
             </table>
         </form>
         <div class="row text-center">
-            <a class="btn btn-success" onclick="save();">领料</a>
+            <a class="btn btn-success" onclick="save();">入库</a>
             <a class="btn btn-danger" href="ingredientsIn.html">返回</a>
         </div>
 

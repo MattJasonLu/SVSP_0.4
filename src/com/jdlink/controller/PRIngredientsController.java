@@ -28,6 +28,20 @@ public class PRIngredientsController {
     IngredientsService ingredientsService;
 
     ///////////辅料/备件入库单////////////////
+    /**
+     * 获取危废物质形态
+     * @return 物质形态
+     */
+    @RequestMapping("getProcurementCheckStateList")
+    @ResponseBody
+    public String getProcurementCheckStateList() {
+        JSONObject res = new JSONObject();
+        //JSONArray formTypeList = JSONArray.fromArray(FormType.values());
+        CheckState[] states = new CheckState[]{CheckState.ToInbound,CheckState.ToPick};
+        JSONArray stateList = JSONArray.fromArray(states);
+        res.put("stateList", stateList);
+        return res.toString();
+    }
 
     /**
      * 获取当前入库单编号
@@ -359,9 +373,9 @@ public class PRIngredientsController {
      *
      * @return
      */
-    @RequestMapping("getItemsAmoutsExist")
+    @RequestMapping("getItemsAmountsExist")
     @ResponseBody
-    public String getItemsAmoutsExist(@RequestBody Ingredients ingredients) {
+    public String getItemsAmountsExist(@RequestBody Ingredients ingredients) {
         JSONObject res = new JSONObject();
         // 获取枚举
         try {
