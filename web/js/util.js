@@ -40,7 +40,7 @@ function getHandleCategoryFromStr(handleCategory) {
         case "精馏残渣":
             res = "Distillation";
             break;
-        case "悬挂连":
+        case "悬挂链":
             res = "Suspension";
             break;
         default:
