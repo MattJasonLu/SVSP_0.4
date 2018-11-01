@@ -13,12 +13,12 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/wastesAnalysis.js"></script>
+    <script src="js/produce/sampleInfoAnalysis.js"></script>
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');     //当前页数
 </script>
-<body onload="loadWasteIntoList();">
+<body onload="loadPageList();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -184,10 +184,7 @@
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
-
                 </div>
             </div>
             <br>
@@ -199,25 +196,22 @@
                             <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
                         </label>
                     </th>
-                    <th class="text-center">序号</th>
-                    <th class="text-center">收样日期</th>
                     <th class="text-center">联单号码</th>
                     <th class="text-center">产废单位</th>
-                    <th class="text-center">废物名称</th>
-                    <th class="text-center">废物类别</th>
+                    <th class="text-center">危废名称</th>
+                    <th class="text-center">危废代码</th>
                     <th class="text-center">废物形态</th>
                     <th class="text-center">pH</th>
-                    <th class="text-center">热值kal/kg</th>
                     <th class="text-center">灰分%</th>
                     <th class="text-center">水分%</th>
-                    <th class="text-center">氟含量%</th>
-                    <th class="text-center">氯含量%</th>
+                    <th class="text-center">热值kal/kg</th>
                     <th class="text-center">硫含量%</th>
+                    <th class="text-center">氯含量%</th>
+                    <th class="text-center">氟含量%</th>
                     <th class="text-center">磷含量%</th>
                     <th class="text-center">闪点℃</th>
                     <th class="text-center">粘度mpa·s</th>
-                    <th class="text-center">熔融温度℃</th>
-                    <th class="text-center">备注</th>
+                    <th class="text-center">热融</th>
                 </tr>
                 </thead>
                 <tbody id="tbody1">
@@ -228,30 +222,25 @@
                                 <!--<input class="checkbox" type="checkbox" value="option1" name="select" id="select">-->
                             </label>
                         </td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center hidden"></td>
+                        <td class="text-center" name="transferDraftId"></td>
+                        <td class="text-center" name="produceCompanyName"></td>
+                        <td class="text-center" name="wastesName"></td>
+                        <td class="text-center" name="wastesCode"></td>
+                        <td class="text-center" name="formType"></td>
+                        <td class="text-center" name="PH"></td>
+                        <td class="text-center" name="ash"></td>
+                        <td class="text-center" name="water"></td>
+                        <td class="text-center" name="heat"></td>
+                        <td class="text-center" name="sulfur"></td>
+                        <td class="text-center" name="chlorine"></td>
+                        <td class="text-center" name="fluorine"></td>
+                        <td class="text-center" name="phosphorus"></td>
+                        <td class="text-center" name="flashPoint"></td>
+                        <td class="text-center" name="viscosity"></td>
+                        <td class="text-center" name=""></td>
                     </tr>
                 </tbody>
             </table>
-            <!--分页-->
         </div>
     </div>
     <!--分页1-->

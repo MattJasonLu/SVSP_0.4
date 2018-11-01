@@ -1,12 +1,9 @@
 package com.jdlink.domain.Inventory;
 
-import com.jdlink.domain.Client;
-import com.jdlink.domain.FormType;
-import com.jdlink.domain.PackageType;
+import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.LaboratoryTest;
 import com.jdlink.domain.Produce.ProcessWay;
-import com.jdlink.domain.Wastes;
 
 import java.util.Date;
 
@@ -46,7 +43,7 @@ public class InboundOrderItem {
     /**
      * 单位
      */
-    private String wastesUnit;
+    private Unit wastesUnit;
     /**
      * 单价
      */
@@ -216,11 +213,11 @@ public class InboundOrderItem {
         this.wastesAmount = wastesAmount;
     }
 
-    public String getWastesUnit() {
+    public Unit getWastesUnit() {
         return wastesUnit;
     }
 
-    public void setWastesUnit(String wastesUnit) {
+    public void setWastesUnit(Unit wastesUnit) {
         this.wastesUnit = wastesUnit;
     }
 

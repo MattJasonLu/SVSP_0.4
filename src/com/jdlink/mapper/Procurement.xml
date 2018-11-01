@@ -34,6 +34,17 @@
             limit #{start}, #{count}
         </if>
     </select>
+    <!--获取采购明细-->
+    <select id="getProcurementItemList" resultType="Material">
+        select * from t_pl_material
+        <if test="start != null and count != null and count != 0">
+            limit #{start}, #{count};
+        </if>
+    </select>
+
+    <select id="countProcurementItemList" resultType="int">
+        select count(*) from t_pl_material;
+    </select>
     <!--获取应急采购-->
     <select id="getEmergencyProcurementList" resultMap="ProcurementRM">
         select * from t_pl_procurement   where procurementCategory='0'order by nowTime desc

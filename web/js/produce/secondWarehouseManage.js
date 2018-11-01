@@ -378,6 +378,7 @@ function getSelectedInfo() {
             console.log("error: " + result);
         }
     });
+
 }
 
 /**
@@ -487,7 +488,7 @@ function addData(state) {
                 wastesId: tr.find("select[name='wastesCode']").val()
             },
             wastesAmount: tr.find("input[name='wastesAmount']").val(),
-            wastesUnit: tr.find("input[name='wastesUnit']").val(),
+            wastesUnit: tr.find("select[name='wastesUnit']").val(),
             unitPriceTax: tr.find("input[name='unitPriceTax']").val(),
             totalPrice: tr.find("td[name='totalPrice']").text(),
             processWay: tr.find("select[name='processWay']").val(),
@@ -616,7 +617,7 @@ function setItemDataList(result) {
             clonedTr.find("td[name='wastesCode']").text(data.wastes.wastesId);
         }
         clonedTr.find("td[name='wastesAmount']").text(parseFloat(data.wastesAmount).toFixed(3));
-        clonedTr.find("td[name='wastesUnit']").text(data.wastesUnit);
+        if (data.wastesUnit != null) clonedTr.find("td[name='wastesUnit']").text(data.wastesUnit.name);
         clonedTr.find("td[name='unitPriceTax']").text(parseFloat(data.unitPriceTax).toFixed(3));
         clonedTr.find("td[name='totalPrice']").text(parseFloat(data.totalPrice).toFixed(3));
         if (data.processWay != null) clonedTr.find("td[name='processWay']").text(data.processWay.name);
@@ -836,6 +837,33 @@ function setSelectList() {
     //     }
     // });
     $("select[name='wastesName']").get(0).selectedIndex = -1;
+
+    // 设置计量单位
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getUnitList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                var wastesUnit = $("select[name='wastesUnit']");
+                wastesUnit.children().remove();
+                $.each(data.unitList, function (index, item) {
+                    if (item.index == 1 || item.index == 2) {
+                        var option = $('<option />');
+                        option.val(item.index);
+                        option.text(item.name);
+                        wastesUnit.append(option);
+                    }
+                });
+                wastesUnit.get(0).selectedIndex = -1;
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
 }
 
 /**
