@@ -242,7 +242,6 @@ function  batchingList() {
     setSeniorSelectedList();
 
     //自动赋值
-    $('#date').val(dateToString(new Date()));
     $('#createDate').val(dateToString(new Date()))
    var data= getCurrentUserData();
     console.log(data)
@@ -470,18 +469,23 @@ function setWasteInventoryList(result) {
                                 $(this).html(obj.handleCategory.name);
                             }
                             break;
-                        //数量
                         case (9):
+                            if(obj.processWay!=null){
+                                $(this).html(obj.processWay.name);
+                            }
+                            break;
+                        //数量
+                        case (10):
                             $(this).html(obj.actualCount.toFixed(2));
                             break;
                         //剩余数量
-                        case (10):
+                        case (11):
                             $(this).html(obj.leftNumeber.toFixed(2));
                             break;
-                        case (11):
+                        case (12):
                             $(this).html(obj.remarks);
                             break;
-                        case (12):
+                        case (13):
                             $(this).html(obj.inboundOrderItemId);
                             break;
                     }
@@ -595,30 +599,35 @@ function setBatchingWList(result) {
                         $(this).html(obj.handleCategory.name);
                     }
                     break;
-                //数量
+                //处置类别
                 case (7):
+                    if(obj.processWay!=null){
+                        $(this).html(obj.processWay.name);
+                    }
                     break;
-                    //剩余数量
+                    //数量
                 case (8):
-                    $(this).html(obj.actualCount.toFixed(2));
                     break;
                 case (9):
-                    $(this).html(obj.remarks);
+                    $(this).html(obj.actualCount.toFixed(2));
                     break;
                 case (10):
-                    $(this).html(obj.inboundOrderItemId);
+                    $(this).html(obj.remarks);
                     break;
                 case (11):
+                    $(this).html(obj.inboundOrderItemId);
+                    break;
+                case (12):
                     if(obj.produceCompany!=null){
                         $(this).html(obj.produceCompany.clientId);
                     }
                     break;
-                case (12):
+                case (13):
                     if(obj.wareHouse!=null){
                         $(this).html(obj.wareHouse.wareHouseId);
                     }
                     break;
-                case (13):
+                case (14):
                         $(this).html(obj.transferDraftId);
                     break;
             }
@@ -868,18 +877,18 @@ function save() {
     $(".myclass2").each(function () {
         var data={
             inboundOrder:{ inboundOrderId:$(this).children('td').eq(0).html()},
-            wareHouse:{ wareHouseId:$(this).children('td').eq(12).html()},
-            produceCompany:{clientId:$(this).children('td').eq(11).html()},
+            wareHouse:{ wareHouseId:$(this).children('td').eq(13).html()},
+            produceCompany:{clientId:$(this).children('td').eq(12).html()},
             wastesName:$(this).children('td').eq(3).html(),
             wasteCategory:$(this).children('td').eq(5).html(),
-            //handelCategory:($(this).children('td').eq(6).html()),
-            batchingNumber:$(this).children('td').eq(7).children('input').val(),//配料的数量
+            handelCategory:getHandleCategoryFromStr($(this).children('td').eq(6).html()),
+            batchingNumber:$(this).children('td').eq(8).children('input').val(),//配料的数量
             batchingDate:$("#date").val(),//配料日期
             createDate:$("#createDate").val(),//创建日期
             creator:$("#creator").val(),
-            inboundOrderItemId:$(this).children('td').eq(10).html(),
-            transferDraftId:$(this).children('td').eq(13).html(),
-
+            inboundOrderItemId:$(this).children('td').eq(11).html(),
+            transferDraftId:$(this).children('td').eq(14).html(),
+            processWay:getProcessWayFromStr($(this).children('td').eq(7).html()),
     };
         console.log(data);
         $.ajax({
@@ -1026,28 +1035,28 @@ function setBatchingOrderList(result) {
 
                             break;
                         // 类别
-                        case (5):
-                            $(this).html(obj.wasteCategory);
-                            break;
+                        // case (5):
+                        //     $(this).html(obj.wasteCategory);
+                        //     break;
                         // 配量数量(吨)
-                        case (6):
+                        case (5):
                             $(this).html(obj.batchingNumber.toFixed(2));
                             break;
                         // 配量日期
-                        case (7):
+                        case (6):
                                 $(this).html(getDateStr(obj.batchingDate));
                             break;
                         //创建日期
-                        case (8):
+                        case (7):
                             $(this).html(getDateStr(obj.createDate));
                             break;
                         //联单号
-                        case (9):
+                        case (8):
                                 $(this).html((obj.transferDraftId));
 
                             break;
                         //状态
-                        case (10):
+                        case (9):
                             if(obj.checkState!=null){
                                 $(this).html(obj.checkState.name);
                             }
@@ -1649,17 +1658,17 @@ function CalRemainQuantities(item) {
     }
 
     if(　!isNaN(count)){
-        var inboundOrderItemId=$(item).parent().parent().children('td').eq(10).html();
+        var inboundOrderItemId=$(item).parent().parent().children('td').eq(11).html();
         console.log(inboundOrderItemId)
         $('.myclass').each(function () {
-            if($(this).children('td').eq(12).html()==inboundOrderItemId){
-                var total= parseFloat($(this).children('td').eq(9).html());
+            if($(this).children('td').eq(13).html()==inboundOrderItemId){
+                var total= parseFloat($(this).children('td').eq(10).html());
                 console.log(total)
                 //剩余数量
                 var residual=total-parseFloat(count);
                 if(parseFloat(residual)>=0){
                     $(item).parent().next().html(residual.toFixed(2))
-                    $(this).children('td').eq(10).html(residual.toFixed(2))//同步到上面的剩余数量
+                    $(this).children('td').eq(11).html(residual.toFixed(2))//同步到上面的剩余数量
 
                 }
                 else {

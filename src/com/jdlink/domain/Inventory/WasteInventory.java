@@ -71,6 +71,8 @@ public class WasteInventory {
      */
     private String  wastesCode;
 
+
+
     /**
      * 进料方式
      */
@@ -136,6 +138,14 @@ public class WasteInventory {
 
 
     private String remarks;
+
+    public String getWastesCode() {
+        return wastesCode;
+    }
+
+    public void setWastesCode(String wastesCode) {
+        this.wastesCode = wastesCode;
+    }
 
     public String getWastesName() {
         return wastesName;
