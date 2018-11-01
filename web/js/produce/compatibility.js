@@ -1209,40 +1209,73 @@ function confirmCompatibilityId() {
                         $(this).html(obj.calorific.toFixed(2));
                         calorificTotal+=parseFloat(obj.calorific.toFixed(2));
                         break;
-                    //灰分
+                    //热值阈值
                     case (7):
+                        $(this).html(obj.calorificThreshold);
+                        break;
+                    //灰分
+                    case (8):
                         $(this).html(obj.ash.toFixed(2));
                         ashTotal+=parseFloat(obj.ash.toFixed(2));
                         break;
+                    //灰分阈值
+                    case (9):
+                        $(this).html(obj.ashThreshold);
+                        break;
                     //水分
-                    case (8):
+                    case (10):
                         $(this).html(obj.water.toFixed(2));
                         waterTotal+=parseFloat(obj.water.toFixed(2))
                         break;
+                        //水分阈值
+                    //灰分阈值
+                    case (11):
+                        $(this).html(obj.waterThreshold);
+                        break;
                     //CL
-                    case (9):
+                    case (12):
                         $(this).html(obj.cl.toFixed(2));
                         clTotal+=parseFloat(obj.cl.toFixed(2))
                         break;
+                    //CL阈值
+                    case (13):
+                        $(this).html(obj.clThreshold);
+                        break;
                     //S
-                    case (10):
+                    case (14):
                         $(this).html(obj.s.toFixed(2));
                         sTotal+=parseFloat(obj.s.toFixed(2));
                         break;
+                      //s阈值
+                    case (15):
+                        $(this).html(obj.sThreshold);
+                        break;
                     //P
-                    case (11):
+                    case (16):
                         $(this).html(obj.p.toFixed(2));
                         pTotal+=parseFloat(obj.p.toFixed(2));
                         break;
+                        //p阈值
+                    case (17):
+                        $(this).html(obj.phThreshold);
+                        break;
                     //F
-                    case (12):
+                    case (18):
                         $(this).html(obj.f.toFixed(2));
                         fTotal+=parseFloat(obj.f.toFixed(2));
                         break;
+                        //f阈值
+                    case (19):
+                        $(this).html(obj.fThreshold);
+                        break;
                     //PH
-                    case (13):
+                    case (20):
                         $(this).html(obj.ph.toFixed(2));
                         phTotal+=parseFloat(obj.ph.toFixed(2));
+                        break;
+                        //ph阈值
+                    case (21):
+                        $(this).html(obj.phThreshold);
                         break;
                 }
                 clonedTr.removeAttr('id');
@@ -1950,8 +1983,8 @@ function addCompatibility() {
 
 
     var data={
-        totalDailyAmount:$("dailyRatioTota4").html(),
-        weeklyDemandTotalAggregate:$("weeklyDemandTotalAdd4").html(),
+        totalDailyAmount:$("#dailyRatioTota4").html(),
+        weeklyDemandTotalAggregate:$("#weeklyDemandTotalAdd4").html(),
         calorificAvg:parseFloat(calorificSum/index1).toFixed(2),
         ashAvg:parseFloat(ashAvgSum/index1).toFixed(2),
         waterAvg:parseFloat(waterSum/index1).toFixed(2),
@@ -1961,13 +1994,66 @@ function addCompatibility() {
         fAvg:parseFloat(fSum/index1).toFixed(2),
         phAvg:parseFloat(phSum/index1).toFixed(2),
     };
+     console.log(data)
      $.ajax({
          type:'POST',
          url:"addCompatibilityNew",
          data:JSON.stringify(data),
          dataType: "json",
          contentType: "application/json;charset=utf-8",
+         success:function (result) {
+             if (result != undefined && result.status == "success"){
+                 //1添加明细
+                 $('.myclass3').each(function () {
+                     var dataItem={
+                         handleCategory:$(this).children('td').eq(1).find('select').get(0).selectedIndex,
+                         formType:$(this).children('td').eq(2).find('select').get(0).selectedIndex,
+                         proportion:$(this).children('td').eq(5).html(),
+                         dailyRatio:$(this).children('td').eq(4).html(),
+                         weeklyDemandTotal:$(this).children('td').eq(3).find("input").val(),
+                         calorific:$(this).children('td').eq(6).find("input").val(),
+                         calorificThreshold:$(this).children('td').eq(7).find("input").val(),
+                         ash:$(this).children('td').eq(8).find("input").val(),
+                         ashThreshold:$(this).children('td').eq(9).find("input").val(),
+                         water:$(this).children('td').eq(10).find("input").val(),
+                         waterThreshold:$(this).children('td').eq(11).find("input").val(),
+                         cl:$(this).children('td').eq(12).find("input").val(),
+                         clThreshold:$(this).children('td').eq(13).find("input").val(),
+                         s:$(this).children('td').eq(14).find("input").val(),
+                         sThreshold:$(this).children('td').eq(15).find("input").val(),
+                         p:$(this).children('td').eq(16).find("input").val(),
+                         pThreshold:$(this).children('td').eq(17).find("input").val(),
+                         f:$(this).children('td').eq(18).find("input").val(),
+                         fThreshold:$(this).children('td').eq(19).find("input").val(),
+                         ph:$(this).children('td').eq(20).find("input").val(),
+                         phThreshold:$(this).children('td').eq(21).find("input").val(),
+                     };
+                     $.ajax({
+                         type:'POST',
+                         url:"addCompatibilityItemNew",
+                         data:JSON.stringify(dataItem),
+                         dataType: "json",
+                         contentType: "application/json;charset=utf-8",
+                         success:function (result) {
+                             if (result != undefined && result.status == "success"){
+
+                             }
+                         },
+                         error:function (result) {
+
+                         }
+                     })
+
+
+                 })
+             }
+                 },
+         error:function (result) {
+             alert("服务器异常!")
+         }
      })
+
+
 
 
 
