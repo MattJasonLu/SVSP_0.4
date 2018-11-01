@@ -315,10 +315,11 @@ $.ajax({
                     <th class="text-center">危废名称</th>
                     <th class="text-center">包装类型</th>
                     <th class="text-center">单位</th>
-                    <th class="text-center">处置单价</th>
                     <th class="text-center" style="width: 100px">合同量</th>
+                    <th class="text-center">处置单价</th>
                     <th class="text-center" style="width: 100px">处置金额</th>
                     <th class="text-center">运输方式</th>
+                    <th class="text-center">备注</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -338,9 +339,11 @@ $.ajax({
                             <option value="0">0</option>
                         </select>
                     </td>
+                    <td class="text-center"><input class="focus" title="" style="width: 100%"></td>
                 </tr>
                 <tr id="plusBtn">
                     <td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>

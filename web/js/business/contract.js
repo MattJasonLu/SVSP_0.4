@@ -62,6 +62,67 @@ function totalPage(contractIndex) {
     return total;
 }
 
+
+/**
+ * 省略显示页码
+ */
+function setPageCloneAfter(contractIndex,currentPageNumber) {
+    var total = totalPage(contractIndex);//合同页面特殊 需加入标记
+    var pageNumber = 5;         // 页码数
+    if (total > pageNumber) { // 大于5页时省略显示
+        $(".beforeClone").remove();          // 删除之前克隆页码
+        $("#next").prev().hide();            // 将页码克隆模板隐藏
+        if (currentPageNumber <= (parseInt(pageNumber/2) + 1)) {   // 如果pageNumber = 5,当前页小于3显示前五页
+            for (var i = 0; i < pageNumber; i++) {
+                var li = $("#next").prev();
+                var clonedLi = li.clone();
+                clonedLi.show();
+                clonedLi.find('a:first-child').text(i + 1);          // 页数赋值
+                clonedLi.find('a:first-child').click(function () {    // 设置点击事件
+                    var num = $(this).text();
+                    switchPage(num);        // 跳转页面
+                });
+                clonedLi.addClass("beforeClone");
+                clonedLi.removeAttr("id");
+                clonedLi.insertAfter(li);
+            }
+        } else if(currentPageNumber <= total - parseInt(pageNumber/2)){  // 如果pageNumber = 5,大于3时显示其前后两页
+            for (var i = currentPage - parseInt(pageNumber/2); i <= parseInt(currentPage) + parseInt(pageNumber/2); i++) {
+                var li = $("#next").prev();
+                var clonedLi = li.clone();
+                clonedLi.show();
+                clonedLi.find('a:first-child').text(i);          // 页数赋值
+                clonedLi.find('a:first-child').click(function () {    // 设置点击事件
+                    var num = $(this).text();
+                    switchPage(num);        // 跳转页面
+                });
+                clonedLi.addClass("beforeClone");
+                clonedLi.removeAttr("id");
+                clonedLi.insertAfter(li);
+            }
+        } else if(currentPageNumber > total - parseInt(pageNumber/2)){    // 如果pageNumber = 5,显示最后五页
+            for (var i = total - pageNumber + 1; i <= total; i++) {
+                var li = $("#next").prev();
+                var clonedLi = li.clone();
+                clonedLi.show();
+                clonedLi.find('a:first-child').text(i);          // 页数赋值
+                clonedLi.find('a:first-child').click(function () {    // 设置点击事件
+                    var num = $(this).text();
+                    switchPage(num);        // 跳转页面
+                });
+                clonedLi.addClass("beforeClone");
+                clonedLi.removeAttr("id");
+                clonedLi.insertAfter(li);
+            }
+        }
+    }
+    if(currentPageNumber == 1){
+        $("#previous").next().next().eq(0).addClass("oldPageClass");
+        $("#previous").next().next().eq(0).addClass("active");       // 将首页页码标蓝
+    }
+}
+
+
 /**
  * 设置克隆页码
  * */
@@ -148,7 +209,7 @@ function switchPage(pageNumber) {
     page.count = countValue();                        //可选
     page.pageNumber = pageNumber;
     currentPage = pageNumber;                   //当前页面
-    setPageCloneAfter(pageNumber);        // 重新设置页码
+    setPageCloneAfter(contractIndex,pageNumber);        // 重新设置页码
     addPageClass(pageNumber);           // 设置页码标蓝
     page.contractIndex = contractIndex;
     //addClass("active");
@@ -223,7 +284,7 @@ function inputSwitchPage() {
             $("#endPage").removeClass("disabled");
         }
         currentPage = pageNumber;
-        setPageCloneAfter(pageNumber);        // 重新设置页码
+        setPageCloneAfter(contractIndex,pageNumber);        // 重新设置页码
         addPageClass(pageNumber);           // 设置页码标蓝
         var page = {};
         page.count = countValue();//可选
@@ -320,7 +381,7 @@ function loadPageContractManageList() {
             if (result != undefined && result.status == "success") {
                 console.log(result);
                 setPageClone(result);
-                setPageCloneAfter(pageNumber);        // 重新设置页码
+                setPageCloneAfter(contractIndex,pageNumber);        // 重新设置页码
             } else {
                 console.log(result.message);
             }
@@ -1318,7 +1379,9 @@ function setContractListModal(result) {
                     if(obj.transport!=null){
                         $(this).html(obj.transport.name);
                     }
-
+                    break;
+                case (9):
+                    $(this).html(obj.remarks);
                     break;
             }
         });
@@ -2403,11 +2466,11 @@ function importExcel() {
 
 //计算总价
 function calculateTotalPrice(item) {
-    var unitPrice=$(item).parent().parent().children('td').eq(5).children('input').val();
+    var unitPrice=$(item).parent().parent().children('td').eq(6).children('input').val();
     if(unitPrice.length==0){
         unitPrice=0;
     }
-    var contractAmount=$(item).parent().parent().children('td').eq(6).children('input').val();
+    var contractAmount=$(item).parent().parent().children('td').eq(5).children('input').val();
     if(contractAmount.length==0){
         contractAmount=0;
     }
@@ -2488,14 +2551,14 @@ function contractWastesSave() {
                                 client: {clientId: $('#companyName').selectpicker('val')},
                                 wastesCode: $(this).children('td').eq(1).children('div').find('button').attr('title'),
                                 wastesName: $(this).children('td').eq(2).children('input').val(),
-                                packageTypeList: $(this).children('td').eq(3).find('select').get(0).selectedIndex,
+                                packageType: $(this).children('td').eq(3).find('select').get(0).selectedIndex,
                                 transport:$(this).children('td').eq(8).children('select').get(0).selectedIndex,
                                 util:$(this).children('td').eq(4).children('select').get(0).selectedIndex,
                                 // packageType: $(this).children('td').eq(3).children('select').val(),
                                 // transport: $(this).children('td').eq(8).children('select').val(),
                                 // util: $(this).children('td').eq(4).children('select').val(),
-                                unitPriceTax: $(this).children('td').eq(5).children('input').val(),
-                                contractAmount: $(this).children('td').eq(6).children('input').val(),
+                                unitPriceTax: $(this).children('td').eq(6).children('input').val(),
+                                contractAmount: $(this).children('td').eq(5).children('input').val(),
                                 totalPrice: $(this).children('td').eq(7).children('input').val(),
                                 remarks: $(this).children('td').eq(9).children('input').val(),
                             };
@@ -2601,14 +2664,14 @@ function contractWastesSave() {
                                 client: {clientId: $('#companyName').selectpicker('val')},
                                 wastesCode: $(this).children('td').eq(1).children('div').find('button').attr('title'),
                                 wastesName: $(this).children('td').eq(2).children('input').val(),
-                                packageTypeList: $(this).children('td').eq(3).find('select').get(0).selectedIndex,
+                                packageType: $(this).children('td').eq(3).find('select').get(0).selectedIndex,
                                 transport:$(this).children('td').eq(8).children('select').get(0).selectedIndex,
                                 util:$(this).children('td').eq(4).children('select').get(0).selectedIndex,
                                 // packageType: $(this).children('td').eq(3).children('select').val(),
                                 // transport: $(this).children('td').eq(8).children('select').val(),
                                 // util: $(this).children('td').eq(4).children('select').val(),
-                                unitPriceTax: $(this).children('td').eq(5).children('input').val(),
-                                contractAmount: $(this).children('td').eq(6).children('input').val(),
+                                unitPriceTax: $(this).children('td').eq(6).children('input').val(),
+                                contractAmount: $(this).children('td').eq(5).children('input').val(),
                                 totalPrice: $(this).children('td').eq(7).children('input').val(),
                                 remarks: $(this).children('td').eq(9).children('input').val(),
                             };
@@ -2785,10 +2848,6 @@ function contractWastesSubmit(){
 
 //克隆行方法
 function addNewLine() {
-    $('.selectpicker').selectpicker({
-        language: 'zh_CN',
-        size:6
-    });
     // // 获取id为cloneTr的tr元素
     var tr = $("#plusBtn").prev();
     // 克隆tr，每次遍历都可以产生新的tr
@@ -4592,9 +4651,10 @@ function contractAdjustSave() {
                             packageType: $(this).children('td').eq(3).children('select').get(0).selectedIndex,
                             transport:$(this).children('td').eq(8).children('select').get(0).selectedIndex,
                             util:$(this).children('td').eq(4).children('select').get(0).selectedIndex,
-                            unitPriceTax:$(this).children('td').eq(5).children('input').val(),
-                            contractAmount:$(this).children('td').eq(6).children('input').val(),
+                            unitPriceTax:$(this).children('td').eq(6).children('input').val(),
+                            contractAmount:$(this).children('td').eq(5).children('input').val(),
                             totalPrice:$(this).children('td').eq(7).children('input').val(),
+                            remarks:$(this).children('td').eq(9).children('input').val(),
                         };
                         console.log(quotationItemData);
                         //1添加报价单明细
@@ -4680,9 +4740,10 @@ function contractAdjustSave() {
                             packageType:$(this).children('td').eq(3).children('select').get(0).selectedIndex,
                             transport:$(this).children('td').eq(8).children('select').get(0).selectedIndex,
                             util:$(this).children('td').eq(4).children('select').get(0).selectedIndex,
-                            unitPriceTax:$(this).children('td').eq(5).children('input').val(),
-                            contractAmount:$(this).children('td').eq(6).children('input').val(),
+                            unitPriceTax:$(this).children('td').eq(6).children('input').val(),
+                            contractAmount:$(this).children('td').eq(5).children('input').val(),
                             totalPrice:$(this).children('td').eq(7).children('input').val(),
+                            remarks:$(this).children('td').eq(9).children('input').val(),
                         };
                         console.log(quotationItemData);
                        // 1添加报价单明细
@@ -5871,8 +5932,8 @@ function adjustNewContract() {
                             // cloneTr.children('td').eq(1).find('select').selectpicker('val', item.wastesCode);
                             cloneTr.children('td').eq(2).children('input').val(item.wastesName);
                             // cloneTr.children('td').eq(4).children('input').val(item.util);
-                            cloneTr.children('td').eq(5).children('input').val(item.unitPriceTax.toFixed(2));
-                            cloneTr.children('td').eq(6).children('input').val(item.contractAmount.toFixed(2));
+                            cloneTr.children('td').eq(5).children('input').val(item.contractAmount.toFixed(2));
+                            cloneTr.children('td').eq(6).children('input').val(item.unitPriceTax.toFixed(2));
                             cloneTr.children('td').eq(7).children('input').val(item.totalPrice.toFixed(2));
                             if(item.packageType!=null){
                                 cloneTr.children('td').eq(3).children('select').val(item.packageType.index);
@@ -5883,6 +5944,7 @@ function adjustNewContract() {
                             if(item.transport!=null){
                                 cloneTr.children('td').eq(8).children('select').val(item.transport.index);
                             }
+                            cloneTr.children('td').eq(9).children('input').val(item.remarks);
 
 
                             //危废编码赋值
@@ -6039,8 +6101,8 @@ function adjustNewContract() {
                             cloneTr.children("td:eq(0)").append(delBtn);
                             cloneTr.children('td').eq(2).children('input').val(item.wastesName);
                             // cloneTr.children('td').eq(4).children('input').val(item.util);
-                            cloneTr.children('td').eq(5).children('input').val(item.unitPriceTax.toFixed(2));
-                            cloneTr.children('td').eq(6).children('input').val(item.contractAmount.toFixed(2));
+                            cloneTr.children('td').eq(6).children('input').val(item.unitPriceTax.toFixed(2));
+                            cloneTr.children('td').eq(5).children('input').val(item.contractAmount.toFixed(2));
                             cloneTr.children('td').eq(7).children('input').val(item.totalPrice.toFixed(2));
                             if (item.packageType != null) {
                                 cloneTr.children('td').eq(3).children('select').val(item.packageType.index);
@@ -6051,6 +6113,7 @@ function adjustNewContract() {
                             if(item.util!=null){
                                 cloneTr.children('td').eq(4).children('select').val(item.util.index);
                             }
+                            cloneTr.children('td').eq(9).children('input').val(item.remarks);
                             //危废编码赋值
                             $.ajax({
                                 type:'POST',

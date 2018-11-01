@@ -365,27 +365,27 @@ function setSoftTestList(result) {
                     break;
                 //浊度FTU
                 case (3):
-                    $(this).html((obj.basicity));
+                    $(this).html((obj.basicity).toFixed(2));
                     break;
                 case (4):
                     // 硬度
-                    $(this).html(obj.hardness);
+                    $(this).html(obj.hardness.toFixed(2));
                     break;
                 case (5):
                     // ph
-                    $(this).html(obj.PH);
+                    $(this).html(obj.PH.toFixed(2));
                     break;
                 case (6):
                     // 电导率
-                    $(this).html(obj.electricalConductivity);
+                    $(this).html(obj.electricalConductivity.toFixed(2));
                     break;
                 case (7):
                     // 全碱度
-                    $(this).html(obj.basicity);
+                    $(this).html(obj.basicity.toFixed(2));
                     break;
                 case (8):
                     // 酚酞碱度
-                    $(this).html(obj.phenolphthalein);
+                    $(this).html(obj.phenolphthalein.toFixed(2));
                     break;
                 case (9):
                     // 备注
