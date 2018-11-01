@@ -101,7 +101,7 @@
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
                         <!--<a class="btn btn-primary btn-xs" onclick="viewPw();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查看</a>-->
-                        <!--<a class="btn btn-primary btn-xs" href=""><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>-->
+                        <a class="btn btn-primary btn-xs" onclick="addPw()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                         <a class="btn btn-primary btn-xs" onclick="importExcelChoose();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary btn-xs" onclick="exportExcel();"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                         <!--<a class="btn btn-primary btn-xs" onclick="cancelPw()"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> 作废</a>-->
@@ -551,6 +551,132 @@
                         </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--添加模态框-->
+    <div class="modal fade bs-example-modal-lg" id="appointModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document"  style="width: 85%">
+            <div class="modal-content" >
+                <div class="modal-header row">
+                    <div class="col-md-3">
+                        <h4 class="modal-title">配伍周计划添加</h4></div>
+                    <div class="col-md-7"></div>
+                    <div class="col-md-2"> <p class="pull-left" >配伍计划单号&nbsp;&nbsp;&nbsp;&nbsp;</p><p id="compatibilityId4"></p></div>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <td class="text-center">序号</td>
+                            <td class="text-center" style="width: 100px">进料方式</td>
+                            <td class="text-center" style="width: 100px">物质形态</td>
+                            <td class="text-center">周需求总量</td>
+                            <td class="text-center">每日配置量</td>
+                            <td class="text-center">比例</td>
+                            <td class="text-center">热值</td>
+                            <td class="text-center">热值阈值</td>
+                            <td class="text-center">灰分</td>
+                            <td class="text-center">灰分阈值</td>
+                            <td class="text-center">水分</td>
+                            <td class="text-center">水分阈值</td>
+                            <td class="text-center">CL</td>
+                            <td class="text-center">CL阈值</td>
+                            <td class="text-center">S</td>
+                            <td class="text-center">S阈值</td>
+                            <td class="text-center">P</td>
+                            <td class="text-center">P阈值</td>
+                            <td class="text-center">F</td>
+                            <td class="text-center">F阈值</td>
+                            <td class="text-center">PH</td>
+                            <td class="text-center">PH阈值</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr id="cloneTr4" class="myclass3">
+                            <td class="text-center modal-companyName">1</td><!--序号-->
+                            <td class="text-center modal-einlass"><select class="focus" title="" id="handleCategory"></select></td><!--进料方式-->
+                            <td class="text-center wastesName" ><select class="focus" title=""  id="formType"></select></td></td><!--物质形态-->
+                            <td class="text-center wastesCode" ><input style="width: 60px" type="number" onkeyup="Cal(this)"></td><!--周需求总量-->
+                            <td class="text-center modal-weight" ></td><!--每日配置量-->
+                            <td class="text-center modal-materialForm"></td><!--比例-->
+                            <td class="text-center modal-packingType" ><input style="width: 60px"></td><!--热值-->
+                            <td class="text-center modal-packingType" ><input style="width: 60px"></td><!--热阈值-->
+                            <td class="text-center modal-processingMethod"><input style="width: 60px"></td><!--灰分-->
+                            <td class="text-center modal-processingMethod"><input style="width: 60px"></td><!--灰分阈值-->
+                            <td class="text-center modal-processingMethod"><input style="width: 60px"></td><!--水分-->
+                            <td class="text-center modal-processingMethod"><input style="width: 60px"></td><!--水分阈值-->
+                            <td class="text-center modal-processingMethod"><input style="width: 60px"></td><!--CL-->
+                            <td class="text-center modal-processingMethod"><input style="width: 60px"></td><!--CL阈值-->
+                            <td class="text-center modal-processingMethod"><input style="width: 60px"></td><!--S-->
+                            <td class="text-center modal-processingMethod"><input style="width: 60px"></td><!--S阈值-->
+                            <td class="text-center modal-processingMethod"><input style="width: 60px"></td><!--P-->
+                            <td class="text-center modal-KCal" ><input style="width: 60px"></td><!--P阈值-->
+                            <td class="text-center modal-PH" ><input style="width: 60px"></td><!--F-->
+                            <td class="text-center modal-ashContent" ><input style="width: 60px"></td><!--F阈值-->
+                            <td class="text-center modal-waterContent"><input style="width: 60px"></td><!--PH-->
+                            <td class="text-center modal-CLContent"><input style="width: 60px"></td><!--PH阈值-->
+                        </tr>
+                        <tr id="plusBtn">
+                            <td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+
+                        <thead>
+                        <tr>
+                            <td class="text-center">合计</td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center" id="weeklyDemandTotalAdd4"></td>
+                            <td class="text-center" id="dailyRatioTota4"></td>
+                            <td class="text-center" id="proportionTota4"></td>
+                            <td class="text-center" id="calorificTotal4"></td>
+                            <td class="text-center" id="ashTotal4"></td>
+                            <td class="text-center" id="waterTotal4"></td>
+                            <td class="text-center" id="clTotal4"></td>
+                            <td class="text-center" id="sTotal4"></td>
+                            <td class="text-center" id="pTotal4"></td>
+                            <td class="text-center" id="fTotal4"></td>
+                            <td class="text-center" ></td>
+                            <td class="text-center"></td>
+                            <td class="text-center" ></td>
+                            <td class="text-center" ></td>
+                            <td class="text-center"></td>
+                            <td class="text-center" ></td>
+                            <td class="text-center" ></td>
+                            <td class="text-center" ></td>
+                            <td class="text-center" ></td>
+                        </tr>
+                        </thead>
+                    </table>
+                    <div class="modal-footer" id="viewBtnGrp">
+                        <div class="row text-center">
+                            <button type="button" class="btn btn-primary" onclick="addCompatibility()">保存</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

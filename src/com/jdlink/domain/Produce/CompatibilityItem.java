@@ -29,29 +29,56 @@ public class CompatibilityItem {
     //热值
     private float calorific;
 
+    //热值阈值
+    private float calorificThreshold;
+
     //灰分
     private float  ash;
+
+    //灰分阈值
+    private float  ashThreshold;
+
 
     //水分
     private float water;
 
+    //水分阈值
+    private float waterThreshold;
+
     //氯
     private float cl;
+
+    //氯阈值
+    private float clThreshold;
 
     //硫
     private float s;
 
+    //硫阈值
+    private float sThreshold;
+
     //磷
     private float p;
 
+    //磷阈值
+    private float pThreshold ;
+
     //氟
     private float f;
+
+    //氟阈值
+    private float fThreshold ;
 
     //酸碱度
 
     private float ph;
 
+    //酸碱度阈值
+    private float phThreshold ;
+
     //明细主键 用来做更新操作
+
+
 
     private int id;
 
@@ -78,6 +105,70 @@ public class CompatibilityItem {
     private float sBeg;
 
     private float sEnd;
+
+    public float getCalorificThreshold() {
+        return calorificThreshold;
+    }
+
+    public void setCalorificThreshold(float calorificThreshold) {
+        this.calorificThreshold = calorificThreshold;
+    }
+
+    public float getAshThreshold() {
+        return ashThreshold;
+    }
+
+    public void setAshThreshold(float ashThreshold) {
+        this.ashThreshold = ashThreshold;
+    }
+
+    public float getWaterThreshold() {
+        return waterThreshold;
+    }
+
+    public void setWaterThreshold(float waterThreshold) {
+        this.waterThreshold = waterThreshold;
+    }
+
+    public float getClThreshold() {
+        return clThreshold;
+    }
+
+    public void setClThreshold(float clThreshold) {
+        this.clThreshold = clThreshold;
+    }
+
+    public float getsThreshold() {
+        return sThreshold;
+    }
+
+    public void setsThreshold(float sThreshold) {
+        this.sThreshold = sThreshold;
+    }
+
+    public float getpThreshold() {
+        return pThreshold;
+    }
+
+    public void setpThreshold(float pThreshold) {
+        this.pThreshold = pThreshold;
+    }
+
+    public float getfThreshold() {
+        return fThreshold;
+    }
+
+    public void setfThreshold(float fThreshold) {
+        this.fThreshold = fThreshold;
+    }
+
+    public float getPhThreshold() {
+        return phThreshold;
+    }
+
+    public void setPhThreshold(float phThreshold) {
+        this.phThreshold = phThreshold;
+    }
 
     public float getCalorificBeg() {
         return calorificBeg;
@@ -275,20 +366,38 @@ public class CompatibilityItem {
     @Override
     public String toString() {
         return "CompatibilityItem{" +
-                "compatibilityId=" + compatibilityId +
+                "compatibilityId='" + compatibilityId + '\'' +
                 ", handleCategory=" + handleCategory +
                 ", formType=" + formType +
                 ", proportion=" + proportion +
                 ", dailyRatio=" + dailyRatio +
                 ", weeklyDemandTotal=" + weeklyDemandTotal +
                 ", calorific=" + calorific +
+                ", calorificThreshold=" + calorificThreshold +
                 ", ash=" + ash +
+                ", ashThreshold=" + ashThreshold +
                 ", water=" + water +
+                ", waterThreshold=" + waterThreshold +
                 ", cl=" + cl +
+                ", clThreshold=" + clThreshold +
                 ", s=" + s +
+                ", sThreshold=" + sThreshold +
                 ", p=" + p +
+                ", pThreshold=" + pThreshold +
                 ", f=" + f +
+                ", fThreshold=" + fThreshold +
                 ", ph=" + ph +
+                ", phThreshold=" + phThreshold +
+                ", id=" + id +
+                ", page=" + page +
+                ", calorificBeg=" + calorificBeg +
+                ", calorificEnd=" + calorificEnd +
+                ", fBeg=" + fBeg +
+                ", fEnd=" + fEnd +
+                ", clBeg=" + clBeg +
+                ", clEnd=" + clEnd +
+                ", sBeg=" + sBeg +
+                ", sEnd=" + sEnd +
                 '}';
     }
 }
