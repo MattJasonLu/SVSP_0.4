@@ -954,11 +954,38 @@ public String importCompatibilityExcel(MultipartFile excelFile){
         try{
        compatibility.setCompatibilityId(compatibilityId);
        compatibilityService.addCompatibility(compatibility);
+            res.put("status", "success");
+            res.put("message", "主表添加成功");
         }
         catch (Exception e){
-
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "主表添加失败");
 
         }
+
+        return res.toString();
+    }
+
+    //系统添加配伍字表
+    @RequestMapping("addCompatibilityItemNew")
+    @ResponseBody
+    public String addCompatibilityItemNew(@RequestBody CompatibilityItem compatibilityItem){
+        JSONObject res=new JSONObject();
+        try {
+            List<String> compatibilityIList= compatibilityService.check();
+            compatibilityItem.setCompatibilityId(compatibilityIList.get(0));
+            compatibilityService.addCompatibilityItem(compatibilityItem);
+            res.put("status", "success");
+            res.put("message", "子表添加成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "子表添加失败");
+        }
+
+
 
         return res.toString();
     }

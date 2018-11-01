@@ -148,8 +148,8 @@
 
     <!--添加配伍计划单的明细-->
     <insert id="addCompatibilityItem" parameterType="CompatibilityItem">
-        insert into t_pr_pwitem(compatibilityId, handleCategory, formType, proportion, dailyRatio, weeklyDemandTotal, calorific, ash, water, cl, s, p, f, ph) values
-        (#{compatibilityId},#{handleCategory},#{formType},#{proportion},#{dailyRatio},#{weeklyDemandTotal},#{calorific},#{ash},#{water},#{cl},#{s},#{p},#{f},#{ph});
+        insert into t_pr_pwitem(compatibilityId, handleCategory, formType, proportion, dailyRatio, weeklyDemandTotal, calorific, ash, water, cl, s, p, f, ph,calorificThreshold,ashThreshold,waterThreshold,fThreshold,phThreshold,sThreshold,clThreshold,pThreshold) values
+        (#{compatibilityId},#{handleCategory},#{formType},#{proportion},#{dailyRatio},#{weeklyDemandTotal},#{calorific},#{ash},#{water},#{cl},#{s},#{p},#{f},#{ph},#{calorificThreshold},#{ashThreshold},#{waterThreshold},#{fThreshold},#{phThreshold},#{sThreshold},#{clThreshold},#{pThreshold});
     </insert>
     <!--添加配伍周计划主表-->
     <insert id="addCompatibility" parameterType="Compatibility">
