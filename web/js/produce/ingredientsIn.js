@@ -117,10 +117,10 @@ function setPageClone(result) {
  * */
 function switchPage(pageNumber) {
     console.log("当前页：" + pageNumber);
-    if(pageNumber > totalPage()){
+    if (pageNumber > totalPage()) {
         pageNumber = totalPage();
     }
-    if(pageNumber > totalPage()){
+    if (pageNumber > totalPage()) {
         pageNumber = totalPage();
     }
     if (pageNumber == 0) {                 //首页
@@ -181,7 +181,7 @@ function switchPage(pageNumber) {
             }
         });
     } else {
-        data['page'] = page;
+        data1['page'] = page;
         $.ajax({
             type: "POST",                       // 方法类型
             url: "searchIngredientsIn",         // url
@@ -209,10 +209,10 @@ function switchPage(pageNumber) {
  * */
 function inputSwitchPage() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
-    if(pageNumber > totalPage()){
+    if (pageNumber > totalPage()) {
         pageNumber = totalPage();
     }
-    if(pageNumber > totalPage()){
+    if (pageNumber > totalPage()) {
         pageNumber = totalPage();
     }
     $("#current").find("a").text("当前页：" + pageNumber);
@@ -458,7 +458,7 @@ function exportInExcel() {
     var name = 't_pr_ingredients_in';
     // 获取勾选项
     var idArry = [];
-    $.each($("input[name='select']:checked"),function(index,item){
+    $.each($("input[name='select']:checked"), function (index, item) {
         idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
     });
     var sqlWords = '';
@@ -473,14 +473,14 @@ function exportInExcel() {
             "name as '物品名称',unitPrice as '单价',amount as '入库数',b.totalPrice as '物品总额',receiveAmount as '已领用数量',wareHouseName as '仓库',\n" +
             "post as '过账',specification as '规格',unit as '单位', ingredientState as '物品状态',remarks as '附注'\n" +
             "from t_pr_ingredients_in as a join t_pr_ingredients as b where inId = id and id" + sql;
-    }else {          // 若无勾选项则导出全部
+    } else {          // 若无勾选项则导出全部
         sqlWords = "select id,companyName as '单位名称',creationDate as '入库单创建日期',fileId as '文件编号',a.totalPrice as '总额',bookkeeper as '记账人',\n" +
             "approver as '审批人',keeper as '保管人',acceptor as '验收人',handlers as '经手人',state as '入库单状态',serialNumberIn as '序号',\n" +
             "name as '物品名称',unitPrice as '单价',amount as '入库数',b.totalPrice as '物品总额',receiveAmount as '已领用数量',wareHouseName as '仓库',\n" +
             "post as '过账',specification as '规格',unit as '单位', ingredientState as '物品状态',remarks as '附注'\n" +
             "from t_pr_ingredients_in as a join t_pr_ingredients as b where inId = id;";
     }
-    console.log("sql:"+sqlWords);
+    console.log("sql:" + sqlWords);
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 
@@ -542,7 +542,7 @@ function importInExcel() {
 /**
  * 回车查询
  */
-function enterSearch(){
+function enterSearch() {
     if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
         searchIngredientIn();      //
     }
@@ -564,12 +564,22 @@ function searchIngredientIn() {
     if ($("#search-state").val() == 2) state = "OutBounded";//已出库
     var keywords = $.trim($("#searchContent").val());
     //模糊查询状态字段转换
-    switch(keywords){
-        case "新建":keywords = "NewBuild";break;
-        case "已作废":keywords = "Invalid";break;
-        case "作废":keywords = "Invalid";break;
-        case "已出库":keywords = "OutBounded";break;
-        case "出库":keywords = "OutBounded";break;
+    switch (keywords) {
+        case "新建":
+            keywords = "NewBuild";
+            break;
+        case "已作废":
+            keywords = "Invalid";
+            break;
+        case "作废":
+            keywords = "Invalid";
+            break;
+        case "已出库":
+            keywords = "OutBounded";
+            break;
+        case "出库":
+            keywords = "OutBounded";
+            break;
     }
     if ($("#senior").is(':visible')) {
         data1 = {
@@ -599,6 +609,7 @@ function searchIngredientIn() {
                 console.log(result);
                 if (result.data != undefined || result.status == "success") {
                     setPageClone(result.data);
+                    setPageCloneAfter(pageNumber);      // 大于5页时页码省略显示
                 } else {
                     console.log(result.message);
                 }
@@ -903,7 +914,7 @@ function totalPage1() {
     } else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchIngredientsOutTotal",                  // url
+            url: "searchMaterialTotal",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
@@ -963,7 +974,7 @@ function setPageClone1(result) {
  * @param pageNumber 跳转页数
  * */
 function switchPage1(pageNumber) {
-    if(pageNumber > totalPage1()){
+    if (pageNumber > totalPage1()) {
         pageNumber = totalPage1();
     }
     if (pageNumber == 0) {                 //首页
@@ -978,8 +989,8 @@ function switchPage1(pageNumber) {
     }
     $("#current").find("a").text("当前页：" + pageNumber);
     if (pageNumber == 1) {
-        $("#previous").attr("disabled","true");
-        $("#firstPage").attr("disabled","true");
+        $("#previous").attr("disabled", "true");
+        $("#firstPage").attr("disabled", "true");
         // $('#previous').removeAttr('href');//去掉a标签中的href属性
         // $('#firstPage').removeAttr('onclick');//去掉a标签中的onclick事件
         $("#next").removeAttr("disabled");
@@ -988,8 +999,8 @@ function switchPage1(pageNumber) {
 
     }
     if (pageNumber == totalPage1()) {
-        $("#next").attr("disabled","true");
-        $("#endPage").attr("disabled","true");
+        $("#next").attr("disabled", "true");
+        $("#endPage").attr("disabled", "true");
         $("#previous").removeAttr("disabled");
         $("#firstPage").removeAttr("disabled");
     }
@@ -1005,7 +1016,7 @@ function switchPage1(pageNumber) {
     page.count = countValue1();                        //可选
     page.pageNumber = pageNumber;
     currentPage = pageNumber;          //当前页面
-    setPageCloneAfter(pageNumber);        // 重新设置页码
+    setPageCloneAfter1(pageNumber);        // 重新设置页码
     addPageClass(pageNumber);           // 设置页码标蓝
     page.start = (pageNumber - 1) * page.count;
     if (!isSearch) {
@@ -1018,7 +1029,7 @@ function switchPage1(pageNumber) {
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined) {
-                    setProcurementItemList(result.data);
+                    setProcurementItemList(result);
                 } else {
                     console.log("fail: " + result);
                 }
@@ -1028,17 +1039,17 @@ function switchPage1(pageNumber) {
             }
         });
     } else {
-        data['page'] = page;
+        data1['page'] = page;
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchIngredientsOut",         // url
+            url: "searchMaterial",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined) {
-                    setProcurementItemList(result.data);
+                    setProcurementItemList(result);
                 } else {
                     console.log("fail: " + result);
                 }
@@ -1051,11 +1062,20 @@ function switchPage1(pageNumber) {
 }
 
 /**
+ * 回车跳转（输入页数回车跳转页面）
+ */
+function enterSwitchPage1() {
+    if (event.keyCode === 13) {
+        inputSwitchPage1();
+    }
+}
+
+/**
  * 输入页数跳转页面
  * */
 function inputSwitchPage1() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
-    if(pageNumber > totalPage1()){
+    if (pageNumber > totalPage1()) {
         pageNumber = totalPage1();
     }
     $("#current").find("a").text("当前页：" + pageNumber);
@@ -1063,14 +1083,14 @@ function inputSwitchPage1() {
         window.alert("跳转页数不能为空！")
     } else {
         if (pageNumber == 1) {
-            $("#previous").attr("disabled","true");
-            $("#firstPage").attr("disabled","true");
+            $("#previous").attr("disabled", "true");
+            $("#firstPage").attr("disabled", "true");
             $("#next").removeAttr("disabled");
             $("#endPage").removeAttr("disabled");
         }
-        if (pageNumber == totalPage()) {
-            $("#next").attr("disabled","true");
-            $("#endPage").attr("disabled","true");
+        if (pageNumber == totalPage1()) {
+            $("#next").attr("disabled", "true");
+            $("#endPage").attr("disabled", "true");
 
             $("#previous").removeAttr("disabled");
             $("#firstPage").removeAttr("disabled");
@@ -1079,12 +1099,12 @@ function inputSwitchPage1() {
             $("#previous").removeAttr("disabled");
             $("#firstPage").removeAttr("disabled");
         }
-        if (pageNumber < totalPage()) {
+        if (pageNumber < totalPage1()) {
             $("#next").removeAttr("disabled");
             $("#endPage").removeAttr("disabled");
         }
         currentPage = pageNumber;
-        setPageCloneAfter(pageNumber);        // 重新设置页码
+        setPageCloneAfter1(pageNumber);        // 重新设置页码
         addPageClass(pageNumber);           // 设置页码标蓝
         var page = {};
         page.count = countValue1();//可选
@@ -1100,7 +1120,7 @@ function inputSwitchPage1() {
                 contentType: 'application/json;charset=utf-8',
                 success: function (result) {
                     if (result != undefined) {
-                        setList(result.data);
+                        setProcurementItemList(result);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -1113,14 +1133,14 @@ function inputSwitchPage1() {
             data1['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "searchIngredientsOut",         // url
+                url: "searchMaterial",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data1),
                 dataType: "json",
                 contentType: 'application/json;charset=utf-8',
                 success: function (result) {
                     if (result != undefined) {
-                        setList(result.data);
+                        setProcurementItemList(result);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -1132,6 +1152,67 @@ function inputSwitchPage1() {
         }
     }
 }
+
+
+/**
+ * 省略显示页码
+ */
+function setPageCloneAfter1(currentPageNumber) {
+    var total = totalPage1();
+    var pageNumber = 5;         // 页码数
+    if (total > pageNumber) { // 大于5页时省略显示
+        $(".beforeClone").remove();          // 删除之前克隆页码
+        $("#next").prev().hide();            // 将页码克隆模板隐藏
+        if (currentPageNumber <= (parseInt(pageNumber / 2) + 1)) {   // 如果pageNumber = 5,当前页小于3显示前五页
+            for (var i = 0; i < pageNumber; i++) {
+                var li = $("#next").prev();
+                var clonedLi = li.clone();
+                clonedLi.show();
+                clonedLi.find('a:first-child').text(i + 1);          // 页数赋值
+                clonedLi.find('a:first-child').click(function () {    // 设置点击事件
+                    var num = $(this).text();
+                    switchPage1(num);        // 跳转页面
+                });
+                clonedLi.addClass("beforeClone");
+                clonedLi.removeAttr("id");
+                clonedLi.insertAfter(li);
+            }
+        } else if (currentPageNumber <= total - parseInt(pageNumber / 2)) {  // 如果pageNumber = 5,大于3时显示其前后两页
+            for (var i = currentPage - parseInt(pageNumber / 2); i <= parseInt(currentPage) + parseInt(pageNumber / 2); i++) {
+                var li = $("#next").prev();
+                var clonedLi = li.clone();
+                clonedLi.show();
+                clonedLi.find('a:first-child').text(i);          // 页数赋值
+                clonedLi.find('a:first-child').click(function () {    // 设置点击事件
+                    var num = $(this).text();
+                    switchPage1(num);        // 跳转页面
+                });
+                clonedLi.addClass("beforeClone");
+                clonedLi.removeAttr("id");
+                clonedLi.insertAfter(li);
+            }
+        } else if (currentPageNumber > total - parseInt(pageNumber / 2)) {    // 如果pageNumber = 5,显示最后五页
+            for (var i = total - pageNumber + 1; i <= total; i++) {
+                var li = $("#next").prev();
+                var clonedLi = li.clone();
+                clonedLi.show();
+                clonedLi.find('a:first-child').text(i);          // 页数赋值
+                clonedLi.find('a:first-child').click(function () {    // 设置点击事件
+                    var num = $(this).text();
+                    switchPage1(num);        // 跳转页面
+                });
+                clonedLi.addClass("beforeClone");
+                clonedLi.removeAttr("id");
+                clonedLi.insertAfter(li);
+            }
+        }
+    }
+    if (currentPageNumber == 1) {
+        $("#previous").next().next().eq(0).addClass("oldPageClass");
+        $("#previous").next().next().eq(0).addClass("active");       // 将首页页码标蓝
+    }
+}
+
 
 /**
  * 计算分页总页数
@@ -1155,13 +1236,13 @@ function loadProcurementItemList() {
     $("#creationDate").text(getcurrentDaydate());
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
-    $("#previous").attr("disabled","true");
-    $("#firstPage").attr("disabled","true");
+    $("#previous").attr("disabled", "true");
+    $("#firstPage").attr("disabled", "true");
     $("#next").removeClass("disabled");            // 移除上一次设置的按钮禁用
     $("#endPage").removeClass("disabled");
     if (totalPage1() == 1) {
-        $("#next").attr("disabled","true");
-        $("#endPage").attr("disabled","true");
+        $("#next").attr("disabled", "true");
+        $("#endPage").attr("disabled", "true");
     }
     var page = {};
     page.count = countValue1();                                 // 可选
@@ -1177,6 +1258,7 @@ function loadProcurementItemList() {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 setPageClone1(result);
+                setPageCloneAfter1(pageNumber);        // 重新设置页码
             } else {
                 console.log(result.message);
             }
@@ -1219,6 +1301,33 @@ function setSelectedList() {
             console.log("error: " + result);
         }
     });
+    // 设置物料状态下拉框数据
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getProcurementCheckStateList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var state = $("#search1-state");
+                state.children().remove();
+                $.each(data.stateList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    state.append(option);
+                });
+                state.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
 }
 
 //设置月度采购申请表数据
@@ -1228,12 +1337,11 @@ function setProcurementItemList(result) {
     var tr = $("#cloneTr1");
     tr.siblings().remove();
     $.each(result.data, function (index, item) {
-        console.log(item);
         // 克隆tr，每次遍历都可以产生新的tr
         if (item.state == null || item.state.name != "待领料") {
             var clonedTr = tr.clone();
             clonedTr.show();
-           // 循环遍历cloneTr的每一个td元素，并赋值
+            // 循环遍历cloneTr的每一个td元素，并赋值
             clonedTr.children("td").each(function (inner_index) {
                 //1生成领料单号
                 var obj = eval(item);
@@ -1253,8 +1361,8 @@ function setProcurementItemList(result) {
                         break;
                     // 计量单位
                     case (4):
-                        if(obj.unit != null)
-                        $(this).html(obj.unit.name);
+                        if (obj.unit != null)
+                            $(this).html(obj.unit.name);
                         break;
                     // 库存量
                     case (5):
@@ -1268,6 +1376,14 @@ function setProcurementItemList(result) {
                     case (7):
                         $(this).html(obj.note);
                         break;
+                    // 状态
+                    case (8):
+                        if (obj.state != null)
+                            $(this).html(obj.state.name);
+                        break;
+                    case (9):
+                        $(this).html(obj.id);
+                        break;
                 }
             });
             // 把克隆好的tr追加到原来的tr前面
@@ -1278,102 +1394,6 @@ function setProcurementItemList(result) {
     });
     // 隐藏无数据的tr
     tr.hide();
-}
-
-/**
- * 双击查看采购单
- * @param item
- */
-function toShowView1(item) {
-    var id = item.firstElementChild.nextElementSibling.innerHTML;
-    viewShow(id);
-}
-
-function toShowView(item) {
-    var id = item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
-    viewShow(id);
-}
-
-/**
- * 显示采购单查看模态框
- */
-function viewShow(id) {
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getProcurementListById",          // url
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        data: {'receiptNumber': id},
-        success: function (result) {
-            if (result != undefined && result.status == "success") {
-                console.log(result);
-                setMonthProcurementListModal(result.data[0].materialList);
-            }
-            else {
-                alert(result.message);
-            }
-        },
-        error: function (result) {
-            alert("服务器异常!");
-        }
-    });
-    $('#appointModal2').modal('show');
-}
-
-/**
- * 设置月度采购申请表数据模态框数据
- * @param result
- */
-function setMonthProcurementListModal(result) {
-    var tr = $("#cloneTr2");
-    tr.siblings().remove();
-    $.each(result, function (index, item) {
-        //console.log(item);
-        // 克隆tr，每次遍历都可以产生新的tr
-        var clonedTr = tr.clone();
-        clonedTr.show();
-        // 循环遍历cloneTr的每一个td元素，并赋值
-        clonedTr.children("td").each(function (inner_index) {
-            //1生成领料单号
-            var obj = eval(item);
-            // 根据索引为部分td赋值
-            switch (inner_index) {
-                // 物资名称
-                case (0):
-                    $(this).html(obj.suppliesName);
-                    break;
-                // 规格型号
-                case (1):
-                    $(this).html(obj.specifications);
-                    break;
-                // 单位
-                case (2):
-                    $(this).html(obj.unit);
-                    break;
-                // 库存量
-                case (3):
-                    $(this).html(obj.inventory);
-                    break;
-                // 需求数量
-                case (4):
-                    $(this).html(obj.demandQuantity);
-                    break;
-                // 备注
-                case (5):
-                    $(this).html(obj.note);
-                    break;
-                // 采购部门负责人
-            }
-        });
-        // 把克隆好的tr追加到原来的tr前面
-        clonedTr.removeAttr("id");
-        clonedTr.insertBefore(tr);
-
-
-    });
-    // 隐藏无数据的tr
-    tr.hide();
-    tr.removeAttr('class');
 }
 
 /**
@@ -1399,7 +1419,7 @@ function getCurrentIngredientsInId() {
     return id;
 }
 
-var procurementIdArray = [];
+var procurementItemIdArray = [];
 var ingredientsIn = {};
 
 /**
@@ -1407,10 +1427,9 @@ var ingredientsIn = {};
  */
 function confirmInsert1() {
 // 定义预处理单，存储勾选出库单
-    console.log("click");
     $(".newLine").remove();
     ingredientsIn = {};
-    procurementIdArray = [];
+    procurementItemIdArray = [];
     var ingredientsList = [];
     ingredientsIn.id = getCurrentIngredientsInId();
     var i = 0;  //序号
@@ -1418,34 +1437,35 @@ function confirmInsert1() {
     $("#ingredientsInData").children().not("#cloneTr1").each(function () {
         var isCheck = $(this).find("input[name='select']").prop('checked');
         if (isCheck) {
-            var procurementId1 = $(this).find("td[name='receiptNumber']").text();
-            if ($.inArray(procurementId1, procurementIdArray) == -1) {
-                procurementIdArray.push(procurementId1);
+            var procurementItemId1 = $(this).find("td[name='id']").text();
+            console.log("id=" + procurementItemId1);
+            if ($.inArray(procurementItemId1, procurementItemIdArray) == -1) {
+                procurementItemIdArray.push(procurementItemId1);
                 //根据Id查找数据并进行赋值
                 $.ajax({
                     type: "POST",                       // 方法类型
-                    url: "getProcurementListById",          // url
+                    url: "getProcurementItemListById",          // url
                     async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
                     data: {
-                        receiptNumber: procurementId1
+                        id: procurementItemId1
                     },
                     dataType: "json",
                     success: function (result) {
                         if (result != undefined && result.status == "success") {
                             //遍历存储物品数组
-                            $.each(result.data[0].materialList, function (index, data) {
-                                i++;
-                                //将数据存到数组中，然后统一赋值
-                                var ingredients = {};
-                                ingredients.serialNumber = i;                    // 序号
-                                ingredients.name = data.suppliesName;            // 物品名称
-                                ingredients.specification = data.specifications; // 规格
-                                ingredients.unit = data.unit;                     // 单位
-                                ingredients.amount = data.demandQuantity;         // 入库数量
-                                ingredients.remarks = data.note;                  // 备注
-                                ingredients.id = ingredientsIn.id;
-                                ingredientsList.push(ingredients);
-                            });
+                            var data = result.data;
+                            i++;
+                            //将数据存到数组中，然后统一赋值
+                            var ingredients = {};
+                            ingredients.serialNumber = i;                    // 序号
+                            ingredients.name = data.suppliesName;            // 物品名称
+                            ingredients.specification = data.specifications; // 规格
+                            if(data.unit != null)
+                            ingredients.unit = data.unit.name;                     // 单位
+                            ingredients.amount = data.demandQuantity;         // 入库数量
+                            ingredients.remarks = data.note;                  // 备注
+                            ingredients.id = ingredientsIn.id;
+                            ingredientsList.push(ingredients);
                         } else {
                             console.log(result.message);
                         }
@@ -1458,10 +1478,11 @@ function confirmInsert1() {
         }
     });
     //保存采购单编号列表
-    ingredientsIn.procurementIdList = procurementIdArray;
+    ingredientsIn.procurementItemIdList = procurementItemIdArray;
     //将数据遍历赋值到入库单中
     var tr = $("#clone3");
     var num = 0;
+    console.log(ingredientsList);
     $.each(ingredientsList, function (index, item) {
         num++;
         var obj = eval(item);
@@ -1476,7 +1497,8 @@ function confirmInsert1() {
         clonedTr.find("td[name='serialNumber']").text(obj.serialNumber);
         clonedTr.find("td[name='name']").text(obj.name);
         clonedTr.find("td[name='specification']").text(obj.specification);
-        clonedTr.find("td[name='unit']").text(obj.unit);
+        if (obj.unit != null)
+            clonedTr.find("td[name='unit']").text(obj.unit.name);
         clonedTr.find("span[name='amount']").text(obj.amount);
         clonedTr.find("td[name='remarks']").text(obj.remarks);
         // 把克隆好的tr追加到原来的tr前面
@@ -1563,11 +1585,13 @@ function save() {
     ingredientsIn.keeper = $("#keeper").val();
     ingredientsIn.acceptor = $("#acceptor").val();
     ingredientsIn.handlers = $("#handlers").val();
+    console.log("添加的数据为:");
+    console.log(ingredientsIn);
     for (var j = 0; j < ingredientsIn.ingredientsList.length; j++) {
         var ingredients = ingredientsIn.ingredientsList[j];
         $.ajax({
             type: "POST",
-            url: "getItemsAmoutsExist",
+            url: "getItemsAmountsExist",
             async: false,
             data: JSON.stringify(ingredients),
             dataType: "json",
@@ -1613,8 +1637,8 @@ function save() {
 /**
  * 回车查询
  */
-function enterSearch1(){
-    if(event.keyCode === 13){
+function enterSearch1() {
+    if (event.keyCode === 13) {
         search1();
     }
 }
@@ -1628,23 +1652,23 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
     $('#searchContent1').keyup(function (event) { //给Input赋予onkeyup事件
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
-            if(last-event.timeStamp=== 0){
+            if (last - event.timeStamp === 0) {
                 search1();
-            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+            } else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
                 search1();      //
             }
-        },600);
+        }, 600);
     });
     // 主页
     $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
-            if(last-event.timeStamp=== 0){
+            if (last - event.timeStamp === 0) {
                 searchIngredientIn();
-            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+            } else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
                 searchIngredientIn();      //
             }
-        },600);
+        }, 600);
     });
 });
 
@@ -1652,31 +1676,66 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
  * 新增页面查询功能
  */
 function search1() {
-    var procurement;
+    isSearch = true;
+    var page = {};
+    var pageNumber = 1;                       // 显示首页
+    page.pageNumber = pageNumber;
+    page.count = countValue1();
+    page.start = (pageNumber - 1) * page.count;
+    var keywords = $.trim($("#searchContent1").val());
+    switch (keywords) {
+        case "待入库":
+            keywords = "ToInbound";
+            break;
+        case "入库":
+            keywords = "ToInbound";
+            break;
+        case "待领料":
+            keywords = "ToPick";
+            break;
+        case "领料":
+            keywords = "ToPick";
+            break;
+    }
+    var state = null;
+    switch ($("#search1-state").find("option:selected").text()) {
+        case '待入库':
+            state = "ToInbound";
+            break;
+        case '待领料':
+            state = "ToPick";
+            break;
+    }
     if ($("#senior1").is(':visible')) {
-        procurement = {
+        data1 = {
+            suppliesName: $.trim($("#search1-suppliesName").val()),
+            specifications: $.trim($("#search1-specifications").val()),
             receiptNumber: $.trim($("#search1-receiptNumber").val()),
-            applyMouth: $("#search1-applyMouth option:selected").text().replace(/[^0-9]/ig, ""),
-            suppliesCategory: $.trim($("#search1-suppliesCategory").val()),
-            applyDepartment: $.trim($("#search1-applyDepartment").val())
+            note: $.trim($("#search1-note").val()),
+            state: state,
+            page: page
         };
     } else {
-        procurement = {
-            keywords: $.trim($("#searchContent1").val())
+        data1 = {
+            keywords: keywords,
+            page: page
         };
     }
-    if (procurement == null) alert("请输入查询内容!");
+    if (data1 == null) alert("请输入查询内容!");
     else {
+        console.log("查询条件：");
+        console.log(data1);
         $.ajax({
             type: "POST",
-            url: "searchProcurement",
+            url: "searchMaterial",
             async: false,
-            data: JSON.stringify(procurement),
+            data: JSON.stringify(data1),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result.status == "success") {
-                    setProcurementList(result);
+                    setPageClone1(result);
+                    setPageCloneAfter1(pageNumber);      // 大于5页时页码省略显示
                 } else console.log(result.message);
             },
             error: function (result) {
@@ -1684,5 +1743,11 @@ function search1() {
             }
         });
     }
+}
 
+//新增页面重置
+function reset1() {
+    $('#searchContent1').val("");
+    $('#senior1').find("input").val("");
+    $("#senior1").find("select").get(0).selectedIndex = -1;
 }

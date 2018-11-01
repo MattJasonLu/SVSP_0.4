@@ -23,5 +23,8 @@ public interface ProcurementService {
     List<Date>getNewestEm();
     List<Procurement> getEmergencyProcurementList(Page page);
     List<Material> getProcurementItemList(Page page);
+    List<Material> searchMaterial(Material material);
+    Material getMaterialById(String id);
+    int searchMaterialTotal(Material material);
     int countProcurementItemList();
 }

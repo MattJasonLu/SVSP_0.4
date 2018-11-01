@@ -38,6 +38,10 @@
         </where>
     </select>
 
+    <select id="getSalesmanByCompanyName" parameterType="String" resultType="Salesman">
+        select * from salesman where salesmanId in (select salesmanId from client where companyName=#{companyName} and state='Enabled')
+    </select>
+
     <update id="update" parameterType="Salesman">
         update salesman set name=#{name},age=#{age},sex=#{sex}, nowTime=NOW() where salesmanId=#{salesmanId};
     </update>
