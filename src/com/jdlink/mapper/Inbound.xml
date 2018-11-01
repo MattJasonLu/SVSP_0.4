@@ -345,7 +345,7 @@
     <select id="getInboundOrderItemByClientId" parameterType="String" resultMap="InboundOrderItemRM">
         select t_pl_inboundorderitem.*,t_pl_inboundorder.inboundDate from t_pl_inboundorderitem join t_pl_inboundorder
         where
-        t_pl_inboundorderitem.produceCompanyId =#{id} and  t_pl_inboundorderitem.inboundOrderId=t_pl_inboundorder.inboundOrderId;
+        t_pl_inboundorderitem.produceCompanyId =#{id} and t_pl_inboundorderitem.inboundOrderId=t_pl_inboundorder.inboundOrderId;
     </select>
     
     <select id="getInventoryByWastesNameAndWareHouse" resultType="int">
