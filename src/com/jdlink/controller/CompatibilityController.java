@@ -925,4 +925,42 @@ public String importCompatibilityExcel(MultipartFile excelFile){
         }
     }
 
+
+    //系统添加配伍主表
+    @RequestMapping("addCompatibilityNew")
+    @ResponseBody
+    public String addCompatibilityNew(@RequestBody Compatibility compatibility){
+        JSONObject res=new JSONObject();
+        Calendar cal = Calendar.getInstance();
+        //获取年
+        String year=String.valueOf(cal.get(Calendar.YEAR));
+        //获取月
+        String mouth= getMouth(String.valueOf(cal.get(Calendar.MONTH)+1));
+        //序列号
+        String number = "001";
+
+        //先查看数据库的配伍编号
+        List<String> compatibilityIList= compatibilityService.check();
+        if(compatibilityIList.size()==0){
+            number="001";
+        }
+        if(compatibilityIList.size()>0) {
+            String s= compatibilityIList.get(0);//原字符串
+            String s2=s.substring(s.length()-3,s.length());//最后一个3字符
+            number=getString3(String.valueOf( Integer.parseInt(s2)+1));
+        }
+        //配伍编号
+        String compatibilityId=year+mouth+number;
+        try{
+       compatibility.setCompatibilityId(compatibilityId);
+       compatibilityService.addCompatibility(compatibility);
+        }
+        catch (Exception e){
+
+
+        }
+
+        return res.toString();
+    }
+
 }

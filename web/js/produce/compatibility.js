@@ -158,6 +158,10 @@ function getWeekDate() {
 }
 
 
+
+
+
+
 /**
  * 返回count值
  * */
@@ -1747,4 +1751,225 @@ function enterSearch() {
     if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
         searchPw();      //
     }
+}
+
+
+//添加配伍计划单==>添加的是配伍明细
+function addPw() {
+    $('#appointModal4').modal('show');
+
+    $('#cloneTr4').siblings().not($('#plusBtn')).remove();
+    //下拉框赋值
+
+    //进料方式
+    $.ajax({
+        type:'POST',
+        url:"getHandleCategory",
+        //data:JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success: function (result){
+            if (result != undefined){
+                //console.log(result);
+                var handleCategory=$('#handleCategory');
+                handleCategory.children().remove();
+                $.each(result.handleCategoryList,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(index+1);
+                    option.text(item.name);
+                    handleCategory.append(option);
+                });
+                handleCategory.get(0).selectedIndex=0;
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
+
+    });
+
+    //物质形态
+    $.ajax({
+        type:'POST',
+        url:"getFormTypeAndPackageType",
+        //data:JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success: function (result){
+            if (result != undefined){
+                //console.log(result);
+                var formType=$('#formType');
+                formType.children().remove();
+                $.each(result.formTypeList,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(index+1);
+                    option.text(item.name);
+                    formType.append(option);
+                });
+                formType.get(0).selectedIndex=0;
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
+
+    });
+}
+
+//克隆行方法
+function addNewLine() {
+    // // 获取id为cloneTr的tr元素
+    var tr = $("#plusBtn").prev();
+    // 克隆tr，每次遍历都可以产生新的tr
+    var clonedTr = tr.clone();
+    // 克隆后清空新克隆出的行数据
+    clonedTr.children("td").find("input").val("");
+    // 获取编号
+    clonedTr.children('td').eq(0).html( $('.myclass3').length+1);
+    clonedTr.insertAfter(tr);
+    var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+    clonedTr.children("td:eq(0)").append(delBtn);
+}
+
+//删除行方法
+function delLine(e) {
+    var tr = $(e).parent().parent();
+    var ele=$(e).parent().parent().parent().children('tr').eq(0).find("input");
+    tr.remove();
+    ele.keyup();
+    tr.prev().children('td').find("input").trigger('onkeyup');
+    $('.myclass3').each(function (index,item) {
+        console.log(index);
+        if(index+1==1){
+            $(this).children('td').eq(0).html((parseInt(index)+1));
+        }
+        if((index+1)>1){
+            $(this).children('td').eq(0).html((parseInt(index)+1) + "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>");
+
+        }
+    });
+
+
+
+}
+
+//周需求总量的计算(周需求总量合计 每日配置量 比例)
+function Cal(item) {
+    var weeklyDemandTotal;
+    if($.trim($(item).val().length)>0){
+        weeklyDemandTotal=$(item).val();
+    }
+    if($.trim($(item).val().length)<=0){
+        weeklyDemandTotal=0;
+    }
+    //1计算每日配置量
+    var dailyRatio=(parseFloat(weeklyDemandTotal/7)).toFixed(2);
+
+    //给每日配置量赋值
+    $(item).parent().next().html(dailyRatio);
+
+    var weeklyDemandTotalAggregate=0;
+    //2计算周需求总量的合计
+    $('.myclass3').each(function () {
+        if($.trim($(this).children('td').eq(3).children('input').val().length)<=0){
+            $(this).children('td').eq(3).children('input').val(0);
+        }
+        console.log('走到这')
+        weeklyDemandTotalAggregate+=parseFloat($(this).children('td').eq(3).children('input').val());
+    })
+    //计算周需求总量合计
+    $("#weeklyDemandTotalAdd4").html(weeklyDemandTotalAggregate)
+
+    //计算比例==》周需求总量/计算周需求总量合计
+    $('.myclass3').each(function () {
+        console.log('走到这')
+        $(this).children('td').eq(5).html((parseFloat($(this).children('td').eq(3).children('input').val())/parseFloat($("#weeklyDemandTotalAdd4").html())).toFixed(2))
+    })
+
+
+    //计算每日配比量合计
+    var totalDailyAmount=0;
+
+    $('.myclass3').each(function () {
+        console.log('走到这')
+        var totalDaily1=parseFloat($(this).children('td').eq(4).text());
+        if(isNaN(totalDaily1)){
+            totalDaily1=0;
+        }
+        totalDailyAmount+=totalDaily1;
+    });
+    console.log(totalDailyAmount)
+    $('#dailyRatioTota4').html(parseFloat(totalDailyAmount).toFixed(2));
+
+
+
+
+}
+
+//真正的添加方法
+function addCompatibility() {
+    //1先列出主表信息
+    //算平均值
+    var calorificSum=0;
+
+    var ashAvgSum=0;
+
+    var waterSum=0;
+
+    var clSum=0;
+
+    var sSum=0;
+
+    var pSum=0;
+
+    var fSum=0;
+
+    var phSum=0;
+
+    var index1=0;
+
+     $('.myclass3').each(function (index,item) {
+         index1++;
+         calorificSum+=parseFloat($(this).children('td').eq(6).find('input').val());
+         ashAvgSum+=parseFloat($(this).children('td').eq(8).find('input').val());
+         waterSum+=parseFloat($(this).children('td').eq(10).find('input').val());
+         clSum+=parseFloat($(this).children('td').eq(12).find('input').val());
+         sSum+=parseFloat($(this).children('td').eq(14).find('input').val());
+         pSum+=parseFloat($(this).children('td').eq(16).find('input').val());
+         fSum+=parseFloat($(this).children('td').eq(18).find('input').val());
+         phSum+=parseFloat($(this).children('td').eq(20).find('input').val());
+     })
+
+
+
+
+    var data={
+        totalDailyAmount:$("dailyRatioTota4").html(),
+        weeklyDemandTotalAggregate:$("weeklyDemandTotalAdd4").html(),
+        calorificAvg:parseFloat(calorificSum/index1).toFixed(2),
+        ashAvg:parseFloat(ashAvgSum/index1).toFixed(2),
+        waterAvg:parseFloat(waterSum/index1).toFixed(2),
+        clAvg:parseFloat(clSum/index1).toFixed(2),
+        sAvg:parseFloat(sSum/index1).toFixed(2),
+        pAvg:parseFloat(pSum/index1).toFixed(2),
+        fAvg:parseFloat(fSum/index1).toFixed(2),
+        phAvg:parseFloat(phSum/index1).toFixed(2),
+    };
+     $.ajax({
+         type:'POST',
+         url:"addCompatibilityNew",
+         data:JSON.stringify(data),
+         dataType: "json",
+         contentType: "application/json;charset=utf-8",
+     })
+
+
+
+
 }

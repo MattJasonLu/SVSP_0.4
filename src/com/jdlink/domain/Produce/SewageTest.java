@@ -17,9 +17,17 @@ public class SewageTest {
 
     private float N2;//氨氮
 
-    private  float alkalinity;//碳酸盐碱度
+    private  float alkalinity;//碳酸盐碱度Cao
 
-    private  float bicarbonate;//重碳酸盐碱度
+    private float alkalinityCaCo3;//碳酸盐碱度CaCo3
+
+    private float alkalinityHCO3;//碳酸盐碱度HCO3-
+
+    private  float bicarbonate;//重碳酸盐碱度Cao
+
+    private  float bicarbonateCaCo3;//重碳酸盐碱度CaCo3
+
+    private  float bicarbonateHCO3;//重碳酸盐碱度HCO3-
 
     private float nitrogen;//总氮
 
@@ -31,6 +39,38 @@ public class SewageTest {
 
     //分页
     private Page page;
+
+    public float getAlkalinityCaCo3() {
+        return alkalinityCaCo3;
+    }
+
+    public void setAlkalinityCaCo3(float alkalinityCaCo3) {
+        this.alkalinityCaCo3 = alkalinityCaCo3;
+    }
+
+    public float getAlkalinityHCO3() {
+        return alkalinityHCO3;
+    }
+
+    public void setAlkalinityHCO3(float alkalinityHCO3) {
+        this.alkalinityHCO3 = alkalinityHCO3;
+    }
+
+    public float getBicarbonateCaCo3() {
+        return bicarbonateCaCo3;
+    }
+
+    public void setBicarbonateCaCo3(float bicarbonateCaCo3) {
+        this.bicarbonateCaCo3 = bicarbonateCaCo3;
+    }
+
+    public float getBicarbonateHCO3() {
+        return bicarbonateHCO3;
+    }
+
+    public void setBicarbonateHCO3(float bicarbonateHCO3) {
+        this.bicarbonateHCO3 = bicarbonateHCO3;
+    }
 
     public Page getPage() {
         return page;
