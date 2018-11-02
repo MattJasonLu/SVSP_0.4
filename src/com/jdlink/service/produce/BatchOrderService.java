@@ -31,4 +31,6 @@ public interface BatchOrderService {
     List<MaterialRequisitionOrder> getMaterialRequisitionOrderList(Page page);
     void updateMaterialRequisitionOrderCheck(String id);
     OutboundOrder getWastesOutBoundById(String id);
+    List<WasteInventory>getWasteInventoryList(Page page);
+    OutboundOrder getSecOutBoundById(String id);
 }

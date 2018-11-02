@@ -369,54 +369,34 @@ function setWasteInventoryList(result) {
                         break;
                     // 仓库名称
                     case (4):
-                        $(this).html("");
-                        break;
-                    // 入库类别
-                    case (5):
-                        if(obj.boundType!=null){
-                            $(this).html(obj.boundType.name);
+                        if(obj.wareHouse!=null){
+                            $(this).html(obj.wareHouse.wareHouseName);
                         }
                         break;
                     // 进料方式
-                    case (6):
+                    case (5):
                         if(obj.handleCategory!=null){
                             $(this).html(obj.handleCategory.name);
                         }
                         break;
                     // 危废名称
-                    case (7):
-                         if(obj.laboratoryTest!=null){
-                             $(this).html(obj.laboratoryTest.wastesName);
-                         }
+                    case (6):
+                             $(this).html(obj.wastesName);
                         break;
                     //危废类型
-                    case (8):
-                        $(this).html(obj.wastesCategory);
+                    case (7):
+                        $(this).html(obj.wastesCode);
                         break;
                     //数量
-                    case (9):
+                    case (8):
                         $(this).html(obj.actualCount.toFixed(2));
                         break;
-                    //单价
-                    case (10):
-                        if(obj.quotationItem!=null){
-                            $(this).html(obj.quotationItem.unitPriceTax);
-                        }
-
-                        break;
-                    //总价
-                    case (11):
-                        if(obj.quotationItem!=null) {
-                            $(this).html(parseInt(obj.actualCount) * (obj.quotationItem.unitPriceTax).toFixed(2));
-                        }
-                        break;
-                    //创建时间
-                    case (12):
-                        $(this).html(getDateStr(obj.creatorDate));
-                        break;
-                    case (13):
+                        //出库单明细
+                    case (9):
                         $(this).html(obj.inboundOrderItemId);
                         break;
+
+
                 }
             });
             // 把克隆好的tr追加到原来的tr前面
@@ -669,8 +649,7 @@ function searchWastesInventory1() {
 
 //危废库存查看
 function view(item) {
-var inboundOrderItemId=$(item).parent().prev().text();
-console.log(inboundOrderItemId);
+var inboundOrderItemId=$(item).parent().prev().html();
 //根据编号查找信息
     $.ajax({
         type: "POST",                       // 方法类型
@@ -721,32 +700,22 @@ function setByInboundOrderItemId(result) {
                     }
                     break;
                 case (2):
-                    if(obj.laboratoryTest!=null){
-                        $(this).html(obj.laboratoryTest.wastesName);
-                    }
+                        $(this).html(obj.wastesName);
                     break;
                 case (3):
-                    if(obj.laboratoryTest!=null){
-                        $(this).html(obj.laboratoryTest.wastesCode);
-                    }
+                    $(this).html(obj.actualCount.toFixed(2));
                     break;
                 case (4):
-                    $(this).html(obj.actualCount);
+                    $(this).html(obj.wastesCode);
                     break;
                 case (5):
-                    $(this).html(obj.wastesCategory);
-                    break;
-                case (6):
                     if(obj.handleCategory!=null){
                         $(this).html(obj.handleCategory.name);
                     }
                     break;
-                case (7):
-                    $(this).html(obj.wastesCategory);
-                    break;
-                case (8):
-                    if(obj.handleCategory!=null){
-                        $(this).html(obj.handleCategory.name);
+                case (6):
+                    if(obj.processWay!=null){
+                        $(this).html(obj.processWay.name);
                     }
                     break;
             }

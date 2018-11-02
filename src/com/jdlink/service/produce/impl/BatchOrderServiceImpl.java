@@ -122,4 +122,14 @@ public class BatchOrderServiceImpl implements BatchOrderService
     public OutboundOrder getWastesOutBoundById(String id) {
         return batchOrderMapper.getWastesOutBoundById(id);
     }
+
+    @Override
+    public List<WasteInventory> getWasteInventoryList(Page page) {
+        return batchOrderMapper.getWasteInventoryList(page);
+    }
+
+    @Override
+    public OutboundOrder getSecOutBoundById(String id) {
+        return batchOrderMapper.getSecOutBoundById(id);
+    }
 }

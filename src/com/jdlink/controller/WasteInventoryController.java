@@ -44,28 +44,7 @@ public class WasteInventoryController {
     @Autowired
     StockService stockService;
    //获得库存信息==》危废（无参数）
-    @RequestMapping("getWasteInventoryList")
-    @ResponseBody
-    public String getWasteInventoryList(@RequestBody Page page){
-        JSONObject res=new JSONObject();
-        try{
-            wasteInventoryService.updateLeftNumber();
 
-            List<WasteInventory> wasteInventoryList= wasteInventoryService.list3(page);
-            JSONArray arrray=JSONArray.fromObject(wasteInventoryList);
-           // Quotation quotation=quotationService.getQuotationByWastesCodeAndClientId(wastesCode, clientId);
-            //更新剩余库存量
-            res.put("status", "success");
-            res.put("message", "分页数据获取成功!");
-           res.put("data", arrray);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            res.put("status", "fail");
-            res.put("message", "分页数据获取失败！");
-        }
-        return res.toString();
-    }
     //获得库存信息==》次生（无参数）
 
 
