@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdlink.mapper.EquipmentMapper" >
+
+    <!--查询当天的设备运行情况-->
+    <select id="getDocument" resultType="DocumentControl">
+        select * from t_base_fileno;
+    </select>
+
+</mapper>

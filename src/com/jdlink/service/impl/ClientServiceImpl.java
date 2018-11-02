@@ -173,4 +173,9 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public String getSalesmanIdByName(String name){ return clientMapper.getSalesmanIdByName(name); }
+
+    @Override
+    public void updateInvoiceItem(Client client) {
+        clientMapper.updateInvoiceItem(client);
+    }
 }
