@@ -40,7 +40,7 @@
     </select>
     <!--查找配伍编号-->
     <select id="check" resultType="String">
-        select compatibilityId from  t_pr_pw order by (CAST(compatibilityId AS SIGNED) ) desc ;
+     select compatibilityId from  t_pr_pw order by(CAST(compatibilityId AS SIGNED)) desc ;
     </select>
     <select id="check1" resultType="String">
         select compatibilityId from  t_pr_pw  where nowTime!="" order by nowTime desc ;
@@ -184,6 +184,7 @@
         calorific=#{calorific},ash=#{ash},water=#{water},cl=#{cl},p=#{p},f=#{f},ph=#{ph}
         where id=#{id}
     </update>
+
     <!--更新配伍周计划-->
     <update id="updateCompatibility" parameterType="Compatibility">
         update t_pr_pw set totalDailyAmount=#{totalDailyAmount},calorificAvg=#{calorificAvg},
@@ -191,6 +192,11 @@
         weeklyDemandTotalAggregate=#{weeklyDemandTotalAggregate},fAvg=#{fAvg},pAvg=#{pAvg},nowTime=NOW()
         where compatibilityId=#{compatibilityId};
     </update>
+
+    <!--更新完毕后删除-->
+    <delete id="deleteCompatibility" parameterType="String">
+        delete from t_pr_pwitem where compatibilityId=#{compatibilityId};
+    </delete>
 
     <!--获取总记录数-->
     <select id="totalCompatibilityRecord" resultType="int">

@@ -44,28 +44,7 @@ public class WasteInventoryController {
     @Autowired
     StockService stockService;
    //获得库存信息==》危废（无参数）
-    @RequestMapping("getWasteInventoryList")
-    @ResponseBody
-    public String getWasteInventoryList(@RequestBody Page page){
-        JSONObject res=new JSONObject();
-        try{
-            wasteInventoryService.updateLeftNumber();
 
-            List<WasteInventory> wasteInventoryList= wasteInventoryService.list3(page);
-            JSONArray arrray=JSONArray.fromObject(wasteInventoryList);
-           // Quotation quotation=quotationService.getQuotationByWastesCodeAndClientId(wastesCode, clientId);
-            //更新剩余库存量
-            res.put("status", "success");
-            res.put("message", "分页数据获取成功!");
-           res.put("data", arrray);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            res.put("status", "fail");
-            res.put("message", "分页数据获取失败！");
-        }
-        return res.toString();
-    }
     //获得库存信息==》次生（无参数）
 
 
@@ -418,26 +397,7 @@ catch (Exception e){
         return outboundOrderService.searchCount(outboundOrder);
     }
 
-    //根据入库单号查询信息
-    @RequestMapping("getByOutBoundOrderId")
-    @ResponseBody
-    public  String getByOutBoundOrderId(String outboundOrderId){
-        JSONObject res=new JSONObject();
-        try {
-            List<OutboundOrder> outboundOrderList=outboundOrderService.getByOutBoundOrderId(outboundOrderId);
-            res.put("status", "success");
-            res.put("message", "查询成功");
-            res.put("data",outboundOrderList);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            res.put("status", "fail");
-            res.put("message", "查询失败");
 
-        }
-        return res.toString();
-
-    }
     //根据入库单号获得总量，然后根据配料量减去得到剩余量
     @RequestMapping("getWasteInventoryLeftNumber")
     @ResponseBody

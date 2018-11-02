@@ -1350,7 +1350,8 @@ function confirmCompatibilityId() {
                 if (result != undefined && result.status == "success") {
                     console.log(result);
                     var tr = $('#cloneTr2');
-                    $('#cloneTr2').siblings().remove();
+                    $("#cloneTr2").siblings().not($("#plusBtn")).remove();
+                    //$('#cloneTr2').siblings().remove();
                     $.each(result.array, function (index, item) {
 
 
@@ -1365,30 +1366,53 @@ function confirmCompatibilityId() {
 
                         cloneTr.children('td').eq(0).html(index + 1);
 
+                        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine1(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
 
-                        cloneTr.children('td').eq(3).children('input').val((obj.dailyRatio / obj.weeklyDemandTotal).toFixed(2) * 100);
+                       if((index+1)!=1){
+                           cloneTr.children('td').eq(0).append(delBtn)
+                       }
 
-                        cloneTr.children('td').eq(4).children('input').val(obj.dailyRatio.toFixed(2));
+                        cloneTr.children('td').eq(3).children('input').val(obj.weeklyDemandTotal);
 
-                        cloneTr.children('td').eq(5).children('input').val(obj.weeklyDemandTotal.toFixed(2));
+                        cloneTr.children('td').eq(4).html(obj.dailyRatio.toFixed(2));
+
+                        cloneTr.children('td').eq(5).html(obj.proportion.toFixed(2));
 
                         cloneTr.children('td').eq(6).children('input').val(obj.calorific.toFixed(2));
 
-                        cloneTr.children('td').eq(7).children('input').val(obj.ash.toFixed(2));
+                        cloneTr.children('td').eq(7).children('input').val(obj.calorificThreshold);
 
-                        cloneTr.children('td').eq(8).children('input').val(obj.water.toFixed(2));
+                        cloneTr.children('td').eq(8).children('input').val(obj.ash.toFixed(2));
 
-                        cloneTr.children('td').eq(9).children('input').val(obj.cl.toFixed(2));
+                        cloneTr.children('td').eq(9).children('input').val(obj.ashThreshold);
 
-                        cloneTr.children('td').eq(10).children('input').val(obj.s.toFixed(2));
+                        cloneTr.children('td').eq(10).children('input').val(obj.water.toFixed(2));
 
-                        cloneTr.children('td').eq(11).children('input').val(obj.p.toFixed(2));
+                        cloneTr.children('td').eq(11).children('input').val(obj.waterThreshold);
 
-                        cloneTr.children('td').eq(12).children('input').val(obj.f.toFixed(2));
+                        cloneTr.children('td').eq(12).children('input').val(obj.cl.toFixed(2));
 
-                        cloneTr.children('td').eq(13).children('input').val(obj.ph.toFixed(2));
+                        cloneTr.children('td').eq(13).children('input').val(obj.clThreshold);
 
-                        cloneTr.children('td').eq(14).html(obj.id);
+                        cloneTr.children('td').eq(14).children('input').val(obj.s.toFixed(2));
+
+                        cloneTr.children('td').eq(15).children('input').val(obj.sThreshold);
+
+                        cloneTr.children('td').eq(16).children('input').val(obj.p.toFixed(2));
+
+                        cloneTr.children('td').eq(17).children('input').val(obj.pThreshold);
+
+
+                        cloneTr.children('td').eq(18).children('input').val(obj.f.toFixed(2));
+
+                        cloneTr.children('td').eq(19).children('input').val(obj.fThreshold);
+
+
+                        cloneTr.children('td').eq(20).children('input').val(obj.ph.toFixed(2));
+
+                        cloneTr.children('td').eq(21).children('input').val(obj.phThreshold);
+
+                        cloneTr.children('td').eq(22).html(obj.id);
 
 
                         if (obj.handleCategory != null) {
@@ -1475,10 +1499,24 @@ function confirmCompatibilityId() {
 
         });
 
+        //合计赋值
+        var weeklyDemandTotalAggregate=0;
+
+        var totalDailyAmount=0;
+
+        $('.myclass2').each(function () {
+         var weeklyDemandTotal=parseFloat($(this).children('td').eq(3).find('input').val()).toFixed(2);
+         var DailyAmount=parseFloat($(this).children('td').eq(4).html()).toFixed(2);
+            weeklyDemandTotalAggregate+=parseFloat(weeklyDemandTotal);
+            totalDailyAmount+=parseFloat(DailyAmount);
+        })
+       // console.log(weeklyDemandTotalAggregate.toFixed(2)+" "+totalDailyAmount.toFixed(2));
+       $('#weeklyDemandTotalAdd4').html(weeklyDemandTotalAggregate.toFixed(2));
+       $('#dailyRatioTota4').html(totalDailyAmount.toFixed(2))
     }
 
 //确认修改
-    function adjustConfirm() {
+    function adjustConfirmPw() {
 
         var calorificSum = 0;
 
@@ -1502,55 +1540,16 @@ function confirmCompatibilityId() {
 
         $('.myclass2').each(function () {
             index++;
-            var data = {
-                handleCategory: $(this).children('td').eq(1).children('select').get(0).selectedIndex,
-                formType: $(this).children('td').eq(2).children('select').get(0).selectedIndex,
-                id: $(this).children('td').eq(14).html(),
-                proportion: $(this).children('td').eq(3).children('input').val(),
-                dailyRatio: $(this).children('td').eq(4).children('input').val(),
-                weeklyDemandTotal: $(this).children('td').eq(5).children('input').val(),
-                calorific: $(this).children('td').eq(6).children('input').val(),
-                ash: $(this).children('td').eq(7).children('input').val(),
-                water: $(this).children('td').eq(8).children('input').val(),
-                cl: $(this).children('td').eq(9).children('input').val(),
-                s: $(this).children('td').eq(10).children('input').val(),
-                p: $(this).children('td').eq(11).children('input').val(),
-                f: $(this).children('td').eq(12).children('input').val(),
-                ph: $(this).children('td').eq(13).children('input').val(),
-            };
             calorificSum += parseFloat($(this).children('td').eq(6).children('input').val());
-            ashSum += parseFloat($(this).children('td').eq(7).children('input').val());
-            waterSum += parseFloat($(this).children('td').eq(8).children('input').val());
-            clSum += parseFloat($(this).children('td').eq(9).children('input').val());
-            sSum += parseFloat($(this).children('td').eq(10).children('input').val());
-            pSum += parseFloat($(this).children('td').eq(11).children('input').val());
-            fSum += parseFloat($(this).children('td').eq(12).children('input').val());
-            phSum += parseFloat($(this).children('td').eq(13).children('input').val());
-            weeklyDemandTotalAggregate += parseFloat($(this).children('td').eq(5).children('input').val());
-            totalDailyAmount += parseFloat($(this).children('td').eq(3).children('input').val());
-            //更新字表数据
-            $.ajax({
-                type: "POST",
-                url: "updateCompatibilityItem",                  // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                dataType: "json",
-                data: JSON.stringify(data),
-                contentType: "application/json; charset=utf-8",
-                success: function (result) {
-                    if (result != undefined && result.status == "success") {
-                        console.log(result)
-                    }
-                    else {
-                        console.log(result)
-                    }
-                },
-                error: function (result) {
-                    console.log("服务器异常！")
-                }
-
-
-            });
-
+            ashSum += parseFloat($(this).children('td').eq(8).children('input').val());
+            waterSum += parseFloat($(this).children('td').eq(10).children('input').val());
+            clSum += parseFloat($(this).children('td').eq(12).children('input').val());
+            sSum += parseFloat($(this).children('td').eq(14).children('input').val());
+            pSum += parseFloat($(this).children('td').eq(16).children('input').val());
+            fSum += parseFloat($(this).children('td').eq(18).children('input').val());
+            phSum += parseFloat($(this).children('td').eq(20).children('input').val());
+            // weeklyDemandTotalAggregate=$('#weeklyDemandTotalAdd4').html();
+            // totalDailyAmount = $('#dailyRatioTota4').html();
         })
         //主表数据
 
@@ -1564,8 +1563,8 @@ function confirmCompatibilityId() {
             pAvg: (pSum / index).toFixed(2),
             fAvg: (fSum / index).toFixed(2),
             phAvg: (phSum / index).toFixed(2),
-            weeklyDemandTotalAggregate: weeklyDemandTotalAggregate,
-            totalDailyAmount: totalDailyAmount,
+            weeklyDemandTotalAggregate: $('#weeklyDemandTotalAdd4').html(),
+            totalDailyAmount:  $('#dailyRatioTota4').html(),
         };
         console.log(data1)
         //更新主表数据
@@ -1579,8 +1578,54 @@ function confirmCompatibilityId() {
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     console.log(result)
-                    alert("修改成功!");
-                    window.location.href = "weekPlan.html";
+                    $('.myclass2').each(function () {
+                        var data = {
+                            handleCategory: $(this).children('td').eq(1).children('select').get(0).selectedIndex,
+                            formType: $(this).children('td').eq(2).children('select').get(0).selectedIndex,
+                            // id: $(this).children('td').eq(14).html(),
+                            weeklyDemandTotal: $(this).children('td').eq(3).children('input').val(),
+                            dailyRatio: $(this).children('td').eq(4).html(),
+                            proportion: $(this).children('td').eq(5).html(),
+                            calorific: $(this).children('td').eq(6).children('input').val(),
+                            calorificThreshold: $(this).children('td').eq(7).children('input').val(),
+                            ash: $(this).children('td').eq(8).children('input').val(),
+                            ashThreshold: $(this).children('td').eq(9).children('input').val(),
+                            water: $(this).children('td').eq(10).children('input').val(),
+                            waterThreshold: $(this).children('td').eq(11).children('input').val(),
+                            cl: $(this).children('td').eq(12).children('input').val(),
+                            clThreshold: $(this).children('td').eq(13).children('input').val(),
+                            s: $(this).children('td').eq(14).children('input').val(),
+                            sThreshold: $(this).children('td').eq(15).children('input').val(),
+                            p: $(this).children('td').eq(16).children('input').val(),
+                            pThreshold: $(this).children('td').eq(17).children('input').val(),
+                            f: $(this).children('td').eq(18).children('input').val(),
+                            fThreshold: $(this).children('td').eq(19).children('input').val(),
+                            ph: $(this).children('td').eq(20).children('input').val(),
+                            phThreshold: $(this).children('td').eq(21).children('input').val(),
+                        };//字表数据
+                        //更新字表数据
+                        $.ajax({
+                            type: "POST",
+                            url: "addCompatibilityItemNew",                  // url
+                            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                            dataType: "json",
+                            data: JSON.stringify(data),
+                            contentType: "application/json; charset=utf-8",
+                            success: function (result) {
+                                if (result != undefined && result.status == "success") {
+                                    console.log(result)
+                                }
+                                else {
+                                    console.log(result)
+                                }
+                            },
+                            error: function (result) {
+                                console.log("服务器异常！")
+                            }
+
+
+                        });
+                    })
                 }
                 else {
                     console.log(result)
@@ -1592,7 +1637,8 @@ function confirmCompatibilityId() {
 
 
         });
-
+        alert("修改成功!");
+        window.location.href = "weekPlan.html";
 
     }
 
@@ -1855,6 +1901,21 @@ function addPw() {
     });
 }
 
+//克隆行方法==>修改
+function addNewLine1() {
+    // // 获取id为cloneTr的tr元素
+    var tr = $("#plusBtn").prev().prev();
+    // 克隆tr，每次遍历都可以产生新的tr
+    var clonedTr = tr.clone();
+    // 克隆后清空新克隆出的行数据
+    clonedTr.children("td").find("input").val("");
+    // 获取编号
+    clonedTr.children('td').eq(0).html( $('.myclass2').length+1);
+    clonedTr.insertAfter(tr);
+    var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine1(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+    clonedTr.children("td:eq(0)").append(delBtn);
+}
+
 //克隆行方法
 function addNewLine() {
     // // 获取id为cloneTr的tr元素
@@ -1868,6 +1929,28 @@ function addNewLine() {
     clonedTr.insertAfter(tr);
     var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
     clonedTr.children("td:eq(0)").append(delBtn);
+}
+
+//删除行方法==>修改
+function delLine1(e) {
+    var tr = $(e).parent().parent();
+    var ele=$(e).parent().parent().parent().children('tr').eq(0).find("input");
+    tr.remove();
+    ele.keyup();
+    tr.prev().children('td').find("input").trigger('onkeyup');
+    $('.myclass2').each(function (index,item) {
+        console.log(index);
+        if(index+1==1){
+            $(this).children('td').eq(0).html((parseInt(index)+1));
+        }
+        if((index+1)>1){
+            $(this).children('td').eq(0).html((parseInt(index)+1) + "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>");
+
+        }
+    });
+
+
+
 }
 
 //删除行方法
@@ -1930,6 +2013,59 @@ function Cal(item) {
     var totalDailyAmount=0;
 
     $('.myclass3').each(function () {
+        console.log('走到这')
+        var totalDaily1=parseFloat($(this).children('td').eq(4).text());
+        if(isNaN(totalDaily1)){
+            totalDaily1=0;
+        }
+        totalDailyAmount+=totalDaily1;
+    });
+    console.log(totalDailyAmount)
+    $('#dailyRatioTota4').html(parseFloat(totalDailyAmount).toFixed(2));
+
+
+
+
+}
+
+//周需求总量的计算(周需求总量合计 每日配置量 比例)==》修改
+function Cal1(item) {
+    var weeklyDemandTotal;
+    if($.trim($(item).val().length)>0){
+        weeklyDemandTotal=$(item).val();
+    }
+    if($.trim($(item).val().length)<=0){
+        weeklyDemandTotal=0;
+    }
+    //1计算每日配置量
+    var dailyRatio=(parseFloat(weeklyDemandTotal/7)).toFixed(2);
+
+    //给每日配置量赋值
+    $(item).parent().next().html(dailyRatio);
+
+    var weeklyDemandTotalAggregate=0;
+    //2计算周需求总量的合计
+    $('.myclass2').each(function () {
+        if($.trim($(this).children('td').eq(3).children('input').val().length)<=0){
+            $(this).children('td').eq(3).children('input').val(0);
+        }
+        console.log('走到这')
+        weeklyDemandTotalAggregate+=parseFloat($(this).children('td').eq(3).children('input').val());
+    })
+    //计算周需求总量合计
+    $("#weeklyDemandTotalAdd4").html(weeklyDemandTotalAggregate)
+
+    //计算比例==》周需求总量/计算周需求总量合计
+    $('.myclass2').each(function () {
+        console.log('走到这')
+        $(this).children('td').eq(5).html((parseFloat($(this).children('td').eq(3).children('input').val())/parseFloat($("#weeklyDemandTotalAdd4").html())).toFixed(2))
+    })
+
+
+    //计算每日配比量合计
+    var totalDailyAmount=0;
+
+    $('.myclass2').each(function () {
         console.log('走到这')
         var totalDaily1=parseFloat($(this).children('td').eq(4).text());
         if(isNaN(totalDaily1)){
@@ -2059,3 +2195,5 @@ function addCompatibility() {
 
 
 }
+
+
