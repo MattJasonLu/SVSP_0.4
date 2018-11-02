@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class BatchOrderServiceImpl implements BatchOrderService{
+public class BatchOrderServiceImpl implements BatchOrderService
+{
     @Autowired
     BatchOrderMapper batchOrderMapper;
 
@@ -95,5 +96,30 @@ public class BatchOrderServiceImpl implements BatchOrderService{
     @Override
     public List<OutboundOrder> loadSecOutBoundList(Page page) {
         return batchOrderMapper.loadSecOutBoundList(page);
+    }
+
+    @Override
+    public BatchingOrder getBatchById(String id) {
+        return batchOrderMapper.getBatchById(id);
+    }
+
+    @Override
+    public void updateBatchOrderState(String id) {
+        batchOrderMapper.updateBatchOrderState(id);
+    }
+
+    @Override
+    public List<MaterialRequisitionOrder> getMaterialRequisitionOrderList(Page page) {
+        return batchOrderMapper.getMaterialRequisitionOrderList(page);
+    }
+
+    @Override
+    public void updateMaterialRequisitionOrderCheck(String id) {
+        batchOrderMapper.updateMaterialRequisitionOrderCheck(id);
+    }
+
+    @Override
+    public OutboundOrder getWastesOutBoundById(String id) {
+        return batchOrderMapper.getWastesOutBoundById(id);
     }
 }

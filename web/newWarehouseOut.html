@@ -185,16 +185,13 @@
                         <td class="text-center">领料单号</td>
                         <td class="text-center">厂家</td>
                         <td class="text-center">危废名称	</td>
-                        <td class="text-center hidden">危废代码</td>
                         <td class="text-center">危废类别</td>
-                        <td class="text-center hidden">单位	</td>
                         <td class="text-center">配料数量</td>
                         <td class="text-center">领用数量</td>
-                        <td class="text-center hidden">附注</td>
-                        <td class="text-center">主管副总经理</td>
-                        <td class="text-center">部门仓库主管</td>
                         <td class="text-center">领料部门主管</td>
                         <td class="text-center">领料人</td>
+                        <td class="text-center">进料方式</td>
+                        <td class="text-center">处置方式</td>
                     </tr>
                     <tr  id="cloneTr" class="myclass">
                         <td class="text-center">
@@ -205,16 +202,13 @@
                         <td class="text-center modal-companyName"></td><!--领料单号-->
                         <td class="text-center modal-einlass"></td>
                         <td class="text-left model-wastesName"></td>
-                        <td class="text-center model-wastesCode hidden"></td>
                         <td class="text-right modal-weight"></td>
-                        <td class="text-right modal-materialForm hidden"></td>
                         <td class="text-right modal-packingType"></td>
                         <td class="text-right modal-KCal"></td>
-                        <td class="text-right modal-PH hidden"></td>
                         <td class="text-right modal-ashContent"></td>
                         <td class="text-right modal-waterContent"></td>
-                        <td class="text-right modal-CLContent"></td>
-                        <td class="text-right modal-SContent"></td>
+                        <td class="text-right modal-ashContent"></td>
+                        <td class="text-right modal-waterContent"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -295,34 +289,32 @@
                 </div>
                 <br>
                 <table class="table table-bordered">
-                    <tbody>
+                    <thead>
                     <tr>
-                        <td class="text-center">序号</td>
+                        <td class="text-center">出库单号</td>
                         <td class="text-center">产废单位</td>
                         <td class="text-center">危废名称</td>
                         <td class="text-center">危废类别</td>
                         <td class="text-center">出库数量</td>
-                        <td class="text-center">单价</td>
-                        <td class="text-center hidden">金额</td>
+                        <td class="text-center">进料方式</td>
                         <td class="text-center">处置方式</td>
-                        <td class="text-center hidden">备注</td>
                         <td class="text-center">仓库</td>
                     </tr>
-                    <tr id="cloneTr2" class="myclass2">
+                    </thead>
+                    <tbody>
+                    <tr id="cloneTr2">
                         <td class="text-center modal-companyName"></td>
                         <td class="text-center modal-einlass"></td>
                         <td class="text-left model-wastesName"></td>
                         <td class="text-center model-wastesCode"></td>
                         <td class="text-right modal-weight" id="number"></td>
                         <td class="text-right modal-materialForm"></td>
-                        <td class="text-right modal-packingType hidden"></td>
-                        <td class="text-right modal-KCal"></td>
-                        <td class="text-right modal-PH hidden"></td>
-                        <td class="text-right modal-ashContent"></td>
+                        <td class="text-right modal-packingType "></td>
+                        <td class="text-right modal-packingType "></td>
                         <td class="text-right modal-ashContent hidden"></td><!--产废单位编号-->
                         <td class="text-right modal-ashContent hidden"></td><!--仓储编号-->
                         <td class="text-right modal-ashContent hidden"></td><!--转移联单-->
-                    </tr>
+                        <td class="text-right modal-ashContent hidden"></td><!--出库明细-->
                     </tbody>
                 </table>
                 <div class="row text-center">

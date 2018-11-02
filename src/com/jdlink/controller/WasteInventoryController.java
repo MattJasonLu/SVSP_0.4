@@ -418,26 +418,7 @@ catch (Exception e){
         return outboundOrderService.searchCount(outboundOrder);
     }
 
-    //根据入库单号查询信息
-    @RequestMapping("getByOutBoundOrderId")
-    @ResponseBody
-    public  String getByOutBoundOrderId(String outboundOrderId){
-        JSONObject res=new JSONObject();
-        try {
-            List<OutboundOrder> outboundOrderList=outboundOrderService.getByOutBoundOrderId(outboundOrderId);
-            res.put("status", "success");
-            res.put("message", "查询成功");
-            res.put("data",outboundOrderList);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            res.put("status", "fail");
-            res.put("message", "查询失败");
 
-        }
-        return res.toString();
-
-    }
     //根据入库单号获得总量，然后根据配料量减去得到剩余量
     @RequestMapping("getWasteInventoryLeftNumber")
     @ResponseBody

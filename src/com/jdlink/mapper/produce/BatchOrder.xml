@@ -21,7 +21,10 @@
             limit #{start}, #{count}
         </if>
     </select>
-
+    <!--根据配料单号获取配料信息-->
+<select id="getBatchById" resultMap="BatchingOrderRM">
+    select * from t_pl_batchingorder where batchingOrderId=#{batchingOrderId};
+</select>
     <resultMap id="WasteInventoryListBatRM" type="WasteInventory">
         <association property="produceCompany" column="clientId" select="getClientBat"></association>
      <association property="wareHouse" column="wareHouseId" select="getwareHouse"></association>
@@ -34,7 +37,7 @@
     </select>
     <!--配料单新增页面获取危废仓储信息-->
     <select id="getWasteInventoryListBat" resultMap="WasteInventoryListBatRM">
-        select * from t_pl_wasteinventory where boundType='WasteInbound';
+        select * from t_pl_wasteinventory where boundType='WasteInbound' and actualCount>0.00;
     </select>
 
     <select id="getSecInventoryListBat" resultMap="WasteInventoryListBatRM">
@@ -63,9 +66,15 @@
 
     <!--添加领料单-->
     <insert id="addRequisition" parameterType="MaterialRequisitionOrder">
-        insert into t_pl_materialrequisitionorder (materialRequisitionId,wastesName,transferDraftId,wareHouseId,clientId,wasteCategory,recipientsNumber,inboundOrderItemId,nowTime,checkState) values
-        (#{materialRequisitionId},#{wastesName},#{transferDraftId},#{wareHouse.wareHouseId},#{client.clientId},#{wasteCategory},#{recipientsNumber},#{inboundOrderItemId},NOW(),'Picked');
+        insert into t_pl_materialrequisitionorder (materialRequisitionId,wastesName,transferDraftId,wareHouseId,clientId,wasteCategory,recipientsNumber,inboundOrderItemId,nowTime,checkState,departmentName,deputyGeneral,warehouseManager,guardian,materialManager,picker,pickerDate,handelCategory,processWay) values
+        (#{materialRequisitionId},#{wastesName},#{transferDraftId},#{wareHouse.wareHouseId},#{client.clientId},#{wasteCategory},#{recipientsNumber},#{inboundOrderItemId},NOW(),'ToOutbound',#{departmentName},#{deputyGeneral},#{warehouseManager},#{guardian},#{materialManager},#{picker},#{pickerDate},#{handelCategory},#{processWay});
     </insert>
+
+    <!--领料成功后更新配料单的信息状态为已领料-->
+    <update id="updateBatchOrderState" parameterType="String">
+        update t_pl_batchingorder set checkState='Picked' ,nowTime=NOW() where batchingOrderId=#{batchingOrderId};
+
+    </update>
 
     <resultMap id="MaterialRequisitionListRM" type="MaterialRequisitionOrder">
         <association property="client" column="clientId" select="getClientMar"></association>
@@ -94,10 +103,16 @@
 
     <!--添加出库信息==》危废-->
     <insert id="addOutBoundOrder" parameterType="OutboundOrder">
-        insert into  t_pl_outboundorder (outboundOrderId,clientId,wareHouseId,transferDraftId,wastesName,wasteCategory,outboundDate,creator,auditor,outboundNumber,equipment,nowTime,checkState,boundType)
+        insert into  t_pl_outboundorder (outboundOrderId,clientId,wareHouseId,transferDraftId,wastesName,wasteCategory,outboundDate,creator,auditor,outboundNumber,equipment,nowTime,checkState,boundType,handelCategory,processWay,inboundOrderItemId)
         values
-        (#{outboundOrderId},#{client.clientId},#{wareHouse.wareHouseId},#{transferDraftId},#{wastesName},#{wasteCategory},#{outboundDate},#{creator},#{auditor},#{outboundNumber},#{equipment},NOW(),'OutBounded','WasteOutbound')
+        (#{outboundOrderId},#{client.clientId},#{wareHouse.wareHouseId},#{transferDraftId},#{wastesName},#{wasteCategory},#{outboundDate},#{creator},#{auditor},#{outboundNumber},#{equipment},NOW(),'OutBounded','WasteOutbound',#{handelCategory},#{processWay},#{inboundOrderItemId})
     </insert>
+
+    <!--出库完毕后更新领料单的信息为已出库-->
+    <update id="updateMaterialRequisitionOrderCheck" parameterType="String">
+        update t_pl_materialrequisitionorder set checkState="OutBounded",nowTime=NOW()
+        where materialRequisitionId=#{materialRequisitionId};
+    </update>
 
     <!--添加出库信息==》次生-->
     <insert id="addSecondary" parameterType="OutboundOrder">
@@ -118,9 +133,26 @@
         </if>
     </select>
 
+    <!--根据出库单号查询出库信息-->
+    <select id="getWastesOutBoundById" parameterType="String" resultMap="WastesOutBoundRM">
+     select * from t_pl_outboundorder where  boundType='WasteOutbound'and  outboundOrderId=#{outboundOrderId};
+</select>
+
     <!--加载次生出库-->
     <select id="loadSecOutBoundList" resultMap="WastesOutBoundRM">
         select * from t_pl_outboundorder where boundType='SecondaryOutbound'
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <resultMap id="MaterialRequisitionOrderRM" type="MaterialRequisitionOrder">
+        <collection property="client" column="clientId" select="getClientMar"></collection>
+   <collection property="wareHouse" column="wareHouseId" select="getwareHouse"></collection>
+    </resultMap>
+    <!--加载领料单列表-->
+    <select id="getMaterialRequisitionOrderList" resultMap="MaterialRequisitionOrderRM">
+        select * from t_pl_materialrequisitionorder
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>

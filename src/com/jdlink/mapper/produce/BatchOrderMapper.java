@@ -26,5 +26,10 @@ public interface BatchOrderMapper {
 
     List<OutboundOrder>loadWastesOutBoundList(Page page);
     List<OutboundOrder>loadSecOutBoundList(Page page);
+    BatchingOrder getBatchById(String id);
+    void updateBatchOrderState(String id);
+    List<MaterialRequisitionOrder> getMaterialRequisitionOrderList(Page page);
+    void updateMaterialRequisitionOrderCheck(String id);
+    OutboundOrder getWastesOutBoundById(String id);
 
 }
