@@ -48,7 +48,7 @@ public class QuotationItem {
      */
     private float unitPriceTax;
     /**
-     * 去税单价
+     * 去税单价(暂不用)
      */
     private float unitPrice;
     /**

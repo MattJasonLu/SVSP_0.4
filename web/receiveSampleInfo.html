@@ -231,6 +231,8 @@
                 <div class="pull-left col-md-6">
                     <a class="btn btn-primary btn-xs" href="#" onclick="appointModal();"><span
                             class="glyphicon glyphicon-plus" aria-hidden="true"></span> 预约登记</a>
+                    <a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose()"><span
+                            class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                     <a class="btn btn-primary btn-xs" onclick="exportExcel()"><span
                             class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                 </div>
@@ -441,6 +443,32 @@
                 </li>
             </ol>
         </nav>
+        <!--导入模态框-->
+        <div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="TitleMyModalLabel">导入表格数据</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="modelAssign" method="post">
+                            <div class="form-group">
+                                <font size="+2">提示：</font>
+                                <font size="+1" class="text-center">请按照模板格式导入数据！</font>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer center">
+                        <button type="button" class="btn btn-default" id="downloadModal" onclick="downloadModal()">下载模板</button>
+                        <button type="button" class="btn btn-primary" onclick="importExcel()">导入数据</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--导入-->
+        <input type="file" name="excelPath" id="idExcel" style="display:none">
         <!--拒收页面-->
         <div class="modal fade" id="rejection1" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
             <div class="modal-dialog" role="document">
@@ -854,7 +882,6 @@
                 </div>
             </div>
         </div>
-        <input type="file" name="excelPath" id="idExcel" style="display:none">
         <div id="embed"></div>
     </div>
 </div>

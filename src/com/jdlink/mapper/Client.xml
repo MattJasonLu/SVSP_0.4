@@ -237,7 +237,29 @@
     <select id="total" resultType="int">
         SELECT COUNT(*) FROM client;
     </select>
+
+
+
+    <!--依次获取字符串相似度最高的数据 中-->
+    <select id="getClientByLikeCompanyName" parameterType="String" resultMap="ClientRM">
+        select * from client where companyName like "%"#{companyName}"%";
+    </select>
+   <!--获取字符串相等的数据 高-->
+    <select id="getClientByEqualCompanyName" parameterType="String" resultMap="ClientRM">
+        select * from client where companyName= #{companyName};
+    </select>
+
     <update id="deleteSalesId" parameterType="String">
         update client set salesmanId=null where clientId=#{clientId}
+    </update>
+    <!--更新配伍周计划明细-->
+    <update id="updateInvoiceItem" parameterType="Client">
+        update client set companyName=#{companyName},organizationCode=#{organizationCode},
+        representative=#{representative},industry=#{industry},enterpriseType=#{enterpriseType},
+        operationType=#{operationType},operationRecord=#{operationRecord},street=#{street},
+        clientId=#{clientId},licenseCode=#{licenseCode},postCode=#{postCode},product=#{product},
+        operationMode=#{operationMode},contingencyPlan=#{contingencyPlan},
+        applicationStatus=#{applicationStatus},location=#{location}
+        where clientId=#{clientId}
     </update>
 </mapper>

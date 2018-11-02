@@ -392,4 +392,9 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <select id="getNewestContractId1" resultType="String">
         select contractId from  t_contract order by contractId desc;
     </select>
+
+    <select id="getWastesInfoByCompanyName" resultType="QuotationItem">
+        select * from t_quotationitem
+        where contractId in (select contractId from t_contract where clientId in (select clientId from client where companyName =#{companyName}) and checkState='Keeping')
+    </select>
 </mapper>
