@@ -24,7 +24,6 @@ public class SewageregistrationItem {
 
     private String identifie;//联单编号
 
-
     private int relativeAlkalinity;//相对碱度
 
     private int dissolvedSolidForm;//溶解固形物
