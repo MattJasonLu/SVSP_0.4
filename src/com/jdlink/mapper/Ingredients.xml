@@ -349,7 +349,7 @@
     </select>
 
     <select id="countInventory" resultType="int">
-        select count(*) from t_pr_ingredients_inventory where amount != 0;
+        select count(*) from t_pr_ingredients_inventory;
     </select>
 
     <select id="getInventoryByNameAndWare" resultType="Ingredients">
@@ -363,7 +363,7 @@
                 or itemId = #{keywords}
                 or name like "%"#{keywords}"%"
                 or wareHouseName like "%"#{keywords}"%"
-                or amount = #{keywords}
+                or amount like "%"#{keywords}"%"
                 or unit like "%"#{keywords}"%"
                 or ingredientState like "%"#{keywords}"%"
                 or specification like "%"#{keywords}"%"
@@ -387,7 +387,7 @@
                 or itemId = #{keywords}
                 or name like "%"#{keywords}"%"
                 or wareHouseName like "%"#{keywords}"%"
-                or amount = #{keywords}
+                or amount like "%"#{keywords}"%"
                 or unit like "%"#{keywords}"%"
                 or ingredientState like "%"#{keywords}"%"
                 or specification like "%"#{keywords}"%"

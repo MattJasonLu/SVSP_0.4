@@ -173,4 +173,24 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public String getSalesmanIdByName(String name){ return clientMapper.getSalesmanIdByName(name); }
+
+    @Override
+    public void updateInvoiceItem(Client client) {
+        clientMapper.updateInvoiceItem(client);
+    }
+
+    /**
+     * 根据公司名获取最高的那一个公司
+     * @return
+     */
+    @Override
+    public Client getClientByCompanyName(String companyName){
+       List<Client> clientList = clientMapper.getClientByLikeCompanyName(companyName);
+        if(clientList.size() > 1){ // 如果存在多个类似名称的公司则进行精确匹配
+            return clientMapper.getClientByEqualCompanyName(companyName);
+        }else {
+            return clientList.get(0);
+        }
+
+    }
 }

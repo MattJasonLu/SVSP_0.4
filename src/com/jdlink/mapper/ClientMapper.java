@@ -66,5 +66,9 @@ public interface ClientMapper {
 
     String getSalesmanIdByName(String name);
 
+    void updateInvoiceItem(Client client);
 
+    List<Client> getClientByLikeCompanyName(String companyName);
+
+    Client getClientByEqualCompanyName(String companyName);
 }

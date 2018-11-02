@@ -76,5 +76,5 @@ public interface ContractService {
     List<Contract> getContractByClientId(String id);
     List<Contract> getContractByMonth(String month);
     List<String> getNewestContractId1();
-
+    List<QuotationItem> getWastesInfoByCompanyName(String companyName);
 }
