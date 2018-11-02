@@ -14,6 +14,7 @@ import java.util.List;
 
 @Service
 public class CompatibilityServiceImpl implements CompatibilityService
+
 {
     @Autowired
     CompatibilityMapper compatibilityMapper;
@@ -167,5 +168,10 @@ public class CompatibilityServiceImpl implements CompatibilityService
     @Override
     public void disabledMaterialRequire(String compatibilityId) {
         compatibilityMapper.disabledMaterialRequire(compatibilityId);
+    }
+
+    @Override
+    public void deleteCompatibility(String compatibilityId) {
+        compatibilityMapper.deleteCompatibility(compatibilityId);
     }
 }

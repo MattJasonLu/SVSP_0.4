@@ -39,5 +39,6 @@ public interface CompatibilityService {
     void addMaterialRequireItem(MaterialRequireItem materialRequireItem);
     void addMaterialRequire(MaterialRequire materialRequire);
     void disabledMaterialRequire(String compatibilityId);
+    void  deleteCompatibility(String compatibilityId);
 
 }
