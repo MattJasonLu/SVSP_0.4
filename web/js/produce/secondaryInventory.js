@@ -346,25 +346,18 @@ function setByInboundOrderItemId(result) {
                     $(this).html(obj.produceCompany.companyName);
                     break;
                 case (2):
-                    if(obj.laboratoryTest.wastesName=='slag'){
-                        $(this).html('炉渣');
-                    }
-                    if(obj.laboratoryTest.wastesName=='ash'){
-                        $(this).html('飞灰');
-                    }
-                    if(obj.laboratoryTest.wastesName=='bucket'){
-                        $(this).html('桶');
-                    }
+                        $(this).html(convertStrToWastesName(obj.wastesName));
+
                     break;
                 case (3):
-                    $(this).html(obj.laboratoryTest.wastesCode);
+                    $(this).html(obj.wastesCode);
                     break;
                 case (4):
-                    $(this).html(obj.actualCount);
+                    $(this).html(obj.actualCount.toFixed(2));
                     break;
-                case (5):
-                    $(this).html(obj.handleCategory.name);
-                    break;
+                // case (5):
+                //     $(this).html(obj.handleCategory.name);
+                //     break;
             }
         })
         clonedTr.removeAttr("id");
@@ -621,7 +614,7 @@ function enterSearch() {
 
 //查看出库信息==>次生库存
 function view(item) {
-    var inboundOrderItemId=$(item).parent().prev().html();
+    var inboundOrderItemId=$(item).parent().prev().prev().html();
     console.log(inboundOrderItemId);
     $.ajax({
         type: "POST",                       // 方法类型
