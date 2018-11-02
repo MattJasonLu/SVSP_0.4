@@ -194,6 +194,7 @@
                         <td class="text-center hidden">危废代码</td>
                         <td class="text-center">产废类别</td>
                         <td class="text-center">进料方式</td>
+                        <td class="text-center">处置类别</td>
                         <td class="text-center">数量(吨)</td>
                         <td class="text-center">剩余数量</td>
                         <td class="text-center hidden">备注</td>
@@ -214,6 +215,7 @@
                         <td class="text-left model-wastesName"></td>
                         <td class="text-center model-wastesCode hidden"></td>
                         <td class="text-center model-wastesCode"></td>
+                        <td class="text-right modal-weight"></td>
                         <td class="text-right modal-weight"></td>
                         <td class="text-right modal-materialForm"></td>
                         <td class="text-right residualQuantity" id="residualQuantity" readonly></td><!--剩余数量-->
@@ -255,7 +257,7 @@
                         <div class="form-group">
                             <label for="date" class="col-sm-4 control-label">配料日期</label>
                             <div class="col-xs-7">
-                                <input type="date" class="form-control" id="date" name="date" placeholder="" readonly>
+                                <input type="date" class="form-control" id="date" name="date" placeholder="">
                             </div>
                         </div>
                         <!--<div class="form-group">-->
@@ -303,6 +305,7 @@
                         <th class="text-center hidden">危废代码</th>
                         <th class="text-center">产废类别</th>
                         <th class="text-center">进料方式</th>
+                        <th class="text-center">处置类别</th>
                         <th class="text-center">数量(吨)</th>
                         <th class="text-center">剩余数量</th>
                         <th class="text-center hidden">备注</th>
@@ -319,6 +322,7 @@
                         <td class="text-center model-wastesCode hidden"></td>
                         <td class="text-right modal-weight"></td>
                         <td class="text-right modal-materialForm"></td>
+                        <td class="text-center modal-companyName"></td>
                         <td class="text-right modal-packingType" name="123">
                             <input type='text' style='width: 100px;'  name='count' value="" id='input1' onkeyup="CalRemainQuantities(this)">
                         </td>

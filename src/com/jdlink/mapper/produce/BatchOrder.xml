@@ -52,8 +52,8 @@
 
     <!--添加配料单-->
     <insert id="addBatchingOrderBat" parameterType="BatchingOrder">
-        insert into t_pl_batchingorder(batchingOrderId,batchingDate,batchingNumber,createDate,creator,handelCategory,inboundOrderId,inboundOrderItemId,produceCompany,wareHouseId,wasteCategory,wastesName,nowTime,transferDraftId,checkState) values
-        (#{batchingOrderId},#{batchingDate},#{batchingNumber},#{createDate},#{creator},#{handelCategory},#{inboundOrder.inboundOrderId},#{inboundOrderItemId},#{produceCompany.clientId},#{wareHouse.wareHouseId},#{wasteCategory},#{wastesName},NOW(),#{transferDraftId},'ToPick')
+        insert into t_pl_batchingorder(batchingOrderId,batchingDate,batchingNumber,createDate,creator,handelCategory,inboundOrderId,inboundOrderItemId,produceCompany,wareHouseId,wasteCategory,wastesName,nowTime,transferDraftId,checkState,processWay) values
+        (#{batchingOrderId},#{batchingDate},#{batchingNumber},#{createDate},#{creator},#{handelCategory},#{inboundOrder.inboundOrderId},#{inboundOrderItemId},#{produceCompany.clientId},#{wareHouse.wareHouseId},#{wasteCategory},#{wastesName},NOW(),#{transferDraftId},'ToPick',#{processWay})
     </insert>
 
     <!--配料成功后扣减库存-->

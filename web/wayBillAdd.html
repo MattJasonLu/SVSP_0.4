@@ -203,14 +203,14 @@
                     <select
                             class="selectpicker input-xlarge form-control" data-live-search="true"
                             data-live-search-placeholder="搜索..." id="modal-produceCompanyName"
-                            name="modal-produceCompanyName" title="未选择" ></select>
+                            name="modal-produceCompanyName" title="未选择" onchange="autoSetSalesman()"></select>
                 </div>
             </div>
             <div class="form-horizontal col-md-5" ></div>
             <div class="form-horizontal col-md-3" >
                 <label for="modal-founder" class="col-sm-5 control-label right">创建人</label>
                 <div class="col-sm-7">
-                    <input type="text" id="modal-founder" class="text-left form-control pull-left" readonly/>
+                    <input type="text" id="modal-founder" class="text-left form-control pull-left" />
                 </div>
             </div>
         </div>
@@ -236,8 +236,8 @@
                 <tr id="addClone">
                     <td class="text-center">1</td>
                     <td class="text-center"><input id="modal0-receiveCompany" name="modal0-receiveCompany" class="focus" value="北控安耐得环保科技发展常州有限公司"></td>
-                    <td class="text-center"><select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="modal0-salesman" name="modal0-salesman" title="未选择"></select></td>
-                    <td class="text-center"><input title="" type="text" class="focus" id="modal0-wastesName" name="modal0-wastesName" style="width: 110px;"></td>
+                    <td class="text-center"><select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="modal0-salesman" name="salesman" title="未选择"></select></td>
+                    <td class="text-center"><input title="" type="text" class="focus" id="modal0-wastesName" name="modal0-wastesName" style="width: 110px;" ></td>
                     <td class="text-center"><select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="modal0-wastesCode" name="modal0-wastesCode" title="未选择" style="width: 130px;"></select></td>
                     <td class="text-center"><input title="" type="number" class="focus" id="modal0-wastesPrice" name="modal0-wastesPrice"></td>
                     <td class="text-center"><input title="" type="number" class="focus" id="modal0-wasteAmount" name="modal0-wasteAmount"></td>
@@ -266,7 +266,7 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td class="text-left" colspan="4">运费：<input title="" type="number" class="focus" id="modal-freight" style="width: 70%"></td>
+                    <td class="text-left" colspan="4">运费：<input title="" value="0" type="number" class="focus" id="modal-freight" style="width: 70%"></td>
                     <td class="text-left" colspan="5">产废单位经手人：<input title="" type="text" class="focus" id="modal-produceCompanyOperator" style="width: 70%"></td>
                     <td class="text-left" colspan="2">备注：<input title="" type="text" id="modal-remarks" class="focus" style="width: 70%"></td>
                 </tr>

@@ -367,37 +367,54 @@ function setSewageTestList(result) {
                     break;
                     //PH
                 case (3):
-                    $(this).html((obj.ph));
+                    $(this).html((obj.ph).toFixed(2));
                     break;
                 case (4):
                     // COD
-                    $(this).html(obj.COD);
+                    $(this).html(obj.COD.toFixed(2));
                     break;
                 case (5):
                     // BOD5
-                    $(this).html(obj.BOD5);
+                    $(this).html(obj.BOD5.toFixed(2));
                     break;
                 case (6):
                     // 氨氮
-                        $(this).html(obj.n2);
+                        $(this).html(obj.n2.toFixed(2));
                     break;
                 case (7):
-                    // 碳酸盐碱度
-                    $(this).html(obj.alkalinity);
+                    // 碳酸盐碱度(Cao)
+                    $(this).html(obj.alkalinity.toFixed(2));
                     break;
                 case (8):
-                    // 重碳酸盐碱度
-                    $(this).html(obj.bicarbonate);
+                    // 碳酸盐碱度(CaCo3)
+                    $(this).html(obj.alkalinityCaCo3.toFixed(2));
                     break;
                 case (9):
-                    // 总氮
-                    $(this).html(obj.nitrogen);
+                    // 碳酸盐碱度(HCO3-))
+                    $(this).html(obj.alkalinityHCO3.toFixed(2));
                     break;
                 case (10):
-                    // 总磷
-                    $(this).html(obj.phosphorus);
+                    // 重碳酸盐碱度(Cao)
+                    $(this).html(obj.bicarbonate.toFixed(2));
                     break;
                 case (11):
+                    // 重碳酸盐碱度(CaCo3)
+                    $(this).html(obj.bicarbonateCaCo3.toFixed(2));
+                    break;
+                case (12):
+                    // 重碳酸盐碱度(HCO3-)
+                    $(this).html(obj.bicarbonateHCO3.toFixed(2));
+                    break;
+
+                case (13):
+                    // 总氮
+                    $(this).html(obj.nitrogen.toFixed(2));
+                    break;
+                case (14):
+                    // 总磷
+                    $(this).html(obj.phosphorus.toFixed(2));
+                    break;
+                case (15):
                     // 备注
                     $(this).html(obj.remarks);
                     break;

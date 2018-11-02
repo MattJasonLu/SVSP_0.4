@@ -307,7 +307,7 @@
 
     <!--列出次生入库单-->
     <select id="listSecondInboundOrder" resultMap="InboundOrderRM">
-        SELECT * FROM t_pl_inboundorder WHERE boundType='SecondaryInbound';
+        SELECT * FROM t_pl_inboundorder WHERE boundType='SecondaryInbound' and checkState != 'Invalid';
     </select>
 
     <!--通过编号获取入库单-->
@@ -318,6 +318,11 @@
     <!--作废该入库单-->
     <update id="setInboundOrderStateInvalid" parameterType="String">
         UPDATE t_pl_inboundorder SET checkState='Invalid' WHERE inboundOrderId=#{inboundOrderId};
+    </update>
+
+    <!--提交该入库单-->
+    <update id="setInboundOrderStateSubmit" parameterType="String">
+        UPDATE t_pl_inboundorder SET checkState='ToExamine' WHERE inboundOrderId=#{inboundOrderId};
     </update>
 
     <!--获取入库单明细列表-->
@@ -345,7 +350,7 @@
     <select id="getInboundOrderItemByClientId" parameterType="String" resultMap="InboundOrderItemRM">
         select t_pl_inboundorderitem.*,t_pl_inboundorder.inboundDate from t_pl_inboundorderitem join t_pl_inboundorder
         where
-        t_pl_inboundorderitem.produceCompanyId =#{id} and  t_pl_inboundorderitem.inboundOrderId=t_pl_inboundorder.inboundOrderId;
+        t_pl_inboundorderitem.produceCompanyId =#{id} and t_pl_inboundorderitem.inboundOrderId=t_pl_inboundorder.inboundOrderId;
     </select>
     
     <select id="getInventoryByWastesNameAndWareHouse" resultType="int">

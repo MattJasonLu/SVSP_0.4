@@ -14,8 +14,8 @@
     </select>
     <!--添加物料表-->
     <insert id="addMaterial" parameterType="Material">
-        insert into t_pl_material (suppliesName, specifications, inventory, note, purchaseQuantity, demandQuantity, receiptNumber,unit)
-        values (#{suppliesName},#{specifications},#{inventory},#{note},#{purchaseQuantity},#{demandQuantity},#{receiptNumber},#{unit});
+        insert into t_pl_material (suppliesName, specifications, inventory, note, purchaseQuantity, demandQuantity, receiptNumber,unit,state)
+        values (#{suppliesName},#{specifications},#{inventory},#{note},#{purchaseQuantity},#{demandQuantity},#{receiptNumber},#{unit},'ToInbound');
     </insert>
     <!--加载采购列表-->
     <resultMap id="ProcurementRM" type="Procurement" autoMapping="true">
@@ -33,6 +33,17 @@
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
+    </select>
+    <!--获取采购明细-->
+    <select id="getProcurementItemList" resultType="Material">
+        select * from t_pl_material where state = 'ToInbound'
+        <if test="start != null and count != null and count != 0">
+            limit #{start}, #{count};
+        </if>
+    </select>
+
+    <select id="countProcurementItemList" resultType="int">
+        select count(*) from t_pl_material where state = 'ToInbound';
     </select>
     <!--获取应急采购-->
     <select id="getEmergencyProcurementList" resultMap="ProcurementRM">
@@ -144,4 +155,72 @@
     <select id="getNewestEm" resultType="Date">
         select applyDate from t_pl_procurement where applyDate is not null  and procurementCategory='0' order by applyDate;
     </select>
+
+    <select id="searchMaterialTotal" resultType="int">
+        select count(*) from t_pl_material
+        <where>
+            <if test="keywords != null and keywords != ''">
+                and suppliesName like "%"#{keywords}"%"
+                or specifications like "%"#{keywords}"%"
+                or receiptNumber like "%"#{keywords}"%"
+                or note like "%"#{keywords}"%"
+                or unit like "%"#{keywords}"%"
+                or demandQuantity like "%"#{keywords}"%"
+                or inventory like "%"#{keywords}"%"
+            </if>
+            <if test="suppliesName != null and suppliesName != ''">
+                and suppliesName like "%"#{suppliesName}"%"
+            </if>
+            <if test="specifications != null and specifications != ''">
+                and specifications like "%"#{specifications}"%"
+            </if>
+            <if test="receiptNumber != null and receiptNumber != ''">
+                and receiptNumber like "%"#{receiptNumber}"%"
+            </if>
+            <if test="note != null and note != ''">
+                and note like "%"#{note}"%"
+            </if>
+            <if test="state != null and state != ''">
+                and state =#{state};
+            </if>
+        </where>
+    </select>
+
+    <select id="searchMaterial" resultType="Material">
+        select * from t_pl_material
+        <where>
+            <if test="keywords != null and keywords != ''">
+                and suppliesName like "%"#{keywords}"%"
+                or specifications like "%"#{keywords}"%"
+                or receiptNumber like "%"#{keywords}"%"
+                or note like "%"#{keywords}"%"
+                or unit like "%"#{keywords}"%"
+                or demandQuantity like "%"#{keywords}"%"
+                or inventory like "%"#{keywords}"%"
+            </if>
+            <if test="suppliesName != null and suppliesName != ''">
+                and suppliesName like "%"#{suppliesName}"%"
+            </if>
+            <if test="specifications != null and specifications != ''">
+                and specifications like "%"#{specifications}"%"
+            </if>
+            <if test="receiptNumber != null and receiptNumber != ''">
+                and receiptNumber like "%"#{receiptNumber}"%"
+            </if>
+            <if test="note != null and note != ''">
+                and note like "%"#{note}"%"
+            </if>
+            <if test="state != null and state != ''">
+                and state =#{state}
+            </if>
+        </where>
+        <if test="page != null and page.start != null and page.count != null and page.count != 0">
+            limit #{page.start}, #{page.count};
+        </if>
+    </select>
+
+    <select id="getMaterialById" parameterType="String" resultType="Material">
+        select * from t_pl_material where id=#{id};
+    </select>
+
 </mapper>

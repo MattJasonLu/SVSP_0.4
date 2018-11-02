@@ -85,4 +85,19 @@ public class ProcurementServiceImpl implements ProcurementService {
     public List<Procurement> getEmergencyProcurementList(Page page) {
         return procurementMapper.getEmergencyProcurementList(page);
     }
+
+    @Override
+    public List<Material> getProcurementItemList(Page page){ return procurementMapper.getProcurementItemList(page);}
+
+    @Override
+    public int countProcurementItemList(){ return procurementMapper.countProcurementItemList();}
+
+    @Override
+    public List<Material> searchMaterial(Material material){ return procurementMapper.searchMaterial(material);}
+
+    @Override
+    public int searchMaterialTotal(Material material){ return procurementMapper.searchMaterialTotal(material);}
+
+    @Override
+    public Material getMaterialById(String id){ return procurementMapper.getMaterialById(id);}
 }

@@ -83,4 +83,7 @@ public class SalesmanServiceImpl implements SalesmanService {
     public int searchCount(Salesman salesman) {
         return salesmanMapper.searchCount(salesman);
     }
+
+    @Override
+    public Salesman getSalesmanByCompanyName(String companyName){ return salesmanMapper.getSalesmanByCompanyName(companyName); }
 }

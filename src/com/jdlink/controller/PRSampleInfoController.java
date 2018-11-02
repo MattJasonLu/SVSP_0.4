@@ -366,7 +366,7 @@ public class PRSampleInfoController {
     public String getSampleFormType() {
         JSONObject res = new JSONObject();
         //JSONArray formTypeList = JSONArray.fromArray(FormType.values());
-        FormType[] states = new FormType[]{FormType.Solid1, FormType.HalfSolid,FormType.HalfSolid.Liquid1};
+        FormType[] states = new FormType[]{FormType.Solid, FormType.HalfSolid,FormType.HalfSolid.Liquid,FormType.Solid1AndHalfSolid,FormType.HalfSolidAndLiquid,FormType.Solid1AndLiquid};
         JSONArray formTypeList = JSONArray.fromArray(states);
         res.put("formTypeList", formTypeList);
         return res.toString();

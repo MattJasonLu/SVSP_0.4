@@ -18,7 +18,7 @@ public class IngredientsIn {
     /**
      * 采购单编号列表
      */
-    private List<String> procurementIdList;
+    private List<String> procurementItemIdList;
     /**
      * 公司名
      */
@@ -104,12 +104,12 @@ public class IngredientsIn {
         this.endDate = endDate;
     }
 
-    public List<String> getProcurementIdList() {
-        return procurementIdList;
+    public List<String> getProcurementItemIdList() {
+        return procurementItemIdList;
     }
 
-    public void setProcurementIdList(List<String> procurementIdList) {
-        this.procurementIdList = procurementIdList;
+    public void setProcurementItemIdList(List<String> procurementItemIdList) {
+        this.procurementItemIdList = procurementItemIdList;
     }
 
     public String getKeywords() {

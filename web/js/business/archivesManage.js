@@ -136,15 +136,16 @@ function searchData() {
  */
 function setDataList(result) {
     // 设置企业数据
+    console.log("设置数据:");
+    console.log(result.clientList[0].clientState);
     for(var i = 0;i < result.clientList.length;i++){
-        if(result.clientList[i] != null && result.clientList[i].state.name != "已禁用"){
+        if(result.clientList[i] != null && result.clientList[i].clientState != null && result.clientList[i].clientState.name != "已禁用"){
             $("#companyName").text(result.clientList[0].companyName);
             $("#companyId").text(result.clientList[0].clientId);
             $("#companyArea").text(result.clientList[0].location);
             $("#location").text(result.clientList[0].location);
             $("#contactName").text(result.clientList[0].contactName);
         }
-
     }
     // 设置接运单数据
     $("#sendSampleNumber").text(result.sampleInfoList.length);
@@ -574,11 +575,13 @@ function setInboundOrderItemList(result) {
                     break;
                 // 八位码
                 case (1):
-                    $(this).html(obj.laboratoryTest.wastesCode);
+                    if(obj.wastes != null)
+                        $(this).html(obj.wastes.wastesId);
                     break;
                 // 危废名称
                 case (2):
-                    $(this).html(obj.laboratoryTest.wastesName);
+                    if(obj.wastes != null)
+                        $(this).html(obj.wastes.name);
                     break;
                 // 包装类型
                 case (3):
@@ -587,11 +590,11 @@ function setInboundOrderItemList(result) {
                     break;
                 // 数量
                 case (4):
-                    $(this).html(obj.wastesAmount);
+                    $(this).html(obj.wastesAmount.toFixed(3));
                     break;
                 // 单位
                 case (5):
-                    // $(this).html(obj.);
+                    $(this).html("吨");
                     break;
                 // 转移联单号
                 case (6):
@@ -688,6 +691,8 @@ function viewData5() {
  * 设置危废处置模态框数据
  */
 function setOutBoundList(result) {
+    console.log("出库数据：");
+    console.log(result);
     $(".newLine").remove();                 // 删除旧数据
     // 获取id为cloneTr的tr元素
     var tr = $("#clone5");
@@ -710,11 +715,13 @@ function setOutBoundList(result) {
                     break;
                 // 八位码
                 case (1):
-                    $(this).html(obj.laboratoryTest.wastesCode);
+                    if(obj.wastes != null)
+                    $(this).html(obj.wastes.wastesId);
                     break;
                 // 危废名称
                 case (2):
-                    $(this).html(obj.laboratoryTest.wastesName);
+                    if(obj.wastes != null)
+                    $(this).html(obj.wastes.name);
                     break;
                 // 包装类型
                 case (3):
@@ -727,7 +734,7 @@ function setOutBoundList(result) {
                     break;
                 // 单位
                 case (5):
-                    // $(this).html(obj.);
+                    $(this).html("吨");
                     break;
                 // 转移联单号
                 case (6):

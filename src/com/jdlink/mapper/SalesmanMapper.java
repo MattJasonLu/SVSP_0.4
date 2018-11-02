@@ -2,6 +2,7 @@ package com.jdlink.mapper;
 
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Salesman;
+import com.jdlink.domain.Sample;
 
 import java.util.List;
 import java.util.Map;
@@ -34,8 +35,10 @@ public interface SalesmanMapper {
     int searchCount(Salesman salesman);
 
     int count();
+
     List<String> getClientBySalesId(String salesmanId);
 
+    Salesman getSalesmanByCompanyName(String companyName);
 
 
 }

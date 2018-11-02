@@ -353,11 +353,11 @@ function setDataList(result) {
                     break;
                 // 热灼减率%
                 case (4):
-                    $(this).html(obj.scorchingRate);
+                    $(this).html(obj.scorchingRate.toFixed(2));
                     break;
                 // 水分%
                 case (5):
-                    $(this).html(obj.water);
+                    $(this).html(obj.water.toFixed(2));
                     break;
                 // 备注
                 case (6):

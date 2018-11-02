@@ -360,6 +360,29 @@ public class InboundController {
     }
 
     /**
+     * 作废入库单
+     *
+     * @param inboundOrderId 入库单编号
+     * @return 成功与否
+     */
+    @RequestMapping("setInboundOrderStateSubmit")
+    @ResponseBody
+    public String setInboundOrderStateSubmit(String inboundOrderId) {
+        JSONObject res = new JSONObject();
+        try {
+            // 作废入库单
+            inboundService.setInboundOrderStateSubmit(inboundOrderId);
+            res.put("status", "success");
+            res.put("message", "提交成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "提交失败");
+        }
+        return res.toString();
+    }
+
+    /**
      * 通过编号获取入库单
      *
      * @param inboundOrderId 入库单编号

@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface ProcurementMapper {
-    void  add(Procurement procurement);
+    void add(Procurement procurement);
     List<String> getNewestId();
     void addMaterial(Material material);
     List<Procurement> getProcurementList(Page page);
@@ -22,4 +22,9 @@ public interface ProcurementMapper {
     int totalEmc();
     List<Date>getNewestMouth();
     List<Date>getNewestEm();
+    List<Material> getProcurementItemList(Page page);
+    List<Material> searchMaterial(Material material);
+    Material getMaterialById(String id);
+    int searchMaterialTotal(Material material);
+    int countProcurementItemList();
 }
