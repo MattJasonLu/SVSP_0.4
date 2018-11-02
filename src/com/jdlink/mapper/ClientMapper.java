@@ -66,5 +66,7 @@ public interface ClientMapper {
 
     String getSalesmanIdByName(String name);
 
+    void updateInvoiceItem(Client client);
+
 
 }

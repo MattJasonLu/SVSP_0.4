@@ -75,4 +75,6 @@ public interface ClientService {
 
     String getSalesmanIdByName(String name);
 
+    void updateInvoiceItem(Client client);
+
 }

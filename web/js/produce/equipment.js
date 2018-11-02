@@ -661,7 +661,8 @@ function setPageClone(result) {
         var clonedLi = li.clone();
         clonedLi.show();
         clonedLi.find('a:first-child').text(myArray[i]);
-        clonedLi.find('a:first-child').click(function () {
+        clonedLi.find('a:first-child').click(function
+            () {
             var num = $(this).text();
             switchPage(num);
             addAndRemoveClass(this);
