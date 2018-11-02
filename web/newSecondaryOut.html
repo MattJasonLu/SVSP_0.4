@@ -143,7 +143,7 @@
                     </div>
                     <div class="form-horizontal col-md-5">
                         <div class="form-group">
-                            <label for="search-handelCategory" class="col-sm-4 control-label">进料方式</label>
+                            <label for="search-handelCategory" class="col-sm-4 control-label">处理方式</label>
                             <div class="col-xs-7">
                                 <select class="form-control" id="search-handelCategory" name="search-handelCategory" onchange="searchInventory()"></select>
                             </div>
@@ -175,6 +175,7 @@
         </div>
         <br>
         <form method="post" id="infoForm" enctype="multipart/form-data">
+            <div style="height:500px; overflow-y:scroll; ">
             <table class="table table-bordered" id="J_tab_fam">
                 <tbody>
                 <tr>
@@ -188,12 +189,10 @@
                     <td class="text-center">仓库号</td>
                     <td class="text-center">产废单位</td>
                     <td class="text-center">危废名称</td>
-                    <td class="text-center">危废代码</td>
                     <td class="text-center">产废类别</td>
-                    <td class="text-center">进料方式</td>
+                    <td class="text-center">处理方式</td>
                     <td class="text-center">数量</td>
                     <td class="text-center">剩余数量</td>
-                    <td class="text-center">备注</td>
                 </tr>
                 <tr id="cloneTr" class="myclass">
                     <td class="text-center">
@@ -207,22 +206,22 @@
                     <td class="text-left model-wastesName"></td>
                     <td class="text-left model-wastesName"></td>
                     <td class="text-center model-wastesCode"></td>
-                    <td class="text-center model-wastesCode"></td>
                     <td class="text-right modal-weight"></td>
                     <td class="text-right modal-materialForm"></td>
                     <td class="text-right residualQuantity" id="residualQuantity"></td><!--剩余数量-->
-                    <td class="text-right modal-packingType"></td>
                     <td class="text-right modal-packingType hidden"></td>
                 </tr>
                 </tbody>
             </table>
-            <div class="row text-center">
-                <a class="btn btn-primary" onclick="batching(this);">确认</a>
-            </div>
+
             <br>
             <h4>出库单</h4>
             <hr class="simple" color="#6f5499" />
             <br>
+            </div>
+            <div class="row text-center">
+                <a class="btn btn-primary" onclick="batching(this);">确认</a>
+            </div>
         </form>
         <form class="cmxform" id="commentForm" method="Post">
             <div class="row">
@@ -313,47 +312,34 @@
             <br>
             <table class="table table-bordered">
                 <tr>
-                    <th class="text-center">入库单号</th>
-                    <th class="text-center">仓库号</th>
-                    <th class="text-center">产废单位</th>
-                    <th class="text-center">危废名称</th>
-                    <th class="text-center">危废代码</th>
-                    <th class="text-center">产废类别</th>
-                    <th class="text-center">处置方式</th>
-                    <th class="text-center">数量</th>
-                    <th class="text-center">备注</th>
+                    <td class="text-center">入库单号</td>
+                    <td class="text-center">入库日期</td>
+                    <td class="text-center">仓库号</td>
+                    <td class="text-center">产废单位</td>
+                    <td class="text-center">危废名称</td>
+                    <td class="text-center">危废类别</td>
+                    <td class="text-center">处理方式</td>
+                    <td class="text-center">数量</td>
+                    <td class="text-center">剩余数量</td>
                 </tr>
                 <tbody>
                 <tr id="cloneTr2" name="clone" class="myclass2">
-                    <!--<td class="text-center modal-companyName"></td>-->
                     <td class="text-center modal-companyName"></td>
                     <td class="text-center modal-einlass"></td>
                     <td class="text-left model-wastesName"></td>
                     <td class="text-left model-wastesName"></td>
-                    <td class="text-center model-wastesCode"></td>
                     <td class="text-right modal-weight"></td>
                     <td class="text-right modal-materialForm"></td>
+                    <td class="text-right modal-materialForm"></td>
                     <td class="text-right modal-packingType" name="123">
-                        <input type='text' style='width: 100px;'  name='count' value="" id='input1'>
+                        <input type='text' style='width: 100px;'  name='count' value="" id='input1' onkeyup="CalRemainQuantities(this)">
                     </td>
-                    <td class="text-right modal-packingType"></td>
-                    <td class="text-right modal-packingType hidden"></td><!--入库单明细-->
+                    <td class="text-right modal-materialForm"></td>
                     <td class="text-right modal-packingType hidden"></td><!--公司编号-->
-                    <td class="text-right modal-packingType hidden"></td><!--转移联单-->
                     <td class="text-right modal-packingType hidden"></td><!--仓库编号-->
+                    <td class="text-right modal-packingType hidden"></td><!--入库单明细-->
+
                 </tr>
-                <!--<tr  >-->
-                <!--&lt;!&ndash;<td class="text-center modal-companyName"></td>&ndash;&gt;-->
-                <!--<td class="text-center modal-companyName"></td>-->
-                <!--<td class="text-center modal-einlass"></td>-->
-                <!--<td class="text-left model-wastesName"></td>-->
-                <!--<td class="text-left model-wastesName"></td>-->
-                <!--<td class="text-center model-wastesCode"></td>-->
-                <!--<td class="text-right modal-weight"></td>-->
-                <!--<td class="text-right modal-materialForm"></td>-->
-                <!--<td class="text-right modal-packingType" name="123" ondblclick="adjustNumber();">100</td>-->
-                <!--<td class="text-right modal-packingType"></td>-->
-                <!--</tr>-->
                 </tbody>
             </table>
             <div class="row text-center">
