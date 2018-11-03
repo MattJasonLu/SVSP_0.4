@@ -90,7 +90,7 @@ public class SampleInfoAnalysis {
     /**
      * 热融试验
      */
-    private float hotMelt;
+    private String hotMelt;
     /**
      * 送样人
      */
@@ -272,11 +272,11 @@ public class SampleInfoAnalysis {
         this.viscosity = viscosity;
     }
 
-    public float getHotMelt() {
+    public String getHotMelt() {
         return hotMelt;
     }
 
-    public void setHotMelt(float hotMelt) {
+    public void setHotMelt(String hotMelt) {
         this.hotMelt = hotMelt;
     }
 
