@@ -5,6 +5,7 @@ import com.jdlink.domain.Client;
 import com.jdlink.domain.Page;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class SecondarySample {
@@ -29,6 +30,18 @@ public class SecondarySample {
     private String advice;
 
     private List<SecondarySampleItem> secondarySampleItemList=new ArrayList<>();
+    /**
+     * 送样日期
+     */
+    private Date creationDate;
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
 
     public List<SecondarySampleItem> getSecondarySampleItemList() {
         return secondarySampleItemList;

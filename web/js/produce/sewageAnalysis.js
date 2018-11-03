@@ -1497,7 +1497,7 @@ function importExcelChoose() {
  * 下载模板
  * */
 function downloadModal() {
-    var filePath = 'Files/Templates/仓储部送样登记导入模板.xlsx';
+    var filePath = 'Files/Templates/污水送样登记导入模板.xlsx';
     window.open('downloadFile?filePath=' + filePath);
 }
 

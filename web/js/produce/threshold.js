@@ -401,6 +401,11 @@ function toView1(item) {
     window.location.href = "thresholdTable.html";
 }
 
+function edit(item){
+    localStorage.id = getCurrentThrenholdId(item);
+    window.location.href = "thresholdTableAdd.html";
+}
+
 /**
  * 启用功能
  * @param item
@@ -1304,3 +1309,20 @@ function setSelectedList1(e) {
     });
 }
 
+/**
+ * 填写最大值后自动设置最小值
+ * @param item
+ */
+function autoSetMin(item){
+   var max = - parseInt($(item).val()); // 获取最大值的相反数
+    $(item).parent().next().find("input").val(max);
+}
+
+/**
+ * 填写最小值后自动设置最大值
+ * @param item
+ */
+function autoSetMax(item){
+    var min = $(item).val().match(/\d+/ig);  // 获取最小值的相反数
+    $(item).parent().prev().find("input").val(min);
+}

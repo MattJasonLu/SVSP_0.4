@@ -81,4 +81,6 @@ public interface EquipmentMapper {
     void deleteEquipment(String documentNumber);
 
     Equipment getEquipmentByDocumentNumber(String documentNumber);
+
+    EquipmentDate getEquipmentDateByDocumentNumber(String documentNumber);
 }

@@ -1,10 +1,10 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.Page;
-import com.jdlink.domain.Produce.SecondarySample;
-import com.jdlink.domain.Produce.SecondarySampleItem;
-import com.jdlink.domain.Produce.WasteInto;
+import com.jdlink.domain.Produce.*;
 import com.jdlink.service.WasteIntoService;
+import com.jdlink.util.DateUtil;
+import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 危废/次生分析日报控制器
@@ -264,7 +264,94 @@ public class WasteIntoController {
           }
 
         return res.toString();
+    }
 
-
+    /**
+     * 次生导入
+     *
+     * @param excelFile
+     * @return
+     */
+    @RequestMapping("importSampleSecondaryExcel")
+    @ResponseBody
+    public String importSampleSecondaryExcel(MultipartFile excelFile) {
+        JSONObject res = new JSONObject();
+        try {
+            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+            {
+                System.out.println("数据如下：");
+                for (int i = 1; i < data.length; i++) {
+                    for (int j = 0; j < data[1].length; j++) {
+                        System.out.print(data[i][j].toString());
+                        System.out.print(",");
+                    }
+                    System.out.println();
+                }
+            }
+            Map<String, SecondarySample> map = new HashMap<>();
+            List<SecondarySampleItem> secondarySampleItemArrayList = new ArrayList<>();
+            String id1 = "";
+            for (int i = 2; i < data.length; i++) {
+                String id = data[i][0].toString();
+                SecondarySampleItem secondarySampleItem = new SecondarySampleItem();
+                //map内不存在即添加公共数据，存在即添加List内数据
+                if (!map.keySet().contains(id)) {
+                    map.put(id, new SecondarySample());
+                    map.get(id).setId(id);
+                    map.get(id).setSendingPerson(data[i][1].toString());
+                    map.get(id).setAddress(data[i][2].toString());
+                    map.get(id).setCreationDate(DateUtil.getDateFromStr(data[i][7].toString()));
+                    //新存储一个id对象时，将以下两个累计数据清零
+                    secondarySampleItemArrayList = new ArrayList<>();
+                    int index = wasteIntoService.wastesCountById(id);  // 设置危废ID
+                    // 获取唯一的编号
+                    do {
+                        index += 1;
+                        String index1 = index + "";
+                        if (index < 10) index1 = "000" + index;
+                        else if (index < 100) index1 = "00" + index;
+                        else if (index < 1000) index1 = "0" + index;
+                        id1 = id + index1;
+                    } while (wasteIntoService.getByWastesId(id) != null);
+                } else {
+                    int index1 = Integer.parseInt(id1.substring(id1.length() - 5)); // 截取ID后五位，然后叠加
+                    String index2 = id1.substring(0, id1.length() - 5); // 截取ID前几位
+                    index1++;
+                    id1 = index2 + index1;  // 拼接ID
+                }
+                secondarySampleItem.setId(id1);
+                secondarySampleItem.setWastesCode(data[i][3].toString());
+                secondarySampleItem.setWastesName(data[i][4].toString());
+                // 设置检测项目
+                if ((data[i][5].toString().equals("R") || data[i][5].toString().equals("1") || data[i][5].toString().equals("1.0")))
+                    secondarySampleItem.setWater(1);
+                if ((data[i][6].toString().equals("R") || data[i][6].toString().equals("1") || data[i][6].toString().equals("1.0")))
+                    secondarySampleItem.setScorchingRate(1);
+                secondarySampleItem.setSampleinformationId(id);
+                secondarySampleItemArrayList.add(secondarySampleItem);
+                map.get(id).setSecondarySampleItemList(secondarySampleItemArrayList);
+            }
+            for (String key : map.keySet()) {
+                SecondarySample secondarySample1 = wasteIntoService.getSecondarysampleById(map.get(key).getId());
+                SecondarySample secondarySample = map.get(key);
+                if (secondarySample1 == null) {
+                    //插入新数据
+                    wasteIntoService.addSecondarySample(secondarySample);
+                    for (SecondarySampleItem secondarySampleItem : secondarySample.getSecondarySampleItemList())
+                        wasteIntoService.addSecondarySampleItem(secondarySampleItem);
+                } else {
+                    res.put("status", "fail");
+                    res.put("message", "预约单号重复，请检查后导入");
+                    return res.toString();
+                }
+            }
+            res.put("status", "success");
+            res.put("message", "导入成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导入失败，请重试！");
+        }
+        return res.toString();
     }
 }

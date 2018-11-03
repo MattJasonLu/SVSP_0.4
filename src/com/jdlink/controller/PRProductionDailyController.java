@@ -184,48 +184,48 @@ public class PRProductionDailyController {
         }
     }
 
-    /**
-     * 导入
-     *
-     * @param excelFile
-     * @return
-     */
-    @RequestMapping("importSoftWaterExcel")
-    @ResponseBody
-    public String importSoftWaterExcel(MultipartFile excelFile) {
-        JSONObject res = new JSONObject();
-        try {
-            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
-            System.out.println("数据如下：");
-            for (int i = 1; i < data.length; i++) {
-                for (int j = 0; j < data[0].length; j++) {
-                    System.out.print(data[i][j].toString());
-                    System.out.print(",");
-                }
-                System.out.println();
-            }
-            for (int i = 1; i < data.length; i++) {
-                SoftWater softWater = new SoftWater();
-                softWater.setName(data[i][1].toString());
-                softWater.setReceiveDate(DateUtil.getDateFromStr(data[i][2].toString()));
-                softWater.setRelativeAlkalinity(Float.parseFloat(data[i][3].toString()));
-                softWater.setDissolvedSolidForm(Float.parseFloat(data[i][4].toString()));
-                softWater.setPh(Float.parseFloat(data[i][5].toString()));
-                softWater.setAlkalinity(Float.parseFloat(data[i][6].toString()));
-                softWater.setHardness(Float.parseFloat(data[i][7].toString()));
-                softWater.setElectricalConductivity(Float.parseFloat(data[i][8].toString()));
-                softWater.setRemarks(data[i][9].toString());
-                productionDailyService.addSoftWater(softWater);
-            }
-            res.put("status", "success");
-            res.put("message", "导入成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            res.put("status", "fail");
-            res.put("message", "导入失败，请重试！");
-        }
-        return res.toString();
-    }
+//    /**
+//     * 导入
+//     *
+//     * @param excelFile
+//     * @return
+//     */
+//    @RequestMapping("importSoftWaterExcel")
+//    @ResponseBody
+//    public String importSoftWaterExcel(MultipartFile excelFile) {
+//        JSONObject res = new JSONObject();
+//        try {
+//            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+//            System.out.println("数据如下：");
+//            for (int i = 1; i < data.length; i++) {
+//                for (int j = 0; j < data[0].length; j++) {
+//                    System.out.print(data[i][j].toString());
+//                    System.out.print(",");
+//                }
+//                System.out.println();
+//            }
+//            for (int i = 1; i < data.length; i++) {
+//                SoftWater softWater = new SoftWater();
+//                softWater.setName(data[i][1].toString());
+//                softWater.setReceiveDate(DateUtil.getDateFromStr(data[i][2].toString()));
+//                softWater.setRelativeAlkalinity(Float.parseFloat(data[i][3].toString()));
+//                softWater.setDissolvedSolidForm(Float.parseFloat(data[i][4].toString()));
+//                softWater.setPh(Float.parseFloat(data[i][5].toString()));
+//                softWater.setAlkalinity(Float.parseFloat(data[i][6].toString()));
+//                softWater.setHardness(Float.parseFloat(data[i][7].toString()));
+//                softWater.setElectricalConductivity(Float.parseFloat(data[i][8].toString()));
+//                softWater.setRemarks(data[i][9].toString());
+//                productionDailyService.addSoftWater(softWater);
+//            }
+//            res.put("status", "success");
+//            res.put("message", "导入成功");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            res.put("status", "fail");
+//            res.put("message", "导入失败，请重试！");
+//        }
+//        return res.toString();
+//    }
 
     /**
      * 获取查询总数
@@ -458,7 +458,7 @@ public class PRProductionDailyController {
     }
 
     /**
-     * 导入
+     * 污水导入
      *
      * @param excelFile
      * @return
@@ -539,6 +539,102 @@ public class PRProductionDailyController {
                     productionDailyService.addSewaGeregistration(sewageregistration);
                     for (SewageregistrationItem sewageregistrationItem : sewageregistration.getSewageregistrationItemList())
                         productionDailyService.addSewaGeregistrationItem(sewageregistrationItem);
+                } else {
+                    res.put("status", "fail");
+                    res.put("message", "预约单号重复，请检查后导入");
+                    return res.toString();
+                }
+            }
+            res.put("status", "success");
+            res.put("message", "导入成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导入失败，请重试！");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 软水导入
+     *
+     * @param excelFile
+     * @return
+     */
+    @RequestMapping("importSampleSoftWaterExcel")
+    @ResponseBody
+    public String importSampleSoftWaterExcel(MultipartFile excelFile) {
+        JSONObject res = new JSONObject();
+        try {
+            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+            {
+                System.out.println("数据如下：");
+                for (int i = 2; i < data.length; i++) {
+                    for (int j = 0; j < data[1].length; j++) {
+                        System.out.print(data[i][j].toString());
+                        System.out.print(",");
+                    }
+                    System.out.println();
+                }
+            }
+            Map<String, Sewageregistration> map = new HashMap<>();
+            List<SewageregistrationItem> sewageregistrationItemArrayList = new ArrayList<>();
+            String id1 = "";
+            for (int i = 2; i < data.length; i++) {
+                String id = data[i][0].toString();
+                SewageregistrationItem sewageregistrationItem = new SewageregistrationItem();
+                //map内不存在即添加公共数据，存在即添加List内数据
+                if (!map.keySet().contains(id)) {
+                    map.put(id, new Sewageregistration());
+                    map.get(id).setId(id);
+                    map.get(id).setSendingPerson(data[i][1].toString());
+                    map.get(id).setAddress(data[i][2].toString());
+                    map.get(id).setWater(false); // 表明为污水数据
+                    map.get(id).setCreationDate(DateUtil.getDateFromStr(data[i][9].toString()));
+                    //新存储一个id对象时，将以下两个累计数据清零
+                    sewageregistrationItemArrayList = new ArrayList<>();
+                    int index = productionDailyService.wastesCountById(id);  // 设置危废ID
+                    // 获取唯一的编号
+                    do {
+                        index += 1;
+                        String index1 = index + "";
+                        if (index < 10) index1 = "000" + index;
+                        else if (index < 100) index1 = "00" + index;
+                        else if (index < 1000) index1 = "0" + index;
+                        id1 = id + index1;
+                    } while (productionDailyService.getByWastesId(id) != null);
+                } else {
+                    int index1 = Integer.parseInt(id1.substring(id1.length() - 5)); // 截取ID后五位，然后叠加
+                    String index2 = id1.substring(0, id1.length() - 5); // 截取ID前几位
+                    index1++;
+                    id1 = index2 + index1;  // 拼接ID
+                }
+                sewageregistrationItem.setId(id1);
+                // 设置检测项目
+                if ((data[i][3].toString().equals("R") || data[i][3].toString().equals("1") || data[i][3].toString().equals("1.0")))
+                    sewageregistrationItem.setTurbidity(1);
+                if ((data[i][4].toString().equals("R") || data[i][4].toString().equals("1") || data[i][4].toString().equals("1.0")))
+                    sewageregistrationItem.setHardness(1);
+                if ((data[i][5].toString().equals("R") || data[i][5].toString().equals("1") || data[i][5].toString().equals("1.0")))
+                    sewageregistrationItem.setPh(1);
+                if ((data[i][6].toString().equals("R") || data[i][6].toString().equals("1") || data[i][6].toString().equals("1.0")))
+                    sewageregistrationItem.setPhenolphthalein(1);
+                if ((data[i][7].toString().equals("R") || data[i][7].toString().equals("1") || data[i][7].toString().equals("1.0")))
+                    sewageregistrationItem.setBasicity(1);
+                if ((data[i][8].toString().equals("R") || data[i][8].toString().equals("1") || data[i][8].toString().equals("1.0")))
+                    sewageregistrationItem.setElectricalConductivity(1);
+                sewageregistrationItem.setSampleinformationId(id);
+                sewageregistrationItemArrayList.add(sewageregistrationItem);
+                map.get(id).setSewageregistrationItemList(sewageregistrationItemArrayList);
+            }
+            for (String key : map.keySet()) {
+                Sewageregistration sewageregistration1 = productionDailyService.getSewaGeregistrationById(map.get(key).getId());
+                Sewageregistration sewageregistration = map.get(key);
+                if (sewageregistration1 == null) {
+                    //插入新数据
+                    productionDailyService.addSoftGeregistration(sewageregistration);
+                    for (SewageregistrationItem sewageregistrationItem : sewageregistration.getSewageregistrationItemList())
+                        productionDailyService.addSoftGeregistrationItem(sewageregistrationItem);
                 } else {
                     res.put("status", "fail");
                     res.put("message", "预约单号重复，请检查后导入");

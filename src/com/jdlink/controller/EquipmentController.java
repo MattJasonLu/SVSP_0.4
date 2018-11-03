@@ -1,9 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.Page;
-import com.jdlink.domain.Produce.Equipment;
-import com.jdlink.domain.Produce.EquipmentDate;
-import com.jdlink.domain.Produce.EquipmentItem;
+import com.jdlink.domain.Produce.*;
 import com.jdlink.service.EquipmentService;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
@@ -16,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 设备控制器，用于捕获url路径并进行操作返回数据
@@ -258,21 +254,46 @@ public class EquipmentController {
         return res.toString();
     }
 
+    /**
+     * 导入
+     *
+     * @param excelFile
+     * @return
+     */
     @RequestMapping("importEquipmentExcel")
     @ResponseBody
     public String importEquipmentExcel(MultipartFile excelFile) {
         JSONObject res = new JSONObject();
         try {
-            // 获取危废入库的表格数据
             Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
-            EquipmentDate equipmentDate = new EquipmentDate();
-            equipmentDate.setDocumentNumber(equipmentService.getDocumentNumber());
-            equipmentDate.setDayTime(DateUtil.getDateFromStr(data[1][5].toString()));
-            equipmentDate.setEditTime(new Date());
-            List<EquipmentItem> equipmentItemList = new ArrayList<>();
+            {
+                System.out.println("数据如下：");
+                for (int i = 0; i < data.length; i++) {
+                    for (int j = 0; j < data[1].length; j++) {
+                        System.out.print(data[i][j].toString());
+                        System.out.print(",");
+                    }
+                    System.out.println();
+                }
+            }
+            Map<String, EquipmentDate> map = new HashMap<>();
+            List<EquipmentItem> equipmentItemArrayList = new ArrayList<>();
+            String id1 = "";
             for (int i = 1; i < data.length; i++) {
+                String id = data[i][0].toString();
                 EquipmentItem equipmentItem = new EquipmentItem();
-                equipmentItem.setDocumentNumber(equipmentDate.getDocumentNumber());
+                //map内不存在即添加公共数据，存在即添加List内数据
+                if (!map.keySet().contains(id)) {
+                    map.put(id, new EquipmentDate());
+                    map.get(id).setDocumentNumber(id);
+                    map.get(id).setDayTime(DateUtil.getDateFromStr(data[i][4].toString()));
+                   // map.get(id).setEditTime(DateUtil.getDateFromStr(data[i][4].toString()));
+                    map.get(id).setCreator(data[i][5].toString());
+                    map.get(id).setCreateDept(data[i][6].toString());
+                    map.get(id).setNote(data[i][7].toString());
+                    //新存储一个id对象时，将以下两个累计数据清零
+                    equipmentItemArrayList = new ArrayList<>();
+                }
                 switch (data[i][1].toString()) {
                     case "医疗蒸煮系统":
                         equipmentItem.setEquipment(Equipment.MedicalCookingSystem);
@@ -295,21 +316,32 @@ public class EquipmentController {
                     default: break;
                 }
                 equipmentItem.setRunningTime(Float.parseFloat(data[i][2].toString()));
-                equipmentItem.setStopTime(Float.parseFloat(data[i][3].toString()));
-                equipmentItem.setStopResult(data[i][4].toString());
-                equipmentItemList.add(equipmentItem);
+                equipmentItem.setStopTime(24 - Float.parseFloat(data[i][2].toString()));
+                equipmentItem.setStopResult(data[i][3].toString());
+                equipmentItem.setDocumentNumber(id);
+                equipmentItemArrayList.add(equipmentItem);
+                map.get(id).setEquipmentItemList(equipmentItemArrayList);
             }
-            equipmentDate.setEquipmentItemList(equipmentItemList);
-            equipmentService.addEquipment(equipmentDate);
-            for (EquipmentItem equipmentItem : equipmentItemList) {
-                equipmentService.addEquipmentItem(equipmentItem);
+            for (String key : map.keySet()) {
+                EquipmentDate equipmentDate1 = equipmentService.getEquipmentDateByDocumentNumber(map.get(key).getDocumentNumber());
+                EquipmentDate equipmentDate = map.get(key);
+                if (equipmentDate1 == null) {
+                    //插入新数据
+                    equipmentService.addEquipment(equipmentDate);
+                    for (EquipmentItem equipmentItem : equipmentDate.getEquipmentItemList())
+                        equipmentService.addEquipmentItem(equipmentItem);
+                } else {
+                    res.put("status", "fail");
+                    res.put("message", "编号重复，请检查后导入");
+                    return res.toString();
+                }
             }
             res.put("status", "success");
             res.put("message", "导入成功");
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
-            res.put("message", "导入失败");
+            res.put("message", "导入失败，请重试！");
         }
         return res.toString();
     }
