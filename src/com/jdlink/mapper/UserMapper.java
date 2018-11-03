@@ -97,4 +97,8 @@ public interface UserMapper {
      */
     boolean checkAuthority(@Param("roleId") int roleId, @Param("functionId") int functionId);
 
+    List<LoginLog> searchLog(LoginLog loginLog);
+
+    int searchLogCount(LoginLog loginLog);
+
 }

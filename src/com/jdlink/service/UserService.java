@@ -98,4 +98,7 @@ public interface UserService {
      */
     boolean checkAuthority(int roleId, int functionId);
 
+    List<LoginLog> searchLog(LoginLog loginLog);
+
+    int searchLogCount(LoginLog loginLog);
 }
