@@ -64,7 +64,7 @@
     </select>
 
     <select id="listPage" resultMap="WayBillRM">
-        select * from t_pr_waybill order by nowTime desc
+        select * from t_pr_waybill order by wayBillDate desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -120,7 +120,7 @@
                 and t_pr_waybill.state = #{state}
             </if>
         </where>
-        order by nowTime desc
+        order by creationDate desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>

@@ -22,7 +22,7 @@
     </select>
 
     <select id="listPage" resultMap="ProductionPlanRM">
-        select * from t_pr_productionplan order by nowTime desc
+        select * from t_pr_productionplan order by creationDate desc
         <if test="start != null and count != null">
             limit #{start}, #{count};
         </if>
@@ -63,7 +63,7 @@
                 and state like "%"#{state}"%"
             </if>
         </where>
-        order by nowTime desc
+        order by creationDate desc
         <if test="page != null and page.start != null and page.count != null and page.count != 0">
             limit #{page.start}, #{page.count};
         </if>
