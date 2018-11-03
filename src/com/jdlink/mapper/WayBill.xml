@@ -243,7 +243,7 @@
         insert into t_pr_waybill
         (id,total,freight,remarks,wayBillDate,produceCompanyId,nowTime,produceCompanyOperator,state,produceCompanyName,founder)
         values
-        (#{id},#{total},#{freight},#{remarks},NOW(),#{produceCompanyId},NOW(),#{produceCompanyOperator},'NewBuild',#{produceCompanyName},#{founder});
+        (#{id},#{total},#{freight},#{remarks},#{wayBillItemList[0].receiveDate},#{produceCompanyId},NOW(),#{produceCompanyOperator},'NewBuild',#{produceCompanyName},#{founder});
         <foreach collection="wayBillItemList" index="index" item="wayBillItem">
             insert into t_pr_waybillitem
             (itemId,wayBillId,receiveDate,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanName,receiveCompanyName,wastesId,wastesCode,wastesPrice,wastesName,wastesAmount,wastesTotalPrice)
