@@ -216,6 +216,20 @@
         </if>
     </insert>
 
+    <update id="updateSecondInboundOrder" parameterType="InboundOrder">
+        <if test="inboundOrderItemList != null and inboundOrderItemList.size() > 0">
+            <foreach collection="inboundOrderItemList" item="inboundOrderItem">
+                update t_pl_inboundorderitem set wastesName=#{inboundOrderItem.wastes.name},
+                wastesCode=#{inboundOrderItem.wastes.wastesId}, wastesAmount=#{inboundOrderItem.wastesAmount},
+                wastesUnit=#{inboundOrderItem.wastesUnit}, unitPriceTax=#{inboundOrderItem.unitPriceTax}, totalPrice=#{inboundOrderItem.totalPrice},
+                processWay=#{inboundOrderItem.processWay}, formType=#{inboundOrderItem.formType}, packageType=#{inboundOrderItem.packageType},
+                laborityTestHeat=#{inboundOrderItem.laboratoryTest.heatAverage}, laborityTestWater=#{inboundOrderItem.laboratoryTest.waterContentAverage},
+                remarks=#{inboundOrderItem.remarks}, warehouseArea=#{inboundOrderItem.warehouseArea} where inboundOrderItemId=#{inboundOrderItem.inboundOrderItemId};
+            </foreach>
+        </if>
+
+    </update>
+
     <!--列出入库单-->
     <select id="listInboundOrder" resultMap="InboundOrderRM">
         SELECT * FROM t_pl_inboundorder WHERE boundType='WasteInbound'
