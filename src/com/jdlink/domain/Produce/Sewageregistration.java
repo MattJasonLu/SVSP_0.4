@@ -6,6 +6,7 @@ import com.jdlink.domain.Client;
 import com.jdlink.domain.Page;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 //污水/软水登记主表
@@ -31,6 +32,28 @@ public class Sewageregistration {
     //原因
     private String advice;
 
+    private List<SewageregistrationItem> sewageregistrationItemList=new ArrayList<>();
+    /**
+     * 送样日期
+     */
+    private Date creationDate;
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public List<SewageregistrationItem> getSewageregistrationItemList() {
+        return sewageregistrationItemList;
+    }
+
+    public void setSewageregistrationItemList(List<SewageregistrationItem> sewageregistrationItemList) {
+        this.sewageregistrationItemList = sewageregistrationItemList;
+    }
+
     public String getAdvice() {
         return advice;
     }
@@ -45,17 +68,6 @@ public class Sewageregistration {
 
     public void setCheckState(CheckState checkState) {
         this.checkState = checkState;
-    }
-
-
-    private List<SewageregistrationItem> sewageregistrationItemList=new ArrayList<>();
-
-    public List<SewageregistrationItem> getSewageregistrationItemList() {
-        return sewageregistrationItemList;
-    }
-
-    public void setSewageregistrationItemList(List<SewageregistrationItem> sewageregistrationItemList) {
-        this.sewageregistrationItemList = sewageregistrationItemList;
     }
 
     public Page getPage() {

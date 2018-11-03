@@ -1,5 +1,7 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.Client;
+import com.jdlink.domain.FormType;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.domain.Wastes;
@@ -25,14 +27,15 @@ public class PRProductionDailyController {
 
     @Autowired
     ProductionDailyService productionDailyService;
-//////污水分析日报////
+
+    //////污水分析日报////
     @RequestMapping("loadPageSewageList")
     @ResponseBody
     public String loadPageSewageList(@RequestBody Page page) {
         JSONObject res = new JSONObject();
         try {
             List<Sewageregistration> sewageList = productionDailyService.sewageList(page);
-           JSONArray data = JSONArray.fromArray(sewageList.toArray(new Sewageregistration[sewageList.size()]));
+            JSONArray data = JSONArray.fromArray(sewageList.toArray(new Sewageregistration[sewageList.size()]));
             res.put("data", data);
             res.put("status", "success");
             res.put("message", "分页数据获取成功!");
@@ -47,6 +50,7 @@ public class PRProductionDailyController {
 
     /**
      * 获取总记录数
+     *
      * @return
      */
     @RequestMapping("totalSewageRecord")
@@ -80,7 +84,7 @@ public class PRProductionDailyController {
                 }
                 System.out.println();
             }
-            for(int i = 1; i < data.length; i++){
+            for (int i = 1; i < data.length; i++) {
                 Sewage sewage = new Sewage();
                 sewage.setName(data[i][1].toString());
                 sewage.setReceiveDate(DateUtil.getDateFromStr(data[i][2].toString()));
@@ -95,7 +99,7 @@ public class PRProductionDailyController {
             }
             res.put("status", "success");
             res.put("message", "导入成功");
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "导入失败，请重试！");
@@ -105,6 +109,7 @@ public class PRProductionDailyController {
 
     /**
      * 获取查询总数
+     *
      * @param sewage
      * @return
      */
@@ -150,7 +155,7 @@ public class PRProductionDailyController {
         JSONObject res = new JSONObject();
         try {
             List<Sewageregistration> softWaterList = productionDailyService.softList(page);
-           // JSONArray data = JSONArray.fromArray(softWaterList.toArray(new SoftWater[softWaterList.size()]));
+            // JSONArray data = JSONArray.fromArray(softWaterList.toArray(new SoftWater[softWaterList.size()]));
             res.put("data", softWaterList);
             res.put("status", "success");
             res.put("message", "分页数据获取成功!");
@@ -165,6 +170,7 @@ public class PRProductionDailyController {
 
     /**
      * 获取总记录数
+     *
      * @return
      */
     @RequestMapping("totalSoftWaterRecord")
@@ -198,7 +204,7 @@ public class PRProductionDailyController {
                 }
                 System.out.println();
             }
-            for(int i = 1; i < data.length; i++){
+            for (int i = 1; i < data.length; i++) {
                 SoftWater softWater = new SoftWater();
                 softWater.setName(data[i][1].toString());
                 softWater.setReceiveDate(DateUtil.getDateFromStr(data[i][2].toString()));
@@ -213,7 +219,7 @@ public class PRProductionDailyController {
             }
             res.put("status", "success");
             res.put("message", "导入成功");
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "导入失败，请重试！");
@@ -223,6 +229,7 @@ public class PRProductionDailyController {
 
     /**
      * 获取查询总数
+     *
      * @param softWater
      * @return
      */
@@ -265,8 +272,8 @@ public class PRProductionDailyController {
     //添加污水登记主表
     @RequestMapping("addSewaGeregistration")
     @ResponseBody
-    public String addSewaGeregistration(@RequestBody Sewageregistration sewageregistration){
-        JSONObject res=new JSONObject();
+    public String addSewaGeregistration(@RequestBody Sewageregistration sewageregistration) {
+        JSONObject res = new JSONObject();
 
         try {
             // 生成预约号
@@ -289,8 +296,7 @@ public class PRProductionDailyController {
             productionDailyService.addSewaGeregistration(sewageregistration);
             res.put("status", "success");
             res.put("message", "添加主表成功");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "success");
             res.put("message", "添加主表失败");
@@ -305,8 +311,8 @@ public class PRProductionDailyController {
     //添加污水登记子表
     @RequestMapping("addSewaGeregistrationItem")
     @ResponseBody
-    public String addSewaGeregistrationItem(@RequestBody SewageregistrationItem sewageregistrationItem){
-        JSONObject res=new JSONObject();
+    public String addSewaGeregistrationItem(@RequestBody SewageregistrationItem sewageregistrationItem) {
+        JSONObject res = new JSONObject();
 
         try {
             String id1;
@@ -314,18 +320,17 @@ public class PRProductionDailyController {
             do {
                 index += 1;
                 String index1 = index + "";
-                if(index < 10) index1 = "000" + index;
-                else if(index < 100) index1 = "00" + index;
-                else if(index < 1000) index1 = "0" + index;
+                if (index < 10) index1 = "000" + index;
+                else if (index < 100) index1 = "00" + index;
+                else if (index < 1000) index1 = "0" + index;
                 id1 = sewageregistrationItem.getSampleinformationId() + index1;
             } while (productionDailyService.getByWastesId(id1) != null);
             sewageregistrationItem.setId(id1);
-            String id=productionDailyService.getNewestId().get(0);
+            String id = productionDailyService.getNewestId().get(0);
             productionDailyService.addSewaGeregistrationItem(sewageregistrationItem);
             res.put("status", "success");
             res.put("message", "字表添加成功");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "字表添加失败");
@@ -340,15 +345,14 @@ public class PRProductionDailyController {
     //添加软水登记主表
     @RequestMapping("addSoftGeregistration")
     @ResponseBody
-    public String addSoftGeregistration(@RequestBody Sewageregistration sewageregistration){
-        JSONObject res=new JSONObject();
+    public String addSoftGeregistration(@RequestBody Sewageregistration sewageregistration) {
+        JSONObject res = new JSONObject();
 
         try {
             productionDailyService.addSoftGeregistration(sewageregistration);
             res.put("status", "success");
             res.put("message", "添加主表成功");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "success");
             res.put("message", "添加主表失败");
@@ -362,26 +366,25 @@ public class PRProductionDailyController {
     //添加软水登记子表
     @RequestMapping("addSoftGeregistrationItem")
     @ResponseBody
-    public String addSoftGeregistrationItem(@RequestBody SewageregistrationItem sewageregistrationItem){
-        JSONObject res=new JSONObject();
-        try{
+    public String addSoftGeregistrationItem(@RequestBody SewageregistrationItem sewageregistrationItem) {
+        JSONObject res = new JSONObject();
+        try {
             String id1;
             int index = productionDailyService.wastesCountById(sewageregistrationItem.getSampleinformationId());
             do {
                 index += 1;
                 String index1 = index + "";
-                if(index < 10) index1 = "000" + index;
-                else if(index < 100) index1 = "00" + index;
-                else if(index < 1000) index1 = "0" + index;
+                if (index < 10) index1 = "000" + index;
+                else if (index < 100) index1 = "00" + index;
+                else if (index < 1000) index1 = "0" + index;
                 id1 = sewageregistrationItem.getSampleinformationId() + index1;
             } while (productionDailyService.getByWastesId(id1) != null);
             sewageregistrationItem.setId(id1);
-            String id=productionDailyService.getNewestId().get(0);
+            String id = productionDailyService.getNewestId().get(0);
             productionDailyService.addSoftGeregistrationItem(sewageregistrationItem);
             res.put("status", "success");
             res.put("message", "字表添加成功");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "字表添加失败");
@@ -393,26 +396,23 @@ public class PRProductionDailyController {
 
     }
 
-  //根据编号获取污水登记信息
+    //根据编号获取污水登记信息
     @RequestMapping("getSewaGeregistrationById")
     @ResponseBody
-    public String getSewaGeregistrationById(String id){
-        JSONObject res=new JSONObject();
-        System.out.println(id+"89");
+    public String getSewaGeregistrationById(String id) {
+        JSONObject res = new JSONObject();
+        System.out.println(id + "89");
         try {
-            Sewageregistration sewageregistration=productionDailyService.getSewaGeregistrationById(id);
+            Sewageregistration sewageregistration = productionDailyService.getSewaGeregistrationById(id);
             res.put("status", "success");
             res.put("message", "查询成功");
             res.put("data", sewageregistration);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "查询失败");
 
         }
-
-
         return res.toString();
 
 
@@ -421,21 +421,20 @@ public class PRProductionDailyController {
     //确认送样
     @RequestMapping("confirmSewaGeregistrationById")
     @ResponseBody
-    public String confirmSewaGeregistrationById(String id){
-        JSONObject res=new JSONObject();
+    public String confirmSewaGeregistrationById(String id) {
+        JSONObject res = new JSONObject();
         try {
             productionDailyService.confirmSewaGeregistrationById(id);
             res.put("status", "success");
             res.put("message", "收样成功");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "收样失败");
 
         }
 
-        return  res.toString();
+        return res.toString();
 
 
     }
@@ -443,14 +442,13 @@ public class PRProductionDailyController {
     //拒收
     @RequestMapping("rejectSewaGeregistrationById")
     @ResponseBody
-    public String rejectSewaGeregistrationById(String id,String advice){
-        JSONObject res=new JSONObject();
+    public String rejectSewaGeregistrationById(String id, String advice) {
+        JSONObject res = new JSONObject();
         try {
-      productionDailyService.rejectSewaGeregistrationById(id,advice);
+            productionDailyService.rejectSewaGeregistrationById(id, advice);
             res.put("status", "success");
             res.put("message", "已拒收");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "拒收失败");
@@ -458,5 +456,104 @@ public class PRProductionDailyController {
 
         return res.toString();
     }
+
+    /**
+     * 导入
+     *
+     * @param excelFile
+     * @return
+     */
+    @RequestMapping("importSampleSewageExcel")
+    @ResponseBody
+    public String importSampleSewageExcel(MultipartFile excelFile) {
+        JSONObject res = new JSONObject();
+        try {
+            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+            {
+                System.out.println("数据如下：");
+                for (int i = 1; i < data.length; i++) {
+                    for (int j = 0; j < data[1].length; j++) {
+                        System.out.print(data[i][j].toString());
+                        System.out.print(",");
+                    }
+                    System.out.println();
+                }
+            }
+            Map<String, Sewageregistration> map = new HashMap<>();
+            List<SewageregistrationItem> sewageregistrationItemArrayList = new ArrayList<>();
+            String id1 = "";
+            for (int i = 2; i < data.length; i++) {
+                String id = data[i][0].toString();
+                SewageregistrationItem sewageregistrationItem = new SewageregistrationItem();
+                //map内不存在即添加公共数据，存在即添加List内数据
+                if (!map.keySet().contains(id)) {
+                    map.put(id, new Sewageregistration());
+                    map.get(id).setId(id);
+                    map.get(id).setSendingPerson(data[i][1].toString());
+                    map.get(id).setAddress(data[i][2].toString());
+                    map.get(id).setWater(true); // 表明为污水数据
+                    map.get(id).setCreationDate(DateUtil.getDateFromStr(data[i][10].toString()));
+                    //新存储一个id对象时，将以下两个累计数据清零
+                    sewageregistrationItemArrayList = new ArrayList<>();
+                    int index = productionDailyService.wastesCountById(id);  // 设置危废ID
+                    // 获取唯一的编号
+                    do {
+                        index += 1;
+                        String index1 = index + "";
+                        if (index < 10) index1 = "000" + index;
+                        else if (index < 100) index1 = "00" + index;
+                        else if (index < 1000) index1 = "0" + index;
+                        id1 = id + index1;
+                    } while (productionDailyService.getByWastesId(id) != null);
+                } else {
+                    int index1 = Integer.parseInt(id1.substring(id1.length() - 5)); // 截取ID后五位，然后叠加
+                    String index2 = id1.substring(0, id1.length() - 5); // 截取ID前几位
+                    index1++;
+                    id1 = index2 + index1;  // 拼接ID
+                }
+                sewageregistrationItem.setId(id1);
+                // 设置检测项目
+                if ((data[i][3].toString().equals("R") || data[i][3].toString().equals("1") || data[i][3].toString().equals("1.0")))
+                    sewageregistrationItem.setPh(1);
+                if ((data[i][4].toString().equals("R") || data[i][4].toString().equals("1") || data[i][4].toString().equals("1.0")))
+                    sewageregistrationItem.setCod(1);
+                if ((data[i][5].toString().equals("R") || data[i][5].toString().equals("1") || data[i][5].toString().equals("1.0")))
+                    sewageregistrationItem.setBod5(1);
+                if ((data[i][6].toString().equals("R") || data[i][6].toString().equals("1") || data[i][6].toString().equals("1.0")))
+                    sewageregistrationItem.setN2(1);
+                if ((data[i][7].toString().equals("R") || data[i][7].toString().equals("1") || data[i][7].toString().equals("1.0")))
+                    sewageregistrationItem.setNitrogen(1);
+                if ((data[i][8].toString().equals("R") || data[i][8].toString().equals("1") || data[i][8].toString().equals("1.0")))
+                    sewageregistrationItem.setPhosphorus(1);
+                if ((data[i][9].toString().equals("R") || data[i][9].toString().equals("1") || data[i][9].toString().equals("1.0")))
+                    sewageregistrationItem.setLye(1);
+                sewageregistrationItem.setSampleinformationId(id);
+                sewageregistrationItemArrayList.add(sewageregistrationItem);
+                map.get(id).setSewageregistrationItemList(sewageregistrationItemArrayList);
+            }
+            for (String key : map.keySet()) {
+                Sewageregistration sewageregistration1 = productionDailyService.getSewaGeregistrationById(map.get(key).getId());
+                Sewageregistration sewageregistration = map.get(key);
+                if (sewageregistration1 == null) {
+                    //插入新数据
+                    productionDailyService.addSewaGeregistration(sewageregistration);
+                    for (SewageregistrationItem sewageregistrationItem : sewageregistration.getSewageregistrationItemList())
+                        productionDailyService.addSewaGeregistrationItem(sewageregistrationItem);
+                } else {
+                    res.put("status", "fail");
+                    res.put("message", "预约单号重复，请检查后导入");
+                    return res.toString();
+                }
+            }
+            res.put("status", "success");
+            res.put("message", "导入成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导入失败，请重试！");
+        }
+        return res.toString();
+    }
+
 
 }
