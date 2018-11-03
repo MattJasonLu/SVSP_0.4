@@ -60,6 +60,7 @@ public class UserController {
                 loginLog.setUsername(user.getUsername());
                 loginLog.setTime(new Date());
                 loginLog.setIp(request.getRemoteAddr());
+                loginLog.setName(user.getName());
                 // 用户名root不添加登陆日志（测试账号）
                 if(!loginLog.getUsername().equals("root"))
                 userService.addLog(loginLog);
@@ -414,6 +415,39 @@ public class UserController {
             res.put("message", "服务器错误");
         }
         return res.toString();
+    }
+
+    @RequestMapping("searchLog")
+    @ResponseBody
+    public String searchLog(@RequestBody LoginLog loginLog) {
+        JSONObject res = new JSONObject();
+        try {
+            List<LoginLog> loginLogs = userService.searchLog(loginLog);
+            JSONArray data = JSONArray.fromArray(loginLogs.toArray(new LoginLog[loginLogs.size()]));
+            res.put("data", data);
+            res.put("message", "查询成功！");
+            res.put("status", "success");
+        } catch (NullPointerException e) {
+//            e.printStackTrace();
+            res.put("message", "查询失败！");
+            res.put("status", "fail");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("message", "获取日志信息失败");
+            res.put("status", "fail");
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("searchLogTotal")
+    @ResponseBody
+    public int searchLogTotal(@RequestBody LoginLog loginLog) {
+        try {
+            return userService.searchLogCount(loginLog);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
 }
