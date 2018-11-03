@@ -33,7 +33,7 @@
     </insert>
 
     <select id="listPage" resultType="SampleInformation">
-        select * from t_pr_sampleinformation ORDER BY nowTime DESC
+        select * from t_pr_sampleinformation ORDER BY creationDate DESC
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -82,7 +82,7 @@
                 or applyState = 'Canceld'
             </if>
         </where>
-        ORDER BY nowTime DESC;
+        ORDER BY creationDate DESC;
     </select>
 
     <select id="searchCount" parameterType="SampleInformation" resultType="int">
@@ -245,7 +245,7 @@
                 and isViscosity = #{isViscosity}
             </if>
         </where>
-        order by nowTime desc
+        order by creationDate desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
