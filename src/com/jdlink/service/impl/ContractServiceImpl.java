@@ -255,4 +255,14 @@ contractMapper.updateFreight2(id);
     @Override
     public List<QuotationItem> getWastesInfoByCompanyName(String companyName){ return contractMapper.getWastesInfoByCompanyName(companyName);}
 
+    @Override
+    public List<QuotationItem> ContractList(Page page) {
+        return contractMapper.ContractList(page);
+    }
+
+    @Override
+    public int contractVolume() {
+        return contractMapper.contractVolume();
+    }
+
 }

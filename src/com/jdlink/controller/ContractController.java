@@ -1234,6 +1234,51 @@ public class ContractController {
         }
         return res.toString();
     }
+
+
+    /*合约量统计加载页面**/
+    @RequestMapping("loadContractVolumeList")
+    @ResponseBody
+    public String loadContractVolumeList(@RequestBody Page page){
+        JSONObject res=new JSONObject();
+
+        try {
+            List<QuotationItem> contractList1=new ArrayList<>();
+            List<QuotationItem> contractList=contractService.ContractList(page);
+            for(int i=0;i<contractList.size();i++){
+                if(contractList.get(i)!=null){
+                    contractList1.add(contractList.get(i));
+                }
+            }
+
+            res.put("status", "success");
+            res.put("message", "合同查询成功");
+            res.put("data", contractList1);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "合同查询失败");
+        }
+
+
+
+        return res.toString();
+
+
+    }
+
+
+    /**
+     *
+     *
+     * 合约量统计总数
+     */
+    @RequestMapping("totalContractVolume")
+    @ResponseBody
+    public int contractVolume(){
+        return contractService.contractVolume();
+    }
 }
 
 

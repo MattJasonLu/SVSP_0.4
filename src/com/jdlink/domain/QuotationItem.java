@@ -124,6 +124,12 @@ public class QuotationItem {
      */
     private String contractId;
 
+    /***
+     *
+     */
+    private  Contract contract;
+
+
     /**
      * 供应商作为绑定
      * @return
@@ -141,6 +147,14 @@ public class QuotationItem {
 
     //备注
     private  String remarks;
+
+    public Contract getContract() {
+        return contract;
+    }
+
+    public void setContract(Contract contract) {
+        this.contract = contract;
+    }
 
     public String getRemarks() {
         return remarks;

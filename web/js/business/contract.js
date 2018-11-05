@@ -598,6 +598,7 @@ function searchContract() {
 
     var contactName=$.trim($('#search-contactName').val());
 
+
     var beginTime=$.trim($('#beginTime').val());
 
     var endTime=$.trim($('#endTime').val());
@@ -605,6 +606,17 @@ function searchContract() {
     var startDate=getDateByStr(beginTime);
 
     var endDate=getDateByStr(endTime);
+
+    var smallContract=$("#smallContract").prop('checked');
+
+    var small;
+    if(smallContract==true){
+        small='小额合同';
+    }
+    if(smallContract==false){
+        small='大额合同';
+    }
+    console.log(small)
 
     if (nameBykey == '危废合同' || nameBykey == "Wastes" || nameBykey == undefined) {
         $('#Wa').click();
@@ -702,7 +714,7 @@ function searchContract() {
                 &&$(this).children('td').text().indexOf(text)!=-1&&
                 $(this).children('td').eq(4).text().indexOf(checkState)!=-1
                 &&$(this).children('td').eq(6).text().indexOf(contactName)!=-1&&(new Date(start).getTime()>=new Date(startDate).getTime())
-                &&(new Date(end).getTime()<=new Date(endDate).getTime())
+                &&(new Date(end).getTime()<=new Date(endDate).getTime()&&$(this).children('td').eq(10).text()==small)
             )){
                 $(this).hide();
             }
@@ -710,7 +722,7 @@ function searchContract() {
                 &&$(this).children('td').text().indexOf(text)!=-1&&
                 $(this).children('td').eq(4).text().indexOf(checkState)!=-1&&(new Date(start).getTime()>=new Date(startDate).getTime())
                 &&$(this).children('td').eq(6).text().indexOf(contactName)!=-1
-                &&(new Date(end).getTime()<=new Date(endDate).getTime()))
+                &&(new Date(end).getTime()<=new Date(endDate).getTime())&&$(this).children('td').eq(10).text()==small)
             ){
                 array1.push($(this));
             }
@@ -1052,6 +1064,19 @@ function setContractList(result) {
                         }
                         else {
                             $(this).html("");
+                        }
+                        break;
+
+                    case (10):
+                        var total=0;
+                        $.each(obj.quotationItemList,function (index,item) {
+                              total+=parseFloat(item.unitPriceTax)
+                        })
+                  if(total==0){
+                      $(this).html("小额合同");
+                  }
+                        if(total>0){
+                            $(this).html("大额合同");
                         }
                         break;
                 }
@@ -6591,3 +6616,4 @@ function ToUpper(s)
 {
         return TrimZero(ToFullUpper(s));
 }
+
