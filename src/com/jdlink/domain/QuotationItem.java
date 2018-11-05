@@ -1,6 +1,7 @@
 package com.jdlink.domain;
 
 import com.jdlink.domain.Produce.HandleCategory;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -147,6 +148,27 @@ public class QuotationItem {
 
     //备注
     private  String remarks;
+
+    //图片地址
+    private String picture;
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    private MultipartFile pictureFile;
+
+    public MultipartFile getPictureFile() {
+        return pictureFile;
+    }
+
+    public void setPictureFile(MultipartFile pictureFile) {
+        this.pictureFile = pictureFile;
+    }
 
     public Contract getContract() {
         return contract;

@@ -2722,6 +2722,46 @@ function contractWastesSave() {
                                 }
                             });
                         });
+
+                        $('.myclass').each(function () {
+                            //添加图片地址
+                            var formFile = new FormData();
+                            var wastesCode=$(this).children('td').eq(1).children('div').find('button').attr('title');
+                            var wastesName= $(this).children('td').eq(2).children('input').val();
+                            formFile.append('wastesCode',wastesCode);
+                            formFile.append('wastesName',wastesName);
+                            formFile.append("contractId", $('#contractId').html());
+                            console.log($(this).children('td').eq(10).children('input').prop('type'))
+                            if ($(this).children('td').eq(10).children('input').prop('type') != 'text') {
+                                var pictureFile = $(this).children('td').eq(10).find("input[name='picture']").get(0).files[0];
+                                formFile.append("pictureFile", pictureFile);
+
+                            }
+                            $.ajax({
+                                type: "POST",                            // 方法类型
+                                url: "savePictureFiles",                     // url
+                                cache: false,
+                                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                                data: formFile,
+                                dataType: "json",
+                                processData: false,
+                                contentType: false,
+                                success: function (result) {
+                                    if (result != undefined && result.status == "success")
+                                    {
+
+                                    }
+                                        else {
+
+                                    }
+                                },
+                                error: function (result) {
+                                    console.log("error: " + result);
+                                    alert("服务器异常!");
+                                }
+                            });
+                        })
+
                     }
                     else {
                         alert(result.message);
@@ -2878,7 +2918,7 @@ function addNewLine() {
     // 克隆tr，每次遍历都可以产生新的tr
     var clonedTr = tr.clone();
     // 克隆后清空新克隆出的行数据
-    clonedTr.children("td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7),td:eq(8),td:eq(9)").find("input").val("");
+    clonedTr.children("td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7),td:eq(8),td:eq(9),td:eq(10)").find("input").val("");
     // 获取编号
     var id = $("#plusBtn").prev().children().get(0).innerHTML;
     //console.log(id);
@@ -6616,4 +6656,10 @@ function ToUpper(s)
 {
         return TrimZero(ToFullUpper(s));
 }
+
+
+
+
+
+
 
