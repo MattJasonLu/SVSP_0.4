@@ -54,23 +54,24 @@ public class InboundController {
      */
     @RequestMapping("listInboundPlanOrder")
     @ResponseBody
-    public String listInboundPlanOrder() {
+    public String listInboundPlanOrder(Page page, InboundPlanOrder inboundPlanOrder) {
         JSONObject res = new JSONObject();
         try {
-            List<InboundPlanOrder> inboundPlanOrderList = inboundService.listInboundPlanOrder();
+            List<InboundPlanOrder> inboundPlanOrderList = inboundService.listInboundPlanOrder(inboundPlanOrder, page);
             JSONArray data = JSONArray.fromArray(inboundPlanOrderList.toArray(new InboundPlanOrder[inboundPlanOrderList.size()]));
-            for (int i = 0; i < inboundPlanOrderList.size(); i++) {
-                InboundPlanOrder inboundPlanOrder = inboundPlanOrderList.get(i);
-                // 通过客户编码和危废编码获取价格
-                String clientId = inboundPlanOrder.getProduceCompany().getClientId();
-                String wastesCode = inboundPlanOrder.getWastes().getWastesId();
-                QuotationItem quotationItem = quotationService.getQuotationByWastesCodeAndClientId(wastesCode, clientId);
-                // 获取价格，如果价格存在则存入数据
-                if (quotationItem != null) {
-                    float unitPriceTax = quotationItem.getUnitPriceTax();
-                    data.getJSONObject(i).put("unitPriceTax", unitPriceTax);
-                }
-            }
+//            JSONArray data = JSONArray.fromArray(inboundPlanOrderList.toArray(new InboundPlanOrder[inboundPlanOrderList.size()]));
+//            for (int i = 0; i < inboundPlanOrderList.size(); i++) {
+//                InboundPlanOrder order = inboundPlanOrderList.get(i);
+//                // 通过客户编码和危废编码获取价格
+//                String clientId = order.getProduceCompany().getClientId();
+//                String wastesCode = order.getWastes().getWastesId();
+//                QuotationItem quotationItem = quotationService.getQuotationByWastesCodeAndClientId(wastesCode, clientId);
+//                // 获取价格，如果价格存在则存入数据
+//                if (quotationItem != null) {
+//                    float unitPriceTax = quotationItem.getUnitPriceTax();
+//                    data.getJSONObject(i).put("unitPriceTax", unitPriceTax);
+//                }
+//            }
             res.put("status", "success");
             res.put("message", "获取信息成功");
             res.put("data", data);
@@ -78,6 +79,43 @@ public class InboundController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("countInboundPlanOrder")
+    @ResponseBody
+    public String countInboundPlanOrder(InboundPlanOrder inboundPlanOrder) {
+        JSONObject res = new JSONObject();
+        try {
+            int count = inboundService.countInboundPlanOrder(inboundPlanOrder);
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", count);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("addInboundPlanOrder")
+    @ResponseBody
+    public String addInboundPlanOrder(@RequestBody InboundPlanOrder inboundPlanOrder) {
+        JSONObject res = new JSONObject();
+        try {
+            // 设置入库单的编号
+            inboundPlanOrder.setInboundPlanOrderId(inboundService.getInboundPlanOrderId());
+            // 设置状态
+            inboundPlanOrder.setCheckState(CheckState.NewBuild);
+            inboundService.addInboundPlanOrder(inboundPlanOrder);
+            res.put("status", "success");
+            res.put("message", "增加成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "增加失败");
         }
         return res.toString();
     }

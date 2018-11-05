@@ -1,11 +1,8 @@
 package com.jdlink.domain.Inventory;
 
-import com.jdlink.domain.CheckState;
-import com.jdlink.domain.Client;
+import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.ProcessWay;
-import com.jdlink.domain.Salesman;
-import com.jdlink.domain.Wastes;
 
 import java.util.Date;
 
@@ -106,6 +103,14 @@ public class InboundPlanOrder {
      * 化验结果是否合格
      */
     private boolean isQualified;
+    /**
+     * 关键字
+     */
+    private String keyword;
+    /**
+     * 页码
+     */
+    private Page page;
 
     public String getInboundPlanOrderId() {
         return inboundPlanOrderId;
@@ -289,6 +294,22 @@ public class InboundPlanOrder {
 
     public void setIsQualified(boolean qualified) {
         isQualified = qualified;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
     }
 
     @Override
