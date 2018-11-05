@@ -102,6 +102,10 @@
             limit #{start}, #{count}
         </if>
     </select>
+
+    <select id="getEquipmentDateByDocumentNumber" parameterType="String" resultType="EquipmentDate">
+        select * from t_rp_equipment where documentNumber=#{documentNumber};
+    </select>
     <!--查看具体数量-->
     <select id="count" resultType="int">
         select count(*) from t_rp_equipment;

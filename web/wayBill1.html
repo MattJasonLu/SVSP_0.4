@@ -277,7 +277,7 @@
                     </div>
                     <div class="form-horizontal col-md-4">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">创建日期 </label>
+                            <label class="col-sm-3 control-label">日期 </label>
                             <div class="input-group">
                                 <input type="date" class="input-sm form-control" id="search-startDate" title="" onkeydown="enterSearch()"/>
                                 <span class="input-group-addon">-</span>
@@ -319,7 +319,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr id="clone" ondblclick="editWayBill1(this)">
+                    <tr id="clone" ondblclick="editWayBill1(this)" onclick="setColor(this)">
                         <td class="text-center">
                             <label>
                                 <input name="select" class="checkbox" type="checkbox"  value="option1" aria-label="...">
@@ -480,6 +480,60 @@
                         <button type="button" class="btn btn-danger" id="back1" data-dismiss="modal"
                                 onclick="reject1()">确认驳回
                         </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 查看模态框-->
+        <div class="modal fade bs-example-modal-lg" id="viewModal" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel3">接运单明细</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div style="overflow-x:scroll;white-space:nowrap;">
+                        <table class="table table-bordered">
+                            <thead style="border:none">
+                            <tr>
+                                <th class="text-center">接运单号</th>
+                                <th class="text-center">委托单位</th>
+                                <th class="text-center">接收单位</th>
+                                <th class="text-center">接收单位经手人</th>
+                                <th class="text-center">接运单日期</th>
+                                <th class="text-center">业务员</th>
+                                <th class="text-center">废物名称</th>
+                                <th class="text-center">危废代码</th>
+                                <th class="text-center">数量</th>
+                                <th class="text-center">单价</th>
+                                <th class="text-center">合计</th>
+                                <th class="text-center">开票日期</th>
+                                <th class="text-center">发票号码</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr id="clone1">
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        </div>
                     </div>
                 </div>
             </div>

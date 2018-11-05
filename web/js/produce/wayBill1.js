@@ -476,7 +476,7 @@ $("#downloadModal").click(function () {
     console.log("click");
     var newWin = window.open('loadingPage.html');
     var filePath = 'Files/Templates/接运单模板.xlsx';
-    ajax().done(function() {
+    ajax().done(function () {
         // 重定向到目标页面
         newWin.location.href = 'downloadFile?filePath=' + filePath;
     });
@@ -667,9 +667,107 @@ function editWayBill1(item) {
  */
 function toView(item) {
     var id = getWayBillId(item);
-    localStorage.id = id;
-    localStorage.add = 0;
-    location.href = "wayBill.html";
+    // localStorage.id = id;
+    // localStorage.add = 0;
+    // location.href = "wayBill.html";
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getWayBill",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            id: id
+        },
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                setDataItemList(result);
+                $("#viewModal").modal('show');
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+}
+
+function setDataItemList(result) {
+    // 获取id为cloneTr的tr元素
+    var tr = $("#clone1");
+    tr.siblings().remove();
+    if (result.data != null)
+        $.each(result.data.wayBillItemList, function (index, item) {
+            // 克隆tr，每次遍历都可以产生新的tr
+            var clonedTr = tr.clone();
+            clonedTr.show();
+            // 循环遍历cloneTr的每一个td元素，并赋值
+            clonedTr.children("td").each(function (inner_index) {
+                var obj = eval(item);
+                // 根据索引为部分td赋值
+                switch (inner_index) {
+                    case (0):
+                        //接运单号
+                        $(this).html(result.data.id);
+                        break;
+                    case (1):
+                        // 委托单位
+                        $(this).html(result.data.produceCompanyName);
+                        break;
+                    case (2):
+                        //接收单位
+                        $(this).html(obj.receiveCompanyName);
+                        break;
+                    case (3):
+                        //接收单位经手人
+                        $(this).html(obj.receiveCompanyOperator);
+                        break;
+                    case (4):
+                        // 接运单日期
+                        $(this).html(getDateStr(obj.receiveDate));
+                        break;
+                    case (5):
+                        //业务员
+                        $(this).html(obj.salesmanName);
+                        break;
+                    case (6):
+                        //危废名称
+                        $(this).html(obj.wastesName);
+                        break;
+                    case (7):
+                        //危废代码
+                        $(this).html(obj.wastesCode);
+                        break;
+                    case (8):
+                        //数量
+                        $(this).html(obj.wastesAmount.toFixed(2));
+                        break;
+                    case (9):
+                        // 单价
+                        $(this).html(obj.wastesPrice.toFixed(2));
+                        break;
+                    case (10):
+                        // 合计
+                        var total = obj.wastesPrice * obj.wastesAmount;
+                        $(this).html(total.toFixed(2));
+                        break;
+                    case (11):
+                        // 开票日期
+                        $(this).html(getDateStr(obj.invoiceDate));
+                        break;
+                    case (12):
+                        // 发票号码
+                        $(this).html(obj.invoiceNumber);
+                        break;
+                }
+            });
+            // 把克隆好的tr追加到原来的tr前面
+            clonedTr.removeAttr("id");
+            clonedTr.insertBefore(tr);
+        });
+    // 隐藏无数据的tr
+    tr.hide();
 }
 
 /**
@@ -870,10 +968,10 @@ function getCurrentDate() {
     var obj = new Date();
     var year = obj.getFullYear();
     var month = obj.getMonth() + 1;
-    if(month < 10) month = "0" + month;
+    if (month < 10) month = "0" + month;
     var day = obj.getDate();
     if (day % 7 > 0) var a = 1; else a = 0;
-    if(day < 10) day = "0" + day;
+    if (day < 10) day = "0" + day;
     return year + "-" + month + "-" + day;
 }
 
@@ -1105,7 +1203,7 @@ function addNewItemLine() {
         title: '请选择',
     });
     $('.selectpicker').data('selectpicker', null);
-   // $('.bootstrap-select').find("button:first").remove();
+    // $('.bootstrap-select').find("button:first").remove();
     $('.bootstrap-select').find("button:first").addClass("hidden");
     $('.selectpicker').selectpicker('refresh');
     $("select[name='salesman']").selectpicker('val', salesman.salesmanId); // 设置业务员信息
@@ -1161,7 +1259,7 @@ function addWayBill() {
         wayBillItem.wastesId = conversionIdFormat(wastesId);
         wayBillItem.wastesName = $("input[id='modal" + $i + "-wastesName']").val();
         wayBillItem.wastesAmount = $("input[id='modal" + $i + "-wasteAmount']").val();
-        wayBillItem.wastesCode = $("select[id='modal" + $i + "-wastesCode']option:selected").text();
+        wayBillItem.wastesCode = $("select[id='modal" + $i + "-wastesCode']").find("option:selected").text();
         wayBillItem.wastesPrice = $("input[id='modal" + $i + "-wastesPrice']").val();
         wayBillItem.wastesTotalPrice = parseFloat(wayBillItem.wastesAmount) * parseFloat(wayBillItem.wastesPrice);
         wayBillItem.itemId = ItemId.toString();
@@ -1321,7 +1419,7 @@ $(window).on('load', function () {
 /**
  * 自动匹配业务员
  */
-function setSalesmanNameAuto(){
+function setSalesmanNameAuto() {
     $.ajax({
         type: "POST",                            // 方法类型
         url: "setSalesmanNameAuto",             // url
@@ -1343,20 +1441,20 @@ var salesman;
 /**
  * 选择公司后自动匹配业务员
  */
-function autoSetSalesman(){
+function autoSetSalesman() {
     $(".newLine").remove();  //删除历史行
     var companyName = $("#modal-produceCompanyName").find("option:selected").text(); // 获取选中的公司
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getSalesmanByCompanyName",             // url
-        data:{
-            companyName : companyName
+        data: {
+            companyName: companyName
         },
         async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
             //alert("数据获取成功！");
-            if(result != null && result.status == "success" && result.data != null){
+            if (result != null && result.status == "success" && result.data != null) {
                 console.log(result);
                 salesman = result.data;
                 $("select[name='salesman']").selectpicker('val', salesman.salesmanId); // 设置业务员信息
@@ -1373,35 +1471,35 @@ function autoSetSalesman(){
 /**
  * 选择公司后自动匹配危废信息
  */
-function autoSetWastesInfo(companyName){
-     //var companyName = $("#modal-produceCompanyName").find("option:selected").text();// 获取产废单位名
-     //var wastesName = $(item).val();// 获取危废名称
-     if(companyName != ""){//若两个参数不为空时，获取合同信息
+function autoSetWastesInfo(companyName) {
+    //var companyName = $("#modal-produceCompanyName").find("option:selected").text();// 获取产废单位名
+    //var wastesName = $(item).val();// 获取危废名称
+    if (companyName != "") {//若两个参数不为空时，获取合同信息
         $.ajax({
             type: "POST",                            // 方法类型
             url: "getWastesInfoByCompanyName",             // url
             data: {
-                companyName:companyName
+                companyName: companyName
             },
             async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
                 //alert("数据获取成功！");
-                if(result != null && result.status == "success" && result.data != null){
+                if (result != null && result.status == "success" && result.data != null) {
                     console.log(result);
                     var wastesList = result.data;
-                    for(var i = 0; i < wastesList.length; i++){
-                        if(i > 0)addNewItemLine();
+                    for (var i = 0; i < wastesList.length; i++) {
+                        if (i > 0) addNewItemLine();
                         var $i = i;
                         $("input[id='modal" + $i + "-wastesName']").val(wastesList[i].wastesName);
                         $("input[id='modal" + $i + "-wasteAmount']").val(wastesList[i].contractAmount);
-                        $("select[id='modal" + $i + "-wastesCode']").selectpicker('val',wastesList[i].wastesCode);
+                        $("select[id='modal" + $i + "-wastesCode']").selectpicker('val', wastesList[i].wastesCode);
                         $("input[id='modal" + $i + "-wastesPrice']").val(wastesList[i].unitPriceTax);
                         $("input[id='modal" + $i + "-receiveDate']").get(0).value = getCurrentDate();
                     }
-                   // $(".active").addClass("hidden"); // 隐藏输入框
-                   // if($("input").attr("placeholder") == "搜索..."){
-                       // $("input").addClass("hidden");
+                    // $(".active").addClass("hidden"); // 隐藏输入框
+                    // if($("input").attr("placeholder") == "搜索..."){
+                    // $("input").addClass("hidden");
                     //}
                 }
             },
@@ -1411,4 +1509,14 @@ function autoSetWastesInfo(companyName){
             }
         });
     }
+}
+
+/**
+ * 改变背景颜色
+ */
+function setColor(item) {
+    console.log("b");
+    // $(item).css("background-color","#ff6d5e");
+    $(item).addClass("active");
+
 }

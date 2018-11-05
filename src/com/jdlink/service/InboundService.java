@@ -136,6 +136,12 @@ public interface InboundService {
     void addSecondInboundOrder(InboundOrder inboundOrder);
 
     /**
+     * 更新入库单
+     * @param inboundOrder 入库单
+     */
+    void updateSecondInboundOrder(InboundOrder inboundOrder);
+
+    /**
      * 通过日期范围获取入库单
      * @param startDate 起始日期
      * @param endDate 结束日期

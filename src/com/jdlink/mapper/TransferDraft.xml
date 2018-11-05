@@ -113,6 +113,11 @@
         where id=#{id};
     </update>
 
+    <!--验收-->
+    <update id="setStateSignIn" parameterType="String">
+        UPDATE t_pr_transferdraft SET checkState='Collected' WHERE id=#{id};
+    </update>
+
     <update id="setStateInvalid" parameterType="String">
         UPDATE t_pr_transferdraft SET checkState='Invalid' WHERE id=#{id};
     </update>

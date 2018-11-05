@@ -40,7 +40,7 @@
     </select>
 
     <select id="listOut" resultMap="ThresholdListRM">
-        select * from t_pr_thresholdlist order by nowTime desc
+        select * from t_pr_thresholdlist order by creationDate desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count};
         </if>
@@ -98,7 +98,7 @@
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
         </where>
-        order by nowTime desc
+        order by creationDate desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count};
         </if>
@@ -130,7 +130,6 @@
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
         </where>
-        order by nowTime desc
     </select>
 
     <select id="getById" parameterType="String" resultMap="ThresholdListRM">

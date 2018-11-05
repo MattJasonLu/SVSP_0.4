@@ -4,6 +4,9 @@
 var isSearch = false;
 var currentPage = 1;                          //当前页数
 var data;
+
+var editId;
+
 /**********************客户部分**********************/
 /**
  * 返回count值
@@ -19,6 +22,7 @@ function countValue() {
  */
 function showModify(e) {
     var id = getIdByMenu(e);
+    editId = id;
     setEditSelectList();
     $.ajax({
         type: "POST",
@@ -86,7 +90,7 @@ function setEditSelectList() {
             if (result !== undefined) {
                 var data = eval(result);
                 // 高级检索下拉框数据填充
-                var wastesCode = $("select[name='editWastesCode']");
+                var wastesCode = $("select[name='editWastesCode']:first");
                 wastesCode.children().remove();
                 $.each(data.data, function (index, item) {
                     var option = $('<option />');
@@ -112,7 +116,7 @@ function setEditSelectList() {
         success: function (result) {
             if (result != undefined) {
                 var data = eval(result);
-                var formType = $("select[name='editFormType']");
+                var formType = $("select[name='editFormType']:first");
                 formType.children().remove();
                 $.each(data.formTypeList, function (index, item) {
                     var option = $('<option />');
@@ -121,7 +125,7 @@ function setEditSelectList() {
                     formType.append(option);
                 });
                 formType.get(0).selectedIndex = -1;
-                var packageType = $("select[name='editPackageType']");
+                var packageType = $("select[name='editPackageType']:first");
                 packageType.children().remove();
                 $.each(data.packageTypeList, function (index, item) {
                     var option = $('<option />');
@@ -143,7 +147,7 @@ function setEditSelectList() {
         success: function (result) {
             if (result != undefined) {
                 var data = eval(result);
-                var processWay = $("select[name='editProcessWay']");
+                var processWay = $("select[name='editProcessWay']:first");
                 processWay.children().remove();
                 $.each(data.processWayList, function (index, item) {
                     var option = $('<option />');
@@ -168,7 +172,7 @@ function setEditSelectList() {
         success: function (result) {
             if (result != undefined) {
                 var data = eval(result);
-                var wastesUnit = $("select[name='editWastesUnit']");
+                var wastesUnit = $("select[name='editWastesUnit']:first");
                 wastesUnit.children().remove();
                 $.each(data.unitList, function (index, item) {
                     if (item.index == 1 || item.index == 2) {
@@ -196,30 +200,95 @@ function setEditItemDataList(result) {
     var tr = $("#itemEditClonedTr");
     tr.siblings().remove();
     $.each(result.inboundOrderItemList, function (index, item) {
-        var data = eval(item);
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
         clonedTr.show();
+
+        clonedTr.children("td").each(function (inner_index) {
+            var obj = eval(item);
+            // 根据索引为部分td赋值
+            switch (inner_index) {
+                case (0):
+                    //接运单号
+                    $(this).find("td").text(index + 1);
+                    break;
+                case (1):
+                    if (obj.produceCompany != null)
+                    $(this).find("span").text(obj.produceCompany.companyName);
+                    break;
+                case (2):
+                    if (obj.wastes != null)
+                    $(this).find("select").val(convertSecondWastesNameEngToChn(obj.wastes.name));
+                    break;
+                case (3):
+                    if (obj.wastes != null)
+                    $(this).find("select").selectpicker('val', obj.wastes.wastesId);
+                    break;
+                case (4):
+                    $(this).find("input").val(parseFloat(obj.wastesAmount).toFixed(3));
+                    break;
+                case (5):
+                    if (obj.wastesUnit != null)
+                    $(this).find("select").val(obj.wastesUnit.index-1);
+                    break;
+                case (6):
+                    $(this).find("input").val(parseFloat(obj.unitPriceTax).toFixed(3));
+                    break;
+                case (7):
+                    $(this).find("input").val(parseFloat(obj.totalPrice).toFixed(3));
+                    break;
+                case (8):
+                    if (obj.processWay != null)
+                    $(this).find("select").val(obj.processWay.index-1);
+                    break;
+                case (9):
+                    if (obj.formType != null)
+                    $(this).find("select").val(obj.formType.index-1);
+                    break;
+                case (10):
+                    if (obj.packageType != null)
+                    $(this).find("select").val(obj.packageType.index-1);
+                    break;
+                case (11):
+                    if (obj.laboratoryTest != null)
+                    $(this).find("input").val(parseFloat(obj.laboratoryTest.heatAverage).toFixed(3));
+                    break;
+                case (12):
+                    if (obj.laboratoryTest != null)
+                    $(this).find("input").val(parseFloat(obj.laboratoryTest.waterContentAverage).toFixed(3));
+                    break;
+                case (13):
+                    $(this).find("input").val(obj.remarks);
+                    break;
+                case (14):
+                    $(this).find("input").val(obj.warehouseArea);
+                    break;
+                case (15):
+                    $(this).find("span").text(obj.inboundOrderItemId);
+                    break;
+            }
+        });
+
         // 循环遍历cloneTr的每一个td元素，并赋值
-        clonedTr.find("td[name='editIndex']").text(index + 1);
-        if (data.produceCompany != null) clonedTr.find("span[name='editProduceCompanyName']").text(data.produceCompany.companyName);
-        if (data.wastes != null) {
-            clonedTr.find("select[name='editWastesName']").text(data.wastes.name);
-            clonedTr.find("select[name='editWastesCode']").selectpicker('val', data.wastes.wastesId);
-        }
-        clonedTr.find("input[name='editWastesAmount']").val(parseFloat(data.wastesAmount).toFixed(3));
-        if (data.wastesUnit != null) clonedTr.find("select[name='editWastesUnit']").val(data.wastesUnit.index-1);
-        clonedTr.find("input[name='editUnitPriceTax']").val(parseFloat(data.unitPriceTax).toFixed(3));
-        clonedTr.find("input[name='editTotalPrice']").val(parseFloat(data.totalPrice).toFixed(3));
-        if (data.processWay != null) clonedTr.find("select[name='editProcessWay']").val(data.processWay.index-1);
-        if (data.formType != null) clonedTr.find("select[name='editFormType']").val(data.formType.index);
-        if (data.packageType != null) clonedTr.find("select[name='editPackageType']").val(data.packageType.index-1);
-        if (data.laboratoryTest != null) {
-            clonedTr.find("input[name='editHeatAverage']").val(parseFloat(data.laboratoryTest.heatAverage).toFixed(3));
-            clonedTr.find("input[name='editWaterContentAverage']").val(parseFloat(data.laboratoryTest.waterContentAverage).toFixed(3));
-        }
-        clonedTr.find("input[name='editRemarks']").val(data.remarks);
-        clonedTr.find("input[name='editWarehouseArea']").val(data.warehouseArea);
+        // clonedTr.find("td[name='editIndex']").text(index + 1);
+        // if (data.produceCompany != null) clonedTr.find("span[name='editProduceCompanyName']").text(data.produceCompany.companyName);
+        // if (data.wastes != null) {
+        //     clonedTr.find("select[name='editWastesName']:first").val(convertSecondWastesNameEngToChn(data.wastes.name));
+        //     clonedTr.find("select[name='editWastesCode']:first").selectpicker('val', data.wastes.wastesId);
+        // }
+        // clonedTr.find("input[name='editWastesAmount']").val(parseFloat(data.wastesAmount).toFixed(3));
+        // if (data.wastesUnit != null) clonedTr.find("select[name='editWastesUnit']:first").val(data.wastesUnit.index-1);
+        // clonedTr.find("input[name='editUnitPriceTax']").val(parseFloat(data.unitPriceTax).toFixed(3));
+        // clonedTr.find("input[name='editTotalPrice']").val(parseFloat(data.totalPrice).toFixed(3));
+        // if (data.processWay != null) clonedTr.find("select[name='editProcessWay']:first").val(data.processWay.index-1);
+        // if (data.formType != null) clonedTr.find("select[name='editFormType']:first").val(data.formType.index-1);
+        // if (data.packageType != null) clonedTr.find("select[name='editPackageType']:first").val(data.packageType.index-1);
+        // if (data.laboratoryTest != null) {
+        //     clonedTr.find("input[name='editHeatAverage']").val(parseFloat(data.laboratoryTest.heatAverage).toFixed(3));
+        //     clonedTr.find("input[name='editWaterContentAverage']").val(parseFloat(data.laboratoryTest.waterContentAverage).toFixed(3));
+        // }
+        // clonedTr.find("input[name='editRemarks']").val(data.remarks);
+        // clonedTr.find("input[name='editWarehouseArea']").val(data.warehouseArea);
 
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
@@ -227,6 +296,61 @@ function setEditItemDataList(result) {
     });
     // 隐藏无数据的tr
     tr.hide();
+}
+
+/**
+ * 修改次生数据
+ */
+function modifyData() {
+    var data = {
+        inboundOrderId: editId
+    };
+    data['inboundOrderItemList'] = [];
+    var items = $("#itemEditData").find("tr[id!='itemEditClonedTr']");
+    items.each(function() {
+        var item = {};
+        var wastes = {
+            name: $(this).find("select[name='editWastesName']").val(),
+            wastesId: $(this).find("select[name='editWastesCode']").selectpicker('val')
+        };
+        item.wastes = wastes;
+        item.wastesAmount = $(this).find("input[name='editWastesAmount']").val();
+        item.wastesUnit = $(this).find("select[name='editWastesUnit']").val();
+        item.unitPriceTax = $(this).find("input[name='unitPriceTax']").val();
+        item.totalPrice = $(this).find("input[name='editTotalPrice']").val();
+        item.processWay = $(this).find("select[name='editProcessWay']").val();
+        item.formType = $(this).find("select[name='editFormType']").val();
+        item.packageType = $(this).find("select[name='editPackageType']").val();
+        var laboratoryTest = {
+            heatAverage: $(this).find("input[name='editHeatAverage']").val(),
+            waterContentAverage: $(this).find("input[name='editWaterContentAverage']").val()
+        };
+        item.laboratoryTest = laboratoryTest;
+        item.remarks = $(this).find("input[name='editRemarks']").val();
+        item.warehouseArea = $(this).find("input[name='editWarehouseArea']").val();
+        item.inboundOrderItemId = $(this).find("span[name='id']").text();
+        data.inboundOrderItemList.push(item);
+    });
+    $.ajax({
+        type: "POST",
+        url: "updateSecondInboundOrder",
+        async: false,
+        dataType: "json",
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                alert(result.message);
+                window.location.reload();
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
 }
 
 /**
@@ -916,17 +1040,17 @@ function addNewLine() {
     var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine($(this));id1--;'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
     clonedTr.children("td:eq(0)").prepend(delBtn);
     clonedTr.insertAfter(tr);
-
-    $('.selectpicker').data('selectpicker', null);
-    $('.bootstrap-select').find("button:first").remove();
-    // 中文重写select 查询为空提示信息
-    $('.selectpicker').selectpicker({
-        language: 'zh_CN',
-        size: 4,
-        title: '请选择',
-        dropupAuto:false
-    });
-    $('.selectpicker').selectpicker('refresh');
+    //
+    // $('.selectpicker').data('selectpicker', null);
+    // $('.bootstrap-select').find("button:first").remove();
+    // // 中文重写select 查询为空提示信息
+    // $('.selectpicker').selectpicker({
+    //     language: 'zh_CN',
+    //     size: 4,
+    //     title: '请选择',
+    //     dropupAuto:false
+    // });
+    // $('.selectpicker').selectpicker('refresh');
 }
 /**
  * 删除行操作

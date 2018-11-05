@@ -86,6 +86,7 @@ public interface EquipmentService {
      */
     String getDocumentNumber();
 
-
     Equipment getEquipmentByDocumentNumber(String documentNumber);
+
+    EquipmentDate getEquipmentDateByDocumentNumber(String documentNumber);
 }

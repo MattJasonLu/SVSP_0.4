@@ -64,7 +64,7 @@
     </select>
 
     <select id="listPage" resultMap="WayBillRM">
-        select * from t_pr_waybill order by nowTime desc
+        select * from t_pr_waybill order by wayBillDate desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -120,7 +120,7 @@
                 and t_pr_waybill.state = #{state}
             </if>
         </where>
-        order by nowTime desc
+        order by creationDate desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
@@ -243,7 +243,7 @@
         insert into t_pr_waybill
         (id,total,freight,remarks,wayBillDate,produceCompanyId,nowTime,produceCompanyOperator,state,produceCompanyName,founder)
         values
-        (#{id},#{total},#{freight},#{remarks},NOW(),#{produceCompanyId},NOW(),#{produceCompanyOperator},'NewBuild',#{produceCompanyName},#{founder});
+        (#{id},#{total},#{freight},#{remarks},#{wayBillItemList[0].receiveDate},#{produceCompanyId},NOW(),#{produceCompanyOperator},'NewBuild',#{produceCompanyName},#{founder});
         <foreach collection="wayBillItemList" index="index" item="wayBillItem">
             insert into t_pr_waybillitem
             (itemId,wayBillId,receiveDate,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanName,receiveCompanyName,wastesId,wastesCode,wastesPrice,wastesName,wastesAmount,wastesTotalPrice)

@@ -246,6 +246,8 @@
         </where>
     </select>
 
+
+
     <insert id="addSoftWater" parameterType="SoftWater">
         insert into t_pr_softwater
         (receiveDate, name, relativeAlkalinity, dissolvedSolidForm, PH, alkalinity, hardness, electricalConductivity, remarks)

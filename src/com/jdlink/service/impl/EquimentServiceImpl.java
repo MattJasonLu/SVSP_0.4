@@ -105,4 +105,7 @@ public class EquimentServiceImpl implements  EquipmentService {
         return equipmentMapper.getEquipmentByDocumentNumber(documentNumber);
     }
 
+    @Override
+    public  EquipmentDate getEquipmentDateByDocumentNumber(String documentNumber){return equipmentMapper.getEquipmentDateByDocumentNumber(documentNumber);}
+
 }

@@ -115,67 +115,6 @@
                 </div>
                 <h4 class="sub-header">设备管理</h4>
             </div>
-            <div class="row">
-                <div>
-                    <!--操作按钮-->
-                    <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查看</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
-                    </div>
-                    <!--查询框-->
-                    <div class="input-group col-md-4 pull-right">
-                        <input type="text" class="form-control" placeholder="搜索..." id="searchContent" onkeydown="">
-                        <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="search();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
-                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
-                            <a class="btn btn-default" onclick="reset()"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <br>
-            <div class="panel panel-default" id="senior" style="display: none;">
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="search-equipment" class="col-sm-4 control-label">故障设备</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-equipment" name="search-equipment" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">运行时间</label>
-                                <div class="input-group date form_datetime" name="search-faultEquipment">
-                                    <input class="form-control focus" type="number" value="" id="search-faultEquipment" name="search-faultEquipment" title="" readonly>
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="search-stopTime" class="col-sm-4 control-label">停运时间 </label>
-                                <div class="input-group date form_datetime">
-                                    <input type="number" class="input-sm form-control form_datetime2" id="search-stopTime" name="search-stopTime" readonly placeholder=""/>
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="search-reason" class="col-sm-4 control-label">停运原因</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-reason" name="search-reason" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <table class="table table-bordered">
                 <thead>
                 <tr>
