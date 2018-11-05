@@ -60,6 +60,10 @@ public class User {
      * 角色
      */
     private Role  role;
+    /**
+     * 所属公司
+     */
+    private Role  company;
 
     public int getId() {
         return id;
@@ -157,5 +161,11 @@ public class User {
         this.role = role;
     }
 
+    public Role getCompany() {
+        return company;
+    }
 
+    public void setCompany(Role company) {
+        this.company = company;
+    }
 }

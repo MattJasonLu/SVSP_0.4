@@ -54,6 +54,7 @@ function viewClient() {
             console.log("失败");
         }
     });
+    setInvoicedList();
 }
 
 /**
