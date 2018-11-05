@@ -11,6 +11,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script src="js/produce/PersonalInformation.js"></script>
 </head>
 <style>
     .sidebar-collapse .sidenav > li > a:after {color: rgb(229,229,229);background-color: rgb(17,79,142)}
@@ -55,7 +56,7 @@
         background-color: #0088cc;
     }
 </style>
-<body>
+<body onload="viewPersonalInformation()">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -84,7 +85,7 @@
         <li class="dropdown">
             <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
             <ul class="dropdown-menu">
-                <li><a href="PersonalInformation.html">个人信息</a></li>
+                <li><a href="personalInformation.html">个人信息</a></li>
                 <li><a href="#">待办事项</a></li>
                 <li><a href="#" onclick="showLog();">登录日志</a></li>
                 <li><a href="admin.html">注销</a></li>
@@ -117,34 +118,84 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h3>个人信息</h3>
             <br>
-            <div class="row">
-                <div class="form-horizontal col-md-4">
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <div class="row">
+                            <div class="form-horizontal col-md-4">
+                                <div class="form-group">
+                                    <label for="username" class="col-sm-4 control-label">用户名</label>
+                                    <div class="col-xs-7">
+                                        <input type="text" class="form-control focus" id="username" name="username" readonly placeholder="" onkeydown="enterSearch()">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-4">
+                                <div class="form-group">
+                                    <label for="department" class="col-sm-4 control-label">部门</label>
+                                    <div class="col-xs-7">
+                                        <input type="text" class="form-control focus" id="department" name="department" readonly placeholder="" onkeydown="enterSearch()">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-4">
+                                <div class="form-group">
+                                    <label for="company" class="col-sm-4 control-label">所属公司</label>
+                                    <div class="col-xs-7">
+                                        <input type="text" class="form-control focus" id="company" name="company" readonly placeholder="" onkeydown="enterSearch()">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div class="row text-center">
+                <a class="btn btn-success" onclick="changePassword()" id="save">修改密码</a>
+                <!--<a class="btn btn-warning hidden" onclick="" id="close">取消</a>-->
+                <a class="btn btn-primary" id="print">打印</a>
+            </div>
+        </div>
+    </div>
+<!--时间选择-->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">修改密码</div>
+            <div class="modal-body">
+                <div class="row">
                     <div class="form-group">
-                        <label for="username" class="col-sm-4 control-label">用户名</label>
-                        <div class="col-xs-7">
-                            <input type="text" class="form-control" id="username" name="username" placeholder="" onkeydown="enterSearch()">
+                        <label for="username" class="col-sm-4 control-label">原密码</label>
+                        <div class="col-xs-8">
+                            <input style="height: 25px" type="text" class="form-control focus" id="password" name="username" placeholder="" onkeydown="enterSearch()">
                         </div>
                     </div>
-                </div>
-                <div class="form-horizontal col-md-4">
+                    <br>
                     <div class="form-group">
-                        <label for="department" class="col-sm-4 control-label">部门</label>
-                        <div class="col-xs-7">
-                            <input type="text" class="form-control" id="department" name="department" placeholder="" onkeydown="enterSearch()">
+                        <label for="department" class="col-sm-4 control-label">新密码</label>
+                        <div class="col-xs-8">
+                            <input style="height: 25px" type="text" class="form-control focus" id="newPassword" name="department" placeholder="" onkeydown="enterSearch()">
                         </div>
                     </div>
-                </div>
-                <div class="form-horizontal col-md-4">
+                    <br>
                     <div class="form-group">
-                        <label for="company" class="col-sm-4 control-label">所属公司</label>
-                        <div class="col-xs-7">
-                            <input type="text" class="form-control" id="company" name="company" placeholder="" onkeydown="enterSearch()">
+                        <label for="company" class="col-sm-4 control-label">再次输入</label>
+                        <div class="col-xs-8">
+                            <input style="height: 25px" type="text" class="form-control focus" id="newPassword1" name="company" placeholder="" onkeydown="enterSearch()">
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="modal-footer">
+                <div class="row text-center">
+                    <a class="btn btn-success" onclick="confirmChange()" id="comfirmChange">修改密码</a>
+                    <a class="btn btn-warning" onclick="cancelChange()" id="close">取消修改</a>
+                    <!--<a class="btn btn-primary" id="print">打印</a>-->
+                </div>
+            </div>
         </div>
     </div>
+</div>
     <div id="embed"></div>
 </body>
 <style>
