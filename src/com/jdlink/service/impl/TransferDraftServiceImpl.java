@@ -24,6 +24,11 @@ public class TransferDraftServiceImpl implements TransferDraftService {
     }
 
     @Override
+    public void setStateSignIn(String id) {
+        transferDraftMapper.setStateSignIn(id);
+    }
+
+    @Override
     public void setStateInvalid(String id) {
         transferDraftMapper.setStateInvalid(id);
     }

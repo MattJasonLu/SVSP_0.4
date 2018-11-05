@@ -159,6 +159,29 @@ public class TransferDraftController {
     }
 
     /**
+     * 验收转移联单
+     *
+     * @param id 联单编号
+     * @return 成功与否
+     */
+    @RequestMapping("setTransferDraftSignIn")
+    @ResponseBody
+    public String setTransferDraftSignIn(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            // 验收转移联单
+            transferDraftService.setStateSignIn(id);
+            res.put("status", "success");
+            res.put("message", "验收成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "验收失败");
+        }
+        return res.toString();
+    }
+
+    /**
      * 作废转移联单
      *
      * @param id 联单编号

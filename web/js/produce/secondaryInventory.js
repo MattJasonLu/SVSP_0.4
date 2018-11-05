@@ -346,25 +346,18 @@ function setByInboundOrderItemId(result) {
                     $(this).html(obj.produceCompany.companyName);
                     break;
                 case (2):
-                    if(obj.laboratoryTest.wastesName=='slag'){
-                        $(this).html('炉渣');
-                    }
-                    if(obj.laboratoryTest.wastesName=='ash'){
-                        $(this).html('飞灰');
-                    }
-                    if(obj.laboratoryTest.wastesName=='bucket'){
-                        $(this).html('桶');
-                    }
+                        $(this).html(convertStrToWastesName(obj.wastesName));
+
                     break;
                 case (3):
-                    $(this).html(obj.laboratoryTest.wastesCode);
+                    $(this).html(obj.wastesCode);
                     break;
                 case (4):
-                    $(this).html(obj.actualCount);
+                    $(this).html(obj.actualCount.toFixed(2));
                     break;
-                case (5):
-                    $(this).html(obj.handleCategory.name);
-                    break;
+                // case (5):
+                //     $(this).html(obj.handleCategory.name);
+                //     break;
             }
         })
         clonedTr.removeAttr("id");
@@ -621,7 +614,7 @@ function enterSearch() {
 
 //查看出库信息==>次生库存
 function view(item) {
-    var inboundOrderItemId=$(item).parent().prev().html();
+    var inboundOrderItemId=$(item).parent().prev().prev().html();
     console.log(inboundOrderItemId);
     $.ajax({
         type: "POST",                       // 方法类型
@@ -704,67 +697,38 @@ function setWasteInventoryList1(result) {
                         break;
                     // 仓库名称
                     case (4):
-                        $(this).html("");
-                        break;
-                    // 入库类别
-                    case (5):
-                        if(obj.boundType!=null){
-                            $(this).html(obj.boundType.name);
-                        }
-
-                        break;
-                    // 进料方式
-                    case (6):
-                        if(obj.handleCategory!=null){
-                            $(this).html(obj.handleCategory.name);
+                        if(obj.wareHouse!=null){
+                            $(this).html(obj.wareHouse.wareHouseName);
                         }
 
                         break;
                     // 危废名称
+                    case (5):
+                            $(this).html(convertStrToWastesName(obj.wastesName));
+                        break;
+                        //危废类型
+                    case (6):
+                        $(this).html((obj.wastesCode));
+                        break;
+                    // 创建时间
                     case (7):
-                        if(obj.laboratoryTest!=null) {
-                            $(this).html(obj.laboratoryTest.wastesName);
-                        }
+                            $(this).html(getDateStr(obj.creatorDate));
                         break;
-                    //危废类型
-                    // case (8):
-                    //     $(this).html(obj.wastesCategory);
-                    //     break;
-                    //数量
+                    // 数量
                     case (8):
-                        $(this).html(parseFloat(obj.actualCount).toFixed(3));
+                            $(this).html(obj.actualCount.toFixed(2));
                         break;
-                    //单价
+
+                    //入库单明细
                     case (9):
-                        $(this).html(obj.unitPriceTax);
+                        $(this).html((obj.inboundOrderItemId));
                         break;
-                    //总价
+                        //单位编号
                     case (10):
-                        $(this).html(parseInt(obj.actualCount)*(obj.unitPriceTax).toFixed(2)  );
-                        break;
-                    //创建时间
-                    case (11):
-                        $(this).html(getDateStr(obj.creatorDate));
-                        break;
-                        //入库单明细编号
-                    case (12):
-                        $(this).html(obj.inboundOrderItemId);
-                        break;
-                        //客户编号
-                    case (13):
                         if(obj.produceCompany!=null){
-                            $(this).html(obj.produceCompany.clientId);
-                        }
-                        break;
-                        //危废编码
-                    case (14):
-                        if(obj.laboratoryTest!=null){
-                            $(this).html(obj.laboratoryTest.wastesCode);
-                        }
-                        break;
-                        //备注
-                    case (15):
-                        $(this).html(obj.remarks);
+
+                        }   $(this).html((obj.produceCompany.clientId));
+
                         break;
                 }
             });
@@ -814,11 +778,10 @@ function DeclareGeneration() {
    $.each(items,function () {
        // var inboundOrderItemId=$(this).parent().parent().parent().children('td').eq(12).html();
 
-        var clientId=$(this).parent().parent().parent().children('td').eq(13).html();
-        var wastesCode=$(this).parent().parent().parent().children('td').eq(14).html();
-        var remarks=$(this).parent().parent().parent().children('td').eq(15).html();
+        var clientId=$(this).parent().parent().parent().children('td').eq(10).html();
+        var wastesCode=$(this).parent().parent().parent().children('td').eq(6).html();
         var number=$(this).parent().parent().parent().children('td').eq(8).html();
-        var wasteName=$(this).parent().parent().parent().children('td').eq(7).html();
+        var wasteName=$(this).parent().parent().parent().children('td').eq(5).html();
 
         var stockData={
                 client:{clientId:clientId},
@@ -842,7 +805,7 @@ function DeclareGeneration() {
                 wastesCode:wastesCode,
                 number:number,
                 wastesName:wasteName,
-                remarks:remarks,
+
 
         };
        //直接生成库存信息==》添加字表

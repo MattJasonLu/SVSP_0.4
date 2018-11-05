@@ -208,14 +208,14 @@
                     <th class="text-center">入库日期</th>
                     <th class="text-center">产废单位</th>
                     <th class="text-center">仓库名称</th>
-                    <th class="text-center">入库类别</th>
-                    <th class="text-center">进料方式</th>
+                    <!--<th class="text-center">进料方式</th>-->
                     <th class="text-center">危废名称</th>
-                    <!--<th class="text-center">危废类型</th>-->
-                    <th class="text-center">数量</th>
-                    <th class="text-center">单价</th>
-                    <th class="text-center">总价</th>
+                    <th class="text-center">危废类型</th>
+                    <!--<th class="text-center">数量</th>-->
+                    <!--<th class="text-center">单价</th>-->
+                    <!--<th class="text-center">总价</th>-->
                     <th class="text-center">创建时间</th>
+                    <th class="text-center">入库数量</th>
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>
@@ -228,7 +228,6 @@
                     </td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
                     <!--<td class="text-center"></td>-->
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -236,12 +235,8 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
                     <td class="text-center hidden"></td><!--入库单明细编号-->
-                    <td class="text-center hidden"></td><!--客户编号-->
-                    <td class="text-center hidden"></td><!--危废编码-->
-                    <td class="text-center hidden"></td><!--备注-->
+                    <td class="text-center hidden"></td><!--单位编号-->
 
                     <td class="text-center"><!--操作-->
                         <a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
@@ -296,7 +291,7 @@
             <div class="modal-dialog modal-lg" role="document" id="print1">
                 <div class="modal-content" >
                     <div class="modal-header">
-                        <h4 class="modal-title" id="TitleMyModalLabel">入库计划单</h4>
+                        <h4 class="modal-title" id="TitleMyModalLabel">次生库存</h4>
                     </div>
                     <div class="modal-body">
                         <table class="table table-bordered">
@@ -318,7 +313,7 @@
                                 <!--<td class="text-center">磷含量/%</td>-->
                                 <!--<td class="text-center">氟含量/%</td>-->
                                 <!--<td class="text-center">处理方式</td>-->
-                                <td class="text-center">进料方式</td>
+                                <!--<td class="text-center">进料方式</td>-->
                             </tr>
                             </thead>
                             <tbody>
@@ -331,7 +326,7 @@
                                 <!--<td class="text-center modal-materialForm"></td>-->
                                 <td class="text-center modal-packingType"></td>
                                 <td class="text-center modal-KCal"></td>
-                                <td class="text-center modal-PH"></td>
+                                <!--<td class="text-center modal-PH"></td>-->
                                 <!--<td class="text-center modal-ashContent">20</td>-->
                                 <!--<td class="text-center modal-waterContent">10</td>-->
                                 <!--<td class="text-center modal-CLContent">20</td>-->

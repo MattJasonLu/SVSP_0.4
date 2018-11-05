@@ -834,12 +834,380 @@ function getcurrentDaydate() {
     return year + "年" + month + "月" + day + "日";
 }
 
+
+/**
+ * 返回count值
+ * */
+function countValue1() {
+    var mySelect = document.getElementById("count1");
+    var index = mySelect.selectedIndex;
+    return mySelect.options[index].text;
+}
+
+/**
+ * 计算总页数
+ * */
+function totalPage1() {
+    var totalRecord = 0;
+    if (!isSearch) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "totalIngredientInventoryRecord",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                if (result > 0) {
+                    totalRecord = result;
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
+    } else {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchIngredientInventoryTotal",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result > 0) {
+                    totalRecord = result;
+                    console.log("总记录数为:" + result);
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
+    }
+    var count = countValue1();                         // 可选
+    var total = loadPages1(totalRecord, count);
+    return total;
+}
+
+/**
+ * 设置克隆页码
+ * */
+function setPageClone1(result) {
+    $(".beforeClone").remove();
+    setInventoryList(result);
+    var total = totalPage1();
+    $("#next").prev().hide();
+    var st = "共" + total + "页";
+    $("#totalPage").text(st);
+    var myArray = new Array();
+    for (var i = 0; i < total; i++) {
+        var li = $("#next").prev();
+        myArray[i] = i + 1;
+        var clonedLi = li.clone();
+        clonedLi.show();
+        clonedLi.find('a:first-child').text(myArray[i]);
+        clonedLi.find('a:first-child').click(function () {
+            var num = $(this).text();
+            switchPage1(num);
+            addAndRemoveClass(this);
+        });
+        clonedLi.addClass("beforeClone");
+        clonedLi.removeAttr("id");
+        clonedLi.insertAfter(li);
+    }
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
+}
+
+/**
+ * 点击页数跳转页面
+ * @param pageNumber 跳转页数
+ * */
+function switchPage1(pageNumber) {
+    if (pageNumber > totalPage1()) {
+        pageNumber = totalPage1();
+    }
+    if (pageNumber == 0) {                 //首页
+        pageNumber = 1;
+    }
+    if (pageNumber == -2) {
+        pageNumber = totalPage1();        //尾页
+    }
+    if (pageNumber == null || pageNumber == undefined) {
+        console.log("参数为空,返回首页!");
+        pageNumber = 1;
+    }
+    $("#current").find("a").text("当前页：" + pageNumber);
+    if (pageNumber == 1) {
+        $("#previous").attr("disabled", "true");
+        $("#firstPage").attr("disabled", "true");
+        // $('#previous').removeAttr('href');//去掉a标签中的href属性
+        // $('#firstPage').removeAttr('onclick');//去掉a标签中的onclick事件
+        $("#next").removeAttr("disabled");
+        $("#endPage").removeAttr("disabled");
+        // $("#next").addAttr("href");
+
+    }
+    if (pageNumber == totalPage1()) {
+        $("#next").attr("disabled", "true");
+        $("#endPage").attr("disabled", "true");
+        $("#previous").removeAttr("disabled");
+        $("#firstPage").removeAttr("disabled");
+    }
+    if (pageNumber > 1) {
+        $("#previous").removeAttr("disabled");
+        $("#firstPage").removeAttr("disabled");
+    }
+    if (pageNumber < totalPage1()) {
+        $("#next").removeAttr("disabled");
+        $("#endPage").removeAttr("disabled");
+    }
+    var page = {};
+    page.count = countValue1();                        //可选
+    page.pageNumber = pageNumber;
+    currentPage = pageNumber;          //当前页面
+    setPageCloneAfter1(pageNumber);        // 重新设置页码
+    addPageClass(pageNumber);           // 设置页码标蓝
+    page.start = (pageNumber - 1) * page.count;
+    if (!isSearch) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "LoadPageIngredientsInventoryList",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    setInventoryList(result);
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+            }
+        });
+    } else {
+        data1['page'] = page;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchIngredientsInventory",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    setInventoryList(result);
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+            }
+        });
+    }
+}
+
+/**
+ * 回车跳转（输入页数回车跳转页面）
+ */
+function enterSwitchPage1() {
+    if (event.keyCode === 13) {
+        inputSwitchPage1();
+    }
+}
+
+/**
+ * 输入页数跳转页面
+ * */
+function inputSwitchPage1() {
+    var pageNumber = $("#pageNumber").val();    // 获取输入框的值
+    if (pageNumber > totalPage1()) {
+        pageNumber = totalPage1();
+    }
+    $("#current").find("a").text("当前页：" + pageNumber);
+    if (pageNumber == null || pageNumber == "") {
+        window.alert("跳转页数不能为空！")
+    } else {
+        if (pageNumber == 1) {
+            $("#previous").attr("disabled", "true");
+            $("#firstPage").attr("disabled", "true");
+            $("#next").removeAttr("disabled");
+            $("#endPage").removeAttr("disabled");
+        }
+        if (pageNumber == totalPage1()) {
+            $("#next").attr("disabled", "true");
+            $("#endPage").attr("disabled", "true");
+
+            $("#previous").removeAttr("disabled");
+            $("#firstPage").removeAttr("disabled");
+        }
+        if (pageNumber > 1) {
+            $("#previous").removeAttr("disabled");
+            $("#firstPage").removeAttr("disabled");
+        }
+        if (pageNumber < totalPage1()) {
+            $("#next").removeAttr("disabled");
+            $("#endPage").removeAttr("disabled");
+        }
+        currentPage = pageNumber;
+        setPageCloneAfter1(pageNumber);        // 重新设置页码
+        addPageClass(pageNumber);           // 设置页码标蓝
+        var page = {};
+        page.count = countValue1();//可选
+        page.pageNumber = pageNumber;
+        page.start = (pageNumber - 1) * page.count;
+        if (!isSearch) {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "LoadPageIngredientsInventoryList",         // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(page),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    if (result != undefined) {
+                        setInventoryList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        } else {
+            data1['page'] = page;
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "searchIngredientsInventory",         // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data1),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    if (result != undefined) {
+                        setInventoryList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+    }
+}
+
+
+/**
+ * 省略显示页码
+ */
+function setPageCloneAfter1(currentPageNumber) {
+    var total = totalPage1();
+    var pageNumber = 5;         // 页码数
+    if (total > pageNumber) { // 大于5页时省略显示
+        $(".beforeClone").remove();          // 删除之前克隆页码
+        $("#next").prev().hide();            // 将页码克隆模板隐藏
+        if (currentPageNumber <= (parseInt(pageNumber / 2) + 1)) {   // 如果pageNumber = 5,当前页小于3显示前五页
+            for (var i = 0; i < pageNumber; i++) {
+                var li = $("#next").prev();
+                var clonedLi = li.clone();
+                clonedLi.show();
+                clonedLi.find('a:first-child').text(i + 1);          // 页数赋值
+                clonedLi.find('a:first-child').click(function () {    // 设置点击事件
+                    var num = $(this).text();
+                    switchPage1(num);        // 跳转页面
+                });
+                clonedLi.addClass("beforeClone");
+                clonedLi.removeAttr("id");
+                clonedLi.insertAfter(li);
+            }
+        } else if (currentPageNumber <= total - parseInt(pageNumber / 2)) {  // 如果pageNumber = 5,大于3时显示其前后两页
+            for (var i = currentPage - parseInt(pageNumber / 2); i <= parseInt(currentPage) + parseInt(pageNumber / 2); i++) {
+                var li = $("#next").prev();
+                var clonedLi = li.clone();
+                clonedLi.show();
+                clonedLi.find('a:first-child').text(i);          // 页数赋值
+                clonedLi.find('a:first-child').click(function () {    // 设置点击事件
+                    var num = $(this).text();
+                    switchPage1(num);        // 跳转页面
+                });
+                clonedLi.addClass("beforeClone");
+                clonedLi.removeAttr("id");
+                clonedLi.insertAfter(li);
+            }
+        } else if (currentPageNumber > total - parseInt(pageNumber / 2)) {    // 如果pageNumber = 5,显示最后五页
+            for (var i = total - pageNumber + 1; i <= total; i++) {
+                var li = $("#next").prev();
+                var clonedLi = li.clone();
+                clonedLi.show();
+                clonedLi.find('a:first-child').text(i);          // 页数赋值
+                clonedLi.find('a:first-child').click(function () {    // 设置点击事件
+                    var num = $(this).text();
+                    switchPage1(num);        // 跳转页面
+                });
+                clonedLi.addClass("beforeClone");
+                clonedLi.removeAttr("id");
+                clonedLi.insertAfter(li);
+            }
+        }
+    }
+    if (currentPageNumber == 1) {
+        $("#previous").next().next().eq(0).addClass("oldPageClass");
+        $("#previous").next().next().eq(0).addClass("active");       // 将首页页码标蓝
+    }
+}
+
+
+/**
+ * 计算分页总页数
+ * @param totalRecord
+ * @param count
+ * @returns {number}
+ */
+function loadPages1(totalRecord, count) {
+    if (totalRecord == 0) {
+        console.log("总记录数为0，请检查！");
+        return 0;
+    }
+    else if (totalRecord % count == 0)
+        return totalRecord / count;
+    else
+        return parseInt(totalRecord / count) + 1;
+}
+
+/**
+ * 设置首页数据
+ */
 function loadInventoryListData() {
     $("#view-id").text(getCurrentIngredientsReceiveId());
     $("#creationDate").text(getcurrentDaydate());
+    var pageNumber = 1;               // 显示首页
+    $("#current").find("a").text("当前页：1");
+    $("#previous").attr("disabled", "true");
+    $("#firstPage").attr("disabled", "true");
+    $("#next").removeClass("disabled");            // 移除上一次设置的按钮禁用
+    $("#endPage").removeClass("disabled");
+    if (totalPage1() == 1) {
+        $("#next").attr("disabled", "true");
+        $("#endPage").attr("disabled", "true");
+    }
     var page = {};
-    page.count = 0;                                 // 可选
-    page.start = 0;
+    page.count = countValue1();                                 // 可选
+    page.pageNumber = pageNumber;
+    page.start = (pageNumber - 1) * page.count;
     $.ajax({
         type: "POST",                       // 方法类型
         url: "LoadPageIngredientsInventoryList",          // url
@@ -849,7 +1217,8 @@ function loadInventoryListData() {
         contentType: 'application/json;charset=utf-8',
         success: function (result) {
             if (result != undefined && result.status == "success") {
-                setInventoryList(result.data);
+                setPageClone1(result);
+                setPageCloneAfter1(pageNumber);        // 重新设置页码
             } else {
                 console.log(result.message);
             }
@@ -868,7 +1237,7 @@ function loadInventoryListData() {
 function setInventoryList(result) {
     var tr = $("#cloneTr1");
     tr.siblings().remove();
-    $.each(result, function (index, item) {
+    $.each(result.data, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
         if (item.amount > 0) {
             var clonedTr = tr.clone();
@@ -967,7 +1336,8 @@ function confirmInsert() {
                 ingredients.amount = $(this).find("td[name='amount']").text();
                 ingredients.unit = $(this).find("td[name='unit']").text();
                 ingredients.id = ingredientsReceive.id;
-                ingredients.receiveAmount = $(this).find("td[name='amount']").text();
+                //ingredients.receiveAmount = $(this).find("td[name='amount']").text();
+                ingredients.receiveAmount = 0;  //领料数默认为0，防止错误操作
                 ingredientsList.push(ingredients);
                 var receiveAmount = parseFloat(ingredients.receiveAmount);
                 $("#total-unit").text("吨");
@@ -1002,7 +1372,7 @@ function confirmInsert() {
         clonedTr.find("td[name='name']").text(obj.name);
         clonedTr.find("td[name='specification']").text(obj.specification);
         clonedTr.find("td[name='unit']").text(obj.unit);
-        clonedTr.find("input[name='receiveAmount']").val(obj.amount);
+        clonedTr.find("input[name='receiveAmount']").val(obj.receiveAmount);
         clonedTr.find("td[name='amount']").text(obj.amount);
         clonedTr.find("td[name='wareHouseName']").text(obj.wareHouseName);
         // 把克隆好的tr追加到原来的tr前面
@@ -1099,31 +1469,39 @@ function enterSearch1(){
  * 查询功能
  */
 function search1() {
-    var ingredients;
+    isSearch = true;
+    var page = {};
+    var pageNumber = 1;                       // 显示首页
+    page.pageNumber = pageNumber;
+    page.count = countValue1();
+    page.start = (pageNumber - 1) * page.count;
     if ($("#senior1").is(':visible')) {
-        ingredients = {
+        data1 = {
             amount: $.trim($("#search1-amount").val()),
             name: $.trim($("#search1-name").val()),
-            wareHouseName: $.trim($("#search1-wareHouseName").val())
+            wareHouseName: $.trim($("#search1-wareHouseName").val()),
+            page:page
         };
     } else {
-        ingredients = {
-            keywords: $.trim($("#searchContent1").val())
+        data1 = {
+            keywords: $.trim($("#searchContent1").val()),
+            page: page
         };
     }
-    if (ingredients == null) alert("请输入查询内容!");
+    if (data1 == null) alert("请输入查询内容!");
     else {
         $.ajax({
             type: "POST",                            // 方法类型
             url: "searchIngredientsInventory",                 // url
             async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(ingredients),
+            data: JSON.stringify(data1),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 console.log(result);
                 if (result.data != undefined || result.status == "success") {
-                    setInventoryList(result.data);
+                    setPageClone1(result);
+                    setPageCloneAfter1(pageNumber);      // 大于5页时页码省略显示
                 } else {
                     console.log(result.message);
                 }

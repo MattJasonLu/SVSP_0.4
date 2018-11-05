@@ -226,6 +226,37 @@ function convertStrToWastesName(str) {
     return name;
 }
 
+function convertSecondWastesNameEngToChn(str) {
+    var name;
+    switch (str) {
+        case '炉渣':
+            name = 'slag';
+            break;
+        case '飞灰':
+            name = 'ash';
+            break;
+        case '桶':
+            name = 'bucket';
+            break;
+        case '活性炭':
+            name = 'activated_carbon';
+            break;
+        case '耐火材料':
+            name = 'refractory';
+            break;
+        case '滤芯':
+            name = 'filter';
+            break;
+        case '污泥':
+            name = 'sludge';
+            break;
+        default:
+            name = str;
+            break;
+    }
+    return name;
+}
+
 /**
  * 重置页面功能
  */

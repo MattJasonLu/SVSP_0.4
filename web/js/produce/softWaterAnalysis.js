@@ -466,11 +466,8 @@ function importExcelChoose() {
  * 下载模板
  * */
 function downloadModal() {
-    var filePath = 'Files/Templates/软水分析日报模板.xls';
-    var r = confirm("是否下载模板?");
-    if (r == true) {
-        window.open('downloadFile?filePath=' + filePath);
-    }
+    var filePath = 'Files/Templates/软水送样登记导入模板.xlsx';
+    window.open('downloadFile?filePath=' + filePath);
 }
 
 /**
@@ -482,10 +479,9 @@ function importExcel() {
         var eFile = document.getElementById("idExcel").files[0];
         var formFile = new FormData();
         formFile.append("excelFile", eFile);
-        formFile.append("excelFile", eFile);
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "importSoftWaterExcel",              // url
+            url: "importSampleSoftWaterExcel",              // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             data: formFile,

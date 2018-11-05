@@ -17,6 +17,12 @@ public interface TransferDraftMapper {
     void add(TransferDraft transferDraft);
 
     /**
+     * 验收
+     * @param id 编号
+     */
+    void setStateSignIn(String id);
+
+    /**
      * 设置状态为已作废
      * @param id 联单编号
      */

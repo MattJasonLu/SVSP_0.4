@@ -77,4 +77,10 @@ public interface ClientService {
 
     void updateInvoiceItem(Client client);
 
+    /**
+     * 根据公司名获取相似度最高的那个
+     * @return
+     */
+    Client getClientByCompanyName(String companyName);
+
 }

@@ -31,7 +31,7 @@
     </select>
 
     <select id="listPageIn" resultMap="IngredientsInRM">
-        select * from t_pr_ingredients_in order by nowTime desc
+        select * from t_pr_ingredients_in order by creationDate desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -81,7 +81,7 @@
                 and companyName like "%"#{companyName}"%"
             </if>
         </where>
-        order by nowTime desc
+        order by creationDate desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count};
         </if>
@@ -237,7 +237,7 @@
     </select>
 
     <select id="listPageReceive" resultMap="IngredientsReceiveRM">
-        select * from t_pr_ingredients_receive order by nowTime desc
+        select * from t_pr_ingredients_receive order by creationDate desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -288,7 +288,7 @@
                 and department like "%"#{department}"%"
             </if>
         </where>
-        order by nowTime desc
+        order by creationDate desc
         <if test="page != null and page.start != null and page.count != null and page.count != 0">
             limit #{page.start}, #{page.count};
         </if>
@@ -349,7 +349,7 @@
     </select>
 
     <select id="countInventory" resultType="int">
-        select count(*) from t_pr_ingredients_inventory where amount != 0;
+        select count(*) from t_pr_ingredients_inventory;
     </select>
 
     <select id="getInventoryByNameAndWare" resultType="Ingredients">
@@ -363,7 +363,7 @@
                 or itemId = #{keywords}
                 or name like "%"#{keywords}"%"
                 or wareHouseName like "%"#{keywords}"%"
-                or amount = #{keywords}
+                or amount like "%"#{keywords}"%"
                 or unit like "%"#{keywords}"%"
                 or ingredientState like "%"#{keywords}"%"
                 or specification like "%"#{keywords}"%"
@@ -387,7 +387,7 @@
                 or itemId = #{keywords}
                 or name like "%"#{keywords}"%"
                 or wareHouseName like "%"#{keywords}"%"
-                or amount = #{keywords}
+                or amount like "%"#{keywords}"%"
                 or unit like "%"#{keywords}"%"
                 or ingredientState like "%"#{keywords}"%"
                 or specification like "%"#{keywords}"%"
@@ -488,7 +488,7 @@
     </select>
 
     <select id="listPageOut" resultMap="IngredientsOutRM">
-        select * from t_pr_ingredients_out order by nowTime desc
+        select * from t_pr_ingredients_out order by creationDate desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -550,7 +550,7 @@
                 and companyName like "%"#{companyName}"%"
             </if>
         </where>
-        order by nowTime desc
+        order by creationDate desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count};
         </if>

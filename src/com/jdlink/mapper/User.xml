@@ -46,7 +46,7 @@
     </select>
 
     <insert id="addLog" parameterType="LoginLog">
-        INSERT INTO t_loginlog (userId, username, time, ip, nowTime) VALUES (#{userId}, #{username}, #{time}, #{ip}, NOW());
+        INSERT INTO t_loginlog (userId, username, time, ip, nowTime,name) VALUES (#{userId}, #{username}, #{time}, #{ip}, NOW(),#{name});
     </insert>
 
     <select id="getLogById"  resultType="LoginLog">
@@ -125,6 +125,80 @@
     <!--校验当前角色是否可以进入该功能-->
     <select id="checkAuthority" resultType="boolean">
         SELECT COUNT(*) FROM t_ur_authority WHERE roleId=#{roleId} AND functionId=#{functionId};
+    </select>
+
+    <select id="searchLog" resultType="LoginLog">
+        select * from t_loginlog
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or username like "%"#{keywords}"%"
+                or name like "%"#{keywords}"%"
+                or ip like "%"#{keywords}"%"
+                or DATE_FORMAT(time,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(time,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(time,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(time,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(time,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(time,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(time,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(time,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(time,'%Y.%c.%e') like "%"#{keywords}"%"
+            </if>
+            <if test="username != '' and username != null">
+                and username like "%"#{username}"%"
+            </if>
+            <if test="name != null and name !=''">
+                and name like "%"#{name}"%"
+            </if>
+            <if test="ip != null and ip !=''">
+                and ip = #{ip}
+            </if>
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(time, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(time, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
+            </if>
+        </where>
+        order by time desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <select id="searchLogCount" resultType="int">
+        select count(*) from t_loginlog
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or username like "%"#{keywords}"%"
+                or name like "%"#{keywords}"%"
+                or ip like "%"#{keywords}"%"
+                or DATE_FORMAT(time,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(time,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(time,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(time,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(time,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(time,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(time,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(time,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(time,'%Y.%c.%e') like "%"#{keywords}"%"
+            </if>
+            <if test="username != '' and username != null">
+                and username like "%"#{username}"%"
+            </if>
+            <if test="name != null and name !=''">
+                and name like "%"#{name}"%"
+            </if>
+            <if test="ip != null and ip !=''">
+                and ip = #{ip}
+            </if>
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(time, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(time, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
+            </if>
+        </where>
     </select>
 
 </mapper>

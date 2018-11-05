@@ -258,7 +258,7 @@ function LoadMaterialRequisitionOrder() {
     //1通过ajax获取领料单数据
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getMaterialByToOut",                  // url
+        url: "getMaterialRequisitionOrderList",                  // url
         data:JSON.stringify(page),
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
@@ -290,7 +290,7 @@ function LoadMaterialRequisitionOrder() {
  * */
 function setPageClone(result) {
     $(".beforeClone").remove();
-    setMaterialRequisitionList(result.jsonArray);
+    setMaterialRequisitionList(result.data);
     var total = totalPage();
     $("#next").prev().hide();
     var st = "共" + total + "页";
@@ -333,7 +333,7 @@ function setMaterialRequisitionList(result) {
                 switch (inner_index) {
                     // 编号
                     case (1):
-                        $(this).html(parseInt(index)+1);
+                        $(this).html(parseInt(index) + 1);
                         break;
                     // 领料单号
                     case (2):
@@ -341,66 +341,54 @@ function setMaterialRequisitionList(result) {
                         break;
                     // 产废单位
                     case (3):
-                        if(obj.client!=null){
+                        if (obj.client != null) {
                             $(this).html(obj.client.companyName);
                         }
 
                         break;
                     // 危废名称
                     case (4):
-                            $(this).html(obj.wastesName);
-                        break;
-                    // 危废代码
-                    case (5):
-                            $(this).html(obj.wasteCategory);
+                        $(this).html(obj.wastesName);
                         break;
                     // 危废类别
-                    case (6):
+                    case (5):
                         $(this).html(obj.wasteCategory);
                         break;
-                    // 单位
-                    case (7):
-                        $(this).html("");
-                        break;
                     //配料数量
-                    case (8):
+                    case (6):
                         $(this).html(obj.recipientsNumber.toFixed(2));
                         break;
                     //领用数量
-                    case (9):
+                    case (7):
                         $(this).html(obj.recipientsNumber.toFixed(2));
                         break;
-                        //附注
-                    // case (10):
-                    //     $(this).html(obj.remarks);
-                    //     break;
-                        //主管副总经理
-                    case (10):
+                    //主管副总经理
+                    case (8):
                         $(this).html(obj.deputyGeneral);
                         break;
-                        //部门仓库主管
-                    case (11):
-                    $(this).html(obj.warehouseManager);
-                    break;
+                    //部门仓库主管
+                    case (9):
+                        $(this).html(obj.warehouseManager);
+                        break;
                     //保管员
-                    case (12):
-                    $(this).html(obj.guardian);
-                    break;
+                    case (10):
+                        $(this).html(obj.guardian);
+                        break;
                     //领料部门主管
-                    case (13):
-                    $(this).html(obj.materialManager);
-                    break;
+                    case (11):
+                        $(this).html(obj.materialManager);
+                        break;
                     //领料人
-                    case (14):
+                    case (12):
                         $(this).html(obj.picker);
                         break;
-                        //状态
-                    case (15):
-                        if(obj.checkState!=null){
-
-                        }   $(this).html(obj.checkState.name);
-
+                    //状态
+                    case (13):
+                        if (obj.checkState != null) {
+                            $(this).html(obj.checkState.name);
+                        }
                         break;
+
                 }
             });
             // 把克隆好的tr追加到原来的tr前面
@@ -613,45 +601,37 @@ function setRequisitionList(result) {
                     case (3):
                             $(this).html(obj.wastesName);
                         break;
-                    // 危废代码
+                    // 危废类别
                     case (4):
                             $(this).html(obj.wasteCategory);
                         break;
-                    // 危废类别
-                    case (5):
-                        $(this).html(obj.wasteCategory);
-                        break;
-                    // 单位
-                    case (6):
-                        $(this).html("");
-                        break;
                     // 配料数量
-                    case (7):
+                    case (5):
                         $(this).html(obj.recipientsNumber);
                         break;
                     //领用数量
-                    case (8):
+                    case (6):
                         $(this).html(obj.recipientsNumber);
                         break;
-                    //附注
-                    case (9):
-                        $(this).html(obj.remarks);
-                        break;
-                        //主管副总经理
-                    case (10):
-                        $(this).html(obj.guardian);
-                        break;
-                        //部门仓库主管
-                    case (11):
-                        $(this).html(obj.warehouseManager);
-                        break;
-                        //领料部门主管
-                    case (12):
+                    //领料部门主管
+                    case (7):
                         $(this).html(obj.materialManager);
                         break;
                         //领料人
-                    case (13):
+                    case (8):
                         $(this).html(obj.picker);
+                        break;
+                        //进料方式
+                    case (9):
+                        if(obj.handelCategory!=null){
+
+                        }  $(this).html(obj.handelCategory.name);
+                        break;
+                        //处置方式
+                    case (10):
+                        if(obj.processWay!=null){
+
+                        }  $(this).html(obj.processWay.name);
                         break;
                     //
                 }

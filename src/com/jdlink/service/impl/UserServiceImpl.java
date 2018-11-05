@@ -109,4 +109,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<LoginLog> getLog(Page page){ return userMapper.getLog(page); }
 
+    @Override
+    public List<LoginLog> searchLog(LoginLog loginLog){return userMapper.searchLog(loginLog);}
+
+    @Override
+    public int searchLogCount(LoginLog loginLog){ return userMapper.searchLogCount(loginLog);}
 }

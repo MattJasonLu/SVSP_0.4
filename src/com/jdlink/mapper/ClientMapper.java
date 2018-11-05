@@ -68,5 +68,7 @@ public interface ClientMapper {
 
     void updateInvoiceItem(Client client);
 
+    List<Client> getClientByLikeCompanyName(String companyName);
 
+    Client getClientByEqualCompanyName(String companyName);
 }

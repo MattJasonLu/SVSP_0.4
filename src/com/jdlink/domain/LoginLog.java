@@ -27,6 +27,66 @@ public class LoginLog {
      * ip
      */
     private String ip;
+    /**
+     * 姓名
+     */
+    private String name;
+    /**
+     * 分页
+     */
+    private Page page;
+    /**
+     * 粗查询关键字
+     */
+    private String keywords;
+    /**
+     * 开始日期
+     */
+    private Date startDate;
+    /**
+     * 结束日期
+     */
+    private Date endDate;
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getId() {
         return id;

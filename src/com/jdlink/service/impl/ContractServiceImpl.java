@@ -252,4 +252,7 @@ contractMapper.updateFreight2(id);
         return contractMapper.getNewestContractId1();
     }
 
+    @Override
+    public List<QuotationItem> getWastesInfoByCompanyName(String companyName){ return contractMapper.getWastesInfoByCompanyName(companyName);}
+
 }
