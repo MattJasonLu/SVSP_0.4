@@ -265,4 +265,9 @@ contractMapper.updateFreight2(id);
         return contractMapper.contractVolume();
     }
 
+    @Override
+    public void setFilePath(QuotationItem quotationItem) {
+        contractMapper.setFilePath(quotationItem);
+    }
+
 }

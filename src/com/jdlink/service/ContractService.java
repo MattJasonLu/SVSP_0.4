@@ -81,4 +81,6 @@ public interface ContractService {
     List<QuotationItem> ContractList(Page page);
 
     int contractVolume();
+
+    void setFilePath(QuotationItem quotationItem);
 }

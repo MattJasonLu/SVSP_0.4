@@ -11,6 +11,7 @@ public class Document {
     private String fileName;
     private String filePath;
     private DocumentType documentType;
+    private String contractId;
     /**
      * 当前时间
      */
@@ -26,6 +27,14 @@ public class Document {
                 ", documentType=" + documentType +
                 ", nowTime=" + nowTime +
                 '}';
+    }
+
+    public String getContractId() {
+        return contractId;
+    }
+
+    public void setContractId(String contractId) {
+        this.contractId = contractId;
     }
 
     public Date getNowTime() {

@@ -116,4 +116,6 @@ public interface ContractMapper {
 
    int contractVolume();
 
+    void setFilePath(QuotationItem quotationItem);
+
 }

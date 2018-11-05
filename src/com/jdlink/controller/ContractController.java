@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -1278,6 +1279,46 @@ public class ContractController {
     @ResponseBody
     public int contractVolume(){
         return contractService.contractVolume();
+    }
+
+
+    /**
+     * 上传图片文件
+     */
+    @RequestMapping("savePictureFiles")
+    @ResponseBody
+    public String savePictureFiles(String wastesCode,String wastesName,String contractId, MultipartFile pictureFile){
+        JSONObject res = new JSONObject();
+
+
+        try {
+            QuotationItem quotationItem = new QuotationItem();
+            quotationItem.setContractId(contractId);
+            quotationItem.setWastesCode(wastesCode);
+            quotationItem.setWastesName(wastesName);
+
+            if (pictureFile != null) {
+                String materialPath = "Files/Contract"; //设置服务器路径
+                File materialDir = new File(materialPath);
+                if (!materialDir.exists()) {
+                    materialDir.mkdirs();
+                }
+                String materialName = contractId + "-" +  pictureFile.getOriginalFilename();//设置文件名称
+                String materialFilePath = materialPath + "/" + materialName;//本地路径
+                File materialFile = new File(materialFilePath);
+                pictureFile.transferTo(materialFile);
+                quotationItem.setPicture(materialFilePath);
+            }
+          contractService.setFilePath(quotationItem);
+
+        }
+        catch (Exception e){
+
+        }
+
+
+        return res.toString();
+
     }
 }
 
