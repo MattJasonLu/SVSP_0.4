@@ -3,6 +3,7 @@ package com.jdlink.service;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.SampleInformation;
+import com.jdlink.domain.Produce.SampleInformationItem;
 import com.jdlink.domain.Wastes;
 
 import java.util.List;
@@ -27,4 +28,8 @@ public interface SampleInformationService {
     List<SampleInformation> getSampleInfoByClientId(String id);
     void deleteById(String id);
     void rejectSampleInfoById(String sampleId,String advice);
+    int countItem();
+    List<SampleInformationItem> listItemPage(Page page);
+    int searchItemCount(SampleInformationItem sampleInformationItem);
+    List<SampleInformationItem> searchItem(SampleInformationItem sampleInformationItem);
 }

@@ -3,6 +3,7 @@ package com.jdlink.service.impl;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.SampleInformation;
+import com.jdlink.domain.Produce.SampleInformationItem;
 import com.jdlink.domain.Sample;
 import com.jdlink.domain.Wastes;
 import com.jdlink.mapper.SampleInformationMapper;
@@ -75,4 +76,17 @@ public class SampleInformationServiceImpl implements SampleInformationService {
 
     @Override
     public void rejectSampleInfoById(String sampleId,String advice){ sampleInformationMapper.rejectSampleInfoById(sampleId,advice);}
+
+    @Override
+    public int countItem(){ return sampleInformationMapper.countItem();}
+
+    @Override
+    public List<SampleInformationItem> listItemPage(Page page){ return sampleInformationMapper.listItemPage(page);}
+
+    @Override
+    public int searchItemCount(SampleInformationItem sampleInformationItem){ return sampleInformationMapper.searchItemCount(sampleInformationItem); }
+
+    @Override
+    public List<SampleInformationItem> searchItem(SampleInformationItem sampleInformationItem){ return sampleInformationMapper.searchItem(sampleInformationItem); }
+
 }
