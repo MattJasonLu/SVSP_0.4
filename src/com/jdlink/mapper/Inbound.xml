@@ -50,6 +50,9 @@
             <if test="inboundPlanOrder != null and inboundPlanOrder.inboundPlanOrderId != null and inboundPlanOrder.inboundPlanOrderId != ''">
                 and inboundPlanOrderId LIKE "%"#{inboundPlanOrder.inboundPlanOrderId}"%"
             </if>
+            <if test="inboundPlanOrder != null and inboundPlanOrder.produceCompany != null">
+                and produceCompanyId in (select clientId from client where companyName like "%"#{inboundPlanOrder.produceCompany.companyName}"%")
+            </if>
             <if test="inboundPlanOrder != null and inboundPlanOrder.departmentId != null and inboundPlanOrder.departmentId != ''">
                 <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
                 and (DATE_FORMAT(planDate,'%Y-%m-%d') like "%"#{inboundPlanOrder.departmentId}"%"
@@ -124,7 +127,7 @@
         modifierId, salesmanId, checkState, recordState, processWay, handleCategory, isQualified)
         VALUES (#{inboundPlanOrderId}, #{planDate}, #{produceCompany.clientId},
         #{acceptCompany.clientId}, #{transferDate}, #{transferDraftId}, #{prepareTransferCount}, #{transferCount}, #{storageCount},
-        #{leftCount}, #{poundsCount}, #{wastes.name}, #{wastes.code}, #{wastes.category}, #{creatorId}, #{createDate}, #{departmentId},
+        #{leftCount}, #{poundsCount}, #{wastes.name}, #{wastes.code}, #{wastes.category}, #{creatorId}, NOW(), #{departmentId},
         #{companyId}, #{modifierId}, #{salesman.salesmanId}, #{checkState}, #{recordState}, #{processWay}, #{handleCategory},
         #{isQualified});
     </insert>

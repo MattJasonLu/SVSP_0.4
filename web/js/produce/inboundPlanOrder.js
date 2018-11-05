@@ -469,7 +469,7 @@ function loadPageList() {
         }
     });
     isSearch = false;
-    getSelectedInfo();
+    // getSelectedInfo();
 }
 
 /**

@@ -189,47 +189,48 @@
             <div class="panel panel-default" id="senior" style="display: none;">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="form-horizontal col-md-4">
+                        <div class="form-horizontal col-md-6">
                             <div class="form-group">
-                                <label for="search-warehouseName" class="col-sm-4 control-label">仓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;库</label>
+                                <label for="search-inboundPlanOrderId" class="col-sm-4 control-label">计划单号</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-warehouseName" name="search-warehouseName" placeholder="" onkeyup="searchData();">
+                                    <input type="text" class="form-control" id="search-inboundPlanOrderId" name="search-inboundPlanOrderId" placeholder="" onkeyup="searchData();">
                                 </div>
                             </div>
                         </div>
-                        <div class="form-horizontal col-md-4">
+                        <div class="form-horizontal col-md-6">
                             <div class="form-group">
-                                <label for="search-inboundOrderId" class="col-sm-4 control-label">入库单号</label>
+                                <label for="search-transferDraftId" class="col-sm-4 control-label">联单编号</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-inboundOrderId" name="search-inboundOrderId" placeholder="" onkeyup="searchData();">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-4">
-                            <div class="form-group">
-                                <label for="search-recordState" class="col-sm-4 control-label">单据状态</label>
-                                <div class="col-xs-7">
-                                    <select class="form-control" name="search-recordState" id="search-recordState" onchange="searchData();"></select>
+                                    <input class="form-control" name="search-transferDraftId" id="search-transferDraftId" onchange="searchData();">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-horizontal col-md-6">
-                            <div class="form-group" style="margin-left: -50px;">
-                                <label class="col-sm-3 control-label">入库日期 </label>
-                                <div class="input-group">
-                                    <input type="date" class="input-sm form-control" id="search-beginTime" title=""/>
-                                    <span class="input-group-addon">-</span>
-                                    <input type="date" class="input-sm form-control" id="search-endTime" title=""/>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">危废名称</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-wastesName" title=""/>
                                 </div>
                             </div>
                         </div>
                         <div class="form-horizontal col-md-6">
                             <div class="form-group">
-                                <label for="search-checkState" class="col-sm-4 control-label">审批状态</label>
+                                <label for="search-wastesCode" class="col-sm-4 control-label">危废代码</label>
                                 <div class="col-xs-7">
-                                    <select class="form-control" name="search-checkState" id="search-checkState" onchange="searchData();"></select>
+                                    <input class="form-control" name="search-checkState" id="search-wastesCode" onchange="searchData();">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group">
+                                <label for="search-companyName" class="col-sm-4 control-label">产废单位</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="" onkeyup="searchData();">
                                 </div>
                             </div>
                         </div>
