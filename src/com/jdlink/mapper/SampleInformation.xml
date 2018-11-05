@@ -40,7 +40,7 @@
     </select>
 
     <select id="listItemPage" resultType="SampleInformationItem">
-        select a.*,b.companyName,b.sendingPerson,b.laboratorySigner,b.applyState from t_pr_sampleinformationItem as a join t_pr_sampleinformation as b on a.sampleId=b.id ORDER BY sampleId DESC
+        select a.*,b.companyName,b.sendingPerson,b.laboratorySigner,b.applyState from t_pr_sampleinformationItem as a join t_pr_sampleinformation as b on a.sampleId=b.id ORDER BY creationDate DESC
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -102,6 +102,7 @@
             <if test="keywords != null and keywords != ''">
                 or companyName LIKE "%"#{keywords}"%"
                 or wastesCode like "%"#{keywords}"%"
+                or wastesName like "%"#{keywords}"%"
                 or laboratorySigner like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y-%c-%d') like "%"#{keywords}"%"
@@ -173,6 +174,7 @@
                 or companyName LIKE "%"#{keywords}"%"
                 or wastesCode like "%"#{keywords}"%"
                 or laboratorySigner like "%"#{keywords}"%"
+                or wastesName like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -245,6 +247,7 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or b.companyName LIKE "%"#{keywords}"%"
+                or a.name like "%"#{keywords}"%"
                 or a.code like "%"#{keywords}"%"
                 or a.sampleId like "%"#{keywords}"%"
                 or b.laboratorySigner like "%"#{keywords}"%"
@@ -310,6 +313,7 @@
             <if test="keywords != null and keywords != ''">
                 or b.companyName LIKE "%"#{keywords}"%"
                 or a.code like "%"#{keywords}"%"
+                or a.name like "%"#{keywords}"%"
                 or a.sampleId like "%"#{keywords}"%"
                 or b.laboratorySigner like "%"#{keywords}"%"
                 or b.sendingPerson like "%"#{keywords}"%"
@@ -366,7 +370,7 @@
                 and t_pr_sampleinformationItem.isHotMelt = #{isHotMelt}
             </if>
         </where>
-        order by sampleId desc
+        order by creationDate desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
