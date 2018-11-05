@@ -663,8 +663,8 @@
 
 
     <!--确认送样-->
-<update id="confirmSewaGeregistrationById" parameterType="String">
-    update t_pr_sewageregistration set checkState='Collected',nowTime=NOW() where id=#{id};
+<update id="confirmSewaGeregistrationById">
+    update t_pr_sewageregistration set checkState='Collected',laboratorySignatory=#{1},nowTime=NOW() where id=#{0};
 </update>
 
     <!--拒收-->

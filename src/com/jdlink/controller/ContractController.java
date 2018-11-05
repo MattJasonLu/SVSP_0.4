@@ -1021,8 +1021,8 @@ public class ContractController {
         JSONObject res = new JSONObject();
         try {
             //首先查询最新的非模板合同编号
-            List<String> contractIdList = contractService.getNewestContractId();
-            quotationItem.setContractId(contractIdList.get(0));
+//            List<String> contractIdList = contractService.getNewestContractId();
+//            quotationItem.setContractId(contractIdList.get(0));
             contractService.addQuotationItem(quotationItem);
             res.put("status", "success");
             res.put("message", "合同报价单明细添加成功");
