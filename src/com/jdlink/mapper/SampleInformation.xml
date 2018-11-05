@@ -39,8 +39,19 @@
         </if>
     </select>
 
+    <select id="listItemPage" resultType="SampleInformationItem">
+        select a.*,b.companyName,b.sendingPerson,b.laboratorySigner,b.applyState from t_pr_sampleinformationItem as a join t_pr_sampleinformation as b on a.sampleId=b.id ORDER BY sampleId DESC
+        <if test="start != null and count != null and count != 0">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
     <select id="count" resultType="int">
         select count(*) from t_pr_sampleinformation;
+    </select>
+
+    <select id="countItem" resultType="int">
+        select count(*) from t_pr_sampleinformationItem;
     </select>
 
     <select id="wastesCountById" resultType="int">
@@ -89,7 +100,7 @@
         SELECT COUNT(*) FROM t_pr_sampleinformation
         <where>
             <if test="keywords != null and keywords != ''">
-                or companyCode LIKE "%"#{keywords}"%"
+                or companyName LIKE "%"#{keywords}"%"
                 or wastesCode like "%"#{keywords}"%"
                 or laboratorySigner like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y-%m-%d') like "%"#{keywords}"%"
@@ -102,27 +113,13 @@
                 or DATE_FORMAT(samplingDate,'%Y.%c.%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or id like "%"#{keywords}"%"
-            </if>
-            <if test='keywords == "已"'>
-                or applyState = 'SampleTaked' or applyState = 'Appointed'
-            </if>
-            <if test='keywords == "预约"'>
-                or applyState = 'Appointed' or applyState = 'Canceld'
-            </if>
-            <if test='keywords == "已取样" or keywords == "取样"'>
-                or applyState = 'SampleTaked'
-            </if>
-            <if test='keywords == "已预约"'>
-                or applyState = 'Appointed'
-            </if>
-            <if test='keywords == "预约取消"'>
-                or applyState = 'Canceld'
+                or applyState like "%"#{keywords}"%"
             </if>
             <if test="id != null and id != ''">
                 and id LIKE "%"#{id}"%"
             </if>
-            <if test='companyCode != null and companyCode != ""'>
-                and companyCode LIKE "%"#{companyCode}"%"
+            <if test='companyName != null and companyName != ""'>
+                and companyName LIKE "%"#{companyName}"%"
             </if>
             <if test='wastesCode != null and wastesCode != ""'>
                 and wastesCode LIKE "%"#{wastesCode}"%"
@@ -162,6 +159,9 @@
             </if>
             <if test='isViscosity != null and isViscosity != ""'>
                 and isViscosity = #{isViscosity}
+            </if>
+            <if test='isHotMelt != null and isHotMelt != ""'>
+                and isHotMelt = #{isHotMelt}
             </if>
         </where>
     </select>
@@ -170,7 +170,7 @@
         SELECT * FROM t_pr_sampleinformation
         <where>
             <if test="keywords != null and keywords != ''">
-                or companyCode LIKE "%"#{keywords}"%"
+                or companyName LIKE "%"#{keywords}"%"
                 or wastesCode like "%"#{keywords}"%"
                 or laboratorySigner like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y-%m-%d') like "%"#{keywords}"%"
@@ -183,27 +183,13 @@
                 or DATE_FORMAT(samplingDate,'%Y.%c.%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or id like "%"#{keywords}"%"
-            </if>
-            <if test='keywords == "已"'>
-                or applyState = 'SampleTaked' or applyState = 'Appointed'
-            </if>
-            <if test='keywords == "预约"'>
-                or applyState = 'Appointed' or applyState = 'Canceld'
-            </if>
-            <if test='keywords == "已取样" or keywords == "取样"'>
-                or applyState = 'SampleTaked'
-            </if>
-            <if test='keywords == "已预约"'>
-                or applyState = 'Appointed'
-            </if>
-            <if test='keywords == "预约取消"'>
-                or applyState = 'Canceld'
+                or applyState like "%"#{keywords}"%"
             </if>
             <if test="id != null and id != ''">
                 and id LIKE "%"#{id}"%"
             </if>
-            <if test='companyCode != null and companyCode != ""'>
-                and companyCode LIKE "%"#{companyCode}"%"
+            <if test='companyName != null and companyName != ""'>
+                and companyName LIKE "%"#{companyName}"%"
             </if>
             <if test='wastesCode != null and wastesCode != ""'>
                 and wastesCode LIKE "%"#{wastesCode}"%"
@@ -244,8 +230,143 @@
             <if test='isViscosity != null and isViscosity != ""'>
                 and isViscosity = #{isViscosity}
             </if>
+            <if test='isHotMelt != null and isHotMelt != ""'>
+                and isHotMelt = #{isHotMelt}
+            </if>
         </where>
         order by creationDate desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <select id="searchItemCount" parameterType="SampleInformationItem" resultType="int">
+        SELECT count(*) from t_pr_sampleinformationItem as a join t_pr_sampleinformation as b on a.sampleId=b.id
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or b.companyName LIKE "%"#{keywords}"%"
+                or a.code like "%"#{keywords}"%"
+                or a.sampleId like "%"#{keywords}"%"
+                or b.laboratorySigner like "%"#{keywords}"%"
+                or b.sendingPerson like "%"#{keywords}"%"
+                or b.applyState like "%"#{keywords}"%"
+                or a.category like "%"#{keywords}"%"
+                or a.formType like "%"#{keywords}"%"
+            </if>
+            <if test="id != null and id != ''">
+                and t_pr_sampleinformationItem.id LIKE "%"#{id}"%"
+            </if>
+            <if test='companyName != null and companyName != ""'>
+                and companyName LIKE "%"#{companyName}"%"
+            </if>
+            <if test='code != null and code != ""'>
+                and t_pr_sampleinformationItem.code LIKE "%"#{code}"%"
+            </if>
+            <if test='applyState != null and applyState != ""'>
+                and applyState LIKE "%"#{applyState}"%"
+            </if>
+            <if test='sendingPerson != null and sendingPerson != ""'>
+                and sendingPerson like "%"#{sendingPerson}"%"
+            </if>
+            <if test='isPH != null and isPH != ""'>
+                and t_pr_sampleinformationItem.isPH = #{isPH}
+            </if>
+            <if test='isAsh != null and isAsh != ""'>
+                and t_pr_sampleinformationItem.isAsh = #{isAsh}
+            </if>
+            <if test='isWater != null and isWater != ""'>
+                and t_pr_sampleinformationItem.isWater = #{isWater}
+            </if>
+            <if test='isHeat != null and isHeat != ""'>
+                and t_pr_sampleinformationItem.isHeat = #{isHeat}
+            </if>
+            <if test='isSulfur != null and isSulfur != ""'>
+                and t_pr_sampleinformationItem.isSulfur = #{isSulfur}
+            </if>
+            <if test='isChlorine != null and isChlorine != ""'>
+                and t_pr_sampleinformationItem.isChlorine = #{isChlorine}
+            </if>
+            <if test='isFluorine != null and isFluorine != ""'>
+                and t_pr_sampleinformationItem.isFluorine = #{isFluorine}
+            </if>
+            <if test='isPhosphorus != null and isPhosphorus != ""'>
+                and t_pr_sampleinformationItem.isPhosphorus = #{isPhosphorus}
+            </if>
+            <if test='isFlashPoint != null and isFlashPoint != ""'>
+                and t_pr_sampleinformationItem.isFlashPoint = #{isFlashPoint}
+            </if>
+            <if test='isViscosity != null and isViscosity != ""'>
+                and t_pr_sampleinformationItem.isViscosity = #{isViscosity}
+            </if>
+            <if test='isHotMelt != null and isHotMelt != ""'>
+                and t_pr_sampleinformationItem.isHotMelt = #{isHotMelt}
+            </if>
+        </where>
+    </select>
+
+    <select id="searchItem" parameterType="SampleInformationItem" resultType="SampleInformationItem">
+        select a.*,b.companyName,b.sendingPerson,b.laboratorySigner,b.applyState from t_pr_sampleinformationItem as a join t_pr_sampleinformation as b on a.sampleId=b.id
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or b.companyName LIKE "%"#{keywords}"%"
+                or a.code like "%"#{keywords}"%"
+                or a.sampleId like "%"#{keywords}"%"
+                or b.laboratorySigner like "%"#{keywords}"%"
+                or b.sendingPerson like "%"#{keywords}"%"
+                or b.applyState like "%"#{keywords}"%"
+                or a.category like "%"#{keywords}"%"
+                or a.formType like "%"#{keywords}"%"
+            </if>
+            <if test="id != null and id != ''">
+                and t_pr_sampleinformationItem.id LIKE "%"#{id}"%"
+            </if>
+            <if test='companyName != null and companyName != ""'>
+                and companyName LIKE "%"#{companyName}"%"
+            </if>
+            <if test='code != null and code != ""'>
+                and t_pr_sampleinformationItem.code LIKE "%"#{code}"%"
+            </if>
+            <if test='applyState != null and applyState != ""'>
+                and applyState LIKE "%"#{applyState}"%"
+            </if>
+            <if test='sendingPerson != null and sendingPerson != ""'>
+                and sendingPerson like "%"#{sendingPerson}"%"
+            </if>
+            <if test='isPH != null and isPH != ""'>
+                and t_pr_sampleinformationItem.isPH = #{isPH}
+            </if>
+            <if test='isAsh != null and isAsh != ""'>
+                and t_pr_sampleinformationItem.isAsh = #{isAsh}
+            </if>
+            <if test='isWater != null and isWater != ""'>
+                and t_pr_sampleinformationItem.isWater = #{isWater}
+            </if>
+            <if test='isHeat != null and isHeat != ""'>
+                and t_pr_sampleinformationItem.isHeat = #{isHeat}
+            </if>
+            <if test='isSulfur != null and isSulfur != ""'>
+                and t_pr_sampleinformationItem.isSulfur = #{isSulfur}
+            </if>
+            <if test='isChlorine != null and isChlorine != ""'>
+                and t_pr_sampleinformationItem.isChlorine = #{isChlorine}
+            </if>
+            <if test='isFluorine != null and isFluorine != ""'>
+                and t_pr_sampleinformationItem.isFluorine = #{isFluorine}
+            </if>
+            <if test='isPhosphorus != null and isPhosphorus != ""'>
+                and t_pr_sampleinformationItem.isPhosphorus = #{isPhosphorus}
+            </if>
+            <if test='isFlashPoint != null and isFlashPoint != ""'>
+                and t_pr_sampleinformationItem.isFlashPoint = #{isFlashPoint}
+            </if>
+            <if test='isViscosity != null and isViscosity != ""'>
+                and t_pr_sampleinformationItem.isViscosity = #{isViscosity}
+            </if>
+            <if test='isHotMelt != null and isHotMelt != ""'>
+                and t_pr_sampleinformationItem.isHotMelt = #{isHotMelt}
+            </if>
+        </where>
+        order by sampleId desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
@@ -291,6 +412,7 @@
         nowTime = NOW()
         WHERE t_pr_sampleinformation.id =#{id};
         <foreach collection="wastesList" item="wastes" index="index">
+            <if test="wastes.unit == 'no'">
             insert into t_pr_sampleinformationitem
             (id,sampleId,code,name,formType,category,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,
             isFlashPoint,isViscosity,isHotMelt)
@@ -298,6 +420,16 @@
             (#{wastes.id},#{id},#{wastes.code},#{wastes.name},#{wastes.formType},#{wastes.category},#{wastes.isPH},#{wastes.isAsh},#{wastes.isWater},
             #{wastes.isHeat},#{wastes.isSulfur},#{wastes.isChlorine},#{wastes.isFluorine},#{wastes.isPhosphorus},
             #{wastes.isFlashPoint},#{wastes.isViscosity},#{wastes.isHotMelt});
+            </if>
+            <if test="wastes.unit == 'yes'">
+                update t_pr_sampleinformationitem
+                set
+                code=#{wastes.code},name=#{wastes.name},formType=#{wastes.formType},category=#{wastes.category},
+                isPH=#{wastes.isPH},isAsh=#{wastes.isAsh},isWater=#{wastes.isWater},isHeat=#{wastes.isHeat},isSulfur=#{wastes.isSulfur},
+                isChlorine=#{wastes.isChlorine},isFluorine=#{wastes.isFluorine},isPhosphorus=#{wastes.isPhosphorus},
+                isFlashPoint=#{wastes.isFlashPoint},isViscosity=#{wastes.isViscosity},isHotMelt=#{wastes.isHotMelt}
+                where id =#{wastes.id};
+            </if>
         </foreach>
     </update>
 
