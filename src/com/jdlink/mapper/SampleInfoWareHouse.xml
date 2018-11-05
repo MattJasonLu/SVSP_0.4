@@ -287,7 +287,7 @@
                 and a.id LIKE "%"#{id}"%"
             </if>
             <if test='companyName != null and companyName != ""'>
-                and b.companyName LIKE "%"#{companyName}"%"
+                and companyName LIKE "%"#{companyName}"%"
             </if>
             <if test='code != null and code != ""'>
                 and a.code LIKE "%"#{code}"%"
@@ -295,8 +295,8 @@
             <if test='applyState != null and applyState != ""'>
                 and applyState LIKE "%"#{applyState}"%"
             </if>
-            <if test='laboratorySigner != null and laboratorySigner != ""'>
-                and laboratorySigner LIKE "%"#{laboratorySigner}"%"
+            <if test='sendingPerson != null and sendingPerson != ""'>
+                and sendingPerson LIKE "%"#{sendingPerson}"%"
             </if>
             <if test='isPH != null and isPH != ""'>
                 and a.isPH = #{isPH}
@@ -354,7 +354,7 @@
                 and a.id LIKE "%"#{id}"%"
             </if>
             <if test='companyName != null and companyName != ""'>
-                and b.companyName LIKE "%"#{companyName}"%"
+                and companyName LIKE "%"#{companyName}"%"
             </if>
             <if test='code != null and code != ""'>
                 and a.code LIKE "%"#{code}"%"
@@ -362,8 +362,8 @@
             <if test='applyState != null and applyState != ""'>
                 and applyState LIKE "%"#{applyState}"%"
             </if>
-            <if test='laboratorySigner != null and laboratorySigner != ""'>
-                and laboratorySigner LIKE "%"#{laboratorySigner}"%"
+            <if test='sendingPerson != null and sendingPerson != ""'>
+                and sendingPerson LIKE "%"#{sendingPerson}"%"
             </if>
             <if test='isPH != null and isPH != ""'>
                 and a.isPH = #{isPH}

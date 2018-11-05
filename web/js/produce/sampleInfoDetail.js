@@ -1253,8 +1253,6 @@ function exportExcel(e) {
     // 获取勾选项
     var idArry = [];
     $.each($("input[name='select']:checked"), function (index, item) {
-        console.log($(item).parent().parent().nextAll().eq(10));
-        console.log($(item).parent().parent().nextAll().eq(10).text());
         idArry.push($(item).parent().parent().nextAll().eq(10).text());        // 将选中项的编号存到集合中
     });
     var sqlWords = '';
