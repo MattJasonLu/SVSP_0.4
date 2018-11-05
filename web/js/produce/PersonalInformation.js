@@ -9,7 +9,7 @@ function cancelChange() {
     window.location.reload();
 }
 /**
- * 更新信息
+ * 修改密码
  */
 function confirmChange() {
     var data;
