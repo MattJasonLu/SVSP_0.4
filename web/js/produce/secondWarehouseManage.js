@@ -4,6 +4,9 @@
 var isSearch = false;
 var currentPage = 1;                          //当前页数
 var data;
+
+var editId;
+
 /**********************客户部分**********************/
 /**
  * 返回count值
@@ -19,6 +22,7 @@ function countValue() {
  */
 function showModify(e) {
     var id = getIdByMenu(e);
+    editId = id;
     setEditSelectList();
     $.ajax({
         type: "POST",
@@ -259,6 +263,9 @@ function setEditItemDataList(result) {
                 case (14):
                     $(this).find("input").val(obj.warehouseArea);
                     break;
+                case (15):
+                    $(this).find("span").text(obj.inboundOrderItemId);
+                    break;
             }
         });
 
@@ -289,6 +296,61 @@ function setEditItemDataList(result) {
     });
     // 隐藏无数据的tr
     tr.hide();
+}
+
+/**
+ * 修改次生数据
+ */
+function modifyData() {
+    var data = {
+        inboundOrderId: editId
+    };
+    data['inboundOrderItemList'] = [];
+    var items = $("#itemEditData").find("tr[id!='itemEditClonedTr']");
+    items.each(function() {
+        var item = {};
+        var wastes = {
+            name: $(this).find("select[name='editWastesName']").val(),
+            wastesId: $(this).find("select[name='editWastesCode']").selectpicker('val')
+        };
+        item.wastes = wastes;
+        item.wastesAmount = $(this).find("input[name='editWastesAmount']").val();
+        item.wastesUnit = $(this).find("select[name='editWastesUnit']").val();
+        item.unitPriceTax = $(this).find("input[name='unitPriceTax']").val();
+        item.totalPrice = $(this).find("input[name='editTotalPrice']").val();
+        item.processWay = $(this).find("select[name='editProcessWay']").val();
+        item.formType = $(this).find("select[name='editFormType']").val();
+        item.packageType = $(this).find("select[name='editPackageType']").val();
+        var laboratoryTest = {
+            heatAverage: $(this).find("input[name='editHeatAverage']").val(),
+            waterContentAverage: $(this).find("input[name='editWaterContentAverage']").val()
+        };
+        item.laboratoryTest = laboratoryTest;
+        item.remarks = $(this).find("input[name='editRemarks']").val();
+        item.warehouseArea = $(this).find("input[name='editWarehouseArea']").val();
+        item.inboundOrderItemId = $(this).find("span[name='id']").text();
+        data.inboundOrderItemList.push(item);
+    });
+    $.ajax({
+        type: "POST",
+        url: "updateSecondInboundOrder",
+        async: false,
+        dataType: "json",
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                alert(result.message);
+                window.location.reload();
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
 }
 
 /**

@@ -544,6 +544,27 @@ public class InboundController {
     }
 
     /**
+     * 更新次生入库单
+     * @param inboundOrder 次生入库单
+     * @return 成功与否
+     */
+    @RequestMapping("updateSecondInboundOrder")
+    @ResponseBody
+    public String updateSecondInboundOrder(@RequestBody InboundOrder inboundOrder) {
+        JSONObject res = new JSONObject();
+        try {
+            inboundService.updateSecondInboundOrder(inboundOrder);
+            res.put("status", "success");
+            res.put("message", "更新成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+        return res.toString();
+    }
+
+    /**
      * 导入危废入库单
      *
      * @param excelFile 导入文件

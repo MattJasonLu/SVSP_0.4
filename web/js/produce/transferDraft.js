@@ -601,6 +601,35 @@ function getCheckState() {
     });
 }
 
+function setSignIn(e) {
+    var r = confirm("确认验收该联单吗？");
+    if (r) {
+        var id = getIdByMenu(e);
+        $.ajax({
+            type: "POST",
+            url: "setTransferDraftSignIn",
+            async: false,
+            dataType: "json",
+            data: {
+                id: id
+            },
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result);
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常");
+            }
+        });
+    }
+}
+
 /**
  * 作废转移联单
  */
