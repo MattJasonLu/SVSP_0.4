@@ -35,6 +35,11 @@ public class InboundServiceImpl implements InboundService {
     }
 
     @Override
+    public void updateInboundPlanPounds(InboundPlanOrder inboundPlanOrder) {
+        inboundMapper.updateInboundPlanPounds(inboundPlanOrder);
+    }
+
+    @Override
     public void addInboundPlanOrder(InboundPlanOrder inboundPlanOrder) {
         inboundMapper.addInboundPlanOrder(inboundPlanOrder);
     }

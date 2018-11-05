@@ -119,6 +119,11 @@
         </where>
     </select>
 
+    <!--根据磅单信息更新入库计划单中的磅单数量-->
+    <update id="updateInboundPlanPounds">
+        update t_pl_inboundplanorder set poundsCount=#{poundsCount} where transferDraftId = #{transferDraftId};
+    </update>
+
     <!-- 增加入库计划单 -->
     <insert id="addInboundPlanOrder" parameterType="InboundPlanOrder" >
         INSERT INTO t_pl_inboundplanorder (inboundPlanOrderId, planDate, produceCompanyId,

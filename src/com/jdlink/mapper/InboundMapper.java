@@ -29,6 +29,12 @@ public interface InboundMapper {
     int countInboundPlanOrder(InboundPlanOrder inboundPlanOrder);
 
     /**
+     * 更新入库计划单的磅单
+     * @param inboundPlanOrder 入库计划单
+     */
+    void updateInboundPlanPounds(InboundPlanOrder inboundPlanOrder);
+
+    /**
      * 增加入库计划单
      * @param inboundPlanOrder 入库计划单
      */

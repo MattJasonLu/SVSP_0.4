@@ -1,10 +1,12 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Inventory.InboundPlanOrder;
 import com.jdlink.domain.Produce.Pounds;
 import com.jdlink.domain.Produce.WayBill;
 import com.jdlink.domain.Produce.WayBillItem;
 import com.jdlink.service.ClientService;
+import com.jdlink.service.InboundService;
 import com.jdlink.service.PoundsService;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
@@ -44,6 +46,8 @@ public class PRPoundsController {
     PoundsService poundsService;
     @Autowired
     ClientService clientService;
+    @Autowired
+    InboundService inboundService;
 
     /**
      * 获取总记录数
@@ -190,6 +194,15 @@ public class PRPoundsController {
 //                        pounds.setTransferId(nf.format(index));
 //                    } while (poundsService.getByTransferId(pounds.getTransferId()) != null);
 //                }
+
+                // update 2018-11-05 17:25:14 by Lu
+//                =====================================================
+                // 根据转移联单号更新入库计划单的磅单数量
+                InboundPlanOrder inboundPlanOrder = new InboundPlanOrder();
+                inboundPlanOrder.setPoundsCount(pounds.getNetWeight());
+                inboundPlanOrder.setTransferDraftId(pounds.getTransferId());
+                inboundService.updateInboundPlanPounds(inboundPlanOrder);
+//                =====================================================
                 poundsService.add(pounds);
             }
             res.put("status", "success");
