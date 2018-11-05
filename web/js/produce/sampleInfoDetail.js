@@ -1249,11 +1249,13 @@ function deleteSample(menu) {
  * @param e
  */
 function exportExcel(e) {
-    var name = 't_pr_sampleinformation';
+    var name = 't_pr_sampleinformationitem';
     // 获取勾选项
     var idArry = [];
     $.each($("input[name='select']:checked"), function (index, item) {
-        idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
+        console.log($(item).parent().parent().nextAll().eq(10));
+        console.log($(item).parent().parent().nextAll().eq(10).text());
+        idArry.push($(item).parent().parent().nextAll().eq(10).text());        // 将选中项的编号存到集合中
     });
     var sqlWords = '';
     var sql = 'in (';
@@ -1262,10 +1264,11 @@ function exportExcel(e) {
             if (i < idArry.length - 1) sql += idArry[i] + ",";
             else if (i == idArry.length - 1) sql += idArry[i] + ");"
         }
-        sqlWords = "select b.id,a.companyName,b.name,b.code,b.formType,a.sendingPerson,b.isPH,b.isHeat,b.isAsh,b.isWater,b.isFluorine,b.isChlorine,b.isSulfur,b.isPhosphorus,b.isFlashPoint,b.isViscosity,b.isHotMelt from t_pr_sampleinformation as a join t_pr_sampleinformationitem as b where a.id=b.sampleId and a.id " + sql;
+        sqlWords = "select b.id,a.companyName,b.name,b.code,b.formType,a.sendingPerson,b.isPH,b.isHeat,b.isAsh,b.isWater,b.isFluorine,b.isChlorine,b.isSulfur,b.isPhosphorus,b.isFlashPoint,b.isViscosity,b.isHotMelt from t_pr_sampleinformation as a join t_pr_sampleinformationitem as b where a.id=b.sampleId and b.id " + sql;
     } else {
         sqlWords = "select b.id,a.companyName,b.name,b.code,b.formType,a.sendingPerson,b.isPH,b.isHeat,b.isAsh,b.isWater,b.isFluorine,b.isChlorine,b.isSulfur,b.isPhosphorus,b.isFlashPoint,b.isViscosity,b.isHotMelt from t_pr_sampleinformation as a join t_pr_sampleinformationitem as b where a.id=b.sampleId;";
     }
+    console.log(sqlWords);
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 

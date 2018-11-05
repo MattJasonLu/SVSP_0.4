@@ -14,17 +14,22 @@
     </resultMap>
 
     <insert id="add" parameterType="SampleInformation">
-        INSERT INTO t_pr_sampleinfowarehouse (id,companyCode,companyName,wastesCode,wastesName,wastesFormType,applyState,sendingPerson,laboratorySigner,isPH,isAsh,
+        INSERT INTO t_pr_sampleinfowarehouse
+        (id,companyCode,companyName,wastesCode,wastesName,wastesFormType,applyState,sendingPerson,laboratorySigner,isPH,isAsh,
         isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity,isHotMelt,nowTime,creationDate)
-        VALUES (#{id},#{companyCode},#{companyName},#{wastesList[0].code},#{wastesList[0].name},#{wastesList[0].formType},'Appointed',#{sendingPerson},#{laboratorySigner},#{wastesList[0].isPH},
-        #{wastesList[0].isAsh},#{wastesList[0].isWater}, #{wastesList[0].isHeat},#{wastesList[0].isSulfur}, #{wastesList[0].isChlorine}, #{wastesList[0].isFluorine},
+        VALUES
+        (#{id},#{companyCode},#{companyName},#{wastesList[0].code},#{wastesList[0].name},#{wastesList[0].formType},'Appointed',#{sendingPerson},#{laboratorySigner},#{wastesList[0].isPH},
+        #{wastesList[0].isAsh},#{wastesList[0].isWater}, #{wastesList[0].isHeat},#{wastesList[0].isSulfur},
+        #{wastesList[0].isChlorine}, #{wastesList[0].isFluorine},
         #{wastesList[0].isPhosphorus},#{wastesList[0].isFlashPoint},#{wastesList[0].isViscosity},#{wastesList[0].isHotMelt},NOW(),#{creationDate});
         <if test="wastesList.size() > 0">
             <foreach collection="wastesList" item="wastes" index="index">
                 INSERT INTO t_pr_sampleinfowarehouseitem
                 (id,transferId,sampleId,code,name,formType,category,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity,isHotMelt)
                 VALUES
-                (#{wastes.id},#{wastes.transferId}, #{id}, #{wastes.code},#{wastes.name},#{wastes.formType},#{wastes.category},#{wastes.isPH}, #{wastes.isAsh}, #{wastes.isWater},
+                (#{wastes.id},#{wastes.transferId}, #{id},
+                #{wastes.code},#{wastes.name},#{wastes.formType},#{wastes.category},#{wastes.isPH}, #{wastes.isAsh},
+                #{wastes.isWater},
                 #{wastes.isHeat},#{wastes.isSulfur}, #{wastes.isChlorine}, #{wastes.isFluorine}, #{wastes.isPhosphorus},
                 #{wastes.isFlashPoint}, #{wastes.isViscosity}, #{wastes.isHotMelt});
             </foreach>
@@ -38,8 +43,19 @@
         </if>
     </select>
 
+    <select id="listItemPage" resultType="SampleInformationItem">
+        select * from t_pr_sampleinfowarehouseitem as a join t_pr_sampleinfowarehouse as b on a.sampleId=b.id ORDER BY creationDate DESC
+        <if test="start != null and count != null and count != 0">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
     <select id="count" resultType="int">
         select count(*) from t_pr_sampleinfowarehouse;
+    </select>
+
+    <select id="countItem" resultType="int">
+        select count(*) from t_pr_sampleinfowarehouseitem;
     </select>
 
     <select id="wastesCountById" resultType="int">
@@ -90,6 +106,7 @@
             <if test="keywords != null and keywords != ''">
                 or companyCode LIKE "%"#{keywords}"%"
                 or wastesCode like "%"#{keywords}"%"
+                or wastesName like "%"#{keywords}"%"
                 or laboratorySigner like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y-%c-%d') like "%"#{keywords}"%"
@@ -171,6 +188,7 @@
             <if test="keywords != null and keywords != ''">
                 or companyCode LIKE "%"#{keywords}"%"
                 or wastesCode like "%"#{keywords}"%"
+                or wastesName like "%"#{keywords}"%"
                 or laboratorySigner like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y-%c-%d') like "%"#{keywords}"%"
@@ -250,6 +268,136 @@
         </if>
     </select>
 
+    <select id="searchItem" parameterType="SampleInformationItem" resultType="SampleInformationItem">
+        SELECT a.*,b.companyName,b.sendingPerson,b.laboratorySigner,b.applyState FROM t_pr_sampleinfowarehouseitem as a join t_pr_sampleinfowarehouse as b on a.sampleId=b.id
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or b.companyName LIKE "%"#{keywords}"%"
+                or a.code like "%"#{keywords}"%"
+                or a.name like "%"#{keywords}"%"
+                or a.sampleId like "%"#{keywords}"%"
+                or b.laboratorySigner like "%"#{keywords}"%"
+                or b.sendingPerson like "%"#{keywords}"%"
+                or b.applyState like "%"#{keywords}"%"
+                or a.category like "%"#{keywords}"%"
+                or a.formType like "%"#{keywords}"%"
+                or a.transferId like "%"#{keywords}"%"
+            </if>
+            <if test="id != null and id != ''">
+                and a.id LIKE "%"#{id}"%"
+            </if>
+            <if test='companyName != null and companyName != ""'>
+                and b.companyName LIKE "%"#{companyName}"%"
+            </if>
+            <if test='code != null and code != ""'>
+                and a.code LIKE "%"#{code}"%"
+            </if>
+            <if test='applyState != null and applyState != ""'>
+                and applyState LIKE "%"#{applyState}"%"
+            </if>
+            <if test='laboratorySigner != null and laboratorySigner != ""'>
+                and laboratorySigner LIKE "%"#{laboratorySigner}"%"
+            </if>
+            <if test='isPH != null and isPH != ""'>
+                and a.isPH = #{isPH}
+            </if>
+            <if test='isAsh != null and isAsh != ""'>
+                and a.isAsh = #{isAsh}
+            </if>
+            <if test='isWater != null and isWater != ""'>
+                and a.isWater = #{isWater}
+            </if>
+            <if test='isHeat != null and isHeat != ""'>
+                and a.isHeat = #{isHeat}
+            </if>
+            <if test='isSulfur != null and isSulfur != ""'>
+                and a.isSulfur = #{isSulfur}
+            </if>
+            <if test='isChlorine != null and isChlorine != ""'>
+                and a.isChlorine = #{isChlorine}
+            </if>
+            <if test='isFluorine != null and isFluorine != ""'>
+                and a.isFluorine = #{isFluorine}
+            </if>
+            <if test='isPhosphorus != null and isPhosphorus != ""'>
+                and a.isPhosphorus = #{isPhosphorus}
+            </if>
+            <if test='isFlashPoint != null and isFlashPoint != ""'>
+                and a.isFlashPoint = #{isFlashPoint}
+            </if>
+            <if test='isViscosity != null and isViscosity != ""'>
+                and a.isViscosity = #{isViscosity}
+            </if>
+        </where>
+        order by creationDate desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <select id="searchItemCount" parameterType="SampleInformationItem" resultType="int">
+        SELECT count(*) FROM t_pr_sampleinfowarehouseitem as a join t_pr_sampleinfowarehouse as b on a.sampleId=b.id
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or b.companyName LIKE "%"#{keywords}"%"
+                or a.code like "%"#{keywords}"%"
+                or a.name like "%"#{keywords}"%"
+                or a.sampleId like "%"#{keywords}"%"
+                or b.laboratorySigner like "%"#{keywords}"%"
+                or b.sendingPerson like "%"#{keywords}"%"
+                or b.applyState like "%"#{keywords}"%"
+                or a.category like "%"#{keywords}"%"
+                or a.formType like "%"#{keywords}"%"
+                or a.transferId like "%"#{keywords}"%"
+            </if>
+            <if test="id != null and id != ''">
+                and a.id LIKE "%"#{id}"%"
+            </if>
+            <if test='companyName != null and companyName != ""'>
+                and b.companyName LIKE "%"#{companyName}"%"
+            </if>
+            <if test='code != null and code != ""'>
+                and a.code LIKE "%"#{code}"%"
+            </if>
+            <if test='applyState != null and applyState != ""'>
+                and applyState LIKE "%"#{applyState}"%"
+            </if>
+            <if test='laboratorySigner != null and laboratorySigner != ""'>
+                and laboratorySigner LIKE "%"#{laboratorySigner}"%"
+            </if>
+            <if test='isPH != null and isPH != ""'>
+                and a.isPH = #{isPH}
+            </if>
+            <if test='isAsh != null and isAsh != ""'>
+                and a.isAsh = #{isAsh}
+            </if>
+            <if test='isWater != null and isWater != ""'>
+                and a.isWater = #{isWater}
+            </if>
+            <if test='isHeat != null and isHeat != ""'>
+                and a.isHeat = #{isHeat}
+            </if>
+            <if test='isSulfur != null and isSulfur != ""'>
+                and a.isSulfur = #{isSulfur}
+            </if>
+            <if test='isChlorine != null and isChlorine != ""'>
+                and a.isChlorine = #{isChlorine}
+            </if>
+            <if test='isFluorine != null and isFluorine != ""'>
+                and a.isFluorine = #{isFluorine}
+            </if>
+            <if test='isPhosphorus != null and isPhosphorus != ""'>
+                and a.isPhosphorus = #{isPhosphorus}
+            </if>
+            <if test='isFlashPoint != null and isFlashPoint != ""'>
+                and a.isFlashPoint = #{isFlashPoint}
+            </if>
+            <if test='isViscosity != null and isViscosity != ""'>
+                and a.isViscosity = #{isViscosity}
+            </if>
+        </where>
+    </select>
+
     <select id="getSampleInfoByClientId" parameterType="String" resultMap="SampleInformationRM">
         select * from t_pr_sampleinfowarehouse
         where
@@ -285,18 +433,32 @@
         companyCode=#{companyCode },companyName=#{companyName},wastesCode =#{wastesList[0].code},
         sendingPerson = #{sendingPerson},isPH = #{wastesList[0].isPH},isAsh = #{wastesList[0].isAsh},
         isWater = #{wastesList[0].isWater},isHeat = #{wastesList[0].isHeat},isSulfur =#{wastesList[0].isSulfur},
-        isChlorine = #{wastesList[0].isChlorine},isFluorine = #{wastesList[0].isFluorine},isPhosphorus =#{wastesList[0].isPhosphorus},
-        isFlashPoint =#{wastesList[0].isFlashPoint},isViscosity = #{wastesList[0].isViscosity},isHotMelt=#{wastesList[0].isHotMelt},wastesFormType=#{wastesList[0].formType},
+        isChlorine = #{wastesList[0].isChlorine},isFluorine = #{wastesList[0].isFluorine},isPhosphorus
+        =#{wastesList[0].isPhosphorus},
+        isFlashPoint =#{wastesList[0].isFlashPoint},isViscosity =
+        #{wastesList[0].isViscosity},isHotMelt=#{wastesList[0].isHotMelt},wastesFormType=#{wastesList[0].formType},
         nowTime = NOW()
         WHERE t_pr_sampleinfowarehouse.id =#{id};
         <foreach collection="wastesList" item="wastes" index="index">
-            insert into t_pr_sampleinfowarehouseitem
-            (id,transferId,sampleId,code,name,category,formType,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,
-            isPhosphorus,isFlashPoint,isViscosity,isHotMelt)
-            values
-            (#{wastes.id},#{wastes.transferId},#{id},#{wastes.code},#{wastes.name},#{wastes.category},#{wastes.formType},
-            #{wastes.isPH},#{wastes.isAsh},#{wastes.isWater},#{wastes.isHeat},#{wastes.isSulfur},#{wastes.isChlorine},#{wastes.isFluorine},#{wastes.isPhosphorus},
-            #{wastes.isFlashPoint},#{wastes.isViscosity},#{wastes.isHotMelt});
+            <if test="wastes.unit == 'no'">
+                insert into t_pr_sampleinfowarehouseitem
+                (id,transferId,sampleId,code,name,category,formType,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,
+                isPhosphorus,isFlashPoint,isViscosity,isHotMelt)
+                values
+                (#{wastes.id},#{wastes.transferId},#{id},#{wastes.code},#{wastes.name},#{wastes.category},#{wastes.formType},
+                #{wastes.isPH},#{wastes.isAsh},#{wastes.isWater},#{wastes.isHeat},#{wastes.isSulfur},#{wastes.isChlorine},#{wastes.isFluorine},#{wastes.isPhosphorus},
+                #{wastes.isFlashPoint},#{wastes.isViscosity},#{wastes.isHotMelt});
+            </if>
+            <if test="wastes.unit == 'yes'">
+                update t_pr_sampleinfowarehouseitem
+                set
+                transferId=#{wastes.transferId},code=#{wastes.code},name=#{wastes.name},category=#{wastes.category},
+                formType=#{wastes.formType},isPH=#{wastes.isPH},isAsh=#{wastes.isAsh},isWater=#{wastes.isWater},
+                isHeat=#{wastes.isHeat},isSulfur=#{wastes.isSulfur},isChlorine=#{wastes.isChlorine},isFluorine=#{wastes.isFluorine},
+                isPhosphorus=#{wastes.isPhosphorus},isFlashPoint=#{wastes.isFlashPoint},isViscosity=#{wastes.isViscosity},
+                isHotMelt=#{wastes.isHotMelt}
+                where id=#{wastes.id}
+            </if>
         </foreach>
     </update>
 
@@ -304,7 +466,7 @@
         update t_pr_sampleinfowarehouse set applyState = 'Invalid' where id = #{sampleId}
     </update>
 
-    <update id="rejectSampleInfoById" >
+    <update id="rejectSampleInfoById">
         update t_pr_sampleinfowarehouse set applyState = 'Rejected',advice=#{advice} where id = #{sampleId}
     </update>
 

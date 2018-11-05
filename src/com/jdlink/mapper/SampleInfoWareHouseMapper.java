@@ -3,6 +3,7 @@ package com.jdlink.mapper;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.SampleInformation;
+import com.jdlink.domain.Produce.SampleInformationItem;
 import com.jdlink.domain.Wastes;
 import org.apache.ibatis.annotations.Param;
 
@@ -28,4 +29,8 @@ public interface SampleInfoWareHouseMapper {
     List<SampleInformation> getSampleInfoByClientId(String id);
     void deleteById(String id);
     void rejectSampleInfoById(@Param("sampleId")String sampleId,@Param("advice")String advice);
+    int countItem();
+    int searchItemCount(SampleInformationItem sampleInformationItem);
+    List<SampleInformationItem> listItemPage(Page page);
+    List<SampleInformationItem> searchItem(SampleInformationItem sampleInformationItem);
 }

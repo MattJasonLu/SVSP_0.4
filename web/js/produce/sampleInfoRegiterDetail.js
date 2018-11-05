@@ -21,7 +21,7 @@ function totalPage() {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "totalSampleInformationWareHouseRecord",                  // url
+            url: "totalSampleInformationWareHouseItemRecord",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
@@ -40,7 +40,7 @@ function totalPage() {
     } else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchSampleInfoWareHouseTotal",                  // url
+            url: "searchSampleInfoWareHouseItemTotal",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data),
             dataType: "json",
@@ -147,7 +147,7 @@ function switchPage(pageNumber) {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "loadPageSampleInformationWareHouseList",         // url
+            url: "loadPageSampleInformationWareHouseItemList",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(page),
             dataType: "json",
@@ -167,7 +167,7 @@ function switchPage(pageNumber) {
         data['page'] = page;
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchSampleInfoWareHouse",         // url
+            url: "searchSampleInfoWareHouseItem",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data),
             dataType: "json",
@@ -239,7 +239,7 @@ function inputSwitchPage() {
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "loadPageSampleInformationWareHouseList",         // url
+                url: "loadPageSampleInformationWareHouseItemList",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(page),
                 dataType: "json",
@@ -260,7 +260,7 @@ function inputSwitchPage() {
             data['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "searchSampleInfoWareHouse",         // url
+                url: "searchSampleInfoWareHouseItem",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data),
                 dataType: "json",
@@ -301,7 +301,7 @@ function loadPageSampleInformationList() {
     page.start = (pageNumber - 1) * page.count;
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "loadPageSampleInformationWareHouseList",          // url
+        url: "loadPageSampleInformationWareHouseItemList",          // url
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
         data: JSON.stringify(page),
         dataType: "json",
@@ -357,36 +357,43 @@ function setSampleList(result) {
             switch (inner_index) {
                 //预约单号
                 case (1):
-                    $(this).html(obj.id);
+                    $(this).html(obj.sampleId);
                     break;
                 // 公司名称
                 case (2):
                     $(this).html(obj.companyName);
                     break;
+                // 危废代码
+                case(3):
+                    $(this).html(obj.code);
+                    break;
                 //危废名称
-                case (3):
-                    $(this).html(obj.wastesName);
+                case (4):
+                    $(this).html(obj.name);
+                    break;
+                //危废类别
+                case(5):
+                    $(this).html(obj.category);
                     break;
                 // 危废形态
-                case (4):
-                    if (obj.wastesFormType != null)
-                        $(this).html(obj.wastesFormType.name);
+                case (6):
+                    if (obj.formType != null)
+                        $(this).html(obj.formType.name);
                     break;
-                case (5):
+                case (7):
                     //检测项目
                 {
                     var list = [];
                     if (obj.isPH === true) list.push("PH");
                     if (obj.isAsh === true) list.push("灰");
                     if (obj.isWater === true) list.push("水");
-                    if (obj.isHeat === true) list.push("热");
+                    if (obj.isHeat === true) list.push("热值");
                     if (obj.isSulfur === true) list.push("硫");
                     if (obj.isChlorine === true) list.push("氯");
                     if (obj.isFluorine === true) list.push("氟");
                     if (obj.isPhosphorus === true) list.push("磷");
                     if (obj.isFlashPoint === true) list.push("闪点");
                     if (obj.isViscosity === true) list.push("黏度");
-                    if (obj.isHotMelt === true) list.push("热融");
                     var flag = false;
                     var r = "";
                     //遍历分隔字符串,以逗号隔开
@@ -402,21 +409,28 @@ function setSampleList(result) {
                 }
                     $(this).html(obj.items);
                     break;
-                // 增加检测项目
-                case (6):
+                case (8):
+                    // 联单编号
+                    $(this).html(obj.transferId);
+                    break;
+                case (9):
                     // 送样人
                     $(this).html(obj.sendingPerson);
                     break;
-                case (7):
+                case (10):
                     // 签收人
                     $(this).html(obj.laboratorySigner);
                     break;
-                case (8):
+                case (11):
                     // 状态
                     if (obj.applyState != null) {
-                        obj.name = obj.applyState.name;
+                        var name = obj.applyState.name;
                     }
-                    $(this).html(obj.name);
+                    $(this).html(name);
+                    break;
+                case(12):
+                    // 编号
+                    $(this).html(obj.id);
                     break;
             }
         });
@@ -459,20 +473,6 @@ function setSeniorSelectedList() {
         }
     });
 }
-
-/**
- * 日期格式
- */
-$('.form_datetime').datetimepicker({
-    language: 'zh-CN',
-    format: 'yyyy-mm-dd hh:ii:ss',
-    weekStart: 1,
-    todayBtn: 1,
-    autoclose: 1,
-    todayHighlight: 1,
-    startView: 2,
-    showMeridian: 1
-});
 
 /**
  * 预约登记-显示预约框
@@ -811,7 +811,7 @@ function addNewLine(item) {
     //clonedTr.children().find("input:first-child").prop('name').charAt(11);
     clonedTr.children().find("input").val("");
     clonedTr.children().find("input:checkbox").prop('checked', false);
-    //clonedTr.children().find("select").selectpicker('val', '');
+   // clonedTr.children().find("select").selectpicker('val', '');
     clonedTr.children().get(0).innerHTML = num;    // 设置序号
     clonedTr.children().find("input,select").each(function () {
         var name = $(this).prop('name');
@@ -1053,10 +1053,10 @@ function updateAppointBySampleId() {
         var $i = i;
         if (data.wastesList[i] != null) {
             wastes.id = data.wastesList[i].id;
-            //  wastes.ph = 1;
+            wastes.unit = 'yes';
         } else {
             wastes.id = wastesId;
-            // wastes.ph = 0;
+            wastes.unit = 'no';
             var num1 = parseInt(wastesId) + 1;
             wastesId = num1 + "";
         }
@@ -1085,7 +1085,7 @@ function updateAppointBySampleId() {
                 break;
         }
         wastes.formType = formType;
-       // wastes.formType = $("select[id='wastes[" + $i + "].wastesFormType']").find("option:selected").val();
+        // wastes.formType = $("select[id='wastes[" + $i + "].wastesFormType']").find("option:selected").val();
         wastes.category = $("input[id='wastes[" + $i + "].wastesHandleCategory']").val();
         wastes.isPH = $("input[name='wastes[" + $i + "].isPH']").prop('checked');
         wastes.isAsh = $("input[name='wastes[" + $i + "].isAsh']").prop('checked');
@@ -1167,6 +1167,7 @@ function searchSampleInfo() {
     page.start = (pageNumber - 1) * page.count;
     // 精确查询
     var applyState = null;
+    console.log($("#search-state").val());
     if ($("#search-state").val() == 0) applyState = "Appointed";
     if ($("#search-state").val() == 1) applyState = "Received";
     if ($("#search-state").val() == 2) applyState = "Rejected";
@@ -1174,9 +1175,9 @@ function searchSampleInfo() {
     if ($("#senior").is(':visible')) {
         data = {
             id: $.trim($("#search-id").val()),
-            companyCode: $.trim($("#search-companyCode").val()),
-            wastesCode: $.trim($("#search-wastesCode").val()),
-            laboratorySigner: $.trim($("#search-signer").val()),
+            companyName: $.trim($("#search-companyCode").text()),
+            code: $.trim($("#search-wastesCode").val()),
+            sendingPerson: $.trim($("#search-sendingPerson").val()),
             applyState: applyState,
             isPH: $("#isPH1").prop("checked"),
             isAsh: $("#isAsh1").prop("checked"),
@@ -1307,7 +1308,7 @@ function searchSampleInfo() {
     }
     $.ajax({
         type: "POST",                            // 方法类型
-        url: "searchSampleInfoWareHouse",                 // url
+        url: "searchSampleInfoWareHouseItem",                 // url
         async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
         data: JSON.stringify(data),
         dataType: "json",
