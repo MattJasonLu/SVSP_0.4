@@ -693,7 +693,7 @@ function getSelectedInfo() {
 }
 
 /**
- * 作废转移联单
+ * 作废
  */
 function setInvalid(e) {    //已作废
     var r = confirm("确认作废该入库单吗？");
@@ -732,14 +732,14 @@ function viewData(e) {
     var id = getIdByMenu(e);
     $.ajax({
         type: "POST",
-        url: "getInboundOrderById",
+        url: "getInboundPlanOrder",
         async: false,
         dataType: "json",
-        data: {"inboundOrderId": id},
+        data: {"inboundPlanOrderId": id},
         success: function (result) {
-            if (result !== undefined && result.status === "success") {
+            if (result != undefined && result.status == "success") {
                 console.log(result);
-                setItemDataList(result.data);
+                setViewData(result.data);
             } else {
                 alert(result.message);
             }
@@ -751,45 +751,22 @@ function viewData(e) {
     });
     $("#viewModal").modal("show");
 
-    /**
-     * 设置数据
-     * @param result
-     */
-    function setItemDataList(result) {
-        // 获取id为cloneTr的tr元素
-        var tr = $("#itemClonedTr");
-        tr.siblings().remove();
-        $.each(result.inboundOrderItemList, function (index, item) {
-            var data = eval(item);
-            // 克隆tr，每次遍历都可以产生新的tr
-            var clonedTr = tr.clone();
-            clonedTr.show();
-            // 循环遍历cloneTr的每一个td元素，并赋值
-            clonedTr.find("td[name='index']").text(index + 1);
-            // clonedTr.find("td[name='inboundPlanOrderId']").text(data.inboundPlanOrderId);
-            clonedTr.find("td[name='transferDraftId']").text(data.transferDraftId);
-            if (data.produceCompany != null)
-                clonedTr.find("td[name='produceCompanyName']").text(data.produceCompany.companyName);
-            if (data.wastes != null) {
-                clonedTr.find("td[name='wastesName']").text(data.wastes.name);
-                clonedTr.find("td[name='wastesCode']").text(data.wastes.wastesId);
-            }
-            clonedTr.find("td[name='wastesAmount']").text(parseFloat(data.wastesAmount).toFixed(3));
-            clonedTr.find("td[name='unitPriceTax']").text(data.unitPriceTax);
-            clonedTr.find("td[name='totalPrice']").text(data.totalPrice);
-            if (data.processWay != null)
-                clonedTr.find("td[name='processWay']").text(data.processWay.name);
-            if (data.handleCategory != null)
-                clonedTr.find("td[name='handleCategory']").text(data.handleCategory.name);
-            clonedTr.find("td[name='remarks']").text(data.remarks);
-            clonedTr.find("td[name='warehouseArea']").text(data.warehouseArea);
-            clonedTr.find("td[name='inboundOrderItemId']").text(data.inboundOrderItemId);
-            // 把克隆好的tr追加到原来的tr前面
-            clonedTr.removeAttr("id");
-            clonedTr.insertBefore(tr);
-        });
-        // 隐藏无数据的tr
-        tr.hide();
+    function setViewData(result) {
+        var obj = eval(result);
+        $("#inboundPlanOrderId").val(obj.inboundPlanOrderId);
+        $("#transferDraftId").val(obj.transferDraftId);
+        if (obj.produceCompany != null) $("#produceCompany").val(obj.produceCompany.companyName);
+        $("#prepareTransferCount").val(obj.prepareTransferCount);
+        $("#transferCount").val(obj.transferCount);
+        $("#storageCount").val(obj.storageCount);
+        $("#planDate").val(getDateStr(obj.planDate));
+        $("#transferDate").val(getDateStr(obj.transferDate));
+        if (obj.wastes != null) {
+            $("#wastesName").val(obj.wastes.name);
+            $("#wastesCode").val(obj.wastes.wastesId);
+        }
+        $("#poundsCount").val(obj.poundsCount);
+        $("#leftCount").val(obj.leftCount);
     }
 }
 
@@ -799,7 +776,7 @@ function viewData(e) {
  * @returns {string} 联单编号
  */
 function getIdByMenu(e) {
-    return e.parent().parent().find("td[name='inboundOrderId']").text();
+    return e.parent().parent().find("td[name='inboundPlanOrderId']").text();
 }
 
 // 覆盖Modal.prototype的hideModal方法

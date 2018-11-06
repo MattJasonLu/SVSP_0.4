@@ -119,6 +119,10 @@
         </where>
     </select>
 
+    <select id="getInboundPlanOrder" resultMap="InboundPlanOrderRM">
+        select * from t_pl_inboundplanorder where inboundPlanOrderId=#{inboundPlanOrderId};
+    </select>
+
     <!--根据磅单信息更新入库计划单中的磅单数量-->
     <update id="updateInboundPlanPounds">
         update t_pl_inboundplanorder set poundsCount=#{poundsCount} where transferDraftId = #{transferDraftId};

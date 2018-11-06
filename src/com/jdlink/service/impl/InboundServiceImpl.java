@@ -45,6 +45,11 @@ public class InboundServiceImpl implements InboundService {
     }
 
     @Override
+    public InboundPlanOrder getInboundPlanOrder(String inboundPlanOrderId) {
+        return inboundMapper.getInboundPlanOrder(inboundPlanOrderId);
+    }
+
+    @Override
     public List<InboundPlanOrder> searchInboundPlanOrder(InboundPlanOrder inboundPlanOrder) {
         return inboundMapper.searchInboundPlanOrder(inboundPlanOrder);
     }
