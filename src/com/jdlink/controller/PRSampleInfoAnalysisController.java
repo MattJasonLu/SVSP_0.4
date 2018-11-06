@@ -15,6 +15,7 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -114,7 +115,7 @@ public class PRSampleInfoAnalysisController {
             res.put("data", count);
         } catch (Exception e) {
             e.printStackTrace();
-            res.put("status", "success");
+            res.put("status", "fail");
             res.put("message", "仓储部化验单获取数据失败");
         }
         return res.toString();
@@ -225,8 +226,32 @@ public class PRSampleInfoAnalysisController {
             res.put("message", "作废成功");
         } catch (Exception e) {
             e.printStackTrace();
-            res.put("status", "success");
+            res.put("status", "fail");
             res.put("message", "作废失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 增加仓储部化验单
+     * @param sampleInfoAnalysis 仓储部化验单
+     * @return 添加成功与否
+     */
+    @RequestMapping("addSampleInfoAnalysis")
+    @ResponseBody
+    public String addSampleInfoAnalysis(@RequestBody SampleInfoAnalysis sampleInfoAnalysis) {
+        JSONObject res = new JSONObject();
+        try {
+            // 增加
+            sampleInfoAnalysis.setId(sampleInfoAnalysis.getTransferDraftId());
+            sampleInfoAnalysis.setCheckState(CheckState.NewBuild);
+            sampleInfoAnalysisService.add(sampleInfoAnalysis);
+            res.put("status", "success");
+            res.put("message", "增加成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "增加失败");
         }
         return res.toString();
     }

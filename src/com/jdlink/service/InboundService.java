@@ -29,10 +29,23 @@ public interface InboundService {
     int countInboundPlanOrder(InboundPlanOrder inboundPlanOrder);
 
     /**
+     * 更新入库计划单的磅单
+     * @param inboundPlanOrder 入库计划单
+     */
+    void updateInboundPlanPounds(InboundPlanOrder inboundPlanOrder);
+
+    /**
      * 增加入库计划单
      * @param inboundPlanOrder 入库计划单
      */
     void addInboundPlanOrder(InboundPlanOrder inboundPlanOrder);
+
+    /**
+     * 通过编号获取入库计划单
+     * @param inboundPlanOrderId 入库计划单号
+     * @return 入库计划单
+     */
+    InboundPlanOrder getInboundPlanOrder(String inboundPlanOrderId);
 
     /**
      * 查找入库计划单

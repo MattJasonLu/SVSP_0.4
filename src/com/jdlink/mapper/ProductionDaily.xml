@@ -72,81 +72,173 @@
         </if>
     </select>
 
-    <select id="searchSewage" resultType="Sewage">
-        select * from t_pr_sewage
+    <select id="searchSewage" resultMap="SewageregistrationRM">
+        select * from t_pr_sewageregistration
         <where>
             <if test="keywords != null and keywords != ''">
-                or DATE_FORMAT(receiveDate,'%Y-%m-%d') like "%"#{keywords}"%"
-                or DATE_FORMAT(receiveDate,'%Y-%c-%d') like "%"#{keywords}"%"
-                or DATE_FORMAT(receiveDate,'%Y-%c-%e') like "%"#{keywords}"%"
-                or DATE_FORMAT(receiveDate,'%Y%m%d') like "%"#{keywords}"%"
-                or DATE_FORMAT(receiveDate,'%Y%c%d') like "%"#{keywords}"%"
-                or DATE_FORMAT(receiveDate,'%Y%c%e') like "%"#{keywords}"%"
-                or DATE_FORMAT(receiveDate,'%Y.%m.%d') like "%"#{keywords}"%"
-                or DATE_FORMAT(receiveDate,'%Y.%c.%d') like "%"#{keywords}"%"
-                or DATE_FORMAT(receiveDate,'%Y.%c.%e') like "%"#{keywords}"%"
-                or name like "%"#{keywords}"%"
-                or remarks like "%"#{keywords}"%"
-                or COD = #{keywords}
-                or BOD5 = #{keywords}
-                or oxygen = #{keywords}
-                or nitrogen = #{keywords}
-                or lye = #{keywords}
-                or PH = #{keywords}
+                or id like "%"#{keywords}"%"
+                or address like "%"#{keywords}"%"
+                or sendingPerson like #{keywords}
+                or laboratorySignatory like #{keywords}
+                or checkState = #{keywords}
+                and t_pr_sewageregistration.water=1
             </if>
-            <if test="name != null and name != ''">
-                and name like "%"#{name}"%"
+            <if test="sewageregistrationItemList[0].ph==1">
+                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.ph=1 ) and t_pr_sewageregistration.water=1
             </if>
-            <if test="startDate !=null and startDate !=''">
-                <![CDATA[ and DATE_FORMAT(receiveDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+
+            <!--<if test="sewageregistrationItemList[0].ph==0">-->
+                <!--and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.ph=0 ) and t_pr_sewageregistration.water=1-->
+            <!--</if>-->
+            <if test=" sewageregistrationItemList[0].lye==1">
+                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.lye=1 ) and t_pr_sewageregistration.water=1
             </if>
-            <if test="endDate !=null and endDate !=''">
-                <![CDATA[ and DATE_FORMAT(receiveDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
+            <!--<if test=" sewageregistrationItemList[0].lye==0">-->
+                <!--and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.lye=0 ) and t_pr_sewageregistration.water=1-->
+            <!--</if>-->
+
+            <if test="sewageregistrationItemList[0].cod==1">
+                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.cod=1 ) and t_pr_sewageregistration.water=1
             </if>
-            <if test="remarks != null and remarks != ''">
-                and remarks like "%"#{remarks}"%"
+            <!--<if test="sewageregistrationItemList[0].cod==0">-->
+                <!--and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.cod=0 ) and t_pr_sewageregistration.water=1-->
+            <!--</if>-->
+
+            <if test=" sewageregistrationItemList[0].bod5==1">
+                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.bod5=1 ) and t_pr_sewageregistration.water=1
             </if>
+            <!--<if test=" sewageregistrationItemList[0].bod5==0">-->
+                <!--and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.bod5=0 ) and t_pr_sewageregistration.water=1-->
+            <!--</if>-->
+            <if test=" sewageregistrationItemList[0].n2==1">
+                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.n2=1 ) and t_pr_sewageregistration.water=1
+            </if>
+            <!--<if test=" sewageregistrationItemList[0].n2==0">-->
+                <!--and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.n2=0 ) and t_pr_sewageregistration.water=1-->
+            <!--</if>-->
+            <if test="sewageregistrationItemList[0].nitrogen==1">
+                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.nitrogen=1 ) and t_pr_sewageregistration.water=1
+            </if>
+            <!--<if test="sewageregistrationItemList[0].nitrogen==0">-->
+                <!--and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.nitrogen=0 ) and t_pr_sewageregistration.water=1-->
+            <!--</if>-->
+
+            <if test="sewageregistrationItemList[0].phosphorus==1">
+                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.phosphorus=1 )    and t_pr_sewageregistration.water=1
+            </if>
+            <!--<if test="sewageregistrationItemList[0].phosphorus==0">-->
+                <!--and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.phosphorus=0 )    and t_pr_sewageregistration.water=1-->
+            <!--</if>-->
+            <if test="sewageregistrationItemList[0].ph==0 and sewageregistrationItemList[0].cod==0 and  sewageregistrationItemList[0].bod5==0
+and sewageregistrationItemList[0].n2==0 and  sewageregistrationItemList[0].nitrogen==0 and sewageregistrationItemList[0].phosphorus==0 and sewageregistrationItemList[0].lye==0 ">
+           and t_pr_sewageregistration.water=1
+            </if>
+            <if test="address !='' and address !=null">
+                and address LIKE "%"#{address}"%"  and t_pr_sewageregistration.water=1
+            </if>
+            <if test="sendingPerson !='' and sendingPerson !=null">
+                and sendingPerson LIKE "%"#{sendingPerson}"%"  and t_pr_sewageregistration.water=1
+            </if>
+            <if test="laboratorySignatory !='' and laboratorySignatory !=null">
+                and laboratorySignatory LIKE "%"#{laboratorySignatory}"%"  and t_pr_sewageregistration.water=1
+            </if>
+
+
+            <if test="checkState !='' and checkState !=null">
+                and checkState = #{checkState}  and t_pr_sewageregistration.water=1
+            </if>
+
         </where>
-        order by receiveDate desc
         <if test="page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
+
     </select>
 
     <select id="searchCountSewage" resultType="int">
-        select count(*) from t_pr_sewage
+        select count(*) from t_pr_sewageregistration
         <where>
             <if test="keywords != null and keywords != ''">
-                or DATE_FORMAT(receiveDate,'%Y-%m-%d') like "%"#{keywords}"%"
-                or DATE_FORMAT(receiveDate,'%Y-%c-%d') like "%"#{keywords}"%"
-                or DATE_FORMAT(receiveDate,'%Y-%c-%e') like "%"#{keywords}"%"
-                or DATE_FORMAT(receiveDate,'%Y%m%d') like "%"#{keywords}"%"
-                or DATE_FORMAT(receiveDate,'%Y%c%d') like "%"#{keywords}"%"
-                or DATE_FORMAT(receiveDate,'%Y%c%e') like "%"#{keywords}"%"
-                or DATE_FORMAT(receiveDate,'%Y.%m.%d') like "%"#{keywords}"%"
-                or DATE_FORMAT(receiveDate,'%Y.%c.%d') like "%"#{keywords}"%"
-                or DATE_FORMAT(receiveDate,'%Y.%c.%e') like "%"#{keywords}"%"
-                or name like "%"#{keywords}"%"
-                or remarks like "%"#{keywords}"%"
-                or COD = #{keywords}
-                or BOD5 = #{keywords}
-                or oxygen = #{keywords}
-                or nitrogen = #{keywords}
-                or lye = #{keywords}
-                or PH = #{keywords}
+                or id like "%"#{keywords}"%"
+                or address like "%"#{keywords}"%"
+                or sendingPerson like #{keywords}
+                or laboratorySignatory like #{keywords}
+                or checkState = #{keywords}
+                and t_pr_sewageregistration.water=1
             </if>
-            <if test="name != null and name != ''">
-                and name like "%"#{name}"%"
+
+
+                <if test="sewageregistrationItemList[0].ph==1">
+                    and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.ph=1 ) and t_pr_sewageregistration.water=1
+                </if>
+                <!--<if test="sewageregistrationItemList[0].ph==0">-->
+                    <!--and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.ph=0 ) and t_pr_sewageregistration.water=1-->
+                <!--</if>-->
+
+
+                <if test=" sewageregistrationItemList[0].lye==1">
+                    and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.lye=1 ) and t_pr_sewageregistration.water=1
+                </if>
+                <!--<if test=" sewageregistrationItemList[0].lye==0">-->
+                    <!--and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.lye=0 ) and t_pr_sewageregistration.water=1-->
+                <!--</if>-->
+
+
+
+
+            <if test="sewageregistrationItemList[0].cod==1">
+                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.cod=1 ) and t_pr_sewageregistration.water=1
             </if>
-            <if test="startDate !=null and startDate !=''">
-                <![CDATA[ and DATE_FORMAT(receiveDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            <!--<if test="sewageregistrationItemList[0].cod==0">-->
+                <!--and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.cod=0 ) and t_pr_sewageregistration.water=1-->
+            <!--</if>-->
+
+            <if test=" sewageregistrationItemList[0].bod5==1">
+                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.bod5=1 ) and t_pr_sewageregistration.water=1
             </if>
-            <if test="endDate !=null and endDate !=''">
-                <![CDATA[ and DATE_FORMAT(receiveDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
+            <!--<if test=" sewageregistrationItemList[0].bod5==0">-->
+                <!--and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.bod5=0 ) and t_pr_sewageregistration.water=1-->
+            <!--</if>-->
+            <if test=" sewageregistrationItemList[0].n2==1">
+                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.n2=1 ) and t_pr_sewageregistration.water=1
             </if>
-            <if test="remarks != null and remarks != ''">
-                and remarks like "%"#{remarks}"%"
+            <!--<if test=" sewageregistrationItemList[0].n2==0">-->
+                <!--and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.n2=0 ) and t_pr_sewageregistration.water=1-->
+            <!--</if>-->
+            <if test="sewageregistrationItemList[0].nitrogen==1">
+                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.nitrogen=1 ) and t_pr_sewageregistration.water=1
             </if>
+            <!--<if test="sewageregistrationItemList[0].nitrogen==0">-->
+                <!--and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.nitrogen=0 ) and t_pr_sewageregistration.water=1-->
+            <!--</if>-->
+
+            <if test="sewageregistrationItemList[0].phosphorus==1">
+                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.phosphorus=1 )    and t_pr_sewageregistration.water=1
+            </if>
+            <!--<if test="sewageregistrationItemList[0].phosphorus==0">-->
+                <!--and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.phosphorus=0 )    and t_pr_sewageregistration.water=1-->
+            <!--</if>-->
+
+            <if test="sewageregistrationItemList[0].ph==0 and sewageregistrationItemList[0].cod==0 and  sewageregistrationItemList[0].bod5==0
+and sewageregistrationItemList[0].n2==0 and  sewageregistrationItemList[0].nitrogen==0 and sewageregistrationItemList[0].phosphorus==0 and sewageregistrationItemList[0].lye==0 ">
+                and t_pr_sewageregistration.water=1
+            </if>
+
+
+
+            <if test="address !='' and address !=null">
+                and address LIKE "%"#{address}"%" and t_pr_sewageregistration.water=1
+            </if>
+            <if test="sendingPerson !='' and sendingPerson !=null">
+                and sendingPerson LIKE "%"#{sendingPerson}"%" and t_pr_sewageregistration.water=1
+            </if>
+            <if test="laboratorySignatory !='' and laboratorySignatory !=null">
+                and laboratorySignatory LIKE "%"#{laboratorySignatory}"%" and t_pr_sewageregistration.water=1
+            </if>
+            <if test="checkState !='' and checkState !=null">
+                and checkState = #{checkState} and t_pr_sewageregistration.water=1
+            </if>
+
         </where>
     </select>
 
@@ -663,8 +755,8 @@
 
 
     <!--确认送样-->
-<update id="confirmSewaGeregistrationById" parameterType="String">
-    update t_pr_sewageregistration set checkState='Collected',nowTime=NOW() where id=#{id};
+<update id="confirmSewaGeregistrationById">
+    update t_pr_sewageregistration set checkState='Collected',laboratorySignatory=#{1},nowTime=NOW() where id=#{0};
 </update>
 
     <!--拒收-->

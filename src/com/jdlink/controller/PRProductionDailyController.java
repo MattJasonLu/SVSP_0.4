@@ -115,9 +115,9 @@ public class PRProductionDailyController {
      */
     @RequestMapping("searchSewageTotal")
     @ResponseBody
-    public int searchSewageTotal(@RequestBody Sewage sewage) {
+    public int searchSewageTotal(@RequestBody Sewageregistration sewageregistration) {
         try {
-            return productionDailyService.searchCountSewage(sewage);
+            return productionDailyService.searchCountSewage(sewageregistration);
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
@@ -127,19 +127,19 @@ public class PRProductionDailyController {
     /**
      * 查询功能
      *
-     * @param sewage
+     * @param sewageregistration
      * @return
      */
     @RequestMapping("searchSewage")
     @ResponseBody
-    public String search(@RequestBody Sewage sewage) {
+    public String search(@RequestBody Sewageregistration sewageregistration) {
         JSONObject res = new JSONObject();
         try {
-            List<Sewage> sewageList = productionDailyService.searchSewage(sewage);
-            JSONArray data = JSONArray.fromArray(sewageList.toArray(new Sewage[sewageList.size()]));
+            List<Sewageregistration> sewageList = productionDailyService.searchSewage(sewageregistration);
+            //JSONArray data = JSONArray.fromArray(sewageList.toArray(new Sewage[sewageList.size()]));
             res.put("status", "success");
             res.put("message", "查询成功");
-            res.put("data", data);
+            res.put("data", sewageList);
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
@@ -421,10 +421,10 @@ public class PRProductionDailyController {
     //确认送样
     @RequestMapping("confirmSewaGeregistrationById")
     @ResponseBody
-    public String confirmSewaGeregistrationById(String id) {
+    public String confirmSewaGeregistrationById(String id,String laboratorySignatory) {
         JSONObject res = new JSONObject();
         try {
-            productionDailyService.confirmSewaGeregistrationById(id);
+            productionDailyService.confirmSewaGeregistrationById(id,laboratorySignatory);
             res.put("status", "success");
             res.put("message", "收样成功");
         } catch (Exception e) {
