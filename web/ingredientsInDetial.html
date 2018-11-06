@@ -11,7 +11,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/ingredientsIn.js"></script>
+    <script src="js/produce/ingredientsInDetail.js"></script>
 </head>
 <body onload="loadPageIngredientsInList();">
 <!--导航条-->
@@ -34,7 +34,8 @@
                 <li><a href="procurementManagement.html">首页</a></li>
                 <li><a href="monthProcurement.html">采购计划</a></li>
                 <li>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">采购申请<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">采购申请<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="monthProcurement.html">月度采购</a></li>
                         <li role="separator" class="divider"></li>
@@ -42,7 +43,8 @@
                     </ul>
                 </li>
                 <li class="active">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">辅料/备件管理<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">辅料/备件管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="ingredientsIn.html">辅料/备件入库</a></li>
                         <li role="separator" class="divider"></li>
@@ -60,7 +62,8 @@
         <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
         <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
         <li class="dropdown">
-            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+               aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
             <ul class="dropdown-menu">
                 <li><a href="#">个人信息</a></li>
                 <li><a href="#">待办事项</a></li>
@@ -138,21 +141,22 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" href="#" onclick="addIngredientsIn();"><span
-                            class="glyphicon glyphicon-plus" aria-hidden="true" ></span> 新增</a>
-                    <a class="btn btn-primary btn-xs" href="ingredientsInDetial.html"><span
-                            class="glyphicon glyphicon-search" aria-hidden="true"></span> 明细页面</a>
-                    <a class="btn btn-primary btn-xs" href="#" onclick="importInExcelChoose();"><span class="glyphicon glyphicon-arrow-down"
-                                                                     aria-hidden="true" ></span> 导入</a>
-                    <a class="btn btn-primary btn-xs" href="#" onclick="exportInExcel();"><span class="glyphicon glyphicon-arrow-up"
-                                                                     aria-hidden="true" ></span> 导出</a>
+                    <a class="btn btn-primary btn-xs" href="newIngredientsIn.html"><span
+                            class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                    <a class="btn btn-primary btn-xs" href="ingredientsIn.html"><span
+                            class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> 返回主页</a>
+                    <a class="btn btn-primary btn-xs" href="#" onclick="exportInExcel();"><span
+                            class="glyphicon glyphicon-arrow-up"
+                            aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
                 <div class="input-group col-md-4 pull-right">
-                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent" onkeydown="enterSearch()">
+                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent"
+                           onkeydown="enterSearch()">
                     <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="searchIngredientIn();"><span class="glyphicon glyphicon-search"
-                                                                                 aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="searchIngredientIn();"><span
+                                    class="glyphicon glyphicon-search"
+                                    aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span
                                     class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
                             <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog"
@@ -170,7 +174,8 @@
                         <div class="form-group">
                             <label for="search-Id" class="col-sm-4 control-label">入库单号</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-Id" name="search-Id" placeholder="" onkeydown="enterSearch()">
+                                <input type="text" class="form-control" id="search-Id" name="search-Id" placeholder=""
+                                       onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -187,7 +192,8 @@
                         <div class="form-group">
                             <label for="search-state" class="col-sm-4 control-label">状态</label>
                             <div class="col-xs-7">
-                                <select class="form-control" id="search-state" name="search-state" onchange="searchIngredientIn()">
+                                <select class="form-control" id="search-state" name="search-state"
+                                        onchange="searchIngredientIn()">
                                     <option value="0"></option>
                                 </select>
                             </div>
@@ -197,11 +203,35 @@
                 <div class="row">
                     <div class="form-horizontal col-md-4">
                         <div class="form-group">
+                            <label for="search-name" class="col-sm-4 control-label">物料名称</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-name" name="search-name"
+                                       placeholder="" onkeydown="enterSearch()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-4">
+                        <div class="form-group">
+                            <label for="search-specification" class="col-sm-4 control-label">规格</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-specification"
+                                       name="search-specification" placeholder="" onkeydown="enterSearch()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-8">
+                        <div class="form-group">
                             <label class="col-sm-3 control-label" style="margin-left: 40px">入库日期 </label>
-                            <div class="input-group">
-                                <input type="date" class="input-sm form-control" id="search-startDate" title="" onkeydown="enterSearch()"/>
-                                <span class="input-group-addon">-</span>
-                                <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown="enterSearch()"/>
+                            <div class=" col-xs-9">
+                                <div class="input-group">
+                                    <input type="date" class="input-sm form-control" id="search-startDate" title=""
+                                           onkeydown="enterSearch()"/>
+                                    <span class="input-group-addon">-</span>
+                                    <input type="date" class="input-sm form-control" id="search-endDate" title=""
+                                           onkeydown="enterSearch()"/>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -215,20 +245,22 @@
                     <tr>
                         <th class="text-center">
                             <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
+                                <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel"
+                                       id="allSel" onclick="allSelect()">
                             </label>
                         </th>
                         <th class="text-center">入库单号</th>
                         <th class="text-center">单位名</th>
                         <th class="text-center">入库单状态</th>
-                        <th class="text-center">总金额</th>
-                        <th class="text-center">记账人</th>
-                        <th class="text-center">审批人</th>
-                        <th class="text-center">保管人</th>
-                        <th class="text-center">验收人</th>
-                        <th class="text-center">经手人</th>
+                        <th class="text-center">物品名称</th>
+                        <th class="text-center">规格</th>
+                        <th class="text-center">计量单位</th>
+                        <th class="text-center">数量</th>
+                        <th class="text-center">单价</th>
+                        <th class="text-center">金额</th>
+                        <th class="text-center">仓库</th>
                         <th class="text-center">入库日期</th>
-                        <th class="text-center" style="display:none;">计量单位</th>
+                        <th class="text-center" hidden>编号</th>
                         <th class="text-center">操作</th>
                     </tr>
                     </thead>
@@ -236,7 +268,8 @@
                     <tr id="clone" ondblclick="toViewIngredientsIn1(this)">
                         <td class="text-center">
                             <label>
-                                <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                                <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1"
+                                       aria-label="...">
                             </label>
                         </td>
                         <td class="text-center"></td>
@@ -249,7 +282,8 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
-                        <td class="text-center" style="display:none;"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center" hidden></td>
                         <td class="text-center">
                             <a title="查看" href="#" onclick="toViewIngredientsIn(this)"><span
                                     class="glyphicon glyphicon-search" aria-hidden="true"></span> </a>
@@ -264,8 +298,8 @@
             </div>
         </div>
         <!--自动提示后隐藏-->
-        <div >
-            <input type="hidden" id="hidvalue" value="作废成功！" />
+        <div>
+            <input type="hidden" id="hidvalue" value="作废成功！"/>
         </div>
         <!--分页-->
         <nav aria-label="Page navigation" class="text-center">
@@ -335,16 +369,22 @@
                 <div class="modal-content">
                     <br>
                     <!--<div class="text-center"><span id="creationDate"></span>&nbsp;&nbsp;&nbsp;&nbsp;预处理单</div>-->
-                    <h3 class="modal-title text-center" >北控安耐得环保科技发展常州有限公司</h3>
-                    <h4 class="modal-title text-center" >入库单</h4>
+                    <h3 class="modal-title text-center">北控安耐得环保科技发展常州有限公司</h3>
+                    <h4 class="modal-title text-center">入库单</h4>
                     <p class="text-center pull-right"><b>NO.</b><span id="view-id" class="text-left"></span></p>
                     <br>
                     <table class="table table-bordered" style="border:none">
                         <thead style="border:none">
                         <tr>
-                            <th colspan="6" class="text-left" style="border:none">单位:<span id="view-companyName" class="text-left"></span></th>
-                            <th colspan="6" class="text-center" style="border:none"><span id="view-creationDate" class="text-center"></span></th>
-                            <th colspan="7" class="text-right" style="border:none">文件编号:<span id="view-fileId" class="text-left"></span></th>
+                            <th colspan="6" class="text-left" style="border:none">单位:<span id="view-companyName"
+                                                                                           class="text-left"></span>
+                            </th>
+                            <th colspan="6" class="text-center" style="border:none"><span id="view-creationDate"
+                                                                                          class="text-center"></span>
+                            </th>
+                            <th colspan="7" class="text-right" style="border:none">文件编号:<span id="view-fileId"
+                                                                                              class="text-left"></span>
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -410,110 +450,28 @@
                             <td class="text-center">--</td>
                         </tr>
                         <tr>
-                            <td class="text-left" colspan="3" style="border: none">记账：<span id="view-bookkeeper" class="text-left"></span></td>
-                            <td class="text-left" colspan="3" style="border: none">审批：<span id="view-approver" class="text-left"></span></td>
-                            <td class="text-left" colspan="5" style="border: none">保管：<span id="view-keeper" class="text-left"></span></td>
-                            <td class="text-left" colspan="4" style="border: none">验收：<span id="view-acceptor" class="text-left"></span></td>
-                            <td class="text-left" colspan="4" style="border: none">经手：<span id="view-handlers" class="text-left"></span></td>
+                            <td class="text-left" colspan="3" style="border: none">记账：<span id="view-bookkeeper"
+                                                                                            class="text-left"></span>
+                            </td>
+                            <td class="text-left" colspan="3" style="border: none">审批：<span id="view-approver"
+                                                                                            class="text-left"></span>
+                            </td>
+                            <td class="text-left" colspan="5" style="border: none">保管：<span id="view-keeper"
+                                                                                            class="text-left"></span>
+                            </td>
+                            <td class="text-left" colspan="4" style="border: none">验收：<span id="view-acceptor"
+                                                                                            class="text-left"></span>
+                            </td>
+                            <td class="text-left" colspan="4" style="border: none">经手：<span id="view-handlers"
+                                                                                            class="text-left"></span>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-
-        <!--修改模态框-->
-        <div class="modal fade bs-example-modal-lg" id="modifyModal" tabindex="-1" role="dialog"
-             aria-labelledby="myModalLabel">
-            <div class="modal-dialog modal-lg" role="document" style="width: 90%">
-                <div class="modal-content">
-                    <br>
-                    <!--<div class="text-center"><span id="creationDate"></span>&nbsp;&nbsp;&nbsp;&nbsp;预处理单</div>-->
-                    <h3 class="modal-title text-center" >北控安耐得环保科技发展常州有限公司</h3>
-                    <h4 class="modal-title text-center" >入库单</h4>
-                    <p class="text-center pull-right"><b>NO.</b><span id="view1-id" class="text-left"></span></p>
-                    <br>
-                    <table class="table table-bordered" style="border:none">
-                        <thead style="border:none">
-                        <tr>
-                            <th colspan="6" class="text-left" style="border:none">单位:<input id="view1-companyName" class="text-left focus"></th>
-                            <th colspan="6" class="text-center" style="border:none"><input type="date" id="view1-creationDate" class="text-center focus"></th>
-                            <th colspan="7" class="text-right" style="border:none">文件编号:<input id="view1-fileId" class="text-left focus"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td class="text-center" rowspan="2">编号</td>
-                            <td class="text-center" rowspan="2">物品名称</td>
-                            <td class="text-center" rowspan="2">规格</td>
-                            <td class="text-center" rowspan="2">单位</td>
-                            <td class="text-center" rowspan="2">数量</td>
-                            <td class="text-center" rowspan="2">单价</td>
-                            <td class="text-center" colspan="8">金额</td>
-                            <td class="text-center" rowspan="2">过账</td>
-                            <td class="text-center" rowspan="2">附注</td>
-                            <td class="text-center" rowspan="2">仓库</td>
-                            <td class="text-center" rowspan="2">处置设备</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">十</td>
-                            <td class="text-center">万</td>
-                            <td class="text-center">千</td>
-                            <td class="text-center">百</td>
-                            <td class="text-center">十</td>
-                            <td class="text-center">元</td>
-                            <td class="text-center">角</td>
-                            <td class="text-center">分</td>
-                        </tr>
-                        <tr id="viewClone1">
-                            <td class="text-center"><span id="modal0-serialNumber"></span></td>
-                            <td class="text-center"><input id="modal0-name" class="text-center focus"></td>
-                            <td class="text-center"><input id="modal0-specification" class="text-center focus"></td>
-                            <td class="text-center"><input id="modal0-unit" class="text-center focus"></td>
-                            <td class="text-center"><input id="modal0-amount" class="text-center focus"></td>
-                            <td class="text-center"><input id="modal0-unitPrice" class="text-center focus"></td>
-                            <td class="text-center"><span id="modal0-hundredThousand" class="text-center focus"></span></td>
-                            <td class="text-center"><span id="modal0-tenThousand" class="text-center focus"></span></td>
-                            <td class="text-center"><span id="modal0-thousand" class="text-center focus"></span></td>
-                            <td class="text-center"><span id="modal0-hundred" class="text-center focus"></span></td>
-                            <td class="text-center"><span id="modal0-ten" class="text-center focus"></span></td>
-                            <td class="text-center"><span id="modal0-yuan" class="text-center focus"></span></td>
-                            <td class="text-center"><span id="modal0-jiao" class="text-center focus"></span></td>
-                            <td class="text-center"><span id="modal0-fen" class="text-center focus"></span></td>
-                            <td class="text-center"><input id="modal0-post" class="text-center focus"></td>
-                            <td class="text-center"><input id="modal0-remarks" class="text-center focus"></td>
-                            <td class="text-center"><input id="modal0-wareHouseName" class="text-center focus"></td>
-                            <td class="text-center"><select id="modal0-equipment" class="text-center focus"></select></td>
-                        </tr>
-                        <tr>
-                            <td colspan="6" class="text-center">合计</td>
-                            <td class="text-center" id="view1-hundredThousand"></td>
-                            <td class="text-center" id="view1-tenThousand"></td>
-                            <td class="text-center" id="view1-thousand"></td>
-                            <td class="text-center" id="view1-hundred"></td>
-                            <td class="text-center" id="view1-ten"></td>
-                            <td class="text-center" id="view1-yuan"></td>
-                            <td class="text-center" id="view1-jiao"></td>
-                            <td class="text-center" id="view1-fen"></td>
-                            <td class="text-center">--</td>
-                            <td class="text-center">--</td>
-                            <td class="text-center">--</td>
-                            <td class="text-center">--</td>
-                            <td class="text-center">--</td>
-                        </tr>
-                        <tr>
-                            <td class="text-left" colspan="3" style="border: none">记账：<input id="view1-bookkeeper" class="text-left"></td>
-                            <td class="text-left" colspan="3" style="border: none">审批：<input id="view1-approver" class="text-left"></td>
-                            <td class="text-left" colspan="5" style="border: none">保管：<input id="view1-keeper" class="text-left"></td>
-                            <td class="text-left" colspan="4" style="border: none">验收：<input id="view1-acceptor" class="text-left"></td>
-                            <td class="text-left" colspan="4" style="border: none">经手：<input id="view1-handlers" class="text-left"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-       <!---->
+        <!---->
     </div>
 </div>
 <!--导入-->

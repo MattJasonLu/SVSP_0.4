@@ -24,11 +24,11 @@ public class IngredientsIn {
      */
     private String companyName;
     /**
-     * 入库单创建日期
+     * 入库单创建日期(用作入库日期)
      */
     private Date creationDate;
     /**
-     * 入库日期
+     * 入库日期(数据库暂无)
      */
     private Date inDate;
     /**
