@@ -23,7 +23,6 @@ function keyLogin(){
         document.getElementById("input1").click(); //调用登录按钮的登录事件
 }
 
-
 /**
  * 计算总页数
  * */
@@ -839,7 +838,6 @@ function dataLeftCompleting(bits, identifier, value) {
     return value.slice(-bits);
 }
 
-
 //合同模板升级的载入方法
 function getContractList() {
     var contractId=localStorage["contractId"];
@@ -936,4 +934,11 @@ function enterSearch() {
     if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
         searchModel();      //
     }
+}
+
+/**
+ * 修改
+ */
+function contractTemplateModify() {
+
 }

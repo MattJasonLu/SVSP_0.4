@@ -20,7 +20,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/sampleInfoRegiter.js"></script>
+    <script src="js/produce/sampleInfoRegiterDetail.js"></script>
 </head>
 <script>
     $(window).on('load', function () {
@@ -120,8 +120,6 @@
                         <li class="dropdown-submenu">
                             <a href="#">入库管理</a>
                             <ul class="dropdown-menu">
-                                <li><a href="InboundPlanOrder.html">入库计划单</a></li>
-                                <li role="separator" class="divider"></li>
                                 <li><a href="warehouseManage.html">危废入库</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="secondWarehouseManage.html">次生入库</a></li>
@@ -172,7 +170,7 @@
                                                                               aria-hidden="true"></span><span
                         class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
                 <li class="active"><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in"
-                                                                              aria-hidden="true"></span><span
+                                                                                             aria-hidden="true"></span><span
                         class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
                 <li><a class="withripple" href="storageManagement.html"><span class="glyphicon glyphicon-save"
                                                                               aria-hidden="true"></span><span
@@ -216,12 +214,8 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" href="#" onclick="appointModal();"><span
-                            class="glyphicon glyphicon-plus" aria-hidden="true"></span> 预约登记</a>
-                    <a class="btn btn-primary btn-xs" href="sampleInfoRegiterDetail.html"><span
-                            class="glyphicon glyphicon-search" aria-hidden="true"></span> 明细页面</a>
-                    <a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose()"><span
-                            class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                    <a class="btn btn-primary btn-xs" href="sampleInfoRegiter.html" ><span
+                            class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> 返回主页</a>
                     <a class="btn btn-primary btn-xs" onclick="exportExcel()"><span
                             class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                 </div>
@@ -247,45 +241,56 @@
                     <div class="form-horizontal col-md-4">
                         <div class="form-group">
                             <label for="search-id" class="col-sm-4 control-label">预约单号</label>
-                            <div class="col-xs-4">
-                                <input type="text" class="form-control" id="search-id" name="search-companyCode"
-                                       placeholder="" onkeydown="enterSearch()">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="search-companyCode" class="col-sm-4 control-label">公司代码</label>
-                            <div class="col-xs-4">
-                                <input type="text" class="form-control" id="search-companyCode"
-                                       name="search-companyCode" placeholder="" onkeydown="enterSearch()">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="search-wastesCode" class="col-sm-4 control-label">危废代码</label>
-                            <div class="col-xs-4">
-                                <input type="text" class="form-control" id="search-wastesCode"
-                                       name="search-wastesCode" placeholder="" onkeydown="enterSearch()">
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-id" name="search-id"
+                                       onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-4">
                         <div class="form-group">
-                            <label for="search-addItems" class="col-sm-5 control-label">增加检测项目</label>
+                            <label for="search-companyName" class="col-sm-4 control-label">公司名称</label>
                             <div class="col-xs-7">
-                                <div class="checkbox" id="search-addItems">
-                                    <label>
-                                        <input type="checkbox" name="isFlashPoint1" id="isFlashPoint1"
-                                               value="true" onchange="searchSampleInfo()">闪点
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="isViscosity1" id="isViscosity1"
-                                               value="true" onchange="searchSampleInfo()">黏度
-                                    </label>
-                                </div>
+                                <input type="text" class="form-control" id="search-companyName"
+                                       name="search-companyName" onkeydown="enterSearch()">
                             </div>
                         </div>
+                    </div>
+                    <div class="form-horizontal col-md-4">
                         <div class="form-group">
-                            <label for="search-basicItems" class="col-sm-5 control-label">基础检测项目</label>
+                            <label for="search-wastesCode" class="col-sm-4 control-label">危废代码</label>
                             <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-wastesCode"
+                                       name="search-wastesCode" onkeydown="enterSearch()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-4">
+                        <div class="form-group">
+                            <label for="search-state" class="col-sm-4 control-label">样品状态</label>
+                            <div class="col-xs-7">
+                                <select class="form-control" name="search-state" id="search-state"
+                                        onchange="searchSampleInfo()"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-4">
+                        <div class="form-group">
+                            <label for="search-sendingPerson" class="col-sm-4 control-label">送样人</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-sendingPerson" name="search-sendingPerson"
+                                      onkeydown="enterSearch()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-8">
+                        <div class="form-group">
+                            <label for="search-basicItems" class="col-sm-2 control-label">检测项目</label>
+                            <div class="col-xs-10">
                                 <div class="checkbox" id="search-basicItems">
                                     <label>
                                         <input type="checkbox" name="isPH1" id="isPH1" value="true"
@@ -319,23 +324,15 @@
                                         <input type="checkbox" name="isP1" id="isP1" value="true"
                                                onchange="searchSampleInfo()">磷
                                     </label>
+                                    <label>
+                                        <input type="checkbox" name="isFlashPoint1" id="isFlashPoint1"
+                                               value="true" onchange="searchSampleInfo()">闪点
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="isViscosity1" id="isViscosity1"
+                                               value="true" onchange="searchSampleInfo()">黏度
+                                    </label>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-horizontal col-md-4">
-                        <div class="form-group">
-                            <label for="search-state" class="col-sm-4 control-label">样&nbsp;&nbsp;&nbsp;品&nbsp;&nbsp;&nbsp;状&nbsp;&nbsp;态</label>
-                            <div class="col-xs-7">
-                                <select class="form-control" name="search-state" id="search-state"
-                                        onchange="searchSampleInfo()"></select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="search-signer" class="col-sm-4 control-label">化验室签收人</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-signer" name="search-signer"
-                                       placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -354,17 +351,21 @@
                     </th>
                     <th class="text-center">预约单号</th>
                     <th class="text-center">产废单位</th>
+                    <th class="text-center">危废代码</th>
                     <th class="text-center">危废名称</th>
+                    <th class="text-center">危废类别</th>
                     <th class="text-center">危废形态</th>
                     <th class="text-center">检测项目</th>
+                    <th class="text-center">联单编号</th>
                     <th class="text-center">送样人</th>
                     <th class="text-center">签收人</th>
                     <th class="text-center">状态</th>
+                    <th class="text-center" hidden>编号</th>
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>
                 <tbody id="sampleInfoData">
-                <tr id="cloneTr" ondblclick="viewSample1(this);">
+                <tr id="cloneTr" >
                     <td class="text-center">
                         <label>
                             <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1"
@@ -379,9 +380,11 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" hidden></td>
                     <td class="text-center">
-                        <a href="#" onclick="viewSample(this);" title="查看"><span class="glyphicon glyphicon-search"
-                                                                                 aria-hidden="true"></span></a>
                         <a href="#" onclick="adjustSample(this);" title="修改信息"><span class="glyphicon glyphicon-pencil"
                                                                                      aria-hidden="true"></span></a>
                         <a href="#" onclick="deleteSample(this);" title="作废"><span
@@ -543,10 +546,10 @@
                                 <td class="text-center" ><input class="focus" name="wastesList[0].wastesName"
                                                                 id="wastesList[0].wastesName"></td>
                                 <td class="text-center" width="10%"><input class="focus" name="modal-wastesHandleCategory"
-                                                                 id="wastesList[0].wastesHandleCategory">
+                                                                           id="wastesList[0].wastesHandleCategory">
                                 </td>
                                 <td class="text-center" width="10%"><select class="focus" name="modal-wastesFormType"
-                                                                 id="wastesList[0].wastesFormType">
+                                                                            id="wastesList[0].wastesFormType">
                                 </select>
                                 </td>
                                 <td class="text-center" width="40%">
@@ -591,8 +594,8 @@
                                                value="true">黏度
                                     </label>
                                     <!--<label>-->
-                                        <!--<input type="checkbox" name="wastesList[0].isHotMelt"-->
-                                               <!--value="true">热融-->
+                                    <!--<input type="checkbox" name="wastesList[0].isHotMelt"-->
+                                    <!--value="true">热融-->
                                     <!--</label>-->
                                 </td>
                                 <td class="text-center" ><input class="focus" name="wastesList[0].transferId"
@@ -683,7 +686,7 @@
                                 <td class="text-center"><input class="focus" name="wastes[0].wastesName"
                                                                id="wastes[0].wastesName"></td>
                                 <td class="text-center"><input class="focus" name="modal-wastesHandleCategory"
-                                                                id="wastes[0].wastesHandleCategory">
+                                                               id="wastes[0].wastesHandleCategory">
                                 </td>
                                 <td class="text-center"><select name="modal-wastesFormType"
                                                                 id="wastes[0].wastesFormType">

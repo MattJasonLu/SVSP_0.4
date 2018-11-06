@@ -2,6 +2,7 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.SampleInformation;
+import com.jdlink.domain.Produce.SampleInformationItem;
 import com.jdlink.domain.Produce.WayBill;
 import com.jdlink.domain.Produce.WayBillItem;
 import com.jdlink.service.ClientService;
@@ -161,6 +162,27 @@ public class PRSampleInfoController {
         }
     }
 
+    /**
+     * 获取总记录数
+     *
+     * @return
+     */
+    @RequestMapping("totalSampleInformationItemRecord")
+    @ResponseBody
+    public int totalSampleInformationItemRecord() {
+        try {
+            return sampleInformationService.countItem();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 获取分页数据
+     * @param page
+     * @return
+     */
     @RequestMapping("loadPageSampleInformationList")
     @ResponseBody
     public String loadPageSampleInformationList(@RequestBody Page page) {
@@ -170,6 +192,32 @@ public class PRSampleInfoController {
             List<SampleInformation> samplesInformationList = sampleInformationService.listPage(page);
             // 计算最后页位置
             JSONArray array = JSONArray.fromArray(samplesInformationList.toArray(new SampleInformation[samplesInformationList.size()]));
+            res.put("data", array);
+            res.put("status", "success");
+            res.put("message", "分页数据获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "分页数据获取失败！");
+        }
+        // 返回结果
+        return res.toString();
+    }
+
+    /**
+     * 明细页面获取分页数据
+     * @param page
+     * @return
+     */
+    @RequestMapping("loadPageSampleInformationItemList")
+    @ResponseBody
+    public String loadPageSampleInformationItemList(@RequestBody Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            // 取出查询客户
+            List<SampleInformationItem> samplesInformationItemList = sampleInformationService.listItemPage(page);
+            // 计算最后页位置
+            JSONArray array = JSONArray.fromArray(samplesInformationItemList.toArray(new SampleInformationItem[samplesInformationItemList.size()]));
             res.put("data", array);
             res.put("status", "success");
             res.put("message", "分页数据获取成功!");
@@ -223,7 +271,7 @@ public class PRSampleInfoController {
     public String updateSampleInformation(@RequestBody SampleInformation sampleInformation) {
         JSONObject res = new JSONObject();
         try {
-            sampleInformationService.deleteById(sampleInformation.getId()); // 删除旧数据
+            //sampleInformationService.deleteById(sampleInformation.getId()); // 删除旧数据
             sampleInformationService.update(sampleInformation);       // 添加新数据
             System.out.println("更新的数据为：");
             System.out.println(sampleInformation.getWastesList().size());
@@ -289,6 +337,18 @@ public class PRSampleInfoController {
         }
     }
 
+
+    @RequestMapping("searchSampleInfoItemTotal")
+    @ResponseBody
+    public int searchSampleInfoItemTotal(@RequestBody SampleInformationItem sampleInformationItem) {
+        try {
+            return sampleInformationService.searchItemCount(sampleInformationItem);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
     /**
      * 查询功能
      *
@@ -313,12 +373,36 @@ public class PRSampleInfoController {
         return res.toString();
     }
 
+    /**
+     * 查询功能
+     *
+     * @param sampleInformationItem
+     * @return
+     */
+    @RequestMapping("searchSampleInfoItem")
+    @ResponseBody
+    public String searchSampleInfoItem(@RequestBody SampleInformationItem sampleInformationItem) {
+        JSONObject res = new JSONObject();
+        try {
+            List<SampleInformationItem> sampleInformationItemList = sampleInformationService.searchItem(sampleInformationItem);
+            JSONArray data = JSONArray.fromArray(sampleInformationItemList.toArray(new SampleInformationItem[sampleInformationItemList.size()]));
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+    }
+
     @RequestMapping("getSampleInfoSeniorSelectedList")
     @ResponseBody
     public String getSampleInfoSeniorSelectedList() {
         JSONObject res = new JSONObject();
         // 获取枚举
-        ApplyState[] applyStates = new ApplyState[]{ApplyState.Appointed, ApplyState.Canceld, ApplyState.SampleTaked, ApplyState.Invalid};
+        ApplyState[] applyStates = new ApplyState[]{ApplyState.Appointed, ApplyState.Received, ApplyState.Rejected, ApplyState.Invalid};
         JSONArray applyStateList = JSONArray.fromArray(applyStates);
         res.put("applyStateList", applyStateList);
         return res.toString();

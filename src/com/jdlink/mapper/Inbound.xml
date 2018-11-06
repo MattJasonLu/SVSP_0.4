@@ -40,8 +40,89 @@
     </select>
 
     <select id="listInboundPlanOrder" resultMap="InboundPlanOrderRM">
-        SELECT * FROM t_pl_inboundplanorder;
+        SELECT * FROM t_pl_inboundplanorder
+        <where>
+            <if test="inboundPlanOrder != null and inboundPlanOrder.keyword != null and inboundPlanOrder.keyword != ''">
+                and inboundPlanOrderId LIKE "%"#{inboundPlanOrder.keyword}"%" or planDate like binary "%"#{inboundPlanOrder.keyword}"%"
+                or transferDate like binary "%"#{inboundPlanOrder.keyword}"%" or transferDraftId like "%"#{inboundPlanOrder.keyword}"%"
+                or wastesName like "%"#{inboundPlanOrder.keyword}"%" or wastesCode like "%"#{inboundPlanOrder.keyword}"%"
+            </if>
+            <if test="inboundPlanOrder != null and inboundPlanOrder.inboundPlanOrderId != null and inboundPlanOrder.inboundPlanOrderId != ''">
+                and inboundPlanOrderId LIKE "%"#{inboundPlanOrder.inboundPlanOrderId}"%"
+            </if>
+            <if test="inboundPlanOrder != null and inboundPlanOrder.produceCompany != null">
+                and produceCompanyId in (select clientId from client where companyName like "%"#{inboundPlanOrder.produceCompany.companyName}"%")
+            </if>
+            <if test="inboundPlanOrder != null and inboundPlanOrder.departmentId != null and inboundPlanOrder.departmentId != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                and (DATE_FORMAT(planDate,'%Y-%m-%d') like "%"#{inboundPlanOrder.departmentId}"%"
+                or DATE_FORMAT(planDate,'%Y%m%d') like "%"#{inboundPlanOrder.departmentId}"%")
+            </if>
+            <if test="inboundPlanOrder != null and inboundPlanOrder.companyId != null and inboundPlanOrder.companyId != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                and (DATE_FORMAT(transferDate,'%Y-%m-%d') like "%"#{inboundPlanOrder.companyId}"%"
+                or DATE_FORMAT(transferDate,'%Y%m%d') like "%"#{inboundPlanOrder.companyId}"%")
+            </if>
+            <if test="inboundPlanOrder != null and inboundPlanOrder.transferDraftId != null and inboundPlanOrder.transferDraftId != ''">
+                and transferDraftId LIKE "%"#{inboundPlanOrder.transferDraftId}"%"
+            </if>
+            <if test="inboundPlanOrder != null and inboundPlanOrder.wastes != null">
+                <if test="inboundPlanOrder.wastes.name != null and inboundPlanOrder.wastes.name != ''">
+                    and wastesName LIKE "%"#{inboundPlanOrder.wastes.name}"%"
+                </if>
+                <if test="inboundPlanOrder.wastes.wastesId != null and inboundPlanOrder.wastes.wastesId != ''">
+                    and wastesCode LIKE "%"#{inboundPlanOrder.wastes.wastesId}"%"
+                </if>
+            </if>
+        </where>
+        order by createDate desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
     </select>
+
+    <select id="countInboundPlanOrder" resultType="int">
+        select count(*) from t_pl_inboundplanorder
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and inboundPlanOrderId LIKE "%"#{keyword}"%" or planDate like binary "%"#{keyword}"%"
+                or transferDate like binary "%"#{keyword}"%" or transferDraftId like "%"#{keyword}"%"
+                or wastesName like "%"#{keyword}"%" or wastesCode like "%"#{keyword}"%"
+            </if>
+            <if test="inboundPlanOrderId != null and inboundPlanOrderId != ''">
+                and inboundPlanOrderId LIKE "%"#{inboundPlanOrderId}"%"
+            </if>
+            <if test="departmentId != null and departmentId != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                and (DATE_FORMAT(planDate,'%Y-%m-%d') like "%"#{departmentId}"%"
+                or DATE_FORMAT(planDate,'%Y%m%d') like "%"#{departmentId}"%")
+            </if>
+            <if test="companyId != null and companyId != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                and (DATE_FORMAT(transferDate,'%Y-%m-%d') like "%"#{companyId}"%"
+                or DATE_FORMAT(transferDate,'%Y%m%d') like "%"#{companyId}"%")
+            </if>
+            <if test="transferDraftId != null and transferDraftId != ''">
+                and transferDraftId LIKE "%"#{transferDraftId}"%"
+            </if>
+            <if test="wastes != null">
+                <if test="wastes.name != null and wastes.name != ''">
+                    and wastesName LIKE "%"#{wastes.name}"%"
+                </if>
+                <if test="wastes.wastesId != null and wastes.wastesId != ''">
+                    and wastesCode LIKE "%"#{wastes.wastesId}"%"
+                </if>
+            </if>
+            <if test="true">
+                and checkState != 'Invalid'
+            </if>
+        </where>
+    </select>
+
+    <!--根据磅单信息更新入库计划单中的磅单数量-->
+    <update id="updateInboundPlanPounds">
+        update t_pl_inboundplanorder set poundsCount=#{poundsCount} where transferDraftId = #{transferDraftId};
+    </update>
 
     <!-- 增加入库计划单 -->
     <insert id="addInboundPlanOrder" parameterType="InboundPlanOrder" >
@@ -51,7 +132,7 @@
         modifierId, salesmanId, checkState, recordState, processWay, handleCategory, isQualified)
         VALUES (#{inboundPlanOrderId}, #{planDate}, #{produceCompany.clientId},
         #{acceptCompany.clientId}, #{transferDate}, #{transferDraftId}, #{prepareTransferCount}, #{transferCount}, #{storageCount},
-        #{leftCount}, #{poundsCount}, #{wastes.name}, #{wastes.code}, #{wastes.category}, #{creatorId}, #{createDate}, #{departmentId},
+        #{leftCount}, #{poundsCount}, #{wastes.name}, #{wastes.code}, #{wastes.category}, #{creatorId}, NOW(), #{departmentId},
         #{companyId}, #{modifierId}, #{salesman.salesmanId}, #{checkState}, #{recordState}, #{processWay}, #{handleCategory},
         #{isQualified});
     </insert>

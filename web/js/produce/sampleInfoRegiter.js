@@ -811,7 +811,7 @@ function addNewLine(item) {
     //clonedTr.children().find("input:first-child").prop('name').charAt(11);
     clonedTr.children().find("input").val("");
     clonedTr.children().find("input:checkbox").prop('checked', false);
-    clonedTr.children().find("select").selectpicker('val', '');
+    //clonedTr.children().find("select").selectpicker('val', '');
     clonedTr.children().get(0).innerHTML = num;    // 设置序号
     clonedTr.children().find("input,select").each(function () {
         var name = $(this).prop('name');
@@ -1065,9 +1065,24 @@ function updateAppointBySampleId() {
         wastes.transferId = $("input[name='wastes[" + $i + "].transferId']").val();
         var formType = $("select[id='wastes[" + $i + "].wastesFormType']").find("option:selected").val();
         switch(parseInt(formType)){
-            case 4 : formType = "HalfSolid";break;
-            case 5 : formType = "Liquid1";break;
-            case 6 : formType = "Solid1";break;
+            case 4 :
+                formType = "HalfSolid";
+                break;
+            case 2 :
+                formType = "Liquid";
+                break;
+            case 3 :
+                formType = "Solid";
+                break;
+            case 5 :
+                formType = "Solid1AndHalfSolid";
+                break;
+            case 6 :
+                formType = "HalfSolidAndLiquid";
+                break;
+            case 7 :
+                formType = "Solid1AndLiquid";
+                break;
         }
         wastes.formType = formType;
        // wastes.formType = $("select[id='wastes[" + $i + "].wastesFormType']").find("option:selected").val();
@@ -1153,8 +1168,8 @@ function searchSampleInfo() {
     // 精确查询
     var applyState = null;
     if ($("#search-state").val() == 0) applyState = "Appointed";
-    if ($("#search-state").val() == 1) applyState = "Canceld";
-    if ($("#search-state").val() == 2) applyState = "SampleTaked";
+    if ($("#search-state").val() == 1) applyState = "Received";
+    if ($("#search-state").val() == 2) applyState = "Rejected";
     if ($("#search-state").val() == 3) applyState = "Invalid";
     if ($("#senior").is(':visible')) {
         data = {
@@ -1231,6 +1246,48 @@ function searchSampleInfo() {
             case "磷":
                 var isPhosphorus = true;
                 keywords = "";
+                break;
+            case "已预约":
+                keywords = "Appointed";
+                break;
+            case "预约":
+                keywords = "Appointed";
+                break;
+            case "已收样":
+                keywords = "Received";
+                break;
+            case "收样":
+                keywords = "Received";
+                break;
+            case "已拒收":
+                keywords = "Rejected";
+                break;
+            case "拒收":
+                keywords = "Rejected";
+                break;
+            case "已作废":
+                keywords = "Invalid";
+                break;
+            case "作废":
+                keywords = "Invalid";
+                break;
+            case "液态":
+                keywords = "Liquid";
+                break;
+            case "固态":
+                keywords = "Solid";
+                break;
+            case "半固态":
+                keywords = "HalfSolid";
+                break;
+            case "固态+半固态":
+                keywords = "Solid1AndHalfSolid";
+                break;
+            case "半固态+液态":
+                keywords = "HalfSolidAndLiquid";
+                break;
+            case "固态+液态":
+                keywords = "Solid1AndLiquid";
                 break;
         }
         data = {

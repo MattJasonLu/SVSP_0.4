@@ -8,7 +8,7 @@ function viewClient() {
         async: false,
         dataType: "json",
         data:{
-            id: "0069"
+            id: "0168"
         },
         success: function (result) {
             if (result != undefined) {
@@ -54,6 +54,7 @@ function viewClient() {
             console.log("失败");
         }
     });
+    setInvoicedList();
 }
 
 /**
@@ -96,50 +97,67 @@ function updateClient() {
     //         console.log("失败");
     //     }
     // });
-    $('.myclass2').each(function () {
-        index++;
-        var data = {
-            companyName: $(this).children('td').eq(1).children('input').val(),
-            organizationCode: $(this).children('td').eq(3).children('input').val(),
-            representative: $(this).children('td').eq(1).html(),
-            industry: $(this).children('td').eq(3).children('input').val(),
-            enterpriseType: $(this).children('td').eq(1).children('input').val(),
-            operationType: $(this).children('td').eq(3).children('input').val(),
-            operationRecord: $(this).children('td').eq(1).children('input').val(),
-            street: $(this).children('td').eq(3).children('input').val(),
-            clientId: $(this).children('td').eq(1).children('input').val(),
-            licenseCode: $(this).children('td').eq(3).children('input').val(),
-            postCode: $(this).children('td').eq(1).children('input').val(),
-            product: $(this).children('td').eq(3).children('input').val(),
-            operationMode: $(this).children('td').eq(1).children('input').val(),
-            contingencyPlan: $(this).children('td').eq(3).children('input').val(),
-            applicationStatus: $(this).children('td').eq(1).children('input').val(),
-            location: $(this).children('td').eq(3).children('input').val()
-        };
-        //更新字表数据
-        $.ajax({
-            type: "POST",
-            url: "saveClient",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data: JSON.stringify(data),
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                if (result != undefined && result.status == "success") {
-                    console.log(result)
-                }
-                else {
-                    console.log(result)
-                }
-            },
-            error: function (result) {
-                console.log("服务器异常！")
+    var data;
+    // $('.myclass2').each(function () {
+    //     index++;
+    //     data = {
+    //         companyName: $(this).children('td').eq(1).children('input').val(),
+    //         organizationCode: $(this).children('td').eq(3).children('input').val(),
+    //         representative: $(this).children('td').eq(1).html(),
+    //         industry: $(this).children('td').eq(3).children('input').val(),
+    //         enterpriseType: $(this).children('td').eq(1).children('input').val(),
+    //         operationType: $(this).children('td').eq(3).children('input').val(),
+    //         operationRecord: $(this).children('td').eq(1).children('input').val(),
+    //         street: $(this).children('td').eq(3).children('input').val(),
+    //         clientId: $(this).children('td').eq(1).children('input').val(),
+    //         licenseCode: $(this).children('td').eq(3).children('input').val(),
+    //         postCode: $(this).children('td').eq(1).children('input').val(),
+    //         product: $(this).children('td').eq(3).children('input').val(),
+    //         operationMode: $(this).children('td').eq(1).children('input').val(),
+    //         contingencyPlan: $(this).children('td').eq(3).children('input').val(),
+    //         applicationStatus: $(this).children('td').eq(1).children('input').val(),
+    //         location: $(this).children('td').eq(3).children('input').val()
+    //     };
+    // });
+    data = {
+        clientId: '0168',
+        companyName: $("#companyName").val(),
+        organizationCode: $("#organizationCode").val(),
+        representative: $("#representative").val(),
+        industry: $("#industry").val(),
+        enterpriseType: $("#enterpriseType").val(),
+        operationType: $("#operationType").val(),
+        operationRecord: $("#operationRecord").val(),
+        street: $("#street").val(),
+        licenseCode: $("#licenseCode").val(),
+        postCode: $("#postCode").val(),
+        product: $("#product").val(),
+        operationMode: $("#operationMode").val(),
+        contingencyPlan: $("#contingencyPlan").val(),
+        // applicationStatus: $("#applicationStatus").val(),
+        location: $("#location").val()
+    };
+    console.log(data);
+    //更新字表数据
+    $.ajax({
+        type: "POST",
+        url: "saveClient",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                alert(result.message);
+                window.location.reload();
+            } else {
+                console.log(result)
             }
-
-
-        });
-
-    })
+        },
+        error: function (result) {
+            console.log("服务器异常！")
+        }
+    });
 }
 function readyForUpdate() {
     $("#table").find("input").removeAttr("readonly");
@@ -148,6 +166,90 @@ function readyForUpdate() {
     $("#save").removeAttr("class","hidden");
     $("#close").removeAttr("class","hidden");
     $("#print").setAttribute("class","hidden");
+}
+
+/**
+ * 设置下拉框数据
+ */
+function setInvoicedList() {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSelectedList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                // 下拉框数据填充
+                var enterpriseType = $("#enterpriseType");
+                enterpriseType.children().remove();
+                $.each(data.enterpriseTypeStrList, function (index, item) {
+                    if (item.index >= 1 && item.index <= 3) {
+                        var option = $('<option />');
+                        option.val(item.index);
+                        option.text(item.name);
+                        enterpriseType.append(option);
+                    }
+                });
+                enterpriseType.get(0).selectedIndex = -1;
+                //
+                var operationMode = $("#operationMode");
+                operationMode.children().remove();
+                $.each(data.operationModeStrList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.index);
+                    option.text(item.name);
+                    operationMode.append(option);
+                });
+                operationMode.get(0).selectedIndex = -1;
+                //
+                var operationType = $("#operationType");
+                operationType.children().remove();
+                $.each(data.operationTypeStrList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.index);
+                    option.text(item.name);
+                    operationType.append(option);
+                });
+                operationType.get(0).selectedIndex = -1;
+                //
+                var contingencyPlan = $("#contingencyPlan");
+                contingencyPlan.children().remove();
+                $.each(data.contingencyPlanStrList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.index);
+                    option.text(item.name);
+                    contingencyPlan.append(option);
+                });
+                contingencyPlan.get(0).selectedIndex = -1;
+                //
+                var operationRecord = $("#operationRecord");
+                operationRecord.children().remove();
+                $.each(data.operationRecordStrList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.index);
+                    option.text(item.name);
+                    operationRecord.append(option);
+                });
+                operationRecord.get(0).selectedIndex = -1;
+                //
+                var applicationStatus = $("#applicationStatus");
+                applicationStatus.children().remove();
+                $.each(data.applicationStatusStrList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.index);
+                    option.text(item.name);
+                    applicationStatus.append(option);
+                });
+                applicationStatus.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
 }
 
 

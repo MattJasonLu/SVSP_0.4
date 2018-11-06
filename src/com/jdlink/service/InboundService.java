@@ -19,7 +19,20 @@ public interface InboundService {
      * 列出所有入库计划单
      * @return 入库计划单
      */
-    List<InboundPlanOrder> listInboundPlanOrder();
+    List<InboundPlanOrder> listInboundPlanOrder(InboundPlanOrder inboundPlanOrder, Page page);
+
+    /**
+     * 获取入库单的数量
+     * @param inboundPlanOrder 入库计划单的数量
+     * @return 数量
+     */
+    int countInboundPlanOrder(InboundPlanOrder inboundPlanOrder);
+
+    /**
+     * 更新入库计划单的磅单
+     * @param inboundPlanOrder 入库计划单
+     */
+    void updateInboundPlanPounds(InboundPlanOrder inboundPlanOrder);
 
     /**
      * 增加入库计划单
