@@ -73,8 +73,8 @@ public class WasteIntoServiceImpl implements WasteIntoService {
     }
 
     @Override
-    public void confirmSecondarySampleById(String id) {
-        wasteIntoMapper.confirmSecondarySampleById(id);
+    public void confirmSecondarySampleById(String id,String laboratorySignatory) {
+        wasteIntoMapper.confirmSecondarySampleById(id,laboratorySignatory);
     }
 
     @Override
@@ -90,5 +90,15 @@ public class WasteIntoServiceImpl implements WasteIntoService {
     @Override
     public SecondarySampleItem getByWastesId(String id) {
         return wasteIntoMapper.getByWastesId(id);
+    }
+
+    @Override
+    public List<SecondarySample> searchSecondary(SecondarySample secondarySample) {
+        return wasteIntoMapper.searchSecondary(secondarySample);
+    }
+
+    @Override
+    public int searchSecondaryCount(SecondarySample secondarySample) {
+        return wasteIntoMapper.searchSecondaryCount(secondarySample);
     }
 }

@@ -17,8 +17,8 @@ public interface ProductionDailyService {
     void addSewage(Sewage sewage);
 
     int countSoftWater();
-    int searchCountSoftWater(SoftWater softWater);
-    List<SoftWater> searchSoftWater(SoftWater softWater);
+    int searchCountSoftWater(Sewageregistration sewageregistration);
+    List<Sewageregistration> searchSoftWater(Sewageregistration sewageregistration);
     List<SoftWater> listPageSoftWater(Page page);
     void addSoftWater(SoftWater softWater);
 

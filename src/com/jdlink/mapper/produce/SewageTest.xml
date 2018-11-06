@@ -64,11 +64,12 @@
     </select>
 
 
-    <!--更新污水主表-->
+    <!--更新污水/软水主表-->
     <update id="updateSewaGeregistration" parameterType="SewaGeregistration">
         update t_pr_sewageregistration set sendingPerson=#{sendingPerson},address=#{address},
         laboratorySignatory=#{laboratorySignatory},nowTime=NOW() where id=#{id}
     </update>
+
 
     <!--更新后做删除字表-->
     <delete id="deleteSewaGeregistrationById" parameterType="String">
@@ -101,6 +102,17 @@
 <select id="totalSecondaryTestRecord" resultType="int">
     select count(*) from t_pr_secondarytest;
 </select>
+
+
+    <!--更新次生送样信息主表-->
+    <update id="updateSecondarySample" parameterType="SecondarySample">
+        update t_pr_secondarysample set sendingPerson=#{sendingPerson},sendingPerson=#{sendingPerson},
+        address=#{address}, laboratorySignatory=#{laboratorySignatory},nowTime=NOW()
+        where  id=#{id}
+    </update>
+    <delete id="deleteSecondarySampleItem" parameterType="String">
+        delete from t_pr_secondarysampleitem where sampleinformationId=#{sampleinformationId};
+    </delete>
 </mapper>
 
 
