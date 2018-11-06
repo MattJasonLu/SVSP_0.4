@@ -113,8 +113,8 @@ public interface ProductionDailyService {
 
     Sewageregistration  getSewaGeregistrationById(String id);
 
-    void confirmSewaGeregistrationById(String id);
 
+    void confirmSewaGeregistrationById(String id,String laboratorySignatory);
     void rejectSewaGeregistrationById(String id,String advice);
 
     int countById(String id);

@@ -151,8 +151,8 @@ public class ProductionDailyServiceImpl implements ProductionDailyService
 
 
     @Override
-    public void confirmSewaGeregistrationById(String id) {
-        productionDailyMapper.confirmSewaGeregistrationById(id);
+    public void confirmSewaGeregistrationById(String id,String laboratorySignatory) {
+        productionDailyMapper.confirmSewaGeregistrationById(id,laboratorySignatory);
     }
 
     @Override

@@ -1151,12 +1151,14 @@ function setSubmit(item) {
 function confirmSample() {
 var id=$("#reservationId1").text();
 
+var laboratorySignatory=$('#laboratorySignatory').val();
+
 $.ajax({
     type: "POST",                       // 方法类型
     url: "confirmSewaGeregistrationById",              // url
     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
     dataType: "json",
-    data:{"id":id},
+    data:{"id":id,'laboratorySignatory':laboratorySignatory},
     //contentType: 'application/json;charset=utf-8',
     success:function (result) {
         if (result != undefined && result.status == "success"){
