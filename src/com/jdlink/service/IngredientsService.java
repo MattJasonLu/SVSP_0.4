@@ -21,6 +21,11 @@ public interface IngredientsService {
     void updateIn(IngredientsIn ingredientsIn);
     int getAmountItems(Ingredients ingredients);
     List<Ingredients> getIngredientsInItemByRange(Date startDate,Date endDate,Equipment equipment);
+    int countInItem();
+    int searchInItemCount(Ingredients ingredients);
+    List<Ingredients> listPageInItem(Page page);
+    List<Ingredients> searchInItem(Ingredients ingredients);
+
 
     /////领料单///////
     int countReceiveById(String id);
@@ -40,6 +45,11 @@ public interface IngredientsService {
     List<Ingredients> searchInventory(Ingredients ingredients);
     void updateReceiveState(String id);
     Ingredients getInventoryByNameAndWare(Ingredients ingredients);
+    int countReceiveItem();
+    int searchReceiveItemCount(Ingredients ingredients);
+    List<Ingredients> listPageReceiveItem(Page page);
+    List<Ingredients> searchReceiveItem(Ingredients ingredients);
+
 
     ///出库单///
     int countOutById(String id);
@@ -52,4 +62,9 @@ public interface IngredientsService {
     void invalidOut(String id);
     void updateOut(IngredientsOut ingredientsOut);
     List<Ingredients> getIngredientsOutItemByRange(Date startDate, Date endDate,Equipment equipment);
+    int countOutItem();
+    int searchOutItemCount(Ingredients ingredients);
+    List<Ingredients> listPageOutItem(Page page);
+    List<Ingredients> searchOutItem(Ingredients ingredients);
+
 }

@@ -123,6 +123,11 @@ public class PRIngredientsController {
         return res.toString();
     }
 
+    /**
+     * 获取分页数据
+     * @param page
+     * @return
+     */
     @RequestMapping("loadPageIngredientsInList")
     @ResponseBody
     public String loadPageIngredientsInList(@RequestBody Page page) {
@@ -130,6 +135,30 @@ public class PRIngredientsController {
         try {
             List<IngredientsIn> ingredientsInList = ingredientsService.listPageIn(page);
             JSONArray data = JSONArray.fromArray(ingredientsInList.toArray(new IngredientsIn[ingredientsInList.size()]));
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "分页数据获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "分页数据获取失败！");
+        }
+        // 返回结果
+        return res.toString();
+    }
+
+    /**
+     * 获取明细分页数据
+     * @param page
+     * @return
+     */
+    @RequestMapping("loadPageIngredientsInItemList")
+    @ResponseBody
+    public String loadPageIngredientsInItemList(@RequestBody Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            List<Ingredients> ingredientsList = ingredientsService.listPageInItem(page);
+            JSONArray data = JSONArray.fromArray(ingredientsList.toArray(new Ingredients[ingredientsList.size()]));
             res.put("data", data);
             res.put("status", "success");
             res.put("message", "分页数据获取成功!");
@@ -152,6 +181,22 @@ public class PRIngredientsController {
     public int totalIngredientsInRecord() {
         try {
             return ingredientsService.countIn();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 获取总记录数
+     *
+     * @return
+     */
+    @RequestMapping("totalIngredientsInItemRecord")
+    @ResponseBody
+    public int totalIngredientsInItemRecord() {
+        try {
+            return ingredientsService.countInItem();
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
@@ -306,8 +351,48 @@ public class PRIngredientsController {
     }
 
     /**
+     * 获取查询总数
+     *
+     * @param ingredients
+     * @return
+     */
+    @RequestMapping("searchIngredientsInItemTotal")
+    @ResponseBody
+    public int searchIngredientsInItemTotal(@RequestBody Ingredients ingredients) {
+        try {
+            return ingredientsService.searchInItemCount(ingredients);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
      * 查询功能
      *
+     * @param ingredients
+     * @return
+     */
+    @RequestMapping("searchIngredientsInItem")
+    @ResponseBody
+    public String searchIngredientsInItem(@RequestBody Ingredients ingredients) {
+        JSONObject res = new JSONObject();
+        try {
+            List<Ingredients> ingredientsList = ingredientsService.searchInItem(ingredients);
+            JSONArray data = JSONArray.fromArray(ingredientsList.toArray(new Ingredients[ingredientsList.size()]));
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 查询功能
      * @param ingredientsIn
      * @return
      */
@@ -489,6 +574,25 @@ public class PRIngredientsController {
         return res.toString();
     }
 
+    @RequestMapping("loadPageIngredientsReceiveItemList")
+    @ResponseBody
+    public String loadPageIngredientsReceiveItemList(@RequestBody Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            List<Ingredients> ingredientsList = ingredientsService.listPageReceiveItem(page);
+            JSONArray data = JSONArray.fromArray(ingredientsList.toArray(new Ingredients[ingredientsList.size()]));
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "分页数据获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "分页数据获取失败！");
+        }
+        // 返回结果
+        return res.toString();
+    }
+
     /**
      * 获取总记录数
      *
@@ -499,6 +603,22 @@ public class PRIngredientsController {
     public int totalIngredientsReceiveRecord() {
         try {
             return ingredientsService.countReceive();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 获取总记录数
+     *
+     * @return
+     */
+    @RequestMapping("totalIngredientsReceiveItemRecord")
+    @ResponseBody
+    public int totalIngredientsReceiveItemRecord() {
+        try {
+            return ingredientsService.countReceiveItem();
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
@@ -624,6 +744,23 @@ public class PRIngredientsController {
     }
 
     /**
+     * 获取查询总数
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("searchIngredientsReceiveItemTotal")
+    @ResponseBody
+    public int searchIngredientsReceiveItemTotal(@RequestBody Ingredients ingredients) {
+        try {
+            return ingredientsService.searchReceiveItemCount(ingredients);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
      * 查询功能
      *
      * @param
@@ -636,6 +773,30 @@ public class PRIngredientsController {
         try {
             List<IngredientsReceive> ingredientsReceiveList = ingredientsService.searchReceive(ingredientsReceive);
             JSONArray data = JSONArray.fromArray(ingredientsReceiveList.toArray(new IngredientsReceive[ingredientsReceiveList.size()]));
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 查询功能
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("searchIngredientsReceiveItem")
+    @ResponseBody
+    public String searchIngredientsReceiveItem(@RequestBody Ingredients ingredients) {
+        JSONObject res = new JSONObject();
+        try {
+            List<Ingredients> ingredientsList = ingredientsService.searchReceiveItem(ingredients);
+            JSONArray data = JSONArray.fromArray(ingredientsList.toArray(new Ingredients[ingredientsList.size()]));
             res.put("status", "success");
             res.put("message", "查询成功");
             res.put("data", data);
@@ -870,6 +1031,25 @@ public class PRIngredientsController {
         return res.toString();
     }
 
+    @RequestMapping("loadPageIngredientsOutItemList")
+    @ResponseBody
+    public String loadPageIngredientsOutItemList(@RequestBody Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            List<Ingredients> ingredientsList = ingredientsService.listPageOutItem(page);
+            JSONArray data = JSONArray.fromArray(ingredientsList.toArray(new Ingredients[ingredientsList.size()]));
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "分页数据获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "分页数据获取失败！");
+        }
+        // 返回结果
+        return res.toString();
+    }
+
     /**
      * 获取总记录数
      *
@@ -880,6 +1060,22 @@ public class PRIngredientsController {
     public int totalIngredientsOutRecord() {
         try {
             return ingredientsService.countOut();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 获取总记录数
+     *
+     * @return
+     */
+    @RequestMapping("totalIngredientsOutItemRecord")
+    @ResponseBody
+    public int totalIngredientsOutItemRecord() {
+        try {
+            return ingredientsService.countOutItem();
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
@@ -1069,6 +1265,23 @@ public class PRIngredientsController {
     }
 
     /**
+     * 获取查询总数
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("searchIngredientsOutItemTotal")
+    @ResponseBody
+    public int searchIngredientsOutItemTotal(@RequestBody Ingredients ingredients) {
+        try {
+            return ingredientsService.searchOutItemCount(ingredients);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
      * 查询功能
      *
      * @param
@@ -1081,6 +1294,30 @@ public class PRIngredientsController {
         try {
             List<IngredientsOut> ingredientsOutList = ingredientsService.searchOut(ingredientsOut);
             JSONArray data = JSONArray.fromArray(ingredientsOutList.toArray(new IngredientsOut[ingredientsOutList.size()]));
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 查询功能
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("searchIngredientsOutItem")
+    @ResponseBody
+    public String searchIngredientsOutItem(@RequestBody Ingredients ingredients) {
+        JSONObject res = new JSONObject();
+        try {
+            List<Ingredients> ingredientsList = ingredientsService.searchOutItem(ingredients);
+            JSONArray data = JSONArray.fromArray(ingredientsList.toArray(new Ingredients[ingredientsList.size()]));
             res.put("status", "success");
             res.put("message", "查询成功");
             res.put("data", data);
