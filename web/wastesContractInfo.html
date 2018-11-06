@@ -324,6 +324,7 @@ $.ajax({
                     <th class="text-center">处置金额</th>
                     <th class="text-center">运输方式</th>
                     <th class="text-center">备注</th>
+                    <th class="text-center">危废图片</th>
                     <!--<th class="text-center">状态</th>-->
                 </tr>
                 </thead>
@@ -345,9 +346,14 @@ $.ajax({
                         </select>
                     </td>
                     <td class="text-center"><input class="focus" title="" id="note"></td>
+                  <td class="text-center">
+                  <input type="file"  id="picture" name="picture" placeholder="">
+                  </td>
                 </tr>
+
                 <tr id="plusBtn">
                     <td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>

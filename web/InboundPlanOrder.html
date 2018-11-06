@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>入库列表</title>
+    <title>产废平台</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -12,7 +12,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/warehouseManage.js"></script>
+    <script src="js/produce/inboundPlanOrder.js"></script>
 </head>
 <body onload="loadPageList();">
     <!--导航条-->
@@ -157,15 +157,15 @@
                 <ol class="breadcrumb">
                     <li><a href="businessModel.html">接收管理</a></li>
                     <li><a href="#">入库管理</a></li>
-                    <li class="active"><a href="#">入库列表</a></li>
+                    <li class="active"><a href="#">入库计划单</a></li>
                 </ol>
             </div>
-            <h4 class="sub-header">入库列表</h4>
+            <h4 class="sub-header">入库计划单</h4>
             <div class="row">
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" href="newWarehouse.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" href="#" onclick="showAddModal();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                         <a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose();"><span
                                 class="glyphicon glyphicon-arrow-down"
                                 aria-hidden="true"></span> 导入</a>
@@ -189,47 +189,48 @@
             <div class="panel panel-default" id="senior" style="display: none;">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="form-horizontal col-md-4">
+                        <div class="form-horizontal col-md-6">
                             <div class="form-group">
-                                <label for="search-warehouseName" class="col-sm-4 control-label">仓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;库</label>
+                                <label for="search-inboundPlanOrderId" class="col-sm-4 control-label">计划单号</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-warehouseName" name="search-warehouseName" placeholder="" onkeyup="searchData();">
+                                    <input type="text" class="form-control" id="search-inboundPlanOrderId" name="search-inboundPlanOrderId" placeholder="" onkeyup="searchData();">
                                 </div>
                             </div>
                         </div>
-                        <div class="form-horizontal col-md-4">
+                        <div class="form-horizontal col-md-6">
                             <div class="form-group">
-                                <label for="search-inboundOrderId" class="col-sm-4 control-label">入库单号</label>
+                                <label for="search-transferDraftId" class="col-sm-4 control-label">联单编号</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-inboundOrderId" name="search-inboundOrderId" placeholder="" onkeyup="searchData();">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-4">
-                            <div class="form-group">
-                                <label for="search-recordState" class="col-sm-4 control-label">单据状态</label>
-                                <div class="col-xs-7">
-                                    <select class="form-control" name="search-recordState" id="search-recordState" onchange="searchData();"></select>
+                                    <input class="form-control" name="search-transferDraftId" id="search-transferDraftId" onchange="searchData();">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-horizontal col-md-6">
-                            <div class="form-group" style="margin-left: -50px;">
-                                <label class="col-sm-3 control-label">入库日期 </label>
-                                <div class="input-group">
-                                    <input type="date" class="input-sm form-control" id="search-beginTime" title=""/>
-                                    <span class="input-group-addon">-</span>
-                                    <input type="date" class="input-sm form-control" id="search-endTime" title=""/>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">危废名称</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-wastesName" title=""/>
                                 </div>
                             </div>
                         </div>
                         <div class="form-horizontal col-md-6">
                             <div class="form-group">
-                                <label for="search-checkState" class="col-sm-4 control-label">审批状态</label>
+                                <label for="search-wastesCode" class="col-sm-4 control-label">危废代码</label>
                                 <div class="col-xs-7">
-                                    <select class="form-control" name="search-checkState" id="search-checkState" onchange="searchData();"></select>
+                                    <input class="form-control" name="search-checkState" id="search-wastesCode" onchange="searchData();">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group">
+                                <label for="search-companyName" class="col-sm-4 control-label">产废单位</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="" onkeyup="searchData();">
                                 </div>
                             </div>
                         </div>
@@ -245,23 +246,18 @@
                                 <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
                             </label>
                         </th>
-                        <th class="text-center">入库单号</th>
-                        <th class="text-center">入库日期</th>
-                        <th class="text-center">仓库</th>
-                        <!--<th class="text-center">部门</th>-->
-                        <!--<th class="text-center">业务员</th>-->
-                        <th class="text-center">入库类别</th>
-                        <!--<th class="text-center">进料方式</th>-->
-                        <!--<th class="text-center">计划数量</th>-->
-                        <!--<th class="text-center">危废数量</th>-->
-                        <th class="text-center">单据状态</th>
-                        <th class="text-center">制单人</th>
-                        <!--<th class="text-center">保管员</th>-->
-                        <!--<th class="text-center">主管</th>-->
-                        <!--<th class="text-center">审批人</th>-->
-                        <th class="text-center">审批状态</th>
-                        <th class="text-center">备注</th>
-                        <!--<th class="text-center">转移联单号</th>-->
+                        <th class="text-center">计划单号</th>
+                        <th class="text-center">计划日期</th>
+                        <th class="text-center">产废单位</th>
+                        <th class="text-center">转移时间</th>
+                        <th class="text-center">联单号</th>
+                        <th class="text-center">危废名称</th>
+                        <th class="text-center">危废代码</th>
+                        <th class="text-center">拟转移量</th>
+                        <th class="text-center">转移量</th>
+                        <th class="text-center">已入库数量</th>
+                        <th class="text-center">剩余数量</th>
+                        <th class="text-center">磅单数量</th>
                         <th class="text-center">操作</th>
                     </tr>
                     </thead>
@@ -272,29 +268,21 @@
                                 <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
                             </label>
                         </td>
-                        <td class="text-center" name="inboundOrderId">入库单号</td>
-                        <td class="text-center" name="inboundDate">入库日期</td>
-                        <td class="text-center" name="wareHouseName">仓库</td>
-                        <!--<td class="text-center">部门</td>-->
-                        <!--<td class="text-center">业务员</td>-->
-                        <td class="text-center" name="boundType">入库类别</td>
-                        <!--<td class="text-center">进料方式</td>-->
-                        <!--<td class="text-center">计划数量</td>-->
-                        <!--<td class="text-center">危废数量</td>-->
-                        <td class="text-center" name="recordState">单据状态</td>
-                        <td class="text-center" name="creatorId">制单人</td>
-                        <!--<td class="text-center" name="keeperId">保管员</td>-->
-                        <!--<td class="text-center" name="directorId">主管</td>-->
-                        <!--<td class="text-center" name="approverId">审批人</td>-->
-                        <td class="text-center" name="checkState">审批状态</td>
-                        <td class="text-center" name="remarks">备注</td>
-                        <!--<td class="text-center">转移联单号</td>-->
+                        <td class="text-center" name="inboundPlanOrderId">计划单号</td>
+                        <td class="text-center" name="planDate">计划日期</td>
+                        <td class="text-center" name="produceCompanyName">产废单位</td>
+                        <td class="text-center" name="transferDate">转移时间</td>
+                        <td class="text-center" name="transferDraftId">联单号</td>
+                        <td class="text-center" name="wastesName">危废名称</td>
+                        <td class="text-center" name="wastesCode">危废代码</td>
+                        <td class="text-center" name="prepareTransferCount">拟转移量</td>
+                        <td class="text-center" name="transferCount">转移量</td>
+                        <td class="text-center" name="storageCount">已入库数量</td>
+                        <td class="text-center" name="leftCount">剩余数量</td>
+                        <td class="text-center" name="poundsCount">磅单数量</td>
                         <td class="text-center">
                             <a href="#" onclick="viewData($(this));" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                             <a href="#" onclick="setInvalid($(this));" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
-                            <!--<a href="#" onclick="submit();" title="提交"><span class="glyphicon glyphicon-export" aria-hidden="true"></span></a>-->
-                            <!--<a href="#" onclick="signIn();" title="签收"><span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>-->
-                            <!--<a href="#" onclick="changeAttribute();" title="属性调整"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></a>-->
                         </td>
                     </tr>
                     </tbody>
@@ -337,87 +325,102 @@
                     </li>
                 </ol>
             </nav>
-
-            <!--属性调整模态框-->
-            <div class="modal fade bs-example-modal-lg" id="attributeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">属性调整</div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <label for="modal-handleCategory" class="col-sm-4 control-label">进料方式</label>
-                                    <div class="col-xs-7">
-                                        <select id="modal-handleCategory"></select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" id="saveBtn" data-dismiss="modal">确认</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        </div>
+        </div>
+        <!--入库单新增模态框-->
+        <div class="modal fade bs-example-modal-lg" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">入库单新增</div>
+                    <div class="modal-body">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th class="text-center">计划日期</th>
+                                <th class="text-center">产废单位</th>
+                                <th class="text-center">转移时间</th>
+                                <th class="text-center">联单编号</th>
+                                <th class="text-center">危废名称</th>
+                                <th class="text-center">危废代码</th>
+                                <th class="text-center">拟转移量</th>
+                                <th class="text-center">转移量</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="text-center"><input class="form-control" type="date" id="addPlanDate"></td>
+                                <td class="text-center"><select class="form-control" id="addProduceCompany"></select></td>
+                                <td class="text-center"><input class="form-control" type="date" id="addTransferDate"></td>
+                                <td class="text-center"><input class="form-control" id="addTransferDraftId"></td>
+                                <td class="text-center"><input class="form-control" id="addWastesName"></td>
+                                <td class="text-center"><input class="form-control" id="addWastesCode"></td>
+                                <td class="text-center"><input class="form-control" id="addPrepareTransferCount"></td>
+                                <td class="text-center"><input class="form-control" id="addTransferCount"></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
-                </div>
-            </div>
-
-            <!--入库单明细查看模态框-->
-            <div class="modal fade bs-example-modal-lg" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">入库单明细</div>
-                        <div class="modal-body">
-                            <table class="table table-bordered">
-                                <thead>
-                                <tr>
-                                    <th class="text-center">序号</th>
-                                    <!--<th class="text-center">入库计划号</th>-->
-                                    <th class="text-center">转移联单号</th>
-                                    <th class="text-center">产废单位</th>
-                                    <th class="text-center">危废名称</th>
-                                    <th class="text-center">危废代码</th>
-                                    <th class="text-center">危废数量(吨)</th>
-                                    <!--<th class="text-center">单价</th>-->
-                                    <!--<th class="text-center">金额</th>-->
-                                    <th class="text-center">处理方式</th>
-                                    <th class="text-center">进料方式</th>
-                                    <th class="text-center">备注</th>
-                                    <th class="text-center">库区</th>
-                                    <th class="text-center hidden">编号</th>
-                                    <th class="text-center">操作</th>
-                                </tr>
-                                </thead>
-                                <tbody id="itemData">
-                                <tr id="itemClonedTr" style="display: none;">
-                                    <td class="text-center" name="index">1</td>
-                                    <!--<td class="text-center" name="inboundPlanOrderId">inboundOrderId</td>-->
-                                    <td class="text-center" name="transferDraftId">inboundOrderId</td>
-                                    <td class="text-left" name="produceCompanyName">produceCompanyName</td>
-                                    <td class="text-left" name="wastesName">废液</td>
-                                    <td class="text-center" name="wastesCode">QW10001</td>
-                                    <td class="text-right" name="wastesAmount">5</td>
-                                    <!--<td class="text-right" name="unitPriceTax"></td>-->
-                                    <!--<td class="text-right" name="totalPrice"></td>-->
-                                    <td class="text-right" name="processWay"></td>
-                                    <td class="text-right" name="handleCategory"></td>
-                                    <td class="text-right" name="remarks"></td>
-                                    <td class="text-right" name="warehouseArea"></td>
-                                    <td class="text-right hidden" name="inboundOrderItemId"></td>
-                                    <td class="text-right">
-                                        <a href="#" onclick="changeAttribute($(this));" title="属性调整"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="add" onclick="addInboundPlanOrder();">新增</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     </div>
                 </div>
             </div>
         </div>
-
+        <!--入库单明细查看模态框-->
+        <div class="modal fade bs-example-modal-lg" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">入库单明细</div>
+                    <div class="modal-body">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th class="text-center">序号</th>
+                                <!--<th class="text-center">入库计划号</th>-->
+                                <th class="text-center">转移联单号</th>
+                                <th class="text-center">产废单位</th>
+                                <th class="text-center">危废名称</th>
+                                <th class="text-center">危废代码</th>
+                                <th class="text-center">危废数量(吨)</th>
+                                <!--<th class="text-center">单价</th>-->
+                                <!--<th class="text-center">金额</th>-->
+                                <th class="text-center">处理方式</th>
+                                <th class="text-center">进料方式</th>
+                                <th class="text-center">备注</th>
+                                <th class="text-center">库区</th>
+                                <th class="text-center hidden">编号</th>
+                                <th class="text-center">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody id="itemData">
+                            <tr id="itemClonedTr" style="display: none;">
+                                <td class="text-center" name="index">1</td>
+                                <!--<td class="text-center" name="inboundPlanOrderId">inboundOrderId</td>-->
+                                <td class="text-center" name="transferDraftId">inboundOrderId</td>
+                                <td class="text-left" name="produceCompanyName">produceCompanyName</td>
+                                <td class="text-left" name="wastesName">废液</td>
+                                <td class="text-center" name="wastesCode">QW10001</td>
+                                <td class="text-right" name="wastesAmount">5</td>
+                                <!--<td class="text-right" name="unitPriceTax"></td>-->
+                                <!--<td class="text-right" name="totalPrice"></td>-->
+                                <td class="text-right" name="processWay"></td>
+                                <td class="text-right" name="handleCategory"></td>
+                                <td class="text-right" name="remarks"></td>
+                                <td class="text-right" name="warehouseArea"></td>
+                                <td class="text-right hidden" name="inboundOrderItemId"></td>
+                                <td class="text-right">
+                                    <a href="#" onclick="changeAttribute($(this));" title="属性调整"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--导入模态框-->
         <div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">

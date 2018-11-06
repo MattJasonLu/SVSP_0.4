@@ -397,4 +397,38 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         select * from t_quotationitem
         where contractId in (select contractId from t_contract where clientId in (select clientId from client where companyName =#{companyName}) and checkState='Keeping')
     </select>
+
+
+    <!--获取最新的合同数据(不分合同类别)==>合约量统计-->
+
+    <resultMap id="QuotationItemRM" type="QuotationItem">
+        <association property="contract" column="contractId" select="getContractById"></association>
+        <association property="client" column="clientId" select="getClient"></association>
+    </resultMap>
+    <select id="getContractById" resultType="Contract">
+        select * from t_contract where contractId=#{contractId};
+    </select>
+    <select id="contractVolume" resultType="int">
+      select  count(*) from t_quotationitem  where
+  t_quotationitem.contractId in(select contractId from t_contract where  contractType is NOT  NULL  and period is NULL and contractContent is NULL  and  modelVersion is null);
+    </select>
+    <select id="ContractList" resultMap="QuotationItemRM"  >
+        select * from t_quotationitem where t_quotationitem.contractId in(select contractId from t_contract where  contractType is NOT  NULL  and period is NULL and contractContent is NULL  and  modelVersion is null)
+
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+
+    <!--插入文件-->
+    <update id="setFilePath" parameterType="QuotationItem">
+        <if test="picture != null and picture != ''">
+            UPDATE t_quotationitem SET picture=#{picture} WHERE contractId=#{contractId} and wastesName=#{wastesName} and wastesCode=#{wastesCode};
+            INSERT INTO t_document (contractId, filePath, documentType) VALUES (#{contractId}, #{picture},'Contract');
+        </if>
+    </update>
 </mapper>
+
+
+

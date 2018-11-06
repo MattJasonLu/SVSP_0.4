@@ -121,6 +121,8 @@
                         <li class="dropdown-submenu">
                             <a href="#">入库管理</a>
                             <ul class="dropdown-menu">
+                                <li><a href="InboundPlanOrder.html">入库计划单</a></li>
+                                <li role="separator" class="divider"></li>
                                 <li><a href="warehouseManage.html">危废入库</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="secondWarehouseManage.html">次生入库</a></li>
@@ -410,12 +412,12 @@
                             <input type="text" class="form-control" id="address" name="signer" title="">
                         </div>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="laboratorySignatory" class="col-sm-4 control-label">化验室签收人</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="laboratorySignatory" name="signer">
-                        </div>
-                    </div>
+                    <!--<div class="form-group col-md-6">-->
+                        <!--<label for="laboratorySignatory" class="col-sm-4 control-label">化验室签收人</label>-->
+                        <!--<div class="col-sm-6">-->
+                            <!--<input type="text" class="form-control" id="laboratorySignatory" name="signer">-->
+                        <!--</div>-->
+                    <!--</div>-->
                 </div>
             </div>
             <table class="table table-bordered">
@@ -647,8 +649,8 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label for="laboratorySignatory" class="col-sm-4 control-label">化验室签收人</label>
-                        <div class="col-sm-6">
-                            <span id="laboratorySignatory1"></span>
+                        <div class="col-md-6">
+                        <input type="text" class="form-control" id="laboratorySignatory" name="signer">
                         </div>
                     </div>
                 </div>

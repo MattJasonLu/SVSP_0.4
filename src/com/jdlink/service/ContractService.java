@@ -77,4 +77,10 @@ public interface ContractService {
     List<Contract> getContractByMonth(String month);
     List<String> getNewestContractId1();
     List<QuotationItem> getWastesInfoByCompanyName(String companyName);
+
+    List<QuotationItem> ContractList(Page page);
+
+    int contractVolume();
+
+    void setFilePath(QuotationItem quotationItem);
 }

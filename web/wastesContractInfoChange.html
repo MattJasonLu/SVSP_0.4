@@ -320,6 +320,8 @@ $.ajax({
                     <th class="text-center" style="width: 100px">处置金额</th>
                     <th class="text-center">运输方式</th>
                     <th class="text-center">备注</th>
+                    <th class="text-center">危废图片</th>
+                    <th class="text-center"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -340,9 +342,18 @@ $.ajax({
                         </select>
                     </td>
                     <td class="text-center"><input class="focus" title="" style="width: 100%"></td>
+                    <td class="text-center form-inline">
+                        <input type="file"  id="picture" name="picture" class="form-inline">
+                    </td>
+                    <td>
+                        <button class="btn btn-default form-inline" id="modal3_materialAttachment">下载查看</button>
+                    </td>
+
                 </tr>
                 <tr id="plusBtn">
                     <td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>

@@ -45,6 +45,10 @@ public class Wastes {
      */
     private String wastesId;
     /**
+     * 样品预约状态
+     */
+    private ApplyState applyState;
+    /**
      * 合约量
      */
     private int contractAmount;
@@ -232,6 +236,14 @@ public class Wastes {
      * 转移联单编号（送样用）
      */
     private String transferId;
+
+    public ApplyState getApplyState() {
+        return applyState;
+    }
+
+    public void setApplyState(ApplyState applyState) {
+        this.applyState = applyState;
+    }
 
     public String getTransferId() {
         return transferId;

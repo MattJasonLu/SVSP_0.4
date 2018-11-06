@@ -421,10 +421,10 @@ public class PRProductionDailyController {
     //确认送样
     @RequestMapping("confirmSewaGeregistrationById")
     @ResponseBody
-    public String confirmSewaGeregistrationById(String id) {
+    public String confirmSewaGeregistrationById(String id,String laboratorySignatory) {
         JSONObject res = new JSONObject();
         try {
-            productionDailyService.confirmSewaGeregistrationById(id);
+            productionDailyService.confirmSewaGeregistrationById(id,laboratorySignatory);
             res.put("status", "success");
             res.put("message", "收样成功");
         } catch (Exception e) {

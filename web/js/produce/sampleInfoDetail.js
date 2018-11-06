@@ -21,7 +21,7 @@ function totalPage() {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "totalSampleInformationRecord",                  // url
+            url: "totalSampleInformationItemRecord",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
@@ -40,7 +40,7 @@ function totalPage() {
     } else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchSampleInfoTotal",                  // url
+            url: "searchSampleInfoItemTotal",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data),
             dataType: "json",
@@ -147,7 +147,7 @@ function switchPage(pageNumber) {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "loadPageSampleInformationList",         // url
+            url: "loadPageSampleInformationItemList",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(page),
             dataType: "json",
@@ -167,7 +167,7 @@ function switchPage(pageNumber) {
         data['page'] = page;
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchSampleInfo",         // url
+            url: "searchSampleItemInfo",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data),
             dataType: "json",
@@ -239,7 +239,7 @@ function inputSwitchPage() {
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "loadPageSampleInformationList",         // url
+                url: "loadPageSampleInformationItemList",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(page),
                 dataType: "json",
@@ -260,7 +260,7 @@ function inputSwitchPage() {
             data['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "searchSampleInfo",         // url
+                url: "searchSampleInfoItem",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data),
                 dataType: "json",
@@ -284,7 +284,7 @@ function inputSwitchPage() {
 /**
  * 分页 获取首页内容
  * */
-function loadPageSampleInformationList() {
+function loadPageSampleInformationItemList() {
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
@@ -301,7 +301,7 @@ function loadPageSampleInformationList() {
     page.start = (pageNumber - 1) * page.count;
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "loadPageSampleInformationList",          // url
+        url: "loadPageSampleInformationItemList",          // url
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
         data: JSON.stringify(page),
         dataType: "json",
@@ -357,24 +357,32 @@ function setSampleList(result) {
             switch (inner_index) {
                 //预约单号
                 case (1):
-                    $(this).html(obj.id);
+                    $(this).html(obj.sampleId);
                     break;
                 // 公司名称
                 case (2):
                     $(this).html(obj.companyName);
                     break;
+                // 危废代码
+                case(3):
+                    $(this).html(obj.code);
+                    break;
                 //危废名称
-                case (3):
-                    $(this).html(obj.wastesName);
+                case (4):
+                    $(this).html(obj.name);
+                    break;
+                //危废类别
+                case(5):
+                    $(this).html(obj.category);
                     break;
                 // 危废形态
-                case (4):
-                    if(obj.wastesFormType != null)
-                       $(this).html(obj.wastesFormType.name);
+                case (6):
+                    if (obj.formType != null)
+                        $(this).html(obj.formType.name);
                     break;
-                case (5):
+                case (7):
                     //检测项目
-                    {
+                {
                     var list = [];
                     if (obj.isPH === true) list.push("PH");
                     if (obj.isAsh === true) list.push("灰");
@@ -403,20 +411,24 @@ function setSampleList(result) {
                     $(this).html(obj.items);
                     break;
                 // 增加检测项目
-                case (6):
+                case (8):
                     // 送样人
                     $(this).html(obj.sendingPerson);
                     break;
-                case (7):
+                case (9):
                     // 签收人
                     $(this).html(obj.laboratorySigner);
                     break;
-                case (8):
+                case (10):
                     // 状态
                     if (obj.applyState != null) {
-                        obj.name = obj.applyState.name;
+                        var name = obj.applyState.name;
                     }
-                    $(this).html(obj.name);
+                    $(this).html(name);
+                    break;
+                case(11):
+                    // 编号
+                    $(this).html(obj.id);
                     break;
             }
         });
@@ -458,30 +470,6 @@ function setSeniorSelectedList() {
             console.log("error: " + result);
         }
     });
-}
-
-/**
- * 日期格式
- */
-$('.form_datetime').datetimepicker({
-    language: 'zh-CN',
-    format: 'yyyy-mm-dd hh:ii:ss',
-    weekStart: 1,
-    todayBtn: 1,
-    autoclose: 1,
-    todayHighlight: 1,
-    startView: 2,
-    showMeridian: 1
-});
-
-/**
- * 预约登记-显示预约框
- */
-function appointModal() {
-    // 显示框体
-    setSelectList();
-    $('#appointModal').modal('show');
-
 }
 
 /**
@@ -555,73 +543,6 @@ function getSampleIdByMenu1(menu) {
     return menu.firstElementChild.nextElementSibling.innerHTML;
 }
 
-/**
- * 双击查看
- * @param menu
- */
-function viewSample1(menu) {
-    sampleId = getSampleIdByMenu1(menu);
-    view(sampleId);
-}
-
-/**
- * 单击查看
- */
-function viewSample(menu) {
-    sampleId = getSampleIdByMenu(menu);
-    view(sampleId);
-}
-
-/**
- * 显示查看模态框
- * @param sampleId
- */
-function view(sampleId) {
-    $(".newLine").remove();
-    $("#footer").show();
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "getSampleInformation",                 // url
-        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: {
-            'sampleId': sampleId
-        },
-        dataType: "json",
-        success: function (result) {
-            console.log(result);
-            if (result != undefined) {
-                var data = eval(result.data);
-                if (result.status == "success") {
-                    console.log(data.wastesList);
-                    num = 1;
-                    for (var i = 0; i < data.wastesList.length; i++) {  // 设置数据
-                        if (i > 0) addLine();
-                        var $i = i;
-                        $("span[id='model" + $i + "-wastesCode']").text(data.wastesList[i].code);
-                        $("span[id='model" + $i + "-wastesName']").text(data.wastesList[i].name);
-                        if(data.wastesList[i].formType != null)
-                            $("span[id='model" + $i + "-wastesFormType']").text(data.wastesList[i].formType.name);
-                        $("span[id='model" + $i + "-wastesHandleCategory']").text(data.wastesList[i].category);
-                        $("span[id='model" + $i + "-basicItems']").text(basicItems(data.wastesList[i]));
-                        $("span[id='model" + $i + "-addItems']").text(addItems(data.wastesList[i]));
-                    }
-                    $("#model0-companyName").text(data.companyName);
-                    $("#model0-signer").text(data.laboratorySigner);
-                    $("#model0-sendingPerson").text(data.sendingPerson);
-                    // 显示框体
-                    $('#viewAppointModal').modal('show');
-                } else {
-                    alert(result.message);
-                }
-            }
-        },
-        error: function (result) {
-            console.dir(result);
-            alert("服务器异常!");
-        }
-    });
-}
-
 function addLine() {
     num++;
     // 获取id为plusBtn的tr元素
@@ -644,7 +565,7 @@ function addLine() {
  */
 function confirmCheck() {
     var laboratorySigner = $("#checkModel0-signer").val();      // 获取签收人
-        $.ajax({
+    $.ajax({
         type: "POST",                             // 方法类型
         url: "confirmSampleInformationCheck",                 // url
         async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
@@ -690,19 +611,7 @@ function setSelectList() {
                     option.text(item.companyName);
                     companyName.append(option);
                 });
-                companyName.get(0).selectedIndex=0;
-                //刷新下拉数据
-                $('.selectpicker').selectpicker('refresh');
-                var wastesCode = $("#wastesList0-wastesCode");
-                $.each(data.wastesCodeList, function (index, item) {
-                    var option = $('<option />');
-                    if(item!=null){
-                        option.val(item.code);
-                        option.text(item.code);
-                    }
-                    wastesCode.append(option);
-                });
-                wastesCode.get(0).selectedIndex=0;
+                companyName.get(0).selectedIndex = 0;
                 //刷新下拉数据
                 $('.selectpicker').selectpicker('refresh');
                 // 下拉框数据填充
@@ -716,7 +625,7 @@ function setSelectList() {
                 var wastesCode1 = $("#wastes0-wastesCode");
                 $.each(data.wastesCodeList, function (index, item) {
                     var option = $('<option />');
-                    if(item!=null){
+                    if (item != null) {
                         option.val(item.code);
                         option.text(item.code);
                     }
@@ -763,6 +672,7 @@ function setSelectList() {
 }
 
 var num = 1;
+
 /**
  * 预约登记/修改-新增样品
  */
@@ -780,7 +690,7 @@ function addNewLine(item) {
     //clonedTr.children().find("input:first-child").prop('name').charAt(11);
     clonedTr.children().find("input").val("");
     clonedTr.children().find("input:checkbox").prop('checked', false);
-  //  clonedTr.children().find("select").selectpicker('val', '');
+    //clonedTr.children().find("select").selectpicker('val', '');
     clonedTr.children().get(0).innerHTML = num;    // 设置序号
     clonedTr.children().find("input,select").each(function () {
         var name = $(this).prop('name');
@@ -795,7 +705,7 @@ function addNewLine(item) {
     clonedTr.removeAttr("id");
     //清空数据为重新初始化selectpicker
     $('.selectpicker').data('selectpicker', null);
-    $('.bootstrap-select').find("button:first").hide();
+    $('.bootstrap-select').find("button:first").remove();
     $('.selectpicker').selectpicker();
     if (clonedTr.children().get(0).innerHTML != 1) {     // 将非第一行的所有行加上减行号
         var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
@@ -856,15 +766,15 @@ function checkModal(menu) {
                         var $i = i;
                         $("span[id='checkModel" + $i + "-wastesCode']").text(data.wastesList[i].code);
                         $("span[id='checkModel" + $i + "-wastesName']").text(data.wastesList[i].name);
-                        if(data.wastesList[i].formType != null)
-                        $("span[id='checkModel" + $i + "-wastesFormType']").text(data.wastesList[i].formType.name);
+                        if (data.wastesList[i].formType != null)
+                            $("span[id='checkModel" + $i + "-wastesFormType']").text(data.wastesList[i].formType.name);
                         $("span[id='checkModel" + $i + "-wastesHandleCategory']").text(data.wastesList[i].category);
                         $("span[id='checkModel" + $i + "-basicItems']").text(basicItems(data.wastesList[i]));
                         $("span[id='checkModel" + $i + "-addItems']").text(addItems(data.wastesList[i]));
                     }
                     $("#checkModel0-companyName").text(data.companyName);
                     $("#checkModel0-sendingPerson").text(data.sendingPerson);
-                    if(data != null && data.laboratorySigner != null)
+                    if (data != null && data.laboratorySigner != null)
                         $("#checkModel0-signer").val(data.laboratorySigner);
                 }
                 else {
@@ -922,16 +832,16 @@ function adjustSample(menu) {
             if (result != undefined) {
                 var data = eval(result.data);
                 if (result.status == "success") {
-                    $("#model3-companyName").selectpicker('val',data.companyCode);
+                    $("#model3-companyName").selectpicker('val', data.companyCode);
                     $("#model3-sendingPerson").val(data.sendingPerson);
                     $("#model3-id").val(sampleId);
                     num = 1; // 重新计数
                     for (var i = 0; i < data.wastesList.length; i++) {
                         if (i > 0) addNewLine(null);
                         var $i = i;
-                        $("select[name='wastes[" + $i + "].wastesCode']").selectpicker('val',data.wastesList[i].code);
+                        $("select[name='wastes[" + $i + "].wastesCode']").selectpicker('val', data.wastesList[i].code);
                         $("input[name='wastes[" + $i + "].wastesName']").val(data.wastesList[i].name);
-                        if(data.wastesList[i].formType != null)
+                        if (data.wastesList[i].formType != null)
                             $("select[id='wastes[" + $i + "].wastesFormType']").val(data.wastesList[i].formType.index);
                         $("input[id='wastes[" + $i + "].wastesHandleCategory']").val(data.wastesList[i].category);
                         $("input[name='wastes[" + $i + "].isPH']").prop('checked', data.wastesList[i].isPH);
@@ -966,22 +876,22 @@ function adjustSample(menu) {
  */
 function updateAppointBySampleId() {
     var sampleInformation = {};
-    if($("#model3-id").val() != "" || $("#model3-id").val() != null){
+    if ($("#model3-id").val() != "" || $("#model3-id").val() != null) {
         sampleInformation.id = $("#model3-id").val();
-    }else{
+    } else {
         sampleInformation.id = sampleId;
     }
     sampleInformation.companyName = $("#model3-companyName").find("option:selected").text();
     sampleInformation.companyCode = $("#model3-companyName").find("option:selected").val();
     sampleInformation.sendingPerson = $("#model3-sendingPerson").val();
     sampleInformation['wastesList'] = [];
-    var lineCount = $("select[name^='wastes'][name$='wastesCode']").length - 1;
+    var lineCount = $("select[name^='wastes'][name$='wastesCode']").length;
     var wastesId = null;
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getCurrentWastesId",                 // url
-        data:{
-            'sampleId':sampleId
+        data: {
+            'sampleId': sampleId
         },
         async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
@@ -1020,23 +930,35 @@ function updateAppointBySampleId() {
         var $i = i;
         if (data.wastesList[i] != null) {
             wastes.id = data.wastesList[i].id;
-            wastes.unit = "yes";   // 表示该条数据存在
+            wastes.unit = "yes";
         } else {
             wastes.id = wastesId;
-            wastes.unit = "no";   // 表示该条数据是新数据
+            wastes.unit = "no";
             var num1 = parseInt(wastesId) + 1;
             wastesId = num1 + "";
         }
         wastes.code = $("select[name='wastes[" + $i + "].wastesCode']").find("option:selected").text();
         wastes.name = $("input[name='wastes[" + $i + "].wastesName']").val();
         var formType = $("select[id='wastes[" + $i + "].wastesFormType']").find("option:selected").val();
-        switch(parseInt(formType)){
-            case 4 : formType = "HalfSolid";break;
-            case 2 : formType = "Liquid";break;
-            case 3 : formType = "Solid";break;
-            case 5 : formType = "Solid1AndHalfSolid";break;
-            case 6 : formType = "HalfSolidAndLiquid";break;
-            case 7 : formType = "Solid1AndLiquid";break;
+        switch (parseInt(formType)) {
+            case 4 :
+                formType = "HalfSolid";
+                break;
+            case 2 :
+                formType = "Liquid";
+                break;
+            case 3 :
+                formType = "Solid";
+                break;
+            case 5 :
+                formType = "Solid1AndHalfSolid";
+                break;
+            case 6 :
+                formType = "HalfSolidAndLiquid";
+                break;
+            case 7 :
+                formType = "Solid1AndLiquid";
+                break;
         }
         wastes.formType = formType;
         //wastes.formType = $("select[id='wastes[" + $i + "].wastesFormType']").find("option:selected").val();
@@ -1121,18 +1043,17 @@ function searchSampleInfo() {
     page.start = (pageNumber - 1) * page.count;
     // 精确查询
     var applyState = null;
-    var state = $("#search-state").val();
-    console.log(state);
-    if (state == 0) applyState = "Appointed";
-    if (state == 1) applyState = "Received";
-    if (state == 2) applyState = "Rejected";
-    if (state == 3) applyState = "Invalid";
+    console.log($("#search-state").val());
+    if ($("#search-state").val() == 0) applyState = "Appointed";
+    if ($("#search-state").val() == 1) applyState = "Received";
+    if ($("#search-state").val() == 2) applyState = "Rejected";
+    if ($("#search-state").val() == 3) applyState = "Invalid";
     if ($("#senior").is(':visible')) {
         data = {
             id: $.trim($("#search-id").val()),
             companyName: $.trim($("#search-companyName").val()),
-            wastesCode: $.trim($("#search-wastesCode").val()),
-            laboratorySigner: $.trim($("#search-signer").val()),
+            code: $.trim($("#search-wastesCode").val()),
+            sendingPerson: $.trim($("#search-sendPerson").val()),
             applyState: applyState,
             isPH: $("#isPH1").prop("checked"),
             isAsh: $("#isAsh1").prop("checked"),
@@ -1216,16 +1137,16 @@ function searchSampleInfo() {
                 keywords = "Appointed";
                 break;
             case "已收样":
-                keywords = "Rejected";
+                keywords = "Received";
                 break;
             case "收样":
-                keywords = "Rejected";
+                keywords = "Received";
                 break;
             case "已拒收":
-                keywords = "Received";
+                keywords = "Rejected";
                 break;
             case "拒收":
-                keywords = "Received";
+                keywords = "Rejected";
                 break;
             case "已作废":
                 keywords = "Invalid";
@@ -1233,6 +1154,25 @@ function searchSampleInfo() {
             case "作废":
                 keywords = "Invalid";
                 break;
+            case "液态":
+                keywords = "Liquid";
+                break;
+            case "固态":
+                keywords = "Solid";
+                break;
+            case "半固态":
+                keywords = "HalfSolid";
+                break;
+            case "固态+半固态":
+                keywords = "Solid1AndHalfSolid";
+                break;
+            case "半固态+液态":
+                keywords = "HalfSolidAndLiquid";
+                break;
+            case "固态+液态":
+                keywords = "Solid1AndLiquid";
+                break;
+
         }
         data = {
             page: page,
@@ -1252,7 +1192,7 @@ function searchSampleInfo() {
     }
     $.ajax({
         type: "POST",                            // 方法类型
-        url: "searchSampleInfo",                 // url
+        url: "searchSampleInfoItem",                 // url
         async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
         data: JSON.stringify(data),
         dataType: "json",
@@ -1271,118 +1211,6 @@ function searchSampleInfo() {
         }
     });
     isSearch = true;
-}
-
-/**
- * 添加预约登记单
- */
-function addAppoint() {
-    var sampleInformation = {};
-    var companyCode = $("#model-companyName").val();   // 获取公司代码
-    if($("#model-id").val() === "" || $("#model-id").val() == null){
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "getCurrentSampleInformationId",                 // url
-        data:{
-            companyCode:companyCode
-        },
-        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            //alert("数据获取成功！");
-            sampleInformation.id = result.id;
-        },
-        error: function (result) {
-            alert("服务器异常!");
-            console.log(result);
-        }
-    });
-    }else {
-        sampleInformation.id = $("#model-id").val();
-    }
-    sampleInformation.companyName = $("#model-companyName").find("option:selected").text();
-    sampleInformation.companyCode = $("#model-companyName").find("option:selected").val();
-    sampleInformation.sendingPerson = $("#model-sendingPerson").val();
-    sampleInformation['wastesList'] = [];
-    var lineCount = $("select[name^='wastesList'][name$='wastesCode']").length;
-    var wastesId = null;
-    //获取wastesId
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "getCurrentWastesId",                 // url
-        data:{
-            'sampleId':sampleInformation.id
-        },
-        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            //alert("wastesId获取成功!");
-            wastesId = result.id;
-        },
-        error: function (result) {
-            //  alert("wastesId获取失败!");
-            console.log(result);
-        }
-    });
-    var sId = wastesId.substring(0,wastesId.length - 5); // 删除后五位
-    var id1 = wastesId.substring(wastesId.length - 5,wastesId.length); // 保留后五位
-    for (var i = 0; i < lineCount; i++) {
-        if(i > 0)id1++;
-        var wastes = {};
-        var $i = i;
-        //id 递增
-        var id2 = sId + id1;
-        wastes.id = id2;
-        wastes.code = $("select[name='wastesList[" + $i + "].wastesCode']").find("option:selected").text();
-        wastes.name = $("input[name='wastesList[" + $i + "].wastesName']").val();
-        var formType = $("select[id='wastesList[" + $i + "].wastesFormType']").find("option:selected").val();
-        switch(parseInt(formType)){
-            case 4 : formType = "HalfSolid";break;
-            case 5 : formType = "Liquid1";break;
-            case 6 : formType = "Solid1";break;
-        }
-        wastes.formType = formType;
-        //wastes.formType = $("select[id='wastesList[" + $i + "].wastesFormType']").find("option:selected").val();
-        wastes.category = $("input[id='wastesList[" + $i + "].wastesHandleCategory']").val();
-        wastes.isPH = $("input[name='wastesList[" + $i + "].isPH']").prop('checked');
-        wastes.isAsh = $("input[name='wastesList[" + $i + "].isAsh']").prop('checked');
-        wastes.isWater = $("input[name='wastesList[" + $i + "].isWater']").prop('checked');
-        wastes.isHeat = $("input[name='wastesList[" + $i + "].isHeat']").prop('checked');
-        wastes.isSulfur = $("input[name='wastesList[" + $i + "].isS']").prop('checked');
-        wastes.isChlorine = $("input[name='wastesList[" + $i + "].isCl']").prop('checked');
-        wastes.isFluorine = $("input[name='wastesList[" + $i + "].isF']").prop('checked');
-        wastes.isPhosphorus = $("input[name='wastesList[" + $i + "].isP']").prop('checked');
-        wastes.isFlashPoint = $("input[name='wastesList[" + $i + "].isFlashPoint']").prop('checked');
-        wastes.isViscosity = $("input[name='wastesList[" + $i + "].isViscosity']").prop('checked');
-        wastes.isHotMelt = $("input[name='wastesList[" + $i + "].isHotMelt']").prop('checked');
-        sampleInformation.wastesList.push(wastes);
-    }
-    console.log("添加的数据为：");
-    console.log(sampleInformation);
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "addSampleInfo",                 // url
-        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(sampleInformation),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            console.log(result);
-            if (result != undefined) {
-                var data = eval(result);
-                if (data.status == "success") {
-                    alert(data.message);
-                    window.location.reload();
-                } else {
-                    alert(data.message);
-                }
-            }
-        },
-        error: function (result) {
-            console.dir(result);
-            alert("服务器异常!");
-        }
-    });
 }
 
 /**
@@ -1416,36 +1244,18 @@ function deleteSample(menu) {
     }
 }
 
-// 对Date原型进行改造，增加方法format
-Date.prototype.format = function (format) {
-    var o = {
-        "M+": this.getMonth() + 1, //month
-        "d+": this.getDate(),    //day
-        "h+": this.getHours(),   //hour
-        "m+": this.getMinutes(), //minute
-        "s+": this.getSeconds(), //second
-        "q+": Math.floor((this.getMonth() + 3) / 3),  //quarter
-        "S": this.getMilliseconds() //millisecond
-    }
-    if (/(y+)/.test(format)) format = format.replace(RegExp.$1,
-        (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-    for (var k in o) if (new RegExp("(" + k + ")").test(format))
-        format = format.replace(RegExp.$1,
-            RegExp.$1.length == 1 ? o[k] :
-                ("00" + o[k]).substr(("" + o[k]).length));
-    return format;
-}
-
 /**
  * 导出excel
  * @param e
  */
 function exportExcel(e) {
-    var name = 't_pr_sampleinformation';
+    var name = 't_pr_sampleinformationitem';
     // 获取勾选项
     var idArry = [];
-    $.each($("input[name='select']:checked"),function(index,item){
-        idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
+    $.each($("input[name='select']:checked"), function (index, item) {
+        console.log($(item).parent().parent().nextAll().eq(10));
+        console.log($(item).parent().parent().nextAll().eq(10).text());
+        idArry.push($(item).parent().parent().nextAll().eq(10).text());        // 将选中项的编号存到集合中
     });
     var sqlWords = '';
     var sql = 'in (';
@@ -1454,11 +1264,12 @@ function exportExcel(e) {
             if (i < idArry.length - 1) sql += idArry[i] + ",";
             else if (i == idArry.length - 1) sql += idArry[i] + ");"
         }
-        sqlWords = "select b.id,a.companyName,b.name,b.code,b.formType,a.sendingPerson,b.isPH,b.isHeat,b.isAsh,b.isWater,b.isFluorine,b.isChlorine,b.isSulfur,b.isPhosphorus,b.isFlashPoint,b.isViscosity,b.isHotMelt from t_pr_sampleinformation as a join t_pr_sampleinformationitem as b where a.id=b.sampleId and a.id " + sql;
-}else{
-    sqlWords = "select b.id,a.companyName,b.name,b.code,b.formType,a.sendingPerson,b.isPH,b.isHeat,b.isAsh,b.isWater,b.isFluorine,b.isChlorine,b.isSulfur,b.isPhosphorus,b.isFlashPoint,b.isViscosity,b.isHotMelt from t_pr_sampleinformation as a join t_pr_sampleinformationitem as b where a.id=b.sampleId;";
-}
-window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+        sqlWords = "select b.id,a.companyName,b.name,b.code,b.formType,a.sendingPerson,b.isPH,b.isHeat,b.isAsh,b.isWater,b.isFluorine,b.isChlorine,b.isSulfur,b.isPhosphorus,b.isFlashPoint,b.isViscosity,b.isHotMelt from t_pr_sampleinformation as a join t_pr_sampleinformationitem as b where a.id=b.sampleId and b.id " + sql;
+    } else {
+        sqlWords = "select b.id,a.companyName,b.name,b.code,b.formType,a.sendingPerson,b.isPH,b.isHeat,b.isAsh,b.isWater,b.isFluorine,b.isChlorine,b.isSulfur,b.isPhosphorus,b.isFlashPoint,b.isViscosity,b.isHotMelt from t_pr_sampleinformation as a join t_pr_sampleinformationitem as b where a.id=b.sampleId;";
+    }
+    console.log(sqlWords);
+    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**
@@ -1488,17 +1299,17 @@ function rejection(menu) {
         url: "getSampleInformation",              // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data:{
-            "sampleId" : sampleId
+        data: {
+            "sampleId": sampleId
         },
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
                 console.log(result);
-                if(result.data != null && result.data.advice != null)
+                if (result.data != null && result.data.advice != null)
                     $('#advice').val(result.data.advice);
             }
         },
-        error:function (result) {
+        error: function (result) {
         }
     });
     $("#rejection1").modal('show');
@@ -1514,21 +1325,22 @@ function rejection1() {
         url: "rejectSampleInfoById",              // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data:{
-            "id" : sampleId,
-            "advice" : advice
+        data: {
+            "id": sampleId,
+            "advice": advice
         },
-        success:function (result) {
+        success: function (result) {
             if (result != undefined && result.status == "success") {
                 alert(result.message);
                 window.location.reload();
             }
         },
-        error:function (result) {
+        error: function (result) {
             alert("服务器异常！")
         }
     })
 }
+
 /**
  * 自动匹配危废类别
  * @param item
@@ -1539,57 +1351,6 @@ function autoSetCategory(item){
         code ="HW" + code.substring(code.length,code.length-2); //截取最后两位
         $(item).parent().parent().nextAll().find("input[name$='wastesHandleCategory']").val(code);  // 以wastesHandleCategory结尾的
     }
-}
-
-/**
- * 导入模态框
- * */
-function importExcelChoose() {
-    $("#importExcelModal").modal('show');
-}
-
-/**
- * 下载模板
- * */
-function downloadModal() {
-     var filePath = 'Files/Templates/市场部送样登记导入模板.xlsx';
-     window.open('downloadFile?filePath=' + filePath);
-}
-
-/**
- * 导入excel
- */
-function importExcel() {
-    document.getElementById("idExcel").click();
-    document.getElementById("idExcel").addEventListener("change", function () {
-        var eFile = document.getElementById("idExcel").files[0];
-        var formFile = new FormData();
-        formFile.append("excelFile", eFile);
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "importSampleMarketExcel",              // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data: formFile,
-            processData: false,
-            contentType: false,
-            success: function (result) {
-                if (result != undefined) {
-                    console.log(result);
-                    if (result.status == "success") {
-                        alert(result.message);
-                        window.location.reload();         //刷新
-                    } else {
-                        alert(result.message);
-                        window.location.reload();
-                    }
-                }
-            },
-            error: function (result) {
-                console.log(result);
-            }
-        });
-    });
 }
 
 
