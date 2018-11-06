@@ -139,6 +139,27 @@ public class InboundController {
     }
 
     /**
+     * 作废入库计划单
+     * @param inboundPlanOrderId 入库计划单编号
+     * @return 成功与否
+     */
+    @RequestMapping("setInboundPlanOrderInvalid")
+    @ResponseBody
+    public String setInboundPlanOrderInvalid(String inboundPlanOrderId) {
+        JSONObject res = new JSONObject();
+        try {
+            inboundService.setInboundPlanOrderInvalid(inboundPlanOrderId);
+            res.put("status", "success");
+            res.put("message", "作废成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+        }
+        return res.toString();
+    }
+
+    /**
      * 查询入库计划单列表
      *
      * @param inboundPlanOrder 入库计划单数据
