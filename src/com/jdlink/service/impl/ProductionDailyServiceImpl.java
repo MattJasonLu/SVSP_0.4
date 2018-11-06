@@ -22,10 +22,10 @@ public class ProductionDailyServiceImpl implements ProductionDailyService
     public int countSewage(){ return productionDailyMapper.countSewage();}
 
     @Override
-    public int searchCountSewage(Sewage sewage){ return productionDailyMapper.searchCountSewage(sewage); }
+    public int searchCountSewage(Sewageregistration sewageregistration){ return productionDailyMapper.searchCountSewage(sewageregistration); }
 
     @Override
-    public List<Sewage> searchSewage(Sewage sewage){ return productionDailyMapper.searchSewage(sewage); }
+    public List<Sewageregistration> searchSewage(Sewageregistration sewageregistration){ return productionDailyMapper.searchSewage(sewageregistration); }
 
     @Override
     public List<Sewage> listPageSewage(Page page){ return productionDailyMapper.listPageSewage(page); }
