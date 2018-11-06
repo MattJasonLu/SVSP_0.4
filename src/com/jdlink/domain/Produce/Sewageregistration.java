@@ -38,6 +38,17 @@ public class Sewageregistration {
      */
     private Date creationDate;
 
+    //关键字
+    private String keywords;
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
     public Date getCreationDate() {
         return creationDate;
     }

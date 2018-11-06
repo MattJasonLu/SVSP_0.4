@@ -11,8 +11,8 @@ import java.util.List;
 public interface ProductionDailyMapper {
 
     int countSewage();
-    int searchCountSewage(Sewage sewage);
-    List<Sewage> searchSewage(Sewage sewage);
+    int searchCountSewage(Sewageregistration sewageregistration);
+    List<Sewageregistration> searchSewage(Sewageregistration sewageregistration);
     List<Sewage> listPageSewage(Page page);
     void addSewage(Sewage sewage);
 
