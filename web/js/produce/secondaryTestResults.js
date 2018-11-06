@@ -333,6 +333,7 @@ function setDataList(result) {
     $.each(result, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
+        clonedTr.attr('class','myclass')
         clonedTr.show();
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
@@ -435,4 +436,38 @@ function exportExcel() {
         var id = $(this).parent().parent().parent().find("td[name='id']").text();
         window.open('exportLaboratoryTestExcel?id=' + id);
     });
+}
+
+
+/**
+ * 延时自动查询
+ */
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp=== 0){
+                searchData();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchData();      //
+            }
+        },600);
+    });
+});
+
+array = [];//存放所有的tr
+array1 = [];//存放目标的tr
+
+//查询
+function searchData() {
+    isSearch = false;
+    array.length = 0;//清空数组
+    array1.length = 0;//清空数组
+    //1分页模糊查询
+    for (var i = totalPage(); i > 0; i--) {
+        switchPage(parseInt(i));
+        array.push($('.myclass'));
+    }
+
 }
