@@ -16,6 +16,7 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -178,6 +179,30 @@ public class PRReceiveSampleAnalysisController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "作废失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 增加市场部化验单
+     * @param receiveSampleAnalysis 市场部化验单
+     * @return 成功与否
+     */
+    @RequestMapping("addReceiveSampleAnalysis")
+    @ResponseBody
+    public String addReceiveSampleAnalysis(@RequestBody ReceiveSampleAnalysis receiveSampleAnalysis){
+        JSONObject res = new JSONObject();
+        try {
+            // 新增
+            receiveSampleAnalysis.setSampleId(receiveSampleAnalysis.getId());
+            receiveSampleAnalysis.setCheckState(CheckState.NewBuild);
+            receiveSampleAnalysisService.add(receiveSampleAnalysis);
+            res.put("status", "success");
+            res.put("message", "增加成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "增加失败");
         }
         return res.toString();
     }

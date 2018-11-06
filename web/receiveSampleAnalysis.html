@@ -208,7 +208,7 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" href="#" onclick="alert('功能开发中');"><span
+                    <a class="btn btn-primary btn-xs" href="#" onclick="showAddModal();"><span
                             class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                     <a class="btn btn-primary btn-xs" onclick="importExcelChoose()"><span
                             class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
@@ -430,108 +430,141 @@
                 </li>
             </ol>
         </nav>
-        <!-- 预约登记模态框 新增-->
-        <div class="modal fade bs-example-modal-lg" id="appointModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <!--新增模态框-->
+        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel">预约登记</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label for="model-companyCode" class="col-sm-5 control-label">公司代码</label>
-                                <div class="col-sm-7">
-                                    <select class="selectpicker form-control" data-live-search="true"
-                                            data-live-search-placeholder="搜索..." id="model-companyCode"
-                                            name="model-companyCode">
-                                    </select>
+                <div class="modal-content" id="addModal1">
+                    <form method="post" enctype="multipart/form-data">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="addModalLabel1">化验单信息</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="form-horizontal col-md-6">
+                                    <div class="form-group">
+                                        <label for="id" class="col-sm-4 control-label">样品编号</label>
+                                        <div class="col-xs-8">
+                                            <input type="text" class="form-control" id="id" name="id">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="produceCompany" class="col-sm-4 control-label">产废单位</label>
+                                        <div class="col-xs-8">
+                                            <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="produceCompany" name="produceCompany"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="finishDate" class="col-sm-4 control-label">完成日期</label>
+                                        <div class="col-xs-8">
+                                            <input type="date" class="form-control" id="finishDate" name="finishDate">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sender" class="col-sm-4 control-label">送样人</label>
+                                        <div class="col-xs-8">
+                                            <input type="number" class="form-control" id="sender" name="sender">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PH" class="col-sm-4 control-label">PH</label>
+                                        <div class="col-xs-8">
+                                            <input type="number" class="form-control" id="PH" name="PH">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ash" class="col-sm-4 control-label">灰分</label>
+                                        <div class="col-xs-8">
+                                            <input type="number" class="form-control" id="ash" name="ash">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fluorine" class="col-sm-4 control-label">氟含量</label>
+                                        <div class="col-xs-8">
+                                            <input type="number" class="form-control" id="fluorine" name="fluorine">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sulfur" class="col-sm-4 control-label">硫含量</label>
+                                        <div class="col-xs-8">
+                                            <input type="number" class="form-control" id="sulfur" name="sulfur">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="flashPoint" class="col-sm-4 control-label">闪点</label>
+                                        <div class="col-xs-8">
+                                            <input type="number" class="form-control" id="flashPoint" name="flashPoint">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="hotMelt" class="col-sm-4 control-label">热融试验</label>
+                                        <div class="col-xs-8">
+                                            <input type="number" class="form-control" id="hotMelt" name="hotMelt">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-horizontal col-md-6">
+                                    <div class="form-group">
+                                        <label for="wastesName" class="col-sm-4 control-label">危废名称</label>
+                                        <div class="col-xs-8">
+                                            <input type="text" class="form-control" id="wastesName" name="wastesName">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="wastesCode" class="col-sm-4 control-label">危废代码</label>
+                                        <div class="col-xs-8">
+                                            <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="wastesCode" name="wastesCode"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="formType" class="col-sm-4 control-label">物质形态</label>
+                                        <div class="col-xs-8">
+                                            <select class="form-control" id="formType" name="formType"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="remark" class="col-sm-4 control-label">备注</label>
+                                        <div class="col-xs-8">
+                                            <input type="text" class="form-control" id="remark" name="remark">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="heat" class="col-sm-4 control-label">热值</label>
+                                        <div class="col-xs-8">
+                                            <input type="number" class="form-control" id="heat" name="heat">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="water" class="col-sm-4 control-label">水分</label>
+                                        <div class="col-xs-8">
+                                            <input type="number" class="form-control" id="water" name="water">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="chlorine" class="col-sm-4 control-label">氯含量</label>
+                                        <div class="col-xs-8">
+                                            <input type="number" class="form-control" id="chlorine" name="chlorine">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phosphorus" class="col-sm-4 control-label">磷含量</label>
+                                        <div class="col-xs-8">
+                                            <input type="number" class="form-control" id="phosphorus" name="phosphorus">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="viscosity" class="col-sm-4 control-label">粘度</label>
+                                        <div class="col-xs-8">
+                                            <input type="number" class="form-control" id="viscosity" name="viscosity">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label for="model-signer" class="col-sm-6 control-label">化验室签收人</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="model-signer" name="signer" required>
-                                </div>
-                            </div>
+                        <div class="modal-footer" id="footer1">
+                            <button type="button" class="btn btn-primary" onclick="addData();">新增</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                         </div>
-                        <table class="table table-bordered">
-                            <thead style="border:none">
-                            <tr>
-                                <th class="text-center">序号</th>
-                                <th class="text-center">危废代码</th>
-                                <th class="text-center">检测项目</th>
-                                <!--<th class="text-center">增加项目</th>-->
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr id="addClone">
-                                <td class="text-center">1</td>
-                                <td class="text-center"><select  class="selectpicker form-control" data-live-search="true"
-                                                                 data-live-search-placeholder="搜索..." id="wastesList0-wastesCode"
-                                                                 name="wastesList[0].wastesCode">
-                                </select></td>
-                                <td class="text-center"><label>
-                                    <input type="checkbox" name="wastesList[0].isPH"
-                                           value="true">PH
-                                </label>
-                                    <label>
-                                        <input type="checkbox" name="wastesList[0].isAsh"
-                                               value="true">灰分
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="wastesList[0].isWater"
-                                               id="wastesList[0].isWater" value="true">水分
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="wastesList[0].isHeat"
-                                               value="true">热值
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="wastesList[0].isS"
-                                               value="true">硫
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="wastesList[0].isCl"
-                                               value="true">氯
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="wastesList[0].isF"
-                                               value="true">氟
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="wastesList[0].isP"
-                                               value="true">磷
-                                    </label>
-                                    <label>
-                                    <input type="checkbox" name="wastesList[0].isFlashPoint"
-                                           value="true">闪点
-                                </label>
-                                    <label>
-                                        <input type="checkbox" name="wastesList[0].isViscosity"
-                                               value="true">黏度
-                                    </label></td>
-                            </tr>
-                            <tr id="plusBtn">
-                                <td>
-                                    <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-                                </td>
-                                <td></td>
-                                <td></td>
-                                <!--<td></td>-->
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" onclick="addAppoint();">预约</button>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
