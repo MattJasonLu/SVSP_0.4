@@ -4,9 +4,17 @@
     <meta charset="UTF-8">
     <title>产废平台</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
-    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <link href="css/bootstrap/bootstrap-datetimepicker.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
     <link href="css/dashboard.css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script src="js/bootstrap/3.3.6/bootstrap.js"></script>
+    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/bootstrap/bootstrap-select.min.js"></script><!---->
+    <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
+    <script language="javascript" src="js/bootstrap/printThis.js"></script>
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
@@ -332,32 +340,78 @@
                 <div class="modal-content">
                     <div class="modal-header">入库单新增</div>
                     <div class="modal-body">
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th class="text-center">计划日期</th>
-                                <th class="text-center">产废单位</th>
-                                <th class="text-center">转移时间</th>
-                                <th class="text-center">联单编号</th>
-                                <th class="text-center">危废名称</th>
-                                <th class="text-center">危废代码</th>
-                                <th class="text-center">拟转移量</th>
-                                <th class="text-center">转移量</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td class="text-center"><input class="form-control" type="date" id="addPlanDate"></td>
-                                <td class="text-center"><select class="form-control" id="addProduceCompany"></select></td>
-                                <td class="text-center"><input class="form-control" type="date" id="addTransferDate"></td>
-                                <td class="text-center"><input class="form-control" id="addTransferDraftId"></td>
-                                <td class="text-center"><input class="form-control" id="addWastesName"></td>
-                                <td class="text-center"><input class="form-control" id="addWastesCode"></td>
-                                <td class="text-center"><input class="form-control" id="addPrepareTransferCount"></td>
-                                <td class="text-center"><input class="form-control" id="addTransferCount"></td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <div class="row">
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label for="addTransferDraftId" class="col-sm-4 control-label">联单编号</label>
+                                    <div class="col-xs-8">
+                                        <input type="text" class="form-control" id="addTransferDraftId" name="addTransferDraftId">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addProduceCompany" class="col-sm-4 control-label">产废单位</label>
+                                    <div class="col-xs-8">
+                                        <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="addProduceCompany" name="addProduceCompany"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addPrepareTransferCount" class="col-sm-4 control-label">拟转移量</label>
+                                    <div class="col-xs-8">
+                                        <input type="number" class="form-control" id="addPrepareTransferCount" name="addPrepareTransferCount">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addTransferCount" class="col-sm-4 control-label">转移量</label>
+                                    <div class="col-xs-8">
+                                        <input type="number" class="form-control" id="addTransferCount" name="addTransferCount">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addStorageCount" class="col-sm-4 control-label">已入库数量</label>
+                                    <div class="col-xs-8">
+                                        <input type="number" class="form-control" id="addStorageCount" name="addStorageCount">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addLeftCount" class="col-sm-4 control-label">剩余数量</label>
+                                    <div class="col-xs-8">
+                                        <input type="number" class="form-control" id="addLeftCount" name="addLeftCount">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label for="addPlanDate" class="col-sm-4 control-label">计划日期</label>
+                                    <div class="col-xs-8">
+                                        <input type="date" class="form-control" id="addPlanDate" name="addPlanDate">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addTransferDate" class="col-sm-4 control-label">转移日期</label>
+                                    <div class="col-xs-8">
+                                        <input type="date" class="form-control" id="addTransferDate" name="addTransferDate">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addWastesName" class="col-sm-4 control-label">危废名称</label>
+                                    <div class="col-xs-8">
+                                        <input type="text" class="form-control" id="addWastesName" name="addWastesName">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addWastesCode" class="col-sm-4 control-label">危废代码</label>
+                                    <div class="col-xs-8">
+                                        <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="addWastesCode" name="addWastesCode"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addPoundsCount" class="col-sm-4 control-label">磅单数量</label>
+                                    <div class="col-xs-8">
+                                        <input type="number" class="form-control" id="addPoundsCount" name="addPoundsCount">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" id="add" onclick="addInboundPlanOrder();">新增</button>
@@ -497,5 +551,13 @@
 </style>
 <script>
     $('#embed').load('embed/loginLogModal.html');
+    $(window).on('load', function () {
+        // 中文重写select 查询为空提示信息
+        $('.selectpicker').selectpicker({
+            language: 'zh_CN',
+            size: 4,
+            title: '请选择'
+        });
+    });
 </script>
 </html>

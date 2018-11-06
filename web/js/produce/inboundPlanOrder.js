@@ -514,6 +514,7 @@ function setInboundOrderDataList(result) {
  * 显示增加模态框
  */
 function showAddModal() {
+    // 设置产废单位
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getAllClients",                  // url
@@ -523,15 +524,44 @@ function showAddModal() {
             if (result !== undefined) {
                 var data = eval(result);
                 // 高级检索下拉框数据填充
-                var addProduceCompany = $("#addProduceCompany");
-                addProduceCompany.children().remove();
+                var produceCompany = $("#addProduceCompany");
+                produceCompany.children().remove();
                 $.each(data, function (index, item) {
                     var option = $('<option />');
                     option.val(item.clientId);
                     option.text(item.companyName);
-                    addProduceCompany.append(option);
+                    produceCompany.append(option);
                 });
-                addProduceCompany.get(0).selectedIndex = -1;
+                produceCompany.selectpicker("refresh");
+                produceCompany.selectpicker('val', '');
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    // 设置危废代码
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getWastesInfoList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var wastesCode = $("#addWastesCode");
+                wastesCode.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.code);
+                    option.text(item.code);
+                    wastesCode.append(option);
+                });
+                wastesCode.selectpicker("refresh");
+                wastesCode.selectpicker('val', '');
             } else {
                 console.log("fail: " + result);
             }
@@ -556,7 +586,10 @@ function addInboundPlanOrder() {
             code: $("#addWastesCode").val()
         },
         prepareTransferCount: $("#addPrepareTransferCount").val(),
-        transferCount: $("#addTransferCount").val()
+        transferCount: $("#addTransferCount").val(),
+        storageCount: $("#addStorageCount").val(),
+        poundsCount: $("#addPoundsCount").val(),
+        leftCount: $("#addLeftCount").val()
     };
     console.log(data);
     $.ajax({
