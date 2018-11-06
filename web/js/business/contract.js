@@ -12,8 +12,6 @@ function reset() {
     $("#senior").find("input").val("");
     $("#searchContent").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
-
-
 }
 
 /**
@@ -530,6 +528,7 @@ function  ContractListByName(item) {
             }
         });
     }
+    console.log("合同索引值"+contractIndex);
 }
 
 /**
