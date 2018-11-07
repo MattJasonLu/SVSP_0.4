@@ -268,23 +268,23 @@
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="id" class="col-sm-4 control-label">受控文档编号</label>
+                            <label for="fileNO" class="col-sm-4 control-label">受控文档编号</label>
                             <div class="col-xs-7">
-                                <input type="text" onkeyup="" class="form-control focus" id="id" name="id" readonly placeholder="">
+                                <input type="text" onkeyup="" class="form-control focus" id="fileNO" name="fileNO" readonly placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="code" class="col-sm-4 control-label">系统关联代码</label>
+                            <label for="SYSCode" class="col-sm-4 control-label">系统关联代码</label>
                             <div class="col-xs-7">
-                                <input type="text" onkeyup="" class="form-control focus" id="code" name="code" readonly placeholder="">
+                                <input type="text" onkeyup="" class="form-control focus" id="SYSCode" name="SYSCode" readonly placeholder="">
                             </div>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="name" class="col-sm-4 control-label">文档名称</label>
+                            <label for="fileName" class="col-sm-4 control-label">文档名称</label>
                             <div class="col-xs-7">
-                                <input type="text" onkeyup="" class="form-control focus" id="name" name="name" readonly placeholder="">
+                                <input type="text" onkeyup="" class="form-control focus" id="fileName" name="fileName" readonly placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
@@ -295,13 +295,15 @@
                         </div>
                     </div>
                 </div>
-                <input class="text-center" type="radio" name="radio" title="生效">生效
-                <input class="text-center" type="radio" name="radio" title="作废">作废
-                <textarea placeholder="备注" title="备注" style="resize: none;width: 100%;height: 100%" readonly></textarea>
+                <div class="row">
+                    <label for="note" class="col-sm-2 control-label" style="margin-left: 40px;">备注</label>
+                    <div class="form-horizontal col-md-9">
+                        <textarea class="form-control" rows="3" placeholder="备注" title="备注" id="note" readonly></textarea>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-primary hidden-print" onclick="">保存</a>
-                <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
+                <a class="btn btn-default" data-dismiss="modal">关闭</a>
             </div>
         </div>
     </div>

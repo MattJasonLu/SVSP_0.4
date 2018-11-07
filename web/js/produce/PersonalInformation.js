@@ -1,36 +1,63 @@
+var user = {};
+var oldPassword = "";
+/**
+ * 显示信息
+ */
+function viewPersonalInformation() {
+    $.ajax({
+        type: "POST",                           // 方法类型
+        url: "getCurrentUserInfo",            // url
+        async: false,
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                console.log(result);
+                var data = result.data;
+                $("#username").text(data.username);//index + 1
+                $("#department").text(data.department);
+                $("#company").text(data.company);
+                user.username = data.username;
+                user.department = data.department;
+                user.company = data.company;
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+            console.log("失败");
+        }
+    });
+}
+
+/**
+ * 显示密码修改框
+ */
 function changePassword() {
     $("#changePasswordModal").modal('show')
 }
 
 /**
- * 取消修改密码
+ * 验证密码是否正确
+ * @param item
  */
-function cancelChange() {
-    window.location.reload();
-}
-/**
- * 修改密码
- */
-function confirmChange() {
-    var data;
-    data = {
-        password: $("#password").val(),
-        newPassword: $("#newPassword").val(),
-        newPassword1: $("#newPassword1").val()
-    };
-    console.log(data);
-    //更新字表数据
+function validation(item) {
+    var password = $(item).val();
+    user.password = password;
     $.ajax({
         type: "POST",
-        url: "savePassword",                  // url
+        url: "validationUser",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data: JSON.stringify(data),
+        data: JSON.stringify(user),
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result != undefined && result.status == "success") {
-                alert(result.message);
-                window.location.reload();
+                if (result.count == 0) {
+                    alert("密码不正确，请重新输入！");
+                }else {
+                    oldPassword = password;   // 保存旧密码，用于之后验证
+                }
             } else {
                 console.log(result)
             }
@@ -40,32 +67,58 @@ function confirmChange() {
         }
     });
 }
-/**
- * 显示信息
- */
-function viewPersonalInformation() {
-    $.ajax({
-        type: "POST",                           // 方法类型
-        url: "getPersonalInformation",            // url
-        async: false,
-        dataType: "json",
-        success: function (result) {
-            if (result != undefined) {
-                if(result.password != null)
-                    $("#password").val(result.password);//index + 1
-                if(result.newPassword != null)
-                    $("#newPassword").val(result.newPassword);
-                if(result.newPassword1 != null)
-                    $("#newPassword1").val(result.newPassword1);
-            } else {
-                console.log(result.message);
-            }
 
-        },
-        error: function (result) {
-            console.log("error: " + result);
-            console.log("失败");
-        }
-    });
-    setInvoicedList();
+/**
+ * 验证新旧密码是否一致
+ * @param item
+ */
+function validationOld(item){
+    var newPassword = $(item).val(); // 新密码
+    if(oldPassword == newPassword) {
+        alert("新密码与旧密码一致，请重新输入!");
+        $("#newPassword1").val("");  // 清空输入框
+        $("#newPassword").val("");
+    }
+}
+
+/**
+ * 修改密码
+ */
+function confirmChange() {
+    var newPassword1 = $("#newPassword1").val();
+    var newPassword = $("#newPassword").val();
+    console.log(newPassword1);
+    console.log(newPassword);
+    if (newPassword1 != newPassword) {
+        alert("两次密码不一致，请重新输入!");
+        $("#newPassword1").val("");  // 清空输入框
+        $("#newPassword").val("");
+    } else if(oldPassword == newPassword1){
+        alert("新密码与旧密码一致，请重新输入!");
+        $("#newPassword1").val("");  // 清空输入框
+        $("#newPassword").val("");
+    }else{  // 修改密码
+        user.password = newPassword;
+        console.log(user);
+        //更新字表数据
+        $.ajax({
+            type: "POST",
+            url: "modifyPassword",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: JSON.stringify(user),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    console.log(result)
+                }
+            },
+            error: function (result) {
+                console.log("服务器异常！")
+            }
+        });
+    }
 }
