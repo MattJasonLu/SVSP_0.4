@@ -167,14 +167,14 @@ function switchPage(pageNumber) {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "loadSewageTestResultsList",         // url
+            url: "loadSoftTestResultsList",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(page),
             dataType: "json",
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined) {
-                    setSewageList(result);
+                    setSoftTestList(result);
                 } else {
                     console.log("fail: " + result);
                 }
@@ -183,27 +183,16 @@ function switchPage(pageNumber) {
                 console.log("error: " + result);
             }
         });
-    } else {
-        data['page'] = page;
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "searchSewage",         // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data1),
-            dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            success: function (result) {
-                if (result != undefined) {
-                    // console.log(result);
-                    setSewageList(result.data);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-            }
-        });
+    } if (isSearch) {//查询用的
+        for (var i = 0; i < array1.length; i++) {
+            $(array1[i]).hide();
+        }
+        var i = parseInt((pageNumber - 1) * countValue());
+        var j = parseInt((pageNumber - 1) * countValue()) + parseInt(countValue() - 1);
+        for (var i = i; i <= j; i++) {
+            $('#tbody1').append(array1[i]);
+            $(array1[i]).show();
+        }
     }
 }
 
@@ -250,7 +239,7 @@ function inputSwitchPage() {
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "loadSewageTestResultsList",         // url
+                url: "loadSoftTestResultsList",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(page),
                 dataType: "json",
@@ -258,7 +247,7 @@ function inputSwitchPage() {
                 success: function (result) {
                     if (result != undefined) {
                         console.log(result);
-                        setSewageList(result);
+                        setSoftTestList(result);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -267,27 +256,16 @@ function inputSwitchPage() {
                     console.log("error: " + result);
                 }
             });
-        } else {
-            data1['page'] = page;
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "searchSewage",         // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(data1),
-                dataType: "json",
-                contentType: 'application/json;charset=utf-8',
-                success: function (result) {
-                    if (result != undefined) {
-                        // console.log(result);
-                        setSewageList(result.data);
-                    } else {
-                        console.log("fail: " + result);
-                    }
-                },
-                error: function (result) {
-                    console.log("error: " + result);
-                }
-            });
+        } if (isSearch) {//查询用的
+            for (var i = 0; i < array1.length; i++) {
+                $(array1[i]).hide();
+            }
+            var i = parseInt((pageNumber - 1) * countValue());
+            var j = parseInt((pageNumber - 1) * countValue()) + parseInt(countValue() - 1);
+            for (var i = i; i <= j; i++) {
+                $('#tbody1').append(array1[i]);
+                $(array1[i]).show();
+            }
         }
     }
 }
@@ -350,6 +328,7 @@ function setSoftTestList(result) {
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
         clonedTr.show();
+        clonedTr.attr('class','myclass')
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
             var obj = eval(item);
@@ -484,4 +463,145 @@ function importExcel() {
             }
         });
     });
+}
+
+array = [];//存放所有的tr
+array1 = [];//存放目标的tr
+
+/**
+ * 延时自动查询
+ */
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp=== 0){
+                searchData();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchData();      //
+            }
+        },600);
+    });
+});
+
+//查询
+function searchData() {
+    isSearch = false;
+    array.length = 0;//清空数组
+    array1.length = 0;//清空数组
+    //1分页模糊查询
+
+    for (var i = totalPage(); i > 0; i--) {
+        switchPage(parseInt(i));
+        array.push($('.myclass'));
+    }
+
+    isSearch = true;
+
+    var text = $.trim($('#searchContent').val());
+
+    var  id= $.trim($('#search-id').val());
+
+    var address= $.trim($('#search-address').val());
+
+    var remarks= $.trim($('#search-remarks').val());
+
+    var turbidity= $.trim($('#search-turbidity').val());
+
+    var hardness= $.trim($('#search-hardness').val());
+
+    var PH= $.trim($('#search-PH').val());
+
+    var electricalConductivity= $.trim($('#search-electricalConductivity').val());
+
+    var basicity= $.trim($('#search-basicity').val());
+
+    var phenolphthalein= $.trim($('#search-phenolphthalein').val());
+
+
+    for (var j = 0; j < array.length; j++) {
+        $.each(array[j], function () {
+            //console.log(this);
+            if (!($(this).children('td').eq(1).text().indexOf(id) != -1 && $(this).children('td').eq(2).text().indexOf(address) != -1
+                && $(this).children('td').eq(3).text().indexOf(turbidity) != -1 && $(this).children('td').eq(4).text().indexOf(hardness) != -1 && $(this).children('td').text().indexOf(text) != -1
+                && $(this).children('td').eq(5).text().indexOf(PH) != -1  && $(this).children('td').eq(6).text().indexOf(electricalConductivity) != -1
+                && $(this).children('td').eq(7).text().indexOf(basicity) != -1&& $(this).children('td').eq(8).text().indexOf(phenolphthalein) != -1
+                && $(this).children('td').eq(9).text().indexOf(remarks) != -1
+
+            )) {
+                $(this).hide();
+            }
+            if (
+                ($(this).children('td').eq(1).text().indexOf(id) != -1 && $(this).children('td').eq(2).text().indexOf(address) != -1
+                    && $(this).children('td').eq(3).text().indexOf(turbidity) != -1 && $(this).children('td').eq(4).text().indexOf(hardness) != -1 && $(this).children('td').text().indexOf(text) != -1
+                    && $(this).children('td').eq(5).text().indexOf(PH) != -1  && $(this).children('td').eq(6).text().indexOf(electricalConductivity) != -1
+                    && $(this).children('td').eq(7).text().indexOf(basicity) != -1&& $(this).children('td').eq(8).text().indexOf(phenolphthalein) != -1
+                    && $(this).children('td').eq(9).text().indexOf(remarks) != -1
+
+                )
+
+            ) {
+                array1.push($(this));
+            }
+        });
+    }
+
+    var total;
+
+    if (array1.length % countValue() == 0) {
+        total = array1.length / countValue()
+    }
+
+    if (array1.length % countValue() > 0) {
+        total = Math.ceil(array1.length / countValue());
+    }
+
+    if (array1.length / countValue() < 1) {
+        total = 1;
+    }
+
+    $("#totalPage").text("共" + total + "页");
+
+    var myArray = new Array();
+
+    $('.beforeClone').remove();
+
+    for (i = 0; i < total; i++) {
+        var li = $("#next").prev();
+        myArray[i] = i + 1;
+        var clonedLi = li.clone();
+        clonedLi.show();
+        clonedLi.find('a:first-child').text(myArray[i]);
+        clonedLi.find('a:first-child').click(function () {
+            var num = $(this).text();
+            switchPage(num);
+            AddAndRemoveClass(this);
+        });
+        clonedLi.addClass("beforeClone");
+        clonedLi.removeAttr("id");
+        clonedLi.insertAfter(li);
+    }
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
+    for (var i = 0; i < array1.length; i++) {
+        array1[i].hide();
+    }
+
+    for (var i = 0; i < countValue(); i++) {
+        $(array1[i]).show();
+        $('#tbody1').append((array1[i]));
+    }
+
+
+
+}
+
+/**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchData();      //
+    }
 }

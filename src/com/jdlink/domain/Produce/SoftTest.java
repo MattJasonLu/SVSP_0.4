@@ -3,7 +3,7 @@ package com.jdlink.domain.Produce;
 import com.jdlink.domain.Page;
 
 public class SoftTest {
-    private String id;//污水验单编号
+    private String id;//软水验单编号
 
     private String address;//采样点
 
