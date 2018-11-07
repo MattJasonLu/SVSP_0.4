@@ -38,6 +38,7 @@ li {
 .focus {
     outline: none;
     border: 0;
+    width: 100%;
 }
 .navbar-brand > img {
     width: 165px;

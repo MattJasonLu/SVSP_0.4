@@ -4,9 +4,17 @@
     <meta charset="UTF-8">
     <title>产废平台</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
-    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <link href="css/bootstrap/bootstrap-datetimepicker.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
     <link href="css/dashboard.css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script src="js/bootstrap/3.3.6/bootstrap.js"></script>
+    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/bootstrap/bootstrap-select.min.js"></script><!---->
+    <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
+    <script language="javascript" src="js/bootstrap/printThis.js"></script>
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
@@ -332,32 +340,78 @@
                 <div class="modal-content">
                     <div class="modal-header">入库单新增</div>
                     <div class="modal-body">
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th class="text-center">计划日期</th>
-                                <th class="text-center">产废单位</th>
-                                <th class="text-center">转移时间</th>
-                                <th class="text-center">联单编号</th>
-                                <th class="text-center">危废名称</th>
-                                <th class="text-center">危废代码</th>
-                                <th class="text-center">拟转移量</th>
-                                <th class="text-center">转移量</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td class="text-center"><input class="form-control" type="date" id="addPlanDate"></td>
-                                <td class="text-center"><select class="form-control" id="addProduceCompany"></select></td>
-                                <td class="text-center"><input class="form-control" type="date" id="addTransferDate"></td>
-                                <td class="text-center"><input class="form-control" id="addTransferDraftId"></td>
-                                <td class="text-center"><input class="form-control" id="addWastesName"></td>
-                                <td class="text-center"><input class="form-control" id="addWastesCode"></td>
-                                <td class="text-center"><input class="form-control" id="addPrepareTransferCount"></td>
-                                <td class="text-center"><input class="form-control" id="addTransferCount"></td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <div class="row">
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label for="addTransferDraftId" class="col-sm-4 control-label">联单编号</label>
+                                    <div class="col-xs-8">
+                                        <input type="text" class="form-control" id="addTransferDraftId" name="addTransferDraftId">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addProduceCompany" class="col-sm-4 control-label">产废单位</label>
+                                    <div class="col-xs-8">
+                                        <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="addProduceCompany" name="addProduceCompany"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addPrepareTransferCount" class="col-sm-4 control-label">拟转移量</label>
+                                    <div class="col-xs-8">
+                                        <input type="number" class="form-control" id="addPrepareTransferCount" name="addPrepareTransferCount">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addTransferCount" class="col-sm-4 control-label">转移量</label>
+                                    <div class="col-xs-8">
+                                        <input type="number" class="form-control" id="addTransferCount" name="addTransferCount">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addStorageCount" class="col-sm-4 control-label">已入库数量</label>
+                                    <div class="col-xs-8">
+                                        <input type="number" class="form-control" id="addStorageCount" name="addStorageCount">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addLeftCount" class="col-sm-4 control-label">剩余数量</label>
+                                    <div class="col-xs-8">
+                                        <input type="number" class="form-control" id="addLeftCount" name="addLeftCount">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label for="addPlanDate" class="col-sm-4 control-label">计划日期</label>
+                                    <div class="col-xs-8">
+                                        <input type="date" class="form-control" id="addPlanDate" name="addPlanDate">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addTransferDate" class="col-sm-4 control-label">转移日期</label>
+                                    <div class="col-xs-8">
+                                        <input type="date" class="form-control" id="addTransferDate" name="addTransferDate">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addWastesName" class="col-sm-4 control-label">危废名称</label>
+                                    <div class="col-xs-8">
+                                        <input type="text" class="form-control" id="addWastesName" name="addWastesName">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addWastesCode" class="col-sm-4 control-label">危废代码</label>
+                                    <div class="col-xs-8">
+                                        <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="addWastesCode" name="addWastesCode"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addPoundsCount" class="col-sm-4 control-label">磅单数量</label>
+                                    <div class="col-xs-8">
+                                        <input type="number" class="form-control" id="addPoundsCount" name="addPoundsCount">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" id="add" onclick="addInboundPlanOrder();">新增</button>
@@ -370,50 +424,86 @@
         <div class="modal fade bs-example-modal-lg" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">入库单明细</div>
+                    <div class="modal-header">入库计划单</div>
                     <div class="modal-body">
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th class="text-center">序号</th>
-                                <!--<th class="text-center">入库计划号</th>-->
-                                <th class="text-center">转移联单号</th>
-                                <th class="text-center">产废单位</th>
-                                <th class="text-center">危废名称</th>
-                                <th class="text-center">危废代码</th>
-                                <th class="text-center">危废数量(吨)</th>
-                                <!--<th class="text-center">单价</th>-->
-                                <!--<th class="text-center">金额</th>-->
-                                <th class="text-center">处理方式</th>
-                                <th class="text-center">进料方式</th>
-                                <th class="text-center">备注</th>
-                                <th class="text-center">库区</th>
-                                <th class="text-center hidden">编号</th>
-                                <th class="text-center">操作</th>
-                            </tr>
-                            </thead>
-                            <tbody id="itemData">
-                            <tr id="itemClonedTr" style="display: none;">
-                                <td class="text-center" name="index">1</td>
-                                <!--<td class="text-center" name="inboundPlanOrderId">inboundOrderId</td>-->
-                                <td class="text-center" name="transferDraftId">inboundOrderId</td>
-                                <td class="text-left" name="produceCompanyName">produceCompanyName</td>
-                                <td class="text-left" name="wastesName">废液</td>
-                                <td class="text-center" name="wastesCode">QW10001</td>
-                                <td class="text-right" name="wastesAmount">5</td>
-                                <!--<td class="text-right" name="unitPriceTax"></td>-->
-                                <!--<td class="text-right" name="totalPrice"></td>-->
-                                <td class="text-right" name="processWay"></td>
-                                <td class="text-right" name="handleCategory"></td>
-                                <td class="text-right" name="remarks"></td>
-                                <td class="text-right" name="warehouseArea"></td>
-                                <td class="text-right hidden" name="inboundOrderItemId"></td>
-                                <td class="text-right">
-                                    <a href="#" onclick="changeAttribute($(this));" title="属性调整"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <div class="row">
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label for="inboundPlanOrderId" class="col-sm-4 control-label">计划单号</label>
+                                    <div class="col-xs-8">
+                                        <input type="text" class="form-control" id="inboundPlanOrderId" name="inboundPlanOrderId" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="transferDraftId" class="col-sm-4 control-label">联单编号</label>
+                                    <div class="col-xs-8">
+                                        <input type="text" class="form-control" id="transferDraftId" name="transferDraftId" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="produceCompany" class="col-sm-4 control-label">产废单位</label>
+                                    <div class="col-xs-8">
+                                        <input type="text" class="form-control" id="produceCompany" name="produceCompany" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="prepareTransferCount" class="col-sm-4 control-label">拟转移量</label>
+                                    <div class="col-xs-8">
+                                        <input type="text" class="form-control" id="prepareTransferCount" name="prepareTransferCount" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="transferCount" class="col-sm-4 control-label">转移量</label>
+                                    <div class="col-xs-8">
+                                        <input type="text" class="form-control" id="transferCount" name="transferCount" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="storageCount" class="col-sm-4 control-label">已入库数量</label>
+                                    <div class="col-xs-8">
+                                        <input type="text" class="form-control" id="storageCount" name="storageCount" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label for="planDate" class="col-sm-4 control-label">计划日期</label>
+                                    <div class="col-xs-8">
+                                        <input type="text" class="form-control" id="planDate" name="planDate" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="transferDate" class="col-sm-4 control-label">转移日期</label>
+                                    <div class="col-xs-8">
+                                        <input type="text" class="form-control" id="transferDate" name="transferDate" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="wastesName" class="col-sm-4 control-label">危废名称</label>
+                                    <div class="col-xs-8">
+                                        <input type="text" class="form-control" id="wastesName" name="wastesName" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="wastesCode" class="col-sm-4 control-label">危废代码</label>
+                                    <div class="col-xs-8">
+                                        <input type="text" class="form-control" id="wastesCode" name="wastesCode" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="poundsCount" class="col-sm-4 control-label">磅单数量</label>
+                                    <div class="col-xs-8">
+                                        <input type="text" class="form-control" id="poundsCount" name="poundsCount" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="leftCount" class="col-sm-4 control-label">剩余数量</label>
+                                    <div class="col-xs-8">
+                                        <input type="text" class="form-control" id="leftCount" name="leftCount" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -461,5 +551,13 @@
 </style>
 <script>
     $('#embed').load('embed/loginLogModal.html');
+    $(window).on('load', function () {
+        // 中文重写select 查询为空提示信息
+        $('.selectpicker').selectpicker({
+            language: 'zh_CN',
+            size: 4,
+            title: '请选择'
+        });
+    });
 </script>
 </html>

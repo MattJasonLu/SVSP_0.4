@@ -1,5 +1,6 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
 
 import java.util.Arrays;
@@ -21,6 +22,10 @@ public class Ingredients {
      * 外键ID
      */
     private String id;
+    /**
+     * 采购申请单ID
+     */
+    private String procurementId;
     /**
      * 辅料、备件名称
      */
@@ -89,6 +94,74 @@ public class Ingredients {
      * 分页
      */
     private Page page;
+    /**
+     * 单位名
+     */
+    private String companyName;
+    /**
+     * 入库日期/创建日期
+     */
+    private Date creationDate;
+    /**
+     * 单据状态
+     */
+    private CheckState state;
+    /**
+     * 日期查询 起始时间
+     */
+    private Date startDate;
+    /**
+     * 日期查询 终止时间
+     */
+    private Date endDate;
+
+    public String getProcurementId() {
+        return procurementId;
+    }
+
+    public void setProcurementId(String procurementId) {
+        this.procurementId = procurementId;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public CheckState getState() {
+        return state;
+    }
+
+    public void setState(CheckState state) {
+        this.state = state;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
 
     public Page getPage() {
         return page;

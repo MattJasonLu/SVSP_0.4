@@ -48,7 +48,7 @@
         update t_pr_sampleinfoanalysis set sampleId=#{sampleId}, transferDraftId=#{transferDraftId},
         produceCompanyId=#{produceCompany.clientId}, wastesName=#{wastesName}, wastesCode=#{wastesCode},
         wastesCategory=#{wastesCategory} ,handleCategory=#{handleCategory}, formType=#{formType}, PH=#{PH}, ash=#{ash}, water=#{water},
-        heat=#{heat}, sulfur=#{sulfur}, chlorine=#{chlorine}, phosphorus=#{phosphorus}, flashPoint=#{flashPoint},
+        heat=#{heat}, sulfur=#{sulfur}, fluorine=#{fluorine}, chlorine=#{chlorine}, phosphorus=#{phosphorus}, flashPoint=#{flashPoint},
         viscosity=#{viscosity}, hotMelt=#{hotMelt}, sender=#{sender}, signer=#{signer}, signDate=#{signDate},
         remark=#{remark} where id=#{id};
     </update>
@@ -78,10 +78,10 @@
     <insert id="add">
         insert into t_pr_sampleinfoanalysis (id, sampleId, transferDraftId, produceCompanyId,
         wastesName, wastesCode, wastesCategory, handleCategory, formType, PH, ash, water, heat, sulfur,
-        chlorine, phosphorus, flashPoint, viscosity, hotMelt, sender, signer, signDate,
+        fluorine, chlorine, phosphorus, flashPoint, viscosity, hotMelt, sender, signer, signDate,
         remark, checkState) values (#{id}, #{sampleId}, #{transferDraftId}, #{produceCompany.clientId},
         #{wastesName}, #{wastesCode}, #{wastesCategory}, #{handleCategory}, #{formType}, #{PH}, #{ash},
-        #{water}, #{heat}, #{sulfur}, #{chlorine}, #{phosphorus}, #{flashPoint}, #{viscosity},
+        #{water}, #{heat}, #{sulfur}, #{fluorine}, #{chlorine}, #{phosphorus}, #{flashPoint}, #{viscosity},
         #{hotMelt}, #{sender}, #{signer}, #{signDate}, #{remark}, #{checkState});
     </insert>
 

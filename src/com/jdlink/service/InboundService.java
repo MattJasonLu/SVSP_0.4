@@ -41,6 +41,19 @@ public interface InboundService {
     void addInboundPlanOrder(InboundPlanOrder inboundPlanOrder);
 
     /**
+     * 通过编号获取入库计划单
+     * @param inboundPlanOrderId 入库计划单号
+     * @return 入库计划单
+     */
+    InboundPlanOrder getInboundPlanOrder(String inboundPlanOrderId);
+
+    /**
+     * 设置入库计划单失效
+     * @param inboundPlanOrderId 入库计划单编号
+     */
+    void setInboundPlanOrderInvalid(String inboundPlanOrderId);
+
+    /**
      * 查找入库计划单
      * @param inboundPlanOrder 入库计划单数据
      * @return 符合条件的入库计划单列表
