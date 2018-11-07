@@ -53,6 +53,11 @@
         #{isEffective}, #{note});
     </insert>
 
+    <!--获取受控文档-->
+    <select id="get" resultType="DocumentControl">
+        select * from t_base_fileno where ID=#{ID};
+    </select>
+
     <!--作废-->
     <update id="setInvalid">
         update t_base_fileno set checkState='Invalid' where ID=#{ID};

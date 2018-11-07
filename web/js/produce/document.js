@@ -1,9 +1,3 @@
-
-function editDocument() {
-    $("#editModal").modal('show')
-}
-
-
 var isSearch = false;
 var currentPage = 1;                          //当前页数
 var data;
@@ -584,12 +578,46 @@ function setUnEffective(e) {    //已提交
 }
 
 /**
- * 修改数据
+ * 显示修改框
  * @param e
  */
-function adjustData(e) {
+function showAdjustModal(e) {
     var id = getIdByMenu(e);
-    alert("功能调整中");
+    $.ajax({
+        type: "POST",
+        url: "getDocumentControl",
+        async: false,
+        dataType: "json",
+        data: {
+            ID: id
+        },
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                var obj = eval(result.data);
+                $("#editFileNO").val(obj.fileNO);
+                $("#editSYSCode").val(obj.SYSCode);
+                $("#editFileName").val(obj.fileName);
+                $("#editCompany").val(obj.company);
+                $("#editNote").val(obj.note);
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
+    $("#editModal").modal('show');
+}
+
+/**
+ * 修改数据
+ */
+function adjustData() {
+
+    alert("修改成功");
 }
 
 /**
@@ -866,7 +894,7 @@ function viewData(e) {
     var id = getIdByMenu(e);
     $.ajax({
         type: "POST",
-        url: "",
+        url: "getDocumentControl",
         async: false,
         dataType: "json",
         data: {
@@ -875,30 +903,12 @@ function viewData(e) {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 console.log(result);
-                var data = eval(result.data);
-                $("#viewTable").find("td[name='transferDraftId']").text(data.transferDraftId);
-                if (data.produceCompany != null)
-                    $("#viewTable").find("td[name='produceCompanyName']").text(data.produceCompany.companyName);
-                $("#viewTable").find("td[name='wastesName']").text(data.wastesName);
-                $("#viewTable").find("td[name='wastesCode']").text(data.wastesCode);
-                $("#viewTable").find("td[name='wastesCategory']").text(data.wastesCategory);
-                if (data.formType != null)
-                    $("#viewTable").find("td[name='formType']").text(data.formType.name);
-                $("#viewTable").find("td[name='sender']").text(data.sender);
-                $("#viewTable").find("td[name='signer']").text(data.signer);
-                $("#viewTable").find("td[name='PH']").text(parseFloat(data.PH).toFixed(2));
-                $("#viewTable").find("td[name='ash']").text(parseFloat(data.ash).toFixed(2));
-                $("#viewTable").find("td[name='water']").text(parseFloat(data.water).toFixed(2));
-                $("#viewTable").find("td[name='heat']").text(parseFloat(data.heat).toFixed(2));
-                $("#viewTable").find("td[name='fluorine']").text(parseFloat(data.fluorine).toFixed(2));
-                $("#viewTable").find("td[name='chlorine']").text(parseFloat(data.chlorine).toFixed(2));
-                $("#viewTable").find("td[name='sulfur']").text(parseFloat(data.sulfur).toFixed(2));
-                $("#viewTable").find("td[name='phosphorus']").text(parseFloat(data.phosphorus).toFixed(2));
-                $("#viewTable").find("td[name='flashPoint']").text(parseFloat(data.flashPoint).toFixed(2));
-                $("#viewTable").find("td[name='viscosity']").text(parseFloat(data.viscosity).toFixed(2));
-                $("#viewTable").find("td[name='hotMelt']").text(data.hotMelt);
-                $("#viewTable").find("td[name='signDate']").text(getDateStr(data.signDate));
-                $("#viewTable").find("td[name='remark']").text(data.remark);
+                var obj = eval(result.data);
+                $("#fileNO").val(obj.fileNO);
+                $("#SYSCode").val(obj.SYSCode);
+                $("#fileName").val(obj.fileName);
+                $("#company").val(obj.company);
+                $("#note").val(obj.note);
             } else {
                 alert(result.message);
             }
