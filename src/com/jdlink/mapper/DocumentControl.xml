@@ -44,4 +44,13 @@
         </where>
     </select>
 
+    <!--增加受控文档-->
+    <insert id="add">
+        insert into t_base_fileno (ID, fileNO, fileName, SYSCode, company,
+        createdName, createdDate, editName, editDate, isEffective, note)
+        values (#{ID}, #{fileNO}, #{fileName}, #{SYSCode}, #{company},
+        #{createdName}, #{createdDate}, #{editName}, #{editDate},
+        #{isEffective}, #{note});
+    </insert>
+
 </mapper>

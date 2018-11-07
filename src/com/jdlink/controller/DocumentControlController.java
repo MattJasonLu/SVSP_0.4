@@ -62,4 +62,26 @@ public class DocumentControlController {
         return res.toString();
     }
 
+    /**
+     * 增加文档控制对象
+     * @param documentControl 文档控制表
+     * @return 成功与否
+     */
+    @RequestMapping("addDocumentControl")
+    @ResponseBody
+    public String addDocumentControl(DocumentControl documentControl) {
+        JSONObject res = new JSONObject();
+        try {
+            documentControlService.add(documentControl);
+            res.put("status", "success");
+            res.put("message", "新增成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "新增失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
 }
