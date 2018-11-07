@@ -380,12 +380,12 @@ function setList(result) {
                     break;
                 case (2):
                     // 部门
-                    $(this).html(obj.departmentName);
+                    $(this).html(obj.department);
                     break;
                 case (3):
                     //出库单状态
                     if(obj.state != null)
-                       $(this).html(obj.state.name);
+                        $(this).html(obj.state.name);
                     break;
                 case (4):
                     // 总数量
@@ -765,11 +765,11 @@ function setViewClone(result) {
                     break;
                 case (4):
                     // 数量
-                    $(this).html(obj.receiveAmount);
+                    $(this).html(obj.receiveAmount.toFixed(2));
                     break;
                 case (5):
                     // 单价
-                    $(this).html(obj.unitPrice);
+                    $(this).html(obj.unitPrice.toFixed(2));
                     break;
                 case (6):
                     // 金额 十万

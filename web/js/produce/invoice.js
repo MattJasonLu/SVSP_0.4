@@ -13,7 +13,7 @@ function viewClient() {
         success: function (result) {
             if (result != undefined) {
                 if(result.companyName != null)
-                $("#companyName").val(result.companyName);//index + 1
+                $("#companyName").text(result.companyName);//index + 1
                 if(result.organizationCode != null)
                 $("#organizationCode").val(result.organizationCode);
                 if(result.representative != null)
@@ -158,14 +158,47 @@ function updateClient() {
             console.log("服务器异常！")
         }
     });
+    $("#save").remove();
+    $("#close").remove();
+    var myElement = document.createElement('a');
+    myElement.className = "btn btn-primary";
+    myElement.id = "print";
+    myElement.innerHTML = "打印";
+    document.getElementById("bot").appendChild(myElement);
 }
+
 function readyForUpdate() {
+
+    // 通过id获取到单元格中的文本
+    var td = $("#companyName");
+    var content = td.text();
+    // 文本清空
+    td.text("");
+    // 创建一个输入框
+    td.append("<input/>");
+    // 为输入框赋值
+    td.find("input").val(content);
+    // 输入框设置id
+    td.find("input").attr("id", td.attr("id"));
+    // 单元格去掉id，保持id唯一性
+    td.removeAttr("id");
+
+
     $("#table").find("input").removeAttr("readonly");
     // $("#save").className="hidden";
     // $("#close").className="hidden";
-    $("#save").removeAttr("class","hidden");
-    $("#close").removeAttr("class","hidden");
-    $("#print").setAttribute("class","hidden");
+    var myElement1 = document.createElement('a');
+    myElement1.className = "btn btn-success";
+    myElement1.id = "save";
+    myElement1.onclick = updateClient;
+    myElement1.innerHTML = "保存";
+    document.getElementById("bot").appendChild(myElement1);
+    var myElement2 = document.createElement('a');
+    myElement2.className = "btn btn-warning";
+    myElement2.id = "close";
+    myElement2.innerHTML = "取消";
+    document.getElementById("bot").appendChild(myElement2);
+    $("#print").remove();
 }
 
 /**

@@ -450,4 +450,49 @@ public class UserController {
         }
     }
 
+    /**
+     * 验证密码是否正确
+     * @param
+     * @return
+     */
+    @RequestMapping("validationUser")
+    @ResponseBody
+    public String validationUser(@RequestBody User user) {
+        JSONObject res = new JSONObject();
+        try {
+            int count = userService.countByUser(user);
+            res.put("count", count);
+            res.put("message", "查询成功！");
+            res.put("status", "success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("message", "查询失败！");
+            res.put("status", "fail");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 修改密码
+     * @param
+     * @return
+     */
+    @RequestMapping("modifyPassword")
+    @ResponseBody
+    public String modifyPassword(@RequestBody User user) {
+        JSONObject res = new JSONObject();
+        try {
+            userService.modifyPassword(user);
+            res.put("message", "密码修改成功！");
+            res.put("status", "success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("message", "密码修改失败");
+            res.put("status", "fail");
+        }
+        return res.toString();
+    }
+
+
+
 }

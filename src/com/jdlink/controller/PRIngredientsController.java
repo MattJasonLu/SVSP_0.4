@@ -123,6 +123,23 @@ public class PRIngredientsController {
         return res.toString();
     }
 
+    @RequestMapping("updateIngredientsIn")
+    @ResponseBody
+    public String updateIngredientsIn(@RequestBody IngredientsIn ingredientsIn) {
+        JSONObject res = new JSONObject();
+        try {
+          //  ingredientsIn.setCreationDate(new Date()); // 设置入库日期为当前日期
+            ingredientsService.updateDataIn(ingredientsIn);
+            res.put("status", "success");
+            res.put("message", "入库单修改成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "入库单修改失败");
+        }
+        return res.toString();
+    }
+
     /**
      * 获取分页数据
      * @param page
@@ -425,7 +442,17 @@ public class PRIngredientsController {
     public String invalidIngredientsIn(String id) {
         JSONObject res = new JSONObject();
         try {
-            ingredientsService.invalidIn(id);
+            IngredientsIn ingredientsIn = ingredientsService.getInById(id);  // 获取要作废的数据
+            System.out.println("作废的数据为：");
+            System.out.println(ingredientsIn);
+            for(Ingredients ingredients:ingredientsIn.getIngredientsList()){
+                System.out.print("采购单号:"+ingredients.getProcurementId());
+                System.out.print("，物品:"+ingredients.getName());
+                System.out.print("，规格:"+ingredients.getSpecification());
+                System.out.print("，仓库:"+ingredients.getWareHouseName());
+            }
+            System.out.println();
+            ingredientsService.invalidIn(ingredientsIn);
             res.put("status", "success");
             res.put("message", "作废成功");
         } catch (Exception e) {
@@ -1113,7 +1140,7 @@ public class PRIngredientsController {
                 if (!map.keySet().contains(id)) {
                     map.put(id, new IngredientsOut());
                     map.get(id).setId(id);
-                    map.get(id).setDepartmentName(data[i][1].toString());
+                    map.get(id).setDepartment(data[i][1].toString());
                     map.get(id).setFileId(data[i][2].toString());
                     map.get(id).setApprover(data[i][3].toString());
                     map.get(id).setKeeper(data[i][4].toString());

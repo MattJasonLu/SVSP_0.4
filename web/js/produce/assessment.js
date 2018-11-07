@@ -77,27 +77,27 @@ function setMonthDataList(result) {
                     break;
                 case (3):
                     // 接运单总金额
-                    $(this).html(obj.wayBillTotalPrice);
+                    $(this).html(obj.wayBillTotalPrice.toFixed(2));
                     break;
                 case (4):
                     // 到账总金额
-                    $(this).html(obj.accountTotalPrice);
+                    $(this).html(obj.accountTotalPrice.toFixed(2));
                     break;
                 case (5):
                     // 有效总金额
-                    $(this).html(obj.effectiveTotalPrice);
+                    $(this).html(obj.effectiveTotalPrice.toFixed(2));
                     break;
                 case (6):
                     // 总提成
-                    $(this).html(obj.totalCommission);
+                    $(this).html(obj.totalCommission.toFixed(2));
                     break;
                 case (7):
                     // 当月发放总金额
-                    $(this).html(obj.monthSendedTotalPrice);
+                    $(this).html(obj.monthSendedTotalPrice.toFixed(2));
                     break;
                 case (8):
                     // 未发放总金额
-                    $(this).html(obj.monthNotSendTotalPrice);
+                    $(this).html(obj.monthNotSendTotalPrice.toFixed(2));
                     break;
                 case (9):
                     // 备注

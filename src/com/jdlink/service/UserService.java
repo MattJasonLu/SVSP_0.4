@@ -101,4 +101,9 @@ public interface UserService {
     List<LoginLog> searchLog(LoginLog loginLog);
 
     int searchLogCount(LoginLog loginLog);
+
+    int countByUser(User user);
+
+    void modifyPassword(User user);
+
 }
