@@ -147,7 +147,7 @@ public class PRReceiveSampleAnalysisController {
                 receiveSampleAnalysis.setPhosphorus(Float.parseFloat(data[i][14].toString()));
                 receiveSampleAnalysis.setFlashPoint(Float.parseFloat(data[i][15].toString()));
                 receiveSampleAnalysis.setViscosity(Float.parseFloat(data[i][16].toString()));
-                receiveSampleAnalysis.setHotMelt(Float.parseFloat(data[i][17].toString()));
+                receiveSampleAnalysis.setHotMelt(data[i][17].toString());
                 receiveSampleAnalysis.setRemark(data[i][18].toString());
                 receiveSampleAnalysis.setCheckState(CheckState.NewBuild);
                 receiveSampleAnalysisService.add(receiveSampleAnalysis);

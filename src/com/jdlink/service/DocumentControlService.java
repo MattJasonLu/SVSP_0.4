@@ -22,4 +22,28 @@ public interface DocumentControlService {
      */
     int count(DocumentControl documentControl);
 
+    /**
+     * 增加受控文档
+     * @param documentControl 受控文档
+     */
+    void add(DocumentControl documentControl);
+
+    /**
+     * 作废
+     * @param ID 编号
+     */
+    void setInvalid(String ID);
+
+    /**
+     * 设置生效
+     * @param ID 编号
+     */
+    void setEffective(String ID);
+
+    /**
+     * 设置失效
+     * @param ID 编号
+     */
+    void setUnEffective(String ID);
+
 }

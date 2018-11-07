@@ -44,4 +44,28 @@
         </where>
     </select>
 
+    <!--增加受控文档-->
+    <insert id="add">
+        insert into t_base_fileno (ID, fileNO, fileName, SYSCode, company,
+        createdName, createdDate, editName, editDate, isEffective, note)
+        values (#{ID}, #{fileNO}, #{fileName}, #{SYSCode}, #{company},
+        #{createdName}, #{createdDate}, #{editName}, #{editDate},
+        #{isEffective}, #{note});
+    </insert>
+
+    <!--作废-->
+    <update id="setInvalid">
+        update t_base_fileno set checkState='Invalid' where ID=#{ID};
+    </update>
+
+    <!--生效-->
+    <update id="setEffective">
+        update t_base_fileno set isEffective=1 where ID=#{ID};
+    </update>
+
+    <!--失效-->
+    <update id="setUnEffective">
+        update t_base_fileno set isEffective=0 where ID=#{ID};
+    </update>
+
 </mapper>

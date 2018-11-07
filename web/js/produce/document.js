@@ -1,12 +1,8 @@
-function viewDocument() {
-    $("#viewModal").modal('show')
-}
+
 function editDocument() {
     $("#editModal").modal('show')
 }
-function newDocument() {
-    $("#newModal").modal('show')
-}
+
 
 var isSearch = false;
 var currentPage = 1;                          //当前页数
@@ -342,6 +338,7 @@ function setDataList(result) {
         var clonedTr = tr.clone();
         clonedTr.show();
         // 循环遍历cloneTr的每一个td元素，并赋值
+        clonedTr.find("td[name='ID']").text(obj.ID);
         clonedTr.find("td[name='fileNO']").text(obj.fileNO);
         clonedTr.find("td[name='fileName']").text(obj.fileName);
         clonedTr.find("td[name='SYSCode']").text(obj.SYSCode);
@@ -420,124 +417,28 @@ function searchData() {
  * 增加数据
  */
 function showAddModal() {
-    // 设置物质形态
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getFormTypeAndPackageType",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            if (result !== undefined) {
-                var data = eval(result);
-                // 高级检索下拉框数据填充
-                var formType = $("#formType");
-                formType.children().remove();
-                $.each(data.formTypeList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    formType.append(option);
-                });
-                formType.get(0).selectedIndex = -1;
-            } else {
-                console.log("fail: " + result);
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-        }
-    });
-    // 设置产废单位
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getAllClients",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            if (result !== undefined) {
-                var data = eval(result);
-                // 高级检索下拉框数据填充
-                var produceCompany = $("#produceCompany");
-                produceCompany.children().remove();
-                $.each(data, function (index, item) {
-                    var option = $('<option />');
-                    option.val(item.clientId);
-                    option.text(item.companyName);
-                    produceCompany.append(option);
-                });
-                produceCompany.selectpicker("refresh");
-                produceCompany.selectpicker('val', '');
-            } else {
-                console.log("fail: " + result);
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-        }
-    });
-    // 设置危废代码
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getWastesInfoList",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            if (result !== undefined) {
-                var data = eval(result);
-                // 高级检索下拉框数据填充
-                var wastesCode = $("#wastesCode");
-                wastesCode.children().remove();
-                $.each(data.data, function (index, item) {
-                    var option = $('<option />');
-                    option.val(item.code);
-                    option.text(item.code);
-                    wastesCode.append(option);
-                });
-                wastesCode.selectpicker("refresh");
-                wastesCode.selectpicker('val', '');
-            } else {
-                console.log("fail: " + result);
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-        }
-    });
-    $("#addModal").modal("show");
+    // 显示新增模态框
+    $("#newModal").modal('show');
 }
 
 /**
- * 增加仓储化验单
+ * 增加
  */
 function addData() {
     var data = {
-        transferDraftId: $("#transferDraftId").val(),
-        wastesName: $("#wastesName").val(),
-        formType: $("#formType").val(),
-        ph: $("#PH").val(),
-        ash: $("#ash").val(),
-        fluorine: $("#fluorine").val(),
-        sulfur: $("#sulfur").val(),
-        flashPoint: $("#flashPoint").val(),
-        hotMelt: $("#hotMelt").val(),
-        produceCompany: {
-            clientId: $("#produceCompany").val()
-        },
-        wastesCode: $("#wastesCode").val(),
-        remark: $("#remark").val(),
-        heat: $("#heat").val(),
-        water: $("#water").val(),
-        chlorine: $("#chlorine").val(),
-        phosphorus: $("#phosphorus").val(),
-        viscosity: $("#viscosity").val()
+        fileNO: $("#addFileNO").val(),
+        fileName: $("#addFileName").val(),
+        SYSCode: $("#addSYSCode").val(),
+        company: $("#addCompany").val(),
+        note: $("#addNote").val()
     };
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "addSampleInfoAnalysis",                  // url
+        url: "addDocumentControl",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(data),
+        data: data,
         dataType: "json",
-        contentType: "application/json; charset=utf-8",
+        // contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 alert(result.message);
@@ -587,19 +488,19 @@ function getCheckState() {
 }
 
 /**
- * 作废转移联单
+ * 作废该受控文档
  */
 function setInvalid(e) {    //已作废
-    var r = confirm("确认作废该化验单吗？");
+    var r = confirm("确认作废该受控文档吗？");
     if (r) {
         var id = getIdByMenu(e);
         $.ajax({
             type: "POST",
-            url: "setSampleInfoAnalysisInvalid",
+            url: "setDocumentControlInvalid",
             async: false,
             dataType: "json",
             data: {
-                id: id
+                ID: id
             },
             success: function (result) {
                 if (result !== undefined && result.status === "success") {
@@ -619,19 +520,51 @@ function setInvalid(e) {    //已作废
 }
 
 /**
- * 提交转移联单
+ * 生效该受控文档
  */
-function setSubmit(e) {    //已提交
-    var r = confirm("确认提交该联单吗？");
+function setEffective(e) {    //已提交
+    var r = confirm("确认生效该受控文档吗？");
     if (r) {
         var id = getIdByMenu(e);
         $.ajax({
             type: "POST",
-            url: "setTransferDraftToExamine",
+            url: "setDocumentControlEffective",
             async: false,
             dataType: "json",
             data: {
-                id: id
+                ID: id
+            },
+            success: function (result) {
+                if (result !== undefined && result.status === "success") {
+                    console.log(result);
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常");
+            }
+        });
+    }
+}
+
+/**
+ * 失效该受控文档
+ */
+function setUnEffective(e) {    //已提交
+    var r = confirm("确认失效该受控文档吗？");
+    if (r) {
+        var id = getIdByMenu(e);
+        $.ajax({
+            type: "POST",
+            url: "setDocumentControlUnEffective",
+            async: false,
+            dataType: "json",
+            data: {
+                ID: id
             },
             success: function (result) {
                 if (result !== undefined && result.status === "success") {
@@ -929,15 +862,15 @@ function getSelectedInfo() {
  * @param e
  */
 function viewData(e) {
-    $("#viewAppointModal").find('td').text('');
+    $("#viewModal").find('td').text('');
     var id = getIdByMenu(e);
     $.ajax({
         type: "POST",
-        url: "getSampleInfoAnalysisById",
+        url: "",
         async: false,
         dataType: "json",
         data: {
-            "id": id
+            ID: id
         },
         success: function (result) {
             if (result != undefined && result.status == "success") {
@@ -975,7 +908,7 @@ function viewData(e) {
             alert("服务器异常");
         }
     });
-    $("#viewAppointModal").modal("show");
+    $("#viewModal").modal('show')
 }
 
 /**
@@ -984,7 +917,7 @@ function viewData(e) {
  * @returns {string} 联单编号
  */
 function getIdByMenu(e) {
-    return $(e).parent().parent().find("td[name='id']").text();
+    return $(e).parent().parent().find("td[name='ID']").text();
 }
 
 /**

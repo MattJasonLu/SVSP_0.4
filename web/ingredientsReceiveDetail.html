@@ -11,7 +11,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/ingredientsReceive.js"></script>
+    <script src="js/produce/ingredientsReceiveDetail.js"></script>
 </head>
 <body onload="loadPageList();">
 <!--导航条-->
@@ -62,7 +62,7 @@
         <li class="dropdown">
             <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
             <ul class="dropdown-menu">
-                <li><a href="personalInformation.html">个人信息</a></li>
+                <li><a href="#">个人信息</a></li>
                 <li><a href="#">待办事项</a></li>
                 <li><a href="#" onclick="showLog();">登录日志</a></li>
                 <li><a href="admin.html">注销</a></li>
@@ -140,12 +140,10 @@
                 <div class="pull-left col-md-6">
                     <a class="btn btn-primary btn-xs" href="newIngredientsReceive.html"><span
                             class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                    <a class="btn btn-primary btn-xs" href="ingredientsReceiveDetail.html"><span
-                            class="glyphicon glyphicon-search" aria-hidden="true"></span> 明细页面</a>
-                    <a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose();"><span class="glyphicon glyphicon-arrow-down"
-                                                                     aria-hidden="true"></span> 导入</a>
+                    <a class="btn btn-primary btn-xs" href="ingredientsReceive.html"><span
+                            class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> 返回主页</a>
                     <a class="btn btn-primary btn-xs" href="#" onclick="exportExcel();"><span class="glyphicon glyphicon-arrow-up"
-                                                                     aria-hidden="true"></span> 导出</a>
+                                                                                              aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
                 <div class="input-group col-md-4 pull-right">
@@ -197,6 +195,34 @@
                 <div class="row">
                     <div class="form-horizontal col-md-4">
                         <div class="form-group">
+                            <label for="search-name" class="col-sm-4 control-label">物品名称</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-name" name="search-name"
+                                       placeholder="" onkeydown="enterSearch()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-4">
+                        <div class="form-group">
+                            <label for="search-specification" class="col-sm-4 control-label">规格</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-specification"
+                                       name="search-specification" placeholder="" onkeydown="enterSearch()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-4">
+                        <div class="form-group">
+                            <label for="search-wareHouseName" class="col-sm-4 control-label">仓库</label>
+                            <div class="col-xs-7">
+                                <input class="form-control" id="search-wareHouseName" name="search-wareHouseName" onkeydown="enterSearch()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
                             <label class="col-sm-3 control-label" style="margin-left: 40px">创建日期 </label>
                             <div class="input-group">
                                 <input type="date" class="input-sm form-control" id="search-startDate" title="" onkeydown="enterSearch()"/>
@@ -220,14 +246,15 @@
                         </th>
                         <th class="text-center">领料单号</th>
                         <th class="text-center">部门</th>
-                        <th class="text-center">领料单状态</th>
-                        <th class="text-center">总数量</th>
-                        <th class="text-center">主管副总经理</th>
-                        <th class="text-center">仓库部门主管</th>
-                        <th class="text-center">保管员</th>
-                        <th class="text-center">领料部门主管</th>
-                        <th class="text-center">领料人</th>
+                        <th class="text-center">单据状态</th>
+                        <th class="text-center">物品名称</th>
+                        <th class="text-center">规格</th>
+                        <th class="text-center">计量单位</th>
+                        <th class="text-center">数量</th>
+                        <th class="text-center">附注</th>
+                        <th class="text-center">仓库</th>
                         <th class="text-center">创建日期</th>
+                        <th class="text-center" hidden>编号</th>
                         <th class="text-center">操作</th>
                     </tr>
                     </thead>
@@ -248,13 +275,14 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
+                        <td class="text-center" hidden></td>
                         <td class="text-center">
                             <a title="查看" href="#"
                                onclick="toView(this)"><span class="glyphicon glyphicon-search"
-                                                                          aria-hidden="true"></span> </a>
+                                                            aria-hidden="true"></span> </a>
                             <a title="修改" href="#"
                                onclick="ingredientsReceiveModify(this)"><span class="glyphicon glyphicon-pencil"
-                                                                          aria-hidden="true"></span> </a>
+                                                                              aria-hidden="true"></span> </a>
                             <a title="作废" href="#" onclick="invalid(this)"><span
                                     class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> </a>
                         </td>
@@ -262,10 +290,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-        <!--自动提示后隐藏-->
-        <div >
-            <input type="hidden" id="hidvalue" value="作废成功！" />
         </div>
         <!--分页-->
         <nav aria-label="Page navigation" class="text-center">

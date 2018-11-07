@@ -16,8 +16,9 @@ public interface IngredientsMapper {
     int countIn();
     int searchInCount(IngredientsIn ingredientsIn);
     List<IngredientsIn> searchIn(IngredientsIn ingredientsIn);
-    void invalidIn(String id);
+    void invalidIn(IngredientsIn ingredientsIn);
     void updateIn(IngredientsIn ingredientsIn);
+    void updateDataIn(IngredientsIn ingredientsIn);
     List<Ingredients> getIngredientsInItemByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("equipment")Equipment equipment);
     /**
      * 用于判断库存表中该物品在某仓库中是否存在库存
