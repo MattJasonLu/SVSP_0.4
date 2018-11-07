@@ -330,38 +330,33 @@ function searchBatchOrder() {
 
 
     var beginTime=$.trim($('#search-inDate').val());
-
     var endTime=$.trim($('#search-endDate').val());
-
-
     var startDate=getDateByStr(beginTime);
 
     var endDate=getDateByStr(endTime);
 
     var dateArray=[];
 
-    for(var j=0;j<array.length;j++){
-        $.each(array[j],function () {
+    for(var j=0;j<array.length;j++) {
+        $.each(array[j], function () {
             dateArray.push(($(this).children('td').eq(6).text()))
         });
     }
-    console.log(dateArray)
     var dateMin=dateArray[0];
     var dateMax=dateArray[0];
-    for (var i=0;i<dateArray.length;i++){
 
+    for (var i=0;i<dateArray.length;i++){
         if(new Date((dateArray[i])).getTime()<=new Date(dateMin).getTime()||dateMin.length==0){
             dateMin=(dateArray[i]);
         }
         if(new Date(dateArray[i]).getTime()>=new Date(dateMax)||dateMax.length==0){
             dateMax=(dateArray[i]);
         }
-
     }
 
 
 
-
+    console.log(processWay);
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
 
@@ -371,17 +366,25 @@ function searchBatchOrder() {
             if(endDate.toString()=='Invalid Date'){
                 endDate=dateMax;
             }
-
             var date=$(this).children('td').eq(6).text();
+
             if(!($(this).children('td').eq(10).text().indexOf(processWay)!=-1
-                &&$(this).children('td').eq(4).text().indexOf(wastesName)!=-1&&$(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').text().indexOf(text)!=-1
-                &&(new Date(startDate).getTime()<=new Date(date).getTime()&&new Date(endDate).getTime()>=new Date (date).getTime())
-            )){
+                &&$(this).children('td').eq(4).text().indexOf(wastesName)!=-1&&
+                $(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').text().indexOf(text)!=-1
+                &&(new Date(startDate).getTime()<=new Date(date).getTime()&&new Date(endDate).getTime()>=new Date (date).getTime()
+            )
+            )
+
+
+            ){
                 $(this).hide();
             }
-            if(($(this).children('td').eq(10).text().indexOf(processWay)!=-1
-                &&$(this).children('td').eq(4).text().indexOf(wastesName)!=-1&&$(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').text().indexOf(text)!=-1)
-                &&(new Date(startDate).getTime()<=new Date(date).getTime()&&new Date(endDate).getTime()>=new Date (date).getTime())){
+            if($(this).children('td').eq(10).text().indexOf(processWay)!=-1
+                &&$(this).children('td').eq(4).text().indexOf(wastesName)!=-1&&
+                $(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').text().indexOf(text)!=-1
+                &&(new Date(startDate).getTime()<=new Date(date).getTime()&&new Date(endDate).getTime()>=new Date (date).getTime()
+                )
+            ){
                 array1.push($(this));
             }
         });
@@ -777,7 +780,7 @@ function searchInventory() {
 
     var endDate=getDateByStr(endTime);
 
-    var hangdeCategory=$.trim($("#search-handelCategory option:selected").text());
+    var handelCategory=$.trim($("#search-handelCategory option:selected").text());
 
     var companyName=$.trim($("select[name='search-companyName']").selectpicker('val'));
 
@@ -812,15 +815,15 @@ function searchInventory() {
             if(endDate.toString()=='Invalid Date'){
                 endDate=dateMax;
             }
-            //console.log($(this).children('td').eq(6).text().toString())
+            console.log($(this).children('td').eq(6).text().toString())
             var code=($(this).children('td').eq(6).text().toString()).substring($(this).children('td').eq(6).text().length-2,$(this).children('td').eq(6).text().length);
-            if(!($(this).children('td').eq(8).text().indexOf(hangdeCategory)!=-1
+            if(!($(this).children('td').eq(8).text().indexOf(handelCategory)!=-1
                 &&$(this).children('td').eq(4).text().indexOf(companyName)!=-1&&code.indexOf(wastesCode)!=-1&&$(this).children('td').text().indexOf(text)!=-1
                 &&(new Date($(this).children('td').eq(2).text()).getTime()>=new Date(startDate).getTime() &&new Date($(this).children('td').eq(2).text()).getTime()<=new Date(endDate).getTime())
             )){
                 $(this).hide();
             }
-            if($(this).children('td').eq(8).text().indexOf(hangdeCategory)!=-1
+            if($(this).children('td').eq(8).text().indexOf(handelCategory)!=-1
                 &&$(this).children('td').eq(4).text().indexOf(companyName)!=-1&&code.indexOf(text)!=-1
                 &&(new Date($(this).children('td').eq(2).text()).getTime()>=new Date(startDate).getTime() &&new Date($(this).children('td').eq(2).text()).getTime()<=new Date(endDate).getTime())){
                 array1.push($(this));
