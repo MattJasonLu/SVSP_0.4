@@ -5,6 +5,8 @@ import com.jdlink.domain.Inventory.InboundOrderItem;
 import com.jdlink.domain.Inventory.InboundPlanOrder;
 import com.jdlink.domain.Page;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
 import java.util.List;
@@ -39,6 +41,20 @@ public interface InboundMapper {
      * @param inboundPlanOrder 入库计划单
      */
     void addInboundPlanOrder(InboundPlanOrder inboundPlanOrder);
+
+    /**
+     * 设置入库计划单失效
+     * @param inboundPlanOrderId
+     * @param newId
+     */
+    void setInboundPlanOrderInvalid(@Param("inboundPlanOrderId") String inboundPlanOrderId, @Param("newId") String newId);
+
+    /**
+     * 通过编号获取入库计划单
+     * @param inboundPlanOrderId 入库计划单号
+     * @return 入库计划单
+     */
+    InboundPlanOrder getInboundPlanOrder(String inboundPlanOrderId);
 
     /**
      * 查找入库计划单

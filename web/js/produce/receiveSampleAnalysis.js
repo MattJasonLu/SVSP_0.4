@@ -422,129 +422,137 @@ function searchData() {
 /**
  * 增加数据
  */
-function addData(state) {
-    var transferId;
-    if (localStorage.transferDraftId == null) {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getCurrentTransferDraftId",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            success: function (result) {
-                if (result !== undefined) {
-                    transferId = result.transferDraftId;
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-            }
-        });
-    } else {
-        transferId = localStorage.transferDraftId;
-    }
-    var data = {
-        id: transferId,
-        produceCompany: {
-            clientId: $("#produceCompany").val(),
-            companyName: $("#produceCompany  option:selected").text(),
-            phone: $("#produceCompanyPhone").val(),
-            location: $("#produceCompanyLocation").val(),
-            postCode: $("#produceCompanyPostcode").val()
-        },
-        transportCompany: {
-            supplierId: $("#transportCompany").val(),
-            companyName: $("#transportCompany  option:selected").text(),
-            phone: $("#transportCompanyPhone").val(),
-            location: $("#transportCompanyLocation").val(),
-            postCode: $("#transportCompanyPostcode").val()
-        },
-        acceptCompany: {
-            clientId: $("#acceptCompany").val(),
-            companyName: $("#acceptCompany  option:selected").text(),
-            phone: $("#acceptCompanyPhone").val(),
-            location: $("#acceptCompanyLocation").val(),
-            postCode: $("#acceptCompanyPostcode").val()
-        },
-        wastes: {
-            name: $("#wastesName").val(),
-            prepareTransferCount: $("#wastesPrepareTransferCount").val(),
-            wastesCharacter: $("#wastesCharacter").val(),
-            handleCategory: $("#wastesCategory").val(),
-            transferCount: $("#wastesTransferCount").val(),
-            formType: $("#wastesFormType").val(),
-            wastesId: $('#wastesCode').selectpicker('val'),
-            signCount: $("#wastesSignCount").val(),
-            packageType: $("#wastesPackageType").val()
-        },
-        outwardIsTransit: $("#outwardIsTransit").prop("checked"),
-        outwardIsUse: $("#outwardIsUse").prop("checked"),
-        outwardIsDeal: $("#outwardIsDeal").prop("checked"),
-        outwardIsDispose: $("#outwardIsDispose").prop("checked"),
-        mainDangerComponent: $("#mainDangerComponent").val(),
-        dangerCharacter: $("#dangerCharacter").val(),
-        emergencyMeasure: $("#emergencyMeasure").val(),
-        emergencyEquipment: $("#emergencyEquipment").val(),
-        dispatcher: $("#dispatcher").val(),
-        destination: $("#destination").val(),
-        transferTime: getStdTimeStr($("#transferTime").val()),
-        // 运输单位填写
-        firstCarrier: $("#firstCarrier").val(),
-        firstCarryTime: getStdTimeStr($("#firstCarryTime").val()),
-        firstModel: $("#firstModel").val(),
-        firstBrand: $("#firstBrand").val(),
-        firstTransportNumber: $("#firstTransportNumber").val(),
-        firstOrigin: $("#firstOrigin").val(),
-        firstStation: $("#firstStation").val(),
-        firstDestination: $("#firstDestination").val(),
-        firstCarrierSign: $("#firstCarrierSign").val(),
-        secondCarrier: $("#secondCarrier").val(),
-        secondCarryTime: getStdTimeStr($("#secondCarryTime").val()),
-        secondModel: $("#secondModel").val(),
-        secondBrand: $("#secondBrand").val(),
-        secondTransportNumber: $("#secondTransportNumber").val(),
-        secondOrigin: $("#secondOrigin").val(),
-        secondStation: $("#secondStation").val(),
-        secondDestination: $("#secondDestination").val(),
-        secondCarrierSign: $("#secondCarrierSign").val(),
-        acceptCompanyLicense: $("#acceptCompanyLicense").val(),
-        recipient: $("#recipient").val(),
-        acceptDate: $("#acceptDate").val(),
-        disposeIsUse: $("#disposeIsUse").prop("checked"),
-        disposeIsStore: $("#disposeIsStore").prop("checked"),
-        disposeIsBurn: $("#disposeIsBurn").prop("checked"),
-        disposeIsLandFill: $("#disposeIsLandFill").prop("checked"),
-        disposeIsOther: $("#disposeIsOther").prop("checked"),
-        headSign: $("#headSign").val(),
-        signDate: $("#signDate").val(),
-        checkState: state === 'save' ? 'ToSubmit' : 'ToExamine'
-    };
-    // 上传用户数据
+function showAddModal() {
+    // 设置物质形态
     $.ajax({
-        type: "POST",                           // 方法类型
-        url: "addTransferDraft",                // url
-        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        type: "POST",                       // 方法类型
+        url: "getFormTypeAndPackageType",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var formType = $("#formType");
+                formType.children().remove();
+                $.each(data.formTypeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    formType.append(option);
+                });
+                formType.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    // 设置产废单位
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getAllClients",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var produceCompany = $("#produceCompany");
+                produceCompany.children().remove();
+                $.each(data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.clientId);
+                    option.text(item.companyName);
+                    produceCompany.append(option);
+                });
+                produceCompany.selectpicker("refresh");
+                produceCompany.selectpicker('val', '');
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    // 设置危废代码
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getWastesInfoList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var wastesCode = $("#wastesCode");
+                wastesCode.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.code);
+                    option.text(item.code);
+                    wastesCode.append(option);
+                });
+                wastesCode.selectpicker("refresh");
+                wastesCode.selectpicker('val', '');
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    $("#addModal").modal("show");
+}
+
+/**
+ * 增加仓储化验单
+ */
+function addData() {
+    var data = {
+        id: $("#id").val(),
+        finishDate: $("#finishDate").val(),
+        sender: $("#sender").val(),
+        wastesName: $("#wastesName").val(),
+        formType: $("#formType").val(),
+        ph: $("#PH").val(),
+        ash: $("#ash").val(),
+        fluorine: $("#fluorine").val(),
+        sulfur: $("#sulfur").val(),
+        flashPoint: $("#flashPoint").val(),
+        hotMelt: $("#hotMelt").val(),
+        produceCompany: {
+            clientId: $("#produceCompany").val()
+        },
+        wastesCode: $("#wastesCode").val(),
+        remark: $("#remark").val(),
+        heat: $("#heat").val(),
+        water: $("#water").val(),
+        chlorine: $("#chlorine").val(),
+        phosphorus: $("#phosphorus").val(),
+        viscosity: $("#viscosity").val()
+    };
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "addReceiveSampleAnalysis",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         data: JSON.stringify(data),
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function (result) {
-            if (result !== undefined) {
-                if (result.status === "success") {
-                    alert(result.message);
-                    // if (addType == "continue") window.location.reload();
-                    // else $(location).attr('href', 'transferDraft.html');//跳转
-
-                    $(location).attr('href', 'transferDraft.html');
-                } else {
-                    console.log(result);
-                    alert(result.message);
-                }
+            if (result != undefined && result.status == "success") {
+                alert(result.message);
+                window.location.reload();
+            } else {
+                alert(result.message);
             }
         },
         error: function (result) {
             console.log(result);
-            alert("服务器异常!");
         }
     });
 }
@@ -946,7 +954,7 @@ function viewData(e) {
                 $("#viewTable").find("td[name='produceCompanyName']").text(obj.produceCompany.companyName);
                 $("#viewTable").find("td[name='wastesName']").text(parseFloat(obj.wastesName).toFixed(3));
                 $("#viewTable").find("td[name='wastesCode']").text(parseFloat(obj.wastesCode).toFixed(3));
-                $("#viewTable").find("td[name='formType']").text(parseFloat(obj.formType.name).toFixed(3));
+                if (obj.formType != null) $("#viewTable").find("td[name='formType']").text(obj.formType.name);
                 $("#viewTable").find("td[name='remark']").text(obj.remark);
                 $("#viewTable").find("td[name='PH']").text(parseFloat(obj.PH).toFixed(3));
                 $("#viewTable").find("td[name='ash']").text(parseFloat(obj.ash).toFixed(3));

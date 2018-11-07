@@ -494,7 +494,7 @@
                         <h5 class="sub-header text-center">拒收原因</h5>
                     </div>
                     <div class="row">
-                        <div class="form-horizontal col-md-12">
+                        <div class="form-horizontal col-md-12 col-sm-12">
                             <textarea class="form-control" rows="5" id="advice" style="min-width: 70%"></textarea>
                         </div>
                     </div>
@@ -521,7 +521,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-12 col-sm-12">
                                 <label for="model-companyName" class="col-sm-2 control-label">公司名称</label>
                                 <div class="col-sm-10">
                                     <select class="selectpicker form-control" data-live-search="true"
@@ -532,14 +532,14 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-6 col-sm-6">
                                 <label for="model-sendingPerson" class="col-sm-4 control-label">送样人</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" id="model-sendingPerson"
                                            name="sendingPerson" required>
                                 </div>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-6 col-sm-6">
                                 <label for="model-id" class="col-sm-4 control-label">预约单号</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" id="model-id"
@@ -547,7 +547,7 @@
                                 </div>
                             </div>
                         </div>
-                        <table class="table table-bordered">
+                        <table class="table table-bordered" style="width: 95%;table-layout: fixed">
                             <thead style="border:none">
                             <tr>
                                 <th class="text-center">序号</th>
@@ -555,25 +555,25 @@
                                 <th class="text-center">危废名称</th>
                                 <th class="text-center">危废类别</th>
                                 <th class="text-center">危废形态</th>
-                                <th class="text-center">检测项目</th>
+                                <th class="text-center" style="width: 30%">检测项目</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr id="addClone">
                                 <td class="text-center">1</td>
-                                <td class="text-center"><select class="selectpicker form-control"
+                                <td class="text-center"><select style="width: 100%" class="selectpicker form-control"
                                                                 data-live-search="true"
                                                                 data-live-search-placeholder="搜索..."
                                                                 id="wastesList0-wastesCode"
                                                                 name="wastesList[0].wastesCode"
                                                                 onchange="autoSetCategory(this)">
                                 </select></td>
-                                <td class="text-center"><input class="focus" name="wastesList[0].wastesName"
+                                <td class="text-center"><input style="width: 100%" class="focus" name="wastesList[0].wastesName"
                                                                id="wastesList[0].wastesName"></td>
-                                <td class="text-center"><input class="focus" name="modal-wastesHandleCategory"
+                                <td class="text-center"><input style="width: 100%" class="focus" name="modal-wastesHandleCategory"
                                                                id="wastesList[0].wastesHandleCategory">
-                                    </input></td>
-                                <td class="text-center"><select class="focus" name="modal-wastesFormType"
+                                </td>
+                                <td class="text-center"><select style="width: 100%" class="focus" name="modal-wastesFormType"
                                                                 id="wastesList[0].wastesFormType">
                                 </select></td>
                                 <td class="text-center">

@@ -486,9 +486,7 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="myModalLabel">预约登记</h4>
                     </div>
                     <div class="modal-body">
@@ -519,15 +517,15 @@
                                 </div>
                             </div>
                         </div>
-                        <table class="table table-bordered">
-                            <thead style="border:none">
+                        <table class="table table-bordered" style="width: 95%;table-layout: fixed">
+                            <thead>
                             <tr>
                                 <th class="text-center">序号</th>
                                 <th class="text-center">危废代码</th>
                                 <th class="text-center">危废名称</th>
-                                <th class="text-center" width="10%">危废类别</th>
-                                <th class="text-center" width="10%">危废形态</th>
-                                <th class="text-center" width="40%">检测项目</th>
+                                <th class="text-center">危废类别</th>
+                                <th class="text-center">危废形态</th>
+                                <th class="text-center" style="width: 30%">检测项目</th>
                                 <th class="text-center">联单编号</th>
                             </tr>
                             </thead>
@@ -541,12 +539,12 @@
                                                                 name="wastesList[0].wastesCode">
                                 </select></td>
                                 <td class="text-center" ><input class="focus" name="wastesList[0].wastesName"
-                                                                id="wastesList[0].wastesName"></td>
+                                                                id="wastesList[0].wastesName" style="width: 100%"></td>
                                 <td class="text-center" width="10%"><input class="focus" name="modal-wastesHandleCategory"
-                                                                 id="wastesList[0].wastesHandleCategory">
+                                                                 id="wastesList[0].wastesHandleCategory" style="width: 100%">
                                 </td>
                                 <td class="text-center" width="10%"><select class="focus" name="modal-wastesFormType"
-                                                                 id="wastesList[0].wastesFormType">
+                                                                 id="wastesList[0].wastesFormType" style="width: 100%">
                                 </select>
                                 </td>
                                 <td class="text-center" width="40%">
@@ -596,7 +594,7 @@
                                     <!--</label>-->
                                 </td>
                                 <td class="text-center" ><input class="focus" name="wastesList[0].transferId"
-                                                                id="wastesList[0].transferId"></td>
+                                                                id="wastesList[0].transferId" style="width: 100%"></td>
                             </tr>
                             <tr id="plusBtn">
                                 <td>

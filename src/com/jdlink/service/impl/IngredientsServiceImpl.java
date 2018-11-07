@@ -59,6 +59,18 @@ public class IngredientsServiceImpl implements IngredientsService {
     @Override
     public List<Ingredients> getIngredientsInItemByRange(Date startDate,Date endDate,Equipment equipment){ return ingredientsMapper.getIngredientsInItemByRange(startDate,endDate,equipment); }
 
+    @Override
+    public int countInItem(){ return ingredientsMapper.countInItem();}
+
+    @Override
+    public int searchInItemCount(Ingredients ingredients){ return ingredientsMapper.searchInItemCount(ingredients);}
+
+    @Override
+    public List<Ingredients> listPageInItem(Page page){ return ingredientsMapper.listPageInItem(page); }
+
+    @Override
+    public List<Ingredients> searchInItem(Ingredients ingredients){ return ingredientsMapper.searchInItem(ingredients);}
+
     ///领料单///
     @Override
     public int countReceiveById(String id){ return ingredientsMapper.countReceiveById(id); }
@@ -111,6 +123,18 @@ public class IngredientsServiceImpl implements IngredientsService {
     @Override
     public Ingredients getInventoryByNameAndWare(Ingredients ingredients){ return ingredientsMapper.getInventoryByNameAndWare(ingredients); }
 
+    @Override
+    public int countReceiveItem(){ return ingredientsMapper.countReceiveItem();}
+
+    @Override
+    public int searchReceiveItemCount(Ingredients ingredients){ return ingredientsMapper.searchReceiveItemCount(ingredients); }
+
+    @Override
+    public List<Ingredients> listPageReceiveItem(Page page){ return ingredientsMapper.listPageReceiveItem(page); }
+
+    @Override
+    public List<Ingredients> searchReceiveItem(Ingredients ingredients){ return searchReceiveItem(ingredients); }
+
     ///出库单///
     @Override
     public int countOutById(String id){ return ingredientsMapper.countOutById(id); }
@@ -147,5 +171,17 @@ public class IngredientsServiceImpl implements IngredientsService {
      */
     @Override
     public List<Ingredients> getIngredientsOutItemByRange(Date startDate, Date endDate,Equipment equipment){ return ingredientsMapper.getIngredientsOutItemByRange(startDate,endDate,equipment); }
+
+    @Override
+    public int countOutItem(){ return ingredientsMapper.countOutItem();}
+
+    @Override
+    public int searchOutItemCount(Ingredients ingredients){ return ingredientsMapper.searchOutItemCount(ingredients); }
+
+    @Override
+    public List<Ingredients> listPageOutItem(Page page){ return ingredientsMapper.listPageOutItem(page); }
+
+    @Override
+    public List<Ingredients> searchOutItem(Ingredients ingredients){ return ingredientsMapper.searchOutItem(ingredients); }
 
 }
