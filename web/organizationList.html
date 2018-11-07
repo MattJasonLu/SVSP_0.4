@@ -15,7 +15,148 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <link rel="stylesheet" href="zTree_v3-master/css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <script type="text/javascript" src="zTree_v3-master/js/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="zTree_v3-master/js/jquery.ztree.core.js"></script>
 </head>
+<SCRIPT type="text/javascript" >
+    <!--
+    var zTree;
+    var demoIframe;
+
+    var setting = {
+        view: {
+            dblClickExpand: false,
+            showLine: true,
+            selectedMulti: false
+        },
+        data: {
+            simpleData: {
+                enable:true,
+                idKey: "id",
+                pIdKey: "pId",
+                rootPId: ""
+            }
+        },
+        callback: {
+            beforeClick: function(treeId, treeNode) {
+                var zTree = $.fn.zTree.getZTreeObj("tree");
+                if (treeNode.isParent) {
+                    zTree.expandNode(treeNode);
+                    return false;
+                } else {
+                    demoIframe.attr("src",treeNode.file + ".html");
+                    return true;
+                }
+            }
+        }
+    };
+
+    var zNodes = [
+        {id:1, pId:0, name:"无锡佳利达国际物流股份有限公司", open:true},       //id:1(父节点1)                 id:2(父节点2)
+        {id:11, pId:1, name:"IT部", open:true},                                     //id:11(次父节点1)               id:21(次父节点2)
+        {id:111, pId:11, name:"项目组1", file:"test/warehouse1"},         //id:111(次父节点1的子节点1)       id:211(次父节点2的子节点1)
+        {id:112, pId:11, name:"项目组2", file:"test/warehouse2"},
+        {id:113, pId:11, name:"项目组3", file:"test/warehouse3"},
+        {id:114, pId:11, name:"项目组4", file:"test/warehouse4"},
+        {id:115, pId:11, name:"项目组5", file:"test/warehouse5"},
+        {id:116, pId:11, name:"项目组6", file:"test/warehouse6"},
+        {id:117, pId:11, name:"项目组7", file:"test/warehouse7"},
+        {id:118, pId:11, name:"项目组8", file:"test/warehouse8"},
+        // {id:109, pId:1, name:"Dynamic Tree - zTree methods", file:"core/async_fun"},
+        // {id:110, pId:1, name:"Update Node - zTree methods", file:"core/update_fun"},
+        // {id:111, pId:1, name:"Control of Click Node", file:"core/click"},
+        // {id:112, pId:1, name:"Control of Expand Node", file:"core/expand"},
+        // {id:113, pId:1, name:"Search Nodes", file:"core/searchNodes"},
+        // {id:114, pId:1, name:"Other Mouse Events for zTree", file:"core/otherMouse"},
+
+        {id:2, pId:0, name:"常州北控安耐得环保科技有限公司", open:false},                  //pId:0(0级节点，即最大父节点)             pId:0(0级节点，即最大父节点)
+        {id:21, pId:2, name:"焚烧组"},                                                //pId:1(第一组节点组，上面必须有0级节点)     pId:2(第二组节点组，上面必须有0级节点)
+        {id:211, pId:21, name:"焚烧炉1", file:"test/incinerator1"},                   //pId:11(第一组节点组中第一组子节点)         pId:21(第二组节点组中第一组子节点)
+        {id:212, pId:21, name:"焚烧炉2", file:"test/incinerator2"},
+        {id:213, pId:21, name:"焚烧炉3", file:"test/incinerator3"},
+        {id:214, pId:21, name:"焚烧炉4", file:"test/incinerator4"},
+        {id:215, pId:21, name:"焚烧炉5", file:"test/incinerator5"},
+        {id:216, pId:21, name:"焚烧炉6", file:"test/incinerator6"},
+        {id:217, pId:21, name:"焚烧炉7", file:"test/incinerator7"},
+        {id:218, pId:21, name:"焚烧炉8", file:"test/incinerator8"}
+        // {id:210, pId:2, name:"Radio chkDisabled Demo", file:"excheck/radio_chkDisabled"},
+        // {id:211, pId:2, name:"Radio halfCheck Demo", file:"excheck/radio_halfCheck"},
+        // {id:205, pId:2, name:"Radio - zTree methods", file:"excheck/radio_fun"},
+
+        // {id:3, pId:0, name:"[exedit] Editing", open:false},
+        // {id:301, pId:3, name:"Normal Drag Node Operation", file:"exedit/drag"},
+        // {id:302, pId:3, name:"Advanced Drag Node Operation", file:"exedit/drag_super"},
+        // {id:303, pId:3, name:"Move / Copy - zTree methods", file:"exedit/drag_fun"},
+        // {id:304, pId:3, name:"Basic Edit Nodes", file:"exedit/edit"},
+        // {id:305, pId:3, name:"Advanced Edit Nodes", file:"exedit/edit_super"},
+        // {id:306, pId:3, name:"Edit Nodes - zTree methods", file:"exedit/edit_fun"},
+        // {id:307, pId:3, name:"Editing Dynamic Tree", file:"exedit/async_edit"},
+        // {id:308, pId:3, name:"Multiple Trees", file:"exedit/multiTree"},
+        //
+        // {id:4, pId:0, name:"Large Amount of Data Loading", open:false},
+        // {id:401, pId:4, name:"One-time Large Data Loading", file:"bigdata/common"},
+        // {id:402, pId:4, name:"Loading Data in Batches", file:"bigdata/diy_async"},
+        // {id:403, pId:4, name:"Loading Data By Pagination", file:"bigdata/page"},
+        //
+        // {id:5, pId:0, name:"Multi-functional", open:false},
+        // {id:501, pId:5, name:"Freeze the Root Node", file:"super/oneroot"},
+        // {id:502, pId:5, name:"Click to Expand Node", file:"super/oneclick"},
+        // {id:503, pId:5, name:"Keep Single Path", file:"super/singlepath"},
+        // {id:504, pId:5, name:"Adding Custom DOM", file:"super/diydom"},
+        // {id:505, pId:5, name:"Checkbox / Radio Coexistence", file:"super/checkbox_radio"},
+        // {id:506, pId:5, name:"Left Menu", file:"super/left_menu"},
+        // {id:513, pId:5, name:"OutLook Style", file:"super/left_menuForOutLook"},
+        // {id:515, pId:5, name:"Awesome Style", file:"super/awesome"},
+        // {id:514, pId:5, name:"Metro Style", file:"super/metro"},
+        // {id:507, pId:5, name:"Drop-down Menu", file:"super/select_menu"},
+        // {id:509, pId:5, name:"Drop-down Menu with checkbox", file:"super/select_menu_checkbox"},
+        // {id:510, pId:5, name:"Drop-down Menu with radio", file:"super/select_menu_radio"},
+        // {id:508, pId:5, name:"Right-click Menu", file:"super/rightClickMenu"},
+        // {id:511, pId:5, name:"Drag With Other DOMs", file:"super/dragWithOther"},
+        // {id:512, pId:5, name:"Expand All Nodes with Async", file:"super/asyncForAll"},
+        //
+        // {id:6, pId:0, name:"Other Extension Package", open:false},
+        // {id:601, pId:6, name:"hide ordinary node", file:"exhide/common"},
+        // {id:602, pId:6, name:"hide with checkbox mode", file:"exhide/checkbox"},
+        // {id:603, pId:6, name:"hide with radio mode", file:"exhide/radio"}
+    ];
+
+    $(document).ready(function(){
+        var t = $("#tree");
+        t = $.fn.zTree.init(t, setting, zNodes);
+        demoIframe = $("#testIframe");
+        demoIframe.bind("load", loadReady);
+        var zTree = $.fn.zTree.getZTreeObj("tree");
+        zTree.selectNode(zTree.getNodeByParam("id", 101));
+
+    });
+
+    function loadReady() {
+        var bodyH = demoIframe.contents().find("body").get(0).scrollHeight,
+            htmlH = demoIframe.contents().find("html").get(0).scrollHeight,
+            maxH = Math.max(bodyH, htmlH), minH = Math.min(bodyH, htmlH),
+            h = demoIframe.height() >= maxH ? minH:maxH ;
+        if (h < 530) h = 530;
+        demoIframe.height(h);
+    }
+
+    //-->
+</SCRIPT>
+<style type="text/css">
+    body {
+        background-color: white;
+        margin:0; padding:0;
+        text-align: center;
+    }
+    div, p, table, th, td {
+        list-style:none;
+        margin:0; padding:0;
+        color:#333; font-size:12px;
+        font-family:dotum, Verdana, Arial, Helvetica, AppleGothic, sans-serif;
+    }
+    #testIframe {margin-left: 10px;}
+</style>
 <body>
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
@@ -73,12 +214,6 @@
 <div class="container-fluid">
     <div class="row">
         <div class="sidebar">
-            <!--<h4>博客管理系统(四月)</h4>-->
-            <!--<div class="cover">-->
-            <!--<h4><img class="img-circle" src="image/icons.png"/></h4>-->
-            <!--<b>Hi~ 小主</b>-->
-            <!--<p>超级管理员</p>-->
-            <!--</div>-->
             <ul class="sidenav animated fadeInUp">
                 <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
                 <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
@@ -96,125 +231,17 @@
             </ul>
         </div>
     </div>
-
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <table border="0" style="width: 100%;height: 100%" align="center">
+        <table  align=left style="border:0;height:600px">
             <tr>
-                <td class="text-center" style="width: 30%;BORDER-RIGHT: #999999 1px dashed;height: 100%">
-                    <h3>公司管理</h3>
-                    <div id="tree"></div>
+                <td width=260px align=left valign=top style="BORDER-RIGHT: #999999 1px dashed">
+                    <ul id="tree" class="ztree" style="width:100%; overflow:auto;"></ul>
                 </td>
-                <td class="text-center" style="width: 30%;BORDER-RIGHT: #999999 1px dashed">
-                    <h3>部门管理</h3>
-                    <div id="tree1"></div>
-                </td>
-                <td class="text-center" style="width: 30%;">
-                    <h3>项目组管理</h3>
-                    <div id="tree2"></div>
-                </td>
+                <td width=770px align=left valign=top><iframe id="testIframe" name="testIframe" frameborder="0" scrolling="auto" width=100%  height=600px src="test/warehouse1.html"></iframe></td>
             </tr>
         </table>
     </div>
 </div>
 <div id="embed"></div>
 </body>
-<script>
-    $('#embed').load('embed/loginLogModal.html');
-
-    /**
-     * 建立树表
-     */
-    function getTree() {
-        return tree;
-    }
-
-    var tree = [
-        {
-            id: 1,
-            text: "********公司",
-            selectable:true,
-            tags: ['available'],
-            nodes:[
-                {
-                    text: "******部门",
-                    selectable:true,
-                    nodes: [
-                        {
-                            text: "*****小组1",
-                            selectable:true,
-                            href: "#tree1",
-                            icon:"glyphicon glyphicon-stop",
-                            state: {
-                                checked: true,
-                                disabled:false,
-                                expanded:true,
-                                selected:false
-                            },
-                            tags: ['available']
-                        },
-                        {
-                            text: "*****小组2",
-                            selectable:true,
-                            href: "#tree1",
-                            icon:"glyphicon glyphicon-stop",
-                            state: {
-                                checked: true,
-                                disabled:false,
-                                expanded:true,
-                                selected:false
-                            },
-                            tags: ['available']
-                        }
-                    ]
-                },
-                {
-                    text: "*******部门",
-                    selectable:true
-                }
-            ]
-        },
-        {
-            text: "*****公司2"
-        },
-        {
-            text: "******公司3"
-        },
-        {
-            text: "*****公司4"
-        },
-        {
-            text: "******公司5"
-        }
-    ];
-    $(document).ready(
-        $('#tree').treeview({
-            data: getTree(),               //将设置好的树装入容器
-            backColor: "#ffffff",           //列表树节点的背景色
-            borderColor: "#ffffff",              // 列表树颜色的边框颜色
-            checkedIcon: "glyphicon glyphicon-check",  //设置复选框图标
-            highlightSearchResults: true,    //选择节点时是否高亮显示
-            collapseIcon: "glyphicon glyphicon-minus" //加号
-        })
-    );
-    $(document).ready(
-        $('#tree1').treeview({
-            data: getTree(),               //将设置好的树装入容器
-            backColor: "#ffffff",           //列表树节点的背景色
-            borderColor: "#ffffff",              // 列表树颜色的边框颜色
-            checkedIcon: "glyphicon glyphicon-check",  //设置复选框图标
-            highlightSearchResults: true,    //选择节点时是否高亮显示
-            collapseIcon: "glyphicon glyphicon-minus" //加号
-        })
-    );
-    $(document).ready(
-        $('#tree2').treeview({
-            data: getTree(),               //将设置好的树装入容器
-            backColor: "#ffffff",           //列表树节点的背景色
-            borderColor: "#ffffff",              // 列表树颜色的边框颜色
-            checkedIcon: "glyphicon glyphicon-check",  //设置复选框图标
-            highlightSearchResults: true,    //选择节点时是否高亮显示
-            collapseIcon: "glyphicon glyphicon-minus" //加号
-        })
-    );
-</script>
 </html>
