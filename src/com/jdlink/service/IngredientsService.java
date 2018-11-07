@@ -17,8 +17,9 @@ public interface IngredientsService {
     int countIn();
     int searchInCount(IngredientsIn ingredientsIn);
     List<IngredientsIn> searchIn(IngredientsIn ingredientsIn);
-    void invalidIn(String id);
+    void invalidIn(IngredientsIn ingredientsIn);
     void updateIn(IngredientsIn ingredientsIn);
+    void updateDataIn(IngredientsIn ingredientsIn);
     int getAmountItems(Ingredients ingredients);
     List<Ingredients> getIngredientsInItemByRange(Date startDate,Date endDate,Equipment equipment);
     int countInItem();
