@@ -74,6 +74,9 @@
                     and wastesCode LIKE "%"#{inboundPlanOrder.wastes.wastesId}"%"
                 </if>
             </if>
+            <if test="true">
+                and checkState != 'Invalid'
+            </if>
         </where>
         order by createDate desc
         <if test="page != null and page.start != null and page.count != null">
@@ -122,6 +125,10 @@
     <select id="getInboundPlanOrder" resultMap="InboundPlanOrderRM">
         select * from t_pl_inboundplanorder where inboundPlanOrderId=#{inboundPlanOrderId};
     </select>
+
+    <update id="setInboundPlanOrderInvalid">
+        update t_pl_inboundplanorder set checkState='Invalid', inboundPlanOrderId=concat(#{inboundPlanOrderId}, #{newId}) where inboundPlanOrderId=#{inboundPlanOrderId};
+    </update>
 
     <!--根据磅单信息更新入库计划单中的磅单数量-->
     <update id="updateInboundPlanPounds">

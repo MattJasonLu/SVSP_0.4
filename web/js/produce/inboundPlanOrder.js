@@ -734,14 +734,14 @@ function setInvalid(e) {    //已作废
         var id = getIdByMenu(e);
         $.ajax({
             type: "POST",
-            url: "setInboundOrderStateInvalid",
+            url: "setInboundPlanOrderInvalid",
             async: false,
             dataType: "json",
             data: {
-                inboundOrderId: id
+                inboundPlanOrderId: id
             },
             success: function (result) {
-                if (result !== undefined && result.status === "success") {
+                if (result != undefined && result.status == "success") {
                     console.log(result);
                     alert(result.message);
                     window.location.reload();

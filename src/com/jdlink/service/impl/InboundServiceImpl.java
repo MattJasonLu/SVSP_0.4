@@ -6,6 +6,7 @@ import com.jdlink.domain.Inventory.InboundPlanOrder;
 import com.jdlink.domain.Page;
 import com.jdlink.mapper.InboundMapper;
 import com.jdlink.service.InboundService;
+import com.jdlink.util.RandomUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +48,12 @@ public class InboundServiceImpl implements InboundService {
     @Override
     public InboundPlanOrder getInboundPlanOrder(String inboundPlanOrderId) {
         return inboundMapper.getInboundPlanOrder(inboundPlanOrderId);
+    }
+
+    @Override
+    public void setInboundPlanOrderInvalid(String inboundPlanOrderId) {
+        String newId = RandomUtil.getRandomEightNumber();
+        inboundMapper.setInboundPlanOrderInvalid(inboundPlanOrderId, newId);
     }
 
     @Override
