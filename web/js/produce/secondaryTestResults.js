@@ -161,7 +161,7 @@ function switchPage(pageNumber) {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "loadPageLaboratoryTestList",         // url
+            url: "loadPageSecondaryTestResultsList",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(page),
             dataType: "json",
@@ -177,26 +177,16 @@ function switchPage(pageNumber) {
                 console.log("error: " + result);
             }
         });
-    } else {
-        data['page'] = page;
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "searchLaboratoryTest",         // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data),
-            dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            success: function (result) {
-                if (result != undefined && result.status == "success") {
-                    setDataList(result.data);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-            }
-        });
+    } if (isSearch) {//查询用的
+        for(var i=0;i<array1.length;i++){
+            $(array1[i]).hide();
+        }
+        var i=parseInt((pageNumber-1)*countValue());
+        var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
+        for(var i=i;i<=j;i++){
+            $('#tbody1').append(array1[i]);
+            $(array1[i]).show();
+        }
     }
 }
 
@@ -241,7 +231,7 @@ function inputSwitchPage() {
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "loadPageLaboratoryTestList",         // url
+                url: "loadPageSecondaryTestResultsList",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(page),
                 dataType: "json",
@@ -258,27 +248,16 @@ function inputSwitchPage() {
                     console.log("error: " + result);
                 }
             });
-        } else {
-            data['page'] = page;
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "searchLaboratoryTest",         // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(data),
-                dataType: "json",
-                contentType: 'application/json;charset=utf-8',
-                success: function (result) {
-                    if (result != undefined && result.status == "success") {
-                        // console.log(result);
-                        setDataList(result.data);
-                    } else {
-                        console.log("fail: " + result);
-                    }
-                },
-                error: function (result) {
-                    console.log("error: " + result);
-                }
-            });
+        }if (isSearch) {//查询用的
+            for(var i=0;i<array1.length;i++){
+                $(array1[i]).hide();
+            }
+            var i=parseInt((pageNumber-1)*countValue());
+            var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
+            for(var i=i;i<=j;i++){
+                $('#tbody1').append(array1[i]);
+                $(array1[i]).show();
+            }
         }
     }
 }
@@ -469,5 +448,144 @@ function searchData() {
         switchPage(parseInt(i));
         array.push($('.myclass'));
     }
+    isSearch = true;
 
+    var text = $.trim($('#searchContent').val());
+
+    var id=$.trim($('#search-id').val());
+
+    var wastesName=$.trim($('#search-wastesName').val());
+
+    var scorchingRate=$.trim($('#search-scorchingRate').val());
+
+    var water=$.trim($('#search-water').val());
+
+    var remarks=$.trim($('#search-water').val());
+
+    var beginTime=$.trim($('#search-inDate').val());
+
+    var endTime=$.trim($('#search-endDate').val());
+
+
+    var startDate=getDateByStr(beginTime);
+
+    var endDate=getDateByStr(endTime);
+
+
+    var dateArray=[];
+
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            dateArray.push(($(this).children('td').eq(2).text()))
+        });
+    }
+    console.log(dateArray)
+    var dateMin=dateArray[0];
+    var dateMax=dateArray[0];
+    for (var i=0;i<dateArray.length;i++){
+
+        if(new Date((dateArray[i])).getTime()<=new Date(dateMin).getTime()||dateMin.length==0){
+            dateMin=(dateArray[i]);
+        }
+        if(new Date(dateArray[i]).getTime()>=new Date(dateMax)||dateMax.length==0){
+            dateMax=(dateArray[i]);
+        }
+
+    }
+
+   console.log(startDate+endDate)
+
+    for (var j = 0; j < array.length; j++) {
+        $.each(array[j], function () {
+
+            if(startDate.toString()=='Invalid Date'){
+                startDate=dateMin;
+            }
+            if(endDate.toString()=='Invalid Date'){
+                endDate=dateMax;
+            }
+            var date=$(this).children('td').eq(2).text();
+            //console.log(this);
+            if (!($(this).children('td').eq(1).text().indexOf(id) != -1
+                && $(this).children('td').eq(3).text().indexOf(wastesName) != -1 && $(this).children('td').eq(4).text().indexOf(scorchingRate) != -1 && $(this).children('td').text().indexOf(text) != -1
+                && $(this).children('td').eq(5).text().indexOf(water) != -1  && $(this).children('td').eq(6).text().indexOf(remarks) != -1
+                &&(new Date(startDate).getTime()<=new Date($(date).children('td').eq(2).text()).getTime()&&new Date(endDate).getTime()>=new Date (date).getTime())
+
+            )) {
+                $(this).hide();
+            }
+            if (
+                ($(this).children('td').eq(1).text().indexOf(id) != -1
+                    && $(this).children('td').eq(3).text().indexOf(wastesName) != -1 && $(this).children('td').eq(4).text().indexOf(scorchingRate) != -1 && $(this).children('td').text().indexOf(text) != -1
+                    && $(this).children('td').eq(5).text().indexOf(water) != -1  && $(this).children('td').eq(6).text().indexOf(remarks) != -1
+                    &&(new Date(startDate).getTime()<=new Date(date).getTime()&&new Date(endDate).getTime()>=new Date (date).getTime())
+
+                )
+
+            ) {
+                array1.push($(this));
+            }
+        });
+    }
+
+
+
+    var total;
+
+    if(array1.length%countValue()==0){
+        total=array1.length/countValue()
+    }
+
+    if(array1.length%countValue()>0){
+        total=Math.ceil(array1.length/countValue());
+    }
+
+    if(array1.length/countValue()<1){
+        total=1;
+    }
+
+    $("#totalPage").text("共" + total + "页");
+
+    var myArray = new Array();
+
+    $('.beforeClone').remove();
+
+    for ( i = 0; i < total; i++) {
+        var li = $("#next").prev();
+        myArray[i] = i+1;
+        var clonedLi = li.clone();
+        clonedLi.show();
+        clonedLi.find('a:first-child').text(myArray[i]);
+        clonedLi.find('a:first-child').click(function () {
+            var num = $(this).text();
+            switchPage(num);
+            AddAndRemoveClass(this);
+        });
+        clonedLi.addClass("beforeClone");
+        clonedLi.removeAttr("id");
+        clonedLi.insertAfter(li);
+    }
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
+
+    for(var i=0;i<array1.length;i++){
+        array1[i].hide();
+    }
+
+    for(var i=0;i<countValue();i++){
+        $(array1[i]).show();
+        $('#tbody1').append((array1[i]));
+    }
+
+
+}
+
+
+/**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchData();      //
+    }
 }
