@@ -17,8 +17,14 @@ public class DocumentControlServiceImpl implements DocumentControlService {
     @Autowired
     DocumentControlMapper documentControlMapper;
 
+
     @Override
-    public List<DocumentControl> getDocument() {
-        return documentControlMapper.getDocument();
+    public List<DocumentControl> list(DocumentControl documentControl) {
+        return documentControlMapper.list(documentControl);
+    }
+
+    @Override
+    public int count(DocumentControl documentControl) {
+        return documentControlMapper.count(documentControl);
     }
 }
