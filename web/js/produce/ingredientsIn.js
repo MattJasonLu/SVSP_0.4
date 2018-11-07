@@ -1234,6 +1234,7 @@ function loadPages1(totalRecord, count) {
 
 function loadProcurementItemList() {
     $("#save").text("入库");   // 修改按钮名称
+    $("#head").text("辅料/备件入库单新增");
     $("#view-id").text(getCurrentIngredientsInId());
     $("#creationDate").val(getDaydate(new Date()));
     var pageNumber = 1;               // 显示首页
@@ -1273,6 +1274,7 @@ function loadProcurementItemList() {
     setSelectedList();
     if (localStorage.id != null && localStorage.id != "null") { // 如果ID非空，加载需要修改的数据
         $("#save").text("修改");   // 修改按钮名称
+        $("#head").text("辅料/备件入库单修改");
         var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'\"></span></a>&nbsp;";
         $.ajax({   // 获取原数据
             type: "POST",
@@ -1302,6 +1304,8 @@ function loadProcurementItemList() {
                     $("#handlers").val(data.handlers);
                     // 设置物品明细数据
                     var allTotalPrice = 0; // 总金额
+                    ingredientsIn1 = {};  // 初始化
+                    ingredientsIn1.ingredientsList = [];
                     $.each(data.ingredientsList, function (index, item) {
                         num++;
                         var obj = eval(item);
@@ -1347,6 +1351,22 @@ function loadProcurementItemList() {
                         clonedTr.removeAttr("id");
                         clonedTr.insertBefore(tr);
                         clonedTr.addClass("newLine1");
+                        var ingredients = {};
+                        console.log("赋值的数据为：");
+                        console.log(obj);
+                        ingredients.serialNumber = obj.serialNumber;                    // 序号
+                        ingredients.name = obj.name;            // 物品名称
+                        ingredients.specification = obj.specification; // 规格
+                        ingredients.unit = obj.unit;                  // 单位
+                        ingredients.amount = obj.amount;         // 入库数量
+                        ingredients.remarks = obj.remarks;                  // 备注
+                        ingredients.id = obj.id;
+                        ingredients.procurementId = obj.procurementId;   // 采购申请单编号
+                        ingredients.procurementItemId = obj.procurementItemId;    // 物资主键
+                        ingredients.serialNumberA = "update";
+                        ingredients.itemId = obj.itemId;
+                        ingredients.wareHouseName = obj.wareHouseName;
+                        ingredientsIn1.ingredientsList.push(ingredients);
                     });
                     tr.hide();
                     if (allTotalPrice != null && allTotalPrice != undefined && allTotalPrice != NaN && allTotalPrice != "") {
@@ -1360,31 +1380,32 @@ function loadProcurementItemList() {
                         $("#total-jiao").text(Math.floor(jiao));
                         $("#total-fen").text(Math.floor(jiao % 1 * 10));
                     }
-                    ingredientsIn1 = {};  // 初始化
-                    ingredientsIn1.ingredientsList = [];
-                    var i = $("span[name='serialNumber']").length - 1;  //序号
-                    if ($("span[name='serialNumber']").length > 1) {  // 出去克隆行和之前的旧数据若存在数据则添加
-                        for (var j = 1; j <= i; j++) {
-                            var ingredients = {};
-                            var $j = j;
-                            ingredients.serialNumber = j;                    // 序号
-                            ingredients.name = $("#name" + $j).text();       // 物品名称
-                            ingredients.specification = $("#specification" + $j).text(); // 规格
-                            ingredients.unit = $("#unit" + $j).text();                     // 单位
-                            ingredients.amount = $("#amount" + $j).text();          // 入库数量
-                            ingredients.remarks = $("#remarks" + $j).text();           // 备注
-                            ingredients.id = $("#view-id").text();
-                            ingredients.serialNumberA = "update";
-                            ingredients.procurementId = $("#procurementId" + $j).text();   // 采购申请单编号
-                            ingredients.unitPrice = $("#unitPrice" + $j).val();
-                            ingredients.wareHouseName = $("#wareHouseName" + $j).val();
-                            ingredients.post = $("#post" + $j).val();
-                            ingredients.equipment =  $("#equipment" + $j).val();
-                            ingredientsIn1.ingredientsList.push(ingredients);
-                        }
-                        console.log("1380:");
-                        console.log(ingredientsIn1);
-                    }
+                    console.log("1380:");
+                    console.log(ingredientsIn1);
+                    // var i = $("span[name='serialNumber']").length - 1;  //序号
+                    // if ($("span[name='serialNumber']").length > 1) {  // 出去克隆行和之前的旧数据若存在数据则添加
+                    //     for (var j = 1; j <= i; j++) {
+                    //         var ingredients = {};
+                    //         var $j = j;
+                    //         ingredients.serialNumber = j;                    // 序号
+                    //         ingredients.name = $("#name" + $j).text();       // 物品名称
+                    //         ingredients.specification = $("#specification" + $j).text(); // 规格
+                    //         ingredients.unit = $("#unit" + $j).text();                     // 单位
+                    //         ingredients.amount = $("#amount" + $j).text();          // 入库数量
+                    //         ingredients.remarks = $("#remarks" + $j).text();           // 备注
+                    //         ingredients.id = $("#view-id").text();
+                    //         ingredients.serialNumberA = "update";
+                    //         ingredients.procurementId = $("#procurementId" + $j).text();   // 采购申请单编号
+                    //         ingredients.unitPrice = $("#unitPrice" + $j).val();
+                    //         ingredients.wareHouseName = $("#wareHouseName" + $j).val();
+                    //         ingredients.post = $("#post" + $j).val();
+                    //         ingredients.equipment =  $("#equipment" + $j).val();
+                    //         ingredients.itemId =
+                    //         ingredientsIn1.ingredientsList.push(ingredients);
+                    //     }
+                    //     console.log("1380:");
+                    //     console.log(ingredientsIn1);
+                    // }
                 } else {
                     alert(result.message);
                 }
@@ -1404,7 +1425,7 @@ function loadProcurementItemList() {
 function delLine(e) {
     var tr = e.parentElement.parentElement;
     var j = $(tr).find("span[name='serialNumber']").text();  // 获取编号，据此获取ID
-    ingredientsIn1.ingredientsList[j-1].serialNumberA = "del";
+    ingredientsIn1.ingredientsList[j - 1].serialNumberA = "del";
     var length = $(tr.parentNode).children().length - 3;         // 行数
     var tBody = $(tr.parentNode);                                  // 删除前获取父节点
     tr.parentNode.removeChild(tr);
@@ -1582,7 +1603,7 @@ function confirmInsert1() {
     ingredientsIn.id = $("#view-id").text();
     // 检测是否有修改数据，若有添加进去
     var i = $("span[name='serialNumber']").length - 1;  //序号
-  // ingredientsList = ingredientsIn1.ingredientsList;  // 将之前数据赋值给数组
+    // ingredientsList = ingredientsIn1.ingredientsList;  // 将之前数据赋值给数组
     // 遍历采购单表格行，获取勾选的计划列表
     $("#ingredientsInData").children().not("#cloneTr1").each(function () {
         var isCheck = $(this).find("input[name='select']").prop('checked');
@@ -1614,6 +1635,7 @@ function confirmInsert1() {
                             ingredients.remarks = data.note;                  // 备注
                             ingredients.id = ingredientsIn.id;
                             ingredients.procurementId = data.receiptNumber;   // 采购申请单编号
+                            ingredients.procurementItemId = data.id;    // 物资主键
                             ingredients.serialNumberA = "add";
                             ingredientsList.push(ingredients);
                         } else {
@@ -1705,29 +1727,55 @@ function save() {
     var totalPrice = 0;
     var wareHouseState = false;
     var unitPriceState = false;
-    for (var i = 0; i < ingredientsIn.ingredientsList.length; i++) {
-        var $i = i + 1;
-        ingredientsIn.ingredientsList[i].unitPrice = $("#unitPrice" + $i).val();
-        ingredientsIn.ingredientsList[i].post = $("#post" + $i).val();
-        ingredientsIn.ingredientsList[i].wareHouseName = $("#wareHouseName" + $i).val();
-        ingredientsIn.ingredientsList[i].totalPrice = ingredientsIn.ingredientsList[i].unitPrice * ingredientsIn.ingredientsList[i].amount;
-        ingredientsIn.ingredientsList[i].equipment = $("#equipment" + $i).val();
-        if ($("#wareHouseName" + $i).val() == null || $("#wareHouseName" + $i).val() == "") wareHouseState = true;
-        if ($("#unitPrice" + $i).val() == null || $("#unitPrice" + $i).val() == "") unitPriceState = true;
-        totalPrice += ingredientsIn.ingredientsList[i].totalPrice;
-    }
-    if(ingredientsIn1 != null && ingredientsIn1.ingredientsList.length > 0){ // 如果为修改则添加数据
-        for(var j = 0; j < ingredientsIn1.ingredientsList.length; j++){
+    if (ingredientsIn != null && ingredientsIn.ingredientsList != null)
+        for (var i = 0; i < ingredientsIn.ingredientsList.length; i++) {
+            var $i = i + 1;
+            ingredientsIn.ingredientsList[i].unitPrice = $("#unitPrice" + $i).val();
+            ingredientsIn.ingredientsList[i].post = $("#post" + $i).val();
+            ingredientsIn.ingredientsList[i].wareHouseName = $("#wareHouseName" + $i).val();
+            ingredientsIn.ingredientsList[i].totalPrice = ingredientsIn.ingredientsList[i].unitPrice * ingredientsIn.ingredientsList[i].amount;
+            ingredientsIn.ingredientsList[i].equipment = parseInt($("#equipment" + $i).find("option:selected").val()) - 1;
+            if ($("#wareHouseName" + $i).val() == null || $("#wareHouseName" + $i).val() == "") wareHouseState = true;
+            if ($("#unitPrice" + $i).val() == null || $("#unitPrice" + $i).val() == "") unitPriceState = true;
+            totalPrice += ingredientsIn.ingredientsList[i].totalPrice;
+            // 判断物料存在与否
+            var ingredients = ingredientsIn.ingredientsList[i];
+            $.ajax({
+                type: "POST",
+                url: "getItemsAmountsExist",
+                async: false,
+                data: JSON.stringify(ingredients),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result.status == "success") {
+                        if (result.data != 0) ingredientsIn.ingredientsList[i].aid = "exist";
+                        else ingredientsIn.ingredientsList[i].aid = "notExist";
+                    } else alert(result.message);
+                },
+                error: function (result) {
+                    console.log(result.message);
+                    alert("服务器错误！");
+                }
+            });
+        }
+    if (ingredientsIn1 != null && ingredientsIn1.ingredientsList != null && ingredientsIn1.ingredientsList.length > 0) { // 如果为修改则添加数据
+        ingredientsIn.keywords = "update";   // 如果修改数据存在则为更新
+        for (var j = 0; j < ingredientsIn1.ingredientsList.length; j++) {
             var $i = j + 1;
-            if(ingredientsIn1.ingredientsList[j].serialNumberA != "del") {  // 没有被删除的数据需要更新数据
+            if (ingredientsIn1.ingredientsList[j].serialNumberA != "del") {  // 没有被删除的数据需要更新数据
                 ingredientsIn1.ingredientsList[j].unitPrice = $("#unitPrice" + $i).val();
                 ingredientsIn1.ingredientsList[j].post = $("#post" + $i).val();
                 ingredientsIn1.ingredientsList[j].wareHouseName = $("#wareHouseName" + $i).val();
-                ingredientsIn1.ingredientsList[j].totalPrice = ingredientsIn.ingredientsList[j].unitPrice * ingredientsIn.ingredientsList[j].amount;
-                ingredientsIn1.ingredientsList[j].equipment = $("#equipment" + $i).val();
+                ingredientsIn1.ingredientsList[j].totalPrice = ingredientsIn1.ingredientsList[j].unitPrice * ingredientsIn1.ingredientsList[j].amount;
+                ingredientsIn1.ingredientsList[j].equipment = parseInt($("#equipment" + $i).find("option:selected").val()) - 1;
+              //  console.log("equipment:" + ingredientsIn1.ingredientsList[j].equipment);
                 if ($("#wareHouseName" + $i).val() == null || $("#wareHouseName" + $i).val() == "") wareHouseState = true;
                 if ($("#unitPrice" + $i).val() == null || $("#unitPrice" + $i).val() == "") unitPriceState = true;
                 totalPrice += ingredientsIn1.ingredientsList[j].totalPrice;
+            }
+            if (ingredientsIn == null || ingredientsIn.ingredientsList == null) {
+                ingredientsIn.ingredientsList = [];  // 若不存在则初始化
             }
             ingredientsIn.ingredientsList.push(ingredientsIn1.ingredientsList[j]); // 将修改的数据添加到数组中与勾选的数据整合
         }
@@ -1751,50 +1799,51 @@ function save() {
     ingredientsIn.creationDate = $("#creationDate").val();
     console.log("添加的数据为:");
     console.log(ingredientsIn);
-    for (var j = 0; j < ingredientsIn.ingredientsList.length; j++) {
-        var ingredients = ingredientsIn.ingredientsList[j];
-        $.ajax({
-            type: "POST",
-            url: "getItemsAmountsExist",
-            async: false,
-            data: JSON.stringify(ingredients),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                if (result.status == "success") {
-                    if (result.data != 0) ingredientsIn.ingredientsList[j].aid = "exist";
-                    else ingredientsIn.ingredientsList[j].aid = "notExist";
-                } else alert(result.message);
-            },
-            error: function (result) {
-                console.log(result.message);
-                alert("服务器错误！");
-            }
-        });
-    }
-    console.log(ingredientsIn);
     if (confirm("确认保存？")) {
-        //将入库单数据插入到数据库
-        $.ajax({
-            type: "POST",
-            url: "addIngredientsIn",
-            async: false,
-            data: JSON.stringify(ingredientsIn),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                if (result.status == "success") {
+        if ($("#save").text() == "入库") {
+            //将入库单数据插入到数据库
+            $.ajax({
+                type: "POST",
+                url: "addIngredientsIn",
+                async: false,
+                data: JSON.stringify(ingredientsIn),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result.status == "success") {
+                        console.log(result.message);
+                        if (confirm("入库单添加成功，是否返回主页面？"))
+                            window.location.href = "ingredientsIn.html";
+                        else window.location.reload();
+                    } else alert(result.message);
+                },
+                error: function (result) {
                     console.log(result.message);
-                    if (confirm("入库单添加成功，是否返回主页面？"))
-                        window.location.href = "ingredientsIn.html";
-                    else window.location.reload();
-                } else alert(result.message);
-            },
-            error: function (result) {
-                console.log(result.message);
-                alert("入库单添加失败！");
-            }
-        });
+                    alert("入库单添加失败！");
+                }
+            });
+        }else if($("#save").text() == "修改"){
+            $.ajax({
+                type: "POST",
+                url: "updateIngredientsIn",
+                async: false,
+                data: JSON.stringify(ingredientsIn),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result.status == "success") {
+                        console.log(result.message);
+                        if (confirm("入库单修改成功，是否返回主页面？"))
+                            window.location.href = "ingredientsIn.html";
+                        else window.location.reload();
+                    } else alert(result.message);
+                },
+                error: function (result) {
+                    console.log(result.message);
+                    alert("入库单添加失败！");
+                }
+            });
+        }
     }
 }
 

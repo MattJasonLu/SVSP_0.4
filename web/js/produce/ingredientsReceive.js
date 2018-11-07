@@ -1340,7 +1340,7 @@ function confirmInsert() {
                 ingredients.receiveAmount = 0;  //领料数默认为0，防止错误操作
                 ingredientsList.push(ingredients);
                 var receiveAmount = parseFloat(ingredients.receiveAmount);
-                $("#total-unit").text("吨");
+               // $("#total-unit").text("吨");
                 if (ingredients.unit === "千克" || ingredients.unit === "kg" || ingredients.unit === "KG") {
                     receiveAmount = receiveAmount / 1000; // 单位换算
                     totalReceiveAmount += receiveAmount;
@@ -1394,6 +1394,7 @@ function calculateTotalReceiveAmount() {
     for (var i = 1; i < ListCount; i++) {
         var $i = i;
         var receiveAmount = parseFloat($("#receiveAmount" + $i).val());
+        console.log("receiveAmount="+receiveAmount);
         ingredientsReceive.ingredientsList[i - 1].receiveAmount = $("#receiveAmount" + $i).val();
         if ($("#receiveAmount" + $i).val() < ingredientsReceive.ingredientsList[i - 1].amount) ingredientsReceive.ingredientsList[i - 1].notReceiveAmount = 1;
         else if ($("#receiveAmount" + $i).val() == ingredientsReceive.ingredientsList[i - 1].amount) ingredientsReceive.ingredientsList[i - 1].notReceiveAmount = 0;
@@ -1401,16 +1402,16 @@ function calculateTotalReceiveAmount() {
             if (ingredientsReceive.ingredientsList[i - 1].unit === "千克" || ingredientsReceive.ingredientsList[i - 1].unit === "kg" || ingredientsReceive.ingredientsList[i - 1].unit === "KG") {
                 receiveAmount = receiveAmount / 1000; // 单位换算
                 totalReceiveAmount += receiveAmount;
-            } else if (ingredientsReceive.ingredientsList[i - 1].unit === "吨" || ingredientsReceive.ingredientsList[i - 1].unit === "t" || ingredientsReceive.ingredientsList[i - 1].unit === "T")
+            } else if (ingredientsReceive.ingredientsList[i - 1].unit === "吨" || ingredientsReceive.ingredientsList[i - 1].unit === "t" || ingredientsReceive.ingredientsList[i - 1].unit === "T"){
                 totalReceiveAmount += receiveAmount;
+            }else totalReceiveAmount += receiveAmount;
         }else totalReceiveAmount += receiveAmount;
-        console.log($("#receiveAmount" + $i).val());
-        console.log(ingredientsReceive.ingredientsList[i - 1].amount);
         if (parseFloat($("#receiveAmount" + $i).val()) > parseFloat(ingredientsReceive.ingredientsList[i - 1].amount)) {
             alert("超出库存量，请重新确认领料数！");
             return;
         }
     }
+    console.log("总数:"+totalReceiveAmount);
     $("#total-Amount").text(totalReceiveAmount);
     ingredientsReceive.totalAmount = totalReceiveAmount;
 }
