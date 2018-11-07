@@ -136,14 +136,6 @@
                     <div class="row">
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-batchingDate" class="col-sm-4 control-label">创建日期</label>
-                                <div class="col-xs-7">
-                                    <input type="date" class="form-control" id="search-batchingDate" name="search-batchingDate" placeholder="" onkeyup="enterSearch()">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-3">
-                            <div class="form-group">
                                 <label for="search-processWay" class="col-sm-4 control-label">处理类别</label>
                                 <div class="col-xs-7">
                                     <select  class="form-control"  id="search-processWay" name="search-processWay" onchange="searchBatchOrder()"></select>
@@ -165,6 +157,22 @@
                                     <input type="text" class="form-control" id="search-client" name="search-client" placeholder="" onkeyup="enterSearch()">
                                 </div>
                             </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="form-horizontal col-md-4">
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" style="margin-left: 40px">配料日期 </label>
+                                <div class="input-group">
+                                    <input type="date" class="input-sm form-control" id="search-inDate" title="" onkeydown="" onkeyup="enterSearch()"/>
+                                    <span class="input-group-addon">-</span>
+                                    <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown="" onkeyup="enterSearch()"/>
+                                </div>
+                            </div>
+
                         </div>
 
                     </div>

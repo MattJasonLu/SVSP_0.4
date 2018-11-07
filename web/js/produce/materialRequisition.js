@@ -692,13 +692,13 @@ function searchMaterial() {
     for (var j = 0; j < array.length; j++) {
         $.each(array[j], function () {
             //console.log(this);
-            if (!($(this).children('td').eq(3).text().indexOf(companyName) != -1 && $(this).children('td').eq(5).text().indexOf(wastesCode) != -1
-                && $(this).children('td').eq(6).text().indexOf(wastesCategory) != -1 && $(this).children('td').eq(8).text().indexOf(number) != -1 && $(this).children('td').text().indexOf(text) != -1
+            if (!($(this).children('td').eq(3).text().indexOf(companyName) != -1
+                && $(this).children('td').eq(5).text().indexOf(wastesCategory) != -1 && $(this).children('td').eq(7).text().indexOf(number) != -1 && $(this).children('td').text().indexOf(text) != -1
             )) {
                 $(this).hide();
             }
-            if (($(this).children('td').eq(3).text().indexOf(companyName) != -1 && $(this).children('td').eq(5).text().indexOf(wastesCode) != -1
-                && $(this).children('td').eq(6).text().indexOf(wastesCategory) != -1 && $(this).children('td').eq(8).text().indexOf(number) != -1 && $(this).children('td').text().indexOf(text) != -1)) {
+            if (($(this).children('td').eq(3).text().indexOf(companyName) != -1
+                && $(this).children('td').eq(5).text().indexOf(wastesCategory) != -1 && $(this).children('td').eq(7).text().indexOf(number) != -1 && $(this).children('td').text().indexOf(text) != -1)) {
                 array1.push($(this));
             }
         });
