@@ -110,14 +110,14 @@ public class PRProductionDailyController {
     /**
      * 获取查询总数
      *
-     * @param sewage
+     * @param
      * @return
      */
     @RequestMapping("searchSewageTotal")
     @ResponseBody
-    public int searchSewageTotal(@RequestBody Sewage sewage) {
+    public int searchSewageTotal(@RequestBody Sewageregistration sewageregistration) {
         try {
-            return productionDailyService.searchCountSewage(sewage);
+            return productionDailyService.searchCountSewage(sewageregistration);
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
@@ -127,19 +127,19 @@ public class PRProductionDailyController {
     /**
      * 查询功能
      *
-     * @param sewage
+     * @param sewageregistration
      * @return
      */
     @RequestMapping("searchSewage")
     @ResponseBody
-    public String search(@RequestBody Sewage sewage) {
+    public String search(@RequestBody Sewageregistration sewageregistration) {
         JSONObject res = new JSONObject();
         try {
-            List<Sewage> sewageList = productionDailyService.searchSewage(sewage);
-            JSONArray data = JSONArray.fromArray(sewageList.toArray(new Sewage[sewageList.size()]));
+            List<Sewageregistration> sewageList = productionDailyService.searchSewage(sewageregistration);
+            //JSONArray data = JSONArray.fromArray(sewageList.toArray(new Sewage[sewageList.size()]));
             res.put("status", "success");
             res.put("message", "查询成功");
-            res.put("data", data);
+            res.put("data", sewageList);
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
@@ -230,14 +230,14 @@ public class PRProductionDailyController {
     /**
      * 获取查询总数
      *
-     * @param softWater
+     * @param
      * @return
      */
     @RequestMapping("searchSoftWaterTotal")
     @ResponseBody
-    public int searchSoftWaterTotal(@RequestBody SoftWater softWater) {
+    public int searchSoftWaterTotal(@RequestBody Sewageregistration sewageregistration) {
         try {
-            return productionDailyService.searchCountSoftWater(softWater);
+            return productionDailyService.searchCountSoftWater(sewageregistration);
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
@@ -247,19 +247,19 @@ public class PRProductionDailyController {
     /**
      * 查询功能
      *
-     * @param softWater
+     * @param
      * @return
      */
     @RequestMapping("searchSoftWater")
     @ResponseBody
-    public String search(@RequestBody SoftWater softWater) {
+    public String searchSoftWater(@RequestBody Sewageregistration sewageregistration) {
         JSONObject res = new JSONObject();
         try {
-            List<SoftWater> softWaterList = productionDailyService.searchSoftWater(softWater);
-            JSONArray data = JSONArray.fromArray(softWaterList.toArray(new SoftWater[softWaterList.size()]));
+            List<Sewageregistration> softWaterList = productionDailyService.searchSoftWater(sewageregistration);
+           // JSONArray data = JSONArray.fromArray(softWaterList.toArray(new SoftWater[softWaterList.size()]));
             res.put("status", "success");
             res.put("message", "查询成功");
-            res.put("data", data);
+            res.put("data", softWaterList);
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");

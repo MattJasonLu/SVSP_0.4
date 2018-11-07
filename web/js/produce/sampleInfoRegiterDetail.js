@@ -1175,7 +1175,7 @@ function searchSampleInfo() {
     if ($("#senior").is(':visible')) {
         data = {
             id: $.trim($("#search-id").val()),
-            companyName: $.trim($("#search-companyCode").text()),
+            companyName: $.trim($("#search-companyName").val()),
             code: $.trim($("#search-wastesCode").val()),
             sendingPerson: $.trim($("#search-sendingPerson").val()),
             applyState: applyState,
@@ -1497,11 +1497,11 @@ Date.prototype.format = function (format) {
  * @param e
  */
 function exportExcel(e) {
-    var name = 't_pr_sampleinfowarehouse';
+    var name = 't_pr_sampleinfowarehouseitem';
     // 获取勾选项
     var idArry = [];
     $.each($("input[name='select']:checked"), function (index, item) {
-        idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
+        idArry.push($(item).parent().parent().nextAll().eq(11).text());        // 将选中项的编号存到集合中
     });
     var sqlWords = '';
     var sql = 'in (';
@@ -1510,7 +1510,7 @@ function exportExcel(e) {
             if (i < idArry.length - 1) sql += idArry[i] + ",";
             else if (i == idArry.length - 1) sql += idArry[i] + ");"
         }
-        sqlWords = "select b.transferId,a.companyName,b.name,b.code,b.category,b.formType,a.sendingPerson,b.isPH,b.isHeat,b.isAsh,b.isWater,b.isFluorine,b.isChlorine,b.isSulfur,b.isPhosphorus,b.isFlashPoint,b.isViscosity,b.isHotMelt,b.id from t_pr_sampleinfowarehouse as a join t_pr_sampleinfowarehouseitem as b where a.id=b.sampleId and a.id " + sql;
+        sqlWords = "select b.transferId,a.companyName,b.name,b.code,b.category,b.formType,a.sendingPerson,b.isPH,b.isHeat,b.isAsh,b.isWater,b.isFluorine,b.isChlorine,b.isSulfur,b.isPhosphorus,b.isFlashPoint,b.isViscosity,b.isHotMelt,b.id from t_pr_sampleinfowarehouse as a join t_pr_sampleinfowarehouseitem as b where a.id=b.sampleId and b.id " + sql;
     } else {
         sqlWords = "select b.transferId,a.companyName,b.name,b.code,b.category,b.formType,a.sendingPerson,b.isPH,b.isHeat,b.isAsh,b.isWater,b.isFluorine,b.isChlorine,b.isSulfur,b.isPhosphorus,b.isFlashPoint,b.isViscosity,b.isHotMelt,b.id from t_pr_sampleinfowarehouse as a join t_pr_sampleinfowarehouseitem as b where a.id=b.sampleId;";
     }

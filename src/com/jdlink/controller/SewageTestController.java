@@ -1,10 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.Page;
-import com.jdlink.domain.Produce.SecondaryTest;
-import com.jdlink.domain.Produce.SewageTest;
-import com.jdlink.domain.Produce.Sewageregistration;
-import com.jdlink.domain.Produce.SoftTest;
+import com.jdlink.domain.Produce.*;
 import com.jdlink.service.produce.SewageTestService;
 import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONObject;
@@ -377,6 +374,55 @@ public class SewageTestController {
 
 
     }
+
+    //修改软水信息
+    @RequestMapping("updateSoftGeregistration")
+    @ResponseBody
+    public String updateSoftGeregistration(@RequestBody Sewageregistration sewageregistration){
+        JSONObject res=new JSONObject();
+
+
+        try {
+
+        }
+        catch (Exception e){
+
+
+        }
+
+        return res.toString();
+
+
+    }
+
+   //更新次生送样信息
+    @RequestMapping("updateSecondarySample")
+    @ResponseBody
+    public String updateSecondarySample(@RequestBody SecondarySample secondarySample){
+        JSONObject res=new JSONObject();
+
+        try {
+            //更新完成
+        sewageTestService.updateSecondarySample(secondarySample);
+        //删除字表
+            sewageTestService.deleteSecondarySampleItem(secondarySample.getId());
+            res.put("status", "success");
+            res.put("message", "更新主表,删除字表完成");
+
+        }
+
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+
+
+        return res.toString();
+
+
+    }
+
 
 
     //次生化验导入

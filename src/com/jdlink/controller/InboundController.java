@@ -100,6 +100,24 @@ public class InboundController {
         return res.toString();
     }
 
+    @RequestMapping("getInboundPlanOrder")
+    @ResponseBody
+    public String getInboundPlanOrder(String inboundPlanOrderId) {
+        JSONObject res = new JSONObject();
+        try {
+            InboundPlanOrder inboundPlanOrder = inboundService.getInboundPlanOrder(inboundPlanOrderId);
+            JSONObject data = JSONObject.fromBean(inboundPlanOrder);
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
     @RequestMapping("addInboundPlanOrder")
     @ResponseBody
     public String addInboundPlanOrder(@RequestBody InboundPlanOrder inboundPlanOrder) {
@@ -116,6 +134,27 @@ public class InboundController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "增加失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 作废入库计划单
+     * @param inboundPlanOrderId 入库计划单编号
+     * @return 成功与否
+     */
+    @RequestMapping("setInboundPlanOrderInvalid")
+    @ResponseBody
+    public String setInboundPlanOrderInvalid(String inboundPlanOrderId) {
+        JSONObject res = new JSONObject();
+        try {
+            inboundService.setInboundPlanOrderInvalid(inboundPlanOrderId);
+            res.put("status", "success");
+            res.put("message", "作废成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
         }
         return res.toString();
     }
@@ -432,7 +471,7 @@ public class InboundController {
         JSONObject res = new JSONObject();
         try {
             InboundOrder inboundOrder = inboundService.getInboundOrderById(inboundOrderId);
-            if (inboundOrder.getBoundType().equals(BoundType.SecondaryInbound)) {
+            if (inboundOrder.getBoundType() != null && inboundOrder.getBoundType().equals(BoundType.SecondaryInbound)) {
                 for (InboundOrderItem inboundOrderItem : inboundOrder.getInboundOrderItemList()) {
                     if (inboundOrderItem.getWastes() != null) {
                         SecondaryCategory secondaryCategory = secondaryCategoryService.getByCode(inboundOrderItem.getWastes().getName());

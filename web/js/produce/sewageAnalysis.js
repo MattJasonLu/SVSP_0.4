@@ -333,117 +333,134 @@ function loadPages(totalRecord, count) {
 
 function setSewageList(result) {
     // 获取id为cloneTr的tr元素
-    var tr = $("#clone");
-    tr.siblings().remove();
-    var serialNumber = 0;    // 序号
-    $.each(result, function (index, item) {
-        serialNumber++;
-        // 克隆tr，每次遍历都可以产生新的tr
-        var clonedTr = tr.clone();
-        clonedTr.show();
-        // 循环遍历cloneTr的每一个td元素，并赋值
-        clonedTr.children("td").each(function (inner_index) {
-            var obj = eval(item);
-            // 根据索引为部分td赋值
-            switch (inner_index) {
-                case (1):
-                    //预约单号
-                    $(this).html(obj.id);
-                    break;
-                case (2):
-                    // 采样点
-                    $(this).html((obj.address));
-                    break;
-                case (3):
-                    // 检测项目
-                    project="";
-                    if(obj.sewageregistrationItemList!=null){
-                        $.each(obj.sewageregistrationItemList,function (index,item) {
-                            if(index<1) {
 
+        var tr = $("#clone");
+        tr.siblings().remove();
+        var serialNumber = 0;    // 序号
+        $.each(result, function (index, item) {
+            serialNumber++;
+            // 克隆tr，每次遍历都可以产生新的tr
 
-                                if (item.cod == 1) {
-                                    project += "COD ";
-                                }
-                                if (item.bod5 == 1) {
-                                    project += "BOD5 ";
-                                }
-                                if (item.ph == 1) {
-                                    project += "PH ";
-                                }
-                                if (item.dissolvedSolidForm == 1) {
-                                    project += "溶解固形物 ";
-                                }
-                                if (item.electricalConductivity == 1) {
-                                    project += "电导率 ";
-                                }
-                                if (item.hardness == 1) {
-                                    project += "硬度 ";
-                                }
-                                if (item.lye == 1) {
-                                    project += "碱度 ";
-                                }
-                                if (item.relativeAlkalinity == 1) {
-                                    project += "相对碱度 ";
-                                }
+            //
+            if(item.water==true){
+                var clonedTr = tr.clone();
+                clonedTr.show();
+                // 循环遍历cloneTr的每一个td元素，并赋值
+                clonedTr.children("td").each(function (inner_index) {
+                    var obj = eval(item);
+                    // 根据索引为部分td赋值
+                    switch (inner_index) {
+                        case (1):
+                            //预约单号
+                            $(this).html(obj.id);
+                            break;
+                        case (2):
+                            // 采样点
+                            $(this).html((obj.address));
+                            break;
+                        case (3):
+                            // 检测项目
+                            project="";
+                            var array=[];
+                            if(obj.sewageregistrationItemList!=null){
+                                $.each(obj.sewageregistrationItemList,function (index,item) {
+                                    if (item.cod == 1) {
+                                        array.push("COD");
+                                    }
+                                    if (item.bod5 == 1) {
+                                        array.push("BOD5");
+                                        // project += "";
+                                    }
+                                    if (item.ph == 1) {
+                                        array.push("PH")
+                                        // project += "";
+                                    }
+                                    if (item.dissolvedSolidForm == 1) {
+                                        array.push("溶解固形物")
+                                        // project += "溶解固形物";
+                                    }
+                                    if (item.electricalConductivity == 1) {
+                                        array.push("电导率")
+                                        // project += "电导率";
+                                    }
+                                    if (item.hardness == 1) {
+                                        array.push("硬度")
+                                        //project += "硬度";
+                                    }
+                                    if (item.lye == 1) {
+                                        array.push("碱度")
+                                        // project += "碱度";
+                                    }
+                                    if (item.relativeAlkalinity == 1) {
+                                        array.push("相对碱度")
+                                        // project += "相对碱度";
+                                    }
 
-                                if (item.n2 == 1) {
-                                    project += '氨氮 ';
-                                }
-                                if (item.relativeAlkalinity == 1) {
-                                    project += "相对碱度 ";
-                                }
-                                if (item.nitrogen == 1) {
-                                    project += "总氮 ";
-                                }
-                                if (item.phosphorus == 1) {
-                                    project += "总磷 ";
-                                }
+                                    if (item.n2 == 1) {
+                                        array.push("氨氮")
+                                        // project += '氨氮';
+                                    }
+                                    if (item.relativeAlkalinity == 1) {
+                                        array.push("相对碱度")
+                                        // project += "相对碱度";
+                                    }
+                                    if (item.nitrogen == 1) {
+                                        array.push("总氮")
+                                        // project += "总氮";
+                                    }
+                                    if (item.phosphorus == 1) {
+                                        array.push("总磷")
+                                        // project += "总磷";
+                                    }
+                                })
+
                             }
-                        })
+                            var hash=unique1(array).join(" ");
+                            $(this).html(hash);
+                            break;
+                        case (4):
+                            // 送样人
+                            $(this).html(obj.sendingPerson);
+                            break;
+                        case (5):
+                            // 签收人
+                            $(this).html(obj.laboratorySignatory);
+                            break;
+                        case (6):
+                            // 备注
+                            if(obj.checkState!=null){
+                                $(this).html(obj.checkState.name);
+                            }
 
+                            break;
+                        // case (7):
+                        //     // 氮
+                        //     $(this).html(obj.nitrogen);
+                        //     break;
+                        // case (8):
+                        //     // 碱液
+                        //     $(this).html(obj.lye);
+                        //     break;
+                        // case (9):
+                        //     // PH
+                        //     $(this).html(obj.ph);
+                        //     break;
+                        // case (10):
+                        //     // 备注
+                        //     $(this).html(obj.remarks);
+                        //     break;
                     }
-                    $(this).html(project);
-                    break;
-                case (4):
-                    // 送样人
-                    $(this).html(obj.sendingPerson);
-                    break;
-                case (5):
-                    // 签收人
-                    $(this).html(obj.laboratorySignatory);
-                    break;
-                case (6):
-                    // 备注
-                    if(obj.checkState!=null){
-                        $(this).html(obj.checkState.name);
-                    }
-
-                    break;
-                // case (7):
-                //     // 氮
-                //     $(this).html(obj.nitrogen);
-                //     break;
-                // case (8):
-                //     // 碱液
-                //     $(this).html(obj.lye);
-                //     break;
-                // case (9):
-                //     // PH
-                //     $(this).html(obj.ph);
-                //     break;
-                // case (10):
-                //     // 备注
-                //     $(this).html(obj.remarks);
-                //     break;
+                });
+                // 把克隆好的tr追加到原来的tr前面
+                clonedTr.removeAttr("id");
+                clonedTr.insertBefore(tr);
             }
+
         });
-        // 把克隆好的tr追加到原来的tr前面
-        clonedTr.removeAttr("id");
-        clonedTr.insertBefore(tr);
-    });
-    // 隐藏无数据的tr
-    tr.hide();
+        // 隐藏无数据的tr
+        tr.hide();
+
+
 }
 
 /**
@@ -554,7 +571,7 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 });
 
 /**
- * 污水分析日报查询功能
+ * 污水送样查询功能
  */
 function searchSewage() {
     isSearch = true;
@@ -563,18 +580,118 @@ function searchSewage() {
     page.pageNumber = pageNumber;
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
-    if ($("#senior").is(':visible')) {
+    if ($("#senior").is(':visible')) { //高级查询
+        var ph;
+        if($('#ph').prop('checked')==true){
+            ph=1;
+        }
+        else
+            ph=0;
+
+        var cod;
+        if($('#cod').prop('checked')==true){
+            cod=1;
+        }
+        else
+            cod=0;
+
+        var bod5;
+        if($('#bod5').prop('checked')==true){
+            bod5=1;
+        }
+        else
+            bod5=0;
+
+        var n2;
+        if($('#n2').prop('checked')==true){
+            n2=1;
+        }
+        else
+            n2=0;
+
+        var nitrogen;
+        if($('#nitrogen').prop('checked')==true){
+            nitrogen=1;
+        }
+        else
+            nitrogen=0;
+
+        var phosphorus;
+        if($('#phosphorus').prop('checked')==true){
+            phosphorus=1;
+        }
+        else
+            phosphorus=0;
+        var lye;
+
+        if($('#lye').prop('checked')==true){
+            lye=1;
+        }
+        else
+            lye=0;;
+            var state=$('#search-checkState').val()
+         if(state==''){
+             state=null
+         }
         data1 = {
-            startDate: $("#search-startDate").val(),
-            endDate: $("#search-endDate").val(),
-            name: $.trim($("#search-sewageName").val()),
-            remarks: $.trim($("#search-remarks").val()),
+            water:true,
+            address: $.trim($("#search-address").val()),
+            sendingPerson: $.trim($("#search-remarks").val()),
+            laboratorySignatory: $.trim($("#search-laboratorySignatory").val()),
+            // remarks: $.trim($("#search-remarks").val()),
+            checkState:state,
+            sewageregistrationItemList:[{ph:ph,lye:lye,cod:cod,bod5:bod5,n2:n2,nitrogen:nitrogen,phosphorus:phosphorus}],
             page: page
         };
-    }else{
+            console.log(data1)
+    }else{             //模糊查询
+        var keywords= $.trim($("#searchContent").val());
+        if(keywords=='已收样'){
+            keywords='Collected'
+        }
+        if(keywords=='待收样'){
+            keywords='ToCollected'
+        }
+        if(keywords=='已拒收'){
+            keywords='Rejected'
+        }
+        if(keywords=='PH'){
+           ph=1;
+            keywords='';
+        }
+        if(keywords=='COD'){
+            cod=1;
+            keywords='';
+        }
+        if(keywords=='BOD5'){
+            bod5=1;
+            keywords='';
+        }
+        if(keywords=='氨氮'){
+            n2=1;
+            keywords='';
+        }
+        if(keywords=='总氮'){
+            nitrogen=1;
+            keywords='';
+        }
+        if(keywords=='总磷'){
+            phosphorus=1;
+            keywords='';
+        }
+        if(keywords=='碱度'){
+            lye=1;
+            keywords='';
+        }
+        // else
+        //     keywords= $.trim($("#searchContent").val());
+
+
         data1 = {
-            keywords: $.trim($("#searchContent").val()),
-            page: page
+            water:true,
+            keywords:keywords,
+            page: page,
+            sewageregistrationItemList:[{ph:ph,lye:lye,cod:cod,bod5:bod5,n2:n2,nitrogen:nitrogen,phosphorus:phosphorus}]
         };
     }
     if (data1 == null) alert("请点击'查询设置'输入查询内容!");
@@ -931,7 +1048,7 @@ function view(item) {
                     $('#companyName').val(result.data.client.companyName);
                 }
                  //化验室签收人
-                $('#laboratorySignatory1').text(result.data.laboratorySignatory)
+                $('#laboratorySignatory').val(result.data.laboratorySignatory)
 
                 //送样人
                 $('#sendingPerson1').text(result.data.sendingPerson)
@@ -1052,7 +1169,7 @@ function setSubmit(item) {
                     $('#companyName').val(result.data.client.companyName);
                 }
                 //化验室签收人
-                $('#laboratorySignatory1').text(result.data.laboratorySignatory)
+                $('#laboratorySignatory').val(result.data.laboratorySignatory)
 
                 //送样人
                 $('#sendingPerson1').text(result.data.sendingPerson)

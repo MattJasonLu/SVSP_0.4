@@ -11,14 +11,14 @@ import java.util.List;
 public interface ProductionDailyService {
 
     int countSewage();
-    int searchCountSewage(Sewage sewage);
-    List<Sewage> searchSewage(Sewage sewage);
+    int searchCountSewage(Sewageregistration sewageregistration);
+    List<Sewageregistration> searchSewage(Sewageregistration sewageregistration);
     List<Sewage> listPageSewage(Page page);
     void addSewage(Sewage sewage);
 
     int countSoftWater();
-    int searchCountSoftWater(SoftWater softWater);
-    List<SoftWater> searchSoftWater(SoftWater softWater);
+    int searchCountSoftWater(Sewageregistration sewageregistration);
+    List<Sewageregistration> searchSoftWater(Sewageregistration sewageregistration);
     List<SoftWater> listPageSoftWater(Page page);
     void addSoftWater(SoftWater softWater);
 

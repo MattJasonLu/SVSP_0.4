@@ -219,7 +219,7 @@
                             aria-hidden="true"></span> 导入</a>
                     <a class="btn btn-primary btn-xs" href="#" onclick="exportExcel()"><span
                             class="glyphicon glyphicon-arrow-up"
-                            aria-hidden="true"></span> 导出</a>
+                           aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
                 <div class="input-group col-md-4 pull-right" style="margin-right: 23px;">
@@ -241,34 +241,90 @@
         <div class="panel panel-default" id="senior" style="display: none;">
             <div class="panel-body">
                 <div class="row">
-                    <div class="form-horizontal col-md-4">
+                    <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">接收日期</label>
-                            <div class="input-group">
-                                <input type="date" class="input-sm form-control" id="search-startDate" title="" onkeydown="enterSearch()"/>
-                                <span class="input-group-addon">-</span>
-                                <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown="enterSearch()"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <label for="search-sewageName" class="col-sm-4 control-label">污水名称</label>
+                            <label class="col-sm-3 control-label" for="search-address">采样点</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-sewageName" name="search-sewageName"
-                                       placeholder="" onkeydown="enterSearch()">
+                            <input type="text" class="form-control" id="search-address" name="search-sewageName"
+                                   placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="search-remarks" class="col-sm-4 control-label">备注</label>
+                            <label for="search-sewageName" class="col-sm-4 control-label">检测项目</label>
+                            <div class="col-xs-7">
+                                <div class="checkbox" id="search-sewageName">
+                                    <label>
+                                        <input type="checkbox" name="isFlashPoint1" id="ph"
+                                               value="true" onchange="searchSewage()">PH
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="isViscosity1" id="cod"
+                                               value="true" onchange="searchSewage()">COD
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="isViscosity1" id="bod5"
+                                               value="true" onchange="searchSewage()">BOD5
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="isViscosity1" id="n2"
+                                               value="true" onchange="searchSewage()">氨氮
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="isViscosity1" id="nitrogen"
+                                               value="true" onchange="searchSewage()">总氮
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="isViscosity1" id="phosphorus"
+                                               value="true" onchange="searchSewage()">总磷
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="isViscosity1" id="lye"
+                                               value="true" onchange="searchSewage()">碱度
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="search-remarks" class="col-sm-3 control-label">送样人</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-remarks" name="search-remarks"
                                        placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="search-laboratorySignatory" class="col-sm-4 control-label">签收人</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-laboratorySignatory" name="search-remarks"
+                                       placeholder="" onkeydown="enterSearch()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                    <div class="form-group">
+                        <label for="search-laboratorySignatory" class="col-sm-3 control-label">收样状态</label>
+                        <div class="col-xs-7">
+                            <select class="form-control" id="search-checkState" onchange="searchSewage()">
+                                <option ></option>
+                                <option value="ToCollected">待收样</option>
+                                <option value="Collected">已收样</option>
+                                <option value="Rejected">已拒收</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                </div>
                 </div>
             </div>
         </div>

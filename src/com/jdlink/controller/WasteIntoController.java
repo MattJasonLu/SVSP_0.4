@@ -230,10 +230,10 @@ public class WasteIntoController {
     //确认收样==>预约登记
     @RequestMapping("confirmSecondarySampleById")
     @ResponseBody
-    public String confirmSecondarySampleById(String id){
+    public String confirmSecondarySampleById(String id,String laboratorySignatory){
         JSONObject res=new JSONObject();
  try {
-     wasteIntoService.confirmSecondarySampleById(id);
+     wasteIntoService.confirmSecondarySampleById(id,laboratorySignatory);
      res.put("status", "success");
      res.put("message", "已收样！");
  }
@@ -353,5 +353,43 @@ public class WasteIntoController {
             res.put("message", "导入失败，请重试！");
         }
         return res.toString();
+    }
+
+
+    /**
+     * 次生送样查询
+     */
+    @RequestMapping("searchSecondary")
+    @ResponseBody
+    public String searchSecondary(@RequestBody SecondarySample secondarySample){
+        JSONObject res=new JSONObject();
+
+        try {
+           List<SecondarySample> secondarySampleList=wasteIntoService.searchSecondary(secondarySample);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", secondarySampleList);
+
+        }
+
+        catch (Exception e){
+
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+
+        return res.toString();
+
+    }
+
+    /**
+     * 次生送样查询总数
+     */
+    @RequestMapping("searchSecondaryCount")
+    @ResponseBody
+    public int searchSecondaryCount(@RequestBody SecondarySample secondarySample){
+
+        return wasteIntoService.searchSecondaryCount(secondarySample);
     }
 }

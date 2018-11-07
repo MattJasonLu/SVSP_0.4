@@ -637,7 +637,7 @@ function inputSwitchPage() {
  */
 function enterSearch() {
     if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
-        search();      //
+        searchConlog();      //
     }
 }
 
@@ -650,9 +650,9 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
             if (last - event.timeStamp === 0) {
-                search();
+                searchConlog();
             } else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
-                search();      //
+                searchConlog();      //
             }
         }, 600);
     });
@@ -661,19 +661,13 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 /**
  * 查询功能
  */
-function search() {
+function searchConlog() {
     isSearch = true;
     var page = {};
     var pageNumber = 1;                       // 显示首页
     page.pageNumber = pageNumber;
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
-    var state = null;
-    if ($("#search-wayBillState").val() === 0) state = "NewBuild";//新建
-    if ($("#search-wayBillState").val() === 1) state = "ToExamine";//待审批
-    if ($("#search-wayBillState").val() === 2) state = "Examining";//审批中
-    if ($("#search-wayBillState").val() === 3) state = "Approval";//审批通过
-    if ($("#search-wayBillState").val() === 4) state = "Backed";//驳回
     if ($("#senior").is(':visible')) {
         data = {
             username: $.trim($("#search-username").val()),
