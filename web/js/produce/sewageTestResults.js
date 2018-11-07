@@ -613,3 +613,81 @@ function enterSearch() {
         searchData();      //
     }
 }
+
+
+/**
+ * 增加数据
+ */
+function addData() {
+    $("#addModal").modal("show");
+    $('#addTable').siblings().not($("#plusBtn")).remove();
+}
+
+/**
+ * 预约登记==>新增
+ */
+function addNewLine(item) {
+    // 获取id为plusBtn的tr元素
+    //var tr = $("#plusBtn").prev();
+    var tr = $(item).parent().parent().prev();
+    // 克隆tr，每次遍历都可以产生新的tr
+    var clonedTr = tr.clone();
+    clonedTr.attr('class','myclass2');
+    clonedTr.show();
+    clonedTr.children().find("input").val("");
+    var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>";
+
+
+    clonedTr.children('td').eq(0).find("a").remove();
+    clonedTr.children('td').eq(0).append(delBtn)
+
+
+
+    clonedTr.insertAfter(tr);
+    clonedTr.removeAttr("id");
+}
+
+
+/**
+ * 删除行
+ */
+function delLine(item) {
+    var tr = item.parentElement.parentElement;
+    tr.parentNode.removeChild(tr);
+
+}
+
+//保存方法
+function save() {
+    $('.myclass2').each(function () {
+        var data={
+            id:$(this).children('td').eq(0).find('input').val(),
+            address:$(this).children('td').eq(1).find('input').val(),
+            ph:$(this).children('td').eq(2).find('input').val(),
+            cod:$(this).children('td').eq(3).find('input').val(),
+            bod5:$(this).children('td').eq(4).find('input').val(),
+            n2:$(this).children('td').eq(5).find('input').val(),
+            alkalinity:$(this).children('td').eq(6).find('input').val(),
+            alkalinityCaCo3:$(this).children('td').eq(7).find('input').val(),
+            alkalinityHCO3:$(this).children('td').eq(8).find('input').val(),
+            bicarbonate:$(this).children('td').eq(9).find('input').val(),
+            bicarbonateCaCo3 :$(this).children('td').eq(10).find('input').val(),
+            bicarbonateHCO3:$(this).children('td').eq(11).find('input').val(),
+            nitrogen:$(this).children('td').eq(12).find('input').val(),
+            phosphorus:$(this).children('td').eq(13).find('input').val(),
+            remarks:$(this).children('td').eq(14).find('input').val(),
+        };
+      $.ajax({
+          type: "POST",                       // 方法类型
+          url: "addSewageTest",              // url
+          async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+          dataType: "json",
+          data:JSON.stringify(data),
+          contentType: 'application/json;charset=utf-8',
+      })
+
+    })
+alert("添加成功")
+    window.location.reload();
+
+}

@@ -15,6 +15,7 @@
     <resultMap id="InIngredientsRM" type="Ingredients" autoMapping="true">
         <id column="itemId" property="itemId"/>
         <result column="inId" property="id"/>
+        <result column="procurementId" property="procurementId"/>
         <result column="serialNumberIn" property="serialNumber"/>
     </resultMap>
 
@@ -30,9 +31,21 @@
         select count(*) from t_pr_ingredients_in;
     </select>
 
+    <select id="countInItem" resultType="int">
+       select count(*) from t_pr_ingredients join t_pr_ingredients_in on inId=id;
+    </select>
+
     <select id="listPageIn" resultMap="IngredientsInRM">
         select * from t_pr_ingredients_in order by creationDate desc
         <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <select id="listPageInItem" resultMap="InIngredientsRM">
+        select a.*,b.companyName,b.creationDate,b.state from t_pr_ingredients as a join t_pr_ingredients_in as b on
+        a.inId=b.id order by creationDate desc
+        <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
     </select>
@@ -79,6 +92,111 @@
             </if>
             <if test="companyName !=null and companyName !='' ">
                 and companyName like "%"#{companyName}"%"
+            </if>
+        </where>
+        order by creationDate desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count};
+        </if>
+    </select>
+
+    <select id="searchInItem" parameterType="Ingredients" resultMap="InIngredientsRM">
+        select a.*,b.companyName,b.creationDate,b.state from t_pr_ingredients as a join t_pr_ingredients_in as b on
+        a.inId=b.id
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or a.inId like "%"#{keywords}"%"
+                or b.companyName like "%"#{keywords}"%"
+                or b.state like "%"#{keywords}"%"
+                or a.name like "%"#{keywords}"%"
+                or a.specification like "%"#{keywords}"%"
+                or a.unit like "%"#{keywords}"%"
+                or a.amount like "%"#{keywords}"%"
+                or a.unitPrice like "%"#{keywords}"%"
+                or a.totalPrice like "%"#{keywords}"%"
+                or a.wareHouseName like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
+            </if>
+            <if test="id != '' and id != null">
+                and inId like "%"#{id}"%"
+            </if>
+            <if test="state != null and state !=''">
+                and state like "%"#{state}"%"
+            </if>
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="companyName !=null and companyName !='' ">
+                and companyName like "%"#{companyName}"%"
+            </if>
+            <if test="name !=null and name !='' ">
+                and name like "%"#{name}"%"
+            </if>
+            <if test="specification !=null and specification !='' ">
+                and specification like "%"#{specification}"%"
+            </if>
+        </where>
+        order by creationDate desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count};
+        </if>
+    </select>
+
+    <select id="searchInItemCount" parameterType="Ingredients" resultType="int">
+        select count(*) from t_pr_ingredients as a join t_pr_ingredients_in as b on a.inId=b.id
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or a.inId like "%"#{keywords}"%"
+                or b.companyName like "%"#{keywords}"%"
+                or b.state like "%"#{keywords}"%"
+                or a.name like "%"#{keywords}"%"
+                or a.specification like "%"#{keywords}"%"
+                or a.unit like "%"#{keywords}"%"
+                or a.amount like "%"#{keywords}"%"
+                or a.unitPrice like "%"#{keywords}"%"
+                or a.totalPrice like "%"#{keywords}"%"
+                or a.wareHouseName like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
+            </if>
+            <if test="id != '' and id != null">
+                and inId like "%"#{id}"%"
+            </if>
+            <if test="state != null and state !=''">
+                and state like "%"#{state}"%"
+            </if>
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="companyName !=null and companyName !='' ">
+                and companyName like "%"#{companyName}"%"
+            </if>
+            <if test="name !=null and name !='' ">
+                and name like "%"#{name}"%"
+            </if>
+            <if test="specification !=null and specification !='' ">
+                and specification like "%"#{specification}"%"
             </if>
         </where>
         order by creationDate desc
@@ -136,7 +254,7 @@
             <![CDATA[WHERE DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')
             AND DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')]]>)
             <if test="equipment != null and equipment != ''">
-               and equipment = #{equipment};
+                and equipment = #{equipment};
             </if>
         </where>
     </select>
@@ -146,8 +264,20 @@
         where name = #{name} and wareHouseName = #{wareHouseName} and specification=#{specification};
     </select>
 
-    <update id="invalidIn" parameterType="String">
-        update t_pr_ingredients_in set state = 'Invalid' where id = #{id}
+    <update id="invalidIn" parameterType="IngredientsIn">
+        update t_pr_ingredients_in set state = 'Invalid' where id = #{id};
+        <if test="ingredientsList != null and ingredientsList.size() > 0">
+            <foreach collection="ingredientsList" item="ingredients" index="index">
+                update t_pl_material set state = 'ToInbound'
+                where receiptNumber =#{ingredients.procurementId} and suppliesName=#{ingredients.name} and
+                specifications=#{ingredients.specification};
+
+                update t_pr_ingredients_inventory
+                set amount= amount - #{ingredients.amount}
+                where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName} and
+                specification=#{ingredients.specification};
+            </foreach>
+        </if>
     </update>
 
     <update id="updateIn" parameterType="IngredientsIn">
@@ -169,46 +299,110 @@
         </if>
     </update>
 
-    <insert id="addIn" parameterType="IngredientsIn">
-        <if test="procurementItemIdList != null and procurementItemIdList.size() > 0">
-            <foreach collection="procurementItemIdList" item="procurementItemId" index="index">
-                update t_pl_material
-                set
-                state = 'ToPick'
-                where id = #{procurementItemId};
-            </foreach>
-        </if>
-        insert into t_pr_ingredients_in
-        (id,companyName,creationDate,fileId,totalPrice,bookkeeper,approver,keeper,
-        acceptor,handlers,state,nowTime)
-        values
-        (#{id},#{companyName},#{creationDate},#{fileId},#{totalPrice},#{bookkeeper},#{approver},#{keeper},
-        #{acceptor},#{handlers},'NewBuild',NOW());
+    <!--修改入库单-->
+    <insert id="updateDataIn" parameterType="IngredientsIn">
+        update t_pr_ingredients_in
+        set companyName=#{companyName},creationDate=#{creationDate},fileId=#{fileId},totalPrice=#{totalPrice},
+        bookkeeper=#{bookkeeper},approver=#{approver},keeper=#{keeper},acceptor=#{acceptor},handlers=#{handlers},
+        nowTime=NOW()
+        where id=#{id};
         <if test="ingredientsList != null and ingredientsList.size() > 0">
             <foreach collection="ingredientsList" item="ingredients" index="index">
-                insert into t_pr_ingredients
-                (inId,serialNumberIn,name,unitPrice,totalPrice,amount,wareHouseName,post,specification,unit,ingredientState,remarks,equipment)
+                <if test="ingredients.aid == 'notExist'">
+                    insert into t_pr_ingredients_inventory
+                    (name,wareHouseName,amount,unit,ingredientState,specification)
+                    values
+                    (#{ingredients.name},#{ingredients.wareHouseName},#{ingredients.amount},#{ingredients.unit},'ToReceive',
+                    #{ingredients.specification});
+                </if>
+                <if test="ingredients.aid == 'exist'">
+                    update t_pr_ingredients_inventory
+                    set
+                    amount = amount + #{ingredients.amount}
+                    where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName} and
+                    specification=#{ingredients.specification};
+                </if>
+                <if test="ingredients.serialNumberA == 'add'"><!--新增-->
+                    update t_pl_material set state = 'ToPick' where
+                    id=#{ingredients.procurementItemId};
+
+                    insert into t_pr_ingredients
+                    (inId,serialNumberIn,name,unitPrice,totalPrice,amount,wareHouseName,post,specification,unit,
+                    ingredientState,remarks,equipment,procurementId)
+                    values
+                    (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.name},#{ingredients.unitPrice},
+                    #{ingredients.totalPrice},#{ingredients.amount},#{ingredients.wareHouseName},
+                    #{ingredients.post},#{ingredients.specification},#{ingredients.unit},'ToReceive',#{ingredients.remarks},
+                    #{ingredients.equipment},#{ingredients.procurementId});
+                </if>
+                <if test="ingredients.serialNumberA == 'update'"><!--更新-->
+                    update t_pr_ingredients
+                    set
+                    unitPrice=#{ingredients.unitPrice},post=#{ingredients.post},wareHouseName=#{ingredients.wareHouseName},equipment=#{ingredients.equipment},
+                    where itemId=#{ingredients.itemId};
+
+                </if>
+                <if test="ingredients.serialNumberA == 'del'"><!--删除，并回退之前的数据-->
+                    delete from t_pr_ingredients where itemId=#{ingredients.itemId};
+
+                    update t_pl_material set state = 'ToInbound'
+                    where receiptNumber =#{ingredients.procurementId} and suppliesName=#{ingredients.name} and
+                    specifications=#{ingredients.specification};
+
+                    update t_pr_ingredients_inventory
+                    set amount= amount - #{ingredients.amount}
+                    where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName} and
+                    specification=#{ingredients.specification};
+                </if>
+            </foreach>
+        </if>
+    </insert>
+
+    <insert id="addIn" parameterType="IngredientsIn">
+        <!--<if test="procurementItemIdList != null and procurementItemIdList.size() > 0">-->
+        <!--<foreach index="index" item="procurementItemId" collection="procurementItemIdList">-->
+        <!--update t_pl_materialsetstate = 'ToPick'where id = #{procurementItemId};-->
+        <!--</foreach>-->
+        <!--</if>-->
+        insert into
+        t_pr_ingredients_in
+        (id,companyName,creationDate,fileId,totalPrice,bookkeeper,approver,keeper,acceptor,handlers,state,nowTime)
+        values
+        (#{id},#{companyName},#{creationDate},#{fileId},#{totalPrice},#{bookkeeper},#{approver},#{keeper},#{acceptor},
+        #{handlers},'NewBuild',NOW());
+        <if test="ingredientsList != null and ingredientsList.size() > 0">
+            <foreach index="index" item="ingredients" collection="ingredientsList">
+                update t_pl_material set state = 'ToPick' where id = #{ingredients.procurementItemId};
+
+                insert into
+                t_pr_ingredients(inId,serialNumberIn,name,unitPrice,totalPrice,amount,wareHouseName,post,specification,
+                unit,ingredientState,remarks,equipment,procurementId)
                 values
                 (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.name},#{ingredients.unitPrice},
-                #{ingredients.totalPrice},#{ingredients.amount},#{ingredients.wareHouseName},
-                #{ingredients.post},#{ingredients.specification},#{ingredients.unit},'ToReceive',#{ingredients.remarks},#{ingredients.equipment});
+                #{ingredients.totalPrice},#{ingredients.amount},#{ingredients.wareHouseName},#{ingredients.post},
+                #{ingredients.specification},#{ingredients.unit},'ToReceive',#{ingredients.remarks},#{ingredients.equipment},
+                #{ingredients.procurementId});
                 <choose>
                     <when test="ingredients.aid != 'exist'">
-                        insert into t_pr_ingredients_inventory
-                        (name,wareHouseName,amount,unit,ingredientState,specification)
+                        insert into
+                        t_pr_ingredients_inventory(name,wareHouseName,amount,unit,ingredientState,specification)
                         values
-                        (#{ingredients.name},#{ingredients.wareHouseName},#{ingredients.amount},#{ingredients.unit},'ToReceive',#{ingredients.specification});
+                        (#{ingredients.name},#{ingredients.wareHouseName},#{ingredients.amount},#{ingredients.unit},
+                        'ToReceive',#{ingredients.specification});
                     </when>
                     <otherwise>
                         update t_pr_ingredients_inventory
                         set
                         amount = amount + #{ingredients.amount}
-                        where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName} and specification=#{ingredients.specification};
+                        where
+                        name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName} and
+                        specification=#{ingredients.specification};
                     </otherwise>
                 </choose>
             </foreach>
         </if>
     </insert>
+
 
     <!--领料单-->
     <resultMap id="IngredientsReceiveRM" type="IngredientsReceive" autoMapping="true">
@@ -236,8 +430,20 @@
         select count(*) from t_pr_ingredients_receive;
     </select>
 
+    <select id="countReceiveItem" resultType="int">
+        select count(*) from t_pr_ingredients as a join t_pr_ingredients_receive as b on a.receiveId=b.id;
+    </select>
+
     <select id="listPageReceive" resultMap="IngredientsReceiveRM">
         select * from t_pr_ingredients_receive order by creationDate desc
+        <if test="start != null and count != null and count != 0">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <select id="listPageReceiveItem" resultMap="ReceiveIngredientsRM">
+        select * from t_pr_ingredients as a join t_pr_ingredients_receive as b on a.receiveId=b.id
+        order by b.id desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -246,7 +452,7 @@
     <select id="getReceiveById" parameterType="String" resultMap="IngredientsReceiveRM">
           select * from t_pr_ingredients_receive where id = #{id};
      </select>
-    
+
     <select id="searchReceive" parameterType="IngredientsReceive" resultMap="IngredientsReceiveRM">
         select * from t_pr_ingredients_receive
         <where>
@@ -336,6 +542,112 @@
             </if>
         </where>
     </select>
+
+    <select id="searchReceiveItem" parameterType="Ingredients" resultMap="ReceiveIngredientsRM">
+        select a.*,b.state,b.department,b.creationDate from t_pr_ingredients as a join t_pr_ingredients_receive as b on a.receiveId=b.id
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or b.id like "%"#{keywords}"%"
+                or b.department like "%"#{keywords}"%"
+                or b.state like "%"#{keywords}"%"
+                or a.name like "%"#{keywords}"%"
+                or a.specification like "%"#{keywords}"%"
+                or a.wareHouseName like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
+                or a.unit like "%"#{keywords}"%"
+                or a.amount like "%"#{keywords}"%"
+                or a.remarks like "%"#{keywords}"%"
+            </if>
+            <if test="id != '' and id != null">
+                and b.id like "%"#{id}"%"
+            </if>
+            <if test="department != null and department != ''">
+                and b.department like "%"#{department}"%"
+            </if>
+            <if test="state != null and state !=''">
+                and b.state like "%"#{state}"%"
+            </if>
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="name != null and name != ''">
+                and a.name like "%"#{name}"%"
+            </if>
+            <if test="specification != null and specification != ''">
+                and a.specification like "%"#{specification}"%"
+            </if>
+            <if test="wareHouseName != null and wareHouseName != ''">
+                and a.wareHouseName like "%"#{wareHouseName}"%"
+            </if>
+        </where>
+        order by b.id desc
+        <if test="page != null and page.start != null and page.count != null and page.count != 0">
+            limit #{page.start}, #{page.count};
+        </if>
+    </select>
+
+    <select id="searchReceiveItemCount" parameterType="Ingredients" resultType="int">
+        select count(*) from t_pr_ingredients as a join t_pr_ingredients_receive as b on a.receiveId=b.id
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or b.id like "%"#{keywords}"%"
+                or b.department like "%"#{keywords}"%"
+                or b.state like "%"#{keywords}"%"
+                or a.name like "%"#{keywords}"%"
+                or a.specification like "%"#{keywords}"%"
+                or a.wareHouseName like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
+                or a.unit like "%"#{keywords}"%"
+                or a.amount like "%"#{keywords}"%"
+                or a.remarks like "%"#{keywords}"%"
+            </if>
+            <if test="id != '' and id != null">
+                and b.id like "%"#{id}"%"
+            </if>
+            <if test="department != null and department != ''">
+                and b.department like "%"#{department}"%"
+            </if>
+            <if test="state != null and state !=''">
+                and b.state like "%"#{state}"%"
+            </if>
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="name != null and name != ''">
+                and a.name like "%"#{name}"%"
+            </if>
+            <if test="specification != null and specification != ''">
+                and a.specification like "%"#{specification}"%"
+            </if>
+            <if test="wareHouseName != null and wareHouseName != ''">
+                and a.wareHouseName like "%"#{wareHouseName}"%"
+            </if>
+        </where>
+    </select>
+
+
 
     <select id="getAmountAndReceive" parameterType="Ingredients" resultMap="ReceiveIngredientsRM">
         select * from t_pr_ingredients_inventory where name=#{name} and wareHouseName=#{wareHouseName};
@@ -429,7 +741,7 @@
         </if>
     </update>
 
-    <update id="updateReceiveState" parameterType="String" >
+    <update id="updateReceiveState" parameterType="String">
         update t_pr_ingredients_receive
         set
         state = 'OutBounded'
@@ -455,7 +767,8 @@
 
                 update t_pr_ingredients_inventory
                 set
-                amount = amount-#{ingredients.receiveAmount},ingredientState=IF((amount-#{ingredients.receiveAmount})>0,'PartReceived','Received')
+                amount =
+                amount-#{ingredients.receiveAmount},ingredientState=IF((amount-#{ingredients.receiveAmount})>0,'PartReceived','Received')
                 where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName};
             </foreach>
         </if>
@@ -641,7 +954,8 @@
                 <if test="receiveIdList == null or receiveIdList.size() == 0">
                     update t_pr_ingredients_inventory
                     set
-                    amount = amount-#{ingredients.receiveAmount},ingredientState=IF((amount-#{ingredients.receiveAmount})>0,'PartReceived','Received')
+                    amount =
+                    amount-#{ingredients.receiveAmount},ingredientState=IF((amount-#{ingredients.receiveAmount})>0,'PartReceived','Received')
                     where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName};
                 </if>
             </foreach>
