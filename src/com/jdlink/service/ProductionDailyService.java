@@ -124,4 +124,10 @@ public interface ProductionDailyService {
     int wastesCountById(String id);
 
     SewageregistrationItem getByWastesId(String id);
+
+    int wastesCountByIdSoft(String id);
+
+    void confirmSoftGeregistrationById(String id,String laboratorySignatory);
+    void rejectSoftGeregistrationById(String id,String advice);
+    Sewageregistration  getSoftGeregistrationById(String id);
 }

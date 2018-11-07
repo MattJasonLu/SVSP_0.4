@@ -223,8 +223,8 @@ and sewageregistrationItemList[0].n2==0 and  sewageregistrationItemList[0].nitro
     </select>
 
 
-    <select id="searchSoftWater" resultMap="SewageregistrationRM" parameterType="Sewageregistration">
-        select * from t_pr_sewageregistration
+    <select id="searchSoftWater" resultMap="SoftgeregistrationRM" >
+        select * from t_pr_softgeregistration
 
          <where>
 
@@ -237,34 +237,34 @@ and sewageregistrationItemList[0].n2==0 and  sewageregistrationItemList[0].nitro
             </if>
 
             <if test="sewageregistrationItemList[0].ph==1">
-                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.ph=1 )
+                and  t_pr_softgeregistration.id in(select DISTINCT sampleinformationId     from t_pr_softgeregistrationitem where t_pr_softgeregistrationitem.ph=1 )
             </if>
 
 
             <if test=" sewageregistrationItemList[0].turbidity==1">
-                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.turbidity=1 )
+                and  t_pr_softgeregistration.id in(select DISTINCT sampleinformationId     from t_pr_softgeregistrationitem where t_pr_softgeregistrationitem.turbidity=1 )
             </if>
 
 
             <if test="sewageregistrationItemList[0].hardness==1">
-                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.hardness=1 )
+                and  t_pr_softgeregistration.id in(select DISTINCT sampleinformationId     from t_pr_softgeregistrationitem where t_pr_softgeregistrationitem.hardness=1 )
             </if>
 
 
             <if test=" sewageregistrationItemList[0].phenolphthalein==1">
-                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.phenolphthalein=1 )
+                and  t_pr_softgeregistration.id in(select DISTINCT sampleinformationId     from t_pr_softgeregistrationitem where t_pr_softgeregistrationitem.phenolphthalein=1 )
             </if>
 
             <if test=" sewageregistrationItemList[0].basicity==1">
-                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.basicity=1 )
+                and  t_pr_softgeregistration.id in(select DISTINCT sampleinformationId     from t_pr_softgeregistrationitem where t_pr_softgeregistrationitem.basicity=1 )
             </if>
 
             <if test="sewageregistrationItemList[0].electricalConductivity==1">
-                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.electricalConductivity=1 )
+                and  t_pr_softgeregistration.id in(select DISTINCT sampleinformationId     from t_pr_softgeregistrationitem where t_pr_softgeregistrationitem.electricalConductivity=1 )
             </if>
             <if test="sewageregistrationItemList[0].ph==0 and sewageregistrationItemList[0].turbidity==0 and  sewageregistrationItemList[0].hardness==0
 and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItemList[0].basicity==0 and sewageregistrationItemList[0].electricalConductivity==0">
-                and water=0
+
             </if>
             <if test="address !='' and address !=null">
                 and address LIKE "%"#{address}"%"
@@ -287,8 +287,9 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
     </select>
 
     <select id="searchCountSoftWater" resultType="int">
-        select count(*) from t_pr_sewageregistration
+        select count(*) from t_pr_softgeregistration
         <where>
+
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
                 or address like "%"#{keywords}"%"
@@ -296,45 +297,37 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
                 or laboratorySignatory like #{keywords}
                 or checkState = #{keywords}
             </if>
-            <if test="water != null and water != ''">
-                and water=#{water}
-            </if>
+
             <if test="sewageregistrationItemList[0].ph==1">
-                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.ph=1 )
+                and  t_pr_softgeregistration.id in(select DISTINCT sampleinformationId     from t_pr_softgeregistrationitem where t_pr_softgeregistrationitem.ph=1 )
             </if>
 
 
             <if test=" sewageregistrationItemList[0].turbidity==1">
-                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.turbidity=1 )
+                and  t_pr_softgeregistration.id in(select DISTINCT sampleinformationId     from t_pr_softgeregistrationitem where t_pr_softgeregistrationitem.turbidity=1 )
             </if>
 
 
             <if test="sewageregistrationItemList[0].hardness==1">
-                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.hardness=1 )
+                and  t_pr_softgeregistration.id in(select DISTINCT sampleinformationId     from t_pr_softgeregistrationitem where t_pr_softgeregistrationitem.hardness=1 )
             </if>
 
 
             <if test=" sewageregistrationItemList[0].phenolphthalein==1">
-                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.phenolphthalein=1 )
+                and  t_pr_softgeregistration.id in(select DISTINCT sampleinformationId     from t_pr_softgeregistrationitem where t_pr_softgeregistrationitem.phenolphthalein=1 )
             </if>
 
             <if test=" sewageregistrationItemList[0].basicity==1">
-                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.basicity=1 )
+                and  t_pr_softgeregistration.id in(select DISTINCT sampleinformationId     from t_pr_softgeregistrationitem where t_pr_softgeregistrationitem.basicity=1 )
             </if>
 
             <if test="sewageregistrationItemList[0].electricalConductivity==1">
-                and  t_pr_sewageregistration.id in(select DISTINCT sampleinformationId     from t_pr_sewageregistrationitem where t_pr_sewageregistrationitem.electricalConductivity=1 )
+                and  t_pr_softgeregistration.id in(select DISTINCT sampleinformationId     from t_pr_softgeregistrationitem where t_pr_softgeregistrationitem.electricalConductivity=1 )
             </if>
-
-
-
-
             <if test="sewageregistrationItemList[0].ph==0 and sewageregistrationItemList[0].turbidity==0 and  sewageregistrationItemList[0].hardness==0
 and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItemList[0].basicity==0 and sewageregistrationItemList[0].electricalConductivity==0">
-                and water=0
+
             </if>
-
-
             <if test="address !='' and address !=null">
                 and address LIKE "%"#{address}"%"
             </if>
@@ -347,7 +340,6 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
             <if test="checkState !='' and checkState !=null">
                 and checkState = #{checkState}
             </if>
-
         </where>
     </select>
 
@@ -726,14 +718,13 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
 
     <!--添加软水登记主表-->
     <insert id="addSoftGeregistration" parameterType="Sewageregistration">
-         insert into  t_pr_sewageregistration(id,laboratorySignatory,sendingPerson,nowTime,water,address,clientId,checkState)
-        values
-        (#{id},#{laboratorySignatory},#{sendingPerson},NOW(),#{water},#{address},#{client.clientId},'ToCollected')
+        insert into t_pr_softgeregistration (id, laboratorySignatory, sendingPerson, nowTime, address, clientId, checkState, advice)
+        values (#{id},#{laboratorySignatory},#{sendingPerson},NOW(),#{address},#{client.clientId},'ToCollected',#{advice});
     </insert>
     <!--添加软水登记字表表-->
     <insert id="addSoftGeregistrationItem" parameterType="SewageregistrationItem">
-      insert into  t_pr_sewageregistrationitem(id,wastesCode, wastesName, sampleinformationId, ph, cod, bod5, o2, lye, n2,alkalinity,bicarbonate,nitrogen,phosphorus,turbidity,basicity,phenolphthalein,remarks,identifie,hardness,electricalConductivity,relativeAlkalinity,dissolvedSolidForm) values
-        (#{id},#{wastesCode},#{wastesName},#{sampleinformationId},#{ph},#{cod},#{bod5},#{o2},#{lye},#{n2},#{alkalinity},#{bicarbonate},#{nitrogen},#{phosphorus},#{turbidity},#{basicity},#{phenolphthalein},#{remarks},#{identifie},#{hardness},#{electricalConductivity},#{relativeAlkalinity},#{dissolvedSolidForm})
+   insert into t_pr_softgeregistrationitem( id, sampleinformationId, turbidity, hardness, ph, phenolphthalein, basicity, electricalConductivity) values
+   (#{id},#{sampleinformationId},#{turbidity},#{hardness},#{ph},#{phenolphthalein},#{basicity},#{electricalConductivity})
     </insert>
 
     <resultMap id="SewageregistrationRM" type="Sewageregistration" autoMapping="true">
@@ -741,6 +732,15 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
         <collection property="sewageregistrationItemList" column="id" select="getSewageregistrationItem"></collection>
        <collection property="client" column="clientId" select="getClient"></collection>
     </resultMap>
+
+    <resultMap id="SoftgeregistrationRM" type="Sewageregistration" autoMapping="true">
+        <result property="id" column="id"></result>
+        <collection property="sewageregistrationItemList" column="id" select="getSoftgeregistrationItem"></collection>
+        <collection property="client" column="clientId" select="getClient"></collection>
+    </resultMap>
+    <select id="getSoftgeregistrationItem" resultType="SewageregistrationItem"   parameterType="String">
+    select * from t_pr_softgeregistrationitem where sampleinformationId=#{id};
+    </select>
     <!--获取污水送样登记-->
     <select id="sewageList" resultMap="SewageregistrationRM">
         select * from t_pr_sewageregistration where water='1' order by nowTime desc
@@ -750,8 +750,8 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
     </select>
 
     <!--获取软水送样登记-->
-    <select id="softList" resultMap="SewageregistrationRM">
-        select * from t_pr_sewageregistration where water='0' order by nowTime desc
+    <select id="softList" resultMap="SoftgeregistrationRM">
+        select * from t_pr_softgeregistration  order by nowTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -766,16 +766,32 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
            select * from t_pr_sewageregistration where id=#{id};
     </select>
 
+    <!--根据编号获取软水登记信息-->
+    <select id="getSoftGeregistrationById" resultMap="SoftgeregistrationRM"   parameterType="String">
+           select * from t_pr_softgeregistration where id=#{id};
+    </select>
 
-    <!--确认送样-->
+    <!--确认送样==>污水-->
 <update id="confirmSewaGeregistrationById">
     update t_pr_sewageregistration set checkState='Collected',laboratorySignatory=#{1},nowTime=NOW() where id=#{0};
 </update>
 
-    <!--拒收-->
+    <!--确认送样==>软水-->
+    <update id="confirmSoftGeregistrationById">
+    update t_pr_softgeregistration set checkState='Collected',laboratorySignatory=#{1},  nowTime=NOW() where id=#{0};
+  </update>
+    <!--拒收==》污水-->
     <update id="rejectSewaGeregistrationById" >
         update t_pr_sewageregistration set  checkState='Rejected',advice=#{1},nowTime=NOW() where id=#{0};
     </update>
+
+    <!--拒收==》软水-->
+    <update id="rejectSoftGeregistrationById" >
+        update t_pr_softgeregistration set  checkState='Rejected',advice=#{1},
+        nowTime=NOW() where id=#{0};
+    </update>
+
+
 
     <select id="countById" resultType="int">
     select count(*) from t_pr_sampleinformation where id like "%"#{id}"%";
@@ -785,8 +801,14 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
     select count(*) from t_pr_sewageregistration where id like "%"#{id}"%";
   </select>
 
+    <!--污水-->
     <select id="wastesCountById" resultType="int" parameterType="String">
     select count(*) from t_pr_sewageregistrationitem where id like "%"#{id}"%";
+  </select>
+
+    <!--软水-->
+    <select id="wastesCountByIdSoft" resultType="int" parameterType="String">
+    select count(*) from t_pr_softgeregistrationitem where id like "%"#{id}"%";
   </select>
 
     <select id="getByWastesId" resultType="SewageregistrationItem" parameterType="String">

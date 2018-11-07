@@ -111,4 +111,16 @@ public class SewageTestImpl implements SewageTestService{
     public void deleteSecondarySampleItem(String id) {
         sewageTestMapper.deleteSecondarySampleItem(id);
     }
+
+    @Override
+    public void updateSoftGeregistration(Sewageregistration sewageregistration) {
+        sewageTestMapper.updateSoftGeregistration(sewageregistration);
+    }
+
+    @Override
+    public void deleteSoftGeregistrationById(String id) {
+        sewageTestMapper.deleteSoftGeregistrationById(id);
+    }
+
+
 }

@@ -179,4 +179,25 @@ public class ProductionDailyServiceImpl implements ProductionDailyService
     public SewageregistrationItem getByWastesId(String id) {
         return productionDailyMapper.getByWastesId(id);
     }
+
+    @Override
+    public int wastesCountByIdSoft(String id) {
+        return productionDailyMapper.wastesCountByIdSoft(id);
+    }
+
+    @Override
+    public void confirmSoftGeregistrationById(String id, String laboratorySignatory) {
+        productionDailyMapper.confirmSoftGeregistrationById(id, laboratorySignatory);
+    }
+
+    @Override
+    public void rejectSoftGeregistrationById(String id, String advice) {
+        productionDailyMapper.rejectSoftGeregistrationById(id, advice);
+
+    }
+
+    @Override
+    public Sewageregistration getSoftGeregistrationById(String id) {
+        return productionDailyMapper.getSoftGeregistrationById(id);
+    }
 }
