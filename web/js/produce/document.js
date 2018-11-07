@@ -1,6 +1,4 @@
-function viewDocument() {
-    $("#viewModal").modal('show')
-}
+
 function editDocument() {
     $("#editModal").modal('show')
 }
@@ -864,15 +862,15 @@ function getSelectedInfo() {
  * @param e
  */
 function viewData(e) {
-    $("#viewAppointModal").find('td').text('');
+    $("#viewModal").find('td').text('');
     var id = getIdByMenu(e);
     $.ajax({
         type: "POST",
-        url: "getSampleInfoAnalysisById",
+        url: "",
         async: false,
         dataType: "json",
         data: {
-            "id": id
+            ID: id
         },
         success: function (result) {
             if (result != undefined && result.status == "success") {
@@ -910,7 +908,7 @@ function viewData(e) {
             alert("服务器异常");
         }
     });
-    $("#viewAppointModal").modal("show");
+    $("#viewModal").modal('show')
 }
 
 /**
