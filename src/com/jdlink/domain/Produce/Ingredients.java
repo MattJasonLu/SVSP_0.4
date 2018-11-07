@@ -103,6 +103,10 @@ public class Ingredients {
      */
     private String companyName;
     /**
+     * 部门
+     */
+    private String department;
+    /**
      * 入库日期/创建日期
      */
     private Date creationDate;
@@ -118,6 +122,14 @@ public class Ingredients {
      * 日期查询 终止时间
      */
     private Date endDate;
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
 
     public String getProcurementId() {
         return procurementId;

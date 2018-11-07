@@ -136,7 +136,7 @@ public class IngredientsServiceImpl implements IngredientsService {
     public List<Ingredients> listPageReceiveItem(Page page){ return ingredientsMapper.listPageReceiveItem(page); }
 
     @Override
-    public List<Ingredients> searchReceiveItem(Ingredients ingredients){ return searchReceiveItem(ingredients); }
+    public List<Ingredients> searchReceiveItem(Ingredients ingredients){ return ingredientsMapper.searchReceiveItem(ingredients); }
 
     ///出库单///
     @Override
