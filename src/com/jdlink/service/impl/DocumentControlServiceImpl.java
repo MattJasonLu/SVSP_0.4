@@ -32,4 +32,19 @@ public class DocumentControlServiceImpl implements DocumentControlService {
     public void add(DocumentControl documentControl) {
         documentControlMapper.add(documentControl);
     }
+
+    @Override
+    public void setInvalid(String ID) {
+        documentControlMapper.setInvalid(ID);
+    }
+
+    @Override
+    public void setEffective(String ID) {
+        documentControlMapper.setEffective(ID);
+    }
+
+    @Override
+    public void setUnEffective(String ID) {
+        documentControlMapper.setUnEffective(ID);
+    }
 }
