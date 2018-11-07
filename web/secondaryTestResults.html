@@ -165,6 +165,9 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
+                        <a class="btn btn-primary btn-xs" href="#" onclick="addData();"><span
+                                class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+
                         <a class="btn btn-primary btn-xs" onclick="importExcelChoose();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <!--<a class="btn btn-primary btn-xs" onclick="setInvalidMulti();"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 作废</a>-->
                         <!--<a class="btn btn-primary btn-xs disabled" onclick=""><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 化验</a>-->
@@ -745,6 +748,58 @@
     <!--导入-->
     <input type="file" name="excelPath" id="idExcel" class="hidden">
     <div id="embed"></div>
+
+    <!--新增模态框-->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 1000px">
+            <div class="modal-content" id="addModal1" >
+                <form method="post" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="addModalLabel1">化验单信息</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-bordered" style="border:none">
+                            <!--<thead style="border:none">-->
+                          <thead>
+                            <tr>
+                                <th>化验单号</th>
+                                <th>收样日期</th>
+                                <th>废物名称</th>
+                                <th>热灼减率%</th>
+                                <th>水分%</th>
+                                <th>备注</th>
+                            </tr>
+                          </thead>
+                            <tbody >
+                            <tr id="addTable" class="myclass2">
+                                <td><input class="form-control" name="transferDraftId"></td>
+                                <td><input class="form-control" name="produceCompany" type="date"></td>
+                                <td><input class="form-control" name="wastesName"></td>
+                                <td><input class="form-control" name="wastesCode"></td>
+                                <td><input class="form-control" name="formType"></td>
+                                <td><input class="form-control" name="remark"></td>
+                            </tr>
+                            <tr id="plusBtn">
+                                <td>
+                                    <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer" id="footer1">
+                        <button type="button" class="btn btn-primary" onclick="save();">保存</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 <style>
     th {
