@@ -1097,7 +1097,7 @@ function updateAppointBySampleId() {
         wastes.isPhosphorus = $("input[name='wastes[" + $i + "].isP']").prop('checked');
         wastes.isFlashPoint = $("input[name='wastes[" + $i + "].isFlashPoint']").prop('checked');
         wastes.isViscosity = $("input[name='wastes[" + $i + "].isViscosity']").prop('checked');
-        wastes.isHotMelt = $("input[name='wastes[" + $i + "].isHotMelt']").prop('checked');
+       // wastes.isHotMelt = $("input[name='wastes[" + $i + "].isHotMelt']").prop('checked');
         sampleInformation.wastesList.push(wastes);
     }
     console.log("要更新的数据为:");
