@@ -119,12 +119,18 @@ public interface ProductionDailyMapper {
 
     void confirmSewaGeregistrationById(String id,String laboratorySignatory);
 
+    void confirmSoftGeregistrationById(String id,String laboratorySignatory);
     void rejectSewaGeregistrationById(String id,String advice);
-
+    void rejectSoftGeregistrationById(String id,String advice);
     int countById(String id);
     int countByIdSew(String id);
 
     int wastesCountById(String id);
 
     SewageregistrationItem getByWastesId(String id);
+    int wastesCountByIdSoft(String id);
+
+    void deleteSoftGeregistrationById(String id);
+
+    Sewageregistration  getSoftGeregistrationById(String id);
 }

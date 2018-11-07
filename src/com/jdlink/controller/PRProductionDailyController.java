@@ -370,7 +370,7 @@ public class PRProductionDailyController {
         JSONObject res = new JSONObject();
         try {
             String id1;
-            int index = productionDailyService.wastesCountById(sewageregistrationItem.getSampleinformationId());
+            int index = productionDailyService.wastesCountByIdSoft(sewageregistrationItem.getSampleinformationId());
             do {
                 index += 1;
                 String index1 = index + "";
@@ -418,13 +418,36 @@ public class PRProductionDailyController {
 
     }
 
+    //根据编号获取软水登记信息
+    @RequestMapping("getSoftGeregistrationById")
+    @ResponseBody
+    public String getSoftGeregistrationById(String id) {
+        JSONObject res = new JSONObject();
+        System.out.println(id + "89");
+        try {
+            Sewageregistration sewageregistration = productionDailyService.getSoftGeregistrationById(id);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", sewageregistration);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+
+        }
+        return res.toString();
+
+
+    }
+
+
     //确认送样
     @RequestMapping("confirmSewaGeregistrationById")
     @ResponseBody
     public String confirmSewaGeregistrationById(String id,String laboratorySignatory) {
         JSONObject res = new JSONObject();
         try {
-            productionDailyService.confirmSewaGeregistrationById(id,laboratorySignatory);
+            productionDailyService.confirmSoftGeregistrationById(id,laboratorySignatory);
             res.put("status", "success");
             res.put("message", "收样成功");
         } catch (Exception e) {
@@ -445,7 +468,7 @@ public class PRProductionDailyController {
     public String rejectSewaGeregistrationById(String id, String advice) {
         JSONObject res = new JSONObject();
         try {
-            productionDailyService.rejectSewaGeregistrationById(id, advice);
+            productionDailyService.rejectSoftGeregistrationById(id, advice);
             res.put("status", "success");
             res.put("message", "已拒收");
         } catch (Exception e) {

@@ -859,9 +859,7 @@ function addAppoint() {
         id:$('#reservationId').val(),
         laboratorySignatory:$('#laboratorySignatory').val(),
         sendingPerson:$('#sendingPerson').val(),
-        water:false,
         address:$('#address').val(),
-
     };
     console.log(data)
     //添加主表
@@ -964,7 +962,7 @@ function view(item) {
     //根据编号查找
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getSewaGeregistrationById",              // url
+        url: "getSoftGeregistrationById",              // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         data:{"id":id},
@@ -1082,7 +1080,7 @@ function setSubmit(item) {
     //根据编号查找
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getSewaGeregistrationById",              // url
+        url: "getSoftGeregistrationById",              // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         data:{"id":id},
@@ -1232,7 +1230,7 @@ function rejection(item) {
     //根据编号查找
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getSewaGeregistrationById",              // url
+        url: "getSoftGeregistrationById",              // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         data:{"id":id},
@@ -1288,7 +1286,7 @@ function softWaterAnalysisModify(item) {
     //根据编号查找
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getSewaGeregistrationById",              // url
+        url: "getSoftGeregistrationById",              // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         data:{"id":id},

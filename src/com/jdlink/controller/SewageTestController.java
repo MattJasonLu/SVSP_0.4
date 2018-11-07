@@ -357,9 +357,9 @@ public class SewageTestController {
         JSONObject res=new JSONObject();
         try {
             //1更新主表
-            sewageTestService.updateSewaGeregistration(sewageregistration);
+            sewageTestService.updateSoftGeregistration(sewageregistration);
             //2删除字表
-            sewageTestService.deleteSewaGeregistrationById(sewageregistration.getId());
+            sewageTestService.deleteSoftGeregistrationById(sewageregistration.getId());
             res.put("status", "success");
             res.put("message", "主表更新成功,字表删除成功");
         }

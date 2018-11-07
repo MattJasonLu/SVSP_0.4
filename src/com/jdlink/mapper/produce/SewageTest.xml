@@ -64,16 +64,27 @@
     </select>
 
 
-    <!--更新污水/软水主表-->
+    <!--更新污水-->
     <update id="updateSewaGeregistration" parameterType="SewaGeregistration">
         update t_pr_sewageregistration set sendingPerson=#{sendingPerson},address=#{address},
         laboratorySignatory=#{laboratorySignatory},nowTime=NOW() where id=#{id}
     </update>
 
+    <!--更新软水/-->
+    <update id="updateSoftGeregistration" parameterType="SewaGeregistration">
+        update t_pr_softgeregistration set laboratorySignatory=#{laboratorySignatory},
+        sendingPerson=#{sendingPerson},nowTime=NOW(),address=#{address},advice=#{advice}
+        where  id=#{id};
+    </update>
 
-    <!--更新后做删除字表-->
+    <!--更新后做删除字表==>污水-->
     <delete id="deleteSewaGeregistrationById" parameterType="String">
         delete from t_pr_sewageregistrationitem where sampleinformationId=#{id};
+    </delete>
+
+    <!--更新后做删除字表==>软水-->
+    <delete id="deleteSoftGeregistrationById" parameterType="String">
+        delete from t_pr_softgeregistrationitem where sampleinformationId=#{id};
     </delete>
 
     <!--根据化验单号获取次生化验信息-->
