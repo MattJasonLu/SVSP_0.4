@@ -10,8 +10,16 @@ import java.util.List;
 public interface DocumentControlService {
 
     /**
-     * 查找最新单据号
+     * 列出所有的受控文档
+     * @return 受控文档列表
      */
-    List<DocumentControl> getDocument();
+    List<DocumentControl> list(DocumentControl documentControl);
+
+    /**
+     * 计算受控文档的数量
+     * @param documentControl 参数
+     * @return 数量
+     */
+    int count(DocumentControl documentControl);
 
 }
