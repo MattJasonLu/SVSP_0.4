@@ -84,4 +84,70 @@ public class DocumentControlController {
         return res.toString();
     }
 
+    /**
+     * 设置受控文档失效
+     * @param ID 编号
+     * @return 成功与否
+     */
+    @RequestMapping("setDocumentControlInvalid")
+    @ResponseBody
+    public String setDocumentControlInvalid(String ID) {
+        JSONObject res = new JSONObject();
+        try {
+            documentControlService.setInvalid(ID);
+            res.put("status", "success");
+            res.put("message", "作废成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
+     * 设置受控文档生效
+     * @param ID 编号
+     * @return 成功与否
+     */
+    @RequestMapping("setDocumentControlEffective")
+    @ResponseBody
+    public String setDocumentControlEffective(String ID) {
+        JSONObject res = new JSONObject();
+        try {
+            documentControlService.setEffective(ID);
+            res.put("status", "success");
+            res.put("message", "生效成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "生效失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
+     * 设置受控文档生效
+     * @param ID 编号
+     * @return 成功与否
+     */
+    @RequestMapping("setDocumentControlUnEffective")
+    @ResponseBody
+    public String setDocumentControlUnEffective(String ID) {
+        JSONObject res = new JSONObject();
+        try {
+            documentControlService.setUnEffective(ID);
+            res.put("status", "success");
+            res.put("message", "失效成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "失效失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
 }

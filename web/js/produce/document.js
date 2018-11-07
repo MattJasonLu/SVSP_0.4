@@ -340,6 +340,7 @@ function setDataList(result) {
         var clonedTr = tr.clone();
         clonedTr.show();
         // 循环遍历cloneTr的每一个td元素，并赋值
+        clonedTr.find("td[name='ID']").text(obj.ID);
         clonedTr.find("td[name='fileNO']").text(obj.fileNO);
         clonedTr.find("td[name='fileName']").text(obj.fileName);
         clonedTr.find("td[name='SYSCode']").text(obj.SYSCode);
@@ -489,19 +490,19 @@ function getCheckState() {
 }
 
 /**
- * 作废转移联单
+ * 作废该受控文档
  */
 function setInvalid(e) {    //已作废
-    var r = confirm("确认作废该化验单吗？");
+    var r = confirm("确认作废该受控文档吗？");
     if (r) {
         var id = getIdByMenu(e);
         $.ajax({
             type: "POST",
-            url: "setSampleInfoAnalysisInvalid",
+            url: "setDocumentControlInvalid",
             async: false,
             dataType: "json",
             data: {
-                id: id
+                ID: id
             },
             success: function (result) {
                 if (result !== undefined && result.status === "success") {
@@ -521,19 +522,51 @@ function setInvalid(e) {    //已作废
 }
 
 /**
- * 提交转移联单
+ * 生效该受控文档
  */
-function setSubmit(e) {    //已提交
-    var r = confirm("确认提交该联单吗？");
+function setEffective(e) {    //已提交
+    var r = confirm("确认生效该受控文档吗？");
     if (r) {
         var id = getIdByMenu(e);
         $.ajax({
             type: "POST",
-            url: "setTransferDraftToExamine",
+            url: "setDocumentControlEffective",
             async: false,
             dataType: "json",
             data: {
-                id: id
+                ID: id
+            },
+            success: function (result) {
+                if (result !== undefined && result.status === "success") {
+                    console.log(result);
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常");
+            }
+        });
+    }
+}
+
+/**
+ * 失效该受控文档
+ */
+function setUnEffective(e) {    //已提交
+    var r = confirm("确认失效该受控文档吗？");
+    if (r) {
+        var id = getIdByMenu(e);
+        $.ajax({
+            type: "POST",
+            url: "setDocumentControlUnEffective",
+            async: false,
+            dataType: "json",
+            data: {
+                ID: id
             },
             success: function (result) {
                 if (result !== undefined && result.status === "success") {
@@ -886,7 +919,7 @@ function viewData(e) {
  * @returns {string} 联单编号
  */
 function getIdByMenu(e) {
-    return $(e).parent().parent().find("td[name='id']").text();
+    return $(e).parent().parent().find("td[name='ID']").text();
 }
 
 /**
