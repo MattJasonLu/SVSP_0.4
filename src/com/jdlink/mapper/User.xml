@@ -201,4 +201,13 @@
         </where>
     </select>
 
+    <select id="countByUser" parameterType="User" resultType="int">
+        select count(*) from user where username=#{username} and password=#{password} and company=#{company};
+    </select>
+
+    <update id="modifyPassword" parameterType="User">
+        update user set password=#{password}
+        where username=#{username} and company=#{company};
+    </update>
+
 </mapper>

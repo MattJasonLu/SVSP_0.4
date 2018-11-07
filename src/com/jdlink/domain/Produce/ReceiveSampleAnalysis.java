@@ -98,7 +98,7 @@ public class ReceiveSampleAnalysis {
     /**
      * 热熔试验
      */
-    private float hotMelt;
+    private String hotMelt;
     /**
      * 备注
      */
@@ -284,11 +284,11 @@ public class ReceiveSampleAnalysis {
         this.viscosity = viscosity;
     }
 
-    public float getHotMelt() {
+    public String getHotMelt() {
         return hotMelt;
     }
 
-    public void setHotMelt(float hotMelt) {
+    public void setHotMelt(String hotMelt) {
         this.hotMelt = hotMelt;
     }
 

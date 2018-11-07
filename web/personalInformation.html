@@ -126,7 +126,7 @@
                                 <div class="form-group">
                                     <label for="username" class="col-sm-4 control-label">用户名</label>
                                     <div class="col-xs-7">
-                                        <input type="text" class="form-control focus" id="username" name="username" readonly placeholder="" onkeydown="enterSearch()">
+                                        <span type="text" class="form-control focus" id="username" name="username" readonly placeholder=""></span>
                                     </div>
                                 </div>
                             </div>
@@ -134,7 +134,7 @@
                                 <div class="form-group">
                                     <label for="department" class="col-sm-4 control-label">部门</label>
                                     <div class="col-xs-7">
-                                        <input type="text" class="form-control focus" id="department" name="department" readonly placeholder="" onkeydown="enterSearch()">
+                                        <span type="text" class="form-control focus" id="department" name="department" readonly placeholder=""></span>
                                     </div>
                                 </div>
                             </div>
@@ -142,7 +142,7 @@
                                 <div class="form-group">
                                     <label for="company" class="col-sm-4 control-label">所属公司</label>
                                     <div class="col-xs-7">
-                                        <input type="text" class="form-control focus" id="company" name="company" readonly placeholder="" onkeydown="enterSearch()">
+                                        <span type="text" class="form-control focus" id="company" name="company" readonly placeholder=""></span>
                                     </div>
                                 </div>
                             </div>
@@ -152,8 +152,6 @@
             </table>
             <div class="row text-center">
                 <a class="btn btn-success" onclick="changePassword()" id="save">修改密码</a>
-                <!--<a class="btn btn-warning hidden" onclick="" id="close">取消</a>-->
-                <a class="btn btn-primary" id="print">打印</a>
             </div>
         </div>
     </div>
@@ -165,23 +163,23 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="form-group">
-                        <label for="username" class="col-sm-4 control-label">原密码</label>
+                        <label for="username" class="col-sm-2 control-label">原密码</label>
                         <div class="col-xs-8">
-                            <input style="height: 25px" type="text" class="form-control focus" id="password" name="username" placeholder="" onkeydown="enterSearch()">
+                            <input style="height: 25px" type="password" class="form-control" id="password" name="username" placeholder="请输入原密码" onchange="validation(this)">
                         </div>
                     </div>
                     <br>
                     <div class="form-group">
-                        <label for="department" class="col-sm-4 control-label">新密码</label>
+                        <label for="department" class="col-sm-2 control-label">新密码</label>
                         <div class="col-xs-8">
-                            <input style="height: 25px" type="text" class="form-control focus" id="newPassword" name="department" placeholder="" onkeydown="enterSearch()">
+                            <input style="height: 25px" type="password" class="form-control" id="newPassword" name="department" placeholder="请输入新密码" onchange="validationOld(this)">
                         </div>
                     </div>
                     <br>
                     <div class="form-group">
-                        <label for="company" class="col-sm-4 control-label">再次输入</label>
+                        <label for="company" class="col-sm-2 control-label">再次输入</label>
                         <div class="col-xs-8">
-                            <input style="height: 25px" type="text" class="form-control focus" id="newPassword1" name="company" placeholder="" onkeydown="enterSearch()">
+                            <input style="height: 25px" type="password" class="form-control" id="newPassword1" name="company" placeholder="请再次输入新密码">
                         </div>
                     </div>
                 </div>
@@ -189,8 +187,7 @@
             <div class="modal-footer">
                 <div class="row text-center">
                     <a class="btn btn-success" onclick="confirmChange()" id="comfirmChange">修改密码</a>
-                    <a class="btn btn-warning" onclick="cancelChange()" id="close">取消修改</a>
-                    <!--<a class="btn btn-primary" id="print">打印</a>-->
+                    <a class="btn btn-warning" data-dismiss="modal">取消修改</a>
                 </div>
             </div>
         </div>

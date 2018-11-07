@@ -800,9 +800,20 @@
         select count(*) from t_pr_ingredients_out;
     </select>
 
+    <select id="countOutItem" resultType="int">
+        select count(*) from t_pr_ingredients as a join t_pr_ingredients_out as b on a.outId=b.id;
+    </select>
+
     <select id="listPageOut" resultMap="IngredientsOutRM">
         select * from t_pr_ingredients_out order by creationDate desc
         <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <select id="listPageOutItem" resultMap="OutIngredientsRM">
+        select * from t_pr_ingredients as a join t_pr_ingredients_out as b on a.outId=b.id
+        <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
     </select>
@@ -911,6 +922,116 @@
         </where>
     </select>
 
+    <select id="searchOutItem" parameterType="Ingredients" resultMap="OutIngredientsRM">
+        select * from t_pr_ingredients as a join t_pr_ingredients_out as b on a.outId=b.id
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or b.id like "%"#{keywords}"%"
+                or b.department like "%"#{keywords}"%"
+                or state like "%"#{keywords}"%"
+                or a.name like "%"#{keywords}"%"
+                or a.specification like "%"#{keywords}"%"
+                or a.wareHouseName like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
+                or a.unit like "%"#{keywords}"%"
+                or a.receiveAmount like "%"#{keywords}"%"
+                or a.unitPrice like "%"#{keywords}"%"
+                or a.post like "%"#{keywords}"%"
+                or a.remarks like "%"#{keywords}"%"
+                or a.equipment like "%"#{keywords}"%"
+            </if>
+            <if test="id != '' and id != null">
+                and b.id like "%"#{id}"%"
+            </if>
+            <if test="department != '' and department != null">
+                and b.department like "%"#{department}"%"
+            </if>
+            <if test="state != null and state !=''">
+                and b.state like "%"#{state}"%"
+            </if>
+            <if test="name != null and name != ''">
+                and a.name like "%"#{name}"%"
+            </if>
+            <if test="specification != null and specification != ''">
+                and a.specification like "%"#{specification}"%"
+            </if>
+            <if test="wareHouseName != null and wareHouseName != ''">
+                and a.wareHouseName like "%"#{wareHouseName}"%"
+            </if>
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
+            </if>
+        </where>
+        order by creationDate desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count};
+        </if>
+    </select>
+
+    <select id="searchOutItemCount" parameterType="Ingredients" resultType="int">
+        select count(*) from t_pr_ingredients as a join t_pr_ingredients_out as b on a.outId=b.id
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or b.id like "%"#{keywords}"%"
+                or b.department like "%"#{keywords}"%"
+                or state like "%"#{keywords}"%"
+                or a.name like "%"#{keywords}"%"
+                or a.specification like "%"#{keywords}"%"
+                or a.wareHouseName like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
+                or a.unit like "%"#{keywords}"%"
+                or a.receiveAmount like "%"#{keywords}"%"
+                or a.unitPrice like "%"#{keywords}"%"
+                or a.post like "%"#{keywords}"%"
+                or a.remarks like "%"#{keywords}"%"
+                or a.equipment like "%"#{keywords}"%"
+            </if>
+            <if test="id != '' and id != null">
+                and b.id like "%"#{id}"%"
+            </if>
+            <if test="department != '' and department != null">
+                and b.department like "%"#{department}"%"
+            </if>
+            <if test="state != null and state !=''">
+                and b.state like "%"#{state}"%"
+            </if>
+            <if test="name != null and name != ''">
+                and a.name like "%"#{name}"%"
+            </if>
+            <if test="specification != null and specification != ''">
+                and a.specification like "%"#{specification}"%"
+            </if>
+            <if test="wareHouseName != null and wareHouseName != ''">
+                and a.wareHouseName like "%"#{wareHouseName}"%"
+            </if>
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
+            </if>
+        </where>
+    </select>
+
     <update id="invalidOut" parameterType="String">
         update t_pr_ingredients_out set state = 'Invalid' where id = #{id}
     </update>
@@ -936,10 +1057,10 @@
 
     <insert id="addOut" parameterType="IngredientsOut">
         insert into t_pr_ingredients_out
-        (id,departmentName,creationDate,fileId,totalPrice,totalAmount,bookkeeper,approver,keeper,
+        (id,department,creationDate,fileId,totalPrice,totalAmount,bookkeeper,approver,keeper,
         handlers,state,nowTime)
         values
-        (#{id},#{departmentName},#{creationDate},#{fileId},#{totalPrice},#{totalAmount},#{bookkeeper},#{approver},#{keeper},
+        (#{id},#{department},#{creationDate},#{fileId},#{totalPrice},#{totalAmount},#{bookkeeper},#{approver},#{keeper},
         #{handlers},'NewBuild',NOW());
         <if test="ingredientsList.size() > 0">
             <foreach collection="ingredientsList" item="ingredients" index="index">

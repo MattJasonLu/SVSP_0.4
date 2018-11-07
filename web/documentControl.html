@@ -116,7 +116,7 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" href="#" onclick="newDocument()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                    <a class="btn btn-primary btn-xs" href="#" onclick="showAddModal();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                     <a class="btn btn-primary btn-xs" href="#" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
@@ -179,6 +179,7 @@
                                 <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
                             </label>
                         </th>
+                        <th class="text-center hidden">ID</th>
                         <th class="text-center">受控文档编号</th>
                         <th class="text-center">文档名称</th>
                         <th class="text-center">系统关联代码</th>
@@ -197,6 +198,7 @@
                                 <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
                             </label>
                         </td>
+                        <td class="text-center hidden" name="ID"></td>
                         <td class="text-center" name="fileNO"></td>
                         <td class="text-center" name="fileName"></td>
                         <td class="text-center" name="SYSCode"></td>
@@ -206,10 +208,11 @@
                         <td class="text-center" name="isEffective"></td>
                         <td class="text-center" name="note"></td>
                         <td class="text-center">
-                            <a href="#" onclick="viewDocument()" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                            <a href="#" onclick="editDocument()" title="编辑"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                            <a href="#" onclick="" title="生效"><span class="glyphicon glyphicon-saved" aria-hidden="true"></span></a>
-                            <a href="#" onclick="" title="作废"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                            <a href="#" onclick="viewData(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                            <a href="#" onclick="editDocument(this);" title="编辑"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                            <a href="#" onclick="setEffective(this);" title="生效"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+                            <a href="#" onclick="setUnEffective(this);" title="失效"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                            <a href="#" onclick="setInvalid(this);" title="作废"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></a>
                         </td>
                     </tr>
                     </tbody>
@@ -265,23 +268,23 @@
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="id" class="col-sm-4 control-label">受控文档编号</label>
+                            <label for="fileNO" class="col-sm-4 control-label">受控文档编号</label>
                             <div class="col-xs-7">
-                                <input type="text" onkeyup="" class="form-control focus" id="id" name="id" readonly placeholder="">
+                                <input type="text" onkeyup="" class="form-control focus" id="fileNO" name="fileNO" readonly placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="code" class="col-sm-4 control-label">系统关联代码</label>
+                            <label for="SYSCode" class="col-sm-4 control-label">系统关联代码</label>
                             <div class="col-xs-7">
-                                <input type="text" onkeyup="" class="form-control focus" id="code" name="code" readonly placeholder="">
+                                <input type="text" onkeyup="" class="form-control focus" id="SYSCode" name="SYSCode" readonly placeholder="">
                             </div>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="name" class="col-sm-4 control-label">文档名称</label>
+                            <label for="fileName" class="col-sm-4 control-label">文档名称</label>
                             <div class="col-xs-7">
-                                <input type="text" onkeyup="" class="form-control focus" id="name" name="name" readonly placeholder="">
+                                <input type="text" onkeyup="" class="form-control focus" id="fileName" name="fileName" readonly placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
@@ -292,13 +295,15 @@
                         </div>
                     </div>
                 </div>
-                <input class="text-center" type="radio" name="radio" title="生效">生效
-                <input class="text-center" type="radio" name="radio" title="作废">作废
-                <textarea placeholder="备注" title="备注" style="resize: none;width: 100%;height: 100%" readonly></textarea>
+                <div class="row">
+                    <label for="note" class="col-sm-2 control-label" style="margin-left: 40px;">备注</label>
+                    <div class="form-horizontal col-md-9">
+                        <textarea class="form-control" rows="3" placeholder="备注" title="备注" id="note" readonly></textarea>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-primary hidden-print" onclick="">保存</a>
-                <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
+                <a class="btn btn-default" data-dismiss="modal">关闭</a>
             </div>
         </div>
     </div>
@@ -307,43 +312,48 @@
 <div class="modal fade bs-example-modal-lg" id="newModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document" style="height: 80%">
         <div class="modal-content">
-            <div class="modal-header">文档查看</div>
+            <div class="modal-header">受控文档新增</div>
             <div class="modal-body">
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="id1" class="col-sm-4 control-label">受控文档编号</label>
+                            <label for="addFileNO" class="col-sm-4 control-label">受控文档编号</label>
                             <div class="col-xs-7">
-                                <input type="text" onkeyup="" class="form-control focus" id="id1" name="id1" required placeholder="">
+                                <input type="text" onkeyup="" class="form-control" id="addFileNO" name="addFileNO" required placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="code1" class="col-sm-4 control-label">系统关联代码</label>
+                            <label for="addSYSCode" class="col-sm-4 control-label">系统关联代码</label>
                             <div class="col-xs-7">
-                                <input type="text" onkeyup="" class="form-control focus" id="code1" name="code1" placeholder="">
+                                <input type="text" onkeyup="" class="form-control" id="addSYSCode" name="addSYSCode" placeholder="">
                             </div>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="name1" class="col-sm-4 control-label">文档名称</label>
+                            <label for="addFileName" class="col-sm-4 control-label">文档名称</label>
                             <div class="col-xs-7">
-                                <input type="text" onkeyup="" class="form-control focus" id="name1" name="name1" placeholder="">
+                                <input type="text" onkeyup="" class="form-control" id="addFileName" name="addFileName" placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="company1" class="col-sm-4 control-label">所属公司</label>
+                            <label for="addCompany" class="col-sm-4 control-label">所属公司</label>
                             <div class="col-xs-7">
-                                <input type="text" onkeyup="" class="form-control focus" id="company1" name="company1" required placeholder="">
+                                <input type="text" onkeyup="" class="form-control focus" id="addCompany" name="addCompany" value="北控安耐得环保科技发展常州有限公司" readonly>
                             </div>
                         </div>
                     </div>
                 </div>
-                <textarea placeholder="备注" title="备注" style="resize: none;width: 100%;height: 100%"></textarea>
+                <div class="row">
+                    <label for="addNote" class="col-sm-2 control-label" style="margin-left: 40px;">备注</label>
+                    <div class="form-horizontal col-md-9">
+                        <textarea class="form-control" rows="3" placeholder="备注" title="备注" id="addNote"></textarea>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-primary hidden-print" onclick="" id="save1">保存</a>
-                <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
+                <a class="btn btn-primary" onclick="addData();" id="save1">保存</a>
+                <a class="btn btn-default" data-dismiss="modal">关闭</a>
             </div>
         </div>
     </div>
