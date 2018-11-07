@@ -11,7 +11,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/ingredientsOut.js"></script>
+    <script src="js/produce/ingredientsOutDetail.js"></script>
 </head>
 <body onload="loadPageOutList();">
 <!--导航条ingredientsOut.html-->
@@ -140,10 +140,8 @@
                 <div class="pull-left col-md-6">
                     <a class="btn btn-primary btn-xs" href="newIngredientsOut.html"><span
                             class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                    <a class="btn btn-primary btn-xs" href="ingredientsOutDetail.html"><span
-                            class="glyphicon glyphicon-search" aria-hidden="true"></span> 明细页面</a>
-                    <a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose();"><span
-                            class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                    <a class="btn btn-primary btn-xs" href="ingredientsOut.html"><span
+                            class="glyphicon glyphicon-search" aria-hidden="true"></span> 返回主页</a>
                     <a class="btn btn-primary btn-xs" href="#" onclick="exportExcel();"><span
                             class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                 </div>
@@ -152,7 +150,7 @@
                     <input type="text" class="form-control" placeholder="搜索..." id="searchContent" onkeydown="enterSearch()">
                     <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchData();"><span class="glyphicon glyphicon-search"
-                                                                                 aria-hidden="true"></span> 查询</a>
+                                                                                     aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span
                                     class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
                             <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog"
@@ -175,10 +173,10 @@
                     </div>
                     <div class="form-horizontal col-md-4">
                         <div class="form-group">
-                            <label for="search-companyName" class="col-sm-4 control-label">单位</label>
+                            <label for="search-department" class="col-sm-4 control-label">部门</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-companyName"
-                                       name="search-companyName" placeholder="" onkeydown="enterSearch()">
+                                <input type="text" class="form-control" id="search-department"
+                                       name="search-department" placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -195,6 +193,33 @@
                 </div>
                 <div class="row">
                     <div class="form-horizontal col-md-4">
+                        <div class="form-group">
+                            <label for="search-name" class="col-sm-4 control-label">物品名称</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-name" name="search-name" placeholder="" onkeydown="enterSearch()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-4">
+                        <div class="form-group">
+                            <label for="search-specification" class="col-sm-4 control-label">规格</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-specification"
+                                       name="search-specification" placeholder="" onkeydown="enterSearch()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-4">
+                        <div class="form-group">
+                            <label for="search-wareHouseName" class="col-sm-4 control-label">仓库</label>
+                            <div class="col-xs-7">
+                                <input class="form-control" id="search-wareHouseName" name="search-wareHouseName" onkeydown="enterSearch()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
                         <div class="form-group">
                             <label class="col-sm-3 control-label" style="margin-left: 40px">创建日期 </label>
                             <div class="input-group">
@@ -218,15 +243,19 @@
                             </label>
                         </th>
                         <th class="text-center">出库单号</th>
-                        <th class="text-center">部门名称</th>
-                        <th class="text-center">出库单状态</th>
-                        <th class="text-center">总数量</th>
-                        <th class="text-center">总金额</th>
-                        <th class="text-center">记账人</th>
-                        <th class="text-center">审批人</th>
-                        <th class="text-center">保管人</th>
-                        <th class="text-center">经手人</th>
+                        <th class="text-center">部门</th>
+                        <th class="text-center">单据状态</th>
+                        <th class="text-center">物品名称</th>
+                        <th class="text-center">规格</th>
+                        <th class="text-center">计量单位</th>
+                        <th class="text-center">数量</th>
+                        <th class="text-center">单价</th>
+                        <th class="text-center">过账</th>
+                        <th class="text-center">附注</th>
+                        <th class="text-center">仓库</th>
+                        <th class="text-center">处置设备</th>
                         <th class="text-center">出库日期</th>
+                        <th class="text-center" hidden>编号</th>
                         <th class="text-center">操作</th>
                     </tr>
                     </thead>
@@ -247,13 +276,17 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center" hidden></td>
                         <td class="text-center">
                             <a title="查看" href="#" onclick="toView(this)"><span
                                     class="glyphicon glyphicon-search" aria-hidden="true"></span> </a>
                             <a title="修改" href="#" onclick="ingredientsOutModify(this)"><span
                                     class="glyphicon glyphicon-pencil" aria-hidden="true"></span> </a>
                             <a title="作废" href="#" onclick="invalid(this)"><span class="glyphicon glyphicon-remove-sign"
-                                                                                        aria-hidden="true"></span> </a>
+                                                                                 aria-hidden="true"></span> </a>
                         </td>
                     </tr>
                     </tbody>
