@@ -1,10 +1,7 @@
 package com.jdlink.service.produce.impl;
 
 import com.jdlink.domain.Page;
-import com.jdlink.domain.Produce.SecondaryTest;
-import com.jdlink.domain.Produce.SewageTest;
-import com.jdlink.domain.Produce.Sewageregistration;
-import com.jdlink.domain.Produce.SoftTest;
+import com.jdlink.domain.Produce.*;
 import com.jdlink.mapper.produce.SewageTestMapper;
 import com.jdlink.service.produce.SewageTestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,5 +100,15 @@ public class SewageTestImpl implements SewageTestService{
     @Override
     public int totalSecondaryTestRecord() {
         return sewageTestMapper.totalSecondaryTestRecord();
+    }
+
+    @Override
+    public void updateSecondarySample(SecondarySample secondarySample) {
+        sewageTestMapper.updateSecondarySample(secondarySample);
+    }
+
+    @Override
+    public void deleteSecondarySampleItem(String id) {
+        sewageTestMapper.deleteSecondarySampleItem(id);
     }
 }

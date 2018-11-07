@@ -197,22 +197,76 @@
             <div class="panel panel-default" id="senior" style="display: none;">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="form-horizontal col-md-4">
+                        <div class="form-horizontal col-md-6">
                             <div class="form-group">
-                            <label for="search-receiveDate" class="col-sm-5 control-label">废物名称</label>
-                            <div class="col-xs-6">
-                            <input type="text" class="form-control" id="search-receiveDate"
-                            name="search-receiveDate" placeholder="" onkeyup="enterSearch()">
-                            </div>
+                                <label class="col-sm-3 control-label" for="search-address">采样点</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-address" name="search-sewageName"
+                                           placeholder="" onkeydown="enterSearch()">
+                                </div>
                             </div>
                         </div>
-                        <div class="form-horizontal col-md-4">
-                            <div class="form-group" style="margin-left: -10px;">
-                                <label class="col-sm-3 control-label">收样日期 </label>
-                                <div class="input-group">
-                                    <input type="date" class="input-sm form-control" id="search-inDate" title="" onkeyup="enterSearch()"/>
-                                    <span class="input-group-addon">-</span>
-                                    <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeyup="enterSearch()"/>
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group">
+                                <label for="search-sewageName" class="col-sm-4 control-label">检测项目</label>
+                                <div class="col-xs-7">
+                                    <div class="checkbox" id="search-sewageName">
+                                        <label>
+                                            <input type="checkbox" name="isFlashPoint1" id="water"
+                                                   value="true" onchange="searchSecInto()">水分
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" name="isViscosity1" id="scorchingRate"
+                                                   value="true" onchange="searchSecInto()">热灼减率
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group">
+                                <label for="search-remarks" class="col-sm-3 control-label">送样人</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-remarks" name="search-remarks"
+                                           placeholder="" onkeydown="enterSearch()">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group">
+                                <label for="search-laboratorySignatory" class="col-sm-4 control-label">签收人</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-laboratorySignatory" name="search-remarks"
+                                           placeholder="" onkeydown="enterSearch()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group">
+                                <label for="search-laboratorySignatory" class="col-sm-3 control-label">收样状态</label>
+                                <div class="col-xs-7">
+                                    <select class="form-control" id="search-checkState" onchange="searchSoftWater()">
+                                        <option ></option>
+                                        <option value="ToCollected">待收样</option>
+                                        <option value="Collected">已收样</option>
+                                        <option value="Rejected">已拒收</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group">
+                                <label for="search-wastesName" class="col-sm-4 control-label">危废名称</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-wastesName" name="search-remarks"
+                                           placeholder="" onkeydown="enterSearch()">
                                 </div>
                             </div>
                         </div>
@@ -363,12 +417,12 @@
                                 <input type="text" class="form-control" id="address" name="signer" title="">
                             </div>
                         </div>
-                        <div class="form-group col-md-6">
-                            <label for="laboratorySignatory" class="col-sm-4 control-label">化验室签收人</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control" id="laboratorySignatory" name="signer">
-                            </div>
-                        </div>
+                        <!--<div class="form-group col-md-6">-->
+                            <!--<label for="laboratorySignatory" class="col-sm-4 control-label">化验室签收人</label>-->
+                            <!--<div class="col-sm-6">-->
+                                <!--<input type="text" class="form-control" id="laboratorySignatory" name="signer">-->
+                            <!--</div>-->
+                        <!--</div>-->
                     </div>
                     <table class="table table-bordered">
                         <thead style="border:none">
@@ -409,7 +463,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td></td>
+                            <!--<td></td>-->
                         </tr>
                         </tbody>
                     </table>
@@ -453,10 +507,10 @@
                             </div>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="laboratorySignatory" class="col-sm-4 control-label">化验室签收人</label>
-                            <div class="col-sm-6">
-                                <span id="laboratorySignatory1"></span>
-                            </div>
+                            <label for="laboratorySignatory1" class="col-sm-4 control-label">化验室签收人</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="laboratorySignatory1"  name="signer" >
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -484,6 +538,101 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     <button type="button" class="btn btn-primary" id="confirm" onclick="confirmSample()">确认收样</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+
+    <!--修改-->
+    <div class="modal fade bs-example-modal-lg" id="appointModa3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 35%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">预约登记</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="reservationId2" class="col-sm-4 control-label">预约单号</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="reservationId2"  name="signer" readonly="">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="sendingPerson2" class="col-sm-4 control-label">送样人</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="sendingPerson2"  name="signer" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="address2" class="col-sm-4 control-label">采样点</label>
+
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="address2"  name="signer" required>
+                                </div>
+
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="laboratorySignatory2" class="col-sm-4 control-label">化验室签收人</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="laboratorySignatory2"  name="signer" required>
+                                </div>
+
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-bordered">
+                    <thead style="border:none">
+                    <tr>
+                        <th class="text-center">序号</th>
+                        <th class="text-center">危废代码</th>
+                        <th class="text-center">危废名称</th>
+                        <th class="text-center hidden">联单编号</th>
+                        <th class="text-center">检测项目</th>
+                        <!--<th class="text-center">增加项目</th>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr id="addClone1" class="myclass2">
+                        <td class="text-center">1</td>
+                        <td class="text-center"><select  class="selectpicker form-control" data-live-search="true"
+                                                         data-live-search-placeholder="搜索..."
+                                                         name="wastesCode" id="wastesCode1">
+                        </select></td>
+                        <td class="text-center"><input class="form-control"></td>
+                        <td class="text-center hidden"><input class="form-control"></td>
+                        <td class="text-center">
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isPH"
+                                       value="true">水分
+                            </label>
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isAsh"
+                                       value="true">热灼减率
+                            </label>
+
+                        </td>
+                    </tr>
+                    <tr id="plusBtn1">
+                        <td>
+                            <a class="btn btn-default btn-xs" onclick="addNewLine1(this);"><span class="glyphicon glyphicon-plus"></span></a>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <!--<td></td>-->
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary"  onclick="adjust()">确认收样</button>
                 </div>
             </div>
 

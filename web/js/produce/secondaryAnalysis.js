@@ -32,7 +32,28 @@ function totalPage() {
             }
         });
     } else {
-        totalRecord=array1.length;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchSecondaryCount",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                // console.log(result);
+                if (result > 0) {
+                    totalRecord = result;
+                    console.log("总记录数为:" + result);
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
     }
     var count = countValue();                         // 可选
     var total = loadPages(totalRecord, count);
@@ -366,7 +387,7 @@ function setSecIntoList(result) {
                     }
                     var projectArray=project.split(" ");
 
-                    console.log(projectArray)
+                    // console.log(projectArray)
                     var array=unique1(projectArray).join(" ")
                     $(this).html(array.toString());
                     break;
@@ -397,130 +418,121 @@ function setSecIntoList(result) {
     });
     tr.hide();
 }
-array=[];//存放所有的tr
-array1=[];//存放目标的tr
+
+/**
+ * 延时自动查询
+ */
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp=== 0){
+                searchSecInto();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchSecInto();      //
+            }
+        },600);
+    });
+});
+
 
 //次生入场高级查询
 function searchSecInto() {
-    isSearch=false;
-
-    array.length=0;//清空数组
-
-    array1.length=0;
-
-    $('.myclass').each(function () {
-        $(this).show();
-    });
-
-
-    //1分页模糊查询
-    for(var i=totalPage();i>0;i--){
-        switchPage(parseInt(i));
-        array.push($('.myclass'));
-    }
-    isSearch=true;
-    var text=$.trim($('#searchContent').val());
-    //1收样日期
-    var beginTime=$.trim($('#search-inDate').val());
-
-    var endTime=$.trim($('#search-endDate').val());
-
-    var startDate=getDateByStr(beginTime);
-
-    var endDate=getDateByStr(endTime);
-
-    //2废物名称
-    var wastesName=$.trim($('#search-receiveDate').val());
-
-    var arraydate=[];
-
-    for(var j=0;j<array.length;j++){
-        $.each(array[j],function () {
-            arraydate.push(($(this).children('td').eq(1).text()))
-        });
-    }
-
-    var dateMin=(arraydate[0]);
-    var dateMax=(arraydate[0]);
-    for(var i=1;i<arraydate.length;i++){
-        if(new Date(arraydate[i]).getTime()<new Date(dateMin)||dateMin.length==0){
-            dateMin=(arraydate[i]);
+    isSearch = true;
+    var page = {};
+    var pageNumber = 1;                       // 显示首页
+    page.pageNumber = pageNumber;
+    page.count = countValue();
+    page.start = (pageNumber - 1) * page.count;
+    if ($("#senior").is(':visible')) {
+        var water;
+        if($('#water').prop('checked')==true){
+            water=1;
         }
-        if(new Date(arraydate[i]).getTime()>new Date(dateMax)||dateMax.length==0){
-            dateMax=(arraydate[i]);
+        else
+            water=0;
+        var scorchingRate;
+        if($('#scorchingRate').prop('checked')==true){
+            scorchingRate=1;
         }
+        else
+            scorchingRate=0;
+
+
+        var state=$('#search-checkState').val()
+        if(state==''){
+            state=null
+        }
+        data1 = {
+
+            address: $.trim($("#search-address").val()),
+            sendingPerson: $.trim($("#search-remarks").val()),
+            laboratorySignatory: $.trim($("#search-laboratorySignatory").val()),
+            //remarks: $.trim($("#search-remarks").val()),
+            checkState:state,
+            secondarySampleItemList:[{water:water,scorchingRate:scorchingRate,  wastesName:$.trim($("#search-wastesName").val()),}],
+            page: page
+        };
     }
-    for(var j=0;j<array.length;j++){
-        $.each(array[j],function () {
-            if(startDate.toString()=='Invalid Date'){
-                startDate=dateMin;
-            }
-            if(endDate.toString()=='Invalid Date'){
-                endDate=dateMax;
-            }
-            var date=$(this).children('td').eq(1).text();
+    else{
+        var keywords= $.trim($("#searchContent").val());
+        if(keywords=='已收样'){
+            keywords='Collected'
+        }
+        if(keywords=='待收样'){
+            keywords='ToCollected'
+        }
+        if(keywords=='已拒收'){
+            keywords='Rejected'
+        }
 
-            if(date.length==0){
-                date=startDate;
-            }
+        var scorchingRate;
 
-            if(!($(this).children('td').eq(3).text().indexOf(wastesName)!=-1
-                &&$(this).children('td').text().indexOf(text)!=-1
-                &&(new Date(date).getTime()>=new Date(startDate).getTime())&&(new Date(date).getTime()<=new Date(endDate).getTime())
-            )){
-                $(this).hide();
-            }
-            if(($(this).children('td').eq(3).text().indexOf(wastesName)!=-1
-               &&$(this).children('td').text().indexOf(text)!=-1
-                &&(new Date(date).getTime()>=new Date(startDate).getTime())&&(new Date(date).getTime()<=new Date(endDate).getTime())))
-            {
-                array1.push($(this));
+        if(keywords=='热灼减率'){
+            scorchingRate=1;
+            keywords='';
+        }
+        var water;
+        if(keywords=='水分'){
+            water=1;
+            keywords='';
+        }
+
+        // else
+        //     keywords= $.trim($("#searchContent").val());
+
+
+
+        data1 = {
+            keywords:keywords,
+            page: page,
+            secondarySampleItemList:[{water:water,scorchingRate:scorchingRate}],
+        };
+        console.log(data1)
+    }
+    if (data1 == null) alert("请点击'查询设置'输入查询内容!");
+    else {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "searchSecondary",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                console.log(result);
+                if (result.data != undefined || result.status == "success") {
+                    setPageClone(result.data);
+                } else {
+                    console.log(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器错误！");
             }
         });
-    }
-
-    var total;
-
-    if(array1.length%countValue()==0){
-        total=array1.length/countValue()
-    }
-
-    if(array1.length%countValue()>0){
-        total=Math.ceil(array1.length/countValue());
-    }
-
-    if(array1.length/countValue()<1){
-        total=1;
-    }
-
-    $("#totalPage").text("共" + total + "页");
-
-    var myArray = new Array();
-    $('.beforeClone').remove();
-    for ( i = 0; i < total; i++) {
-        var li = $("#next").prev();
-        myArray[i] = i+1;
-        var clonedLi = li.clone();
-        clonedLi.show();
-        clonedLi.find('a:first-child').text(myArray[i]);
-        clonedLi.find('a:first-child').click(function () {
-            var num = $(this).text();
-            switchPage(num);
-            AddAndRemoveClass(this);
-        });
-        clonedLi.addClass("beforeClone");
-        clonedLi.removeAttr("id");
-        clonedLi.insertAfter(li);
-    }
-    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
-    $("#previous").next().next().eq(0).addClass("oldPageClass");
-    for(var i=0;i<array1.length;i++){
-        array1[i].hide();
-    }
-
-    for(var i=0;i<countValue();i++){
-        $(array1[i]).show();
-        $('#tbody1').append((array1[i]));
     }
 }
 
@@ -535,106 +547,10 @@ function enterSearch() {
 
 
 
-//粗查询
-$(document).ready(function () {//页面载入是就会进行加载里面的内容
-    var last;
-    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
-        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
-        setTimeout(function () {
-            if(last-event.timeStamp==0){
-                searchWastesAnalysis();
-            }
-        },400);
-    });
-});
 
-//粗查询
-function searchWastesAnalysis() {
-    isSearch=false;
-   // secondaryAnalysis();
-    array.length=0;//清空数组
-    array1.length=0;
-    $('.myclass').each(function () {
-        $(this).show();
-    });
-    //1分页模糊查询
 
-    for(var i=totalPage();i>0;i--){
-        switchPage(parseInt(i));
-        array.push($('.myclass'));
-    }
-    isSearch=true;
-    var text=$.trim($('#searchContent').val());
-    for(var j=0;j<array.length;j++){
-        $.each(array[j],function () {
-            //console.log(this);
-            if(($(this).children('td').text().indexOf(text)==-1)){
-                $(this).hide();
-            }
-            if($(this).children('td').text().indexOf(text)!=-1){
-                array1.push($(this));
-            }
-        });
-    }
 
-    var total;
 
-    if(array1.length%countValue()==0){
-        total=array1.length/countValue()
-    }
-
-    if(array1.length%countValue()>0){
-        total=Math.ceil(array1.length/countValue());
-    }
-
-    if(array1.length/countValue()<1){
-        total=1;
-    }
-
-    $("#totalPage").text("共" + total + "页");
-
-    var myArray = new Array();
-
-    $('.beforeClone').remove();
-
-    for ( i = 0; i < total; i++) {
-        var li = $("#next").prev();
-        myArray[i] = i+1;
-        var clonedLi = li.clone();
-        clonedLi.show();
-        clonedLi.find('a:first-child').text(myArray[i]);
-        clonedLi.find('a:first-child').click(function () {
-            var num = $(this).text();
-            switchPage(num);
-            AddAndRemoveClass(this)
-        });
-        clonedLi.addClass("beforeClone");
-        clonedLi.removeAttr("id");
-        clonedLi.insertAfter(li);
-    }
-    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
-    $("#previous").next().next().eq(0).addClass("oldPageClass");
-    for(var i=0;i<array1.length;i++){
-        $(array1[i]).hide();
-    }
-
-    //首页展示
-    for(var i=0;i<countValue();i++){
-        $(array1[i]).show();
-        $('#tbody1').append((array1[i]));
-    }
-
-    if(text.length<=0){
-        secondaryAnalysis();
-    }
-}
-
-/**
- * 查看页面
- */
-function view() {
-    $("#viewModal").modal('show')
-}
 
 /**
  *
@@ -733,6 +649,43 @@ function setSelectList() {
         }
     });
 }
+
+function setSelectList1() {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getClientAndWastesCodeSelectedList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status === "success") {
+                var data = eval(result);
+                console.log("下拉数据为：");
+                console.log(data);
+
+
+                var wastesCode = $("#wastesCode1");
+                $.each(data.wastesCodeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.code);
+                    option.text(item.code);
+                    wastesCode.append(option);
+                });
+                //刷新下拉数据
+                $('.selectpicker').selectpicker('refresh');
+
+                $('#addClone1').siblings().not($('#plusBtn1')).remove();
+
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+}
+
+
 
 var num = 1;
 /**
@@ -882,6 +835,51 @@ function addAppoint() {
 }
 
 
+/**
+ * 预约登记==>修改
+ */
+function addNewLine1(item) {
+    // 获取id为plusBtn的tr元素
+    //var tr = $("#plusBtn").prev();
+    var tr = null;
+    if (item != null)
+        tr = $(item).parent().parent().prev().prev();
+    // 克隆tr，每次遍历都可以产生新的tr
+    var clonedTr = tr.clone();
+    clonedTr.show();
+    clonedTr.children('td').eq(0).html(($('.myclass2 ').length)+1);
+    if (clonedTr.children('td').eq(0).html() != 1) {     // 将非第一行的所有行加上减行号
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        clonedTr.children('td').eq(0).prepend(delBtn);
+    }
+
+    // 克隆后清空新克隆出的行数据
+    //clonedTr.children().find("input:first-child").prop('name').charAt(11);
+    clonedTr.children().find("input").val("");
+    clonedTr.children().find("input:checkbox").prop('checked', false);
+    clonedTr.children().find("select").selectpicker('val', '');
+    // clonedTr.children().find("input,select").each(function () {
+    //     var name = $(this).prop('name');
+    //     var newName = name.replace(/[0-9]\d*/, num - 1);
+    //     $(this).prop('name', newName);
+    //     var id = $(this).prop('id');
+    //     var newId = id.replace(/[0-9]\d*/, num - 1);
+    //     $(this).prop('id', newId);
+    // });
+    // clonedTr.addClass("newLine");
+
+
+
+    clonedTr.insertAfter(tr);
+    clonedTr.removeAttr("id");
+    //清空数据为重新初始化selectpicker
+    $('.selectpicker').data('selectpicker', null);
+    $('.bootstrap-select').find("button:first").remove();
+    $('.selectpicker').selectpicker();
+
+}
+
+
 //查看
 function view(item) {
     var id=$(item).parent().parent().children('td').eq(1).html();
@@ -906,7 +904,7 @@ function view(item) {
                     $('#companyName').val(result.data.client.companyName);
                 }
                 //化验室签收人
-                $('#laboratorySignatory1').text(result.data.laboratorySignatory)
+                $('#laboratorySignatory1').val(result.data.laboratorySignatory)
 
                 //送样人
                 $('#sendingPerson1').text(result.data.sendingPerson)
@@ -1021,7 +1019,7 @@ function setSubmit(item)  {
                     $('#companyName').val(result.data.client.companyName);
                 }
                 //化验室签收人
-                $('#laboratorySignatory1').text(result.data.laboratorySignatory)
+                $('#laboratorySignatory1').val(result.data.laboratorySignatory)
 
                 //送样人
                 $('#sendingPerson1').text(result.data.sendingPerson)
@@ -1117,12 +1115,14 @@ function setSubmit(item)  {
 function confirmSample() {
     var id=  $('#reservationId1').text()
 
+    var   laboratorySignatory = $('#laboratorySignatory1').val();
+
     $.ajax({
         type: "POST",                       // 方法类型
         url: "confirmSecondarySampleById",              // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data:{"id":id},
+        data:{"id":id,'laboratorySignatory':laboratorySignatory},
         //contentType: 'application/json;charset=utf-8',
         success:function (result) {
             if (result != undefined && result.status == "success"){
@@ -1249,3 +1249,194 @@ function importExcel() {
     });
 }
 
+
+//次生修改
+function secondaryAnalysisModify(item) {
+
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size:4
+    });
+    $('.selectpicker').data('selectpicker', null);
+    $('.bootstrap-select').find("button:first").remove();
+    $('#addClone1').siblings().not($('#plusBtn1')).remove();
+    setSelectList1();
+    var id=$(item).parent().parent().children('td').eq(1).html();
+    console.log(id)
+    $('#reservationId2').val(id)
+    $("#appointModa3").modal('show');
+    $('#confirm').hide();
+
+
+
+    //根据编号查找
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSecondarysampleById",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{"id":id},
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                //赋值
+                // 公司名称
+                if(result.data.client!=null){
+                    $('#companyName').val(result.data.client.companyName);
+                }
+                //化验室签收人
+                $('#laboratorySignatory2').val(result.data.laboratorySignatory)
+
+                //送样人
+                $('#sendingPerson2').val(result.data.sendingPerson)
+
+                //采样点
+                $('#address2').val(result.data.address)
+
+
+                if(result.data.secondarySampleItemList!=null){
+
+                    var tr=$('#addClone1');
+                    //tr.siblings().remove();
+
+                    $.each(result.data.secondarySampleItemList,function (index,item) {
+
+                        var clonedTr = tr.clone();
+
+                        clonedTr.attr('class','myclass2');
+
+                        clonedTr.show();
+
+                        var obj = eval(item);
+
+                        if((index + 1)!=1){
+                            var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+                            clonedTr.children('td').eq(0).html(delBtn);
+                            clonedTr.children("td:eq(0)").append(index+1);
+                        }
+                        if((index + 1)==1){
+                            clonedTr.children('td').eq(0).html(index + 1);
+                        }
+
+                        // clonedTr.children('td').eq(1).find('select').selectpicker('val',obj.wastesCode)
+
+                        clonedTr.children('td').eq(2).find('input').val(obj.wastesName)
+
+
+                        if(obj.water==1){
+                            clonedTr.children('td').eq(4).children("label").eq(0).find("input").prop('checked',true)
+                        }
+                        if(obj.water==0){
+                            clonedTr.children('td').eq(4).children("label").eq(0).find("input").prop('checked',false)
+                        }
+
+                        if(obj.scorchingRate==1){
+                            clonedTr.children('td').eq(4).children("label").eq(1).find("input").prop('checked',true)
+                        }
+                        if(obj.scorchingRate==0){
+                            clonedTr.children('td').eq(4).children("label").eq(1).find("input").prop('checked',false)
+                        }
+
+                        clonedTr.children('td').eq(1).find('select').selectpicker('val',obj.wastesCode);
+
+                        clonedTr.removeAttr("id");
+                        clonedTr.insertBefore(tr);
+                        $('.selectpicker').data('selectpicker', null);
+                        $('.bootstrap-select').find("button:first").remove();
+                        // $('.selectpicker').selectpicker();
+                        $('.selectpicker').selectpicker({
+                            language: 'zh_CN',
+                            size:6
+                        });
+                        $('.selectpicker').selectpicker('refresh');
+                    });
+
+                    // 隐藏无数据的tr
+                    tr.hide();
+                    tr.removeAttr('class');
+
+
+
+                }
+
+            }
+            else {
+
+            }
+        },
+        error:function (result) {
+
+        }
+    });
+
+}
+
+//确认修改
+function adjust() {
+
+    var data={
+        id:$('#reservationId2').val(),
+        sendingPerson:$('#sendingPerson2').val(),
+        address:$('#address2').val(),
+        laboratorySignatory:$('#laboratorySignatory2').val(),
+    };
+
+    //更新主表后删除字表数据
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "updateSecondarySample",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: JSON.stringify(data),
+        processData: false,
+        contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                $('.myclass2').each(function () {
+                    var water;
+                    if($(this).children('td').eq(4).find('label').eq(0).find("input").prop('checked')==true){
+                        water=1;
+                    }
+                    else
+                        water=0;
+                    var scorchingRate;
+                    if($(this).children('td').eq(4).find('label').eq(1).find("input").prop('checked')==true){
+                        scorchingRate=1;
+                    }
+                    else
+                        scorchingRate=0;
+
+                    var   dataItem={
+                        sampleinformationId:$('#reservationId2').val(),
+                        wastesCode:$(this).children('td').eq(1).find("button").attr('title'),
+                        wastesName:$(this).children('td').eq(2).find("input").val(),
+                        water:water,
+                        scorchingRate:scorchingRate,
+                        identifie:$(this).children('td').eq(3).find("input").val(),
+                    };
+                    console.log(dataItem)
+                    $.ajax({
+                        type: "POST",                       // 方法类型
+                        url: "addSecondarySampleItem",              // url
+                        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                        dataType: "json",
+                        data: JSON.stringify(dataItem),
+                        processData: false,
+                        contentType: 'application/json;charset=utf-8',
+                    })
+
+
+                })
+                alert("修改成功！")
+                window.location.reload();
+            }
+        },
+        error:function (result) {
+
+        }
+    })
+
+
+
+}

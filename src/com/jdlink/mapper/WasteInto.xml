@@ -79,11 +79,105 @@
     </select>
 
     <!--确认登记-->
-    <update id="confirmSecondarySampleById" parameterType="String">
-        update t_pr_secondarysample set  checkState='Collected',nowTime=NOW() where id=#{id};
+    <update id="confirmSecondarySampleById" >
+        update t_pr_secondarysample set  checkState='Collected',nowTime=NOW(),laboratorySignatory=#{1} where id=#{0};
     </update>
     <!--拒收-->
     <update id="rejectSecondarySampleById" >
         update t_pr_secondarysample set checkState='Rejected',advice=#{1} ,nowTime=NOW() where id=#{0}
     </update>
+
+
+    <!--次生送样查询-->
+    <select id="searchSecondary" resultMap="SecondarysampleRM">
+        select  * from t_pr_secondarysample
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or address like "%"#{keywords}"%"
+                or sendingPerson like "%"#{keywords}"%"
+                or laboratorySignatory like "%"#{keywords}"%"
+                or checkState = #{keywords}
+                or id in(select sampleinformationId from t_pr_secondarysampleitem where t_pr_secondarysampleitem.wastesName like  #{keywords})
+            </if>
+
+            <if test="secondarySampleItemList[0].water==1">
+                and  t_pr_secondarysample.id in(select DISTINCT sampleinformationId  from t_pr_secondarysampleitem where t_pr_secondarysampleitem.water=1)
+            </if>
+
+            <if test="secondarySampleItemList[0].scorchingRate==1">
+                and  t_pr_secondarysample.id in(select DISTINCT sampleinformationId     from t_pr_secondarysampleitem where t_pr_secondarysampleitem.scorchingRate=1)
+            </if>
+
+            <!--<if test="secondarySampleItemList[0].water==0 and secondarySampleItemList[0].scorchingRate==0 ">-->
+              <!---->
+            <!--</if>-->
+
+            <if test="secondarySampleItemList[0].wastesName !='' and secondarySampleItemList[0].wastesName !=null">
+                and id in(select sampleinformationId from t_pr_secondarysampleitem where t_pr_secondarysampleitem.wastesName like  #{secondarySampleItemList[0].wastesName})
+            </if>
+            <if test="address !='' and address !=null">
+                and address LIKE "%"#{address}"%"
+            </if>
+
+            <if test="sendingPerson !='' and sendingPerson !=null">
+                and sendingPerson LIKE "%"#{sendingPerson}"%"
+            </if>
+
+            <if test="laboratorySignatory !='' and laboratorySignatory !=null">
+                and laboratorySignatory LIKE "%"#{laboratorySignatory}"%"
+            </if>
+
+            <if test="checkState !='' and checkState !=null">
+                and checkState =#{checkState}
+            </if>
+
+
+        </where>
+        <if test="page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--次生送样查询总数-->
+    <select id="searchSecondaryCount" resultType="int">
+       select count(*) from t_pr_secondarysample
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or address like "%"#{keywords}"%"
+                or sendingPerson like "%"#{keywords}"%"
+                or laboratorySignatory like "%"#{keywords}"%"
+                or checkState = #{keywords}
+                or id in(select sampleinformationId from t_pr_secondarysampleitem where t_pr_secondarysampleitem.wastesName like  #{keywords})
+            </if>
+
+            <if test="secondarySampleItemList[0].water==1">
+                and  t_pr_secondarysample.id in(select DISTINCT sampleinformationId     from t_pr_secondarysampleitem where t_pr_secondarysampleitem.water=1)
+            </if>
+
+            <if test="secondarySampleItemList[0].scorchingRate==1">
+                and  t_pr_secondarysample.id in(select DISTINCT sampleinformationId     from t_pr_secondarysampleitem where t_pr_secondarysampleitem.scorchingRate=1)
+            </if>
+            <if test="secondarySampleItemList[0].wastesName !='' and secondarySampleItemList[0].wastesName !=null">
+                and id in(select sampleinformationId from t_pr_secondarysampleitem where t_pr_secondarysampleitem.wastesName like  #{secondarySampleItemList[0].wastesName})
+            </if>
+            <if test="address !='' and address !=null">
+                and address LIKE "%"#{address}"%"
+            </if>
+
+            <if test="sendingPerson !='' and sendingPerson !=null">
+                and sendingPerson LIKE "%"#{sendingPerson}"%"
+            </if>
+
+            <if test="laboratorySignatory !='' and laboratorySignatory !=null">
+                and laboratorySignatory LIKE "%"#{laboratorySignatory}"%"
+            </if>
+
+            <if test="checkState !='' and checkState !=null">
+                and checkState =#{checkState}
+            </if>
+        </where>
+    </select>
+
 </mapper>
