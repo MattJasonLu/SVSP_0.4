@@ -1718,3 +1718,11 @@ function ingredientsInModify(item){
     localStorage.id = getIngredientsInId(item);
     window.location.href="newIngredientsIn.html";
 }
+
+/**
+ * 点击新增页面时将ID清空
+ */
+function addIngredientsIn() {
+    localStorage.id = null;
+    window.location.href = "newIngredientsIn.html";
+}
