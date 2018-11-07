@@ -20,7 +20,9 @@ public interface SewageTestMapper {
     int totalSoftTestRecord();
    List<SoftTest> loadSoftTestResultsList(Page page);
    void updateSewaGeregistration(Sewageregistration sewageregistration);
+   void updateSoftGeregistration(Sewageregistration sewageregistration);
    void deleteSewaGeregistrationById(String id);
+    void deleteSoftGeregistrationById(String id);
      SecondaryTest getSecondaryTestById(String id);
      void updateSecondaryTestById(SecondaryTest secondaryTest);
      void addSecondaryTest(SecondaryTest secondaryTest);
@@ -28,4 +30,5 @@ public interface SewageTestMapper {
     int totalSecondaryTestRecord();
     void updateSecondarySample(SecondarySample secondarySample);
     void deleteSecondarySampleItem(String id);
+
 }

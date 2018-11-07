@@ -4,9 +4,17 @@
     <meta charset="UTF-8">
     <title>产废服务平台</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
-    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <link href="css/bootstrap/bootstrap-datetimepicker.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
     <link href="css/dashboard.css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script src="js/bootstrap/3.3.6/bootstrap.js"></script>
+    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
+    <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
+    <script language="javascript" src="js/bootstrap/printThis.js"></script>
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
@@ -14,7 +22,7 @@
     <script src="js/util.js"></script>
     <script src="js/produce/document.js"></script>
 </head>
-<body onload="listDocumentControl()">
+<body onload="loadPageList();">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -208,6 +216,43 @@
                 </table>
             </div>
         </div>
+        <!--分页-->
+        <nav aria-label="Page navigation" style="text-align: center">
+            <ol class="pagination" style="width: 900px;">
+                <li id="current" style="display: none"><a></a></li>
+                <li id="firstPage">
+                    <a href='#' onclick="switchPage(0)">首 页</a>
+                </li>
+                <li id="previous">
+                    <a href="#" aria-label="Previous">
+                        <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)-1);"><span
+                                class="glyphicon glyphicon-backward" aria-hidden="true"></span></span>
+                    </a>
+                </li>
+                <li><a href="#">1</a></li>
+                <li id="next">
+                    <a href="#" aria-label="Next">
+                        <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)+1);"><span
+                                class="glyphicon glyphicon-forward" aria-hidden="true"></span></span>
+                    </a>
+                </li>
+                <li id="endPage">
+                    <a href='#' onclick="switchPage(-2)">尾 页</a>
+                </li>
+                <li><a id="totalPage"></a></li>
+                <li><a href="#" onclick="inputSwitchPage()">跳转</a></li>
+                <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
+                           id="pageNumber" title="" onkeydown="enterSwitchPage()"></li>
+                <li class="showLi">每页显示:</li>
+                <li class="selectLi">
+                    <select id="count" onchange="loadPageList()" title="">
+                        <option>5</option>
+                        <option selected>15</option>
+                        <option>50</option>
+                    </select>
+                </li>
+            </ol>
+        </nav>
     </div>
 </div>
 <div id="embed"></div>

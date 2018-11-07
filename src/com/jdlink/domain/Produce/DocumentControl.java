@@ -1,5 +1,7 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.Page;
+
 import java.util.Date;
 
 public class DocumentControl {
@@ -47,6 +49,14 @@ public class DocumentControl {
      * 备注
      */
     private String note;
+    /**
+     * 页码
+     */
+    private Page page;
+    /**
+     * 关键字
+     */
+    private String keyword;
 
     public int getID() {
         return ID;
@@ -134,6 +144,22 @@ public class DocumentControl {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
     @Override

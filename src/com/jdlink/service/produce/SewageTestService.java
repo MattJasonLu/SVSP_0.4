@@ -25,4 +25,6 @@ public interface SewageTestService {
     int totalSecondaryTestRecord();
     void updateSecondarySample(SecondarySample secondarySample);
     void deleteSecondarySampleItem(String id);
+    void updateSoftGeregistration(Sewageregistration sewageregistration);
+    void deleteSoftGeregistrationById(String id);
 }

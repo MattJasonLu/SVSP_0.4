@@ -187,59 +187,52 @@
             <div class="panel panel-default" id="senior" style="display: none;">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="form-horizontal col-md-3">
+                        <div class="form-horizontal col-sm-6">
                             <div class="form-group">
-                                <label for="search-laboratoryTestNumber" class="col-sm-4 control-label">化验单号</label>
+                                <label for="search-id" class="col-sm-4 control-label">化验单号</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-laboratoryTestNumber" name="search-laboratoryTestNumber" placeholder="" onkeyup="searchData();">
+                                    <input type="text" class="form-control" id="search-id" name="search-laboratoryTestNumber" placeholder="" onkeyup="searchData();">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="search-laboratory" class="col-sm-4 control-label">化&nbsp;&nbsp;验&nbsp;&nbsp;人</label>
+                                <label for="search-wastesName" class="col-sm-4 control-label">废物名称</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-laboratory" name="search-laboratory" placeholder="" onkeyup="searchData();">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="search-queryNumber" class="col-sm-4 control-label">查&nbsp;&nbsp;询&nbsp;&nbsp;号</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-queryNumber" name="search-queryNumber" placeholder="" onkeyup="searchData();">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="search-laboratoryDate" class="col-sm-4 control-label">化验日期</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-laboratoryDate" name="search-laboratoryDate" placeholder="" onkeyup="searchData();">
+                                    <input type="text" class="form-control" id="search-wastesName" name="search-laboratory" placeholder="" onkeyup="searchData();">
                                 </div>
                             </div>
                         </div>
-                        <div class="form-horizontal col-md-3">
+                        <div class="form-horizontal col-sm-6">
                             <div class="form-group">
-                                <label for="search-companyName" class="col-sm-4 control-label">企业名称</label>
+                                <label for="search-scorchingRate" class="col-sm-4 control-label">热灼减率</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="" onkeyup="searchData();">
+                                    <input type="text" class="form-control" id="search-scorchingRate" name="search-queryNumber" placeholder="" onkeyup="searchData();">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="search-laboratoryCompany" class="col-sm-4 control-label">化验公司</label>
+                                <label for="search-water" class="col-sm-4 control-label">水分</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-laboratoryCompany" name="search-laboratoryCompany" placeholder="" onkeyup="searchData();">
+                                    <input type="text" class="form-control" id="search-water" name="search-companyName" placeholder="" onkeyup="searchData();">
                                 </div>
                             </div>
                         </div>
-                        <div class="form-horizontal col-md-3">
+
+                    </div>
+                    <div class="row">
+                        <div class="form-horizontal col-md-6">
                             <div class="form-group">
-                                <label for="search-record" class="col-sm-4 control-label">填&nbsp;&nbsp;报&nbsp;&nbsp;人</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-record" name="search-record" placeholder="" onkeyup="searchData();">
+                                <label class="col-sm-3 control-label" style="margin-left: 40px">收样日期 </label>
+                                <div class="input-group">
+                                    <input type="date" class="input-sm form-control" id="search-inDate" title="" onkeydown="" onkeyup="enterSearch()"/>
+                                    <span class="input-group-addon">-</span>
+                                    <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown="" onkeyup="enterSearch()"/>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-horizontal col-md-6">
                             <div class="form-group">
-                                <label for="search-checkState" class="col-sm-4 control-label">单据状态</label>
+                                <label for="search-remarks" class="col-sm-4 control-label">备注</label>
                                 <div class="col-xs-7">
-                                    <select class="form-control" name="search-checkState" id="search-checkState" onchange="searchData();"></select>
+                                    <input type="text" class="form-control" id="search-remarks" name="search-record" placeholder="" onkeyup="searchData();">
                                 </div>
                             </div>
                         </div>
