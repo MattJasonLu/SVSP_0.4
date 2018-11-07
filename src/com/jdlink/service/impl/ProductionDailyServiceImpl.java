@@ -38,10 +38,10 @@ public class ProductionDailyServiceImpl implements ProductionDailyService
     public int countSoftWater(){ return productionDailyMapper.countSoftWater();}
 
     @Override
-    public int searchCountSoftWater(SoftWater softWater){ return productionDailyMapper.searchCountSoftWater(softWater); }
+    public int searchCountSoftWater(Sewageregistration sewageregistration){ return productionDailyMapper.searchCountSoftWater(sewageregistration); }
 
     @Override
-    public List<SoftWater> searchSoftWater(SoftWater softWater){ return productionDailyMapper.searchSoftWater(softWater); }
+    public List<Sewageregistration> searchSoftWater(Sewageregistration sewageregistration){ return productionDailyMapper.searchSoftWater(sewageregistration); }
 
     @Override
     public List<SoftWater> listPageSoftWater(Page page){ return productionDailyMapper.listPageSoftWater(page); }

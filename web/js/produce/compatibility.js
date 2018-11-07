@@ -2191,7 +2191,8 @@ function addCompatibility() {
 
 
 
-
+ alert("添加成功！")
+    window.location.reload();
 
 
 }
