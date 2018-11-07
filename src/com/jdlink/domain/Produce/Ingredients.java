@@ -27,6 +27,10 @@ public class Ingredients {
      */
     private String procurementId;
     /**
+     * 采购申请单物料明细ID
+     */
+    private String procurementItemId;
+    /**
      * 辅料、备件名称
      */
     private String name;
@@ -129,6 +133,14 @@ public class Ingredients {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getProcurementItemId() {
+        return procurementItemId;
+    }
+
+    public void setProcurementItemId(String procurementItemId) {
+        this.procurementItemId = procurementItemId;
     }
 
     public Date getCreationDate() {

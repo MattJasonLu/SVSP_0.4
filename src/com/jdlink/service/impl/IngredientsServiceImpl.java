@@ -42,10 +42,13 @@ public class IngredientsServiceImpl implements IngredientsService {
     public List<IngredientsIn> searchIn(IngredientsIn ingredientsIn){ return ingredientsMapper.searchIn(ingredientsIn); }
 
     @Override
-    public void invalidIn(String id){ ingredientsMapper.invalidIn(id); }
+    public void invalidIn(IngredientsIn ingredientsIn){ ingredientsMapper.invalidIn(ingredientsIn); }
 
     @Override
     public void updateIn(IngredientsIn ingredientsIn){ ingredientsMapper.updateIn(ingredientsIn); }
+
+    @Override
+    public void updateDataIn(IngredientsIn ingredientsIn){ ingredientsMapper.updateDataIn(ingredientsIn); }
 
     @Override
     public int getAmountItems(Ingredients ingredients){ return ingredientsMapper.getAmountItems(ingredients); }
