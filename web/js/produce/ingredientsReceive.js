@@ -117,7 +117,7 @@ function setPageClone(result) {
  * */
 function switchPage(pageNumber) {
     console.log("当前页：" + pageNumber);
-    if(pageNumber > totalPage()){
+    if (pageNumber > totalPage()) {
         pageNumber = totalPage();
     }
     if (pageNumber == 0) {                 //首页
@@ -206,7 +206,7 @@ function switchPage(pageNumber) {
  * */
 function inputSwitchPage() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
-    if(pageNumber > totalPage()){
+    if (pageNumber > totalPage()) {
         pageNumber = totalPage();
     }
     $("#current").find("a").text("当前页：" + pageNumber);
@@ -449,7 +449,7 @@ function exportExcel() {
     var name = 't_pr_ingredients_receive';
     // 获取勾选项
     var idArry = [];
-    $.each($("input[name='select']:checked"),function(index,item){
+    $.each($("input[name='select']:checked"), function (index, item) {
         idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
     });
     var sqlWords = '';
@@ -460,10 +460,10 @@ function exportExcel() {
             else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
         }
         sqlWords = "select * from t_pr_ingredients_receive as a join t_pr_ingredients as b where receiveId = id and id" + sql;
-    }else {          // 若无勾选项则导出全部
+    } else {          // 若无勾选项则导出全部
         sqlWords = "select * from t_pr_ingredients_receive as a join t_pr_ingredients as b where receiveId = id;";
     }
-    console.log("sql:"+sqlWords);
+    console.log("sql:" + sqlWords);
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 
@@ -525,7 +525,7 @@ function importExcel() {
 /**
  * 回车查询
  */
-function enterSearch(){
+function enterSearch() {
     if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
         searchData();      //
     }
@@ -540,23 +540,23 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
     $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
-            if(last-event.timeStamp=== 0){
+            if (last - event.timeStamp === 0) {
                 searchData();
-            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+            } else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
                 searchData();      //
             }
-        },600);
+        }, 600);
     });
     // 新增页面
     $('#searchContent1').keyup(function (event) { //给Input赋予onkeyup事件
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
-            if(last-event.timeStamp=== 0){
+            if (last - event.timeStamp === 0) {
                 search1();
-            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+            } else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
                 search1();      //
             }
-        },600);
+        }, 600);
     });
 });
 
@@ -575,19 +575,43 @@ function searchData() {
     if ($("#search-state").val() == 1) state = "Invalid";//已作废
     if ($("#search-state").val() == 2) state = "OutBounded";//已出库
     var keywords = $.trim($("#searchContent").val());
-    switch (keywords){
-        case("新建"): keywords = "NewBuild";break;
-        case("待审批"): keywords = "ToExamine";break;
-        case("审批中"): keywords = "Examining";break;
-        case("审批通过"): keywords = "Approval";break;
-        case("已驳回"): keywords = "Backed";break;
-        case("驳回"): keywords = "Backed";break;
-        case("已作废"): keywords = "Invalid";break;
-        case("作废"): keywords = "Invalid";break;
-        case("已确认"): keywords = "Confirm";break;
-        case("确认"): keywords = "Confirm";break;
-        case ("已出库"): keywords = "OutBounded";break;
-        case ("出库"): keywords = "OutBounded";break;
+    switch (keywords) {
+        case("新建"):
+            keywords = "NewBuild";
+            break;
+        case("待审批"):
+            keywords = "ToExamine";
+            break;
+        case("审批中"):
+            keywords = "Examining";
+            break;
+        case("审批通过"):
+            keywords = "Approval";
+            break;
+        case("已驳回"):
+            keywords = "Backed";
+            break;
+        case("驳回"):
+            keywords = "Backed";
+            break;
+        case("已作废"):
+            keywords = "Invalid";
+            break;
+        case("作废"):
+            keywords = "Invalid";
+            break;
+        case("已确认"):
+            keywords = "Confirm";
+            break;
+        case("确认"):
+            keywords = "Confirm";
+            break;
+        case ("已出库"):
+            keywords = "OutBounded";
+            break;
+        case ("出库"):
+            keywords = "OutBounded";
+            break;
     }
     if ($("#senior").is(':visible')) {
         data1 = {
@@ -772,28 +796,32 @@ function setViewClone(result) {
  */
 function invalid(item) {
     var id = getIngredientsId(item);
-    if (confirm("是否作废？")) {
-        $.ajax({
-            type: "POST",
-            url: "invalidIngredientsReceive",
-            async: false,
-            data: {
-                id: id
-            },
-            dataType: "json",
-            success: function (result) {
-                if (result.status == "success") {
-                    alert("作废成功！");
-                    window.location.reload();
-                } else {
-                    alert(result.message);
+    if ($(item).parent().parent().children().eq(3).text() == '新建') {
+        if (confirm("是否作废？")) {
+            $.ajax({
+                type: "POST",
+                url: "invalidIngredientsReceive",
+                async: false,
+                data: {
+                    id: id
+                },
+                dataType: "json",
+                success: function (result) {
+                    if (result.status == "success") {
+                        alert("作废成功！");
+                        window.location.reload();
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                    alert("服务器异常!");
                 }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常!");
-            }
-        });
+            });
+        }
+    } else {
+        alert("单据不可作废！");
     }
 }
 
@@ -1340,14 +1368,14 @@ function confirmInsert() {
                 ingredients.receiveAmount = 0;  //领料数默认为0，防止错误操作
                 ingredientsList.push(ingredients);
                 var receiveAmount = parseFloat(ingredients.receiveAmount);
-               // $("#total-unit").text("吨");
+                // $("#total-unit").text("吨");
                 if (ingredients.unit === "千克" || ingredients.unit === "kg" || ingredients.unit === "KG") {
                     receiveAmount = receiveAmount / 1000; // 单位换算
                     totalReceiveAmount += receiveAmount;
                 } else if (ingredients.unit === "吨" || ingredients.unit === "t" || ingredients.unit === "T")
                     totalReceiveAmount += receiveAmount;
-                }
             }
+        }
     });
     //将数据遍历赋值到领料单中
     ingredientsReceive.totalAmount = totalReceiveAmount;
@@ -1394,7 +1422,7 @@ function calculateTotalReceiveAmount() {
     for (var i = 1; i < ListCount; i++) {
         var $i = i;
         var receiveAmount = parseFloat($("#receiveAmount" + $i).val());
-        console.log("receiveAmount="+receiveAmount);
+        console.log("receiveAmount=" + receiveAmount);
         ingredientsReceive.ingredientsList[i - 1].receiveAmount = $("#receiveAmount" + $i).val();
         if ($("#receiveAmount" + $i).val() < ingredientsReceive.ingredientsList[i - 1].amount) ingredientsReceive.ingredientsList[i - 1].notReceiveAmount = 1;
         else if ($("#receiveAmount" + $i).val() == ingredientsReceive.ingredientsList[i - 1].amount) ingredientsReceive.ingredientsList[i - 1].notReceiveAmount = 0;
@@ -1402,16 +1430,16 @@ function calculateTotalReceiveAmount() {
             if (ingredientsReceive.ingredientsList[i - 1].unit === "千克" || ingredientsReceive.ingredientsList[i - 1].unit === "kg" || ingredientsReceive.ingredientsList[i - 1].unit === "KG") {
                 receiveAmount = receiveAmount / 1000; // 单位换算
                 totalReceiveAmount += receiveAmount;
-            } else if (ingredientsReceive.ingredientsList[i - 1].unit === "吨" || ingredientsReceive.ingredientsList[i - 1].unit === "t" || ingredientsReceive.ingredientsList[i - 1].unit === "T"){
+            } else if (ingredientsReceive.ingredientsList[i - 1].unit === "吨" || ingredientsReceive.ingredientsList[i - 1].unit === "t" || ingredientsReceive.ingredientsList[i - 1].unit === "T") {
                 totalReceiveAmount += receiveAmount;
-            }else totalReceiveAmount += receiveAmount;
-        }else totalReceiveAmount += receiveAmount;
+            } else totalReceiveAmount += receiveAmount;
+        } else totalReceiveAmount += receiveAmount;
         if (parseFloat($("#receiveAmount" + $i).val()) > parseFloat(ingredientsReceive.ingredientsList[i - 1].amount)) {
             alert("超出库存量，请重新确认领料数！");
             return;
         }
     }
-    console.log("总数:"+totalReceiveAmount);
+    console.log("总数:" + totalReceiveAmount);
     $("#total-Amount").text(totalReceiveAmount);
     ingredientsReceive.totalAmount = totalReceiveAmount;
 }
@@ -1460,8 +1488,8 @@ function save() {
 /**
  * 回车查询
  */
-function enterSearch1(){
-    if(event.keyCode === 13){
+function enterSearch1() {
+    if (event.keyCode === 13) {
         search1();
     }
 }
@@ -1481,7 +1509,7 @@ function search1() {
             amount: $.trim($("#search1-amount").val()),
             name: $.trim($("#search1-name").val()),
             wareHouseName: $.trim($("#search1-wareHouseName").val()),
-            page:page
+            page: page
         };
     } else {
         data1 = {
