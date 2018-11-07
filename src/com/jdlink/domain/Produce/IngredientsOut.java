@@ -22,7 +22,7 @@ public class IngredientsOut {
     /**
      * 部门
      */
-    private String departmentName;
+    private String department;
     /**
      * 出库单创建日期
      */
@@ -232,12 +232,12 @@ public class IngredientsOut {
         this.totalAmount = totalAmount;
     }
 
-    public String getDepartmentName() {
-        return departmentName;
+    public String getDepartment() {
+        return department;
     }
 
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
+    public void setDepartment(String department) {
+        this.department = department;
     }
 
     @Override

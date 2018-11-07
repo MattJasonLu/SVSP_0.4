@@ -1140,7 +1140,7 @@ public class PRIngredientsController {
                 if (!map.keySet().contains(id)) {
                     map.put(id, new IngredientsOut());
                     map.get(id).setId(id);
-                    map.get(id).setDepartmentName(data[i][1].toString());
+                    map.get(id).setDepartment(data[i][1].toString());
                     map.get(id).setFileId(data[i][2].toString());
                     map.get(id).setApprover(data[i][3].toString());
                     map.get(id).setKeeper(data[i][4].toString());
