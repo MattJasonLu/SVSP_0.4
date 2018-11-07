@@ -2,11 +2,46 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jdlink.mapper.EquipmentMapper" >
+<mapper namespace="com.jdlink.mapper.DocumentControlMapper" >
 
-    <!--查询当天的设备运行情况-->
-    <select id="getDocument" resultType="DocumentControl">
-        select * from t_base_fileno;
+    <!--列出所有的受控文档-->
+    <select id="list" resultType="DocumentControl">
+        select * from t_base_fileno
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and id LIKE "%"#{keyword}"%" or dispatcher like "%"#{keyword}"%" or destination like "%"#{keyword}"%"
+                or transferTime like binary "%"#{keyword}"%" or produceCompanyName like "%"#{keyword}"%"
+                or transportCompanyName like "%"#{keyword}"%" or acceptCompanyName like "%"#{keyword}"%"
+            </if>
+            <if test="ID != null and ID != ''">
+                and id LIKE "%"#{ID}"%"
+            </if>
+            <if test="true">
+                and checkState != 'Invalid'
+            </if>
+        </where>
+        order by createTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--获取受控文档数量-->
+    <select id="count" resultType="int">
+        SELECT count(*) FROM t_base_fileno
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and id LIKE "%"#{keyword}"%" or dispatcher like "%"#{keyword}"%" or destination like "%"#{keyword}"%"
+                or transferTime like binary "%"#{keyword}"%" or produceCompanyName like "%"#{keyword}"%"
+                or transportCompanyName like "%"#{keyword}"%" or acceptCompanyName like "%"#{keyword}"%"
+            </if>
+            <if test="ID != null and ID != ''">
+                and id LIKE "%"#{ID}"%"
+            </if>
+            <if test="true">
+                and checkState != 'Invalid'
+            </if>
+        </where>
     </select>
 
 </mapper>
