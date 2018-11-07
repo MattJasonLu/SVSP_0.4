@@ -101,4 +101,8 @@ public interface UserMapper {
 
     int searchLogCount(LoginLog loginLog);
 
+    int countByUser(User user);
+
+    void modifyPassword(User user);
+
 }

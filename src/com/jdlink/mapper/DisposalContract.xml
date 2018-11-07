@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdlink.mapper.DisposalContractMapper" >
+<!--添加危险废物处置合同-->
+    <insert id="addWastesContract" parameterType="DisposalContract">
+        insert into t_pr_disposalcontract (hw1, hw2, hw3, n1, n2, n3, totalPrice, address, nowTime)
+        values (#{hw1},#{hw2},#{hw3},#{n1},#{n2},#{n3},#{totalPrice},#{address},NOW());
+    </insert>
+
+    <!--查询意向书列表-->
+    <select id="loadWastesContractList" resultType="DisposalContract">
+        select * from t_pr_disposalcontract
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <!--根据编号查询意向书-->
+    <select id="getWastesContractListById" parameterType="String" resultType="DisposalContract">
+        select * from t_pr_disposalcontract where id=#{id};
+    </select>
+
+    <!--修改意向书-->
+    <update id="updateWastesContract" parameterType="DisposalContract">
+        update t_pr_disposalcontract set hw1=#{hw1},hw2=#{hw2},hw3=#{hw3},
+        n1=#{n1},n2=#{n2},n3=#{n3},totalPrice=#{totalPrice},address=#{address} where
+        id=#{id}
+    </update>
+
+
+</mapper>

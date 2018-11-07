@@ -114,4 +114,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int searchLogCount(LoginLog loginLog){ return userMapper.searchLogCount(loginLog);}
+
+    @Override
+    public  int countByUser(User user){ return userMapper.countByUser(user);}
+
+    @Override
+    public void modifyPassword(User user){ userMapper.modifyPassword(user);}
+
 }

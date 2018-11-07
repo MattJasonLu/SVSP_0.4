@@ -63,7 +63,7 @@ public class User {
     /**
      * 所属公司
      */
-    private Role  company;
+    private String company;
 
     public int getId() {
         return id;
@@ -161,11 +161,11 @@ public class User {
         this.role = role;
     }
 
-    public Role getCompany() {
+    public String getCompany() {
         return company;
     }
 
-    public void setCompany(Role company) {
+    public void setCompany(String company) {
         this.company = company;
     }
 }

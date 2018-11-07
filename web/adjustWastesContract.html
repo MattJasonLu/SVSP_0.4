@@ -29,7 +29,7 @@
         text-indent: 2em;
     }
 </style>
-<body>
+<body onload="receptionIdAdjust()">
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
         <ul class="nav navbar-nav navbar-left navbar-side">
@@ -101,7 +101,7 @@
         <li class="dropdown">
             <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
             <ul class="dropdown-menu">
-                <li><a href="personalInformation.html">个人信息</a></li>
+                <li><a href="#">个人信息</a></li>
                 <li><a href="#">待办事项</a></li>
                 <li><a href="#" onclick="showLog();">登录日志</a></li>
                 <li><a href="admin.html">注销</a></li>
@@ -141,91 +141,92 @@
         <div class="col-sm-9 col-sm-offset-2 col-md-7">
             <h4 class="sub-header" align="center">危险废物处置合同</h4>
             <form method="post" id="contractInfoForm" enctype="multipart/form-data" >
-            <div class="row">
-                <div class="form-horizontal col-md-6"></div>
-                <div class="form-horizontal col-md-6">
-                    <div class="form-group">
-                        <label class="col-sm-6 control-label" for="area"> 所属区域</label>
-                        <div class="col-xs-6">
-                            <input type="text"  name="area" id="area" style="border-left: none;border-right: none;border-top: none;">
+                <div class="row">
+                    <div class="form-horizontal col-md-6"></div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label" for="area"> 所属区域</label>
+                            <div class="col-xs-6">
+                                <input type="text"  name="area" id="area" style="border-left: none;border-right: none;border-top: none;">
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <p><b>甲方</b>：常州市宇安电器有限公司</p>
-            <p><b>乙方</b>：北控安耐得环保科技发展常州有限公司</p>
-            <p class="indent">为加强企业危险废物的管理，防止危险废物污染环境，根据《中华人民共和国固体废物污染环境防治法》的要求，甲乙双方经友好协商， 就甲方生产的工业危险废物(以下简称“危废”)处置事宜，达成如下合同：</p>
-            <h5><b>一、委托事项</b></h5>
-            <p class="indent">双方经友好协商，本着平等互利的原则，就该项目产生的危险废弃物进行安全处置事宜 达成一致意见，具体内容如下：</p>
-            <p>危险废弃物的名称及数量：</p>
-            <table class="table table-bordered" align="center">
-                <tr>
-                    <td>名称：收集粉尘(含抛光膏)[HW49(900-041-49)]</td>
-                    <td>数量：零点肆捌吨每年[0.48t/a]</td>
-                </tr>
-                <tr>
-                    <td>名称：槽渣[HW17(336-046-17)]</td>
-                    <td>数量：零点零柒吨每年[0.07t/a]</td>
-                </tr>
-                <tr>
-                    <td>名称：废活性炭、渗透膜[HW49(900-041-49)]</td>
-                    <td>数量：零点贰贰伍吨每年[0.225t/a]</td>
-                </tr>
-                <tr>
-                    <td>名称：脱脂剂废包装桶[HW49(900-041-49)]</td>
-                    <td>数量：零点壹吨每年[0.1t/a]</td>
-                </tr>
-                <tr>
-                    <td>名称：废乳化液[HW09(900-006-09)]</td>
-                    <td>数量：零点叁肆吨每年[0.34t/a]</td>
-                </tr>
-                <tr>
-                    <td>名称：含油手套、抹布(含抛光膏)[HW49(900-041-49)]</td>
-                    <td>数量：零点伍吨每年[0.5t/a]</td>
-                </tr>
-            </table>
-            <h5><b>二、处置费用</b></h5>
-            <p class="indent">2.1 本合同期间内，甲方<input title="" style="border-left: none;border-right: none;border-top: none;" id="H1">类别的合同量
-                分别为<input title="" style="border-left: none;border-right: none;border-top: none;" id="N1">吨；
-                <input title="" style="border-left: none;border-right: none;border-top: none;" id="H2">类别的合同量
-                分别为<input title="" style="border-left: none;border-right: none;border-top: none;" id="N2">吨；
-                <input title="" style="border-left: none;border-right: none;border-top: none;" id="H3">类别的合同量
-                分别为<input title="" style="border-left: none;border-right: none;border-top: none;" id="N3">吨。
-            <b>甲方预付乙方预付款<input title="" style="border-left: none;border-right: none;border-top: none;" id="N4">元整，预付款随协议同时到期，
-            到期不予退还。</b></p>
-            <p class="indent">2.2 甲方应在本合同签订之日，将处置费支付至乙方账户</p>
-            <p class="indent">2.3 危险废弃物的交付时间：双方同意，在甲方开始试生产时，且乙方取得危险废物许可证后，签订固废处置合同，并经环保部门审批后开始废物转移。</p>
-            <h5><b>三、其他</b></h5>
-            <p class="indent">3.1 本合同一式六份，甲方执二份，乙方执三份，环保部门存档一份。本合同经双方签字盖章，且经环保部门审批后生效。</p>
-            <p class="indent">3.2 本合同有效期自2018年1月至2018年12月。</p>
-            <p class="indent">3.3 本合同未尽事宜，甲乙双方可商定补充协议，补充协议经双方签字盖章后与本合同具有同等法律效力。</p>
-            <div class="row">
-                <div class="form-horizontal col-md-6">
-                    <p>甲方单位(盖章)</p>
-                    <p>委托代理人：</p>
-                    <p>联系电话：</p>
-                    <p>单位地址：</p>
-                    <p>开户：<input title="" style="border-left: none;border-right: none;border-top: none;"></p>
-                    <p>账号：<input title="" style="border-left: none;border-right: none;border-top: none;"></p>
-                    <p>日期：</p>
+                <p><b>甲方</b>：常州市宇安电器有限公司</p>
+                <p><b>乙方</b>：北控安耐得环保科技发展常州有限公司</p>
+                <p class="indent">为加强企业危险废物的管理，防止危险废物污染环境，根据《中华人民共和国固体废物污染环境防治法》的要求，甲乙双方经友好协商， 就甲方生产的工业危险废物(以下简称“危废”)处置事宜，达成如下合同：</p>
+                <h5><b>一、委托事项</b></h5>
+                <p class="indent">双方经友好协商，本着平等互利的原则，就该项目产生的危险废弃物进行安全处置事宜 达成一致意见，具体内容如下：</p>
+                <p>危险废弃物的名称及数量：</p>
+                <table class="table table-bordered" align="center">
+                    <tr>
+                        <td>名称：收集粉尘(含抛光膏)[HW49(900-041-49)]</td>
+                        <td>数量：零点肆捌吨每年[0.48t/a]</td>
+                    </tr>
+                    <tr>
+                        <td>名称：槽渣[HW17(336-046-17)]</td>
+                        <td>数量：零点零柒吨每年[0.07t/a]</td>
+                    </tr>
+                    <tr>
+                        <td>名称：废活性炭、渗透膜[HW49(900-041-49)]</td>
+                        <td>数量：零点贰贰伍吨每年[0.225t/a]</td>
+                    </tr>
+                    <tr>
+                        <td>名称：脱脂剂废包装桶[HW49(900-041-49)]</td>
+                        <td>数量：零点壹吨每年[0.1t/a]</td>
+                    </tr>
+                    <tr>
+                        <td>名称：废乳化液[HW09(900-006-09)]</td>
+                        <td>数量：零点叁肆吨每年[0.34t/a]</td>
+                    </tr>
+                    <tr>
+                        <td>名称：含油手套、抹布(含抛光膏)[HW49(900-041-49)]</td>
+                        <td>数量：零点伍吨每年[0.5t/a]</td>
+                    </tr>
+                </table>
+                <h5><b>二、处置费用</b></h5>
+                <p class="indent">2.1 本合同期间内，甲方<input title="" style="border-left: none;border-right: none;border-top: none;" id="H1">类别的合同量
+                    分别为<input title="" style="border-left: none;border-right: none;border-top: none;" id="N1">吨；
+                    <input title="" style="border-left: none;border-right: none;border-top: none;" id="H2">类别的合同量
+                    分别为<input title="" style="border-left: none;border-right: none;border-top: none;" id="N2">吨；
+                    <input title="" style="border-left: none;border-right: none;border-top: none;" id="H3">类别的合同量
+                    分别为<input title="" style="border-left: none;border-right: none;border-top: none;" id="N3">吨。
+                    <b>甲方预付乙方预付款<input title="" style="border-left: none;border-right: none;border-top: none;" id="N4">元整，预付款随协议同时到期，
+                        到期不予退还。</b></p>
+                <p class="indent">2.2 甲方应在本合同签订之日，将处置费支付至乙方账户</p>
+                <p class="indent">2.3 危险废弃物的交付时间：双方同意，在甲方开始试生产时，且乙方取得危险废物许可证后，签订固废处置合同，并经环保部门审批后开始废物转移。</p>
+                <h5><b>三、其他</b></h5>
+                <p class="indent">3.1 本合同一式六份，甲方执二份，乙方执三份，环保部门存档一份。本合同经双方签字盖章，且经环保部门审批后生效。</p>
+                <p class="indent">3.2 本合同有效期自2018年1月至2018年12月。</p>
+                <p class="indent">3.3 本合同未尽事宜，甲乙双方可商定补充协议，补充协议经双方签字盖章后与本合同具有同等法律效力。</p>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <p>甲方单位(盖章)</p>
+                        <p>委托代理人：</p>
+                        <p>联系电话：</p>
+                        <p>单位地址：</p>
+                        <p>开户：<input title="" style="border-left: none;border-right: none;border-top: none;"></p>
+                        <p>账号：<input title="" style="border-left: none;border-right: none;border-top: none;"></p>
+                        <p>日期：</p>
+                    </div>
+                    <div class="form-horizontal col-md-6">
+                        <p>乙方单位(盖章)</p>
+                        <p>委托代理人：</p>
+                        <p>联系电话：0519-86763880</p>
+                        <p>单位地址：新北区春江镇江边工业园滨江三路1号</p>
+                        <p>开户：建行常州市新北支行</p>
+                        <p>账号：32050162843609123456</p>
+                        <p>日期：</p>
+                    </div>
                 </div>
-                <div class="form-horizontal col-md-6">
-                    <p>乙方单位(盖章)</p>
-                    <p>委托代理人：</p>
-                    <p>联系电话：0519-86763880</p>
-                    <p>单位地址：新北区春江镇江边工业园滨江三路1号</p>
-                    <p>开户：建行常州市新北支行</p>
-                    <p>账号：32050162843609123456</p>
-                    <p>日期：</p>
+                <input class="hidden" id="id">
+                <br>
+                <br>
+                <div class="row text-center">
+                    <a class="btn btn-primary" id="print" onclick="confirmAdjust()"> 修改</a>
+                    <a class="btn btn-danger" id="back" href="wastesContractList.html">返回</a>
                 </div>
-            </div>
-        <br>
-        <br>
-            <div class="row text-center">
-                <a class="btn btn-primary" id="print" onclick="save()"> 保存</a>
-                <a class="btn btn-danger" id="back" href="wastesContractList.html">返回</a>
-            </div>
-        </form>
+            </form>
         </div>
     </div>
 </div>
