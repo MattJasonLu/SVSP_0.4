@@ -339,7 +339,7 @@ function setSoftWaterList(result) {
     var serialNumber = 0;    // 序号
     $.each(result, function (index, item) {
         serialNumber++;
-        if(item.water==false){
+
             // 克隆tr，每次遍历都可以产生新的tr
             var clonedTr = tr.clone();
             clonedTr.show();
@@ -425,7 +425,7 @@ function setSoftWaterList(result) {
             // 把克隆好的tr追加到原来的tr前面
             clonedTr.removeAttr("id");
             clonedTr.insertBefore(tr);
-        }
+
 
     });
     // 隐藏无数据的tr

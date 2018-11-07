@@ -344,7 +344,7 @@ function setSoftTestList(result) {
                     break;
                 //浊度FTU
                 case (3):
-                    $(this).html((obj.basicity).toFixed(2));
+                    $(this).html((obj.turbidity).toFixed(2));
                     break;
                 case (4):
                     // 硬度
@@ -604,4 +604,86 @@ function enterSearch() {
     if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
         searchData();      //
     }
+}
+
+
+/**
+ * 增加数据
+ */
+function addData() {
+    $("#addModal").modal("show");
+    $('#addTable').siblings().not($("#plusBtn")).remove();
+}
+
+/**
+ * 预约登记==>新增
+ */
+function addNewLine(item) {
+    // 获取id为plusBtn的tr元素
+    //var tr = $("#plusBtn").prev();
+    var tr = $(item).parent().parent().prev();
+    // 克隆tr，每次遍历都可以产生新的tr
+    var clonedTr = tr.clone();
+    clonedTr.attr('class','myclass2');
+    clonedTr.show();
+    clonedTr.children().find("input").val("");
+    var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>";
+
+
+    clonedTr.children('td').eq(0).find("a").remove();
+    clonedTr.children('td').eq(0).append(delBtn)
+
+
+
+    clonedTr.insertAfter(tr);
+    clonedTr.removeAttr("id");
+}
+
+
+/**
+ * 删除行
+ */
+function delLine(item) {
+    var tr = item.parentElement.parentElement;
+    tr.parentNode.removeChild(tr);
+
+}
+
+//添加方法
+function save() {
+
+    $('.myclass2').each(function () {
+        var data={
+            id:$(this).children('td').eq(0).find('input').val(),
+            address:$(this).children('td').eq(1).find('input').val(),
+            turbidity:$(this).children('td').eq(2).find('input').val(),
+            hardness:$(this).children('td').eq(3).find('input').val(),
+            ph:$(this).children('td').eq(4).find('input').val(),
+            electricalConductivity:$(this).children('td').eq(5).find('input').val(),
+            basicity:$(this).children('td').eq(6).find('input').val(),
+            phenolphthalein:$(this).children('td').eq(7).find('input').val(),
+            remarks:$(this).children('td').eq(8).find('input').val(),
+        };
+        console.log(data)
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "addSoftTest",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data:JSON.stringify(data),
+            contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+
+                }
+            },
+            error:function (result) {
+
+            }
+        })
+
+    })
+
+    alert("添加成功")
+    window.location.reload();
 }
