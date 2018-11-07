@@ -22,4 +22,10 @@ public interface DocumentControlService {
      */
     int count(DocumentControl documentControl);
 
+    /**
+     * 增加受控文档
+     * @param documentControl 受控文档
+     */
+    void add(DocumentControl documentControl);
+
 }

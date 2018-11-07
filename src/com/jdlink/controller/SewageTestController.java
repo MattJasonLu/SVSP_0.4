@@ -518,4 +518,67 @@ public class SewageTestController {
         return sewageTestService.totalSecondaryTestRecord();
 
     }
+
+    //次生化验添加
+    @RequestMapping("addSecondaryTest")
+    @ResponseBody
+    public String addSecondaryTest(@RequestBody SecondaryTest secondaryTest){
+        JSONObject res=new JSONObject();
+
+        try {
+         sewageTestService.addSecondaryTest(secondaryTest);
+           res.put("status", "success");
+            res.put("message", "添加成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "添加失败");
+        }
+
+        return res.toString();
+
+    }
+
+    //污水化验添加
+    @RequestMapping("addSewageTest")
+    @ResponseBody
+    public String addSewageTest(@RequestBody SewageTest sewageTest){
+        JSONObject res=new JSONObject();
+        try {
+            sewageTestService.addSewageTest(sewageTest);
+            res.put("status", "success");
+            res.put("message", "添加成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "添加失败");
+        }
+
+        return res.toString();
+    }
+
+    //添加软水化验
+    @RequestMapping("addSoftTest")
+    @ResponseBody
+    public String addSoftTest(@RequestBody SoftTest softTest){
+        JSONObject res=new JSONObject();
+        try {
+            sewageTestService.addSoftTest(softTest);
+            res.put("status", "success");
+            res.put("message", "添加成功");
+        }
+
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "添加失败");
+        }
+
+
+        return res.toString();
+
+    }
 }

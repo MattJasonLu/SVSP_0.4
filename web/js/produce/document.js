@@ -4,9 +4,7 @@ function viewDocument() {
 function editDocument() {
     $("#editModal").modal('show')
 }
-function newDocument() {
-    $("#newModal").modal('show')
-}
+
 
 var isSearch = false;
 var currentPage = 1;                          //当前页数
@@ -420,124 +418,28 @@ function searchData() {
  * 增加数据
  */
 function showAddModal() {
-    // 设置物质形态
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getFormTypeAndPackageType",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            if (result !== undefined) {
-                var data = eval(result);
-                // 高级检索下拉框数据填充
-                var formType = $("#formType");
-                formType.children().remove();
-                $.each(data.formTypeList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    formType.append(option);
-                });
-                formType.get(0).selectedIndex = -1;
-            } else {
-                console.log("fail: " + result);
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-        }
-    });
-    // 设置产废单位
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getAllClients",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            if (result !== undefined) {
-                var data = eval(result);
-                // 高级检索下拉框数据填充
-                var produceCompany = $("#produceCompany");
-                produceCompany.children().remove();
-                $.each(data, function (index, item) {
-                    var option = $('<option />');
-                    option.val(item.clientId);
-                    option.text(item.companyName);
-                    produceCompany.append(option);
-                });
-                produceCompany.selectpicker("refresh");
-                produceCompany.selectpicker('val', '');
-            } else {
-                console.log("fail: " + result);
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-        }
-    });
-    // 设置危废代码
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getWastesInfoList",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            if (result !== undefined) {
-                var data = eval(result);
-                // 高级检索下拉框数据填充
-                var wastesCode = $("#wastesCode");
-                wastesCode.children().remove();
-                $.each(data.data, function (index, item) {
-                    var option = $('<option />');
-                    option.val(item.code);
-                    option.text(item.code);
-                    wastesCode.append(option);
-                });
-                wastesCode.selectpicker("refresh");
-                wastesCode.selectpicker('val', '');
-            } else {
-                console.log("fail: " + result);
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-        }
-    });
-    $("#addModal").modal("show");
+    // 显示新增模态框
+    $("#newModal").modal('show');
 }
 
 /**
- * 增加仓储化验单
+ * 增加
  */
 function addData() {
     var data = {
-        transferDraftId: $("#transferDraftId").val(),
-        wastesName: $("#wastesName").val(),
-        formType: $("#formType").val(),
-        ph: $("#PH").val(),
-        ash: $("#ash").val(),
-        fluorine: $("#fluorine").val(),
-        sulfur: $("#sulfur").val(),
-        flashPoint: $("#flashPoint").val(),
-        hotMelt: $("#hotMelt").val(),
-        produceCompany: {
-            clientId: $("#produceCompany").val()
-        },
-        wastesCode: $("#wastesCode").val(),
-        remark: $("#remark").val(),
-        heat: $("#heat").val(),
-        water: $("#water").val(),
-        chlorine: $("#chlorine").val(),
-        phosphorus: $("#phosphorus").val(),
-        viscosity: $("#viscosity").val()
+        fileNO: $("#addFileNO").val(),
+        fileName: $("#addFileName").val(),
+        SYSCode: $("#addSYSCode").val(),
+        company: $("#addCompany").val(),
+        note: $("#addNote").val()
     };
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "addSampleInfoAnalysis",                  // url
+        url: "addDocumentControl",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(data),
+        data: data,
         dataType: "json",
-        contentType: "application/json; charset=utf-8",
+        // contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 alert(result.message);

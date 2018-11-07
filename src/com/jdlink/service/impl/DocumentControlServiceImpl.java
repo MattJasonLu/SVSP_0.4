@@ -27,4 +27,9 @@ public class DocumentControlServiceImpl implements DocumentControlService {
     public int count(DocumentControl documentControl) {
         return documentControlMapper.count(documentControl);
     }
+
+    @Override
+    public void add(DocumentControl documentControl) {
+        documentControlMapper.add(documentControl);
+    }
 }
