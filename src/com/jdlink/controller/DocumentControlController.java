@@ -85,6 +85,30 @@ public class DocumentControlController {
     }
 
     /**
+     * 获取受控文档
+     * @param ID 编号
+     * @return 受控文档
+     */
+    @RequestMapping("getDocumentControl")
+    @ResponseBody
+    public String getDocumentControl(String ID) {
+        JSONObject res = new JSONObject();
+        try {
+            DocumentControl documentControl = documentControlService.get(ID);
+            JSONObject data = JSONObject.fromBean(documentControl);
+            res.put("status", "success");
+            res.put("message", "新增成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "新增失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
      * 设置受控文档失效
      * @param ID 编号
      * @return 成功与否
