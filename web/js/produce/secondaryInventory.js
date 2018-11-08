@@ -299,34 +299,34 @@ function loadWasteInventoryList(){
     });
     isSearch = false;
     //加载进料方式列表
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getHandelCategoryList",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        //contentType: "application/json; charset=utf-8",
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                var type=$('#search-type');
-                type.children().remove();
-                $.each(result.array1,function (index,item) {
-                    var option=$('<option/>');
-                    option.val(item.index);
-                    option.text(item.name);
-                    type.append(option);
-                })
-                type.get(0).selectedIndex=-1;
-            }
-            else {
-                alert(result.message);
-
-            }
-        },
-        error:function (result) {
-            alert("服务器异常！")
-        },
-
-    });
+    // $.ajax({
+    //     type: "POST",                       // 方法类型
+    //     url: "getHandelCategoryList",                  // url
+    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     dataType: "json",
+    //     //contentType: "application/json; charset=utf-8",
+    //     success:function (result) {
+    //         if (result != undefined && result.status == "success"){
+    //             var type=$('#search-type');
+    //             type.children().remove();
+    //             $.each(result.array1,function (index,item) {
+    //                 var option=$('<option/>');
+    //                 option.val(item.index);
+    //                 option.text(item.name);
+    //                 type.append(option);
+    //             })
+    //             type.get(0).selectedIndex=-1;
+    //         }
+    //         else {
+    //             alert(result.message);
+    //
+    //         }
+    //     },
+    //     error:function (result) {
+    //         alert("服务器异常！")
+    //     },
+    //
+    // });
 }
 
 //危废库存查看，点击查看按钮==>次生库存
@@ -528,14 +528,14 @@ function searchSec() {
             if(start.length==0){
                 start=startDate;
             }
-            if(!($(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1
-            &&$(this).children('td').text().indexOf(text)!=-1 &&$(this).children('td').eq(7).text().indexOf(wastesName)!=-1
+            if(!($(this).children('td').eq(3).text().indexOf(companyName)!=-1
+            &&$(this).children('td').text().indexOf(text)!=-1 &&$(this).children('td').eq(5).text().indexOf(wastesName)!=-1
                 &&(getDateByStr(start)<=endDate&&getDateByStr(start)>=startDate)
             )){
                 $(this).hide();
             }
-            if(($(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1
-                &&$(this).children('td').text().indexOf(text)!=-1 &&$(this).children('td').eq(7).text().indexOf(wastesName)!=-1
+            if(($(this).children('td').eq(3).text().indexOf(companyName)!=-1
+                &&$(this).children('td').text().indexOf(text)!=-1 &&$(this).children('td').eq(5).text().indexOf(wastesName)!=-1
                 &&(getDateByStr(start)<=endDate&&getDateByStr(start)>=startDate)
             )){
                array1.push($(this));

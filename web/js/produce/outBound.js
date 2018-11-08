@@ -1022,6 +1022,9 @@ function searchWasteOut() {
     isSearch=true;
 // console.log(array);
     var text=$.trim($('#searchContent').val());
+
+    var wareHouseName=$.trim($('#search-warehouseId').val());
+
    //1出库日期
     var outBoundDate=$.trim($('#search-storageDate').val());
     var endDate=$.trim($('#search-endDate').val());
@@ -1046,14 +1049,14 @@ function searchWasteOut() {
             if(start.length==0){
                 start=startDate;
             }
-                if(!($(this).children('td').eq(12).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
-                    &&$(this).children('td').eq(13).text().indexOf(processWay)!=-1&&$(this).children('td').eq(3).text().indexOf(salesman)!=-1
+                if(!($(this).children('td').eq(8).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
+                    &&$(this).children('td').eq(3).text().indexOf(salesman)!=-1&&$(this).children('td').eq(2).text().indexOf(wareHouseName)!=-1
                     &&(getDateByStr(start)<=endDate&&getDateByStr(start)>=startDate)
                 )){
                     $(this).hide();
                 }
-                if(($(this).children('td').eq(12).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
-                    &&$(this).children('td').eq(13).text().indexOf(processWay)!=-1&&$(this).children('td').eq(3).text().indexOf(salesman)!=-1)
+                if(($(this).children('td').eq(8).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
+                    &&$(this).children('td').eq(3).text().indexOf(salesman)!=-1)&&$(this).children('td').eq(2).text().indexOf(wareHouseName)!=-1
                     &&(getDateByStr(start)<=endDate&&getDateByStr(start)>=startDate)
                 ){
                     array1.push($(this));
