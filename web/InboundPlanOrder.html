@@ -291,6 +291,7 @@
                         <td class="text-center">
                             <a href="#" onclick="viewData($(this));" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                             <a href="#" onclick="setInvalid($(this));" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                            <a href="#" onclick="showSampleInfo($(this));" title="预约送样"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
                         </td>
                     </tr>
                     </tbody>
@@ -506,6 +507,130 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--仓储部送样登记新增模态框-->
+        <div class="modal fade bs-example-modal-lg" id="appointModal" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">预约登记</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label for="model-companyName" class="col-sm-2 control-label">公司名称</label>
+                                <div class="col-sm-10">
+                                    <select class="selectpicker form-control" data-live-search="true"
+                                            data-live-search-placeholder="搜索..." id="model-companyName"
+                                            name="model-companyName">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="model-sendingPerson" class="col-sm-4 control-label">送样人</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="model-sendingPerson"
+                                           name="sendingPerson" required>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="model-id" class="col-sm-4 control-label">预约单号</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="model-id"
+                                           name="id" required>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-bordered" style="width: 95%;table-layout: fixed">
+                            <thead>
+                            <tr>
+                                <th class="text-center">危废代码</th>
+                                <th class="text-center">危废名称</th>
+                                <th class="text-center">危废类别</th>
+                                <th class="text-center">危废形态</th>
+                                <th class="text-center" style="width: 30%">检测项目</th>
+                                <th class="text-center">联单编号</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr id="addClone">
+                                <td class="text-center"><select onchange="autoSetCategory(this)" class="selectpicker form-control"
+                                                                data-live-search="true"
+                                                                data-live-search-placeholder="搜索..."
+                                                                id="wastesList0-wastesCode"
+                                                                name="wastesList[0].wastesCode">
+                                </select></td>
+                                <td class="text-center" ><input class="focus" name="wastesList[0].wastesName"
+                                                                id="wastesList[0].wastesName" style="width: 100%"></td>
+                                <td class="text-center" width="10%"><input class="focus" name="modal-wastesHandleCategory"
+                                                                           id="wastesList[0].wastesHandleCategory" style="width: 100%">
+                                </td>
+                                <td class="text-center" width="10%"><select class="focus" name="modal-wastesFormType"
+                                                                            id="wastesList[0].wastesFormType" style="width: 100%">
+                                </select>
+                                </td>
+                                <td class="text-center" width="40%">
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isPH"
+                                               value="true">PH
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isAsh"
+                                               value="true">灰分
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isWater"
+                                               id="wastesList[0].isWater" value="true">水分
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isHeat"
+                                               value="true">热值
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isS"
+                                               value="true">硫
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isCl"
+                                               value="true">氯
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isF"
+                                               value="true">氟
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isP"
+                                               value="true">磷
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isFlashPoint"
+                                               value="true">闪点
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isViscosity"
+                                               value="true">黏度
+                                    </label>
+                                    <!--<label>-->
+                                    <!--<input type="checkbox" name="wastesList[0].isHotMelt"-->
+                                    <!--value="true">热融-->
+                                    <!--</label>-->
+                                </td>
+                                <td class="text-center" ><input class="focus" name="wastesList[0].transferId"
+                                                                id="wastesList[0].transferId" style="width: 100%"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="addAppoint();">预约</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     </div>
                 </div>

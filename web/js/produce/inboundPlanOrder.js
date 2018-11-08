@@ -804,6 +804,17 @@ function viewData(e) {
 }
 
 /**
+ * 显示预约送样的模态框
+ * @param e
+ */
+function showSampleInfo(e) {
+    // 获取编号
+    var id = getIdByMenu(e);
+    // 显示模态框
+    $("#appointModal").modal("show");
+}
+
+/**
  * 通过操作菜单来获取编号
  * @param e 点击的按钮
  * @returns {string} 联单编号
