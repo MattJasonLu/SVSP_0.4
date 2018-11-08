@@ -203,7 +203,7 @@
                     <tr>
                         <th class="text-center" style="width: 40px">
                             <input class="checkbox" type="checkbox" id="allSel1" onclick="allSelect();"
-                                   style="height: 17px;width: 17px">
+                                   >
                         </th>
                         <th class="text-center">领料单号</th>
                         <th class="text-center">部门</th>
@@ -221,7 +221,7 @@
                     <tbody id="ingredientsReceiveData">
                     <tr id="clone1" ondblclick="toViewReiceve1(this)">
                         <td class="text-center" style="width: 40px">
-                            <input name="select" class="checkbox" type="checkbox" style="height: 17px;width: 17px">
+                            <input name="select" class="checkbox" type="checkbox" >
                         </td>
                         <td class="text-center" name="receiveId"></td>
                         <td class="text-center"></td>
@@ -254,9 +254,8 @@
             <thead>
             <tr>
                 <th colspan="6" class="text-left">部门:<input class="focus" type="text" title="" id="departmentName"></th>
-                <th colspan="6" class="text-left"><span id="creationDate" class="text-center"></span></th>
-                <th colspan="7" class="text-right">文件编号:<input title="" type="text" class="focus" value="M-TD-107-R03" id="fileId">
-                </th>
+                <th colspan="8" class="text-left"><input type="date" id="creationDate1" class="text-center focus"></th>
+                <th colspan="4" class="text-left">文件编号:<input title="" type="text" class="focus" value="M-TD-107-R03" id="fileId"></th>
             </tr>
             </thead>
             <tbody>
@@ -301,7 +300,7 @@
                 <td class="text-center"><input class="text-center focus" type="text" id="post0"></td>
                 <td class="text-center" name="remarks"></td>
                 <td class="text-center" name="wareHouseName"></td>
-                <td class="text-center"><select id="equipment0" name="equipment"></select></td>
+                <td class="text-center"><select class="focus" id="equipment0" name="equipment"></select></td>
             </tr>
             <tr>
                 <td colspan="6" class="text-center">合计</td>
@@ -321,14 +320,14 @@
             <tr>
                 <td class="text-left" colspan="4">记账人：<input style="width: 60px" title="" class="focus" maxlength="4" type="text" id="bookkeeper"></td>
                 <td class="text-left" colspan="4">审批人：<input style="width: 60px" title="" class="focus" maxlength="4" type="text" id="approver"></td>
-                <td class="text-left" colspan="5">保管人：<input style="width: 60px" title="" class="focus" maxlength="4" type="text" id="keeper"></td>
-                <td class="text-left" colspan="5">经手人：<input style="width: 60px" title="" class="focus" maxlength="4" type="text" id="handlers"></td>
+                <td class="text-left" colspan="6">保管人：<input style="width: 60px" title="" class="focus" maxlength="4" type="text" id="keeper"></td>
+                <td class="text-left" colspan="4">经手人：<input style="width: 60px" title="" class="focus" maxlength="4" type="text" id="handlers"></td>
             </tr>
             </tbody>
         </table>
         <div class="row text-center">
             <a class="btn btn-success" onclick="save();">出库</a>
-            <a class="btn btn-danger" href="ingredientsIn.html">返回</a>
+            <a class="btn btn-danger" href="ingredientsOut.html">返回</a>
         </div>
         <!--查看模态框-->
         <div class="modal fade bs-example-modal-lg" id="viewModal1" tabindex="-1" role="dialog"
@@ -412,9 +411,6 @@
     $('#embed').load('embed/loginLogModal.html');
 </script>
 <style>
-    input {
-        width: 80%;
-        height: 100%;
-    }
+
 </style>
 </html>

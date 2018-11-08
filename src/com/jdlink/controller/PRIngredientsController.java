@@ -28,8 +28,10 @@ public class PRIngredientsController {
     IngredientsService ingredientsService;
 
     ///////////辅料/备件入库单////////////////
+
     /**
      * 获取危废物质形态
+     *
      * @return 物质形态
      */
     @RequestMapping("getProcurementCheckStateList")
@@ -37,7 +39,7 @@ public class PRIngredientsController {
     public String getProcurementCheckStateList() {
         JSONObject res = new JSONObject();
         //JSONArray formTypeList = JSONArray.fromArray(FormType.values());
-        CheckState[] states = new CheckState[]{CheckState.ToInbound,CheckState.ToPick};
+        CheckState[] states = new CheckState[]{CheckState.ToInbound, CheckState.ToPick};
         JSONArray stateList = JSONArray.fromArray(states);
         res.put("stateList", stateList);
         return res.toString();
@@ -128,7 +130,7 @@ public class PRIngredientsController {
     public String updateIngredientsIn(@RequestBody IngredientsIn ingredientsIn) {
         JSONObject res = new JSONObject();
         try {
-          //  ingredientsIn.setCreationDate(new Date()); // 设置入库日期为当前日期
+            //  ingredientsIn.setCreationDate(new Date()); // 设置入库日期为当前日期
             ingredientsService.updateDataIn(ingredientsIn);
             res.put("status", "success");
             res.put("message", "入库单修改成功");
@@ -142,6 +144,7 @@ public class PRIngredientsController {
 
     /**
      * 获取分页数据
+     *
      * @param page
      * @return
      */
@@ -166,6 +169,7 @@ public class PRIngredientsController {
 
     /**
      * 获取明细分页数据
+     *
      * @param page
      * @return
      */
@@ -174,8 +178,8 @@ public class PRIngredientsController {
     public String loadPageIngredientsInItemList(@RequestBody Page page) {
         JSONObject res = new JSONObject();
         try {
-            List<Ingredients> ingredientsList = ingredientsService.listPageInItem(page);
-            JSONArray data = JSONArray.fromArray(ingredientsList.toArray(new Ingredients[ingredientsList.size()]));
+            List<Ingredients> ingredientsList = ingredientsService.listPageInItem(page); // 获取分页数据
+            JSONArray data = JSONArray.fromArray(ingredientsList.toArray(new Ingredients[ingredientsList.size()])); // 数据转化
             res.put("data", data);
             res.put("status", "success");
             res.put("message", "分页数据获取成功!");
@@ -410,6 +414,7 @@ public class PRIngredientsController {
 
     /**
      * 查询功能
+     *
      * @param ingredientsIn
      * @return
      */
@@ -452,7 +457,7 @@ public class PRIngredientsController {
 //                System.out.print("，仓库:"+ingredients.getWareHouseName());
 //            }
 //            System.out.println();
-            ingredientsService.invalidIn(ingredientsIn);
+            ingredientsService.invalidIn(ingredientsIn);  // 将该数据作废并回退之前数据
             res.put("status", "success");
             res.put("message", "作废成功");
         } catch (Exception e) {
@@ -566,6 +571,12 @@ public class PRIngredientsController {
         return res.toString();
     }
 
+    /**
+     * 添加领料单
+     *
+     * @param ingredientsReceive
+     * @return
+     */
     @RequestMapping("addIngredientsReceive")
     @ResponseBody
     public String addIngredientsReceive(@RequestBody IngredientsReceive ingredientsReceive) {
@@ -581,6 +592,29 @@ public class PRIngredientsController {
         }
         return res.toString();
     }
+
+    /**
+     * 修改领料单
+     *
+     * @param ingredientsReceive
+     * @return
+     */
+    @RequestMapping("updateIngredientsReceive")
+    @ResponseBody
+    public String updateIngredientsReceive(@RequestBody IngredientsReceive ingredientsReceive) {
+        JSONObject res = new JSONObject();
+        try {
+            ingredientsService.updateDataReceive(ingredientsReceive);
+            res.put("status", "success");
+            res.put("message", "修改成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "修改失败");
+        }
+        return res.toString();
+    }
+
 
     @RequestMapping("loadPageIngredientsReceiveList")
     @ResponseBody
@@ -1028,7 +1062,8 @@ public class PRIngredientsController {
     public String addIngredientsOut(@RequestBody IngredientsOut ingredientsOut) {
         JSONObject res = new JSONObject();
         try {
-            ingredientsOut.setCreationDate(new Date());
+            if (ingredientsOut.getCreationDate() == null)
+                ingredientsOut.setCreationDate(new Date());
             ingredientsService.addOut(ingredientsOut);
             res.put("status", "success");
             res.put("message", "新建成功");
@@ -1036,6 +1071,22 @@ public class PRIngredientsController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "新建失败");
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("updateIngredientsOut")
+    @ResponseBody
+    public String updateIngredientsOut(@RequestBody IngredientsOut ingredientsOut) {
+        JSONObject res = new JSONObject();
+        try {
+            ingredientsService.updateDataOut(ingredientsOut);
+            res.put("status", "success");
+            res.put("message", "修改成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "修改失败");
         }
         return res.toString();
     }
@@ -1378,6 +1429,23 @@ public class PRIngredientsController {
             res.put("message", "作废失败");
         }
         return res.toString();
+    }
+
+    /**
+     * 获取库存量
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("getInventoryByNameAndWare")
+    @ResponseBody
+    public float getInventoryByNameAndWare(@RequestBody Ingredients ingredients) {
+        try {
+            return ingredientsService.getInventoryByNameAndWare(ingredients).getAmount();
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
     }
 
 

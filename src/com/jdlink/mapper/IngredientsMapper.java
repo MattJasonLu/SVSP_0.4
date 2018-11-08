@@ -42,6 +42,7 @@ public interface IngredientsMapper {
     List<IngredientsReceive> searchReceive(IngredientsReceive ingredientsReceive);
     void invalidReceive(IngredientsReceive ingredientsReceive);
     void updateReceive(IngredientsReceive ingredientsReceive);
+    void updateDataReceive(IngredientsReceive ingredientsReceive);
     Ingredients getAmountAndReceive(Ingredients ingredients);
     List<Ingredients> getInventoryList(Page page);
     int searchInventoryCount(Ingredients ingredients);
@@ -64,6 +65,7 @@ public interface IngredientsMapper {
     List<IngredientsOut> searchOut(IngredientsOut ingredientsOut);
     void invalidOut(IngredientsOut ingredientsOut);
     void updateOut(IngredientsOut ingredientsOut);
+    void updateDataOut(IngredientsOut ingredientsOut);
     List<Ingredients> getIngredientsOutItemByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("equipment")Equipment equipment);
     int countOutItem();
     int searchOutItemCount(Ingredients ingredients);

@@ -131,7 +131,7 @@
                 </ol>
                 <p class="text-center pull-right"><b>编号</b><span class="id"></span></p>
             </div>
-            <h4 class="sub-header">辅料/备件领用单新增</h4>
+            <h4 class="sub-header" id="head">辅料/备件领用单新增</h4>
         </div>
         <div class="row">
             <!--查询框-->
@@ -287,7 +287,7 @@
                     <td class="text-center"><input class="text-center focus" name="receiveAmount" type="number"
                                                    id="receiveAmount0" oninput="calculateTotalReceiveAmount()"></td>
                     <td class="text-center" name="unit"></td>
-                    <td class="text-center" name="amount"></td>
+                    <td class="text-center" ><span name="amount" id="amount0"></span></td>
                     <td class="text-center"><input class="text-center focus" type="text" id="remarks0" name="remarks">
                     </td>
                     <td class="text-center" name="wareHouseName"></td>
@@ -311,8 +311,8 @@
             </table>
         </form>
         <div class="row text-center">
-            <a class="btn btn-success" onclick="save();">领料</a>
-            <a class="btn btn-danger" href="ingredientsIn.html">返回</a>
+            <a class="btn btn-success" id="save" onclick="save();">领料</a>
+            <a class="btn btn-danger" href="ingredientsReceive.html">返回</a>
         </div>
     </div>
 </div>

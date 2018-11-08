@@ -783,27 +783,31 @@ function setViewClone(result) {
  */
 function invalid(item) {
     var id = getIngredientsId(item);
-    if (confirm("是否作废？")) {
-        $.ajax({
-            type: "POST",
-            url: "invalidIngredientsReceive",
-            async: false,
-            data: {
-                id: id
-            },
-            dataType: "json",
-            success: function (result) {
-                if (result.status == "success") {
-                    alert("作废成功！");
-                    window.location.reload();
-                } else {
-                    alert(result.message);
+    if ($(item).parent().parent().children().eq(3).text() == '新建') {
+        if (confirm("是否作废？")) {
+            $.ajax({
+                type: "POST",
+                url: "invalidIngredientsReceive",
+                async: false,
+                data: {
+                    id: id
+                },
+                dataType: "json",
+                success: function (result) {
+                    if (result.status == "success") {
+                        alert("作废成功！");
+                        window.location.reload();
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                    alert("服务器异常!");
                 }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常!");
-            }
-        });
+            });
+        }
+    }else{
+        alert("单据不可作废！");
     }
 }

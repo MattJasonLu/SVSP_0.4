@@ -106,6 +106,9 @@ public class IngredientsServiceImpl implements IngredientsService {
     public void updateReceive(IngredientsReceive ingredientsReceive){ ingredientsMapper.updateReceive(ingredientsReceive); }
 
     @Override
+    public void updateDataReceive(IngredientsReceive ingredientsReceive){ ingredientsMapper.updateDataReceive(ingredientsReceive); }
+
+    @Override
     public Ingredients getAmountAndReceive(Ingredients ingredients){ return ingredientsMapper.getAmountAndReceive(ingredients); }
 
     @Override
@@ -165,6 +168,9 @@ public class IngredientsServiceImpl implements IngredientsService {
 
     @Override
     public void updateOut(IngredientsOut ingredientsOut){ ingredientsMapper.updateOut(ingredientsOut); }
+
+    @Override
+    public void updateDataOut(IngredientsOut ingredientsOut){ ingredientsMapper.updateDataOut(ingredientsOut); }
 
     /**
      * 根据日期范围获取出库单
