@@ -581,4 +581,335 @@ public class SewageTestController {
         return res.toString();
 
     }
+
+    //提交污水化验单
+    @RequestMapping("submitSewageTest")
+    @ResponseBody
+    public String submitSewageTest(String id){
+        JSONObject res=new JSONObject();
+        try {
+        sewageTestService.submitSewageTest(id);
+            res.put("status", "success");
+            res.put("message", "提交成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "提交失败");
+
+        }
+
+        return res.toString();
+
+    }
+
+    //签收污水化验单
+    @RequestMapping("confirmSewageTest")
+    @ResponseBody
+    public String confirmSewageTest(String id){
+        JSONObject res=new JSONObject();
+
+
+        try {
+            sewageTestService.confirmSewageTest(id);
+            res.put("status", "success");
+            res.put("message", "已确认");
+        }
+
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "确认失败");
+        }
+
+        return res.toString();
+    }
+
+    //作废污水化验单
+    @RequestMapping("cancelSewageTest")
+    @ResponseBody
+    public String cancelSewageTest(String id){
+        JSONObject res=new JSONObject();
+
+        try {
+          sewageTestService.cancelSewageTest(id);
+            res.put("status", "success");
+            res.put("message", "已作废");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+
+        }
+
+        return res.toString();
+    }
+
+    //根据编号获取污水化验单信息
+    @RequestMapping("getSewageTestById")
+    @ResponseBody
+    public String getSewageTestById(String id){
+        JSONObject res=new JSONObject();
+
+
+        try {
+             SewageTest sewageTest=sewageTestService.getSewageTestById(id);
+             res.put("status", "success");
+             res.put("message", "查询成功");
+             res.put("data", sewageTest);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return  res.toString();
+
+    }
+
+    //修改污水化验单
+    @RequestMapping("updateSewageTestById")
+    @ResponseBody
+    private String updateSewageTestById(@RequestBody SewageTest sewageTest){
+        JSONObject res=new JSONObject();
+
+
+        try {
+            sewageTestService.updateSewageTestById(sewageTest);
+            res.put("status", "success");
+            res.put("message", "修改成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "修改失败");
+        }
+
+        return res.toString();
+
+
+    }
+
+    //提交软水化验单
+    @RequestMapping("submitSoftTest")
+    @ResponseBody
+    public String submitSoftTest(String id){
+        JSONObject res=new JSONObject();
+
+        try {
+     sewageTestService.submitSoftTest(id);
+            res.put("status", "success");
+            res.put("message", "提交成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "提交失败");
+
+        }
+
+
+        return res.toString();
+
+
+    }
+
+    //签收软水化验单
+    @RequestMapping("confirmSoftTest")
+    @ResponseBody
+    public String confirmSoftTest(String id){
+        JSONObject res=new JSONObject();
+
+        try {
+  sewageTestService.confirmSoftTest(id);
+            res.put("status", "success");
+            res.put("message", "已签收");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "签收失败");
+        }
+
+        return res.toString();
+
+
+    }
+
+    //作废软水化验单
+    @RequestMapping("cancelSoftTest")
+    @ResponseBody
+    public String cancelSoftTest(String id){
+        JSONObject res=new JSONObject();
+
+        try {
+            sewageTestService.cancelSoftTest(id);
+            res.put("status", "success");
+            res.put("message", "已作废");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+
+        }
+
+        return res.toString();
+    }
+
+    //根据编号查询软水化验
+    @RequestMapping("getSoftTestById")
+    @ResponseBody
+    public String getSoftTestById(String id){
+        JSONObject res=new JSONObject();
+
+        try {
+            SoftTest softTest=sewageTestService.getSoftTestById(id);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", softTest);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+
+        }
+
+
+        return res.toString();
+    }
+
+    //更新软水化验
+    @RequestMapping("updateSoftTestById")
+    @ResponseBody
+    public String updateSoftTestById(@RequestBody SoftTest softTest){
+        JSONObject res=new JSONObject();
+
+        try {
+              sewageTestService.updateSoftTest(softTest);
+            res.put("status", "success");
+            res.put("message", "更新成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+
+        }
+
+        return res.toString();
+
+    }
+
+    //提交次生化验单
+    @RequestMapping("submitSecondaryTest")
+    @ResponseBody
+    public String submitSecondaryTest(String id){
+        JSONObject res=new JSONObject();
+
+
+        try {
+            sewageTestService.submitSecondaryTest(id);
+            res.put("status", "success");
+            res.put("message", "提交成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "提交失败");
+        }
+        return res.toString();
+    }
+
+
+    //签收次生化验单
+    @RequestMapping("confirmSecondaryTest")
+    @ResponseBody
+    public String confirmSecondaryTest(String id){
+        JSONObject res=new JSONObject();
+
+        try {
+            sewageTestService.confirmSecondaryTest(id);
+            res.put("status", "success");
+            res.put("message", "已签收");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "签收失败");
+        }
+
+        return res.toString();
+
+
+    }
+
+
+    //作废次生化验单
+    @RequestMapping("cancelSecondaryTest")
+    @ResponseBody
+    public String cancelSecondaryTest(String id){
+        JSONObject res=new JSONObject();
+
+        try {
+            sewageTestService.cancelSecondaryTest(id);
+            res.put("status", "success");
+            res.put("message", "已作废");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+
+        }
+
+        return res.toString();
+    }
+
+    //根据编号查找次生化验信息
+    @RequestMapping("getSecondaryTestById")
+    @ResponseBody
+    public String getSecondaryTestById(String id){
+        JSONObject res=new JSONObject();
+
+        try {
+            SecondaryTest secondaryTest=sewageTestService.getSecondaryTestById(id);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", secondaryTest);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+
+        }
+
+
+        return res.toString();
+    }
+
+    //更新次生化验单
+    @RequestMapping("updateSecondaryTestById")
+    @ResponseBody
+    public String updateSecondaryTestById(@RequestBody SecondaryTest secondaryTest){
+        JSONObject res=new JSONObject();
+
+        try {
+              sewageTestService.updateSecondaryTestById(secondaryTest);
+            res.put("status", "success");
+            res.put("message", "更新成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+        return res.toString();
+
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
 
 public class SoftTest {
@@ -25,6 +26,16 @@ public class SoftTest {
     private float basicity;//全碱度
 
     private  float phenolphthalein;//酚酞碱度
+
+    private CheckState checkState;
+
+    public CheckState getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(CheckState checkState) {
+        this.checkState = checkState;
+    }
 
     public String getId() {
         return id;

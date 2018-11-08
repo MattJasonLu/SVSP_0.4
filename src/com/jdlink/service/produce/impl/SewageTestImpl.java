@@ -122,5 +122,50 @@ public class SewageTestImpl implements SewageTestService{
         sewageTestMapper.deleteSoftGeregistrationById(id);
     }
 
+    @Override
+    public void submitSewageTest(String id) {
+        sewageTestMapper.submitSewageTest(id);
+    }
+
+    @Override
+    public void confirmSewageTest(String id) {
+        sewageTestMapper.confirmSewageTest(id);
+    }
+
+    @Override
+    public void cancelSewageTest(String id) {
+        sewageTestMapper.cancelSewageTest(id);
+    }
+
+    @Override
+    public void submitSoftTest(String id) {
+        sewageTestMapper.submitSoftTest(id);
+    }
+
+    @Override
+    public void confirmSoftTest(String id) {
+        sewageTestMapper.confirmSoftTest(id);
+    }
+
+    @Override
+    public void cancelSoftTest(String id) {
+        sewageTestMapper.cancelSoftTest(id);
+    }
+
+    @Override
+    public void submitSecondaryTest(String id) {
+        sewageTestMapper.submitSecondaryTest(id);
+    }
+
+    @Override
+    public void confirmSecondaryTest(String id) {
+        sewageTestMapper.confirmSecondaryTest(id);
+    }
+
+    @Override
+    public void cancelSecondaryTest(String id) {
+        sewageTestMapper.cancelSecondaryTest(id);
+    }
+
 
 }

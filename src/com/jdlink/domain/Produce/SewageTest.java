@@ -1,5 +1,6 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
 
 //污水化验
@@ -37,8 +38,18 @@ public class SewageTest {
 
     private String sampleId;//预约单号
 
+    private CheckState checkState;
+
     //分页
     private Page page;
+
+    public CheckState getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(CheckState checkState) {
+        this.checkState = checkState;
+    }
 
     public float getAlkalinityCaCo3() {
         return alkalinityCaCo3;
