@@ -476,7 +476,7 @@ function loadSecondaryList() {
         success:function (result) {
             if (result != undefined && result.status == "success"){
                 console.log(result);
-                var processWay=$('#search-materialForm');
+                var processWay=$('#search-processWay');
                 processWay.children().remove();
                 $.each(result.processWayList,function (index,item) {
                     var option=$('<option/>')
@@ -1576,5 +1576,172 @@ function CalRemainQuantities(item) {
 
 
 
+
+}
+
+
+
+
+//次生出库新增页面粗查询
+
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContentAdd').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp==0){
+                searchSecondaryOuntBoundAdd();
+            }
+            else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchSecondaryOuntBoundAdd();      //
+            }
+        },600);
+    });
+});
+
+
+//粗查询==>新增页面
+function searchSecondaryOuntBoundAdd() {
+
+    $('.myclass').each(function () {
+        $(this).show();
+    })
+
+    array.length=0;//清空数组
+
+    array1.length=0;
+
+    array.push($('.myclass'));
+
+    var text=$.trim($('#searchContentAdd').val());
+
+
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            //console.log(this);
+            if(($(this).children('td').text().indexOf(text)==-1)){
+                $(this).hide();
+            }
+            if($(this).children('td').text().indexOf(text)!=-1){
+                array1.push($(this));
+            }
+        });
+    }
+
+    for(var i=0;i<array1.length;i++){
+        $.each(array1[i],function () {
+            $('#tbody1').append(this) ;
+        });
+    }
+
+
+    if(text.length<=0){
+        $('.myclass').each(function () {
+            $(this).show();
+        })
+    }
+
+
+
+}
+
+
+
+/**
+ * 回车查询
+ */
+function enterSearch1() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchSecOutboundAdd();      //
+    }
+}
+//次生高级查询==>新增页面
+function searchSecOutboundAdd() {
+
+    array.length=0;//清空数组
+
+    array1.length=0;//清空数组
+
+    $('.myclass').each(function () {
+        $(this).show();
+        array.push($(this));
+    });
+
+
+    var text=$.trim($('#searchContentAdd').val());
+
+    var beginTime=$.trim($('#search-inDate').val());
+
+    var endTime=$.trim($('#search-endDate').val());
+
+    var startDate=getDateByStr(beginTime);
+
+    var endDate=getDateByStr(endTime);
+
+    var processWay=$.trim($("#search-processWay option:selected").text());
+
+    var wastesCode=$.trim($("#search-wasteId").val());
+
+
+    var companyName=$.trim($("#search-companyName").val());
+
+    console.log(companyName)
+
+    var arraydate=[];
+
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            arraydate.push(($(this).children('td').eq(2).text()))
+        });
+    }
+
+    var dateMin=(arraydate[0]);
+
+    var dateMax=(arraydate[0]);
+
+    for(var i=0;i<arraydate.length;i++){
+        if(new Date(arraydate[i]).getTime()<new Date(dateMin)||dateMin.length==0){
+            dateMin=(arraydate[i]);
+        }
+        if(new Date(arraydate[i]).getTime()>new Date(dateMax)||dateMax.length==0){
+            dateMax=(arraydate[i]);
+        }
+
+    }
+
+
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            if(startDate.toString()=='Invalid Date'){
+                startDate=dateMin;
+            }
+            if(endDate.toString()=='Invalid Date'){
+                endDate=dateMax;
+            }
+
+            var code=($(this).children('td').eq(6).text().toString()).substring($(this).children('td').eq(6).text().length-2,$(this).children('td').eq(6).text().length);
+           var date=$(this).children('td').eq(2).text()
+      if(date.length<=0){
+               date=startDate;
+      }
+            if(!($(this).children('td').eq(7).text().indexOf(processWay)!=-1
+                &&$(this).children('td').eq(4).text().indexOf(companyName)!=-1&&code.indexOf(wastesCode)!=-1&&$(this).children('td').text().indexOf(text)!=-1
+                &&(new Date(date).getTime()>=new Date(startDate).getTime() &&new Date(date).getTime()<=new Date(endDate).getTime())
+            )){
+                $(this).hide();
+            }
+            if($(this).children('td').eq(7).text().indexOf(processWay)!=-1
+                &&$(this).children('td').eq(4).text().indexOf(companyName)!=-1&&code.indexOf(wastesCode)!=-1&&$(this).children('td').text().indexOf(text)!=-1
+                &&(new Date(date).getTime()>=new Date(startDate).getTime() &&new Date(date).getTime()<=new Date(endDate).getTime())){
+                array1.push($(this));
+            }
+        });
+    }
+
+    for(var i=0;i<array1.length;i++){
+        $.each(array1[i],function () {
+            $('#tbody1').append(this) ;
+        });
+    }
 
 }

@@ -36,6 +36,12 @@ public interface DocumentControlService {
     DocumentControl get(String ID);
 
     /**
+     * 更新受控文档
+     * @param documentControl 受控文档
+     */
+    void update(DocumentControl documentControl);
+
+    /**
      * 作废
      * @param ID 编号
      */

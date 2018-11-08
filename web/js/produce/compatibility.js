@@ -1372,7 +1372,7 @@ function confirmCompatibilityId() {
                            cloneTr.children('td').eq(0).append(delBtn)
                        }
 
-                        cloneTr.children('td').eq(3).children('input').val(obj.weeklyDemandTotal);
+                        cloneTr.children('td').eq(3).children('input').val(obj.weeklyDemandTotal.toFixed(2));
 
                         cloneTr.children('td').eq(4).html(obj.dailyRatio.toFixed(2));
 
@@ -1977,15 +1977,15 @@ function delLine(e) {
 
 //周需求总量的计算(周需求总量合计 每日配置量 比例)
 function Cal(item) {
-    var weeklyDemandTotal;
-    if($.trim($(item).val().length)>0){
+    var weeklyDemandTotal;//周需求总量
+    if($.trim($(item).val().length)>0){ //如果有输入就默认输入值
         weeklyDemandTotal=$(item).val();
     }
-    if($.trim($(item).val().length)<=0){
+    if($.trim($(item).val().length)<=0){ //如果没输入就默认0
         weeklyDemandTotal=0;
     }
     //1计算每日配置量
-    var dailyRatio=(parseFloat(weeklyDemandTotal/7)).toFixed(2);
+    var dailyRatio=(parseFloat(weeklyDemandTotal/7)).toFixed(2); //每日配置量=周需求总量/7
 
     //给每日配置量赋值
     $(item).parent().next().html(dailyRatio);
@@ -2015,16 +2015,13 @@ function Cal(item) {
     $('.myclass3').each(function () {
         console.log('走到这')
         var totalDaily1=parseFloat($(this).children('td').eq(4).text());
-        if(isNaN(totalDaily1)){
+        if(isNaN(totalDaily1)){ //如果输入的不是数字就默认0
             totalDaily1=0;
         }
         totalDailyAmount+=totalDaily1;
     });
     console.log(totalDailyAmount)
     $('#dailyRatioTota4').html(parseFloat(totalDailyAmount).toFixed(2));
-
-
-
 
 }
 

@@ -209,7 +209,6 @@
                                     <input type="text" class="form-control" id="search-remarks" name="search-address" placeholder="" onkeyup="enterSearch();">
                                 </div>
                             </div>
-
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
@@ -222,6 +221,18 @@
                                 <label for="search-COD" class="col-sm-4 control-label">COD</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-COD" name="search-laboratoryDate" placeholder="" onkeyup="enterSearch();">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="search-checkState" class="col-sm-4 control-label">单据状态</label>
+                                <div class="col-xs-7">
+                                    <select type="text" class="form-control" id="search-checkState" name="search-laboratoryDate"  onchange="searchData();">
+                                          <option></option>
+                                        <option>待提交</option>
+                                        <option>已提交</option>
+                                        <option>已作废</option>
+                                        <option>已确认</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -280,6 +291,7 @@
                         <th class="text-center">总氮</th>
                         <th class="text-center">总磷</th>
                         <th class="text-center">备注</th>
+                        <th class="text-center">单据状态</th>
                         <th class="text-center">操作</th>
                     </tr>
                     </thead>
@@ -305,11 +317,15 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
+                        <td class="text-center"></td>
                         <td class="text-center">
                             <!--<a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>-->
-                            <a href="#" onclick="setInvalid(this);" title="修改"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span></a>
-                            <!--<a href="#" onclick="setSubmit(this);" title="确认收样"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>-->
-                            <a href="#" onclick="setConfirm(this);" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                            <!--<a href="#" onclick="setInvalid(this);" title="修改"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span></a>-->
+                            <!--&lt;!&ndash;<a href="#" onclick="setInvalid(this);" title="修改"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span></a>&ndash;&gt;-->
+                            <a href="#" onclick="setAdjust(this);" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                            <a href="#" onclick="setSubmit(this);" title="提交"><span class="glyphicon glyphicon-export" aria-hidden="true"></span></a>
+                            <a href="#" onclick="setConfirm(this);" title="签收"><span class="glyphicon glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>
+                            <a href="#" onclick="setCancel(this);" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
                         </td>
                     </tr>
                     </tbody>
@@ -853,6 +869,67 @@
                     </div>
                     <div class="modal-footer center-block" id="footer1">
                         <button type="button" class="btn btn-primary" onclick="save();">保存</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+   <!--修改模态框-->
+    <div class="modal fade" id="addModa2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 1600px">
+            <div class="modal-content" >
+                <form method="post" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h4 class="modal-title">化验单信息修改</h4>
+                    </div>
+                    <div class="modal-body" style="overflow-x:scroll;">
+                        <table class="table table-bordered" style="border:none">
+                            <!--<thead style="border:none">-->
+                            <thead>
+                            <tr>
+                                <th style="width: 180px">化验单号</th>
+                                <th>采样点</th>
+                                <th>PH</th>
+                                <th>COD</th>
+                                <th>BOD5</th>
+                                <th>氨氮</th>
+                                <th>碳酸盐碱度(Cao)</th>
+                                <th>碳酸盐碱度(CaCo3)</th>
+                                <th>碳酸盐碱度(HCO3-)</th>
+                                <th>重碳酸盐碱度(Cao)</th>
+                                <th>重碳酸盐碱度(CaCo3)</th>
+                                <th>重碳酸盐碱度(HCO3-)</th>
+                                <th>总氮</th>
+                                <th>总磷	</th>
+                                <th>备注</th>
+                            </tr>
+                            </thead>
+                            <tbody >
+                            <tr id="addTable1" class="myclass3">
+                                <td><input class="form-control" name="transferDraftId" id="id" readonly></td>
+                                <td><input class="form-control" name="produceCompany" type="text" id="address"></td>
+                                <td><input class="form-control" name="wastesName" id="ph"></td>
+                                <td><input class="form-control" name="wastesCode" id="COD"></td>
+                                <td><input class="form-control" name="formType" id="BOD5"></td>
+                                <td><input class="form-control" name="remark" id="N2" ></td>
+                                <td><input class="form-control" name="remark" id="alkalinity"></td>
+                                <td><input class="form-control" name="remark" id="alkalinityCaCo3"></td>
+                                <td><input class="form-control" name="remark" id="alkalinityHCO3"></td>
+                                <td><input class="form-control" name="remark" id="bicarbonate"></td>
+                                <td><input class="form-control" name="remark" id="bicarbonateCaCo3"></td>
+                                <td><input class="form-control" name="remark" id="bicarbonateHCO3"></td>
+                                <td><input class="form-control" name="remark" id="nitrogen"></td>
+                                <td><input class="form-control" name="remark" id="phosphorus"></td>
+                                <td><input class="form-control" name="remark" id="remarks"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer center-block">
+                        <button type="button" class="btn btn-primary" onclick="adjustSewageTest();">修改</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     </div>
                 </form>
