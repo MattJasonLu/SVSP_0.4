@@ -1733,3 +1733,11 @@ function ingredientsReceiveModify(item) {
     localStorage.id = getIngredientsId(item);
     window.location.href = "newIngredientsReceive.html";
 }
+
+/**
+ * 点击新增页面时将ID清空
+ */
+function addIngredientsReceive() {
+    localStorage.id = null;
+    window.location.href = "newIngredientsReceive.html";
+}
