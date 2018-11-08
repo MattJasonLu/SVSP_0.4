@@ -30,5 +30,14 @@ public interface SewageTestMapper {
     int totalSecondaryTestRecord();
     void updateSecondarySample(SecondarySample secondarySample);
     void deleteSecondarySampleItem(String id);
+    void submitSewageTest(String id);
+    void confirmSewageTest(String id);
+    void cancelSewageTest(String id);
+    void submitSoftTest(String id);
+    void  confirmSoftTest(String id);
+    void cancelSoftTest(String id);
+    void submitSecondaryTest(String id);
+    void confirmSecondaryTest(String id);
+    void cancelSecondaryTest(String id);
 
 }

@@ -39,6 +39,11 @@ public class DocumentControlServiceImpl implements DocumentControlService {
     }
 
     @Override
+    public void update(DocumentControl documentControl) {
+        documentControlMapper.update(documentControl);
+    }
+
+    @Override
     public void setInvalid(String ID) {
         documentControlMapper.setInvalid(ID);
     }

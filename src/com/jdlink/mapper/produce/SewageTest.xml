@@ -3,14 +3,20 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jdlink.mapper.produce.SewageTestMapper">
+
+    <!--添加污水化验单-->
+
 <insert id="addSewageTest" parameterType="SewageTest">
-    insert into t_pr_sewagetest(id, address, ph, COD, BOD5, N2, alkalinity, bicarbonate, nitrogen, phosphorus, remarks, sampleId,nowTime,alkalinityCaCo3,alkalinityHCO3,bicarbonateCaCo3,bicarbonateHCO3)
+    insert into t_pr_sewagetest(id, address, ph, COD, BOD5, N2, alkalinity, bicarbonate, nitrogen, phosphorus, remarks, sampleId,nowTime,alkalinityCaCo3,alkalinityHCO3,bicarbonateCaCo3,bicarbonateHCO3,checkState)
     values
-    (#{id},#{address},#{ph},#{COD},#{BOD5},#{N2},#{alkalinity},#{bicarbonate},#{nitrogen},#{phosphorus},#{remarks},#{sampleId},NOW(),#{alkalinityCaCo3},#{alkalinityHCO3},#{bicarbonateCaCo3},#{bicarbonateHCO3});
+    (#{id},#{address},#{ph},#{COD},#{BOD5},#{N2},#{alkalinity},#{bicarbonate},#{nitrogen},#{phosphorus},#{remarks},#{sampleId},NOW(),#{alkalinityCaCo3},#{alkalinityHCO3},#{bicarbonateCaCo3},#{bicarbonateHCO3},'ToSubmit');
 </insert>
+
     <select id="getSewageTestById" parameterType="String" resultType="SewageTest">
       select * from t_pr_sewagetest where id=#{id};
     </select>
+
+
     <update id="updateSewageTestById" parameterType="SewageTest">
         update t_pr_sewagetest set address=#{address},ph=#{ph},COD=#{COD},BOD5=#{BOD5},N2=#{N2},alkalinity=#{alkalinity},
         bicarbonate=#{bicarbonate},nitrogen=#{nitrogen},phosphorus=#{phosphorus},remarks=#{remarks},sampleId=#{sampleId},nowTime=NOW(),alkalinityHCO3=#{alkalinityHCO3},alkalinityCaCo3=#{alkalinityCaCo3},
@@ -34,8 +40,8 @@
 
     <!--添加软水化验单-->
     <select id="addSoftTest" parameterType="SoftTest">
-        insert into t_pr_softest (id, address, remarks, sampleId, turbidity, hardness, PH, electricalConductivity, basicity, phenolphthalein, nowTime) values
-        (#{id},#{address},#{remarks},#{sampleId},#{turbidity},#{hardness},#{PH},#{electricalConductivity},#{basicity},#{phenolphthalein},NOW());
+        insert into t_pr_softest (id, address, remarks, sampleId, turbidity, hardness, PH, electricalConductivity, basicity, phenolphthalein, nowTime,checkState) values
+        (#{id},#{address},#{remarks},#{sampleId},#{turbidity},#{hardness},#{PH},#{electricalConductivity},#{basicity},#{phenolphthalein},NOW(),'ToSubmit');
     </select>
 
     <!--根据编号获取软水化验单信息-->
@@ -100,8 +106,8 @@
 
     <!--添加次生化验单-->
     <insert id="addSecondaryTest" parameterType="SecondaryTest">
-        insert into t_pr_secondarytest (id, dateTime, wastesName, scorchingRate, water, remarks, nowTime) values
-        (#{id},#{dateTime},#{wastesName},#{scorchingRate},#{water},#{remarks},NOW());
+        insert into t_pr_secondarytest (id, dateTime, wastesName, scorchingRate, water, remarks, nowTime,checkState) values
+        (#{id},#{dateTime},#{wastesName},#{scorchingRate},#{water},#{remarks},NOW(),'ToSubmit');
     </insert>
 
     <select id="loadPageSecondaryTestResultsList" resultType="SecondaryTest">
@@ -124,6 +130,52 @@
     <delete id="deleteSecondarySampleItem" parameterType="String">
         delete from t_pr_secondarysampleitem where sampleinformationId=#{sampleinformationId};
     </delete>
+
+    <!--提交污水化验单-->
+    <update id="submitSewageTest" parameterType="String">
+        update t_pr_sewagetest set  checkState='Submitted' where id=#{id};
+    </update>
+
+    <!--签收污水化验单-->
+    <update id="confirmSewageTest" parameterType="String">
+        update t_pr_sewagetest set  checkState='Confirm' where id=#{id};
+    </update>
+
+    <!--作废污水化验单-->
+    <update id="cancelSewageTest" parameterType="String">
+        update t_pr_sewagetest set  checkState='Invalid' where id=#{id};
+    </update>
+
+    <!--提交软水化验单-->
+    <update id="submitSoftTest" parameterType="String">
+      update t_pr_softest set   checkState='Submitted' where id=#{id};
+    </update>
+
+    <!--签收软水化验单-->
+    <update id="confirmSoftTest" parameterType="String">
+           update t_pr_softest set   checkState='Confirm' where id=#{id};
+    </update>
+    <!--作废软水化验单-->
+    <update id="cancelSoftTest" parameterType="String">
+           update t_pr_softest set   checkState='Invalid' where id=#{id};
+    </update>
+
+    <!--提交次生化验单-->
+    <update id="submitSecondaryTest" parameterType="String">
+        update t_pr_secondarytest set   checkState='Submitted' where id=#{id};
+    </update>
+
+    <!--签收次生化验单-->
+    <update id="confirmSecondaryTest" parameterType="String">
+           update t_pr_secondarytest set   checkState='Confirm' where id=#{id};
+    </update>
+
+    <!--作废次生化验-->
+    <update id="cancelSecondaryTest" parameterType="String">
+           update t_pr_secondarytest set   checkState='Invalid' where id=#{id};
+    </update>
+
+
 </mapper>
 
 

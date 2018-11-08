@@ -240,6 +240,24 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group">
+                                <label for="search-checkState" class="col-sm-4 control-label">单据状态</label>
+                                <div class="col-xs-7">
+                                    <select type="text" class="form-control" id="search-checkState" name="search-laboratoryDate"  onchange="searchData();">
+                                        <option></option>
+                                        <option>待提交</option>
+                                        <option>已提交</option>
+                                        <option>已作废</option>
+                                        <option>已确认</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
             <div class="table">
@@ -257,6 +275,7 @@
                         <th class="text-center">热灼减率%</th>
                         <th class="text-center">水分%</th>
                         <th class="text-center">备注</th>
+                        <th class="text-center">单据状态</th>
                         <th class="text-center">操作</th>
                     </tr>
                     </thead>
@@ -273,11 +292,15 @@
                         <td class="text-center">2018-7-31</td>
                         <td class="text-center">安耐得环保常州分公司</td>
                         <td class="text-center">待签收</td>
+                        <td class="text-center">待签收</td>
                         <td class="text-center">
-                            <a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                            <a href="#" onclick="setInvalid(this);" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                            <!--<a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>-->
+                            <!--<a href="#" onclick="setInvalid(this);" title="修改"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span></a>-->
+                            <!--&lt;!&ndash;<a href="#" onclick="setInvalid(this);" title="修改"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span></a>&ndash;&gt;-->
+                            <a href="#" onclick="setAdjust(this);" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
                             <a href="#" onclick="setSubmit(this);" title="提交"><span class="glyphicon glyphicon-export" aria-hidden="true"></span></a>
                             <a href="#" onclick="setConfirm(this);" title="签收"><span class="glyphicon glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>
+                            <a href="#" onclick="setCancel(this);" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
                         </td>
                     </tr>
                     </tbody>
@@ -381,7 +404,7 @@
                                     <tr>
                                         <td>1</td>
                                         <td><p class="text-left"><span id="samplingDate">2018-08-08</span></p></td>
-                                        <td><p class="text-left"><span id="wastesName">物品01</span></p></td>
+                                        <td><p class="text-left"><span >物品01</span></p></td>
                                         <td><p class="text-left"><span id="wastesCode">823-987-09</span></p></td>
                                         <td><p class="text-left"><span id="samplingNumber_1">0001</span></p></td>
                                         <td><p class="text-center"><input type="checkbox" id="isProductionLine"/></td>
@@ -774,10 +797,10 @@
                             <tr id="addTable" class="myclass2">
                                 <td><input class="form-control" name="transferDraftId"></td>
                                 <td><input class="form-control" name="produceCompany" type="date"></td>
-                                <td><input class="form-control" name="wastesName"></td>
-                                <td><input class="form-control" name="wastesCode"></td>
-                                <td><input class="form-control" name="formType"></td>
-                                <td><input class="form-control" name="remark"></td>
+                                <td><input class="form-control" name="wastesName" ></td>
+                                <td><input class="form-control" name="wastesCode" ></td>
+                                <td><input class="form-control" name="formType" ></td>
+                                <td><input class="form-control" name="remark" ></td>
                             </tr>
                             <tr id="plusBtn">
                                 <td>
@@ -800,6 +823,49 @@
             </div>
         </div>
     </div>
+
+    <!--修改模态框-->
+    <div class="modal fade" id="addModa2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 1000px">
+            <div class="modal-content"  >
+                <form method="post" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h4 class="modal-title" >化验单信息</h4>
+                    </div>
+                    <div class="modal-body" style="overflow-x:scroll;">
+                        <table class="table table-bordered" style="border:none">
+                            <!--<thead style="border:none">-->
+                            <thead>
+                            <tr>
+                                <th>化验单号</th>
+                                <th>收样日期</th>
+                                <th>废物名称</th>
+                                <th>热灼减率%</th>
+                                <th>水分%</th>
+                                <th>备注</th>
+                            </tr>
+                            </thead>
+                            <tbody >
+                            <tr  class="myclass2">
+                                <td><input class="form-control" name="transferDraftId" id="id" readonly></td>
+                                <td><input class="form-control" name="produceCompany" type="date" id="dateTime"></td>
+                                <td><input class="form-control" name="wastesName" id="wastesName"></td>
+                                <td><input class="form-control" name="wastesCode" id="scorchingRate"></td>
+                                <td><input class="form-control" name="formType" id="water"></td>
+                                <td><input class="form-control" name="remark" id="remarks"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="adjustSecondaryTest();">修改</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </body>
 <style>
     th {

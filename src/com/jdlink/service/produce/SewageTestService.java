@@ -27,4 +27,13 @@ public interface SewageTestService {
     void deleteSecondarySampleItem(String id);
     void updateSoftGeregistration(Sewageregistration sewageregistration);
     void deleteSoftGeregistrationById(String id);
+    void submitSewageTest(String id);
+    void confirmSewageTest(String id);
+    void cancelSewageTest(String id);
+    void submitSoftTest(String id);
+    void  confirmSoftTest(String id);
+    void cancelSoftTest(String id);
+    void submitSecondaryTest(String id);
+    void confirmSecondaryTest(String id);
+    void cancelSecondaryTest(String id);
 }

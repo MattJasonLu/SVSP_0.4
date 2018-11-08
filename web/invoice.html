@@ -105,56 +105,55 @@
                     <td class="text-center" style="width: 15%;">企业名称</td>
                     <td class="text-center" style="width: 35%;" id="companyName"></td>
                     <td class="text-center" style="width: 15%;">组织机构代码</td>
-                    <td class="text-center" style="width: 35%;"><input readonly class="focus text-center" id="organizationCode" title=""></td>
+                    <td class="text-center" style="width: 35%;" id="organizationCode"></td>
                 </tr>
                 <tr>
                     <td class="text-center" style="width: 15%;">法人代表</td>
-                    <td class="text-center" style="width: 35%;"><input readonly class="focus text-center" id="representative" title=""></td>
+                    <td class="text-center" style="width: 35%;" id="representative"></td>
                     <td class="text-center" style="width: 15%;">所属行业</td>
-                    <td class="text-center" style="width: 35%;"><input readonly class="focus text-center" id="industry" title=""></td>
+                    <td class="text-center" style="width: 35%;" id="industry"></td>
                 </tr>
                 <tr>
                     <td class="text-center" style="width: 15%;">企业类型</td>
-                    <td class="text-center" style="width: 35%;"><select readonly class="focus text-center" id="enterpriseType" title=""></select></td>
+                    <td class="text-center" style="width: 35%;" id="enterpriseType"></td>
                     <td class="text-center" style="width: 15%;">经营单位类别</td>
-                    <td class="text-center" style="width: 35%;"><select readonly class="focus text-center" id="operationType" title=""></select></td>
+                    <td class="text-center" style="width: 35%;" id="operationType"></td>
                 </tr>
                 <tr>
                     <td class="text-center" style="width: 15%;">危废经营记录情况</td>
-                    <td class="text-center" style="width: 35%;"><select readonly class="focus text-center" id="operationRecord" title=""></select></td>
+                    <td class="text-center" style="width: 35%;" id="operationRecord"></td>
                     <td class="text-center" style="width: 15%;">所属街道</td>
-                    <td class="text-center" style="width: 35%;"><input readonly class="focus text-center" id="street" title=""></td>
+                    <td class="text-center" style="width: 35%;" id="street"></td>
                 </tr>
                 <tr>
                     <td class="text-center" style="width: 15%;">产废单位编码</td>
-                    <td class="text-center" style="width: 35%;"><input readonly class="focus text-center" id="clientId" title=""></td>
+                    <td class="text-center" style="width: 35%;" id="clientId"></td>
                     <td class="text-center" style="width: 15%;">营业执照注册号</td>
-                    <td class="text-center" style="width: 35%;"><input readonly class="focus text-center" id="licenseCode" title=""></td>
+                    <td class="text-center" style="width: 35%;" id="licenseCode"></td>
                 </tr>
                 <tr>
                     <td class="text-center" style="width: 15%;">工商注册地邮编</td>
-                    <td class="text-center" style="width: 35%;"><input readonly class="focus text-center" id="postCode" title=""></td>
+                    <td class="text-center" style="width: 35%;" id="postCode"></td>
                     <td class="text-center" style="width: 15%;">主要产品</td>
-                    <td class="text-center" style="width: 35%;"><input readonly class="focus text-center" id="product" title=""></td>
+                    <td class="text-center" style="width: 35%;" id="product"></td>
                 </tr>
                 <tr>
                     <td class="text-center" style="width: 15%;">经营方式</td>
-                    <td class="text-center" style="width: 35%;"><select readonly class="focus text-center" id="operationMode" title=""></select></td>
+                    <td class="text-center" style="width: 35%;" id="operationMode"></td>
                     <td class="text-center" style="width: 15%;">事故防范应急预案</td>
-                    <td class="text-center" style="width: 35%;"><select readonly class="focus text-center" id="contingencyPlan" title=""> </select></td>
+                    <td class="text-center" style="width: 35%;" id="contingencyPlan"></td>
                 </tr>
                 <tr>
                     <td class="text-center" style="width: 15%;">申报状态</td>
-                    <td class="text-center" style="width: 35%;"><select readonly class="focus text-center" id="applicationStatus" title=""></select></td>
+                    <td class="text-center" style="width: 35%;" id="applicationStatus"></td>
                     <td class="text-center" style="width: 15%;">工商注册地址</td>
-                    <td class="text-center" style="width: 35%;"><input readonly class="focus text-center" id="location" title=""></td>
+                    <td class="text-center" style="width: 35%;" id="location"></td>
                 </tr>
             </table>
             <br>
             <div class="row text-center bot" id="bot">
-                <a class="btn btn-success hidden" onclick="updateClient()" id="save">保存</a>
-                <a class="btn btn-warning hidden" onclick="" id="close">取消</a>
-                <a class="btn btn-primary" id="print">打印</a>
+                <a class="btn btn-primary hidden" onclick="updateClient()" id="save">保存</a>
+                <a class="btn btn-default hidden" onclick="reset();" id="close">取消</a>
             </div>
         </form>
     </div>
