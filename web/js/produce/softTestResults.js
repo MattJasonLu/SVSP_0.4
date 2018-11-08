@@ -370,6 +370,13 @@ function setSoftTestList(result) {
                     // 备注
                     $(this).html(obj.remarks);
                     break;
+                case (10):
+                    // 单据状态
+                    if(obj.checkState!=null){
+                        $(this).html((obj.checkState.name))
+                    }
+                    break;
+
             }
         });
         // 把克隆好的tr追加到原来的tr前面
@@ -519,6 +526,7 @@ function searchData() {
 
     var phenolphthalein= $.trim($('#search-phenolphthalein').val());
 
+    var checkState=$('#search-checkState option:selected').text();
 
     for (var j = 0; j < array.length; j++) {
         $.each(array[j], function () {
@@ -527,7 +535,7 @@ function searchData() {
                 && $(this).children('td').eq(3).text().indexOf(turbidity) != -1 && $(this).children('td').eq(4).text().indexOf(hardness) != -1 && $(this).children('td').text().indexOf(text) != -1
                 && $(this).children('td').eq(5).text().indexOf(PH) != -1  && $(this).children('td').eq(6).text().indexOf(electricalConductivity) != -1
                 && $(this).children('td').eq(7).text().indexOf(basicity) != -1&& $(this).children('td').eq(8).text().indexOf(phenolphthalein) != -1
-                && $(this).children('td').eq(9).text().indexOf(remarks) != -1
+                && $(this).children('td').eq(9).text().indexOf(remarks) != -1&&$(this).children('td').eq(10).text().indexOf(checkState) != -1
 
             )) {
                 $(this).hide();
@@ -537,7 +545,7 @@ function searchData() {
                     && $(this).children('td').eq(3).text().indexOf(turbidity) != -1 && $(this).children('td').eq(4).text().indexOf(hardness) != -1 && $(this).children('td').text().indexOf(text) != -1
                     && $(this).children('td').eq(5).text().indexOf(PH) != -1  && $(this).children('td').eq(6).text().indexOf(electricalConductivity) != -1
                     && $(this).children('td').eq(7).text().indexOf(basicity) != -1&& $(this).children('td').eq(8).text().indexOf(phenolphthalein) != -1
-                    && $(this).children('td').eq(9).text().indexOf(remarks) != -1
+                    && $(this).children('td').eq(9).text().indexOf(remarks) != -1&&$(this).children('td').eq(10).text().indexOf(checkState) != -1
 
                 )
 
@@ -686,4 +694,171 @@ function save() {
 
     alert("添加成功")
     window.location.reload();
+}
+
+
+
+//提交
+function setSubmit(item) {
+
+    var id = $(item).parent().parent().children('td').eq(1).html();
+
+    console.log(id)
+
+    if (confirm("确认提交?")) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "submitSoftTest",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'id': id},
+            //contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    alert(result.message)
+                    window.location.reload();
+                }
+
+            },
+            error: function (result) {
+                alert("服务器异常！")
+            }
+
+        })
+    }
+
+}
+
+//签收
+function setConfirm(item) {
+    var id = $(item).parent().parent().children('td').eq(1).html();
+
+    if (confirm("确认签收?")) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "confirmSoftTest",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'id': id},
+            //contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    alert(result.message)
+                    window.location.reload();
+                }
+
+            },
+            error: function (result) {
+                alert("服务器异常！")
+            }
+
+        })
+    }
+}
+
+//作废
+function setCancel(item) {
+    var id = $(item).parent().parent().children('td').eq(1).html();
+
+    if (confirm("确认作废?")) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "cancelSoftTest",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'id': id},
+            //contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    alert(result.message)
+                    window.location.reload();
+                }
+
+            },
+            error: function (result) {
+                alert("服务器异常！")
+            }
+
+        })
+    }
+
+}
+
+
+//修改
+function setAdjust(item) {
+    var id = $(item).parent().parent().children('td').eq(1).html();
+
+    //根据编号获取信息
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSoftTestById",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'id': id},
+        //contentType: 'application/json;charset=utf-8',
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                //赋值
+                var obj = eval(result.data);
+                console.log(obj)
+                $('#id').val(obj.id);
+                $('#address').val(obj.address);
+                $('#turbidity').val(obj.turbidity.toFixed(2));
+                $('#hardness').val(obj.hardness.toFixed(2));
+                $('#PH').val(obj.PH.toFixed(2));
+                $('#electricalConductivity').val(obj.electricalConductivity.toFixed(2));
+                $('#basicity').val(obj.basicity.toFixed(2));
+                $('#phenolphthalein').val(obj.phenolphthalein.toFixed(2));
+                $('#remarks').val(obj.remarks);
+
+            }
+
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+
+    })
+
+    $('#addModal2').modal('show');
+}
+
+//软水化验单修改
+function adjustSoftTest() {
+
+    var data={
+        id: $('#id').val(),
+        address:  $('#address').val(),
+        turbidity: $('#turbidity').val(),
+        hardness:$('#hardness').val(),
+         ph:$('#PH').val(),
+        electricalConductivity:$('#electricalConductivity').val(),
+        basicity:$('#basicity').val(),
+        phenolphthalein:$('#phenolphthalein').val(),
+        remarks:$('#remarks').val()
+    };
+
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "updateSoftTestById",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: JSON.stringify(data),
+        contentType: 'application/json;charset=utf-8',
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                //赋值
+                alert(result.message)
+                window.location.reload();
+
+            }
+
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+
+    })
 }

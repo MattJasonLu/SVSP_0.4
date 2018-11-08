@@ -64,6 +64,7 @@ function totalPage() {
     var count = countValue();                         // 可选
     return loadPages(totalRecord, count);
 }
+
 /**
  * 计算分页总页数
  * @param totalRecord
@@ -117,7 +118,7 @@ function setPageClone(result) {
  * @param pageNumber 跳转页数
  * */
 function switchPage(pageNumber) {
-    if(pageNumber > totalPage()){
+    if (pageNumber > totalPage()) {
         pageNumber = totalPage();
     }
     if (pageNumber == 0) {                 //首页
@@ -177,13 +178,14 @@ function switchPage(pageNumber) {
                 console.log("error: " + result);
             }
         });
-    } if (isSearch) {//查询用的
-        for(var i=0;i<array1.length;i++){
+    }
+    if (isSearch) {//查询用的
+        for (var i = 0; i < array1.length; i++) {
             $(array1[i]).hide();
         }
-        var i=parseInt((pageNumber-1)*countValue());
-        var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
-        for(var i=i;i<=j;i++){
+        var i = parseInt((pageNumber - 1) * countValue());
+        var j = parseInt((pageNumber - 1) * countValue()) + parseInt(countValue() - 1);
+        for (var i = i; i <= j; i++) {
             $('#tbody1').append(array1[i]);
             $(array1[i]).show();
         }
@@ -195,7 +197,7 @@ function switchPage(pageNumber) {
  * */
 function inputSwitchPage() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
-    if(pageNumber > totalPage()){
+    if (pageNumber > totalPage()) {
         pageNumber = totalPage();
     }
     $("#current").find("a").text("当前页：" + pageNumber);
@@ -248,13 +250,14 @@ function inputSwitchPage() {
                     console.log("error: " + result);
                 }
             });
-        }if (isSearch) {//查询用的
-            for(var i=0;i<array1.length;i++){
+        }
+        if (isSearch) {//查询用的
+            for (var i = 0; i < array1.length; i++) {
                 $(array1[i]).hide();
             }
-            var i=parseInt((pageNumber-1)*countValue());
-            var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
-            for(var i=i;i<=j;i++){
+            var i = parseInt((pageNumber - 1) * countValue());
+            var j = parseInt((pageNumber - 1) * countValue()) + parseInt(countValue() - 1);
+            for (var i = i; i <= j; i++) {
                 $('#tbody1').append(array1[i]);
                 $(array1[i]).show();
             }
@@ -312,7 +315,7 @@ function setDataList(result) {
     $.each(result, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
-        clonedTr.attr('class','myclass')
+        clonedTr.attr('class', 'myclass')
         clonedTr.show();
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
@@ -329,7 +332,7 @@ function setDataList(result) {
                     break;
                 // 废物名称
                 case (3):
-                        $(this).html(obj.wastesName);
+                    $(this).html(obj.wastesName);
                     break;
                 // 热灼减率%
                 case (4):
@@ -342,6 +345,13 @@ function setDataList(result) {
                 // 备注
                 case (6):
                     $(this).html((obj.remarks));
+                    break;
+                // 单据状态
+                case (7):
+                    if (obj.checkState != null) {
+                        $(this).html((obj.checkState.name));
+                    }
+
                     break;
             }
         });
@@ -426,12 +436,12 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
     $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
-            if(last-event.timeStamp=== 0){
+            if (last - event.timeStamp === 0) {
                 searchData();
-            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+            } else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
                 searchData();      //
             }
-        },600);
+        }, 600);
     });
 });
 
@@ -452,73 +462,74 @@ function searchData() {
 
     var text = $.trim($('#searchContent').val());
 
-    var id=$.trim($('#search-id').val());
+    var id = $.trim($('#search-id').val());
 
-    var wastesName=$.trim($('#search-wastesName').val());
+    var wastesName = $.trim($('#search-wastesName').val());
 
-    var scorchingRate=$.trim($('#search-scorchingRate').val());
+    var scorchingRate = $.trim($('#search-scorchingRate').val());
 
-    var water=$.trim($('#search-water').val());
+    var water = $.trim($('#search-water').val());
 
-    var remarks=$.trim($('#search-water').val());
+    var remarks = $.trim($('#search-water').val());
 
-    var beginTime=$.trim($('#search-inDate').val());
+    var beginTime = $.trim($('#search-inDate').val());
 
-    var endTime=$.trim($('#search-endDate').val());
-
-
-    var startDate=getDateByStr(beginTime);
-
-    var endDate=getDateByStr(endTime);
+    var endTime = $.trim($('#search-endDate').val());
 
 
-    var dateArray=[];
+    var startDate = getDateByStr(beginTime);
 
-    for(var j=0;j<array.length;j++){
-        $.each(array[j],function () {
+    var endDate = getDateByStr(endTime);
+
+    var checkState=$('#search-checkState option:selected').text();
+
+    var dateArray = [];
+
+    for (var j = 0; j < array.length; j++) {
+        $.each(array[j], function () {
             dateArray.push(($(this).children('td').eq(2).text()))
         });
     }
     console.log(dateArray)
-    var dateMin=dateArray[0];
-    var dateMax=dateArray[0];
-    for (var i=0;i<dateArray.length;i++){
+    var dateMin = dateArray[0];
+    var dateMax = dateArray[0];
+    for (var i = 0; i < dateArray.length; i++) {
 
-        if(new Date((dateArray[i])).getTime()<=new Date(dateMin).getTime()||dateMin.length==0){
-            dateMin=(dateArray[i]);
+        if (new Date((dateArray[i])).getTime() <= new Date(dateMin).getTime() || dateMin.length == 0) {
+            dateMin = (dateArray[i]);
         }
-        if(new Date(dateArray[i]).getTime()>=new Date(dateMax)||dateMax.length==0){
-            dateMax=(dateArray[i]);
+        if (new Date(dateArray[i]).getTime() >= new Date(dateMax) || dateMax.length == 0) {
+            dateMax = (dateArray[i]);
         }
 
     }
 
-   console.log(startDate+endDate)
+    console.log(startDate + endDate)
 
     for (var j = 0; j < array.length; j++) {
         $.each(array[j], function () {
 
-            if(startDate.toString()=='Invalid Date'){
-                startDate=dateMin;
+            if (startDate.toString() == 'Invalid Date') {
+                startDate = dateMin;
             }
-            if(endDate.toString()=='Invalid Date'){
-                endDate=dateMax;
+            if (endDate.toString() == 'Invalid Date') {
+                endDate = dateMax;
             }
-            var date=$(this).children('td').eq(2).text();
+            var date = $(this).children('td').eq(2).text();
             //console.log(this);
-            if (!($(this).children('td').eq(1).text().indexOf(id) != -1
+            if (!($(this).children('td').eq(1).text().indexOf(id) != -1&& $(this).children('td').eq(7).text().indexOf(checkState) != -1
                 && $(this).children('td').eq(3).text().indexOf(wastesName) != -1 && $(this).children('td').eq(4).text().indexOf(scorchingRate) != -1 && $(this).children('td').text().indexOf(text) != -1
-                && $(this).children('td').eq(5).text().indexOf(water) != -1  && $(this).children('td').eq(6).text().indexOf(remarks) != -1
-                &&(new Date(startDate).getTime()<=new Date($(date).children('td').eq(2).text()).getTime()&&new Date(endDate).getTime()>=new Date (date).getTime())
+                && $(this).children('td').eq(5).text().indexOf(water) != -1 && $(this).children('td').eq(6).text().indexOf(remarks) != -1
+                && (new Date(startDate).getTime() <= new Date($(date).children('td').eq(2).text()).getTime() && new Date(endDate).getTime() >= new Date(date).getTime())
 
             )) {
                 $(this).hide();
             }
             if (
-                ($(this).children('td').eq(1).text().indexOf(id) != -1
+                ($(this).children('td').eq(1).text().indexOf(id) != -1&& $(this).children('td').eq(7).text().indexOf(checkState) != -1
                     && $(this).children('td').eq(3).text().indexOf(wastesName) != -1 && $(this).children('td').eq(4).text().indexOf(scorchingRate) != -1 && $(this).children('td').text().indexOf(text) != -1
-                    && $(this).children('td').eq(5).text().indexOf(water) != -1  && $(this).children('td').eq(6).text().indexOf(remarks) != -1
-                    &&(new Date(startDate).getTime()<=new Date(date).getTime()&&new Date(endDate).getTime()>=new Date (date).getTime())
+                    && $(this).children('td').eq(5).text().indexOf(water) != -1 && $(this).children('td').eq(6).text().indexOf(remarks) != -1
+                    && (new Date(startDate).getTime() <= new Date(date).getTime() && new Date(endDate).getTime() >= new Date(date).getTime())
 
                 )
 
@@ -529,19 +540,18 @@ function searchData() {
     }
 
 
-
     var total;
 
-    if(array1.length%countValue()==0){
-        total=array1.length/countValue()
+    if (array1.length % countValue() == 0) {
+        total = array1.length / countValue()
     }
 
-    if(array1.length%countValue()>0){
-        total=Math.ceil(array1.length/countValue());
+    if (array1.length % countValue() > 0) {
+        total = Math.ceil(array1.length / countValue());
     }
 
-    if(array1.length/countValue()<1){
-        total=1;
+    if (array1.length / countValue() < 1) {
+        total = 1;
     }
 
     $("#totalPage").text("共" + total + "页");
@@ -550,9 +560,9 @@ function searchData() {
 
     $('.beforeClone').remove();
 
-    for ( i = 0; i < total; i++) {
+    for (i = 0; i < total; i++) {
         var li = $("#next").prev();
-        myArray[i] = i+1;
+        myArray[i] = i + 1;
         var clonedLi = li.clone();
         clonedLi.show();
         clonedLi.find('a:first-child').text(myArray[i]);
@@ -568,11 +578,11 @@ function searchData() {
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
 
-    for(var i=0;i<array1.length;i++){
+    for (var i = 0; i < array1.length; i++) {
         array1[i].hide();
     }
 
-    for(var i=0;i<countValue();i++){
+    for (var i = 0; i < countValue(); i++) {
         $(array1[i]).show();
         $('#tbody1').append((array1[i]));
     }
@@ -604,10 +614,10 @@ function addData() {
 function addNewLine(item) {
     // 获取id为plusBtn的tr元素
     //var tr = $("#plusBtn").prev();
-       var tr = $(item).parent().parent().prev();
+    var tr = $(item).parent().parent().prev();
     // 克隆tr，每次遍历都可以产生新的tr
     var clonedTr = tr.clone();
-    clonedTr.attr('class','myclass2');
+    clonedTr.attr('class', 'myclass2');
     clonedTr.show();
     clonedTr.children().find("input").val("");
     var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>";
@@ -615,7 +625,6 @@ function addNewLine(item) {
 
     clonedTr.children('td').eq(0).find("a").remove();
     clonedTr.children('td').eq(0).append(delBtn)
-
 
 
     clonedTr.insertAfter(tr);
@@ -636,13 +645,13 @@ function delLine(item) {
 function save() {
 
     $('.myclass2').each(function () {
-        var data={
-            id:$(this).children('td').eq(0).find('input').val(),
-            dateTime:$(this).children('td').eq(1).find('input').val(),
-            wastesName:$(this).children('td').eq(2).find('input').val(),
-            scorchingRate:$(this).children('td').eq(3).find('input').val(),
-            water:$(this).children('td').eq(4).find('input').val(),
-            remarks:$(this).children('td').eq(5).find('input').val(),
+        var data = {
+            id: $(this).children('td').eq(0).find('input').val(),
+            dateTime: $(this).children('td').eq(1).find('input').val(),
+            wastesName: $(this).children('td').eq(2).find('input').val(),
+            scorchingRate: $(this).children('td').eq(3).find('input').val(),
+            water: $(this).children('td').eq(4).find('input').val(),
+            remarks: $(this).children('td').eq(5).find('input').val(),
         };
         console.log(data)
         $.ajax({
@@ -650,20 +659,181 @@ function save() {
             url: "addSecondaryTest",              // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
-            data:JSON.stringify(data),
+            data: JSON.stringify(data),
             contentType: 'application/json;charset=utf-8',
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
 
                 }
             },
-            error:function (result) {
+            error: function (result) {
 
             }
         })
 
     })
 
- alert("添加成功")
+    alert("添加成功")
     window.location.reload();
+}
+
+
+//提交
+function setSubmit(item) {
+
+    var id = $(item).parent().parent().children('td').eq(1).html();
+
+    console.log(id)
+
+    if (confirm("确认提交?")) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "submitSecondaryTest",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'id': id},
+            //contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    alert(result.message)
+                    window.location.reload();
+                }
+
+            },
+            error: function (result) {
+                alert("服务器异常！")
+            }
+
+        })
+    }
+
+}
+
+//签收
+function setConfirm(item) {
+    var id = $(item).parent().parent().children('td').eq(1).html();
+
+    if (confirm("确认签收?")) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "confirmSecondaryTest",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'id': id},
+            //contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    alert(result.message)
+                    window.location.reload();
+                }
+
+            },
+            error: function (result) {
+                alert("服务器异常！")
+            }
+
+        })
+    }
+}
+
+//作废
+function setCancel(item) {
+    var id = $(item).parent().parent().children('td').eq(1).html();
+
+    if (confirm("确认作废?")) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "cancelSecondaryTest",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'id': id},
+            //contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    alert(result.message)
+                    window.location.reload();
+                }
+
+            },
+            error: function (result) {
+                alert("服务器异常！")
+            }
+
+        })
+    }
+
+}
+
+//修改
+function setAdjust(item) {
+    var id = $(item).parent().parent().children('td').eq(1).html();
+
+    //根据编号获取信息
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSecondaryTestById",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'id': id},
+        //contentType: 'application/json;charset=utf-8',
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                //赋值
+                var obj = eval(result.data);
+                console.log(obj)
+                $('#id').val(obj.id);
+                $('#dateTime').val(getDateStr(obj.dateTime));
+                $('#wastesName').val(obj.wastesName);
+                $('#scorchingRate').val(obj.scorchingRate.toFixed(2));
+                $('#water').val(obj.water.toFixed(2));
+                $('#remarks').val(obj.remarks);
+            }
+
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+
+    })
+
+    $('#addModa2').modal('show');
+}
+
+
+//
+//次生化验单修改
+function adjustSecondaryTest() {
+    var data = {
+        id: $('#id').val(),
+        dateTime: $('#dateTime').val(),
+        wastesName: $('#wastesName').val(),
+        scorchingRate: $('#scorchingRate').val(),
+        water: $('#water').val(),
+        remarks: $('#remarks').val()
+    }
+
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "updateSecondaryTestById",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: JSON.stringify(data),
+        contentType: 'application/json;charset=utf-8',
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                //赋值
+                alert(result.message)
+                window.location.reload();
+
+            }
+
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+
+    })
+
+
 }

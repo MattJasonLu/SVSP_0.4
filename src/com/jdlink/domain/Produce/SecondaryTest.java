@@ -1,5 +1,7 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.CheckState;
+
 import java.util.Date;
 
 public class SecondaryTest {
@@ -22,6 +24,17 @@ public class SecondaryTest {
 
     //备注
     private String remarks;
+
+    private CheckState checkState;
+
+    public CheckState getCheckState() {
+
+        return checkState;
+    }
+
+    public void setCheckState(CheckState checkState) {
+        this.checkState = checkState;
+    }
 
     public String getId() {
         return id;

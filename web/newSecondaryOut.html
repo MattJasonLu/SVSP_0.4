@@ -143,7 +143,7 @@
                         <div class="form-group">
                             <label for="search-processWay" class="col-sm-4 control-label">处置方式</label>
                             <div class="col-xs-7">
-                                <select class="form-control" id="search-processWay" name="search-processWay" onchange="searchInventory()"></select>
+                                <select class="form-control" id="search-processWay" name="search-processWay" onchange="searchSecOutboundAdd()"></select>
                             </div>
                         </div>
                     </div>
@@ -154,7 +154,7 @@
                             <label for="search-companyName"
                                    class="col-sm-4 control-label">产废单位</label>
                             <div class="col-xs-7">
-                                <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="search-companyName" id="search-companyName" onchange="searchInventory()"></select>
+                                <input class="form-control"  id="search-companyName" onkeyup="enterSearch1()">
                             </div>
                         </div>
 
@@ -175,7 +175,7 @@
         <form method="post" id="infoForm" enctype="multipart/form-data">
             <div style="height:500px; overflow-y:scroll; ">
             <table class="table table-bordered" id="J_tab_fam">
-                <tbody>
+                <tbody id="tbody1">
                 <tr>
                     <th class="text-center">
                         <label>

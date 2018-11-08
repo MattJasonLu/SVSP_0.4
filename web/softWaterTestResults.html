@@ -222,6 +222,18 @@
                                     <input type="text" class="form-control" id="search-hardness" name="search-laboratoryDate" placeholder="" onkeyup="enterSearch();">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="search-checkState" class="col-sm-4 control-label">单据状态</label>
+                                <div class="col-xs-7">
+                                    <select type="text" class="form-control" id="search-checkState" name="search-laboratoryDate"  onchange="searchData();">
+                                        <option></option>
+                                        <option>待提交</option>
+                                        <option>已提交</option>
+                                        <option>已作废</option>
+                                        <option>已确认</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
@@ -272,6 +284,7 @@
                         <th class="text-center">全碱度</th>
                         <th class="text-center">酚酞碱度</th>
                         <th class="text-center">备注</th>
+                        <th class="text-center">单据状态</th>
                         <th class="text-center">操作</th>
                     </tr>
                     </thead>
@@ -291,11 +304,15 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
+                        <td class="text-center"></td>
                         <td class="text-center">
-                            <a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                            <a href="#" onclick="setInvalid(this);" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                            <!--<a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>-->
+                            <!--<a href="#" onclick="setInvalid(this);" title="修改"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span></a>-->
+                            <!--&lt;!&ndash;<a href="#" onclick="setInvalid(this);" title="修改"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span></a>&ndash;&gt;-->
+                            <a href="#" onclick="setAdjust(this);" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
                             <a href="#" onclick="setSubmit(this);" title="提交"><span class="glyphicon glyphicon-export" aria-hidden="true"></span></a>
                             <a href="#" onclick="setConfirm(this);" title="签收"><span class="glyphicon glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>
+                            <a href="#" onclick="setCancel(this);" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
                         </td>
                     </tr>
                     </tbody>
@@ -820,6 +837,54 @@
                     </div>
                     <div class="modal-footer" id="footer1">
                         <button type="button" class="btn btn-primary" onclick="save();">保存</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--修改模态框-->
+    <div class="modal fade"  id="addModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 1000px">
+            <div class="modal-content" >
+                <form method="post" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h4 class="modal-title" >化验单信息</h4>
+                    </div>
+                    <div class="modal-body" style="overflow-x:scroll;">
+                        <table class="table table-bordered" style="border:none">
+                            <!--<thead style="border:none">-->
+                            <thead>
+                            <tr>
+                                <th style="width: 180px">化验单号</th>
+                                <th>采样点</th>
+                                <th>浊度FTU</th>
+                                <th>硬度</th>
+                                <th>ph</th>
+                                <th>电导率</th>
+                                <th>全碱度</th>
+                                <th>酚酞碱度</th>
+                                <th>备注</th>
+                            </tr>
+                            </thead>
+                            <tbody >
+                            <tr class="myclass2">
+                                <td><input class="form-control" name="transferDraftId" id="id" readonly></td>
+                                <td><input class="form-control" name="produceCompany" id="address"></td>
+                                <td><input class="form-control" name="wastesName" id="turbidity"></td>
+                                <td><input class="form-control" name="wastesCode" id="hardness"></td>
+                                <td><input class="form-control" name="formType" id="PH"></td>
+                                <td><input class="form-control" name="remark" id="electricalConductivity"></td>
+                                <td><input class="form-control" name="remark" id="basicity"></td>
+                                <td><input class="form-control" name="remark" id="phenolphthalein"></td>
+                                <td><input class="form-control" name="remark" id="remarks"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer" >
+                        <button type="button" class="btn btn-primary" onclick="adjustSoftTest();">修改</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     </div>
                 </form>

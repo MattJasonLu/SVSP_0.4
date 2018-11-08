@@ -102,7 +102,7 @@ function setPageClone(result) {
  * */
 function switchPage(pageNumber) {
     console.log("当前页：" + pageNumber);
-    if(pageNumber > totalPage()){
+    if (pageNumber > totalPage()) {
         pageNumber = totalPage();
     }
     if (pageNumber == 0) {                 //首页
@@ -183,7 +183,7 @@ function switchPage(pageNumber) {
  * */
 function inputSwitchPage() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
-    if(pageNumber > totalPage()){
+    if (pageNumber > totalPage()) {
         pageNumber = totalPage();
     }
     $("#current").find("a").text("当前页：" + pageNumber);
@@ -238,7 +238,8 @@ function inputSwitchPage() {
                     console.log("error: " + result);
                 }
             });
-        }  if (isSearch) {//查询用的
+        }
+        if (isSearch) {//查询用的
             for (var i = 0; i < array1.length; i++) {
                 $(array1[i]).hide();
             }
@@ -294,7 +295,6 @@ function loadPageList() {
     isSearch = false;
 
 
-
 }
 
 
@@ -309,7 +309,7 @@ function setSewageTestList(result) {
     $.each(result.data, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
-        clonedTr.attr('class','myclass')
+        clonedTr.attr('class', 'myclass')
         clonedTr.show();
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
@@ -324,7 +324,7 @@ function setSewageTestList(result) {
                     // 采样点
                     $(this).html((obj.address));
                     break;
-                    //PH
+                //PH
                 case (3):
                     $(this).html((obj.ph).toFixed(2));
                     break;
@@ -338,7 +338,7 @@ function setSewageTestList(result) {
                     break;
                 case (6):
                     // 氨氮
-                        $(this).html(obj.n2.toFixed(2));
+                    $(this).html(obj.n2.toFixed(2));
                     break;
                 case (7):
                     // 碳酸盐碱度(Cao)
@@ -377,6 +377,13 @@ function setSewageTestList(result) {
                     // 备注
                     $(this).html(obj.remarks);
                     break;
+                case (16):
+                    // 状态
+                    if (obj.checkState != null) {
+                        $(this).html(obj.checkState.name);
+                    }
+
+                    break;
             }
         });
         // 把克隆好的tr追加到原来的tr前面
@@ -385,7 +392,6 @@ function setSewageTestList(result) {
     });
     // 隐藏无数据的tr
     tr.hide();
-
 
 
 }
@@ -399,7 +405,7 @@ function exportExcel() {
     var name = 't_pr_sewage';
     // 获取勾选项
     var idArry = [];
-    $.each($("input[name='select']:checked"),function(index,item){
+    $.each($("input[name='select']:checked"), function (index, item) {
         idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
     });
     var sqlWords = '';
@@ -410,10 +416,10 @@ function exportExcel() {
             else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
         }
         sqlWords = "select id as '编号', name as '污水名称',receiveDate as '污水接收日期',COD,BOD5,oxygen as '氧',nitrogen as '氮',lye as '碱液',PH,remarks as '备注' from t_pr_sewage where id" + sql;
-    }else {          // 若无勾选项则导出全部
+    } else {          // 若无勾选项则导出全部
         sqlWords = "select id as '编号', name as '污水名称',receiveDate as '污水接收日期',COD,BOD5,oxygen as '氧',nitrogen as '氮',lye as '碱液',PH,remarks as '备注' from t_pr_sewage;";
     }
-    console.log("sql:"+sqlWords);
+    console.log("sql:" + sqlWords);
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 
@@ -481,12 +487,12 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
     $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
-            if(last-event.timeStamp=== 0){
+            if (last - event.timeStamp === 0) {
                 searchData();
-            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+            } else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
                 searchData();      //
             }
-        },600);
+        }, 600);
     });
 });
 
@@ -509,33 +515,36 @@ function searchData() {
 
     var text = $.trim($('#searchContent').val());
 
-    var  id= $.trim($('#search-id').val());
+    var id = $.trim($('#search-id').val());
 
-    var address= $.trim($('#search-address').val());
+    var address = $.trim($('#search-address').val());
 
-    var remarks= $.trim($('#search-remarks').val());
+    var remarks = $.trim($('#search-remarks').val());
 
-    var ph= $.trim($('#search-ph').val());
+    var ph = $.trim($('#search-ph').val());
 
-    var cod= $.trim($('#search-COD').val());
+    var cod = $.trim($('#search-COD').val());
 
-    var bod5= $.trim($('#search-BOD5').val());
+    var bod5 = $.trim($('#search-BOD5').val());
 
-    var n2= $.trim($('#search-N2').val());
+    var n2 = $.trim($('#search-N2').val());
 
-    var nitrogen= $.trim($('#search-nitrogen').val());
+    var nitrogen = $.trim($('#search-nitrogen').val());
 
-    var phosphorus= $.trim($('#search-phosphorus').val());
+    var phosphorus = $.trim($('#search-phosphorus').val());
 
+    var checkState=$('#search-checkState option:selected').text();
+
+    console.log(checkState)
 
     for (var j = 0; j < array.length; j++) {
         $.each(array[j], function () {
             //console.log(this);
             if (!($(this).children('td').eq(1).text().indexOf(id) != -1 && $(this).children('td').eq(2).text().indexOf(address) != -1
                 && $(this).children('td').eq(3).text().indexOf(ph) != -1 && $(this).children('td').eq(4).text().indexOf(cod) != -1 && $(this).children('td').text().indexOf(text) != -1
-                && $(this).children('td').eq(5).text().indexOf(bod5) != -1  && $(this).children('td').eq(6).text().indexOf(n2) != -1
-                && $(this).children('td').eq(13).text().indexOf(nitrogen) != -1&& $(this).children('td').eq(14).text().indexOf(phosphorus) != -1
-                && $(this).children('td').eq(14).text().indexOf(remarks) != -1
+                && $(this).children('td').eq(5).text().indexOf(bod5) != -1 && $(this).children('td').eq(6).text().indexOf(n2) != -1
+                && $(this).children('td').eq(13).text().indexOf(nitrogen) != -1 && $(this).children('td').eq(14).text().indexOf(phosphorus) != -1
+                && $(this).children('td').eq(15).text().indexOf(remarks) != -1&&$(this).children('td').eq(16).text().indexOf(checkState) != -1
 
             )) {
                 $(this).hide();
@@ -543,9 +552,9 @@ function searchData() {
             if (
                 ($(this).children('td').eq(1).text().indexOf(id) != -1 && $(this).children('td').eq(2).text().indexOf(address) != -1
                     && $(this).children('td').eq(3).text().indexOf(ph) != -1 && $(this).children('td').eq(4).text().indexOf(cod) != -1 && $(this).children('td').text().indexOf(text) != -1
-                    && $(this).children('td').eq(5).text().indexOf(bod5) != -1  && $(this).children('td').eq(6).text().indexOf(n2) != -1
-                    && $(this).children('td').eq(13).text().indexOf(nitrogen) != -1&& $(this).children('td').eq(14).text().indexOf(phosphorus) != -1
-                    && $(this).children('td').eq(14).text().indexOf(remarks) != -1
+                    && $(this).children('td').eq(5).text().indexOf(bod5) != -1 && $(this).children('td').eq(6).text().indexOf(n2) != -1
+                    && $(this).children('td').eq(13).text().indexOf(nitrogen) != -1 && $(this).children('td').eq(14).text().indexOf(phosphorus) != -1
+                    && $(this).children('td').eq(15).text().indexOf(remarks) != -1&&$(this).children('td').eq(16).text().indexOf(checkState) != -1
 
                 )
 
@@ -602,7 +611,6 @@ function searchData() {
     }
 
 
-
 }
 
 /**
@@ -632,7 +640,7 @@ function addNewLine(item) {
     var tr = $(item).parent().parent().prev();
     // 克隆tr，每次遍历都可以产生新的tr
     var clonedTr = tr.clone();
-    clonedTr.attr('class','myclass2');
+    clonedTr.attr('class', 'myclass2');
     clonedTr.show();
     clonedTr.children().find("input").val("");
     var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>";
@@ -640,7 +648,6 @@ function addNewLine(item) {
 
     clonedTr.children('td').eq(0).find("a").remove();
     clonedTr.children('td').eq(0).append(delBtn)
-
 
 
     clonedTr.insertAfter(tr);
@@ -660,34 +667,212 @@ function delLine(item) {
 //保存方法
 function save() {
     $('.myclass2').each(function () {
-        var data={
-            id:$(this).children('td').eq(0).find('input').val(),
-            address:$(this).children('td').eq(1).find('input').val(),
-            ph:$(this).children('td').eq(2).find('input').val(),
-            cod:$(this).children('td').eq(3).find('input').val(),
-            bod5:$(this).children('td').eq(4).find('input').val(),
-            n2:$(this).children('td').eq(5).find('input').val(),
-            alkalinity:$(this).children('td').eq(6).find('input').val(),
-            alkalinityCaCo3:$(this).children('td').eq(7).find('input').val(),
-            alkalinityHCO3:$(this).children('td').eq(8).find('input').val(),
-            bicarbonate:$(this).children('td').eq(9).find('input').val(),
-            bicarbonateCaCo3 :$(this).children('td').eq(10).find('input').val(),
-            bicarbonateHCO3:$(this).children('td').eq(11).find('input').val(),
-            nitrogen:$(this).children('td').eq(12).find('input').val(),
-            phosphorus:$(this).children('td').eq(13).find('input').val(),
-            remarks:$(this).children('td').eq(14).find('input').val(),
+        var data = {
+            id: $(this).children('td').eq(0).find('input').val(),
+            address: $(this).children('td').eq(1).find('input').val(),
+            ph: $(this).children('td').eq(2).find('input').val(),
+            cod: $(this).children('td').eq(3).find('input').val(),
+            bod5: $(this).children('td').eq(4).find('input').val(),
+            n2: $(this).children('td').eq(5).find('input').val(),
+            alkalinity: $(this).children('td').eq(6).find('input').val(),
+            alkalinityCaCo3: $(this).children('td').eq(7).find('input').val(),
+            alkalinityHCO3: $(this).children('td').eq(8).find('input').val(),
+            bicarbonate: $(this).children('td').eq(9).find('input').val(),
+            bicarbonateCaCo3: $(this).children('td').eq(10).find('input').val(),
+            bicarbonateHCO3: $(this).children('td').eq(11).find('input').val(),
+            nitrogen: $(this).children('td').eq(12).find('input').val(),
+            phosphorus: $(this).children('td').eq(13).find('input').val(),
+            remarks: $(this).children('td').eq(14).find('input').val(),
         };
-      $.ajax({
-          type: "POST",                       // 方法类型
-          url: "addSewageTest",              // url
-          async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-          dataType: "json",
-          data:JSON.stringify(data),
-          contentType: 'application/json;charset=utf-8',
-      })
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "addSewageTest",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: JSON.stringify(data),
+            contentType: 'application/json;charset=utf-8',
+        })
 
     })
-alert("添加成功")
+    alert("添加成功")
     window.location.reload();
+
+}
+
+//提交
+function setSubmit(item) {
+
+    var id = $(item).parent().parent().children('td').eq(1).html();
+
+    console.log(id)
+
+    if (confirm("确认提交?")) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "submitSewageTest",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'id': id},
+            //contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    alert(result.message)
+                    window.location.reload();
+                }
+
+            },
+            error: function (result) {
+                alert("服务器异常！")
+            }
+
+        })
+    }
+
+}
+
+//签收
+function setConfirm(item) {
+    var id = $(item).parent().parent().children('td').eq(1).html();
+
+    if (confirm("确认签收?")) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "confirmSewageTest",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'id': id},
+            //contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    alert(result.message)
+                    window.location.reload();
+                }
+
+            },
+            error: function (result) {
+                alert("服务器异常！")
+            }
+
+        })
+    }
+}
+
+//作废
+function setCancel(item) {
+    var id = $(item).parent().parent().children('td').eq(1).html();
+
+    if (confirm("确认作废?")) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "cancelSewageTest",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'id': id},
+            //contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    alert(result.message)
+                    window.location.reload();
+                }
+
+            },
+            error: function (result) {
+                alert("服务器异常！")
+            }
+
+        })
+    }
+
+}
+
+//修改
+function setAdjust(item) {
+    var id = $(item).parent().parent().children('td').eq(1).html();
+
+    //根据编号获取信息
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSewageTestById",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'id': id},
+        //contentType: 'application/json;charset=utf-8',
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                //赋值
+                var obj = eval(result.data);
+                console.log(obj)
+                $('#id').val(obj.id);
+                $('#address').val(obj.address);
+                $('#ph').val(obj.ph.toFixed(2));
+                $('#COD').val(obj.COD.toFixed(2));
+                $('#BOD5').val(obj.BOD5.toFixed(2));
+                $('#N2').val(obj.n2.toFixed(2));
+                $('#alkalinity').val(obj.alkalinity.toFixed(2));
+                $('#alkalinityCaCo3').val(obj.alkalinityCaCo3.toFixed(2));
+                $('#alkalinityHCO3').val(obj.alkalinityHCO3.toFixed(2));
+                $('#bicarbonate').val(obj.bicarbonate.toFixed(2));
+                $('#bicarbonateCaCo3').val(obj.bicarbonateCaCo3.toFixed(2));
+                $('#bicarbonateHCO3').val(obj.bicarbonateHCO3.toFixed(2));
+                $('#nitrogen').val(obj.nitrogen.toFixed(2));
+                $('#phosphorus').val(obj.phosphorus.toFixed(2));
+                $('#remarks').val(obj.remarks);
+
+
+            }
+
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+
+    })
+
+    $('#addModa2').modal('show');
+}
+
+//污水化验单修改
+function adjustSewageTest() {
+    var data = {
+        id: $('#id').val(),
+        address: $('#address').val(),
+        ph: $('#ph').val(),
+        cod: $('#COD').val(),
+        bod5: $('#BOD5').val(),
+        n2: $('#N2').val(),
+        alkalinity: $('#alkalinity').val(),
+        alkalinityCaCo3: $('#alkalinityCaCo3').val(),
+        alkalinityHCO3: $('#alkalinityHCO3').val(),
+        bicarbonate: $('#bicarbonate').val(),
+        bicarbonateCaCo3: $('#bicarbonateCaCo3').val(),
+        bicarbonateHCO3: $('#bicarbonateHCO3').val(),
+        nitrogen: $('#nitrogen').val(),
+        phosphorus: $('#phosphorus').val(),
+        remarks: $('#remarks').val()
+    }
+
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "updateSewageTestById",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: JSON.stringify(data),
+        contentType: 'application/json;charset=utf-8',
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                //赋值
+              alert(result.message)
+                window.location.reload();
+
+            }
+
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+
+    })
+
 
 }
