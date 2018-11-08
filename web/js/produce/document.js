@@ -1,12 +1,6 @@
-
-function editDocument() {
-    $("#editModal").modal('show')
-}
-
-
 var isSearch = false;
 var currentPage = 1;                          //当前页数
-var data;
+var data = {};
 /**
  * 返回count值
  * */
@@ -22,11 +16,14 @@ function countValue() {
 function totalPage() {
     var totalRecord = 0;
     if (!isSearch) {
+        var data1 = {};
         $.ajax({
             type: "POST",                       // 方法类型
             url: "countDocumentControl",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
             dataType: "json",
+            contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     if (result.data > 0) {
@@ -47,8 +44,9 @@ function totalPage() {
             type: "POST",                       // 方法类型
             url: "countDocumentControl",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: data,
+            data: JSON.stringify(data),
             dataType: "json",
+            contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     if (result.data > 0) {
@@ -164,13 +162,15 @@ function switchPage(pageNumber) {
     addPageClass(pageNumber);           // 设置页码标蓝
     //addClass("active");
     page.start = (pageNumber - 1) * page.count;
+    data.page = page;
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
             url: "listDocumentControl",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: page,
+            data: JSON.stringify(data),
             dataType: "json",
+            contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result !== undefined && result.status === "success") {
                     setDataList(result.data);
@@ -301,12 +301,15 @@ function loadPageList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
+    var data1 = {};
+    data1.page = page;
     $.ajax({
         type: "POST",                       // 方法类型
         url: "listDocumentControl",   // url
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: page,
+        data: JSON.stringify(data1),
         dataType: "json",
+        contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 console.log(result);
@@ -368,20 +371,10 @@ function searchData() {
     // 精确查询
     if ($("#senior").is(':visible')) {
         data = {
-            id: $("#search-draftId").val(),
-            checkState: $("#search-checkState").val(),
-            produceCompany: {
-                companyName: $("#search-produceCompanyName").val()
-            },
-            transportCompany: {
-                companyName: $("#search-transportCompanyName").val()
-            },
-            acceptCompany: {
-                companyName: $("#search-acceptCompanyName").val()
-            },
-            dispatcher: $("#search-dispatcher").val(),
-            destination: $("#search-destination").val(),
-            transferTime: $("#search-transferTime").val(),
+            fileNO: $("#searchFileNO").val(),
+            syscode: $("#searchSYSCode").val(),
+            fileName: $("#searchFileName").val(),
+            company: $("#searchCompany").val(),
             page: page
         };
         console.log(data);
@@ -396,8 +389,9 @@ function searchData() {
         type: "POST",                       // 方法类型
         url: "listDocumentControl",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: data,
+        data: JSON.stringify(data),
         dataType: "json",
+        contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result !== undefined && result.status === "success") {
                 console.log(result);
@@ -582,14 +576,76 @@ function setUnEffective(e) {    //已提交
         });
     }
 }
+var ID;
+/**
+ * 显示修改框
+ * @param e
+ */
+function showAdjustModal(e) {
+    var id = getIdByMenu(e);
+    ID = id;
+    $.ajax({
+        type: "POST",
+        url: "getDocumentControl",
+        async: false,
+        dataType: "json",
+        data: {
+            ID: id
+        },
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                var obj = eval(result.data);
+                $("#editFileNO").val(obj.fileNO);
+                $("#editSYSCode").val(obj.SYSCode);
+                $("#editFileName").val(obj.fileName);
+                $("#editCompany").val(obj.company);
+                $("#editNote").val(obj.note);
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
+    $("#editModal").modal('show');
+}
 
 /**
  * 修改数据
- * @param e
  */
-function adjustData(e) {
-    var id = getIdByMenu(e);
-    alert("功能调整中");
+function adjustData() {
+    var data = {
+        ID: ID,
+        fileNO: $("#editFileNO").val(),
+        SYSCode: $("#editSYSCode").val(),
+        fileName: $("#editFileName").val(),
+        company: $("#editCompany").val(),
+        note: $("#editNote").val()
+    };
+    console.log(data);
+    $.ajax({
+        type: "POST",
+        url: "updateDocumentControl",
+        async: false,
+        dataType: "json",
+        data: data,
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                alert(result.message);
+                window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
 }
 
 /**

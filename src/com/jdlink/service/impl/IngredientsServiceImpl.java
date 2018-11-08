@@ -100,7 +100,7 @@ public class IngredientsServiceImpl implements IngredientsService {
     public List<IngredientsReceive> searchReceive(IngredientsReceive ingredientsReceive){ return ingredientsMapper.searchReceive(ingredientsReceive); }
 
     @Override
-    public void invalidReceive(String id){ ingredientsMapper.invalidReceive(id); }
+    public void invalidReceive(IngredientsReceive ingredientsReceive){ ingredientsMapper.invalidReceive(ingredientsReceive); }
 
     @Override
     public void updateReceive(IngredientsReceive ingredientsReceive){ ingredientsMapper.updateReceive(ingredientsReceive); }
@@ -161,7 +161,7 @@ public class IngredientsServiceImpl implements IngredientsService {
     public List<IngredientsOut> searchOut(IngredientsOut ingredientsOut){ return ingredientsMapper.searchOut(ingredientsOut); }
 
     @Override
-    public void invalidOut(String id){ ingredientsMapper.invalidOut(id); }
+    public void invalidOut(IngredientsOut ingredientsOut){ ingredientsMapper.invalidOut(ingredientsOut); }
 
     @Override
     public void updateOut(IngredientsOut ingredientsOut){ ingredientsMapper.updateOut(ingredientsOut); }
