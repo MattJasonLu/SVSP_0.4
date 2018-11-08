@@ -1309,6 +1309,15 @@ function viewContract(item) {
                 if (data.freight == false) {//不需要运费
                     $('#modal3_freight').removeAttr("checked");
                 }
+                $('#modal3_contractAppendices').click(function () {
+
+                    if (data.contractAppendicesUrl != null && data.contractAppendicesUrl  != "") {
+                        window.open('downloadFile?filePath=' +data.contractAppendicesUrl);
+                    } else {
+                        alert("未上传文件");
+                    }
+
+                })
 
                 //赋值报价单明细
                 if(data.quotationItemList!=null){
@@ -2578,6 +2587,38 @@ function contractWastesSave() {
                 contentType: "application/json; charset=utf-8",
                 success:function (result) {
                     if (result != undefined && result.status == "success"){
+                        //添加图片地址
+                        var formFile = new FormData();
+                        formFile.append("contractId", $('#contractId').html());
+                        if ($('#contractAppendices').prop('type') != 'text') {
+                            var pictureFile = $('#contractAppendices')[0].files[0];
+                            formFile.append("pictureFile", pictureFile);
+
+                        }
+                        //保存合同附件
+                        $.ajax({
+                            type: "POST",                            // 方法类型
+                            url: "saveContractAppendices",                     // url
+                            cache: false,
+                            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                            data: formFile,
+                            dataType: "json",
+                            processData: false,
+                            contentType: false,
+                            success: function (result) {
+                                if (result != undefined && result.status == "success")
+                                {
+
+                                }
+                                else {
+
+                                }
+                            },
+                            error: function (result) {
+                                console.log("error: " + result);
+                                alert("服务器异常!");
+                            }
+                        });
                         //console.log(result);
                         $('.myclass').each(function () {
                             var quotationItemData = {
@@ -2729,6 +2770,42 @@ function contractWastesSave() {
                 contentType: "application/json; charset=utf-8",
                 success: function (result) {
                     if (result != undefined && result.status == "success") {
+
+                        //添加图片地址
+                        var formFile = new FormData();
+                        formFile.append("contractId", $('#contractId').html());
+                        if ($('#contractAppendices').prop('type') != 'text') {
+                            var pictureFile = $('#contractAppendices').get(0).files[0];
+                            formFile.append("contractAppendices", pictureFile);
+
+                        }
+                           //保存合同附件
+                        $.ajax({
+                            type: "POST",                            // 方法类型
+                            url: "saveContractAppendices",                     // url
+                            cache: false,
+                            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                            data: formFile,
+                            dataType: "json",
+                            processData: false,
+                            contentType: false,
+                            success: function (result) {
+                                if (result != undefined && result.status == "success")
+                                {
+
+                                }
+                                else {
+
+                                }
+                            },
+                            error: function (result) {
+                                console.log("error: " + result);
+                                alert("服务器异常!");
+                            }
+                        });
+
+
+
                         // console.log(result);
                         $('.myclass').each(function () {
                             //var formFile = new FormData();
@@ -4919,42 +4996,75 @@ function contractAdjustSave() {
 
                             }
                         });
-                        //     //添加图片地址
-                        var formFile = new FormData();
-                        var wastesCode=$(this).children('td').eq(1).children('div').find('button').attr('title');
-                        var wastesName= $(this).children('td').eq(2).children('input').val();
-                        formFile.append('wastesCode',wastesCode);
-                        formFile.append('wastesName',wastesName);
-                        formFile.append("contractId", $('#contractId').html());
-                        console.log($(this).children('td').eq(10).children('input').prop('type'))
-                        if ($(this).children('td').eq(10).children('input').prop('type') != 'text') {
-                            var pictureFile = $(this).children('td').eq(10).find("input[name='picture']").get(0).files[0];
-                            formFile.append("pictureFile", pictureFile);
+                      var file=$(this).children('td').eq(10).find("input[name='picture']").get(0).files[0];
+                      if(file!=undefined){
+                          //     //添加图片地址
+                          var formFile = new FormData();
+                          var wastesCode=$(this).children('td').eq(1).children('div').find('button').attr('title');
+                          var wastesName= $(this).children('td').eq(2).children('input').val();
+                          formFile.append('wastesCode',wastesCode);
+                          formFile.append('wastesName',wastesName);
+                          formFile.append("contractId", $('#contractId').html());
+                          console.log($(this).children('td').eq(10).children('input').prop('type'))
+                          if ($(this).children('td').eq(10).children('input').prop('type') != 'text') {
+                              var pictureFile = $(this).children('td').eq(10).find("input[name='picture']").get(0).files[0];
+                              formFile.append("pictureFile", pictureFile);
 
-                        }
-                        $.ajax({
-                            type: "POST",                            // 方法类型
-                            url: "savePictureFiles",                     // url
-                            cache: false,
-                            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-                            data: formFile,
-                            dataType: "json",
-                            processData: false,
-                            contentType: false,
-                            success: function (result) {
-                                if (result != undefined && result.status == "success")
-                                {
+                          }
+                          $.ajax({
+                              type: "POST",                            // 方法类型
+                              url: "savePictureFiles",                     // url
+                              cache: false,
+                              async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                              data: formFile,
+                              dataType: "json",
+                              processData: false,
+                              contentType: false,
+                              success: function (result) {
+                                  if (result != undefined && result.status == "success")
+                                  {
 
-                                }
-                                else {
+                                  }
+                                  else {
 
-                                }
-                            },
-                            error: function (result) {
-                                console.log("error: " + result);
-                                alert("服务器异常!");
-                            }
-                        });
+                                  }
+                              },
+                              error: function (result) {
+                                  console.log("error: " + result);
+                                  alert("服务器异常!");
+                              }
+                          });
+                      }
+                      if(file==undefined){
+                          var wastesCode=$(this).children('td').eq(1).children('div').find('button').attr('title');
+                          var wastesName= $(this).children('td').eq(2).children('input').val();
+                          var contractId= $('#contractId').html();
+                          var picture= $(this).children('td').eq(12).html();
+                          $.ajax({
+                              type: "POST",                            // 方法类型
+                              url: "updatePictureUrl",                     // url
+                              // cache: false,
+                              // async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                              data: {"wastesCode":wastesCode,'wastesName':wastesName,'contractId':contractId,'picture':picture},
+                              dataType: "json",
+                              // processData: false,
+                              //contentType: false,
+                              success: function (result) {
+                                  if (result != undefined && result.status == "success")
+                                  {
+
+                                  }
+                                  else {
+
+                                  }
+                              },
+                              error: function (result) {
+                                  console.log("error: " + result);
+                                  alert("服务器异常!");
+                              }
+                          });
+                      }
+
                     });
                     console.log(result)
                     alert("修改成功!");
@@ -6142,6 +6252,8 @@ function adjustNewContract() {
                                     alert("未上传文件");
                                 }
                             })
+
+                            cloneTr.children('td').eq(12).html(item.picture);
                             //危废编码赋值
                             $.ajax({
                                 type:'POST',
@@ -6351,7 +6463,7 @@ function adjustNewContract() {
                                     alert("未上传文件");
                                 }
                             })
-
+                            cloneTr.children('td').eq(12).html(item.picture);
                             cloneTr.removeAttr('id');
                             cloneTr.insertAfter(tr);
                             $('.selectpicker').data('selectpicker', null);

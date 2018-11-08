@@ -1320,6 +1320,72 @@ public class ContractController {
         return res.toString();
 
     }
+
+
+    @RequestMapping("saveContractAppendices")
+    @ResponseBody
+    public String saveContractAppendices(String contractId,MultipartFile contractAppendices){
+        JSONObject res = new JSONObject();
+
+        try {
+
+            Contract contract = new Contract();
+            contract.setContractId(contractId);
+            if (contractAppendices != null) {
+                String materialPath = "Files/Contract"; //设置服务器路径
+                File materialDir = new File(materialPath);
+                if (!materialDir.exists()) {
+                    materialDir.mkdirs();
+                }
+//                String materialName = contractId + "-" +  contractAppendices.getOriginalFilename();//设置文件名称
+//                String materialFilePath = materialPath + "/" + materialName;//本地路径
+//                contract.setContractAppendicesUrl(materialFilePath);
+
+                String materialName = contractId + "-" +  contractAppendices.getOriginalFilename();//设置文件名称
+                String materialFilePath = materialPath + "/" + materialName;//本地路径
+                File materialFile = new File(materialFilePath);
+                contractAppendices.transferTo(materialFile);
+                contract.setContractAppendicesUrl(materialFilePath);
+            }
+
+            contractService.setContractFilePath(contract);
+            res.put("status", "success");
+            res.put("message", "文件上传成功");
+
+        }
+
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "文件上传失败");
+
+        }
+
+
+        return res.toString();
+    }
+
+
+    //更新图片路径
+    @RequestMapping("updatePictureUrl")
+    @ResponseBody
+    public String updatePictureUrl(String wastesCode,String wastesName,int contractId,String picture ){
+        JSONObject res=new JSONObject();
+
+
+        try{
+    contractService.updatePictureUrl(wastesCode, wastesName, contractId, picture);
+            res.put("status", "success");
+            res.put("message", "图片更新成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "图片更新失败");
+        }
+        return res.toString();
+    }
 }
+
 
 
