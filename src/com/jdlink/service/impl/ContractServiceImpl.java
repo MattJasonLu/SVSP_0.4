@@ -270,4 +270,14 @@ contractMapper.updateFreight2(id);
         contractMapper.setFilePath(quotationItem);
     }
 
+    @Override
+    public void setContractFilePath(Contract contract) {
+        contractMapper.setContractFilePath(contract);
+    }
+
+    @Override
+    public void updatePictureUrl(String wastesCode, String wastesName, int contractId, String url) {
+        contractMapper.updatePictureUrl(wastesCode, wastesName, contractId, url);
+    }
+
 }

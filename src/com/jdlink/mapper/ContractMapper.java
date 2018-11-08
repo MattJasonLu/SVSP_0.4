@@ -118,4 +118,8 @@ public interface ContractMapper {
 
     void setFilePath(QuotationItem quotationItem);
 
+    void setContractFilePath(Contract contract);
+
+    void updatePictureUrl(String wastesCode,String wastesName,int contractId,String url);
+
 }
