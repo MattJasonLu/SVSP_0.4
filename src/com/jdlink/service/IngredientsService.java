@@ -39,6 +39,7 @@ public interface IngredientsService {
     List<IngredientsReceive> searchReceive(IngredientsReceive ingredientsReceive);
     void invalidReceive(IngredientsReceive ingredientsReceive);
     void updateReceive(IngredientsReceive ingredientsReceive);
+    void updateDataReceive(IngredientsReceive ingredientsReceive);
     Ingredients getAmountAndReceive(Ingredients ingredients);
     List<Ingredients> getInventoryList(Page page);
     int searchInventoryCount(Ingredients ingredients);
@@ -62,6 +63,7 @@ public interface IngredientsService {
     List<IngredientsOut> searchOut(IngredientsOut ingredientsOut);
     void invalidOut(IngredientsOut ingredientsOut);
     void updateOut(IngredientsOut ingredientsOut);
+    void updateDataOut(IngredientsOut ingredientsOut);
     List<Ingredients> getIngredientsOutItemByRange(Date startDate, Date endDate,Equipment equipment);
     int countOutItem();
     int searchOutItemCount(Ingredients ingredients);

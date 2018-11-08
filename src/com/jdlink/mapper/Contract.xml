@@ -428,6 +428,20 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
             INSERT INTO t_document (contractId, filePath, documentType) VALUES (#{contractId}, #{picture},'Contract');
         </if>
     </update>
+
+    <!--插入合同附件-->
+    <update id="setContractFilePath" parameterType="Contract">
+        <if test="contractAppendicesUrl != null and contractAppendicesUrl != ''">
+            UPDATE t_contract SET contractAppendicesUrl=#{contractAppendicesUrl} WHERE contractId=#{contractId};
+            INSERT INTO t_document (contractId, filePath, documentType) VALUES (#{contractId}, #{contractAppendicesUrl},'Contract');
+        </if>
+    </update>
+
+    <!--更新危废图片路径-->
+    <update id="updatePictureUrl">
+        update t_quotationitem set picture=#{3} where wastesCode=#{0} and wastesName=#{1} and
+        contractId=#{2}
+    </update>
 </mapper>
 
 

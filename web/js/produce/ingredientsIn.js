@@ -820,28 +820,32 @@ function setViewIngredientsClone(result) {
  */
 function invalidIngredientsIn(item) {
     var id = getIngredientsInId(item);
-    if (confirm("是否作废？")) {
-        $.ajax({
-            type: "POST",
-            url: "invalidIngredientsIn",
-            async: false,
-            data: {
-                id: id
-            },
-            dataType: "json",
-            success: function (result) {
-                if (result.status == "success") {
-                    alert("作废成功！");
-                    window.location.reload();
-                } else {
-                    alert(result.message);
+    if ($(item).parent().parent().children().eq(3).text() == '新建') {
+        if (confirm("是否作废？")) {
+            $.ajax({
+                type: "POST",
+                url: "invalidIngredientsIn",
+                async: false,
+                data: {
+                    id: id
+                },
+                dataType: "json",
+                success: function (result) {
+                    if (result.status == "success") {
+                        alert("作废成功！");
+                        window.location.reload();
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                    alert("服务器异常!");
                 }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常!");
-            }
-        });
+            });
+        }
+    }else{
+        alert("单据不可作废！");
     }
 }
 
@@ -875,7 +879,7 @@ function getDaydate(date) {
     var month = obj.getMonth() + 1;
     var day = obj.getDate();
     if (day % 7 > 0) var a = 1; else a = 0;
-    return year + "-" + month + "-" + day + "-";
+    return year + "-" + month + "-" + day;
 }
 
 
@@ -1234,7 +1238,7 @@ function loadPages1(totalRecord, count) {
 
 function loadProcurementItemList() {
     $("#save").text("入库");   // 修改按钮名称
-    $("#head").text("辅料/备件入库单新增");
+    $("#head").text("辅料/备件入库单新增");  // 标题修改
     $("#view-id").text(getCurrentIngredientsInId());
     $("#creationDate").val(getDaydate(new Date()));
     var pageNumber = 1;               // 显示首页
@@ -1296,6 +1300,7 @@ function loadProcurementItemList() {
                     $("#view-id").text(data.id);
                     $("#companyName").val(data.companyName);
                     $("#creationDate").val(getDateStr(data.creationDate));
+                    //console.log("日期："+getDateStr(data.creationDate));
                     $("#fileId").val(data.fileId);
                     $("#bookkeeper").val(data.bookkeeper);
                     $("#approver").val(data.approver);
@@ -1436,7 +1441,6 @@ function delLine(e) {
             $(this).prop('id', newId);
         });
         tBody.children().eq(i).find("span[name='serialNumber']").text(i - 1);// 更新序号
-        console.log("序号=" + tBody.children().eq(i).find("span[name='serialNumber']").text());
     }
 }
 
@@ -1727,7 +1731,7 @@ function save() {
     var totalPrice = 0;
     var wareHouseState = false;
     var unitPriceState = false;
-    if (ingredientsIn != null && ingredientsIn.ingredientsList != null)
+    if (ingredientsIn != null && ingredientsIn.ingredientsList != null)//如果有新添的数据则获取最新的输入数据
         for (var i = 0; i < ingredientsIn.ingredientsList.length; i++) {
             var $i = i + 1;
             ingredientsIn.ingredientsList[i].unitPrice = $("#unitPrice" + $i).val();
@@ -1797,7 +1801,7 @@ function save() {
     ingredientsIn.acceptor = $("#acceptor").val();
     ingredientsIn.handlers = $("#handlers").val();
     ingredientsIn.creationDate = $("#creationDate").val();
-    console.log("添加的数据为:");
+    console.log("数据为:");
     console.log(ingredientsIn);
     if (confirm("确认保存？")) {
         if ($("#save").text() == "入库") {
@@ -1833,14 +1837,15 @@ function save() {
                 success: function (result) {
                     if (result.status == "success") {
                         console.log(result.message);
-                        if (confirm("入库单修改成功，是否返回主页面？"))
-                            window.location.href = "ingredientsIn.html";
+                        if (confirm("入库单修改成功，是否返回上一页？"))
+                            //window.location.href = "ingredientsIn.html";
+                            history.back();
                         else window.location.reload();
                     } else alert(result.message);
                 },
                 error: function (result) {
                     console.log(result.message);
-                    alert("入库单添加失败！");
+                    alert("入库单修改失败！");
                 }
             });
         }
@@ -1893,10 +1898,10 @@ function search1() {
     var page = {};
     var pageNumber = 1;                       // 显示首页
     page.pageNumber = pageNumber;
-    page.count = countValue1();
+    page.count = countValue1();   // 获取每页显示数
     page.start = (pageNumber - 1) * page.count;
     var keywords = $.trim($("#searchContent1").val());
-    switch (keywords) {
+    switch (keywords) {   // 枚举类型的关键字转化
         case "待入库":
             keywords = "ToInbound";
             break;
@@ -1911,7 +1916,7 @@ function search1() {
             break;
     }
     var state = null;
-    switch ($("#search1-state").find("option:selected").text()) {
+    switch ($("#search1-state").find("option:selected").text()) { // 枚举类型状态转化
         case '待入库':
             state = "ToInbound";
             break;
@@ -1920,7 +1925,7 @@ function search1() {
             break;
     }
     if ($("#senior1").is(':visible')) {
-        data1 = {
+        data1 = {           // 获取数据并设置搜索条件
             suppliesName: $.trim($("#search1-suppliesName").val()),
             specifications: $.trim($("#search1-specifications").val()),
             receiptNumber: $.trim($("#search1-receiptNumber").val()),
@@ -1929,7 +1934,7 @@ function search1() {
             page: page
         };
     } else {
-        data1 = {
+        data1 = {   // 模糊查询
             keywords: keywords,
             page: page
         };
@@ -1947,7 +1952,7 @@ function search1() {
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result.status == "success") {
-                    setPageClone1(result);
+                    setPageClone1(result);               // 设置分页页码并克隆数据
                     setPageCloneAfter1(pageNumber);      // 大于5页时页码省略显示
                 } else console.log(result.message);
             },

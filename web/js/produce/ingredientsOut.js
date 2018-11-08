@@ -702,7 +702,7 @@ function showViewModal(id) {
                 console.log(result);
                 setViewClone(result.data);
                 $("#view-id").text(data.id);
-                $("#view-companyName").text(data.companyName);
+                $("#view-department").text(data.department);
                 $("#view-creationDate").text(getDayDate(data.creationDate));
                 $("#view-fileId").text(data.fileId);
                 $("#view-hundredThousand").text(Math.floor(data.totalPrice / 100000));
@@ -841,28 +841,32 @@ function setViewClone(result) {
  */
 function invalid(item) {
     var id = getIngredientsId(item);
-    if (confirm("是否作废？")) {
-        $.ajax({
-            type: "POST",
-            url: "invalidIngredientsOut",
-            async: false,
-            data: {
-                id: id
-            },
-            dataType: "json",
-            success: function (result) {
-                if (result.status == "success") {
-                    alert("作废成功！");
-                    window.location.reload();
-                } else {
-                    alert(result.message);
+    if ($(item).parent().parent().children().eq(3).text() == '新建') {
+        if (confirm("是否作废？")) {
+            $.ajax({
+                type: "POST",
+                url: "invalidIngredientsOut",
+                async: false,
+                data: {
+                    id: id
+                },
+                dataType: "json",
+                success: function (result) {
+                    if (result.status == "success") {
+                        alert("作废成功！");
+                        window.location.reload();
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                    alert("服务器异常!");
                 }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常!");
-            }
-        });
+            });
+        }
+    }else{
+        alert("单据不可作废！");
     }
 }
 
@@ -900,7 +904,8 @@ function getcurrentDaydate() {
     var month = obj.getMonth() + 1;
     var day = obj.getDate();
     if (day % 7 > 0) var a = 1; else a = 0;
-    return year + "年" + month + "月" + day + "日";
+    var time = year + "-" + month + "-" + day;
+    return year + "-" + month + "-" + day;
 }
 
 /**
@@ -908,7 +913,8 @@ function getcurrentDaydate() {
  * */
 function loadIngredientsReceiveList() {
     $("#view-id").text(getCurrentIngredientsOutId());
-    $("#creationDate").text(getcurrentDaydate());
+    $("#creationDate1").val(getcurrentDaydate());
+    console.log("当前日期:"+getcurrentDaydate());
     var page = {};
     page.start = null;
     page.count = null;
@@ -1335,6 +1341,7 @@ function confirmInsert() {
                     success: function (result) {
                         if (result != undefined && result.status == "success") {
                             //遍历存储物品数组
+                            ingredientsOut.department = result.data.department;
                             $.each(result.data.ingredientsList, function (index, item) {
                                 i++;
                                 //将数据存到数组中，然后统一赋值
@@ -1347,6 +1354,7 @@ function confirmInsert() {
                                 ingredients.remarks = item.remarks;                  // 备注
                                 ingredients.id = ingredientsOut.id;
                                 ingredients.wareHouseName = item.wareHouseName;
+                                ingredients.aid = item.id;                      //辅料备件领料单号
                                 if(item.ingredientState.name === "部分领用")ingredients.notReceiveAmount = 1;  // 未领用数为1，表示还有余量
                                 else if(item.ingredientState.name === "已领用")ingredients.notReceiveAmount = 0;   // 未领用数为0，表示没有余量
                                 ingredients.notReceiveAmount = 1;
@@ -1366,6 +1374,7 @@ function confirmInsert() {
     //将数据遍历赋值到出库单中
     var num = 0;
     var tr = $("#clone3");
+    $("#departmentName").val(ingredientsOut.department);  // 部门赋值
     $.each(ingredientsList, function (index, item) {
         num++;
         var obj = eval(item);
@@ -1446,21 +1455,21 @@ function save() {
         var $i = i + 1;
         ingredientsOut.ingredientsList[i].unitPrice = $("#out-unitPrice" + $i).val();
         ingredientsOut.ingredientsList[i].post = $("#post" + $i).val();
-        ingredientsOut.ingredientsList[i].wareHouseName = $("#wareHouseName" + $i).val();
         ingredientsOut.ingredientsList[i].totalPrice = parseFloat(ingredientsOut.ingredientsList[i].unitPrice) * parseFloat(ingredientsOut.ingredientsList[i].receiveAmount);
-        ingredientsOut.ingredientsList[i].equipment = $("#equipment" + $i).val();
+        ingredientsOut.ingredientsList[i].equipment = parseInt($("#equipment" + $i).find("option:selected").val()) - 1;
         if($("#out-unitPrice" + $i).val() == null || $("#out-unitPrice" + $i).val() === "")unitPriceState = true;
         totalPrice += ingredientsOut.ingredientsList[i].totalPrice;
         totalAmount += ingredientsOut.ingredientsList[i].receiveAmount;
     }
     ingredientsOut.totalPrice = totalPrice;
     ingredientsOut.totalAmount = totalAmount;
-    ingredientsOut.departmentName = $("#departmentName").val();
+    ingredientsOut.department = $("#departmentName").val();
     ingredientsOut.fileId = $("#fileId").val();
     ingredientsOut.bookkeeper = $("#bookkeeper").val();
     ingredientsOut.approver = $("#approver").val();
     ingredientsOut.keeper = $("#keeper").val();
     ingredientsOut.handlers = $("#handlers").val();
+    ingredientsOut.creationDate = $("#creationDate1").val();
     console.log(ingredientsOut);
     if(unitPriceState){
         if(confirm("单价为空，确定出库？"))
