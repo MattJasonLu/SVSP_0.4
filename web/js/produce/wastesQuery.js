@@ -457,6 +457,8 @@ function searchWastesInventory() {
     var handelCategory=$.trim($('#search-type option:selected').text());
     var startDate=getDateByStr(inboundOrderId);
     var endDate=getDateByStr(endDate);
+
+    var wareHouseName=$.trim($('#search-storageType').val());
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
             if(startDate.toString()=='Invalid Date'){
@@ -471,13 +473,13 @@ function searchWastesInventory() {
             }
             //console.log(this);
             if(!($(this).children('td').eq(3).text().indexOf(client)!=-1&&$(this).children('td').text().indexOf(text)!=-1
-                &&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1
+                &&$(this).children('td').eq(5).text().indexOf(handelCategory)!=-1&&$(this).children('td').eq(4).text().indexOf(wareHouseName)!=-1
                 &&(getDateByStr(start)<=endDate&&getDateByStr(start)>=startDate)
             )){
                 $(this).hide();
             }
             if(($(this).children('td').eq(3).text().indexOf(client)!=-1&&$(this).children('td').text().indexOf(text)!=-1
-                &&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1
+                &&$(this).children('td').eq(5).text().indexOf(handelCategory)!=-1&&$(this).children('td').eq(4).text().indexOf(wareHouseName)!=-1
                 &&(getDateByStr(start)<=endDate&&getDateByStr(start)>=startDate)
             )){
                 array1.push($(this));

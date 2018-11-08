@@ -719,8 +719,16 @@
         </if>
     </select>
 
-    <update id="invalidReceive" parameterType="String">
-        update t_pr_ingredients_receive set state = 'Invalid' where id = #{id}
+    <update id="invalidReceive" parameterType="IngredientsReceive">
+        update t_pr_ingredients_receive set state = 'Invalid' where id = #{id};
+        <if test="ingredientsList != null and ingredientsList.size() > 0">
+            <foreach collection="ingredientsList" item="ingredients" index="index"><!--将库存加回-->
+                update t_pr_ingredients_inventory
+                set amount= amount + #{ingredients.receiveAmount}
+                where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName} and
+                specification=#{ingredients.specification};
+            </foreach>
+        </if>
     </update>
 
     <update id="updateReceive" parameterType="IngredientsReceive">
@@ -1033,7 +1041,27 @@
     </select>
 
     <update id="invalidOut" parameterType="String">
-        update t_pr_ingredients_out set state = 'Invalid' where id = #{id}
+        update t_pr_ingredients_out set state = 'Invalid' where id = #{id};
+        <if test="ingredientsList != null and ingredientsList.size() > 0">
+            <foreach collection="ingredientsList" item="ingredients" index="index">
+
+
+                <if test="receiveIdList == null or receiveIdList.size() == 0">
+                    update t_pr_ingredients_inventory
+                    set
+                    amount = amount + #{ingredients.receiveAmount},ingredientState='ToReceive'
+                    where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName};
+                </if>
+            </foreach>
+        </if>
+        <if test="receiveIdList != null and receiveIdList.size() > 0 ">
+            <foreach collection="receiveIdList" item="receiveId" index="index">
+                update t_pr_ingredients_receive
+                set
+                state = 'ToOutBound'
+                where id = #{receiveId};
+            </foreach>
+        </if>
     </update>
 
     <update id="updateOut" parameterType="IngredientsOut">

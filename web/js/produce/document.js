@@ -1,9 +1,3 @@
-
-function editDocument() {
-    $("#editModal").modal('show')
-}
-
-
 var isSearch = false;
 var currentPage = 1;                          //当前页数
 var data;
@@ -584,12 +578,46 @@ function setUnEffective(e) {    //已提交
 }
 
 /**
- * 修改数据
+ * 显示修改框
  * @param e
  */
-function adjustData(e) {
+function showAdjustModal(e) {
     var id = getIdByMenu(e);
-    alert("功能调整中");
+    $.ajax({
+        type: "POST",
+        url: "getDocumentControl",
+        async: false,
+        dataType: "json",
+        data: {
+            ID: id
+        },
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                var obj = eval(result.data);
+                $("#editFileNO").val(obj.fileNO);
+                $("#editSYSCode").val(obj.SYSCode);
+                $("#editFileName").val(obj.fileName);
+                $("#editCompany").val(obj.company);
+                $("#editNote").val(obj.note);
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
+    $("#editModal").modal('show');
+}
+
+/**
+ * 修改数据
+ */
+function adjustData() {
+
+    alert("修改成功");
 }
 
 /**
