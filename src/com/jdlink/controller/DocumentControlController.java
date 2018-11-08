@@ -7,6 +7,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
@@ -24,7 +25,7 @@ public class DocumentControlController {
      */
     @RequestMapping("listDocumentControl")
     @ResponseBody
-    public String listDocumentControl(DocumentControl documentControl) {
+    public String listDocumentControl(@RequestBody DocumentControl documentControl) {
         JSONObject res = new JSONObject();
         try {
             List<DocumentControl> documentControlList = documentControlService.list(documentControl);
@@ -46,7 +47,7 @@ public class DocumentControlController {
      */
     @RequestMapping("countDocumentControl")
     @ResponseBody
-    public String countDocumentControl(DocumentControl documentControl) {
+    public String countDocumentControl(@RequestBody DocumentControl documentControl) {
         JSONObject res = new JSONObject();
         try {
             int count = documentControlService.count(documentControl);

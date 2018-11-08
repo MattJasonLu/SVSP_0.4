@@ -9,12 +9,22 @@
         select * from t_base_fileno
         <where>
             <if test="keyword != null and keyword != ''">
-                and id LIKE "%"#{keyword}"%" or dispatcher like "%"#{keyword}"%" or destination like "%"#{keyword}"%"
-                or transferTime like binary "%"#{keyword}"%" or produceCompanyName like "%"#{keyword}"%"
-                or transportCompanyName like "%"#{keyword}"%" or acceptCompanyName like "%"#{keyword}"%"
+                and (fileNO LIKE "%"#{keyword}"%"
+                or fileName like "%"#{keyword}"%"
+                or SYSCode like "%"#{keyword}"%"
+                or company like "%"#{keyword}"%")
             </if>
-            <if test="ID != null and ID != ''">
-                and id LIKE "%"#{ID}"%"
+            <if test="fileNO != null and fileNO != ''">
+                and fileNO LIKE "%"#{fileNO}"%"
+            </if>
+            <if test="fileName != null and fileName != ''">
+                and fileName LIKE "%"#{fileName}"%"
+            </if>
+            <if test="SYSCode != null and SYSCode != ''">
+                and SYSCode LIKE "%"#{SYSCode}"%"
+            </if>
+            <if test="company != null and company != ''">
+                and company LIKE "%"#{company}"%"
             </if>
             <if test="true">
                 and checkState != 'Invalid'
@@ -31,12 +41,22 @@
         SELECT count(*) FROM t_base_fileno
         <where>
             <if test="keyword != null and keyword != ''">
-                and id LIKE "%"#{keyword}"%" or dispatcher like "%"#{keyword}"%" or destination like "%"#{keyword}"%"
-                or transferTime like binary "%"#{keyword}"%" or produceCompanyName like "%"#{keyword}"%"
-                or transportCompanyName like "%"#{keyword}"%" or acceptCompanyName like "%"#{keyword}"%"
+                and (fileNO LIKE "%"#{keyword}"%"
+                or fileName like "%"#{keyword}"%"
+                or SYSCode like "%"#{keyword}"%"
+                or company like "%"#{keyword}"%")
             </if>
-            <if test="ID != null and ID != ''">
-                and id LIKE "%"#{ID}"%"
+            <if test="fileNO != null and fileNO != ''">
+                and fileNO LIKE "%"#{fileNO}"%"
+            </if>
+            <if test="fileName != null and fileName != ''">
+                and fileName LIKE "%"#{fileName}"%"
+            </if>
+            <if test="SYSCode != null and SYSCode != ''">
+                and SYSCode LIKE "%"#{SYSCode}"%"
+            </if>
+            <if test="company != null and company != ''">
+                and company LIKE "%"#{company}"%"
             </if>
             <if test="true">
                 and checkState != 'Invalid'
