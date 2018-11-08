@@ -298,7 +298,7 @@ function onLoadSecondary() {
     //进料方式高级检索
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getHandleCategory",                  // url
+        url: "getProcessWay",                  // url
        // data:JSON.stringify(page),
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
@@ -308,7 +308,7 @@ function onLoadSecondary() {
                 console.log(result);
                 var processWay=$('#search-materialForm');
                 processWay.children().remove();
-                $.each(result.handleCategoryList,function (index,item) {
+                $.each(result.processWayList,function (index,item) {
                     var option=$('<option/>')
                     option.val(index);
                     option.text(item.name);
@@ -463,6 +463,38 @@ function loadSecondaryList() {
             alert("服务器异常")
         }
 
+    });
+
+    //进料方式高级检索
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getProcessWay",                  // url
+        // data:JSON.stringify(page),
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                var processWay=$('#search-materialForm');
+                processWay.children().remove();
+                $.each(result.processWayList,function (index,item) {
+                    var option=$('<option/>')
+                    option.val(index);
+                    option.text(item.name);
+                    processWay.append(option);
+                })
+                processWay.get(0).selectedIndex=-1;
+            }
+            else {
+                alert(result.message);
+            }
+
+
+        },
+        error:function (result) {
+            alert("服务器异常")
+        }
     });
 }
 
@@ -1263,6 +1295,9 @@ function searchSecOutbound() {
     var processWay=$.trim($('#search-materialForm option:selected').text());
     //业务员
     var salesman=$.trim($('#search-salesman').val());
+
+    var wareHouseName=$.trim($('#search-warehouseId').val());
+
     var startDate=getDateByStr(outBoundDate);
     var endDate=getDateByStr(endDate);
 
@@ -1275,21 +1310,19 @@ function searchSecOutbound() {
             if(endDate.toString()=='Invalid Date'){
                 endDate=new Date();
             }
-            var start=$(this).children('td').eq(4).text();
+            var start=$(this).children('td').eq(2).text();
             if(start.length==0){
                 start=date;
             }
 
-            if(!($(this).children('td').eq(8).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
-            &&$(this).children('td').eq(9).text().indexOf(processWay)!=-1&&$(this).children('td').eq(5).text().indexOf(outboundOrderId)!=-1
-                &&$(this).children('td').eq(3).text().indexOf(salesman)!=-1
+            if(!($(this).children('td').eq(5).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
+            &&$(this).children('td').eq(6).text().indexOf(processWay)!=-1&&$(this).children('td').eq(1).text().indexOf(outboundOrderId)!=-1
                 &&(getDateByStr(start)<=endDate&&getDateByStr(start)>=startDate)
             )){
                 $(this).hide();
            }
-            if(($(this).children('td').eq(8).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
-                &&$(this).children('td').eq(9).text().indexOf(processWay)!=-1&&$(this).children('td').eq(5).text().indexOf(outboundOrderId)!=-1
-                &&$(this).children('td').eq(3).text().indexOf(salesman)!=-1
+            if(($(this).children('td').eq(5).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
+                &&$(this).children('td').eq(6).text().indexOf(processWay)!=-1&&$(this).children('td').eq(1).text().indexOf(outboundOrderId)!=-1
                 &&(getDateByStr(start)<=endDate&&getDateByStr(start)>=startDate))){
                array1.push($(this));
             }
