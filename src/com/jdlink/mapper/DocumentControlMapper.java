@@ -30,6 +30,12 @@ public interface DocumentControlMapper {
     void add(DocumentControl documentControl);
 
     /**
+     * 更新受控文档
+     * @param documentControl 受控文档
+     */
+    void update(DocumentControl documentControl);
+
+    /**
      * 获取受控文档
      * @param ID 编号
      * @return 文档

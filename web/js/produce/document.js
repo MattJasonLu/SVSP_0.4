@@ -576,13 +576,14 @@ function setUnEffective(e) {    //已提交
         });
     }
 }
-
+var ID;
 /**
  * 显示修改框
  * @param e
  */
 function showAdjustModal(e) {
     var id = getIdByMenu(e);
+    ID = id;
     $.ajax({
         type: "POST",
         url: "getDocumentControl",
@@ -616,8 +617,35 @@ function showAdjustModal(e) {
  * 修改数据
  */
 function adjustData() {
-
-    alert("修改成功");
+    var data = {
+        ID: ID,
+        fileNO: $("#editFileNO").val(),
+        SYSCode: $("#editSYSCode").val(),
+        fileName: $("#editFileName").val(),
+        company: $("#editCompany").val(),
+        note: $("#editNote").val()
+    };
+    console.log(data);
+    $.ajax({
+        type: "POST",
+        url: "updateDocumentControl",
+        async: false,
+        dataType: "json",
+        data: data,
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                alert(result.message);
+                window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
 }
 
 /**

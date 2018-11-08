@@ -109,6 +109,31 @@ public class DocumentControlController {
     }
 
     /**
+     * 更新受控文档
+     * @param documentControl 受控文档
+     * @return 成功与否
+     */
+    @RequestMapping("updateDocumentControl")
+    @ResponseBody
+    public String updateDocumentControl(DocumentControl documentControl) {
+        JSONObject res = new JSONObject();
+        try {
+            // 更新受控文档
+            documentControlService.update(documentControl);
+            JSONObject data = JSONObject.fromBean(documentControl);
+            res.put("status", "success");
+            res.put("message", "修改成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "修改失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
      * 设置受控文档失效
      * @param ID 编号
      * @return 成功与否

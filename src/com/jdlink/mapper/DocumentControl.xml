@@ -58,6 +58,12 @@
         select * from t_base_fileno where ID=#{ID};
     </select>
 
+    <!--更新受控文档-->
+    <update id="update">
+        update t_base_fileno set fileNO=#{fileNO}, fileName=#{fileName}, SYSCode=#{SYSCode},
+        company=#{company}, editDate=NOW(), editName=#{editName}, note=#{note} where ID=#{ID};
+    </update>
+
     <!--作废-->
     <update id="setInvalid">
         update t_base_fileno set checkState='Invalid' where ID=#{ID};
