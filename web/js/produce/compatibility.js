@@ -1372,7 +1372,7 @@ function confirmCompatibilityId() {
                            cloneTr.children('td').eq(0).append(delBtn)
                        }
 
-                        cloneTr.children('td').eq(3).children('input').val(obj.weeklyDemandTotal);
+                        cloneTr.children('td').eq(3).children('input').val(obj.weeklyDemandTotal.toFixed(2));
 
                         cloneTr.children('td').eq(4).html(obj.dailyRatio.toFixed(2));
 
