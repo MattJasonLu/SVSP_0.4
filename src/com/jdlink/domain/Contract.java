@@ -1,5 +1,7 @@
 package com.jdlink.domain;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -234,6 +236,28 @@ public class Contract implements Serializable {
      * 增加类型
      */
     private String addType;
+
+    //合同附件
+    private MultipartFile contractAppendices;
+
+    //合同附件地址
+    private String  contractAppendicesUrl;
+
+    public MultipartFile getContractAppendices() {
+        return contractAppendices;
+    }
+
+    public void setContractAppendices(MultipartFile contractAppendices) {
+        this.contractAppendices = contractAppendices;
+    }
+
+    public String getContractAppendicesUrl() {
+        return contractAppendicesUrl;
+    }
+
+    public void setContractAppendicesUrl(String contractAppendicesUrl) {
+        this.contractAppendicesUrl = contractAppendicesUrl;
+    }
 
     public List<QuotationItem> getQuotationItemList() {
         return quotationItemList;
