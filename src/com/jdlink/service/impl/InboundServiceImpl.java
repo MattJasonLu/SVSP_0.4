@@ -57,6 +57,11 @@ public class InboundServiceImpl implements InboundService {
     }
 
     @Override
+    public void setInboundPlanOrderSignIn(String inboundPlanOrderId) {
+        inboundMapper.setInboundPlanOrderSignIn(inboundPlanOrderId);
+    }
+
+    @Override
     public void setInboundPlanOrderReject(InboundPlanOrder inboundPlanOrder) {
         inboundMapper.setInboundPlanOrderReject(inboundPlanOrder);
     }

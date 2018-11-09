@@ -130,6 +130,12 @@
     <update id="setInboundPlanOrderInvalid">
         update t_pl_inboundplanorder set checkState='Invalid', inboundPlanOrderId=concat(#{inboundPlanOrderId}, #{newId}) where inboundPlanOrderId=#{inboundPlanOrderId};
     </update>
+
+    <!--收样入库计划单-->
+    <update id="setInboundPlanOrderSignIn">
+        update t_pl_inboundplanorder set checkState='Collected' where inboundPlanOrderId=#{inboundPlanOrderId};
+    </update>
+
     <!--设置入库计划单拒收-->
     <update id="setInboundPlanOrderReject">
         update t_pl_inboundplanorder set checkState='Rejected', advice=#{advice} where inboundPlanOrderId=#{inboundPlanOrderId};

@@ -54,6 +54,12 @@ public interface InboundService {
     void setInboundPlanOrderInvalid(String inboundPlanOrderId);
 
     /**
+     * 确认收样
+     * @param inboundPlanOrderId
+     */
+    void setInboundPlanOrderSignIn(String inboundPlanOrderId);
+
+    /**
      * 拒收入库计划单
      * @param inboundPlanOrder 入库计划单
      */

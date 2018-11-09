@@ -160,6 +160,27 @@ public class InboundController {
     }
 
     /**
+     * 确认收样
+     * @param inboundPlanOrderId 入库计划单号
+     * @return 成功与否
+     */
+    @RequestMapping("setInboundPlanOrderSignIn")
+    @ResponseBody
+    public String setInboundPlanOrderSignIn(String inboundPlanOrderId) {
+        JSONObject res = new JSONObject();
+        try {
+            inboundService.setInboundPlanOrderSignIn(inboundPlanOrderId);
+            res.put("status", "success");
+            res.put("message", "收样成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "收样失败");
+        }
+        return res.toString();
+    }
+
+    /**
      * 拒收入库计划单
      * @param inboundPlanOrder 参数
      * @return 结果

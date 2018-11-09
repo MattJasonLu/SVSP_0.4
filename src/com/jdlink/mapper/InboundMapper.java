@@ -50,6 +50,12 @@ public interface InboundMapper {
     void setInboundPlanOrderInvalid(@Param("inboundPlanOrderId") String inboundPlanOrderId, @Param("newId") String newId);
 
     /**
+     * 确认收样
+     * @param inboundPlanOrderId
+     */
+    void setInboundPlanOrderSignIn(String inboundPlanOrderId);
+
+    /**
      * 拒收入库计划单
      * @param inboundPlanOrder 入库计划单
      */

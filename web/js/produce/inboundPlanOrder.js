@@ -759,6 +759,39 @@ function setInvalid(e) {    //已作废
 }
 
 /**
+ * 确认收样
+ * @param e
+ */
+function setSignIn(e) {
+    var r = confirm("确认收样该入库单吗？");
+    if (r) {
+        var id = getIdByMenu(e);
+        $.ajax({
+            type: "POST",
+            url: "setInboundPlanOrderSignIn",
+            async: false,
+            dataType: "json",
+            data: {
+                inboundPlanOrderId: id
+            },
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result);
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常");
+            }
+        });
+    }
+}
+
+/**
  * 查看数据
  * @param e
  */
