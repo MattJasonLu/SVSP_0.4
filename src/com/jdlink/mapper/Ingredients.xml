@@ -306,56 +306,57 @@
         bookkeeper=#{bookkeeper},approver=#{approver},keeper=#{keeper},acceptor=#{acceptor},handlers=#{handlers},
         nowTime=NOW()
         where id=#{id};
-        <if test="ingredientsList != null and ingredientsList.size() > 0">
-            <foreach collection="ingredientsList" item="ingredients" index="index">
-                <if test="ingredients.aid == 'notExist'"><!--不存在则新增-->
-                    insert into t_pr_ingredients_inventory
-                    (name,wareHouseName,amount,unit,ingredientState,specification)
-                    values
-                    (#{ingredients.name},#{ingredients.wareHouseName},#{ingredients.amount},#{ingredients.unit},'ToReceive',
-                    #{ingredients.specification});
-                </if>
-                <if test="ingredients.aid == 'exist'"><!--存在则更新-->
-                    update t_pr_ingredients_inventory
-                    set
-                    amount = amount + #{ingredients.amount}
-                    where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName} and
-                    specification=#{ingredients.specification};
-                </if>
-                <if test="ingredients.serialNumberA == 'add'"><!--新增-->
-                    update t_pl_material set state = 'ToPick' where
-                    id=#{ingredients.procurementItemId};
-
-                    insert into t_pr_ingredients
-                    (inId,serialNumberIn,name,unitPrice,totalPrice,amount,wareHouseName,post,specification,unit,
-                    ingredientState,remarks,equipment,procurementId)
-                    values
-                    (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.name},#{ingredients.unitPrice},
-                    #{ingredients.totalPrice},#{ingredients.amount},#{ingredients.wareHouseName},
-                    #{ingredients.post},#{ingredients.specification},#{ingredients.unit},'ToReceive',#{ingredients.remarks},
-                    #{ingredients.equipment},#{ingredients.procurementId});
-                </if>
-                <if test="ingredients.serialNumberA == 'update'"><!--更新-->
-                    update t_pr_ingredients
-                    set
-                    unitPrice=#{ingredients.unitPrice},post=#{ingredients.post},wareHouseName=#{ingredients.wareHouseName},equipment=#{ingredients.equipment},
-                    where itemId=#{ingredients.itemId};
-                </if>
-                <if test="ingredients.serialNumberA == 'del'"><!--删除，并回退之前的数据-->
-                    delete from t_pr_ingredients where itemId=#{ingredients.itemId};
-
-                    update t_pl_material set state = 'ToInbound'
-                    where receiptNumber =#{ingredients.procurementId} and suppliesName=#{ingredients.name} and
-                    specifications=#{ingredients.specification};
-
-                    update t_pr_ingredients_inventory
-                    set amount= amount - #{ingredients.amount}
-                    where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName} and
-                    specification=#{ingredients.specification};
-                </if>
-            </foreach>
-        </if>
     </update>
+
+    <insert id="addInventoryItem" parameterType="Ingredients">
+        insert into t_pr_ingredients_inventory
+        (name,wareHouseName,amount,unit,ingredientState,specification)
+        values
+        (#{name},#{wareHouseName},#{amount},#{unit},'ToReceive',#{specification});
+    </insert>
+
+    <insert id="addIngredientsInItem" parameterType="Ingredients">
+         insert into t_pr_ingredients
+         (inId,serialNumberIn,name,unitPrice,totalPrice,amount,wareHouseName,post,specification,unit,
+         ingredientState,remarks,equipment,procurementId)
+         values
+         (#{id},#{serialNumber},#{name},#{unitPrice},#{totalPrice},#{amount},#{wareHouseName},
+         #{post},#{specification},#{unit},'ToReceive',#{remarks},#{equipment},#{procurementId});
+
+          update t_pl_material set state = 'ToPick' where id=#{procurementItemId};
+    </insert>
+
+    <update id="addInventoryAmount" parameterType="Ingredients">
+        update t_pr_ingredients_inventory
+        set
+        amount = amount + #{amount}
+        where name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
+    </update>
+
+    <update id="updateIngredientInItem" parameterType="Ingredients">
+         update t_pr_ingredients
+         set
+         unitPrice=#{unitPrice},post=#{post},wareHouseName=#{wareHouseName},equipment=#{equipment}
+         where itemId=#{itemId};
+    </update>
+
+    <delete id="delIngredientInItem" parameterType="Ingredients">
+        delete from t_pr_ingredients where itemId=#{itemId};
+
+        update t_pl_material set state = 'ToInbound'
+        where receiptNumber =#{procurementId} and suppliesName=#{name} and specifications=#{specification};
+
+        update t_pr_ingredients_inventory
+        set amount= amount - #{amount}
+        where name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
+    </delete>
+
+    <update id="reduceOldInventory" parameterType="Ingredients">
+        update t_pr_ingredients_inventory
+        set amount= amount - #{amount}
+        where name=#{name} and wareHouseName=#{oldWareHouseName} and specification=#{specification};
+    </update>
+
 
     <insert id="addIn" parameterType="IngredientsIn">
         <!--<if test="procurementItemIdList != null and procurementItemIdList.size() > 0">-->
@@ -755,51 +756,47 @@
         department=#{department},fileId=#{fileId},totalAmount=#{totalAmount},vicePresident=#{vicePresident},warehouseSupervisor=#{warehouseSupervisor},
         keeper=#{keeper},pickingSupervisor=#{pickingSupervisor},pickingMan=#{pickingMan},nowTime=NOW()
         where id = #{id};
-        <if test="ingredientsList.size() > 0">
-            <foreach collection="ingredientsList" item="ingredients" index="index">
-                <if test="ingredients.serialNumberA == 'update'"><!--更新-->
-                    <if test="ingredients.keywords == 'plus'"><!--新领料数比旧的小则需增加库存-->
-                        update t_pr_ingredients_inventory
-                        set amount= amount + #{ingredients.notReceiveAmount}
-                        where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName} and
-                        specification=#{ingredients.specification};
-                    </if>
-                    <if test="ingredients.keywords == 'reduce'"><!--新领料数比旧的大则需减少库存-->
-                        update t_pr_ingredients_inventory
-                        set amount= amount - #{ingredients.notReceiveAmount}
-                        where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName} and
-                        specification=#{ingredients.specification};
-                    </if>
-                    update t_pr_ingredients
-                    set
-                    remarks=#{ingredients.remarks},receiveAmount=#{ingredients.receiveAmount},ingredientState='PartReceived'
-                    where itemId=#{ingredients.itemId};
-                </if>
-                <if test="ingredients.serialNumberA == 'add'"><!--新增-->
-                    insert into t_pr_ingredients
-                    (receiveId,serialNumberReceive,name,receiveAmount,wareHouseName,
-                    specification,unit,remarks,ingredientState)
-                    values
-                    (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.name},
-                    #{ingredients.receiveAmount},#{ingredients.wareHouseName},#{ingredients.specification},
-                    #{ingredients.unit},#{ingredients.remarks},IF(#{ingredients.notReceiveAmount}>0,'PartReceived','Received'));
-
-                    update t_pr_ingredients_inventory
-                    set amount= amount - #{ingredients.receiveAmount}
-                    where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName} and
-                    specification=#{ingredients.specification};
-                </if>
-                <if test="ingredients.serialNumberA == 'del'"><!--减少-->
-                    update t_pr_ingredients_inventory
-                    set amount= amount + #{ingredients.receiveAmount}
-                    where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName} and
-                    specification=#{ingredients.specification};
-
-                    delete from t_pr_ingredients where itemId=#{ingredients.itemId}
-                </if>
-            </foreach>
-        </if>
     </update>
+
+    <insert id="addIngredientsReceiveItem" parameterType="Ingredients">
+        insert into t_pr_ingredients
+        (receiveId,serialNumberReceive,name,receiveAmount,wareHouseName,
+        specification,unit,remarks,ingredientState)
+        values
+        (#{id},#{serialNumber},#{name},#{receiveAmount},#{wareHouseName},#{specification},
+        #{unit},#{remarks},IF(#{notReceiveAmount}>0,'PartReceived','Received'));
+
+        update t_pr_ingredients_inventory
+        set amount= amount - #{receiveAmount}
+        where name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
+    </insert>
+
+    <update id="updateIngredientsReceiveItem" parameterType="Ingredients">
+        update t_pr_ingredients
+        set
+        remarks=#{remarks},receiveAmount=#{receiveAmount},ingredientState='PartReceived',serialNumberReceive=#{serialNumber}
+        where itemId=#{itemId};
+    </update>
+
+    <update id="plusInventoryAmount" parameterType="Ingredients">
+        update t_pr_ingredients_inventory
+        set amount= amount + #{notReceiveAmount}
+        where name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
+    </update>
+
+    <update id="reduceInventoryAmount" parameterType="Ingredients">
+        update t_pr_ingredients_inventory
+        set amount= amount - #{notReceiveAmount}
+        where name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
+    </update>
+
+    <delete id="delIngredientReceiveItem" parameterType="Ingredients">
+        update t_pr_ingredients_inventory
+        set amount= amount + #{receiveAmount}
+        where name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
+
+        delete from t_pr_ingredients where itemId=#{itemId}
+    </delete>
 
     <update id="updateReceiveState" parameterType="String">
         update t_pr_ingredients_receive
@@ -910,7 +907,7 @@
                 or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
-                or companyName like "%"#{keywords}"%"
+                or department like "%"#{keywords}"%"
                 or fileId like "%"#{keywords}"%"
                 or totalAmount = #{keywords}
                 or totalPrice = #{keywords}
@@ -931,8 +928,8 @@
             <if test="endDate !=null and endDate !=''">
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
-            <if test="companyName !=null and companyName !='' ">
-                and companyName like "%"#{companyName}"%"
+            <if test="department !=null and department !='' ">
+                and department like "%"#{department}"%"
             </if>
         </where>
         order by creationDate desc
@@ -956,7 +953,7 @@
                 or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
-                or companyName like "%"#{keywords}"%"
+                or department like "%"#{keywords}"%"
                 or fileId like "%"#{keywords}"%"
                 or totalAmount = #{keywords}
                 or totalPrice = #{keywords}
@@ -977,8 +974,8 @@
             <if test="endDate !=null and endDate !=''">
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
-            <if test="companyName !=null and companyName !='' ">
-                and companyName like "%"#{companyName}"%"
+            <if test="department !=null and department !='' ">
+                and department like "%"#{department}"%"
             </if>
         </where>
     </select>
@@ -1133,38 +1130,41 @@
         department=#{department},fileId=#{fileId},totalPrice=#{totalPrice},totalAmount=#{totalAmount},bookkeeper=#{bookkeeper},approver=#{approver},
         keeper=#{keeper},handlers=#{handlers},creationDate=#{creationDate},nowTime=NOW()
         where id = #{id};
-        <if test="ingredientsList != null and ingredientsList != '' and ingredientsList.size() > 0">
-            <foreach collection="ingredientsList" item="ingredients" index="index">
-                <if test="ingredients.serialNumberA == 'add'"><!--新增-->
-                    insert into t_pr_ingredients
-                    (outId,serialNumberOut,name,unitPrice,totalPrice,receiveAmount,wareHouseName,post,
-                    specification,unit,ingredientState,remarks,equipment,aid)
-                    values
-                    (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.name},#{ingredients.unitPrice},
-                    #{ingredients.totalPrice},#{ingredients.receiveAmount},#{ingredients.wareHouseName},
-                    #{ingredients.post},#{ingredients.specification},#{ingredients.unit},
-                    IF(#{ingredients.notReceiveAmount}>0,'PartOutBound','OutBounded'),#{ingredients.remarks},#{ingredients.equipment},
-                    #{ingredients.aid});
-                </if>
-                <if test="ingredients.serialNumberA == 'update'"><!--修改-->
-                    update t_pr_ingredients
-                    set unitPrice=#{ingredients.unitPrice},totalPrice=#{ingredients.totalPrice},post=#{ingredients.post},
-                    equipment=#{ingredients.equipment}
-                    where itemId=#{ingredients.itemId}
-                </if>
-                <if test="ingredients.serialNumberA == 'del'"><!--删除-->
-                    update t_pr_ingredients_receive
-                    set state='NewBuild'
-                    where id=#{ingredients.aid};
-
-                    update t_pr_ingredients
-                    set ingredientState='PartReceived'
-                    where receiveId=#{ingredients.aid} and name=#{ingredients.name} and specification=#{ingredients.specification}
-                    and wareHouseName=#{ingredients.wareHouseName};
-                </if>
-            </foreach>
-        </if>
     </update>
+
+    <insert id="addIngredientsOutItem" parameterType="Ingredients">
+        insert into t_pr_ingredients
+        (outId,serialNumberOut,name,unitPrice,totalPrice,receiveAmount,wareHouseName,post,
+        specification,unit,ingredientState,remarks,equipment,aid)
+        values
+        (#{id},#{serialNumber},#{name},#{unitPrice},#{totalPrice},#{receiveAmount},#{wareHouseName},#{post},
+        #{specification},#{unit},IF(#{notReceiveAmount}>0,'PartOutBound','OutBounded'),#{remarks},#{equipment},#{aid});
+
+        update t_pr_ingredients_receive
+        set
+        state = 'OutBounded'
+        where id = #{aid};
+    </insert>
+
+    <update id="updateIngredientsOutItem" parameterType="Ingredients">
+         update t_pr_ingredients
+         set
+         unitPrice=#{unitPrice},totalPrice=#{totalPrice},post=#{post},equipment=#{equipment}
+         where itemId=#{itemId}
+    </update>
+
+    <delete id="delIngredientsOutItem" parameterType="Ingredients">
+        update t_pr_ingredients_receive
+        set state='NewBuild'
+        where id=#{aid};
+
+        update t_pr_ingredients
+        set ingredientState='PartReceived'
+        where receiveId=#{aid} ;
+
+        delete from t_pr_ingredients
+         where itemId=#{itemId} ;
+    </delete>
 
     <insert id="addOut" parameterType="IngredientsOut">
         insert into t_pr_ingredients_out

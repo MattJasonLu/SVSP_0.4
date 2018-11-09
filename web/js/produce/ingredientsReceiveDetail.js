@@ -817,8 +817,12 @@ function invalid(item) {
  * @param item
  */
 function ingredientsReceiveModify(item) {
-    localStorage.id = getIngredientsId(item);
-    window.location.href = "newIngredientsReceive.html";
+    if ($(item).parent().parent().children().eq(3).text() == '新建') {
+        localStorage.id = getIngredientsId(item);
+        window.location.href = "newIngredientsReceive.html";
+    }else {
+        alert("单据不可修改！");
+    }
 }
 
 

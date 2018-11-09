@@ -1719,8 +1719,12 @@ function reset1() {
  * @param item
  */
 function ingredientsInModify(item){
-    localStorage.id = getIngredientsInId(item);
-    window.location.href="newIngredientsIn.html";
+    if ($(item).parent().parent().children().eq(3).text() == '新建') {
+        localStorage.id = getIngredientsInId(item);
+        window.location.href = "newIngredientsIn.html";
+    }else{
+        alert("单据不可修改！");
+    }
 }
 
 /**
