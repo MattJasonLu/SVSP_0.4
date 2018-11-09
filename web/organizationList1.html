@@ -22,28 +22,36 @@
     <!--
     var setting = {
         view: {
-            addHoverDom: addHoverDom,
-            removeHoverDom: removeHoverDom,
-            selectedMulti: false
+            addHoverDom: addHoverDom,     //鼠标悬停时显示用户自定义的控件，如zTree内部的编辑，删除等
+            removeHoverDom: removeHoverDom,//鼠标失去悬停焦点时隐藏用户自定义的控件
+            selectedMulti: false          //设置是否允许同事选中多个节点
         },
         edit: {
-            enable: true,
-            editNameSelectAll: true,
-            showRemoveBtn: showRemoveBtn,
-            showRenameBtn: showRenameBtn
+            enable: true,                  //设置zTree是否处于编辑状态
+            editNameSelectAll: true,       //节点编辑名称input初次显示时，设置txt内容是否为权限状态
+            showRemoveBtn: showRemoveBtn,   //enable: true时生效，首先触发callback回调函数，判定用户是否进行删除操作；如果未设置beforeRemove或beforeRemove返回true，
+			                                //则删除节点并触发callback.onRemove回调函数。
+            showRenameBtn: showRenameBtn    //enable: true时生效，先进入节点名称编辑状态，编辑名称完毕(input失去焦点或按下Enter键)，会触发callback.beforeRename
+			                                //回调函数，用户可根据自己的规则判定是否允许修改名称，若beforeRename返回false，则继续保持编辑名称状态，直到名称
+											// 符合规则位置(按下ESC键可取消编辑名称状态，恢复原名称)。若未设置beforeRename或beforeRename返回true，则结束节点
+											// 编辑名称状态，更新节点名称并触发callback.onRename回调函数。
         },
         data: {
             simpleData: {
-                enable: true
+                enable: true  //确定zTree初始化时的节点数据、异步加载时的节点数据、或addNodes方法中输入的newNodes诗句是否采用简单数据模式(Array)，不需要
+                // 用户再把数据库中取出的List强行转换为复杂的JSON嵌套格式
             }
         },
         callback: {
-            beforeDrag: beforeDrag,
-            beforeEditName: beforeEditName,
-            beforeRemove: beforeRemove,
-            beforeRename: beforeRename,
-            onRemove: onRemove,
-            onRename: onRename
+            beforeDrag: beforeDrag,   //用于捕获节点被拖拽之前的事件回调函数，并且根据返回值确定是否开始拖拽操作
+            beforeEditName: beforeEditName, //用于捕获及诶单编辑按钮的click事件，并且根据返回值确定是否允许进入名称编辑状态
+            beforeRemove: beforeRemove,//用于捕获节点被删除之前的事件回调函数，并且根据返回值确定是否允许删除操作。
+            beforeRename: beforeRename,//用于捕获节点编辑名称结束(input失去焦点或按下Enter键)之后，更新节点名称数据之前的事件回调函数，并根据返回值确定是否允许
+                                    // 更改名称的操作。节点进入编辑名称状态后，按ESC键可以放弃当前修改，恢复原名称，取消编辑名称状态从V3.5.13开始，
+                                    // 取消编辑状态也会触发此回调函数，根据isCancel参数判断
+            onRemove: onRemove,//用于捕获节点之后的事件回调函数。
+            onRename: onRename //用于捕获节点编辑名称结束之后的事件回调函数。节点进入名称编辑状态，并且就该节点名称后触发此回调函数。如果用户设置了beforeRename回调函数，
+                                //并返回false，将无法触发onRename事件回调函数，若通过直接修改treeNode的数据，并且利用update方法更新，是不会触发此函数的。
         }
     };
 
