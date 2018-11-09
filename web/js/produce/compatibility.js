@@ -594,9 +594,8 @@ function totalPage() {
 
         $.each(result.compatibilityList, function (index, item) {
             var data = eval(item);
-            // console.log(obj)
-
-
+             // console.log(data)
+        if(data.checkState.name!='已作废'){
             var clonedTr = tr.clone();
 
             clonedTr.show();
@@ -678,6 +677,10 @@ function totalPage() {
             //把克隆好的tr追加到原来的tr前面
             // 隐藏无数据的tr
             tr.hide();
+
+        }
+
+
         });
 
     }
@@ -2005,7 +2008,11 @@ function Cal(item) {
     //计算比例==》周需求总量/计算周需求总量合计
     $('.myclass3').each(function () {
         console.log('走到这')
-        $(this).children('td').eq(5).html((parseFloat($(this).children('td').eq(3).children('input').val())/parseFloat($("#weeklyDemandTotalAdd4").html())).toFixed(2))
+        var proportion=(parseFloat($(this).children('td').eq(3).children('input').val())/parseFloat($("#weeklyDemandTotalAdd4").html())).toFixed(2);
+        if(isNaN(proportion)){ //如果输入的不是数字就默认0
+            proportion=0;
+        }
+        $(this).children('td').eq(5).html(proportion)
     })
 
 
@@ -2102,6 +2109,31 @@ function addCompatibility() {
 
      $('.myclass3').each(function (index,item) {
          index1++;
+         if($.trim($(this).children('td').eq(6).find('input').val()).length==0){
+             $(this).children('td').eq(6).find('input').val(0)
+         }
+         if($.trim($(this).children('td').eq(8).find('input').val()).length==0){
+             $(this).children('td').eq(8).find('input').val(0)
+         }
+         if($.trim($(this).children('td').eq(10).find('input').val()).length==0){
+             $(this).children('td').eq(10).find('input').val(0)
+         }
+         if($.trim($(this).children('td').eq(12).find('input').val()).length==0){
+             $(this).children('td').eq(12).find('input').val(0)
+         }
+         if($.trim($(this).children('td').eq(14).find('input').val()).length==0){
+             $(this).children('td').eq(14).find('input').val(0)
+         }
+         if($.trim($(this).children('td').eq(16).find('input').val()).length==0){
+             $(this).children('td').eq(16).find('input').val(0)
+         }
+         if($.trim($(this).children('td').eq(18).find('input').val()).length==0){
+             $(this).children('td').eq(18).find('input').val(0)
+         }
+         if($.trim($(this).children('td').eq(20).find('input').val()).length==0){
+             $(this).children('td').eq(20).find('input').val(0)
+         }
+
          calorificSum+=parseFloat($(this).children('td').eq(6).find('input').val());
          ashAvgSum+=parseFloat($(this).children('td').eq(8).find('input').val());
          waterSum+=parseFloat($(this).children('td').eq(10).find('input').val());
@@ -2188,7 +2220,7 @@ function addCompatibility() {
 
 
 
- alert("添加成功！")
+    alert("添加成功！")
     window.location.reload();
 
 

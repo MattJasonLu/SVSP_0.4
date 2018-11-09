@@ -3,6 +3,7 @@ package com.jdlink.controller;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.service.WasteIntoService;
+import com.jdlink.service.produce.SewageTestService;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
@@ -24,6 +25,8 @@ import java.util.*;
 public class WasteIntoController {
     @Autowired
     WasteIntoService wasteIntoService;
+    @Autowired
+    SewageTestService sewageTestService;
     /**
      * 获得危废入场分析日报列表
      */
@@ -56,8 +59,8 @@ public class WasteIntoController {
     public String getSecondIntoList(@RequestBody Page page){
         JSONObject res=new JSONObject();
         try {
-            //首先更新
-            wasteIntoService.updateWasteInto();
+            //首先更新==>有问题 会报错2018/11/9
+           // wasteIntoService.updateWasteInto();
             List<SecondarySample> wasteIntoList=wasteIntoService.getSecondarysample(page);
             res.put("data",wasteIntoList);
             res.put("status", "success");
@@ -234,6 +237,29 @@ public class WasteIntoController {
         JSONObject res=new JSONObject();
  try {
      wasteIntoService.confirmSecondarySampleById(id,laboratorySignatory);
+
+     //如果存在就更新 否则就添加
+     //根据编号获得次生送样明细
+     SecondarySample secondarySample=wasteIntoService.getSecondarysampleById(id);
+
+     List<SecondarySampleItem> secondarySampleItemList=secondarySample.getSecondarySampleItemList();
+
+     for(int i=0;i<secondarySampleItemList.size();i++){
+
+         //根据编号获取次生化验信息
+         if(sewageTestService.getSecondaryTestById(id)!=null){
+             //更新
+             wasteIntoService.updateSecondarySample(id);
+         }
+
+         if(sewageTestService.getSecondaryTestById(id)==null){
+            //新增
+             wasteIntoService.SecondarySample(id);
+         }
+
+     }
+
+
      res.put("status", "success");
      res.put("message", "已收样！");
  }
