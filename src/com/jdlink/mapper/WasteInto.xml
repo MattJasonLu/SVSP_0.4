@@ -180,4 +180,16 @@
         </where>
     </select>
 
+
+    <!--次生化验对象不存在就新增-->
+    <insert id="SecondarySample" parameterType="String">
+        insert into t_pr_secondarytest (id,dateTime) values (#{id},NOW());
+    </insert>
+
+    <!--次生化验对象存在就更新-->
+    <update id="updateSecondarySample" parameterType="String">
+        update t_pr_secondarytest set dateTime=NOW() where id=#{id};
+
+    </update>
+
 </mapper>

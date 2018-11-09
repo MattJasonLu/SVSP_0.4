@@ -663,7 +663,7 @@ public class BatchOrderController {
     public String getSecondaryInventoryList(@RequestBody Page page) {
         JSONObject res=new JSONObject();
         try {
-            List<WasteInventory> wasteInventoryList= batchOrderService.getSecInventoryListBat();
+            List<WasteInventory> wasteInventoryList= batchOrderService.getSecInventoryListBat(page);
             JSONArray arrray=JSONArray.fromObject(wasteInventoryList);
             // Quotation quotation=quotationService.getQuotationByWastesCodeAndClientId(wastesCode, clientId);
             //更新剩余库存量

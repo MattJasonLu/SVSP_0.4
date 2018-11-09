@@ -101,4 +101,14 @@ public class WasteIntoServiceImpl implements WasteIntoService {
     public int searchSecondaryCount(SecondarySample secondarySample) {
         return wasteIntoMapper.searchSecondaryCount(secondarySample);
     }
+
+    @Override
+    public void SecondarySample(String id) {
+        wasteIntoMapper.SecondarySample(id);
+    }
+
+    @Override
+    public void updateSecondarySample(String id) {
+        wasteIntoMapper.updateSecondarySample(id);
+    }
 }

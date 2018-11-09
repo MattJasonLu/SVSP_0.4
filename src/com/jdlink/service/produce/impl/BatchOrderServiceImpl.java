@@ -83,9 +83,11 @@ public class BatchOrderServiceImpl implements BatchOrderService
         return batchOrderMapper.loadWastesOutBoundList(page);
     }
 
+
+
     @Override
-    public List<WasteInventory> getSecInventoryListBat() {
-        return batchOrderMapper.getSecInventoryListBat();
+    public List<WasteInventory> getSecInventoryListBat(Page page) {
+        return batchOrderMapper.getSecInventoryListBat(page);
     }
 
     @Override

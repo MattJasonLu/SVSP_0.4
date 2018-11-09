@@ -63,8 +63,11 @@
 
     <!--获得次生库存信息-->
     <select id="getSecInventoryListBat" resultMap="WasteInventoryListBatRM">
-        select * from t_pl_wasteinventory where boundType='SecondaryInbound' order by inboundDate;
-    </select>
+        select * from t_pl_wasteinventory where boundType='SecondaryInbound' order by inboundDate
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+</select>
 
     <!--根据入库单号明细编号查询库存信息-->
     <select id="getWasteInventoryByInboundOrderId" resultMap="WasteInventoryListBatRM" parameterType="String">
