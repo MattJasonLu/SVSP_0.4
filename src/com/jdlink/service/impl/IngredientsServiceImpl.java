@@ -196,9 +196,9 @@ public class IngredientsServiceImpl implements IngredientsService {
                     ingredientsMapper.addIngredientsReceiveItem(ingredients);// 新增领料单条目并更新库存
                 }else if(ingredients.getSerialNumberA().equals("update")){
                     ingredientsMapper.updateIngredientsReceiveItem(ingredients);// 更新领料单条目数据
-                    if(ingredients.getKeywords().equals("plus")){
+                    if(ingredients.getReceiveAmount() < ingredients.getOldReceiveAmount()){
                         ingredientsMapper.plusInventoryAmount(ingredients); // 如果领料数比以前少则需加回库存
-                    }else if(ingredients.getKeywords().equals("reduce")){
+                    }else if(ingredients.getReceiveAmount() > ingredients.getOldReceiveAmount()){
                         ingredientsMapper.reduceInventoryAmount(ingredients);// 如果领料数比以前多则需减少库存
                     }
                 }else if(ingredients.getKeywords().equals("del")){

@@ -1313,6 +1313,7 @@ function loadInventoryListData() {
                         ingredients.specification = obj.specification; // 规格
                         ingredients.unit = obj.unit;                  // 单位
                         ingredients.receiveAmount = obj.receiveAmount.toFixed(2); // 领料数
+                        ingredients.oldReceiveAmount = obj.receiveAmount.toFixed(2);
                         ingredients.wareHouseName = obj.wareHouseName;
                         //获取库存量
                         $.ajax({
