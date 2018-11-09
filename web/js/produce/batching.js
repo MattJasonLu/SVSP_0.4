@@ -243,7 +243,9 @@ function  batchingList() {
 
     //自动赋值
     $('#createDate').val(dateToString(new Date()))
+    $('#date').val(dateToString(new Date()))
    var data= getCurrentUserData();
+
     console.log(data)
     if(data!=null){
         $('#creator').val(data.username);

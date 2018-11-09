@@ -560,6 +560,7 @@ function loadRequisitionList() {
     }
     /*加载出库类别下拉框
      */
+    $('#outBoundDate').val(dateToString(new Date()))
     var data=getCurrentUserData();
     console.log(data)
     if(data!=null){

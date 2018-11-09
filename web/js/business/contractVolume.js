@@ -6,7 +6,10 @@
 var isSearch = false;
 var currentPage = 1;                          //当前页数
 var data;
-
+var array0=[];//初始化时存放的数组
+var array=[];//存放所有的tr
+var array1=[];//存放目标的tr
+//危废出库查询
 
 /**
  * 返回count值
@@ -378,11 +381,68 @@ function setContractVolume(result) {
 
 }
 
+/**
+ * 省略显示页码
+ */
+function setPageCloneAfter(currentPageNumber) {
+    var total = totalPage();
+    var pageNumber = 5;         // 页码数
+    if (total > pageNumber) { // 大于5页时省略显示
+        $(".beforeClone").remove();          // 删除之前克隆页码
+        $("#next").prev().hide();            // 将页码克隆模板隐藏
+        if (currentPageNumber <= (parseInt(pageNumber/2) + 1)) {   // 如果pageNumber = 5,当前页小于3显示前五页
+            for (var i = 0; i < pageNumber; i++) {
+                var li = $("#next").prev();
+                var clonedLi = li.clone();
+                clonedLi.show();
+                clonedLi.find('a:first-child').text(i + 1);          // 页数赋值
+                clonedLi.find('a:first-child').click(function () {    // 设置点击事件
+                    var num = $(this).text();
+                    switchPage(num);        // 跳转页面
+                });
+                clonedLi.addClass("beforeClone");
+                clonedLi.removeAttr("id");
+                clonedLi.insertAfter(li);
+            }
+        } else if(currentPageNumber <= total - parseInt(pageNumber/2)){  // 如果pageNumber = 5,大于3时显示其前后两页
+            for (var i = currentPage - parseInt(pageNumber/2); i <= parseInt(currentPage) + parseInt(pageNumber/2); i++) {
+                var li = $("#next").prev();
+                var clonedLi = li.clone();
+                clonedLi.show();
+                clonedLi.find('a:first-child').text(i);          // 页数赋值
+                clonedLi.find('a:first-child').click(function () {    // 设置点击事件
+                    var num = $(this).text();
+                    switchPage(num);        // 跳转页面
+                });
+                clonedLi.addClass("beforeClone");
+                clonedLi.removeAttr("id");
+                clonedLi.insertAfter(li);
+            }
+        } else if(currentPageNumber > total - parseInt(pageNumber/2)){    // 如果pageNumber = 5,显示最后五页
+            for (var i = total - pageNumber + 1; i <= total; i++) {
+                var li = $("#next").prev();
+                var clonedLi = li.clone();
+                clonedLi.show();
+                clonedLi.find('a:first-child').text(i);          // 页数赋值
+                clonedLi.find('a:first-child').click(function () {    // 设置点击事件
+                    var num = $(this).text();
+                    switchPage(num);        // 跳转页面
+                });
+                clonedLi.addClass("beforeClone");
+                clonedLi.removeAttr("id");
+                clonedLi.insertAfter(li);
+            }
+        }
+    }
+    if(currentPageNumber == 1){
+        $("#previous").next().next().eq(0).addClass("oldPageClass");
+        $("#previous").next().next().eq(0).addClass("active");       // 将首页页码标蓝
+    }
+}
 
 
-array=[];//存放所有的tr
-array1=[];//存放目标的tr
-//危废出库查询
+
+
 
 
 $(document).ready(function () {//页面载入是就会进行加载里面的内容
@@ -398,27 +458,43 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
             }
         },600);
     });
+    // $("#circleChart").hide();
+    // $("#circleChart").circleChart({
+    //     size:200,
+    //     value:100,
+    //     text: '加载中', // 进度条内容
+    //
+    // });
 });
 
+
+
 //合约量粗查询
+
 function searchFuzzy() {
+        // $("#circleChart").show();
     isSearch=false;
     //分页模糊查询
     array.length=0;//清空数组
-    array1.length=0;
-    var text=$.trim($('#searchContent').val());
 
-    for(var i=totalPage();i>0;i--){
-        switchPage(parseInt());
+    array1.length=0;
+    // console.log("刚进来:"+end)
+
+    for (var i = totalPage(); i > 0; i--) {
+        switchPage(parseInt(i));
+        // $("#circleChart").circleChart({
+        //     size:200,
+        //     value:100,
+        //     text: '加载中', // 进度条内容
+        //
+        // });
         array.push($('.myclass'));
     }
 
-    if(text.length<=0){
-        localStorage.name="Wastes";
-        loadPageContractManageList();
-    }
-
     isSearch=true;
+
+    var text=$.trim($('#searchContent').val());
+
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
             //console.log(this);
@@ -430,7 +506,6 @@ function searchFuzzy() {
             }
         });
     }
-    console.log(array1)
     var total;
 
     if(array1.length%countValue()==0){
@@ -476,11 +551,23 @@ function searchFuzzy() {
     for(var i=0;i<countValue();i++){
         $(array1[i]).show();
         $('#tbody1').append((array1[i]));
+
+
     }
 
 
+    //  end=1;
+    //
+    // if(end==1){
+    //
+    // }
+
+    // $("#circleChart").hide();
     CalculateAggregate() ;
 
+    if(text.length<=0){
+        loadContractVolumeList();
+    }
 }
 
 
@@ -668,7 +755,7 @@ function CalculateAggregate() {
             totalMoney+=parseFloat(Money);
         }
     })
-    console.log(totalVolume+" "+totalMoney)
+    // console.log(totalVolume+" "+totalMoney)
 
     $('#total').children('td').eq(5).html(totalVolume.toFixed(2));
     $('#total').children('td').eq(6).html(totalMoney.toFixed(2));

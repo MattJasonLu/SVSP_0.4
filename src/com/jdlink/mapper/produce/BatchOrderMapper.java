@@ -13,7 +13,7 @@ public interface BatchOrderMapper {
     List<BatchingOrder> BatchList(Page page);
     List<WasteInventory>getWasteInventoryListBat();
     List<WasteInventory> getWasteInventoryByInboundOrderId(String id);
-    List<WasteInventory> getSecInventoryListBat();
+    List<WasteInventory> getSecInventoryListBat(Page page);
     List<String> getBatchingOrderIdList();
     void  addBatchingOrderBat(BatchingOrder batchingOrder);
     void deducNumber(String inboundOrderItemId,float actualCount);

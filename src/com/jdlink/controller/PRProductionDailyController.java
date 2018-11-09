@@ -6,6 +6,7 @@ import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.domain.Wastes;
 import com.jdlink.service.ProductionDailyService;
+import com.jdlink.service.produce.SewageTestService;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
@@ -27,6 +28,8 @@ public class PRProductionDailyController {
 
     @Autowired
     ProductionDailyService productionDailyService;
+    @Autowired
+    SewageTestService sewageTestService;
 
     //////污水分析日报////
     @RequestMapping("loadPageSewageList")
@@ -441,13 +444,26 @@ public class PRProductionDailyController {
     }
 
 
-    //确认送样
+    //确认送样==》污水
     @RequestMapping("confirmSewaGeregistrationById")
     @ResponseBody
     public String confirmSewaGeregistrationById(String id,String laboratorySignatory) {
         JSONObject res = new JSONObject();
         try {
-            productionDailyService.confirmSoftGeregistrationById(id,laboratorySignatory);
+            productionDailyService.confirmSewaGeregistrationById(id,laboratorySignatory);
+            //获取样品单号
+            Sewageregistration sewageregistration=productionDailyService.getSewaGeregistrationById(id);
+            List<SewageregistrationItem> sewageregistrationItemList=sewageregistration.getSewageregistrationItemList();
+            for(int i=0;i<sewageregistrationItemList.size();i++){
+                if(sewageTestService.getSewageTestById(sewageregistrationItemList.get(i).getId())==null){
+                    productionDailyService.sampleTest(sewageregistrationItemList.get(i).getId(),sewageregistration.getAddress());
+                }
+                if(sewageTestService.getSewageTestById(sewageregistrationItemList.get(i).getId())!=null){
+                    productionDailyService.updateSampleTest(sewageregistrationItemList.get(i).getId(),sewageregistration.getAddress());
+                }
+
+            }
+
             res.put("status", "success");
             res.put("message", "收样成功");
         } catch (Exception e) {
@@ -462,10 +478,62 @@ public class PRProductionDailyController {
 
     }
 
-    //拒收
+    //确认送样==》软水
+    @RequestMapping("confirmSoftGeregistrationById")
+    @ResponseBody
+    public String confirmSoftGeregistrationById(String id,String laboratorySignatory) {
+        JSONObject res = new JSONObject();
+        try {
+            productionDailyService.confirmSoftGeregistrationById(id,laboratorySignatory);
+            //获取样品单号
+            Sewageregistration sewageregistration=productionDailyService.getSoftGeregistrationById(id);
+            List<SewageregistrationItem> sewageregistrationItemList=sewageregistration.getSewageregistrationItemList();
+            for(int i=0;i<sewageregistrationItemList.size();i++){
+                if(sewageTestService.getSoftTestById(sewageregistrationItemList.get(i).getId())==null){
+                    productionDailyService.sampleTestSoft(sewageregistrationItemList.get(i).getId(),sewageregistration.getAddress());
+                }
+                if(sewageTestService.getSoftTestById(sewageregistrationItemList.get(i).getId())!=null){
+                    productionDailyService.updateSampleSoftTest(sewageregistrationItemList.get(i).getId(),sewageregistration.getAddress());
+                }
+
+            }
+
+            res.put("status", "success");
+            res.put("message", "收样成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "收样失败");
+
+        }
+
+        return res.toString();
+
+
+    }
+
+    //拒收污水
     @RequestMapping("rejectSewaGeregistrationById")
     @ResponseBody
     public String rejectSewaGeregistrationById(String id, String advice) {
+        JSONObject res = new JSONObject();
+        try {
+            productionDailyService.rejectSewaGeregistrationById(id, advice);
+            res.put("status", "success");
+            res.put("message", "已拒收");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "拒收失败");
+        }
+
+        return res.toString();
+    }
+
+    //拒收软水
+    @RequestMapping("rejectSoftGeregistrationById")
+    @ResponseBody
+    public String rejectSoftGeregistrationById(String id, String advice) {
         JSONObject res = new JSONObject();
         try {
             productionDailyService.rejectSoftGeregistrationById(id, advice);
