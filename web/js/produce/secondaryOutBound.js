@@ -496,6 +496,9 @@ function loadSecondaryList() {
             alert("服务器异常")
         }
     });
+
+    $('#date').val(dateToString(new Date()))
+
 }
 
 //设置次生库存列表数据==>次生出库新增页面

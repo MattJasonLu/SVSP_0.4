@@ -130,4 +130,12 @@ public interface ProductionDailyService {
     void confirmSoftGeregistrationById(String id,String laboratorySignatory);
     void rejectSoftGeregistrationById(String id,String advice);
     Sewageregistration  getSoftGeregistrationById(String id);
+
+    void sampleTest(String id, String address);
+
+    void updateSampleTest(String id, String address);
+
+    void sampleTestSoft(String id, String address);
+
+    void updateSampleSoftTest(String id, String address);
 }

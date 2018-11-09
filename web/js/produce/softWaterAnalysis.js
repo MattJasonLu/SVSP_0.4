@@ -1072,123 +1072,129 @@ function view(item) {
 
 //确认收样
 function setSubmit(item) {
-    var id=$(item).parent().parent().children('td').eq(1).html();
-    console.log(id)
-    $("#appointModa2").modal('show');
-    $('#confirm').show();
-    $('#reservationId1').text(id)
-    //根据编号查找
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getSoftGeregistrationById",              // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        data:{"id":id},
-        //contentType: 'application/json;charset=utf-8',
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                console.log(result)
-                //赋值
-                // 公司名称
-                if(result.data.client=null){
-                    $('#companyName').val(result.data.client.companyName);
+    if($(item).parent().parent().children('td').eq(6).html()!='已收样'){
+        var id=$(item).parent().parent().children('td').eq(1).html();
+        console.log(id)
+        $("#appointModa2").modal('show');
+        $('#confirm').show();
+        $('#reservationId1').text(id)
+        //根据编号查找
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getSoftGeregistrationById",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data:{"id":id},
+            //contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(result)
+                    //赋值
+                    // 公司名称
+                    if(result.data.client=null){
+                        $('#companyName').val(result.data.client.companyName);
+                    }
+                    //化验室签收人
+                    $('#laboratorySignatory1').val(result.data.laboratorySignatory)
+
+                    //送样人
+                    $('#sendingPerson1').text(result.data.sendingPerson)
+
+                    //采样点
+                    $('#address1').text(result.data.address)
+
+                    if(result.data.sewageregistrationItemList!=null){
+
+                        var tr=$('#clonrTr');
+                        tr.siblings().remove();
+
+                        $.each(result.data.sewageregistrationItemList,function (index,item) {
+
+                            var clonedTr = tr.clone();
+
+                            clonedTr.show();
+
+                            var obj = eval(item);
+
+
+                            clonedTr.children('td').eq(0).html(index + 1);
+                            clonedTr.children('td').eq(1).html(obj.identifie);
+                            //clonedTr.children('td').eq(2).html(obj.wastesName);
+                            project = "";
+                            if (obj.cod == 1) {
+                                project += "COD ";
+                            }
+                            if (obj.bod5 == 1) {
+                                project += "BOD5 ";
+                            }
+                            if (obj.ph == 1) {
+                                project += "PH ";
+                            }
+                            if (obj.dissolvedSolidForm == 1) {
+                                project += "溶解固形物 ";
+                            }
+                            if (obj.electricalConductivity == 1) {
+                                project += "电导率 ";
+                            }
+                            if (obj.hardness == 1) {
+                                project += "硬度 ";
+                            }
+                            if (obj.lye == 1) {
+                                project += "碱度 ";
+                            }
+                            if (obj.n2 == 1) {
+                                project += "氮气 ";
+                            }
+                            if (obj.o2 == 1) {
+                                project += "氧气 ";
+                            }
+                            if (obj.relativeAlkalinity == 1) {
+                                project += "相对碱度 ";
+                            }
+                            if (obj.turbidity == 1) {
+                                project += "浊度 ";
+                            }
+                            if (obj.basicity == 1) {
+                                project += "全碱度 ";
+                            }
+                            if (obj.phenolphthalein == 1) {
+                                project += "酚酞碱度 ";
+                            }
+                            clonedTr.children('td').eq(2).html(project);
+
+                            clonedTr.removeAttr("id");
+                            clonedTr.insertBefore(tr);
+
+                        });
+
+                        // 隐藏无数据的tr
+                        tr.hide();
+                        tr.removeAttr('class');
+
+
+
+                    }
+
+
+
+
+
+
+
                 }
-                //化验室签收人
-                $('#laboratorySignatory1').val(result.data.laboratorySignatory)
-
-                //送样人
-                $('#sendingPerson1').text(result.data.sendingPerson)
-
-                //采样点
-                $('#address1').text(result.data.address)
-
-                if(result.data.sewageregistrationItemList!=null){
-
-                    var tr=$('#clonrTr');
-                    tr.siblings().remove();
-
-                    $.each(result.data.sewageregistrationItemList,function (index,item) {
-
-                        var clonedTr = tr.clone();
-
-                        clonedTr.show();
-
-                        var obj = eval(item);
-
-
-                        clonedTr.children('td').eq(0).html(index + 1);
-                        clonedTr.children('td').eq(1).html(obj.identifie);
-                        //clonedTr.children('td').eq(2).html(obj.wastesName);
-                        project = "";
-                        if (obj.cod == 1) {
-                            project += "COD ";
-                        }
-                        if (obj.bod5 == 1) {
-                            project += "BOD5 ";
-                        }
-                        if (obj.ph == 1) {
-                            project += "PH ";
-                        }
-                        if (obj.dissolvedSolidForm == 1) {
-                            project += "溶解固形物 ";
-                        }
-                        if (obj.electricalConductivity == 1) {
-                            project += "电导率 ";
-                        }
-                        if (obj.hardness == 1) {
-                            project += "硬度 ";
-                        }
-                        if (obj.lye == 1) {
-                            project += "碱度 ";
-                        }
-                        if (obj.n2 == 1) {
-                            project += "氮气 ";
-                        }
-                        if (obj.o2 == 1) {
-                            project += "氧气 ";
-                        }
-                        if (obj.relativeAlkalinity == 1) {
-                            project += "相对碱度 ";
-                        }
-                        if (obj.turbidity == 1) {
-                            project += "浊度 ";
-                        }
-                        if (obj.basicity == 1) {
-                            project += "全碱度 ";
-                        }
-                        if (obj.phenolphthalein == 1) {
-                            project += "酚酞碱度 ";
-                        }
-                        clonedTr.children('td').eq(2).html(project);
-
-                        clonedTr.removeAttr("id");
-                        clonedTr.insertBefore(tr);
-
-                    });
-
-                    // 隐藏无数据的tr
-                    tr.hide();
-                    tr.removeAttr('class');
-
-
+                else {
 
                 }
-
-
-
-
-
-
+            },
+            error:function (result) {
 
             }
-            else {
+        });
+    }
+    else {
+        alert("已收样，无法再次收样！")
+    }
 
-            }
-        },
-        error:function (result) {
-
-        }
-    });
 }
 //确认送样方法==>真正的方法
 function confirmSample() {
@@ -1197,7 +1203,7 @@ function confirmSample() {
 
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "confirmSewaGeregistrationById",              // url
+        url: "confirmSoftGeregistrationById",              // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         data:{"id":id,'laboratorySignatory':laboratorySignatory},
@@ -1258,7 +1264,7 @@ function rejection1() {
 
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "rejectSewaGeregistrationById",              // url
+        url: "rejectSoftGeregistrationById",              // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         data:{"id":id,"advice":advice},
@@ -1425,7 +1431,7 @@ function adjust() {
     //更新主表后删除字表数据
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "updateSewaGeregistration",              // url
+        url: "updateSoftGeregistration",              // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         data: JSON.stringify(data),

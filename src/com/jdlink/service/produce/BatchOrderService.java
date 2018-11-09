@@ -23,7 +23,7 @@ public interface BatchOrderService {
     MaterialRequisitionOrder getByMaterialRequisitionId(String id);
     void addOutBoundOrder(OutboundOrder outboundOrder);
     List<OutboundOrder>loadWastesOutBoundList(Page page);
-    List<WasteInventory> getSecInventoryListBat();
+    List<WasteInventory> getSecInventoryListBat(Page page);
     void addSecondary(OutboundOrder outboundOrder);
     List<OutboundOrder>loadSecOutBoundList(Page page);
     BatchingOrder getBatchById(String id);
