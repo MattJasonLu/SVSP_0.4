@@ -526,10 +526,7 @@
                             <div class="form-group col-md-12">
                                 <label for="model-companyName" class="col-sm-2 control-label">公司名称</label>
                                 <div class="col-sm-10">
-                                    <select class="selectpicker form-control" data-live-search="true"
-                                            data-live-search-placeholder="搜索..." id="model-companyName"
-                                            name="model-companyName">
-                                    </select>
+                                    <span id="model-companyName" name="model-companyName"></span>
                                 </div>
                             </div>
                         </div>
@@ -562,69 +559,43 @@
                             </thead>
                             <tbody>
                             <tr id="addClone">
-                                <td class="text-center"><select onchange="autoSetCategory(this)" class="selectpicker form-control"
-                                                                data-live-search="true"
-                                                                data-live-search-placeholder="搜索..."
-                                                                id="wastesList0-wastesCode"
-                                                                name="wastesList[0].wastesCode">
-                                </select></td>
-                                <td class="text-center" ><input class="focus" name="wastesList[0].wastesName"
-                                                                id="wastesList[0].wastesName" style="width: 100%"></td>
-                                <td class="text-center" width="10%"><input class="focus" name="modal-wastesHandleCategory"
-                                                                           id="wastesList[0].wastesHandleCategory" style="width: 100%">
-                                </td>
-                                <td class="text-center" width="10%"><select class="focus" name="modal-wastesFormType"
-                                                                            id="wastesList[0].wastesFormType" style="width: 100%">
-                                </select>
-                                </td>
+                                <td class="text-center" id="model-wastesCode" name="model-wastesCode"></td>
+                                <td class="text-center" name="model-wastesName" id="model-wastesName"></td>
+                                <td class="text-center" width="10%" name="modal-wastesCategory" id="model-wastesCategory"></td>
+                                <td class="text-center" width="10%" name="modal-wastesFormType" id="model-wastesFormType"></td>
                                 <td class="text-center" width="40%">
                                     <label>
-                                        <input type="checkbox" name="wastesList[0].isPH"
-                                               value="true">PH
+                                        <input type="checkbox" name="model-isPH" id="model-isPH" value="true">PH
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="wastesList[0].isAsh"
-                                               value="true">灰分
+                                        <input type="checkbox" name="model-isAsh" id="model-isAsh" value="true">灰分
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="wastesList[0].isWater"
-                                               id="wastesList[0].isWater" value="true">水分
+                                        <input type="checkbox" name="model-isWater" id="model-isWater" value="true">水分
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="wastesList[0].isHeat"
-                                               value="true">热值
+                                        <input type="checkbox" name="model-isHeat" id="model-isHeat" value="true">热值
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="wastesList[0].isS"
-                                               value="true">硫
+                                        <input type="checkbox" name="model-isS" id="model-isS" value="true">硫
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="wastesList[0].isCl"
-                                               value="true">氯
+                                        <input type="checkbox" name="model-isCl" id="model-isCl" value="true">氯
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="wastesList[0].isF"
-                                               value="true">氟
+                                        <input type="checkbox" name="model-isF" id="model-isF" value="true">氟
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="wastesList[0].isP"
-                                               value="true">磷
+                                        <input type="checkbox" name="model-isP" id="model-isP" value="true">磷
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="wastesList[0].isFlashPoint"
-                                               value="true">闪点
+                                        <input type="checkbox" name="model-isFlashPoint" id="model-isFlashPoint" value="true">闪点
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="wastesList[0].isViscosity"
-                                               value="true">黏度
+                                        <input type="checkbox" name="model-isViscosity" id="model-isViscosity" value="true">黏度
                                     </label>
-                                    <!--<label>-->
-                                    <!--<input type="checkbox" name="wastesList[0].isHotMelt"-->
-                                    <!--value="true">热融-->
-                                    <!--</label>-->
                                 </td>
-                                <td class="text-center" ><input class="focus" name="wastesList[0].transferId"
-                                                                id="wastesList[0].transferId" style="width: 100%"></td>
+                                <td class="text-center" name="model-transferId" id="model-transferId"></td>
                             </tr>
                             </tbody>
                         </table>
