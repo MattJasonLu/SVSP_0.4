@@ -122,6 +122,18 @@ public class Ingredients {
      * 日期查询 终止时间
      */
     private Date endDate;
+    /**
+     * 旧仓库名（用于修改入库单仓库）
+     */
+    private String oldWareHouseName;
+
+    public String getOldWareHouseName() {
+        return oldWareHouseName;
+    }
+
+    public void setOldWareHouseName(String oldWareHouseName) {
+        this.oldWareHouseName = oldWareHouseName;
+    }
 
     public String getDepartment() {
         return department;
