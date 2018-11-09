@@ -32,7 +32,7 @@
         <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
             <ul class="nav navbar-nav">
                 <li><a href="procurementManagement.html">首页</a></li>
-                <li><a href="monthProcurement.html">采购计划</a></li>
+                <li><a href="procurementPlan.html">采购计划</a></li>
                 <li>
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">采购申请<span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -138,7 +138,7 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" href="newIngredientsOut.html"><span
+                    <a class="btn btn-primary btn-xs" href="#" onclick="addIngredientsOut()"><span
                             class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                     <a class="btn btn-primary btn-xs" href="ingredientsOutDetail.html"><span
                             class="glyphicon glyphicon-search" aria-hidden="true"></span> 明细页面</a>
@@ -175,10 +175,10 @@
                     </div>
                     <div class="form-horizontal col-md-4">
                         <div class="form-group">
-                            <label for="search-companyName" class="col-sm-4 control-label">单位</label>
+                            <label for="search-department" class="col-sm-4 control-label">部门</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-companyName"
-                                       name="search-companyName" placeholder="" onkeydown="enterSearch()">
+                                <input type="text" class="form-control" id="search-department"
+                                       name="search-department" placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
