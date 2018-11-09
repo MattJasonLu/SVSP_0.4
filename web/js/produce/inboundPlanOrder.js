@@ -502,6 +502,7 @@ function setInboundOrderDataList(result) {
         clonedTr.find("td[name='storageCount']").text(data.storageCount);
         clonedTr.find("td[name='leftCount']").text(data.leftCount);
         clonedTr.find("td[name='poundsCount']").text(data.poundsCount);
+        if (data.checkState != null) clonedTr.find("td[name='checkState']").text(data.checkState.name);
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
         clonedTr.insertBefore(tr);
@@ -897,6 +898,51 @@ function addAppoint() {
         error: function (result) {
             console.dir(result);
             alert("服务器异常!");
+        }
+    });
+}
+
+var rejectId;
+
+/**
+ * 显示拒收框
+ * @param e
+ */
+function showReject(e) {
+    // 获取编号
+    var id = getIdByMenu(e);
+    rejectId = id;
+    $("#rejectModal").modal("show");
+}
+
+/**
+ * 拒收
+ */
+function reject() {
+    var advice = $("#advice").val();
+    var data = {
+        inboundPlanOrderId: rejectId,
+        advice: advice
+    };
+
+    $.ajax({
+        type: "POST",
+        url: "setInboundPlanOrderReject",
+        async: false,
+        dataType: "json",
+        data: data,
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                alert(result.message);
+                window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
         }
     });
 }

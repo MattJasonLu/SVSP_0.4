@@ -54,6 +54,12 @@ public interface InboundService {
     void setInboundPlanOrderInvalid(String inboundPlanOrderId);
 
     /**
+     * 拒收入库计划单
+     * @param inboundPlanOrder 入库计划单
+     */
+    void setInboundPlanOrderReject(InboundPlanOrder inboundPlanOrder);
+
+    /**
      * 查找入库计划单
      * @param inboundPlanOrder 入库计划单数据
      * @return 符合条件的入库计划单列表

@@ -266,6 +266,7 @@
                         <th class="text-center">已入库数量</th>
                         <th class="text-center">剩余数量</th>
                         <th class="text-center">磅单数量</th>
+                        <th class="text-center">状态</th>
                         <th class="text-center">操作</th>
                     </tr>
                     </thead>
@@ -288,10 +289,13 @@
                         <td class="text-center" name="storageCount">已入库数量</td>
                         <td class="text-center" name="leftCount">剩余数量</td>
                         <td class="text-center" name="poundsCount">磅单数量</td>
+                        <td class="text-center" name="checkState">状态</td>
                         <td class="text-center">
                             <a href="#" onclick="viewData($(this));" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                             <a href="#" onclick="setInvalid($(this));" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
                             <a href="#" onclick="showSampleInfo($(this));" title="预约送样"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
+                            <a href="#" onclick="alert('功能开发中');" title="确认收样"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></a>
+                            <a href="#" onclick="showReject($(this));" title="拒收"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
                         </td>
                     </tr>
                     </tbody>
@@ -602,6 +606,25 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" onclick="addAppoint();">预约</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--拒收页面-->
+        <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="sub-header text-center">拒收原因</h5>
+                    </div>
+                    <div class="row">
+                        <div class="form-horizontal col-md-12 col-sm-12">
+                            <textarea class="form-control" rows="5" id="advice" style="margin: 5%; width: 90%;"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="confirm" onclick="reject()">确认拒收</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     </div>
                 </div>

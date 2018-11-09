@@ -126,8 +126,13 @@
         select * from t_pl_inboundplanorder where inboundPlanOrderId=#{inboundPlanOrderId};
     </select>
 
+    <!--设置入库计划单作废-->
     <update id="setInboundPlanOrderInvalid">
         update t_pl_inboundplanorder set checkState='Invalid', inboundPlanOrderId=concat(#{inboundPlanOrderId}, #{newId}) where inboundPlanOrderId=#{inboundPlanOrderId};
+    </update>
+    <!--设置入库计划单拒收-->
+    <update id="setInboundPlanOrderReject">
+        update t_pl_inboundplanorder set checkState='Rejected', advice=#{advice} where inboundPlanOrderId=#{inboundPlanOrderId};
     </update>
 
     <!--根据磅单信息更新入库计划单中的磅单数量-->
