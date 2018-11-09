@@ -28,4 +28,6 @@ public interface WasteIntoMapper {
    SecondarySampleItem getByWastesId(String id);
    List<SecondarySample>searchSecondary(SecondarySample secondarySample);
    int searchSecondaryCount(SecondarySample secondarySample);
+   void SecondarySample(String id);
+   void updateSecondarySample(String id);
 }

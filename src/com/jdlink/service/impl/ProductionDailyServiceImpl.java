@@ -200,4 +200,24 @@ public class ProductionDailyServiceImpl implements ProductionDailyService
     public Sewageregistration getSoftGeregistrationById(String id) {
         return productionDailyMapper.getSoftGeregistrationById(id);
     }
+
+    @Override
+    public void sampleTest(String id, String address) {
+        productionDailyMapper.sampleTest(id, address);
+    }
+
+    @Override
+    public void updateSampleTest(String id, String address) {
+        productionDailyMapper.updateSampleTest(id, address);
+    }
+
+    @Override
+    public void sampleTestSoft(String id, String address) {
+        productionDailyMapper.sampleTestSoft(id, address);
+    }
+
+    @Override
+    public void updateSampleSoftTest(String id, String address) {
+        productionDailyMapper.updateSampleSoftTest(id, address);
+    }
 }

@@ -357,9 +357,9 @@ public class SewageTestController {
         JSONObject res=new JSONObject();
         try {
             //1更新主表
-            sewageTestService.updateSoftGeregistration(sewageregistration);
+            sewageTestService.updateSewaGeregistration(sewageregistration);
             //2删除字表
-            sewageTestService.deleteSoftGeregistrationById(sewageregistration.getId());
+            sewageTestService.deleteSewaGeregistrationById(sewageregistration.getId());
             res.put("status", "success");
             res.put("message", "主表更新成功,字表删除成功");
         }
@@ -383,10 +383,17 @@ public class SewageTestController {
 
 
         try {
-
+            //1更新主表
+            sewageTestService.updateSoftGeregistration(sewageregistration);
+            //2删除字表
+            sewageTestService.deleteSoftGeregistrationById(sewageregistration.getId());
+            res.put("status", "success");
+            res.put("message", "主表更新成功,字表删除成功");
         }
         catch (Exception e){
-
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "主表更新失败,字表删除失败");
 
         }
 

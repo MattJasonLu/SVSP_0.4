@@ -48,6 +48,8 @@
     <select id="getSoftTestById" parameterType="String" resultType="SoftTest">
         select * from t_pr_softest where id=#{id};
     </select>
+
+
     <!--更新软水化验单-->
     <update id="updateSoftTest" parameterType="SoftTest">
         update t_pr_softest set address=#{address},remarks=#{remarks},sampleId=#{sampleId},
