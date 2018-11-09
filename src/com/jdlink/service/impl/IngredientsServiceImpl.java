@@ -21,176 +21,340 @@ public class IngredientsServiceImpl implements IngredientsService {
 
     ///入库单///
     @Override
-    public int countInById(String id){ return ingredientsMapper.countInById(id); }
+    public int countInById(String id) {
+        return ingredientsMapper.countInById(id);
+    }
 
     @Override
-    public IngredientsIn getInById(String id){ return ingredientsMapper.getInById(id); }
+    public IngredientsIn getInById(String id) {
+        return ingredientsMapper.getInById(id);
+    }
 
     @Override
-    public void addIn(IngredientsIn ingredientsIn){ ingredientsMapper.addIn(ingredientsIn); }
+    public void addIn(IngredientsIn ingredientsIn) {
+        ingredientsMapper.addIn(ingredientsIn);
+    }
 
     @Override
-    public List<IngredientsIn> listPageIn(Page page){ return ingredientsMapper.listPageIn(page); }
+    public List<IngredientsIn> listPageIn(Page page) {
+        return ingredientsMapper.listPageIn(page);
+    }
 
     @Override
-    public int countIn(){ return ingredientsMapper.countIn(); }
+    public int countIn() {
+        return ingredientsMapper.countIn();
+    }
 
     @Override
-    public int searchInCount(IngredientsIn ingredientsIn){ return ingredientsMapper.searchInCount(ingredientsIn); }
+    public int searchInCount(IngredientsIn ingredientsIn) {
+        return ingredientsMapper.searchInCount(ingredientsIn);
+    }
 
     @Override
-    public List<IngredientsIn> searchIn(IngredientsIn ingredientsIn){ return ingredientsMapper.searchIn(ingredientsIn); }
+    public List<IngredientsIn> searchIn(IngredientsIn ingredientsIn) {
+        return ingredientsMapper.searchIn(ingredientsIn);
+    }
 
     @Override
-    public void invalidIn(IngredientsIn ingredientsIn){ ingredientsMapper.invalidIn(ingredientsIn); }
+    public void invalidIn(IngredientsIn ingredientsIn) {
+        ingredientsMapper.invalidIn(ingredientsIn);
+    }
 
     @Override
-    public void updateIn(IngredientsIn ingredientsIn){ ingredientsMapper.updateIn(ingredientsIn); }
+    public void updateIn(IngredientsIn ingredientsIn) {
+        ingredientsMapper.updateIn(ingredientsIn);
+    }
+
+    /**
+     * 修改入库单数据
+     *
+     * @param ingredientsIn
+     */
+    @Override
+    public void updateDataIn(IngredientsIn ingredientsIn) {
+        ingredientsMapper.updateDataIn(ingredientsIn);  // 更新入库单外部数据
+        if (ingredientsIn.getIngredientsList() != null && ingredientsIn.getIngredientsList().size() > 0)
+            for (Ingredients ingredients : ingredientsIn.getIngredientsList()) {
+                if (ingredients.getSerialNumberA().equals("add")) {
+                    ingredientsMapper.addIngredientsInItem(ingredients);// 如果是新增的物品则新增入库单明细条目
+                    if (ingredients.getAid().equals("notExist")) {// 仓库内该物品不存在则在库存新增该物品
+                        ingredientsMapper.addInventoryItem(ingredients);
+                    } else if (ingredients.getAid().equals("exist")) {// 仓库内存在该物品则叠加库存量
+                        ingredientsMapper.addInventoryAmount(ingredients);
+                    }
+                } else if (ingredients.getSerialNumberA().equals("update")) {
+                    ingredientsMapper.updateIngredientInItem(ingredients);//更新入库单条目数据
+                    if(!ingredients.getOldWareHouseName().equals(ingredients.getWareHouseName())){ // 如果仓库发生变化需要更新库存
+
+                        ingredientsMapper.reduceOldInventory(ingredients); // 删除旧库存
+                        if(ingredientsMapper.getAmountItems(ingredients) > 0) { // 如果新仓库中存在该物品则增加库存量
+                            ingredientsMapper.addInventoryAmount(ingredients);
+                        }else{                                                  // 新仓库不存在该物品则增加条目
+                            ingredientsMapper.addInventoryItem(ingredients);
+                        }
+                    }
+                } else if (ingredients.getSerialNumberA().equals("del")) {
+                    ingredientsMapper.delIngredientInItem(ingredients);// 删除入库单条目并将数据回退
+                }
+            }
+    }
 
     @Override
-    public void updateDataIn(IngredientsIn ingredientsIn){ ingredientsMapper.updateDataIn(ingredientsIn); }
-
-    @Override
-    public int getAmountItems(Ingredients ingredients){ return ingredientsMapper.getAmountItems(ingredients); }
+    public int getAmountItems(Ingredients ingredients) {
+        return ingredientsMapper.getAmountItems(ingredients);
+    }
 
     /**
      * 根据日期范围获取入库单
+     *
      * @param startDate
      * @param endDate
      * @return
      */
     @Override
-    public List<Ingredients> getIngredientsInItemByRange(Date startDate,Date endDate,Equipment equipment){ return ingredientsMapper.getIngredientsInItemByRange(startDate,endDate,equipment); }
+    public List<Ingredients> getIngredientsInItemByRange(Date startDate, Date endDate, Equipment equipment) {
+        return ingredientsMapper.getIngredientsInItemByRange(startDate, endDate, equipment);
+    }
 
     @Override
-    public int countInItem(){ return ingredientsMapper.countInItem();}
+    public int countInItem() {
+        return ingredientsMapper.countInItem();
+    }
 
     @Override
-    public int searchInItemCount(Ingredients ingredients){ return ingredientsMapper.searchInItemCount(ingredients);}
+    public int searchInItemCount(Ingredients ingredients) {
+        return ingredientsMapper.searchInItemCount(ingredients);
+    }
 
     @Override
-    public List<Ingredients> listPageInItem(Page page){ return ingredientsMapper.listPageInItem(page); }
+    public List<Ingredients> listPageInItem(Page page) {
+        return ingredientsMapper.listPageInItem(page);
+    }
 
     @Override
-    public List<Ingredients> searchInItem(Ingredients ingredients){ return ingredientsMapper.searchInItem(ingredients);}
+    public List<Ingredients> searchInItem(Ingredients ingredients) {
+        return ingredientsMapper.searchInItem(ingredients);
+    }
 
     ///领料单///
     @Override
-    public int countReceiveById(String id){ return ingredientsMapper.countReceiveById(id); }
+    public int countReceiveById(String id) {
+        return ingredientsMapper.countReceiveById(id);
+    }
 
     @Override
-    public IngredientsReceive getReceiveById(String id){ return ingredientsMapper.getReceiveById(id); }
+    public IngredientsReceive getReceiveById(String id) {
+        return ingredientsMapper.getReceiveById(id);
+    }
 
     @Override
-    public void addReceive(IngredientsReceive ingredientsReceive){ ingredientsMapper.addReceive(ingredientsReceive); }
+    public void addReceive(IngredientsReceive ingredientsReceive) {
+        ingredientsMapper.addReceive(ingredientsReceive);
+    }
 
     @Override
-    public void addAllReceive(IngredientsReceive ingredientsReceive){ ingredientsMapper.addAllReceive(ingredientsReceive); }
+    public void addAllReceive(IngredientsReceive ingredientsReceive) {
+        ingredientsMapper.addAllReceive(ingredientsReceive);
+    }
 
     @Override
-    public List<IngredientsReceive> listPageReceive(Page page){ return ingredientsMapper.listPageReceive(page); }
+    public List<IngredientsReceive> listPageReceive(Page page) {
+        return ingredientsMapper.listPageReceive(page);
+    }
 
     @Override
-    public int countReceive(){ return ingredientsMapper.countReceive(); }
+    public int countReceive() {
+        return ingredientsMapper.countReceive();
+    }
 
     @Override
-    public int searchReceiveCount(IngredientsReceive ingredientsReceive){ return ingredientsMapper.searchReceiveCount(ingredientsReceive); }
+    public int searchReceiveCount(IngredientsReceive ingredientsReceive) {
+        return ingredientsMapper.searchReceiveCount(ingredientsReceive);
+    }
 
     @Override
-    public List<IngredientsReceive> searchReceive(IngredientsReceive ingredientsReceive){ return ingredientsMapper.searchReceive(ingredientsReceive); }
+    public List<IngredientsReceive> searchReceive(IngredientsReceive ingredientsReceive) {
+        return ingredientsMapper.searchReceive(ingredientsReceive);
+    }
 
     @Override
-    public void invalidReceive(IngredientsReceive ingredientsReceive){ ingredientsMapper.invalidReceive(ingredientsReceive); }
+    public void invalidReceive(IngredientsReceive ingredientsReceive) {
+        ingredientsMapper.invalidReceive(ingredientsReceive);
+    }
 
     @Override
-    public void updateReceive(IngredientsReceive ingredientsReceive){ ingredientsMapper.updateReceive(ingredientsReceive); }
+    public void updateReceive(IngredientsReceive ingredientsReceive) {
+        ingredientsMapper.updateReceive(ingredientsReceive);
+    }
 
     @Override
-    public void updateDataReceive(IngredientsReceive ingredientsReceive){ ingredientsMapper.updateDataReceive(ingredientsReceive); }
+    public void updateDataReceive(IngredientsReceive ingredientsReceive) {
+        ingredientsMapper.updateDataReceive(ingredientsReceive);  // 修改领用单外部数据
+        if(ingredientsReceive.getIngredientsList() != null && ingredientsReceive.getIngredientsList().size() > 0){
+            for(Ingredients ingredients : ingredientsReceive.getIngredientsList()){
+                if(ingredients.getSerialNumberA().equals("add")){
+                    ingredientsMapper.addIngredientsReceiveItem(ingredients);// 新增领料单条目并更新库存
+                }else if(ingredients.getSerialNumberA().equals("update")){
+                    ingredientsMapper.updateIngredientsReceiveItem(ingredients);// 更新领料单条目数据
+                    if(ingredients.getReceiveAmount() < ingredients.getOldReceiveAmount()){
+                        ingredientsMapper.plusInventoryAmount(ingredients); // 如果领料数比以前少则需加回库存
+                    }else if(ingredients.getReceiveAmount() > ingredients.getOldReceiveAmount()){
+                        ingredientsMapper.reduceInventoryAmount(ingredients);// 如果领料数比以前多则需减少库存
+                    }
+                }else if(ingredients.getKeywords().equals("del")){
+                    ingredientsMapper.delIngredientReceiveItem(ingredients);// 删除领料单条目并回退库存数据
+                }
+            }
+        }
+    }
 
     @Override
-    public Ingredients getAmountAndReceive(Ingredients ingredients){ return ingredientsMapper.getAmountAndReceive(ingredients); }
+    public Ingredients getAmountAndReceive(Ingredients ingredients) {
+        return ingredientsMapper.getAmountAndReceive(ingredients);
+    }
 
     @Override
-    public List<Ingredients> getInventoryList(Page page){ return ingredientsMapper.getInventoryList(page); }
+    public List<Ingredients> getInventoryList(Page page) {
+        return ingredientsMapper.getInventoryList(page);
+    }
 
     @Override
-    public int searchInventoryCount(Ingredients ingredients){ return ingredientsMapper.searchInventoryCount(ingredients);}
+    public int searchInventoryCount(Ingredients ingredients) {
+        return ingredientsMapper.searchInventoryCount(ingredients);
+    }
 
     @Override
-    public int countInventory(){ return ingredientsMapper.countInventory(); }
+    public int countInventory() {
+        return ingredientsMapper.countInventory();
+    }
 
     @Override
-    public  List<Ingredients> searchInventory(Ingredients ingredients){ return ingredientsMapper.searchInventory(ingredients); }
+    public List<Ingredients> searchInventory(Ingredients ingredients) {
+        return ingredientsMapper.searchInventory(ingredients);
+    }
 
     @Override
-    public void updateReceiveState(String id){ ingredientsMapper.updateReceiveState(id); }
+    public void updateReceiveState(String id) {
+        ingredientsMapper.updateReceiveState(id);
+    }
 
     @Override
-    public Ingredients getInventoryByNameAndWare(Ingredients ingredients){ return ingredientsMapper.getInventoryByNameAndWare(ingredients); }
+    public Ingredients getInventoryByNameAndWare(Ingredients ingredients) {
+        return ingredientsMapper.getInventoryByNameAndWare(ingredients);
+    }
 
     @Override
-    public int countReceiveItem(){ return ingredientsMapper.countReceiveItem();}
+    public int countReceiveItem() {
+        return ingredientsMapper.countReceiveItem();
+    }
 
     @Override
-    public int searchReceiveItemCount(Ingredients ingredients){ return ingredientsMapper.searchReceiveItemCount(ingredients); }
+    public int searchReceiveItemCount(Ingredients ingredients) {
+        return ingredientsMapper.searchReceiveItemCount(ingredients);
+    }
 
     @Override
-    public List<Ingredients> listPageReceiveItem(Page page){ return ingredientsMapper.listPageReceiveItem(page); }
+    public List<Ingredients> listPageReceiveItem(Page page) {
+        return ingredientsMapper.listPageReceiveItem(page);
+    }
 
     @Override
-    public List<Ingredients> searchReceiveItem(Ingredients ingredients){ return ingredientsMapper.searchReceiveItem(ingredients); }
+    public List<Ingredients> searchReceiveItem(Ingredients ingredients) {
+        return ingredientsMapper.searchReceiveItem(ingredients);
+    }
 
     ///出库单///
     @Override
-    public int countOutById(String id){ return ingredientsMapper.countOutById(id); }
+    public int countOutById(String id) {
+        return ingredientsMapper.countOutById(id);
+    }
 
     @Override
-    public IngredientsOut getOutById(String id){ return ingredientsMapper.getOutById(id); }
+    public IngredientsOut getOutById(String id) {
+        return ingredientsMapper.getOutById(id);
+    }
 
     @Override
-    public void addOut(IngredientsOut ingredientsOut){ ingredientsMapper.addOut(ingredientsOut); }
+    public void addOut(IngredientsOut ingredientsOut) {
+        ingredientsMapper.addOut(ingredientsOut);
+    }
 
     @Override
-    public List<IngredientsOut> listPageOut(Page page){ return ingredientsMapper.listPageOut(page); }
+    public List<IngredientsOut> listPageOut(Page page) {
+        return ingredientsMapper.listPageOut(page);
+    }
 
     @Override
-    public int countOut(){ return ingredientsMapper.countOut(); }
+    public int countOut() {
+        return ingredientsMapper.countOut();
+    }
 
     @Override
-    public int searchOutCount(IngredientsOut ingredientsOut){ return ingredientsMapper.searchOutCount(ingredientsOut); }
+    public int searchOutCount(IngredientsOut ingredientsOut) {
+        return ingredientsMapper.searchOutCount(ingredientsOut);
+    }
 
     @Override
-    public List<IngredientsOut> searchOut(IngredientsOut ingredientsOut){ return ingredientsMapper.searchOut(ingredientsOut); }
+    public List<IngredientsOut> searchOut(IngredientsOut ingredientsOut) {
+        return ingredientsMapper.searchOut(ingredientsOut);
+    }
 
     @Override
-    public void invalidOut(IngredientsOut ingredientsOut){ ingredientsMapper.invalidOut(ingredientsOut); }
+    public void invalidOut(IngredientsOut ingredientsOut) {
+        ingredientsMapper.invalidOut(ingredientsOut);
+    }
 
     @Override
-    public void updateOut(IngredientsOut ingredientsOut){ ingredientsMapper.updateOut(ingredientsOut); }
+    public void updateOut(IngredientsOut ingredientsOut) {
+        ingredientsMapper.updateOut(ingredientsOut);
+    }
 
     @Override
-    public void updateDataOut(IngredientsOut ingredientsOut){ ingredientsMapper.updateDataOut(ingredientsOut); }
+    public void updateDataOut(IngredientsOut ingredientsOut) {
+        ingredientsMapper.updateDataOut(ingredientsOut);// 更新出库单外部数据
+        if(ingredientsOut.getIngredientsList() != null && ingredientsOut.getIngredientsList().size() > 0){
+            for(Ingredients ingredients : ingredientsOut.getIngredientsList()){
+                if(ingredients.getSerialNumberA().equals("add")){
+                    ingredientsMapper.addIngredientsOutItem(ingredients); // 新增出库单条目并更新领料单状态
+                }else if(ingredients.getSerialNumberA().equals("update")){
+                    ingredientsMapper.updateIngredientsOutItem(ingredients); // 更新出库单条目数据
+                }else if(ingredients.getSerialNumberA().equals("del")){
+                    ingredientsMapper.delIngredientsOutItem(ingredients); // 删除出库单条目并更新领料单状态及其条目状态
+                }
+            }
+        }
+    }
 
     /**
      * 根据日期范围获取出库单
+     *
      * @param startDate
      * @param endDate
      * @return
      */
     @Override
-    public List<Ingredients> getIngredientsOutItemByRange(Date startDate, Date endDate,Equipment equipment){ return ingredientsMapper.getIngredientsOutItemByRange(startDate,endDate,equipment); }
+    public List<Ingredients> getIngredientsOutItemByRange(Date startDate, Date endDate, Equipment equipment) {
+        return ingredientsMapper.getIngredientsOutItemByRange(startDate, endDate, equipment);
+    }
 
     @Override
-    public int countOutItem(){ return ingredientsMapper.countOutItem();}
+    public int countOutItem() {
+        return ingredientsMapper.countOutItem();
+    }
 
     @Override
-    public int searchOutItemCount(Ingredients ingredients){ return ingredientsMapper.searchOutItemCount(ingredients); }
+    public int searchOutItemCount(Ingredients ingredients) {
+        return ingredientsMapper.searchOutItemCount(ingredients);
+    }
 
     @Override
-    public List<Ingredients> listPageOutItem(Page page){ return ingredientsMapper.listPageOutItem(page); }
+    public List<Ingredients> listPageOutItem(Page page) {
+        return ingredientsMapper.listPageOutItem(page);
+    }
 
     @Override
-    public List<Ingredients> searchOutItem(Ingredients ingredients){ return ingredientsMapper.searchOutItem(ingredients); }
+    public List<Ingredients> searchOutItem(Ingredients ingredients) {
+        return ingredientsMapper.searchOutItem(ingredients);
+    }
 
 }

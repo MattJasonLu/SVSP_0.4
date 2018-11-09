@@ -1526,4 +1526,25 @@ function save() {
 }
 
 
+/**
+ * 显示修改模态框
+ * @param item
+ */
+function ingredientsOutModify(item) {
+    if ($(item).parent().parent().children().eq(3).text() == '新建') {
+        localStorage.id = getIngredientsId(item);
+        window.location.href = "newIngredientsOut.html";
+    }else {
+        alert("单据不可修改！");
+    }
+}
+
+/**
+ * 点击新增页面时将ID清空
+ */
+function addIngredientsOut() {
+    localStorage.id = null;
+    window.location.href = "newIngredientsOut.html";
+}
+
 

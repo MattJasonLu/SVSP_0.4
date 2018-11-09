@@ -1313,6 +1313,7 @@ function loadInventoryListData() {
                         ingredients.specification = obj.specification; // 规格
                         ingredients.unit = obj.unit;                  // 单位
                         ingredients.receiveAmount = obj.receiveAmount.toFixed(2); // 领料数
+                        ingredients.oldReceiveAmount = obj.receiveAmount.toFixed(2);
                         ingredients.wareHouseName = obj.wareHouseName;
                         //获取库存量
                         $.ajax({
@@ -1339,7 +1340,7 @@ function loadInventoryListData() {
                         ingredients.itemId = obj.itemId;
                         ingredientsReceive1.ingredientsList.push(ingredients);
                         totalReceiveAmount += parseFloat(obj.receiveAmount.toFixed(2));  // 计算总领料数
-                        clonedTr.find("td[name='serialNumber']").text(num);
+                        clonedTr.find("span[name='serialNumber']").text(num);
                         if (index > 0) // 两行及以上才能删除
                             clonedTr.children("td:eq(0)").prepend(delBtn);   // 添加减行按钮
                         clonedTr.find("td[name='name']").text(obj.name);
@@ -1374,10 +1375,10 @@ function loadInventoryListData() {
  */
 function delLine(e) {
     var tr = e.parentElement.parentElement;
-    var j = $(tr).find("td[name='serialNumber']").text();  // 获取编号，据此获取ID
+    var j = $(tr).find("span[name='serialNumber']").text();  // 获取编号，据此获取ID
     ingredientsReceive1.ingredientsList[j - 1].serialNumberA = "del";
     var length = $(tr.parentNode).children().length - 3;         // 行数
-    console.log("length:"+length);
+    console.log("length:" + length);
     var tBody = $(tr.parentNode);                                  // 删除前获取父节点
     tr.parentNode.removeChild(tr);
     for (var i = 1; i < length; i++) {             // 更新ID和NAME
@@ -1386,7 +1387,7 @@ function delLine(e) {
             var newId = id.replace(/[0-9]\d*/, i);
             $(this).prop('id', newId);
         });
-        tBody.children().eq(i).find("td[name='serialNumber']").text(i);// 更新序号
+        tBody.children().eq(i).find("span[name='serialNumber']").text(i);// 更新序号
     }
 }
 
@@ -1478,8 +1479,11 @@ function confirmInsert() {
     ingredientsIdArray = [];
     totalReceiveAmount = 0;
     var ingredientsList = [];
-    ingredientsReceive.id = getCurrentIngredientsReceiveId();
-    var i = 0;  //序号
+    ingredientsReceive.id = $("#view-id").text();
+    if(ingredientsReceive1 != null && ingredientsReceive1.ingredientsList != null && ingredientsReceive1.ingredientsList.length > 0){
+        ingredientsReceive.ingredientsList = ingredientsReceive1.ingredientsList; // 将更新的数据赋给对象
+    }
+    var i = $("span[name='serialNumber']").length - 1;  //序号
     // 遍历库存列表，生成领料单
     $("#ingredientsInventoryData").children().not("#cloneTr1").each(function () {
         var isCheck = $(this).find("input[name='select']").prop('checked');
@@ -1527,7 +1531,7 @@ function confirmInsert() {
             $(this).prop('id', newId);
         });
         clonedTr.show();
-        clonedTr.find("td[name='serialNumber']").text(obj.serialNumber);
+        clonedTr.find("span[name='serialNumber']").text(obj.serialNumber);
         clonedTr.find("td[name='name']").text(obj.name);
         clonedTr.find("td[name='specification']").text(obj.specification);
         clonedTr.find("td[name='unit']").text(obj.unit);
@@ -1538,27 +1542,34 @@ function confirmInsert() {
         clonedTr.removeAttr("id");
         clonedTr.insertBefore(tr);
         clonedTr.addClass("newLine");
+        ingredientsReceive.ingredientsList.push(item);// 将数据装到对象中
     });
     $("#total-Amount").text(totalReceiveAmount);
     tr.hide();
-    ingredientsReceive.ingredientsList = ingredientsList;
 }
 
 /**
  * 即时计算总量
  */
-function calculateTotalReceiveAmount() {
+function calculateTotalReceiveAmount(item) {
     totalReceiveAmount = 0;
-    var ListCount = $("input[name^='receiveAmount']").length;
-    for (var i = 1; i < ListCount; i++) {
-        var $i = i;
-        var receiveAmount = parseFloat($("#receiveAmount" + $i).val());
-        console.log("receiveAmount=" + receiveAmount);
-        if(receiveAmount > parseFloat($("#amount" + $i).text())){
-            alert("领料数大于库存量，请重新输入！");
-            $("#receiveAmount" + $i).val($("#amount" + $i).text()); // 领料数赋值为最大值
-        }
-        totalReceiveAmount += receiveAmount;
+    var serialNumber = parseInt($(item).parent().parent().children().find("span[name='serialNumber']").text());
+     var ListCount = $("input[name^='receiveAmount']").length;
+     for (var i = 1; i < ListCount; i++) {
+          var $i = i;
+          var receiveAmount1 = parseFloat($("#receiveAmount" + $i).val());
+    //     var amount = parseFloat($("#amount" + $i).text());
+    //     if(receiveAmount > amount){
+    //         alert("领料数大于库存量，请重新输入！");
+    //     }
+         totalReceiveAmount += receiveAmount1;
+     }
+    var $i1 = serialNumber;
+    var receiveAmount = parseFloat($("#receiveAmount" + $i1).val());
+    var amount = parseFloat($("#amount" + $i).text());
+    if (receiveAmount > amount) {
+        alert("领料数大于库存量，请重新输入！");
+        $("#receiveAmount" + $i).val(amount);
     }
     console.log("总数:" + totalReceiveAmount);
     $("#total-Amount").text(totalReceiveAmount.toFixed(2));
@@ -1569,6 +1580,9 @@ function calculateTotalReceiveAmount() {
  */
 function save() {
     //获取输入的数据
+    if(ingredientsReceive == null || ingredientsReceive.ingredientsList == null){
+        ingredientsReceive.ingredientsList = ingredientsReceive1.ingredientsList; // 没有新增数据时将修改的数据赋给ingredientsOut
+    }
     ingredientsReceive.department = $("#department").val();
     ingredientsReceive.fileId = $("#fileId").val();
     ingredientsReceive.vicePresident = $("#vicePresident").val();
@@ -1576,43 +1590,19 @@ function save() {
     ingredientsReceive.keeper = $("#keeper").val();
     ingredientsReceive.pickingSupervisor = $("#pickingSupervisor").val();
     ingredientsReceive.pickingMan = $("#pickingMan").val();
+    ingredientsReceive.id = $("#view-id").text();
     totalReceiveAmount = 0;  // 总领料数
     if (ingredientsReceive != null && ingredientsReceive.ingredientsList != null)//如果有新添的数据则获取最新的输入数据
         for (var i = 0; i < ingredientsReceive.ingredientsList.length; i++) {
             var $i = i + 1;
             ingredientsReceive.ingredientsList[i].remarks = $("#remarks" + $i).val();
             ingredientsReceive.ingredientsList[i].receiveAmount = $("#receiveAmount" + $i).val();
-            if(ingredientsReceive.ingredientsList[i].receiveAmount == ingredientsReceive.ingredientsList[i].amount){
+            if (ingredientsReceive.ingredientsList[i].receiveAmount == ingredientsReceive.ingredientsList[i].amount) {
                 ingredientsReceive.ingredientsList[i].notReceiveAmount = 0;
-            }else{
+            } else {
                 ingredientsReceive.ingredientsList[i].notReceiveAmount = 1;
             }
             totalReceiveAmount += parseInt(ingredientsReceive.ingredientsList[i].receiveAmount);
-        }
-    if (ingredientsReceive1 != null && ingredientsReceive1.ingredientsList != null)//如果存在需要修改跟新的数据则获取最新的数据
-        for (var i = 0; i < ingredientsReceive1.ingredientsList.length; i++) {
-            var $i = i + 1;
-            if (ingredientsReceive1.ingredientsList[i].serialNumberA != "del") {
-                ingredientsReceive1.ingredientsList[i].remarks = $("#remarks" + $i).val();
-                if ($("#receiveAmount" + $i).val() > ingredientsReceive1.ingredientsList[i].receiveAmount) {
-                    ingredientsReceive1.ingredientsList[i].keywords = "reduce";//新领料数比以前大则需减少库存
-                    // 计算差额
-                    ingredientsReceive1.ingredientsList[i].notReceiveAmount = parseFloat($("#receiveAmount" + $i).val()) - parseFloat(ingredientsReceive1.ingredientsList[i].receiveAmount);
-                } else if ($("#receiveAmount" + $i).val() < ingredientsReceive1.ingredientsList[i].receiveAmount) {
-                    ingredientsReceive1.ingredientsList[i].keywords = "plus";//新领料数比以前少则需增加库存
-                    // 计算差额
-                    ingredientsReceive1.ingredientsList[i].notReceiveAmount = parseFloat(ingredientsReceive1.ingredientsList[i].receiveAmount) - parseFloat($("#receiveAmount" + $i).val());
-                } else {
-                    ingredientsReceive1.ingredientsList[i].keywords = "equal";//新领料数等于以前则库存不变
-                    ingredientsReceive1.ingredientsList[i].notReceiveAmount = 0;
-                }
-                ingredientsReceive1.ingredientsList[i].receiveAmount = $("#receiveAmount" + $i).val();
-                totalReceiveAmount += parseInt(ingredientsReceive1.ingredientsList[i].receiveAmount);
-            }
-            if (ingredientsReceive == null || ingredientsReceive.ingredientsList == null) {
-                ingredientsReceive.ingredientsList = [];  // 若不存在则初始化
-            }
-            ingredientsReceive.ingredientsList.push(ingredientsReceive1.ingredientsList[i]); // 将修改的数据添加到数组中与勾选的数据整合
         }
     ingredientsReceive.totalAmount = totalReceiveAmount; // 设置总领料数
     console.log("数据为：");
@@ -1730,8 +1720,12 @@ function search1() {
  * @param item
  */
 function ingredientsReceiveModify(item) {
-    localStorage.id = getIngredientsId(item);
-    window.location.href = "newIngredientsReceive.html";
+    if ($(item).parent().parent().children().eq(3).text() == '新建') {
+        localStorage.id = getIngredientsId(item);
+        window.location.href = "newIngredientsReceive.html";
+    } else {
+        alert("单据不可修改！");
+    }
 }
 
 /**
