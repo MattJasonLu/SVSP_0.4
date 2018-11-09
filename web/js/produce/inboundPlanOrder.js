@@ -502,6 +502,7 @@ function setInboundOrderDataList(result) {
         clonedTr.find("td[name='storageCount']").text(data.storageCount);
         clonedTr.find("td[name='leftCount']").text(data.leftCount);
         clonedTr.find("td[name='poundsCount']").text(data.poundsCount);
+        if (data.checkState != null) clonedTr.find("td[name='checkState']").text(data.checkState.name);
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
         clonedTr.insertBefore(tr);
@@ -758,6 +759,39 @@ function setInvalid(e) {    //已作废
 }
 
 /**
+ * 确认收样
+ * @param e
+ */
+function setSignIn(e) {
+    var r = confirm("确认收样该入库单吗？");
+    if (r) {
+        var id = getIdByMenu(e);
+        $.ajax({
+            type: "POST",
+            url: "setInboundPlanOrderSignIn",
+            async: false,
+            dataType: "json",
+            data: {
+                inboundPlanOrderId: id
+            },
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result);
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常");
+            }
+        });
+    }
+}
+
+/**
  * 查看数据
  * @param e
  */
@@ -802,7 +836,7 @@ function viewData(e) {
         $("#leftCount").val(obj.leftCount);
     }
 }
-
+var inboundPlanOrder = {};
 /**
  * 显示预约送样的模态框
  * @param e
@@ -810,8 +844,140 @@ function viewData(e) {
 function showSampleInfo(e) {
     // 获取编号
     var id = getIdByMenu(e);
+    $.ajax({
+        type: "POST",
+        url: "getInboundPlanOrder",
+        async: false,
+        dataType: "json",
+        data: {"inboundPlanOrderId": id},
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                // 为全局对象赋值
+                inboundPlanOrder = result.data;
+                var obj = eval(result.data);
+                // 页面赋值
+                $("#model-companyName").text(obj.produceCompany.companyName);
+                $("#model-companyName").text(obj.produceCompany.companyName);
+                $("#model-companyName").text(obj.produceCompany.companyName);
+                $("#model-wastesName").text(obj.wastes.name);
+                $("#model-wastesCode").text(obj.wastes.wastesId);
+                $("#model-wastesCategory").text(obj.wastes.category);
+                $("#model-wastesFormType").text(obj.wastes.formType.name);
+                $("#model-transferId").text(obj.transferDraftId);
+
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
     // 显示模态框
     $("#appointModal").modal("show");
+}
+
+/**
+ * 增加预约送样
+ */
+function addAppoint() {
+    // 创建
+    var sampleInformation = {};
+    sampleInformation.inboundPlanOrderId = inboundPlanOrder.inboundPlanOrderId;
+    sampleInformation.companyCode = inboundPlanOrder.produceCompany.clientId;
+    sampleInformation.companyName = inboundPlanOrder.produceCompany.companyName;
+    sampleInformation.sendingPerson = $("#model-sendingPerson").val();
+    sampleInformation.id = $("#model-id").val();
+    sampleInformation['wastesList'] = [];
+    var wastes = {};
+    wastes.id = sampleInformation.id + '0001';
+    wastes.code = inboundPlanOrder.wastes.wastesId;
+    wastes.name = inboundPlanOrder.wastes.name;
+    wastes.transferId = inboundPlanOrder.transferDraftId;
+    wastes.formType = inboundPlanOrder.wastes.formType;
+    wastes.category = inboundPlanOrder.wastes.category;
+    wastes.isPH = $("#model-isPH").prop('checked');
+    wastes.isAsh = $("#model-isAsh").prop('checked');
+    wastes.isWater = $("#model-isWater").prop('checked');
+    wastes.isHeat = $("#model-isHeat").prop('checked');
+    wastes.isSulfur = $("#model-isS").prop('checked');
+    wastes.isChlorine = $("#model-isCl").prop('checked');
+    wastes.isFluorine = $("#model-isF").prop('checked');
+    wastes.isPhosphorus = $("#model-isP").prop('checked');
+    wastes.isFlashPoint = $("#model-isFlashPoint").prop('checked');
+    wastes.isViscosity = $("#model-isViscosity").prop('checked');
+    sampleInformation.wastesList.push(wastes);
+
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "addSampleInfoWareHouse",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(sampleInformation),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            console.log(result);
+            if (result != undefined) {
+                var data = eval(result);
+                if (data.status == "success") {
+                    alert(data.message);
+                    window.location.reload();
+                } else {
+                    alert(data.message + ", 预约单号未填写或重复！");
+                }
+            }
+        },
+        error: function (result) {
+            console.dir(result);
+            alert("服务器异常!");
+        }
+    });
+}
+
+var rejectId;
+
+/**
+ * 显示拒收框
+ * @param e
+ */
+function showReject(e) {
+    // 获取编号
+    var id = getIdByMenu(e);
+    rejectId = id;
+    $("#rejectModal").modal("show");
+}
+
+/**
+ * 拒收
+ */
+function reject() {
+    var advice = $("#advice").val();
+    var data = {
+        inboundPlanOrderId: rejectId,
+        advice: advice
+    };
+
+    $.ajax({
+        type: "POST",
+        url: "setInboundPlanOrderReject",
+        async: false,
+        dataType: "json",
+        data: data,
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                alert(result.message);
+                window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
 }
 
 /**

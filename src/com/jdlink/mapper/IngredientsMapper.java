@@ -18,7 +18,49 @@ public interface IngredientsMapper {
     List<IngredientsIn> searchIn(IngredientsIn ingredientsIn);
     void invalidIn(IngredientsIn ingredientsIn);
     void updateIn(IngredientsIn ingredientsIn);
+
+    /**
+     * 修改入库单外部数据
+     * @param ingredientsIn
+     */
     void updateDataIn(IngredientsIn ingredientsIn);
+
+    /**
+     * 新增库存物品
+     * @param ingredients
+     */
+    void addInventoryItem(Ingredients ingredients);
+
+    /**
+     * 增加库存数量
+     * @param ingredients
+     */
+    void addInventoryAmount(Ingredients ingredients);
+
+    /**
+     * 新增入库单库存条目并改变采购单条目状态为ToPick
+     * @param ingredients
+     */
+    void addIngredientsInItem(Ingredients ingredients);
+
+    /**
+     * 更新入库单条目数据
+     * @param ingredients
+     */
+    void updateIngredientInItem(Ingredients ingredients);
+
+    /**
+     * 删除入库单条目并更新采购单条目状态为ToInbound及更新库存数量
+     * @param ingredients
+     */
+    void delIngredientInItem(Ingredients ingredients);
+
+    /**
+     * 删除旧库存
+     * @param ingredients
+     */
+    void reduceOldInventory(Ingredients ingredients);
+
     List<Ingredients> getIngredientsInItemByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("equipment")Equipment equipment);
     /**
      * 用于判断库存表中该物品在某仓库中是否存在库存
@@ -42,7 +84,39 @@ public interface IngredientsMapper {
     List<IngredientsReceive> searchReceive(IngredientsReceive ingredientsReceive);
     void invalidReceive(IngredientsReceive ingredientsReceive);
     void updateReceive(IngredientsReceive ingredientsReceive);
+
+    /**
+     * 更新领料单外部数据
+     * @param ingredientsReceive
+     */
     void updateDataReceive(IngredientsReceive ingredientsReceive);
+
+    /**
+     * 增加领料单条目并更新库存数据
+     * @param ingredients
+     */
+    void addIngredientsReceiveItem(Ingredients ingredients);
+    /**
+     * 更新领料单条目数据
+     * @param ingredients
+     */
+    void updateIngredientsReceiveItem(Ingredients ingredients);
+    /**
+     * 增加库存数
+     * @param ingredients
+     */
+    void plusInventoryAmount(Ingredients ingredients);
+    /**
+     * 减少库存数
+     * @param ingredients
+     */
+    void reduceInventoryAmount(Ingredients ingredients);
+    /**
+     * 删除领料单条目并更新库存数据
+     * @param ingredients
+     */
+    void delIngredientReceiveItem(Ingredients ingredients);
+
     Ingredients getAmountAndReceive(Ingredients ingredients);
     List<Ingredients> getInventoryList(Page page);
     int searchInventoryCount(Ingredients ingredients);
@@ -65,7 +139,30 @@ public interface IngredientsMapper {
     List<IngredientsOut> searchOut(IngredientsOut ingredientsOut);
     void invalidOut(IngredientsOut ingredientsOut);
     void updateOut(IngredientsOut ingredientsOut);
+
+    /**
+     * 更新出库单外部数据
+     * @param ingredientsOut
+     */
     void updateDataOut(IngredientsOut ingredientsOut);
+
+    /**
+     *  新增出库单条目
+     * @param ingredients
+     */
+    void addIngredientsOutItem(Ingredients ingredients);
+    /**
+     * 更新出库单条目数据
+     * @param ingredients
+     */
+    void updateIngredientsOutItem(Ingredients ingredients);
+
+    /**
+     * 删除出库单条目
+     * @param ingredients
+     */
+    void delIngredientsOutItem(Ingredients ingredients);
+
     List<Ingredients> getIngredientsOutItemByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("equipment")Equipment equipment);
     int countOutItem();
     int searchOutItemCount(Ingredients ingredients);

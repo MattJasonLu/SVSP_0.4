@@ -131,7 +131,7 @@
                 </ol>
                 <p class="text-center pull-right"><b>编号</b><span class="id"></span></p>
             </div>
-            <h4 class="sub-header">辅料/备件出库单新增</h4>
+            <h4 class="sub-header" id="head">辅料/备件出库单新增</h4>
         </div>
         <div class="row">
             <div class="input-group col-md-4 pull-right">
@@ -283,21 +283,21 @@
                 <td class="text-center">分</td>
             </tr>
             <tr id="clone3">
-                <td class="text-center" name="serialNumber"></td>
+                <td class="text-center"><span name="serialNumber" id="serialNumber0"></span></td>
                 <td class="text-center" name="name"></td>
                 <td class="text-center" name="specification"></td>
                 <td class="text-center" name="unit"></td>
-                <td class="text-center" ><span id="out-receiveAmount0"></span></td>
+                <td class="text-center" ><span id="out-receiveAmount0" name="receiveAmount"></span></td>
                 <td class="text-center"><input class="text-center focus" type="number" name="unitPrice" id="out-unitPrice0" oninput="totalCalculate()"></td>
-                <td class="text-center" ><span id="out-hundredThousand0"></span></td>
-                <td class="text-center" ><span id="out-tenThousand0"></span></td>
-                <td class="text-center" ><span id="out-thousand0"></span></td>
-                <td class="text-center" ><span id="out-hundred0"></span></td>
-                <td class="text-center" ><span id="out-ten0"></span></td>
-                <td class="text-center" ><span id="out-yuan0"></span></td>
-                <td class="text-center" ><span id="out-jiao0"></span></td>
-                <td class="text-center" ><span id="out-fen0"></span></td>
-                <td class="text-center"><input class="text-center focus" type="text" id="post0"></td>
+                <td class="text-center" ><span id="out-hundredThousand0" name="hundredThousand"></span></td>
+                <td class="text-center" ><span id="out-tenThousand0" name="tenThousand"></span></td>
+                <td class="text-center" ><span id="out-thousand0" name="thousand"></span></td>
+                <td class="text-center" ><span id="out-hundred0" name="hundred"></span></td>
+                <td class="text-center" ><span id="out-ten0" name="ten"></span></td>
+                <td class="text-center" ><span id="out-yuan0" name="yuan"></span></td>
+                <td class="text-center" ><span id="out-jiao0" name="jiao"></span></td>
+                <td class="text-center" ><span id="out-fen0" name="fen"></span></td>
+                <td class="text-center"><input class="text-center focus" type="text" id="post0" name="post"></td>
                 <td class="text-center" name="remarks"></td>
                 <td class="text-center" name="wareHouseName"></td>
                 <td class="text-center"><select class="focus" id="equipment0" name="equipment"></select></td>
@@ -326,7 +326,7 @@
             </tbody>
         </table>
         <div class="row text-center">
-            <a class="btn btn-success" onclick="save();">出库</a>
+            <a class="btn btn-success" id="save" onclick="save();">出库</a>
             <a class="btn btn-danger" href="ingredientsOut.html">返回</a>
         </div>
         <!--查看模态框-->

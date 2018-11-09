@@ -1385,6 +1385,24 @@ public class ContractController {
         }
         return res.toString();
     }
+
+   //更新合同附件路径
+    @RequestMapping("updateContractAppendicesUrl")
+    @ResponseBody
+    public String  updateContractAppendicesUrl(String contractId,String contractAppendicesUrl){
+        JSONObject res=new JSONObject();
+
+        try {
+
+        }
+        catch (Exception e){
+
+        }
+
+        return res.toString();
+
+    }
+
 }
 
 

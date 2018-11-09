@@ -111,6 +111,10 @@ public class InboundPlanOrder {
      * 页码
      */
     private Page page;
+    /**
+     * 建议
+     */
+    private String advice;
 
     public String getInboundPlanOrderId() {
         return inboundPlanOrderId;
@@ -310,6 +314,14 @@ public class InboundPlanOrder {
 
     public void setPage(Page page) {
         this.page = page;
+    }
+
+    public String getAdvice() {
+        return advice;
+    }
+
+    public void setAdvice(String advice) {
+        this.advice = advice;
     }
 
     @Override
