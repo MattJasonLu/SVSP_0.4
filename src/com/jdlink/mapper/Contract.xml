@@ -442,6 +442,8 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         update t_quotationitem set picture=#{3} where wastesCode=#{0} and wastesName=#{1} and
         contractId=#{2}
     </update>
+
+
 </mapper>
 
 
