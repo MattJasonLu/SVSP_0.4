@@ -193,5 +193,54 @@
             limit #{start}, #{count}
         </if>
     </select>
-    
+
+
+    <!--根据年月日查询配料单单据中的个数-->
+    <select id="getCountByTime" resultType="int" parameterType="String">
+    select count(*) from t_pl_batchingorder  where batchingOrderId like "%"#{prefix}"%";
+    </select>
+
+    <!--根据明细单号获取库存数量-->
+    <select id="getCountByInboundOrderItemId" resultType="float" parameterType="String">
+        select actualCount from t_pl_wasteinventory where inboundOrderItemId=#{inboundOrderItemId};
+    </select>
+
+
+    <!--修改配料单数量-->
+    <update id="updateBatchingOrder" parameterType="BatchingOrder">
+        update t_pl_batchingorder set batchingNumber=#{batchingNumber},batchingDate=#{batchingDate} where batchingOrderId=#{batchingOrderId}
+    </update>
+
+    <!--更新库存数量-->
+    <update id="updateWasteInventoryActualCount">
+        update t_pl_wasteinventory set actualCount=#{1} where inboundOrderItemId=#{0};
+    </update>
+
+
+    <!--根据配料单号查询领料中包含的个数-->
+    <select id="getCountByBatchId" resultType="int" parameterType="String">
+    select count(*) from t_pl_materialrequisitionorder  where materialRequisitionId like "%"#{prefix}"%";
+    </select>
+
+    <!--领料单添加成功后就更新配料单数量-->
+    <update id="updateBatchOrderNumberAfterMater">
+        update t_pl_batchingorder set batchingNumber=batchingNumber-#{1} where batchingOrderId=#{0};
+    </update>
+
+    <!--根据配料单号查询配量数-->
+    <select id="getCountByBatchingOrderId" resultType="float" parameterType="String">
+        select batchingNumber from t_pl_batchingorder where batchingOrderId=#{batchingOrderId};
+    </select>
+
+    <!--修改领料单数据-->
+    <update id="adjustMaterialRequisitionOrder" parameterType="MaterialRequisitionOrder">
+        update t_pl_materialrequisitionorder set batchingNumber=#{batchingNumber},recipientsNumber=#{recipientsNumber},
+        deputyGeneral=#{deputyGeneral},warehouseManager=#{warehouseManager},guardian=#{guardian},picker=#{picker},materialManager=#{materialManager} where materialRequisitionId=#{materialRequisitionId}
+
+    </update>
+
+    <!--通过配料单号更新配量-->
+    <update id="updateCountByBatchingOrderId">
+        update t_pl_batchingorder set  batchingNumber=#{1} where batchingOrderId=#{0};
+    </update>
 </mapper>

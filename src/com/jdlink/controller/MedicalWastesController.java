@@ -364,4 +364,46 @@ public class MedicalWastesController {
 
     }
 
+    //根据编号获取信息
+    @RequestMapping("getMedicalWasteById")
+    @ResponseBody
+    public String getMedicalWasteById(String medicalWastesId){
+        JSONObject res=new JSONObject();
+        try {
+            MedicalWastes medicalWastes=medicalWastesService.getMedicalWasteById(medicalWastesId);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", medicalWastes);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+
+        return res.toString();
+
+    }
+
+    //修改信息
+    @RequestMapping("updateMedicalWaste")
+    @ResponseBody
+    public String updateMedicalWaste(@RequestBody MedicalWastes medicalWastes){
+        JSONObject res=new JSONObject();
+
+
+        try {
+              medicalWastesService.updateMedicalWaste(medicalWastes);
+            res.put("status", "success");
+            res.put("message", "更新成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+        return res.toString();
+
+    }
+
 }

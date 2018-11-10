@@ -69,6 +69,9 @@ public class BatchingOrder {
     /*配料数量*/
     private float batchingNumber;
 
+    //库存剩余数量
+    private float inventoryNumber;
+
 
     //1号入库量
     private float storage1;
@@ -134,10 +137,13 @@ public class BatchingOrder {
     private LaboratoryTest laboratoryTest;
 
 
+    public float getInventoryNumber() {
+        return inventoryNumber;
+    }
 
-
-
-
+    public void setInventoryNumber(float inventoryNumber) {
+        this.inventoryNumber = inventoryNumber;
+    }
 
     public Date getInboundOrderDate() {
         return inboundOrderDate;

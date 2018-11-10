@@ -305,7 +305,7 @@
                 insert  into t_pl_wasteinventory
                 (inboundOrderId,actualCount,unitPriceTax,wastesName,wareHouseId,clientId,wastesCode,inboundDate,processWay,handleCategory,creatorDate,boundType,transferDraftId,inboundOrderItemId,laboratoryTestId)
                 values
-                (#{inboundOrderItem.inboundOrderId},#{inboundOrderItem.wastesAmount},#{inboundOrderItem.unitPriceTax},#{inboundOrderItem.wastes.name},#{wareHouse.wareHouseId}, #{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},#{inboundDate}
+                (#{inboundOrderId},#{inboundOrderItem.wastesAmount},#{inboundOrderItem.unitPriceTax},#{inboundOrderItem.wastes.name},#{wareHouse.wareHouseId}, #{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},#{inboundDate}
                 ,#{inboundOrderItem.processWay}, #{inboundOrderItem.handleCategory},#{createDate},#{boundType},#{inboundOrderItem.transferDraftId},#{inboundOrderItem.inboundOrderItemId},#{inboundOrderItem.laboratoryTest.laboratoryTestNumber});
 
                 insert into t_pl_secondaryinto

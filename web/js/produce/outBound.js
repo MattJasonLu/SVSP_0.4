@@ -295,36 +295,36 @@ function loadOutBoundList() {
     //setSeniorSelectedList();
     //加载进料方式列表
     //进料方式高级检索
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getHandleCategory",                  // url
-        // data:JSON.stringify(page),
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                console.log(result);
-                var processWay=$('#search-materialForm');
-                processWay.children().remove();
-                $.each(result.handleCategoryList,function (index,item) {
-                    var option=$('<option/>')
-                    option.val(index);
-                    option.text(item.name);
-                    processWay.append(option);
-                })
-                processWay.get(0).selectedIndex=-1;
-            }
-            else {
-                alert(result.message);
-            }
-
-
-        },
-        error:function (result) {
-            alert("服务器异常")
-        }
-    });
+    // $.ajax({
+    //     type: "POST",                       // 方法类型
+    //     url: "getHandleCategory",                  // url
+    //     // data:JSON.stringify(page),
+    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     dataType: "json",
+    //     contentType: "application/json; charset=utf-8",
+    //     success:function (result) {
+    //         if (result != undefined && result.status == "success"){
+    //             console.log(result);
+    //             var processWay=$('#search-materialForm');
+    //             processWay.children().remove();
+    //             $.each(result.handleCategoryList,function (index,item) {
+    //                 var option=$('<option/>')
+    //                 option.val(index);
+    //                 option.text(item.name);
+    //                 processWay.append(option);
+    //             })
+    //             processWay.get(0).selectedIndex=-1;
+    //         }
+    //         else {
+    //             alert(result.message);
+    //         }
+    //
+    //
+    //     },
+    //     error:function (result) {
+    //         alert("服务器异常")
+    //     }
+    // });
     isSearch = false;
 
 

@@ -14,6 +14,8 @@ import java.util.List;
 
 @Service
 public class BatchOrderServiceImpl implements BatchOrderService
+
+
 {
     @Autowired
     BatchOrderMapper batchOrderMapper;
@@ -133,5 +135,50 @@ public class BatchOrderServiceImpl implements BatchOrderService
     @Override
     public OutboundOrder getSecOutBoundById(String id) {
         return batchOrderMapper.getSecOutBoundById(id);
+    }
+
+    @Override
+    public int getCountByTime(String prefix) {
+        return batchOrderMapper.getCountByTime(prefix);
+    }
+
+    @Override
+    public float getCountByInboundOrderItemId(String inboundOrderItemId) {
+        return batchOrderMapper.getCountByInboundOrderItemId(inboundOrderItemId);
+    }
+
+    @Override
+    public void updateBatchingOrder(BatchingOrder batchingOrder) {
+        batchOrderMapper.updateBatchingOrder(batchingOrder);
+    }
+
+    @Override
+    public void updateWasteInventoryActualCount(String inboundOrderItemId, float actualCount) {
+        batchOrderMapper.updateWasteInventoryActualCount(inboundOrderItemId, actualCount);
+    }
+
+    @Override
+    public int getCountByBatchId(String prefix) {
+        return batchOrderMapper.getCountByBatchId(prefix);
+    }
+
+    @Override
+    public void updateBatchOrderNumberAfterMater(String batchingOrderId, float recipientsNumber) {
+        batchOrderMapper.updateBatchOrderNumberAfterMater(batchingOrderId, recipientsNumber);
+    }
+
+    @Override
+    public float getCountByBatchingOrderId(String batchingOrderId) {
+        return batchOrderMapper.getCountByBatchingOrderId(batchingOrderId);
+    }
+
+    @Override
+    public void adjustMaterialRequisitionOrder(MaterialRequisitionOrder materialRequisitionOrder) {
+        batchOrderMapper.adjustMaterialRequisitionOrder(materialRequisitionOrder);
+    }
+
+    @Override
+    public void updateCountByBatchingOrderId(String batchingOrderId, float batchingNumber) {
+        batchOrderMapper.updateCountByBatchingOrderId(batchingOrderId,batchingNumber);
     }
 }
