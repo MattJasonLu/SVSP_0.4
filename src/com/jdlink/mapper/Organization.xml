@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.OrganizationMapper">
+
+    <select id="listCompany" resultType="Organization">
+        select * from organization_company;
+    </select>
+
+    <select id="listDepartment" resultType="Organization">
+        select * from organization_department;
+    </select>
+
+    <select id="listTeam" resultType="Organization">
+        select * from organization_team;
+    </select>
+
+    <insert id="addCompany" parameterType="Organization">
+        insert into organization_company
+        (id,pid,name)
+        values
+        (#{id},#{pid},#{name});
+    </insert>
+
+    <insert id="addDepartment" parameterType="Organization">
+        insert into organization_department
+        (id,pid,name)
+        values
+        (#{id},#{pid},#{name});
+    </insert>
+
+    <insert id="addTeam" parameterType="Organization">
+        insert into organization_team
+        (id,pid,name)
+        values
+        (#{id},#{pid},#{name});
+    </insert>
+
+    <update id="updateCompany" parameterType="Organization">
+        update organization_company
+        set name=#{name}
+        where id=#{id};
+    </update>
+
+    <update id="updateDepartment" parameterType="Organization">
+        update organization_department
+        set name=#{name}
+        where id=#{id};
+    </update>
+
+    <update id="updateTeam" parameterType="Organization">
+        update organization_team
+        set name=#{name}
+        where id=#{id};
+    </update>
+
+    <delete id="deleteCompany" parameterType="Organization">
+        delete from organization_company where id=#{id}
+    </delete>
+
+    <delete id="deleteDepartment" parameterType="Organization">
+        delete from organization_department where id=#{id}
+    </delete>
+
+    <delete id="deleteTeam" parameterType="Organization">
+        delete from organization_team where id=#{id}
+    </delete>
+</mapper>
