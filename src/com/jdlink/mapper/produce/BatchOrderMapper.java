@@ -33,5 +33,13 @@ public interface BatchOrderMapper {
     OutboundOrder getWastesOutBoundById(String id);
     List<WasteInventory>getWasteInventoryList(Page page);
     OutboundOrder getSecOutBoundById(String id);
-
+    int getCountByTime(String prefix);
+    float getCountByInboundOrderItemId(String inboundOrderItemId);
+    void updateBatchingOrder(BatchingOrder batchingOrder);
+    void updateWasteInventoryActualCount(String inboundOrderItemId,float actualCount);
+    int getCountByBatchId(String prefix);
+    void updateBatchOrderNumberAfterMater(String batchingOrderId,float recipientsNumber);
+    float getCountByBatchingOrderId(String batchingOrderId);
+   void adjustMaterialRequisitionOrder(MaterialRequisitionOrder materialRequisitionOrder);
+   void updateCountByBatchingOrderId(String batchingOrderId,float batchingNumber);
 }

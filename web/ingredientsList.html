@@ -326,5 +326,110 @@
     </div>
     <!--导入-->
     <input type="file" name="excelPath" id="idExcel" style="display:none">
+
+    <!--查看模态框-->
+    <div class="modal fade" id="addModa1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 1600px;">
+            <div class="modal-content" >
+                <form method="post" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h4 class="modal-title">医危废出入库修改</h4>
+                    </div>
+                    <div class="modal-body" style="overflow-x:scroll;">
+                        <table class="table table-bordered" style="border:none">
+                            <!--<thead style="border:none">-->
+                            <thead>
+                            <tr>
+                                <th style="width: 180px">配料单号</th>
+                                <th>仓库</th>
+                                <th>产废单位</th>
+                                <th>废物名称</th>
+                                <th>配料数量(吨)</th>
+                                <th>配料日期</th>
+                                <th>创建日期	</th>
+                                <th>联单号</th>
+                                <th>进料方式</th>
+                                <th>处置方式</th>
+                            </tr>
+                            </thead>
+                            <tbody >
+                            <tr id="addTable1" class="myclass3">
+                                <td><input class="focus" name="transferDraftId" id="batchingOrderId" readonly></td><!--配料单号-->
+                                <td><input class="focus" name="produceCompany"  id="wareHouse"></td><!--仓库-->
+                                <td><input class="focus" name="wastesName" id="produceCompany"></td><!--产废单位-->
+                                <td><input class="focus" name="wastesCode" id="wastesName"></td><!--废物名称-->
+                                <td><input class="focus" name="formType" id="batchingNumber"></td><!--配料数量(吨)-->
+                                <td><input class="focus" name="remark" id="batchingDate" type="date" ></td><!--配料日期-->
+                                <td><input class="focus" name="remark" id="createDate" type="date"></td><!--创建日期-->
+                                <td><input class="focus" name="remark" id="transferDraftId" ></td><!--联单号	-->
+                                <td><input class="focus" name="remark" id="handelCategory" ></td><!--进料方式-->
+                                <td><input class="focus" name="remark" id="processWay" ></td><!--处置方式-->
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer center-block">
+                        <!--<button type="button" class="btn btn-primary" onclick="adjustMedicalWaste();">修改</button>-->
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--修改模态框-->
+    <div class="modal fade" id="addModa2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 1600px;">
+            <div class="modal-content" >
+                <form method="post" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h4 class="modal-title">配料单修改</h4>
+                    </div>
+                    <div class="modal-body" style="overflow-x:scroll;">
+                        <table class="table table-bordered" style="border:none">
+                            <!--<thead style="border:none">-->
+                            <thead>
+                            <tr>
+                                <th style="width: 180px">配料单号</th>
+                                <th>仓库</th>
+                                <th>产废单位</th>
+                                <th>废物名称</th>
+                                <th>配料数量(吨)</th>
+                                <th>配料日期</th>
+                                <th>创建日期	</th>
+                                <th>联单号</th>
+                                <th>进料方式</th>
+                                <th>处置方式</th>
+                                <th>库存数量</th>
+                            </tr>
+                            </thead>
+                            <tbody >
+                            <tr id="addTable2" class="myclass3">
+                                <td><input class="focus" name="transferDraftId" id="batchingOrderId1" readonly></td><!--配料单号-->
+                                <td><input class="focus" name="produceCompany"  id="wareHouse1"readonly> </td><!--仓库-->
+                                <td><input class="focus" name="wastesName" id="produceCompany1"readonly></td><!--产废单位-->
+                                <td><input class="focus" name="wastesCode" id="wastesName1"readonly></td><!--废物名称-->
+                                <td><input class="focus" name="formType" id="batchingNumber1" onkeyup="CalIngredients()"></td><!--配料数量(吨)-->
+                                <td><input class="focus" name="remark" id="batchingDate1" type="date" ></td><!--配料日期-->
+                                <td><input class="focus" name="remark" id="createDate1" type="date"readonly></td><!--创建日期-->
+                                <td><input class="focus" name="remark" id="transferDraftId1" readonly></td><!--联单号	-->
+                                <td><input class="focus" name="remark" id="handelCategory1" readonly></td><!--进料方式-->
+                                <td><input class="focus" name="remark" id="processWay1" readonly></td><!--处置方式-->
+                                <td><input class="focus" name="remark" id="inventoryNumber" readonly></td><!--库存数量-->
+                               <input class="focus hidden" name="formType" id="batchingNumber2"><!--配料数量(吨) 隐藏-->
+                                <input class="focus hidden" name="formType" id="inventoryNumber2"><!--库存数量(吨) 隐藏-->
+                                <input class="focus hidden" name="formType" id="inboundOrderItemId"><!--入库单明细 隐藏-->
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer center-block">
+                        <button type="button" class="btn btn-primary" onclick="adjustIngredientsList();">修改</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

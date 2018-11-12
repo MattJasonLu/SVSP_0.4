@@ -661,7 +661,7 @@ function setBatchingWList(result) {
                     $(this).html(obj.actualCount.toFixed(2));
                     break;
                 case (10):
-                    $(this).html(obj.remarks);
+                    $(this).html(obj.actualCount.toFixed(2));
                     break;
                 case (11):
                     $(this).html(obj.inboundOrderItemId);
@@ -1051,7 +1051,7 @@ function setBatchingOrderList(result) {
         tr.siblings().remove();
         $.each(result, function (index, item) {
             // 克隆tr，每次遍历都可以产生新的tr
-            if(item.checkState.name=='待领料'){
+            if(item.batchingNumber>0){
                 var clonedTr = tr.clone();
                 clonedTr.attr('class','myclass');
                 clonedTr.show();
@@ -1312,7 +1312,6 @@ function setMaterialRequisitionList(result) {
                             break;
                         //领用数量
                         case (6):
-                            $(this).html(obj.batchingNumber.toFixed(2));
                             break;
                        //进料方式
                         case (7):
@@ -1449,7 +1448,7 @@ function updateMaterialRequisitionOrder() {
                materialRequisitionId:$(this).children("td").eq(0).html(),
                wastesName:$(this).children("td").eq(2).html(),
                wasteCategory:$(this).children("td").eq(3).html(),
-               recipientsNumber:$(this).children("td").eq(6).html(),
+               recipientsNumber:parseFloat($(this).children("td").eq(6).children('input').val()).toFixed(2),
                handelCategory:getHandleCategoryFromStr($(this).children("td").eq(7).html()),
                processWay:getProcessWayFromStr($(this).children("td").eq(8).html()),
                inboundOrderItemId:$(this).children("td").eq(9).html(),
@@ -1732,18 +1731,7 @@ function importExcel() {
     });
 }
 
-//延迟进行计算
-$(document).ready(function () {//页面载入是就会进行加载里面的内容
-    var last;
-    $("#input[name='count']").keyup(function (event) { //给Input赋予onkeyup事件
-        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
-        setTimeout(function () {
-            if(last-event.timeStamp==0){
-                CalRemainQuantities();
-            }
-        },1000);
-    });
-});
+
 
 //实时计算剩余数量
 
@@ -1757,27 +1745,27 @@ function CalRemainQuantities(item) {
     }
 
     if(　!isNaN(count)){
-        var inboundOrderItemId=$(item).parent().parent().children('td').eq(11).html();
-        console.log(inboundOrderItemId)
-        $('.myclass').each(function () {
-            if($(this).children('td').eq(13).html()==inboundOrderItemId){
-                var total= parseFloat($(this).children('td').eq(10).html());
-                console.log(total)
-                //剩余数量
-                var residual=total-parseFloat(count);
-                if(parseFloat(residual)>=0){
-                    $(item).parent().next().html(residual.toFixed(2))
-                    $(this).children('td').eq(11).html(residual.toFixed(2))//同步到上面的剩余数量
+       //剩余数量==>隐藏
+        var residual=$(item).parent().next().next().html();
 
-                }
-                else {
-                    alert("配料数量超出最大数额！重新配料")
-                }
+        // //剩余数量==>显示
+        var residual1;
+        residual1=parseFloat(residual)-parseFloat(count);
 
 
-            }
 
-        })
+
+        if(residual1<0){
+            alert("配料量大于库存量，请重新配料！")
+        }
+        else {
+            $(item).parent().next().html(parseFloat(residual1).toFixed(2))
+        }
+
+
+
+
+
     }
 
 
@@ -1787,6 +1775,182 @@ function CalRemainQuantities(item) {
 
 
 
+
+
+}
+
+//配料单查看
+function view(item) {
+    var batchingOrderId=$(item).parent().parent().children('td').eq(1).html();
+  $('#addModa1').modal('show');
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getBatchingOrderById",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{"batchingOrderId":batchingOrderId},
+        //contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                var obj=eval(result.data);
+                $('#batchingOrderId').val(obj.batchingOrderId);
+                if(obj.wareHouse!=null){
+                    $('#wareHouse').val(obj.wareHouse.wareHouseName);
+                }
+                if(obj.produceCompany!=null){
+                    $('#produceCompany').val(obj.produceCompany.companyName);
+                }
+                $('#wastesName').val(obj.wastesName);
+                $('#batchingNumber').val(obj.batchingNumber.toFixed(2));
+                $('#batchingDate').val(getDateStr(obj.batchingDate));
+                $('#createDate').val(getDateStr(obj.createDate));
+                $('#transferDraftId').val(obj.transferDraftId);
+                if(obj.handelCategory!=null){
+                    $('#handelCategory').val(obj.handelCategory.name);
+                }
+                if(obj.processWay!=null){
+                    $('#processWay').val(obj.processWay.name);
+                }
+
+
+            }
+        },
+        error:function (result) {
+            
+        }
+        
+    })
+
+}
+
+//配料单编辑
+function ingreadientsListModify(item) {
+    var batchingOrderId=$(item).parent().parent().children('td').eq(1).html();
+    $('#addModa2').modal('show');
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getBatchingOrderById",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{"batchingOrderId":batchingOrderId},
+        //contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                var obj=eval(result.data);
+                $('#batchingOrderId1').val(obj.batchingOrderId);
+                if(obj.wareHouse!=null){
+                    $('#wareHouse1').val(obj.wareHouse.wareHouseName);
+                }
+                if(obj.produceCompany!=null){
+                    $('#produceCompany1').val(obj.produceCompany.companyName);
+                }
+                $('#wastesName1').val(obj.wastesName);
+                $('#batchingNumber1').val(obj.batchingNumber.toFixed(2));
+                $('#batchingNumber2').val(obj.batchingNumber.toFixed(2));
+                $('#batchingDate1').val(getDateStr(obj.batchingDate));
+                $('#createDate1').val(getDateStr(obj.createDate));
+                $('#transferDraftId1').val(obj.transferDraftId);
+                if(obj.handelCategory!=null){
+                    $('#handelCategory1').val(obj.handelCategory.name);
+                }
+                if(obj.processWay!=null){
+                    $('#processWay1').val(obj.processWay.name);
+                }
+
+                $('#inventoryNumber').val(obj.inventoryNumber.toFixed(2));
+                $('#inventoryNumber2').val(obj.inventoryNumber.toFixed(2));
+                $('#inboundOrderItemId').val(obj.inboundOrderItemId);
+
+
+            }
+        },
+        error:function (result) {
+
+        }
+
+    })
+}
+
+//计算配料数和库存数
+function CalIngredients() {
+var batchingNumber=$("#batchingNumber1").val();
+
+    if(batchingNumber.length==0){
+        batchingNumber=0;
+    }
+    if(　isNaN(batchingNumber)){
+        alert("请输入数字!")
+    }
+
+    if(　!isNaN(batchingNumber)){
+        var inventoryNumber=$('#inventoryNumber2').val();//现有库存==》不会变
+
+        var difference=parseFloat(batchingNumber)-parseFloat($('#batchingNumber2').val());
+
+        var inventoryNumber1=parseFloat(inventoryNumber)-parseFloat(difference);
+
+          if(parseFloat(inventoryNumber1)>0){
+              $('#inventoryNumber').val(parseFloat(inventoryNumber1).toFixed(2))
+          }
+          else {
+              alert("配料量大于库存量，请重新配料！")
+              $('#batchingNumber1').val($("#batchingNumber2").val())
+          }
+
+    }
+}
+
+//配料单修改方法=>修改配料数量/库存数量
+function adjustIngredientsList() {
+
+    var data={
+        batchingOrderId:$('#batchingOrderId1').val(),
+        batchingDate:$('#batchingDate1').val(),
+        batchingNumber:$('#batchingNumber1').val(),
+        inventoryNumber:$("#inventoryNumber").val(),
+        inboundOrderItemId:$("#inboundOrderItemId").val(),
+    };
+    console.log(data)
+    //
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "updateBatchingOrder",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                alert(result.message)
+                window.location.reload()
+            }
+        },
+        error:function (result) {
+            
+        }
+    })
+
+}
+
+
+//领料单新增页面计算
+function Cal(item) {
+    var number=$(item).val();
+    if(number.length==0){
+        number=0;
+    }
+    if(　isNaN(number)){
+        alert("请输入数字!")
+    }
+    var batchNumber=$(item).parent().prev().html();
+
+    var difference=parseFloat(batchNumber)-parseFloat(number);
+
+    if(difference<0){
+        alert("领料数大于配料数，请重新领料")
+    }
 
 
 }

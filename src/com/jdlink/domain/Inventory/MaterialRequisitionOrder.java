@@ -45,7 +45,9 @@ public class MaterialRequisitionOrder {
 
     private String inboundOrderItemId;
 
+    /*配料数量*/
 
+    private float batchingNumber;
     /**
      * 单价
      */
@@ -90,6 +92,14 @@ public class MaterialRequisitionOrder {
 
     private Page page;
 
+
+    public float getBatchingNumber() {
+        return batchingNumber;
+    }
+
+    public void setBatchingNumber(float batchingNumber) {
+        this.batchingNumber = batchingNumber;
+    }
 
     public String getInboundOrderItemId() {
         return inboundOrderItemId;

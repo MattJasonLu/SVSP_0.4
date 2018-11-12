@@ -191,7 +191,7 @@
                             <th class="text-center">厂家</th>
                             <th class="text-center">危废名称</th>
                             <th class="text-center">危废类别</th>
-                            <th class="text-center">配料数量</th>
+                            <th class="text-center hidden">配料数量</th>
                             <th class="text-center">领用数量</th>
                             <th class="text-center">主管副总经理</th>
                             <th class="text-center">部门仓库主管</th>
@@ -214,11 +214,9 @@
                             <td class="text-center"></td>
                             <td class="text-center "></td>
                             <td class="text-center "></td>
+                            <td class="text-center hidden"></td>
                             <td class="text-center "></td>
                             <td class="text-center "></td>
-                            <td class="text-center "></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
                             <td class="text-center"></td>
                             <td class="text-center"></td>
                             <td class="text-center"></td>
@@ -277,5 +275,110 @@
         </ol>
     </nav>
     <div id="embed"></div>
+
+    <!--查看模态框-->
+    <div class="modal fade" id="addModa1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 1600px;">
+            <div class="modal-content" >
+                <form method="post" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h4 class="modal-title">医危废出入库修改</h4>
+                    </div>
+                    <div class="modal-body" style="overflow-x:scroll;">
+                        <table class="table table-bordered" style="border:none">
+                            <!--<thead style="border:none">-->
+                            <thead>
+                            <tr>
+                                <th style="width: 180px">领料单号</th>
+                                <th>厂家</th>
+                                <th>危废名称</th>
+                                <th>危废类别</th>
+                                <th>领用数量</th>
+                                <th>主管副总经理</th>
+                                <th>部门仓库主管	</th>
+                                <th>保管员</th>
+                                <th>领料部门主管</th>
+                                <th>领料人</th>
+                            </tr>
+                            </thead>
+                            <tbody >
+                            <tr id="addTable1" class="myclass3">
+                                <td><input class="focus" name="transferDraftId" id="materialRequisitionId" readonly></td><!--领料单号	-->
+                                <td style="width: 15%"><input class="focus" name="produceCompany"  id="client" ></td><!--厂家-->
+                                <td><input class="focus" name="wastesName" id="wastesName"></td><!--危废名称-->
+                                <td><input class="focus" name="wastesCode" id="wasteCategory"></td><!--危废类别-->
+                                <td><input class="focus" name="formType" id="recipientsNumber"></td><!--领用数量-->
+                                <td><input class="focus" name="remark" id="deputyGeneral"></td><!--主管副总经理-->
+                                <td><input class="focus" name="remark" id="warehouseManager" ></td><!--部门仓库主管-->
+                                <td><input class="focus" name="remark" id="guardian" ></td><!--保管员	-->
+                                <td><input class="focus" name="remark" id="materialManager" ></td><!--领料部门主管-->
+                                <td><input class="focus" name="remark" id="picker" ></td><!--领料人-->
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer center-block">
+                        <!--<button type="button" class="btn btn-primary" onclick="adjustMedicalWaste();">修改</button>-->
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--修改模态框-->
+    <div class="modal fade" id="addModa2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 1600px;">
+            <div class="modal-content" >
+                <form method="post" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h4 class="modal-title">医危废出入库修改</h4>
+                    </div>
+                    <div class="modal-body" style="overflow-x:scroll;">
+                        <table class="table table-bordered" style="border:none">
+                            <!--<thead style="border:none">-->
+                            <thead>
+                            <tr>
+                                <th style="width: 180px">领料单号</th>
+                                <th>厂家</th>
+                                <th>危废名称</th>
+                                <th>危废类别</th>
+                                <th>领用数量</th>
+                                <th>主管副总经理</th>
+                                <th>部门仓库主管	</th>
+                                <th>保管员</th>
+                                <th>领料部门主管</th>
+                                <th>领料人</th>
+                                <th>剩余配料数</th>
+                            </tr>
+                            </thead>
+                            <tbody >
+                            <tr  class="myclass3">
+                                <td><input class="focus" name="transferDraftId" id="materialRequisitionId1" readonly></td><!--领料单号	-->
+                                <td style="width: 15%"><input class="focus" name="produceCompany"  id="client1"readonly ></td><!--厂家-->
+                                <td><input class="focus" name="wastesName" id="wastesName1"readonly></td><!--危废名称-->
+                                <td><input class="focus" name="wastesCode" id="wasteCategory1"readonly></td><!--危废类别-->
+                                <td><input class="focus" name="formType" id="recipientsNumber1" onkeyup="CalIngredients()"></td><!--领用数量-->
+                                <td><input class="focus" name="remark" id="deputyGeneral1"></td><!--主管副总经理-->
+                                <td><input class="focus" name="remark" id="warehouseManager1" ></td><!--部门仓库主管-->
+                                <td><input class="focus" name="remark" id="guardian1" ></td><!--保管员	-->
+                                <td><input class="focus" name="remark" id="materialManager1" ></td><!--领料部门主管-->
+                                <td><input class="focus" name="remark" id="picker1" ></td><!--领料人-->
+                                <td><input class="focus" name="remark" id="batchingNumber" readonly></td><!--剩余配料数-->
+                                <input class="focus hidden" name="remark" id="recipientsNumber2" ><!--领用数隐藏-->
+                                <input class="focus hidden" name="remark" id="batchingNumber2" ><!--剩余配料数隐藏-->
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer center-block">
+                        <button type="button" class="btn btn-primary" onclick="adjustMaterialRequisition();">修改</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
