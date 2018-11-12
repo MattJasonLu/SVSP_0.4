@@ -599,21 +599,21 @@
                             <th class="text-center">序号</th>
                             <th class="text-center" style="width:100px;">产废单位</th>
                             <th class="text-center">进料方式</th>
-                            <th class="text-center" style="width:100px;">入场时间</th>
+                            <th class="text-center">入场时间</th>
                             <th class="text-center">废物名称</th>
                             <th class="text-center" style="width:100px;">废物代码</th>
                             <th class="text-center">数量</th>
                             <th class="text-center">计量单位</th>
                             <th class="text-center">物质形态</th>
                             <th class="text-center">包装形式</th>
-                            <th class="text-center">热值/KCal/Kg</th>
+                            <th class="text-center">热值</th>
                             <th class="text-center">PH</th>
-                            <th class="text-center">灰分/%</th>
-                            <th class="text-center">水分/%</th>
-                            <th class="text-center">氯含量/%</th>
-                            <th class="text-center">硫含量/%</th>
-                            <th class="text-center">磷含量/%</th>
-                            <th class="text-center">氟含量/%</th>
+                            <th class="text-center">灰分</th>
+                            <th class="text-center">水分</th>
+                            <th class="text-center">氯</th>
+                            <th class="text-center">硫</th>
+                            <th class="text-center">磷</th>
+                            <th class="text-center">氟</th>
                             <th class="text-center">处理方式</th>
                             <th class="text-center hidden">ID</th>
                         </tr>
@@ -621,11 +621,11 @@
                             <td class="text-center" id="transportPlanItemList[0].id">0</td>
                             <td class="text-center" id="transportPlanItemList[0].produceCompany.companyName">测试产废单位</td>
                             <td class="text-center" id="transportPlanItemList[0].handleCategory">污泥</td>
-                            <td class="text-center" style="width: 60%;"><input class="form-control" type="date" id="transportPlanItemList[0].approachTime" style="width: 60%;"></td>
+                            <td class="text-center"><input class="form-control" type="date" id="transportPlanItemList[0].approachTime" style="width: 140px;"></td>
                             <td class="text-left" id="transportPlanItemList[0].wastes.name">废液</td>
                             <td class="text-center" id="transportPlanItemList[0].wastes.wastesId">823-898-09</td>
                             <td class="text-right"><input class="form-control" type="number" size="3" id="transportPlanItemList[0].wastes.wasteAmount" style="width: 50px;" value="1"></td>
-                            <td class="text-right"><input class="form-control" type="text" size="3" id="transportPlanItemList[0].wastes.unit" value="T"></td>
+                            <td class="text-right"><input class="form-control" type="text" size="3" id="transportPlanItemList[0].wastes.unit" value="吨" style="width: 50px;"></td>
                             <td class="text-right" id="transportPlanItemList[0].wastes.formType">液体</td>
                             <td class="text-right" id="transportPlanItemList[0].wastes.packageType">标准箱</td>
                             <td class="text-right" id="transportPlanItemList[0].wastes.calorific">20</td>
@@ -637,7 +637,7 @@
                             <td class="text-right" id="transportPlanItemList[0].wastes.phosphorusPercentage">10</td>
                             <td class="text-right" id="transportPlanItemList[0].wastes.fluorinePercentage">10</td>
                             <td class="text-right">
-                                <select id="transportPlanItemList[0].wastes.processWay" class="form-control">
+                                <select id="transportPlanItemList[0].wastes.processWay" class="form-control" style="width: 70px;">
                                     <option value="1">焚烧</option>
                                     <option value="2">填埋</option>
                                     <option value="3">清洗</option>

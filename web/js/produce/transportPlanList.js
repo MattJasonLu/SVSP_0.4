@@ -1261,7 +1261,8 @@ function addData() {
         // 隐藏无数据的tr
         tr.hide();
         //赋值
-        $("#dailyProportionsTotal").text(dailyProportionsTotal.toFixed(1));
+        // update 2018年11月12日 by matt 下面一行报错 暂时注释
+        // $("#dailyProportionsTotal").text(dailyProportionsTotal.toFixed(1));
         $("#currentInventoryTotal").html(currentInventoryTotal.toFixed(1));
         $("#safetyTotal").html(safetyTotal.toFixed(1));
         $("#marketPurchasesTotal").html(marketPurchasesTotal.toFixed(1));
@@ -1466,6 +1467,9 @@ function setWastesData2(wastesList) {
                     break;
                 case (2):
                     $(this).html(obj.handleType);
+                    break;
+                case (3):
+                    $(this).find("input").val(getNowDate());
                     break;
                 case (4):
                     $(this).html(obj.name);
