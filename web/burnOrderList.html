@@ -119,42 +119,24 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="form-horizontal col-md-4">
-                            <div class="form-group">
-                                <label for="search-id" class="col-sm-4 control-label">焚烧工单号</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-id" name="search-id" placeholder="" onkeydown="enterSearch()">
-                                </div>
-                            </div>
+                            <p style="display: inline">焚烧工单号：<input style="width: 55%;display: inline" class="form-control" type="text" id="search-id" name="search-id" placeholder="" onkeydown="enterSearch()"></p>
                         </div>
                         <div class="form-horizontal col-md-4">
-                            <div class="form-group">
-                                <label for="search-state" class="col-sm-4 control-label">状态</label>
-                                <div class="col-xs-7">
-                                    <select class="form-control" id="search-state" name="search-state" onchange="searchBurnOrder()">
-                                        <option value="0"></option>
-                                    </select>
-                                </div>
-                            </div>
+                            <p style="display: inline">状态：<select style="width: 55%;display: inline" class="form-control" title="" id="search-state" name="search-state" onchange="searchBurnOrder()">
+                                <option value="0"></option>
+                            </select></p>
                         </div>
                         <div class="form-horizontal col-md-4">
-                            <div class="form-group">
-                                <label for="search-remarks" class="col-sm-4 control-label">备注</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-remarks" name="search-remarks" placeholder="" onkeydown="enterSearch()">
-                                </div>
-                            </div>
+                            <p style="display: inline">备注：<input style="width: 55%;display: inline" class="form-control" type="text" id="search-remarks" name="search-remarks" placeholder="" onkeydown="enterSearch()"></p>
                         </div>
                     </div>
+                    <br>
                     <div class="row">
                         <div class="form-horizontal col-md-6">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" style="margin-left: -35px">创&nbsp;建&nbsp;&nbsp;日&nbsp;期 </label>
-                                <div class="input-group">
-                                    <input type="date" class="input-sm form-control" id="search-startDate" title="" onkeydown="enterSearch()"/>
-                                    <span class="input-group-addon">-</span>
-                                    <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown="enterSearch()"/>
-                                </div>
-                            </div>
+                            <p style="display: inline;margin-left: -2px">创建日期：
+                            <input style="display: inline;width: 20%"  type="date" class="input-sm form-control" id="search-startDate" title="" onkeydown="enterSearch()"/>
+                            <span  style="display: inline" class="input-group-addon">-</span>
+                            <input style="display: inline;width: 20%"  type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown="enterSearch()"/></p>
                         </div>
                     </div>
                 </div>
