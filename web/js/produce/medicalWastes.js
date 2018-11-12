@@ -1,9 +1,9 @@
-
 var isSearch = false;
 var currentPage = 1;                          //当前页数
 var data;
-array=[];
-array1=[];
+array = [];
+array1 = [];
+
 /**********************客户部分**********************/
 
 /**
@@ -47,7 +47,7 @@ function totalPage() {
         });
     }
     if (isSearch) {
-        totalRecord=array1.length;
+        totalRecord = array1.length;
     }
     var count = countValue();                         // 可选
     return loadPages(totalRecord, count);
@@ -180,12 +180,12 @@ function switchPage(pageNumber) {
         });
     }
     if (isSearch) {//查询用的
-        for(var i=0;i<array1.length;i++){
+        for (var i = 0; i < array1.length; i++) {
             $(array1[i]).hide();
         }
-        var i=parseInt((pageNumber-1)*countValue());
-        var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
-        for(var i=i;i<=j;i++){
+        var i = parseInt((pageNumber - 1) * countValue());
+        var j = parseInt((pageNumber - 1) * countValue()) + parseInt(countValue() - 1);
+        for (var i = i; i <= j; i++) {
             $('#tbody1').append(array1[i]);
             $(array1[i]).show();
         }
@@ -252,13 +252,14 @@ function inputSwitchPage() {
                     // setClientList(result);
                 }
             });
-        }   if (isSearch) {//查询用的
-            for(var i=0;i<array1.length;i++){
+        }
+        if (isSearch) {//查询用的
+            for (var i = 0; i < array1.length; i++) {
                 $(array1[i]).hide();
             }
-            var i=parseInt((pageNumber-1)*countValue());
-            var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
-            for(var i=i;i<=j;i++){
+            var i = parseInt((pageNumber - 1) * countValue());
+            var j = parseInt((pageNumber - 1) * countValue()) + parseInt(countValue() - 1);
+            for (var i = i; i <= j; i++) {
                 $('#tbody1').append(array1[i]);
                 $(array1[i]).show();
             }
@@ -273,64 +274,64 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
     $('#searchContent').keyup(function (event) {
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
-            if(last-event.timeStamp==0){
+            if (last - event.timeStamp == 0) {
                 searchMedicalWastes1();
             }
-            else if(event.keyCode=='13'){
+            else if (event.keyCode == '13') {
                 searchMedicalWastes1();
             }
-        },600);
+        }, 600);
 
     });
 });
 
 //粗查询
 function searchMedicalWastes1() {
-    isSearch=false;
+    isSearch = false;
 
     //loadMedicalWastesList();
     //1分页模糊查询
-    array.length=0;//清空数组
+    array.length = 0;//清空数组
 
-    array1.length=0;
+    array1.length = 0;
 
-    for(var i=totalPage();i>0;i--){
+    for (var i = totalPage(); i > 0; i--) {
         switchPage(parseInt(i));
         array.push($('.myclass'));
     }
 
-     console.log((array));
+    console.log((array));
     isSearch = true;
 
-    var text= $.trim($('#searchContent').val());
+    var text = $.trim($('#searchContent').val());
     console.log(text);
-    for(var j=0;j<array.length;j++){
-        $.each(array[j],function () {
+    for (var j = 0; j < array.length; j++) {
+        $.each(array[j], function () {
             //console.log(this);
-            if(($(this).children('td').text().indexOf(text)==-1)){
+            if (($(this).children('td').text().indexOf(text) == -1)) {
                 $(this).hide();
             }
-            if($(this).children('td').text().indexOf(text)!=-1){
+            if ($(this).children('td').text().indexOf(text) != -1) {
                 array1.push($(this));
             }
         });
     }
 
     console.log(array1);
-    console.log("长度"+array1.length);
+    console.log("长度" + array1.length);
 
     var total;
 
-    if(array1.length%countValue()==0){
-        total=array1.length/countValue()
+    if (array1.length % countValue() == 0) {
+        total = array1.length / countValue()
     }
 
-    if(array1.length%countValue()>0){
-        total=Math.ceil(array1.length/countValue());
+    if (array1.length % countValue() > 0) {
+        total = Math.ceil(array1.length / countValue());
     }
 
-    if(array1.length/countValue()<1){
-        total=1;
+    if (array1.length / countValue() < 1) {
+        total = 1;
     }
 
     $("#totalPage").text("共" + total + "页");
@@ -339,9 +340,9 @@ function searchMedicalWastes1() {
 
     $('.beforeClone').remove();
 
-    for ( i = 0; i < total; i++) {
+    for (i = 0; i < total; i++) {
         var li = $("#next").prev();
-        myArray[i] = i+1;
+        myArray[i] = i + 1;
         var clonedLi = li.clone();
         clonedLi.show();
         clonedLi.find('a:first-child').text(myArray[i]);
@@ -356,18 +357,18 @@ function searchMedicalWastes1() {
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
-    for(var i=0;i<array1.length;i++){
+    for (var i = 0; i < array1.length; i++) {
         (array1[i]).hide();
     }
 
     //首页展示
-        for(var i=0;i<countValue();i++){
-            $(array1[i]).show();
-            //$('#tbody1').append((array1[i]));
-        }
+    for (var i = 0; i < countValue(); i++) {
+        $(array1[i]).show();
+        //$('#tbody1').append((array1[i]));
+    }
 
 
-    if(text.length<=0){
+    if (text.length <= 0) {
         loadMedicalWastesList();
     }
 
@@ -385,16 +386,16 @@ function getNewestId() {
         dataType: "json",
         //data:{'stockId':stockId},
         contentType: "application/json; charset=utf-8",
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                 $('#medicalWastesId').val(result.medicalWastesId);
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                $('#medicalWastesId').val(result.medicalWastesId);
                 console.log(result);
             }
             else {
                 alert(result.message);
             }
         },
-        error:function (result) {
+        error: function (result) {
             alert("服务器异常！");
         }
     });
@@ -408,13 +409,13 @@ function getNewestId() {
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
                 console.log(result)
-                var equipment=$("#equipment");
+                var equipment = $("#equipment");
                 equipment.children().remove();
-                $.each(result.equipmentList,function (index,item) {
-                    var option=$('<option/>')
+                $.each(result.equipmentList, function (index, item) {
+                    var option = $('<option/>')
                     option.val(index);
                     option.text(item.name);
                     equipment.append(option);
@@ -425,7 +426,7 @@ function getNewestId() {
                 alert(result.message)
             }
         },
-        error:function (result) {
+        error: function (result) {
             alert("服务器异常")
         }
 
@@ -433,46 +434,45 @@ function getNewestId() {
     $('#date').val(dateToString(new Date()))
 
 
-
 }
 
 //保存医废出入库信息
 function saveMedicalWastes() {
 //获得输入的信息
-    data={
-        medicalWastesId:$('#medicalWastesId').val(),
-        department:$('#department').val(),
-        departmentName:$('#departmentName').val(),
-        adjustName:$('#adjustName').val(),
-        adjustDate:$('#adjustDate').val(),
-        dateTime:$('#date').val(),
-        thisMonthWastes:$('#thisMonthWastes').val(),
-        directDisposal:$('#directDisposal').val(),
-        cookingWastes:$('#cookingWastes').val(),
-        afterCookingNumber:$('#afterCookingNumber').val(),
-        afterCookingInbound:$('#afterCookingInbound').val(),
-        thisMonthSendCooking:$('#thisMonthSendCooking').val(),
-        errorNumber:$('#errorNumber').val(),
-        wetNumber:$('#wetNumber').val(),
-        equipment:$('#equipment').selectpicker('val'),
+    data = {
+        medicalWastesId: $('#medicalWastesId').val(),
+        department: $('#department').val(),
+        departmentName: $('#departmentName').val(),
+        adjustName: $('#adjustName').val(),
+        adjustDate: $('#adjustDate').val(),
+        dateTime: $('#date').val(),
+        thisMonthWastes: $('#thisMonthWastes').val(),
+        directDisposal: $('#directDisposal').val(),
+        cookingWastes: $('#cookingWastes').val(),
+        afterCookingNumber: $('#afterCookingNumber').val(),
+        afterCookingInbound: $('#afterCookingInbound').val(),
+        thisMonthSendCooking: $('#thisMonthSendCooking').val(),
+        errorNumber: $('#errorNumber').val(),
+        wetNumber: $('#wetNumber').val(),
+        equipment: $('#equipment').selectpicker('val'),
     }
     $.ajax({
         type: "POST",                            // 方法类型
         url: "addMedicalWastes",                  // url
         dataType: "json",
-        data:JSON.stringify(data),
+        data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
                 console.log(result);
                 alert(result.message);
-                window.location.href="medicalWasteManager.html";
+                window.location.href = "medicalWasteManager.html";
             }
             else {
                 alert(result.message);
             }
         },
-        error:function (result) {
+        error: function (result) {
             alert("服务器异常！")
         }
     });
@@ -498,8 +498,8 @@ function loadMedicalWastesList() {
         dataType: "json",
         data: JSON.stringify(page),
         contentType: "application/json; charset=utf-8",
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
                 console.log(result);
                 setPageClone(result);
                 setPageCloneAfter(pageNumber);        // 重新设置页码
@@ -509,12 +509,12 @@ function loadMedicalWastesList() {
                 alert(result.message);
             }
         },
-        error:function (result) {
+        error: function (result) {
             alert("服务器异常！")
 
         }
     });
-    isSearch=false;
+    isSearch = false;
 }
 
 //加载医危废数据
@@ -524,7 +524,7 @@ function setMedicalWastesList(result) {
     $.each(result.medicalWastesList, function (index, item) {
         var clonedTr = tr.clone();
         clonedTr.show();
-        clonedTr.attr('class','myclass');
+        clonedTr.attr('class', 'myclass');
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
             var obj = eval(item);
@@ -554,11 +554,11 @@ function setMedicalWastesList(result) {
                 case (6):
                     $(this).html(getDateStr(obj.adjustDate));
                     break;
-                    //本月进厂危废
+                //本月进厂危废
                 case (7):
                     $(this).html(obj.thisMonthWastes.toFixed(2));
                     break;
-                    //本日直接转外处置量
+                //本日直接转外处置量
                 case (8):
                     $(this).html(obj.directDisposal.toFixed(2));
                     break;
@@ -566,34 +566,34 @@ function setMedicalWastesList(result) {
                 case (9):
                     $(this).html(obj.cookingWastes.toFixed(2));
                     break;
-                    //蒸煮后重量
+                //蒸煮后重量
                 case (10):
                     $(this).html(obj.afterCookingNumber.toFixed(2));
                     break;
-                    //蒸煮后入库量
+                //蒸煮后入库量
                 case (11):
                     $(this).html(obj.afterCookingInbound.toFixed(2));
                     break;
-                    //本月蒸煮后外送量
+                //本月蒸煮后外送量
                 case (12):
                     $(this).html(obj.thisMonthSendCooking.toFixed(2));
                     break;
-                    //误差量
+                //误差量
                 case (13):
                     $(this).html(obj.errorNumber.toFixed(2));
                     break;
-                    //水分含量
+                //水分含量
                 case (14):
                     $(this).html(obj.wetNumber.toFixed(2));
                     break;
-                    //处置设备
+                //处置设备
                 case (15):
-                    if(obj.equipment!=null){
+                    if (obj.equipment != null) {
                         $(this).html(obj.equipment.name);
                     }
                     break;
                 case (16):
-                    if(obj.checkState!=null){
+                    if (obj.checkState != null) {
                         $(this).html(obj.checkState.name);
                     }
                     break;
@@ -612,73 +612,73 @@ function setMedicalWastesList(result) {
 
 //高级查询
 function searchMedicalWastes() {
-    isSearch=false;
-    array.length=0;//清空数组
-    array1.length=0;//清空数组
+    isSearch = false;
+    array.length = 0;//清空数组
+    array1.length = 0;//清空数组
     //1分页模糊查询
 
-    for(var i=totalPage();i>0;i--){
+    for (var i = totalPage(); i > 0; i--) {
         switchPage(parseInt(i));
         array.push($('.myclass'));
     }
 
-    isSearch=true;
+    isSearch = true;
 
-    var text= $.trim($('#searchContent').val());
+    var text = $.trim($('#searchContent').val());
 
-    var person=$.trim($('#search-departmentName').val());
+    var person = $.trim($('#search-departmentName').val());
 
-    var beginTime=$.trim($('#search-storageDate').val());
+    var beginTime = $.trim($('#search-storageDate').val());
 
-    var endTime=$.trim($('#search-endDate').val());
+    var endTime = $.trim($('#search-endDate').val());
 
-    var startDate=getDateByStr(beginTime);
+    var startDate = getDateByStr(beginTime);
 
-    var endDate=getDateByStr(endTime);
+    var endDate = getDateByStr(endTime);
 
-    var arraydate=[];
-    for(var j=0;j<array.length;j++){
-        $.each(array[j],function () {
+    var arraydate = [];
+    for (var j = 0; j < array.length; j++) {
+        $.each(array[j], function () {
             arraydate.push(($(this).children('td').eq(2).text()))
         });
     }
 
-    var dateMin=(arraydate[0]);
-    var dateMax=(arraydate[0]);
+    var dateMin = (arraydate[0]);
+    var dateMax = (arraydate[0]);
 
-    for(var i=0;i<arraydate.length;i++){
-        if(new Date(arraydate[i]).getTime()<new Date(dateMin)||dateMin.length==0){
-            dateMin=(arraydate[i]);
+    for (var i = 0; i < arraydate.length; i++) {
+        if (new Date(arraydate[i]).getTime() < new Date(dateMin) || dateMin.length == 0) {
+            dateMin = (arraydate[i]);
         }
-        if(new Date(arraydate[i]).getTime()>new Date(dateMax)||dateMax.length==0){
-            dateMax=(arraydate[i]);
+        if (new Date(arraydate[i]).getTime() > new Date(dateMax) || dateMax.length == 0) {
+            dateMax = (arraydate[i]);
         }
 
     }
-console.log(dateMin+dateMax)
+    console.log(dateMin + dateMax)
 
-    for(var j=0;j<array.length;j++){
-        $.each(array[j],function () {
+    for (var j = 0; j < array.length; j++) {
+        $.each(array[j], function () {
             //console.log(this);
-            if(startDate.toString()=='Invalid Date'){
-                startDate=dateMin;
+            if (startDate.toString() == 'Invalid Date') {
+                startDate = dateMin;
             }
-            if(endDate.toString()=='Invalid Date'){
-                endDate=dateMax;
+            if (endDate.toString() == 'Invalid Date') {
+                endDate = dateMax;
             }
-            console.log(startDate+endDate)
+            console.log(startDate + endDate)
             // console.log($(this).children('td').eq(2).text())
-            if(!($(this).children('td').eq(4).text().indexOf(person)!=-1
-              &&$(this).children('td').text().indexOf(text)!=-1
-                &&(new Date($(this).children('td').eq(2).text()).getTime()>=new Date(startDate).getTime() &&new Date($(this).children('td').eq(2).text()).getTime()<=new Date(endDate).getTime())
+            if (!($(this).children('td').eq(4).text().indexOf(person) != -1
+                && $(this).children('td').text().indexOf(text) != -1
+                && (new Date($(this).children('td').eq(2).text()).getTime() >= new Date(startDate).getTime() && new Date($(this).children('td').eq(2).text()).getTime() <= new Date(endDate).getTime())
 
-            )){
+            )) {
                 $(this).hide();
             }
-            if(($(this).children('td').eq(4).text().indexOf(person)!=-1
-                &&$(this).children('td').text().indexOf(text)!=-1
-                &&(new Date($(this).children('td').eq(2).text()).getTime()>=new Date(startDate).getTime() &&new Date($(this).children('td').eq(2).text()).getTime()<=new Date(endDate).getTime())
-            )){
+            if (($(this).children('td').eq(4).text().indexOf(person) != -1
+                && $(this).children('td').text().indexOf(text) != -1
+                && (new Date($(this).children('td').eq(2).text()).getTime() >= new Date(startDate).getTime() && new Date($(this).children('td').eq(2).text()).getTime() <= new Date(endDate).getTime())
+            )) {
                 array1.push($(this));
             }
         });
@@ -686,16 +686,16 @@ console.log(dateMin+dateMax)
     console.log(array1);
     var total;
 
-    if(array1.length%countValue()==0){
-        total=array1.length/countValue()
+    if (array1.length % countValue() == 0) {
+        total = array1.length / countValue()
     }
 
-    if(array1.length%countValue()>0){
-        total=Math.ceil(array1.length/countValue());
+    if (array1.length % countValue() > 0) {
+        total = Math.ceil(array1.length / countValue());
     }
 
-    if(array1.length/countValue()<1){
-        total=1;
+    if (array1.length / countValue() < 1) {
+        total = 1;
     }
 
     $("#totalPage").text("共" + total + "页");
@@ -704,9 +704,9 @@ console.log(dateMin+dateMax)
 
     $('.beforeClone').remove();
 
-    for ( i = 0; i < total; i++) {
+    for (i = 0; i < total; i++) {
         var li = $("#next").prev();
-        myArray[i] = i+1;
+        myArray[i] = i + 1;
         var clonedLi = li.clone();
         clonedLi.show();
         clonedLi.find('a:first-child').text(myArray[i]);
@@ -721,11 +721,11 @@ console.log(dateMin+dateMax)
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
-    for(var i=0;i<array1.length;i++){
+    for (var i = 0; i < array1.length; i++) {
         array1[i].hide();
     }
 
-    for(var i=0;i<countValue();i++){
+    for (var i = 0; i < countValue(); i++) {
         $(array1[i]).show();
         $('#tbody1').append((array1[i]));
     }
@@ -746,34 +746,34 @@ function enterSearch() {
 //医废-误差量计算公式：误差量=本日进厂医废（接运单）-本日直接转外处置量-本日蒸煮医废（过磅量）
 function geterrorNumberByWastes() {
     thisMonthWastes = $('#thisMonthWastes').val();
-    if($('#thisMonthWastes').val()==null||$('#thisMonthWastes').val()==''){
-        thisMonthWastes=0;
+    if ($('#thisMonthWastes').val() == null || $('#thisMonthWastes').val() == '') {
+        thisMonthWastes = 0;
     }
-    directDisposal=$('#directDisposal').val();
-    if($('#directDisposal').val()==null||$('#directDisposal').val()==''||$('#directDisposal').val().length<=0){
-        directDisposal=0;
+    directDisposal = $('#directDisposal').val();
+    if ($('#directDisposal').val() == null || $('#directDisposal').val() == '' || $('#directDisposal').val().length <= 0) {
+        directDisposal = 0;
     }
-    cookingWastes=$('#cookingWastes').val();
-    if($('#cookingWastes').val()==null||$('#cookingWastes').val()==''||$('#cookingWastes').val().length<=0){
-        cookingWastes=0;
+    cookingWastes = $('#cookingWastes').val();
+    if ($('#cookingWastes').val() == null || $('#cookingWastes').val() == '' || $('#cookingWastes').val().length <= 0) {
+        cookingWastes = 0;
     }
-    $("#errorNumber").val(parseInt(thisMonthWastes)-parseInt(directDisposal)-parseInt(cookingWastes));
+    $("#errorNumber").val(parseInt(thisMonthWastes) - parseInt(directDisposal) - parseInt(cookingWastes));
 }
 
 function geterrorNumberByDisposal() {
     thisMonthWastes = $('#thisMonthWastes').val();
-    if($('#thisMonthWastes').val()==null||$('#thisMonthWastes').val()==''){
-        thisMonthWastes=0;
+    if ($('#thisMonthWastes').val() == null || $('#thisMonthWastes').val() == '') {
+        thisMonthWastes = 0;
     }
-    directDisposal=$('#directDisposal').val();
-    if($('#directDisposal').val()==null||$('#directDisposal').val()==''||$('#directDisposal').val().length<=0){
-        directDisposal=0;
+    directDisposal = $('#directDisposal').val();
+    if ($('#directDisposal').val() == null || $('#directDisposal').val() == '' || $('#directDisposal').val().length <= 0) {
+        directDisposal = 0;
     }
-    cookingWastes=$('#cookingWastes').val();
-    if($('#cookingWastes').val()==null||$('#cookingWastes').val()==''||$('#cookingWastes').val().length<=0){
-        cookingWastes=0;
+    cookingWastes = $('#cookingWastes').val();
+    if ($('#cookingWastes').val() == null || $('#cookingWastes').val() == '' || $('#cookingWastes').val().length <= 0) {
+        cookingWastes = 0;
     }
-    $("#errorNumber").val(parseInt(thisMonthWastes)-parseInt(directDisposal)-parseInt(cookingWastes));
+    $("#errorNumber").val(parseInt(thisMonthWastes) - parseInt(directDisposal) - parseInt(cookingWastes));
 
 
 }
@@ -781,51 +781,51 @@ function geterrorNumberByDisposal() {
 
 function geterrorNumberByCook() {
     thisMonthWastes = $('#thisMonthWastes').val();
-    if($('#thisMonthWastes').val()==null||$('#thisMonthWastes').val()==''){
-        thisMonthWastes=0;
+    if ($('#thisMonthWastes').val() == null || $('#thisMonthWastes').val() == '') {
+        thisMonthWastes = 0;
     }
-    directDisposal=$('#directDisposal').val();
-    if($('#directDisposal').val()==null||$('#directDisposal').val()==''||$('#directDisposal').val().length<=0){
-        directDisposal=0;
+    directDisposal = $('#directDisposal').val();
+    if ($('#directDisposal').val() == null || $('#directDisposal').val() == '' || $('#directDisposal').val().length <= 0) {
+        directDisposal = 0;
     }
-    cookingWastes=$('#cookingWastes').val();
-    if($('#cookingWastes').val()==null||$('#cookingWastes').val()==''||$('#cookingWastes').val().length<=0){
-        cookingWastes=0;
+    cookingWastes = $('#cookingWastes').val();
+    if ($('#cookingWastes').val() == null || $('#cookingWastes').val() == '' || $('#cookingWastes').val().length <= 0) {
+        cookingWastes = 0;
     }
-    afterCookingNumber=$('#afterCookingNumber').val();
-    if($('#afterCookingNumber').val()==null||$('#afterCookingNumber').val()==''||$('#afterCookingNumber').val().length<=0){
-        afterCookingNumber=0;
+    afterCookingNumber = $('#afterCookingNumber').val();
+    if ($('#afterCookingNumber').val() == null || $('#afterCookingNumber').val() == '' || $('#afterCookingNumber').val().length <= 0) {
+        afterCookingNumber = 0;
     }
-    $("#wetNumber").val(parseInt(cookingWastes)-parseInt(afterCookingNumber));
-    $("#errorNumber").val(parseInt(thisMonthWastes)-parseInt(directDisposal)-parseInt(cookingWastes));
+    $("#wetNumber").val(parseInt(cookingWastes) - parseInt(afterCookingNumber));
+    $("#errorNumber").val(parseInt(thisMonthWastes) - parseInt(directDisposal) - parseInt(cookingWastes));
 }
 
 //水分含量计算
 //医废-水分含量计算公式：水份含量=本日蒸煮医废（过磅量）-蒸煮后重量
 function getWaterByCooking() {
-    cookingWastes=$('#cookingWastes').val();
-    if($('#cookingWastes').val()==null||$('#cookingWastes').val()==''||$('#cookingWastes').val().length<=0){
-        cookingWastes=0;
+    cookingWastes = $('#cookingWastes').val();
+    if ($('#cookingWastes').val() == null || $('#cookingWastes').val() == '' || $('#cookingWastes').val().length <= 0) {
+        cookingWastes = 0;
     }
-    afterCookingNumber=$('#afterCookingNumber').val();
-    if($('#afterCookingNumber').val()==null||$('#afterCookingNumber').val()==''||$('#afterCookingNumber').val().length<=0){
-        afterCookingNumber=0;
+    afterCookingNumber = $('#afterCookingNumber').val();
+    if ($('#afterCookingNumber').val() == null || $('#afterCookingNumber').val() == '' || $('#afterCookingNumber').val().length <= 0) {
+        afterCookingNumber = 0;
     }
-    $("#wetNumber").val(parseInt(cookingWastes)-parseInt(afterCookingNumber));
+    $("#wetNumber").val(parseInt(cookingWastes) - parseInt(afterCookingNumber));
 
 }
 
 function cancelMedicalWastes(item) {
-    var id=$(item).parent().parent().children('td').eq(0).text();
-    if(confirm("确认作废？")){
+    var id = $(item).parent().parent().children('td').eq(0).text();
+    if (confirm("确认作废？")) {
         $.ajax({
             type: "POST",                            // 方法类型
             url: "cancelMedicalWastes",                  // url
             dataType: "json",
-            data: {'id':id},
+            data: {'id': id},
             //contentType: "application/json; charset=utf-8",
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
                     console.log(result);
                     alert(result.message)
                     window.location.reload();
@@ -834,7 +834,7 @@ function cancelMedicalWastes(item) {
                     alert(result.message);
                 }
             },
-            error:function (result) {
+            error: function (result) {
                 alert("服务器异常！")
 
             }
@@ -875,7 +875,7 @@ function exportExcel() {
                 if (i < idArry.length - 1) sql += idArry[i] + ",";
                 else if (i == idArry.length - 1) sql += idArry[i] + ");"
             }
-            var sqlWords = "select medicalWastesId 序号,department 部门,adjustName 修改人,adjustDate 修改日期,thisMonthWastes 本日进厂危废, directDisposal 本日直接转外处置量,cookingWastes 本日蒸煮医废,afterCookingNumber 蒸煮后重量,afterCookingInbound 蒸煮后入库量,thisMonthSendCooking 本日蒸煮后外送量,errorNumber 误差量,wetNumber 水分含量,equipment 处置设备 from t_pl_medicalwastes where medicalWastesId"+sql;
+            var sqlWords = "select medicalWastesId 序号,department 部门,adjustName 修改人,adjustDate 修改日期,thisMonthWastes 本日进厂危废, directDisposal 本日直接转外处置量,cookingWastes 本日蒸煮医废,afterCookingNumber 蒸煮后重量,afterCookingInbound 蒸煮后入库量,thisMonthSendCooking 本日蒸煮后外送量,errorNumber 误差量,wetNumber 水分含量,equipment 处置设备 from t_pl_medicalwastes where medicalWastesId" + sql;
 
 
         }
@@ -980,6 +980,123 @@ function downloadModal() {
     if (r == true) {
         window.open('downloadFile?filePath=' + filePath);
     }
+}
+
+//修改赋值
+function medicalWasteManagerModify(item) {
+    $('#addModa2').modal('show');
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 4
+    });
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getEquipmentNameList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result)
+                var equipment = $("#equipment");
+                equipment.children().remove();
+                $.each(result.equipmentList, function (index, item) {
+                    var option = $('<option/>')
+                    option.val(index);
+                    option.text(item.name);
+                    equipment.append(option);
+                    $('.selectpicker').selectpicker('refresh');
+                });
+            }
+            else {
+                alert(result.message)
+            }
+        },
+        error: function (result) {
+            alert("服务器异常")
+        }
+
+    });
+    $('#date').val(dateToString(new Date()))
+
+    //根据编号获取信息赋值
+    var medicalWastesId = $(item).parent().parent().children('td').eq(1).html();
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getMedicalWasteById",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {'medicalWastesId': medicalWastesId},
+        dataType: "json",
+        // contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                var obj=eval(result.data)
+                $('#medicalWastesId').val(obj.medicalWastesId);
+                $('#dateTime').val(getDateStr(obj.dateTime));
+                $('#department').val(obj.department);
+                $('#departmentName').val(obj.departmentName);
+                $('#adjustName').val(obj.adjustName);
+                $('#adjustDate').val(getDateStr(obj.adjustDate));
+                $('#thisMonthWastes').val(obj.thisMonthWastes);
+                $('#directDisposal').val(obj.directDisposal);
+                $('#cookingWastes').val(obj.cookingWastes);
+                $('#afterCookingNumber').val(obj.afterCookingNumber);
+                $('#afterCookingInbound').val(obj.afterCookingInbound);
+                $('#thisMonthSendCooking').val(obj.thisMonthSendCooking);
+                $('#errorNumber').val(obj.errorNumber);
+                $('#wetNumber').val(obj.wetNumber);
+                $('#equipment').selectpicker(obj.equipment.name);
+            }
+        },
+        error:function (result) {
+            
+        }
+    })
+
+}
+
+//修改方法
+function adjustMedicalWaste() {
+    var data={
+        medicalWastesId  : $('#medicalWastesId').val(),
+        dateTime: $('#dateTime').val(),
+        department: $('#department').val(),
+        departmentName: $('#departmentName').val(),
+        adjustName: $('#adjustName').val(),
+        adjustDate: $('#adjustDate').val(),
+        thisMonthWastes: $('#thisMonthWastes').val(),
+        directDisposal:  $('#directDisposal').val(),
+        cookingWastes:  $('#cookingWastes').val(),
+        afterCookingNumber:  $('#afterCookingNumber').val(),
+        afterCookingInbound:  $('#afterCookingInbound').val(),
+        thisMonthSendCooking:  $('#thisMonthSendCooking').val(),
+        errorNumber:  $('#errorNumber').val(),
+        wetNumber:  $('#wetNumber').val(),
+        equipment: $('#equipment').selectpicker('val'),
+
+    };
+    //更新
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "updateMedicalWaste",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(data),
+         dataType: "json",
+         contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                alert("修改成功")
+                window.location.reload();
+            }
+        },
+        error:function (result) {
+
+        }
+    })
+
+
 }
 
 

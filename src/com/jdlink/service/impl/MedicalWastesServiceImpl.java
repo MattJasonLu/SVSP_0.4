@@ -63,4 +63,14 @@ public class MedicalWastesServiceImpl implements MedicalWastesService {
     public void cancelMedicalWastes(String medicalWastesId) {
         medicalWastesMapper.cancelMedicalWastes(medicalWastesId);
     }
+
+    @Override
+    public MedicalWastes getMedicalWasteById(String medicalWastesId) {
+        return medicalWastesMapper.getMedicalWasteById(medicalWastesId);
+    }
+
+    @Override
+    public void updateMedicalWaste(MedicalWastes medicalWastes) {
+        medicalWastesMapper.updateMedicalWaste(medicalWastes);
+    }
 }

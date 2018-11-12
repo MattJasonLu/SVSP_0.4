@@ -595,9 +595,8 @@ function totalPage() {
         $.each(result.compatibilityList, function (index, item) {
             var data = eval(item);
              // console.log(data)
-        if(data.checkState.name!='已作废'){
             var clonedTr = tr.clone();
-
+            clonedTr.attr('class','myclass1');
             clonedTr.show();
 
             clonedTr.children("td").each(function (inner_index) {
@@ -672,13 +671,17 @@ function totalPage() {
                         break;
                 }
                 clonedTr.removeAttr("id");
+                if(clonedTr.children('td').eq(13).html()=='已作废'){
+                    $(clonedTr).hide();
+                }
                 clonedTr.insertBefore(tr);
             });
             //把克隆好的tr追加到原来的tr前面
             // 隐藏无数据的tr
+
             tr.hide();
 
-        }
+
 
 
         });
@@ -2226,4 +2229,84 @@ function addCompatibility() {
 
 }
 
+array = [];//存放所有的tr
+array1 = [];//存放目标的tr
+//状态高价查询
+function searchData() {
+
+    isSearch = false;
+    array.length = 0;//清空数组
+    array1.length = 0;//清空数组
+    //1分页模糊查询
+    for (var i = totalPage(); i > 0; i--) {
+        switchPage(parseInt(i));
+        array.push($('.myclass1'));
+    }
+    isSearch = true;
+
+    //审核状态
+    var checkState = $.trim($('#search-checkState option:selected').text());
+
+
+    for (var j = 0; j < array.length; j++) {
+        $.each(array[j], function () {
+            //console.log(this);
+            if (($(this).children('td').eq(13).text().indexOf(checkState) == -1
+            )) {
+                $(this).hide();
+            }
+            if ($(this).children('td').eq(13).text().indexOf(checkState) != -1) {
+                array1.push($(this));
+            }
+        });
+    }
+
+    var total;
+
+    if (array1.length % countValue() == 0) {
+        total = array1.length / countValue()
+    }
+
+    if (array1.length % countValue() > 0) {
+        total = Math.ceil(array1.length / countValue());
+    }
+
+    if (array1.length / countValue() < 1) {
+        total = 1;
+    }
+
+    $("#totalPage").text("共" + total + "页");
+
+    var myArray = new Array();
+
+    $('.beforeClone').remove();
+
+    for (i = 0; i < total; i++) {
+        var li = $("#next").prev();
+        myArray[i] = i + 1;
+        var clonedLi = li.clone();
+        clonedLi.show();
+        clonedLi.find('a:first-child').text(myArray[i]);
+        clonedLi.find('a:first-child').click(function () {
+            var num = $(this).text();
+            switchPage(num);
+            AddAndRemoveClass(this);
+        });
+        clonedLi.addClass("beforeClone");
+        clonedLi.removeAttr("id");
+        clonedLi.insertAfter(li);
+    }
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
+    for (var i = 0; i < array1.length; i++) {
+        array1[i].hide();
+    }
+
+    for (var i = 0; i < countValue(); i++) {
+        $(array1[i]).show();
+        $('#tbody1').append((array1[i]));
+    }
+
+
+}
 

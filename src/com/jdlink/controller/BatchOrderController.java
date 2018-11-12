@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static com.jdlink.domain.Produce.HandleCategory.*;
@@ -46,7 +47,7 @@ public class BatchOrderController {
 
     //获取3位序列号
     public static String getString3(String id){
-        while (id.length()!=5){
+        while (id.length()!=3){
             System.out.println(id.length());
             id="0"+id;
         }
@@ -476,26 +477,21 @@ public class BatchOrderController {
     public String addBatchingOrderBat(@RequestBody BatchingOrder batchingOrder){
         JSONObject res=new JSONObject();
 
-        Calendar cal = Calendar.getInstance();
-        //获取年
-        String year = String.valueOf(cal.get(Calendar.YEAR));
-        //获取月
-        String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
+          Date date = new Date();   //获取当前时间
+         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
 
-        //序列号
-        String number = "001";
+        String prefix = simpleDateFormat.format(date);
 
-        List<String> batchingOrderIdList=batchOrderService.getBatchingOrderIdList();
+        String count=String.valueOf ((batchOrderService.getCountByTime(prefix))+1);
 
-        if(batchingOrderIdList.size()==0){
-            number = "00001";
+        while (count.length()!=3){
+
+            count='0'+count;
         }
-        if(batchingOrderIdList.size()>0){
-            String s = batchingOrderIdList.get(0);//原字符串
-            String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
-            number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
-        }
-        String batchingOrderId = year + mouth + number;
+
+        String batchingOrderId = prefix + count;
+
+
         try {
             //添加配料单
                batchingOrder.setBatchingOrderId(batchingOrderId);
@@ -524,9 +520,23 @@ public class BatchOrderController {
         JSONObject res=new JSONObject();
 
         try{
+            //重新选择配料单号
+            String prefix=materialRequisitionOrder.getMaterialRequisitionId();
+
+            String count=String.valueOf ((batchOrderService.getCountByBatchId(prefix))+1);
+
+
+            while (count.length()!=3){
+
+                count='0'+count;
+            }
+
+            String materialRequisitionOrderId=prefix+count;
+            materialRequisitionOrder.setMaterialRequisitionId(materialRequisitionOrderId);
             batchOrderService.addRequisition(materialRequisitionOrder);
-            //紧接着更新配料单的状态
-            batchOrderService.updateBatchOrderState(materialRequisitionOrder.getMaterialRequisitionId());
+            //紧接着更新配料单的状态==>现在不更新状态，更新数量（配料单号和领用数量）
+            //batchOrderService.updateBatchOrderState(materialRequisitionOrder.getMaterialRequisitionId());
+            batchOrderService.updateBatchOrderNumberAfterMater(prefix,materialRequisitionOrder.getRecipientsNumber());
             res.put("status", "success");
             res.put("message", "领料单添加成功");
         }
@@ -805,6 +815,108 @@ public class BatchOrderController {
             res.put("message", "分页数据获取失败！");
         }
         return res.toString();
+    }
+
+    //根据配料单号查询信息
+    @RequestMapping("getBatchingOrderById")
+    @ResponseBody
+    public String getBatchingOrderById(String batchingOrderId){
+        JSONObject res=new JSONObject();
+
+
+
+        try {
+            BatchingOrder batchingOrder=batchOrderService.getBatchById(batchingOrderId);
+            //再获取下库存数量
+            float inventoryNumber=batchOrderService.getCountByInboundOrderItemId(batchingOrder.getInboundOrderItemId());
+            batchingOrder.setInventoryNumber(inventoryNumber);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", batchingOrder);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+
+    }
+
+    //修改配料单
+    @RequestMapping("updateBatchingOrder")
+    @ResponseBody
+    public String updateBatchingOrder(@RequestBody BatchingOrder batchingOrder){
+        JSONObject res=new JSONObject();
+
+        try {
+            batchOrderService.updateBatchingOrder(batchingOrder);
+            //更新库存数量
+            batchOrderService.updateWasteInventoryActualCount(batchingOrder.getInboundOrderItemId(),batchingOrder.getInventoryNumber());
+            res.put("status", "success");
+            res.put("message", "配料单修改成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "配料单修改失败");
+        }
+
+        return res.toString();
+
+    }
+
+   //通过领料单号获取领料单
+    @RequestMapping("getMaterialRequisitionOrderById")
+    @ResponseBody
+    public String getMaterialRequisitionOrderById(String materialRequisitionOrderId){
+        JSONObject res=new JSONObject();
+
+        try {
+            MaterialRequisitionOrder materialRequisitionOrder=batchOrderService.getByMaterialRequisitionId(materialRequisitionOrderId);
+            //根据配料单号查询配料数量
+            String batchingOrderId=materialRequisitionOrderId.substring(0,materialRequisitionOrderId.length()-3);
+                  float batchingNumber=batchOrderService.getCountByBatchingOrderId(batchingOrderId);
+            materialRequisitionOrder.setBatchingNumber(batchingNumber);
+
+            res.put("status", "success");
+            res.put("message", "领料单获取成功");
+            res.put("data", materialRequisitionOrder);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "领料单获取失败");
+        }
+        return res.toString();
+
+    }
+
+     //修改领料单数据
+    @RequestMapping("adjustMaterialRequisitionOrder")
+    @ResponseBody
+    public String adjustMaterialRequisitionOrder(@RequestBody MaterialRequisitionOrder materialRequisitionOrder){
+        JSONObject res=new JSONObject();
+
+        try {
+            batchOrderService.adjustMaterialRequisitionOrder(materialRequisitionOrder);
+            String batchingOrderId=materialRequisitionOrder.getMaterialRequisitionId().substring(0,materialRequisitionOrder.getMaterialRequisitionId().length()-3);
+            batchOrderService.updateCountByBatchingOrderId(batchingOrderId,materialRequisitionOrder.getBatchingNumber());
+            res.put("status", "success");
+            res.put("message", "领料单修改成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "领料单修改失败");
+
+        }
+
+
+        return res.toString();
+
     }
 
 }

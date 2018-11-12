@@ -54,4 +54,19 @@
     <update id="cancelMedicalWastes" parameterType="String">
         update t_pl_medicalwastes set checkState='Disabled',nowTime=NOW() where medicalWastesId=#{medicalWastesId};
     </update>
+
+    <!--根据编号获取信息-->
+    <select id="getMedicalWasteById" parameterType="String" resultType="MedicalWastes">
+        select  * from t_pl_medicalwastes where medicalWastesId=#{medicalWastesId}
+    </select>
+
+    <!--修改信息-->
+    <update id="updateMedicalWaste" parameterType="MedicalWastes">
+        update t_pl_medicalwastes set  departmentName=#{departmentName},departmentName=#{departmentName},
+        adjustName=#{adjustName},adjustDate=#{adjustDate},dateTime=#{dateTime},thisMonthWastes=#{thisMonthWastes},
+        directDisposal=#{directDisposal},cookingWastes=#{cookingWastes},afterCookingNumber=#{afterCookingNumber},
+        afterCookingInbound=#{afterCookingInbound},thisMonthSendCooking=#{thisMonthSendCooking},
+        errorNumber=#{errorNumber},wetNumber=#{wetNumber},nowTime=NOW(),equipment=#{equipment}
+        where medicalWastesId=#{medicalWastesId};
+    </update>
 </mapper>
