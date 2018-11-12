@@ -977,17 +977,14 @@ function adjustSample(menu) {
  */
 function updateAppointBySampleId() {
     var sampleInformation = {};
-    if ($("#model3-id").val() != "" || $("#model3-id").val() != null) {
-        sampleInformation.id = $("#model3-id").val();
-    } else {
-        sampleInformation.id = sampleId;
-    }
+    sampleInformation.id = sampleId;
     sampleInformation.companyName = $("#model3-companyName").find("option:selected").text();
     sampleInformation.companyCode = $("#model3-companyName").find("option:selected").val();
     sampleInformation.sendingPerson = $("#model3-sendingPerson").val();
     sampleInformation['wastesList'] = [];
     var lineCount = $("select[name^='wastes'][name$='wastesCode']").length - 1;
     var wastesId = null;
+    //获取wastesId
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getCurrentWastesId",                 // url
@@ -1006,7 +1003,6 @@ function updateAppointBySampleId() {
         }
     });
     var data = {};
-    //获取wastesId
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getSampleInformation",                 // url
@@ -1632,4 +1628,7 @@ function importExcel() {
     });
 }
 
+function readOnly(){
+    alert("预约单号不允许修改，如需修改请作废后新建！");
+}
 

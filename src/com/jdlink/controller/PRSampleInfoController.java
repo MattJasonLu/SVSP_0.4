@@ -339,7 +339,8 @@ public class PRSampleInfoController {
         JSONObject res = new JSONObject();
         try {
             String newId = "I-" + sampleId; // 作废的数据将ID前添加I用于区别
-            sampleInformationService.updateSampleInfo(sampleId);
+
+            sampleInformationService.updateSampleInfo(sampleId,newId);
             res.put("status", "success");
             res.put("message", "作废数据成功！");
         } catch (Exception e) {

@@ -1460,7 +1460,7 @@ function addAppoint() {
  * 删除预约单----->改作废
  */
 function deleteSample(menu) {
-    if ($(menu).parent().prev().text() == "已预约") {
+    if (1) {
         sampleId = getSampleIdByMenu(menu);
         var msg = "是否作废该条记录？";
         if (confirm(msg) == true) {
@@ -1676,4 +1676,7 @@ function importExcel() {
             }
         });
     });
+}
+function readOnly(){
+    alert("预约单号不允许修改，如需修改请作废后新建！");
 }

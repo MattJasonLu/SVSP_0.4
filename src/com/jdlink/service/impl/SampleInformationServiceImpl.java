@@ -48,7 +48,7 @@ public class SampleInformationServiceImpl implements SampleInformationService {
     public List<SampleInformation> listByKeyword(String keyword){ return sampleInformationMapper.listByKeyword(keyword); }
 
     @Override
-    public void updateSampleInfo(String sampleId){ sampleInformationMapper.updateSampleInfo(sampleId); }
+    public void updateSampleInfo(String sampleId,String newId){ sampleInformationMapper.updateSampleInfo(sampleId,newId); }
 
     @Override
     public int searchCount(SampleInformation sampleInformation){ return sampleInformationMapper.searchCount(sampleInformation); }
