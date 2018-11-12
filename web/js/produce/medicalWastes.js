@@ -816,7 +816,8 @@ function getWaterByCooking() {
 }
 
 function cancelMedicalWastes(item) {
-    var id = $(item).parent().parent().children('td').eq(0).text();
+    var id = $(item).parent().parent().children('td').eq(1).html();
+    console.log(id)
     if (confirm("确认作废？")) {
         $.ajax({
             type: "POST",                            // 方法类型
