@@ -698,8 +698,26 @@ public class BatchOrderController {
         JSONObject res=new JSONObject();
 
         try{
+            Date date = new Date();   //获取当前时间
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
 
-           batchOrderService.addSecondary(outboundOrder);
+            String prefix = simpleDateFormat.format(date);
+
+            String count=String.valueOf ((batchOrderService.getSecCountByTime(prefix))+1);
+
+            while (count.length()!=6){
+
+                count='0'+count;
+            }
+
+            String outBoundOrderId = prefix + count;
+
+            outboundOrder.setOutboundOrderId(outBoundOrderId);
+            batchOrderService.addSecondary(outboundOrder);
+
+            //同步更新库存数量
+            batchOrderService.deducNumber(outboundOrder.getInboundOrderItemId(),outboundOrder.getOutboundNumber());
+
             res.put("status", "success");
             res.put("message", "次生出库成功");
 
@@ -785,6 +803,10 @@ public class BatchOrderController {
         JSONObject res=new JSONObject();
         try {
             OutboundOrder outboundOrder=batchOrderService.getSecOutBoundById(outboundOrderId);
+
+            //查询库存数量
+            float inventoryNumber=batchOrderService.getCountByInboundOrderItemId(outboundOrder.getInboundOrderItemId());
+            outboundOrder.setInventoryNumber(inventoryNumber);
             res.put("status", "success");
             res.put("message", "查询成功");
             res.put("data",outboundOrder);
@@ -919,4 +941,125 @@ public class BatchOrderController {
 
     }
 
+    //更新次生出库单
+    @RequestMapping("updateSecOutBound")
+    @ResponseBody
+    public String updateSecOutBound(@RequestBody OutboundOrder outboundOrder){
+        JSONObject res=new JSONObject();
+
+        try {
+      batchOrderService.updateSecOutBound(outboundOrder);
+
+      //更新库存数量
+            batchOrderService.updateWasteInventoryActualCount(outboundOrder.getInboundOrderItemId(),outboundOrder.getInventoryNumber());
+            res.put("status", "success");
+            res.put("message", "次生出库单修改成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "次生出库单修改失败");
+        }
+        return res.toString();
+
+    }
+
+    //作废配料单
+    @RequestMapping("cancelBatchingOrder")
+    @ResponseBody
+    public String cancelBatchingOrder(@RequestBody BatchingOrder batchingOrder){
+        JSONObject res=new JSONObject();
+
+        try {
+           //1作废
+            batchOrderService.cancelBatchingOrder(batchingOrder);
+
+            //2库存更细
+            batchOrderService.updateInventoryNumber(batchingOrder.getInboundOrderItemId(),batchingOrder.getBatchingNumber());
+            res.put("status", "success");
+            res.put("message", "配料单作废成功");
+
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "配料单作废失败");
+        }
+
+        return res.toString();
+    }
+
+    //作废领料单
+    @RequestMapping("cancelMaterialRequisitionOrder")
+    @ResponseBody
+    public String cancelMaterialRequisitionOrder(@RequestBody MaterialRequisitionOrder materialRequisitionOrder){
+        JSONObject res=new JSONObject();
+
+        try {
+            //1作废
+          batchOrderService.cancelMaterialRequisitionOrder(materialRequisitionOrder);
+
+          //更新配料单数据
+            String batchingOrderId=materialRequisitionOrder.getMaterialRequisitionId().substring(0,materialRequisitionOrder.getMaterialRequisitionId().length()-3);
+            batchOrderService.updateBatchOrderNumber(batchingOrderId,materialRequisitionOrder.getRecipientsNumber());
+            res.put("status", "success");
+            res.put("message", "领料单作废成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "领料单作废失败");
+        }
+        return res.toString();
+
+    }
+
+    /**
+     * 作废危废出库单
+     */
+    @RequestMapping("cancelOutBoundOrder")
+    @ResponseBody
+    public  String cancelOutBoundOrder(@RequestBody OutboundOrder outboundOrder){
+        JSONObject res=new JSONObject();
+        try {
+             //1状态作废
+            batchOrderService.cancelOutBoundOrder(outboundOrder);
+            //2将数量还给库存
+            batchOrderService.updateInventoryNumberAfterInvalid(outboundOrder.getInboundOrderItemId(),outboundOrder.getInventoryNumber());
+            res.put("status", "success");
+            res.put("message", "作废成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+
+        }
+        return  res.toString();
+    }
+
+    /**
+     * 退库危废出库单
+     */
+    @RequestMapping("retireOutBoundOrder")
+    @ResponseBody
+    public  String retireOutBoundOrder(@RequestBody OutboundOrder outboundOrder){
+        JSONObject res=new JSONObject();
+        try {
+            //1状态作废
+            batchOrderService.retireOutBoundOrder(outboundOrder);
+            //2将数量还给库存
+            batchOrderService.updateInventoryNumberAfterInvalid(outboundOrder.getInboundOrderItemId(),outboundOrder.getInventoryNumber());
+            res.put("status", "success");
+            res.put("message", "退库成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+
+        }
+        return  res.toString();
+    }
 }

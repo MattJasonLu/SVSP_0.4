@@ -42,4 +42,13 @@ public interface BatchOrderService {
     float getCountByBatchingOrderId(String batchingOrderId);
     void adjustMaterialRequisitionOrder(MaterialRequisitionOrder materialRequisitionOrder);
     void updateCountByBatchingOrderId(String batchingOrderId,float batchingNumber);
+    int getSecCountByTime(String prefix);
+    void updateSecOutBound(OutboundOrder outboundOrder);
+    void cancelBatchingOrder(BatchingOrder batchingOrder);
+    void updateInventoryNumber(String inboundOrderItemId,float batchingNumber);
+    void cancelMaterialRequisitionOrder(MaterialRequisitionOrder materialRequisitionOrder);
+    void updateBatchOrderNumber(String batchingOrderId,float recipientsNumber);
+    void cancelOutBoundOrder(OutboundOrder outboundOrder);
+    void updateInventoryNumberAfterInvalid(String inboundOrderItemId,float inventoryNumber);
+    void retireOutBoundOrder(OutboundOrder outboundOrder);
 }
