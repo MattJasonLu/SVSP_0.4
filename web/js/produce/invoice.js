@@ -138,6 +138,7 @@ function readyForUpdate() {
     // 显示保存和取消按钮
     $("#save").removeClass("hidden");
     $("#close").removeClass("hidden");
+    $("#editBtn").addClass("hidden");
 }
 
 /**
