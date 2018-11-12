@@ -13,6 +13,8 @@
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
     <script src="js/produce/medicalWastes.js"></script>
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
 </head>
 <body onload="loadMedicalWastesList()"  >
 <!--导航条-->
@@ -389,6 +391,69 @@
 <div id="embed"></div>
 <!--导入-->
 <input type="file" name="excelPath" id="idExcel" style="display:none">
+
+
+<!--修改模态框-->
+<div class="modal fade" id="addModa2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width: 1600px;">
+        <div class="modal-content" >
+            <form method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h4 class="modal-title">医危废出入库修改</h4>
+                </div>
+                <div class="modal-body" style="overflow-x:scroll;">
+                    <table class="table table-bordered" style="border:none">
+                        <!--<thead style="border:none">-->
+                        <thead>
+                        <tr>
+                            <th style="width: 180px">登记单号</th>
+                            <th>登记日期</th>
+                            <th>登记部门</th>
+                            <th>登记人</th>
+                            <th>修改人</th>
+                            <th>修改时间</th>
+                            <th>本日进厂危废</th>
+                            <th>本日直接转外处置量</th>
+                            <th>本日蒸煮医废(过磅)</th>
+                            <th>蒸煮后重量</th>
+                            <th>蒸煮后入库量</th>
+                            <th>本日蒸煮后外送量</th>
+                            <th>误差量</th>
+                            <th>水分含量	</th>
+                            <th style="width: 10%">处置设备	</th>
+                        </tr>
+                        </thead>
+                        <tbody >
+                        <tr id="addTable1" class="myclass3">
+                            <td><input class="form-control" name="transferDraftId" id="medicalWastesId" readonly></td><!--登记单号-->
+                            <td><input class="form-control" name="produceCompany" type="date" id="dateTime"></td><!--登记日期-->
+                            <td><input class="form-control" name="wastesName" id="department"></td><!--登记部门-->
+                            <td><input class="form-control" name="wastesCode" id="departmentName"></td><!--登记人-->
+                            <td><input class="form-control" name="formType" id="adjustName"></td><!--修改人-->
+                            <td><input class="form-control" name="remark" id="adjustDate" type="date" ></td><!--修改时间-->
+                            <td><input class="form-control" name="remark" id="thisMonthWastes" onkeyup="geterrorNumberByWastes()"></td><!--本日进厂危废-->
+                            <td><input class="form-control" name="remark" id="directDisposal" onkeyup="geterrorNumberByDisposal()"></td><!--本日直接转外处置量	-->
+                            <td><input class="form-control" name="remark" id="cookingWastes" onkeyup="geterrorNumberByCook()"></td><!--本日蒸煮医废(过磅)-->
+                            <td><input class="form-control" name="remark" id="afterCookingNumber" onkeyup="getWaterByCooking()"></td><!--蒸煮后重量-->
+                            <td><input class="form-control" name="remark" id="afterCookingInbound"></td><!--蒸煮后入库量-->
+                            <td><input class="form-control" name="remark" id="thisMonthSendCooking"></td><!--本日蒸煮后外送量-->
+                            <td><input class="form-control" name="remark" id="errorNumber" readonly></td><!--误差量-->
+                            <td><input class="form-control" name="remark" id="wetNumber" readonly></td><!--水分含量-->
+                            <td style="width: 10%"> <select data-live-search="true" data-live-search-placeholder="搜索..." class="selectpicker input-xlarge form-control" id="equipment" name="equipment" placeholder=""></select></td><!--处置设备-->
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer center-block">
+                    <button type="button" class="btn btn-primary" onclick="adjustMedicalWaste();">修改</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 </body>
 <style>
     th {

@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <HTML>
 <HEAD>
-	<TITLE>组织架构管理表</TITLE>
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	<script src="js/jquery/jquery2.0.3/jquery-2.0.3.min.js"></script>
-	<script src="js/jquery/jquery2.0.3/jquery-2.0.3.js"></script>
-	<link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
-	<link href="css/bootstrap/3.3.6/bootstrap.css" rel="stylesheet">
-	<link href="css/dashboard.css" rel="stylesheet">
-	<link href="css/dropdown-submenu.css" rel="stylesheet">
-	<link href="css/bootstrap/navbar.css" rel="stylesheet">
-	<script src="js/bootstrap/navbar.js"></script>
-	<link rel="stylesheet" href="zTree_v3-master/css/demo.css" type="text/css">
-	<link rel="stylesheet" href="zTree_v3-master/css/zTreeStyle/zTreeStyle.css" type="text/css">
-	<script type="text/javascript" src="zTree_v3-master/js/jquery-1.4.4.min.js"></script>
-	<script type="text/javascript" src="zTree_v3-master/js/jquery.ztree.core.js"></script>
-	<script type="text/javascript" src="zTree_v3-master/js/jquery.ztree.excheck.js"></script>
-	<script type="text/javascript" src="zTree_v3-master/js/jquery.ztree.exedit.js"></script>
+    <TITLE>组织架构管理表</TITLE>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script src="js/jquery/jquery2.0.3/jquery-2.0.3.min.js"></script>
+    <script src="js/jquery/jquery2.0.3/jquery-2.0.3.js"></script>
+    <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap/3.3.6/bootstrap.css" rel="stylesheet">
+    <link href="css/dashboard.css" rel="stylesheet">
+    <link href="css/dropdown-submenu.css" rel="stylesheet">
+    <link href="css/bootstrap/navbar.css" rel="stylesheet">
+    <script src="js/bootstrap/navbar.js"></script>
+    <script src="js/time.js"></script>
+    <script src="js/util.js"></script>
+    <link rel="stylesheet" href="zTree_v3-master/css/demo.css" type="text/css">
+    <link rel="stylesheet" href="zTree_v3-master/css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <script type="text/javascript" src="zTree_v3-master/js/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="zTree_v3-master/js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="zTree_v3-master/js/jquery.ztree.excheck.js"></script>
+    <script type="text/javascript" src="zTree_v3-master/js/jquery.ztree.exedit.js"></script>
 </HEAD>
 <SCRIPT type="text/javascript">
-    <!--
+
     var setting = {
         view: {
             addHoverDom: addHoverDom,     //鼠标悬停时显示用户自定义的控件，如zTree内部的编辑，删除等
@@ -28,13 +30,11 @@
         },
         edit: {
             enable: true,                  //设置zTree是否处于编辑状态
-            editNameSelectAll: true,       //节点编辑名称input初次显示时，设置txt内容是否为权限状态
-            showRemoveBtn: showRemoveBtn,   //enable: true时生效，首先触发callback回调函数，判定用户是否进行删除操作；如果未设置beforeRemove或beforeRemove返回true，
-			                                //则删除节点并触发callback.onRemove回调函数。
-            showRenameBtn: showRenameBtn    //enable: true时生效，先进入节点名称编辑状态，编辑名称完毕(input失去焦点或按下Enter键)，会触发callback.beforeRename
-			                                //回调函数，用户可根据自己的规则判定是否允许修改名称，若beforeRename返回false，则继续保持编辑名称状态，直到名称
-											// 符合规则位置(按下ESC键可取消编辑名称状态，恢复原名称)。若未设置beforeRename或beforeRename返回true，则结束节点
-											// 编辑名称状态，更新节点名称并触发callback.onRename回调函数。
+            editNameSelectAll: true,    //节点编辑名称input初次显示时，设置txt内容是否为权限状态
+            removeTitle: "删除1",            // 设置删除按钮名称
+            renameTitle: "重命名1",        // 设置修改按钮名称
+            showRemoveBtn: showRemoveBtn,   // 控制是否显示删除按钮
+            showRenameBtn: showRenameBtn    // 控制是否显示修改按钮
         },
         data: {
             simpleData: {
@@ -47,84 +47,74 @@
             beforeEditName: beforeEditName, //用于捕获及诶单编辑按钮的click事件，并且根据返回值确定是否允许进入名称编辑状态
             beforeRemove: beforeRemove,//用于捕获节点被删除之前的事件回调函数，并且根据返回值确定是否允许删除操作。
             beforeRename: beforeRename,//用于捕获节点编辑名称结束(input失去焦点或按下Enter键)之后，更新节点名称数据之前的事件回调函数，并根据返回值确定是否允许
-                                    // 更改名称的操作。节点进入编辑名称状态后，按ESC键可以放弃当前修改，恢复原名称，取消编辑名称状态从V3.5.13开始，
-                                    // 取消编辑状态也会触发此回调函数，根据isCancel参数判断
             onRemove: onRemove,//用于捕获节点之后的事件回调函数。
             onRename: onRename //用于捕获节点编辑名称结束之后的事件回调函数。节点进入名称编辑状态，并且就该节点名称后触发此回调函数。如果用户设置了beforeRename回调函数，
-                                //并返回false，将无法触发onRename事件回调函数，若通过直接修改treeNode的数据，并且利用update方法更新，是不会触发此函数的。
+
         }
     };
 
     var zNodes = [
-        {id:1, pId:0, name:"无锡佳利达国际物流股份有限公司", open:true},       //id:1(父节点1)                 id:2(父节点2)
-        {id:11, pId:1, name:"IT部", open:true},                          //id:11(次父节点1)               id:21(次父节点2)
-        {id:111, pId:11, name:"项目组1", file:"test/warehouse1"},         //id:111(次父节点1的子节点1)       id:211(次父节点2的子节点1)
-        {id:112, pId:11, name:"项目组2", file:"test/warehouse2"},
-        {id:113, pId:11, name:"项目组3", file:"test/warehouse3"},
-        {id:114, pId:11, name:"项目组4", file:"test/warehouse4"},
-        {id:115, pId:11, name:"项目组5", file:"test/warehouse5"},
-        {id:116, pId:11, name:"项目组6", file:"test/warehouse6"},
-        {id:117, pId:11, name:"项目组7", file:"test/warehouse7"},
-        {id:118, pId:11, name:"项目组8", file:"test/warehouse8"},
+        {id: 1, pId: 0, name: "测试专用", open: true},       //id:1(父节点1)                 id:2(父节点2)
+        {id: 11, pId: 1, name: "IT部", open: true},                          //id:11(次父节点1)               id:21(次父节点2)
+        {id: 111, pId: 11, name: "项目组1", file: "test/warehouse1"},         //id:111(次父节点1的子节点1)       id:211(次父节点2的子节点1)
+        {id: 112, pId: 11, name: "项目组2", file: "test/warehouse2"},
+        {id: 113, pId: 11, name: "项目组3", file: "test/warehouse3"},
+        {id: 114, pId: 11, name: "项目组4", file: "test/warehouse4"},
+        {id: 115, pId: 11, name: "项目组5", file: "test/warehouse5"},
+        {id: 116, pId: 11, name: "项目组6", file: "test/warehouse6"},
+        {id: 117, pId: 11, name: "项目组7", file: "test/warehouse7"},
+        {id: 118, pId: 11, name: "项目组8", file: "test/warehouse8"},
 
-        {id:2, pId:0, name:"常州北控安耐得环保科技有限公司", open:false},                  //pId:0(0级节点，即最大父节点)             pId:0(0级节点，即最大父节点)
-        {id:21, pId:2, name:"焚烧组"},                                                //pId:1(第一组节点组，上面必须有0级节点)     pId:2(第二组节点组，上面必须有0级节点)
-        {id:211, pId:21, name:"焚烧炉1", file:"test/incinerator1"},                   //pId:11(第一组节点组中第一组子节点)         pId:21(第二组节点组中第一组子节点)
-        {id:212, pId:21, name:"焚烧炉2", file:"test/incinerator2"},
-        {id:213, pId:21, name:"焚烧炉3", file:"test/incinerator3"},
-        {id:214, pId:21, name:"焚烧炉4", file:"test/incinerator4"},
-        {id:215, pId:21, name:"焚烧炉5", file:"test/incinerator5"},
-        {id:216, pId:21, name:"焚烧炉6", file:"test/incinerator6"},
-        {id:217, pId:21, name:"焚烧炉7", file:"test/incinerator7"},
-        {id:218, pId:21, name:"焚烧炉8", file:"test/incinerator8"}
+        {id: 2, pId: 0, name: "常州北控安耐得环保科技有限公司", open: false},                  //pId:0(0级节点，即最大父节点)             pId:0(0级节点，即最大父节点)
+        {id: 21, pId: 2, name: "焚烧组"},                                                //pId:1(第一组节点组，上面必须有0级节点)     pId:2(第二组节点组，上面必须有0级节点)
+        {id: 211, pId: 21, name: "焚烧炉1", file: "test/incinerator1"},                   //pId:11(第一组节点组中第一组子节点)         pId:21(第二组节点组中第一组子节点)
+        {id: 212, pId: 21, name: "焚烧炉2", file: "test/incinerator2"},
+        {id: 213, pId: 21, name: "焚烧炉3", file: "test/incinerator3"},
+        {id: 214, pId: 21, name: "焚烧炉4", file: "test/incinerator4"},
+        {id: 215, pId: 21, name: "焚烧炉5", file: "test/incinerator5"},
+        {id: 216, pId: 21, name: "焚烧炉6", file: "test/incinerator6"},
+        {id: 217, pId: 21, name: "焚烧炉7", file: "test/incinerator7"},
+        {id: 218, pId: 21, name: "焚烧炉8", file: "test/incinerator8"}
     ];
-    // var zNodes =[
-    // 	{ id:1, pId:0, name:"父节点 1", open:true},
-    // 	{ id:11, pId:1, name:"叶子节点 1-1"},
-    // 	{ id:12, pId:1, name:"叶子节点 1-2"},
-    // 	{ id:13, pId:1, name:"叶子节点 1-3"},
-    // 	{ id:2, pId:0, name:"父节点 2", open:true},
-    // 	{ id:21, pId:2, name:"叶子节点 2-1"},
-    // 	{ id:22, pId:2, name:"叶子节点 2-2"},
-    // 	{ id:23, pId:2, name:"叶子节点 2-3"},
-    // 	{ id:3, pId:0, name:"父节点 3", open:true},
-    // 	{ id:31, pId:3, name:"叶子节点 3-1"},
-    // 	{ id:32, pId:3, name:"叶子节点 3-2"},
-    // 	{ id:33, pId:3, name:"叶子节点 3-3"}
-    // ];
+
     var log, className = "dark";
+
     function beforeDrag(treeId, treeNodes) {
         return false;
     }
+
     function beforeEditName(treeId, treeNode) {
-        className = (className === "dark" ? "":"dark");
-        showLog("[ "+getTime()+" beforeEditName ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
+        className = (className === "dark" ? "" : "dark");
+        showLog("[ " + getTime() + " beforeEditName ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
         var zTree = $.fn.zTree.getZTreeObj("treeDemo");
         zTree.selectNode(treeNode);
-        setTimeout(function() {
-            if (confirm("进入节点 -- " + treeNode.name + " 的编辑状态吗？")) {
-                setTimeout(function() {
-                    zTree.editName(treeNode);
-                }, 0);
-            }
+        setTimeout(function () {
+            // if (confirm("进入节点 -- " + treeNode.name + " 的编辑状态吗？")) {
+            setTimeout(function () {
+                zTree.editName(treeNode);
+            }, 0);
+            //  }
         }, 0);
         return false;
     }
+
     function beforeRemove(treeId, treeNode) {
-        className = (className === "dark" ? "":"dark");
-        showLog("[ "+getTime()+" beforeRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
+        className = (className === "dark" ? "" : "dark");
+        showLog("[ " + getTime() + " beforeRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
         var zTree = $.fn.zTree.getZTreeObj("treeDemo");
         zTree.selectNode(treeNode);
-        return confirm("确认删除 节点 -- " + treeNode.name + " 吗？");
+        return confirm("确认删除" + treeNode.name + " 吗？");
     }
+
     function onRemove(e, treeId, treeNode) {
-        showLog("[ "+getTime()+" onRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
+        showLog("[ " + getTime() + " onRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
     }
+
     function beforeRename(treeId, treeNode, newName, isCancel) {
-        className = (className === "dark" ? "":"dark");
-        showLog((isCancel ? "<span style='color:red'>":"") + "[ "+getTime()+" beforeRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>":""));
+        className = (className === "dark" ? "" : "dark");
+        showLog((isCancel ? "<span style='color:red'>" : "") + "[ " + getTime() + " beforeRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>" : ""));
         if (newName.length == 0) {
-            setTimeout(function() {
+            setTimeout(function () {
                 var zTree = $.fn.zTree.getZTreeObj("treeDemo");
                 zTree.cancelEditName();
                 alert("节点名称不能为空.");
@@ -133,151 +123,390 @@
         }
         return true;
     }
+
     function onRename(e, treeId, treeNode, isCancel) {
-        showLog((isCancel ? "<span style='color:red'>":"") + "[ "+getTime()+" onRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>":""));
+        showLog((isCancel ? "<span style='color:red'>" : "") + "[ " + getTime() + " onRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>" : ""));
     }
+
     function showRemoveBtn(treeId, treeNode) {
-        return !treeNode.isFirstNode;
+        //return !treeNode.isFirstNode;
+        return false;
     }
+
     function showRenameBtn(treeId, treeNode) {
-        return !treeNode.isLastNode;
+        //return !treeNode.isLastNode;
+        return false;
     }
+
     function showLog(str) {
         if (!log) log = $("#log");
-        log.append("<li class='"+className+"'>"+str+"</li>");
-        if(log.children("li").length > 8) {
+        log.append("<li class='" + className + "'>" + str + "</li>");
+        if (log.children("li").length > 8) {
             log.get(0).removeChild(log.children("li")[0]);
         }
     }
-    function getTime() {
-        var now= new Date(),
-            h=now.getHours(),
-            m=now.getMinutes(),
-            s=now.getSeconds(),
-            ms=now.getMilliseconds();
-        return (h+":"+m+":"+s+ " " +ms);
+
+    function getTime() {  // 获取当前时间
+        var now = new Date(),
+            h = now.getHours(),
+            m = now.getMinutes(),
+            s = now.getSeconds(),
+            ms = now.getMilliseconds();
+        return (h + ":" + m + ":" + s + " " + ms);
     }
 
     var newCount = 1;
+    var organization1 = {};   // 承装需要修改/删除/新增的数据
+    /**
+     * 鼠标悬浮时事件
+     * */
     function addHoverDom(treeId, treeNode) {
         var sObj = $("#" + treeNode.tId + "_span");
-        if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
-        var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
-            + "' title='add node' onfocus='this.blur();'></span>";
-        sObj.after(addStr);
-        var btn = $("#addBtn_"+treeNode.tId);
-        if (btn) btn.bind("click", function(){
-            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-            zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, name:"new node" + (newCount++)});
-            return false;
+        if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
+        var addStr = "<span class='button add' name='buttonOrganization' id='addBtn_" + treeNode.tId
+            + "' title='新增' onfocus='this.blur();' onclick='addOrganization(this)'></span>";
+        var addStr1 = "<span class='button edit' name='buttonOrganization' id='editBtn_" + treeNode.tId
+            + "' title='编辑' onfocus='this.blur();' onclick='editOrganization(this)'></span>";
+        var addStr2 = "<span class='button remove' name='buttonOrganization' id='removeBtn_" + treeNode.tId
+            + "' title='删除' onfocus='this.blur();' onclick='removeOrganization(this)'></span>";
+        sObj.after(addStr2);   // 插入删除按钮
+        sObj.after(addStr1); // 插入编辑按钮
+        sObj.after(addStr); // 插入新增按钮
+
+        var btn = $("span[name='buttonOrganization']");
+        if (btn) btn.bind("click", function () { // 点击获取数据
+            organization1.id = treeNode.id;
+            organization1.pId = treeNode.pId;
+            organization1.name = treeNode.name;
         });
     };
-    function removeHoverDom(treeId, treeNode) {
-        $("#addBtn_"+treeNode.tId).unbind().remove();
+
+    /**
+     * 鼠标移开事件
+     * */
+    function removeHoverDom(treeId, treeNode) { // 鼠标移开后删除按钮
+        $("#addBtn_" + treeNode.tId).unbind().remove();
+        $("#editBtn_" + treeNode.tId).unbind().remove();
+        $("#removeBtn_" + treeNode.tId).unbind().remove();
     };
+
     function selectAll() {
         var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-        zTree.setting.edit.editNameSelectAll =  $("#selectAll").attr("checked");
+        zTree.setting.edit.editNameSelectAll = $("#selectAll").attr("checked");
     }
 
-    $(document).ready(function(){
+    $(document).ready(function () {
+        loadOrganization();  // 获取并设置节点数据
         $.fn.zTree.init($("#treeDemo"), setting, zNodes);//根据参数初始化树
         $("#selectAll").bind("click", selectAll);
     });
-    //-->
+
+    /**
+     * 新增功能
+     * @param item
+     */
+    function addOrganization(item) {
+        alert("功能调整中");
+       // $('#editModal').modal('show');
+        // if(organization1 != null){
+        //     $.ajax({
+        //         type: "POST",                       // 方法类型
+        //         url: "updateOrganization",                  // url
+        //         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        //         data: JSON.stringify(organization1),
+        //         dataType: "json",
+        //         contentType: "application/json; charset=utf-8",
+        //         success: function (result) {
+        //             // console.log(result);
+        //             if (result != null && result.status == "success") {
+        //                 loadOrganization(); // 重新设置页面
+        //             } else {
+        //                alert(result.message);
+        //             }
+        //         },
+        //         error: function (result) {
+        //             alert(result.message);
+        //         }
+        //     });
+        // }
+    }
+
+    /**
+     * 重命名
+     */
+    function editOrganization(item) {
+        alert("功能调整中");
+        // $("#name").val(organization1.name);
+        // $("#editModal").modal('show');
+        //  alert("功能调整中");
+        //    var oldName = $(item).prev().text();  // 获取旧名称
+        //    var s = $(item).prev() + "";
+        //    s = s.replace(/<span>(.*?)<\/span>/g,"<input type='text' value='$1' />");
+        //    $(item).append(s);
+
+        // organization1.name = $(item).prev().val(); // 设置新名称
+        // if(organization1 != null){
+        //     $.ajax({
+        //         type: "POST",                       // 方法类型
+        //         url: "updateOrganization",                  // url
+        //         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        //         data: JSON.stringify(organization1),
+        //         dataType: "json",
+        //         contentType: "application/json; charset=utf-8",
+        //         success: function (result) {
+        //             // console.log(result);
+        //             if (result != null && result.status == "success") {
+        //                 loadOrganization(); // 重新设置页面
+        //             } else {
+        //                 alert(result.message);
+        //             }
+        //         },
+        //         error: function (result) {
+        //             alert(result.message);
+        //         }
+        //     });
+        // }
+    }
+
+    function save() {
+        organization1.name = $("#name").val(); // 设置新名称
+        if (organization1 != null) {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "updateOrganization",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(organization1),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    // console.log(result);
+                    if (result != null && result.status == "success") {
+                        window.location.reload(); // 重新设置页面
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function (result) {
+                    alert(result.message);
+                }
+            });
+        }
+    }
+
+    /**
+     * 删除
+     * @param item
+     */
+    function removeOrganization(item) {
+        console.log(organization1);
+        if (comfirm("确认删除？"))
+            if (organization1 != null) {
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "deleteOrganization",                  // url
+                    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    data: JSON.stringify(organization1),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        // console.log(result);
+                        if (result != null && result.status == "success") {
+                            window.location.reload(); // 重新设置页面
+                        } else {
+                            alert(result.message);
+                        }
+                    },
+                    error: function (result) {
+                        alert(result.message);
+                    }
+                });
+            }
+    }
+
+    /**
+     * 显示
+     */
+    function loadOrganization() {
+        zNodes = [];  // 清空数组
+        organization1 = {}; // 初始化
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "loadOrganizationList",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                if (result != null && result.status == 'success') {
+                    var data = result.data;
+                    // 设置数组
+                    for (var i = 0; i < data.length; i++) {
+                        var organization = {};
+                        organization.id = data[i].id; // 设置节点数据
+                        organization.pId = data[i].pId;
+                        organization.name = data[i].name;
+                        // if(data[i].id < 100){
+                        //     organization.open = true;
+                        // }
+                        organization.open = true;
+                        zNodes.push(organization);  // 将节点添加到LIST中
+                    }
+                    console.log(zNodes);
+                } else {
+                    console.log(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result.message);
+                alert("服务器错误！");
+            }
+        });
+    }
+
+
 </SCRIPT>
 <style type="text/css">
-	.ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
+    .ztree li span.button.add {
+        margin-left: 2px;
+        margin-right: -1px;
+        background-position: -144px 0;
+        vertical-align: top;
+        *vertical-align: middle
+    }
 </style>
 
 <BODY>
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
-	<div class="main-title">
-		<ul class="nav navbar-nav navbar-left navbar-side">
-			<li>
-				<a href="#" onclick="$('body').toggleClass('sidebar-collapse');" style="width: 50px">
-					<span class="glyphicon glyphicon-menu-hamburger"></span>
-				</a>
-			</li>
-		</ul>
-	</div>
-	<div class="container navbar-left" style="width: 920px;">
-		<div class="navbar-header">
-			<a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
-		</div>
-		<div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
-			<ul class="nav navbar-nav">
-				<li><a href="basicData.html">首页</a></li>
-				<li><a href="invoice.html">企业信息</a></li>
-				<li><a href="Conlog.html">登录日志</a></li>
-				<li class="dropdown active">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-					   aria-expanded="false">账号管理<span class="caret"></span></a>
-					<ul class="dropdown-menu">
-						<li><a href="roleList.html">角色列表</a></li>
-						<li role="separator" class="divider"></li>
-						<li><a href="permissionList.html">权限表</a></li>
-						<li role="separator" class="divider"></li>
-						<li><a href="userManage.html">用户列表</a></li>
-						<li role="separator" class="divider"></li>
-						<li><a href="organizationList.html">组织架构管理表</a></li>
-					</ul>
-				</li>
-				<li><a href="thresholdTableList.html">处置类别阈值表</a></li>
-				<li><a href="documentControl.html">受控文档表</a></li>
-				<li><a href="contractCommission.html">合同提成比例计算</a></li>
-			</ul>
-		</div><!--/.nav-collapse -->
-	</div>
-	<ul class="nav navbar-nav navbar-right">
-		<li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
-		<li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
-		<li class="dropdown">
-			<a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
-			<ul class="dropdown-menu">
-				<li><a href="personalInformation.html">个人信息</a></li>
-				<li><a href="#">待办事项</a></li>
-				<li><a href="admin.html">注销</a></li>
-			</ul>
-		</li>
-	</ul>
+    <div class="main-title">
+        <ul class="nav navbar-nav navbar-left navbar-side">
+            <li>
+                <a href="#" onclick="$('body').toggleClass('sidebar-collapse');" style="width: 50px">
+                    <span class="glyphicon glyphicon-menu-hamburger"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="container navbar-left" style="width: 920px;">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
+            <ul class="nav navbar-nav">
+                <li><a href="basicData.html">首页</a></li>
+                <li><a href="invoice.html">企业信息</a></li>
+                <li><a href="Conlog.html">登录日志</a></li>
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">账号管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="roleList.html">角色列表</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="permissionList.html">权限表</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="userManage.html">用户列表</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="organizationList.html">组织架构管理表</a></li>
+                    </ul>
+                </li>
+                <li><a href="thresholdTableList.html">处置类别阈值表</a></li>
+                <li><a href="documentControl.html">受控文档表</a></li>
+                <li><a href="contractCommission.html">合同提成比例计算</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
+        <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+        <li class="dropdown">
+            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+               aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="personalInformation.html">个人信息</a></li>
+                <li><a href="#">待办事项</a></li>
+                <li><a href="admin.html">注销</a></li>
+            </ul>
+        </li>
+    </ul>
 </nav>
 <div class="container-fluid">
-	<div class="row">
-		<div class="sidebar">
-			<ul class="sidenav animated fadeInUp" style="list-style: none">
-				<!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
-				<li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
-				<li><a class="withripple" href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
-				<li><a class="withripple" href="compatibilityPlan.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
-				<li><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
-				<li><a class="withripple" href="storageManagement.html"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
-				<li><a class="withripple" href="preprocessingManagement.html"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
-				<li><a class="withripple" href="dispositionManagement.html"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
-				<li><a class="withripple" href="secondaryManagement.html"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
-				<li><a class="withripple" href="procurementManagement.html"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span class="iright pull-right">&gt;</span></a></li>
-				<li><a class="withripple" href="reportManagement.html"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
-				<li class="active"><a class="withripple" href="basicData.html"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
-				<li><a class="withripple" href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
-			</ul>
-		</div>
-	</div>
-	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-		<div class="content_wrap" style="width: 100%;height: 100%;background-color: #fff;border: none">
-			<div class="zTreeDemoBackground left" style="width: 100%;background-color: #fff;border: none">
-				<ul id="treeDemo" class="ztree" style="width: 30%;height: 100%"></ul>
-			</div>
-		</div>
-		<!--<table  align=left style="border:0;height:600px;width: 100%">-->
-			<!--<tr>-->
-				<!--<td width=40% align=left valign=top style="BORDER-RIGHT: #fff 1px dashed">-->
-					<!--<ul id="treeDemo" class="ztree" style="width:100%; overflow:auto;"></ul>-->
-				<!--</td>-->
-				<!--<td width=60% align=left valign=top><iframe id="testIframe" name="testIframe" frameborder="0" scrolling="auto" width=100%  height=600px src="test/warehouse1.html"></iframe></td>-->
-			<!--</tr>-->
-		<!--</table>-->
-	</div>
+    <div class="row">
+        <div class="sidebar">
+            <ul class="sidenav animated fadeInUp" style="list-style: none">
+                <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
+                <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list"
+                                                                           aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span
+                        class="sr-only">(current)</span></a></li>
+                <li><a class="withripple" href="businessModel.html"><span class="glyphicon glyphicon-user"
+                                                                          aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="compatibilityPlan.html"><span class="glyphicon glyphicon-list"
+                                                                              aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in"
+                                                                              aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="storageManagement.html"><span class="glyphicon glyphicon-save"
+                                                                              aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="preprocessingManagement.html"><span
+                        class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="dispositionManagement.html"><span class="glyphicon glyphicon-retweet"
+                                                                                  aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="secondaryManagement.html"><span class="glyphicon glyphicon-tags"
+                                                                                aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="procurementManagement.html"><span
+                        class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span
+                        class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="reportManagement.html"><span class="glyphicon glyphicon-edit"
+                                                                             aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li class="active"><a class="withripple" href="basicData.html"><span class="glyphicon glyphicon-signal"
+                                                                                     aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="content_wrap" style="width: 100%;height: 100%;background-color: #fff;border: none">
+            <div class="zTreeDemoBackground left" style="width: 100%;background-color: #fff;border: none">
+                <ul id="treeDemo" class="ztree" style="width: 30%;height: 100%"></ul>
+            </div>
+        </div>
+        <!--修改模态框-->
+        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="TitleMyModalLabel">信息修改</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="modelAssign" method="post">
+                            名称:<input name="name" id="name">
+                        </form>
+                    </div>
+                    <div class="modal-footer center">
+                        <button type="button" class="btn btn-default" id="downloadModal" onclick="save()">保存</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<table  align=left style="border:0;height:600px;width: 100%">-->
+        <!--<tr>-->
+        <!--<td width=40% align=left valign=top style="BORDER-RIGHT: #fff 1px dashed">-->
+        <!--<ul id="treeDemo" class="ztree" style="width:100%; overflow:auto;"></ul>-->
+        <!--</td>-->
+        <!--<td width=60% align=left valign=top><iframe id="testIframe" name="testIframe" frameborder="0" scrolling="auto" width=100%  height=600px src="test/warehouse1.html"></iframe></td>-->
+        <!--</tr>-->
+        <!--</table>-->
+    </div>
 </div>
 </BODY>
 </HTML>

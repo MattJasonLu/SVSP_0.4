@@ -1,5 +1,5 @@
-array=[]//用来存放循环出来的领料单信息
-MaterialRequisitionList=[];
+array = []//用来存放循环出来的领料单信息
+MaterialRequisitionList = [];
 var currentPage = 1;                          //当前页数
 var data1;
 var isSearch = false;
@@ -70,7 +70,7 @@ function totalPage() {
         //         totalRecord = 0;
         //     }
         // });
-        totalRecord=array1.length;
+        totalRecord = array1.length;
     }
     var count = countValue();                         // 可选
     var total = loadPages(totalRecord, count);
@@ -158,12 +158,12 @@ function switchPage(pageNumber) {
         });
     }
     if (isSearch) {//查询用的
-        for(var i=0;i<array1.length;i++){
+        for (var i = 0; i < array1.length; i++) {
             $(array1[i]).hide();
         }
-        var i=parseInt((pageNumber-1)*countValue());
-        var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
-        for(var i=i;i<=j;i++){
+        var i = parseInt((pageNumber - 1) * countValue());
+        var j = parseInt((pageNumber - 1) * countValue()) + parseInt(countValue() - 1);
+        for (var i = i; i <= j; i++) {
             $('#tbody1').append(array1[i]);
             $(array1[i]).show();
         }
@@ -227,12 +227,12 @@ function inputSwitchPage() {
             });
         }
         if (isSearch) {//查询用的
-            for(var i=0;i<array1.length;i++){
+            for (var i = 0; i < array1.length; i++) {
                 $(array1[i]).hide();
             }
-            var i=parseInt((pageNumber-1)*countValue());
-            var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
-            for(var i=i;i<=j;i++){
+            var i = parseInt((pageNumber - 1) * countValue());
+            var j = parseInt((pageNumber - 1) * countValue()) + parseInt(countValue() - 1);
+            for (var i = i; i <= j; i++) {
                 $('#tbody1').append(array1[i]);
                 $(array1[i]).show();
             }
@@ -259,12 +259,12 @@ function LoadMaterialRequisitionOrder() {
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getMaterialRequisitionOrderList",                  // url
-        data:JSON.stringify(page),
+        data: JSON.stringify(page),
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
                 console.log(result);
                 //设置领料单新增列表
                 //赋值配料单
@@ -276,13 +276,13 @@ function LoadMaterialRequisitionOrder() {
                 alert(result.message);
             }
         },
-        error:function (result) {
+        error: function (result) {
             alert("服务器异常！")
         }
     });
     //2加载高级搜索下拉框
     //setSenierList();
-      isSearch = false;
+    isSearch = false;
 }
 
 /**
@@ -320,10 +320,10 @@ function setPageClone(result) {
 function setMaterialRequisitionList(result) {
     var tr = $("#cloneTr4");
     tr.siblings().remove();
-    tr.attr('class','myclass');
+    tr.attr('class', 'myclass');
     $.each(result, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
-        if(item.checkState.name=='待出库'){
+        if (item.checkState.name == '待出库') {
             var clonedTr = tr.clone();
             clonedTr.show();
             // 循环遍历cloneTr的每一个td元素，并赋值
@@ -405,41 +405,41 @@ function setMaterialRequisitionList(result) {
 //领料单领用
 function receive() {
     var items = $("input[name='select']:checked");//判断复选框是否选中
-    if(items.length>0){
-        if(confirm("确定出库?")){
+    if (items.length > 0) {
+        if (confirm("确定出库?")) {
             //点击确定后操作
             items.each(function () {
                 //1获得领料单的编号
-                var materialRequisitionId=$(this).parent().parent().next().next().html();
+                var materialRequisitionId = $(this).parent().parent().next().next().html();
                 //console.log(materialRequisitionId);
                 //2获得厂家
-                var companyName=$(this).parent().parent().next().next().next().html();
+                var companyName = $(this).parent().parent().next().next().next().html();
                 //3获得危废名称
-                var name=$(this).parent().parent().next().next().next().next().html();
+                var name = $(this).parent().parent().next().next().next().next().html();
                 //4获得危废代码
-                var wastesId=$(this).parent().parent().next().next().next().next().next().html();
+                var wastesId = $(this).parent().parent().next().next().next().next().next().html();
                 //危废类别
-                var category=$(this).parent().parent().next().next().next().next().next().next().html();
+                var category = $(this).parent().parent().next().next().next().next().next().next().html();
                 //单位
-                var unit=$(this).parent().parent().next().next().next().next().next().next().next().html();
+                var unit = $(this).parent().parent().next().next().next().next().next().next().next().html();
                 //配料数量
-                var batchingNumber=$(this).parent().parent().next().next().next().next().next().next().next().next().html();
+                var batchingNumber = $(this).parent().parent().next().next().next().next().next().next().next().next().html();
                 //领用数量
-                var recipientsNumber=$(this).parent().parent().next().next().next().next().next().next().next().next().next().html();
+                var recipientsNumber = $(this).parent().parent().next().next().next().next().next().next().next().next().next().html();
                 //附注
-                var remarks=$(this).parent().parent().next().next().next().next().next().next().next().next().next().next().html();
+                var remarks = $(this).parent().parent().next().next().next().next().next().next().next().next().next().next().html();
                 //主管副总经理
-                var deputyGeneral=$(this).parent().parent().next().next().next().next().next().next().next().next().next().next().next().html();
+                var deputyGeneral = $(this).parent().parent().next().next().next().next().next().next().next().next().next().next().next().html();
                 //部门仓库主管
-                var warehouseManager=$(this).parent().parent().next().next().next().next().next().next().next().next().next().next().next().next().html();
+                var warehouseManager = $(this).parent().parent().next().next().next().next().next().next().next().next().next().next().next().next().html();
                 //保管员
-                var guardian=$(this).parent().parent().next().next().next().next().next().next().next().next().next().next().next().next().next().html();
+                var guardian = $(this).parent().parent().next().next().next().next().next().next().next().next().next().next().next().next().next().html();
                 //领料部门主管
-                var materialManager=$(this).parent().parent().next().next().next().next().next().next().next().next().next().next().next().next().next().next().html();
+                var materialManager = $(this).parent().parent().next().next().next().next().next().next().next().next().next().next().next().next().next().next().html();
                 //领料人
-                var picker=$(this).parent().parent().next().next().next().next().next().next().next().next().next().next().next().next().next().next().next().html();
-                data={
-                    materialRequisitionId:materialRequisitionId,
+                var picker = $(this).parent().parent().next().next().next().next().next().next().next().next().next().next().next().next().next().next().next().html();
+                data = {
+                    materialRequisitionId: materialRequisitionId,
                     //   wastes:{client:{companyName:companyName},
                     //         name:name,
                     //         wastesId:wastesId,
@@ -454,32 +454,32 @@ function receive() {
                     //       materialManager:materialManager,
                     //       picker:picker
                     //   },
-                    recipientsNumber:recipientsNumber,
+                    recipientsNumber: recipientsNumber,
                 },
                     $.ajax({
                         type: "POST",                       // 方法类型
                         url: "getByMaterialRequisitionId",                  // url
                         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                        data: {'materialRequisitionId':materialRequisitionId},
+                        data: {'materialRequisitionId': materialRequisitionId},
                         dataType: "json",
                         //contentType: "application/json; charset=utf-8",
-                        success:function (result) {
-                            if (result != undefined && result.status == "success"){
+                        success: function (result) {
+                            if (result != undefined && result.status == "success") {
                             }
                             else {
                                 alert(result.message);
                             }
                         },
-                        error:function (result) {
+                        error: function (result) {
                             alert("服务器异常！");
                         }
                     });
-                if(materialRequisitionId.length>0){
+                if (materialRequisitionId.length > 0) {
                     array.push(materialRequisitionId);
                 }
             });
-            window.localStorage.array=array;
-            location.href="newWarehouseOut.html";
+            window.localStorage.array = array;
+            location.href = "newWarehouseOut.html";
         }
     }
     else {
@@ -501,16 +501,16 @@ function loadRequisitionList() {
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
                 console.log(result)
-                var equipment=$("#equipment");
+                var equipment = $("#equipment");
                 equipment.children().remove();
-                $.each(result.equipmentList,function (index,item) {
-                var option=$('<option/>')
+                $.each(result.equipmentList, function (index, item) {
+                    var option = $('<option/>')
                     option.val(item.index);
                     option.text(item.name);
-                     equipment.append(option);
+                    equipment.append(option);
                     $('.selectpicker').selectpicker('refresh');
                 });
             }
@@ -518,25 +518,25 @@ function loadRequisitionList() {
                 alert(result.message)
             }
         },
-        error:function (result) {
+        error: function (result) {
             alert("服务器异常")
         }
 
     });
-    var array=new Array(localStorage['array']);
-   // console.log(array[0].length);
-    if(array[0]!=undefined&&array[0].length>0){
-        var array1=array[0].split(",");//获得配料编号的数组
-        $.each(array1,function (index,item) {
+    var array = new Array(localStorage['array']);
+    // console.log(array[0].length);
+    if (array[0] != undefined && array[0].length > 0) {
+        var array1 = array[0].split(",");//获得配料编号的数组
+        $.each(array1, function (index, item) {
             $.ajax({
                 type: "POST",                       // 方法类型
                 url: "getByMaterialRequisitionId",                  // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: {'materialRequisitionId':item},
+                data: {'materialRequisitionId': item},
                 dataType: "json",
                 //contentType: "application/json; charset=utf-8",
-                success:function (result) {
-                    if (result != undefined && result.status == "success"){
+                success: function (result) {
+                    if (result != undefined && result.status == "success") {
                         console.log(result);
                         MaterialRequisitionList.push(result.materialRequisitionOrder);
                     }
@@ -544,7 +544,7 @@ function loadRequisitionList() {
                         alert(result.message);
                     }
                 },
-                error:function (result) {
+                error: function (result) {
                     alert("服务器异常！");
                 }
             });
@@ -554,17 +554,17 @@ function loadRequisitionList() {
     }
     else {
         alert("还未领料，请领料！");
-        if(confirm("是否跳转至领料页面?")){
-          window.location.href="materialRequisition.html";
+        if (confirm("是否跳转至领料页面?")) {
+            window.location.href = "materialRequisition.html";
         }
     }
     /*加载出库类别下拉框
      */
     $('#outBoundDate').val(dateToString(new Date()))
-    var data=getCurrentUserData();
+    var data = getCurrentUserData();
     console.log(data)
-    if(data!=null){
-     $('#creator').val(data.username)
+    if (data != null) {
+        $('#creator').val(data.username)
     }
 
     localStorage.clear();
@@ -575,10 +575,10 @@ function setRequisitionList(result) {
     var tr = $("#cloneTr");
     //console.log(result);
     //tr.siblings().remove();
-    tr.attr('class','myclass');
+    tr.attr('class', 'myclass');
     $.each(result, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
-        if(item.checkState.name=='待出库'){
+        if (item.checkState.name == '待出库') {
             var clonedTr = tr.clone();
             clonedTr.show();
             // 循环遍历cloneTr的每一个td元素，并赋值
@@ -593,18 +593,18 @@ function setRequisitionList(result) {
                         break;
                     // 厂家
                     case (2):
-                        if(obj.client!=null){
+                        if (obj.client != null) {
                             $(this).html(obj.client.companyName);
                         }
 
                         break;
                     // 危废名称
                     case (3):
-                            $(this).html(obj.wastesName);
+                        $(this).html(obj.wastesName);
                         break;
                     // 危废类别
                     case (4):
-                            $(this).html(obj.wasteCategory);
+                        $(this).html(obj.wasteCategory);
                         break;
                     // 配料数量
                     case (5):
@@ -612,27 +612,29 @@ function setRequisitionList(result) {
                         break;
                     //领用数量
                     case (6):
-                        $(this).html(obj.recipientsNumber);
+                        $(this).html(obj.recipientsNumber.toFixed(2));
                         break;
                     //领料部门主管
                     case (7):
                         $(this).html(obj.materialManager);
                         break;
-                        //领料人
+                    //领料人
                     case (8):
                         $(this).html(obj.picker);
                         break;
-                        //进料方式
+                    //进料方式
                     case (9):
-                        if(obj.handelCategory!=null){
+                        if (obj.handelCategory != null) {
 
-                        }  $(this).html(obj.handelCategory.name);
+                        }
+                        $(this).html(obj.handelCategory.name);
                         break;
-                        //处置方式
+                    //处置方式
                     case (10):
-                        if(obj.processWay!=null){
+                        if (obj.processWay != null) {
 
-                        }  $(this).html(obj.processWay.name);
+                        }
+                        $(this).html(obj.processWay.name);
                         break;
                     //
                 }
@@ -647,13 +649,9 @@ function setRequisitionList(result) {
     tr.removeAttr('class');
 
 
-
-
-
-
 }
 
-$('#number').on('blur','[contenteditable="true"]',function(){
+$('#number').on('blur', '[contenteditable="true"]', function () {
     //var data = getData();
     var index = $(this).parent().attr('index');
     var val = $(this).html();
@@ -663,8 +661,9 @@ $('#number').on('blur','[contenteditable="true"]',function(){
 
 })
 
-array=[];
-array1=[];
+array = [];
+array1 = [];
+
 //领料单高级查询
 
 function searchMaterial() {
@@ -768,39 +767,39 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
     $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
-            if(last-event.timeStamp==0){
+            if (last - event.timeStamp == 0) {
                 searchMaterialRequisition();
             }
-        },400);
+        }, 400);
     });
 });
 
 //粗查询
 function searchMaterialRequisition() {
 
-    isSearch=false;
+    isSearch = false;
 
     //LoadMaterialRequisitionOrder();
     //1分页模糊查询
-    array.length=0;//清空数组
-    array1.length=0;
+    array.length = 0;//清空数组
+    array1.length = 0;
 
-    for(var i=totalPage();i>0;i--){
+    for (var i = totalPage(); i > 0; i--) {
         switchPage(parseInt(i));
         array.push($('.myclass'));
     }
 
-    isSearch=true;
+    isSearch = true;
 
-    var text=$.trim($('#searchContent').val());
+    var text = $.trim($('#searchContent').val());
 
-    for(var j=0;j<array.length;j++){
-        $.each(array[j],function () {
+    for (var j = 0; j < array.length; j++) {
+        $.each(array[j], function () {
             //console.log(this);
-            if(($(this).children('td').text().indexOf(text)==-1)){
+            if (($(this).children('td').text().indexOf(text) == -1)) {
                 $(this).hide();
             }
-            if($(this).children('td').text().indexOf(text)!=-1){
+            if ($(this).children('td').text().indexOf(text) != -1) {
                 array1.push($(this));
             }
         });
@@ -808,16 +807,16 @@ function searchMaterialRequisition() {
 
     var total;
 
-    if(array1.length%countValue()==0){
-        total=array1.length/countValue()
+    if (array1.length % countValue() == 0) {
+        total = array1.length / countValue()
     }
 
-    if(array1.length%countValue()>0){
-        total=Math.ceil(array1.length/countValue());
+    if (array1.length % countValue() > 0) {
+        total = Math.ceil(array1.length / countValue());
     }
 
-    if(array1.length/countValue()<1){
-        total=1;
+    if (array1.length / countValue() < 1) {
+        total = 1;
     }
 
     $("#totalPage").text("共" + total + "页");
@@ -826,9 +825,9 @@ function searchMaterialRequisition() {
 
     $('.beforeClone').remove();
 
-    for ( i = 0; i < total; i++) {
+    for (i = 0; i < total; i++) {
         var li = $("#next").prev();
-        myArray[i] = i+1;
+        myArray[i] = i + 1;
         var clonedLi = li.clone();
         clonedLi.show();
         clonedLi.find('a:first-child').text(myArray[i]);
@@ -844,23 +843,22 @@ function searchMaterialRequisition() {
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
 
-    for(var i=0;i<array1.length;i++){
+    for (var i = 0; i < array1.length; i++) {
         $(array1[i]).hide();
     }
 
     //首页展示
-    for(var i=0;i<countValue();i++){
+    for (var i = 0; i < countValue(); i++) {
         $(array1[i]).show();
         $('#tbody1').append((array1[i]));
     }
 
-    if(text.length<=0){
+    if (text.length <= 0) {
         LoadMaterialRequisitionOrder();
     }
 
 
 }
-
 
 
 //导出
@@ -896,19 +894,18 @@ function exportExcel() {
 }
 
 
-
 $(document).ready(function () {//页面载入是就会进行加载里面的内容
     var last;
     $('#searchContentAdd').keyup(function (event) { //给Input赋予onkeyup事件
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
-            if(last-event.timeStamp==0){
+            if (last - event.timeStamp == 0) {
                 searchMaterialRe();
             }
             else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
                 searchMaterialRe();      //
             }
-        },600);
+        }, 600);
     });
 });
 
@@ -918,28 +915,28 @@ function searchMaterialRe() {
         $(this).show();
     })
     //1分页模糊查询
-    array.length=0;//清空数组
-    array1.length=0;
+    array.length = 0;//清空数组
+    array1.length = 0;
     array.push($('.myclass'));
-    var text=$.trim($('#searchContentAdd').val());
-    for(var j=0;j<array.length;j++){
-        $.each(array[j],function () {
+    var text = $.trim($('#searchContentAdd').val());
+    for (var j = 0; j < array.length; j++) {
+        $.each(array[j], function () {
             //console.log(this);
-            if(($(this).children('td').text().indexOf(text)==-1)){
+            if (($(this).children('td').text().indexOf(text) == -1)) {
                 $(this).hide();
             }
-            if($(this).children('td').text().indexOf(text)!=-1){
+            if ($(this).children('td').text().indexOf(text) != -1) {
                 array1.push($(this));
             }
         });
     }
-    for(var i=0;i<array1.length;i++){
-        $.each(array1[i],function () {
-            $('#tbody1').append(this) ;
+    for (var i = 0; i < array1.length; i++) {
+        $.each(array1[i], function () {
+            $('#tbody1').append(this);
         });
     }
 
-    if(text.length<=0){
+    if (text.length <= 0) {
         $('.myclass').each(function () {
             $(this).show();
         })
@@ -948,44 +945,44 @@ function searchMaterialRe() {
 
 //出库单新增页面高级查询
 function searchMaterialRe1() {
-    array.length=0;//清空数组
-    array1.length=0;//清空数组
+    array.length = 0;//清空数组
+    array1.length = 0;//清空数组
 
     $('.myclass').each(function () {
         $(this).show();
         array.push($(this));
     });
 
-    var text=$.trim($('#searchContentAdd').val());
+    var text = $.trim($('#searchContentAdd').val());
 
-    var companyName=$.trim($('#search-company').val());
+    var companyName = $.trim($('#search-company').val());
 
-    var wastesName=$.trim($('#search-wastesName').val());
+    var wastesName = $.trim($('#search-wastesName').val());
 
-    var wastesCode=$.trim($('#search-wastesCode').val());
+    var wastesCode = $.trim($('#search-wastesCode').val());
 
-    var wastesCategory=$.trim($('#search-wastesCategory').val());
+    var wastesCategory = $.trim($('#search-wastesCategory').val());
 
-    for(var j=0;j<array.length;j++){
-        $.each(array[j],function () {
-            if(!($(this).children('td').eq(2).text().indexOf(companyName)!=-1&&$(this).children('td').eq(5).text().indexOf(wastesCategory)!=-1
-                &&$(this).children('td').eq(3).text().indexOf(wastesName)!=-1&&$(this).children('td').eq(4).text().indexOf(wastesCode)!=-1&&$(this).children('td').text().indexOf(text)!=-1
+    for (var j = 0; j < array.length; j++) {
+        $.each(array[j], function () {
+            if (!($(this).children('td').eq(2).text().indexOf(companyName) != -1 && $(this).children('td').eq(5).text().indexOf(wastesCategory) != -1
+                && $(this).children('td').eq(3).text().indexOf(wastesName) != -1 && $(this).children('td').eq(4).text().indexOf(wastesCode) != -1 && $(this).children('td').text().indexOf(text) != -1
 
-            )){
+            )) {
                 $(this).hide();
             }
-            if($(this).children('td').eq(2).text().indexOf(companyName)!=-1&&$(this).children('td').eq(5).text().indexOf(wastesCategory)!=-1
-                &&$(this).children('td').eq(3).text().indexOf(wastesName)!=-1&&$(this).children('td').eq(4).text().indexOf(wastesCode)!=-1&&$(this).children('td').text().indexOf(text)!=-1
+            if ($(this).children('td').eq(2).text().indexOf(companyName) != -1 && $(this).children('td').eq(5).text().indexOf(wastesCategory) != -1
+                && $(this).children('td').eq(3).text().indexOf(wastesName) != -1 && $(this).children('td').eq(4).text().indexOf(wastesCode) != -1 && $(this).children('td').text().indexOf(text) != -1
 
-            ){
+            ) {
                 array1.push($(this));
             }
         });
     }
 
-    for(var i=0;i<array1.length;i++){
-        $.each(array1[i],function () {
-            $('#tbody1').append(this) ;
+    for (var i = 0; i < array1.length; i++) {
+        $.each(array1[i], function () {
+            $('#tbody1').append(this);
         });
     }
 
@@ -1007,4 +1004,156 @@ function enterSearch1() {
     if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
         searchMaterialRe1();      //
     }
+}
+
+//领料单查看
+function view(item) {
+    var materialRequisitionOrderId = $(item).parent().parent().children('td').eq(2).html();
+    console.log(materialRequisitionOrderId)
+    $('#addModa1').modal('show')
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getMaterialRequisitionOrderById",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {'materialRequisitionOrderId': materialRequisitionOrderId},
+        dataType: "json",
+        //contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result)
+                var obj = eval(result.data);
+                $("#materialRequisitionId").val(obj.materialRequisitionId);
+                if (obj.client != null) {
+                    $("#client").val(obj.client.companyName);
+                }
+
+                $("#wastesName").val(obj.wastesName)
+                $("#wasteCategory").val(obj.wasteCategory);
+                $("#recipientsNumber").val(obj.recipientsNumber.toFixed(2));
+                $("#deputyGeneral").val(obj.deputyGeneral);
+                $("#warehouseManager").val(obj.warehouseManager);
+                $("#guardian").val(obj.guardian);
+                $("#materialManager").val(obj.materialManager);
+                $("#picker").val(obj.picker);
+
+
+            }
+        },
+        error: function (result) {
+
+        }
+
+    })
+}
+
+//领料单编辑
+function materialRequisitionModify(item) {
+    var materialRequisitionOrderId = $(item).parent().parent().children('td').eq(2).html();
+    console.log(materialRequisitionOrderId)
+    $('#addModa2').modal('show')
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getMaterialRequisitionOrderById",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {'materialRequisitionOrderId': materialRequisitionOrderId},
+        dataType: "json",
+        //contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result)
+                var obj = eval(result.data);
+                $("#materialRequisitionId1").val(obj.materialRequisitionId);
+                if (obj.client != null) {
+                    $("#client1").val(obj.client.companyName);
+                }
+
+                $("#wastesName1").val(obj.wastesName)
+                $("#wasteCategory1").val(obj.wasteCategory);
+                $("#recipientsNumber1").val(obj.recipientsNumber.toFixed(2));
+                $("#deputyGeneral1").val(obj.deputyGeneral);
+                $("#warehouseManager1").val(obj.warehouseManager);
+                $("#guardian1").val(obj.guardian);
+                $("#materialManager1").val(obj.materialManager);
+                $("#picker1").val(obj.picker);
+                $("#batchingNumber").val(obj.batchingNumber.toFixed(2));
+
+
+                $("#recipientsNumber2").val(obj.recipientsNumber.toFixed(2));
+                $("#batchingNumber2").val(obj.batchingNumber.toFixed(2));
+
+            }
+        },
+        error: function (result) {
+
+        }
+
+    })
+
+}
+
+//计算领料数和配料数
+function CalIngredients() {
+    var recipientsNumber = $("#recipientsNumber1").val();
+
+    if (recipientsNumber.length == 0) {
+        recipientsNumber = 0;
+    }
+    if (isNaN(recipientsNumber)) {
+        alert("请输入数字!")
+    }
+
+    if (!isNaN(recipientsNumber)) {
+        var batchingNumber = $('#batchingNumber2').val();//现有配料==》不会变
+
+        var difference = parseFloat(recipientsNumber) - parseFloat($('#recipientsNumber2').val());
+
+        var batchingNumber1 = parseFloat(batchingNumber) - parseFloat(difference);
+
+        if (parseFloat(batchingNumber1) > 0) {
+            $('#batchingNumber').val(parseFloat(batchingNumber1).toFixed(2))
+        }
+        else {
+            alert("配料量大于库存量，请重新配料！")
+            $('#recipientsNumber1').val($("#recipientsNumber2").val())
+        }
+
+    }
+}
+
+//修改
+function adjustMaterialRequisition() {
+    var data = {
+        materialRequisitionId: $("#materialRequisitionId1").val(),
+        batchingNumber: $("#batchingNumber").val(),
+        recipientsNumber: $("#recipientsNumber1").val(),
+        deputyGeneral: $("#deputyGeneral1").val(),
+        warehouseManager: $("#warehouseManager1").val(),
+        guardian: $("#guardian1").val(),
+        materialManager: $("#materialManager1").val(),
+        picker: $("#picker1").val(),
+    }
+    console.log(data)
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "adjustMaterialRequisitionOrder",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                alert(result.message)
+                window.location.reload()
+            }
+
+        },
+        error: function (result) {
+
+        }
+    })
+
+
 }
