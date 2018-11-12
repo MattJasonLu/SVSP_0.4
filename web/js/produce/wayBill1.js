@@ -774,68 +774,70 @@ function setDataItemList(result) {
  * 编辑功能
  */
 function editWayBill(item) {
-    var id = getWayBillId(item);
-    localStorage.id = id;
-    localStorage.add = 1;
-    location.href = "wayBill.html";
+    var state = $(item).parent().prev().text();
+    if (state == '新建') {
+        var id = getWayBillId(item);
+        localStorage.id = id;
+        localStorage.add = 1;
+        location.href = "wayBill.html";
+    } else if (state == '审批中') {
+        alert("单据审批中，不可修改！");
+    } else if (state == '已作废') {
+        alert("单据已作废，不可修改！");
+    } else {
+        alert("单据不可修改！");
+    }
 }
 
 /**
  * 提交功能
  */
 function submit(item) {
+    var state = $(item).parent().prev().text();
     var id = getWayBillId(item);
-    $.ajax({
-        type: "POST",
-        url: "submitWayBill",
-        async: false,
-        data: {
-            id: id
-        },
-        dataType: "json",
-        success: function (result) {
-            if (result.status == "success") {
-                alert("提交成功！");
-                window.location.reload();
-            } else {
-                alert(result.message);
-            }
-        },
-        error: function (result) {
-            console.log(result);
-            alert("服务器异常!");
-        }
-    });
+    if (state == '新建' || state == '已驳回') {
+        if (confirm("确认提交？"))
+            $.ajax({
+                type: "POST",
+                url: "submitWayBill",
+                async: false,
+                data: {
+                    id: id
+                },
+                dataType: "json",
+                success: function (result) {
+                    if (result.status == "success") {
+                        alert("提交成功！");
+                        window.location.reload();
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                    alert("服务器异常!");
+                }
+            });
+    } else if (state == '审批中') {
+        alert("单据审批中，不可提交！");
+    } else if (state == '已作废') {
+        alert("单据已作废，不可提交！");
+    } else {
+        alert("单据不可提交！");
+    }
 }
 
 /**
  * 审批
  */
 function examination(item) {
-    wayBillId = getWayBillId(item);
-    console.log(wayBillId);
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "getWayBill",                 // url
-        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: {
-            id: wayBillId
-        },
-        dataType: "json",
-        success: function (result) {
-            if (result.data != undefined || result.status == "success" || result.data != null) {
-                var data = eval(result.data);
-                if (data.state.name != '审批中') alert("请提交后再进行审批操作！");
-                else $('#examinationModal').modal('show');//手动触发模态框弹出
-            } else {
-                alert(result.message);
-            }
-        },
-        error: function (result) {
-            console.log(result);
-            alert("服务器异常!");
-        }
-    });
+    var state = $(item).parent().prev().text();
+    if (state != '审批中') {
+        alert("请提交后再进行审批操作！");
+    } else {
+        wayBillId = getWayBillId(item);
+        $('#examinationModal').modal('show');//手动触发模态框弹出
+    }
 }
 
 function approval() {
@@ -924,29 +926,38 @@ function reject1() {
  * 作废功能
  */
 function invalidWayBill(item) {
-    var id = getWayBillId(item);
-    if (confirm("确定作废？"))
-        $.ajax({
-            type: "POST",
-            url: "invalidWayBill",
-            async: false,
-            data: {
-                id: id
-            },
-            dataType: "json",
-            success: function (result) {
-                if (result.status == "success") {
-                    alert("作废成功！");
-                    window.location.reload();
-                } else {
-                    alert(result.message);
+    var state = $(item).parent().prev().text();
+    if (state == '新建') {
+        var id = getWayBillId(item);
+        if (confirm("确定作废？"))
+            $.ajax({
+                type: "POST",
+                url: "invalidWayBill",
+                async: false,
+                data: {
+                    id: id
+                },
+                dataType: "json",
+                success: function (result) {
+                    if (result.status == "success") {
+                        alert("作废成功！");
+                        window.location.reload();
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                    alert("服务器异常!");
                 }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常!");
-            }
-        });
+            });
+    } else if (state == '审核中') {
+        alert("单据审核中，不能作废！")
+    } else if (state == '已作废') {
+        alert("单据已作废！");
+    } else {
+        alert("单据不能作废！");
+    }
 }
 
 /**

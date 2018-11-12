@@ -1,13 +1,11 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
-import com.jdlink.domain.Produce.SampleInformation;
-import com.jdlink.domain.Produce.SampleInformationItem;
-import com.jdlink.domain.Produce.WayBill;
-import com.jdlink.domain.Produce.WayBillItem;
+import com.jdlink.domain.Produce.*;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.SampleInformationService;
 import com.jdlink.service.WayBillService;
+import com.jdlink.service.produce.ReceiveSampleAnalysisService;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
@@ -35,6 +33,8 @@ public class PRSampleInfoController {
     ClientService clientService;
     @Autowired
     WayBillService wayBillService;
+    @Autowired
+    ReceiveSampleAnalysisService receiveSampleAnalysisService;
 
 
     /**
@@ -255,7 +255,28 @@ public class PRSampleInfoController {
     public String confirmSampleInformationCheck(String sampleId, String laboratorySigner) {
         JSONObject res = new JSONObject();
         try {
-            sampleInformationService.confirmCheck(sampleId, laboratorySigner);
+            SampleInformation sampleInformation = sampleInformationService.getById(sampleId); // 获取对象
+            sampleInformation.setLaboratorySigner(laboratorySigner); // 设置签收人
+            sampleInformationService.confirmCheck(sampleInformation);
+            // 创建化验单
+            if(sampleInformation.getWastesList() != null && sampleInformation.getWastesList().size() > 0){
+                for(Wastes wastes :sampleInformation.getWastesList()){
+                    ReceiveSampleAnalysis receiveSampleAnalysis = new ReceiveSampleAnalysis();
+                    receiveSampleAnalysis.setId(wastes.getId());
+                    receiveSampleAnalysis.setSampleId(sampleInformation.getId());
+                    receiveSampleAnalysis.setFinishDate(new Date());
+                    receiveSampleAnalysis.setWastesName(wastes.getName());
+                    receiveSampleAnalysis.setWastesCode(wastes.getCode());
+                    Client produceCompany = new Client();
+                    produceCompany.setClientId(sampleInformation.getCompanyCode());
+                    produceCompany.setCompanyName(sampleInformation.getCompanyName());
+                    receiveSampleAnalysis.setProduceCompany(produceCompany);
+                    receiveSampleAnalysis.setFormType(wastes.getFormType());
+                    receiveSampleAnalysis.setCheckState(CheckState.NewBuild);
+                    receiveSampleAnalysis.setSender(sampleInformation.getSendingPerson());
+                    receiveSampleAnalysisService.add(receiveSampleAnalysis);  // 添加新的化验结果单
+                }
+            }
             res.put("status", "success");
             res.put("message", "确认登记成功！");
         } catch (Exception e) {
@@ -273,9 +294,6 @@ public class PRSampleInfoController {
         try {
             //sampleInformationService.deleteById(sampleInformation.getId()); // 删除旧数据
             sampleInformationService.update(sampleInformation);       // 添加新数据
-            System.out.println("更新的数据为：");
-            System.out.println(sampleInformation.getWastesList().size());
-            System.out.println(sampleInformation);
             res.put("status", "success");
             res.put("message", "登记单修改成功！");
         } catch (Exception e) {
@@ -310,12 +328,19 @@ public class PRSampleInfoController {
         return res.toString();
     }
 
+    /**
+     * 作废
+     * @param sampleId
+     * @return
+     */
     @RequestMapping("cancelSampleInformation")
     @ResponseBody
     public String cancelSampleInformation(String sampleId) {
         JSONObject res = new JSONObject();
         try {
-            sampleInformationService.updateSampleInfo(sampleId);
+            String newId = "I-" + sampleId; // 作废的数据将ID前添加I用于区别
+
+            sampleInformationService.updateSampleInfo(sampleId,newId);
             res.put("status", "success");
             res.put("message", "作废数据成功！");
         } catch (Exception e) {

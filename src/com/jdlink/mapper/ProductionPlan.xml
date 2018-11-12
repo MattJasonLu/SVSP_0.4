@@ -22,7 +22,9 @@
     </select>
 
     <select id="listPage" resultMap="ProductionPlanRM">
-        select * from t_pr_productionplan order by creationDate desc
+        select * from t_pr_productionplan
+        where state != 'Invalid'
+        order by id desc
         <if test="start != null and count != null">
             limit #{start}, #{count};
         </if>
@@ -121,7 +123,9 @@
     </update>
 
     <update id="invalid" parameterType="String">
-        update t_pr_productionplan set state = 'Invalid' where id = #{id};
+        update t_pr_productionplan
+        set state = 'Invalid',id=CONCAT('I-',id)
+         where id = #{id};
     </update>
 
     <update id="confirm" parameterType="String">

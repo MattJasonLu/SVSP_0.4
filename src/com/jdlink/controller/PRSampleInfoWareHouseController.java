@@ -1,10 +1,13 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Produce.ReceiveSampleAnalysis;
+import com.jdlink.domain.Produce.SampleInfoAnalysis;
 import com.jdlink.domain.Produce.SampleInformation;
 import com.jdlink.domain.Produce.SampleInformationItem;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.SampleInfoWareHouseService;
+import com.jdlink.service.produce.SampleInfoAnalysisService;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
@@ -28,7 +31,8 @@ public class PRSampleInfoWareHouseController {
     SampleInfoWareHouseService sampleInfoWareHouseService;
     @Autowired
     ClientService clientService;
-
+    @Autowired
+    SampleInfoAnalysisService sampleInfoAnalysisService;
 
     /**
      * 增加样品登记预约单
@@ -224,6 +228,29 @@ public class PRSampleInfoWareHouseController {
         JSONObject res = new JSONObject();
         try{
             sampleInfoWareHouseService.confirmCheck(sampleId,laboratorySigner);
+            // 创建化验单
+            SampleInformation sampleInformation = sampleInfoWareHouseService.getById(sampleId);
+
+            if(sampleInformation.getWastesList() != null && sampleInformation.getWastesList().size() > 0){
+                for(Wastes wastes :sampleInformation.getWastesList()){
+                    SampleInfoAnalysis sampleAnalysis = new SampleInfoAnalysis();
+                    sampleAnalysis.setId(wastes.getId());
+                    sampleAnalysis.setSampleId(sampleInformation.getId());
+                    sampleAnalysis.setSignDate(new Date());   // 签收日期
+                    sampleAnalysis.setWastesName(wastes.getName());
+                    sampleAnalysis.setWastesCode(wastes.getCode());
+                    sampleAnalysis.setTransferDraftId(wastes.getTransferId());
+                    Client produceCompany = new Client();
+                    produceCompany.setClientId(sampleInformation.getCompanyCode());
+                    produceCompany.setCompanyName(sampleInformation.getCompanyName());
+                    sampleAnalysis.setProduceCompany(produceCompany);
+                    sampleAnalysis.setFormType(wastes.getFormType());
+                    sampleAnalysis.setSender(sampleInformation.getSendingPerson());
+                    sampleAnalysis.setSigner(sampleInformation.getLaboratorySigner());
+                    sampleAnalysis.setCheckState(CheckState.NewBuild);
+                    sampleInfoAnalysisService.add(sampleAnalysis);  // 添加新的化验结果单
+                }
+            }
             res.put("status","success");
             res.put("message","确认登记成功！");
         }catch (Exception e){
@@ -254,35 +281,13 @@ public class PRSampleInfoWareHouseController {
         return res.toString();
     }
 
-    /**
-     * 模糊查询 已整合  暂时不用
-     * @param keyword
-     * @return
-     */
-    @RequestMapping("searchSampleInformationWareHouse")
-    @ResponseBody
-    public String searchSampleInformation(String keyword){
-        JSONObject res = new JSONObject();
-        try{
-            List<SampleInformation> sampleInformationList = sampleInfoWareHouseService.listByKeyword(keyword);
-            JSONArray data = JSONArray.fromArray(sampleInformationList.toArray(new SampleInformation[sampleInformationList.size()]));
-            res.put("data",data);
-            res.put("status","success");
-            res.put("message","查询数据获取成功！");
-        }catch (Exception e){
-            e.printStackTrace();
-            res.put("status","fail");
-            res.put("message","查询数据获取失败！");
-        }
-        return res.toString();
-    }
-
     @RequestMapping("cancelSampleInformationWareHouse")
     @ResponseBody
     public String cancelSampleInformation(String sampleId){
         JSONObject res = new JSONObject();
         try{
-            sampleInfoWareHouseService.updateSampleInfo(sampleId);
+            String newId = "I-"+sampleId;
+            sampleInfoWareHouseService.updateSampleInfo(sampleId,newId);
             res.put("status","success");
             res.put("message","作废数据成功！");
         }catch (Exception e){
@@ -327,6 +332,29 @@ public class PRSampleInfoWareHouseController {
         try {
             List<SampleInformationItem> sampleInformationItemList = sampleInfoWareHouseService.searchItem(sampleInformationItem);
             JSONArray data = JSONArray.fromArray(sampleInformationItemList.toArray(new SampleInformationItem[sampleInformationItemList.size()]));
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 查询功能
+     * @param sampleInformation
+     * @return
+     */
+    @RequestMapping("searchSampleInfoWareHouse")
+    @ResponseBody
+    public String searchSampleInfoWareHouseItem(@RequestBody SampleInformation sampleInformation) {
+        JSONObject res = new JSONObject();
+        try {
+            List<SampleInformation> sampleInformationList = sampleInfoWareHouseService.search(sampleInformation);
+            JSONArray data = JSONArray.fromArray(sampleInformationList.toArray(new SampleInformation[sampleInformationList.size()]));
             res.put("status", "success");
             res.put("message", "查询成功");
             res.put("data", data);
