@@ -150,10 +150,19 @@
     </insert>
 
     <resultMap id="WastesOutBoundRM" type="OutboundOrder">
+        <result  property="inboundOrderItemId" column="inboundOrderItemId"></result>
+        <association property="inboundOrderId" column="inboundOrderItemId" select="getInboundOrderId"></association>
         <association property="client" column="clientId" select="getClientMar"></association>
         <association property="wareHouse" column="wareHouseId" select="getwareHouse"></association>
+        <association property="inventoryNumber" column="inboundOrderItemId" select="getInventoryNumber"></association>
     </resultMap>
+<select id="getInboundOrderId" resultType="String">
+    select inboundOrderId from t_pl_wasteinventory where inboundOrderItemId=#{inboundOrderItemId};
+</select>
 
+    <select id="getInventoryNumber" resultType="float">
+        select actualCount from  t_pl_wasteinventory where inboundOrderItemId=#{inboundOrderItemId};
+    </select>
     <!--加载危废出库-->
     <select id="loadWastesOutBoundList" resultMap="WastesOutBoundRM">
         select * from t_pl_outboundorder where  boundType='WasteOutbound'
@@ -200,6 +209,11 @@
     select count(*) from t_pl_batchingorder  where batchingOrderId like "%"#{prefix}"%";
     </select>
 
+    <!--根据年月日查询出库单但剧中的个数-->
+    <select id="getSecCountByTime" resultType="int" parameterType="String">
+         select count(*) from t_pl_outboundorder  where outboundOrderId like "%"#{prefix}"%";
+    </select>
+
     <!--根据明细单号获取库存数量-->
     <select id="getCountByInboundOrderItemId" resultType="float" parameterType="String">
         select actualCount from t_pl_wasteinventory where inboundOrderItemId=#{inboundOrderItemId};
@@ -243,4 +257,46 @@
     <update id="updateCountByBatchingOrderId">
         update t_pl_batchingorder set  batchingNumber=#{1} where batchingOrderId=#{0};
     </update>
+
+    <!--更新次生出库单-->
+    <update id="updateSecOutBound" parameterType="OutboundOrder">
+        update t_pl_outboundorder set outboundNumber=#{outboundNumber},outboundDate=#{outboundDate} where outboundOrderId=#{outboundOrderId}
+    </update>
+
+    <!--配料单作废-->
+    <update id="cancelBatchingOrder" parameterType="BatchingOrder">
+        update t_pl_batchingorder set checkState='Invalid' where batchingOrderId=#{batchingOrderId}
+    </update>
+
+    <!--配料单作废后更新库存-->
+    <update id="updateInventoryNumber">
+        update t_pl_wasteinventory set actualCount=#{1} where inboundOrderItemId=#{0};
+    </update>
+
+    <!--领料单作废-->
+    <update id="cancelMaterialRequisitionOrder" parameterType="MaterialRequisitionOrder">
+        update t_pl_materialrequisitionorder set checkState='Invalid' where  materialRequisitionId=#{materialRequisitionId}
+    </update>
+
+    <!--领料单作废后更新配料单-->
+    <update id="updateBatchOrderNumber">
+        update t_pl_batchingorder set batchingNumber=batchingNumber+#{1} where batchingOrderId=#{0};
+    </update>
+
+    <!--出库单作废-->
+    <update id="cancelOutBoundOrder" parameterType="OutboundOrder">
+        update t_pl_outboundorder set  checkState='Invalid' where outboundOrderId=#{outboundOrderId};
+    </update>
+
+    <!--出库单作废后更新库存数量-->
+    <update id="updateInventoryNumberAfterInvalid">
+        update t_pl_wasteinventory set actualCount=#{1} where inboundOrderItemId=#{0};
+    </update>
+
+    <!--退库-->
+    <update id="retireOutBoundOrder" parameterType="OutboundOrder">
+        update t_pl_outboundorder set  checkState='Retired' where outboundOrderId=#{outboundOrderId};
+    </update>
+
+
 </mapper>

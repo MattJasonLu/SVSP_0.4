@@ -124,7 +124,7 @@ public class BatchingOrder {
     private String time;
 
 
-
+ private InboundOrderItem inboundOrderItem;
     /*记录状态*/
     private  RecordState recordState;
     /*危废库存*/
@@ -136,6 +136,26 @@ public class BatchingOrder {
 
     private LaboratoryTest laboratoryTest;
 
+    /**
+     * 入库单号
+     */
+    private String inboundOrderId;
+
+    public String getInboundOrderId() {
+        return inboundOrderId;
+    }
+
+    public void setInboundOrderId(String inboundOrderId) {
+        this.inboundOrderId = inboundOrderId;
+    }
+
+    public InboundOrderItem getInboundOrderItem() {
+        return inboundOrderItem;
+    }
+
+    public void setInboundOrderItem(InboundOrderItem inboundOrderItem) {
+        this.inboundOrderItem = inboundOrderItem;
+    }
 
     public float getInventoryNumber() {
         return inventoryNumber;
