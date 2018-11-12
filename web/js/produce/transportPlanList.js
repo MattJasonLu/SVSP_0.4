@@ -819,6 +819,13 @@ function adjustData(e) {
     }
 }
 
+/**
+ * 使页面
+ */
+function setEditHidden() {
+    if (!$("#viewBtnGrp").hasClass("hidden")) $("#viewBtnGrp").addClass("hidden");
+}
+
 function getSelectedInfo() {
     // 生产单位和接收单位的信息
     $.ajax({
