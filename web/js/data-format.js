@@ -6,6 +6,10 @@ function getNowDate() {
     var now = new Date();
     return now.format('yyyy-MM-dd');
 }
+function getNowDateType2() {
+    var now = new Date();
+    return now.format('yyyy/MM/dd');
+}
 function getFormatDate(date) {
     var date1 = new Date(date);
     return date1.format('yyyy-MM-dd');

@@ -703,98 +703,91 @@ function view2(item) {
  * 修改、编辑功能
  */
 function edit(item) {
-    btn = 'edit';
-    productionPlanId = getProductionPlanId(item);
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "getProductionPlan",                 // url
-        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: {
-            id: productionPlanId
-        },
-        dataType: "json",
-        success: function (result) {
-            if (result.data != undefined || result.status == "success" || result.data != null) {
-                var data = eval(result.data);
-                $("#modal-founder").val(data.founder);
-                $("#modal-transportRate").val(data.transportRate);
-                $("#modal-planQuantity").val(data.planQuantity);
-                if (data.auxiliaryConsumption != null) {
-                    $("#modal-calcareousLime").val(data.auxiliaryConsumption.calcareousLime);
-                    $("#modal-waterScaleInhibitor").val(data.auxiliaryConsumption.waterScaleInhibitor);
-                    $("#modal-commonActivatedCarbon").val(data.auxiliaryConsumption.commonActivatedCarbon);
-                    $("#modal-naclo").val(data.auxiliaryConsumption.naclo);
-                    $("#modal-activatedCarbon").val(data.auxiliaryConsumption.activatedCarbon);
-                    $("#modal-standardBox").val(data.auxiliaryConsumption.standardBox);
-                    $("#modal-activatedCarbonParticles").val(data.auxiliaryConsumption.activatedCarbonParticles);
-                    $("#modal-woodenPallets").val(data.auxiliaryConsumption.woodenPallets);
-                    $("#modal-lye").val(data.auxiliaryConsumption.lye);
-                    $("#modal-standardTray_1m").val(data.auxiliaryConsumption.standardTray_1m);
-                    $("#modal-causticSoda").val(data.auxiliaryConsumption.causticSoda);
-                    $("#modal-standardTray_1_2m").val(data.auxiliaryConsumption.standardTray_1_2m);
-                    $("#modal-urea").val(data.auxiliaryConsumption.urea);
-                    $("#modal-slagBag").val(data.auxiliaryConsumption.slagBag);
-                    $("#modal-hydrochloricAcid").val(data.auxiliaryConsumption.hydrochloricAcid);
-                    $("#modal-flyAshBag").val(data.auxiliaryConsumption.flyAshBag);
-                    $("#modal-nahco3").val(data.auxiliaryConsumption.nahco3);
-                    $("#modal-tonBox").val(data.auxiliaryConsumption.tonBox);
-                    $("#modal-flour").val(data.auxiliaryConsumption.flour);
-                    $("#modal-steam").val(data.auxiliaryConsumption.steam);
-                    $("#modal-defoamer").val(data.auxiliaryConsumption.defoamer);
-                    $("#modal-dieselOil").val(data.auxiliaryConsumption.dieselOil);
-                    $("#modal-flocculant").val(data.auxiliaryConsumption.flocculant);
-                    $("#modal-naturalGas").val(data.auxiliaryConsumption.naturalGas);
-                    $("#modal-softWaterReducingAgent").val(data.auxiliaryConsumption.softWaterReducingAgent);
-                    $("#modal-electricQuantity").val(data.auxiliaryConsumption.electricQuantity);
-                    $("#modal-softWaterScaleInhibitor").val(data.auxiliaryConsumption.softWaterScaleInhibitor);
-                    $("#modal-industrialWater").val(data.auxiliaryConsumption.industrialWater);
-                    $("#modal-pH").val(data.auxiliaryConsumption.pH);
-                    $("#modal-tapWaterQuantity").val(data.auxiliaryConsumption.tapWaterQuantity);
-                    $("#modal-waterReducingAgent").val(data.auxiliaryConsumption.waterReducingAgent);
+    var state = $(item).parent().prev().text();
+    if (state == '新建' || state == '已驳回') {
+        btn = 'edit';
+        productionPlanId = getProductionPlanId(item);
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getProductionPlan",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                id: productionPlanId
+            },
+            dataType: "json",
+            success: function (result) {
+                if (result.data != undefined || result.status == "success" || result.data != null) {
+                    var data = eval(result.data);
+                    $("#modal-founder").val(data.founder);
+                    $("#modal-transportRate").val(data.transportRate);
+                    $("#modal-planQuantity").val(data.planQuantity);
+                    if (data.auxiliaryConsumption != null) {
+                        $("#modal-calcareousLime").val(data.auxiliaryConsumption.calcareousLime);
+                        $("#modal-waterScaleInhibitor").val(data.auxiliaryConsumption.waterScaleInhibitor);
+                        $("#modal-commonActivatedCarbon").val(data.auxiliaryConsumption.commonActivatedCarbon);
+                        $("#modal-naclo").val(data.auxiliaryConsumption.naclo);
+                        $("#modal-activatedCarbon").val(data.auxiliaryConsumption.activatedCarbon);
+                        $("#modal-standardBox").val(data.auxiliaryConsumption.standardBox);
+                        $("#modal-activatedCarbonParticles").val(data.auxiliaryConsumption.activatedCarbonParticles);
+                        $("#modal-woodenPallets").val(data.auxiliaryConsumption.woodenPallets);
+                        $("#modal-lye").val(data.auxiliaryConsumption.lye);
+                        $("#modal-standardTray_1m").val(data.auxiliaryConsumption.standardTray_1m);
+                        $("#modal-causticSoda").val(data.auxiliaryConsumption.causticSoda);
+                        $("#modal-standardTray_1_2m").val(data.auxiliaryConsumption.standardTray_1_2m);
+                        $("#modal-urea").val(data.auxiliaryConsumption.urea);
+                        $("#modal-slagBag").val(data.auxiliaryConsumption.slagBag);
+                        $("#modal-hydrochloricAcid").val(data.auxiliaryConsumption.hydrochloricAcid);
+                        $("#modal-flyAshBag").val(data.auxiliaryConsumption.flyAshBag);
+                        $("#modal-nahco3").val(data.auxiliaryConsumption.nahco3);
+                        $("#modal-tonBox").val(data.auxiliaryConsumption.tonBox);
+                        $("#modal-flour").val(data.auxiliaryConsumption.flour);
+                        $("#modal-steam").val(data.auxiliaryConsumption.steam);
+                        $("#modal-defoamer").val(data.auxiliaryConsumption.defoamer);
+                        $("#modal-dieselOil").val(data.auxiliaryConsumption.dieselOil);
+                        $("#modal-flocculant").val(data.auxiliaryConsumption.flocculant);
+                        $("#modal-naturalGas").val(data.auxiliaryConsumption.naturalGas);
+                        $("#modal-softWaterReducingAgent").val(data.auxiliaryConsumption.softWaterReducingAgent);
+                        $("#modal-electricQuantity").val(data.auxiliaryConsumption.electricQuantity);
+                        $("#modal-softWaterScaleInhibitor").val(data.auxiliaryConsumption.softWaterScaleInhibitor);
+                        $("#modal-industrialWater").val(data.auxiliaryConsumption.industrialWater);
+                        $("#modal-pH").val(data.auxiliaryConsumption.pH);
+                        $("#modal-tapWaterQuantity").val(data.auxiliaryConsumption.tapWaterQuantity);
+                        $("#modal-waterReducingAgent").val(data.auxiliaryConsumption.waterReducingAgent);
+                    }
+                    $("#addModal").modal('show');
+                } else {
+                    alert(result.message);
                 }
-                $("#addModal").modal('show');
-            } else {
-                alert(result.message);
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常!");
             }
-        },
-        error: function (result) {
-            console.log(result);
-            alert("服务器异常!");
-        }
-    });
+        });
+    }else if(state == "待审批" || state == "审批中"){
+        alert("单据审批中，不可修改！");
+    } else if(state == "审批通过"){
+        alert("单据已审批，不可修改！");
+    }else if(state == "已作废"){
+        alert("单据已作废，不可修改！");
+    }else{
+        alert("单据不可修改！");
+    }
 }
 
 /**
  * 提交功能
  */
 function submit(item) {
-    productionPlanId = getProductionPlanId(item);
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "getProductionPlan",                 // url
-        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: {
-            id: productionPlanId
-        },
-        dataType: "json",
-        success: function (result) {
-            if (result.data != undefined || result.status == "success" || result.data != null) {
-                var data = eval(result.data);
-                if (data.state.name != '待审批') alert("请确认后再进行提交操作！");
-                else {
-                    if (confirm("确定提交？")) {
-                        submit1(productionPlanId);
-                    }
-                }
-            } else {
-                alert(result.message);
-            }
-        },
-        error: function (result) {
-            console.log(result);
-            alert("服务器异常!");
-        }
-    });
+    var state = $(item).parent().prev().text();
+    if (state == '待审批') {
+        productionPlanId = getProductionPlanId(item);
+        submit1(productionPlanId);
+    } else if (state == '新建' || state == '已驳回') {
+        alert("请确认后再进行提交操作！");
+    } else {
+        alert("单据不可提交！");
+    }
 }
 
 function submit1(id) {
@@ -825,30 +818,36 @@ function submit1(id) {
  * 审批
  */
 function examination(item) {
+    var state = $(item).parent().prev().text();
     productionPlanId = getProductionPlanId(item);
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "getProductionPlan",                 // url
-        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: {
-            id: productionPlanId
-        },
-        dataType: "json",
-        success: function (result) {
-            if (result.data != undefined || result.status == "success" || result.data != null) {
-                var data = eval(result.data);
-                console.log(data.state);
-                if (data.state.name != '审批中') alert("请提交后再进行审批操作！");
-                else $('#examinationModal').modal('show');//手动触发模态框弹出
-            } else {
-                alert(result.message);
+    if (state == '审批中' || state == "已驳回" || state == "审批通过" ) {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getProductionPlan",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                id: productionPlanId
+            },
+            dataType: "json",
+            success: function (result) {
+                if (result.data != undefined || result.status == "success" || result.data != null) {
+                    var data = eval(result.data);
+                    $("#advice").val(data.advice);
+                    $('#examinationModal').modal('show');//手动触发模态框弹出
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常!");
             }
-        },
-        error: function (result) {
-            console.log(result);
-            alert("服务器异常!");
-        }
-    });
+        });
+    } else if (state == "新建" || state == "待审批") {
+        alert("请提交后再进行审批操作！");
+    } else {
+        alert("单据不可审批！");
+    }
 }
 
 function approval() {
@@ -938,29 +937,38 @@ function reject1() {
  * 作废功能
  */
 function invalid(item) {
-    if (confirm("确定作废？")) {
-        var id = getProductionPlanId(item);
-        $.ajax({
-            type: "POST",
-            url: "invalidProductionPlan",
-            async: false,
-            data: {
-                id: id
-            },
-            dataType: "json",
-            success: function (result) {
-                if (result.status == "success") {
-                    alert("作废成功！");
-                    window.location.reload();
-                } else {
-                    alert(result.message);
+    var state = $(item).parent().prev().text();
+    if (state == "新建" || state == "已驳回") {
+        if (confirm("确定作废？")) {
+            var id = getProductionPlanId(item);
+            $.ajax({
+                type: "POST",
+                url: "invalidProductionPlan",
+                async: false,
+                data: {
+                    id: id
+                },
+                dataType: "json",
+                success: function (result) {
+                    if (result.status == "success") {
+                        alert("作废成功！");
+                        window.location.reload();
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                    alert("服务器异常!");
                 }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常!");
-            }
-        });
+            });
+        }
+    } else if(state == "待审批" || state == "审批中"){
+        alert("单据审批中，不可作废！");
+    } else if(state == "审批通过"){
+        alert("单据已审批，不可作废！");
+    }else {
+        alert("单据不可作废！");
     }
 }
 
@@ -969,29 +977,38 @@ function invalid(item) {
  * @param item
  */
 function delete1(item) {
-    if (confirm("确定删除？")) {
-        var id = getProductionPlanId(item);
-        $.ajax({
-            type: "POST",
-            url: "deleteProductionPlan",
-            async: false,
-            data: {
-                id: id
-            },
-            dataType: "json",
-            success: function (result) {
-                if (result.status == "success") {
-                    alert("删除成功！");
-                    window.location.reload();
-                } else {
-                    alert(result.message);
+    var state = $(item).parent().prev().text();
+    if (state == "新建" || state == "已驳回") {
+        if (confirm("删除后不可恢复，确认删除？")) {
+            var id = getProductionPlanId(item);
+            $.ajax({
+                type: "POST",
+                url: "deleteProductionPlan",
+                async: false,
+                data: {
+                    id: id
+                },
+                dataType: "json",
+                success: function (result) {
+                    if (result.status == "success") {
+                        alert("删除成功！");
+                        window.location.reload();
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                    alert("服务器异常!");
                 }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常!");
-            }
-        });
+            });
+        }
+    } else if(state == "待审批" || state == "审批中"){
+        alert("单据审批中，不可删除！");
+    } else if(state == "审批通过"){
+        alert("单据已审批，不可删除！");
+    }else {
+        alert("单据不可删除！");
     }
 }
 
@@ -1000,30 +1017,36 @@ function delete1(item) {
  * @param item
  */
 function confirm1(item) {
-
-    if (confirm("是否确认？")) {
-        var id = getProductionPlanId(item);
-        $.ajax({
-            type: "POST",
-            url: "confirmProductionPlan",
-            async: false,
-            data: {
-                id: id
-            },
-            dataType: "json",
-            success: function (result) {
-                if (result.status == "success") {
-                    alert("确认成功！");
-                    window.location.reload();
-                } else {
-                    alert(result.message);
+    var state = $(item).parent().prev().text();
+    if(state == '新建' || state == '已驳回') {
+        if (confirm("是否确认？")) {
+            var id = getProductionPlanId(item);
+            $.ajax({
+                type: "POST",
+                url: "confirmProductionPlan",
+                async: false,
+                data: {
+                    id: id
+                },
+                dataType: "json",
+                success: function (result) {
+                    if (result.status == "success") {
+                        alert("确认成功！");
+                        window.location.reload();
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                    alert("服务器异常!");
                 }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常!");
-            }
-        });
+            });
+        }
+    }else if(state == "待审批" || state == "审批中" || state == "审批通过"){
+        alert("单据已确认！");
+    } else if(state == "已作废"){
+        alert("单据已作废，不可确认！");
     }
 }
 
@@ -1035,8 +1058,8 @@ function addModal() {
     var data = getCurrentUserData();
     console.log("data:");
     console.log(data);
-    if(data != null )
-       $("#modal-founder").val(data.username);  // 将创建人设置为当前登陆用户
+    if (data != null)
+        $("#modal-founder").val(data.username);  // 将创建人设置为当前登陆用户
     // $.ajax({
     //     type: "POST",                       // 方法类型
     //     url: "getCurrentUserInfo",              // url
@@ -1167,8 +1190,5 @@ function save() {
                 alert("服务器异常!");
             }
         });
-
     }
-
-
 }
