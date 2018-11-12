@@ -32,11 +32,11 @@ public class TransportPlanItem {
     /**
      * 转移联单编号
      */
-    private String transportDraftId;
-    /**
-     * 危废信息(不用)
-     */
-    private Wastes wastes;
+    private String transferDraftId;
+//    /**
+//     * 危废信息(不用)
+//     */
+//    private Wastes wastes;
     /**
      * 危废名称
      */
@@ -130,20 +130,12 @@ public class TransportPlanItem {
         this.approachTime = approachTime;
     }
 
-    public Wastes getWastes() {
-        return wastes;
+    public String getTransferDraftId() {
+        return transferDraftId;
     }
 
-    public void setWastes(Wastes wastes) {
-        this.wastes = wastes;
-    }
-
-    public String getTransportDraftId() {
-        return transportDraftId;
-    }
-
-    public void setTransportDraftId(String transportDraftId) {
-        this.transportDraftId = transportDraftId;
+    public void setTransferDraftId(String transferDraftId) {
+        this.transferDraftId = transferDraftId;
     }
 
     public String getWastesName() {

@@ -676,13 +676,12 @@ function adjustData(e) {
                 var transportPlanItem = {};
                 transportPlanItem.id = $("td[id='transportPlanItemList[" + $i + "].id2']").text();
                 transportPlanItem.approachTime = $("input[id='transportPlanItemList[" + $i + "].approachTime2']").val();
-                var wastes = {};
-                wastes.wasteAmount = $("input[id='transportPlanItemList[" + $i + "].wastes.wasteAmount2']").val();
-                wastes.unit = $("input[id='transportPlanItemList[" + $i + "].wastes.unit2']").val();
-                wastes.processWay = $("select[id='transportPlanItemList[" + $i + "].wastes.processWay2']").val();
-                transportPlanItem.wastes = wastes;
+                transportPlanItem.wastesAmount = $("input[id='transportPlanItemList[" + $i + "].wastes.wasteAmount2']").val();
+                transportPlanItem.unit = $("input[id='transportPlanItemList[" + $i + "].wastes.unit2']").val();
+                transportPlanItem.processWay = $("select[id='transportPlanItemList[" + $i + "].wastes.processWay2']").val();
                 data.transportPlanItemList.push(transportPlanItem);
             }
+            console.log(data);
 
             $.ajax({
                 type: "POST",
@@ -742,52 +741,52 @@ function adjustData(e) {
                         $(this).html(getDateStr(obj.approachTime));
                         break;
                     case (5):
-                        $(this).html(obj.wastes.name);
+                        $(this).html(obj.wastesName);
                         break;
                     case (6):
-                        $(this).html(obj.wastes.wastesId);
+                        $(this).html(obj.wastesCode);
                         break;
                     case (7):
-                        $(this).html(obj.wastes.wasteAmount);
+                        $(this).html(obj.wastesAmount);
                         break;
                     case (8):
-                        $(this).html(obj.wastes.unit);
+                        $(this).html(obj.unit);
                         break;
                     case (9):
-                        if (obj.wastes.formType != null)
-                            $(this).html(obj.wastes.formType.name);
+                        if (obj.formType != null)
+                            $(this).html(obj.formType.name);
                         break;
                     case (10):
-                        if (obj.wastes.packageType != null)
-                            $(this).html(obj.wastes.packageType.name);
+                        if (obj.packageType != null)
+                            $(this).html(obj.packageType.name);
                         break;
                     case (11):
-                        $(this).html(obj.wastes.calorific);
+                        $(this).html(obj.heat);
                         break;
                     case (12):
-                        $(this).html(obj.wastes.ph);
+                        $(this).html(obj.ph);
                         break;
                     case (13):
-                        $(this).html(obj.wastes.ashPercentage);
+                        $(this).html(obj.ash);
                         break;
                     case (14):
-                        $(this).html(obj.wastes.wetPercentage);
+                        $(this).html(obj.waterContent);
                         break;
                     case (15):
-                        $(this).html(obj.wastes.chlorinePercentage);
+                        $(this).html(obj.chlorineContent);
                         break;
                     case (16):
-                        $(this).html(obj.wastes.sulfurPercentage);
+                        $(this).html(obj.sulfurContent);
                         break;
                     case (17):
-                        $(this).html(obj.wastes.phosphorusPercentage);
+                        $(this).html(obj.phosphorusContent);
                         break;
                     case (18):
-                        $(this).html(obj.wastes.fluorinePercentage);
+                        $(this).html(obj.fluorineContent);
                         break;
                     case (19):
-                        if (obj.wastes.processWay != null)
-                            $(this).html(obj.wastes.processWay.name);
+                        if (obj.processWay != null)
+                            $(this).html(obj.processWay.name);
                         break;
                     case (20):
                         $(this).html(obj.id);
@@ -1017,25 +1016,39 @@ function addData() {
             var produceCompany = {};
             var wastes = {};
             produceCompany.companyName = $("td[id='transportPlanItemList[" + $i + "].produceCompany.companyName']").text();
-            wastes.name = $("td[id='transportPlanItemList[" + $i + "].wastes.name']").text();
-            wastes.wastesId = $("td[id='transportPlanItemList[" + $i + "].wastes.wastesId']").text();
-            wastes.wasteAmount = $("input[id='transportPlanItemList[" + $i + "].wastes.wasteAmount']").val();
-            wastes.unit = $("input[id='transportPlanItemList[" + $i + "].wastes.unit']").val();
-            wastes.formType = getFormTypeFromStr($("td[id='transportPlanItemList[" + $i + "].wastes.formType']").text());
-            wastes.packageType = getPackageTypeFromStr($("td[id='transportPlanItemList[" + $i + "].wastes.packageType']").text());
-            wastes.calorific = $("td[id='transportPlanItemList[" + $i + "].wastes.calorific']").text();
-            wastes.ph = $("td[id='transportPlanItemList[" + $i + "].wastes.ph']").text();
-            wastes.ashPercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.ashPercentage']").text();
-            wastes.wetPercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.wetPercentage']").text();
-            wastes.chlorinePercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.chlorinePercentage']").text();
-            wastes.sulfurPercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.sulfurPercentage']").text();
-            wastes.phosphorusPercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.phosphorusPercentage']").text();
-            wastes.fluorinePercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.fluorinePercentage']").text();
-            wastes.processWay = parseInt($("select[id='transportPlanItemList[" + $i + "].wastes.processWay']").val())-1;
-            wastes.id = $("td[id='transportPlanItemList[" + $i + "].wastes.id']").text();
+            // wastes.name = $("td[id='transportPlanItemList[" + $i + "].wastes.name']").text();
+            // wastes.wastesId = $("td[id='transportPlanItemList[" + $i + "].wastes.wastesId']").text();
+            // wastes.wasteAmount = $("input[id='transportPlanItemList[" + $i + "].wastes.wasteAmount']").val();
+            // wastes.unit = $("input[id='transportPlanItemList[" + $i + "].wastes.unit']").val();
+            // wastes.formType = getFormTypeFromStr($("td[id='transportPlanItemList[" + $i + "].wastes.formType']").text());
+            // wastes.packageType = getPackageTypeFromStr($("td[id='transportPlanItemList[" + $i + "].wastes.packageType']").text());
+            // wastes.calorific = $("td[id='transportPlanItemList[" + $i + "].wastes.calorific']").text();
+            // wastes.ph = $("td[id='transportPlanItemList[" + $i + "].wastes.ph']").text();
+            // wastes.ashPercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.ashPercentage']").text();
+            // wastes.wetPercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.wetPercentage']").text();
+            // wastes.chlorinePercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.chlorinePercentage']").text();
+            // wastes.sulfurPercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.sulfurPercentage']").text();
+            // wastes.phosphorusPercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.phosphorusPercentage']").text();
+            // wastes.fluorinePercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.fluorinePercentage']").text();
+            // wastes.processWay = parseInt($("select[id='transportPlanItemList[" + $i + "].wastes.processWay']").val())-1;
+            // wastes.id = $("td[id='transportPlanItemList[" + $i + "].wastes.id']").text();
             transportPlanItem.handleCategory = getHandleCategoryFromStr($("td[id='transportPlanItemList[" + $i + "].handleCategory']").text());
             transportPlanItem.approachTime = $("input[id='transportPlanItemList[" + $i + "].approachTime']").val();
-            transportPlanItem.wastes = wastes;
+            transportPlanItem.wastesName = $("td[id='transportPlanItemList[" + $i + "].wastes.name']").text();
+            transportPlanItem.wastesCode = $("td[id='transportPlanItemList[" + $i + "].wastes.wastesId']").text();
+            transportPlanItem.wastesAmount = $("input[id='transportPlanItemList[" + $i + "].wastes.wasteAmount']").val();
+            transportPlanItem.unit = $("input[id='transportPlanItemList[" + $i + "].wastes.unit']").val();
+            transportPlanItem.formType = getFormTypeFromStr($("td[id='transportPlanItemList[" + $i + "].wastes.formType']").text());
+            transportPlanItem.packageType = getPackageTypeFromStr($("td[id='transportPlanItemList[" + $i + "].wastes.packageType']").text());
+            transportPlanItem.heat = $("td[id='transportPlanItemList[" + $i + "].wastes.calorific']").text();
+            transportPlanItem.ph = $("td[id='transportPlanItemList[" + $i + "].wastes.ph']").text();
+            transportPlanItem.ash = $("td[id='transportPlanItemList[" + $i + "].wastes.ashPercentage']").text();
+            transportPlanItem.waterContent = $("td[id='transportPlanItemList[" + $i + "].wastes.wetPercentage']").text();
+            transportPlanItem.chlorineContent = $("td[id='transportPlanItemList[" + $i + "].wastes.chlorinePercentage']").text();
+            transportPlanItem.sulfurContent = $("td[id='transportPlanItemList[" + $i + "].wastes.sulfurPercentage']").text();
+            transportPlanItem.phosphorusContent = $("td[id='transportPlanItemList[" + $i + "].wastes.phosphorusPercentage']").text();
+            transportPlanItem.fluorineContent = $("td[id='transportPlanItemList[" + $i + "].wastes.fluorinePercentage']").text();
+            transportPlanItem.processWay = parseInt($("select[id='transportPlanItemList[" + $i + "].wastes.processWay']").val())-1;
             transportPlanItem.produceCompany = produceCompany;
             data.transportPlanItemList.push(transportPlanItem);
         }
@@ -1326,8 +1339,8 @@ function setWastesData() {
                 // 根据索引为部分td赋值
                 switch (inner_index) {
                     case (1):
-                        if (obj.client != null)
-                            $(this).html(obj.client.companyName);
+                        if (obj.produceCompany != null)
+                            $(this).html(obj.produceCompany.companyName);
                         break;
                     case (2):
                         $(this).html(obj.wastesName);
@@ -1645,10 +1658,10 @@ function viewData(e) {
         // 隐藏无数据的tr
         tr.hide();
         $("#id").val(result.id);
-        $("#author").val(result.author);
-        $("#departmentDirector").val(result.departmentDirector);
-        $("#group").val(result.group);
-        $("#productionDirector").val(result.productionDirector);
+        $("#author").text(result.author);
+        $("#departmentDirector").text(result.departmentDirector);
+        $("#group").text(result.group);
+        $("#productionDirector").text(result.productionDirector);
 
         /**
          * 改变id

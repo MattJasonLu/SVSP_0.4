@@ -373,27 +373,27 @@
                             </thead>
                             <tbody>
                             <tr id="cloneTrView">
-                                <td class="text-center">1</td>
-                                <td class="text-center">0001</td>
-                                <td class="text-center">测试产废单位01</td>
-                                <td class="text-center">污泥</td>
-                                <td class="text-center" id="transportPlanItemList[0].approachTime2">2018-08-07</td>
-                                <td class="text-left">废液</td>
-                                <td class="text-center">QW10001</td>
-                                <td class="text-right" id="transportPlanItemList[0].wastes.wasteAmount2">100</td>
-                                <td class="text-right" id="transportPlanItemList[0].wastes.unit2">吨</td>
-                                <td class="text-right">液体</td>
-                                <td class="text-right">标准箱</td>
-                                <td class="text-right">20</td>
-                                <td class="text-right">10</td>
-                                <td class="text-right">10</td>
-                                <td class="text-right">20</td>
-                                <td class="text-right">10</td>
-                                <td class="text-right">20</td>
-                                <td class="text-right">10</td>
-                                <td class="text-right">10</td>
-                                <td class="text-right" id="transportPlanItemList[0].wastes.processWay2">焚烧</td>
-                                <td class="text-center hidden" id="transportPlanItemList[0].id2">01</td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center" id="transportPlanItemList[0].approachTime2"></td>
+                                <td class="text-left"></td>
+                                <td class="text-center"></td>
+                                <td class="text-right" id="transportPlanItemList[0].wastes.wasteAmount2"></td>
+                                <td class="text-right" id="transportPlanItemList[0].wastes.unit2"></td>
+                                <td class="text-right"></td>
+                                <td class="text-right"></td>
+                                <td class="text-right"></td>
+                                <td class="text-right"></td>
+                                <td class="text-right"></td>
+                                <td class="text-right"></td>
+                                <td class="text-right"></td>
+                                <td class="text-right"></td>
+                                <td class="text-right"></td>
+                                <td class="text-right"></td>
+                                <td class="text-right" id="transportPlanItemList[0].wastes.processWay2"></td>
+                                <td class="text-center hidden" id="transportPlanItemList[0].id2"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -403,7 +403,7 @@
                                 <div class="form-group">
                                     <label for="author" class="col-sm-4 control-label">制表人</label>
                                     <div class="col-xs-7">
-                                        <input type="text" class="form-control focus" id="author" name="author" placeholder="">
+                                        <p id="author" name="author"></p>
                                     </div>
                                 </div>
                             </div>
@@ -411,7 +411,7 @@
                                 <div class="form-group">
                                     <label for="departmentDirector" class="col-sm-4 control-label">部门主管</label>
                                     <div class="col-xs-7">
-                                        <input type="text" class="form-control focus" id="departmentDirector" name="departmentDirector" placeholder="">
+                                        <p id="departmentDirector" name="departmentDirector"></p>
                                     </div>
                                 </div>
                             </div>
@@ -419,15 +419,15 @@
                                 <div class="form-group">
                                     <label for="group" class="col-sm-4 control-label">组别</label>
                                     <div class="col-xs-7">
-                                        <input type="text" class="form-control focus" id="group" name="group" placeholder="">
+                                        <p id="group" name="group"></p>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-horizontal col-md-3">
                                 <div class="form-group">
-                                    <label for="productionDirector" class="col-sm-4 control-label">生产负责人</label>
-                                    <div class="col-xs-7">
-                                        <input type="text" class="form-control focus" id="productionDirector" name="productionDirector" placeholder="">
+                                    <label for="productionDirector" class="col-sm-6 control-label">生产负责人</label>
+                                    <div class="col-xs-6">
+                                        <p id="productionDirector" name="productionDirector"></p>
                                     </div>
                                 </div>
                             </div>
@@ -621,16 +621,11 @@
                             <td class="text-center" id="transportPlanItemList[0].id">0</td>
                             <td class="text-center" id="transportPlanItemList[0].produceCompany.companyName">测试产废单位</td>
                             <td class="text-center" id="transportPlanItemList[0].handleCategory">污泥</td>
-                            <td class="text-center">
-                                <div class="input-group date form_datetime">
-                                    <input class="form-control focus" type="text" value="" id="transportPlanItemList[0].approachTime" readonly>
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
-                                </div>
-                            </td>
+                            <td class="text-center" style="width: 60%;"><input class="form-control" type="date" id="transportPlanItemList[0].approachTime" style="width: 60%;"></td>
                             <td class="text-left" id="transportPlanItemList[0].wastes.name">废液</td>
                             <td class="text-center" id="transportPlanItemList[0].wastes.wastesId">823-898-09</td>
-                            <td class="text-right"><input type="number" size="3" id="transportPlanItemList[0].wastes.wasteAmount" style="width: 50px;" value="1"></td>
-                            <td class="text-right"><input type="text" size="3" id="transportPlanItemList[0].wastes.unit" value="T"></td>
+                            <td class="text-right"><input class="form-control" type="number" size="3" id="transportPlanItemList[0].wastes.wasteAmount" style="width: 50px;" value="1"></td>
+                            <td class="text-right"><input class="form-control" type="text" size="3" id="transportPlanItemList[0].wastes.unit" value="T"></td>
                             <td class="text-right" id="transportPlanItemList[0].wastes.formType">液体</td>
                             <td class="text-right" id="transportPlanItemList[0].wastes.packageType">标准箱</td>
                             <td class="text-right" id="transportPlanItemList[0].wastes.calorific">20</td>
@@ -642,9 +637,10 @@
                             <td class="text-right" id="transportPlanItemList[0].wastes.phosphorusPercentage">10</td>
                             <td class="text-right" id="transportPlanItemList[0].wastes.fluorinePercentage">10</td>
                             <td class="text-right">
-                                <select id="transportPlanItemList[0].wastes.processWay">
+                                <select id="transportPlanItemList[0].wastes.processWay" class="form-control">
                                     <option value="1">焚烧</option>
                                     <option value="2">填埋</option>
+                                    <option value="3">清洗</option>
                                 </select>
                             </td>
                             <td class="text-right hidden" id="transportPlanItemList[0].wastes.id">01</td>
