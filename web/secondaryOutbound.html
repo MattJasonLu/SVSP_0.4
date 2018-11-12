@@ -128,50 +128,38 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <label for="search-storageQuantity" class="col-sm-4 control-label">出库数量</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-storageQuantity" name="search-storageQuantity" placeholder="" onkeyup="enterSearch()">
-                            </div>
-                        </div>
-
+                        <p style="display: inline">出库数量：
+                            <input style="display: inline;width: 65%" type="text" class="form-control" id="search-storageQuantity" name="search-storageQuantity" placeholder="" onkeyup="enterSearch()">
+                        </p>
                     </div>
                     <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <label for="search-materialForm" class="col-sm-4 control-label">处置方式</label>
-                            <div class="col-xs-7">
-                                <select class="form-control" name="search-materialForm" id="search-materialForm" onchange="searchSecOutbound()">
-                                    <option value="0"></option>
-                                </select>
-                            </div>
-                        </div>
+                        <p style="display: inline">处置方式：
+                            <select style="display: inline;width: 65%" title="" class="form-control" name="search-materialForm" id="search-materialForm" onchange="searchSecOutbound()">
+                                <option value="0"></option>
+                            </select>
+                        </p>
                         <!--<div class="form-group">-->
-                            <!--<label for="search-packingType" class="col-sm-4 control-label">包装类型</label>-->
-                            <!--<div class="col-xs-7">-->
-                                <!--<input type="text" class="form-control" id="search-packingType" name="search-packingType" placeholder="">-->
-                            <!--</div>-->
+                        <!--<label for="search-packingType" class="col-sm-4 control-label">包装类型</label>-->
+                        <!--<div class="col-xs-7">-->
+                        <!--<input type="text" class="form-control" id="search-packingType" name="search-packingType" placeholder="">-->
+                        <!--</div>-->
                         <!--</div>-->
                     </div>
-                    <div class="form-horizontal col-md-3">
-                        <!--<div class="form-group">-->
-                            <!--<label for="search-materialForm" class="col-sm-4 control-label">业务员</label>-->
-                            <!--<div class="col-xs-7">-->
-                                <!--<input class="form-control" name="search-salesman" id="search-salesman" title="" onkeyup="enterSearch()">-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    </div>
-                </div>
-                <div class="row">
                     <div class="form-horizontal col-md-6">
-                        <div class="form-group" style="width: 450px">
-                            <label class="col-sm-3 control-label" style="margin-left: -30px">出库日期 </label>
-                            <div class="input-group">
-                                <input type="date" class="input-sm form-control" id="search-storageDate" title="" onkeydown="" onkeyup="enterSearch()"/>
-                                <span class="input-group-addon">-</span>
-                                <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown="" onkeyup="enterSearch()"/>
-                            </div>
-                        </div>
+                        <p style="display: inline;">出库日期：
+                            <input style="display: inline;width: 20%"  type="date" class="input-sm form-control" id="search-storageDate" title="" onkeydown="" onkeyup="enterSearch()"/>
+                            <span  style="display: inline" class="input-group-addon">-</span>
+                            <input style="display: inline;width: 20%"  type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown="" onkeyup="enterSearch()"/>
+                        </p>
                     </div>
+                    <!--<div class="form-horizontal col-md-3">-->
+                    <!--&lt;!&ndash;<div class="form-group">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<label for="search-materialForm" class="col-sm-4 control-label">业务员</label>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="col-xs-7">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<input class="form-control" name="search-salesman" id="search-salesman" title="" onkeyup="enterSearch()">&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--</div>-->
                 </div>
             </div>
         </div>
