@@ -398,11 +398,11 @@
         select count(*) from t_pr_sampleinformation where id like "%"#{id}"%";
     </select>
 
-    <update id="confirmCheck">
+    <update id="confirmCheck" parameterType="SampleInformation">
         UPDATE t_pr_sampleinformation
         SET
         applyState = 'Received',laboratorySigner=#{laboratorySigner},nowTime = NOW(),samplingDate = NOW()
-        WHERE id = #{sampleId};
+        WHERE id = #{id};
     </update>
 
     <update id="update" parameterType="SampleInformation">
@@ -439,7 +439,9 @@
     </update>
 
     <update id="updateSampleInfo" parameterType="String">
-        update t_pr_sampleinformation set applyState = 'Invalid' where id = #{sampleId}
+        update t_pr_sampleinformation set applyState = 'Invalid',id=
+
+        where id = #{sampleId}
     </update>
 
     <update id="rejectSampleInfoById" >

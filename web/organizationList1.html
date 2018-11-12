@@ -211,7 +211,7 @@
         // if(organization1 != null){
         //     $.ajax({
         //         type: "POST",                       // 方法类型
-        //         url: "updateOrganization",                  // url
+        //         url: "addOrganization",                  // url
         //         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         //         data: JSON.stringify(organization1),
         //         dataType: "json",
@@ -238,12 +238,12 @@
         alert("功能调整中");
         // $("#name").val(organization1.name);
         // $("#editModal").modal('show');
-        //  alert("功能调整中");
+        // // alert("功能调整中");
         //    var oldName = $(item).prev().text();  // 获取旧名称
         //    var s = $(item).prev() + "";
         //    s = s.replace(/<span>(.*?)<\/span>/g,"<input type='text' value='$1' />");
         //    $(item).append(s);
-
+        //
         // organization1.name = $(item).prev().val(); // 设置新名称
         // if(organization1 != null){
         //     $.ajax({
@@ -299,7 +299,7 @@
      */
     function removeOrganization(item) {
         console.log(organization1);
-        if (comfirm("确认删除？"))
+        if (confirm("确认删除？"))
             if (organization1 != null) {
                 $.ajax({
                     type: "POST",                       // 方法类型

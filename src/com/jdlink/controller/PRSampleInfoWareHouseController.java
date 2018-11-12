@@ -1,10 +1,13 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Produce.ReceiveSampleAnalysis;
+import com.jdlink.domain.Produce.SampleInfoAnalysis;
 import com.jdlink.domain.Produce.SampleInformation;
 import com.jdlink.domain.Produce.SampleInformationItem;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.SampleInfoWareHouseService;
+import com.jdlink.service.produce.SampleInfoAnalysisService;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
@@ -28,7 +31,8 @@ public class PRSampleInfoWareHouseController {
     SampleInfoWareHouseService sampleInfoWareHouseService;
     @Autowired
     ClientService clientService;
-
+    @Autowired
+    SampleInfoAnalysisService sampleInfoAnalysisService;
 
     /**
      * 增加样品登记预约单
@@ -224,6 +228,29 @@ public class PRSampleInfoWareHouseController {
         JSONObject res = new JSONObject();
         try{
             sampleInfoWareHouseService.confirmCheck(sampleId,laboratorySigner);
+            // 创建化验单
+            SampleInformation sampleInformation = sampleInfoWareHouseService.getById(sampleId);
+
+            if(sampleInformation.getWastesList() != null && sampleInformation.getWastesList().size() > 0){
+                for(Wastes wastes :sampleInformation.getWastesList()){
+                    SampleInfoAnalysis sampleAnalysis = new SampleInfoAnalysis();
+                    sampleAnalysis.setId(wastes.getId());
+                    sampleAnalysis.setSampleId(sampleInformation.getId());
+                    sampleAnalysis.setSignDate(new Date());   // 签收日期
+                    sampleAnalysis.setWastesName(wastes.getName());
+                    sampleAnalysis.setWastesCode(wastes.getCode());
+                    sampleAnalysis.setTransferDraftId(wastes.getTransferId());
+                    Client produceCompany = new Client();
+                    produceCompany.setClientId(sampleInformation.getCompanyCode());
+                    produceCompany.setCompanyName(sampleInformation.getCompanyName());
+                    sampleAnalysis.setProduceCompany(produceCompany);
+                    sampleAnalysis.setFormType(wastes.getFormType());
+                    sampleAnalysis.setSender(sampleInformation.getSendingPerson());
+                    sampleAnalysis.setSigner(sampleInformation.getLaboratorySigner());
+                    sampleAnalysis.setCheckState(CheckState.NewBuild);
+                    sampleInfoAnalysisService.add(sampleAnalysis);  // 添加新的化验结果单
+                }
+            }
             res.put("status","success");
             res.put("message","确认登记成功！");
         }catch (Exception e){
