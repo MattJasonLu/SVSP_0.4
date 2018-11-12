@@ -642,6 +642,9 @@ function setOutBoundList(result) {
                 }
             });
             // 把克隆好的tr追加到原来的tr前面
+        if(clonedTr.children('td').eq(9).html()=="已作废"||clonedTr.children('td').eq(9).html()=="已退库"){
+            $(clonedTr).hide();
+        }
             clonedTr.removeAttr("id");
             clonedTr.insertBefore(tr);
 
@@ -746,13 +749,14 @@ function viewOutBound(item) {
 }
 
 //属性调整
-function adjustAttr() {
+function adjustAttr(item) {
 
+    var outboundOrderId=$(item).parent().parent().children('td').eq(1).html();
     //加载进料方式的下拉框
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getHandelCategoryList",                  // url
-        data:{'outboundOrderId':$("#outboundOrderId").val()},
+        data:{'outboundOrderId':outboundOrderId},
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         //contentType: "application/json; charset=utf-8",
@@ -880,7 +884,7 @@ function view1(item){
                     $('#wastesId').text(result.data.wasteCategory);
 
                 // //重量
-                $('#wastesAmount').text(result.data.outboundNumber);
+                $('#wastesAmount').text(parseFloat(result.data.outboundNumber).toFixed(2));
                 // if(result.data[0].quotationItem!=null){
                 //     if(result.data[0].quotationItem.formType!=null){
                 //         //物质形态
@@ -954,16 +958,96 @@ function view1(item){
 
 //作废
 function cancel(item) {
+
+    $('#Invalid').show();
+    $('#Retire').hide();
+
+
+    var outboundOrderId=$(item).parent().parent().children('td').eq(1).html();
+
+    $('#appointModal3').modal('show')
+
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getByOutBoundOrderId",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:{'outboundOrderId':outboundOrderId},
+        dataType: "json",
+        //contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                var obj=eval(result.data)
+                $('#inboundOrderId').html(obj.inboundOrderId);
+                $('#outboundOrderId1').html(obj.outboundOrderId);
+                $('#inventoryNumber').html(obj.inventoryNumber.toFixed(2));
+                $('#cancelNumber').html(obj.outboundNumber.toFixed(2));
+                $('#inventoryNumber1').html((parseFloat(obj.inventoryNumber.toFixed(2))+parseFloat(obj.outboundNumber.toFixed(2))).toFixed(2));
+                $('#inboundOrderItemId').html(obj.inboundOrderItemId);
+
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+
+    }) ;
+
+
+
+
+    // if(confirm("确定作废?")){
+    //     //点击确定后操作
+    //     var outboundOrderId=$(item).parent().parent().children('td').eq(1).html();
+    //     console.log(outboundOrderId);
+    //     $.ajax({
+    //         type: "POST",                       // 方法类型
+    //         url: "cancelOutBoundOrder",                  // url
+    //         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //         data:{'outboundOrderId':outboundOrderId},
+    //         dataType: "json",
+    //         success:function (result) {
+    //             if (result != undefined && result.status == "success"){
+    //                 alert(result.message);
+    //                 window.location.reload();
+    //             }
+    //             else {
+    //                 alert(result.message);
+    //             }
+    //         },
+    //         error:function (result) {
+    //             alert("服务器异常！")
+    //         }
+    //     });
+    // }
+
+
+
+}
+
+
+//确认作废
+function confirmCancel(){
+
+
     if(confirm("确定作废?")){
         //点击确定后操作
-        var outboundOrderId=$(item).parent().parent().children('td').eq(1).html();
-        console.log(outboundOrderId);
+        var data={
+            outboundOrderId : $('#outboundOrderId1').html(),
+            inboundOrderItemId:$('#inboundOrderItemId').html(),
+            inventoryNumber: $('#inventoryNumber1').html(),
+        };
         $.ajax({
             type: "POST",                       // 方法类型
             url: "cancelOutBoundOrder",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data:{'outboundOrderId':outboundOrderId},
+            data:JSON.stringify(data),
             dataType: "json",
+            contentType: "application/json; charset=utf-8",
             success:function (result) {
                 if (result != undefined && result.status == "success"){
                     alert(result.message);
@@ -978,10 +1062,11 @@ function cancel(item) {
             }
         });
     }
-
-
-
 }
+
+
+
+
 
 array=[];//存放所有的tr
 array1=[];//存放目标的tr
@@ -1228,46 +1313,77 @@ function searchOutBound() {
 
 //退库
 function rollback(item) {
-    //获取 inboundOrderItemId 和 outboundOrderId 和 outboundNumber
 
-    var inboundOrderItemId=$(item).parent().parent().children('td').eq(11).html();
-
+   $('#Invalid').hide();
+    $('#Retire').show();
     var outboundOrderId=$(item).parent().parent().children('td').eq(1).html();
 
-    var outboundNumber=$(item).parent().parent().children('td').eq(8).html();
-
-  if($(item).parent().parent().children('td').eq(9).html()!='已退库'){
-      if(confirm("确定退库?")){
-          $.ajax({
-              type: "POST",                       // 方法类型
-              url: "rollback",                  // url
-              data:{'inboundOrderItemId':inboundOrderItemId,'outboundOrderId':outboundOrderId,'outboundNumber':outboundNumber},
-              async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-              //data:{'outboundOrderId':outboundOrderId},
-              dataType: "json",
-              // contentType: "application/json; charset=utf-8",
-              success:function (result) {
-                  if (result != undefined && result.status == "success"){
-                      alert(result.message)
-                      window.location.reload();
-                  }
-                  else {
-                      alert(result.message);
-                  }
-              },
-              error:function (result) {
-                  alert("服务器异常！");
-              }
-
-          });
-      }
-  }
-   else {
-      alert("已退库，无法再次退库！")
-  }
+    $('#appointModal4').modal('show')
 
 
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getByOutBoundOrderId",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:{'outboundOrderId':outboundOrderId},
+        dataType: "json",
+        //contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                var obj=eval(result.data)
+                $('#inboundOrderId2').html(obj.inboundOrderId);
+                $('#outboundOrderId2').html(obj.outboundOrderId);
+                $('#inventoryNumber2').html(obj.inventoryNumber.toFixed(2));
+                $('#cancelNumber2').html(obj.outboundNumber.toFixed(2));
+                $('#inventoryNumber3').html(parseFloat(obj.inventoryNumber.toFixed(2))+parseFloat(obj.outboundNumber.toFixed(2)));
+                $('#inboundOrderItemId2').html(obj.inboundOrderItemId);
+
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+
+    }) ;
 
 
 }
 
+
+
+//确认退库
+function confirmRetire(){
+
+    if(confirm("确定退库?")){
+        //点击确定后操作
+        var data={
+            outboundOrderId : $('#outboundOrderId2').html(),
+            inboundOrderItemId:$('#inboundOrderItemId2').html(),
+            inventoryNumber: $('#inventoryNumber3').html(),
+        };
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "retireOutBoundOrder",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data:JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    alert(result.message);
+                    window.location.reload();
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error:function (result) {
+                alert("服务器异常！")
+            }
+        });
+    }
+}

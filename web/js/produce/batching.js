@@ -1138,6 +1138,9 @@ function setBatchingOrderList(result) {
                 // 把克隆好的tr追加到原来的tr前面
                 clonedTr.removeAttr("id");
                 clonedTr.insertBefore(tr);
+                if($(clonedTr).children('td').eq(11).html()=="已作废"){
+                    $(clonedTr).hide();
+                }
             }
         });
         // 隐藏无数据的tr
@@ -1952,5 +1955,72 @@ function Cal(item) {
         alert("领料数大于配料数，请重新领料")
     }
 
+
+}
+
+
+//作废配料单
+function cancel(item) {
+
+        var batchingOrderId=$(item).parent().parent().children('td').eq(1).html();
+
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getBatchingOrderById",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data:{"batchingOrderId":batchingOrderId},
+            //contentType: "application/json; charset=utf-8",
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(result)
+                    var obj=eval(result.data);
+                    $('#inboundOrderId').html(obj.inboundOrderId);
+                    $('#batchingOrderId3').html(obj.batchingOrderId);
+                    $('#inventoryNumber3').html(parseFloat(obj.inventoryNumber).toFixed(2));
+                    $('#cancelNumber').html(parseFloat(obj.batchingNumber).toFixed(2));
+                    $('#inventoryNumber1').html((parseFloat(obj.inventoryNumber)+parseFloat(obj.batchingNumber)).toFixed(2));
+                    $('#inboundOrderItemId2').html(obj.inboundOrderItemId);
+
+                }
+            },
+            error:function (result) {
+
+            }
+
+        })
+
+        $('#appointModal3').modal('show')
+
+
+
+
+}
+
+//作废方法
+function confirmCancel() {
+    var data={
+        batchingOrderId: $('#inboundOrderId').html(),
+        batchingNumber: $('#inventoryNumber1').html(),
+        inboundOrderItemId:$('#inboundOrderItemId2').html()
+    };
+    console.log(data)
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "cancelBatchingOrder",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                alert(result.message)
+                window.location.reload()
+            }
+        },
+        error:function (result) {
+
+        }
+    })
 
 }

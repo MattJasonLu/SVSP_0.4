@@ -225,6 +225,9 @@
                             <td class="text-center">
                                 <a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                                 <a href="#" onclick="materialRequisitionModify(this);" title="编辑"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                                <a title="作废" href="#" onclick="cancel(this)"><span
+                                        class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> </a>
+
                             </td>
                             <!--<td class="text-center hidden"></td>&lt;!&ndash;入库单明细&ndash;&gt;-->
                             <!--<td class="text-center hidden"></td>&lt;!&ndash;单位编号&ndash;&gt;-->
@@ -358,7 +361,7 @@
                                 <td style="width: 15%"><input class="focus" name="produceCompany"  id="client1"readonly ></td><!--厂家-->
                                 <td><input class="focus" name="wastesName" id="wastesName1"readonly></td><!--危废名称-->
                                 <td><input class="focus" name="wastesCode" id="wasteCategory1"readonly></td><!--危废类别-->
-                                <td><input class="focus" name="formType" id="recipientsNumber1" onkeyup="CalIngredients()"></td><!--领用数量-->
+                                <td><input class="form-control" name="formType" id="recipientsNumber1" onkeyup="CalIngredients()"></td><!--领用数量-->
                                 <td><input class="focus" name="remark" id="deputyGeneral1"></td><!--主管副总经理-->
                                 <td><input class="focus" name="remark" id="warehouseManager1" ></td><!--部门仓库主管-->
                                 <td><input class="focus" name="remark" id="guardian1" ></td><!--保管员	-->
@@ -380,5 +383,44 @@
         </div>
     </div>
 
+
+    <!--作废模态框-->
+    <div class="modal fade bs-example-modal-lg" id="appointModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document"  style="width: 85%">
+            <div class="modal-content" >
+                <div class="modal-header">
+                    <h4 class="modal-title" >领料单明细</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                            <td class="text-center">领料单号</td>
+                            <td class="text-center">配料单号</td>
+                            <td class="text-center">作废前配料数量(t)</td>
+                            <td class="text-center">作废领料量(t)</td>
+                            <td class="text-center">作废后配料数量(t)</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center modal-companyName" id="materialRequisitionId2"></td>
+                            <td class="text-center modal-companyName" id="batchingOrderId2"></td>
+                            <td class="text-center modal-einlass" id="batchingNumber3"></td>
+                            <td class="text-center wastesName" id="cancelNumber"></td>
+                            <td class="text-center wastesCode" id="batchingNumber4"></td>
+                            <td class="text-center wastesCode hidden" id="inboundOrderItemId2"></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                    <div class="modal-footer" id="viewBtnGrp">
+                        <div class="row text-center">
+                            <button type="button" class="btn btn-primary" onclick="confirmCancel()" id="Invalid">确认作废</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

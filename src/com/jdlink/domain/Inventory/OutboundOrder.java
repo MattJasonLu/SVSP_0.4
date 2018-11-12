@@ -115,8 +115,33 @@ public class OutboundOrder {
     private Date endDate;
     private QuotationItem quotationItem;
 
+    //库存剩余数量
+    private float inventoryNumber;
+
+    /**
+     * 入库单号
+     */
+    private String inboundOrderId;
+
     public String getWastesName() {
         return wastesName;
+    }
+
+
+    public float getInventoryNumber() {
+        return inventoryNumber;
+    }
+
+    public String getInboundOrderId() {
+        return inboundOrderId;
+    }
+
+    public void setInboundOrderId(String inboundOrderId) {
+        this.inboundOrderId = inboundOrderId;
+    }
+
+    public void setInventoryNumber(float inventoryNumber) {
+        this.inventoryNumber = inventoryNumber;
     }
 
     public void setWastesName(String wastesName) {

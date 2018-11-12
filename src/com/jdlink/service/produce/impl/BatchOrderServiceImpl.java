@@ -181,4 +181,49 @@ public class BatchOrderServiceImpl implements BatchOrderService
     public void updateCountByBatchingOrderId(String batchingOrderId, float batchingNumber) {
         batchOrderMapper.updateCountByBatchingOrderId(batchingOrderId,batchingNumber);
     }
+
+    @Override
+    public int getSecCountByTime(String prefix) {
+        return batchOrderMapper.getSecCountByTime(prefix);
+    }
+
+    @Override
+    public void updateSecOutBound(OutboundOrder outboundOrder) {
+        batchOrderMapper.updateSecOutBound(outboundOrder);
+    }
+
+    @Override
+    public void cancelBatchingOrder(BatchingOrder batchingOrder) {
+        batchOrderMapper.cancelBatchingOrder(batchingOrder);;
+    }
+
+    @Override
+    public void updateInventoryNumber(String inboundOrderItemId, float batchingNumber) {
+        batchOrderMapper.updateInventoryNumber(inboundOrderItemId, batchingNumber);
+    }
+
+    @Override
+    public void cancelMaterialRequisitionOrder(MaterialRequisitionOrder materialRequisitionOrder) {
+        batchOrderMapper.cancelMaterialRequisitionOrder(materialRequisitionOrder);
+    }
+
+    @Override
+    public void updateBatchOrderNumber(String batchingOrderId, float recipientsNumber) {
+        batchOrderMapper.updateBatchOrderNumber(batchingOrderId,recipientsNumber);
+    }
+
+    @Override
+    public void cancelOutBoundOrder(OutboundOrder outboundOrder) {
+        batchOrderMapper.cancelOutBoundOrder(outboundOrder);
+    }
+
+    @Override
+    public void updateInventoryNumberAfterInvalid(String inboundOrderItemId, float inventoryNumber) {
+        batchOrderMapper.updateInventoryNumberAfterInvalid(inboundOrderItemId, inventoryNumber);
+    }
+
+    @Override
+    public void retireOutBoundOrder(OutboundOrder outboundOrder) {
+        batchOrderMapper.retireOutBoundOrder(outboundOrder);
+    }
 }
