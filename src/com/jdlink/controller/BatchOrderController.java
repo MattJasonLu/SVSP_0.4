@@ -1062,4 +1062,28 @@ public class BatchOrderController {
         }
         return  res.toString();
     }
+
+    //作废次生出库单
+    @RequestMapping("cancelSecOutBoundOrder")
+    @ResponseBody
+    public String cancelSecOutBoundOrder(@RequestBody OutboundOrder outboundOrder){
+        JSONObject res=new JSONObject();
+
+        try {
+    batchOrderService.cancelOutBoundOrder(outboundOrder);
+
+        //同步更新库存数量
+            batchOrderService.updateInventoryNumberAfterInvalid(outboundOrder.getInboundOrderItemId(),outboundOrder.getInventoryNumber());
+            res.put("status", "success");
+            res.put("message", "出库单作废成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "出库单作废失败");
+        }
+
+        return res.toString();
+
+    }
 }

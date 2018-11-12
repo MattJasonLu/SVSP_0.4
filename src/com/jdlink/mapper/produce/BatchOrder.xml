@@ -297,4 +297,6 @@
     <update id="retireOutBoundOrder" parameterType="OutboundOrder">
         update t_pl_outboundorder set  checkState='Retired' where outboundOrderId=#{outboundOrderId};
     </update>
+
+
 </mapper>
