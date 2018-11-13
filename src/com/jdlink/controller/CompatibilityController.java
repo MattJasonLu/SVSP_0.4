@@ -566,7 +566,7 @@ public String importCompatibilityExcel(MultipartFile excelFile){
     //配伍周计划高级查询
     @RequestMapping("searchCompatibility")
     @ResponseBody
-    public String searchCompatibility(@RequestBody Compatibility compatibility,CompatibilityItem compatibilityItem){
+    public String searchCompatibility(@RequestBody Compatibility compatibility){
         JSONObject res=new JSONObject();
          try {
              List<Compatibility> compatibilityList=compatibilityService.searchCompatibility(compatibility);
@@ -611,30 +611,19 @@ public String importCompatibilityExcel(MultipartFile excelFile){
 
 
     //查询总数==>高级
-    @RequestMapping("searchCompatibilityItemTotal")
-    @ResponseBody
-    public  int searchCompatibilityTotal(@RequestBody CompatibilityItem compatibilityItem){
-
-        try {
-            return compatibilityService.searchCount(compatibilityItem);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
-    //查询总数==>粗查询
-
     @RequestMapping("searchCompatibilityTotal")
     @ResponseBody
-    public int searchCompatibilityTotal(@RequestBody Compatibility compatibility){
+    public  int searchCompatibilityTotal(@RequestBody Compatibility compatibility){
+
         try {
-            return compatibilityService.count(compatibility);
+            return compatibilityService.searchCount(compatibility);
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
     }
+
+
 
     //点击生成物料需求功能
     @RequestMapping("generateSheet")
@@ -919,7 +908,7 @@ public String importCompatibilityExcel(MultipartFile excelFile){
     //获取总记录数
     @RequestMapping("totalCompatibilityRecord")
     @ResponseBody
-    public int totalCompatibilityRecord(){
+    public int totalCompatibilityRecord( ){
         try {
             return compatibilityService.totalCompatibilityRecord();
         } catch (Exception e) {
