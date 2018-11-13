@@ -59,4 +59,16 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public void deleteTeam(Organization organization){ organizationMapper.deleteTeam(organization);}
+
+    @Override
+    public int countDepartment(int id){ return organizationMapper.countDepartment(id);}
+
+    @Override
+    public int countTeam(int id){ return organizationMapper.countTeam(id);}
+
+    @Override
+    public Organization getDepartmentById(int id){ return organizationMapper.getDepartmentById(id);}
+
+    @Override
+    public Organization getTeamById(int id){ return organizationMapper.getTeamById(id);}
 }
