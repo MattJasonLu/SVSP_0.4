@@ -470,7 +470,7 @@ function setWasteInventoryList(result) {
     // console.log(result);
     //tr.siblings().remove();
         $.each(result, function (index, item) {
-            if(parseFloat(item.actualCount)>0&&item.boundType.name=='危废入库'){
+            if(parseFloat(item.actualCount).toFixed(2)>0&&item.boundType.name=='危废入库'){
                 // 克隆tr，每次遍历都可以产生新的tr
                 var clonedTr = tr.clone();
                 clonedTr.show();
@@ -569,30 +569,33 @@ $('#cloneTr2').siblings().remove();
     var items = $("input[name='select']:checked");//判断复选框是否选中
     items.each(function () {
         //获得库存Id
-      var inboundOrderItemId=  $(this).parent().parent().parent().children('td').last().text();
-      console.log(inboundOrderItemId);
-      //根据inboundOrderItemId获得库存的信息，进行转移放到配料中
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getWasteInventoryByInboundOrderId",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data:{'inboundOrderItemId':inboundOrderItemId},
-            success:function (result) {
-                if(result != undefined && result.status == "success"){
-                   console.log(result);
-                    //设置配料列表
-                    setBatchingWList(result.data);
+        if($(this).parent().parent().parent().attr('style')!='display: none;'){
+            var inboundOrderItemId=  $(this).parent().parent().parent().children('td').last().text();
+            console.log(inboundOrderItemId);
+            //根据inboundOrderItemId获得库存的信息，进行转移放到配料中
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "getWasteInventoryByInboundOrderId",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data:{'inboundOrderItemId':inboundOrderItemId},
+                success:function (result) {
+                    if(result != undefined && result.status == "success"){
+                        console.log(result);
+                        //设置配料列表
+                        setBatchingWList(result.data);
+                    }
+                    else {
+                        console.log(result.message);
+                    }
+                },
+                error:function (result) {
+                    alert("服务器异常！")
                 }
-                else {
-                    console.log(result.message);
-                }
-            },
-            error:function (result) {
-                alert("服务器异常！")
-            }
 
-        });
+            });
+        }
+
     });
 }
 
@@ -1897,7 +1900,7 @@ var batchingNumber=$("#batchingNumber1").val();
 
         var inventoryNumber1=parseFloat(inventoryNumber)-parseFloat(difference);
 
-          if(parseFloat(inventoryNumber1)>0){
+          if(parseFloat(inventoryNumber1)>=0){
               $('#inventoryNumber').val(parseFloat(inventoryNumber1).toFixed(2))
           }
           else {
