@@ -42,6 +42,8 @@ public class AuthFilter implements Filter {
             if (session == null || session.getAttribute("user") == null) { //获取用户如果为空则重定向
                 // *用户登录以后需手动添加session
                 response.sendRedirect(request.getContextPath() + "/admin.html");
+                String path = request.getContextPath() + "/admin.html";
+                System.out.println("路径："+path);
                 // 如果session为空表示用户没有登录就重定向到admin.html页面
                 return;
             }
