@@ -174,11 +174,11 @@
                 <div class="form-horizontal col-md-12">
                     <table style="width: 100%">
                         <tr>
-                            <td>出厂时间：</td>
+                            <td>入厂时间：</td>
                             <td>
-                                <div class="input-group date form_datetime1 col-xs-6" name="add_outTime">
-                                    <input class="form-control focus" type="text" value="" id="add_outTime"
-                                           name="add_outTime" title="" readonly>
+                                <div class="input-group date form_datetime1 col-xs-6" name="add_enterTime">
+                                    <input class="form-control focus" type="text" value="" id="add_enterTime"
+                                           name="add_enterTime" title="" readonly>
                                     <span class="input-group-addon"><span
                                             class="glyphicon glyphicon-remove"></span></span>
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
@@ -191,7 +191,7 @@
                     <table class="table table-bordered">
                         <tr>
                             <td class="text-center" style="width: 150px;">入厂车号</td>
-                            <td class="text-center"><input class="focus" style="width:100%" id="add_enterLicencePlate"></td>
+                            <td class="text-center"><input class="focus" style="width:100%" id="add_enterLicencePlate" onkeyup="autoSetoutLicencePlate(this);"></td>
                             <td class="text-center" style="width: 150px;">出厂车号</td>
                             <td class="text-center"><input class="focus" style="width:100%" id="add_outLicencePlate"></td>
                         </tr>
@@ -226,13 +226,13 @@
                         <tr>
                             <td class="text-center" style="width: 150px;">收货单位</td>
                             <td class="text-center">
-                                <input id="add_receiveCompany" name="add_receiveCompany">
+                                <input id="add_receiveCompany" name="add_receiveCompany" class="focus ">
                             </td>
-                            <td class="text-center" style="width: 150px;">进厂时间</td>
+                            <td class="text-center" style="width: 150px;">出厂时间</td>
                             <td class="text-center">
-                                <div class="input-group date form_datetime1 col-xs-6" name="add_enterTime">
-                                    <input class="form-control focus" type="text" value="" id="add_enterTime"
-                                           name="add_enterTime" title="" readonly>
+                                <div class="input-group date form_datetime1 col-xs-6" name="add_outTime">
+                                    <input class="form-control focus" type="text" value="" id="add_outTime"
+                                           name="add_outTime" title="" readonly>
                                     <span class="input-group-addon"><span
                                             class="glyphicon glyphicon-remove"></span></span>
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>

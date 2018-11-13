@@ -393,6 +393,160 @@
                 </div>
             </div>
         </div>
+        <!--修改模态框-->
+        <div class="modal fade bs-example-modal-lg" id="editModal" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document" style="width: 90%">
+                <div class="modal-content">
+                    <br>
+                    <!--<div class="text-center"><span id="creationDate"></span>&nbsp;&nbsp;&nbsp;&nbsp;预处理单</div>-->
+                    <h4 class="modal-title text-center" id="title1">预处理单</h4>
+                    <br>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th class="text-center">预处理单编号：</th>
+                            <th class="text-center"><span class="text-center" id="edit-pretreatmentId"></span></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                        </tr>
+                        <tr>
+                            <th class="text-center">序号</th>
+                            <th class="text-center">产废单位</th>
+                            <th class="text-center">指标要求及来源</th>
+                            <th class="text-center">危废名称</th>
+                            <th class="text-center">比例</th>
+                            <th class="text-center">重量(吨)</th>
+                            <th class="text-center">危废热值(cal/g)</th>
+                            <th class="text-center">灰分(%)</th>
+                            <th class="text-center">水分(%)</th>
+                            <th class="text-center">挥发份(%)</th>
+                            <th class="text-center">氯(%)</th>
+                            <th class="text-center">硫(%)</th>
+                            <th class="text-center">PH</th>
+                            <th class="text-center">P</th>
+                            <th class="text-center">F</th>
+                            <th class="text-center">备注</th>
+                            <th class="text-center">处置方式</th>
+                            <th class="text-center">进料方式</th>
+                            <th class="text-center" hidden>出库单号</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr id="editClone1">
+                            <td class="text-center"><span id="edit-serialNumber0" name="serialNumber"></span></td>
+                            <td class="text-center"><input id="edit-produceCompanyName0" name="produceCompanyName"></td>
+                            <td class="text-center"><input id="edit-requirements0" name="requirements"></td>
+                            <td class="text-center"><input id="edit-wastesName0" name="wastesName"></td>
+                            <td class="text-center"><input id="edit-proportion0" name="proportion" class="focus" readonly></td>
+                            <td class="text-center"><input id="edit-weight0" name="weight" onkeyup="calculate()"></td>
+                            <td class="text-center"><input id="edit-calorific0" name="calorific" onkeyup="calculate()"></td>
+                            <td class="text-center"><input id="edit-ashPercentage0" name="ashPercentage" onkeyup="calculate()"></td>
+                            <td class="text-center"><input id="edit-wetPercentage0" name="wetPercentage" onkeyup="calculate()"></td>
+                            <td class="text-center"><input id="edit-volatileNumber0" name="volatileNumber" onkeyup="calculate()"></td>
+                            <td class="text-center"><input id="edit-chlorinePercentage0" name="chlorinePercentage" onkeyup="calculate()"></td>
+                            <td class="text-center"><input id="edit-sulfurPercentage0" name="sulfurPercentage" onkeyup="calculate()"></td>
+                            <td class="text-center"><input id="edit-ph0" name="ph" onkeyup="calculate()"></td>
+                            <td class="text-center"><input id="edit-phosphorusPercentage0" name="phosphorusPercentage" onkeyup="calculate()"></td>
+                            <td class="text-center"><input id="edit-fluorinePercentage0" name="fluorinePercentage" onkeyup="calculate()"></td>
+                            <td class="text-center"><input id="edit-remarks0" name="remarks"></td>
+                            <td class="text-center"><select id="edit-processWay0" name="processWay" onchange="calculate()"></select></td>
+                            <td class="text-center"><select id="edit-handleCategory0" name="handleCategory" onchange="calculate()"></select></td>
+                            <td class="text-center" hidden><span id="edit-outBounderOrderId0" name="outBounderOrderId" ></span></td>
+
+                        </tr>
+                        <tr>
+                            <td class="text-center">备注</td>
+                            <td class="text-center" colspan="17"><input class="text-center" id="edit-remarks">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center" colspan="2">合计</td>
+                            <td class="text-center">--</td>
+                            <td class="text-center">--</td>
+                            <td class="text-center">--</td>
+                            <td class="text-center"><span class="text-center" id="edit-weightTotal"></span></td>
+                            <td class="text-center"><span class="text-center" id="edit-calorificTotal"></span></td>
+                            <td class="text-center"><span class="text-center" id="edit-ashPercentageTotal"></span>
+                            </td>
+                            <td class="text-center"><span class="text-center" id="edit-wetPercentageTotal"></span>
+                            </td>
+                            <td class="text-center"><span class="text-center" id="edit-volatileNumberTotal"></span>
+                            </td>
+                            <td class="text-center"><span class="text-center"
+                                                          id="edit-chlorinePercentageTotal"></span>
+                            </td>
+                            <td class="text-center"><span class="text-center"
+                                                          id="edit-sulfurPercentageTotal"></span>
+                            </td>
+                            <td class="text-center"><span class="text-center" id="edit-phTotal"></span></td>
+                            <td class="text-center"><span class="text-center"
+                                                          id="edit-phosphorusPercentageTotal"></span>
+                            </td>
+                            <td class="text-center"><span class="text-center"
+                                                          id="edit-fluorinePercentageTotal"></span>
+                            </td>
+                            <td class="text-center">--</td>
+                            <td class="text-center">--</td>
+                            <td class="text-center">--</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">残渣比例</td>
+                            <td class="text-center"><span class="text-center"
+                                                          id="edit-distillationProportion"></span>
+                            </td>
+                            <td class="text-center">废液比例</td>
+                            <td class="text-center"><span class="text-center"
+                                                          id="edit-wasteLiquidProportion"></span>
+                            </td>
+                            <td class="text-center">污泥比例</td>
+                            <td class="text-center"><span class="text-center" id="edit-sludgeProportion"></span>
+                            </td>
+                            <td class="text-center">散料比例</td>
+                            <td class="text-center"><span class="text-center" id="edit-bulkProportion"></span></td>
+                            <td class="text-center">破碎比例</td>
+                            <td class="text-center"><span class="text-center"
+                                                          id="edit-crushingProportion"></span></span>
+                            </td>
+                            <td class="text-center">悬挂连比例</td>
+                            <td class="text-center"><span class="text-center" id="edit-suspensionProportion"></span>
+                            </td>
+                            <td class="text-center">--</td>
+                            <td class="text-center">--</td>
+                            <td class="text-center">--</td>
+                            <td class="text-center">--</td>
+                            <td class="text-center">--</td>
+                            <td class="text-center">--</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">注意事项</td>
+                            <td colspan="17" class="text-left">
+                                作业人员需穿戴防护用品，口罩(防毒面具)，胶皮手套，避免吸入毒气和与人体直接接触，物料转移后及时清理现场环境。
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="edit();">保存</button>
+                </div>
+            </div>
+        </div>
         <!--分页-->
         <nav aria-label="Page navigation" class="text-center">
             <ol class="pagination" style="width: 800px;">

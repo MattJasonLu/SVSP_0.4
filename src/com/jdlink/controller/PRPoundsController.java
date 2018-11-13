@@ -220,7 +220,7 @@ public class PRPoundsController {
     public String getPoundsSeniorSelectedList() {
         JSONObject res = new JSONObject();
         // 获取枚举
-        CheckState[] states = new CheckState[]{CheckState.Confirm, CheckState.Invalid};
+        CheckState[] states = new CheckState[]{CheckState.NewBuild,CheckState.Confirm, CheckState.Invalid};
         JSONArray stateList = JSONArray.fromArray(states);
         res.put("stateList", stateList);
         return res.toString();
