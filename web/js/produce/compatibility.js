@@ -99,11 +99,15 @@ function importExcel() {
  * 下载模板
  * */
 function downloadModal() {
+
     var filePath = 'Files/Templates/配伍计划导入模板.xlsx';
     var r = confirm("是否下载模板?");
     if (r == true) {
-        window.open('downloadFile?filePath=' + filePath);
+        var newTab = window.open('about:blank')
+        newTab.location.href='downloadFile?filePath='+filePath;
+        //window.open('downloadFile?filePath=' + newTab);
     }
+
 }
 
 /**
