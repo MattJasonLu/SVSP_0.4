@@ -16,7 +16,6 @@ import javax.servlet.http.HttpSession;
 /**
  * 拦截器，查看用户是否登录过，未登录禁止访问页面
  */
-
 public class AuthFilter implements Filter {
 
     public void destroy() {
@@ -42,7 +41,7 @@ public class AuthFilter implements Filter {
         if (!"/admin.html".equals(targetURL)) {// 判断当前页是否是重定向以后的登录页面页面，如果是就不做session的判断，防止出现死循环
             if (session == null || session.getAttribute("user") == null) { //获取用户如果为空则重定向
                 // *用户登录以后需手动添加session
-                response.sendRedirect("/admin.html");
+                response.sendRedirect(request.getContextPath() + "/admin.html");
                 // 如果session为空表示用户没有登录就重定向到admin.html页面
                 return;
             }
