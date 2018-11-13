@@ -33,14 +33,18 @@
     </insert>
 
     <select id="listPage" resultType="SampleInformation">
-        select * from t_pr_sampleinformation ORDER BY creationDate DESC
+        select * from t_pr_sampleinformation
+        where applyState in ('Rejected','Appointed','Received')
+        ORDER BY id DESC
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
     </select>
 
     <select id="listItemPage" resultType="SampleInformationItem">
-        select a.*,b.companyName,b.sendingPerson,b.laboratorySigner,b.applyState from t_pr_sampleinformationItem as a join t_pr_sampleinformation as b on a.sampleId=b.id ORDER BY creationDate DESC
+        select a.*,b.companyName,b.sendingPerson,b.laboratorySigner,b.applyState from t_pr_sampleinformationItem as a join t_pr_sampleinformation as b on a.sampleId=b.id
+        where b.applyState in ('Rejected','Appointed','Received')
+        ORDER BY a.id DESC
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -236,7 +240,7 @@
                 and isHotMelt = #{isHotMelt}
             </if>
         </where>
-        order by creationDate desc
+        order by id desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
@@ -370,7 +374,7 @@
                 and t_pr_sampleinformationItem.isHotMelt = #{isHotMelt}
             </if>
         </where>
-        order by creationDate desc
+        order by a.id desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
@@ -398,11 +402,11 @@
         select count(*) from t_pr_sampleinformation where id like "%"#{id}"%";
     </select>
 
-    <update id="confirmCheck">
+    <update id="confirmCheck" parameterType="SampleInformation">
         UPDATE t_pr_sampleinformation
         SET
         applyState = 'Received',laboratorySigner=#{laboratorySigner},nowTime = NOW(),samplingDate = NOW()
-        WHERE id = #{sampleId};
+        WHERE id = #{id};
     </update>
 
     <update id="update" parameterType="SampleInformation">
@@ -413,8 +417,7 @@
         isWater = #{wastesList[0].isWater},isHeat = #{wastesList[0].isHeat},isSulfur =#{wastesList[0].isSulfur},
         isChlorine = #{wastesList[0].isChlorine},isFluorine = #{wastesList[0].isFluorine},isPhosphorus =#{wastesList[0].isPhosphorus},
         isFlashPoint =#{wastesList[0].isFlashPoint},isViscosity = #{wastesList[0].isViscosity},isHotMelt=#{wastesList[0].isHotMelt},
-        wastesFormType=#{wastesList[0].formType},
-        nowTime = NOW()
+        wastesFormType=#{wastesList[0].formType},nowTime = NOW()
         WHERE t_pr_sampleinformation.id =#{id};
         <foreach collection="wastesList" item="wastes" index="index">
             <if test="wastes.unit == 'no'">
@@ -432,14 +435,19 @@
                 code=#{wastes.code},name=#{wastes.name},formType=#{wastes.formType},category=#{wastes.category},
                 isPH=#{wastes.isPH},isAsh=#{wastes.isAsh},isWater=#{wastes.isWater},isHeat=#{wastes.isHeat},isSulfur=#{wastes.isSulfur},
                 isChlorine=#{wastes.isChlorine},isFluorine=#{wastes.isFluorine},isPhosphorus=#{wastes.isPhosphorus},
-                isFlashPoint=#{wastes.isFlashPoint},isViscosity=#{wastes.isViscosity},isHotMelt=#{wastes.isHotMelt}
+                isFlashPoint=#{wastes.isFlashPoint},isViscosity=#{wastes.isViscosity},isHotMelt=#{wastes.isHotMelt},sampleId=#{id}
                 where id =#{wastes.id};
             </if>
         </foreach>
     </update>
 
     <update id="updateSampleInfo" parameterType="String">
-        update t_pr_sampleinformation set applyState = 'Invalid' where id = #{sampleId}
+        update t_pr_sampleinformation set applyState = 'Invalid',
+        id=#{newId}
+        where id = #{sampleId};
+
+        update t_pr_sampleinformationitem set id = CONCAT('I-',id),sampleId=#{newId}
+        where sampleId= #{sampleId};
     </update>
 
     <update id="rejectSampleInfoById" >

@@ -69,7 +69,8 @@
                         <li><a href="questionnaireManage.html" id="function_50" onclick="checkAuthority($(this))">危废数据调查表管理</a>
                         </li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="sampleInfo.html" id="function_51" onclick="checkAuthority($(this))">产废单位样品登记</a></li>
+                        <li><a href="sampleInfo.html" id="function_51" onclick="checkAuthority($(this))">产废单位样品登记</a>
+                        </li>
                         </li>
                         <li role="separator" class="divider"></li>
                         <li><a href="wayBill1.html" id="function_52" onclick="checkAuthority($(this))">接运单管理</a></li>
@@ -102,13 +103,13 @@
                     </ul>
                 </li>
                 <!--<li class="dropdown">-->
-                    <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"-->
-                       <!--aria-expanded="false">价格管理<span class="caret"></span></a>-->
-                    <!--<ul class="dropdown-menu">-->
-                        <!--<li><a href="quotation.html" id="function_57" onclick="checkAuthority($(this))">报价管理</a></li>-->
-                        <!--<li role="separator" class="divider"></li>-->
-                        <!--<li><a href="cost.html" id="function_58" onclick="checkAuthority($(this));">成本管理</a></li>-->
-                    <!--</ul>-->
+                <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"-->
+                <!--aria-expanded="false">价格管理<span class="caret"></span></a>-->
+                <!--<ul class="dropdown-menu">-->
+                <!--<li><a href="quotation.html" id="function_57" onclick="checkAuthority($(this))">报价管理</a></li>-->
+                <!--<li role="separator" class="divider"></li>-->
+                <!--<li><a href="cost.html" id="function_58" onclick="checkAuthority($(this));">成本管理</a></li>-->
+                <!--</ul>-->
                 <!--</li>-->
                 <li><a href="archivesManage.html" id="function_18" onclick="checkAuthority($(this));">一企一档</a></li>
                 <li><a href="stockManage.html" id="function_19" onclick="checkAuthority($(this));">库存申报</a></li>
@@ -207,9 +208,10 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" href="#" id="function_337" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; addWayBillModal(e);}"><span
-                    class="glyphicon glyphicon-plus"
-                    aria-hidden="true"></span> 新增</a>
+                    <a class="btn btn-primary btn-xs" href="#" id="function_337"
+                       onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; addWayBillModal(e);}"><span
+                            class="glyphicon glyphicon-plus"
+                            aria-hidden="true"></span> 新增</a>
                     <a class="btn btn-primary btn-xs" href="#" id="function_121"
                        onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose(e);}"><span
                             class="glyphicon glyphicon-arrow-down"
@@ -221,9 +223,10 @@
                 </div>
                 <!--查询框-->
                 <div class="input-group col-md-4 pull-right">
-                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent" onkeydown="enterSearch()">
+                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent"
+                           onkeydown="enterSearch()">
                     <span class="input-group-btn">
-                        <a class="btn btn-default" onclick="searchWayBill()" ><span
+                        <a class="btn btn-default" onclick="searchWayBill()"><span
                                 class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                         <a class="btn btn-default" onclick="$('#senior').toggle();"><span
                                 class="glyphicon glyphicon-search" aria-hidden="true"></span> 高级查询</a>
@@ -242,7 +245,8 @@
                         <div class="form-group">
                             <label for="search-id" class="col-sm-4 control-label">序列号</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-id" name="search-id" placeholder="" onkeydown="enterSearch()">
+                                <input type="text" class="form-control" id="search-id" name="search-id" placeholder=""
+                                       onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -259,7 +263,8 @@
                         <div class="form-group">
                             <label for="search-wayBillState" class="col-sm-4 control-label">接运单状态</label>
                             <div class="col-xs-7">
-                                <select class="form-control" id="search-wayBillState" name="search-wayBillState" onchange="searchWayBill()">
+                                <select class="form-control" id="search-wayBillState" name="search-wayBillState"
+                                        onchange="searchWayBill()">
                                     <option value="0"></option>
                                 </select>
                             </div>
@@ -271,17 +276,8 @@
                         <div class="form-group">
                             <label for="search-founder" class="col-sm-4 control-label">创建人</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-founder" name="search-founder" placeholder="" onkeydown="enterSearch()">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-horizontal col-md-4">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">日期 </label>
-                            <div class="input-group">
-                                <input type="date" class="input-sm form-control" id="search-startDate" title="" onkeydown="enterSearch()"/>
-                                <span class="input-group-addon">-</span>
-                                <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown="enterSearch()"/>
+                                <input type="text" class="form-control" id="search-founder" name="search-founder"
+                                       placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -289,7 +285,22 @@
                         <div class="form-group">
                             <label for="search-operator" class="col-sm-4 control-label">经&nbsp;&nbsp;&nbsp;&nbsp;手&nbsp;&nbsp;&nbsp;&nbsp;人</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-operator" name="search-operator" placeholder="" onkeydown="enterSearch()">
+                                <input type="text" class="form-control" id="search-operator" name="search-operator"
+                                       placeholder="" onkeydown="enterSearch()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6" >
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" style="margin-left: -15px">日期 </label>
+                            <div class="input-group col-md-6">
+                                <input type="date" class="input-sm form-control" id="search-startDate" title=""
+                                       onkeydown="enterSearch()"/>
+                                <span class="input-group-addon">-</span>
+                                <input type="date" class="input-sm form-control" id="search-endDate" title=""
+                                       onkeydown="enterSearch()"/>
                             </div>
                         </div>
                     </div>
@@ -303,7 +314,8 @@
                     <tr>
                         <th class="text-center">
                             <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
+                                <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel"
+                                       id="allSel" onclick="allSelect()">
                             </label>
                         </th>
                         <th class="text-center">接运单号</th>
@@ -322,7 +334,7 @@
                     <tr id="clone" ondblclick="editWayBill1(this)" onclick="setColor(this)">
                         <td class="text-center">
                             <label>
-                                <input name="select" class="checkbox" type="checkbox"  value="option1" aria-label="...">
+                                <input name="select" class="checkbox" type="checkbox" value="option1" aria-label="...">
                             </label>
                         </td>
                         <td class="text-center"></td>
@@ -344,7 +356,9 @@
                             <a href="#" id="function_125" title="提交"
                                onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; submit(e);}"><span
                                     class="glyphicon glyphicon-export" aria-hidden="true"></span></a>
-                            <!--<a href="#" id="function_126" title="审批" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; examination(e);}"><span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>-->
+                            <a href="#" id="function_126" title="审批"
+                               onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; examination(e);}"><span
+                                    class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>
                             <a href="#" id="function_127" title="作废"
                                onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; invalidWayBill(e);}"><span
                                     class="glyphicon glyphicon-remove-sign"
@@ -363,14 +377,14 @@
                     <a href='#' onclick="switchPage(0)">首 页</a>
                 </li>
                 <li id="previous" onclick="switchPage(parseInt(currentPage)-1);">
-                    <a href="#" aria-label="Previous" >
+                    <a href="#" aria-label="Previous">
                         <span aria-hidden="true"><span class="glyphicon glyphicon-backward"
                                                        aria-hidden="true"></span></span>
                     </a>
                 </li>
                 <li><a href="#">1</a></li>
                 <li id="next" onclick="switchPage(parseInt(currentPage)+1);">
-                    <a href="#" aria-label="Next" >
+                    <a href="#" aria-label="Next">
                         <span aria-hidden="true"><span class="glyphicon glyphicon-forward"
                                                        aria-hidden="true"></span></span>
                     </a>
@@ -410,7 +424,9 @@
                         </form>
                     </div>
                     <div class="modal-footer center">
-                        <button type="button" class="btn btn-default" id="downloadModal" onclick="downloadModal()">下载模板</button>
+                        <button type="button" class="btn btn-default" id="downloadModal" onclick="downloadModal()">
+                            下载模板
+                        </button>
                         <button type="button" class="btn btn-primary" onclick="importExcel()">导入数据</button>
                     </div>
                 </div>
@@ -497,42 +513,42 @@
                     </div>
                     <div class="modal-body">
                         <div style="overflow-x:scroll;white-space:nowrap;">
-                        <table class="table table-bordered">
-                            <thead style="border:none">
-                            <tr>
-                                <th class="text-center">接运单号</th>
-                                <th class="text-center">委托单位</th>
-                                <th class="text-center">接收单位</th>
-                                <th class="text-center">接收单位经手人</th>
-                                <th class="text-center">接运单日期</th>
-                                <th class="text-center">业务员</th>
-                                <th class="text-center">废物名称</th>
-                                <th class="text-center">危废代码</th>
-                                <th class="text-center">数量</th>
-                                <th class="text-center">单价</th>
-                                <th class="text-center">合计</th>
-                                <th class="text-center">开票日期</th>
-                                <th class="text-center">发票号码</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr id="clone1">
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                            </tr>
-                            </tbody>
-                        </table>
+                            <table class="table table-bordered">
+                                <thead style="border:none">
+                                <tr>
+                                    <th class="text-center">接运单号</th>
+                                    <th class="text-center">委托单位</th>
+                                    <th class="text-center">接收单位</th>
+                                    <th class="text-center">接收单位经手人</th>
+                                    <th class="text-center">接运单日期</th>
+                                    <th class="text-center">业务员</th>
+                                    <th class="text-center">废物名称</th>
+                                    <th class="text-center">危废代码</th>
+                                    <th class="text-center">数量</th>
+                                    <th class="text-center">单价</th>
+                                    <th class="text-center">合计</th>
+                                    <th class="text-center">开票日期</th>
+                                    <th class="text-center">发票号码</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr id="clone1">
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

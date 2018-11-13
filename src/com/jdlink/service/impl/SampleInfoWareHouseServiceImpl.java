@@ -47,7 +47,7 @@ public class SampleInfoWareHouseServiceImpl  implements SampleInfoWareHouseServi
     public List<SampleInformation> listByKeyword(String keyword){ return sampleInfoWareHouseMapper.listByKeyword(keyword); }
 
     @Override
-    public void updateSampleInfo(String sampleId){ sampleInfoWareHouseMapper.updateSampleInfo(sampleId); }
+    public void updateSampleInfo(String sampleId,String newId){ sampleInfoWareHouseMapper.updateSampleInfo(sampleId,newId); }
 
     @Override
     public int searchCount(SampleInformation sampleInformation){ return sampleInfoWareHouseMapper.searchCount(sampleInformation); }

@@ -64,9 +64,11 @@
     </select>
 
     <select id="listPage" resultMap="WayBillRM">
-        select * from t_pr_waybill order by wayBillDate desc
+        select * from t_pr_waybill
+        where state != 'Invalid'
+        order by wayBillDate desc
         <if test="start != null and count != null">
-            limit #{start}, #{count}
+            limit #{start}, #{count};
         </if>
     </select>
 
@@ -201,7 +203,8 @@
     </update>
 
     <update id="invalid" parameterType="String">
-        update t_pr_waybill set state = 'Invalid' where id = #{id}
+        update t_pr_waybill set state = 'Invalid',id=CONCAT('I-',id)
+        where id = #{id};
     </update>
 
     <update id="update" parameterType="WayBill">

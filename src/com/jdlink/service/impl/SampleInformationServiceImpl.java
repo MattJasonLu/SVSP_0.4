@@ -39,7 +39,7 @@ public class SampleInformationServiceImpl implements SampleInformationService {
     public SampleInformation getById(String sampleId){ return sampleInformationMapper.getById(sampleId); }
 
     @Override
-    public void confirmCheck(String sampleId,String laboratorySigner){ sampleInformationMapper.confirmCheck(sampleId,laboratorySigner); }
+    public void confirmCheck(SampleInformation sampleInformation){ sampleInformationMapper.confirmCheck(sampleInformation); }
 
     @Override
     public void update(SampleInformation sampleInformation){ sampleInformationMapper.update(sampleInformation); }
@@ -48,7 +48,7 @@ public class SampleInformationServiceImpl implements SampleInformationService {
     public List<SampleInformation> listByKeyword(String keyword){ return sampleInformationMapper.listByKeyword(keyword); }
 
     @Override
-    public void updateSampleInfo(String sampleId){ sampleInformationMapper.updateSampleInfo(sampleId); }
+    public void updateSampleInfo(String sampleId,String newId){ sampleInformationMapper.updateSampleInfo(sampleId,newId); }
 
     @Override
     public int searchCount(SampleInformation sampleInformation){ return sampleInformationMapper.searchCount(sampleInformation); }

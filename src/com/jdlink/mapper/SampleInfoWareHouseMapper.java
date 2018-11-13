@@ -19,7 +19,7 @@ public interface SampleInfoWareHouseMapper {
     void confirmCheck(@Param("sampleId") String sampleId, @Param("laboratorySigner") String laboratorySigner);
     void update(SampleInformation sampleInformation);
     List<SampleInformation> listByKeyword(@Param(value="keyword") String keyword);
-    void updateSampleInfo(String sampleId);
+    void updateSampleInfo(@Param("sampleId") String sampleId,@Param("newId") String newId);
     int searchCount(SampleInformation sampleInformation);
     List<SampleInformation> search(SampleInformation sampleInformation);
     SampleInformation getBySampleInformationId(String id);
