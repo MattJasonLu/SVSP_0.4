@@ -133,6 +133,29 @@ public class UtilController {
         }
     }
 
+
+    /**
+     * 返回下载路径
+     * */
+    @RequestMapping("getUrl")
+    @ResponseBody
+    public String getUrl(String filePath){
+        JSONObject res=new JSONObject();
+
+        try {
+            res.put("status", "success");
+            res.put("message", "获取路径成功");
+            res.put("data", "downloadFile?filePath="+filePath);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取路径失败");
+
+        }
+        return res.toString();
+
+    }
 }
 
 
