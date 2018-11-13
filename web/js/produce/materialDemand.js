@@ -700,6 +700,7 @@ function downloadModal() {
 //下载按钮绑定事件
 $(function () {
     $('#download').click(function () {
+        console.log(" window.location.href提交")
         var filePath = 'Files/Templates/物料需求导入模板.xlsx';
         var r = confirm("是否下载模板?");
         if (r == true) {

@@ -106,8 +106,10 @@ function importExcel() {
 //下载按钮绑定事件
 $(function () {
     $('#download').click(function () {
+        console.log("form提交")
         var filePath = 'Files/Templates/配伍计划导入模板.xlsx';
         var r = confirm("是否下载模板?");
+
         if (r == true) {
             $('#vform').submit();
 
