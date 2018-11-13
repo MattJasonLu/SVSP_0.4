@@ -32,11 +32,11 @@ public interface CompatibilityMapper {
     void  updateCompatibilityItem(CompatibilityItem compatibilityItem);
     void updateCompatibility(Compatibility compatibility);
     List<Compatibility> searchCompatibility(Compatibility compatibility);
-    int totalCompatibilityRecord();
+    int totalCompatibilityRecord( );
 
     List<String>  searchCompatibilityItem(CompatibilityItem compatibilityItem);
 
-    int searchCount(CompatibilityItem compatibilityItem);
+    int searchCount(Compatibility compatibility);
     int count(Compatibility compatibility);
     List<CompatibilityItem> getCompatibilityItemById(String compatibilityId);
     List<String> getNewestMaterialRequireId();

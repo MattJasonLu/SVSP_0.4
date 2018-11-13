@@ -34,6 +34,7 @@ public interface BatchOrderMapper {
     List<WasteInventory>getWasteInventoryList(Page page);
     OutboundOrder getSecOutBoundById(String id);
     int getCountByTime(String prefix);
+    int getSecCountByTime(String prefix);
     float getCountByInboundOrderItemId(String inboundOrderItemId);
     void updateBatchingOrder(BatchingOrder batchingOrder);
     void updateWasteInventoryActualCount(String inboundOrderItemId,float actualCount);
@@ -42,4 +43,12 @@ public interface BatchOrderMapper {
     float getCountByBatchingOrderId(String batchingOrderId);
    void adjustMaterialRequisitionOrder(MaterialRequisitionOrder materialRequisitionOrder);
    void updateCountByBatchingOrderId(String batchingOrderId,float batchingNumber);
+   void updateSecOutBound(OutboundOrder outboundOrder);
+   void cancelBatchingOrder(BatchingOrder batchingOrder);
+   void updateInventoryNumber(String inboundOrderItemId,float batchingNumber);
+   void cancelMaterialRequisitionOrder(MaterialRequisitionOrder materialRequisitionOrder);
+   void updateBatchOrderNumber(String batchingOrderId,float recipientsNumber);
+   void cancelOutBoundOrder(OutboundOrder outboundOrder);
+   void updateInventoryNumberAfterInvalid(String inboundOrderItemId,float inventoryNumber);
+   void retireOutBoundOrder(OutboundOrder outboundOrder);
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 /**
@@ -37,6 +38,8 @@ public class TransportPlanController {
     ContractService contractService;
     @Autowired
     StockService stockService;
+    @Autowired
+    UserService userService;
 
     /**
      * 增加运输计划
@@ -45,12 +48,14 @@ public class TransportPlanController {
      */
     @RequestMapping("addTransportPlan")
     @ResponseBody
-    public String addTransportPlan(@RequestBody TransportPlan transportPlan) {
+    public String addTransportPlan(@RequestBody TransportPlan transportPlan, HttpSession session) {
         JSONObject res = new JSONObject();
         try {
             // 设置运输计划编号
             transportPlan.setId(RandomUtil.getRandomEightNumber());
-            transportPlan.setAuthor("测试用户");
+            User userInfo = userService.getCurrentUserInfo(session);
+            if (userInfo != null)
+            transportPlan.setAuthor(userInfo.getName());
             transportPlan.setDepartmentDirector("测试用户");
             transportPlan.setProductionDirector("测试用户");
             transportPlan.setGroup("测试组别");
@@ -60,7 +65,6 @@ public class TransportPlanController {
                 transportPlanItem.setId(RandomUtil.getRandomEightNumber());
                 Client produceCompany = clientService.getByName(transportPlanItem.getProduceCompany().getCompanyName());
                 transportPlanItem.setProduceCompany(produceCompany);
-//                transportPlanItem.getWastes().setId(RandomUtil.getRandomEightNumber());
             }
             transportPlanService.add(transportPlan);
             res.put("status", "success");
@@ -78,11 +82,11 @@ public class TransportPlanController {
     public String updateTransportPlan(@RequestBody TransportPlan transportPlan) {
         JSONObject res = new JSONObject();
         try {
-            // 为危废设置编号
-            TransportPlan oldTransportPlan = transportPlanService.getById(transportPlan.getId());
-            for (int i = 0; i < oldTransportPlan.getTransportPlanItemList().size(); i++) {
-                transportPlan.getTransportPlanItemList().get(i).getWastes().setId(oldTransportPlan.getTransportPlanItemList().get(i).getWastes().getId());
-            }
+//            // 为危废设置编号
+//            TransportPlan oldTransportPlan = transportPlanService.getById(transportPlan.getId());
+//            for (int i = 0; i < oldTransportPlan.getTransportPlanItemList().size(); i++) {
+//                transportPlan.getTransportPlanItemList().get(i).getWastes().setId(oldTransportPlan.getTransportPlanItemList().get(i).getWastes().getId());
+//            }
             // 更新运输计划
             transportPlanService.update(transportPlan);
             res.put("status", "success");
@@ -320,7 +324,6 @@ public class TransportPlanController {
                 // 获取当前公司的业务员
                 Salesman salesman = null;
                 Client client = clientService.getByClientId(itemList.get(0).getProduceCompany().getClientId());
-                Client reveiveClient = clientService.getByClientId("0038");
                 if (client != null) {
                     if (client.getSalesman() != null) salesman = client.getSalesman();
                 }
@@ -332,18 +335,19 @@ public class TransportPlanController {
                     // 设置接运单条目的编号
                     wayBillItem.setItemId(String.valueOf(itemId));
                     // 设置接运单条目的危废
-                    wayBillItem.setWastesId(transportPlanItem.getWastes().getId());
-                    wayBillItem.setWastesCode(transportPlanItem.getWastes().getName());
-                    wayBillItem.setWastesAmount((float)transportPlanItem.getWastes().getWasteAmount());
-                    wayBillItem.setWastesPrice(transportPlanItem.getWastes().getUnitPriceTax());
-                    wayBillItem.setWastesName(transportPlanItem.getWastes().getName());
+//                    wayBillItem.setWastesId(transportPlanItem);
+                    wayBillItem.setWayBillId(wayBill.getId());
+                    wayBillItem.setWastesCode(transportPlanItem.getWastesCode());
+                    wayBillItem.setWastesAmount(transportPlanItem.getWastesAmount());
+//                    wayBillItem.setWastesPrice(transportPlanItem.getWas);
+                    wayBillItem.setWastesName(transportPlanItem.getWastesName());
                     wayBillItem.setWastesTotalPrice(wayBillItem.getWastesPrice() * wayBillItem.getWastesAmount());
                     // 设置接运单条目的业务员
-                    wayBillItem.setSalesmanName(salesman.getName());
+                    if (salesman != null) wayBillItem.setSalesmanName(salesman.getName());
                     // 设置接运单条目的接运单日期
                     wayBillItem.setReceiveDate(transportPlanItem.getApproachTime());
                     // 设置接收单位
-                    wayBillItem.setReceiveCompanyName(reveiveClient.getCompanyName());
+                    wayBillItem.setReceiveCompanyName("北控安耐得环保科技发展常州有限公司");
                     wayBillItem.setReceiveCompanyOperator("管理员");
                     // 增加接运单条目
                     wayBillItemList.add(wayBillItem);
@@ -561,15 +565,15 @@ public class TransportPlanController {
                     default:
                         break;
                 }
-                transportPlanItem.setWastes(wastes);
+//                transportPlanItem.setWastes(wastes);
                 transportPlanItemList.add(transportPlanItem);
             }
             transportPlan.setTransportPlanItemList(transportPlanItemList);
             transportPlanService.add(transportPlan);
             // 增加危废
-            for (TransportPlanItem transportPlanItem : transportPlanItemList) {
-                wastesService.add(transportPlanItem.getWastes());
-            }
+//            for (TransportPlanItem transportPlanItem : transportPlanItemList) {
+//                wastesService.add(transportPlanItem.getWastes());
+//            }
             res.put("status", "success");
             res.put("message", "导入成功");
         } catch (Exception e) {

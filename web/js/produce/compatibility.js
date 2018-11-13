@@ -182,6 +182,7 @@ function totalPage() {
             url: "totalCompatibilityRecord",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
+            contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result > 0) {
                     totalRecord = result;
@@ -196,58 +197,30 @@ function totalPage() {
             }
         });
     }
-        else {
-    console.log(data1)
-        if(data1.keywords==undefined){//高级查询
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "searchCompatibilityItemTotal",                  // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(data1),
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (result) {
-                    // console.log(result);
-                    if (result > 0) {
-                        totalRecord = result;
-                        console.log("总记录数为:" + result);
-                    } else {
-                        console.log("fail: " + result);
-                        totalRecord = 0;
-                    }
-                },
-                error: function (result) {
-                    console.log("error: " + result);
+    else {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchCompatibilityTotal",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                // console.log(result);
+                if (result > 0) {
+                    totalRecord = result;
+                    console.log("总记录数为:" + result);
+                } else {
+                    console.log("fail: " + result);
                     totalRecord = 0;
                 }
-            });
-        }
-        if(data1.keywords!=undefined){
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "searchCompatibilityTotal",                  // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(data1),
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (result) {
-                    // console.log(result);
-                    if (result > 0) {
-                        totalRecord = result;
-                        console.log("总记录数为:" + result);
-                    } else {
-                        console.log("fail: " + result);
-                        totalRecord = 0;
-                    }
-                },
-                error: function (result) {
-                    console.log("error: " + result);
-                    totalRecord = 0;
-                }
-            });
-
-        }
-        }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
+    }
 
 
         var count = countValue();                         // 可选
@@ -356,53 +329,28 @@ function totalPage() {
             });
         }
         else {
-            data1['page'] = page;
-         if(data1.keywords==undefined){ //高级查询
-             console.log("进来了")
-             $.ajax({
-                 type: "POST",                            // 方法类型
-                 url: "searchCompatibilityItem",                 // url
-                 async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-                 data: JSON.stringify(data1),
-                 dataType: "json",
-                 contentType: "application/json; charset=utf-8",
-                 success: function (result) {
-                     if (result != undefined && result.status == "success"){
-                         setCompatibility(result)
-                     } else {
-                         alert(result.message);
-
-                     }
-                 },
-                 error: function (result) {
-                     console.log(result);
-                     alert("服务器错误！");
-                 }
-             });
-
-         }
-            if(data1.keywords!=undefined){
-                $.ajax({
-                    type: "POST",                            // 方法类型
-                    url: "searchCompatibility",                 // url
-                    async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-                    data: JSON.stringify(data1),
-                    dataType: "json",
-                    contentType: "application/json; charset=utf-8",
-                    success: function (result) {
-                        if (result != undefined && result.status == "success"){
-                            setCompatibility(result)
-                        } else {
-                            alert(result.message);
-
-                        }
-                    },
-                    error: function (result) {
-                        console.log(result);
-                        alert("服务器错误！");
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "searchCompatibilityTotal",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data1),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    // console.log(result);
+                    if (result > 0) {
+                        totalRecord = result;
+                        console.log("总记录数为:" + result);
+                    } else {
+                        console.log("fail: " + result);
+                        totalRecord = 0;
                     }
-                });
-            }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                    totalRecord = 0;
+                }
+            });
         }
     }
 
@@ -466,56 +414,29 @@ function totalPage() {
                         console.log("error: " + result);
                     }
                 });
-            } else {
-                data1['page'] = page;
-                if(data1.keywords==undefined){ //高级查询
-                    console.log("进来了")
-                    $.ajax({
-                        type: "POST",                            // 方法类型
-                        url: "searchCompatibilityItem",                 // url
-                        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-                        data: JSON.stringify(data1),
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8",
-                        success: function (result) {
-                            if (result != undefined && result.status == "success"){
-                                setCompatibility(result)
-                            } else {
-                                alert(result.message);
-
-                            }
-                        },
-                        error: function (result) {
-                            console.log(result);
-                            alert("服务器错误！");
+            }  else {
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "searchCompatibilityTotal",                  // url
+                    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    data: JSON.stringify(data1),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        // console.log(result);
+                        if (result > 0) {
+                            totalRecord = result;
+                            console.log("总记录数为:" + result);
+                        } else {
+                            console.log("fail: " + result);
+                            totalRecord = 0;
                         }
-                    });
-
-                }
-                if(data1.keywords!=undefined){
-                    $.ajax({
-                        type: "POST",                            // 方法类型
-                        url: "searchCompatibility",                 // url
-                        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-                        data: JSON.stringify(data1),
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8",
-                        success: function (result) {
-                            if (result != undefined && result.status == "success"){
-                                setCompatibility(result)
-                            } else {
-                                alert(result.message);
-
-                            }
-                        },
-                        error: function (result) {
-                            console.log(result);
-                            alert("服务器错误！");
-                        }
-                    });
-                }
-
-
+                    },
+                    error: function (result) {
+                        console.log("error: " + result);
+                        totalRecord = 0;
+                    }
+                });
             }
         }
     }
@@ -1681,9 +1602,9 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
             if(last-event.timeStamp==0){
-                searchCompatibility();
+                searchPw();
             }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
-                searchCompatibility();      //
+                searchPw();      //
             }
         },600);
     });
@@ -1755,9 +1676,9 @@ function searchPw() {
     page.pageNumber = pageNumber;
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
-    var formType=null;
-    var handleCategory=null;
     if ($("#senior").is(':visible')) {
+        var formType=null;
+        var handleCategory=null;
         if($("#search-formType").val()==0)
             formType="Gas";
         if($("#search-formType").val()==1)
@@ -1784,36 +1705,66 @@ function searchPw() {
 
         if($("#search-handleCategory").val()==5)
             handleCategory="Suspension"
-
+ var    checkState=$('#search-checkState').val()
+        if(checkState.length<=0){
+            checkState=null;
+        }
         data1 = {
-             compatibilityId: $.trim($("#search-pwId").val()),
-             formType: formType,
-             handleCategory:handleCategory,
-             weeklyDemandTotal:$.trim( $('#search-weeklyDemandTotalAggregate').val()),
-             calorificBeg:$.trim( $('#search-calorificBeg').val()),
-             calorificEnd:$.trim( $('#search-calorificEnd').val()),
-             fBeg:$.trim( $('#search-fBeg').val()),
-             fEnd:$.trim( $('#search-fEnd').val()),
-            clBeg:$.trim( $('#search-clBeg').val()),
-            clEnd:$.trim( $('#search-clEnd').val()),
-            sBeg:$.trim( $('#search-sBeg').val()),
-            sEnd:$.trim( $('#search-sEnd').val()),
-             page: page
+               compatibilityItemList:[{compatibilityId:$.trim($("#search-pwId").val()),
+                formType: formType,
+                handleCategory:handleCategory,
+                weeklyDemandTotal:$.trim( $('#search-weeklyDemandTotalAggregate').val()),
+                calorificBeg:$.trim( $('#search-calorificBeg').val()),
+                calorificEnd:$.trim( $('#search-calorificEnd').val()),
+                fBeg:$.trim( $('#search-fBeg').val()),
+                fEnd:$.trim( $('#search-fEnd').val()),
+                clBeg:$.trim( $('#search-clBeg').val()),
+                clEnd:$.trim( $('#search-clEnd').val()),
+                sBeg:$.trim( $('#search-sBeg').val()),
+                sEnd:$.trim( $('#search-sEnd').val()),
+                }],
+               page: page,
+                checkState:checkState
+
         };
     }
+    else{
+        var keywords = $.trim($("#searchContent").val());
+        if(keywords=='已失效'){
+            keywords='Disabled'
+        }
+        if(keywords=='待提交'){
+            keywords='ToSubmit'
+        }
+        if(keywords=='审批通过'){
+            keywords='Approval'
+        }
+        if(keywords=='待审批'){
+            keywords='ToExamine'
+        }
+        if(keywords=='生效中'){
+            keywords='Enabled'
+        }
+        data1 = {
+            page: page,
+            keywords: keywords
+        }
+    }
+
+
 
     if (data1 == null) alert("请点击'查询设置'输入查询内容!");
     else {
         $.ajax({
             type: "POST",                            // 方法类型
-            url: "searchCompatibilityItem",                 // url
+            url: "searchCompatibility",                 // url
             async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined && result.status == "success"){
-                  // setCompatibility(result)
+              console.log(result)
                     setPageClone(result)
                 } else {
                     alert(result.message);

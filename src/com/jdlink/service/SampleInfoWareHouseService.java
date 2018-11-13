@@ -18,7 +18,7 @@ public interface SampleInfoWareHouseService {
     void confirmCheck(String sampleId,String laboratorySigner);
     void update(SampleInformation sampleInformation);
     List<SampleInformation> listByKeyword(String keyword);
-    void updateSampleInfo(String sampleId);
+    void updateSampleInfo(String sampleId,String newId);
     int searchCount(SampleInformation sampleInformation);
     List<SampleInformation> search(SampleInformation sampleInformation);
     SampleInformation getBySampleInformationId(String id);

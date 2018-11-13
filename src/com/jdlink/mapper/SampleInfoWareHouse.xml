@@ -37,14 +37,18 @@
     </insert>
 
     <select id="listPage" resultType="SampleInformation">
-        select * from t_pr_sampleinfowarehouse ORDER BY creationDate DESC
+        select * from t_pr_sampleinfowarehouse
+        where applyState in ('Rejected','Appointed','Received')
+        ORDER BY id DESC
         <if test="start != null and count != null">
-            limit #{start}, #{count}
+            limit #{start}, #{count};
         </if>
     </select>
 
     <select id="listItemPage" resultType="SampleInformationItem">
-        select * from t_pr_sampleinfowarehouseitem as a join t_pr_sampleinfowarehouse as b on a.sampleId=b.id ORDER BY creationDate DESC
+        select * from t_pr_sampleinfowarehouseitem as a join t_pr_sampleinfowarehouse as b on a.sampleId=b.id
+        where b.applyState in ('Rejected','Appointed','Received')
+        ORDER BY a.id DESC
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -262,7 +266,7 @@
                 and isViscosity = #{isViscosity}
             </if>
         </where>
-        order by creationDate desc
+        order by id desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
@@ -329,7 +333,7 @@
                 and a.isViscosity = #{isViscosity}
             </if>
         </where>
-        order by creationDate desc
+        order by a.id desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
@@ -463,7 +467,12 @@
     </update>
 
     <update id="updateSampleInfo" parameterType="String">
-        update t_pr_sampleinfowarehouse set applyState = 'Invalid' where id = #{sampleId}
+        update t_pr_sampleinfowarehouse set applyState = 'Invalid',
+        id=#{newId}
+        where id = #{sampleId};
+
+        update t_pr_sampleinfowarehouseitem set id = CONCAT('I-',id),sampleId=#{newId}
+        where sampleId= #{sampleId};
     </update>
 
     <update id="rejectSampleInfoById">

@@ -32,7 +32,7 @@ public interface CompatibilityService {
     List<Compatibility> searchCompatibility(Compatibility compatibility);
     int totalCompatibilityRecord();
     List<java.lang.String>  searchCompatibilityItem(CompatibilityItem compatibilityItem);
-    int searchCount(CompatibilityItem compatibilityItem);
+    int searchCount(Compatibility compatibility);
     int count(Compatibility compatibility);
     List<CompatibilityItem> getCompatibilityItemById(String compatibilityId);
     List<String> getNewestMaterialRequireId();

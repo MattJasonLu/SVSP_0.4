@@ -7,6 +7,7 @@ import com.jdlink.domain.LoginLog;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.User;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -105,5 +106,12 @@ public interface UserService {
     int countByUser(User user);
 
     void modifyPassword(User user);
+
+    /**
+     * 获取当前用户信息
+     * @param session
+     * @return
+     */
+    User getCurrentUserInfo(HttpSession session);
 
 }
