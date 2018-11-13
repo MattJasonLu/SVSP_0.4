@@ -752,6 +752,8 @@ function viewOutBound(item) {
 function adjustAttr(item) {
 
     var outboundOrderId=$(item).parent().parent().children('td').eq(1).html();
+
+    $('#outboundOrderId3').val(outboundOrderId);
     //加载进料方式的下拉框
     $.ajax({
         type: "POST",                       // 方法类型
@@ -789,12 +791,12 @@ function adjustAttr(item) {
 
 //确认修改属性
 function comfirm() {
-    console.log($("#outboundOrderId").val());
+    console.log($("#outboundOrderId3").val());
     console.log($('#modal-type').val());
     $.ajax({
         type: "POST",                       // 方法类型
         url: "upHandelCategoryById",                  // url
-        data:{'outboundOrderId':$("#outboundOrderId").val(),'index':$('#modal-type').val()},
+        data:{'outboundOrderId':$("#outboundOrderId3").val(),'index':$('#modal-type').val()},
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success:function (result) {
@@ -937,7 +939,7 @@ function view1(item){
                     //进料方式
                     $('#handelCategory').text(result.data.handelCategory.name);
                 }
-                //入库单号
+                //出库单号
                 $("#outboundOrderId").val(result.data.outboundOrderId);
                 //处置设备
                 if(result.data.equipment!=null){
@@ -1336,7 +1338,7 @@ function rollback(item) {
                 $('#outboundOrderId2').html(obj.outboundOrderId);
                 $('#inventoryNumber2').html(obj.inventoryNumber.toFixed(2));
                 $('#cancelNumber2').html(obj.outboundNumber.toFixed(2));
-                $('#inventoryNumber3').html(parseFloat(obj.inventoryNumber.toFixed(2))+parseFloat(obj.outboundNumber.toFixed(2)));
+                $('#inventoryNumber3').html((parseFloat(obj.inventoryNumber.toFixed(2))+parseFloat(obj.outboundNumber.toFixed(2))).toFixed(2));
                 $('#inboundOrderItemId2').html(obj.inboundOrderItemId);
 
             }

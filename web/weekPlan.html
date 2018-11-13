@@ -59,6 +59,8 @@
             </li>
         </ul>
     </nav>
+
+
     <div class="container-fluid">
         <div class="row">
             <div class="sidebar">
@@ -425,7 +427,7 @@
                     </form>
                 </div>
                 <div class="modal-footer center">
-                    <button type="button" class="btn btn-default" onclick="downloadModal()">下载模板</button>
+                    <button type="button" class="btn btn-default"  id="download">下载模板</button>
                     <button type="button" class="btn btn-primary" onclick="importExcel()">导入数据</button>
                 </div>
             </div>
@@ -708,6 +710,8 @@
             </div>
         </div>
     </div>
+
+    <form id="vform" class="hidden"  method="post" action="downloadFile?filePath=Files/Templates/配伍计划导入模板.xlsx" name=""></form>
 </body>
 
 

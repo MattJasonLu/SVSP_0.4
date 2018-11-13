@@ -46,6 +46,8 @@ public class InboundController {
     WareHouseService wareHouseService;
     @Autowired
     SecondaryCategoryService secondaryCategoryService;
+    @Autowired
+    UserService userService;
 
     /**
      * 列出所有入库计划单信息
@@ -574,9 +576,9 @@ public class InboundController {
      */
     @RequestMapping("countSecondInboundOrder")
     @ResponseBody
-    public int countSecondInboundOrder() {
+    public int countSecondInboundOrder(@RequestBody InboundOrder inboundOrder) {
         try {
-            return inboundService.countSecondInboundOrder();
+            return inboundService.countSecondInboundOrder(inboundOrder);
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
@@ -590,11 +592,11 @@ public class InboundController {
      */
     @RequestMapping("listSecondInboundOrder")
     @ResponseBody
-    public String listSecondInboundOrder(@RequestBody Page page) {
+    public String listSecondInboundOrder(@RequestBody InboundOrder inboundOrder) {
         JSONObject res = new JSONObject();
         try {
             // 获取入库单列表
-            List<InboundOrder> inboundOrderList = inboundService.listSecondInboundOrder(page);
+            List<InboundOrder> inboundOrderList = inboundService.listSecondInboundOrder(inboundOrder);
             JSONArray data = JSONArray.fromArray(inboundOrderList.toArray(new InboundOrder[inboundOrderList.size()]));
             res.put("status", "success");
             res.put("message", "获取信息成功");
@@ -609,7 +611,7 @@ public class InboundController {
 
     @RequestMapping("addSecondInboundOrder")
     @ResponseBody
-    public String addSecondInboundOrder(@RequestBody InboundOrder inboundOrder) {
+    public String addSecondInboundOrder(@RequestBody InboundOrder inboundOrder, HttpSession session) {
         JSONObject res = new JSONObject();
         try {
             //得到一个NumberFormat的实例
@@ -651,6 +653,23 @@ public class InboundController {
                 } while (laboratoryTestService.getLaboratoryTestById(labId) != null);
                 labId = nf.format(num);
             }
+            // update 2018年11月13日 by Matt 增加用户信息
+            User user = userService.getCurrentUserInfo(session);
+            if (user != null) {
+                inboundOrder.setCreatorId(user.getName());
+                inboundOrder.setModifierId(user.getName());
+                inboundOrder.setKeeperId(user.getName());
+                inboundOrder.setApproverId(user.getName());
+                inboundOrder.setDirectorId(user.getName());
+            } else {
+                inboundOrder.setCreatorId("管理员");
+                inboundOrder.setModifierId("管理员");
+                inboundOrder.setKeeperId("管理员");
+                inboundOrder.setApproverId("管理员");
+                inboundOrder.setDirectorId("管理员");
+            }
+            inboundOrder.setInboundDate(new Date());
+            inboundOrder.setCreateDate(new Date());
             inboundService.addSecondInboundOrder(inboundOrder);
             res.put("status", "success");
             res.put("message", "增加次生入库单成功");
