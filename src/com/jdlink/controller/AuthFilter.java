@@ -3,6 +3,7 @@ package com.jdlink.controller;
 import com.jdlink.domain.User;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -39,12 +40,17 @@ public class AuthFilter implements Filter {
         // 截取到当前文件名用于比较
         HttpSession session = request.getSession(false);
         //if (!"/SVSP/admin.html".equals(targetURL)) {// 判断当前页是否是重定向以后的登录页面页面，如果是就不做session的判断，防止出现死循环
+        PrintWriter pw = response.getWriter();
+        pw.println("hello");
         if (session == null || session.getAttribute("user") == null) { //获取用户如果为空则重定向
             // *用户登录以后需手动添加session
             response.sendRedirect(request.getContextPath() + "/SVSP/admin.html");
+            pw.println(request.getContextPath() + "/SVSP/admin.html");
             // 如果session为空表示用户没有登录就重定向到admin.html页面
             return;
         }
+        pw.flush();
+        pw.close();
         // }
         //  加入filter链继续向下执行
 
