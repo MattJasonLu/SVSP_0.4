@@ -1157,3 +1157,80 @@ function adjustMaterialRequisition() {
 
 
 }
+
+//领料单作废
+function cancel(item) {
+
+
+
+    var materialRequisitionOrderId = $(item).parent().parent().children('td').eq(2).html();
+
+   var batchingOrderId=materialRequisitionOrderId.substring(0,materialRequisitionOrderId.length-3);
+    $('#appointModal3').modal('show');
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getMaterialRequisitionOrderById",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {'materialRequisitionOrderId': materialRequisitionOrderId},
+        dataType: "json",
+        //contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result)
+                var obj = eval(result.data);
+                $("#materialRequisitionId2").html(obj.materialRequisitionId);
+
+                $("#batchingOrderId2").html(batchingOrderId);
+
+                $("#batchingNumber3").html(parseFloat(obj.batchingNumber).toFixed(2));
+
+                $("#cancelNumber").html(parseFloat(obj.recipientsNumber).toFixed(2));
+
+                $("#batchingNumber4").html((parseFloat(obj.recipientsNumber)+parseFloat(obj.batchingNumber)).toFixed(2));
+
+                $("#inboundOrderItemId2").html(obj.inboundOrderItemId);
+            }
+        },
+        error: function (result) {
+
+        }
+
+    })
+
+
+
+
+
+
+
+}
+
+//作废方法
+function confirmCancel() {
+
+
+
+        var data={
+            materialRequisitionId:  $("#materialRequisitionId2").html(),
+            recipientsNumber:$("#cancelNumber").html(),
+        };
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "cancelMaterialRequisitionOrder",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    alert(result.message)
+                    window.location.reload()
+                }
+            },
+            error:function (result) {
+
+            }
+        })
+
+}

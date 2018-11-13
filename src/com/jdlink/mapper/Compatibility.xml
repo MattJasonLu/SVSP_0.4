@@ -219,8 +219,49 @@
                 or  weeklyDemandTotalAggregate   like "%"#{keywords}"%"
                 or  fAvg  like "%"#{keywords}"%"
                 or  pAvg  like "%"#{keywords}"%"
-                or  checkState like "%"#{keywords}"%"
+                or  checkState = #{keywords}
             </if>
+            <if test="compatibilityItemList.size()>0">
+                <if test="compatibilityItemList[0].formType!='' and  compatibilityItemList[0].formType!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.formType=#{compatibilityItemList[0].formType} )
+                </if>
+                <if test="compatibilityItemList[0].handleCategory!='' and  compatibilityItemList[0].handleCategory!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.handleCategory=#{compatibilityItemList[0].handleCategory} )
+                </if>
+                <if test="compatibilityItemList[0].compatibilityId!='' and  compatibilityItemList[0].compatibilityId!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.compatibilityId  like "%"#{compatibilityItemList[0].compatibilityId}"%" )
+                </if>
+                <if test="compatibilityItemList[0].weeklyDemandTotal!='' and  compatibilityItemList[0].weeklyDemandTotal!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.weeklyDemandTotal like #{compatibilityItemList[0].weeklyDemandTotal} )
+                </if>
+                <if test="compatibilityItemList[0].calorificBeg!='' and  compatibilityItemList[0].calorificBeg!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.calorific <![CDATA[ >= ]]> #{compatibilityItemList[0].calorificBeg})
+                </if>
+                <if test="compatibilityItemList[0].calorificEnd!='' and  compatibilityItemList[0].calorificEnd!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.calorific   <![CDATA[ <= ]]>  #{compatibilityItemList[0].calorificEnd})
+                </if>
+                <if test="compatibilityItemList[0].fBeg!='' and  compatibilityItemList[0].fBeg!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.f   <![CDATA[ >= ]]>  #{compatibilityItemList[0].fBeg})
+                </if>
+                <if test="compatibilityItemList[0].fEnd!='' and  compatibilityItemList[0].fEnd!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.f   <![CDATA[ <= ]]>  #{compatibilityItemList[0].fEnd})
+                </if>
+                <if test="compatibilityItemList[0].clBeg!='' and  compatibilityItemList[0].clBeg!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.cl   <![CDATA[ >= ]]>  #{compatibilityItemList[0].clBeg})
+                </if>
+                <if test="compatibilityItemList[0].clEnd!='' and  compatibilityItemList[0].clEnd!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.cl   <![CDATA[ <= ]]>  #{compatibilityItemList[0].clEnd})
+                </if>
+                <if test="compatibilityItemList[0].sBeg!='' and  compatibilityItemList[0].sBeg!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.s   <![CDATA[ >= ]]>  #{compatibilityItemList[0].sBeg})
+                </if>
+                <if test="compatibilityItemList[0].sEnd!='' and  compatibilityItemList[0].sEnd!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.s   <![CDATA[ <= ]]>  #{compatibilityItemList[0].sEnd})
+                </if>
+            </if>
+              <if test="checkState!=null and checkState!=''">
+                  and checkState=#{checkState}
+              </if>
         </where>
         order by nowTime desc
         <if test="page != null and page.start != null and page.count != null">
@@ -275,46 +316,66 @@
      </select>
 
     <!--高级查询计数-->
-    <select id="searchCount" parameterType="CompatibilityItem" resultType="int">
-        select count( DISTINCT compatibilityId)  from  t_pr_pwitem
+    <select id="searchCount" parameterType="Compatibility" resultType="int">
+        select count( DISTINCT compatibilityId)  from  t_pr_pw
         <where>
-            <if test="compatibilityId != null and compatibilityId != ''">
-                and compatibilityId=#{compatibilityId}
+            <if test="keywords != null and keywords != ''">
+                or compatibilityId like "%"#{keywords}"%"
+                or totalDailyAmount like "%"#{keywords}"%"
+                or  ashAvg   like "%"#{keywords}"%"
+                or  calorificAvg like  "%"#{keywords}"%"
+                or   waterAvg   like "%"#{keywords}"%"
+                or   clAvg   like "%"#{keywords}"%"
+                or  sAvg  like "%"#{keywords}"%"
+                or   phAvg like "%"#{keywords}"%"
+                or  weeklyDemandTotalAggregate   like "%"#{keywords}"%"
+                or  fAvg  like "%"#{keywords}"%"
+                or  pAvg  like "%"#{keywords}"%"
+                or  checkState = #{keywords}
             </if>
-            <if test="formType != null and formType != ''">
-                and formType=#{formType}
+            <if test="compatibilityItemList.size()>0">
+                <if test="compatibilityItemList[0].formType!='' and  compatibilityItemList[0].formType!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.formType=#{compatibilityItemList[0].formType} )
+                </if>
+                <if test="compatibilityItemList[0].handleCategory!='' and  compatibilityItemList[0].handleCategory!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.handleCategory=#{compatibilityItemList[0].handleCategory} )
+                </if>
+                <if test="compatibilityItemList[0].compatibilityId!='' and  compatibilityItemList[0].compatibilityId!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.compatibilityId  like "%"#{compatibilityItemList[0].compatibilityId}"%" )
+                </if>
+                <if test="compatibilityItemList[0].weeklyDemandTotal!='' and  compatibilityItemList[0].weeklyDemandTotal!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.weeklyDemandTotal like #{compatibilityItemList[0].weeklyDemandTotal} )
+                </if>
+                <if test="compatibilityItemList[0].calorificBeg!='' and  compatibilityItemList[0].calorificBeg!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.calorific <![CDATA[ >= ]]> #{compatibilityItemList[0].calorificBeg})
+                </if>
+                <if test="compatibilityItemList[0].calorificEnd!='' and  compatibilityItemList[0].calorificEnd!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.calorific   <![CDATA[ <= ]]>  #{compatibilityItemList[0].calorificEnd})
+                </if>
+                <if test="compatibilityItemList[0].fBeg!='' and  compatibilityItemList[0].fBeg!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.f   <![CDATA[ >= ]]>  #{compatibilityItemList[0].fBeg})
+                </if>
+                <if test="compatibilityItemList[0].fEnd!='' and  compatibilityItemList[0].fEnd!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.f   <![CDATA[ <= ]]>  #{compatibilityItemList[0].fEnd})
+                </if>
+                <if test="compatibilityItemList[0].clBeg!='' and  compatibilityItemList[0].clBeg!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.cl   <![CDATA[ >= ]]>  #{compatibilityItemList[0].clBeg})
+                </if>
+                <if test="compatibilityItemList[0].clEnd!='' and  compatibilityItemList[0].clEnd!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.cl   <![CDATA[ <= ]]>  #{compatibilityItemList[0].clEnd})
+                </if>
+                <if test="compatibilityItemList[0].sBeg!='' and  compatibilityItemList[0].sBeg!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.s   <![CDATA[ >= ]]>  #{compatibilityItemList[0].sBeg})
+                </if>
+                <if test="compatibilityItemList[0].sEnd!='' and  compatibilityItemList[0].sEnd!=null">
+                    and t_pr_pw.compatibilityId in(select DISTINCT  compatibilityId from t_pr_pwitem where t_pr_pwitem.s   <![CDATA[ <= ]]>  #{compatibilityItemList[0].sEnd})
+                </if>
             </if>
-            <if test="handleCategory != null and handleCategory != ''">
-                and handleCategory=#{handleCategory}
-            </if>
-            <if test="weeklyDemandTotal != null and weeklyDemandTotal != ''">
-                and weeklyDemandTotal =#{weeklyDemandTotal}
-            </if>
-            <if test="calorificBeg != null and calorificBeg != ''">
-                <![CDATA[   and  calorific >=#{calorificBeg} ]]>
-            </if>
-            <if test="calorificEnd != null and calorificEnd != ''">
-                <![CDATA[   and  calorific <=#{calorificEnd} ]]>
-            </if>
-            <if test="fBeg != null and fBeg != ''">
-                <![CDATA[   and  f >=#{fBeg} ]]>
-            </if>
-            <if test="fEnd != null and fEnd != ''">
-                <![CDATA[   and  f <=#{fEnd} ]]>
-            </if>
-            <if test="clBeg != null and clBeg != ''">
-                <![CDATA[   and  cl >=#{clBeg} ]]>
-            </if>
-            <if test="clEnd != null and clEnd != ''">
-                <![CDATA[   and  cl <=#{clEnd} ]]>
-            </if>
-            <if test="sBeg != null and sBeg != ''">
-                <![CDATA[   and  s >=#{sBeg} ]]>
-            </if>
-            <if test="sEnd != null and sEnd != ''">
-                <![CDATA[   and  s <=#{sEnd} ]]>
+            <if test="checkState!=null and checkState!=''">
+                and checkState=#{checkState}
             </if>
         </where>
+
     </select>
   <!--粗查询计数-->
     <select id="count" parameterType="Compatibility" resultType="int">

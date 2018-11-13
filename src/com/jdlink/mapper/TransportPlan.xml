@@ -13,39 +13,38 @@
     <resultMap id="TransportPlanItemRM" type="TransportPlanItem" autoMapping="true">
         <id property="id" column="id"/>
         <association property="produceCompany" column="produceCompanyId" select="getProduceCompany"/>
-        <association property="wastes" column="id" select="getWastes"/>
+        <!--<association property="wastes" column="id" select="getWastes"/>-->
     </resultMap>
     <resultMap id="ClientRM" type="Client" autoMapping="true">
         <id property="clientId" column="clientId"/>
         <association property="salesman" column="salesmanId" select="getSalesman"/>
     </resultMap>
+    <!--增加运输计划-->
     <insert id="add" parameterType="TransportPlan">
         INSERT INTO t_pr_transportplan (id, author, departmentDirector, productionDirector, `group`, nowTime, checkState, createDate)
         VALUES (#{id}, #{author}, #{departmentDirector}, #{productionDirector}, #{group}, NOW(), #{checkState}, NOW());
         <if test="transportPlanItemList.size() > 0">
             <foreach collection="transportPlanItemList" item="transportPlanItem" index="index">
-                INSERT INTO t_pr_transportplanitem (id, produceCompanyId, handleCategory,
-                approachTime, wastesId, transportPlanId) VALUES (#{transportPlanItem.id},
-                #{transportPlanItem.produceCompany.clientId}, #{transportPlanItem.handleCategory},
-                #{transportPlanItem.approachTime}, #{transportPlanItem.wastes.id}, #{id});
-                UPDATE t_wastes SET name=#{transportPlanItem.wastes.name}, formType=#{transportPlanItem.wastes.formType},
-                wastesId=#{transportPlanItem.wastes.wastesId}, ph=#{transportPlanItem.wastes.ph}, ashPercentage=#{transportPlanItem.wastes.ashPercentage},
-                wetPercentage=#{transportPlanItem.wastes.wetPercentage}, calorific=#{transportPlanItem.wastes.calorific},
-                sulfurPercentage=#{transportPlanItem.wastes.sulfurPercentage}, fluorinePercentage=#{transportPlanItem.wastes.fluorinePercentage},
-                phosphorusPercentage=#{transportPlanItem.wastes.phosphorusPercentage}, chlorinePercentage=#{transportPlanItem.wastes.chlorinePercentage},
-                nowTime=NOW(), packageType=#{transportPlanItem.wastes.packageType}, wasteAmount=#{transportPlanItem.wastes.wasteAmount}, unit=#{transportPlanItem.wastes.unit},
-                processWay=#{transportPlanItem.wastes.processWay}, transportPlanItemId=#{transportPlanItem.id} WHERE id=#{transportPlanItem.wastes.id};
+                INSERT INTO t_pr_transportplanitem (id, produceCompanyId, handleCategory, approachTime,
+                transportPlanId, transferDraftId, wastesName, wastesCode, wastesAmount, unit, formType, packageType,
+                heat, ph, ash, waterContent, chlorineContent, sulfurContent, phosphorusContent, fluorineContent,
+                processWay) VALUES (#{transportPlanItem.id}, #{transportPlanItem.produceCompany.clientId},
+                #{transportPlanItem.handleCategory}, #{transportPlanItem.approachTime}, #{id},
+                #{transportPlanItem.transferDraftId}, #{transportPlanItem.wastesName}, #{transportPlanItem.wastesCode},
+                #{transportPlanItem.wastesAmount}, #{transportPlanItem.unit}, #{transportPlanItem.formType},
+                #{transportPlanItem.packageType}, #{transportPlanItem.heat}, #{transportPlanItem.ph}, #{transportPlanItem.ash},
+                #{transportPlanItem.waterContent}, #{transportPlanItem.chlorineContent}, #{transportPlanItem.sulfurContent},
+                #{transportPlanItem.phosphorusContent}, #{transportPlanItem.fluorineContent}, #{transportPlanItem.processWay});
             </foreach>
         </if>
     </insert>
 
+    <!--更新运输计划-->
     <update id="update" parameterType="TransportPlan">
         <if test="transportPlanItemList.size() > 0">
             <foreach collection="transportPlanItemList" item="transportPlanItem" index="index">
-                UPDATE t_pr_transportplanitem SET approachTime=#{transportPlanItem.approachTime} WHERE t_pr_transportplanitem.id=#{transportPlanItem.id};
-
-                UPDATE t_wastes SET wasteAmount=#{transportPlanItem.wastes.wasteAmount}, unit=#{transportPlanItem.wastes.unit},
-                processWay=#{transportPlanItem.wastes.processWay} WHERE t_wastes.id=#{transportPlanItem.wastes.id};
+                update t_pr_transportplanitem set approachTime=#{transportPlanItem.approachTime}, unit=#{transportPlanItem.unit},
+                processWay=#{transportPlanItem.processWay} where t_pr_transportplanitem.id=#{transportPlanItem.id};
             </foreach>
         </if>
     </update>

@@ -125,6 +125,7 @@ public class CompatibilityServiceImpl implements CompatibilityService
         return compatibilityMapper.searchCompatibility(compatibility);
     }
 
+
     @Override
     public int totalCompatibilityRecord() {
         return compatibilityMapper.totalCompatibilityRecord();
@@ -136,8 +137,8 @@ public class CompatibilityServiceImpl implements CompatibilityService
     }
 
     @Override
-    public int searchCount(CompatibilityItem compatibilityItem) {
-        return compatibilityMapper.searchCount(compatibilityItem);
+    public int searchCount(Compatibility compatibility) {
+        return compatibilityMapper.searchCount(compatibility);
     }
 
     @Override

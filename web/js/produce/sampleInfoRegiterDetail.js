@@ -865,6 +865,7 @@ function delLine(item) {
  * 显示确认收样框
  */
 function checkModal(menu) {
+    if ($(menu).parent().prev().prev().text() == "已预约") {
     $(".newLine").remove();
     sampleId = getSampleIdByMenu(menu);
     // 更新数据
@@ -910,6 +911,11 @@ function checkModal(menu) {
     });
     // 显示框体
     $('#checkModal').modal('show');
+    }else if ($(menu).parent().prev().prev().text() == "已拒收") {
+        alert("单据已拒收，不可收样！");
+    }else if ($(menu).parent().prev().prev().text() == "已作废") {
+        alert("单据已作废，不可收样！");
+    }
 }
 
 /**
@@ -937,6 +943,7 @@ function addNextLine() {
  * 修改信息功能
  */
 function adjustSample(menu) {
+    if ($(menu).parent().prev().prev().text() == "已预约") {
     num = 0;
     setSelectList();        // 设置危废代码和公司名下拉框数据
     $(".newLine").remove();
@@ -992,6 +999,9 @@ function adjustSample(menu) {
             alert("服务器异常!");
         }
     });
+    } else {
+        alert("单据不可修改！");
+    }
 }
 
 /**
@@ -1445,6 +1455,7 @@ function addAppoint() {
  * 删除预约单----->改作废
  */
 function deleteSample(menu) {
+    if ($(menu).parent().prev().prev().text() == "已预约") {
     sampleId = getSampleIdByMenu(menu);
     var msg = "是否作废该条记录？";
     if (confirm(msg) == true) {
@@ -1469,6 +1480,9 @@ function deleteSample(menu) {
                 console.log(result);
             }
         });
+    }
+    } else {
+        alert("单据不可作废！");
     }
 }
 
@@ -1537,6 +1551,7 @@ function print() {
  * 显示拒收模态框
  */
 function rejection(menu) {
+    if ($(menu).parent().prev().prev().text() == "已预约") {
     sampleId = getSampleIdByMenu(menu);
     //根据编号查找
     $.ajax({
@@ -1558,6 +1573,11 @@ function rejection(menu) {
         }
     });
     $("#rejection1").modal('show');
+    }else if ($(menu).parent().prev().prev().text() == "已收样") {
+        alert("单据已收样，不可拒收！");
+    }else if ($(menu).parent().prev().prev().text() == "已作废") {
+        alert("单据已作废，不可拒收！");
+    }
 }
 
 /**

@@ -341,6 +341,7 @@ function setDataList(result) {
         if (obj.produceCompany != null) clonedTr.find("td[name='produceCompanyName']").text(obj.produceCompany.companyName);
         clonedTr.find("td[name='wastesName']").text(obj.wastesName);
         clonedTr.find("td[name='wastesCode']").text(obj.wastesCode);
+        if(obj.formType != null)
         clonedTr.find("td[name='formType']").text(obj.formType.name);
         clonedTr.find("td[name='PH']").text(parseFloat(obj.PH).toFixed(2));
         clonedTr.find("td[name='ash']").text(parseFloat(obj.ash).toFixed(2));

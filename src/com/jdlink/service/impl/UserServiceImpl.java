@@ -11,6 +11,7 @@ import com.jdlink.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -120,5 +121,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void modifyPassword(User user){ userMapper.modifyPassword(user);}
+
+    @Override
+    public User getCurrentUserInfo(HttpSession session) {
+        return (User) session.getAttribute("user");
+    }
 
 }
