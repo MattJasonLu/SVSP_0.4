@@ -58,7 +58,7 @@
     </filter>
     <filter-mapping>
         <filter-name>AuthFilter</filter-name>
-        <url-pattern>/SVSP/*.html</url-pattern>
+        <url-pattern>/SVSP/*</url-pattern>
     </filter-mapping>
 
 </web-app>
