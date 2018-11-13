@@ -286,6 +286,7 @@ function addEquipment() {
            success: function (result) {
                if (result != undefined && result.status == "success") {
                    console.log(result);
+                   alert(result.message);
                    window.location.href = "equipment.html";
                } else {
                    console.log(result.message);
@@ -301,6 +302,7 @@ function addEquipment() {
 
 //生成单据号
 function createDocNumber() {
+    // 设置单据号
     $.ajax({
         type: "POST",                       // 方法类型
         url: "createDocNumber",            // url
@@ -321,6 +323,32 @@ function createDocNumber() {
             console.log("失败");
         }
     });
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getCurrentUserInfo",            // url
+        async: false,
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                var user = eval(result.data);
+                $('#editor').val(user.name);
+                $('#creator').val(user.name);
+
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+            console.log("失败");
+        }
+    });
+    // 设置创建日期
+    $("#dayTime").val(getNowDate());
+    $("#editTime").val(getNowDate());
+    // 设置编辑日期
     setSeniorSelectList();
 }
 function stopping() {
