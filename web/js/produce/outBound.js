@@ -405,7 +405,7 @@ function setOutboutList(result,index) {
                         break;
                     // 出库数量
                     case (4):
-                        $(this).html(obj.recipientsNumber);
+                        $(this).html(parseFloat(obj.recipientsNumber).toFixed(2));
                         break;
                     // 进料方式
                     case (5):
@@ -1138,13 +1138,13 @@ function searchWasteOut() {
             }
                 if(!($(this).children('td').eq(8).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
                     &&$(this).children('td').eq(3).text().indexOf(salesman)!=-1&&$(this).children('td').eq(2).text().indexOf(wareHouseName)!=-1
-                    &&(getDateByStr(start)<=endDate&&getDateByStr(start)>=startDate)
+                    &&(getDateByStr(start)<=endDate&&getDateByStr(start)>=startDate)&&$(this).children('td').eq(9).text()!='已退库'&&$(this).children('td').eq(9).text()!='已作废'
                 )){
                     $(this).hide();
                 }
                 if(($(this).children('td').eq(8).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
                     &&$(this).children('td').eq(3).text().indexOf(salesman)!=-1)&&$(this).children('td').eq(2).text().indexOf(wareHouseName)!=-1
-                    &&(getDateByStr(start)<=endDate&&getDateByStr(start)>=startDate)
+                    &&(getDateByStr(start)<=endDate&&getDateByStr(start)>=startDate)&&$(this).children('td').eq(9).text()!='已退库'&&$(this).children('td').eq(9).text()!='已作废'
                 ){
                     array1.push($(this));
                 }
