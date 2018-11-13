@@ -54,14 +54,14 @@ public class UtilController {
      */
     @RequestMapping("exportExcel2")
     @ResponseBody
-    public String exportExcel(String name, HttpServletResponse response, String sqlWords,String tableHead) {
+    public String exportExcel(String name, HttpServletResponse response, String sqlWords, String tableHead) {
         JSONObject res = new JSONObject();
         try {
             DBUtil db = new DBUtil();
             byte[] bytes = tableHead.getBytes("UTF-8");
-            String tHead = new String(bytes,"UTF-8");
+            String tHead = new String(bytes, "UTF-8");
             System.out.println(tHead);
-            db.exportExcel2(name, response, sqlWords,tHead);//HttpServletResponse response
+            db.exportExcel2(name, response, sqlWords, tHead);//HttpServletResponse response
             res.put("status", "success");
             res.put("message", "导出成功");
         } catch (IOException ex) {
@@ -100,6 +100,7 @@ public class UtilController {
 
     /**
      * 下载模板
+     *
      * @param filePath 文件路径
      * @param response
      */
@@ -136,18 +137,17 @@ public class UtilController {
 
     /**
      * 返回下载路径
-     * */
+     */
     @RequestMapping("getUrl")
     @ResponseBody
-    public String getUrl(String filePath){
-        JSONObject res=new JSONObject();
+    public String getUrl(String filePath) {
+        JSONObject res = new JSONObject();
 
         try {
             res.put("status", "success");
             res.put("message", "获取路径成功");
-            res.put("data", "downloadFile?filePath="+filePath);
-        }
-        catch (Exception e){
+            res.put("data", filePath);
+        } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "获取路径失败");
@@ -156,6 +156,52 @@ public class UtilController {
         return res.toString();
 
     }
+
+
+
+    /**
+     * 下载模板
+     *
+     * @param filePath 文件路径
+     * @param response
+     */
+    @RequestMapping("downloadFileUrl")
+    @ResponseBody
+    public String downloadFileUrl(String filePath, HttpServletResponse response) {
+        String fileName = "";   // 初始化文件名
+        JSONObject res=new JSONObject();
+        try {
+            // 获取文件路径，适配中文
+            filePath = new String(filePath.getBytes("iso8859-1"), "utf-8");
+            String[] str = filePath.split("[/]");     // 根据“/”将字符串分割成数组
+            fileName = java.net.URLEncoder.encode(str[str.length - 1], "UTF-8");  // 设置文件名
+            response.setCharacterEncoding("UTF-8");   // 设置编码
+            response.setContentType("multipart/form-data");
+            // 设置头文件
+            response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+            // 初始化输入流
+            InputStream in = null;
+            in = new FileInputStream(filePath);
+            byte[] buffer = new byte[1024];
+            int bytesRead = 0;
+            do {
+                // 写入字节
+                bytesRead = in.read(buffer, 0, buffer.length);
+                response.getOutputStream().write(buffer, 0, bytesRead);
+            } while (bytesRead == buffer.length);
+            in.close();      // 关闭输入流等
+            response.getOutputStream().flush();
+            res.put("status", "success");
+            res.put("message", "下载成功");
+        } catch (Exception e) {
+            res.put("status", "fail");
+            res.put("message", "下载失败");
+            e.printStackTrace();
+        }
+        return  res.toString();
+    }
+
+
 }
 
 

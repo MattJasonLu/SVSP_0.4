@@ -1131,7 +1131,10 @@ function setBatchingOrderList(result) {
                             break;
                             //仓库编号
                         case (14):
-                            $(this).html(obj.wareHouse.wareHouseId);
+                            if(obj.wareHouse!=null){
+                                $(this).html(obj.wareHouse.wareHouseId);
+                            }
+
                             break;
                     }
                 });
