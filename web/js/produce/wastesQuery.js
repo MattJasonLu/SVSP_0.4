@@ -345,7 +345,7 @@ function setWasteInventoryList(result) {
     tr.attr('class','myclass')
     $.each(result,function (index,item) {
         // 克隆tr，每次遍历都可以产生新的tr
-        if(item.boundType.name=='危废入库'){
+        if(item.boundType.name=='危废入库'&&parseFloat(item.actualCount.toFixed(2))>0){
             var clonedTr = tr.clone();
             clonedTr.show();
             clonedTr.children("td").each(function (inner_index) {
