@@ -58,7 +58,7 @@ public class EquipmentController {
             equipmentItem.setDocumentNumber(documentNumber);
             equipmentService.addEquipmentItem(equipmentItem);
             res.put("status", "success");
-            res.put("message", "添加子表成功");
+            res.put("message", "添加成功");
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
@@ -150,7 +150,6 @@ public class EquipmentController {
         JSONObject res = new JSONObject();
         String DocNumberId = "0001";
         try {
-
             if (equipmentService.getNewestId().size()>0) {
                 String DocNumber = equipmentService.getNewestId().get(0);
                 DocNumberId =get4(DocNumber);
@@ -174,11 +173,11 @@ public class EquipmentController {
      */
     public String get4(String DocNumber) {
         String s = String.valueOf((Integer.parseInt(DocNumber) + 1));
-        while (s.length() != 4) {
+        // update 2018年11月13日 by Matt：s.length() != 4 -> s.length() < 4
+        while (s.length() < 4) {
             s = "0" + s;
         }
         return s;
-
     }
 
     /**
