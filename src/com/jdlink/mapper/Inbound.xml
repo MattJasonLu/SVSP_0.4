@@ -424,7 +424,87 @@
 
     <!--列出次生入库单-->
     <select id="listSecondInboundOrder" resultMap="InboundOrderRM">
-        SELECT * FROM t_pl_inboundorder WHERE boundType='SecondaryInbound' and checkState != 'Invalid';
+        SELECT * FROM t_pl_inboundorder
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and (inboundOrderId like "%"#{keyword}"%"
+                or (DATE_FORMAT(inboundDate,'%Y-%m-%d') like "%"#{keyword}"%")
+                or recordState=#{keyword}
+                or checkState=#{keyword})
+            </if>
+            <if test="inboundOrderId != null and inboundOrderId != ''">
+                and inboundOrderId like "%"#{inboundOrderId}"%"
+            </if>
+            <if test="wareHouse != null and wareHouse.wareHouseName != null">
+                and warehouseId in (select warehouseId from t_pl_warehouse where warehouseName like "%"#{wareHouse.wareHouseName}"%")
+            </if>
+            <if test="recordState != null and recordState != ''">
+                and recordState = #{recordState}
+            </if>
+            <if test="checkState != null and checkState != ''">
+                and checkState = #{checkState}
+            </if>
+            <if test="companyId != null and companyId != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                <![CDATA[
+                and (DATE_FORMAT(inboundDate,'%Y-%m-%d') >= #{companyId})
+                ]]>
+            </if>
+            <if test="modifierId != null and modifierId != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                <![CDATA[
+                and (DATE_FORMAT(inboundDate,'%Y-%m-%d') <= #{modifierId})
+                ]]>
+            </if>
+            <if test="true">
+                and boundType='SecondaryInbound' and checkState != 'Invalid'
+            </if>
+        </where>
+        order by createDate desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+
+    </select>
+
+    <!--获取次生入库单的数量-->
+    <select id="countSecondInboundOrder" resultType="int">
+        SELECT COUNT(*) FROM t_pl_inboundorder
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and (inboundOrderId like "%"#{keyword}"%"
+                or (DATE_FORMAT(inboundDate,'%Y-%m-%d') like "%"#{keyword}"%")
+                or recordState=#{keyword}
+                or checkState=#{keyword})
+            </if>
+            <if test="inboundOrderId != null and inboundOrderId != ''">
+                and inboundOrderId like "%"#{inboundOrderId}"%"
+            </if>
+            <if test="wareHouse != null and wareHouse.wareHouseName != null">
+                and warehouseId in (select warehouseId from t_pl_warehouse where warehouseName like "%"#{wareHouse.wareHouseName}"%")
+            </if>
+            <if test="recordState != null and recordState != ''">
+                and recordState = #{recordState}
+            </if>
+            <if test="checkState != null and checkState != ''">
+                and checkState = #{checkState}
+            </if>
+            <if test="companyId != null and companyId != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                <![CDATA[
+                and (DATE_FORMAT(inboundDate,'%Y-%m-%d') >= #{companyId})
+                ]]>
+            </if>
+            <if test="modifierId != null and modifierId != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                <![CDATA[
+                and (DATE_FORMAT(inboundDate,'%Y-%m-%d') <= #{modifierId})
+                ]]>
+            </if>
+            <if test="true">
+                and boundType='SecondaryInbound' and checkState != 'Invalid'
+            </if>
+        </where>
     </select>
 
     <!--通过编号获取入库单-->
@@ -458,10 +538,6 @@
 
     <select id="countInboundOrder" resultType="int">
         SELECT COUNT(*) FROM t_pl_inboundorder WHERE boundType='WasteInbound';
-    </select>
-
-    <select id="countSecondInboundOrder" resultType="int">
-        SELECT COUNT(*) FROM t_pl_inboundorder WHERE boundType='SecondaryInbound';
     </select>
 
     <select id="getInboundOrderItemByClientId" parameterType="String" resultMap="InboundOrderItemRM">

@@ -200,7 +200,7 @@
                             <div class="form-group">
                                 <label for="search-inboundOrderId" class="col-sm-4 control-label">入库单号</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-inboundOrderId" name="search-inboundOrderId" placeholder="">
+                                    <input type="text" class="form-control" id="search-inboundOrderId" name="search-inboundOrderId" onkeyup="searchData();">
                                 </div>
                             </div>
                         </div>
@@ -208,7 +208,7 @@
                             <div class="form-group">
                                 <label for="search-wareHouseName" class="col-sm-4 control-label">仓库</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-wareHouseName" name="search-wareHouseName" placeholder="">
+                                    <input type="text" class="form-control" id="search-wareHouseName" name="search-wareHouseName" onkeyup="searchData();">
                                 </div>
                             </div>
                         </div>
@@ -216,7 +216,7 @@
                             <div class="form-group">
                                 <label for="search-checkState" class="col-sm-4 control-label">审批状态</label>
                                 <div class="col-xs-7">
-                                    <select class="form-control" id="search-checkState" name="search-checkState"></select>
+                                    <select class="form-control" id="search-checkState" name="search-checkState" onchange="searchData();"></select>
                                 </div>
                             </div>
                         </div>
@@ -224,20 +224,18 @@
                             <div class="form-group">
                                 <label for="search-recordState" class="col-sm-4 control-label">单据状态</label>
                                 <div class="col-xs-7">
-                                    <select class="form-control" name="search-recordState" id="search-recordState"></select>
+                                    <select class="form-control" name="search-recordState" id="search-recordState" onchange="searchData();"></select>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label pull-left" style="margin-left: 10px">入库日期 </label>
-                                <div class="input-group">
-                                    <input type="date" class="input-sm form-control" id="search-beginTime" title=""/>
-                                    <span class="input-group-addon">-</span>
-                                    <input type="date" class="input-sm form-control" id="search-endTime" title=""/>
-                                </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-1">入库日期</label>
+                            <div class="input-group col-sm-5">
+                                <input type="date" class="form-control" id="search-beginTime"/>
+                                <span class="input-group-addon">-</span>
+                                <input type="date" class="form-control" id="search-endTime"/>
                             </div>
                         </div>
                     </div>
@@ -449,7 +447,7 @@
                                     <th class="text-center small">单价</th>
                                     <th class="text-center small">金额</th>
                                     <th class="text-center small">处理方式</th>
-                                    <th class="text-center small">进料方式</th>
+                                    <!--<th class="text-center small">进料方式</th>-->
                                     <th class="text-center small">物质形态</th>
                                     <th class="text-center small">包装方式</th>
                                     <th class="text-center small">热酌减率</th>
@@ -471,7 +469,7 @@
                                     <td class="text-center small" name="unitPriceTax"></td>
                                     <td class="text-center small" name="totalPrice"></td>
                                     <td class="text-center small" name="processWay"></td>
-                                    <td class="text-center small" name="handleCategory"></td>
+                                    <!--<td class="text-center small" name="handleCategory"></td>-->
                                     <td class="text-center small" name="formType"></td>
                                     <td class="text-center small" name="packageType"></td>
                                     <td class="text-center small" name="heatAverage"></td>
