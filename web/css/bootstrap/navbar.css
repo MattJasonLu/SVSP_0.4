@@ -8,6 +8,9 @@ textarea {
 table th, table td {
     vertical-align: middle!important;
 }
+a {
+    text-decoration:none;
+}
 .pagination > li {
     display: inline;
 }
