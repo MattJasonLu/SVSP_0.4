@@ -105,6 +105,7 @@ function downloadModal() {
     if (r == true) {
         var newTab = window.open('about:blank')
         newTab.location.href='downloadFile?filePath='+filePath;
+        console.log(newTab.location.href)
         //window.open('downloadFile?filePath=' + newTab);
     }
 
