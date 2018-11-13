@@ -359,10 +359,13 @@ function modifyData() {
 function totalPage() {
     var totalRecord = 0;
     if (!isSearch) {
+        var data1 = {};
         $.ajax({
             type: "POST",                       // 方法类型
             url: "countSecondInboundOrder",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (result) {
                 if (result > 0) {
@@ -380,7 +383,7 @@ function totalPage() {
     } else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchSecondInboundOrderCount",                  // url
+            url: "countSecondInboundOrder",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data),
             dataType: "json",
@@ -492,11 +495,13 @@ function switchPage(pageNumber) {
     //addClass("active");
     page.start = (pageNumber - 1) * page.count;
     if (!isSearch) {
+        var data1 = {};
+        data1.page = page;
         $.ajax({
             type: "POST",                       // 方法类型
             url: "listSecondInboundOrder",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(page),
+            data: JSON.stringify(data1),
             dataType: "json",
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
@@ -514,7 +519,7 @@ function switchPage(pageNumber) {
         data['page'] = page;
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchSecondInboundOrder",         // url
+            url: "listSecondInboundOrder",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data),
             dataType: "json",
@@ -569,12 +574,14 @@ function inputSwitchPage() {
         page.count = countValue();//可选
         page.pageNumber = pageNumber;
         page.start = (pageNumber - 1) * page.count;
+        var data1 = {};
+        data1.page = page;
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
                 url: "listSecondInboundOrder",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(page),
+                data: JSON.stringify(data1),
                 dataType: "json",
                 contentType: 'application/json;charset=utf-8',
                 success: function (result) {
@@ -593,7 +600,7 @@ function inputSwitchPage() {
             data['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "searchSecondInboundOrder",         // url
+                url: "listSecondInboundOrder",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data),
                 dataType: "json",
@@ -626,11 +633,13 @@ function loadPageList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
+    var data1 = {};
+    data1.page = page;
     $.ajax({
         type: "POST",                       // 方法类型
         url: "listSecondInboundOrder",   // url
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(page),
+        data: JSON.stringify(data1),
         dataType: "json",
         contentType: 'application/json;charset=utf-8',
         success: function (result) {
@@ -779,7 +788,7 @@ function searchData() {
     }
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "searchSecondInboundOrder",                  // url
+        url: "listSecondInboundOrder",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         data: JSON.stringify(data),
         dataType: "json",

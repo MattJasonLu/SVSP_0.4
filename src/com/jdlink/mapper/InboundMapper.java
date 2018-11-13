@@ -150,13 +150,13 @@ public interface InboundMapper {
      * 计算次生入库单数量
      * @return 入库单数量
      */
-    int countSecondInboundOrder();
+    int countSecondInboundOrder(InboundOrder inboundOrder);
 
     /**
      * 列出次生入库单
      * @return 次生入库单列表
      */
-    List<InboundOrder> listSecondInboundOrder(Page page);
+    List<InboundOrder> listSecondInboundOrder(InboundOrder inboundOrder);
 
     /**
      * 增加次生危废入库单
