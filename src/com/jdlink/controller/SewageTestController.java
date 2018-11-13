@@ -919,4 +919,151 @@ public class SewageTestController {
     }
 
 
+    //检测污水预约单号是否存在
+    @RequestMapping("testingSewageId")
+    @ResponseBody
+    public String testingSewageId(String id){
+        JSONObject res=new JSONObject();
+
+        try {
+           List<String> sewageIdList=sewageTestService.getAllSewageId();
+            boolean bool = sewageIdList.contains(id);
+            res.put("status", "success");
+            res.put("message", "检验完毕");
+            res.put("data", bool);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "检验失败");
+
+        }
+
+        return res.toString();
+
+    }
+
+    //检测软水预约单号是否存在
+    @RequestMapping("testingSoftId")
+    @ResponseBody
+    public String testingSoftId(String id){
+        JSONObject res=new JSONObject();
+
+        try {
+            List<String> softIdList=sewageTestService.getAllSoftId();
+            boolean bool = softIdList.contains(id);
+            res.put("status", "success");
+            res.put("message", "检验完毕");
+            res.put("data", bool);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "检验失败");
+
+        }
+
+        return res.toString();
+
+    }
+
+    //检测次生预约单号是否存在
+    @RequestMapping("testingSecondaryId")
+    @ResponseBody
+    public String testingSecondaryId(String id){
+        JSONObject res=new JSONObject();
+
+        try {
+            List<String> secondaryIdList=sewageTestService.getAllSecondaryId();
+            boolean bool = secondaryIdList.contains(id);
+            res.put("status", "success");
+            res.put("message", "检验完毕");
+            res.put("data", bool);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "检验失败");
+
+        }
+
+        return res.toString();
+
+    }
+
+    //检测污水化验单号
+    @RequestMapping("testingSewageTestId")
+    @ResponseBody
+    public String testingSewageTestId(String  id){
+
+        JSONObject res=new JSONObject();
+
+        try {
+            List<String> sewageTestIdList=sewageTestService.getAllSewageTestId();
+            boolean bool = sewageTestIdList.contains(id);
+            res.put("status", "success");
+            res.put("message", "检验完毕");
+            res.put("data", bool);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "检验失败");
+
+        }
+
+        return res.toString();
+
+    }
+
+    //检测软水化验单号
+    @RequestMapping("testingSoftTestId")
+    @ResponseBody
+    public String testingSoftTestId(String  id){
+
+        JSONObject res=new JSONObject();
+
+        try {
+            List<String> softTestIdList=sewageTestService.getAllSoftTestId();
+            boolean bool = softTestIdList.contains(id);
+            res.put("status", "success");
+            res.put("message", "检验完毕");
+            res.put("data", bool);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "检验失败");
+
+        }
+
+        return res.toString();
+
+    }
+
+
+    //检测次生化验单号
+    @RequestMapping("testingSecondaryTestId")
+    @ResponseBody
+    public String testingSecondaryTestId(String  id){
+
+        JSONObject res=new JSONObject();
+
+        try {
+            List<String> secondaryTestIdList=sewageTestService.getAllSecondaryTestId();
+            boolean bool = secondaryTestIdList.contains(id);
+            res.put("status", "success");
+            res.put("message", "检验完毕");
+            res.put("data", bool);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "检验失败");
+
+        }
+
+        return res.toString();
+
+    }
 }
