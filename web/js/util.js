@@ -407,3 +407,25 @@ function unique1(arr){
     }
     return hash;
 }
+
+function getCurrentUserInfo(){
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getCurrentUserInfo",              // url
+        cache: false,
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result.status == "fail") {
+                if(data == null || result.message == "用户未正常登陆"){
+                    window.location.href="admin.html";
+                }
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+}

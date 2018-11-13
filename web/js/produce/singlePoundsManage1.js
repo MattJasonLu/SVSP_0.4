@@ -1058,6 +1058,12 @@ function calculateWeight(){
         $("#add_netWeight").val(parseFloat(grossWeight) - parseFloat(tare));
     }
 }
+/**
+ * 自动设置出厂车号
+ */
+function autoSetoutLicencePlate(item){
+    $("#add_outLicencePlate").val($(item).val());
+}
 
 
 

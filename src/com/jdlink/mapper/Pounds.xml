@@ -33,14 +33,16 @@
     </select>
 
     <select id="listPage" resultMap="PoundsRM">
-        select * from t_pr_pounds order by nowTime desc
+        select * from t_pr_pounds
+        where state != 'Invalid'
+        order by id desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
     </select>
 
     <select id="list" resultMap="PoundsRM">
-        select * from t_pr_pounds order by nowTime desc;
+        select * from t_pr_pounds order by id desc;
     </select>
 
     <select id="getClientIdByName" parameterType="String" resultType="String">
@@ -98,7 +100,7 @@
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
         </where>
-        order by nowTime desc
+        order by id desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
@@ -158,7 +160,8 @@
     </select>
 
     <update id="invalid" parameterType="String">
-        update t_pr_pounds set state = 'Invalid' where id = #{id}
+        update t_pr_pounds set state = 'Invalid',id=CONCAT('I-',id)
+        where id = #{id}
     </update>
 
 
