@@ -829,7 +829,10 @@
                             </thead>
                             <tbody >
                             <tr id="addTable" class="myclass2">
-                                <td><input class="form-control" name="transferDraftId"></td>
+                                <td><input class="form-control" name="transferDraftId" onkeyup="testing(this)">
+                                    <p id="pass"  style="color: green">通过</p>
+                                    <p id="break" style="color: red">化验单号已存在</p>
+                                </td>
                                 <td><input class="form-control" name="produceCompany" type="text"></td>
                                 <td><input class="form-control" name="wastesName"></td>
                                 <td><input class="form-control" name="wastesCode"></td>

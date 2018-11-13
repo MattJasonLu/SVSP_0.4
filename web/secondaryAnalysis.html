@@ -400,7 +400,9 @@
                         <div class="form-group col-md-6">
                             <label for="reservationId" class="col-sm-4 control-label">预约单号</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" id="reservationId"  name="signer" required>
+                                <input type="text" class="form-control" id="reservationId"  name="signer" onkeyup="testing(this)">
+                                <p id="pass"  style="color: green">通过</p>
+                                <p id="break" style="color: red">预约单号已存在</p>
                             </div>
                         </div>
                         <div class="form-group col-md-6">
