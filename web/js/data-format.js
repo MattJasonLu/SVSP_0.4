@@ -6,9 +6,28 @@ function getNowDate() {
     var now = new Date();
     return now.format('yyyy-MM-dd');
 }
-function getNowDateType2() {
+
+/**
+ * 获取日报范围起始日期
+ */
+function getReportStart() {
     var now = new Date();
-    return now.format('yyyy/MM/dd');
+    var year = now.getFullYear();
+    var month = now.getMonth();
+    var start = new Date();
+    start.setFullYear(year, month, 23);
+    return start.format('yyyy-MM-dd')
+}
+/**
+ * 获取日报范围结束日期
+ */
+function getReportEnd() {
+    var now = new Date();
+    var year = now.getFullYear();
+    var month = now.getMonth() + 1;
+    var start = new Date();
+    start.setFullYear(year, month, 22);
+    return start.format('yyyy-MM-dd')
 }
 function getFormatDate(date) {
     var date1 = new Date(date);
