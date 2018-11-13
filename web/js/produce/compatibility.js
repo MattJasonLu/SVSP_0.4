@@ -103,21 +103,49 @@ function importExcel() {
 //
 //
 // }
-
+//下载按钮绑定事件
 $(function () {
     $('#download').click(function () {
         var filePath = 'Files/Templates/配伍计划导入模板.xlsx';
         var r = confirm("是否下载模板?");
         if (r == true) {
+            //e.preventDefault();
             var newTab = window.open('about:blank')
+            console.log("打开了空白页面")
             newTab.location.href='downloadFile?filePath='+filePath;
-            console.log(newTab.location.href)
+            console.log("打开了下载页面")
             //window.open('downloadFile?filePath=' + newTab);
         }
 
 
     })
 })
+
+
+
+$(".canModify").click(function(){
+
+    var test01 = window.open();  //此处不会拦截
+
+    ajaxInSameDomain(url, "regStatus=06&supplierInfoId=" + _this.attr("cz"), 'POST', function(data){
+        if (data.mark == "success") {
+
+
+            //path=需要弹出的页面URL；
+
+
+ test01.location = path;//此处会将弹出的页面内容刷新为原先需要弹出页面的内容，从而绕过拦截
+
+
+        }else if(data.mark == "hasStop"){
+
+            return;
+        }
+    }, null);
+});
+
+
+
 
 
 /**
