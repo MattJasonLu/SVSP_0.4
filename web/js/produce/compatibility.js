@@ -98,18 +98,27 @@ function importExcel() {
 /**
  * 下载模板
  * */
-function downloadModal() {
+// function downloadModal() {
+//
+//
+//
+// }
 
-    var filePath = 'Files/Templates/配伍计划导入模板.xlsx';
-    var r = confirm("是否下载模板?");
-    if (r == true) {
-        var newTab = window.open('about:blank')
-        newTab.location.href='downloadFile?filePath='+filePath;
-        console.log(newTab.location.href)
-        //window.open('downloadFile?filePath=' + newTab);
-    }
+$(function () {
+    $('#download').click(function () {
+        var filePath = 'Files/Templates/配伍计划导入模板.xlsx';
+        var r = confirm("是否下载模板?");
+        if (r == true) {
+            var newTab = window.open('about:blank')
+            newTab.location.href='downloadFile?filePath='+filePath;
+            console.log(newTab.location.href)
+            //window.open('downloadFile?filePath=' + newTab);
+        }
 
-}
+
+    })
+})
+
 
 /**
  * 
