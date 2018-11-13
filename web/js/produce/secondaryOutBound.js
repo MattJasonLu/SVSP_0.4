@@ -388,10 +388,16 @@ function setOutBoundList(result) {
                         break;
                         //处置方式
                     case (6):
-                        $(this).html(obj.processWay.name);
+                        if(obj.processWay!=null){
+                            $(this).html(obj.processWay.name);
+                        }
+
                         break
                     case (7):
-                        $(this).html(obj.checkState.name);
+                        if(obj.checkState!=null){
+                            $(this).html(obj.checkState.name);
+                        }
+
                         break
                     case (8):
                         $(this).html(obj.inboundOrderItemId);
