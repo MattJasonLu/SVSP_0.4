@@ -122,7 +122,7 @@
                 and t_pr_waybill.state = #{state}
             </if>
         </where>
-        order by creationDate desc
+        order by wayBillDate desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
