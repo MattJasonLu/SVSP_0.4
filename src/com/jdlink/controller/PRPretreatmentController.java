@@ -461,6 +461,27 @@ public class PRPretreatmentController {
         return res.toString();
     }
 
+    /**
+     * 修改
+     * @return
+     */
+    @RequestMapping("updatePretreatment")
+    @ResponseBody
+    public String updatePretreatment(@RequestBody Pretreatment pretreatment) {
+        JSONObject res = new JSONObject();
+        try {
+            pretreatmentService.update(pretreatment);
+            res.put("status", "success");
+            res.put("message", "修改成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "修改失败！");
+        }
+        // 返回结果
+        return res.toString();
+    }
+
 
 
 }
