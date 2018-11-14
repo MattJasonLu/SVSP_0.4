@@ -474,7 +474,7 @@ function searchData() {
 
     var water = $.trim($('#search-water').val());
 
-    var remarks = $.trim($('#search-water').val());
+    var remarks = $.trim($('#search-remarks').val());
 
     var beginTime = $.trim($('#search-inDate').val());
 
@@ -521,19 +521,19 @@ function searchData() {
             }
             var date = $(this).children('td').eq(2).text();
             //console.log(this);
-            if (!($(this).children('td').eq(1).text().indexOf(id) != -1&& $(this).children('td').eq(7).text().indexOf(checkState) != -1
-                && $(this).children('td').eq(3).text().indexOf(wastesName) != -1 && $(this).children('td').eq(4).text().indexOf(scorchingRate) != -1 && $(this).children('td').text().indexOf(text) != -1
-                && $(this).children('td').eq(5).text().indexOf(water) != -1 && $(this).children('td').eq(6).text().indexOf(remarks) != -1
-                && (new Date(startDate).getTime() <= new Date($(date).children('td').eq(2).text()).getTime() && new Date(endDate).getTime() >= new Date(date).getTime())
+            if (!($(this).children('td').eq(1).text().indexOf(id) != -1&& $(this).children('td').eq(6).text().indexOf(checkState) != -1
+                && $(this).children('td').eq(2).text().indexOf(wastesName) != -1 && $(this).children('td').eq(3).text().indexOf(scorchingRate) != -1 && $(this).children('td').text().indexOf(text) != -1
+                && $(this).children('td').eq(6).text().indexOf(water) != -1 && $(this).children('td').eq(5).text().indexOf(remarks) != -1
+
 
             )) {
                 $(this).hide();
             }
             if (
-                ($(this).children('td').eq(1).text().indexOf(id) != -1&& $(this).children('td').eq(7).text().indexOf(checkState) != -1
-                    && $(this).children('td').eq(3).text().indexOf(wastesName) != -1 && $(this).children('td').eq(4).text().indexOf(scorchingRate) != -1 && $(this).children('td').text().indexOf(text) != -1
-                    && $(this).children('td').eq(5).text().indexOf(water) != -1 && $(this).children('td').eq(6).text().indexOf(remarks) != -1
-                    && (new Date(startDate).getTime() <= new Date(date).getTime() && new Date(endDate).getTime() >= new Date(date).getTime())
+                ($(this).children('td').eq(1).text().indexOf(id) != -1&& $(this).children('td').eq(6).text().indexOf(checkState) != -1
+                    && $(this).children('td').eq(2).text().indexOf(wastesName) != -1 && $(this).children('td').eq(3).text().indexOf(scorchingRate) != -1 && $(this).children('td').text().indexOf(text) != -1
+                    && $(this).children('td').eq(6).text().indexOf(water) != -1 && $(this).children('td').eq(5).text().indexOf(remarks) != -1
+
 
                 )
 
