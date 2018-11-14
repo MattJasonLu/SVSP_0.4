@@ -86,7 +86,7 @@ public class SampleInfoAnalysis {
     /**
      * 粘度
      */
-    private float viscosity;
+    private String viscosity;
     /**
      * 热融试验
      */
@@ -264,11 +264,11 @@ public class SampleInfoAnalysis {
         this.flashPoint = flashPoint;
     }
 
-    public float getViscosity() {
+    public String getViscosity() {
         return viscosity;
     }
 
-    public void setViscosity(float viscosity) {
+    public void setViscosity(String viscosity) {
         this.viscosity = viscosity;
     }
 
