@@ -175,7 +175,17 @@
     <select id="loadWastesOutBoundList" resultMap="WastesOutBoundRM">
         select * from t_pl_outboundorder where  boundType='WasteOutbound' order by outboundOrderId desc
         <if test="start != null and count != null">
-            limit #{start}, #{count}
+            limit #{start}, #{count};
+        </if>
+    </select>
+
+    <!--预处理获取危废出库数据接口-->
+    <select id="loadOutBoundList" resultMap="WastesOutBoundRM">
+        select * from t_pl_outboundorder
+        where boundType='WasteOutbound' and checkState = 'OutBounded'
+        order by outboundOrderId desc
+        <if test="start != null and count != null and count != 0">
+            limit #{start}, #{count};
         </if>
     </select>
 
