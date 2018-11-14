@@ -193,7 +193,7 @@
                     <div class="row">
                         <div class="form-horizontal col-sm-6">
                             <div class="form-group">
-                                <label for="search-id" class="col-sm-4 control-label">化验单号</label>
+                                <label for="search-id" class="col-sm-4 control-label">样品单号</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-id" name="search-laboratoryTestNumber" placeholder="" onkeyup="searchData();">
                                 </div>
@@ -222,16 +222,16 @@
 
                     </div>
                     <div class="row">
-                        <div class="form-horizontal col-md-6">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" style="margin-left: 40px">收样日期 </label>
-                                <div class="input-group">
-                                    <input type="date" class="input-sm form-control" id="search-inDate" title="" onkeydown="" onkeyup="enterSearch()"/>
-                                    <span class="input-group-addon">-</span>
-                                    <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown="" onkeyup="enterSearch()"/>
-                                </div>
-                            </div>
-                        </div>
+                        <!--<div class="form-horizontal col-md-6">-->
+                            <!--<div class="form-group">-->
+                                <!--<label class="col-sm-3 control-label" style="margin-left: 40px">收样日期 </label>-->
+                                <!--<div class="input-group">-->
+                                    <!--<input type="date" class="input-sm form-control" id="search-inDate" title="" onkeydown="" onkeyup="enterSearch()"/>-->
+                                    <!--<span class="input-group-addon">-</span>-->
+                                    <!--<input type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown="" onkeyup="enterSearch()"/>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
                         <div class="form-horizontal col-md-6">
                             <div class="form-group">
                                 <label for="search-remarks" class="col-sm-4 control-label">备注</label>
@@ -240,8 +240,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="form-horizontal col-md-6">
                             <div class="form-group">
                                 <label for="search-checkState" class="col-sm-4 control-label">单据状态</label>
@@ -257,6 +255,9 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+
+                    </div>
 
 
                 </div>
@@ -270,8 +271,8 @@
                                 <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
                             </label>
                         </th>
-                        <th class="text-center">化验单号</th>
-                        <th class="text-center">收样日期</th>
+                        <th class="text-center">样品单号</th>
+                        <!--<th class="text-center hidden">收样日期</th>-->
                         <th class="text-center">废物名称</th>
                         <th class="text-center">热灼减率%</th>
                         <th class="text-center">水分%</th>
@@ -280,7 +281,7 @@
                         <th class="text-center">操作</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tbody1">
                     <tr id="cloneTr">
                         <td class="text-center">
                             <label>
@@ -288,7 +289,7 @@
                             </label>
                         </td>
                         <td class="text-center" name="id">Q10000001</td>
-                        <td class="text-center">张三</td>
+                        <!--<td class="text-center hidden">张三</td>-->
                         <td class="text-center">李四</td>
                         <td class="text-center">2018-7-31</td>
                         <td class="text-center">安耐得环保常州分公司</td>
@@ -786,8 +787,8 @@
                             <!--<thead style="border:none">-->
                           <thead>
                             <tr>
-                                <th>化验单号</th>
-                                <th>收样日期</th>
+                                <th>样品单号</th>
+                                <!--<th class="hidden">收样日期</th>-->
                                 <th>废物名称</th>
                                 <th>热灼减率%</th>
                                 <th>水分%</th>
@@ -795,12 +796,12 @@
                             </tr>
                           </thead>
                             <tbody >
-                            <tr id="addTable" class="myclass2">
+                            <tr id="addTable" class="myclass3">
                                 <td><input class="form-control" name="transferDraftId" onkeyup="testing(this)">
                                     <p id="pass"  style="color: green">通过</p>
-                                    <p id="break" style="color: red">化验单号已存在</p>
+                                    <p id="break" style="color: red">样品单号已存在</p>
                                 </td>
-                                <td><input class="form-control" name="produceCompany" type="date"></td>
+                                <!--<td><input class="form-control hidden" name="produceCompany" type="date"></td>-->
                                 <td><input class="form-control" name="wastesName" ></td>
                                 <td><input class="form-control" name="wastesCode" ></td>
                                 <td><input class="form-control" name="formType" ></td>
@@ -814,7 +815,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
+                                <!--<td></td>-->
                             </tr>
                             </tbody>
                         </table>
@@ -841,8 +842,8 @@
                             <!--<thead style="border:none">-->
                             <thead>
                             <tr>
-                                <th>化验单号</th>
-                                <th>收样日期</th>
+                                <th>样品单号</th>
+                                <!--<th class="hidden">收样日期</th>-->
                                 <th>废物名称</th>
                                 <th>热灼减率%</th>
                                 <th>水分%</th>
@@ -852,7 +853,7 @@
                             <tbody >
                             <tr  class="myclass2">
                                 <td><input class="form-control" name="transferDraftId" id="id" readonly></td>
-                                <td><input class="form-control" name="produceCompany" type="date" id="dateTime"></td>
+                                <!--<td><input class="form-control hidden" name="produceCompany" type="date" id="dateTime"></td>-->
                                 <td><input class="form-control" name="wastesName" id="wastesName"></td>
                                 <td><input class="form-control" name="wastesCode" id="scorchingRate"></td>
                                 <td><input class="form-control" name="formType" id="water"></td>

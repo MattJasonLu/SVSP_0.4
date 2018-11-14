@@ -340,29 +340,50 @@ function setSoftTestList(result) {
                     break;
                 case (2):
                     // 采样点
+
                     $(this).html((obj.address));
                     break;
                 //浊度FTU
                 case (3):
+                    if(obj.turbidity==0){
+                        $(this).html('--')
+                    }
+                    else
                     $(this).html((obj.turbidity).toFixed(2));
                     break;
                 case (4):
                     // 硬度
-                    $(this).html(obj.hardness.toFixed(2));
+                    $(this).html(obj.hardness);
                     break;
                 case (5):
+                    if(obj.PH==0){
+                        $(this).html('--')
+                    }
+                    else
                     // ph
                     $(this).html(obj.PH.toFixed(2));
                     break;
                 case (6):
+                    if(obj.electricalConductivity==0){
+                        $(this).html('--')
+                    }
+                    else
                     // 电导率
                     $(this).html(obj.electricalConductivity.toFixed(2));
                     break;
                 case (7):
+                    if(obj.basicity==0){
+                        $(this).html('--')
+                    }
+                    else
                     // 全碱度
                     $(this).html(obj.basicity.toFixed(2));
                     break;
                 case (8):
+                    if(obj.phenolphthalein==0){
+                        $(this).html('--')
+                    }
+                    else
                     // 酚酞碱度
                     $(this).html(obj.phenolphthalein.toFixed(2));
                     break;
@@ -635,7 +656,7 @@ function addNewLine(item) {
     var tr = $(item).parent().parent().prev();
     // 克隆tr，每次遍历都可以产生新的tr
     var clonedTr = tr.clone();
-    clonedTr.attr('class','myclass2');
+    clonedTr.attr('class','myclass3');
     $(clonedTr).children('td').eq(0).find('p').hide()
     clonedTr.show();
     clonedTr.children().find("input").val("");
@@ -664,7 +685,7 @@ function delLine(item) {
 //添加方法
 function save() {
 
-    $('.myclass2').each(function () {
+    $('.myclass3').each(function () {
         var data={
             id:$(this).children('td').eq(0).find('input').val(),
             address:$(this).children('td').eq(1).find('input').val(),
@@ -677,22 +698,25 @@ function save() {
             remarks:$(this).children('td').eq(8).find('input').val(),
         };
         console.log(data)
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "addSoftTest",              // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data:JSON.stringify(data),
-            contentType: 'application/json;charset=utf-8',
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
+        if(data.id!=''){
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "addSoftTest",              // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data:JSON.stringify(data),
+                contentType: 'application/json;charset=utf-8',
+                success:function (result) {
+                    if (result != undefined && result.status == "success"){
+
+                    }
+                },
+                error:function (result) {
 
                 }
-            },
-            error:function (result) {
+            })
+        }
 
-            }
-        })
 
     })
 
@@ -809,7 +833,7 @@ function setAdjust(item) {
                 $('#id').val(obj.id);
                 $('#address').val(obj.address);
                 $('#turbidity').val(obj.turbidity.toFixed(2));
-                $('#hardness').val(obj.hardness.toFixed(2));
+                $('#hardness').val(obj.hardness);
                 $('#PH').val(obj.PH.toFixed(2));
                 $('#electricalConductivity').val(obj.electricalConductivity.toFixed(2));
                 $('#basicity').val(obj.basicity.toFixed(2));

@@ -2,10 +2,7 @@ package com.jdlink.service.impl;
 
 
 import com.jdlink.domain.Page;
-import com.jdlink.domain.Produce.SampleInfoAnalysis;
-import com.jdlink.domain.Produce.SecondarySample;
-import com.jdlink.domain.Produce.SecondarySampleItem;
-import com.jdlink.domain.Produce.WasteInto;
+import com.jdlink.domain.Produce.*;
 import com.jdlink.mapper.WasteIntoMapper;
 import com.jdlink.service.WasteIntoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,5 +118,15 @@ public class WasteIntoServiceImpl implements WasteIntoService {
     @Override
     public int searchWastesDailyCount(SampleInfoAnalysis sampleInfoAnalysis) {
         return wasteIntoMapper.searchWastesDailyCount(sampleInfoAnalysis);
+    }
+
+    @Override
+    public List<SecondaryTest> searchSecondaryDaily(SecondaryTest secondaryTest) {
+        return wasteIntoMapper.searchSecondaryDaily(secondaryTest);
+    }
+
+    @Override
+    public int searchSecondaryDailyCount(SecondaryTest secondaryTest) {
+        return wasteIntoMapper.searchSecondaryDailyCount(secondaryTest);
     }
 }
