@@ -7,6 +7,7 @@ import com.jdlink.domain.Produce.MaterialRequire;
 import com.jdlink.domain.Produce.Stock;
 import com.jdlink.domain.Produce.StockItem;
 import com.jdlink.service.*;
+import com.jdlink.service.produce.BatchOrderService;
 import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -43,6 +44,8 @@ public class WasteInventoryController {
     QuotationService quotationService;
     @Autowired
     StockService stockService;
+    @Autowired
+    BatchOrderService batchOrderService;
    //获得库存信息==》危废（无参数）
 
     //获得库存信息==》次生（无参数）
@@ -330,14 +333,14 @@ public class WasteInventoryController {
         return  res.toString();
     }
 
-//加载出库信息列表==>接口口
+//加载出库信息列表==>接口
     @RequestMapping("loadOutBoundList")
     @ResponseBody
     public String loadOutBoundList(Page page){
         JSONObject res=new JSONObject();
        try {
            page.setCount(0);
-           List<OutboundOrder> outboundOrderList=outboundOrderService.loadOutBoundList(page);
+           List<OutboundOrder> outboundOrderList = batchOrderService.loadOutBoundList(page);
            res.put("data",outboundOrderList);
            res.put("status", "success");
            res.put("message", "查询成功");

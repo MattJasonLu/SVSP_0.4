@@ -226,4 +226,8 @@ public class BatchOrderServiceImpl implements BatchOrderService
     public void retireOutBoundOrder(OutboundOrder outboundOrder) {
         batchOrderMapper.retireOutBoundOrder(outboundOrder);
     }
+
+    @Override
+    public List<OutboundOrder> loadOutBoundList(Page page){ return batchOrderMapper.loadOutBoundList(page);}
+
 }
