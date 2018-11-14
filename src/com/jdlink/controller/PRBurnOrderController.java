@@ -142,6 +142,24 @@ public class PRBurnOrderController {
         return res.toString();
     }
 
+    @RequestMapping("updateBurnOrder")
+    @ResponseBody
+    public String updateBurnOrder(@RequestBody BurnOrder burnOrder) {
+        JSONObject res = new JSONObject();
+        try {
+            burnOrder.setState(CheckState.NewBuild);
+            burnOrderService.update(burnOrder);
+            res.put("status", "success");
+            res.put("message", "修改成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "修改失败！");
+        }
+        // 返回结果
+        return res.toString();
+    }
+
     /**
      * 获取总记录数
      *
@@ -369,7 +387,8 @@ public class PRBurnOrderController {
     public String invalidBurnOrder(String id) {
         JSONObject res = new JSONObject();
         try {
-            burnOrderService.invalid(id);
+            BurnOrder burnOrder = burnOrderService.getById(id);  // 获取对象
+            burnOrderService.invalid(burnOrder);
             res.put("status", "success");
             res.put("message", "作废成功");
         } catch (Exception e) {

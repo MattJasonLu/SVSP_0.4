@@ -16,7 +16,7 @@ public interface BurnOrderMapper {
     void updateTemporaryAddressById(Pretreatment pretreatment);
     void add(BurnOrder burnOrder);
     List<BurnOrder> listPage(Page page);
-    void invalid(String id);
+    void invalid(BurnOrder burnOrder);
     List<BurnOrder> search(BurnOrder burnOrder);
     void update(BurnOrder burnOrder);
     int countItem();

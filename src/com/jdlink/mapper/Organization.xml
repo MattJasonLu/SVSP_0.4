@@ -17,25 +17,41 @@
         select * from organization_team;
     </select>
 
+    <select id="countDepartment" parameterType="int" resultType="int">
+        select count(*) from organization_department where pId=#{id};
+    </select>
+
+    <select id="countTeam" parameterType="int" resultType="int">
+        select count(*) from organization_team where pId=#{id};
+    </select>
+
+    <select id="getDepartmentById" parameterType="int" resultType="Organization">
+        select * from organization_department where id=#{id};
+    </select>
+
+    <select id="getTeamById" parameterType="int" resultType="Organization">
+        select * from organization_team where id=#{id};
+    </select>
+
     <insert id="addCompany" parameterType="Organization">
         insert into organization_company
-        (id,pid,name)
+        (id,pId,name)
         values
-        (#{id},#{pid},#{name});
+        (#{id},#{pId},#{name});
     </insert>
 
     <insert id="addDepartment" parameterType="Organization">
         insert into organization_department
-        (id,pid,name)
+        (id,pId,name)
         values
-        (#{id},#{pid},#{name});
+        (#{id},#{pId},#{name});
     </insert>
 
     <insert id="addTeam" parameterType="Organization">
         insert into organization_team
-        (id,pid,name)
+        (id,pId,name)
         values
-        (#{id},#{pid},#{name});
+        (#{id},#{pId},#{name});
     </insert>
 
     <update id="updateCompany" parameterType="Organization">
@@ -67,4 +83,6 @@
     <delete id="deleteTeam" parameterType="Organization">
         delete from organization_team where id=#{id}
     </delete>
+
+
 </mapper>

@@ -51,9 +51,11 @@
      </select>
 
     <select id="listPage" resultMap="PretreatmentRM">
-        select * from t_pr_pretreatment order by creationDate desc
+        select * from t_pr_pretreatment
+        where state != 'Invalid'
+        order by creationDate desc
         <if test="start != null and count != null">
-            limit #{start}, #{count}
+            limit #{start}, #{count};
         </if>
     </select>
 
@@ -153,8 +155,19 @@
         select * from t_pr_pretreatmentitem where itemId = #{id};
     </select>
 
-    <update id="invalid" parameterType="String">
-        update t_pr_pretreatment set state = 'Invalid',nowTime = NOW() where id = #{id}
+    <update id="invalid" parameterType="Pretreatment">
+        update t_pr_pretreatment
+        set state = 'Invalid',nowTime = NOW(),id=CONCAT('I-',id)
+        where id = #{id};
+
+        <if test="pretreatmentItemList != null and pretreatmentItemList.size() > 0 ">
+            <foreach collection="pretreatmentItemList" item="PretreatmentItem" index="index">
+                update t_pl_outboundorder
+                set
+                checkState = "OutBounded"
+                where outboundOrderId = #{outBoundOrderId};
+            </foreach>
+        </if>
     </update>
 
     <update id="adjust" parameterType="Pretreatment">
