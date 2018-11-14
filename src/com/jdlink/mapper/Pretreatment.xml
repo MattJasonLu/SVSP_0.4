@@ -161,11 +161,11 @@
         where id = #{id};
 
         <if test="pretreatmentItemList != null and pretreatmentItemList.size() > 0 ">
-            <foreach collection="pretreatmentItemList" item="PretreatmentItem" index="index">
+            <foreach collection="pretreatmentItemList" index="index" item="pretreatmentItem">
                 update t_pl_outboundorder
                 set
-                checkState = "OutBounded"
-                where outboundOrderId = #{outBoundOrderId};
+                checkState = 'OutBounded'
+                where outboundOrderId =#{pretreatmentItem.outboundOrderId};
             </foreach>
         </if>
     </update>
