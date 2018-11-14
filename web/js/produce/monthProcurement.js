@@ -573,7 +573,7 @@ function submit(item) {
 function cancel(item) {
     if(confirm("确定作废?")){
         //点击确定后操作
-        var receiptNumber=$(item).parent().parent().children('td').eq(0).text();
+        var receiptNumber=$(item).parent().parent().children('td').eq(1).text();
         $.ajax({
             type: "POST",                       // 方法类型
             url: "setProcurementListCancel",          // url
@@ -625,6 +625,41 @@ function view1(item) {
     });
     $('#appointModal2').modal('show');
 }
+
+
+//修改页面
+function monthProcurementModify(item) {
+
+    if($(item).parent().parent().children('td').eq(10).text()=='待提交'){
+        var receiptNumber=$(item).parent().parent().children('td').eq(1).text();
+        //console.log(receiptNumber);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getProcurementListById",          // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data:{'receiptNumber':receiptNumber},
+            //contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(result);
+                    setMonthProcurementListModalAdjust(result.data[0].materialList);
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error:function (result) {
+                alert("服务器异常!");
+            }
+        });
+        $('#appointModal3').modal('show');
+    }
+   else {
+        alert('不能修改已提交或者作废的数据')
+    }
+}
+
 //双击查询
 function view(item) {
     var receiptNumber=$(item).children().get(1).innerHTML;
@@ -650,7 +685,9 @@ function view(item) {
     });
     $('#appointModal2').modal('show');
 }
-//设置月度采购申请表数据模态框数据
+
+
+//设置月度采购申请表数据模态框数据==>查看
 function setMonthProcurementListModal(result) {
     //$('.myclass1').hide();
     var tr = $("#cloneTr2");
@@ -707,6 +744,100 @@ function setMonthProcurementListModal(result) {
     tr.hide();
     tr.removeAttr('class');
 }
+
+//设置月度采购申请表数据模态框数据==》修改
+function setMonthProcurementListModalAdjust(result) {
+    //$('.myclass1').hide();
+    var tr = $("#cloneTr3");
+    tr.siblings().remove();
+    tr.attr('class','myclass2');
+    $.each(result, function (index, item) {
+        //console.log(item);
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+
+        clonedTr.show();
+        // 循环遍历cloneTr的每一个td元素，并赋值
+        clonedTr.children("td").each(function (inner_index) {
+            //1生成领料单号
+            var obj = eval(item);
+            // 根据索引为部分td赋值
+            switch (inner_index) {
+                // 物资名称
+                case (0):
+                    $(this).html(obj.suppliesName);
+                    break;
+                // 规格型号
+                case (1):
+                    $(this).html(obj.specifications);
+                    break;
+                // 单位
+                case (2):
+                    if(obj.unit!=null){
+                        $(this).html(obj.unit.name);
+                    }
+                    break;
+                // 库存量
+                case (3):
+                    $(this).find("input").val(obj.inventory);
+                    break;
+                // 需求数量
+                case (4):
+                    $(this).find("input").val(obj.demandQuantity)
+                    break;
+                // 备注
+                case (5):
+                    $(this).find("input").val(obj.note)
+                    break;
+                // 主键
+
+                case (6):
+                    $(this).html(obj.id)
+                    break
+
+            }
+        });
+        // 把克隆好的tr追加到原来的tr前面
+        clonedTr.removeAttr('id');
+        clonedTr.insertBefore(tr);
+
+
+    });
+    // 隐藏无数据的tr
+    tr.hide();
+    tr.removeAttr('class');
+}
+
+//确认修改
+function confirmAdjust() {
+
+    $('.myclass2').each(function () {
+        var data={
+            inventory:$(this).children('td').eq(3).find("input").val(),
+            demandQuantity:$(this).children('td').eq(4).find("input").val(),
+            note:$(this).children('td').eq(5).find("input").val(),
+            id:$(this).children('td').eq(6).html()
+        }
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "updateMaterial",          // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data:JSON.stringify(data),
+            contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+
+            },
+            error:function (result) {
+
+            }
+        })
+      console.log(data)
+    })
+    alert("修改成功")
+    window.location.reload()
+}
+
 //高级查询
 function searchProcurement() {
     isSearch=false;
@@ -1139,4 +1270,31 @@ function downloadModal() {
     if (r == true) {
         window.open('downloadFile?filePath=' + filePath);
     }
+}
+
+//提交
+function setSubmit(item) {
+    var receiptNumber=$(item).parent().parent().children('td').eq(1).text();
+    if(confirm("确认提交?")){
+        //点击确定后操作
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "submitProcurementListById",          // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data:{'receiptNumber':receiptNumber},
+            //contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    alert(result.message)
+                    window.location.reload()
+                }
+            },
+            error:function (result) {
+                
+            }
+        })
+    }
+
+
 }

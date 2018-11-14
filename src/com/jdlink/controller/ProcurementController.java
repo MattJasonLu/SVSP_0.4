@@ -725,5 +725,44 @@ public class ProcurementController {
         return res.toString();
     }
 
+    //提交采购单
+    @RequestMapping("submitProcurementListById")
+    @ResponseBody
+    public String submitProcurementListById(String receiptNumber){
+        JSONObject res=new JSONObject();
+
+        try{
+           procurementService.submitProcurementListById(receiptNumber);
+            res.put("status", "success");
+            res.put("message", "提交成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "提交失败");
+        }
+        return res.toString();
+
+    }
+
+    //更新采购明细
+    @RequestMapping("updateMaterial")
+    @ResponseBody
+    public String updateMaterial(@RequestBody Material material){
+        JSONObject res=new JSONObject();
+
+        try {
+   procurementService.updateMaterial(material);
+            res.put("status", "success");
+            res.put("message", "更新成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+
+        }        return res.toString();
+
+    }
 
 }
