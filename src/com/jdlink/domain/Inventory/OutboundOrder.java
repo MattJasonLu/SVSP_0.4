@@ -26,7 +26,6 @@ public class OutboundOrder {
 
     private float outboundNumber;
 
-
     /*制单人*/
     private String creator;
 
@@ -68,7 +67,6 @@ public class OutboundOrder {
 
     /*出库类型*/
     private OutboundOrder outboundOrder;
-
     /*部门*/
     //private String departmentId;
     /*业务员 来自产废单位的业务员*/
