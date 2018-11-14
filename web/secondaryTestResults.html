@@ -222,16 +222,16 @@
 
                     </div>
                     <div class="row">
-                        <div class="form-horizontal col-md-6">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" style="margin-left: 40px">收样日期 </label>
-                                <div class="input-group">
-                                    <input type="date" class="input-sm form-control" id="search-inDate" title="" onkeydown="" onkeyup="enterSearch()"/>
-                                    <span class="input-group-addon">-</span>
-                                    <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown="" onkeyup="enterSearch()"/>
-                                </div>
-                            </div>
-                        </div>
+                        <!--<div class="form-horizontal col-md-6">-->
+                            <!--<div class="form-group">-->
+                                <!--<label class="col-sm-3 control-label" style="margin-left: 40px">收样日期 </label>-->
+                                <!--<div class="input-group">-->
+                                    <!--<input type="date" class="input-sm form-control" id="search-inDate" title="" onkeydown="" onkeyup="enterSearch()"/>-->
+                                    <!--<span class="input-group-addon">-</span>-->
+                                    <!--<input type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown="" onkeyup="enterSearch()"/>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
                         <div class="form-horizontal col-md-6">
                             <div class="form-group">
                                 <label for="search-remarks" class="col-sm-4 control-label">备注</label>
@@ -240,8 +240,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="form-horizontal col-md-6">
                             <div class="form-group">
                                 <label for="search-checkState" class="col-sm-4 control-label">单据状态</label>
@@ -256,6 +254,9 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
+
                     </div>
 
 
@@ -280,7 +281,7 @@
                         <th class="text-center">操作</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tbody1">
                     <tr id="cloneTr">
                         <td class="text-center">
                             <label>
