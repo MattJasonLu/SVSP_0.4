@@ -3,10 +3,12 @@
 <HEAD>
     <TITLE>组织架构管理表</TITLE>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <script src="js/jquery/jquery2.0.3/jquery-2.0.3.min.js"></script>
     <script src="js/jquery/jquery2.0.3/jquery-2.0.3.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap/3.3.6/bootstrap.css" rel="stylesheet">
+    <script src="js/data-format.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
@@ -32,9 +34,9 @@
             enable: true,                  //设置zTree是否处于编辑状态
             editNameSelectAll: true,    //节点编辑名称input初次显示时，设置txt内容是否为权限状态
             removeTitle: "删除1",            // 设置删除按钮名称
-            renameTitle: "重命名1",        // 设置修改按钮名称
-            showRemoveBtn: showRemoveBtn,   // 控制是否显示删除按钮
-            showRenameBtn: showRenameBtn    // 控制是否显示修改按钮
+            renameTitle: "编辑",        // 设置修改按钮名称
+            showRemoveBtn: true,   // 控制是否显示删除按钮
+            showRenameBtn: true    // 控制是否显示修改按钮
         },
         data: {
             simpleData: {
@@ -43,13 +45,12 @@
             }
         },
         callback: {
-            beforeDrag: beforeDrag,   //用于捕获节点被拖拽之前的事件回调函数，并且根据返回值确定是否开始拖拽操作
-            beforeEditName: beforeEditName, //用于捕获及诶单编辑按钮的click事件，并且根据返回值确定是否允许进入名称编辑状态
+            //    beforeDrag: beforeDrag,   //用于捕获节点被拖拽之前的事件回调函数，并且根据返回值确定是否开始拖拽操作
+            //   beforeEditName: beforeEditName, //用于捕获及诶单编辑按钮的click事件，并且根据返回值确定是否允许进入名称编辑状态
             beforeRemove: beforeRemove,//用于捕获节点被删除之前的事件回调函数，并且根据返回值确定是否允许删除操作。
-            beforeRename: beforeRename,//用于捕获节点编辑名称结束(input失去焦点或按下Enter键)之后，更新节点名称数据之前的事件回调函数，并根据返回值确定是否允许
-            onRemove: onRemove,//用于捕获节点之后的事件回调函数。
-            onRename: onRename //用于捕获节点编辑名称结束之后的事件回调函数。节点进入名称编辑状态，并且就该节点名称后触发此回调函数。如果用户设置了beforeRename回调函数，
-
+            //  beforeRename: beforeRename,//用于捕获节点编辑名称结束(input失去焦点或按下Enter键)之后，更新节点名称数据之前的事件回调函数，并根据返回值确定是否允许
+            onRemove: onRemove,// 删除按钮点击后事件
+            onRename: onRename // 编辑按钮点击后事件
         }
     };
 
@@ -99,15 +100,39 @@
     }
 
     function beforeRemove(treeId, treeNode) {
-        className = (className === "dark" ? "" : "dark");
-        showLog("[ " + getTime() + " beforeRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
-        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-        zTree.selectNode(treeNode);
         return confirm("确认删除" + treeNode.name + " 吗？");
     }
 
+    /**
+     * 删除功能
+     * */
     function onRemove(e, treeId, treeNode) {
-        showLog("[ " + getTime() + " onRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
+        organization1.id = treeNode.id;
+        organization1.pId = treeNode.pId;
+        organization1.name = treeNode.name;
+        console.log("删除的数据：");
+        console.log(organization1);
+        if (organization1 != null) {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "deleteOrganization",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(organization1),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    // console.log(result);
+                    if (result != null && result.status == "success") {
+                        window.location.reload(); // 重新设置页面
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function (result) {
+                    alert(result.message);
+                }
+            });
+        }
     }
 
     function beforeRename(treeId, treeNode, newName, isCancel) {
@@ -124,152 +149,15 @@
         return true;
     }
 
-    function onRename(e, treeId, treeNode, isCancel) {
-        showLog((isCancel ? "<span style='color:red'>" : "") + "[ " + getTime() + " onRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>" : ""));
-    }
-
-    function showRemoveBtn(treeId, treeNode) {
-        //return !treeNode.isFirstNode;
-        return false;
-    }
-
-    function showRenameBtn(treeId, treeNode) {
-        //return !treeNode.isLastNode;
-        return false;
-    }
-
-    function showLog(str) {
-        if (!log) log = $("#log");
-        log.append("<li class='" + className + "'>" + str + "</li>");
-        if (log.children("li").length > 8) {
-            log.get(0).removeChild(log.children("li")[0]);
-        }
-    }
-
-    function getTime() {  // 获取当前时间
-        var now = new Date(),
-            h = now.getHours(),
-            m = now.getMinutes(),
-            s = now.getSeconds(),
-            ms = now.getMilliseconds();
-        return (h + ":" + m + ":" + s + " " + ms);
-    }
-
-    var newCount = 1;
-    var organization1 = {};   // 承装需要修改/删除/新增的数据
-    /**
-     * 鼠标悬浮时事件
-     * */
-    function addHoverDom(treeId, treeNode) {
-        var sObj = $("#" + treeNode.tId + "_span");
-        if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
-        var addStr = "<span class='button add' name='buttonOrganization' id='addBtn_" + treeNode.tId
-            + "' title='新增' onfocus='this.blur();' onclick='addOrganization(this)'></span>";
-        var addStr1 = "<span class='button edit' name='buttonOrganization' id='editBtn_" + treeNode.tId
-            + "' title='编辑' onfocus='this.blur();' onclick='editOrganization(this)'></span>";
-        var addStr2 = "<span class='button remove' name='buttonOrganization' id='removeBtn_" + treeNode.tId
-            + "' title='删除' onfocus='this.blur();' onclick='removeOrganization(this)'></span>";
-        sObj.after(addStr2);   // 插入删除按钮
-        sObj.after(addStr1); // 插入编辑按钮
-        sObj.after(addStr); // 插入新增按钮
-
-        var btn = $("span[name='buttonOrganization']");
-        if (btn) btn.bind("click", function () { // 点击获取数据
-            organization1.id = treeNode.id;
-            organization1.pId = treeNode.pId;
-            organization1.name = treeNode.name;
-        });
-    };
-
-    /**
-     * 鼠标移开事件
-     * */
-    function removeHoverDom(treeId, treeNode) { // 鼠标移开后删除按钮
-        $("#addBtn_" + treeNode.tId).unbind().remove();
-        $("#editBtn_" + treeNode.tId).unbind().remove();
-        $("#removeBtn_" + treeNode.tId).unbind().remove();
-    };
-
-    function selectAll() {
-        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-        zTree.setting.edit.editNameSelectAll = $("#selectAll").attr("checked");
-    }
-
-    $(document).ready(function () {
-        loadOrganization();  // 获取并设置节点数据
-        $.fn.zTree.init($("#treeDemo"), setting, zNodes);//根据参数初始化树
-        $("#selectAll").bind("click", selectAll);
-    });
-
-    /**
-     * 新增功能
-     * @param item
-     */
-    function addOrganization(item) {
-        alert("功能调整中");
-       // $('#editModal').modal('show');
-        // if(organization1 != null){
-        //     $.ajax({
-        //         type: "POST",                       // 方法类型
-        //         url: "addOrganization",                  // url
-        //         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        //         data: JSON.stringify(organization1),
-        //         dataType: "json",
-        //         contentType: "application/json; charset=utf-8",
-        //         success: function (result) {
-        //             // console.log(result);
-        //             if (result != null && result.status == "success") {
-        //                 loadOrganization(); // 重新设置页面
-        //             } else {
-        //                alert(result.message);
-        //             }
-        //         },
-        //         error: function (result) {
-        //             alert(result.message);
-        //         }
-        //     });
-        // }
-    }
-
     /**
      * 重命名
-     */
-    function editOrganization(item) {
-        alert("功能调整中");
-        // $("#name").val(organization1.name);
-        // $("#editModal").modal('show');
-        // // alert("功能调整中");
-        //    var oldName = $(item).prev().text();  // 获取旧名称
-        //    var s = $(item).prev() + "";
-        //    s = s.replace(/<span>(.*?)<\/span>/g,"<input type='text' value='$1' />");
-        //    $(item).append(s);
-        //
-        // organization1.name = $(item).prev().val(); // 设置新名称
-        // if(organization1 != null){
-        //     $.ajax({
-        //         type: "POST",                       // 方法类型
-        //         url: "updateOrganization",                  // url
-        //         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        //         data: JSON.stringify(organization1),
-        //         dataType: "json",
-        //         contentType: "application/json; charset=utf-8",
-        //         success: function (result) {
-        //             // console.log(result);
-        //             if (result != null && result.status == "success") {
-        //                 loadOrganization(); // 重新设置页面
-        //             } else {
-        //                 alert(result.message);
-        //             }
-        //         },
-        //         error: function (result) {
-        //             alert(result.message);
-        //         }
-        //     });
-        // }
-    }
-
-    function save() {
-        organization1.name = $("#name").val(); // 设置新名称
+     * */
+    function onRename(e, treeId, treeNode, isCancel) {
+        organization1.id = treeNode.id;
+        organization1.pId = treeNode.pId;
+        organization1.name = treeNode.name;
+        console.log("数据：");
+        console.log(organization1);
         if (organization1 != null) {
             $.ajax({
                 type: "POST",                       // 方法类型
@@ -293,34 +181,103 @@
         }
     }
 
+    function showRemoveBtn(treeId, treeNode) {
+        //return !treeNode.isFirstNode;
+        return false;
+    }
+
+    function showRenameBtn(treeId, treeNode) {
+        //return !treeNode.isLastNode;
+        return true;
+    }
+
+    function showLog(str) {
+        if (!log) log = $("#log");
+        log.append("<li class='" + className + "'>" + str + "</li>");
+        if (log.children("li").length > 8) {
+            log.get(0).removeChild(log.children("li")[0]);
+        }
+    }
+
+    function getTime() {  // 获取当前时间
+        var now = new Date(),
+            h = now.getHours(),
+            m = now.getMinutes(),
+            s = now.getSeconds(),
+            ms = now.getMilliseconds();
+        return (h + ":" + m + ":" + s + " " + ms);
+    }
+
+    var newCount = 1;       // 新节点个数，起始值为1
+    var organization1 = {};   // 承装需要修改/删除/新增的数据
     /**
-     * 删除
+     * 鼠标悬浮时事件
+     * */
+    function addHoverDom(treeId, treeNode) {
+        var sObj = $("#" + treeNode.tId + "_span");
+        if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
+        var addStr = "<span class='button add buttonOrganizationAdd' id='addBtn_" + treeNode.tId
+            + "' title='新增' onfocus='this.blur();' ></span>";
+        sObj.after(addStr); // 插入新增按钮
+        if (treeNode.id > 99)   // 最后一层不设新增按钮
+            $("#addBtn_" + treeNode.tId).hide(); // 最后一层隐藏新增按钮
+        organization1 = {};  // 初始化
+        var btn1 = $(".buttonOrganizationAdd"); // 获取对象
+        if (btn1) btn1.bind("click", function () { // 新增事件
+            organization1.id = treeNode.id;
+            organization1.pId = treeNode.pId;
+            organization1.name = treeNode.name;
+            addOrganization();  // 新增
+        });
+    };
+
+    /**
+     * 鼠标移开事件
+     * */
+    function removeHoverDom(treeId, treeNode) { // 鼠标移开后删除按钮
+        $("#editBtn_" + treeNode.tId).unbind().remove();
+        $("#removeBtn_" + treeNode.tId).unbind().remove();
+        $("#addBtn_" + treeNode.tId).unbind().remove();
+    };
+
+    function selectAll() {
+        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+        zTree.setting.edit.editNameSelectAll = $("#selectAll").attr("checked");
+    }
+
+    $(document).ready(function () {
+        loadOrganization();  // 获取并设置节点数据
+        $.fn.zTree.init($("#treeDemo"), setting, zNodes);//根据参数初始化树
+        $("#selectAll").bind("click", selectAll);
+    });
+
+    /**
+     * 新增功能
      * @param item
      */
-    function removeOrganization(item) {
+    function addOrganization(item) {
         console.log(organization1);
-        if (confirm("确认删除？"))
-            if (organization1 != null) {
-                $.ajax({
-                    type: "POST",                       // 方法类型
-                    url: "deleteOrganization",                  // url
-                    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                    data: JSON.stringify(organization1),
-                    dataType: "json",
-                    contentType: "application/json; charset=utf-8",
-                    success: function (result) {
-                        // console.log(result);
-                        if (result != null && result.status == "success") {
-                            window.location.reload(); // 重新设置页面
-                        } else {
-                            alert(result.message);
-                        }
-                    },
-                    error: function (result) {
+        if (organization1 != null) {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "addOrganization",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(organization1),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    // console.log(result);
+                    if (result != null && result.status == "success") {
+                        window.location.reload(); // 刷新页面
+                    } else {
                         alert(result.message);
                     }
-                });
-            }
+                },
+                error: function (result) {
+                    alert(result.message);
+                }
+            });
+        }
     }
 
     /**
@@ -343,10 +300,15 @@
                         organization.id = data[i].id; // 设置节点数据
                         organization.pId = data[i].pId;
                         organization.name = data[i].name;
-                        // if(data[i].id < 100){
-                        //     organization.open = true;
-                        // }
-                        organization.open = true;
+                        if (data[i].id < 10 || (data[i].id == 11)) // 公司默认展开
+                            organization.open = true;   // 设置下拉是否展开
+                        if (data[i].id < 10) { // 设置功能图标
+                            organization.icon = "";
+                        } else if (data[i].id < 100) { // 设置部门图标
+                            organization.icon = "";
+                        } else if (data[i].id < 1000) { // 设置项目组图标
+                            organization.icon = "";
+                        }
                         zNodes.push(organization);  // 将节点添加到LIST中
                     }
                     console.log(zNodes);
@@ -371,8 +333,9 @@
         vertical-align: top;
         *vertical-align: middle
     }
+
     a {
-        text-decoration:none;
+        text-decoration: none;
     }
 </style>
 
@@ -388,7 +351,7 @@
             </li>
         </ul>
     </div>
-    <div class="container navbar-left" style="width: 80%;">
+    <div class="container navbar-left" style="width: 920px;">
         <div class="navbar-header">
             <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
         </div>
@@ -407,7 +370,7 @@
                         <li role="separator" class="divider"></li>
                         <li><a href="userManage.html">用户列表</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="organizationList.html">组织架构管理表</a></li>
+                        <li><a href="organizationList1.html">组织架构管理表</a></li>
                     </ul>
                 </li>
                 <li><a href="thresholdTableList.html">处置类别阈值表</a></li>
@@ -420,8 +383,7 @@
         <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
         <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
         <li class="dropdown">
-            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-               aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
             <ul class="dropdown-menu">
                 <li><a href="personalInformation.html">个人信息</a></li>
                 <li><a href="#">待办事项</a></li>
@@ -475,30 +437,22 @@
         </div>
     </div>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <div class="content_wrap" style="width: 100%;height: 100%;background-color: #fff;border: none">
-            <div class="zTreeDemoBackground left" style="width: 100%;background-color: #fff;border: none">
-                <ul id="treeDemo" class="ztree" style="width: 30%;height: 100%"></ul>
+        <div class="row">
+            <div>
+                <ol class="breadcrumb">
+                    <li><a href="basicData.html">基础数据</a></li>
+                    <li class="active">账号管理</li>
+                </ol>
             </div>
+            <h4 class="sub-header">组织架构管理表</h4>
         </div>
-        <!--修改模态框-->
-        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="TitleMyModalLabel">信息修改</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form id="modelAssign" method="post">
-                            名称:<input name="name" id="name">
-                        </form>
-                    </div>
-                    <div class="modal-footer center">
-                        <button type="button" class="btn btn-default" id="downloadModal" onclick="save()">保存</button>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
-                    </div>
-                </div>
+        <div class="content_wrap" style="width: 200%;height: 150%;background-color: #fff;border:none">
+            <br>
+            <br>
+            <br>
+            <div class="zTreeDemoBackground left" style="width: 100%;background-color: #fff;border:none">
+                <ul id="treeDemo" class="ztree"
+                    style="width: 70%;height:100%;border:none;background-color:#fff;font-size: larger"></ul>
             </div>
         </div>
         <!--<table  align=left style="border:0;height:600px;width: 100%">-->

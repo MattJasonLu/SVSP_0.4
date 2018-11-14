@@ -51,4 +51,5 @@ public interface BatchOrderService {
     void cancelOutBoundOrder(OutboundOrder outboundOrder);
     void updateInventoryNumberAfterInvalid(String inboundOrderItemId,float inventoryNumber);
     void retireOutBoundOrder(OutboundOrder outboundOrder);
+    List<OutboundOrder> loadOutBoundList(Page page);
 }

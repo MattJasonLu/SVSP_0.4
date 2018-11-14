@@ -17,7 +17,7 @@ public interface PretreatmentService {
     List<Pretreatment> search(Pretreatment pretreatment);
     int searchCount(Pretreatment pretreatment);
     int countById(String id);
-    void invalid(String id);
+    void invalid(Pretreatment pretreatment);
     void adjust(Pretreatment pretreatment);
     String getCurrentPretreatmentId();
     int getCurrentItemId();

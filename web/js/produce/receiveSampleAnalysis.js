@@ -337,21 +337,21 @@ function setDataList(result) {
         clonedTr.find("td[name='finishDate']").text(getDateStr(obj.finishDate));
         if (obj.produceCompany != null) clonedTr.find("td[name='produceCompanyName']").text(obj.produceCompany.companyName);
         clonedTr.find("td[name='wastesName']").text(obj.wastesName);
-        clonedTr.find("td[name='wastesCode']").text(obj.wastesCode);
+        clonedTr.find("td[name='sampleId']").text(obj.sampleId);
         if (obj.formType != null) clonedTr.find("td[name='formType']").text(obj.formType.name);
         if (obj.handleCategory != null) clonedTr.find("td[name='handleCategory']").text(obj.handleCategory.name);
         clonedTr.find("td[name='sender']").text(obj.sender);
-        clonedTr.find("td[name='PH']").text(parseFloat(obj.PH).toFixed(2));
-        clonedTr.find("td[name='heat']").text(parseFloat(obj.heat).toFixed(2));
-        clonedTr.find("td[name='ash']").text(parseFloat(obj.ash).toFixed(2));
-        clonedTr.find("td[name='water']").text(parseFloat(obj.water).toFixed(2));
-        clonedTr.find("td[name='fluorine']").text(parseFloat(obj.fluorine).toFixed(2));
-        clonedTr.find("td[name='chlorine']").text(parseFloat(obj.chlorine).toFixed(2));
-        clonedTr.find("td[name='sulfur']").text(parseFloat(obj.sulfur).toFixed(2));
-        clonedTr.find("td[name='phosphorus']").text(parseFloat(obj.phosphorus).toFixed(2));
-        clonedTr.find("td[name='flashPoint']").text(parseFloat(obj.flashPoint).toFixed(2));
-        clonedTr.find("td[name='viscosity']").text(parseFloat(obj.viscosity).toFixed(2));
-        clonedTr.find("td[name='hotMelt']").text(obj.hotMelt);
+        clonedTr.find("td[name='PH']").text(setNumber2Line(parseFloat(obj.PH).toFixed(2)));
+        clonedTr.find("td[name='heat']").text(setNumber2Line(parseFloat(obj.heat).toFixed(2)));
+        clonedTr.find("td[name='ash']").text(setNumber2Line(parseFloat(obj.ash).toFixed(2)));
+        clonedTr.find("td[name='water']").text(setNumber2Line(parseFloat(obj.water).toFixed(2)));
+        clonedTr.find("td[name='fluorine']").text(setNumber2Line(parseFloat(obj.fluorine).toFixed(2)));
+        clonedTr.find("td[name='chlorine']").text(setNumber2Line(parseFloat(obj.chlorine).toFixed(2)));
+        clonedTr.find("td[name='sulfur']").text(setNumber2Line(parseFloat(obj.sulfur).toFixed(2)));
+        clonedTr.find("td[name='phosphorus']").text(setNumber2Line(parseFloat(obj.phosphorus).toFixed(2)));
+        clonedTr.find("td[name='flashPoint']").text(setNumber2Line(parseFloat(obj.flashPoint).toFixed(2)));
+        clonedTr.find("td[name='viscosity']").text(setNumber2Line(obj.viscosity));
+        clonedTr.find("td[name='hotMelt']").text(setNumber2Line(obj.hotMelt));
         clonedTr.find("td[name='signer']").text(obj.signer);
         clonedTr.find("td[name='remark']").text(obj.remark);
         // 把克隆好的tr追加到原来的tr前面
@@ -655,13 +655,149 @@ function setSubmit(e) {    //已提交
     }
 }
 
+var editId;
 /**
  * 修改数据
  * @param e
  */
-function adjustData(e) {
+function showEditModal(e) {
+    // 获取编号
     var id = getIdByMenu(e);
+    editId = id;
+    // 设置物质形态
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getFormTypeAndPackageType",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var formType = $("#editFormType");
+                formType.children().remove();
+                $.each(data.formTypeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    formType.append(option);
+                });
+                formType.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    // 设置产废单位
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getAllClients",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var produceCompany = $("#editProduceCompany");
+                produceCompany.children().remove();
+                $.each(data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.clientId);
+                    option.text(item.companyName);
+                    produceCompany.append(option);
+                });
+                produceCompany.selectpicker("refresh");
+                produceCompany.selectpicker('val', '');
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    // 设置危废代码
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getWastesInfoList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var wastesCode = $("#editWastesCode");
+                wastesCode.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.code);
+                    option.text(item.code);
+                    wastesCode.append(option);
+                });
+                wastesCode.selectpicker("refresh");
+                wastesCode.selectpicker('val', '');
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    $.ajax({
+        type: "POST",
+        url: "getReceiveSampleAnalysisById",
+        async: false,
+        dataType: "json",
+        data: {
+            "id": id
+        },
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                var obj = eval(result.data);
+                $("#editId").val(obj.sampleId);
+                $("#editFinishDate").val(getDateStr(obj.finishDate));
+                if (obj.produceCompany != null)
+                    $("#editProduceCompany").selectpicker('val', obj.produceCompany.clientId);
+                $("#editWastesName").val(obj.wastesName);
+                $("#editWastesCode").selectpicker('val', obj.wastesCode);
+                if (obj.formType != null) $("#editFormType").val(obj.formType.index - 1);
+                $("#editRemark").val(obj.remark);
+                $("#editPH").val(parseFloat(obj.PH).toFixed(2));
+                $("#editAsh").val(parseFloat(obj.ash).toFixed(2));
+                $("#editWater").val(parseFloat(obj.water).toFixed(2));
+                $("#editHeat").val(parseFloat(obj.heat).toFixed(2));
+                $("#editFluorine").val(parseFloat(obj.fluorine).toFixed(2));
+                $("#editChlorine").val(parseFloat(obj.chlorine).toFixed(2));
+                $("#editSulfur").val(parseFloat(obj.sulfur).toFixed(2));
+                $("#editPhosphorus").val(parseFloat(obj.phosphorus).toFixed(2));
+                $("#editFlashPoint").val(parseFloat(obj.flashPoint).toFixed(2));
+                $("#editViscosity").val(obj.viscosity);
+                $("#editHotMelt").val(obj.hotMelt);
+                $("#editSender").val(obj.sender);
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
 
+    // 显示编辑模态框
+    $("#editModal").modal("show");
+}
+
+/**
+ * 修改数据
+ */
+function editData() {
+    alert("功能调整中");
 }
 
 /**
@@ -948,26 +1084,26 @@ function viewData(e) {
             if (result != undefined && result.status == "success") {
                 console.log(result);
                 var obj = eval(result.data);
-                $("#viewTable").find("td[name='sampleId']").text(obj.sampleId);
-                $("#viewTable").find("td[name='finishDate']").text(getDateStr(obj.finishDate));
+                $("#viewId").text(obj.sampleId);
+                $("#viewFinishDate").text(getDateStr(obj.finishDate));
                 if (obj.produceCompany != null)
-                $("#viewTable").find("td[name='produceCompanyName']").text(obj.produceCompany.companyName);
-                $("#viewTable").find("td[name='wastesName']").text(parseFloat(obj.wastesName).toFixed(2));
-                $("#viewTable").find("td[name='wastesCode']").text(parseFloat(obj.wastesCode).toFixed(2));
-                if (obj.formType != null) $("#viewTable").find("td[name='formType']").text(obj.formType.name);
-                $("#viewTable").find("td[name='remark']").text(obj.remark);
-                $("#viewTable").find("td[name='PH']").text(parseFloat(obj.PH).toFixed(2));
-                $("#viewTable").find("td[name='ash']").text(parseFloat(obj.ash).toFixed(2));
-                $("#viewTable").find("td[name='water']").text(parseFloat(obj.water).toFixed(2));
-                $("#viewTable").find("td[name='heat']").text(parseFloat(obj.heat).toFixed(2));
-                $("#viewTable").find("td[name='fluorine']").text(parseFloat(obj.fluorine).toFixed(2));
-                $("#viewTable").find("td[name='chlorine']").text(parseFloat(obj.chlorine).toFixed(2));
-                $("#viewTable").find("td[name='sulfur']").text(parseFloat(obj.sulfur).toFixed(2));
-                $("#viewTable").find("td[name='phosphorus']").text(parseFloat(obj.phosphorus).toFixed(2));
-                $("#viewTable").find("td[name='flashPoint']").text(parseFloat(obj.flashPoint).toFixed(2));
-                $("#viewTable").find("td[name='viscosity']").text(parseFloat(obj.viscosity).toFixed(2));
-                $("#viewTable").find("td[name='hotMelt']").text(obj.hotMelt);
-                $("#viewTable").find("td[name='sender']").text(obj.sender);
+                $("#viewProduceCompanyName").text(obj.produceCompany.companyName);
+                $("#viewWastesName").text(obj.wastesName);
+                $("#viewWastesCode").text(obj.wastesCode);
+                if (obj.formType != null) $("#viewFormType").text(obj.formType.name);
+                $("#viewRemark").text(obj.remark);
+                $("#viewPH").text(setNumber2Line(parseFloat(obj.PH).toFixed(2)));
+                $("#viewAsh").text(setNumber2Line(parseFloat(obj.ash).toFixed(2)));
+                $("#viewWater").text(setNumber2Line(parseFloat(obj.water).toFixed(2)));
+                $("#viewHeat").text(setNumber2Line(parseFloat(obj.heat).toFixed(2)));
+                $("#viewFluorine").text(setNumber2Line(parseFloat(obj.fluorine).toFixed(2)));
+                $("#viewChlorine").text(setNumber2Line(parseFloat(obj.chlorine).toFixed(2)));
+                $("#viewSulfur").text(setNumber2Line(parseFloat(obj.sulfur).toFixed(2)));
+                $("#viewPhosphorus").text(setNumber2Line(parseFloat(obj.phosphorus).toFixed(2)));
+                $("#viewFlashPoint").text(setNumber2Line(parseFloat(obj.flashPoint).toFixed(2)));
+                $("#viewViscosity").text(setNumber2Line(obj.viscosity));
+                $("#viewHotMelt").text(setNumber2Line(obj.hotMelt));
+                $("#viewSender").text(setNumber2Line(obj.sender));
             } else {
                 alert(result.message);
             }
