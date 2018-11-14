@@ -36,7 +36,9 @@
     </select>
 
     <select id="listPageIn" resultMap="IngredientsInRM">
-        select * from t_pr_ingredients_in order by creationDate desc
+        select * from t_pr_ingredients_in
+        where state != 'Invalid'
+        order by creationDate desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -44,7 +46,9 @@
 
     <select id="listPageInItem" resultMap="InIngredientsRM">
         select a.*,b.companyName,b.creationDate,b.state from t_pr_ingredients as a join t_pr_ingredients_in as b on
-        a.inId=b.id order by creationDate desc
+        a.inId=b.id
+        where b.state != 'Invalid'
+        order by creationDate desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -435,7 +439,9 @@
     </select>
 
     <select id="listPageReceive" resultMap="IngredientsReceiveRM">
-        select * from t_pr_ingredients_receive order by creationDate desc
+        select * from t_pr_ingredients_receive
+        where state != 'Invalid'
+        order by creationDate desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -443,6 +449,7 @@
 
     <select id="listPageReceiveItem" resultMap="ReceiveIngredientsRM">
         select * from t_pr_ingredients as a join t_pr_ingredients_receive as b on a.receiveId=b.id
+        where b.state != 'Invalid'
         order by b.id desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
@@ -863,7 +870,9 @@
     </select>
 
     <select id="listPageOut" resultMap="IngredientsOutRM">
-        select * from t_pr_ingredients_out order by creationDate desc
+        select * from t_pr_ingredients_out
+        where state != 'Invalid'
+        order by creationDate desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -871,6 +880,8 @@
 
     <select id="listPageOutItem" resultMap="OutIngredientsRM">
         select * from t_pr_ingredients as a join t_pr_ingredients_out as b on a.outId=b.id
+        where b.state != 'Invalid'
+        order by b.creationDate desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>

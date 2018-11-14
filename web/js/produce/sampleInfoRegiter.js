@@ -1654,7 +1654,6 @@ function autoSetCategory(item) {
     if (code != "" || code != null) {
         code = "HW" + code.substring(code.length, code.length - 2); //截取最后两位
         console.log("code:" + code);
-
         $(item).parent().parent().nextAll().find("input[name$='wastesHandleCategory']").val(code);  // 以wastesHandleCategory结尾的
     }
 }
