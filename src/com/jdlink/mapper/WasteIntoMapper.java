@@ -1,6 +1,7 @@
 package com.jdlink.mapper;
 
 import com.jdlink.domain.Page;
+import com.jdlink.domain.Produce.SampleInfoAnalysis;
 import com.jdlink.domain.Produce.SecondarySample;
 import com.jdlink.domain.Produce.SecondarySampleItem;
 import com.jdlink.domain.Produce.WasteInto;
@@ -30,4 +31,6 @@ public interface WasteIntoMapper {
    int searchSecondaryCount(SecondarySample secondarySample);
    void SecondarySample(String id);
    void updateSecondarySample(String id);
+   List<SampleInfoAnalysis>searchWastesDaily(SampleInfoAnalysis sampleInfoAnalysis);
+   int searchWastesDailyCount(SampleInfoAnalysis sampleInfoAnalysis);
 }
