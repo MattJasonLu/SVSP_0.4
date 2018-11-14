@@ -16,13 +16,13 @@
     <insert id="add" parameterType="SampleInformation">
         INSERT INTO t_pr_sampleinfowarehouse
         (id,companyCode,companyName,wastesCode,wastesName,wastesFormType,applyState,sendingPerson,laboratorySigner,isPH,isAsh,
-        isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity,isHotMelt,nowTime,creationDate)
+        isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity,isHotMelt,nowTime,creationDate,creationTime)
         VALUES
         (#{id},#{companyCode},#{companyName},#{wastesList[0].code},#{wastesList[0].name},#{wastesList[0].formType},'Appointed',
         #{sendingPerson},#{laboratorySigner},#{wastesList[0].isPH},#{wastesList[0].isAsh},#{wastesList[0].isWater},
         #{wastesList[0].isHeat},#{wastesList[0].isSulfur},#{wastesList[0].isChlorine}, #{wastesList[0].isFluorine},
         #{wastesList[0].isPhosphorus},#{wastesList[0].isFlashPoint},#{wastesList[0].isViscosity},#{wastesList[0].isHotMelt},
-        NOW(),#{creationDate});
+        NOW(),#{creationDate},NOW());
         <if test="wastesList.size() > 0">
             <foreach collection="wastesList" item="wastes" index="index">
                 INSERT INTO t_pr_sampleinfowarehouseitem
@@ -39,7 +39,7 @@
     <select id="listPage" resultType="SampleInformation">
         select * from t_pr_sampleinfowarehouse
         where applyState in ('Rejected','Appointed','Received')
-        ORDER BY id DESC
+        ORDER BY creationTime DESC
         <if test="start != null and count != null">
             limit #{start}, #{count};
         </if>
@@ -48,7 +48,7 @@
     <select id="listItemPage" resultType="SampleInformationItem">
         select * from t_pr_sampleinfowarehouseitem as a join t_pr_sampleinfowarehouse as b on a.sampleId=b.id
         where b.applyState in ('Rejected','Appointed','Received')
-        ORDER BY a.id DESC
+        ORDER BY b.creationTime DESC
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -101,7 +101,7 @@
                 or applyState = 'Canceld'
             </if>
         </where>
-        ORDER BY creationDate DESC;
+        ORDER BY id DESC;
     </select>
 
     <select id="searchCount" parameterType="SampleInformation" resultType="int">
@@ -265,8 +265,11 @@
             <if test='isViscosity != null and isViscosity != ""'>
                 and isViscosity = #{isViscosity}
             </if>
+            <if test='isHotMelt != null and isHotMelt != ""'>
+                and isHotMelt = #{isHotMelt}
+            </if>
         </where>
-        order by id desc
+        order by creationTime desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
@@ -332,8 +335,11 @@
             <if test='isViscosity != null and isViscosity != ""'>
                 and a.isViscosity = #{isViscosity}
             </if>
+            <if test='isHotMelt != null and isHotMelt != ""'>
+                and a.isHotMelt = #{isHotMelt}
+            </if>
         </where>
-        order by a.id desc
+        order by b.creationTime desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
@@ -438,10 +444,8 @@
         sendingPerson = #{sendingPerson},isPH = #{wastesList[0].isPH},isAsh = #{wastesList[0].isAsh},
         isWater = #{wastesList[0].isWater},isHeat = #{wastesList[0].isHeat},isSulfur =#{wastesList[0].isSulfur},
         isChlorine = #{wastesList[0].isChlorine},isFluorine = #{wastesList[0].isFluorine},isPhosphorus
-        =#{wastesList[0].isPhosphorus},
-        isFlashPoint =#{wastesList[0].isFlashPoint},isViscosity =
-        #{wastesList[0].isViscosity},isHotMelt=#{wastesList[0].isHotMelt},wastesFormType=#{wastesList[0].formType},
-        nowTime = NOW()
+        =#{wastesList[0].isPhosphorus},isFlashPoint =#{wastesList[0].isFlashPoint},isViscosity =#{wastesList[0].isViscosity},
+        isHotMelt=#{wastesList[0].isHotMelt},wastesFormType=#{wastesList[0].formType},nowTime = NOW()
         WHERE t_pr_sampleinfowarehouse.id =#{id};
         <foreach collection="wastesList" item="wastes" index="index">
             <if test="wastes.unit == 'no'">
@@ -482,6 +486,5 @@
     <delete id="deleteById" parameterType="String">
         delete from t_pr_sampleinfowarehouseitem where sampleId =#{id};
     </delete>
-
 
 </mapper>

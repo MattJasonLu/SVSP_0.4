@@ -15,11 +15,11 @@
 
     <insert id="add" parameterType="SampleInformation">
         INSERT INTO t_pr_sampleinformation (id,companyCode,companyName,wastesCode,wastesName,wastesFormType,applyState,sendingPerson,laboratorySigner,isPH,isAsh,
-        isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity,isHotMelt,nowTime,creationDate)
+        isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity,isHotMelt,nowTime,creationDate,creationTime)
         VALUES (#{id},#{companyCode},#{companyName},#{wastesList[0].code},#{wastesList[0].name},#{wastesList[0].formType},'Appointed',#{sendingPerson},#{laboratorySigner},#{wastesList[0].isPH},
         #{wastesList[0].isAsh}, #{wastesList[0].isWater}, #{wastesList[0].isHeat},
         #{wastesList[0].isSulfur}, #{wastesList[0].isChlorine}, #{wastesList[0].isFluorine},
-        #{wastesList[0].isPhosphorus}, #{wastesList[0].isFlashPoint}, #{wastesList[0].isViscosity},#{wastesList[0].isHotMelt}, NOW(),NOW());
+        #{wastesList[0].isPhosphorus}, #{wastesList[0].isFlashPoint}, #{wastesList[0].isViscosity},#{wastesList[0].isHotMelt}, NOW(),NOW(),NOW());
         <if test="wastesList.size() > 0">
             <foreach collection="wastesList" item="wastes" index="index">
                 INSERT INTO t_pr_sampleinformationitem
@@ -35,7 +35,7 @@
     <select id="listPage" resultType="SampleInformation">
         select * from t_pr_sampleinformation
         where applyState in ('Rejected','Appointed','Received')
-        ORDER BY id DESC
+        ORDER BY creationTime DESC
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -44,7 +44,7 @@
     <select id="listItemPage" resultType="SampleInformationItem">
         select a.*,b.companyName,b.sendingPerson,b.laboratorySigner,b.applyState from t_pr_sampleinformationItem as a join t_pr_sampleinformation as b on a.sampleId=b.id
         where b.applyState in ('Rejected','Appointed','Received')
-        ORDER BY a.id DESC
+        ORDER BY b.creationTime DESC
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -240,7 +240,7 @@
                 and isHotMelt = #{isHotMelt}
             </if>
         </where>
-        order by id desc
+        order by creationTime desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
@@ -374,7 +374,7 @@
                 and t_pr_sampleinformationItem.isHotMelt = #{isHotMelt}
             </if>
         </where>
-        order by a.id desc
+        order by b.creationTime desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
