@@ -655,13 +655,149 @@ function setSubmit(e) {    //已提交
     }
 }
 
+var editId;
 /**
  * 修改数据
  * @param e
  */
-function adjustData(e) {
+function showEditModal(e) {
+    // 获取编号
     var id = getIdByMenu(e);
+    editId = id;
+    // 设置物质形态
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getFormTypeAndPackageType",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var formType = $("#editFormType");
+                formType.children().remove();
+                $.each(data.formTypeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    formType.append(option);
+                });
+                formType.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    // 设置产废单位
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getAllClients",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var produceCompany = $("#editProduceCompany");
+                produceCompany.children().remove();
+                $.each(data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.clientId);
+                    option.text(item.companyName);
+                    produceCompany.append(option);
+                });
+                produceCompany.selectpicker("refresh");
+                produceCompany.selectpicker('val', '');
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    // 设置危废代码
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getWastesInfoList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var wastesCode = $("#editWastesCode");
+                wastesCode.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.code);
+                    option.text(item.code);
+                    wastesCode.append(option);
+                });
+                wastesCode.selectpicker("refresh");
+                wastesCode.selectpicker('val', '');
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    $.ajax({
+        type: "POST",
+        url: "getReceiveSampleAnalysisById",
+        async: false,
+        dataType: "json",
+        data: {
+            "id": id
+        },
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                var obj = eval(result.data);
+                $("#editId").val(obj.sampleId);
+                $("#editFinishDate").val(getDateStr(obj.finishDate));
+                if (obj.produceCompany != null)
+                    $("#editProduceCompany").selectpicker('val', obj.produceCompany.clientId);
+                $("#editWastesName").val(obj.wastesName);
+                $("#editWastesCode").selectpicker('val', obj.wastesCode);
+                if (obj.formType != null) $("#editFormType").val(obj.formType.index - 1);
+                $("#editRemark").val(obj.remark);
+                $("#editPH").val(parseFloat(obj.PH).toFixed(2));
+                $("#editAsh").val(parseFloat(obj.ash).toFixed(2));
+                $("#editWater").val(parseFloat(obj.water).toFixed(2));
+                $("#editHeat").val(parseFloat(obj.heat).toFixed(2));
+                $("#editFluorine").val(parseFloat(obj.fluorine).toFixed(2));
+                $("#editChlorine").val(parseFloat(obj.chlorine).toFixed(2));
+                $("#editSulfur").val(parseFloat(obj.sulfur).toFixed(2));
+                $("#editPhosphorus").val(parseFloat(obj.phosphorus).toFixed(2));
+                $("#editFlashPoint").val(parseFloat(obj.flashPoint).toFixed(2));
+                $("#editViscosity").val(parseFloat(obj.viscosity).toFixed(2));
+                $("#editHotMelt").val(obj.hotMelt);
+                $("#editSender").val(obj.sender);
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
 
+    // 显示编辑模态框
+    $("#editModal").modal("show");
+}
+
+/**
+ * 修改数据
+ */
+function editData() {
+    alert("功能调整中");
 }
 
 /**
