@@ -42,4 +42,10 @@ public interface ReceiveSampleAnalysisService {
      * @param id 编号
      */
     void setState(String id, CheckState checkState);
+
+    /**
+     * 更新
+     * @param receiveSampleAnalysis 市场部化验单
+     */
+    void update(ReceiveSampleAnalysis receiveSampleAnalysis);
 }

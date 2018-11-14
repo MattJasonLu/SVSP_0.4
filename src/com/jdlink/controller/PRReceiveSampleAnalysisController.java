@@ -78,6 +78,27 @@ public class PRReceiveSampleAnalysisController {
     }
 
     /**
+     * 更新市场部化验单
+     * @param receiveSampleAnalysis 市场部化验单
+     * @return 成功与否
+     */
+    @RequestMapping("updateReceiveSampleAnalysisById")
+    @ResponseBody
+    public String updateReceiveSampleAnalysisById(@RequestBody ReceiveSampleAnalysis receiveSampleAnalysis) {
+        JSONObject res = new JSONObject();
+        try {
+            receiveSampleAnalysisService.update(receiveSampleAnalysis);
+            res.put("status", "success");
+            res.put("message", "更新成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+        return res.toString();
+    }
+
+    /**
      * 获取市场部化验单的数量
      * @param receiveSampleAnalysis 市场部化验单的查询参数
      * @return 市场部化验单的数量

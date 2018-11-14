@@ -341,7 +341,7 @@ function setDataList(result) {
         if (obj.formType != null) clonedTr.find("td[name='formType']").text(obj.formType.name);
         if (obj.handleCategory != null) clonedTr.find("td[name='handleCategory']").text(obj.handleCategory.name);
         clonedTr.find("td[name='sender']").text(obj.sender);
-        clonedTr.find("td[name='PH']").text(setNumber2Line(parseFloat(obj.PH).toFixed(2)));
+        clonedTr.find("td[name='ph']").text(setNumber2Line(parseFloat(obj.PH).toFixed(2)));
         clonedTr.find("td[name='heat']").text(setNumber2Line(parseFloat(obj.heat).toFixed(2)));
         clonedTr.find("td[name='ash']").text(setNumber2Line(parseFloat(obj.ash).toFixed(2)));
         clonedTr.find("td[name='water']").text(setNumber2Line(parseFloat(obj.water).toFixed(2)));
@@ -797,7 +797,51 @@ function showEditModal(e) {
  * 修改数据
  */
 function editData() {
-    alert("功能调整中");
+    var data = {
+        id: editId,
+        sampleId: $("#editId").val(),
+        finishDate: $("#editFinishDate").val(),
+        produceCompany: {
+            clientId: $("#editProduceCompany").val()
+        },
+        sender: $("#editSender").val(),
+        ph: $("#editPH").val(),
+        ash: $("#editAsh").val(),
+        fluorine: $("#editFluorine").val(),
+        sulfur: $("#editSulfur").val(),
+        flashPoint: $("#editFlashPoint").val(),
+        hotMelt: $("#editHotMelt").val(),
+        wastesName: $("#editWastesName").val(),
+        wastesCode: $("#editWastesCode").val(),
+        formType: $("#editFormType").val(),
+        remark: $("#editRemark").val(),
+        heat: $("#editHeat").val(),
+        water: $("#editWater").val(),
+        chlorine: $("#editChlorine").val(),
+        phosphorus: $("#editPhosphorus").val(),
+        viscosity: $("#editViscosity").val()
+    };
+    $.ajax({
+        type: "POST",
+        url: "updateReceiveSampleAnalysisById",
+        async: false,
+        dataType: "json",
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                alert(result.message);
+                window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
 }
 
 /**

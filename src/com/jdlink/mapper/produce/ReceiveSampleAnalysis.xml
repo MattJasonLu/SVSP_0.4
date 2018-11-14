@@ -69,22 +69,22 @@
         insert into t_pr_receivesampleanalysis (id, transferDraftId, sampleId, finishDate,
         produceCompanyId, wastesName, wastesCode, handleCategory, formType, heat, PH, ash,
         water, fluorine, chlorine, sulfur, phosphorus, flashPoint, viscosity, hotMelt,
-        remark, checkState, wastesCategory) values (#{id}, #{transferDraftId}, #{sampleId},
+        remark, checkState, wastesCategory, sender) values (#{id}, #{transferDraftId}, #{sampleId},
         #{finishDate}, #{produceCompany.clientId}, #{wastesName}, #{wastesCode}, #{handleCategory},
         #{formType}, #{heat}, #{PH}, #{ash}, #{water}, #{fluorine}, #{chlorine}, #{sulfur},
         #{phosphorus}, #{flashPoint}, #{viscosity}, #{hotMelt}, #{remark}, #{checkState},
-        #{wastesCategory});
+        #{wastesCategory}, #{sender});
     </insert>
 
-    <!--更新仓储部化验单-->
+    <!--更新市场部化验单-->
     <update id="update">
         update t_pr_receivesampleanalysis set transferDraftId=#{transferDraftId},
         sampleId=#{sampleId}, finishDate=#{finishDate}, produceCompanyId=#{produceCompany.clientId},
         wastesName=#{wastesName}, wastesCode=#{wastesCode}, handleCategory=#{handleCategory},
         formType=#{formType}, heat=#{heat}, PH=#{PH}, ash=#{ash}, water=#{water}, fluorine=#{fluorine},
         chlorine=#{chlorine}, sulfur=#{sulfur}, phosphorus=#{phosphorus}, flashPoint=#{flashPoint},
-        viscosity=#{viscosity}, hotMelt=#{hotMelt}, remark=#{remark}, wastesCategory=#{wastesCategory}
-        where id=#{id};
+        viscosity=#{viscosity}, hotMelt=#{hotMelt}, remark=#{remark}, wastesCategory=#{wastesCategory},
+        sender=#{sender} where id=#{id};
     </update>
 
     <!--设置状态-->
