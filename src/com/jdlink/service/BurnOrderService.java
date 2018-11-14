@@ -20,7 +20,7 @@ public interface BurnOrderService {
     void add(BurnOrder burnOrder);
     List<BurnOrder> listPage(Page page);
     List<BurnOrder> search(BurnOrder burnOrder);
-    void invalid(String id);
+    void invalid(BurnOrder burnOrder);
     void update(BurnOrder burnOrder);
     int getCurrentItemId();
     PretreatmentItem getItemsById(int id);

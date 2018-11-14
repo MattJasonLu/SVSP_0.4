@@ -47,7 +47,9 @@
     </select>
 
     <select id="listPage" resultMap="BurnOrderRM">
-        select * from t_pr_burnorder order by creationDate desc
+        select * from t_pr_burnorder
+        where state != 'Invalid'
+        order by creationDate desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -176,14 +178,24 @@
                 chlorinePercentage=#{pretreatmentItem.wastes.chlorinePercentage},sulfurPercentage=#{pretreatmentItem.wastes.sulfurPercentage},
                 ph=#{pretreatmentItem.wastes.ph},phosphorusPercentage=#{pretreatmentItem.wastes.phosphorusPercentage},fluorinePercentage=#{pretreatmentItem.wastes.fluorinePercentage},
                 remarks=#{pretreatmentItem.wastes.remarks},processWay=#{pretreatmentItem.wastes.processWay},handleCategory=#{pretreatmentItem.wastes.handleCategory},wastesName
-                =#{pretreatmentItem.wastes.name}
+                =#{pretreatmentItem.wastes.name},temporaryAddress=#{pretreatmentItem.temporaryAddress}
                 where serialNumber = #{pretreatmentItem.serialNumber} and burnOrderId = #{id};
             </foreach>
         </if>
     </update>
 
-    <update id="invalid" parameterType="String">
-        update t_pr_burnorder set state = 'Invalid' where id = #{id}
+    <update id="invalid" parameterType="BurnOrder">
+        update t_pr_burnorder
+        set state = 'Invalid',id=CONCAT('I-',id)
+        where id = #{id};
+
+        <if test="pretreatmentItemList != null and pretreatmentItemList.size() > 0">
+            <foreach collection="pretreatmentItemList" index="index" item="pretreatmentItem">
+                update t_pr_pretreatment
+                set state = 'NewBuild' where
+                id = #{pretreatmentId};
+            </foreach>
+        </if>
     </update>
 
     <insert id="add" parameterType="BurnOrder">
@@ -220,7 +232,6 @@
             state = 'Confirm'
             where id =#{pretreatmentId};
         </if>
-
     </insert>
 
 
