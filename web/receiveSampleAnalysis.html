@@ -336,7 +336,7 @@
                     </th>
                     <th class="text-center hidden">ID</th>
                     <th class="text-center">完成日期</th>
-                    <th class="text-center">样品代码</th>
+                    <th class="text-center">样品编号</th>
                     <th class="text-center">产废单位</th>
                     <th class="text-center">危废名称</th>
                     <!--<th class="text-center">废物类别</th>-->
@@ -366,7 +366,7 @@
                     </td>
                     <td class="text-center hidden" name="id">ID</td>
                     <td class="text-center" name="finishDate">完成日期</td>
-                    <td class="text-center" name="wastesCode">样品代码</td>
+                    <td class="text-center" name="sampleId">样品编号</td>
                     <td class="text-center" name="produceCompanyName">产废单位</td>
                     <td class="text-center" name="wastesName">危废名称</td>
                     <!--<td class="text-center" name="handleCategory">废物类别</td>-->
@@ -556,7 +556,7 @@
                                     <div class="form-group">
                                         <label for="viscosity" class="col-sm-4 control-label">粘度</label>
                                         <div class="col-xs-8">
-                                            <input type="number" class="form-control" id="viscosity" name="viscosity">
+                                            <input type="text" class="form-control" id="viscosity" name="viscosity">
                                         </div>
                                     </div>
                                 </div>
@@ -696,7 +696,7 @@
                                 <div class="form-group">
                                     <label for="editViscosity" class="col-sm-4 control-label">粘度</label>
                                     <div class="col-xs-8">
-                                        <input type="number" class="form-control" id="editViscosity" name="editViscosity">
+                                        <input type="text" class="form-control" id="editViscosity" name="editViscosity">
                                     </div>
                                 </div>
                             </div>
@@ -718,66 +718,126 @@
                             <h4 class="modal-title" id="myModalLabel1">化验单信息</h4>
                         </div>
                         <div class="modal-body">
-                            <table class="table table-bordered" style="border:none">
-                                <!--<thead style="border:none">-->
-                                <tbody id="viewTable">
-                                <tr>
-                                    <th>样品编号</th>
-                                    <th>完成日期</th>
-                                    <th>产废单位</th>
-                                    <th>废物名称</th>
-                                    <th>废物代码</th>
-                                    <th>废物形态</th>
-                                    <th>备注</th>
-                                </tr>
-                                <tr>
-                                    <td name="sampleId"></td>
-                                    <td name="finishDate"></td>
-                                    <td name="produceCompanyName"></td>
-                                    <td name="wastesName"></td>
-                                    <td name="wastesCode"></td>
-                                    <td name="formType"></td>
-                                    <td name="remark"></td>
-                                </tr>
-                                <tr>
-                                    <th>PH</th>
-                                    <th>热值kal/kg</th>
-                                    <th>灰分%</th>
-                                    <th>水分%</th>
-                                    <th>氟含量%</th>
-                                    <th>氯含量%</th>
-                                    <th>硫含量%</th>
-                                </tr>
-                                <!--</thead>-->
-                                <tr>
-                                    <td name="PH"></td>
-                                    <td name="ash"></td>
-                                    <td name="water"></td>
-                                    <td name="heat"></td>
-                                    <td name="fluorine"></td>
-                                    <td name="chlorine"></td>
-                                    <td name="sulfur"></td>
-                                </tr>
-                                <tr>
-                                    <th>磷含量%</th>
-                                    <th>闪点&#176;C</th>
-                                    <th>粘度mpa*s</th>
-                                    <th>热融试验120&#176;C</th>
-                                    <th>送样人</th>
-                                    <!--<th>签收人</th>-->
-                                    <!--<th>签收日期</th>-->
-                                </tr>
-                                <tr>
-                                    <td name="phosphorus"></td>
-                                    <td name="flashPoint"></td>
-                                    <td name="viscosity"></td>
-                                    <td name="hotMelt"></td>
-                                    <td name="sender"></td>
-                                    <!--<td name="signer"></td>-->
-                                    <!--<td name="signDate"></td>-->
-                                </tr>
-                                </tbody>
-                            </table>
+                            <div class="row">
+                                <div class="form-horizontal col-md-6">
+                                    <div class="form-group">
+                                        <label for="viewId" class="col-sm-4 control-label">样品编号</label>
+                                        <div class="col-xs-8" style="margin-top: 5px;">
+                                            <span id="viewId"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="produceCompany" class="col-sm-4 control-label">产废单位</label>
+                                        <div class="col-xs-8" style="margin-top: 5px;">
+                                            <span id="viewProduceCompanyName"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="finishDate" class="col-sm-4 control-label">完成日期</label>
+                                        <div class="col-xs-8" style="margin-top: 5px;">
+                                            <span id="viewFinishDate"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sender" class="col-sm-4 control-label">送样人</label>
+                                        <div class="col-xs-8" style="margin-top: 5px;">
+                                            <span id="viewSender"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PH" class="col-sm-4 control-label">PH</label>
+                                        <div class="col-xs-8" style="margin-top: 5px;">
+                                            <span id="viewPH"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ash" class="col-sm-4 control-label">灰分</label>
+                                        <div class="col-xs-8" style="margin-top: 5px;">
+                                            <span id="viewAsh"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fluorine" class="col-sm-4 control-label">氟含量</label>
+                                        <div class="col-xs-8" style="margin-top: 5px;">
+                                            <span id="viewFluorine"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sulfur" class="col-sm-4 control-label">硫含量</label>
+                                        <div class="col-xs-8" style="margin-top: 5px;">
+                                            <span id="viewSulfur"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="flashPoint" class="col-sm-4 control-label">闪点</label>
+                                        <div class="col-xs-8" style="margin-top: 5px;">
+                                            <span id="viewFlashPoint"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="hotMelt" class="col-sm-4 control-label">热融试验</label>
+                                        <div class="col-xs-8" style="margin-top: 5px;">
+                                            <span id="viewHotMelt"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-horizontal col-md-6">
+                                    <div class="form-group">
+                                        <label for="wastesName" class="col-sm-4 control-label">危废名称</label>
+                                        <div class="col-xs-8" style="margin-top: 5px;">
+                                            <span id="viewWastesName"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="wastesCode" class="col-sm-4 control-label">危废代码</label>
+                                        <div class="col-xs-8" style="margin-top: 5px;">
+                                            <span id="viewWastesCode"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="formType" class="col-sm-4 control-label">物质形态</label>
+                                        <div class="col-xs-8" style="margin-top: 5px;">
+                                            <span id="viewFormType"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="remark" class="col-sm-4 control-label">备注</label>
+                                        <div class="col-xs-8" style="margin-top: 5px;">
+                                            <span id="viewRemark"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="heat" class="col-sm-4 control-label">热值</label>
+                                        <div class="col-xs-8" style="margin-top: 5px;">
+                                            <span id="viewHeat"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="water" class="col-sm-4 control-label">水分</label>
+                                        <div class="col-xs-8" style="margin-top: 5px;">
+                                            <span id="viewWater"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="chlorine" class="col-sm-4 control-label">氯含量</label>
+                                        <div class="col-xs-8" style="margin-top: 5px;">
+                                            <span id="viewChlorine"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phosphorus" class="col-sm-4 control-label">磷含量</label>
+                                        <div class="col-xs-8" style="margin-top: 5px;">
+                                            <span id="viewPhosphorus"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="viscosity" class="col-sm-4 control-label">粘度</label>
+                                        <div class="col-xs-8" style="margin-top: 5px;">
+                                            <span id="viewViscosity"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer" id="footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>

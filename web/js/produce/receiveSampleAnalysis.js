@@ -350,7 +350,7 @@ function setDataList(result) {
         clonedTr.find("td[name='sulfur']").text(parseFloat(obj.sulfur).toFixed(2));
         clonedTr.find("td[name='phosphorus']").text(parseFloat(obj.phosphorus).toFixed(2));
         clonedTr.find("td[name='flashPoint']").text(parseFloat(obj.flashPoint).toFixed(2));
-        clonedTr.find("td[name='viscosity']").text(parseFloat(obj.viscosity).toFixed(2));
+        clonedTr.find("td[name='viscosity']").text(obj.viscosity);
         clonedTr.find("td[name='hotMelt']").text(obj.hotMelt);
         clonedTr.find("td[name='signer']").text(obj.signer);
         clonedTr.find("td[name='remark']").text(obj.remark);
@@ -776,7 +776,7 @@ function showEditModal(e) {
                 $("#editSulfur").val(parseFloat(obj.sulfur).toFixed(2));
                 $("#editPhosphorus").val(parseFloat(obj.phosphorus).toFixed(2));
                 $("#editFlashPoint").val(parseFloat(obj.flashPoint).toFixed(2));
-                $("#editViscosity").val(parseFloat(obj.viscosity).toFixed(2));
+                $("#editViscosity").val(obj.viscosity);
                 $("#editHotMelt").val(obj.hotMelt);
                 $("#editSender").val(obj.sender);
             } else {
@@ -1084,26 +1084,26 @@ function viewData(e) {
             if (result != undefined && result.status == "success") {
                 console.log(result);
                 var obj = eval(result.data);
-                $("#viewTable").find("td[name='sampleId']").text(obj.sampleId);
-                $("#viewTable").find("td[name='finishDate']").text(getDateStr(obj.finishDate));
+                $("#viewId").text(obj.sampleId);
+                $("#viewFinishDate").text(getDateStr(obj.finishDate));
                 if (obj.produceCompany != null)
-                $("#viewTable").find("td[name='produceCompanyName']").text(obj.produceCompany.companyName);
-                $("#viewTable").find("td[name='wastesName']").text(parseFloat(obj.wastesName).toFixed(2));
-                $("#viewTable").find("td[name='wastesCode']").text(parseFloat(obj.wastesCode).toFixed(2));
-                if (obj.formType != null) $("#viewTable").find("td[name='formType']").text(obj.formType.name);
-                $("#viewTable").find("td[name='remark']").text(obj.remark);
-                $("#viewTable").find("td[name='PH']").text(parseFloat(obj.PH).toFixed(2));
-                $("#viewTable").find("td[name='ash']").text(parseFloat(obj.ash).toFixed(2));
-                $("#viewTable").find("td[name='water']").text(parseFloat(obj.water).toFixed(2));
-                $("#viewTable").find("td[name='heat']").text(parseFloat(obj.heat).toFixed(2));
-                $("#viewTable").find("td[name='fluorine']").text(parseFloat(obj.fluorine).toFixed(2));
-                $("#viewTable").find("td[name='chlorine']").text(parseFloat(obj.chlorine).toFixed(2));
-                $("#viewTable").find("td[name='sulfur']").text(parseFloat(obj.sulfur).toFixed(2));
-                $("#viewTable").find("td[name='phosphorus']").text(parseFloat(obj.phosphorus).toFixed(2));
-                $("#viewTable").find("td[name='flashPoint']").text(parseFloat(obj.flashPoint).toFixed(2));
-                $("#viewTable").find("td[name='viscosity']").text(parseFloat(obj.viscosity).toFixed(2));
-                $("#viewTable").find("td[name='hotMelt']").text(obj.hotMelt);
-                $("#viewTable").find("td[name='sender']").text(obj.sender);
+                $("#viewProduceCompanyName").text(obj.produceCompany.companyName);
+                $("#viewWastesName").text(obj.wastesName);
+                $("#viewWastesCode").text(obj.wastesCode);
+                if (obj.formType != null) $("#viewFormType").text(obj.formType.name);
+                $("#viewRemark").text(obj.remark);
+                $("#viewPH").text(parseFloat(obj.PH).toFixed(2));
+                $("#viewAsh").text(parseFloat(obj.ash).toFixed(2));
+                $("#viewWater").text(parseFloat(obj.water).toFixed(2));
+                $("#viewHeat").text(parseFloat(obj.heat).toFixed(2));
+                $("#viewFluorine").text(parseFloat(obj.fluorine).toFixed(2));
+                $("#viewChlorine").text(parseFloat(obj.chlorine).toFixed(2));
+                $("#viewSulfur").text(parseFloat(obj.sulfur).toFixed(2));
+                $("#viewPhosphorus").text(parseFloat(obj.phosphorus).toFixed(2));
+                $("#viewFlashPoint").text(parseFloat(obj.flashPoint).toFixed(2));
+                $("#viewViscosity").text(obj.viscosity);
+                $("#viewHotMelt").text(obj.hotMelt);
+                $("#viewSender").text(obj.sender);
             } else {
                 alert(result.message);
             }
