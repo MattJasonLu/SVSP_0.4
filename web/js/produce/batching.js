@@ -1856,6 +1856,7 @@ function ingreadientsListModify(item) {
                     $('#produceCompany1').val(obj.produceCompany.companyName);
                 }
                 $('#wastesName1').val(obj.wastesName);
+                $("#inboundorderId1").val(obj.inboundOrderId);
                 $('#batchingNumber1').val(obj.batchingNumber.toFixed(2));
                 $('#batchingNumber2').val(obj.batchingNumber.toFixed(2));
                 $('#batchingDate1').val(getDateStr(obj.batchingDate));

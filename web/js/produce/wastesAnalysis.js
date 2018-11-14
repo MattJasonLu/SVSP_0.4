@@ -7,6 +7,7 @@ function reset() {
 var currentPage = 1;                          //当前页数
 var isSearch = false;
 var data1;
+
 /**
  * 计算总页数
  * */
@@ -15,15 +16,18 @@ function totalPage() {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "totalWasteIntoRecord",                  // url
+            url: "countSampleInfoAnalysis",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
+            contentType: "application/json; charset=utf-8",
             success: function (result) {
-                if (result > 0) {
-                    totalRecord = result;
-                } else {
-                    console.log("fail: " + result);
-                    totalRecord = 0;
+                if (result != undefined && result.status == "success") {
+                    if (result.data > 0) {
+                        totalRecord = result.data;
+                    } else {
+                        console.log("fail: " + result.data);
+                        totalRecord = 0;
+                    }
                 }
             },
             error: function (result) {
@@ -32,11 +36,31 @@ function totalPage() {
             }
         });
     } else {
-        totalRecord=array1.length;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchWastesDailyCount",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    if (result.data > 0) {
+                        totalRecord = result.data;
+                    } else {
+                        console.log("fail: " + result.data);
+                        totalRecord = 0;
+                    }
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
     }
     var count = countValue();                         // 可选
-    var total = loadPages(totalRecord, count);
-    return total;
+    return loadPages(totalRecord, count);
 }
 
 /**
@@ -50,16 +74,17 @@ function AddAndRemoveClass(item) {
 }
 
 /**
- * 设置克隆页码
- * */
+ * 克隆页码
+ * @param result
+ */
 function setPageClone(result) {
     $(".beforeClone").remove();
-    setWasteIntoList(result);
+    setDataList(result);
     var total = totalPage();
     $("#next").prev().hide();
     var st = "共" + total + "页";
     $("#totalPage").text(st);
-    var myArray = new Array();
+    var myArray = [];
     for (var i = 0; i < total; i++) {
         var li = $("#next").prev();
         myArray[i] = i + 1;
@@ -69,7 +94,7 @@ function setPageClone(result) {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
-            AddAndRemoveClass(this);
+            addAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -78,6 +103,50 @@ function setPageClone(result) {
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
 }
+
+
+/**
+ * 设置数据
+ * @param result
+ */
+function setDataList(result) {
+    // 获取id为cloneTr的tr元素
+    var tr = $("#cloneTr");
+    tr.siblings().remove();
+    $.each(result, function (index, item) {
+        var obj = eval(item);
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        clonedTr.show();
+        // 循环遍历cloneTr的每一个td元素，并赋值
+        clonedTr.find("td[name='id']").text(obj.id);
+        clonedTr.find("td[name='transferDraftId']").text(obj.transferDraftId);
+        if (obj.produceCompany != null) clonedTr.find("td[name='produceCompanyName']").text(obj.produceCompany.companyName);
+        clonedTr.find("td[name='wastesName']").text(obj.wastesName);
+        clonedTr.find("td[name='wastesCode']").text(obj.wastesCode);
+        if(obj.formType != null)
+            clonedTr.find("td[name='formType']").text(obj.formType.name);
+        clonedTr.find("td[name='PH']").text(parseFloat(obj.PH).toFixed(2));
+        clonedTr.find("td[name='ash']").text(parseFloat(obj.ash).toFixed(2));
+        clonedTr.find("td[name='water']").text(parseFloat(obj.water).toFixed(2));
+        clonedTr.find("td[name='heat']").text(parseFloat(obj.heat).toFixed(2));
+        clonedTr.find("td[name='sulfur']").text(parseFloat(obj.sulfur).toFixed(2));
+        clonedTr.find("td[name='chlorine']").text(parseFloat(obj.chlorine).toFixed(2));
+        clonedTr.find("td[name='fluorine']").text(parseFloat(obj.fluorine).toFixed(2));
+        clonedTr.find("td[name='phosphorus']").text(parseFloat(obj.phosphorus).toFixed(2));
+        clonedTr.find("td[name='flashPoint']").text(parseFloat(obj.flashPoint).toFixed(2));
+        clonedTr.find("td[name='viscosity']").text(parseFloat(obj.viscosity).toFixed(2));
+        clonedTr.find("td[name='hotMelt']").text(obj.hotMelt);
+        clonedTr.find("td[name='signer']").text(obj.signer);
+        clonedTr.find("td[name='remark']").text(obj.remark);
+        // 把克隆好的tr追加到原来的tr前面
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+    });
+    // 隐藏无数据的tr
+    tr.hide();
+}
+
 
 /**
  * 返回count值
@@ -88,30 +157,33 @@ function countValue() {
     return mySelect.options[index].text;
 }
 
+
 /**
  * 点击页数跳转页面
  * @param pageNumber 跳转页数
  * */
 function switchPage(pageNumber) {
-    console.log("当前页：" + pageNumber);
-    if (pageNumber == 0) {                 //首页
+    if(pageNumber > totalPage()){
+        pageNumber = totalPage();
+    }
+    if (pageNumber === 0) {                 //首页
         pageNumber = 1;
     }
-    if (pageNumber == -2) {
+    if (pageNumber === -2) {
         pageNumber = totalPage();        //尾页
     }
-    if (pageNumber == null || pageNumber == undefined) {
+    if (pageNumber == null || pageNumber === undefined) {
         console.log("参数为空,返回首页!");
         pageNumber = 1;
     }
     $("#current").find("a").text("当前页：" + pageNumber);
-    if (pageNumber == 1) {
+    if (pageNumber === 1) {
         $("#previous").addClass("disabled");
         $("#firstPage").addClass("disabled");
         $("#next").removeClass("disabled");
         $("#endPage").removeClass("disabled");
     }
-    if (pageNumber == totalPage()) {
+    if (pageNumber === totalPage()) {
         $("#next").addClass("disabled");
         $("#endPage").addClass("disabled");
         $("#previous").removeClass("disabled");
@@ -125,6 +197,7 @@ function switchPage(pageNumber) {
         $("#next").removeClass("disabled");
         $("#endPage").removeClass("disabled");
     }
+    addPageClass(pageNumber);           // 设置页码标蓝
     var page = {};
     page.count = countValue();                        //可选
     page.pageNumber = pageNumber;
@@ -136,58 +209,72 @@ function switchPage(pageNumber) {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "getWasteIntoList",                  // url
-            data:JSON.stringify(page),
+            url: "getSampleInfoAnalysis",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: page,
             dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result !== undefined && result.status === "success") {
+                    setDataList(result.data);
+                } else {
                     console.log(result);
-                    setWasteIntoList(result);
-                }
-                else {
-                    alert(result.message);
-
                 }
             },
-            error:function (result) {
-                alert("服务器异常！")
+            error: function (result) {
+                console.log("error: " + result);
             }
         });
-    }
-    if (isSearch) {//查询用的
-        for(var i=0;i<array1.length;i++){
-            $(array1[i]).hide();
-        }
-        var i=parseInt((pageNumber-1)*countValue());
-        var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
-        for(var i=i;i<=j;i++){
-            $('#tbody1').append(array1[i]);
-            $(array1[i]).show();
-        }
+    } else {
+        data1['page'] = page;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchWastesDailyCount",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result !== undefined && result.status === "success") {
+                    if (result.data > 0) {
+                        totalRecord = result;
+                        console.log("总记录数为:" + result);
+                    } else {
+                        console.log("fail: " + result);
+                        totalRecord = 0;
+                    }
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+            }
+        });
     }
 }
 
 /**
  * 输入页数跳转页面
  * */
-function inputSwitchPage()  {
+function inputSwitchPage() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
+    if(pageNumber > totalPage()){
+        pageNumber = totalPage();
+    }
     $("#current").find("a").text("当前页：" + pageNumber);
-    if (pageNumber == null || pageNumber == undefined) {
+    if (pageNumber == null || pageNumber === undefined) {
         window.alert("跳转页数不能为空！")
     } else {
-        if (pageNumber == 1) {
+        if (pageNumber === 1) {
             $("#previous").addClass("disabled");
             $("#firstPage").addClass("disabled");
             $("#next").removeClass("disabled");
             $("#endPage").removeClass("disabled");
         }
-        if (pageNumber == totalPage()) {
+        if (pageNumber === totalPage()) {
             $("#next").addClass("disabled");
             $("#endPage").addClass("disabled");
-
             $("#previous").removeClass("disabled");
             $("#firstPage").removeClass("disabled");
         }
@@ -209,15 +296,15 @@ function inputSwitchPage()  {
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "getWasteIntoList",         // url
+                url: "getSampleInfoAnalysis",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(page),
+                data: page,
                 dataType: "json",
-                contentType: 'application/json;charset=utf-8',
+                contentType: "application/json; charset=utf-8",
                 success: function (result) {
-                    if (result != undefined) {
+                    if (result != undefined && result.status == "success") {
                         console.log(result);
-                        setWasteIntoList(result);
+                        setDataList(result.data);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -226,17 +313,33 @@ function inputSwitchPage()  {
                     console.log("error: " + result);
                 }
             });
-        }
-        if (isSearch) {//查询用的
-            for(var i=0;i<array1.length;i++){
-                $(array1[i]).hide();
-            }
-            var i=parseInt((pageNumber-1)*countValue());
-            var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
-            for(var i=i;i<=j;i++){
-                $('#tbody1').append(array1[i]);
-                $(array1[i]).show();
-            }
+        } else {
+            data1['page'] = page;
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "searchWastesDailyCount",         // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data1),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result != undefined && result.status == "success") {
+                        // console.log(result);
+                        if (result.data > 0) {
+                            totalRecord = result;
+                            console.log("总记录数为:" + result);
+                        } else {
+                            console.log("fail: " + result);
+                            totalRecord = 0;
+                        }
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
         }
     }
 }
@@ -258,15 +361,17 @@ function loadPages(totalRecord, count) {
         return parseInt(totalRecord / count) + 1;
 }
 
-//加载危废入场分析日报数据列表
-function loadWasteIntoList() {
+
+
+/**
+ * 分页 获取首页内容
+ * */
+function loadPageList() {
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
-    if (totalPage() == 1) {
-        $("#next").addClass("disabled");
-        $("#endPage").addClass("disabled");
-    }
+    $("#next").removeClass("disabled");            // 移除上一次设置的按钮禁用
+    $("#endPage").removeClass("disabled");
     var page = {};
     var pageNumber = 1;                       // 显示首页
     page.count = countValue();                                 // 可选
@@ -274,319 +379,158 @@ function loadWasteIntoList() {
     page.start = (pageNumber - 1) * page.count;
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getWasteIntoList",                  // url
-        data:JSON.stringify(page),
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        url: "getSampleInfoAnalysis",   // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: page,
         dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
+        success: function (result) {
+            if (result !== undefined && result.status === "success") {
                 console.log(result);
-                setPageClone(result);
+                setPageClone(result.data);
                 setPageCloneAfter(pageNumber);        // 重新设置页码
-                //setWasteIntoList(result);
-            }
-            else {
-                alert(result.message);
-
+            } else {
+                console.log("fail: " + result);
             }
         },
-        error:function (result) {
-             alert("服务器异常！")
+        error: function (result) {
+            console.log("error: " + result);
+            console.log("失败");
         }
     });
-    //加载进料方式列表
+    isSearch = false;
+    //加载高级查询的废物形态
+
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getHandelCategoryList",                  // url
+        url: "getFormTypeAndPackageType",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        //contentType: "application/json; charset=utf-8",
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                var type=$('#search-type');
-                type.children().remove();
-                $.each(result.array1,function (index,item) {
-                    var option=$('<option/>');
-                    option.val(item.index);
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var formType = $("#search-type");
+                formType.children().remove();
+                $.each(data.formTypeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
                     option.text(item.name);
-                    type.append(option);
-                })
-                type.get(0).selectedIndex=-1;
-            }
-            else {
-                alert(result.message);
-
+                    formType.append(option);
+                });
+                formType.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
             }
         },
-        error:function (result) {
-            alert("服务器异常！")
-        },
-
+        error: function (result) {
+            console.log("error: " + result);
+        }
     });
-
 }
 
-//设置危废入场分析日报数据
-function setWasteIntoList(result) {
-    var tr = $("#cloneTr");
-    tr.siblings().remove();
-    $.each(result.data,function (index,item) {
-        var clonedTr = tr.clone();
-        clonedTr.show();
-        clonedTr.children("td").each(function (inner_index) {
-            var obj = eval(item);
-            switch (inner_index) {
-                // 序号
-                case (1):
-                    $(this).html(index+1);
-                    break;
-                // 收样日期
-                case (2):
-                    if(obj.laboratoryTest!=null){
-                        $(this).html(getDateStr(obj.laboratoryTest.samplingDate));
-                    }
-                    break;
-                // 联单号码
-                case (3):
-                    $(this).html(obj.transferDraftId);
-                    break;
-                // 产废单位
-                case (4):
-                    if(obj.client!=null){
-                        $(this).html(obj.client.companyName);
-                    }
 
-                    break;
-                // 废物名称
-                case (5):
-                    if(obj.laboratoryTest!=null){
-                        $(this).html(obj.laboratoryTest.wastesName);
 
-                    }
-                    break;
-                // 废物类别
-                case (6):
-                        $(this).html(obj.wastesCategory);
-                    break;
-                // 废物形态
-                case (7):
-                    if(obj.handleCategory!=null){
-                        $(this).html(obj.handleCategory.name);
-                    }
-                    break;
-                    //PH
-                case (8):
-                    if(obj.laboratoryTest!=null){
-                        $(this).html(obj.laboratoryTest.phAverage);
-                    }
 
-                    break;
-                    //热值
-                case (9):
-                    if(obj.laboratoryTest!=null){
-                        $(this).html(obj.laboratoryTest.heatAverage);
-                    }
-                    break;
-                    //水分
-                case (10):
-                    if(obj.laboratoryTest!=null){
-                        $(this).html(obj.laboratoryTest.waterContentAverage);
-                    }
-                    break;
-                    //灰分
-                case (11):
-                    if(obj.laboratoryTest!=null) {
-                        $(this).html(obj.laboratoryTest.ashAverage);
-                    }
-                    break;
-                    //氟含量
 
-                case (12):
-                    if(obj.laboratoryTest!=null) {
-                        $(this).html(obj.laboratoryTest.fluorineContentAverage);
-                    }
-                    break;
-                    //氯含量
-                case (13):
-                    if(obj.laboratoryTest!=null) {
-                        $(this).html(obj.laboratoryTest.chlorineContentAverage);
-                    }
-                    break;
-                    //硫含量
-                case (14):
-                    if(obj.laboratoryTest!=null) {
-                        $(this).html(obj.laboratoryTest.sulfurContentAverage);
-                    }
-                    break;
-                    //磷含量
-                case (15):
-                    if(obj.laboratoryTest!=null) {
-                        $(this).html(obj.laboratoryTest.phosphorusContentAverage);
-                    }
-                    break;
-                    //闪点
-                case (16):
-                    if(obj.laboratoryTest!=null) {
-                        $(this).html(obj.laboratoryTest.flashPointAverage);
-                    }
-                    break;
-                    //粘度
-                case (17):
-                    if(obj.laboratoryTest!=null) {
-                        $(this).html(obj.laboratoryTest.viscosityAverage);
-                    }
-                    break;
-                    //熔融温度
-                case (18):
-                    if(obj.laboratoryTest!=null) {
-                        $(this).html(obj.laboratoryTest.meltingPointAverage);
-                    }
-                    break;
-                    //备注
-                case (19):
-                    $(this).html(obj.remarks);
-                    break;
-                case (20):
-                    $(this).html(obj.id);
-                    break;
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp==0){
+                searchWasteInto();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchWasteInto();      //
             }
-        })
-        // 把克隆好的tr追加到原来的tr前面
-        clonedTr.removeAttr("id");
-        clonedTr.insertBefore(tr);
+        },600);
     });
-    tr.hide();
-}
+});
 
-array=[];//存放所有的tr
-array1=[];//存放目标的tr
-//危废入场的高级查询
 
 function searchWasteInto() {
-    isSearch=false;
-    array.length=0;//清空数组
-    array1.length=0;//清空数组
-    $('.myclass').each(function () {
-        $(this).show();
-    });
+    isSearch = true;
+    var page = {};
+    var pageNumber = 1;                       // 显示首页
+    page.pageNumber = pageNumber;
+    page.count = countValue();
+    page.start = (pageNumber - 1) * page.count;
+
+    if ($("#senior").is(':visible')) {
+        var formType=null;
+
+        if($("#search-type").val()==0)
+            formType="Gas";
+        if($("#search-type").val()==1)
+            formType="Liquid";
+        if($("#search-type").val()==2)
+            formType="Solid";
+        if($("#search-type").val()==3)
+            formType="HalfSolid";
+        if($("#search-type").val()==4)
+            formType="Solid1AndHalfSolid";
+        if($("#search-type").val()==5)
+            formType="HalfSolidAndLiquid";
+        if($("#search-type").val()==6)
+            formType="Solid1AndLiquid";
 
 
-    //1分页模糊查询
-    for(var i=totalPage();i>0;i--){
-        switchPage(parseInt(i));
-        array.push($('.myclass'));
+
+        data1 = {
+            produceCompany:{companyName:$.trim($('#search-receiveDate').val())},
+            transferDraftId:$.trim($('#search-remarks').val()),
+            formType:formType,
+            wastesName:$.trim($('#search-wastesName').val()),
+            wastesCode:$.trim($('#search-wastesCategory').val()),
+            page: page,
+
+        };
     }
-    isSearch=true;
-    var text=$.trim($('#searchContent').val());
-    //1产废单位
-    var companyName=$.trim($('#search-receiveDate').val());
-    //2收样日期
-    var beginTime=$.trim($('#search-inDate').val());
-    var endTime=$.trim($('#search-endDate').val());
-
-    var startDate=getDateByStr(beginTime);
-
-    var endDate=getDateByStr(endTime);
-
-    //3联单号码
-    var number=$.trim($('#search-remarks').val());
-    //进料方式
-    var hangelCategory=$.trim($('#search-type option:selected').text());
-    //废物名称
-    var wastesName=$.trim($('#search-wastesName').val());
-    //废物类别
-    var wastesCategory=$.trim($('#search-wastesCategory').val());
-    var arraydate=[];
-    for(var j=0;j<array.length;j++){
-        $.each(array[j],function () {
-            arraydate.push(($(this).children('td').eq(1).text()))
-        });
-    }
-    var dateMin=(arraydate[0]);
-    var dateMax=(arraydate[0]);
-    for(var i=0;i<arraydate.length;i++){
-        if(new Date(arraydate[i]).getTime()<new Date(dateMin)||dateMin.length==0){
-            dateMin=(arraydate[i]);
+    else{
+        var keyword = $.trim($("#searchContent").val());
+         if(keyword=='固态'){
+             keyword='Solid'
+         }
+        if(keyword=='液态'){
+            keyword='Liquid'
         }
-        if(new Date(arraydate[i]).getTime()>new Date(dateMax)||dateMax.length==0){
-            dateMax=(arraydate[i]);
+        if(keyword=='半固态'){
+            keyword='HalfSolid'
+        }
+
+
+
+        data1 = {
+            page: page,
+            keyword: keyword
         }
     }
-    for(var j=0;j<array.length;j++){
-        $.each(array[j],function () {
-            var date=$(this).children('td').eq(1).text();
-            if(startDate.toString()=='Invalid Date'){
-                startDate=dateMin;
-            }
-            if(endDate.toString()=='Invalid Date'){
-                endDate=dateMax;
-            }
-            if(date.length==0){
-                date=startDate;
-            }
 
-            if(!($(this).children('td').eq(4).text().indexOf(companyName)!=-1 &&$(this).children('td').eq(7).text().indexOf(hangelCategory)!=-1
-                &&$(this).children('td').eq(3).text().indexOf(number)!=-1 &&$(this).children('td').text().indexOf(text)!=-1
-                &&$(this).children('td').eq(5).text().indexOf(wastesName)!=-1 &&$(this).children('td').eq(6).text().indexOf(wastesCategory)!=-1
-                &&(new Date(date).getTime()<=new Date(endDate).getTime()&&new Date(date).getTime()>=new Date(startDate).getTime())
-            )){
-                $(this).hide();
-            }
-            if(
-                ($(this).children('td').eq(4).text().indexOf(companyName)!=-1 &&$(this).children('td').eq(7).text().indexOf(hangelCategory)!=-1
-                    &&$(this).children('td').eq(3).text().indexOf(number)!=-1 &&$(this).children('td').text().indexOf(text)!=-1
-                    &&$(this).children('td').eq(5).text().indexOf(wastesName)!=-1 &&$(this).children('td').eq(6).text().indexOf(wastesCategory)!=-1
-                    &&(new Date(date).getTime()<=new Date(endDate).getTime()&&new Date(date).getTime()>=new Date(startDate).getTime())
-                )
-            ){
-                array1.push($(this));
+
+    if (data1 == null) alert("请点击'查询设置'输入查询内容!");
+    else {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "searchWastesDaily",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(result)
+                    setPageClone(result.data)
+                } else {
+                    alert(result.message);
+
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器错误！");
             }
         });
     }
 
-    var total;
-
-    if(array1.length%countValue()==0){
-        total=array1.length/countValue()
-    }
-
-    if(array1.length%countValue()>0){
-        total=Math.ceil(array1.length/countValue());
-    }
-
-    if(array1.length/countValue()<1){
-        total=1;
-    }
-
-    $("#totalPage").text("共" + total + "页");
-
-    var myArray = new Array();
-    $('.beforeClone').remove();
-    for ( i = 0; i < total; i++) {
-        var li = $("#next").prev();
-        myArray[i] = i+1;
-        var clonedLi = li.clone();
-        clonedLi.show();
-        clonedLi.find('a:first-child').text(myArray[i]);
-        clonedLi.find('a:first-child').click(function () {
-            var num = $(this).text();
-            switchPage(num);
-            AddAndRemoveClass(this);
-        });
-        clonedLi.addClass("beforeClone");
-        clonedLi.removeAttr("id");
-        clonedLi.insertAfter(li);
-    }
-    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
-    $("#previous").next().next().eq(0).addClass("oldPageClass");
-    for(var i=0;i<array1.length;i++){
-        array1[i].hide();
-    }
-
-    for(var i=0;i<countValue();i++){
-        $(array1[i]).show();
-        $('#tbody1').append((array1[i]));
     }
 
 
@@ -594,7 +538,7 @@ function searchWasteInto() {
 
 
 
-}
+
 
 /**
  * 回车查询
@@ -605,107 +549,9 @@ function enterSearch() {
     }
 }
 
-//粗查询
-$(document).ready(function () {//页面载入是就会进行加载里面的内容
-    var last;
-    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
-        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
-        setTimeout(function () {
-            if(last-event.timeStamp==0){
-                searchWastesAnalysis();
-            }
-        },400);
-    });
-});
-
-//粗查询
-function searchWastesAnalysis() {
-
-    isSearch=false;
-
-    //loadWasteIntoList();
-
-    $('.myclass').each(function () {
-        $(this).show();
-    });
-    //1分页模糊查询
-    array.length=0;//清空数组
-    array1.length=0;
-
-    for(var i=totalPage();i>0;i--){
-        switchPage(parseInt(i));
-        array.push($('.myclass'));
-    }
-
-    isSearch=true;
-
-    var text=$.trim($('#searchContent').val());
-
-    for(var j=0;j<array.length;j++){
-        $.each(array[j],function () {
-            //console.log(this);
-            if(($(this).children('td').text().indexOf(text)==-1)){
-                $(this).hide();
-            }
-            if($(this).children('td').text().indexOf(text)!=-1){
-                array1.push($(this));
-            }
-        });
-    }
-
-    var total;
-
-    if(array1.length%countValue()==0){
-        total=array1.length/countValue()
-    }
-
-    if(array1.length%countValue()>0){
-        total=Math.ceil(array1.length/countValue());
-    }
-
-    if(array1.length/countValue()<1){
-        total=1;
-    }
-
-    $("#totalPage").text("共" + total + "页");
-
-    var myArray = new Array();
-
-    $('.beforeClone').remove();
-
-    for ( i = 0; i < total; i++) {
-        var li = $("#next").prev();
-        myArray[i] = i+1;
-        var clonedLi = li.clone();
-        clonedLi.show();
-        clonedLi.find('a:first-child').text(myArray[i]);
-        clonedLi.find('a:first-child').click(function () {
-            var num = $(this).text();
-            switchPage(num);
-            AddAndRemoveClass(this);
-        });
-        clonedLi.addClass("beforeClone");
-        clonedLi.removeAttr("id");
-        clonedLi.insertAfter(li);
-    }
-    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
-    $("#previous").next().next().eq(0).addClass("oldPageClass");
-    for(var i=0;i<array1.length;i++){
-        $(array1[i]).hide();
-    }
-
-    //首页展示
-    for(var i=0;i<countValue();i++){
-        $(array1[i]).show();
-        $('#tbody1').append((array1[i]));
-    }
-
-    if(text.length<=0){
-        loadWasteIntoList();
-    }
 
 
-}
+
 
 /**
 *

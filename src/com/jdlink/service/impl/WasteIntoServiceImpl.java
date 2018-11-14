@@ -2,6 +2,7 @@ package com.jdlink.service.impl;
 
 
 import com.jdlink.domain.Page;
+import com.jdlink.domain.Produce.SampleInfoAnalysis;
 import com.jdlink.domain.Produce.SecondarySample;
 import com.jdlink.domain.Produce.SecondarySampleItem;
 import com.jdlink.domain.Produce.WasteInto;
@@ -110,5 +111,15 @@ public class WasteIntoServiceImpl implements WasteIntoService {
     @Override
     public void updateSecondarySample(String id) {
         wasteIntoMapper.updateSecondarySample(id);
+    }
+
+    @Override
+    public List<SampleInfoAnalysis> searchWastesDaily(SampleInfoAnalysis sampleInfoAnalysis) {
+        return wasteIntoMapper.searchWastesDaily(sampleInfoAnalysis);
+    }
+
+    @Override
+    public int searchWastesDailyCount(SampleInfoAnalysis sampleInfoAnalysis) {
+        return wasteIntoMapper.searchWastesDailyCount(sampleInfoAnalysis);
     }
 }

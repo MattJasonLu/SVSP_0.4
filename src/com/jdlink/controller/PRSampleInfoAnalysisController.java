@@ -85,7 +85,7 @@ public class PRSampleInfoAnalysisController {
      */
     @RequestMapping("updateSampleInfoAnalysisById")
     @ResponseBody
-    public String updateSampleInfoAnalysisById(SampleInfoAnalysis sampleInfoAnalysis) {
+    public String updateSampleInfoAnalysisById(@RequestBody SampleInfoAnalysis sampleInfoAnalysis) {
         JSONObject res = new JSONObject();
         try {
             sampleInfoAnalysisService.update(sampleInfoAnalysis);
