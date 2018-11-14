@@ -20,11 +20,14 @@ function countValue() {
 function totalPage() {
     var totalRecord = 0;
     if (!isSearch) {
+        var obj = {};
         $.ajax({
             type: "POST",                       // 方法类型
             url: "countReceiveSampleAnalysis",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     if (result.data > 0) {
@@ -45,8 +48,9 @@ function totalPage() {
             type: "POST",                       // 方法类型
             url: "countReceiveSampleAnalysis",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: data,
+            data: JSON.stringify(data),
             dataType: "json",
+            contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     if (result.data > 0) {
@@ -161,12 +165,15 @@ function switchPage(pageNumber) {
     //addClass("active");
     page.start = (pageNumber - 1) * page.count;
     if (!isSearch) {
+        var data1 = {};
+        data1.page = page;
         $.ajax({
             type: "POST",                       // 方法类型
             url: "getReceiveSampleAnalysis",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: page,
+            data: JSON.stringify(data1),
             dataType: "json",
+            contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result !== undefined && result.status === "success") {
                     setDataList(result.data);
@@ -184,8 +191,9 @@ function switchPage(pageNumber) {
             type: "POST",                       // 方法类型
             url: "getReceiveSampleAnalysis",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: data,
+            data: JSON.stringify(data),
             dataType: "json",
+            contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result !== undefined && result.status === "success") {
                     setDataList(result.data);
@@ -239,12 +247,15 @@ function inputSwitchPage() {
         page.pageNumber = pageNumber;
         page.start = (pageNumber - 1) * page.count;
         if (!isSearch) {
+            var data1 = {};
+            data1.page = page;
             $.ajax({
                 type: "POST",                       // 方法类型
                 url: "getReceiveSampleAnalysis",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: page,
+                data: JSON.stringify(data1),
                 dataType: "json",
+                contentType: "application/json; charset=utf-8",
                 success: function (result) {
                     if (result != undefined && result.status == "success") {
                         console.log(result);
@@ -263,8 +274,9 @@ function inputSwitchPage() {
                 type: "POST",                       // 方法类型
                 url: "getReceiveSampleAnalysis",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: data,
+                data: JSON.stringify(data),
                 dataType: "json",
+                contentType: "application/json; charset=utf-8",
                 success: function (result) {
                     if (result != undefined && result.status == "success") {
                         // console.log(result);
@@ -295,12 +307,15 @@ function loadPageList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
+    var data1 = {};
+    data1.page = page;
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getReceiveSampleAnalysis",   // url
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: page,
+        data: JSON.stringify(data1),
         dataType: "json",
+        contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result !== undefined && result.status === "success") {
                 console.log(result);
@@ -374,20 +389,12 @@ function searchData() {
     // 精确查询
     if ($("#senior").is(':visible')) {
         data = {
-            id: $("#search-draftId").val(),
-            checkState: $("#search-checkState").val(),
-            produceCompany: {
-                companyName: $("#search-produceCompanyName").val()
+            sampleId: $("#search-sampleId").val(),
+            finishDate: $("#search-finishDate").val(),
+            produceCompany:{
+                 companyName: $("#search-produceCompany").val()
             },
-            transportCompany: {
-                companyName: $("#search-transportCompanyName").val()
-            },
-            acceptCompany: {
-                companyName: $("#search-acceptCompanyName").val()
-            },
-            dispatcher: $("#search-dispatcher").val(),
-            destination: $("#search-destination").val(),
-            transferTime: $("#search-transferTime").val(),
+            wastesName: $("#search-wastesName").val(),
             page: page
         };
         console.log(data);
@@ -402,10 +409,11 @@ function searchData() {
         type: "POST",                       // 方法类型
         url: "getReceiveSampleAnalysis",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: data,
+        data: JSON.stringify(data),
         dataType: "json",
+        contentType: "application/json; charset=utf-8",
         success: function (result) {
-            if (result !== undefined && result.status === "success") {
+            if (result != undefined && result.status == "success") {
                 console.log(result);
                 setPageClone(result.data);
             } else {

@@ -33,16 +33,15 @@ public class PRReceiveSampleAnalysisController {
 
     /**
      * 获取市场部化验单的
-     * @param page 分页数据
      * @param receiveSampleAnalysis 市场部化验单的查询参数
      * @return 查询所得数据
      */
     @RequestMapping("getReceiveSampleAnalysis")
     @ResponseBody
-    public String getReceiveSampleAnalysis(Page page, ReceiveSampleAnalysis receiveSampleAnalysis) {
+    public String getReceiveSampleAnalysis(@RequestBody ReceiveSampleAnalysis receiveSampleAnalysis) {
         JSONObject res = new JSONObject();
         try {
-            List<ReceiveSampleAnalysis> receiveSampleAnalysisList = receiveSampleAnalysisService.get(page, receiveSampleAnalysis);
+            List<ReceiveSampleAnalysis> receiveSampleAnalysisList = receiveSampleAnalysisService.get(receiveSampleAnalysis.getPage(), receiveSampleAnalysis);
             JSONArray data = JSONArray.fromArray(receiveSampleAnalysisList.toArray(new ReceiveSampleAnalysis[receiveSampleAnalysisList.size()]));
             res.put("status", "success");
             res.put("message", "市场部化验单获取数据成功");
@@ -105,7 +104,7 @@ public class PRReceiveSampleAnalysisController {
      */
     @RequestMapping("countReceiveSampleAnalysis")
     @ResponseBody
-    public String countReceiveSampleAnalysis(ReceiveSampleAnalysis receiveSampleAnalysis) {
+    public String countReceiveSampleAnalysis(@RequestBody ReceiveSampleAnalysis receiveSampleAnalysis) {
         JSONObject res = new JSONObject();
         try {
             int count = receiveSampleAnalysisService.count(receiveSampleAnalysis);

@@ -18,15 +18,22 @@
         SELECT * FROM t_pr_receivesampleanalysis
         <where>
             <if test="receiveSampleAnalysis != null and receiveSampleAnalysis.keyword != null and receiveSampleAnalysis.keyword != ''">
-                and id LIKE "%"#{receiveSampleAnalysis.keyword}"%" or dispatcher like "%"#{receiveSampleAnalysis.keyword}"%" or destination like "%"#{receiveSampleAnalysis.keyword}"%"
-                or transferTime like binary "%"#{receiveSampleAnalysis.keyword}"%" or produceCompanyName like "%"#{receiveSampleAnalysis.keyword}"%"
-                or transportCompanyName like "%"#{receiveSampleAnalysis.keyword}"%" or acceptCompanyName like "%"#{receiveSampleAnalysis.keyword}"%"
+                and (sampleId LIKE "%"#{receiveSampleAnalysis.keyword}"%"
+                or wastesName LIKE "%"#{receiveSampleAnalysis.keyword}"%"
+                or produceCompanyId in (select clientId from client where companyName like "%"#{receiveSampleAnalysis.keyword}"%")
+                or finishDate LIKE binary "%"#{receiveSampleAnalysis.keyword}"%")
             </if>
-            <if test="receiveSampleAnalysis != null and receiveSampleAnalysis.id != null and receiveSampleAnalysis.id != ''">
-                and id LIKE "%"#{receiveSampleAnalysis.id}"%"
+            <if test="receiveSampleAnalysis != null and receiveSampleAnalysis.sampleId != null and receiveSampleAnalysis.sampleId != ''">
+                and sampleId LIKE "%"#{receiveSampleAnalysis.sampleId}"%"
             </if>
             <if test="receiveSampleAnalysis != null and receiveSampleAnalysis.produceCompany != null and receiveSampleAnalysis.produceCompany.companyName != null and receiveSampleAnalysis.produceCompany.companyName != ''">
-                and produceCompanyName LIKE "%"#{receiveSampleAnalysis.produceCompany.companyName}"%"
+                and produceCompanyId in (select clientId from client where companyName like "%"#{receiveSampleAnalysis.produceCompany.companyName}"%")
+            </if>
+            <if test="receiveSampleAnalysis != null and receiveSampleAnalysis.wastesName != null and receiveSampleAnalysis.wastesName != ''">
+                and wastesName LIKE "%"#{receiveSampleAnalysis.wastesName}"%"
+            </if>
+            <if test="receiveSampleAnalysis != null and receiveSampleAnalysis.finishDate != null and receiveSampleAnalysis.finishDate != ''">
+                and finishDate = #{receiveSampleAnalysis.finishDate}
             </if>
             <if test="true">
                 and checkState != 'Invalid'
@@ -48,15 +55,22 @@
         SELECT count(*) FROM t_pr_receivesampleanalysis
         <where>
             <if test="keyword != null and keyword != ''">
-                and id LIKE "%"#{keyword}"%" or dispatcher like "%"#{keyword}"%" or destination like "%"#{keyword}"%"
-                or transferTime like binary "%"#{keyword}"%" or produceCompanyName like "%"#{keyword}"%"
-                or transportCompanyName like "%"#{keyword}"%" or acceptCompanyName like "%"#{keyword}"%"
+                and (sampleId LIKE "%"#{keyword}"%"
+                or wastesName LIKE "%"#{keyword}"%"
+                or produceCompanyId in (select clientId from client where companyName like "%"#{keyword}"%")
+                or finishDate LIKE binary "%"#{keyword}"%")
             </if>
-            <if test="id != null and id != ''">
-                and id LIKE "%"#{id}"%"
+            <if test="sampleId != null and sampleId != ''">
+                and sampleId LIKE "%"#{sampleId}"%"
             </if>
             <if test="produceCompany != null and produceCompany.companyName != null and produceCompany.companyName != ''">
-                and produceCompanyName LIKE "%"#{produceCompany.companyName}"%"
+                and produceCompanyId in (select clientId from client where companyName like "%"#{produceCompany.companyName}"%")
+            </if>
+            <if test="wastesName != null and wastesName != ''">
+                and wastesName LIKE "%"#{wastesName}"%"
+            </if>
+            <if test="finishDate != null and finishDate != ''">
+                and finishDate = #{finishDate}
             </if>
             <if test="true">
                 and checkState != 'Invalid'
