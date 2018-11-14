@@ -61,8 +61,8 @@ public class PretreatmentServiceImpl implements PretreatmentService {
     }
 
     @Override
-    public void invalid(String id) {
-        pretreatmentMapper.invalid(id);
+    public void invalid(Pretreatment pretreatment) {
+        pretreatmentMapper.invalid(pretreatment);
     }
 
     @Override

@@ -18,7 +18,7 @@ public interface PretreatmentMapper {
     int searchCount(Pretreatment pretreatment);
     int countById(String id);
     int countItem();
-    void invalid(String id);
+    void invalid(Pretreatment pretreatment);
     void adjust(Pretreatment pretreatment);
     PretreatmentItem getItemsById(int id);
 }
