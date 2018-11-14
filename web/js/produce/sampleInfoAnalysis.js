@@ -661,6 +661,7 @@ function setSubmit(e) {    //已提交
  */
 function adjustData(e) {
     var id = getIdByMenu(e);
+
     alert("功能调整中");
 }
 
@@ -948,29 +949,26 @@ function viewData(e) {
             if (result != undefined && result.status == "success") {
                 console.log(result);
                 var data = eval(result.data);
-                $("#viewTable").find("td[name='transferDraftId']").text(data.transferDraftId);
+                $("#viewTransferDraftId").text(data.transferDraftId);
                 if (data.produceCompany != null)
-                $("#viewTable").find("td[name='produceCompanyName']").text(data.produceCompany.companyName);
-                $("#viewTable").find("td[name='wastesName']").text(data.wastesName);
-                $("#viewTable").find("td[name='wastesCode']").text(data.wastesCode);
-                $("#viewTable").find("td[name='wastesCategory']").text(data.wastesCategory);
+                $("#viewProduceCompanyName").text(data.produceCompany.companyName);
+                $("#viewWastesName").text(data.wastesName);
+                $("#viewWastesCode").text(data.wastesCode);
+                $("#viewWastesCategory").text(data.wastesCategory);
                 if (data.formType != null)
-                $("#viewTable").find("td[name='formType']").text(data.formType.name);
-                $("#viewTable").find("td[name='sender']").text(data.sender);
-                $("#viewTable").find("td[name='signer']").text(data.signer);
-                $("#viewTable").find("td[name='PH']").text(parseFloat(data.PH).toFixed(2));
-                $("#viewTable").find("td[name='ash']").text(parseFloat(data.ash).toFixed(2));
-                $("#viewTable").find("td[name='water']").text(parseFloat(data.water).toFixed(2));
-                $("#viewTable").find("td[name='heat']").text(parseFloat(data.heat).toFixed(2));
-                $("#viewTable").find("td[name='fluorine']").text(parseFloat(data.fluorine).toFixed(2));
-                $("#viewTable").find("td[name='chlorine']").text(parseFloat(data.chlorine).toFixed(2));
-                $("#viewTable").find("td[name='sulfur']").text(parseFloat(data.sulfur).toFixed(2));
-                $("#viewTable").find("td[name='phosphorus']").text(parseFloat(data.phosphorus).toFixed(2));
-                $("#viewTable").find("td[name='flashPoint']").text(parseFloat(data.flashPoint).toFixed(2));
-                $("#viewTable").find("td[name='viscosity']").text(parseFloat(data.viscosity).toFixed(2));
-                $("#viewTable").find("td[name='hotMelt']").text(data.hotMelt);
-                $("#viewTable").find("td[name='signDate']").text(getDateStr(data.signDate));
-                $("#viewTable").find("td[name='remark']").text(data.remark);
+                $("#viewFormType").text(data.formType.name);
+                $("#viewPH").text(parseFloat(data.PH).toFixed(2));
+                $("#viewAsh").text(parseFloat(data.ash).toFixed(2));
+                $("#viewWater").text(parseFloat(data.water).toFixed(2));
+                $("#viewHeat").text(parseFloat(data.heat).toFixed(2));
+                $("#viewFluorine").text(parseFloat(data.fluorine).toFixed(2));
+                $("#viewChlorine").text(parseFloat(data.chlorine).toFixed(2));
+                $("#viewSulfur").text(parseFloat(data.sulfur).toFixed(2));
+                $("#viewPhosphorus").text(parseFloat(data.phosphorus).toFixed(2));
+                $("#viewFlashPoint").text(parseFloat(data.flashPoint).toFixed(2));
+                $("#viewViscosity").text(parseFloat(data.viscosity).toFixed(2));
+                $("#viewHotMelt").text(data.hotMelt);
+                $("#viewRemark").text(data.remark);
             } else {
                 alert(result.message);
             }

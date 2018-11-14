@@ -695,6 +695,45 @@ function downloadModal() {
         window.open('downloadFile?filePath=' + filePath);
     }
 }
+
+
+//下载按钮绑定事件
+$(function () {
+    $('#download').click(function () {
+        console.log(" window.location.href提交")
+        var filePath = 'Files/Templates/物料需求导入模板.xlsx';
+        var r = confirm("是否下载模板?");
+        if (r == true) {
+
+            window.location.href='downloadFile?filePath='+filePath;
+           // var test01 = window.open();  //此处不会拦截
+
+           // $.ajax({
+           //     type: "POST",
+           //     url: "downloadFileUrl",                  // url
+           //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+           //     dataType: "json",
+           //     data:{"filePath":filePath},
+           //     success:function (result) {
+           //         if (result != undefined && result.status == "success"){
+           //            alert(result.message)
+           //         }
+           //         else {
+           //             alert(result.message)
+           //         }
+           //     },
+           //     error:function (result) {
+           //         alert("服务器异常！")
+           //     }
+           //
+           // })
+          console.log("下载完成")
+        }
+
+
+    })
+})
+
 /**
  *
  * 导出

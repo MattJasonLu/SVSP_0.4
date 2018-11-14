@@ -30,4 +30,12 @@ public interface OrganizationMapper {
 
     void deleteTeam(Organization organization);
 
+    int countDepartment(int id);
+
+    int countTeam(int id);
+
+    Organization getDepartmentById(int id);
+
+    Organization getTeamById(int id);
+
 }

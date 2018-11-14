@@ -781,10 +781,11 @@ public class BatchOrderController {
     public  String getByOutBoundOrderId(String outboundOrderId){
         JSONObject res=new JSONObject();
         try {
-            OutboundOrder outboundOrder=batchOrderService.getWastesOutBoundById(outboundOrderId);
+            OutboundOrder outboundOrder = batchOrderService.getWastesOutBoundById(outboundOrderId);
+            JSONObject data = JSONObject.fromBean(outboundOrder);
             res.put("status", "success");
             res.put("message", "查询成功");
-            res.put("data",outboundOrder);
+            res.put("data",data);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -793,7 +794,6 @@ public class BatchOrderController {
 
         }
         return res.toString();
-
     }
 
     //根据入库单号查询信息==》次生

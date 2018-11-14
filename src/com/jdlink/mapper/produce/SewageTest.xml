@@ -177,8 +177,37 @@
            update t_pr_secondarytest set   checkState='Invalid' where id=#{id};
     </update>
 
+    <!--查询所有的污水送样编号-->
+    <select id="getAllSewageId" resultType="String">
+        select id from  t_pr_sewageregistration;
+    </select>
 
+    <!--查询所有的软水送样编号-->
+    <select id="getAllSoftId" resultType="String">
+        select id from  t_pr_softgeregistration;
+    </select>
+
+    <!--查询所有的次生送样编号-->
+    <select id="getAllSecondaryId" resultType="String">
+        select id from  t_pr_secondarysample;
+    </select>
+
+    <!--查询所有的污水化验单号-->
+    <select id="getAllSewageTestId" resultType="String">
+        select id from  t_pr_sewagetest;
+    </select>
+
+    <!--查询所有的软水化验单号-->
+    <select id="getAllSoftTestId" resultType="String">
+      select id from  t_pr_softest;
+    </select>
+
+    <!--查询所有的次生化验单号-->
+    <select id="getAllSecondaryTestId" resultType="String">
+      select id from  t_pr_secondarytest;
+    </select>
 </mapper>
+
 
 
 

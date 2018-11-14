@@ -675,6 +675,8 @@ function searchSoftWater() {
  * 预约登记-显示预约框
  */
 function appointModal() {
+    $('#pass').hide();
+    $('#break').hide();
     // 显示框体
     setSelectList();
     $('#appointModal').modal('show');
@@ -1520,6 +1522,41 @@ function adjust() {
     //添加子表数据
     alert("修改成功！")
     window.location.reload();
+}
+
+
+//预约单号检测
+function testing(item) {
+    $('#pass').hide();
+    $('#break').hide();
+
+    var id=$.trim($(item).val());
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "testingSoftId",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{'id':id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                if(result.data==true){
+                    $('#break').show();
+                }
+                if(result.data==false){
+                    $('#pass').show();
+                }
+                if($.trim(id).length<=0){
+                    $('#pass').hide();
+                    $('#break').hide();
+                }
+            }
+        },
+        error:function (result) {
+
+        }
+    })
 }
 
 

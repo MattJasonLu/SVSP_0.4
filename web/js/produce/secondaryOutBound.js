@@ -388,10 +388,16 @@ function setOutBoundList(result) {
                         break;
                         //处置方式
                     case (6):
-                        $(this).html(obj.processWay.name);
+                        if(obj.processWay!=null){
+                            $(this).html(obj.processWay.name);
+                        }
+
                         break
                     case (7):
-                        $(this).html(obj.checkState.name);
+                        if(obj.checkState!=null){
+                            $(this).html(obj.checkState.name);
+                        }
+
                         break
                     case (8):
                         $(this).html(obj.inboundOrderItemId);
@@ -513,7 +519,7 @@ function setWasteInventoryList(result) {
     console.log(result);
     //tr.siblings().remove();
     $.each(result, function (index, item) {
-        if(item.actualCount>0&&item.boundType.name=='次生入库'){
+        if(parseFloat(item.actualCount).toFixed(2)>0&&item.boundType.name=='次生入库'){
             // 克隆tr，每次遍历都可以产生新的tr
             var clonedTr = tr.clone();
             clonedTr.show();
@@ -599,29 +605,32 @@ function batching() {
     var items = $("input[name='select']:checked");//判断复选框是否选中
     items.each(function () {
         //获得库存Id
-        var inboundOrderItemId=  $(this).parent().parent().parent().children('td').last().text();
-        //根据inboundOrderItemId获得库存的信息，进行转移放到配料中
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getWasteInventoryByInboundOrderId",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data:{'inboundOrderItemId':inboundOrderItemId},
-            success:function (result) {
-                if(result != undefined && result.status == "success"){
-                    console.log(result);
-                    //设置配料列表
-                    setBatchingWList(result.data);
+        if($(this).parent().parent().parent().attr('style')!='display: none;'){
+            var inboundOrderItemId=  $(this).parent().parent().parent().children('td').last().text();
+            //根据inboundOrderItemId获得库存的信息，进行转移放到配料中
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "getWasteInventoryByInboundOrderId",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data:{'inboundOrderItemId':inboundOrderItemId},
+                success:function (result) {
+                    if(result != undefined && result.status == "success"){
+                        console.log(result);
+                        //设置配料列表
+                        setBatchingWList(result.data);
+                    }
+                    else {
+                        console.log(result.message);
+                    }
+                },
+                error:function (result) {
+                    alert("服务器异常！")
                 }
-                else {
-                    console.log(result.message);
-                }
-            },
-            error:function (result) {
-                alert("服务器异常！")
-            }
 
-        });
+            });
+        }
+
     });
 }
 
@@ -664,7 +673,7 @@ function setBatchingWList(result) {
                     break;
                 // 危废名称
                 case (4):
-                    $(this).html(obj.wastesName);
+                    $(this).html(convertSecondWastesNameEngToChn(obj.wastesName));
                     break;
                 // 产废类别
                 case (5):
@@ -1259,49 +1268,8 @@ function adjust(item) {
                 $('#wastesAmount1').val(result.data.outboundNumber.toFixed(2));
 
                 $('#wastesAmount2').html(result.data.outboundNumber.toFixed(2));
-                // //物质形态
-                // if(result.data[0].formType!=null){
-                //     $('#formType').text(result.data[0].formType.name);
-                // }
-                //
-                // // //包装形式
-                // if(result.data[0].packageType!=null){
-                //     $('#packageType').text(result.data[0].packageType.name);
-                // }
-                // if(result.data[0].laboratoryTest!=null) {
-                //     //热值/KCal/Kg最大
-                //     $('#kCalMax').text(result.data[0].laboratoryTest.heatMaximum);
-                //     $('#kCalAvg').text(result.data[0].laboratoryTest.heatAverage);
-                //     $('#kCalMin').text(result.data[0].laboratoryTest.heatMinimum);
-                //     // //PH
-                //     $('#phMax').text(result.data[0].laboratoryTest.phMaximum);
-                //     $('#phAvg').text(result.data[0].laboratoryTest.phAverage);
-                //     $('#phMin').text(result.data[0].laboratoryTest.phMaximum);
-                //     //灰分/%
-                //     $('#ashMax').text(result.data[0].laboratoryTest.ashMaximum);
-                //     $('#ashAvg').text(result.data[0].laboratoryTest.ashAverage);
-                //     $('#ashMin').text(result.data[0].laboratoryTest.ashMinimum);
-                //     //水分
-                //     $('#waterMax').text(result.data[0].laboratoryTest.waterContentMaximum);
-                //     $('#waterAvg').text(result.data[0].laboratoryTest.waterContentAverage);
-                //     $('#waterMin').text(result.data[0].laboratoryTest.waterContentMinimum);
-                //     //硫含量
-                //     $('#sMax').text(result.data[0].laboratoryTest.sulfurContentMaximum);
-                //     $('#sAvg').text(result.data[0].laboratoryTest.sulfurContentAverage);
-                //     $('#sMin').text(result.data[0].laboratoryTest.sulfurContentMinimum);
-                //     //氯含量
-                //     $('#clMax').text(result.data[0].laboratoryTest.chlorineContentMaximum);
-                //     $('#clAvg').text(result.data[0].laboratoryTest.chlorineContentAverage);
-                //     $('#clMin').text(result.data[0].laboratoryTest.chlorineContentMinimum);
-                //     //磷含量
-                //     $('#pMax').text(result.data[0].laboratoryTest.phosphorusContentMaximum);
-                //     $('#pAvg').text(result.data[0].laboratoryTest.phosphorusContentAverage);
-                //     $('#pMin').text(result.data[0].laboratoryTest.phosphorusContentMinimum);
-                //     //氟含量
-                //     $('#fMax').text(result.data[0].laboratoryTest.fluorineContentMaximum);
-                //     $('#fAvg').text(result.data[0].laboratoryTest.fluorineContentAverage);
-                //     $('#fMin').text(result.data[0].laboratoryTest.fluorineContentMinimum);
-                // }
+
+                $('#secInBoundId').html(result.data.inboundOrderId);
                 //处理方式
                 if(result.data.processWay!=null){
                     $('#processingMethod1').text(result.data.processWay.name);
@@ -1342,7 +1310,7 @@ function adjust(item) {
 }
 
 
-//此生出库修改
+//次生出库修改
 function adjustSecOutBound() {
 
   var outboundOrderId=$('#secOutBoundId').html();

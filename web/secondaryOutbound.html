@@ -357,7 +357,6 @@
                 </div>
             </div>
         </div>
-        <!--属性调整模态框-->
         <div class="modal fade" id="examineModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -365,7 +364,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <label for="search-warehouseId" class="col-sm-4 control-label">进料方式</label>
+                                <label for="modal-type" class="col-sm-4 control-label">进料方式</label>
                                 <div class="col-xs-7">
                                     <select class="form-control" id="modal-type" name="search-warehouseId" placeholder=""></select>
                                 </div>
@@ -379,42 +378,32 @@
                 </div>
             </div>
         </div>
+
         <!--修改模态框-->
         <div class="modal fade bs-example-modal-lg" id="appointModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog modal-lg" role="document" style="width: 85%">
                 <div class="modal-content" >
                     <div class="modal-header">
-                        <h4 class="modal-title" id="TitleMyModalLabe2">出库单明细</h4>
+                        <h4 class="modal-title" id="TitleMyModalLabe2">出库单修改</h4>
                     </div>
                     <div class="modal-body">
                         <table class="table table-bordered">
                             <tbody>
                             <tr>
                                 <td class="text-center">出库单号</td>
+                                <td class="text-center">入库单号</td>
                                 <td class="text-center">产废单位</td>
                                 <td class="text-center">出库时间</td>
                                 <td class="text-center">废物名称</td>
                                 <td class="text-center">废物代码</td>
                                 <td class="text-center">出库数量/t</td>
-                                <!--<td class="text-center">物质形态</td>-->
-                                <!--<td class="text-center">包装形式</td>-->
-                                <!--<td class="text-center">进料方式</td>-->
                                 <td class="text-center">处理方式</td>
                                 <td class="text-center">处置设备</td>
                                 <td class="text-center">库存数量</td>
-                                <!--<td class="text-center">热值最大值/KCal/Kg</td>-->
-                                <!--<td class="text-center">热值均值/KCal/Kg</td>-->
-                                <!--<td class="text-center">热值最小值/KCal/Kg</td>-->
-                                <!--<td class="text-center">PH最大值</td>-->
-                                <!--<td class="text-center">PH均值</td>-->
-                                <!--<td class="text-center">PH最小值</td>-->
-                                <!--<td class="text-center">灰分最大值/%</td>-->
-                                <!--<td class="text-center">灰分均值/%</td>-->
-                                <!--<td class="text-center">灰分最小值/%</td>-->
-
                             </tr>
                             <tr>
-                                <td class="text-center modal-companyName" id="secOutBoundId"></td><!--产废单位-->
+                                <td class="text-center modal-companyName" id="secOutBoundId"></td><!--出库单号-->
+                                <td class="text-center modal-companyName" id="secInBoundId"></td><!--出库单号-->
                                 <td class="text-center modal-companyName" id="companyName1"></td><!--产废单位-->
                                 <td class="text-center modal-einlass" ><input type="date" id="outBoundDate1"> </td><!--出库时间-->
                                 <td class="text-center wastesName" id="name1"></td><!--废物名称-->
@@ -440,52 +429,14 @@
                                 <!--<td class="text-center modal-FContent" id="ashAvg"></td>-->
                                 <!--<td class="text-center modal-FContent" id="ashMin"></td>-->
                             </tr>
-                            <tr>
-                                <!--<td class="text-center">水分最大值/%</td>-->
-                                <!--<td class="text-center">水分均值/%</td>-->
-                                <!--<td class="text-center">水分最小值/%</td>-->
-                                <!--<td class="text-center">氯含量最大值/%</td>-->
-                                <!--<td class="text-center">氯含量均值/%</td>-->
-                                <!--<td class="text-center">氯含量最小值/%</td>-->
-                                <!--<td class="text-center">硫含量最大值/%</td>-->
-                                <!--<td class="text-center">硫含量均值/%</td>-->
-                                <!--<td class="text-center">硫含量最小值/%</td>-->
-                                <!--<td class="text-center">磷含量最大值/%</td>-->
-                                <!--<td class="text-center">磷含量均值/%</td>-->
-                                <!--<td class="text-center">磷含量最小值/%</td>-->
-                                <!--<td class="text-center">氟含量最大值/%</td>-->
-                                <!--<td class="text-center">氟含量均值/%</td>-->
-                                <!--<td class="text-center">氟含量最小值/%</td>-->
 
-                            </tr>
-                            <tr>
-                                <!--<td class="text-center modal-FContent" id="waterMax"></td>-->
-                                <!--<td class="text-center modal-FContent" id="waterAvg"></td>-->
-                                <!--<td class="text-center modal-FContent" id="waterMin"></td>-->
-                                <!--<td class="text-center modal-FContent" id="clMax"></td>-->
-                                <!--<td class="text-center modal-FContent" id="clAvg"></td>-->
-                                <!--<td class="text-center modal-FContent" id="clMin"></td>-->
-                                <!--<td class="text-center modal-FContent" id="sMax"></td>-->
-                                <!--<td class="text-center modal-FContent" id="sAvg"></td>-->
-                                <!--<td class="text-center modal-FContent" id="sMin"></td>-->
-                                <!--<td class="text-center modal-FContent" id="pMax"></td>-->
-                                <!--<td class="text-center modal-FContent" id="pAvg"></td>-->
-                                <!--<td class="text-center modal-FContent" id="pMin"></td>-->
-                                <!--<td class="text-center modal-FContent" id="fMax"></td>-->
-                                <!--<td class="text-center modal-FContent" id="fAvg"></td>-->
-                                <!--<td class="text-center modal-FContent" id="fMin"></td>-->
 
-                                <input class="text-center modal-FContent hidden" id="outboundOrderId1">
-                            </tr>
-                            <tr>
-                                <!--<a class="btn btn-primary btn-xs" onclick="adjustAttr();"><span class="glyphicon glyphicon-log-out" ></span> 属性调整</a>-->
-                            </tr>
-                            <div class="modal-footer center-block">
-                                <button type="button" class="btn btn-primary" onclick="adjustSecOutBound();">修改</button>
-                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            </div>
                             </tbody>
                         </table>
+                        <div class="modal-footer center-block">
+                            <button type="button" class="btn btn-primary" onclick="adjustSecOutBound();">修改</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        </div>
                     </div>
                 </div>
             </div>

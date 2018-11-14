@@ -386,7 +386,7 @@ function setPretreatmentList(result) {
                     break;
                 case (4):
                     // 重量合计
-                    $(this).html(obj.weightTotal);
+                    $(this).html(obj.weightTotal.toFixed(2));
                     break;
                 case (5):
                     // 备注
@@ -394,27 +394,27 @@ function setPretreatmentList(result) {
                     break;
                 case (6):
                     // 散装比例
-                    $(this).html(obj.bulkProportion);
+                    $(this).html(obj.bulkProportion.toFixed(2));
                     break;
                 case (7):
                     // 残渣比例
-                    $(this).html(obj.distillationProportion);
+                    $(this).html(obj.distillationProportion.toFixed(2));
                     break;
                 case (8):
                     // 废液比例
-                    $(this).html(obj.wasteLiquidProportion);
+                    $(this).html(obj.wasteLiquidProportion.toFixed(2));
                     break;
                 case (9):
                     // 污泥比例
-                    $(this).html(obj.sludgeProportion);
+                    $(this).html(obj.sludgeProportion.toFixed(2));
                     break;
                 case (10):
                     // 破碎料比例
-                    $(this).html(obj.crushingProportion);
+                    $(this).html(obj.crushingProportion.toFixed(2));
                     break;
                 case (11):
                     // 悬挂连比例
-                    $(this).html(obj.suspensionProportion);
+                    $(this).html(obj.suspensionProportion.toFixed(2));
                     break;
             }
         });
@@ -723,22 +723,22 @@ function showViewModal(id) {
                 setViewDataClone(result.data);
                 $("#view-pretreatmentId").text(data.id);
                 $("#view-remarks").text(data.remarks);
-                $("#view-weightTotal").text(data.weightTotal);
-                $("#view-calorificTotal").text(data.calorificTotal);
-                $("#view-ashPercentageTotal").text(data.ashPercentageTotal);
-                $("#view-wetPercentageTotal").text(data.wetPercentageTotal);
-                $("#view-volatileNumberTotal").text(data.volatileNumberTotal);
-                $("#view-chlorinePercentageTotal").text(data.chlorinePercentageTotal);
-                $("#view-sulfurPercentageTotal").text(data.sulfurPercentageTotal);
-                $("#view-phTotal").text(data.phTotal);
-                $("#view-phosphorusPercentageTotal").text(data.phosphorusPercentageTotal);
-                $("#view-fluorinePercentageTotal").text(data.fluorinePercentageTotal);
-                $("#view-distillationProportion").text(data.distillationProportion);
-                $("#view-wasteLiquidProportion").text(data.wasteLiquidProportion);
-                $("#view-sludgeProportion").text(data.sludgeProportion);
-                $("#view-bulkProportion").text(data.bulkProportion);
-                $("#view-crushingProportion").text(data.crushingProportion);
-                $("#view-suspensionProportion").text(data.suspensionProportion);
+                $("#view-weightTotal").text(data.weightTotal.toFixed(2));
+                $("#view-calorificTotal").text(data.calorificTotal.toFixed(2));
+                $("#view-ashPercentageTotal").text(data.ashPercentageTotal.toFixed(2));
+                $("#view-wetPercentageTotal").text(data.wetPercentageTotal.toFixed(2));
+                $("#view-volatileNumberTotal").text(data.volatileNumberTotal.toFixed(2));
+                $("#view-chlorinePercentageTotal").text(data.chlorinePercentageTotal.toFixed(2));
+                $("#view-sulfurPercentageTotal").text(data.sulfurPercentageTotal.toFixed(2));
+                $("#view-phTotal").text(data.phTotal.toFixed(2));
+                $("#view-phosphorusPercentageTotal").text(data.phosphorusPercentageTotal.toFixed(2));
+                $("#view-fluorinePercentageTotal").text(data.fluorinePercentageTotal.toFixed(2));
+                $("#view-distillationProportion").text(data.distillationProportion.toFixed(2));
+                $("#view-wasteLiquidProportion").text(data.wasteLiquidProportion.toFixed(2));
+                $("#view-sludgeProportion").text(data.sludgeProportion.toFixed(2));
+                $("#view-bulkProportion").text(data.bulkProportion.toFixed(2));
+                $("#view-crushingProportion").text(data.crushingProportion.toFixed(2));
+                $("#view-suspensionProportion").text(data.suspensionProportion.toFixed(2));
             } else {
                 alert(result.message);
             }
@@ -786,47 +786,47 @@ function setViewDataClone(result) {
                     break;
                 case (4):
                     // 比例
-                    $(this).html(obj.proportion);
+                    $(this).html(obj.proportion.toFixed(2));
                     break;
                 case (5):
                     // 重量（吨）
-                    $(this).html(obj.wastes.weight);
+                    $(this).html(obj.wastes.weight.toFixed(2));
                     break;
                 case (6):
                     // 危废热值
-                    $(this).html(obj.wastes.calorific);
+                    $(this).html(obj.wastes.calorific.toFixed(2));
                     break;
                 case (7):
                     // 灰分
-                    $(this).html(obj.wastes.ashPercentage);
+                    $(this).html(obj.wastes.ashPercentage.toFixed(2));
                     break;
                 case (8):
                     // 水分
-                    $(this).html(obj.wastes.wetPercentage);
+                    $(this).html(obj.wastes.wetPercentage.toFixed(2));
                     break;
                 case (9):
                     // 挥发份
-                    $(this).html(obj.wastes.volatileNumber);
+                    $(this).html(obj.wastes.volatileNumber.toFixed(2));
                     break;
                 case (10):
                     // 氯
-                    $(this).html(obj.wastes.chlorinePercentage);
+                    $(this).html(obj.wastes.chlorinePercentage.toFixed(2));
                     break;
                 case (11):
                     // 硫
-                    $(this).html(obj.wastes.sulfurPercentage);
+                    $(this).html(obj.wastes.sulfurPercentage.toFixed(2));
                     break;
                 case (12):
                     // PH
-                    $(this).html(obj.wastes.ph);
+                    $(this).html(obj.wastes.ph.toFixed(2));
                     break;
                 case (13):
                     // P
-                    $(this).html(obj.wastes.phosphorusPercentage);
+                    $(this).html(obj.wastes.phosphorusPercentage.toFixed(2));
                     break;
                 case (14):
                     // F
-                    $(this).html(obj.wastes.fluorinePercentage);
+                    $(this).html(obj.wastes.fluorinePercentage.toFixed(2));
                     break;
                 case (15):
                     // 备注
@@ -1169,10 +1169,6 @@ function setOutBoundOrderList(result) {
     var tr = $("#clone1");
     tr.siblings().remove();
     $.each(result, function (index, item) {
-        //已作废的数据不显示
-        if (item.checkState.name === '已作废' || item.checkState.name === "已处理") {
-            return true;
-        }
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
         clonedTr.show();
@@ -1219,12 +1215,11 @@ function setOutBoundOrderList(result) {
                     break;
                 case (9):
                     // 危废名称
-                    if (obj.laboratoryTest != null)
-                        $(this).html(obj.laboratoryTest.wastesName);
+                    $(this).html(obj.wastesName);
                     break;
                 case(10):
                     // 危废重量
-                    $(this).html(obj.outboundNumber);
+                    $(this).html(obj.outboundNumber.toFixed(2));
                     break;
                 case(11):
                     // 备注
@@ -1308,9 +1303,10 @@ function confirmInsert() {
                     dataType: "json",
                     success: function (result) {
                         if (result != undefined && result.status == "success") {
-                            var data = eval(result.data[0]);
+                            var data = result.data;
                             //将数据存到数组中，然后统一赋值
                             console.log("数据为：");
+                            console.log(result);
                             console.log(data);
                             var pretreatmentItem = {};
                             pretreatmentItem.serialNumber = i;
@@ -1320,7 +1316,7 @@ function confirmInsert() {
                                 pretreatmentItem.produceCompanyName = data.client.companyName;
                             weightTotal += data.outboundNumber;          // 总重量累加
                             var wastes = {};
-                            wastes.name = data.laboratoryTest.wastesName;
+                            wastes.name = data.wastesName;
                             wastes.weight = data.outboundNumber;
                             if (data.laboratoryTest != null) {
                                 wastes.calorific = data.laboratoryTest.heatAverage;
@@ -1332,12 +1328,51 @@ function confirmInsert() {
                                 wastes.ph = data.laboratoryTest.phAverage;
                                 wastes.phosphorusPercentage = data.laboratoryTest.phosphorusContentAverage;
                                 wastes.fluorinePercentage = data.laboratoryTest.fluorineContentAverage;
+                            } else {
+                                wastes.calorific = 0;
+                                wastes.ashPercentage = 0;
+                                wastes.wetPercentage = 0;
+                                wastes.volatileNumber = 0;
+                                wastes.chlorinePercentage = 0;
+                                wastes.sulfurPercentage = 0;
+                                wastes.ph = 0;
+                                wastes.phosphorusPercentage = 0;
+                                wastes.fluorinePercentage = 0;
                             }
                             wastes.remarks = data.remarks;
                             if (data.handelCategory != null)
-                                wastes.handleCategory = data.handelCategory.index;
+                                switch (data.handelCategory.name) {
+                                    case "污泥":
+                                        wastes.handleCategory = "Sludge";
+                                        break;
+                                    case "废液":
+                                        wastes.handleCategory = "WasteLiquid";
+                                        break;
+                                    case "散装料":
+                                        wastes.handleCategory = "Bulk";
+                                        break;
+                                    case "破碎料":
+                                        wastes.handleCategory = "Crushing";
+                                        break;
+                                    case "精馏残渣":
+                                        wastes.handleCategory = "Distillation";
+                                        break;
+                                    case "悬挂链":
+                                        wastes.handleCategory = "Suspension";
+                                        break;
+                                }
                             if (data.processWay != null)
-                                wastes.processWay = data.processWay.index - 1;
+                                switch (data.processWay.name) {
+                                    case "焚烧":
+                                        wastes.processWay = "Burning";
+                                        break;
+                                    case "填埋":
+                                        wastes.processWay = "Landfill";
+                                        break;
+                                    case "清洗":
+                                        wastes.processWay = "Clean";
+                                        break;
+                                }
                             nameList.push(data.handelCategory.name);
                             nameList.push(data.processWay.name);
                             pretreatmentItem.wastes = wastes;
@@ -1431,7 +1466,8 @@ function confirmInsert() {
                     break;
                 case (3):
                     //危废名称
-                    $(this).html(obj.wastes.name);
+                    if (obj.wastes != null)
+                        $(this).html(obj.wastes.name);
                     break;
                 case (4):
                     //比例
@@ -1439,54 +1475,69 @@ function confirmInsert() {
                     break;
                 case (5):
                     //重量
-                    $(this).html(obj.wastes.weight);
+                    if (obj.wastes != null)
+                        $(this).html(obj.wastes.weight.toFixed(2));
                     break;
                 case (6):
                     //危废热值
-                    $(this).html(obj.wastes.calorific);
+                    if (obj.wastes != null)
+                        $(this).html(obj.wastes.calorific.toFixed(2));
                     break;
                 case (7):
                     //灰分
-                    $(this).html(obj.wastes.ashPercentage);
+                    if (obj.wastes != null)
+                        $(this).html(obj.wastes.ashPercentage.toFixed(2));
                     break;
                 case (8):
                     //水分
-                    $(this).html(obj.wastes.wetPercentage);
+                    if (obj.wastes != null)
+                        $(this).html(obj.wastes.wetPercentage.toFixed(2));
                     break;
                 case (9):
                     //挥发份
-                    $(this).html(obj.wastes.volatileNumber);
+                    if (obj.wastes != null)
+                        $(this).html(obj.wastes.volatileNumber.toFixed(2));
                     break;
                 case (10):
                     //氯
-                    $(this).html(obj.wastes.chlorinePercentage);
+                    if (obj.wastes != null)
+                        $(this).html(obj.wastes.chlorinePercentage.toFixed(2));
                     break;
                 case (11):
                     //硫
-                    $(this).html(obj.wastes.sulfurPercentage);
+                    if (obj.wastes != null)
+                        $(this).html(obj.wastes.sulfurPercentage.toFixed(2));
                     break;
                 case (12):
                     //PH
-                    $(this).html(obj.wastes.ph);
+                    if (obj.wastes != null)
+                        $(this).html(obj.wastes.ph.toFixed(2));
                     break;
                 case (13):
                     //P
-                    $(this).html(obj.wastes.phosphorusPercentage);
+                    if (obj.wastes != null)
+                        $(this).html(obj.wastes.phosphorusPercentage.toFixed(2));
                     break;
                 case (14):
                     //F
-                    $(this).html(obj.wastes.fluorinePercentage);
+                    if (obj.wastes != null)
+                        $(this).html(obj.wastes.fluorinePercentage.toFixed(2));
                     break;
                 case (15):
                     //备注
-                    $(this).html(obj.wastes.remarks);
+                    if (obj.wastes != null)
+                        $(this).html(obj.wastes.remarks);
                     break;
                 case (16):
                     //处置方式
+                    // if(obj.wastes != null && obj.wastes.handleCategory != null)
+                    //     $(this).html(obj.wastes.handleCategory.name);
                     $(this).html(nameList[j1 + 1]);
                     break;
                 case (17):
                     //进料方式
+                    // if(obj.wastes != null && obj.wastes.processWay != null)
+                    //     $(this).html(obj.wastes.processWay.name);
                     $(this).html(nameList[j1]);
                     j1 += 2;
                     break;
@@ -1706,6 +1757,7 @@ function searchOutBoundOrder() {
 function pretreatmentListModify(item) {
     var id = getPretreatmentId(item);
     $(".newLine").remove();
+    setSelectedList();    // 设置下拉框数据
     $.ajax({
         type: "POST",
         url: "getPretreatmentById",
@@ -1722,22 +1774,22 @@ function pretreatmentListModify(item) {
                 setEditDataClone(result.data);
                 $("#edit-pretreatmentId").text(data.id);
                 $("#edit-remarks").val(data.remarks);
-                $("#edit-weightTotal").text(data.weightTotal);
-                $("#edit-calorificTotal").text(data.calorificTotal);
-                $("#edit-ashPercentageTotal").text(data.ashPercentageTotal);
-                $("#edit-wetPercentageTotal").text(data.wetPercentageTotal);
-                $("#edit-volatileNumberTotal").text(data.volatileNumberTotal);
-                $("#edit-chlorinePercentageTotal").text(data.chlorinePercentageTotal);
-                $("#edit-sulfurPercentageTotal").text(data.sulfurPercentageTotal);
-                $("#edit-phTotal").text(data.phTotal);
-                $("#edit-phosphorusPercentageTotal").text(data.phosphorusPercentageTotal);
-                $("#edit-fluorinePercentageTotal").text(data.fluorinePercentageTotal);
-                $("#edit-distillationProportion").text(data.distillationProportion);
-                $("#edit-wasteLiquidProportion").text(data.wasteLiquidProportion);
-                $("#edit-sludgeProportion").text(data.sludgeProportion);
-                $("#edit-bulkProportion").text(data.bulkProportion);
-                $("#edit-crushingProportion").text(data.crushingProportion);
-                $("#edit-suspensionProportion").text(data.suspensionProportion);
+                $("#edit-weightTotal").text(data.weightTotal.toFixed(2));
+                $("#edit-calorificTotal").text(data.calorificTotal.toFixed(2));
+                $("#edit-ashPercentageTotal").text(data.ashPercentageTotal.toFixed(2));
+                $("#edit-wetPercentageTotal").text(data.wetPercentageTotal.toFixed(2));
+                $("#edit-volatileNumberTotal").text(data.volatileNumberTotal.toFixed(2));
+                $("#edit-chlorinePercentageTotal").text(data.chlorinePercentageTotal.toFixed(2));
+                $("#edit-sulfurPercentageTotal").text(data.sulfurPercentageTotal.toFixed(2));
+                $("#edit-phTotal").text(data.phTotal.toFixed(2));
+                $("#edit-phosphorusPercentageTotal").text(data.phosphorusPercentageTotal.toFixed(2));
+                $("#edit-fluorinePercentageTotal").text(data.fluorinePercentageTotal.toFixed(2));
+                $("#edit-distillationProportion").text(data.distillationProportion.toFixed(2));
+                $("#edit-wasteLiquidProportion").text(data.wasteLiquidProportion.toFixed(2));
+                $("#edit-sludgeProportion").text(data.sludgeProportion.toFixed(2));
+                $("#edit-bulkProportion").text(data.bulkProportion.toFixed(2));
+                $("#edit-crushingProportion").text(data.crushingProportion.toFixed(2));
+                $("#edit-suspensionProportion").text(data.suspensionProportion.toFixed(2));
             } else {
                 alert(result.message);
             }
@@ -1747,7 +1799,6 @@ function pretreatmentListModify(item) {
             alert("服务器异常!");
         }
     });
-    setSelectedList();    // 设置下拉框数据
     $("#editModal").modal('show');
 }
 
@@ -1765,10 +1816,11 @@ function setSelectedList() {
                 state.children().remove();
                 $.each(data.processWayList, function (index, item) {
                     var option = $('<option />');
-                    option.val(index);
+                    option.val(item.index);
                     option.text(item.name);
                     state.append(option);
                 });
+                state.get(0).selectedIndex = -1;
             }
         }
     });
@@ -1784,7 +1836,7 @@ function setSelectedList() {
                 state1.children().remove();
                 $.each(data.handleCategoryList, function (index, item) {
                     var option = $('<option />');
-                    option.val(index);
+                    option.val(item.index);
                     option.text(item.name);
                     state1.append(option);
                 });
@@ -1798,258 +1850,265 @@ function setSelectedList() {
         }
     });
 }
-    /**
-     * 为修改模态框设置克隆数据
-     * @param result
-     */
-    function setEditDataClone(result) {
-        // 获取id为cloneTr的tr元素
-        num = 0;
-        var tr = $("#editClone1");
-        $.each(result.pretreatmentItemList, function (index, item) {
-            // 克隆tr，每次遍历都可以产生新的tr
-            var clonedTr = tr.clone();
-            clonedTr.show();
-            // 循环遍历cloneTr的每一个td元素，并赋值
-            clonedTr.children("td").each(function (inner_index) {
-                var obj = eval(item);
-                num++;
-                $(this).find("span,input,select").each(function () { //更新ID
-                    var id = $(this).prop('id');
-                    var newId = id.replace(/[0-9]\d*/, num);
-                    $(this).prop('id', newId);
-                });
-                $(this).find("span[name='serialNumber']").text(obj.serialNumber);
-                $(this).find("input[name='produceCompanyName']").val(obj.produceCompanyName);
-                $(this).find("input[name='requirements']").val(obj.requirements);
-                $(this).find("input[name='proportion']").val(obj.proportion);
-                $(this).find("span[name='outBounderOrderId']").val(obj.outboundOrderId);
-                if (obj.wastes != null) {
-                    $(this).find("input[name='wastesName']").val(obj.wastes.name);
-                    $(this).find("input[name='weight']").val(obj.wastes.weight);
-                    $(this).find("input[name='calorific']").val(obj.wastes.calorific);
-                    $(this).find("input[name='ashPercentage']").val(obj.wastes.ashPercentage);
-                    $(this).find("input[name='wetPercentage']").val(obj.wastes.wetPercentage);
-                    $(this).find("input[name='volatileNumber']").val(obj.wastes.volatileNumber);
-                    $(this).find("input[name='chlorinePercentage']").val(obj.wastes.chlorinePercentage);
-                    $(this).find("input[name='sulfurPercentage']").val(obj.wastes.sulfurPercentage);
-                    $(this).find("input[name='ph']").val(obj.wastes.ph);
-                    $(this).find("input[name='phosphorusPercentage']").val(obj.wastes.phosphorusPercentage);
-                    $(this).find("input[name='fluorinePercentage']").val(obj.wastes.fluorinePercentage);
-                    $(this).find("input[name='remarks']").val(obj.wastes.remarks);
-                    if (obj.wastes.processWay != null)
-                        $(this).find("select[name='processWay']").val(obj.wastes.processWay.index);
-                    if (obj.wastes.handleCategory != null)
-                        $(this).find("select[name='handleCategory']").val(obj.wastes.handleCategory.index);
-                }
-            });
-            // 把克隆好的tr追加到原来的tr前面
-            clonedTr.addClass("newLine");
-            clonedTr.removeAttr("id");
-            clonedTr.insertBefore(tr);
-        });
-        // 隐藏无数据的tr
-        tr.hide();
-    }
 
-    /**
-     * 保存修改的数据
-     */
-    function edit() {
-        var lineCount = $("span[name='serialNumber']").length;  // 获取数据行数
-        var pretreatment = {};
-        pretreatment.id = $("#edit-pretreatmentId").text();
-        pretreatment.remarks = $("#edit-remarks").val();
-        pretreatment.weightTotal = $("#edit-weightTotal").text();
-        pretreatment.calorificTotal = $("#edit-calorificTotal").text();
-        pretreatment.ashPercentageTotal = $("#edit-ashPercentageTotal").text();
-        pretreatment.wetPercentageTotal = $("#edit-wetPercentageTotal").text();
-        pretreatment.volatileNumberTotal = $("#edit-volatileNumberTotal").text();
-        pretreatment.chlorinePercentageTotal = $("#edit-chlorinePercentageTotal").text();
-        pretreatment.sulfurPercentageTotal = $("#edit-sulfurPercentageTotal").text();
-        pretreatment.phTotal = $("#edit-phTotal").text();
-        pretreatment.phosphorusPercentageTotal = $("#edit-phosphorusPercentageTotal").text();
-        pretreatment.fluorinePercentageTotal = $("#edit-fluorinePercentageTotal").text();
-        pretreatment.distillationProportion = $("#edit-distillationProportion").text();
-        pretreatment.wasteLiquidProportion = $("#edit-sludgeProportion").text();
-        pretreatment.bulkProportion = $("#edit-bulkProportion").text();
-        pretreatment.crushingProportion = $("#edit-crushingProportion").text();
-        pretreatment.suspensionProportion = $("#edit-suspensionProportion").text();
-        var pretreatmentItemList = [];
-        for (var i = 1; i < lineCount; i++) {
-            var $i = i;
-            var pretreatmentItem = {};
-            pretreatmentItem.pretreatmentId = $("#edit-pretreatmentId").text();
-            pretreatmentItem.serialNumber = $("#edit-serialNumber" + $i).text();
-            pretreatmentItem.outboundOrderId = $("#edit-outBounderOrderId" + $i).text();
-            pretreatmentItem.produceCompanyName = $("#edit-produceCompanyName" + $i).val();
-            pretreatmentItem.requirements = $("#edit-requirements" + $i).val();
-            pretreatmentItem.proportion = $("#edit-proportion" + $i).val();
-            var wastes = {};
-            wastes.name = $("#edit-wastesName" + $i).val();
-            wastes.weight = $("#edit-weight" + $i).val();
-            wastes.calorific = $("#edit-calorific" + $i).val();
-            wastes.ashPercentage = $("#edit-ashPercentage" + $i).val();
-            wastes.wetPercentage = $("#edit-wetPercentage" + $i).val();
-            wastes.volatileNumber = $("#edit-volatileNumber" + $i).val();
-            wastes.chlorinePercentage = $("#edit-chlorinePercentage" + $i).val();
-            wastes.sulfurPercentage = $("#edit-sulfurPercentage" + $i).val();
-            wastes.ph = $("#edit-ph" + $i).val();
-            wastes.phosphorusPercentage = $("#edit-phosphorusPercentage" + $i).val();
-            wastes.fluorinePercentage = $("#edit-fluorinePercentage" + $i).val();
-            switch ($("#edit-processWay" + $i).val()) {
-                case "0":
-                    wastes.processWay = 'Burning';
-                    break;
-                case "1":
-                    wastes.processWay = 'Landfill';
-                    break;
-                case "2":
-                    wastes.processWay = 'Clean';
-                    break;
-            }
-            switch ($("#edit-handleCategory" + $i).val()) {
-                case "0":
-                    wastes.handleCategory = 'Sludge';
-                    break;
-                case "1":
-                    wastes.handleCategory = 'WasteLiquid';
-                    break;
-                case "2":
-                    wastes.handleCategory = 'Bulk';
-                    break;
-                case "3":
-                    wastes.handleCategory = 'Crushing';
-                    break;
-                case "4":
-                    wastes.handleCategory = 'Distillation';
-                    break;
-                case "5":
-                    wastes.handleCategory = 'Suspension';
-                    break;
-                case "6":
-                    wastes.handleCategory = 'Jelly';
-                    break;
-            }
-            pretreatmentItem.wastes = wastes;
-            pretreatmentItemList.push(pretreatmentItem);
-        }
-        pretreatment.pretreatmentItemList = pretreatmentItemList;
-        console.log("修改的数据为：");
-        console.log(pretreatment);
-        item;
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "updatePretreatment",                 // url
-            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(pretreatment),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                console.log(result);
-                if (result.data != undefined || result.status == "success") {
-                    alert("修改成功!");
-                    window.location.reload();
-                } else {
-                    console.log(result.message);
-                }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器错误！");
-            }
+/**
+ * 为修改模态框设置克隆数据
+ * @param result
+ */
+function setEditDataClone(result) {
+    // 获取id为cloneTr的tr元素
+    num = 0;
+    var tr = $("#editClone1");
+    $.each(result.pretreatmentItemList, function (index, item) {
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        clonedTr.show();
+        // 循环遍历cloneTr的每一个td元素，并赋值
+        num++;
+        clonedTr.find("span,input,select").each(function () { //更新ID
+            var id = $(this).prop('id');
+            var newId = id.replace(/[0-9]\d*/, num);
+            $(this).prop('id', newId);
         });
-    }
+        var $i = num;
+        var obj = eval(item); // 赋值
+        clonedTr.find("span[name='serialNumber']").text(obj.serialNumber);
+        clonedTr.find("input[name='produceCompanyName']").val(obj.produceCompanyName);
+        clonedTr.find("input[name='requirements']").val(obj.requirements);
+        clonedTr.find("input[name='proportion']").val(obj.proportion.toFixed(2));
+        clonedTr.find("span[name='outBounderOrderId']").val(obj.outboundOrderId);
+        if (obj.wastes != null) {
+            clonedTr.find("input[name='wastesName']").val(obj.wastes.name);
+            clonedTr.find("input[name='weight']").val(obj.wastes.weight);
+            clonedTr.find("input[name='calorific']").val(obj.wastes.calorific);
+            clonedTr.find("input[name='ashPercentage']").val(obj.wastes.ashPercentage);
+            clonedTr.find("input[name='wetPercentage']").val(obj.wastes.wetPercentage);
+            clonedTr.find("input[name='volatileNumber']").val(obj.wastes.volatileNumber);
+            clonedTr.find("input[name='chlorinePercentage']").val(obj.wastes.chlorinePercentage);
+            clonedTr.find("input[name='sulfurPercentage']").val(obj.wastes.sulfurPercentage);
+            clonedTr.find("input[name='ph']").val(obj.wastes.ph);
+            clonedTr.find("input[name='phosphorusPercentage']").val(obj.wastes.phosphorusPercentage);
+            clonedTr.find("input[name='fluorinePercentage']").val(obj.wastes.fluorinePercentage);
+            clonedTr.find("input[name='remarks']").val(obj.wastes.remarks);
+            if (obj.wastes.processWay != null)
+                clonedTr.find("select[name='processWay']").get(0).selectedIndex = obj.wastes.processWay.index - 1;
+            if (obj.wastes.handleCategory != null)
+                clonedTr.find("select[name='handleCategory']").get(0).selectedIndex = obj.wastes.handleCategory.index - 1;
+        }
+        // 把克隆好的tr追加到原来的tr前面
+        clonedTr.addClass("newLine");
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+    });
+    // 隐藏无数据的tr
+    tr.hide();
+}
 
-    /**
-     * 自动结算总计
-     */
-    function calculate() {
-        var weightTotal = 0;
-        var volatileNumberTotal = 0;
-        var calorificTotal = 0;
-        var ashPercentageTotal = 0;
-        var wetPercentageTotal = 0;
-        var chlorinePercentageTotal = 0;
-        var sulfurPercentageTotal = 0;
-        var phTotal = 0;
-        var phosphorusPercentageTotal = 0;
-        var fluorinePercentageTotal = 0;
-        var distillationProportion = 0;
-        var wasteLiquidProportion = 0;
-        var sludgeProportion = 0;
-        var bulkProportion = 0;
-        var crushingProportion = 0;
-        var suspensionProportion = 0;
-        var lineCount = $("span[name='serialNumber']").length;
-        for (var j = 1; j < lineCount; j++) {
-            var $j = j;
-            //计算总比例、总计等数值
-            var weight = parseFloat($("#edit-weight" + $j).val());
-            weightTotal += weight;
-            var calorific = parseFloat($("#edit-calorific" + $j).val());
-            calorificTotal += calorific;
-            var ashPercentage = parseFloat($("#edit-ashPercentage" + $j).val());
-            ashPercentageTotal += ashPercentage;
-            var wetPercentage = parseFloat($("#edit-wetPercentage" + $j).val());
-            wetPercentageTotal += wetPercentage;
-            var volatileNumber = parseFloat($("#edit-volatileNumber" + $j).val());
-            volatileNumberTotal += volatileNumber;
-            var chlorinePercentage = parseFloat($("#edit-chlorinePercentage" + $j).val());
-            chlorinePercentageTotal += chlorinePercentage;
-            var sulfurPercentage = parseFloat($("#edit-sulfurPercentage" + $j).val());
-            sulfurPercentageTotal += sulfurPercentage;
-            var ph = parseFloat($("#edit-ph" + $j).val());
-            phTotal += ph;
-            var phosphorusPercentage = parseFloat($("#edit-phosphorusPercentage" + $j).val());
-            phosphorusPercentageTotal += phosphorusPercentage;
-            var fluorinePercentage = parseFloat($("#edit-fluorinePercentage" + $j).val());
-            fluorinePercentageTotal += fluorinePercentage;
+/**
+ * 保存修改的数据
+ */
+function edit() {
+    var lineCount = $("span[name='serialNumber']").length;  // 获取数据行数
+    var pretreatment = {};
+    pretreatment.id = $("#edit-pretreatmentId").text();
+    pretreatment.remarks = $("#edit-remarks").val();
+    pretreatment.weightTotal = $("#edit-weightTotal").text();
+    pretreatment.calorificTotal = $("#edit-calorificTotal").text();
+    pretreatment.ashPercentageTotal = $("#edit-ashPercentageTotal").text();
+    pretreatment.wetPercentageTotal = $("#edit-wetPercentageTotal").text();
+    pretreatment.volatileNumberTotal = $("#edit-volatileNumberTotal").text();
+    pretreatment.chlorinePercentageTotal = $("#edit-chlorinePercentageTotal").text();
+    pretreatment.sulfurPercentageTotal = $("#edit-sulfurPercentageTotal").text();
+    pretreatment.phTotal = $("#edit-phTotal").text();
+    pretreatment.phosphorusPercentageTotal = $("#edit-phosphorusPercentageTotal").text();
+    pretreatment.fluorinePercentageTotal = $("#edit-fluorinePercentageTotal").text();
+    pretreatment.distillationProportion = $("#edit-distillationProportion").text();
+    pretreatment.wasteLiquidProportion = $("#edit-sludgeProportion").text();
+    pretreatment.bulkProportion = $("#edit-bulkProportion").text();
+    pretreatment.crushingProportion = $("#edit-crushingProportion").text();
+    pretreatment.suspensionProportion = $("#edit-suspensionProportion").text();
+    var pretreatmentItemList = [];
+    for (var i = 1; i < lineCount; i++) {
+        var $i = i;
+        var pretreatmentItem = {};
+        pretreatmentItem.pretreatmentId = $("#edit-pretreatmentId").text();
+        pretreatmentItem.serialNumber = $("#edit-serialNumber" + $i).text();
+        pretreatmentItem.outboundOrderId = $("#edit-outBounderOrderId" + $i).text();
+        pretreatmentItem.produceCompanyName = $("#edit-produceCompanyName" + $i).val();
+        pretreatmentItem.requirements = $("#edit-requirements" + $i).val();
+        pretreatmentItem.proportion = $("#edit-proportion" + $i).val();
+        var wastes = {};
+        wastes.name = $("#edit-wastesName" + $i).val();
+        wastes.weight = $("#edit-weight" + $i).val();
+        wastes.calorific = $("#edit-calorific" + $i).val();
+        wastes.ashPercentage = $("#edit-ashPercentage" + $i).val();
+        wastes.wetPercentage = $("#edit-wetPercentage" + $i).val();
+        wastes.volatileNumber = $("#edit-volatileNumber" + $i).val();
+        wastes.chlorinePercentage = $("#edit-chlorinePercentage" + $i).val();
+        wastes.sulfurPercentage = $("#edit-sulfurPercentage" + $i).val();
+        wastes.ph = $("#edit-ph" + $i).val();
+        wastes.phosphorusPercentage = $("#edit-phosphorusPercentage" + $i).val();
+        wastes.fluorinePercentage = $("#edit-fluorinePercentage" + $i).val();
+        switch ($("#edit-processWay" + $i).val()) {
+            case "1":
+                wastes.processWay = 'Burning';
+                break;
+            case "2":
+                wastes.processWay = 'Landfill';
+                break;
+            case "3":
+                wastes.processWay = 'Clean';
+                break;
         }
-        for (var j = 1; j < lineCount; j++) { // 计算比例并赋值
-            var $i = j;
-            var proportion = parseFloat($("#edit-weight" + $j).val()) / weightTotal;
-            $("#edit-proportion" + $j).val(proportion);
+        switch ($("#edit-handleCategory" + $i).val()) {
+            case "1":
+                wastes.handleCategory = 'Sludge';
+                break;
+            case "2":
+                wastes.handleCategory = 'WasteLiquid';
+                break;
+            case "3":
+                wastes.handleCategory = 'Bulk';
+                break;
+            case "4":
+                wastes.handleCategory = 'Crushing';
+                break;
+            case "5":
+                wastes.handleCategory = 'Distillation';
+                break;
+            case "6":
+                wastes.handleCategory = 'Suspension';
+                break;
+            case "7":
+                wastes.handleCategory = 'Jelly';
+                break;
         }
-        // 计算
-        for (var j = 1; j < lineCount; j++) { // 计算进料方式比例
-            var $i = j;
-            switch ($("#edit-handleCategory" + $i).val()) {
-                case "0":
-                    sludgeProportion += parseFloat($("#edit-proportion" + $i).val());
-                    break;
-                case "1":
-                    wasteLiquidProportion += parseFloat($("#edit-proportion" + $i).val());
-                    break;
-                case "2":
-                    bulkProportion += parseFloat($("#edit-proportion" + $i).val());
-                    break;
-                case "3":
-                    crushingProportion += parseFloat($("#edit-proportion" + $i).val());
-                    break;
-                case "4":
-                    distillationProportion += parseFloat($("#edit-proportion" + $i).val());
-                    break;
-                case "5":
-                    suspensionProportion += parseFloat($("#edit-proportion" + $i).val());
-                    break;
-            }
-        }
-        // 赋值
-        $("#edit-weightTotal").text(weightTotal);
-        $("#edit-calorificTotal").text(calorificTotal);
-        $("#edit-ashPercentageTotal").text(ashPercentageTotal);
-        $("#edit-wetPercentageTotal").text(wetPercentageTotal);
-        $("#edit-volatileNumberTotal").text(volatileNumberTotal);
-        $("#edit-chlorinePercentageTotal").text(chlorinePercentageTotal);
-        $("#edit-sulfurPercentageTotal").text(sulfurPercentageTotal);
-        $("#edit-phTotal").text(phTotal);
-        $("#edit-phosphorusPercentageTotal").text(phosphorusPercentageTotal);
-        $("#edit-fluorinePercentageTotal").text(fluorinePercentageTotal);
-        $("#edit-distillationProportion").text(distillationProportion);
-        $("#edit-wasteLiquidProportion").text(wasteLiquidProportion);
-        $("#edit-sludgeProportion").text(sludgeProportion);
-        $("#edit-bulkProportion").text(bulkProportion);
-        $("#edit-crushingProportion").text(crushingProportion);
-        $("#edit-suspensionProportion").text(suspensionProportion);
+        pretreatmentItem.wastes = wastes;
+        pretreatmentItemList.push(pretreatmentItem);
     }
+    pretreatment.pretreatmentItemList = pretreatmentItemList;
+    console.log("修改的数据为：");
+    console.log(pretreatment);
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "updatePretreatment",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(pretreatment),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            console.log(result);
+            if (result.data != undefined || result.status == "success") {
+                alert("修改成功!");
+                window.location.reload();
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器错误！");
+        }
+    });
+}
+
+/**
+ * 根据重量自动计算比例
+ */
+function calculateWeight(){
+    var weightTotal = 0;
+    var lineCount = $("span[name='serialNumber']").length;
+    for (var j = 1; j < lineCount; j++) {
+        var $j = j;
+        //计算总重量
+        var weight = parseFloat($("#edit-weight" + $j).val());
+        weightTotal += weight;
+    }
+    for (var j = 1; j < lineCount; j++) { // 计算比例并赋值
+        var $j = j;
+        var proportion = parseFloat($("#edit-weight" + $j).val()) / weightTotal;
+        $("#edit-proportion" + $j).val(proportion);
+    }
+    $("#edit-weightTotal").text(weightTotal); // 总重量赋值
+}
+
+
+/**
+ * 自动结算总计
+ */
+function calculate() {
+    var volatileNumberTotal = 0;
+    var calorificTotal = 0;
+    var ashPercentageTotal = 0;
+    var wetPercentageTotal = 0;
+    var chlorinePercentageTotal = 0;
+    var sulfurPercentageTotal = 0;
+    var phTotal = 0;
+    var phosphorusPercentageTotal = 0;
+    var fluorinePercentageTotal = 0;
+    var distillationProportion = 0;
+    var wasteLiquidProportion = 0;
+    var sludgeProportion = 0;
+    var bulkProportion = 0;
+    var crushingProportion = 0;
+    var suspensionProportion = 0;
+    var lineCount = $("span[name='serialNumber']").length;
+    for (var j = 1; j < lineCount; j++) {
+        var $j = j;
+        //计算总计等数值
+        var calorific = parseFloat($("#edit-calorific" + $j).val());
+        calorificTotal += calorific;
+        var ashPercentage = parseFloat($("#edit-ashPercentage" + $j).val());
+        ashPercentageTotal += ashPercentage;
+        var wetPercentage = parseFloat($("#edit-wetPercentage" + $j).val());
+        wetPercentageTotal += wetPercentage;
+        var volatileNumber = parseFloat($("#edit-volatileNumber" + $j).val());
+        volatileNumberTotal += volatileNumber;
+        var chlorinePercentage = parseFloat($("#edit-chlorinePercentage" + $j).val());
+        chlorinePercentageTotal += chlorinePercentage;
+        var sulfurPercentage = parseFloat($("#edit-sulfurPercentage" + $j).val());
+        sulfurPercentageTotal += sulfurPercentage;
+        var ph = parseFloat($("#edit-ph" + $j).val());
+        phTotal += ph;
+        var phosphorusPercentage = parseFloat($("#edit-phosphorusPercentage" + $j).val());
+        phosphorusPercentageTotal += phosphorusPercentage;
+        var fluorinePercentage = parseFloat($("#edit-fluorinePercentage" + $j).val());
+        fluorinePercentageTotal += fluorinePercentage;
+        switch ($("#edit-handleCategory" + $j).val()) {
+            case "1":
+                sludgeProportion += parseFloat($("#edit-proportion" + $j).val());
+                break;
+            case "2":
+                wasteLiquidProportion += parseFloat($("#edit-proportion" + $j).val());
+                break;
+            case "3":
+                bulkProportion += parseFloat($("#edit-proportion" + $j).val());
+                break;
+            case "4":
+                crushingProportion += parseFloat($("#edit-proportion" + $j).val());
+                break;
+            case "5":
+                distillationProportion += parseFloat($("#edit-proportion" + $j).val());
+                break;
+            case "6":
+                suspensionProportion += parseFloat($("#edit-proportion" + $j).val());
+                break;
+        }
+    }
+    // 赋值
+    $("#edit-calorificTotal").text(calorificTotal);
+    $("#edit-ashPercentageTotal").text(ashPercentageTotal);
+    $("#edit-wetPercentageTotal").text(wetPercentageTotal);
+    $("#edit-volatileNumberTotal").text(volatileNumberTotal);
+    $("#edit-chlorinePercentageTotal").text(chlorinePercentageTotal);
+    $("#edit-sulfurPercentageTotal").text(sulfurPercentageTotal);
+    $("#edit-phTotal").text(phTotal);
+    $("#edit-phosphorusPercentageTotal").text(phosphorusPercentageTotal);
+    $("#edit-fluorinePercentageTotal").text(fluorinePercentageTotal);
+    $("#edit-distillationProportion").text(distillationProportion);
+    $("#edit-wasteLiquidProportion").text(wasteLiquidProportion);
+    $("#edit-sludgeProportion").text(sludgeProportion);
+    $("#edit-bulkProportion").text(bulkProportion);
+    $("#edit-crushingProportion").text(crushingProportion);
+    $("#edit-suspensionProportion").text(suspensionProportion);
+}

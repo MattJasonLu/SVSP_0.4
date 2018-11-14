@@ -436,7 +436,9 @@ function searchData() {
  * 显示日期选择模态框
  */
 function showDateModal() {
-    $("#dateChooseModal").find('input').val('');
+    $("#reportDate").val(getNowDate());
+    $("#reportDateStart").val(getReportStart());
+    $("#reportDateEnd").val(getReportEnd());
     $("#dateChooseModal").modal('show');
 }
 

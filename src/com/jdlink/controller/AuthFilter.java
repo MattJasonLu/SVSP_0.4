@@ -2,7 +2,10 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.User;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URLEncoder;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -16,13 +19,12 @@ import javax.servlet.http.HttpSession;
 /**
  * 拦截器，查看用户是否登录过，未登录禁止访问页面
  */
-
 public class AuthFilter implements Filter {
 
     public void destroy() {
     }
 
-    public void doFilter(ServletRequest servletRequest,ServletResponse servletResponse, FilterChain filterChain)throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         /**
          * 1,doFilter方法的第一个参数为ServletRequest对象。此对象给过滤器提供了对进入的信息（包括*
          * 表单数据、cookie和HTTP请求头）的完全访问。第二个参数为ServletResponse，通常在简单的过*
@@ -36,18 +38,24 @@ public class AuthFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String currentURL = request.getRequestURI();
         // 取得根目录所对应的绝对路径:
-        String targetURL = currentURL.substring(currentURL.indexOf("/", 0),currentURL.length());
+        String targetURL = currentURL.substring(currentURL.indexOf("/", 0), currentURL.length());
         // 截取到当前文件名用于比较
         HttpSession session = request.getSession(false);
-        if (!"/admin.html".equals(targetURL)) {// 判断当前页是否是重定向以后的登录页面页面，如果是就不做session的判断，防止出现死循环
-            if (session == null || session.getAttribute("user") == null) { //获取用户如果为空则重定向
-                // *用户登录以后需手动添加session
-                response.sendRedirect("/admin.html");
-                // 如果session为空表示用户没有登录就重定向到admin.html页面
-                return;
-            }
+        //if (!"/SVSP/admin.html".equals(targetURL)) {// 判断当前页是否是重定向以后的登录页面页面，如果是就不做session的判断，防止出现死循环
+//
+//        String errFileName = "print.txt";
+//        response.setContentType("application/x-msdownload");
+//        response.setHeader("Content-Disposition", "attachment;filename=" + errFileName);
+        if (session == null || session.getAttribute("user") == null) { //获取用户如果为空则重定向
+            // *用户登录以后需手动添加session
+            response.sendRedirect(request.getContextPath() + "/SVSP/admin.html");
+
+            // 如果session为空表示用户没有登录就重定向到admin.html页面
+            return;
         }
-       //  加入filter链继续向下执行
+
+        // }
+        //  加入filter链继续向下执行
 
         filterChain.doFilter(request, response);
         /**

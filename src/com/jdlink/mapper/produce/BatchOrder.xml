@@ -22,7 +22,7 @@
 
     <!--获取配料单信息-->
     <select id="BatchList" resultMap="BatchingOrderRM">
-        select * from t_pl_batchingorder order by nowTime desc
+        select * from t_pl_batchingorder order by batchingOrderId desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -50,7 +50,7 @@
 
     <!--配料单新增页面获取危废仓储信息-->
     <select id="getWasteInventoryListBat" resultMap="WasteInventoryListBatRM">
-        select * from t_pl_wasteinventory where boundType='WasteInbound' and actualCount>0.00;
+        select * from t_pl_wasteinventory where boundType='WasteInbound' and actualCount>0.00 order by inboundDate desc ;
     </select>
 
     <!--危废库存查询页面获取危废库存信息-->
@@ -63,7 +63,7 @@
 
     <!--获得次生库存信息-->
     <select id="getSecInventoryListBat" resultMap="WasteInventoryListBatRM">
-        select * from t_pl_wasteinventory where boundType='SecondaryInbound' order by inboundDate
+        select * from t_pl_wasteinventory where boundType='SecondaryInbound' order by inboundDate desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -108,8 +108,16 @@
     </resultMap>
 
     <!--获得客户信息-->
-    <select id="getClientMar" resultType="Client">
+    <select id="getClientMar" resultMap="ClientRM">
         select * from client where clientId=#{clientId};
+    </select>
+
+    <resultMap id="ClientRM" type="Client">
+        <association property="salesman" column="salesmanId" select="getSalesman"></association>
+    </resultMap>
+
+    <select id="getSalesman" resultType="Salesman" parameterType="String">
+        select * from salesman where salesmanId=#{salesmanId}
     </select>
 
     <!--查询领料单 新增页面-->
@@ -165,9 +173,19 @@
     </select>
     <!--加载危废出库-->
     <select id="loadWastesOutBoundList" resultMap="WastesOutBoundRM">
-        select * from t_pl_outboundorder where  boundType='WasteOutbound'
+        select * from t_pl_outboundorder where  boundType='WasteOutbound' order by outboundOrderId desc
         <if test="start != null and count != null">
-            limit #{start}, #{count}
+            limit #{start}, #{count};
+        </if>
+    </select>
+
+    <!--预处理获取危废出库数据接口-->
+    <select id="loadOutBoundList" resultMap="WastesOutBoundRM">
+        select * from t_pl_outboundorder
+        where boundType='WasteOutbound' and checkState = 'OutBounded'
+        order by outboundOrderId desc
+        <if test="start != null and count != null and count != 0">
+            limit #{start}, #{count};
         </if>
     </select>
 
@@ -184,7 +202,7 @@
 
     <!--加载次生出库-->
     <select id="loadSecOutBoundList" resultMap="WastesOutBoundRM">
-        select * from t_pl_outboundorder where boundType='SecondaryOutbound'
+        select * from t_pl_outboundorder where boundType='SecondaryOutbound' order by outboundOrderId desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -197,7 +215,7 @@
 
     <!--加载领料单列表-->
     <select id="getMaterialRequisitionOrderList" resultMap="MaterialRequisitionOrderRM">
-        select * from t_pl_materialrequisitionorder
+        select * from t_pl_materialrequisitionorder order by  materialRequisitionId desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>

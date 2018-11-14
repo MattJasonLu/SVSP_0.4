@@ -627,6 +627,9 @@ function enterSearch() {
  * 增加数据
  */
 function addData() {
+    $('#pass').hide();
+    $('#break').hide();
+    $('#addModal').find('input').val('');
     $("#addModal").modal("show");
     $('#addTable').siblings().not($("#plusBtn")).remove();
 }
@@ -635,11 +638,13 @@ function addData() {
  * 预约登记==>新增
  */
 function addNewLine(item) {
+
     // 获取id为plusBtn的tr元素
     //var tr = $("#plusBtn").prev();
     var tr = $(item).parent().parent().prev();
     // 克隆tr，每次遍历都可以产生新的tr
     var clonedTr = tr.clone();
+    $(clonedTr).children('td').eq(0).find('p').hide()
     clonedTr.attr('class', 'myclass2');
     clonedTr.show();
     clonedTr.children().find("input").val("");
@@ -875,4 +880,40 @@ function adjustSewageTest() {
     })
 
 
+}
+
+//污水化验校验
+function testing(item) {
+    $(item).parent().children('p').eq(0).hide()
+    $(item).parent().children('p').eq(1).hide()
+
+    var id=$.trim($(item).val());
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "testingSewageTestId",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{'id':id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                if(result.data==true){
+                  $(item).parent().children('p').eq(1).show()
+                    $(item).parent().children('p').eq(0).hide()
+                }
+                if(result.data==false){
+                    $(item).parent().children('p').eq(0).show()
+                    $(item).parent().children('p').eq(1).hide()
+                }
+                if($.trim(id).length<=0){
+                    $('#pass').hide();
+                    $('#break').hide();
+                }
+            }
+        },
+        error:function (result) {
+
+        }
+    })
 }
