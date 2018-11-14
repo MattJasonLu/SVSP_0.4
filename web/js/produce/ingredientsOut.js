@@ -1510,6 +1510,7 @@ function confirmInsert() {
     $(".newLine").remove();
     ingredientsOut = {};
     ingredientsReceiveIdArray = [];
+    ingredientsOut.ingredientsList = [];
     if(ingredientsOut1 != null && ingredientsOut1.ingredientsList != null && ingredientsOut1.ingredientsList.length > 0){
         ingredientsOut.ingredientsList = ingredientsOut1.ingredientsList; // 将更新的数据赋给对象
     }
