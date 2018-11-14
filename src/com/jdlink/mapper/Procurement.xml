@@ -6,7 +6,7 @@
    <!--添加采购-->
     <insert id="add" parameterType="Procurement">
         insert into t_pl_procurement(receiptNumber, applyMouth, demandTime, applyDepartment, proposer, divisionHead, purchasingDirector, generalManager, id1, procurementCategory,nowTIme,purchasingHead,applyDate,suppliesCategory,state,createDate)
-      values (#{receiptNumber},#{applyMouth},#{demandTime},#{applyDepartment},#{proposer},#{divisionHead},#{purchasingDirector},#{generalManager},#{id1},#{procurementCategory},NOW(),#{purchasingHead},#{applyDate},#{suppliesCategory},'Enabled',NOW());
+      values (#{receiptNumber},#{applyMouth},#{demandTime},#{applyDepartment},#{proposer},#{divisionHead},#{purchasingDirector},#{generalManager},#{id1},#{procurementCategory},NOW(),#{purchasingHead},#{applyDate},#{suppliesCategory},'ToSubmit',NOW());
     </insert>
     <!--寻找最新的采购主键-->
     <select id="getNewestId" resultType="String">
@@ -224,4 +224,15 @@
         select * from t_pl_material where id=#{id};
     </select>
 
+
+    <!--提交采购单-->
+    <update id="submitProcurementListById" parameterType="String">
+    update t_pl_procurement set  state='Submitted' where receiptNumber=#{receiptNumber}
+    </update>
+
+    <!--更新采购单明细-->
+    <update id="updateMaterial" parameterType="Material">
+        update t_pl_material set inventory=#{inventory},demandQuantity=#{demandQuantity},
+        note=#{note} where  id=#{id}
+    </update>
 </mapper>
