@@ -292,10 +292,14 @@ $('.form_datetime2').datetimepicker({
                             </div>
                         </div>
                         <div class="row form-horizontal">
-                            <div class="form-group">
-                                <label for="reportDate" class="col-sm-2 control-label">日报范围</label>
-                                <div class="col-xs-10">
-                                    <input type="date" class="form-control" id="reportDateStart" style="width: 150px;">-<input type="date" class="form-control" id="reportDateEnd" style="width: 150px;">
+                            <div class="row">
+                                <div class="form-group" style="margin-left: 10px;">
+                                    <label class="control-label col-sm-2">日报范围</label>
+                                    <div class="input-group col-xs-7">
+                                        <input type="date" class="form-control" id="reportDateStart"/>
+                                        <span class="input-group-addon">-</span>
+                                        <input type="date" class="form-control" id="reportDateEnd"/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
