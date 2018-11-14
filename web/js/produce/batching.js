@@ -2006,7 +2006,7 @@ function cancel(item) {
 //作废方法
 function confirmCancel() {
     var data={
-        batchingOrderId: $('#inboundOrderId').html(),
+        batchingOrderId: $('#batchingOrderId3').html(),
         batchingNumber: $('#inventoryNumber1').html(),
         inboundOrderItemId:$('#inboundOrderItemId2').html()
     };
