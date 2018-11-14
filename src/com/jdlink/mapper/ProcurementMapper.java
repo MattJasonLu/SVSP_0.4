@@ -27,4 +27,6 @@ public interface ProcurementMapper {
     Material getMaterialById(String id);
     int searchMaterialTotal(Material material);
     int countProcurementItemList();
+    void submitProcurementListById(String receiptNumber);
+    void updateMaterial(Material material);
 }
