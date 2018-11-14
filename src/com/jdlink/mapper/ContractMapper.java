@@ -109,7 +109,7 @@ public interface ContractMapper {
 
    List<String> getNewestContractId1();
 
-   List<QuotationItem> getWastesInfoByCompanyName(String companyName);
+   Contract getWastesInfoByCompanyName(String companyName);
 
 
    List<QuotationItem> ContractList(Page page);

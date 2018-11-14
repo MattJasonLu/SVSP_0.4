@@ -182,7 +182,7 @@
 
     <select id="getWayBillItemByClientIdAndWastesCode" resultMap="WayBillItemRM">
         select * from t_pr_waybillitem
-        where wayBillId in ( select id from t_pr_waybill where produceCompanyId=#{clientId})
+        where wayBillId in ( select id from t_pr_waybill where produceCompanyId=#{clientId} and state = 'Approval')
         and wastesCode =#{code};
     </select>
 
@@ -244,9 +244,11 @@
 
     <insert id="addWayBill" parameterType="WayBill">
         insert into t_pr_waybill
-        (id,total,freight,remarks,wayBillDate,produceCompanyId,nowTime,produceCompanyOperator,state,produceCompanyName,founder,creationTime)
+        (id,total,freight,remarks,wayBillDate,produceCompanyId,nowTime,produceCompanyOperator,state,produceCompanyName,
+        founder,contractId)
         values
-        (#{id},#{total},#{freight},#{remarks},#{wayBillItemList[0].receiveDate},#{produceCompanyId},NOW(),#{produceCompanyOperator},'NewBuild',#{produceCompanyName},#{founder},NOW());
+        (#{id},#{total},#{freight},#{remarks},#{wayBillItemList[0].receiveDate},#{produceCompanyId},NOW(),
+        #{produceCompanyOperator},'NewBuild',#{produceCompanyName},#{founder},NOW(),#{contractId});
         <foreach collection="wayBillItemList" index="index" item="wayBillItem">
             insert into t_pr_waybillitem
             (itemId,wayBillId,receiveDate,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanName,receiveCompanyName,wastesId,wastesCode,wastesPrice,wastesName,wastesAmount,wastesTotalPrice)

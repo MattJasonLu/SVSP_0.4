@@ -15,6 +15,10 @@ public class WayBill {
      */
     private String produceCompanyName;
     /**
+     * 关联的合同ID
+     */
+    private String contractId;
+    /**
      * 委托单位ID
      */
     private String produceCompanyId;
@@ -70,6 +74,14 @@ public class WayBill {
      * 日期查询 终止时间
      */
     private Date endDate;
+
+    public String getContractId() {
+        return contractId;
+    }
+
+    public void setContractId(String contractId) {
+        this.contractId = contractId;
+    }
 
     public Date getStartDate() {
         return startDate;

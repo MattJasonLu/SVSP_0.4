@@ -1224,10 +1224,11 @@ public class ContractController {
     public String getWastesInfoByCompanyName(String companyName) {
         JSONObject res = new JSONObject();
         try {
-            List<QuotationItem> quotationItems = contractService.getWastesInfoByCompanyName(companyName);   // 获取合同报价单明细
+            Contract contract = contractService.getWastesInfoByCompanyName(companyName);   // 获取合同
+            JSONObject data = JSONObject.fromBean(contract);
             res.put("status", "success");
             res.put("message", "明细数据获取成功");
-            res.put("data", quotationItems);
+            res.put("data", data);
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
