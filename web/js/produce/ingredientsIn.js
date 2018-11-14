@@ -1657,7 +1657,7 @@ function confirmInsert1() {
         clonedTr.find("span[name='specification']").text(obj.specification);
         if (obj.unit != null)
             clonedTr.find("td[name='unit']").text(obj.unit.name);
-        clonedTr.find("span[name='amount']").text(obj.amount);
+        clonedTr.find("input[name='amount']").val(obj.amount);
         clonedTr.find("span[name='remarks']").text(obj.remarks);
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
@@ -1676,7 +1676,7 @@ function totalCalculate() {
     var allTotalPrice = null;
     for (var i = 1; i < ListCount; i++) {
         var $i = i;
-        var amount = $("#amount" + $i).text();
+        var amount = $("#amount" + $i).val();
         var unitPrice = $("#unitPrice" + $i).val();
         if (amount != null && unitPrice != null && amount != "" && unitPrice != "") {
             var totalPrice = parseFloat(amount) * parseFloat(unitPrice);
@@ -1722,6 +1722,7 @@ function save() {
             var $i = i + 1;
             if (ingredientsIn.ingredientsList[i].serialNumberA != 'del') {
                 ingredientsIn.ingredientsList[i].unitPrice = $("#unitPrice" + $i).val();
+                ingredientsIn.ingredientsList[i].amount = $("#amount" + $i).val();
                 ingredientsIn.ingredientsList[i].post = $("#post" + $i).val();
                 ingredientsIn.ingredientsList[i].wareHouseName = $("#wareHouseName" + $i).val();
                 ingredientsIn.ingredientsList[i].totalPrice = ingredientsIn.ingredientsList[i].unitPrice * ingredientsIn.ingredientsList[i].amount;

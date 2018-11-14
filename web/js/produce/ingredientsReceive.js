@@ -1479,6 +1479,7 @@ function confirmInsert() {
     ingredientsIdArray = [];
     totalReceiveAmount = 0;
     var ingredientsList = [];
+    ingredientsReceive.ingredientsList = [];  // 初始化
     ingredientsReceive.id = $("#view-id").text();
     if(ingredientsReceive1 != null && ingredientsReceive1.ingredientsList != null && ingredientsReceive1.ingredientsList.length > 0){
         ingredientsReceive.ingredientsList = ingredientsReceive1.ingredientsList; // 将更新的数据赋给对象

@@ -36,7 +36,8 @@
     </select>
     <!--获取采购明细-->
     <select id="getProcurementItemList" resultType="Material">
-        select * from t_pl_material where state = 'ToInbound'
+        select a.* from t_pl_material as a join t_pl_procurement as b on a.receiptNumber=b.receiptNumber
+        where b.state = 'Submitted'
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count};
         </if>
