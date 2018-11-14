@@ -13,7 +13,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/secondaryTestResults.js"></script>
+    <script src="js/produce/secondaryDaily.js"></script>
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');     //当前页数
@@ -148,6 +148,30 @@
                             </div>
                             </div>
                         </div>
+
+                        <div class="form-horizontal col-md-4">
+                            <div class="form-group">
+                                <label for="search-id" class="col-sm-5 control-label">单号</label>
+                                <div class="col-xs-6">
+                                    <input type="text" class="form-control" id="search-id"
+                                           name="search-receiveDate" placeholder="" onkeyup="enterSearch()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-horizontal col-md-4">
+                            <div class="form-group">
+                                <label for="search-remarks" class="col-sm-5 control-label">备注</label>
+                                <div class="col-xs-6">
+                                    <input type="text" class="form-control" id="search-remarks"
+                                           name="search-receiveDate" placeholder="" onkeyup="enterSearch()">
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="row">
                         <div class="form-horizontal col-md-4">
                             <div class="form-group" style="margin-left: -10px;">
                                 <label class="col-sm-3 control-label">收样日期 </label>
@@ -155,6 +179,26 @@
                                     <input type="date" class="input-sm form-control" id="search-inDate" title="" onkeyup="enterSearch()"/>
                                     <span class="input-group-addon">-</span>
                                     <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeyup="enterSearch()"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-horizontal col-md-4">
+                            <div class="form-group">
+                                <label for="search-scorchingRate" class="col-sm-5 control-label">热灼减率</label>
+                                <div class="col-xs-6">
+                                    <input type="text" class="form-control" id="search-scorchingRate"
+                                           name="search-receiveDate" placeholder="" onkeyup="enterSearch()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-horizontal col-md-4">
+                            <div class="form-group">
+                                <label for="search-water" class="col-sm-5 control-label">水分</label>
+                                <div class="col-xs-6">
+                                    <input type="text" class="form-control" id="search-water"
+                                           name="search-receiveDate" placeholder="" onkeyup="enterSearch()">
                                 </div>
                             </div>
                         </div>
@@ -170,7 +214,7 @@
                                 <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
                             </label>
                         </th>
-                        <th class="text-center">序号</th>
+                        <th class="text-center">单号</th>
                         <th class="text-center">收样日期</th>
                         <th class="text-center">废物名称</th>
                         <th class="text-center">热灼减率 %</th>

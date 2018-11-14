@@ -17,7 +17,7 @@ public class SoftTest {
 
     private float turbidity;//浊度
 
-    private float  hardness;//硬度
+    private String  hardness;//硬度
 
     private float  PH;
 
@@ -85,11 +85,11 @@ public class SoftTest {
         this.turbidity = turbidity;
     }
 
-    public float getHardness() {
+    public String getHardness() {
         return hardness;
     }
 
-    public void setHardness(float hardness) {
+    public void setHardness(String hardness) {
         this.hardness = hardness;
     }
 

@@ -1,6 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Page;
 
 import java.util.Date;
 
@@ -26,6 +27,47 @@ public class SecondaryTest {
     private String remarks;
 
     private CheckState checkState;
+
+    private String keyword;
+
+    private Page page;
+
+
+    private  Date dateTimeStart;
+
+    private  Date dateTimeEnd;
+
+    public Date getDateTimeStart() {
+        return dateTimeStart;
+    }
+
+    public void setDateTimeStart(Date dateTimeStart) {
+        this.dateTimeStart = dateTimeStart;
+    }
+
+    public Date getDateTimeEnd() {
+        return dateTimeEnd;
+    }
+
+    public void setDateTimeEnd(Date dateTimeEnd) {
+        this.dateTimeEnd = dateTimeEnd;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
 
     public CheckState getCheckState() {
 

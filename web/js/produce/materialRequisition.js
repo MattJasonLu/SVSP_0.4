@@ -1068,7 +1068,8 @@ function materialRequisitionModify(item) {
                 if (obj.client != null) {
                     $("#client1").val(obj.client.companyName);
                 }
-
+                var batchOrderId= $("#materialRequisitionId1").val().substring(0,$("#materialRequisitionId1").val().length-3);
+                 $('#batchOrderId').val(batchOrderId);
                 $("#wastesName1").val(obj.wastesName)
                 $("#wasteCategory1").val(obj.wasteCategory);
                 $("#recipientsNumber1").val(obj.recipientsNumber.toFixed(2));

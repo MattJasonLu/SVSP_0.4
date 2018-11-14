@@ -418,4 +418,81 @@ public class WasteIntoController {
 
         return wasteIntoService.searchSecondaryCount(secondarySample);
     }
+
+    //危废入场查询
+    @RequestMapping("searchWastesDaily")
+    @ResponseBody
+    public String searchWastesDaily(@RequestBody SampleInfoAnalysis sampleInfoAnalysis){
+        JSONObject res=new JSONObject();
+
+
+        try {
+     List<SampleInfoAnalysis> sampleInfoAnalysisList=wasteIntoService.searchWastesDaily(sampleInfoAnalysis);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", sampleInfoAnalysisList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+
+        }
+        return res.toString();
+
+    }
+
+   //危废入场查询计数
+    @RequestMapping("searchWastesDailyCount")
+    @ResponseBody
+    public String searchWastesDailyCount(@RequestBody SampleInfoAnalysis sampleInfoAnalysis ){
+        JSONObject res=new JSONObject();
+
+        try {
+                   int count =wasteIntoService.searchWastesDailyCount(sampleInfoAnalysis);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", count);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                    res.put("status", "fail");
+                    res.put("message", "查询失败");
+                }
+        return res.toString();
+    }
+
+    //次生入场查询
+    @RequestMapping("searchSecondaryDaily")
+    @ResponseBody
+    public String searchSecondaryDaily(@RequestBody SecondaryTest secondaryTest){
+        JSONObject res=new JSONObject();
+
+        try {
+     List<SecondaryTest> secondaryTestList=wasteIntoService.searchSecondaryDaily(secondaryTest);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", secondaryTestList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+
+        }
+
+
+
+        return res.toString();
+    }
+
+
+    //次生入场查询计数
+    @RequestMapping("searchSecondaryDailyCount")
+    @ResponseBody
+    public int  searchSecondaryDailyCount(@RequestBody SecondaryTest secondaryTest ){
+
+        return wasteIntoService.searchSecondaryDailyCount(secondaryTest);
+
+    }
 }

@@ -912,7 +912,8 @@ function addNextLine() {
  * 修改信息功能
  */
 function adjustSample(menu) {
-    if ($(menu).parent().prev().text() == "已预约") {
+    var state = $(menu).parent().prev().text();
+    if (state == "已预约") {
         num = 0;
         setSelectList();        // 设置危废代码和公司名下拉框数据
         $(".newLine").remove();
@@ -967,8 +968,14 @@ function adjustSample(menu) {
                 alert("服务器异常!");
             }
         });
-    } else {
-        alert("单据不可修改");
+    }else if(state == '已作废'){
+        alert("单据已作废，不可修改！");
+    }else if(state == '已收样'){
+        alert("单据已收样，不可修改！");
+    }else if(state == '已拒收'){
+        alert("单据已拒收，不可修改！");
+    }else {
+        alert("单据不可修改！");
     }
 }
 
@@ -1038,14 +1045,14 @@ function updateAppointBySampleId() {
         wastes.name = $("input[name='wastes[" + $i + "].wastesName']").val();
         var formType = $("select[id='wastes[" + $i + "].wastesFormType']").find("option:selected").val();
         switch (parseInt(formType)) {
-            case 4 :
-                formType = "HalfSolid";
-                break;
             case 2 :
                 formType = "Liquid";
                 break;
             case 3 :
                 formType = "Solid";
+                break;
+            case 4 :
+                formType = "HalfSolid";
                 break;
             case 5 :
                 formType = "Solid1AndHalfSolid";
@@ -1356,14 +1363,23 @@ function addAppoint() {
         wastes.name = $("input[name='wastesList[" + $i + "].wastesName']").val();
         var formType = $("select[id='wastesList[" + $i + "].wastesFormType']").find("option:selected").val();
         switch (parseInt(formType)) {
+            case 2 :
+                formType = "Liquid";
+                break;
+            case 3 :
+                formType = "Solid";
+                break;
             case 4 :
                 formType = "HalfSolid";
                 break;
             case 5 :
-                formType = "Liquid1";
+                formType = "Solid1AndHalfSolid";
                 break;
             case 6 :
-                formType = "Solid1";
+                formType = "HalfSolidAndLiquid";
+                break;
+            case 7 :
+                formType = "Solid1AndLiquid";
                 break;
         }
         wastes.formType = formType;
@@ -1414,7 +1430,8 @@ function addAppoint() {
  * 删除预约单----->改作废
  */
 function deleteSample(menu) {
-    if ($(menu).parent().prev().text() == "已预约") {
+    var state = $(menu).parent().prev().text();
+    if (state == "已预约" || state == "已拒收") {
         sampleId = getSampleIdByMenu(menu);
         var msg = "是否作废该条记录？";
         if (confirm(msg) == true) {
@@ -1440,6 +1457,10 @@ function deleteSample(menu) {
                 }
             });
         }
+    }else if(state == "已收样"){
+        alert("单据已收样，不可作废！");
+    }else if(state == "已作废"){
+        alert("单据已作废！");
     }else {
         alert("单据不可作废！");
     }

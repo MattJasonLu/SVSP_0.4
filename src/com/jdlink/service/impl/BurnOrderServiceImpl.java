@@ -50,7 +50,7 @@ public class BurnOrderServiceImpl implements BurnOrderService {
     public List<BurnOrder> listPage(Page page){ return burnOrderMapper.listPage(page); }
 
     @Override
-    public void invalid(String id){ burnOrderMapper.invalid(id); }
+    public void invalid(BurnOrder burnOrder){ burnOrderMapper.invalid(burnOrder); }
 
     @Override
     public List<BurnOrder> search(BurnOrder burnOrder){ return burnOrderMapper.search(burnOrder); }

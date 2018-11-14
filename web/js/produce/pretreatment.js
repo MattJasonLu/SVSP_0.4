@@ -856,29 +856,38 @@ function setViewDataClone(result) {
  * @param item
  */
 function invalid(item) {
-    var id = getPretreatmentId(item);
-    if (confirm("确认作废？")) {
-        $.ajax({
-            type: "POST",
-            url: "invalidPretreatment",
-            async: false,
-            data: {
-                id: id
-            },
-            dataType: "json",
-            success: function (result) {
-                if (result.status == "success") {
-                    alert("作废成功!");
-                    window.location.reload();
-                } else {
-                    alert(result.message);
+    var state = $(item).parent().parent().children().eq(2).text();
+    if (state == "新建") {
+        var id = getPretreatmentId(item);
+        if (confirm("确认作废？")) {
+            $.ajax({
+                type: "POST",
+                url: "invalidPretreatment",
+                async: false,
+                data: {
+                    id: id
+                },
+                dataType: "json",
+                success: function (result) {
+                    if (result.status == "success") {
+                        alert("作废成功!");
+                        window.location.reload();
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                    alert("服务器异常!");
                 }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常!");
-            }
-        });
+            });
+        }
+    }else if(state == "已作废"){
+        alert("单据已作废！");
+    }else if(state == "已确认"){
+        alert("单据已确认，不可作废");
+    }else{
+        alert("单据不可作废！");
     }
 }
 
@@ -1755,51 +1764,60 @@ function searchOutBoundOrder() {
  * @param item
  */
 function pretreatmentListModify(item) {
-    var id = getPretreatmentId(item);
-    $(".newLine").remove();
-    setSelectedList();    // 设置下拉框数据
-    $.ajax({
-        type: "POST",
-        url: "getPretreatmentById",
-        async: false,
-        data: {
-            id: id
-        },
-        dataType: "json",
-        success: function (result) {
-            if (result.status == "success") {
-                //设置数据
-                var data = eval(result.data);
+    var state = $(item).parent().parent().children().eq(2).text();
+    if (state == "新建") {
+        var id = getPretreatmentId(item);
+        $(".newLine").remove();
+        setSelectedList();    // 设置下拉框数据
+        $.ajax({
+            type: "POST",
+            url: "getPretreatmentById",
+            async: false,
+            data: {
+                id: id
+            },
+            dataType: "json",
+            success: function (result) {
+                if (result.status == "success") {
+                    //设置数据
+                    var data = eval(result.data);
+                    console.log(result);
+                    setEditDataClone(result.data);
+                    $("#edit-pretreatmentId").text(data.id);
+                    $("#edit-remarks").val(data.remarks);
+                    $("#edit-weightTotal").text(data.weightTotal.toFixed(2));
+                    $("#edit-calorificTotal").text(data.calorificTotal.toFixed(2));
+                    $("#edit-ashPercentageTotal").text(data.ashPercentageTotal.toFixed(2));
+                    $("#edit-wetPercentageTotal").text(data.wetPercentageTotal.toFixed(2));
+                    $("#edit-volatileNumberTotal").text(data.volatileNumberTotal.toFixed(2));
+                    $("#edit-chlorinePercentageTotal").text(data.chlorinePercentageTotal.toFixed(2));
+                    $("#edit-sulfurPercentageTotal").text(data.sulfurPercentageTotal.toFixed(2));
+                    $("#edit-phTotal").text(data.phTotal.toFixed(2));
+                    $("#edit-phosphorusPercentageTotal").text(data.phosphorusPercentageTotal.toFixed(2));
+                    $("#edit-fluorinePercentageTotal").text(data.fluorinePercentageTotal.toFixed(2));
+                    $("#edit-distillationProportion").text(data.distillationProportion.toFixed(2));
+                    $("#edit-wasteLiquidProportion").text(data.wasteLiquidProportion.toFixed(2));
+                    $("#edit-sludgeProportion").text(data.sludgeProportion.toFixed(2));
+                    $("#edit-bulkProportion").text(data.bulkProportion.toFixed(2));
+                    $("#edit-crushingProportion").text(data.crushingProportion.toFixed(2));
+                    $("#edit-suspensionProportion").text(data.suspensionProportion.toFixed(2));
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
                 console.log(result);
-                setEditDataClone(result.data);
-                $("#edit-pretreatmentId").text(data.id);
-                $("#edit-remarks").val(data.remarks);
-                $("#edit-weightTotal").text(data.weightTotal.toFixed(2));
-                $("#edit-calorificTotal").text(data.calorificTotal.toFixed(2));
-                $("#edit-ashPercentageTotal").text(data.ashPercentageTotal.toFixed(2));
-                $("#edit-wetPercentageTotal").text(data.wetPercentageTotal.toFixed(2));
-                $("#edit-volatileNumberTotal").text(data.volatileNumberTotal.toFixed(2));
-                $("#edit-chlorinePercentageTotal").text(data.chlorinePercentageTotal.toFixed(2));
-                $("#edit-sulfurPercentageTotal").text(data.sulfurPercentageTotal.toFixed(2));
-                $("#edit-phTotal").text(data.phTotal.toFixed(2));
-                $("#edit-phosphorusPercentageTotal").text(data.phosphorusPercentageTotal.toFixed(2));
-                $("#edit-fluorinePercentageTotal").text(data.fluorinePercentageTotal.toFixed(2));
-                $("#edit-distillationProportion").text(data.distillationProportion.toFixed(2));
-                $("#edit-wasteLiquidProportion").text(data.wasteLiquidProportion.toFixed(2));
-                $("#edit-sludgeProportion").text(data.sludgeProportion.toFixed(2));
-                $("#edit-bulkProportion").text(data.bulkProportion.toFixed(2));
-                $("#edit-crushingProportion").text(data.crushingProportion.toFixed(2));
-                $("#edit-suspensionProportion").text(data.suspensionProportion.toFixed(2));
-            } else {
-                alert(result.message);
+                alert("服务器异常!");
             }
-        },
-        error: function (result) {
-            console.log(result);
-            alert("服务器异常!");
-        }
-    });
-    $("#editModal").modal('show');
+        });
+        $("#editModal").modal('show');
+    }else if(state == "已作废"){
+        alert("单据已作废，不可修改！");
+    }else if(state == "已确认"){
+        alert("单据已确认，不可修改！");
+    }else{
+        alert("单据不可修改！");
+    }
 }
 
 function setSelectedList() {
@@ -1949,6 +1967,7 @@ function edit() {
         wastes.ph = $("#edit-ph" + $i).val();
         wastes.phosphorusPercentage = $("#edit-phosphorusPercentage" + $i).val();
         wastes.fluorinePercentage = $("#edit-fluorinePercentage" + $i).val();
+        wastes.remarks = $("#edit-remarks" + $i).val();
         switch ($("#edit-processWay" + $i).val()) {
             case "1":
                 wastes.processWay = 'Burning';

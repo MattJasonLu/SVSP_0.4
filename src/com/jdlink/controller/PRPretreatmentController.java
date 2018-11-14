@@ -366,7 +366,8 @@ public class PRPretreatmentController {
     public String invalidPretreatment(String id) {
         JSONObject res = new JSONObject();
         try {
-            pretreatmentService.invalid(id);
+            Pretreatment pretreatment = pretreatmentService.getById(id);  // 获取对象数据
+            pretreatmentService.invalid(pretreatment);
             res.put("status", "success");
             res.put("message", "作废成功");
         } catch (Exception e) {

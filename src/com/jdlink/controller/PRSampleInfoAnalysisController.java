@@ -85,7 +85,7 @@ public class PRSampleInfoAnalysisController {
      */
     @RequestMapping("updateSampleInfoAnalysisById")
     @ResponseBody
-    public String updateSampleInfoAnalysisById(SampleInfoAnalysis sampleInfoAnalysis) {
+    public String updateSampleInfoAnalysisById(@RequestBody SampleInfoAnalysis sampleInfoAnalysis) {
         JSONObject res = new JSONObject();
         try {
             sampleInfoAnalysisService.update(sampleInfoAnalysis);
@@ -195,7 +195,7 @@ public class PRSampleInfoAnalysisController {
                 sampleInfoAnalysis.setSulfur(Float.parseFloat(data[i][12].toString()));
                 sampleInfoAnalysis.setPhosphorus(Float.parseFloat(data[i][13].toString()));
                 sampleInfoAnalysis.setFlashPoint(Float.parseFloat(data[i][14].toString()));
-                sampleInfoAnalysis.setViscosity(Float.parseFloat(data[i][15].toString()));
+                sampleInfoAnalysis.setViscosity(data[i][15].toString());
                 sampleInfoAnalysis.setHotMelt(data[i][16].toString());
 //                sampleInfoAnalysis.setSignDate(DateUtil.getDateFromStr(data[i][19].toString()));
                 sampleInfoAnalysis.setRemark(data[i][17].toString());

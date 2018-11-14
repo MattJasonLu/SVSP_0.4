@@ -93,6 +93,16 @@ public class ProcurementServiceImpl implements ProcurementService {
     public int countProcurementItemList(){ return procurementMapper.countProcurementItemList();}
 
     @Override
+    public void submitProcurementListById(String receiptNumber) {
+        procurementMapper.submitProcurementListById(receiptNumber);
+    }
+
+    @Override
+    public void updateMaterial(Material material) {
+        procurementMapper.updateMaterial(material);
+    }
+
+    @Override
     public List<Material> searchMaterial(Material material){ return procurementMapper.searchMaterial(material);}
 
     @Override
