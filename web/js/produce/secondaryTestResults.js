@@ -326,28 +326,32 @@ function setDataList(result) {
                 case (1):
                     $(this).html(obj.id);
                     break;
-                // 收样日期
-                case (2):
-                    $(this).html(getDateStr(obj.dateTime));
-                    break;
                 // 废物名称
-                case (3):
+                case (2):
                     $(this).html(obj.wastesName);
                     break;
                 // 热灼减率%
-                case (4):
+                case (3):
+                    if(obj.scorchingRate==0){
+                        $(this).html('--')
+                    }
+                    else
                     $(this).html(obj.scorchingRate.toFixed(2));
                     break;
                 // 水分%
-                case (5):
+                case (4):
+                    if(obj.water==0){
+                        $(this).html('--')
+                    }
+                    else
                     $(this).html(obj.water.toFixed(2));
                     break;
                 // 备注
-                case (6):
+                case (5):
                     $(this).html((obj.remarks));
                     break;
                 // 单据状态
-                case (7):
+                case (6):
                     if (obj.checkState != null) {
                         $(this).html((obj.checkState.name));
                     }
@@ -621,7 +625,7 @@ function addNewLine(item) {
     // 克隆tr，每次遍历都可以产生新的tr
     var clonedTr = tr.clone();
     $(clonedTr).children('td').eq(0).find('p').hide()
-    clonedTr.attr('class', 'myclass2');
+    clonedTr.attr('class', 'myclass3');
     clonedTr.show();
     clonedTr.children().find("input").val("");
     var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>";
@@ -648,14 +652,13 @@ function delLine(item) {
 //添加方法
 function save() {
 
-    $('.myclass2').each(function () {
+    $('.myclass3').each(function () {
         var data = {
             id: $(this).children('td').eq(0).find('input').val(),
-            dateTime: $(this).children('td').eq(1).find('input').val(),
-            wastesName: $(this).children('td').eq(2).find('input').val(),
-            scorchingRate: $(this).children('td').eq(3).find('input').val(),
-            water: $(this).children('td').eq(4).find('input').val(),
-            remarks: $(this).children('td').eq(5).find('input').val(),
+            wastesName: $(this).children('td').eq(1).find('input').val(),
+            scorchingRate: $(this).children('td').eq(2).find('input').val(),
+            water: $(this).children('td').eq(3).find('input').val(),
+            remarks: $(this).children('td').eq(4).find('input').val(),
         };
         console.log(data)
         $.ajax({

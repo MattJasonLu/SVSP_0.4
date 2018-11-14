@@ -248,7 +248,7 @@
         </if>
     </select>
 
-     <!--查询计数-->
+     <!--危废入场查询计数-->
     <select id="searchWastesDailyCount" resultType="int" parameterType="SampleInfoAnalysis">
         select count(*) from t_pr_sampleinfoanalysis
         <where>
@@ -290,4 +290,84 @@
             </if>
         </where>
     </select>
+
+
+    <!--次生入场分析日报查询-->
+    <select id="searchSecondaryDaily" parameterType="SecondaryTest" resultType="SecondaryTest">
+        select * from t_pr_secondarytest
+        <where>
+            <if test="keyword != null and keyword != ''">
+                or id like "%"#{keyword}"%"
+                or wastesName like "%"#{keyword}"%"
+                or scorchingRate like "%"#{keyword}"%"
+                or water like "%"#{keyword}"%"
+                or remarks like "%"#{keyword}"%"
+                or dateTime like "%"#{keyword}"%"
+            </if>
+                 <if test="id != null and id != ''">
+                     and id like "%"#{id}"%"
+                 </if>
+            <if test="wastesName != null and wastesName != ''">
+                and wastesName like "%"#{wastesName}"%"
+            </if>
+            <if test="remarks != null and remarks != ''">
+                and remarks like "%"#{remarks}"%"
+            </if>
+            <if test="scorchingRate != null and scorchingRate != ''">
+                and scorchingRate = #{scorchingRate}
+            </if>
+            <if test="water != null and water != ''">
+                and water = #{water}
+            </if>
+            <if test="dateTimeStart != null and dateTimeStart != ''">
+                and dateTime <![CDATA[ >= ]]>  #{dateTimeStart}
+            </if>
+            <if test="dateTimeEnd != null and dateTimeEnd != ''">
+                and dateTime <![CDATA[ <= ]]>  #{dateTimeEnd}
+            </if>
+        </where>
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+
+    </select>
+
+    <!--次生入场分析计数-->
+    <select id="searchSecondaryDailyCount" resultType="int" parameterType="SecondaryTest">
+        select count(*) from t_pr_secondarytest
+        <where>
+            <if test="keyword != null and keyword != ''">
+                or id like "%"#{keyword}"%"
+                or wastesName like "%"#{keyword}"%"
+                or scorchingRate like "%"#{keyword}"%"
+                or water like "%"#{keyword}"%"
+                or remarks like "%"#{keyword}"%"
+                or dateTime like "%"#{keyword}"%"
+            </if>
+            <if test="id != null and id != ''">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="wastesName != null and wastesName != ''">
+                and wastesName like "%"#{wastesName}"%"
+            </if>
+            <if test="remarks != null and remarks != ''">
+                and remarks like "%"#{remarks}"%"
+            </if>
+            <if test="scorchingRate != null and scorchingRate != ''">
+                and scorchingRate =#{scorchingRate}
+            </if>
+            <if test="water != null and water != ''">
+                and water = #{water}
+            </if>
+            <if test="dateTimeStart != null and dateTimeStart != ''">
+                and dateTime <![CDATA[ >= ]]>  #{dateTimeStart}
+            </if>
+            <if test="dateTimeEnd != null and dateTimeEnd != ''">
+                and dateTime <![CDATA[ <= ]]>  #{dateTimeEnd}
+            </if>
+
+        </where>
+    </select>
 </mapper>
+
+

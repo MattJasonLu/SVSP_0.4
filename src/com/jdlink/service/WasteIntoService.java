@@ -1,10 +1,7 @@
 package com.jdlink.service;
 
 import com.jdlink.domain.Page;
-import com.jdlink.domain.Produce.SampleInfoAnalysis;
-import com.jdlink.domain.Produce.SecondarySample;
-import com.jdlink.domain.Produce.SecondarySampleItem;
-import com.jdlink.domain.Produce.WasteInto;
+import com.jdlink.domain.Produce.*;
 
 import java.util.List;
 
@@ -30,4 +27,6 @@ public interface WasteIntoService {
     void updateSecondarySample(String id);
     List<SampleInfoAnalysis>searchWastesDaily(SampleInfoAnalysis sampleInfoAnalysis);
     int searchWastesDailyCount(SampleInfoAnalysis sampleInfoAnalysis);
+    List<SecondaryTest> searchSecondaryDaily(SecondaryTest secondaryTest);
+    int searchSecondaryDailyCount(SecondaryTest secondaryTest);
 }
