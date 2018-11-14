@@ -53,7 +53,7 @@
     <select id="listPage" resultMap="PretreatmentRM">
         select * from t_pr_pretreatment
         where state != 'Invalid'
-        order by creationDate desc
+        order by creationTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count};
         </if>
@@ -103,7 +103,7 @@
                 and remarks like "%"#{remarks}"%"
             </if>
         </where>
-        order by creationDate desc
+        order by creationTime desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
@@ -218,12 +218,14 @@
         (id,creationDate,state,remarks,weightTotal,calorificTotal,ashPercentageTotal,
         wetPercentageTotal,volatileNumberTotal,chlorinePercentageTotal,sulfurPercentageTotal,
         phTotal,phosphorusPercentageTotal,fluorinePercentageTotal,distillationProportion,
-        wasteLiquidProportion,sludgeProportion,bulkProportion,crushingProportion,suspensionProportion,nowTime)
+        wasteLiquidProportion,sludgeProportion,bulkProportion,crushingProportion,suspensionProportion,
+        nowTime,creationTime)
         values
         (#{id},NOW(),'NewBuild',#{remarks},#{weightTotal},#{calorificTotal},#{ashPercentageTotal},
         #{wetPercentageTotal},#{volatileNumberTotal},#{chlorinePercentageTotal},#{sulfurPercentageTotal},
         #{phTotal},#{phosphorusPercentageTotal},#{fluorinePercentageTotal},#{distillationProportion},
-        #{wasteLiquidProportion},#{sludgeProportion},#{bulkProportion},#{crushingProportion},#{suspensionProportion},NOW());
+        #{wasteLiquidProportion},#{sludgeProportion},#{bulkProportion},#{crushingProportion},#{suspensionProportion},
+        NOW(),NOW());
         <if test="pretreatmentItemList.size() > 0">
             <foreach collection="pretreatmentItemList" item="pretreatmentItem" index="index">
                 insert into t_pr_pretreatmentitem
