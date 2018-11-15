@@ -218,8 +218,8 @@
                 <div class="pull-left col-md-6">
                     <a class="btn btn-primary btn-xs" href="#" onclick="appointModal();"><span
                             class="glyphicon glyphicon-plus" aria-hidden="true"></span> 预约登记</a>
-                    <a class="btn btn-primary btn-xs" href="sampleInfoRegiterDetail.html"><span
-                            class="glyphicon glyphicon-search" aria-hidden="true"></span> 明细页面</a>
+                    <!--<a class="btn btn-primary btn-xs" href="sampleInfoRegiterDetail.html"><span-->
+                            <!--class="glyphicon glyphicon-search" aria-hidden="true"></span> 明细页面</a>-->
                     <a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose()"><span
                             class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                     <a class="btn btn-primary btn-xs" onclick="exportExcel()"><span
@@ -246,17 +246,17 @@
                 <div class="row">
                     <div class="form-horizontal col-md-4">
                         <div class="form-group">
-                            <label for="search-id" class="col-sm-4 control-label">预约单号</label>
+                            <label for="search-id" class="col-sm-4 control-label">联单编号</label>
                             <div class="col-xs-4">
-                                <input type="text" class="form-control" id="search-id" name="search-companyCode"
+                                <input type="text" class="form-control" id="search-id" name="search-id"
                                        placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="search-companyCode" class="col-sm-4 control-label">公司代码</label>
+                            <label for="search-companyName" class="col-sm-4 control-label">公司名称</label>
                             <div class="col-xs-4">
-                                <input type="text" class="form-control" id="search-companyCode"
-                                       name="search-companyCode" placeholder="" onkeydown="enterSearch()">
+                                <input type="text" class="form-control" id="search-companyName"
+                                       name="search-companyName" placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                         <div class="form-group">
@@ -356,9 +356,11 @@
                                    id="allSel" onclick="allSelect()">
                         </label>
                     </th>
-                    <th class="text-center">预约单号</th>
+                    <th class="text-center" hidden>预约单号</th>
+                    <th class="text-center">联单编号</th>
                     <th class="text-center">产废单位</th>
                     <th class="text-center">危废名称</th>
+                    <th class="text-center">危废代码</th>
                     <th class="text-center">危废形态</th>
                     <th class="text-center">检测项目</th>
                     <th class="text-center">送样人</th>
@@ -375,6 +377,8 @@
                                    aria-label="...">
                         </label>
                     </td>
+                    <td class="text-center" hidden></td>
+                    <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -514,40 +518,43 @@
                                 </div>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="model-id" class="col-sm-4 control-label">预约单号</label>
+                                <label for="model-id" class="col-sm-4 control-label">联单编号</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="model-id"
-                                           name="id" required>
+                                    <input class="form-control" name="wastesList[0].transferId"
+                                           id="wastesList[0].transferId" style="width: 100%">
                                 </div>
                             </div>
                         </div>
                         <table class="table table-bordered" style="width: 95%;table-layout: fixed">
                             <thead>
                             <tr>
-                                <th class="text-center">序号</th>
+                                <!--<th class="text-center">序号</th>-->
+                                <th class="text-center">预约单号</th>
                                 <th class="text-center">危废代码</th>
                                 <th class="text-center">危废名称</th>
                                 <th class="text-center">危废类别</th>
                                 <th class="text-center">危废形态</th>
                                 <th class="text-center" style="width: 30%">检测项目</th>
-                                <th class="text-center">联单编号</th>
+
                             </tr>
                             </thead>
                             <tbody>
                             <tr id="addClone">
-                                <td class="text-center">1</td>
+                                <!--<td class="text-center">1</td>-->
+                                <td class="text-center" ><input type="text" class="form-control" id="model-id"
+                                                                name="id" required></td>
                                 <td class="text-center"><select onchange="autoSetCategory(this)" class="selectpicker form-control"
                                                                 data-live-search="true"
                                                                 data-live-search-placeholder="搜索..."
                                                                 id="wastesList0-wastesCode"
                                                                 name="wastesList[0].wastesCode">
                                 </select></td>
-                                <td class="text-center" ><input class="focus" name="wastesList[0].wastesName"
+                                <td class="text-center" ><input class="form-control" name="wastesList[0].wastesName"
                                                                 id="wastesList[0].wastesName" style="width: 100%"></td>
-                                <td class="text-center" width="10%"><input class="focus" name="modal-wastesHandleCategory"
+                                <td class="text-center" width="10%"><input class="form-control" name="modal-wastesHandleCategory"
                                                                  id="wastesList[0].wastesHandleCategory" style="width: 100%">
                                 </td>
-                                <td class="text-center" width="10%"><select class="focus" name="modal-wastesFormType"
+                                <td class="text-center" width="10%"><select class="form-control" name="modal-wastesFormType"
                                                                  id="wastesList[0].wastesFormType" style="width: 100%">
                                 </select>
                                 </td>
@@ -597,21 +604,19 @@
                                                value="true">热融
                                     </label>
                                 </td>
-                                <td class="text-center" ><input class="focus" name="wastesList[0].transferId"
-                                                                id="wastesList[0].transferId" style="width: 100%"></td>
                             </tr>
-                            <tr id="plusBtn">
-                                <td>
-                                    <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span
-                                            class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-                                </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                            <!--<tr id="plusBtn">-->
+                                <!--<td>-->
+                                    <!--<a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span-->
+                                            <!--class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>-->
+                                <!--</td>-->
+                                <!--<td></td>-->
+                                <!--<td></td>-->
+                                <!--<td></td>-->
+                                <!--<td></td>-->
+                                <!--<td></td>-->
+                                <!--<td></td>-->
+                            <!--</tr>-->
                             </tbody>
                         </table>
                     </div>
@@ -636,8 +641,8 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="form-group col-md-12">
-                                <label for="model3-companyName" class="col-sm-3 control-label">公司名称</label>
-                                <div class="col-sm-9">
+                                <label for="model3-companyName" class="col-sm-2 control-label">公司名称</label>
+                                <div class="col-sm-10">
                                     <select class="selectpicker form-control" data-live-search="true"
                                             data-live-search-placeholder="搜索..." id="model3-companyName"
                                             name="model-companyName">
@@ -654,41 +659,43 @@
                                 </div>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="model3-sendingPerson" class="col-sm-3 control-label">预约单号</label>
+                                <label for="model3-sendingPerson" class="col-sm-3 control-label">联单编号</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="model3-id"
-                                           name="id" readonly >
+                                    <input class="form-control" name="wastes[0].transferId"
+                                           id="wastes[0].transferId" style="width: 100%">
                                 </div>
                             </div>
                         </div>
                         <table class="table table-bordered" style="width: 95%;table-layout: fixed">
                             <thead style="border:none">
                             <tr>
-                                <th class="text-center">序号</th>
+                                <!--<th class="text-center">序号</th>-->
+                                <th class="text-center">预约单号</th>
                                 <th class="text-center">危废代码</th>
                                 <th class="text-center">危废名称</th>
                                 <th class="text-center">危废类别</th>
                                 <th class="text-center">危废形态</th>
                                 <th class="text-center" style="width: 30%">检测项目</th>
-                                <th class="text-center">联单编号</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr id="addClone3">
-                                <td class="text-center">1</td>
+                                <!--<td class="text-center">1</td>-->
+                                <td class="text-center"><input type="text" class="focus" id="model3-id"
+                                                               name="id" readonly ></td>
                                 <td class="text-center" width="20%"><select class="selectpicker form-control"
                                                                 data-live-search="true"
                                                                 data-live-search-placeholder="搜索..."
                                                                 id="wastes0-wastesCode"
                                                                 name="wastes[0].wastesCode">
                                 </select></td>
-                                <td class="text-center"><input class="focus" name="wastes[0].wastesName"
+                                <td class="text-center"><input class="form-control" name="wastes[0].wastesName"
                                                                id="wastes[0].wastesName" style="width: 100%"></td>
-                                <td class="text-center" width="10%"><input class="focus" name="modal-wastesHandleCategory"
+                                <td class="text-center" width="10%"><input class="form-control" name="modal-wastesHandleCategory"
                                                                 id="wastes[0].wastesHandleCategory" style="width: 100%">
                                 </td>
                                 <td class="text-center" width="10%"><select name="modal-wastesFormType"
-                                                                id="wastes[0].wastesFormType" class="focus" style="width: 100%">
+                                                                id="wastes[0].wastesFormType" class="form-control" style="width: 100%">
                                 </select></td>
                                 <td class="text-center" width="40%">
                                     <label>
@@ -736,21 +743,19 @@
                                                value="true">热融
                                     </label>
                                 </td>
-                                <td class="text-center"><input class="focus" name="wastes[0].transferId"
-                                                               id="wastes[0].transferId" style="width: 100%"></td>
                             </tr>
-                            <tr id="addBtn3">
-                                <td>
-                                    <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span
-                                            class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-                                </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                            <!--<tr id="addBtn3">-->
+                                <!--<td>-->
+                                    <!--<a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span-->
+                                            <!--class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>-->
+                                <!--</td>-->
+                                <!--<td></td>-->
+                                <!--<td></td>-->
+                                <!--<td></td>-->
+                                <!--<td></td>-->
+                                <!--<td></td>-->
+                                <!--<td></td>-->
+                            <!--</tr>-->
                             </tbody>
                         </table>
                     </div>
