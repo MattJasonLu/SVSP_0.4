@@ -255,4 +255,47 @@
             and t_pl_material.receiptNumber in(select t_pl_procurement.receiptNumber from t_pl_procurement where t_pl_procurement.state='Submitted' and t_pl_procurement.procurementCategory=1)
         </where>
     </select>
+    
+    <!--在采购计划主表总查询前缀一样的单号数目-->
+    <select id="getPrefixCount" resultType="int" parameterType="String">
+        select  count(*) from t_pr_procumentplan where procurementPlanId like "%"#{prefix}"%"
+    </select>
+
+    <!--添加采购计划单主表-->
+    <insert id="addProcurementPlan" parameterType="ProcurementPlan">
+        insert into t_pr_procumentplan (procurementPlanId, createName, createDate, adjustName, adjustDate, approvalName, checkState, nowTime) values
+      (#{procurementPlanId},#{createName},#{createDate},#{adjustName},#{adjustDate},#{approvalName},'ToSubmit',NOW());
+    </insert>
+
+<!--根据主键查出申购部门-->
+    <select id="getApplyDepartmentByReceiptNumber" parameterType="String" resultType="String">
+        select applyDepartment from t_pl_procurement where receiptNumber=#{receiptNumber}
+    </select>
+
+    <!--更新采购申请的状态为生效中-->
+    <update id="updateProcurementState" parameterType="String">
+        update t_pl_procurement set state='Disabled' where receiptNumber=#{receiptNumber};
+    </update>
+
+    <!--添加采购单明细-->
+    <insert id="addProcurementPlanItem" parameterType="procurementPlanItem">
+        insert into t_pr_procumentplanitem(procurementPlanId, category, suppliesName, specifications, proposer, demandQuantity, unit, price, priceTotal, remarks) values
+     (#{procurementPlanId},#{category},#{suppliesName},#{specifications},#{proposer},#{demandQuantity},#{unit},#{price},#{priceTotal},#{remarks});
+
+</insert>
+
+    <resultMap id="ProcurementPlanRM" type="ProcurementPlan">
+        <result  property="procurementPlanId" column="procurementPlanId"></result>
+        <collection property="procurementPlanItemList" column="procurementPlanId" select="getProcurementPlanItemList">
+        </collection>
+    </resultMap>
+    <select id="getProcurementPlanItemList" resultType="ProcurementPlanItem">
+        select  *from t_pr_procumentplanitem where procurementPlanId=#{procurementPlanId}
+    </select>
+    <select id="getProcurementPlanList" resultMap="ProcurementPlanRM">
+        select * from t_pr_procumentplan order by createDate desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
 </mapper>

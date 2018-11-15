@@ -1,8 +1,7 @@
 package com.jdlink.mapper;
 
 import com.jdlink.domain.Page;
-import com.jdlink.domain.Produce.Material;
-import com.jdlink.domain.Produce.Procurement;
+import com.jdlink.domain.Produce.*;
 
 import java.util.Date;
 import java.util.List;
@@ -31,4 +30,10 @@ public interface ProcurementMapper {
     void updateMaterial(Material material);
      List<Material> getProcurement();
     List<Material>  searchNewProcurementPlan(Material material);
+    int getPrefixCount(String prefix);
+    void addProcurementPlan(ProcurementPlan procurementPlan);
+    String getApplyDepartmentByReceiptNumber(String id);
+    void addProcurementPlanItem(ProcurementPlanItem procurementPlanItem);
+    List<ProcurementPlan>getProcurementPlanList(Page page);
+    void updateProcurementState(String id);
 }

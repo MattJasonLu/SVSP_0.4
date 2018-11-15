@@ -113,11 +113,14 @@
         <div class="row">
             <div>
                 <!--操作按钮-->
-                <div class="pull-left col-md-6"></div>
+                <!--查询框-->
             </div>
         </div>
         <div class="panel panel-default" id="senior">
             <div class="panel-body">
+           <span class="input-group-btn">
+                                         <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
+           </span>
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group" >
@@ -138,6 +141,9 @@
         </div>
         <div style="height:500px; overflow-y:scroll; ">
             <table class="table table-bordered" id="J_tab_fam">
+                <input id="procurementPlanId" class="hidden">
+                <input id="createName" class="hidden">
+                <input id="createDate" class="hidden">
                 <thead>
                 <tr>
                     <th class="text-center">
@@ -170,12 +176,13 @@
                     <td class="text-center model-wastesCode"></td>
                     <td class="text-center model-wastesCode"></td>
                     <td class="text-right modal-weight"></td>
+                    <td class="text-right modal-weight hidden"></td>
                 </tr>
                 </tbody>
             </table>
         </div>
         <div class="row text-center">
-            <a class="btn btn-primary" onclick="batching(this);">确认</a>
+            <a class="btn btn-primary" onclick="add(this);">添加采购计划单</a>
         </div>
         <br>
 
@@ -192,18 +199,6 @@
     }
     .pagination > li {
         display: inline;
-    }
-    .inputText { float:left;
-    }
-    .showLi{
-        float: left;
-        height: 38px;
-        line-height: 38px;
-    }
-    .selectLi{
-        float: left;
-        height: 38px;
-        line-height: 38px;
     }
 </style>
 </html>

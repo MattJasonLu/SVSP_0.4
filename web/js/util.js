@@ -440,3 +440,71 @@ function setNumber2Line(number) {
         return "--";
     else return number;
 }
+
+/**
+ * 单位转化为枚举
+ * **/
+function getFormTypeByFromStr(str) {
+    var name;
+    switch (str){
+        case ('公斤'):
+            name='Kg'
+            break;
+        case ('吨'):
+            name='T'
+            break;
+        case ('斤'):
+            name='Catty'
+            break;
+        case ('套'):
+            name='Set'
+            break;
+        case ('台'):
+            name='Platform'
+            break;
+        case ('只'):
+            name='Only'
+            break;
+        case ('根'):
+            name='Root'
+            break;
+        case ('盒'):
+            name='Box'
+            break;
+            case ('箱'):
+        name='Chest'
+        break;
+        case ('张'):
+        name='Spread'
+        break;
+        case ('把'):
+            name='Hold'
+            break;
+        case ('米'):
+            name='Metre'
+            break;
+        case ('桶'):
+            name='Bucket'
+            break;
+        case ('包'):
+            name='Package'
+            break;
+        case ('个'):
+            name='Individual'
+            break;
+        case ('卷'):
+            name='Volume'
+            break;
+        case ('平方'):
+            name='Square'
+            break;
+        case ('盘'):
+            name='Disc'
+            break;
+    }
+
+   return name;
+}
+
+
+
