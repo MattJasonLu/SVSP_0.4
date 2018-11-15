@@ -42,4 +42,9 @@ public class ReceiveSampleAnalysisServiceImpl implements ReceiveSampleAnalysisSe
         String newId = RandomUtil.getRandomEightNumber();
         receiveSampleAnalysisMapper.setState(id, checkState, newId);
     }
+
+    @Override
+    public void update(ReceiveSampleAnalysis receiveSampleAnalysis) {
+        receiveSampleAnalysisMapper.update(receiveSampleAnalysis);
+    }
 }

@@ -379,7 +379,7 @@ function setSampleList(result) {
                     if (obj.isPH === true) list.push("PH");
                     if (obj.isAsh === true) list.push("灰");
                     if (obj.isWater === true) list.push("水");
-                    if (obj.isHeat === true) list.push("热");
+                    if (obj.isHeat === true) list.push("热值");
                     if (obj.isSulfur === true) list.push("硫");
                     if (obj.isChlorine === true) list.push("氯");
                     if (obj.isFluorine === true) list.push("氟");
@@ -495,7 +495,7 @@ function basicItems(data) {
     if (data.isPH === true) list.push("PH");
     if (data.isAsh === true) list.push("灰");
     if (data.isWater === true) list.push("水");
-    if (data.isHeat === true) list.push("热");
+    if (data.isHeat === true) list.push("热值");
     if (data.isSulfur === true) list.push("硫");
     if (data.isChlorine === true) list.push("氯");
     if (data.isFluorine === true) list.push("氟");
@@ -943,7 +943,8 @@ function addNextLine() {
  * 修改信息功能
  */
 function adjustSample(menu) {
-    if ($(menu).parent().prev().text() == "已预约") {
+    var state = $(menu).parent().prev().text();
+    if (state == "已预约") {
         num = 0;
         setSelectList();        // 设置危废代码和公司名下拉框数据
         $(".newLine").remove();
@@ -972,8 +973,8 @@ function adjustSample(menu) {
                             $("input[name='wastes[" + $i + "].wastesName']").val(data.wastesList[i].name);
                             $("input[name='wastes[" + $i + "].transferId']").val(data.wastesList[i].transferId);
                             if (data.wastesList[i].formType != null)
-                                $("input[id='wastes[" + $i + "].wastesFormType']").val(data.wastesList[i].formType.index);
-                            $("select[id='wastes[" + $i + "].wastesHandleCategory']").val(data.wastesList[i].category);
+                                $("select[id='wastes[" + $i + "].wastesFormType']").val(data.wastesList[i].formType.index);
+                            $("input[id='wastes[" + $i + "].wastesHandleCategory']").val(data.wastesList[i].category);
                             $("input[name='wastes[" + $i + "].isPH']").prop('checked', data.wastesList[i].isPH);
                             $("input[name='wastes[" + $i + "].isAsh']").prop('checked', data.wastesList[i].isAsh);
                             $("input[name='wastes[" + $i + "].isWater']").prop('checked', data.wastesList[i].isWater);
@@ -999,8 +1000,14 @@ function adjustSample(menu) {
                 alert("服务器异常!");
             }
         });
-    } else {
-        alert("单据不可修改");
+    }else if(state == '已作废'){
+        alert("单据已作废，不可修改！");
+    }else if(state == '已收样'){
+        alert("单据已收样，不可修改！");
+    }else if(state == '已拒收'){
+        alert("单据已拒收，不可修改！");
+    }else {
+        alert("单据不可修改！");
     }
 }
 
@@ -1063,26 +1070,28 @@ function updateAppointBySampleId() {
         var $i = i;
         if (data.wastesList[i] != null) {
             wastes.id = data.wastesList[i].id;
-            //  wastes.ph = 1;
+            //wastes.ph = 1;
+            wastes.unit = 'yes'; // 危废存在
         } else {
             wastes.id = wastesId;
             // wastes.ph = 0;
             var num1 = parseInt(wastesId) + 1;
             wastesId = num1 + "";
+            wastes.unit = 'no'; // 危废存在
         }
         wastes.code = $("select[name='wastes[" + $i + "].wastesCode']").find("option:selected").text();
         wastes.name = $("input[name='wastes[" + $i + "].wastesName']").val();
         wastes.transferId = $("input[name='wastes[" + $i + "].transferId']").val();
-        var formType = $("select[id='wastes[" + $i + "].wastesFormType']").find("option:selected").val();
+        var formType = $("select[id='wastes[" + $i + "].wastesFormType']").val();
         switch (parseInt(formType)) {
-            case 4 :
-                formType = "HalfSolid";
-                break;
             case 2 :
                 formType = "Liquid";
                 break;
             case 3 :
                 formType = "Solid";
+                break;
+            case 4 :
+                formType = "HalfSolid";
                 break;
             case 5 :
                 formType = "Solid1AndHalfSolid";
@@ -1107,7 +1116,7 @@ function updateAppointBySampleId() {
         wastes.isPhosphorus = $("input[name='wastes[" + $i + "].isP']").prop('checked');
         wastes.isFlashPoint = $("input[name='wastes[" + $i + "].isFlashPoint']").prop('checked');
         wastes.isViscosity = $("input[name='wastes[" + $i + "].isViscosity']").prop('checked');
-        // wastes.isHotMelt = $("input[name='wastes[" + $i + "].isHotMelt']").prop('checked');
+        wastes.isHotMelt = $("input[name='wastes[" + $i + "].isHotMelt']").prop('checked');
         sampleInformation.wastesList.push(wastes);
     }
     console.log("要更新的数据为:");
@@ -1198,6 +1207,7 @@ function searchSampleInfo() {
             isPhosphorus: $("#isP1").prop("checked"),
             isFlashPoint: $("#isFlashPoint1").prop("checked"),
             isViscosity: $("#isViscosity1").prop("checked"),
+            isHotMelt: $("#isHotMelt1").prop("checked"),
             page: page
         };
         console.log(data);
@@ -1239,6 +1249,7 @@ function searchSampleInfo() {
                 break;
             case "热":
                 var isHeat = true;
+                var isHotMelt = true;
                 keywords = "";
                 break;
             case "硫":
@@ -1255,6 +1266,13 @@ function searchSampleInfo() {
                 break;
             case "磷":
                 var isPhosphorus = true;
+                keywords = "";
+                break;
+            case "热融":
+                var isHotMelt = true;
+                keywords = "";
+            case "热熔":
+                var isHotMelt = true;
                 keywords = "";
                 break;
             case "已预约":
@@ -1312,7 +1330,8 @@ function searchSampleInfo() {
             isSulfur: isSulfur,
             isChlorine: isChlorine,
             isFluorine: isFluorine,
-            isPhosphorus: isPhosphorus
+            isPhosphorus: isPhosphorus,
+            isHotMelt : isHotMelt
         }
     }
     $.ajax({
@@ -1403,14 +1422,23 @@ function addAppoint() {
         wastes.transferId = $("input[name='wastesList[" + $i + "].transferId']").val();
         var formType = $("select[id='wastesList[" + $i + "].wastesFormType']").find("option:selected").val();
         switch (parseInt(formType)) {
+            case 2 :
+                formType = "Liquid";
+                break;
+            case 3 :
+                formType = "Solid";
+                break;
             case 4 :
                 formType = "HalfSolid";
                 break;
             case 5 :
-                formType = "Liquid1";
+                formType = "Solid1AndHalfSolid";
                 break;
             case 6 :
-                formType = "Solid1";
+                formType = "HalfSolidAndLiquid";
+                break;
+            case 7 :
+                formType = "Solid1AndLiquid";
                 break;
         }
         wastes.formType = formType;
@@ -1460,7 +1488,8 @@ function addAppoint() {
  * 删除预约单----->改作废
  */
 function deleteSample(menu) {
-    if (1) {
+    var state = $(menu).parent().prev().text();
+    if (state == "已预约" || state == "已拒收") {
         sampleId = getSampleIdByMenu(menu);
         var msg = "是否作废该条记录？";
         if (confirm(msg) == true) {
@@ -1486,7 +1515,11 @@ function deleteSample(menu) {
                 }
             });
         }
-    } else {
+    } else if(state == "已收样"){
+        alert("单据已收样，不可作废！");
+    }else if(state == "已作废"){
+        alert("单据已作废！");
+    }else {
         alert("单据不可作废！");
     }
 }
@@ -1621,7 +1654,6 @@ function autoSetCategory(item) {
     if (code != "" || code != null) {
         code = "HW" + code.substring(code.length, code.length - 2); //截取最后两位
         console.log("code:" + code);
-        console.log($(item).parent().parent().nextAll().find("input[name$='wastesHandleCategory']"));
         $(item).parent().parent().nextAll().find("input[name$='wastesHandleCategory']").val(code);  // 以wastesHandleCategory结尾的
     }
 }

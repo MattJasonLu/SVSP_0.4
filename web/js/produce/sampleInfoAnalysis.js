@@ -343,17 +343,17 @@ function setDataList(result) {
         clonedTr.find("td[name='wastesCode']").text(obj.wastesCode);
         if(obj.formType != null)
         clonedTr.find("td[name='formType']").text(obj.formType.name);
-        clonedTr.find("td[name='PH']").text(parseFloat(obj.PH).toFixed(2));
-        clonedTr.find("td[name='ash']").text(parseFloat(obj.ash).toFixed(2));
-        clonedTr.find("td[name='water']").text(parseFloat(obj.water).toFixed(2));
-        clonedTr.find("td[name='heat']").text(parseFloat(obj.heat).toFixed(2));
-        clonedTr.find("td[name='sulfur']").text(parseFloat(obj.sulfur).toFixed(2));
-        clonedTr.find("td[name='chlorine']").text(parseFloat(obj.chlorine).toFixed(2));
-        clonedTr.find("td[name='fluorine']").text(parseFloat(obj.fluorine).toFixed(2));
-        clonedTr.find("td[name='phosphorus']").text(parseFloat(obj.phosphorus).toFixed(2));
-        clonedTr.find("td[name='flashPoint']").text(parseFloat(obj.flashPoint).toFixed(2));
-        clonedTr.find("td[name='viscosity']").text(parseFloat(obj.viscosity).toFixed(2));
-        clonedTr.find("td[name='hotMelt']").text(obj.hotMelt);
+        clonedTr.find("td[name='PH']").text(setNumber2Line(parseFloat(obj.PH).toFixed(2)));
+        clonedTr.find("td[name='ash']").text(setNumber2Line(parseFloat(obj.ash).toFixed(2)));
+        clonedTr.find("td[name='water']").text(setNumber2Line(parseFloat(obj.water).toFixed(2)));
+        clonedTr.find("td[name='heat']").text(setNumber2Line(parseFloat(obj.heat).toFixed(2)));
+        clonedTr.find("td[name='sulfur']").text(setNumber2Line(parseFloat(obj.sulfur).toFixed(2)));
+        clonedTr.find("td[name='chlorine']").text(setNumber2Line(parseFloat(obj.chlorine).toFixed(2)));
+        clonedTr.find("td[name='fluorine']").text(setNumber2Line(parseFloat(obj.fluorine).toFixed(2)));
+        clonedTr.find("td[name='phosphorus']").text(setNumber2Line(parseFloat(obj.phosphorus).toFixed(2)));
+        clonedTr.find("td[name='flashPoint']").text(setNumber2Line(parseFloat(obj.flashPoint).toFixed(2)));
+        clonedTr.find("td[name='viscosity']").text(setNumber2Line(obj.viscosity));
+        clonedTr.find("td[name='hotMelt']").text(setNumber2Line(obj.hotMelt));
         clonedTr.find("td[name='signer']").text(obj.signer);
         clonedTr.find("td[name='remark']").text(obj.remark);
         // 把克隆好的tr追加到原来的tr前面
@@ -767,17 +767,17 @@ function showEditModal(e) {
                 $("#editWastesCode").selectpicker('val', data.wastesCode);
                 if (data.formType != null)
                     $("#editFormType").val(data.formType.index-1);
-                $("#editPH").val(parseFloat(data.PH).toFixed(2));
-                $("#editAsh").val(parseFloat(data.ash).toFixed(2));
-                $("#editWater").val(parseFloat(data.water).toFixed(2));
-                $("#editHeat").val(parseFloat(data.heat).toFixed(2));
-                $("#editFluorine").val(parseFloat(data.fluorine).toFixed(2));
-                $("#editChlorine").val(parseFloat(data.chlorine).toFixed(2));
-                $("#editSulfur").val(parseFloat(data.sulfur).toFixed(2));
-                $("#editPhosphorus").val(parseFloat(data.phosphorus).toFixed(2));
-                $("#editFlashPoint").val(parseFloat(data.flashPoint).toFixed(2));
-                $("#editViscosity").val(parseFloat(data.viscosity).toFixed(2));
-                $("#editHotMelt").val(data.hotMelt);
+                $("#editPH").val(setNumber2Line(parseFloat(data.PH).toFixed(2)));
+                $("#editAsh").val(setNumber2Line(parseFloat(data.ash).toFixed(2)));
+                $("#editWater").val(setNumber2Line(parseFloat(data.water).toFixed(2)));
+                $("#editHeat").val(setNumber2Line(parseFloat(data.heat).toFixed(2)));
+                $("#editFluorine").val(setNumber2Line(parseFloat(data.fluorine).toFixed(2)));
+                $("#editChlorine").val(setNumber2Line(parseFloat(data.chlorine).toFixed(2)));
+                $("#editSulfur").val(setNumber2Line(parseFloat(data.sulfur).toFixed(2)));
+                $("#editPhosphorus").val(setNumber2Line(parseFloat(data.phosphorus).toFixed(2)));
+                $("#editFlashPoint").val(setNumber2Line(parseFloat(data.flashPoint).toFixed(2)));
+                $("#editViscosity").val(setNumber2Line(data.viscosity));
+                $("#editHotMelt").val(setNumber2Line(data.hotMelt));
                 $("#editRemark").val(data.remark);
             } else {
                 alert(result.message);
@@ -1142,7 +1142,7 @@ function viewData(e) {
                 $("#viewSulfur").text(parseFloat(data.sulfur).toFixed(2));
                 $("#viewPhosphorus").text(parseFloat(data.phosphorus).toFixed(2));
                 $("#viewFlashPoint").text(parseFloat(data.flashPoint).toFixed(2));
-                $("#viewViscosity").text(parseFloat(data.viscosity).toFixed(2));
+                $("#viewViscosity").text(data.viscosity);
                 $("#viewHotMelt").text(data.hotMelt);
                 $("#viewRemark").text(data.remark);
             } else {

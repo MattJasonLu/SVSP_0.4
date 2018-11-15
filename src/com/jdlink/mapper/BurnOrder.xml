@@ -49,7 +49,7 @@
     <select id="listPage" resultMap="BurnOrderRM">
         select * from t_pr_burnorder
         where state != 'Invalid'
-        order by creationDate desc
+        order by creationTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -101,7 +101,7 @@
                 and remarks like "%"#{remarks}"%"
             </if>
         </where>
-        order by creationDate desc
+        order by creationTime desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count};
         </if>
@@ -203,14 +203,14 @@
         (id,pretreatmentId,state,creationDate,nowTime,remarks,weightTotal,calorificTotal,ashPercentageTotal,
         wetPercentageTotal,volatileNumberTotal,chlorinePercentageTotal,sulfurPercentageTotal,
         phTotal,phosphorusPercentageTotal,fluorinePercentageTotal,distillationProportion,
-        wasteLiquidProportion,sludgeProportion,bulkProportion,crushingProportion,suspensionProportion)
+        wasteLiquidProportion,sludgeProportion,bulkProportion,crushingProportion,suspensionProportion,creationTime)
         values
         (#{id},#{pretreatmentId},'NewBuild',NOW(),NOW(),#{remarks},#{weightTotal},#{calorificTotal},
         #{ashPercentageTotal},#{wetPercentageTotal},#{volatileNumberTotal},
         #{chlorinePercentageTotal},#{sulfurPercentageTotal},#{phTotal},
         #{phosphorusPercentageTotal},#{fluorinePercentageTotal},#{distillationProportion},
         #{wasteLiquidProportion},#{sludgeProportion},#{bulkProportion},#{crushingProportion},
-        #{suspensionProportion});
+        #{suspensionProportion},NOW());
         <if test="pretreatmentItemList.size() > 0">
             <foreach collection="pretreatmentItemList" item="pretreatmentItem" index="index">
                 insert into t_pr_burnorderitem

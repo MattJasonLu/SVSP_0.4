@@ -35,14 +35,14 @@
     <select id="listPage" resultMap="PoundsRM">
         select * from t_pr_pounds
         where state != 'Invalid'
-        order by id desc
+        order by creationTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
     </select>
 
     <select id="list" resultMap="PoundsRM">
-        select * from t_pr_pounds order by id desc;
+        select * from t_pr_pounds order by creationTime desc;
     </select>
 
     <select id="getClientIdByName" parameterType="String" resultType="String">
@@ -100,7 +100,7 @@
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
         </where>
-        order by id desc
+        order by creationTime desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
@@ -189,11 +189,12 @@
     <insert id="add" parameterType="Pounds">
         insert into t_pr_pounds
         (id,transferId,founder,creationDate,enterLicencePlate,goodsName,grossWeight,netWeight,tare,
-        deliveryCompanyId,receiveCompanyId,businessType,enterTime,outTime,driver,weighman,remarks,nowTime,state,wastesCode)
+        deliveryCompanyId,receiveCompanyId,businessType,enterTime,outTime,driver,weighman,remarks,
+        nowTime,state,wastesCode,creationTime)
         values
         (#{id},#{transferId},#{founder},#{creationDate},#{outLicencePlate},
         #{goodsName},#{grossWeight},#{netWeight},#{tare},#{deliveryCompany.clientId},#{receiveCompany.clientId},
-        #{businessType},#{enterTime},#{outTime},#{driver},#{weighman},#{remarks},NOW(),'Confirm',#{wastesCode});
+        #{businessType},#{enterTime},#{outTime},#{driver},#{weighman},#{remarks},NOW(),'Confirm',#{wastesCode},NOW());
 
         update t_pl_inboundplanorder
         set poundsCount = #{netWeight}

@@ -394,6 +394,7 @@ function setSampleList(result) {
                     if (obj.isPhosphorus === true) list.push("磷");
                     if (obj.isFlashPoint === true) list.push("闪点");
                     if (obj.isViscosity === true) list.push("黏度");
+                    if (obj.isHotMelt === true) list.push("热融");
                     var flag = false;
                     var r = "";
                     //遍历分隔字符串,以逗号隔开
@@ -481,7 +482,6 @@ function appointModal() {
     // 显示框体
     setSelectList();
     $('#appointModal').modal('show');
-
 }
 
 /**
@@ -495,7 +495,7 @@ function basicItems(data) {
     if (data.isPH === true) list.push("PH");
     if (data.isAsh === true) list.push("灰");
     if (data.isWater === true) list.push("水");
-    if (data.isHeat === true) list.push("热");
+    if (data.isHeat === true) list.push("热值");
     if (data.isSulfur === true) list.push("硫");
     if (data.isChlorine === true) list.push("氯");
     if (data.isFluorine === true) list.push("氟");
@@ -943,63 +943,70 @@ function addNextLine() {
  * 修改信息功能
  */
 function adjustSample(menu) {
-    if ($(menu).parent().prev().prev().text() == "已预约") {
-    num = 0;
-    setSelectList();        // 设置危废代码和公司名下拉框数据
-    $(".newLine").remove();
-    sampleId = getSampleIdByMenu(menu);
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "getSampleInformationWareHouse",                 // url
-        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: {
-            'sampleId': sampleId
-        },
-        dataType: "json",
-        success: function (result) {
-            console.log(result);
-            if (result != undefined) {
-                var data = eval(result.data);
-                if (result.status == "success") {
-                    $("#model3-companyName").selectpicker('val', data.companyCode);
-                    $("#model3-sendingPerson").val(data.sendingPerson);
-                    $("#model3-id").val(data.id);
-                    num = 1; // 重新计数
-                    for (var i = 0; i < data.wastesList.length; i++) {
-                        if (i > 0) addNewLine(null);
-                        var $i = i;
-                        $("select[name='wastes[" + $i + "].wastesCode']").selectpicker('val', data.wastesList[i].code);
-                        $("input[name='wastes[" + $i + "].wastesName']").val(data.wastesList[i].name);
-                        $("input[name='wastes[" + $i + "].transferId']").val(data.wastesList[i].transferId);
-                        if (data.wastesList[i].formType != null)
-                            $("input[id='wastes[" + $i + "].wastesFormType']").val(data.wastesList[i].formType.index);
-                        $("select[id='wastes[" + $i + "].wastesHandleCategory']").val(data.wastesList[i].category);
-                        $("input[name='wastes[" + $i + "].isPH']").prop('checked', data.wastesList[i].isPH);
-                        $("input[name='wastes[" + $i + "].isAsh']").prop('checked', data.wastesList[i].isAsh);
-                        $("input[name='wastes[" + $i + "].isWater']").prop('checked', data.wastesList[i].isWater);
-                        $("input[name='wastes[" + $i + "].isHeat']").prop('checked', data.wastesList[i].isHeat);
-                        $("input[name='wastes[" + $i + "].isS']").prop('checked', data.wastesList[i].isSulfur);
-                        $("input[name='wastes[" + $i + "].isCl']").prop('checked', data.wastesList[i].isChlorine);
-                        $("input[name='wastes[" + $i + "].isF']").prop('checked', data.wastesList[i].isFluorine);
-                        $("input[name='wastes[" + $i + "].isP']").prop('checked', data.wastesList[i].isPhosphorus);
-                        $("input[name='wastes[" + $i + "].isFlashPoint']").prop('checked', data.wastesList[i].isFlashPoint);
-                        $("input[name='wastes[" + $i + "].isViscosity']").prop('checked', data.wastesList[i].isViscosity);
-                        $("input[name='wastes[" + $i + "].isHotMelt']").prop('checked', data.wastesList[i].isHotMelt);
+    var state = $(menu).parent().prev().text();
+    if (state == "已预约") {
+        num = 0;
+        setSelectList();        // 设置危废代码和公司名下拉框数据
+        $(".newLine").remove();
+        sampleId = getSampleIdByMenu(menu);
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getSampleInformationWareHouse",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'sampleId': sampleId
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result.data);
+                    if (result.status == "success") {
+                        $("#model3-companyName").selectpicker('val', data.companyCode);
+                        $("#model3-sendingPerson").val(data.sendingPerson);
+                        $("#model3-id").val(data.id);
+                        num = 1; // 重新计数
+                        for (var i = 0; i < data.wastesList.length; i++) {
+                            if (i > 0) addNewLine(null);
+                            var $i = i;
+                            $("select[name='wastes[" + $i + "].wastesCode']").selectpicker('val', data.wastesList[i].code);
+                            $("input[name='wastes[" + $i + "].wastesName']").val(data.wastesList[i].name);
+                            $("input[name='wastes[" + $i + "].transferId']").val(data.wastesList[i].transferId);
+                            if (data.wastesList[i].formType != null)
+                                $("select[id='wastes[" + $i + "].wastesFormType']").val(data.wastesList[i].formType.index);
+                            $("input[id='wastes[" + $i + "].wastesHandleCategory']").val(data.wastesList[i].category);
+                            $("input[name='wastes[" + $i + "].isPH']").prop('checked', data.wastesList[i].isPH);
+                            $("input[name='wastes[" + $i + "].isAsh']").prop('checked', data.wastesList[i].isAsh);
+                            $("input[name='wastes[" + $i + "].isWater']").prop('checked', data.wastesList[i].isWater);
+                            $("input[name='wastes[" + $i + "].isHeat']").prop('checked', data.wastesList[i].isHeat);
+                            $("input[name='wastes[" + $i + "].isS']").prop('checked', data.wastesList[i].isSulfur);
+                            $("input[name='wastes[" + $i + "].isCl']").prop('checked', data.wastesList[i].isChlorine);
+                            $("input[name='wastes[" + $i + "].isF']").prop('checked', data.wastesList[i].isFluorine);
+                            $("input[name='wastes[" + $i + "].isP']").prop('checked', data.wastesList[i].isPhosphorus);
+                            $("input[name='wastes[" + $i + "].isFlashPoint']").prop('checked', data.wastesList[i].isFlashPoint);
+                            $("input[name='wastes[" + $i + "].isViscosity']").prop('checked', data.wastesList[i].isViscosity);
+                            $("input[name='wastes[" + $i + "].isHotMelt']").prop('checked', data.wastesList[i].isHotMelt);
+                        }
+                        // 显示框体
+                        $('#adjustModal').modal('show');
+                    } else {
+                        alert(data.message);
+                        console.log(data.exception);
                     }
-                    // 显示框体
-                    $('#adjustModal').modal('show');
-                } else {
-                    alert(data.message);
-                    console.log(data.exception);
                 }
+            },
+            error: function (result) {
+                console.dir(result);
+                alert("服务器异常!");
             }
-        },
-        error: function (result) {
-            console.dir(result);
-            alert("服务器异常!");
-        }
-    });
-    } else {
+        });
+    }else if(state == '已作废'){
+        alert("单据已作废，不可修改！");
+    }else if(state == '已收样'){
+        alert("单据已收样，不可修改！");
+    }else if(state == '已拒收'){
+        alert("单据已拒收，不可修改！");
+    }else {
         alert("单据不可修改！");
     }
 }
@@ -1009,9 +1016,9 @@ function adjustSample(menu) {
  */
 function updateAppointBySampleId() {
     var sampleInformation = {};
-    if($("#model3-id").val() != null || $("#model-id").val() == ""){
+    if ($("#model3-id").val() != null || $("#model-id").val() == "") {
         sampleInformation.id = $("#model3-id").val();
-    }else {
+    } else {
         sampleInformation.id = sampleId;
     }
     sampleInformation.companyName = $("#model3-companyName").find("option:selected").text();
@@ -1063,26 +1070,28 @@ function updateAppointBySampleId() {
         var $i = i;
         if (data.wastesList[i] != null) {
             wastes.id = data.wastesList[i].id;
-            wastes.unit = 'yes';
+            //wastes.ph = 1;
+            wastes.unit = 'yes'; // 危废存在
         } else {
             wastes.id = wastesId;
-            wastes.unit = 'no';
+            // wastes.ph = 0;
             var num1 = parseInt(wastesId) + 1;
             wastesId = num1 + "";
+            wastes.unit = 'no'; // 危废存在
         }
         wastes.code = $("select[name='wastes[" + $i + "].wastesCode']").find("option:selected").text();
         wastes.name = $("input[name='wastes[" + $i + "].wastesName']").val();
         wastes.transferId = $("input[name='wastes[" + $i + "].transferId']").val();
-        var formType = $("select[id='wastes[" + $i + "].wastesFormType']").find("option:selected").val();
-        switch(parseInt(formType)){
-            case 4 :
-                formType = "HalfSolid";
-                break;
+        var formType = $("select[id='wastes[" + $i + "].wastesFormType']").val();
+        switch (parseInt(formType)) {
             case 2 :
                 formType = "Liquid";
                 break;
             case 3 :
                 formType = "Solid";
+                break;
+            case 4 :
+                formType = "HalfSolid";
                 break;
             case 5 :
                 formType = "Solid1AndHalfSolid";
@@ -1199,6 +1208,7 @@ function searchSampleInfo() {
             isPhosphorus: $("#isP1").prop("checked"),
             isFlashPoint: $("#isFlashPoint1").prop("checked"),
             isViscosity: $("#isViscosity1").prop("checked"),
+            isHotMelt : $("#isHotMelt1").prop("checked"),
             page: page
         };
         console.log(data);
@@ -1240,6 +1250,7 @@ function searchSampleInfo() {
                 break;
             case "热":
                 var isHeat = true;
+                var isHotMelt = true;
                 keywords = "";
                 break;
             case "硫":
@@ -1256,6 +1267,14 @@ function searchSampleInfo() {
                 break;
             case "磷":
                 var isPhosphorus = true;
+                keywords = "";
+                break;
+            case "热融":
+                var isHotMelt = true;
+                keywords = "";
+                break;
+            case "热熔":
+                var isHotMelt = true;
                 keywords = "";
                 break;
             case "已预约":
@@ -1313,7 +1332,8 @@ function searchSampleInfo() {
             isSulfur: isSulfur,
             isChlorine: isChlorine,
             isFluorine: isFluorine,
-            isPhosphorus: isPhosphorus
+            isPhosphorus: isPhosphorus,
+            isHotMelt : isHotMelt
         }
     }
     $.ajax({
@@ -1345,7 +1365,7 @@ function searchSampleInfo() {
 function addAppoint() {
     var sampleInformation = {};
     var companyCode = $("#model-companyName").val();   // 获取公司代码
-    if ($("#model-id").val() == null || $("#model-id").val() == ""){
+    if ($("#model-id").val() == null || $("#model-id").val() == "") {
         $.ajax({
             type: "POST",                            // 方法类型
             url: "getCurrentSampleInformationWareHouseId",                 // url
@@ -1363,7 +1383,7 @@ function addAppoint() {
                 console.log(result);
             }
         });
-    }else{
+    } else {
         sampleInformation.id = $("#model-id").val();
     }
     sampleInformation.companyName = $("#model-companyName").find("option:selected").text();
@@ -1403,10 +1423,25 @@ function addAppoint() {
         wastes.name = $("input[name='wastesList[" + $i + "].wastesName']").val();
         wastes.transferId = $("input[name='wastesList[" + $i + "].transferId']").val();
         var formType = $("select[id='wastesList[" + $i + "].wastesFormType']").find("option:selected").val();
-        switch(parseInt(formType)){
-            case 4 : formType = "HalfSolid";break;
-            case 5 : formType = "Liquid1";break;
-            case 6 : formType = "Solid1";break;
+        switch (parseInt(formType)) {
+            case 2 :
+                formType = "Liquid";
+                break;
+            case 3 :
+                formType = "Solid";
+                break;
+            case 4 :
+                formType = "HalfSolid";
+                break;
+            case 5 :
+                formType = "Solid1AndHalfSolid";
+                break;
+            case 6 :
+                formType = "HalfSolidAndLiquid";
+                break;
+            case 7 :
+                formType = "Solid1AndLiquid";
+                break;
         }
         wastes.formType = formType;
         wastes.category = $("input[id='wastesList[" + $i + "].wastesHandleCategory']").val();
@@ -1455,33 +1490,38 @@ function addAppoint() {
  * 删除预约单----->改作废
  */
 function deleteSample(menu) {
-    if ($(menu).parent().prev().prev().text() == "已预约") {
-    sampleId = getSampleIdByMenu(menu);
-    var msg = "是否作废该条记录？";
-    if (confirm(msg) == true) {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "cancelSampleInformationWareHouse",              // url
-            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {
-                'sampleId': sampleId
-            },
-            dataType: "json",
-            success: function (result) {
-                if (result != undefined) {
-                    var data = eval(result);
-                    alert(data.message);
-                    if (data.status == "success") {
-                        window.location.reload();
+    var state = $(menu).parent().prev().text();
+    if (state == "已预约" || state == "已拒收") {
+        sampleId = getSampleIdByMenu(menu);
+        var msg = "是否作废该条记录？";
+        if (confirm(msg) == true) {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "cancelSampleInformationWareHouse",              // url
+                async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {
+                    'sampleId': sampleId
+                },
+                dataType: "json",
+                success: function (result) {
+                    if (result != undefined) {
+                        var data = eval(result);
+                        alert(data.message);
+                        if (data.status == "success") {
+                            window.location.reload();
+                        }
                     }
+                },
+                error: function (result) {
+                    console.log(result);
                 }
-            },
-            error: function (result) {
-                console.log(result);
-            }
-        });
-    }
-    } else {
+            });
+        }
+    } else if(state == "已收样"){
+        alert("单据已收样，不可作废！");
+    }else if(state == "已作废"){
+        alert("单据已作废！");
+    }else {
         alert("单据不可作废！");
     }
 }

@@ -129,8 +129,6 @@ public class QuotationItem {
      *
      */
     private  Contract contract;
-
-
     /**
      * 供应商作为绑定
      * @return

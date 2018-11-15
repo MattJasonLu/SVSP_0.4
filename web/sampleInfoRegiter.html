@@ -319,6 +319,10 @@
                                         <input type="checkbox" name="isP1" id="isP1" value="true"
                                                onchange="searchSampleInfo()">磷
                                     </label>
+                                    <label>
+                                        <input type="checkbox" name="isHotMelt1" id="isHotMelt1" value="true"
+                                               onchange="searchSampleInfo()">热融
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -588,10 +592,10 @@
                                         <input type="checkbox" name="wastesList[0].isViscosity"
                                                value="true">黏度
                                     </label>
-                                    <!--<label>-->
-                                        <!--<input type="checkbox" name="wastesList[0].isHotMelt"-->
-                                               <!--value="true">热融-->
-                                    <!--</label>-->
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isHotMelt"
+                                               value="true">热融
+                                    </label>
                                 </td>
                                 <td class="text-center" ><input class="focus" name="wastesList[0].transferId"
                                                                 id="wastesList[0].transferId" style="width: 100%"></td>
@@ -672,7 +676,7 @@
                             <tbody>
                             <tr id="addClone3">
                                 <td class="text-center">1</td>
-                                <td class="text-center"><select class="selectpicker form-control"
+                                <td class="text-center" width="20%"><select class="selectpicker form-control"
                                                                 data-live-search="true"
                                                                 data-live-search-placeholder="搜索..."
                                                                 id="wastes0-wastesCode"
@@ -726,6 +730,10 @@
                                     <label>
                                         <input type="checkbox" name="wastes[0].isViscosity"
                                                value="true">黏度
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="wastes[0].isHotMelt"
+                                               value="true">热融
                                     </label>
                                 </td>
                                 <td class="text-center"><input class="focus" name="wastes[0].transferId"

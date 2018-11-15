@@ -827,7 +827,8 @@ function addNextLine() {
  * 修改信息功能
  */
 function adjustSample(menu) {
-    if ($(menu).parent().prev().prev().text() == "已预约") {
+    var state = $(menu).parent().prev().text();
+    if (state == "已预约") {
         num = 0;
         setSelectList();        // 设置危废代码和公司名下拉框数据
         $(".newLine").remove();
@@ -882,7 +883,13 @@ function adjustSample(menu) {
                 alert("服务器异常!");
             }
         });
-    } else {
+    }else if(state == '已作废'){
+        alert("单据已作废，不可修改！");
+    }else if(state == '已收样'){
+        alert("单据已收样，不可修改！");
+    }else if(state == '已拒收'){
+        alert("单据已拒收，不可修改！");
+    }else {
         alert("单据不可修改！");
     }
 }
@@ -1233,7 +1240,8 @@ function searchSampleInfo() {
  * 删除预约单----->改作废
  */
 function deleteSample(menu) {
-    if ($(menu).parent().prev().prev().text() == "已预约") {
+    var state = $(menu).parent().prev().text();
+    if (state == "已预约" || state == "已拒收") {
         sampleId = getSampleIdByMenu(menu);
         var msg = "是否作废该条记录？";
         if (confirm(msg) == true) {
@@ -1259,7 +1267,11 @@ function deleteSample(menu) {
                 }
             });
         }
-    } else {
+    }else if(state == "已收样"){
+        alert("单据已收样，不可作废！");
+    }else if(state == "已作废"){
+        alert("单据已作废！");
+    }else {
         alert("单据不可作废！");
     }
 }

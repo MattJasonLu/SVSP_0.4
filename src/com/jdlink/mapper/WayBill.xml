@@ -66,7 +66,7 @@
     <select id="listPage" resultMap="WayBillRM">
         select * from t_pr_waybill
         where state != 'Invalid'
-        order by wayBillDate desc
+        order by creationTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count};
         </if>
@@ -122,7 +122,7 @@
                 and t_pr_waybill.state = #{state}
             </if>
         </where>
-        order by wayBillDate desc
+        order by creationTime desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
@@ -182,7 +182,7 @@
 
     <select id="getWayBillItemByClientIdAndWastesCode" resultMap="WayBillItemRM">
         select * from t_pr_waybillitem
-        where wayBillId in ( select id from t_pr_waybill where produceCompanyId=#{clientId})
+        where wayBillId in ( select id from t_pr_waybill where produceCompanyId=#{clientId} and state = 'Approval')
         and wastesCode =#{code};
     </select>
 
@@ -209,7 +209,7 @@
 
     <update id="update" parameterType="WayBill">
         update t_pr_waybill
-        set total=#{total},freight=#{freight},remarks=#{remarks},wayBillDate=NOW(),produceCompanyId=#{produceCompanyId},
+        set total=#{total},freight=#{freight},remarks=#{remarks},produceCompanyId=#{produceCompanyId},
         nowTime=NOW(),produceCompanyOperator=#{produceCompanyOperator},produceCompanyName=#{produceCompanyName},
         founder=#{founder}
         where id = #{id};
@@ -244,9 +244,11 @@
 
     <insert id="addWayBill" parameterType="WayBill">
         insert into t_pr_waybill
-        (id,total,freight,remarks,wayBillDate,produceCompanyId,nowTime,produceCompanyOperator,state,produceCompanyName,founder)
+        (id,total,freight,remarks,wayBillDate,produceCompanyId,nowTime,produceCompanyOperator,state,produceCompanyName,
+        founder,contractId)
         values
-        (#{id},#{total},#{freight},#{remarks},#{wayBillItemList[0].receiveDate},#{produceCompanyId},NOW(),#{produceCompanyOperator},'NewBuild',#{produceCompanyName},#{founder});
+        (#{id},#{total},#{freight},#{remarks},#{wayBillItemList[0].receiveDate},#{produceCompanyId},NOW(),
+        #{produceCompanyOperator},'NewBuild',#{produceCompanyName},#{founder},NOW(),#{contractId});
         <foreach collection="wayBillItemList" index="index" item="wayBillItem">
             insert into t_pr_waybillitem
             (itemId,wayBillId,receiveDate,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanName,receiveCompanyName,wastesId,wastesCode,wastesPrice,wastesName,wastesAmount,wastesTotalPrice)
