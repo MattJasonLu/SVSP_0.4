@@ -147,4 +147,7 @@ public class WayBillServiceImpl implements WayBillService {
     @Override
     public void updateSalesmanNameByCompanyName(String salesmanName,String companyName){ wayBillMapper.updateSalesmanNameByCompanyName(salesmanName,companyName);}
 
+    @Override
+    public WayBill getWayBillByContractId(String id){ return wayBillMapper.getWayBillByContractId(id); }
+
 }

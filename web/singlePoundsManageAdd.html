@@ -166,7 +166,7 @@
                 </ol>
             </div>
         </div>
-        <h4 class="sub-header">磅单新增</h4>
+        <h4 class="sub-header" id="head">磅单新增</h4>
         <br>
         <form method="post" id="poundsForm" enctype="multipart/form-data">
             <h3 class="text-center focus">北控安耐得环保科技发展常州有限公司 称重磅单</h3>
@@ -184,22 +184,23 @@
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                                 </div>
                             </td>
-                            <td>创建人：<input class="focus" id="add_founder"></td>
-                            <td style="width: 250px;">单位:千克</td>
+                            <td class="text-right">创建人：</td>
+                            <td class="text-left"><input class="form-control" id="add_founder"></td>
+                            <td style="width: 250px;" class="text-right">单位:千克</td>
                         </tr>
                     </table>
                     <table class="table table-bordered">
                         <tr>
                             <td class="text-center" style="width: 150px;">入厂车号</td>
-                            <td class="text-center"><input class="focus" style="width:100%" id="add_enterLicencePlate" onkeyup="autoSetoutLicencePlate(this);"></td>
+                            <td class="text-center"><input class="form-control" style="width:100%" id="add_enterLicencePlate" onkeyup="autoSetoutLicencePlate(this);"></td>
                             <td class="text-center" style="width: 150px;">出厂车号</td>
-                            <td class="text-center"><input class="focus" style="width:100%" id="add_outLicencePlate"></td>
+                            <td class="text-center"><input class="form-control" style="width:100%" id="add_outLicencePlate"></td>
                         </tr>
                         <tr>
                             <td class="text-center" style="width: 150px;">货物名称</td>
-                            <td class="text-center"><input class="focus" style="width:100%" id="add_goodsName"></td>
+                            <td class="text-center"><input class="form-control" style="width:100%" id="add_goodsName"></td>
                             <td class="text-center" style="width: 150px;">毛重</td>
-                            <td class="text-center"><input class="focus" style="width:100%" type="number" id="add_grossWeight"></td>
+                            <td class="text-center"><input class="form-control" style="width:100%" type="number" id="add_grossWeight"></td>
                         </tr>
                         <tr>
                             <td class="text-center" style="width: 150px;">危废代码</td>
@@ -210,7 +211,7 @@
                                 </select>
                             </td>
                             <td class="text-center" style="width: 150px;">皮重</td>
-                            <td class="text-center"><input class="focus" style="width:100%" type="number" id="add_tare" onkeyup="calculateWeight()"></td>
+                            <td class="text-center"><input class="form-control" style="width:100%" type="number" id="add_tare" onkeyup="calculateWeight()"></td>
                         </tr>
                         <tr>
                             <td class="text-center" style="width: 150px;">发货单位</td>
@@ -221,12 +222,12 @@
                                 </select>
                             </td>
                             <td class="text-center" style="width: 150px;">净重</td>
-                            <td class="text-center"><input class="focus" style="width:100%" id="add_netWeight"></td>
+                            <td class="text-center"><input class="form-control" style="width:100%" id="add_netWeight"></td>
                         </tr>
                         <tr>
                             <td class="text-center" style="width: 150px;">收货单位</td>
                             <td class="text-center">
-                                <input id="add_receiveCompany" name="add_receiveCompany" class="focus ">
+                                <input id="add_receiveCompany" name="add_receiveCompany" class="form-control ">
                             </td>
                             <td class="text-center" style="width: 150px;">出厂时间</td>
                             <td class="text-center">
@@ -241,25 +242,25 @@
                         </tr>
                         <tr>
                             <td class="text-center" style="width: 150px;">业务类型</td>
-                            <td class="text-center"><input class="focus" style="width:100%" id="add_businessType"></td>
+                            <td class="text-center"><input class="form-control" style="width:100%" id="add_businessType"></td>
                             <td class="text-center" style="width: 150px;">司机</td>
-                            <td class="text-center"><input class="focus" style="width:100%" id="add_driver"></td>
+                            <td class="text-center"><input class="form-control" style="width:100%" id="add_driver"></td>
                         </tr>
                         <tr>
                             <td class="text-center" style="width: 150px;">司磅员</td>
-                            <td class="text-center"><input class="focus" style="width:100%" id="add_weighman"></td>
+                            <td class="text-center"><input class="form-control" style="width:100%" id="add_weighman"></td>
                             <td class="text-center" style="width: 150px;">备注</td>
-                            <td class="text-center"><input class="focus" style="width:100%" id="add_remarks"></td>
+                            <td class="text-center"><input class="form-control" style="width:100%" id="add_remarks"></td>
                         </tr>
                         <tr>
                             <td class="text-center" style="width: 150px;">转移联单号</td>
-                            <td class="text-center"><input class="focus" style="width:100%" id="add_transferId"></td>
+                            <td class="text-center"><input class="form-control" style="width:100%" id="add_transferId"></td>
                             <td class="text-center" style="width: 150px;"></td>
                             <td class="text-center"></td>
                         </tr>
                     </table>
                     <div class="row text-center">
-                        <a class="btn btn-success" onclick="addPounds();">保存</a>
+                        <a class="btn btn-success" id="save" onclick="addPounds();">新增</a>
                         <a class="btn btn-danger" href="singlePoundsManage1.html">返回</a>
                     </div>
                 </div>

@@ -13,9 +13,9 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/monthProcurement.js"></script>
+    <script src="js/produce/procurementPlan.js"></script>
 </head>
-<body onload="getMontnProcurement()">
+<body onload="loadPage()">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -115,7 +115,7 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" href="" ><span class="glyphicon glyphicon-plus" aria-hidden="true" >生成采购计划</span></a>
+                        <a class="btn btn-primary btn-xs" href="newProcurementPlan.html" ><span class="glyphicon glyphicon-plus" aria-hidden="true" >生成采购计划</span></a>
                         <a class="btn btn-primary btn-xs" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
                     <!--查询框-->
@@ -235,7 +235,7 @@
                 </tr>
                 </thead>
                 <tbody id="tbody1">
-                <tr id="cloneTr" class="myclass" ondblclick="view(this)">
+                <tr id="cloneTr"  ondblclick="view(this)">
                     <td class="text-center">
                         <label>
                             <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
@@ -250,7 +250,7 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">
-                        <a href="#" title="查看" onclick="viewProcurementPlan(this);"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> </a>
+                        <a href="#" title="查看" onclick="viewProcurementPlan(this);"><span class="glyphicon glyphicon-search"></span> </a>
                         <a href="#" title="修改" onclick="procurementPlanModify(this);"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> </a>
                         <a href="#" title="提交" onclick="submitProcurementPlan(this);"><span class="glyphicon glyphicon-subscript" aria-hidden="true"></span> </a>
                         <a href="#" title="审批" onclick="cancelProcurementPlan(this);"><span class="glyphicon glyphicon-cd" aria-hidden="true"></span> </a>
@@ -284,7 +284,7 @@
                 <li ><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;" id="pageNumber" onkeydown="enterSwitchPage();"></li>
                 <li class="showLi">每页显示:</li>
                 <li class="selectLi">
-                    <select id="count" onchange="getMontnProcurement();">
+                    <select id="count" onchange="loadPage();">
                         <option>5</option>
                         <option selected>15</option>
                         <option>50</option>
@@ -306,7 +306,6 @@
                       <thead>
                         <tr>
                             <td class="text-center">序号</td>
-                            <td class="text-center">类别</td>
                             <td class="text-center">物资名称</td>
                             <td class="text-center">规格型号</td>
                             <td class="text-center">申购部门</td>
@@ -319,8 +318,6 @@
                       </thead>
                         <tbody>
                         <tr id="cloneTr2" class="myclass1">
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
                             <td class="text-center"></td>
                             <td class="text-center"></td>
                             <td class="text-center"></td>
@@ -367,6 +364,8 @@
     </div>
     <!--导入-->
     <input type="file" name="excelPath" id="idExcel" style="display:none">
+
+
 </body>
 <style type="text/css">
     /*input {*/

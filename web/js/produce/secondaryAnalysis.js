@@ -1256,122 +1256,130 @@ function importExcel() {
 //次生修改
 function secondaryAnalysisModify(item) {
 
-    $('.selectpicker').selectpicker({
-        language: 'zh_CN',
-        size:4
-    });
-    $('.selectpicker').data('selectpicker', null);
-    $('.bootstrap-select').find("button:first").remove();
-    $('#addClone1').siblings().not($('#plusBtn1')).remove();
-    setSelectList1();
-    var id=$(item).parent().parent().children('td').eq(1).html();
-    console.log(id)
-    $('#reservationId2').val(id)
-    $("#appointModa3").modal('show');
-    $('#confirm').hide();
+    var checkState=$(item).parent().parent().children('td').eq(7).html();
+    if(checkState!='已作废'&&checkState!='已拒收'&&checkState!='已收样'){
+        $('.selectpicker').selectpicker({
+            language: 'zh_CN',
+            size:4
+        });
+        $('.selectpicker').data('selectpicker', null);
+        $('.bootstrap-select').find("button:first").remove();
+        $('#addClone1').siblings().not($('#plusBtn1')).remove();
+        setSelectList1();
+        var id=$(item).parent().parent().children('td').eq(1).html();
+        console.log(id)
+        $('#reservationId2').val(id)
+        $("#appointModa3").modal('show');
+        $('#confirm').hide();
 
 
 
-    //根据编号查找
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getSecondarysampleById",              // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        data:{"id":id},
-        //contentType: 'application/json;charset=utf-8',
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                console.log(result)
-                //赋值
-                // 公司名称
-                if(result.data.client!=null){
-                    $('#companyName').val(result.data.client.companyName);
-                }
-                //化验室签收人
-                $('#laboratorySignatory2').val(result.data.laboratorySignatory)
+        //根据编号查找
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getSecondarysampleById",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data:{"id":id},
+            //contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(result)
+                    //赋值
+                    // 公司名称
+                    if(result.data.client!=null){
+                        $('#companyName').val(result.data.client.companyName);
+                    }
+                    //化验室签收人
+                    $('#laboratorySignatory2').val(result.data.laboratorySignatory)
 
-                //送样人
-                $('#sendingPerson2').val(result.data.sendingPerson)
+                    //送样人
+                    $('#sendingPerson2').val(result.data.sendingPerson)
 
-                //采样点
-                $('#address2').val(result.data.address)
-
-
-                if(result.data.secondarySampleItemList!=null){
-
-                    var tr=$('#addClone1');
-                    //tr.siblings().remove();
-
-                    $.each(result.data.secondarySampleItemList,function (index,item) {
-
-                        var clonedTr = tr.clone();
-
-                        clonedTr.attr('class','myclass2');
-
-                        clonedTr.show();
-
-                        var obj = eval(item);
-
-                        if((index + 1)!=1){
-                            var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
-                            clonedTr.children('td').eq(0).html(delBtn);
-                            clonedTr.children("td:eq(0)").append(index+1);
-                        }
-                        if((index + 1)==1){
-                            clonedTr.children('td').eq(0).html(index + 1);
-                        }
-
-                        // clonedTr.children('td').eq(1).find('select').selectpicker('val',obj.wastesCode)
-
-                        clonedTr.children('td').eq(2).find('input').val(obj.wastesName)
+                    //采样点
+                    $('#address2').val(result.data.address)
 
 
-                        if(obj.water==1){
-                            clonedTr.children('td').eq(4).children("label").eq(0).find("input").prop('checked',true)
-                        }
-                        if(obj.water==0){
-                            clonedTr.children('td').eq(4).children("label").eq(0).find("input").prop('checked',false)
-                        }
+                    if(result.data.secondarySampleItemList!=null){
 
-                        if(obj.scorchingRate==1){
-                            clonedTr.children('td').eq(4).children("label").eq(1).find("input").prop('checked',true)
-                        }
-                        if(obj.scorchingRate==0){
-                            clonedTr.children('td').eq(4).children("label").eq(1).find("input").prop('checked',false)
-                        }
+                        var tr=$('#addClone1');
+                        //tr.siblings().remove();
 
-                        clonedTr.children('td').eq(1).find('select').selectpicker('val',obj.wastesCode);
+                        $.each(result.data.secondarySampleItemList,function (index,item) {
 
-                        clonedTr.removeAttr("id");
-                        clonedTr.insertBefore(tr);
-                        $('.selectpicker').data('selectpicker', null);
-                        $('.bootstrap-select').find("button:first").remove();
-                        // $('.selectpicker').selectpicker();
-                        $('.selectpicker').selectpicker({
-                            language: 'zh_CN',
-                            size:6
+                            var clonedTr = tr.clone();
+
+                            clonedTr.attr('class','myclass2');
+
+                            clonedTr.show();
+
+                            var obj = eval(item);
+
+                            if((index + 1)!=1){
+                                var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+                                clonedTr.children('td').eq(0).html(delBtn);
+                                clonedTr.children("td:eq(0)").append(index+1);
+                            }
+                            if((index + 1)==1){
+                                clonedTr.children('td').eq(0).html(index + 1);
+                            }
+
+                            // clonedTr.children('td').eq(1).find('select').selectpicker('val',obj.wastesCode)
+
+                            clonedTr.children('td').eq(2).find('input').val(obj.wastesName)
+
+
+                            if(obj.water==1){
+                                clonedTr.children('td').eq(4).children("label").eq(0).find("input").prop('checked',true)
+                            }
+                            if(obj.water==0){
+                                clonedTr.children('td').eq(4).children("label").eq(0).find("input").prop('checked',false)
+                            }
+
+                            if(obj.scorchingRate==1){
+                                clonedTr.children('td').eq(4).children("label").eq(1).find("input").prop('checked',true)
+                            }
+                            if(obj.scorchingRate==0){
+                                clonedTr.children('td').eq(4).children("label").eq(1).find("input").prop('checked',false)
+                            }
+
+                            clonedTr.children('td').eq(1).find('select').selectpicker('val',obj.wastesCode);
+
+                            clonedTr.removeAttr("id");
+                            clonedTr.insertBefore(tr);
+                            $('.selectpicker').data('selectpicker', null);
+                            $('.bootstrap-select').find("button:first").remove();
+                            // $('.selectpicker').selectpicker();
+                            $('.selectpicker').selectpicker({
+                                language: 'zh_CN',
+                                size:6
+                            });
+                            $('.selectpicker').selectpicker('refresh');
                         });
-                        $('.selectpicker').selectpicker('refresh');
-                    });
 
-                    // 隐藏无数据的tr
-                    tr.hide();
-                    tr.removeAttr('class');
+                        // 隐藏无数据的tr
+                        tr.hide();
+                        tr.removeAttr('class');
 
 
+
+                    }
 
                 }
+                else {
+
+                }
+            },
+            error:function (result) {
 
             }
-            else {
+        });
+    }
+    else {
+        alert('不能修改已拒收已收样已作废的数据！')
+    }
 
-            }
-        },
-        error:function (result) {
 
-        }
-    });
 
 }
 
@@ -1441,6 +1449,34 @@ function adjust() {
     })
 
 
+
+}
+
+//作废
+function setInvalid(item) {
+    var id=$(item).parent().parent().children('td').eq(1).html();
+
+    if(confirm("确认作废?")){
+        //点击确定后操作
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "cancelSecondaryGeregistration",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'id':id},
+            //processData: false,
+            //contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    alert(result.message)
+                    window.location.reload();
+                }
+            },
+            error:function (result) {
+
+            }
+        })
+    }
 
 }
 

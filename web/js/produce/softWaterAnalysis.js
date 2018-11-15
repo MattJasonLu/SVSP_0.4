@@ -1288,136 +1288,147 @@ function rejection1() {
 
 //软水送样修改
 function softWaterAnalysisModify(item) {
-    $('#addClone1').siblings().not($('#plusBtn1')).remove();
-    var id=$(item).parent().parent().children('td').eq(1).html();
-    $('#reservationId2').val(id)
-    //根据编号查找
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getSoftGeregistrationById",              // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        data:{"id":id},
-        //contentType: 'application/json;charset=utf-8',
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                console.log(result)
-                //赋值
-                // 公司名称
-                if(result.data.client!=null){
-                    $('#companyName').val(result.data.client.companyName);
+
+    var checkState=$(item).parent().parent().children('td').eq(6).html();
+
+
+    if(checkState!='已作废'&&checkState!='已拒收'&&checkState!='已收样'){
+        $('#addClone1').siblings().not($('#plusBtn1')).remove();
+        var id=$(item).parent().parent().children('td').eq(1).html();
+        $('#reservationId2').val(id)
+        //根据编号查找
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getSoftGeregistrationById",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data:{"id":id},
+            //contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(result)
+                    //赋值
+                    // 公司名称
+                    if(result.data.client!=null){
+                        $('#companyName').val(result.data.client.companyName);
+                    }
+                    //化验室签收人
+                    $('#laboratorySignatory2').val(result.data.laboratorySignatory)
+
+                    //送样人
+                    $('#sendingPerson2').val(result.data.sendingPerson)
+
+                    //采样点
+                    $('#address2').val(result.data.address)
+
+
+                    if(result.data.sewageregistrationItemList!=null){
+
+                        var tr=$('#addClone1');
+
+                        //tr.siblings().not($('#plusBtn1')).remove();
+
+                        $.each(result.data.sewageregistrationItemList,function (index,item) {
+
+                            var clonedTr = tr.clone();
+
+                            clonedTr.show();
+                            clonedTr.attr("class","myclass2");
+                            var obj = eval(item);
+
+                            if((index + 1)!=1){
+                                var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+                                clonedTr.children('td').eq(0).html(delBtn);
+                                clonedTr.children("td:eq(0)").append(index+1);
+                            }
+                            if((index + 1)==1){
+                                clonedTr.children('td').eq(0).html(index + 1);
+                            }
+
+
+
+
+                            if(item.turbidity==1){
+                                clonedTr.children('td').eq(2).children("label").eq(0).find("input").prop('checked',true)
+                            }
+                            if(item.turbidity==0){
+                                clonedTr.children('td').eq(2).children("label").eq(0).find("input").prop('checked',false)
+                            }
+
+                            if(item.hardness==1){
+                                clonedTr.children('td').eq(2).children("label").eq(1).find("input").prop('checked',true)
+                            }
+                            if(item.hardness==0){
+                                clonedTr.children('td').eq(2).children("label").eq(1).find("input").prop('checked',false)
+                            }
+
+                            if(item.ph==1){
+                                clonedTr.children('td').eq(2).children("label").eq(2).find("input").prop('checked',true)
+                            }
+                            if(item.ph==0){
+                                clonedTr.children('td').eq(2).children("label").eq(2).find("input").prop('checked',false)
+                            }
+
+                            if(item.phenolphthalein==1){
+                                clonedTr.children('td').eq(2).children("label").eq(3).find("input").prop('checked',true)
+                            }
+                            if(item.phenolphthalein==0){
+                                clonedTr.children('td').eq(2).children("label").eq(3).find("input").prop('checked',false)
+                            }
+
+                            if(item.basicity==1){
+                                clonedTr.children('td').eq(2).children("label").eq(4).find("input").prop('checked',true)
+                            }
+                            if(item.basicity==0){
+                                clonedTr.children('td').eq(2).children("label").eq(4).find("input").prop('checked',false)
+                            }
+
+                            if(item.electricalConductivity==1){
+                                clonedTr.children('td').eq(2).children("label").eq(5).find("input").prop('checked',true)
+                            }
+                            if(item.electricalConductivity==0){
+                                clonedTr.children('td').eq(2).children("label").eq(5).find("input").prop('checked',false)
+                            }
+
+
+                            clonedTr.removeAttr("id");
+                            clonedTr.insertBefore(tr);
+
+                        });
+
+                        // 隐藏无数据的tr
+                        tr.hide();
+                        tr.removeAttr('class');
+
+
+
+                    }
+
+
+
+
+
+
+
                 }
-                //化验室签收人
-                $('#laboratorySignatory2').val(result.data.laboratorySignatory)
-
-                //送样人
-                $('#sendingPerson2').val(result.data.sendingPerson)
-
-                //采样点
-                $('#address2').val(result.data.address)
-
-
-                if(result.data.sewageregistrationItemList!=null){
-
-                    var tr=$('#addClone1');
-
-                    //tr.siblings().not($('#plusBtn1')).remove();
-
-                    $.each(result.data.sewageregistrationItemList,function (index,item) {
-
-                        var clonedTr = tr.clone();
-
-                        clonedTr.show();
-                        clonedTr.attr("class","myclass2");
-                        var obj = eval(item);
-
-                        if((index + 1)!=1){
-                            var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
-                            clonedTr.children('td').eq(0).html(delBtn);
-                            clonedTr.children("td:eq(0)").append(index+1);
-                        }
-                        if((index + 1)==1){
-                            clonedTr.children('td').eq(0).html(index + 1);
-                        }
-
-
-
-
-                        if(item.turbidity==1){
-                            clonedTr.children('td').eq(2).children("label").eq(0).find("input").prop('checked',true)
-                        }
-                        if(item.turbidity==0){
-                            clonedTr.children('td').eq(2).children("label").eq(0).find("input").prop('checked',false)
-                        }
-
-                        if(item.hardness==1){
-                            clonedTr.children('td').eq(2).children("label").eq(1).find("input").prop('checked',true)
-                        }
-                        if(item.hardness==0){
-                            clonedTr.children('td').eq(2).children("label").eq(1).find("input").prop('checked',false)
-                        }
-
-                        if(item.ph==1){
-                            clonedTr.children('td').eq(2).children("label").eq(2).find("input").prop('checked',true)
-                        }
-                        if(item.ph==0){
-                            clonedTr.children('td').eq(2).children("label").eq(2).find("input").prop('checked',false)
-                        }
-
-                        if(item.phenolphthalein==1){
-                            clonedTr.children('td').eq(2).children("label").eq(3).find("input").prop('checked',true)
-                        }
-                        if(item.phenolphthalein==0){
-                            clonedTr.children('td').eq(2).children("label").eq(3).find("input").prop('checked',false)
-                        }
-
-                        if(item.basicity==1){
-                            clonedTr.children('td').eq(2).children("label").eq(4).find("input").prop('checked',true)
-                        }
-                        if(item.basicity==0){
-                            clonedTr.children('td').eq(2).children("label").eq(4).find("input").prop('checked',false)
-                        }
-
-                        if(item.electricalConductivity==1){
-                            clonedTr.children('td').eq(2).children("label").eq(5).find("input").prop('checked',true)
-                        }
-                        if(item.electricalConductivity==0){
-                            clonedTr.children('td').eq(2).children("label").eq(5).find("input").prop('checked',false)
-                        }
-
-
-                        clonedTr.removeAttr("id");
-                        clonedTr.insertBefore(tr);
-
-                    });
-
-                    // 隐藏无数据的tr
-                    tr.hide();
-                    tr.removeAttr('class');
-
-
+                else {
 
                 }
-
-
-
-
-
-
+            },
+            error:function (result) {
 
             }
-            else {
+        });
+        $('#appointModa3').modal('show');
 
-            }
-        },
-        error:function (result) {
+    }
 
-        }
-    });
-
+    else {
+        alert('不能修改已拒收已收样已作废的数据！')
+    }
 
 
-    $('#appointModa3').modal('show');
+
 }
 
 //确认修改
@@ -1524,6 +1535,32 @@ function adjust() {
     window.location.reload();
 }
 
+//作废
+function setInvalid(item) {
+    var id=$(item).parent().parent().children('td').eq(1).html();
+    if(confirm("确认作废?")){
+        //点击确定后操作
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "cancelSoftGeregistration",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'id':id},
+            //processData: false,
+            //contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    alert(result.message)
+                    window.location.reload();
+                }
+            },
+            error:function (result) {
+
+            }
+        })
+    }
+
+}
 
 //预约单号检测
 function testing(item) {

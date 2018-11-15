@@ -817,24 +817,24 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
     
     <!--污水送样完成后加入污水化验单-->
     <insert id="sampleTest">
-        insert into t_pr_sewagetest (id,address,checkState) values (#{0},#{1},'ToSubmit');
+        insert into t_pr_sewagetest (id,address,checkState,dateTime) values (#{0},#{1},'ToSubmit',NOW());
     </insert>
 
 
 
     <!--污水送样完成后加入污水化验单==>有更新-->
     <update id="updateSampleTest">
-        update t_pr_sewagetest set address=#{1} where id=#{0};
+        update t_pr_sewagetest set address=#{1},dateTime=NOW() where id=#{0};
     </update>
 
     <!--软水送样完成后加入污水化验单-->
     <insert id="sampleTestSoft">
-        insert into t_pr_softest (id,address,checkState) values (#{0},#{1},'ToSubmit');
+        insert into t_pr_softest (id,address,checkState,dateTime) values (#{0},#{1},'ToSubmit',NOW());
     </insert>
 
     <!--软水送样完成后加入软水化验单==>有更新-->
     <update id="updateSampleSoftTest">
-        update t_pr_softest set address=#{1} where id=#{0};
+        update t_pr_softest set address=#{1},dateTime=NOW() where id=#{0};
     </update>
 
 </mapper>

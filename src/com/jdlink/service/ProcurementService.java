@@ -3,6 +3,8 @@ package com.jdlink.service;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Material;
 import com.jdlink.domain.Produce.Procurement;
+import com.jdlink.domain.Produce.ProcurementPlan;
+import com.jdlink.domain.Produce.ProcurementPlanItem;
 
 import java.util.Date;
 import java.util.List;
@@ -29,4 +31,12 @@ public interface ProcurementService {
     int countProcurementItemList();
     void submitProcurementListById(String receiptNumber);
     void updateMaterial(Material material);
+    List<Material> getProcurement();
+    List<Material>  searchNewProcurementPlan(Material material);
+    int getPrefixCount(String prefix);
+    void addProcurementPlan(ProcurementPlan procurementPlan);
+    String getApplyDepartmentByReceiptNumber(String id);
+    void addProcurementPlanItem(ProcurementPlanItem procurementPlanItem);
+    List<ProcurementPlan>getProcurementPlanList(Page page);
+    void updateProcurementState(String id);
 }

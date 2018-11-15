@@ -359,20 +359,28 @@ function setSampleList(result) {
                 case (1):
                     $(this).html(obj.id);
                     break;
-                // 公司名称
+                // 联单编号
                 case (2):
+                    $(this).html(obj.wastesList[0].transferId);
+                    break;
+                // 公司名称
+                case (3):
                     $(this).html(obj.companyName);
                     break;
                 //危废名称
-                case (3):
+                case (4):
                     $(this).html(obj.wastesName);
                     break;
-                // 危废形态
-                case (4):
-                    if (obj.wastesFormType != null)
-                        $(this).html(obj.wastesFormType.name);
-                    break;
+                // 危废代码
                 case (5):
+                    $(this).html(obj.wastesList[0].code);
+                    break;
+                // 危废形态
+                case (6):
+                    if (obj.wastesList[0].formType != null)
+                        $(this).html(obj.wastesList[0].formType.name);
+                    break;
+                case (7):
                     //检测项目
                 {
                     var list = [];
@@ -403,15 +411,15 @@ function setSampleList(result) {
                     $(this).html(obj.items);
                     break;
                 // 增加检测项目
-                case (6):
+                case (8):
                     // 送样人
                     $(this).html(obj.sendingPerson);
                     break;
-                case (7):
+                case (9):
                     // 签收人
                     $(this).html(obj.laboratorySigner);
                     break;
-                case (8):
+                case (10):
                     // 状态
                     if (obj.applyState != null) {
                         obj.name = obj.applyState.name;
@@ -915,6 +923,10 @@ function checkModal(menu) {
         alert("单据已拒收，不可收样！");
     } else if ($(menu).parent().prev().text() == "已作废") {
         alert("单据已作废，不可收样！");
+    }else if ($(menu).parent().prev().text() == "已收样") {
+        alert("单据已收样！");
+    }else{
+        alert("单据不可收样！");
     }
 }
 
@@ -944,7 +956,7 @@ function addNextLine() {
  */
 function adjustSample(menu) {
     var state = $(menu).parent().prev().text();
-    if (state == "已预约") {
+    if (state == "已预约" || state == "已收样" || state == "已拒收") {
         num = 0;
         setSelectList();        // 设置危废代码和公司名下拉框数据
         $(".newLine").remove();
@@ -1002,10 +1014,6 @@ function adjustSample(menu) {
         });
     }else if(state == '已作废'){
         alert("单据已作废，不可修改！");
-    }else if(state == '已收样'){
-        alert("单据已收样，不可修改！");
-    }else if(state == '已拒收'){
-        alert("单据已拒收，不可修改！");
     }else {
         alert("单据不可修改！");
     }
@@ -1193,7 +1201,7 @@ function searchSampleInfo() {
     if ($("#senior").is(':visible')) {
         data = {
             id: $.trim($("#search-id").val()),
-            companyCode: $.trim($("#search-companyCode").val()),
+            companyName: $.trim($("#search-companyName").val()),
             wastesCode: $.trim($("#search-wastesCode").val()),
             laboratorySigner: $.trim($("#search-signer").val()),
             applyState: applyState,

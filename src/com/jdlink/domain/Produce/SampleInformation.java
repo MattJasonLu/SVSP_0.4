@@ -113,6 +113,18 @@ public class SampleInformation {
      * 分页
      */
     private Page page;
+    /**
+     * 新预约单号（送样登记修改用）
+     */
+    private String newId;
+
+    public String getNewId() {
+        return newId;
+    }
+
+    public void setNewId(String newId) {
+        this.newId = newId;
+    }
 
     public String getAdvice() {
         return advice;

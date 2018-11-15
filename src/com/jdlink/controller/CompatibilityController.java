@@ -114,16 +114,18 @@ public String importCompatibilityExcel(MultipartFile excelFile){
 
             float phSum=0;
 
+            int index=0;
             for(int k=1;k<data.get(i).length;k++){
                 if (data.get(i)[k][5].toString() != "null") {
+                    index++;
                     System.out.println(data.get(i)[k][5].toString()+"1232");
                     weeklyDemandTotalAggregate += Float.parseFloat(data.get(i)[k][5].toString());//周需求总量
                 }
             }
+            //System.out.println("周需求总量"+weeklyDemandTotalAggregate);//==》正确
 
 
             for (int j=1;j<data.get(i).length;j++){
-                System.out.println(data.get(i)[j][0].toString()+"长度");
                  if(data.get(i)[j][0].toString()!="null") {
 
 
@@ -170,13 +172,14 @@ public String importCompatibilityExcel(MultipartFile excelFile){
 
 
                      //第四列是比例==>当天周需求总量/周需求总量总数
-                     if(data.get(i)[j][5].toString()!="null"){
-                         compatibilityItem.setProportion(Float.parseFloat(data.get(i)[j][5].toString())/weeklyDemandTotalAggregate);
-                         totalDailyAmount+=Float.parseFloat(data.get(i)[j][5].toString())/weeklyDemandTotalAggregate;
-                     }
-                     else {
-                         compatibilityItem.setProportion(0);
-                     }
+//                     if(data.get(i)[j][5].toString()!="null"){
+//                         compatibilityItem.setProportion(Float.parseFloat(data.get(i)[j][5].toString())/weeklyDemandTotalAggregate);
+////                         System.out.println("比例"+Float.parseFloat(data.get(i)[j][5].toString())/weeklyDemandTotalAggregate);
+//                         totalDailyAmount+=Float.parseFloat(data.get(i)[j][5].toString())/weeklyDemandTotalAggregate;
+//                     }
+//                     else {
+//                         compatibilityItem.setProportion(0);
+//                     }
 
 
                      //第五列是每日配置量==》周需求总量/7
@@ -189,6 +192,11 @@ public String importCompatibilityExcel(MultipartFile excelFile){
 
                      //第六列是周需求总量
                      if (data.get(i)[j][5].toString() != "null") {
+//                         System.out.println("周需求总量"+Float.parseFloat(data.get(i)[j][5].toString()));
+                         float proportion=Float.parseFloat(data.get(i)[j][5].toString())/weeklyDemandTotalAggregate;
+                         compatibilityItem.setProportion(proportion);
+                         System.out.println("比例"+proportion);
+                         totalDailyAmount+=Float.parseFloat(data.get(i)[j][5].toString())/weeklyDemandTotalAggregate;
                          compatibilityItem.setWeeklyDemandTotal(Float.parseFloat(data.get(i)[j][5].toString()));
                      }
                      if (data.get(i)[j][5].toString() == "null")
@@ -271,29 +279,30 @@ public String importCompatibilityExcel(MultipartFile excelFile){
             //设置周需求总量
             compatibility.setWeeklyDemandTotalAggregate(weeklyDemandTotalAggregate);
 
+            System.out.println("行数:"+index);
             //设置平均热值
-            compatibility.setCalorificAvg(calorificSum/(data.get(i).length-1));
+            compatibility.setCalorificAvg(calorificSum/index);
 
             //设置平均灰分
-            compatibility.setAshAvg(ashSum/(data.get(i).length-1));
+            compatibility.setAshAvg(ashSum/index);
 
             //设置水分平均
-            compatibility.setWaterAvg(waterSum/(data.get(i).length-1));
+            compatibility.setWaterAvg(waterSum/index);
 
             //设置cl平均
-            compatibility.setClAvg(clSum/(data.get(i).length-1));
+            compatibility.setClAvg(clSum/index);
 
             //设置硫平均
-            compatibility.setsAvg(sSum/(data.get(i).length-1));
+            compatibility.setsAvg(sSum/index);
 
             //设置磷平均
-            compatibility.setpAvg(pSum/(data.get(i).length-1));
+            compatibility.setpAvg(pSum/index);
 
             //设置氟平均
-            compatibility.setfAvg(fSum/(data.get(i).length-1));
+            compatibility.setfAvg(fSum/index);
 
             //设置ph平均
-            compatibility.setPhAvg(phSum/(data.get(i).length-1));
+            compatibility.setPhAvg(phSum/index);
             //添加主表
             compatibilityService.addCompatibility(compatibility);
 
@@ -923,28 +932,9 @@ public String importCompatibilityExcel(MultipartFile excelFile){
     @ResponseBody
     public String addCompatibilityNew(@RequestBody Compatibility compatibility){
         JSONObject res=new JSONObject();
-        Calendar cal = Calendar.getInstance();
-        //获取年
-        String year=String.valueOf(cal.get(Calendar.YEAR));
-        //获取月
-        String mouth= getMouth(String.valueOf(cal.get(Calendar.MONTH)+1));
-        //序列号
-        String number = "001";
 
-        //先查看数据库的配伍编号
-        List<String> compatibilityIList= compatibilityService.check();
-        if(compatibilityIList.size()==0){
-            number="001";
-        }
-        if(compatibilityIList.size()>0) {
-            String s= compatibilityIList.get(0);//原字符串
-            String s2=s.substring(s.length()-3,s.length());//最后一个3字符
-            number=getString3(String.valueOf( Integer.parseInt(s2)+1));
-        }
-        //配伍编号
-        String compatibilityId=year+mouth+number;
         try{
-       compatibility.setCompatibilityId(compatibilityId);
+
        compatibilityService.addCompatibility(compatibility);
             res.put("status", "success");
             res.put("message", "主表添加成功");
@@ -965,8 +955,8 @@ public String importCompatibilityExcel(MultipartFile excelFile){
     public String addCompatibilityItemNew(@RequestBody CompatibilityItem compatibilityItem){
         JSONObject res=new JSONObject();
         try {
-            List<String> compatibilityIList= compatibilityService.check();
-            compatibilityItem.setCompatibilityId(compatibilityIList.get(0));
+//            List<String> compatibilityIList= compatibilityService.check();
+//            compatibilityItem.setCompatibilityId(compatibilityIList.get(0));
             compatibilityService.addCompatibilityItem(compatibilityItem);
             res.put("status", "success");
             res.put("message", "子表添加成功");
@@ -981,5 +971,34 @@ public String importCompatibilityExcel(MultipartFile excelFile){
 
         return res.toString();
     }
+
+    @RequestMapping("getNewCompatibilityId")
+    @ResponseBody
+    public String getNewCompatibilityId(){
+
+        Calendar cal = Calendar.getInstance();
+        //获取年
+        String year=String.valueOf(cal.get(Calendar.YEAR));
+        //获取月
+        String mouth= getMouth(String.valueOf(cal.get(Calendar.MONTH)+1));
+        //序列号
+        String number = "001";
+
+        //先查看数据库的配伍编号
+        List<String> compatibilityIList= compatibilityService.check();
+        if(compatibilityIList.size()==0){
+            number="001";
+        }
+        if(compatibilityIList.size()>0) {
+            String s= compatibilityIList.get(0);//原字符串
+            String s2=s.substring(s.length()-3,s.length());//最后一个3字符
+            number=getString3(String.valueOf( Integer.parseInt(s2)+1));
+        }
+        //配伍编号
+        String compatibilityId=year+mouth+number;
+
+        return compatibilityId;
+    }
+
 
 }

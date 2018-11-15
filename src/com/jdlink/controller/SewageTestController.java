@@ -1066,4 +1066,74 @@ public class SewageTestController {
         return res.toString();
 
     }
+
+
+    //作废污水送样
+    @RequestMapping("cancelSewaGeregistration")
+    @ResponseBody
+    public String cancelSewaGeregistration(String id){
+        JSONObject res=new JSONObject();
+
+        try {
+            sewageTestService.cancelSewaGeregistration(id);
+            res.put("status", "success");
+            res.put("message", "作废成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+
+        }
+
+        return res.toString();
+
+    }
+
+    //作废软水送样
+    @RequestMapping("cancelSoftGeregistration")
+    @ResponseBody
+    public String cancelSoftGeregistration(String id){
+        JSONObject res=new JSONObject();
+
+        try {
+            sewageTestService.cancelSoftGeregistration(id);
+            res.put("status", "success");
+            res.put("message", "作废成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+
+        }
+
+
+        return res.toString();
+    }
+
+    //次生送样作废
+    @RequestMapping("cancelSecondaryGeregistration")
+    @ResponseBody
+    public String cancelSecondaryGeregistration(String id){
+        JSONObject res=new JSONObject();
+
+        try {
+            sewageTestService.cancelSecondaryGeregistration(id);
+            res.put("status", "success");
+            res.put("message", "作废成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+
+        }
+
+
+        return res.toString();
+    }
+
 }
+
+

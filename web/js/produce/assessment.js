@@ -352,27 +352,27 @@ function setSalesmanMonthDataList(result) {
                     break;
                 case (4):
                     // 接运单金额
-                    $(this).html(obj.wayBillTotalPrice);
+                    $(this).html(obj.wayBillTotalPrice.toFixed(2));
                     break;
                 case (5):
                     // 到账金额
-                    $(this).html(obj.accountTotalPrice);
+                    $(this).html(obj.accountTotalPrice.toFixed(2));
                     break;
                 case (6):
                     // 有效金额
-                    $(this).html(obj.effectiveTotalPrice);
+                    $(this).html(obj.effectiveTotalPrice.toFixed(2));
                     break;
                 case (7):
                     // 提成
-                    $(this).html(obj.totalCommission);
+                    $(this).html(obj.totalCommission.toFixed(2));
                     break;
                 case (8):
                     // 当月发放金额
-                    $(this).html(obj.monthSendedTotalPrice);
+                    $(this).html(obj.monthSendedTotalPrice.toFixed(2));
                     break;
                 case (9):
                     // 当月未发放金额
-                    $(this).html(obj.monthNotSendTotalPrice);
+                    $(this).html(obj.monthNotSendTotalPrice.toFixed(2));
                     break;
             }
         });
@@ -591,7 +591,7 @@ function setContractList(result) {
                     break;
                 case (6):
                     // 接运单金额
-                    $(this).html(obj.wayBillTotalPrice);
+                    $(this).html(obj.wayBillTotalPrice.toFixed(2));
                     break;
                 case (7):
                     // 系数
@@ -599,23 +599,23 @@ function setContractList(result) {
                     break;
                 case (8):
                     // 到账金额
-                    $(this).html(obj.accountTotalPrice);
+                    $(this).html(obj.accountTotalPrice.toFixed(2));
                     break;
                 case (9):
                     // 有效金额
-                    $(this).html(obj.effectiveTotalPrice);
+                    $(this).html(obj.effectiveTotalPrice.toFixed(2));
                     break;
                 case (10):
                     // 提成
-                    $(this).html(obj.totalCommission);
+                    $(this).html(obj.totalCommission.toFixed(2));
                     break;
                 case (11):
                     // 当月发放金额
-                    $(this).html(obj.monthSendedTotalPrice);
+                    $(this).html(obj.monthSendedTotalPrice.toFixed(2));
                     break;
                 case (12):
                     // 未发放金额
-                    $(this).html(obj.monthNotSendTotalPrice);
+                    $(this).html(obj.monthNotSendTotalPrice.toFixed(2));
                     break;
                 case (13):
                     // 备注

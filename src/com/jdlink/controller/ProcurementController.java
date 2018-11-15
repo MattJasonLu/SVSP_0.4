@@ -3,6 +3,8 @@ package com.jdlink.controller;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Material;
 import com.jdlink.domain.Produce.Procurement;
+import com.jdlink.domain.Produce.ProcurementPlan;
+import com.jdlink.domain.Produce.ProcurementPlanItem;
 import com.jdlink.domain.Unit;
 import com.jdlink.service.ProcurementService;
 import com.jdlink.util.ImportUtil;
@@ -765,4 +767,144 @@ public class ProcurementController {
 
     }
 
+    //获取采购单明细
+    @RequestMapping("getProcurement")
+    @ResponseBody
+    public String getProcurement(){
+        JSONObject res=new JSONObject();
+
+        try {
+        List<Material> materialList=procurementService.getProcurement();
+            res.put("status", "success");
+            res.put("message", "采购明细获取成功");
+            res.put("data", materialList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "采购明细获取失败");
+
+        }
+
+        return res.toString();
+    }
+
+
+    //采购计划单新增列表高级查询时间
+    @RequestMapping("searchNewProcurementPlan")
+    @ResponseBody
+    public String searchNewProcurementPlan(@RequestBody Material material){
+        JSONObject res=new JSONObject();
+
+        try {
+            List<Material> materialList=procurementService.searchNewProcurementPlan(material);
+            res.put("status", "success");
+            res.put("message", "时间查询成功");
+            res.put("data", materialList);
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "时间查询失败");
+        }
+
+        return res.toString();
+    }
+
+    //采购计划单新增页面赋值采购计划单号
+    @RequestMapping("getNewestProcurementPlanId")
+    @ResponseBody
+    public String getNewestProcurementPlanId(){
+        Date date=new Date();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyyMM");
+        String prefix=simpleDateFormat.format(date);
+       int count=procurementService.getPrefixCount(prefix)+1;
+
+       String number=String.valueOf(count);
+       while (number.length()<=3){
+           number="0"+number;
+       }
+       String procurementPlanId=prefix+number;
+
+
+
+        return procurementPlanId;
+    }
+
+
+    //添加采购计划单主表
+    @RequestMapping("addProcurementPlan")
+    @ResponseBody
+    public String addProcurementPlan(@RequestBody ProcurementPlan procurementPlan){
+        JSONObject res=new JSONObject();
+
+        try {
+            procurementService.addProcurementPlan(procurementPlan);
+            res.put("status", "success");
+            res.put("message", "添加成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "添加失败");
+        }
+
+        return res.toString();
+    }
+
+
+    //添加采购计划单字表==>传进来的是采购物资明细为了拿出申购部门
+    @RequestMapping("addProcurementPlanItem")
+    @ResponseBody
+    public String addProcurementPlanItem(@RequestBody Material material){
+        JSONObject res=new JSONObject();
+
+        try {
+            ProcurementPlanItem procurementPlanItem=new ProcurementPlanItem();
+            String receiptNumber=material.getReceiptNumber();
+
+            //更新采购申请的状态为生效中
+            procurementService.updateProcurementState(receiptNumber);
+            //根据主键查出申购部门
+            String proposer=procurementService.getApplyDepartmentByReceiptNumber(receiptNumber);
+
+            procurementPlanItem.setProcurementPlanId(material.getWareHouseName());//外键
+            procurementPlanItem.setProposer(proposer);//申请部门
+            procurementPlanItem.setSuppliesName(material.getSuppliesName());//物资名称
+            procurementPlanItem.setSpecifications(material.getSpecifications());//规格
+            procurementPlanItem.setUnit(material.getUnit());//单位
+            procurementPlanItem.setDemandQuantity((int)material.getDemandQuantity());//需求数量
+            procurementPlanItem.setRemarks(material.getNote());//备注
+            procurementService.addProcurementPlanItem(procurementPlanItem);
+            res.put("status", "success");
+            res.put("message", "添加成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "添加失败");
+        }
+        return res.toString();
+    }
+
+    //加载采购计划表
+    @RequestMapping("getProcurementPlanList")
+    @ResponseBody
+    public String getProcurementPlanList(@RequestBody Page page){
+        JSONObject res=new JSONObject();
+        try {
+            List<ProcurementPlan> procurementPlanList=procurementService.getProcurementPlanList(page);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", procurementPlanList);
+        }
+        catch (Exception e){
+
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+      return res.toString();
+    }
 }

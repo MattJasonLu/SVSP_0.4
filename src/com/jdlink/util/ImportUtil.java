@@ -137,9 +137,13 @@ public class ImportUtil {
                    // int col = xSheet.getRow(1).getPhysicalNumberOfCells();
                     List<Integer> numberList=new ArrayList<>();//存放列数的列表
                     for(int x=0;x<row;x++){
-                        numberList.add((int) xSheet.getRow(x).getLastCellNum());
+                        if(xSheet.getRow(x)!=null){
+                            numberList.add((int) xSheet.getRow(x).getLastCellNum());
+                        }
+
                     }
                     int col = Collections.max(numberList);//获取最大的列数
+
                     param = new Object[row][col];
                     for (int i = 0; i < row; i++) {
                         XSSFRow row1 = xSheet.getRow(i);
