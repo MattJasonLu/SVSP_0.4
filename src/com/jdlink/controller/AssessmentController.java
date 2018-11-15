@@ -47,20 +47,14 @@ public class AssessmentController {
             for (Contract contract : contractList) {
                 String clientId = contract.getClientId();
                 //map.put(clientId,laboratoryTest);
-                List<QuotationItem> quotationItemList = contract.getQuotationItemList();
-                List<WayBillItem> wayBillItemList = new ArrayList<>();
                 float wayBillPrice = 0;
                 float wayBillWastesAmount = 0;
-                //获取接运单明细数据
-                for (QuotationItem quotationItem : quotationItemList) {
-                    String code = quotationItem.getWastesCode();
-                    if (code != null) {
-                        WayBillItem wayBillItem = wayBillService.getWayBillItemByClientIdAndWastesCode(clientId, code);
-                        if(wayBillItem != null) {
-                            wayBillItemList.add(wayBillItem);
-                            wayBillPrice += wayBillItem.getWastesTotalPrice(); //计算接运单明细总额
-                            wayBillWastesAmount += wayBillItem.getWastesAmount();  // 计算危废总数量
-                        }
+                //根据合同ID获取接运单数据
+                WayBill wayBill = wayBillService.getWayBillByContractId(contract.getContractId());
+                if(wayBill != null){
+                    wayBillPrice = wayBill.getTotal(); //计算单个接运单总额
+                    for(WayBillItem wayBillItem : wayBill.getWayBillItemList()){
+                        wayBillWastesAmount += wayBillItem.getWastesAmount();  // 计算单个接运单的危废总数量
                     }
                 }
                 Date beginDate = contract.getBeginTime();
@@ -75,9 +69,9 @@ public class AssessmentController {
                 wayBillTotalPrice = map.get(month).getWayBillTotalPrice();
                 wayBillTotalWastesAmount = map.get(month).getWayBillTotalWastesAmount();
                 wayBillTotalPrice += wayBillPrice;
-                map.get(month).setWayBillTotalPrice(wayBillTotalPrice);    // 接运单总金额
+                map.get(month).setWayBillTotalPrice(wayBillTotalPrice);    // 所有接运单总金额
                 wayBillTotalWastesAmount += wayBillWastesAmount;
-                map.get(month).setWayBillTotalWastesAmount(wayBillTotalWastesAmount);   //接运单总数量
+                map.get(month).setWayBillTotalWastesAmount(wayBillTotalWastesAmount);   //所有接运单总数量
                 map.get(month).setTotalCommission(calculateTotalCommission(wayBillTotalWastesAmount));  // 总提成
             }
             JSONObject jMap = JSONObject.fromMap(map);
@@ -114,16 +108,12 @@ public class AssessmentController {
                 List<WayBillItem> wayBillItemList = new ArrayList<>();
                 float wayBillPrice = 0;
                 float wayBillWastesAmount = 0;
-                //获取接运单明细数据
-                for (QuotationItem quotationItem : quotationItemList) {
-                    String code = quotationItem.getWastesCode();
-                    if (code != null) {
-                        WayBillItem wayBillItem = wayBillService.getWayBillItemByClientIdAndWastesCode(clientId, code);
-                        if(wayBillItem != null) {
-                            wayBillItemList.add(wayBillItem);
-                            wayBillPrice += wayBillItem.getWastesTotalPrice(); //计算接运单明细总额
-                            wayBillWastesAmount += wayBillItem.getWastesAmount();  // 计算危废总数量
-                        }
+                //根据合同ID获取接运单数据
+                WayBill wayBill = wayBillService.getWayBillByContractId(contract.getContractId());
+                if(wayBill != null){
+                    wayBillPrice = wayBill.getTotal(); //计算单个接运单总额
+                    for(WayBillItem wayBillItem : wayBill.getWayBillItemList()){
+                        wayBillWastesAmount += wayBillItem.getWastesAmount();  // 计算单个接运单的危废总数量
                     }
                 }
                 Date beginDate = contract.getBeginTime();
@@ -178,6 +168,11 @@ public class AssessmentController {
         return totalCommission;
     }
 
+    /**
+     * 根据年月份查询合同数据查询
+     * @param month
+     * @return
+     */
     @RequestMapping("loadMonthSalesmanData")
     @ResponseBody
     public String loadMonthSalesmanData(String month) {
@@ -209,18 +204,12 @@ public class AssessmentController {
                 List<WayBillItem> wayBillItemList = new ArrayList<>();
                 float wayBillPrice = 0;           // 接运单总额
                 float wayBillWastesAmount = 0;     // 接运单危废总数量
-                //获取接运单明细数据
-                for (QuotationItem quotationItem : quotationItemList) {
-                    String code = quotationItem.getWastesCode();
-                    if (code != null) {
-                        WayBillItem wayBillItem = wayBillService.getWayBillItemByClientIdAndWastesCode(clientId, code);
-                        if(wayBillItem != null) {
-                            wayBillItemList.add(wayBillItem);
-                            if(wayBillItem.getWastesTotalPrice() != 0)
-                               wayBillPrice += wayBillItem.getWastesTotalPrice(); //计算接运单明细总额
-                            if(wayBillItem.getWastesAmount() != 0)
-                               wayBillWastesAmount += wayBillItem.getWastesAmount();  // 计算危废总数量
-                        }
+                //根据合同ID获取接运单数据
+                WayBill wayBill = wayBillService.getWayBillByContractId(contract.getContractId());
+                if(wayBill != null){
+                    wayBillPrice = wayBill.getTotal(); //计算单个接运单总额
+                    for(WayBillItem wayBillItem : wayBill.getWayBillItemList()){
+                        wayBillWastesAmount += wayBillItem.getWastesAmount();  // 计算单个接运单的危废总数量
                     }
                 }
                 if (!map.keySet().contains(salesmanId)) {          // 没有该业务员就添加，并初始化累加数据
@@ -297,24 +286,14 @@ public class AssessmentController {
                 List<WayBillItem> wayBillItemList = new ArrayList<>();
                 float wayBillPrice = 0;           // 接运单总额
                 float wayBillWastesAmount = 0;     // 接运单危废总数量
-                //获取接运单明细数据
-                String wayBillId = "";
-                for (QuotationItem quotationItem : quotationItemList) {
-                    String code = quotationItem.getWastesCode();
-                    if (code != null) {
-                        WayBillItem wayBillItem = wayBillService.getWayBillItemByClientIdAndWastesCode(clientId, code);
-                        if(wayBillItem != null) {
-                            wayBillItemList.add(wayBillItem);
-                            wayBillPrice += wayBillItem.getWastesTotalPrice(); //计算接运单明细总额
-                            wayBillWastesAmount += wayBillItem.getWastesAmount();  // 计算危废总数量
-                            wayBillId = wayBillItem.getWayBillId();                           // 根据最后一个wayBillItem获取wayBillId
-                        }
+                //根据合同ID获取接运单数据
+                WayBill wayBill = wayBillService.getWayBillByContractId(contract.getContractId());
+                if(wayBill != null){
+                    wayBillPrice = wayBill.getTotal(); //计算单个接运单总额
+                    for(WayBillItem wayBillItem : wayBill.getWayBillItemList()){
+                        wayBillWastesAmount += wayBillItem.getWastesAmount();  // 计算单个接运单的危废总数量
                     }
                 }
-                // 获取接运单日期和备注
-                WayBill wayBill = wayBillService.getWayBillById(wayBillId);
-                if (wayBillItemList.size() > 0)
-                    wayBill.setWayBillItemList(wayBillItemList);
                 if (!map3.keySet().contains(clientId)) {          // 没有就添加，并初始化累加数据
                     map3.put(clientId, new Assessment());
                     wayBillTotalPrice = 0;

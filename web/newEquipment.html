@@ -130,13 +130,13 @@
                 </thead>
                 <tbody>
                 <tr id="cloneTr1">
-                    <td class="text-center"><input type="text" class="focus" id="documentNumber" name="documentNumber" title="" readonly></td>
-                    <td class="text-center"><input type="text" class="focus " name="creator" id="creator" title=""></td>
-                    <td class="text-center"><input type="date" class="focus " name="dayTime" id="dayTime" title=""></td>
-                    <td class="text-center"><input type="text" class="focus " name="createDept" id="createDept" title=""></td>
-                    <td class="text-center"><input type="text" class="focus " name="editor" id="editor" title=""></td>
-                    <td class="text-center"><input type="date" class="focus " name="editTime" id="editTime" title=""></td>
-                    <td class="text-center"><input type="text" class="focus " name="note" id="note" title=""></td>
+                    <td class="text-center"><input type="text" class="form-control" id="documentNumber" name="documentNumber" title="" readonly></td>
+                    <td class="text-center"><input type="text" class="form-control" name="creator" id="creator" title=""></td>
+                    <td class="text-center"><input type="date" class="form-control" name="dayTime" id="dayTime" style="width: 150px;" title="" readonly></td>
+                    <td class="text-center"><input type="text" class="form-control" name="createDept" id="createDept" title=""></td>
+                    <td class="text-center"><input type="text" class="form-control" name="editor" id="editor" title=""></td>
+                    <td class="text-center"><input type="date" class="form-control" name="editTime" id="editTime" style="width: 150px;" title="" readonly></td>
+                    <td class="text-center"><input type="text" class="form-control" name="note" id="note" title=""></td>
                 </tr>
                 <tr>
                     <td class="text-center" style="height: 15%" colspan="7">设备表明细</td>
@@ -149,15 +149,13 @@
                     <th class="text-center" colspan="2">停运原因</th>
                 </tr>
                 <tr id="cloneTr2" class="myclass">
-                    <td class="text-center">1<input type="text" class="focus" id="id" name="id" title=""></td>
+                    <td class="text-center">1</td>
                     <td class="text-center" colspan="2">
-                        <select title="" class="focus" id="equipment" name="equipment">
-                            <option value="1"></option>
-                        </select>
+                        <select title="故障设备" class="form-control" id="equipment" name="equipment"></select>
                     </td>
-                    <td class="text-center"><input type="text" class="focus" onkeyup="stopping()" id="runningTime0" name="runningTime" title=""></td>
-                    <td class="text-center"><input type="text" class="focus" id="stopTime0" name="stopTime" title=""></td>
-                    <td class="text-center" colspan="2"><input type="text" class="focus " name="stopReason" id="stopReason0" title=""></td>
+                    <td class="text-center"><input type="number" class="form-control" onkeyup="stopping()" id="runningTime0" name="runningTime" title=""></td>
+                    <td class="text-center"><input type="number" class="form-control" id="stopTime0" name="stopTime" title=""></td>
+                    <td class="text-center" colspan="2"><input type="text" class="form-control " name="stopReason" id="stopReason0" title=""></td>
                 </tr>
                 <tr id="plusBtn">
                     <td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
@@ -168,28 +166,9 @@
                 </tr>
                 </tbody>
             </table>
-            <!--<div class="row">-->
-                <!--<div class="form-horizontal col-md-6">-->
-                    <!--<div class="form-group">-->
-                        <!--<label class="col-sm-4 control-label">保存之后 </label>-->
-                        <!--<div class="col-xs-5 radio">-->
-                            <!--<label>-->
-                                <!--<input type="radio" name="addType" id="addType1" value="continue" checked>-->
-                                <!--继续添加-->
-                            <!--</label>-->
-                            <!--<label>-->
-                                <!--<input type="radio" name="addType" id="addType2" value="break">-->
-                                <!--返回列表-->
-                            <!--</label>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<br>-->
+
             <div class="row text-center">
                 <a id="btnSave" class="btn btn-primary" onclick="addEquipment(this);">保存</a>
-                <!--<a id="btnCfm" class="btn btn-primary" onclick="addEquipment(this);">提交</a>-->
-                <!--<a class="btn btn-warning" onclick="equipmentReset()">重置</a>-->
                 <a class="btn btn-default" href="equipment.html">返回</a>
             </div>
         </div>

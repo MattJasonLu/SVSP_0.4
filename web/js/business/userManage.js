@@ -354,7 +354,7 @@ function showAuthorityById(e) {
             console.log(result);
         }
     });
-     if(bar == 0)count();  // 滚动条加载
+    // if(bar == 0)count();  // 滚动条加载
 }
 /**
  * 设置功能勾选
@@ -378,20 +378,20 @@ function setFunctionChecked(result) {
  * 设置页面加载滚动条
  * @type {number}
  */
-var bar = 0;
-function count() {
-    bar = bar + 1;
-    var barp = bar + '%';
-    $("#load-id").width(barp);
-    if (bar < 101) {
-        if (bar < 100) {
-            setTimeout("count()",10);
-        }else if (bar >= 100) {
-            $("#load-id").width('0%');
-            bar = 0;
-        }
-    }
-}
+// var bar = 0;
+// function count() {
+//     bar = bar + 1;
+//     var barp = bar + '%';
+//     $("#load-id").width(barp);
+//     if (bar < 101) {
+//         if (bar < 100) {
+//             setTimeout("count()",10);
+//         }else if (bar >= 100) {
+//             $("#load-id").width('0%');
+//             bar = 0;
+//         }
+//     }
+// }
 
 /**
  * 保存选中的节点到数据库

@@ -107,7 +107,7 @@
                 or companyName LIKE "%"#{keywords}"%"
                 or wastesCode like "%"#{keywords}"%"
                 or wastesName like "%"#{keywords}"%"
-                or laboratorySigner like "%"#{keywords}"%"
+                or sendingPerson like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -132,8 +132,8 @@
             <if test='applyState != null and applyState != ""'>
                 and applyState LIKE "%"#{applyState}"%"
             </if>
-            <if test='laboratorySigner != null and laboratorySigner != ""'>
-                and laboratorySigner LIKE "%"#{laboratorySigner}"%"
+            <if test='sendingPerson != null and sendingPerson != ""'>
+                and sendingPerson LIKE "%"#{sendingPerson}"%"
             </if>
             <if test='isPH != null and isPH != ""'>
                 and isPH = #{isPH}

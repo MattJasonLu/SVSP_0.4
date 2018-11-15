@@ -5,6 +5,7 @@ import com.jdlink.domain.Produce.SampleInformation;
 import com.jdlink.domain.Produce.WayBill;
 import com.jdlink.domain.Produce.WayBillItem;
 import com.jdlink.service.ClientService;
+import com.jdlink.service.ContractService;
 import com.jdlink.service.SalesmanService;
 import com.jdlink.service.WayBillService;
 import com.jdlink.util.DBUtil;
@@ -35,6 +36,8 @@ public class PRWayBillController {
     ClientService clientService;
     @Autowired
     SalesmanService salesmanService;
+    @Autowired
+    ContractService contractService;
 
     @RequestMapping("addWayBill")
     @ResponseBody
@@ -174,6 +177,13 @@ public class PRWayBillController {
                     String produceCompanyId = wayBillService.getClientIdByName(data[i][1].toString());
                     map.get(id.toString()).setProduceCompanyId(produceCompanyId);
                     map.get(id.toString()).setProduceCompanyName(data[i][1].toString());
+                    // 根据公司名获取当前有效期内的合同编号并绑定
+                    Contract contract = contractService.getWastesInfoByCompanyName(data[i][1].toString());   // 获取合同
+                    if (contract != null) { // 如果获取到则设置合同id
+                        map.get(id.toString()).setContractId(contract.getContractId());
+                    } else { // 没有获取到则设置合同ID为空
+                        map.get(id.toString()).setContractId("");
+                    }
                     map.get(id.toString()).setFounder(data[i][2].toString());
                     map.get(id.toString()).setRemarks(data[i][3].toString());
                     map.get(id.toString()).setProduceCompanyOperator(data[i][4].toString());
@@ -181,7 +191,6 @@ public class PRWayBillController {
                     //新存储一个id对象时，将以下两个累计数据清零
                     total = 0;
                     wayBillItemList = new ArrayList<>();
-
                 }
                 wayBillItemList.add(wayBillItem);
                 map.get(id.toString()).setWayBillItemList(wayBillItemList);
@@ -189,19 +198,25 @@ public class PRWayBillController {
                 map.get(id.toString()).setTotal(total);
                 // map.get(id.toString()).getWayBillItemList().add(wayBillItem);
             }
+            String message = "部分导入成功！";
             for (String key : map.keySet()) {
                 WayBill wayBill1 = wayBillService.getById(map.get(key).getId());
                 WayBill wayBill = map.get(key);
-                if (wayBill1 == null) {
-                    //插入新数据
-                    wayBillService.addWayBill(wayBill);
-                } else {
-                    //根据id更新数据
-                    wayBillService.update(wayBill);
+                if (!wayBill.getContractId().equals("")) { // 如果接运单绑定了合同ID则进行添加或更新
+                    message = "导入成功！";
+                    if (wayBill1 == null) {
+                        //插入新数据
+                        wayBillService.addWayBill(wayBill);
+                    } else {
+                        //根据id更新数据
+                        wayBillService.update(wayBill);
+                    }
+                }else{ // 没有ID则
+                    message += "\n" + wayBill.getProduceCompanyName() + "导入失败，没有检测到对应的合同，请检查公司名是否完整或者其合同是否存在或生效！";
                 }
             }
             res.put("status", "success");
-            res.put("message", "导入成功");
+            res.put("message", message);
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
@@ -495,7 +510,7 @@ public class PRWayBillController {
         JSONObject res = new JSONObject();
         try {
             Salesman salesman = salesmanService.getSalesmanByCompanyName(companyName);
-            res.put("data",salesman);
+            res.put("data", salesman);
             res.put("status", "success");
             res.put("message", "获取成功！");
         } catch (Exception e) {

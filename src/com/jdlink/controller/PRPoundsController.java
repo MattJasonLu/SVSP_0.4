@@ -160,15 +160,7 @@ public class PRPoundsController {
                 }
                 pounds.setDeliveryCompany(deliveryCompany);
                 // 收货单位
-                Client receiveCompany = null;
-                receiveCompany = clientService.getByName(data[i][8].toString());
-                if (receiveCompany == null) {
-                    receiveCompany = new Client();
-                    receiveCompany.setCompanyName(data[i][8].toString());
-                    receiveCompany.setClientId(clientService.getCurrentId());
-                    clientService.add(receiveCompany);
-                }
-                pounds.setReceiveCompany(receiveCompany);
+                pounds.setReceiveCompanyName(data[i][8].toString());
                 // 业务类型
                 pounds.setBusinessType(data[i][9].toString());
                 pounds.setEnterTime(DateUtil.getDateTimeFromStr(data[i][10].toString()));
@@ -340,7 +332,7 @@ public class PRPoundsController {
                 data[i][5] = pounds.getNetWeight().toString();
                 data[i][6] = pounds.getTare().toString();
                 data[i][7] = pounds.getDeliveryCompany().getCompanyName();
-                data[i][8] = pounds.getReceiveCompany().getCompanyName();
+                data[i][8] = pounds.getReceiveCompanyName();
                 data[i][9] = pounds.getBusinessType();
                 data[i][10] = getTimeSecondStr(pounds.getEnterTime());
                 data[i][11] = getTimeSecondStr(pounds.getOutTime());
@@ -461,6 +453,11 @@ public class PRPoundsController {
         return res.toString();
     }
 
+    /**
+     * 新增
+     * @param pounds
+     * @return
+     */
     @RequestMapping("addPounds")
     @ResponseBody
     public String addPounds(@RequestBody Pounds pounds){
@@ -475,6 +472,27 @@ public class PRPoundsController {
         }
         return res.toString();
     }
+
+    /**
+     * 修改
+     * @param pounds
+     * @return
+     */
+    @RequestMapping("updatePounds")
+    @ResponseBody
+    public String updatePounds(@RequestBody Pounds pounds){
+        JSONObject res = new JSONObject();
+        try{
+            poundsService.update(pounds);
+            res.put("status","success");
+            res.put("message","更新成功！");
+        }catch (Exception e){
+            res.put("status","fail");
+            res.put("message","更新失败！");
+        }
+        return res.toString();
+    }
+
 
 
 }

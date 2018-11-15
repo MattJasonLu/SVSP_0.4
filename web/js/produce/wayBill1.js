@@ -712,45 +712,45 @@ function setDataItemList(result) {
                         $(this).html(result.data.id);
                         break;
                     case (1):
-                        // 委托单位
-                        $(this).html(result.data.produceCompanyName);
-                        break;
-                    case (2):
-                        //接收单位
-                        $(this).html(obj.receiveCompanyName);
-                        break;
-                    case (3):
-                        //接收单位经手人
-                        $(this).html(obj.receiveCompanyOperator);
-                        break;
-                    case (4):
-                        // 接运单日期
-                        $(this).html(getDateStr(obj.receiveDate));
-                        break;
-                    case (5):
-                        //业务员
-                        $(this).html(obj.salesmanName);
-                        break;
-                    case (6):
                         //危废名称
                         $(this).html(obj.wastesName);
                         break;
-                    case (7):
+                    case (2):
                         //危废代码
                         $(this).html(obj.wastesCode);
                         break;
-                    case (8):
+                    case (3):
                         //数量
                         $(this).html(obj.wastesAmount.toFixed(2));
                         break;
-                    case (9):
+                    case (4):
                         // 单价
                         $(this).html(obj.wastesPrice.toFixed(2));
                         break;
-                    case (10):
+                    case (5):
                         // 合计
                         var total = obj.wastesPrice * obj.wastesAmount;
                         $(this).html(total.toFixed(2));
+                        break;
+                    case (6):
+                        //业务员
+                        $(this).html(obj.salesmanName);
+                        break;
+                    case (7):
+                        // 委托单位
+                        $(this).html(result.data.produceCompanyName);
+                        break;
+                    case (8):
+                        //接收单位
+                        $(this).html(obj.receiveCompanyName);
+                        break;
+                    case (9):
+                        //接收单位经手人
+                        $(this).html(obj.receiveCompanyOperator);
+                        break;
+                    case (10):
+                        // 接运单日期
+                        $(this).html(getDateStr(obj.receiveDate));
                         break;
                     case (11):
                         // 开票日期
@@ -1477,53 +1477,44 @@ function autoSetSalesman() {
             console.log(result);
         }
     });
-    autoSetWastesInfo(companyName);  //设置危废信息
-}
-var contractId = '';
-
-/**
- * 选择公司后自动匹配危废信息
- */
-function autoSetWastesInfo(companyName) {
-    //var companyName = $("#modal-produceCompanyName").find("option:selected").text();// 获取产废单位名
-    //var wastesName = $(item).val();// 获取危废名称
-    if (companyName != "") {//若两个参数不为空时，获取合同信息
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "getWastesInfoByCompanyName",             // url
-            data: {
-                companyName: companyName
-            },
-            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            success: function (result) {
-                //alert("数据获取成功！");
-                if (result != null && result.status == "success" && result.data != null) {
-                    console.log(result);
-                    var wastesList = result.data.quotationItemList;
-                    contractId = result.data.contractId;
-                    for (var i = 0; i < wastesList.length; i++) {
-                        if (i > 0) addNewItemLine();
-                        var $i = i;
-                        $("input[id='modal" + $i + "-wastesName']").val(wastesList[i].wastesName);
-                        $("input[id='modal" + $i + "-wasteAmount']").val(wastesList[i].contractAmount);
-                        $("select[id='modal" + $i + "-wastesCode']").selectpicker('val', wastesList[i].wastesCode);
-                        $("input[id='modal" + $i + "-wastesPrice']").val(wastesList[i].unitPriceTax);
-                        $("input[id='modal" + $i + "-receiveDate']").get(0).value = getCurrentDate();
-                    }
-                    // $(".active").addClass("hidden"); // 隐藏输入框
-                    // if($("input").attr("placeholder") == "搜索..."){
-                    // $("input").addClass("hidden");
-                    //}
-                }
-            },
-            error: function (result) {
-                alert("服务器异常!");
+    console.log(companyName);
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getWastesInfoByCompanyName",             // url
+        data: {
+            companyName: companyName
+        },
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            //alert("数据获取成功！");
+            if (result != null && result.status == "success" && result.data != null) {
+                console.log("合同数据:");
                 console.log(result);
+                var wastesList = result.data.quotationItemList;
+                contractId = result.data.contractId;
+                console.log("合同ID：" + contractId);
+                for (var i = 0; i < wastesList.length; i++) {
+                    if (i > 0) addNewItemLine();
+                    var $i = i;
+                    $("input[id='modal" + $i + "-wastesName']").val(wastesList[i].wastesName);
+                    $("input[id='modal" + $i + "-wasteAmount']").val(wastesList[i].contractAmount.toFixed(2));
+                    $("select[id='modal" + $i + "-wastesCode']").selectpicker('val', wastesList[i].wastesCode);
+                    $("input[id='modal" + $i + "-wastesPrice']").val(wastesList[i].unitPriceTax.toFixed(2));
+                    $("input[id='modal" + $i + "-receiveDate']").get(0).value = getCurrentDate();
+                }
+            }else{
+                alert("为获取到合同数据，请检查该公司合同是否存在、审核或过期！");
             }
-        });
-    }
+        },
+        error: function (result) {
+            alert("服务器异常!");
+            console.log(result);
+        }
+    });
 }
+
+var contractId = '';
 
 /**
  * 改变背景颜色
