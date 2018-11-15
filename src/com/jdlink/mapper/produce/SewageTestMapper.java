@@ -45,5 +45,8 @@ public interface SewageTestMapper {
     List<String> getAllSewageTestId();
     List<String> getAllSoftTestId();
     List<String> getAllSecondaryTestId();
+    void cancelSewaGeregistration(String id);
+    void cancelSoftGeregistration(String id);
+    void cancelSecondaryGeregistration(String id);
 
 }

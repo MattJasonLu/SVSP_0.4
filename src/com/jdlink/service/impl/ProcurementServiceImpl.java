@@ -103,6 +103,16 @@ public class ProcurementServiceImpl implements ProcurementService {
     }
 
     @Override
+    public List<Material> getProcurement() {
+        return procurementMapper.getProcurement();
+    }
+
+    @Override
+    public List<Material> searchNewProcurementPlan(Material material) {
+        return procurementMapper.searchNewProcurementPlan(material);
+    }
+
+    @Override
     public List<Material> searchMaterial(Material material){ return procurementMapper.searchMaterial(material);}
 
     @Override

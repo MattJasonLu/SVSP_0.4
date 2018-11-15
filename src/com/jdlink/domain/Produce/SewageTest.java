@@ -3,6 +3,8 @@ package com.jdlink.domain.Produce;
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
 
+import java.util.Date;
+
 //污水化验
 public class SewageTest {
 
@@ -42,6 +44,17 @@ public class SewageTest {
 
     //分页
     private Page page;
+
+    //创建日期
+    private Date dateTime;
+
+    public Date getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(Date dateTime) {
+        this.dateTime = dateTime;
+    }
 
     public CheckState getCheckState() {
         return checkState;
