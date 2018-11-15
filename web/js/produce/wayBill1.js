@@ -1499,9 +1499,11 @@ function autoSetWastesInfo(companyName) {
             success: function (result) {
                 //alert("数据获取成功！");
                 if (result != null && result.status == "success" && result.data != null) {
+                    console.log("合同数据:");
                     console.log(result);
                     var wastesList = result.data.quotationItemList;
                     contractId = result.data.contractId;
+                    console.log("合同ID："+contractId);
                     for (var i = 0; i < wastesList.length; i++) {
                         if (i > 0) addNewItemLine();
                         var $i = i;
@@ -1511,10 +1513,6 @@ function autoSetWastesInfo(companyName) {
                         $("input[id='modal" + $i + "-wastesPrice']").val(wastesList[i].unitPriceTax);
                         $("input[id='modal" + $i + "-receiveDate']").get(0).value = getCurrentDate();
                     }
-                    // $(".active").addClass("hidden"); // 隐藏输入框
-                    // if($("input").attr("placeholder") == "搜索..."){
-                    // $("input").addClass("hidden");
-                    //}
                 }
             },
             error: function (result) {

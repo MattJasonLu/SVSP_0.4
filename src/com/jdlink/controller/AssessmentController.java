@@ -47,6 +47,7 @@ public class AssessmentController {
             for (Contract contract : contractList) {
                 String clientId = contract.getClientId();
                 //map.put(clientId,laboratoryTest);
+                // 获取合同的费用明细及相关危废
                 List<QuotationItem> quotationItemList = contract.getQuotationItemList();
                 List<WayBillItem> wayBillItemList = new ArrayList<>();
                 float wayBillPrice = 0;
@@ -55,6 +56,7 @@ public class AssessmentController {
                 for (QuotationItem quotationItem : quotationItemList) {
                     String code = quotationItem.getWastesCode();
                     if (code != null) {
+                        // 根据合同的公司ID和危废代码和接运单ID获取接运单明细
                         WayBillItem wayBillItem = wayBillService.getWayBillItemByClientIdAndWastesCode(clientId, code);
                         if(wayBillItem != null) {
                             wayBillItemList.add(wayBillItem);

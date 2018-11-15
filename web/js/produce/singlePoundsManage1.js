@@ -507,6 +507,11 @@ function downloadModal() {
     }
 }
 
+function add(){
+    localStorage.id = null;// 新增页面清除ID
+    window.location.href="singlePoundsManageAdd.html";
+}
+
 /**
  * 导入excel
  *
@@ -701,6 +706,16 @@ function toView1(item) {
 }
 
 /**
+ * 编辑功能
+ * @param item
+ */
+function toEdit(item){
+    var id = getPoundsId(item);
+    localStorage.id = id;
+    location.href = "singlePoundsManageAdd.html";
+}
+
+/**
  * 作废功能
  */
 function invalid(item) {
@@ -753,8 +768,7 @@ function loadPoundsItems() {
                 if (data.deliveryCompany != null)
                 $("#modal1_deliveryCompany").text(data.deliveryCompany.companyName);
                 $("#modal1_tare").text(data.tare);
-                if (data.receiveCompany != null)
-                $("#modal1_receiveCompany").text(data.receiveCompany.companyName);
+                $("#modal1_receiveCompany").text(data.receiveCompanyName);
                 $("#modal1_netWeight").text(data.netWeight);
                 $("#modal1_businessType").text(data.businessType);
                 $("#modal1_enterTime").text(getTimeStr(data.enterTime));
@@ -900,6 +914,8 @@ function cancel() {
  * 初始化数据
  */
 function loadPoundsAdd(){
+    $("#head").text("磅单新增");
+    //$("#save").text("新增");
     setSelectedListAdd();  // 填充下拉框数据
     $("#add_receiveCompany").val("北控安耐得环保科技发展常州有限公司");  // 收货单位默认为北控
     if(getCurrentUserData() != null)
@@ -909,6 +925,50 @@ function loadPoundsAdd(){
         // style: 'btn-info',
         size: 4
     });//下拉框样式
+    if(localStorage.id != null && localStorage.id != "null"){
+        $("#head").text("磅单修改");
+        $("#save").text("修改");
+        // 获取数据
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getPounds",          // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                id: localStorage.id
+            },
+            dataType: "json",
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result.data);
+                    var data = eval(result.data); // 赋值
+                    $("#add_enterTime").val(getTimeStr(data.enterTime));
+                    $("#add_founder").val(data.founder);
+                    $("#add_enterLicencePlate").val(data.enterLicencePlate);
+                    $("#add_outLicencePlate").val(data.outLicencePlate);
+                    $("#add_goodsName").val(data.goodsName);
+                    $("#add_grossWeight").val(data.grossWeight);
+                    $("#add_netWeight").val(data.netWeight);
+                    $("#add_tare").val(data.tare);
+                    $("#add_wastesCode").selectpicker('val',data.wastesCode); // 危废代码
+                    if (data.deliveryCompany != null)
+                        $("#add_deliveryCompany").selectpicker('val',data.deliveryCompany.clientId);  // 发货公司
+                    $("#add_receiveCompany").val(data.receiveCompanyName);
+                    $("#add_outTime").val(getTimeStr(data.outTime));
+                    $("#add_businessType").val(data.businessType);
+                    $("#add_weighman").val(data.weighman);
+                    $("#add_driver").val(data.driver);
+                    $("#add_remarks").val(data.remarks);
+                    $("#add_transferId").val(data.transferId);
+                } else {
+                    console.log(result.message);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                console.log("首页获取失败");
+            }
+        });
+    }
 }
 
 /**
@@ -955,7 +1015,7 @@ function setSelectedListAdd(){
                 $.each(data.wastesCodeList, function (index, item) {
                     var option = $('<option />');
                     if (item != null) {
-                        option.val(parseInt(item.code.replace(/[^0-9]/ig, "")));
+                        option.val(item.code);
                         option.text(item.code);
                         wastesCode.append(option);
                     }
@@ -1007,10 +1067,7 @@ function addPounds(){
     deliveryCompany.companyName = $("#add_deliveryCompany option:selected").text();
     deliveryCompany.clientId = $("#add_deliveryCompany option:selected").val();
     pounds.deliveryCompany = deliveryCompany;
-    var receiveCompany = {};
-    receiveCompany.companyName = $("#add_receiveCompany option:selected").text();
-    //receiveCompany.clientId = $("#add_receiveCompany option:selected").val();
-    pounds.receiveCompany = receiveCompany;
+    pounds.receiveCompanyName = $("#add_receiveCompany").val();
     pounds.netWeight = $("#add_netWeight").val();
     pounds.tare = $("#add_tare").val();
     pounds.grossWeight = $("#add_grossWeight").val();
@@ -1020,32 +1077,60 @@ function addPounds(){
     pounds.weighman = $("#add_weighman").val();
     pounds.remarks = $("#add_remarks").val();
     pounds.founder = $("#add_founder").val();
-    pounds.creationDate = dateToString(new Date());
     console.log(pounds);
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "addPounds",         // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(pounds),
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (result) {
-            console.log(result);
-            if (result.data != undefined || result.status == "success") {
-                if(confirm("保存成功，是否返回主页?")){
-                    window.location.href = 'singlePoundsManage1.html';
+    if($("#save").text() == "新增") {
+        pounds.creationDate = dateToString(new Date());
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "addPounds",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(pounds),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                console.log(result);
+                if (result.data != undefined || result.status == "success") {
+                    if (confirm("保存成功，是否返回主页?")) {
+                        window.location.href = 'singlePoundsManage1.html';
+                    } else {
+                        window.location.reload();
+                    }
                 } else {
-                    window.location.reload();
+                    console.log(result.message);
                 }
-            } else {
-                console.log(result.message);
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器错误！");
             }
-        },
-        error: function (result) {
-            console.log(result);
-            alert("服务器错误！");
-        }
-    });
+        });
+    }else if($("#save").text() == "修改"){
+        pounds.id = localStorage.id;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "updatePounds",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(pounds),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                console.log(result);
+                if (result.data != undefined || result.status == "success") {
+                    if (confirm("修改成功，是否返回主页?")) {
+                        window.location.href = 'singlePoundsManage1.html';
+                    } else {
+                        window.location.reload();
+                    }
+                } else {
+                    console.log(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器错误！");
+            }
+        });
+    }
 }
 
 /**

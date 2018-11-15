@@ -233,8 +233,8 @@
                 <div class="pull-left col-md-6">
                     <a class="btn btn-primary btn-xs" href="#" onclick="appointModal();"><span
                             class="glyphicon glyphicon-plus" aria-hidden="true"></span> 预约登记</a>
-                    <a class="btn btn-primary btn-xs" href="receiveSampleInfoDetial.html"><span
-                            class="glyphicon glyphicon-search" aria-hidden="true"></span> 明细页面</a>
+                    <!--<a class="btn btn-primary btn-xs" href="receiveSampleInfoDetial.html"><span-->
+                            <!--class="glyphicon glyphicon-search" aria-hidden="true"></span> 明细页面</a>-->
                     <a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose()"><span
                             class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                     <a class="btn btn-primary btn-xs" onclick="exportExcel()"><span
@@ -298,6 +298,10 @@
                                             <input type="checkbox" name="isViscosity1" id="isViscosity1"
                                                    value="true" onchange="searchSampleInfo()">黏度
                                         </label>
+                                        <label>
+                                            <input type="checkbox" name="isHotMelt1" id="isHotMelt1" value="true"
+                                                   onchange="searchSampleInfo()">热融
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -337,10 +341,6 @@
                                             <input type="checkbox" name="isP1" id="isP1" value="true"
                                                    onchange="searchSampleInfo()">磷
                                         </label>
-                                        <label>
-                                            <input type="checkbox" name="isHotMelt1" id="isHotMelt1" value="true"
-                                                   onchange="searchSampleInfo()">热融
-                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -354,9 +354,9 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="search-signer" class="col-sm-4 control-label">化验室签收人</label>
+                                <label for="search-sendingPerson" class="col-sm-4 control-label">送样人</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-signer" name="search-signer"
+                                    <input type="text" class="form-control" id="search-sendingPerson" name="search-sendingPerson"
                                            placeholder="" onkeydown="enterSearch()">
                                 </div>
                             </div>
@@ -378,6 +378,7 @@
                     <th class="text-center">预约单号</th>
                     <th class="text-center">产废单位</th>
                     <th class="text-center">危废名称</th>
+                    <th class="text-center">危废代码</th>
                     <th class="text-center">危废形态</th>
                     <th class="text-center">检测项目</th>
                     <th class="text-center">送样人</th>
@@ -394,6 +395,7 @@
                                    aria-label="...">
                         </label>
                     </td>
+                    <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -623,17 +625,17 @@
                                     </label>
                                 </td>
                             </tr>
-                            <tr id="plusBtn">
-                                <td>
-                                    <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span
-                                            class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-                                </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                            <!--<tr id="plusBtn">-->
+                                <!--<td>-->
+                                    <!--<a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span-->
+                                            <!--class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>-->
+                                <!--</td>-->
+                                <!--<td></td>-->
+                                <!--<td></td>-->
+                                <!--<td></td>-->
+                                <!--<td></td>-->
+                                <!--<td></td>-->
+                            <!--</tr>-->
                             </tbody>
                         </table>
                     </div>
@@ -678,7 +680,7 @@
                             <div class="form-group col-md-6">
                                 <label for="model3-id" class="col-sm-4 control-label">预约单号</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="model3-id"
+                                    <input type="text" class="focus" id="model3-id"
                                            name="id" readonly >
                                 </div>
                             </div>
@@ -759,17 +761,17 @@
                                     </label>
                                 </td>
                             </tr>
-                            <tr id="addBtn3">
-                                <td>
-                                    <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span
-                                            class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-                                </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                            <!--<tr id="addBtn3">-->
+                                <!--<td>-->
+                                    <!--<a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span-->
+                                            <!--class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>-->
+                                <!--</td>-->
+                                <!--<td></td>-->
+                                <!--<td></td>-->
+                                <!--<td></td>-->
+                                <!--<td></td>-->
+                                <!--<td></td>-->
+                            <!--</tr>-->
                             </tbody>
                         </table>
                     </div>

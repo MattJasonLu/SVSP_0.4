@@ -66,7 +66,7 @@ public class Pounds {
     /**
      * 收货单位
      */
-    private Client receiveCompany;
+    private String receiveCompanyName;
     /**
      * 业务类型
      */
@@ -228,12 +228,12 @@ public class Pounds {
         this.deliveryCompany = deliveryCompany;
     }
 
-    public Client getReceiveCompany() {
-        return receiveCompany;
+    public String getReceiveCompanyName() {
+        return receiveCompanyName;
     }
 
-    public void setReceiveCompany(Client receiveCompany) {
-        this.receiveCompany = receiveCompany;
+    public void setReceiveCompanyName(String receiveCompanyName) {
+        this.receiveCompanyName = receiveCompanyName;
     }
 
     public String getBusinessType() {
@@ -338,7 +338,6 @@ public class Pounds {
                 ", netWeight=" + netWeight +
                 ", tare=" + tare +
                 ", deliveryCompany=" + deliveryCompany +
-                ", receiveCompany=" + receiveCompany +
                 ", businessType='" + businessType + '\'' +
                 ", enterTime=" + enterTime +
                 ", outTime=" + outTime +

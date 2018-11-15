@@ -367,12 +367,16 @@ function setSampleList(result) {
                 case (3):
                     $(this).html(obj.wastesName);
                     break;
-                // 危废形态
+                //危废代码
                 case (4):
+                    $(this).html(obj.wastesCode);
+                    break;
+                // 危废形态
+                case (5):
                     if (obj.wastesFormType != null)
                         $(this).html(obj.wastesFormType.name);
                     break;
-                case (5):
+                case (6):
                     //检测项目
                 {
                     var list = [];
@@ -403,15 +407,15 @@ function setSampleList(result) {
                     $(this).html(obj.items);
                     break;
                 // 增加检测项目
-                case (6):
+                case (7):
                     // 送样人
                     $(this).html(obj.sendingPerson);
                     break;
-                case (7):
+                case (8):
                     // 签收人
                     $(this).html(obj.laboratorySigner);
                     break;
-                case (8):
+                case (9):
                     // 状态
                     if (obj.applyState != null) {
                         obj.name = obj.applyState.name;
@@ -936,7 +940,7 @@ function adjustSample(menu) {
                         $("#model3-id").val(sampleId);
                         num = 1; // 重新计数
                         for (var i = 0; i < data.wastesList.length; i++) {
-                            if (i > 0) addNewLine(null);
+                          //  if (i > 0) addNewLine(null);
                             var $i = i;
                             $("select[name='wastes[" + $i + "].wastesCode']").selectpicker('val', data.wastesList[i].code);
                             $("input[name='wastes[" + $i + "].wastesName']").val(data.wastesList[i].name);
@@ -1154,7 +1158,7 @@ function searchSampleInfo() {
             id: $.trim($("#search-id").val()),
             companyName: $.trim($("#search-companyName").val()),
             wastesCode: $.trim($("#search-wastesCode").val()),
-            laboratorySigner: $.trim($("#search-signer").val()),
+            sendingPerson: $.trim($("#search-sendingPerson").val()),
             applyState: applyState,
             isPH: $("#isPH1").prop("checked"),
             isAsh: $("#isAsh1").prop("checked"),

@@ -169,8 +169,9 @@
         update t_pr_pounds
         set enterLicencePlate =#{enterLicencePlate},outLicencePlate =#{outLicencePlate},goodsName =#{goodsName},
         grossWeight =#{grossWeight},netWeight =#{netWeight},tare =#{tare},deliveryCompanyId =#{deliveryCompany.clientId},
-        receiveCompanyId =#{receiveCompany.clientId},businessType =#{businessType},enterTime =#{enterTime},
-        outTime =#{outTime},driver =#{driver},weighman =#{weighman},remarks= #{remarks},wastesCode = #{wastesCode}
+        receiveCompanyName =#{receiveCompanyName},businessType =#{businessType},enterTime =#{enterTime},
+        outTime =#{outTime},driver =#{driver},weighman =#{weighman},remarks= #{remarks},wastesCode = #{wastesCode},
+        transferId=#{transferId},founder=#{founder}
         where id = #{id};
     </update>
 
@@ -189,11 +190,11 @@
     <insert id="add" parameterType="Pounds">
         insert into t_pr_pounds
         (id,transferId,founder,creationDate,enterLicencePlate,goodsName,grossWeight,netWeight,tare,
-        deliveryCompanyId,receiveCompanyId,businessType,enterTime,outTime,driver,weighman,remarks,
+        deliveryCompanyId,receiveCompanyName,businessType,enterTime,outTime,driver,weighman,remarks,
         nowTime,state,wastesCode,creationTime)
         values
         (#{id},#{transferId},#{founder},#{creationDate},#{outLicencePlate},
-        #{goodsName},#{grossWeight},#{netWeight},#{tare},#{deliveryCompany.clientId},#{receiveCompany.clientId},
+        #{goodsName},#{grossWeight},#{netWeight},#{tare},#{deliveryCompany.clientId},#{receiveCompanyName},
         #{businessType},#{enterTime},#{outTime},#{driver},#{weighman},#{remarks},NOW(),'Confirm',#{wastesCode},NOW());
 
         update t_pl_inboundplanorder
