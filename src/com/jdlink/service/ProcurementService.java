@@ -29,4 +29,6 @@ public interface ProcurementService {
     int countProcurementItemList();
     void submitProcurementListById(String receiptNumber);
     void updateMaterial(Material material);
+    List<Material> getProcurement();
+    List<Material>  searchNewProcurementPlan(Material material);
 }
