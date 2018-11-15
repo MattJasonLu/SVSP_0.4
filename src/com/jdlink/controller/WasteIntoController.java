@@ -247,14 +247,14 @@ public class WasteIntoController {
      for(int i=0;i<secondarySampleItemList.size();i++){
 
          //根据编号获取次生化验信息
-         if(sewageTestService.getSecondaryTestById(id)!=null){
+         if(sewageTestService.getSecondaryTestById(secondarySampleItemList.get(i).getId())!=null){
              //更新
-             wasteIntoService.updateSecondarySample(id);
+             wasteIntoService.updateSecondarySample(secondarySampleItemList.get(i).getId());
          }
 
-         if(sewageTestService.getSecondaryTestById(id)==null){
+         if(sewageTestService.getSecondaryTestById(secondarySampleItemList.get(i).getId())==null){
             //新增
-             wasteIntoService.SecondarySample(id);
+             wasteIntoService.SecondarySample(secondarySampleItemList.get(i).getId());
          }
 
      }

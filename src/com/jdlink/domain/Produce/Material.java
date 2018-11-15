@@ -5,6 +5,7 @@ import com.jdlink.domain.Inventory.WareHouse;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Unit;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -75,6 +76,40 @@ public class Material {
      * 状态
      */
     private CheckState state;
+
+    //创建日期
+    private Date createDate;
+
+    //创建日期开始
+    private Date createDateStart;
+
+    //创建日期结束
+    private Date createDateEnd;
+
+
+    public Date getCreateDateStart() {
+        return createDateStart;
+    }
+
+    public void setCreateDateStart(Date createDateStart) {
+        this.createDateStart = createDateStart;
+    }
+
+    public Date getCreateDateEnd() {
+        return createDateEnd;
+    }
+
+    public void setCreateDateEnd(Date createDateEnd) {
+        this.createDateEnd = createDateEnd;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
 
     public CheckState getState() {
         return state;

@@ -3,6 +3,8 @@ package com.jdlink.domain.Produce;
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
 
+import java.util.Date;
+
 public class SoftTest {
     private String id;//软水验单编号
 
@@ -28,6 +30,17 @@ public class SoftTest {
     private  float phenolphthalein;//酚酞碱度
 
     private CheckState checkState;
+
+    //创建日期
+    private Date dateTime;
+
+    public Date getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(Date dateTime) {
+        this.dateTime = dateTime;
+    }
 
     public CheckState getCheckState() {
         return checkState;

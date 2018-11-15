@@ -18,15 +18,22 @@
         SELECT * FROM t_pr_sampleinfoanalysis
         <where>
             <if test="sampleInfoAnalysis != null and sampleInfoAnalysis.keyword != null and sampleInfoAnalysis.keyword != ''">
-                and id LIKE "%"#{sampleInfoAnalysis.keyword}"%" or dispatcher like "%"#{sampleInfoAnalysis.keyword}"%" or destination like "%"#{sampleInfoAnalysis.keyword}"%"
-                or transferTime like binary "%"#{sampleInfoAnalysis.keyword}"%" or produceCompanyName like "%"#{sampleInfoAnalysis.keyword}"%"
-                or transportCompanyName like "%"#{sampleInfoAnalysis.keyword}"%" or acceptCompanyName like "%"#{sampleInfoAnalysis.keyword}"%"
+                and (transferDraftId LIKE "%"#{sampleInfoAnalysis.keyword}"%"
+                or wastesName like "%"#{sampleInfoAnalysis.keyword}"%"
+                or wastesCode like "%"#{sampleInfoAnalysis.keyword}"%"
+                or produceCompanyId in (select clientId from client where companyName like "%"#{sampleInfoAnalysis.keyword}"%"))
             </if>
-            <if test="sampleInfoAnalysis != null and sampleInfoAnalysis.id != null and sampleInfoAnalysis.id != ''">
-                and id LIKE "%"#{sampleInfoAnalysis.id}"%"
+            <if test="sampleInfoAnalysis != null and sampleInfoAnalysis.transferDraftId != null and sampleInfoAnalysis.transferDraftId != ''">
+                and transferDraftId LIKE "%"#{sampleInfoAnalysis.transferDraftId}"%"
             </if>
-            <if test="sampleInfoAnalysis != null and sampleInfoAnalysis.produceCompany != null and sampleInfoAnalysis.produceCompany.companyName != null and sampleInfoAnalysis.produceCompany.companyName != ''">
-                and produceCompanyName LIKE "%"#{sampleInfoAnalysis.produceCompany.companyName}"%"
+            <if test="sampleInfoAnalysis != null and sampleInfoAnalysis.produceCompany != null and sampleInfoAnalysis.produceCompany.companyName != ''">
+                and produceCompanyId in (select clientId from client where companyName LIKE "%"#{sampleInfoAnalysis.produceCompany.companyName}"%")
+            </if>
+            <if test="sampleInfoAnalysis != null and sampleInfoAnalysis.wastesName != null and sampleInfoAnalysis.wastesName != ''">
+                and wastesName LIKE "%"#{sampleInfoAnalysis.wastesName}"%"
+            </if>
+            <if test="sampleInfoAnalysis != null and sampleInfoAnalysis.wastesCode != null and sampleInfoAnalysis.wastesCode != ''">
+                and wastesCode LIKE "%"#{sampleInfoAnalysis.wastesCode}"%"
             </if>
             <if test="true">
                 and checkState != 'Invalid'
@@ -58,15 +65,22 @@
         SELECT count(*) FROM t_pr_sampleinfoanalysis
         <where>
             <if test="keyword != null and keyword != ''">
-                and id LIKE "%"#{keyword}"%" or dispatcher like "%"#{keyword}"%" or destination like "%"#{keyword}"%"
-                or transferTime like binary "%"#{keyword}"%" or produceCompanyName like "%"#{keyword}"%"
-                or transportCompanyName like "%"#{keyword}"%" or acceptCompanyName like "%"#{keyword}"%"
+                and (transferDraftId LIKE "%"#{keyword}"%"
+                or wastesName like "%"#{keyword}"%"
+                or wastesCode like "%"#{keyword}"%"
+                or produceCompanyId in (select clientId from client where companyName like "%"#{keyword}"%"))
             </if>
-            <if test="id != null and id != ''">
-                and id LIKE "%"#{id}"%"
+            <if test="transferDraftId != null and transferDraftId != ''">
+                and transferDraftId LIKE "%"#{transferDraftId}"%"
             </if>
-            <if test="produceCompany != null and produceCompany.companyName != null and produceCompany.companyName != ''">
-                and produceCompanyName LIKE "%"#{produceCompany.companyName}"%"
+            <if test="produceCompany != null and produceCompany.companyName != ''">
+                and produceCompanyId in (select clientId from client where companyName LIKE "%"#{produceCompany.companyName}"%")
+            </if>
+            <if test="wastesName != null and wastesName != ''">
+                and wastesName LIKE "%"#{wastesName}"%"
+            </if>
+            <if test="wastesCode != null and wastesCode != ''">
+                and wastesCode LIKE "%"#{wastesCode}"%"
             </if>
             <if test="true">
                 and checkState != 'Invalid'

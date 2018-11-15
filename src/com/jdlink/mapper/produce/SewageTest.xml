@@ -7,9 +7,9 @@
     <!--添加污水化验单-->
 
 <insert id="addSewageTest" parameterType="SewageTest">
-    insert into t_pr_sewagetest(id, address, ph, COD, BOD5, N2, alkalinity, bicarbonate, nitrogen, phosphorus, remarks, sampleId,nowTime,alkalinityCaCo3,alkalinityHCO3,bicarbonateCaCo3,bicarbonateHCO3,checkState)
+    insert into t_pr_sewagetest(id, address, ph, COD, BOD5, N2, alkalinity, bicarbonate, nitrogen, phosphorus, remarks, sampleId,nowTime,alkalinityCaCo3,alkalinityHCO3,bicarbonateCaCo3,bicarbonateHCO3,checkState,dateTime)
     values
-    (#{id},#{address},#{ph},#{COD},#{BOD5},#{N2},#{alkalinity},#{bicarbonate},#{nitrogen},#{phosphorus},#{remarks},#{sampleId},NOW(),#{alkalinityCaCo3},#{alkalinityHCO3},#{bicarbonateCaCo3},#{bicarbonateHCO3},'ToSubmit');
+    (#{id},#{address},#{ph},#{COD},#{BOD5},#{N2},#{alkalinity},#{bicarbonate},#{nitrogen},#{phosphorus},#{remarks},#{sampleId},NOW(),#{alkalinityCaCo3},#{alkalinityHCO3},#{bicarbonateCaCo3},#{bicarbonateHCO3},'ToSubmit',NOW());
 </insert>
 
     <select id="getSewageTestById" parameterType="String" resultType="SewageTest">
@@ -20,13 +20,13 @@
     <update id="updateSewageTestById" parameterType="SewageTest">
         update t_pr_sewagetest set address=#{address},ph=#{ph},COD=#{COD},BOD5=#{BOD5},N2=#{N2},alkalinity=#{alkalinity},
         bicarbonate=#{bicarbonate},nitrogen=#{nitrogen},phosphorus=#{phosphorus},remarks=#{remarks},sampleId=#{sampleId},nowTime=NOW(),alkalinityHCO3=#{alkalinityHCO3},alkalinityCaCo3=#{alkalinityCaCo3},
-        bicarbonateHCO3=#{bicarbonateHCO3},bicarbonateCaCo3=#{bicarbonateCaCo3}
+        bicarbonateHCO3=#{bicarbonateHCO3},bicarbonateCaCo3=#{bicarbonateCaCo3},dateTime=NOW()
         where id=#{id};
     </update>
 
     <!--加载初始化页面-->
     <select id="loadSewageTestResultsList" resultType="SewageTest">
-        select  * from t_pr_sewagetest order by nowTime desc
+        select  * from t_pr_sewagetest order by dateTime desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -65,7 +65,7 @@
 
     <!--软水化验单初始化-->
     <select id="loadSoftTestResultsList" resultType="SoftTest">
-        select * from t_pr_softest order  by  nowTime desc
+        select * from t_pr_softest order  by  dateTime desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -109,11 +109,11 @@
     <!--添加次生化验单-->
     <insert id="addSecondaryTest" parameterType="SecondaryTest">
         insert into t_pr_secondarytest (id, dateTime, wastesName, scorchingRate, water, remarks, nowTime,checkState) values
-        (#{id},#{dateTime},#{wastesName},#{scorchingRate},#{water},#{remarks},NOW(),'ToSubmit');
+        (#{id},NOW(),#{wastesName},#{scorchingRate},#{water},#{remarks},NOW(),'ToSubmit');
     </insert>
 
     <select id="loadPageSecondaryTestResultsList" resultType="SecondaryTest">
-        select * from t_pr_secondarytest order  by nowTime desc
+        select * from t_pr_secondarytest order  by dateTime desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -206,6 +206,21 @@
     <select id="getAllSecondaryTestId" resultType="String">
       select id from  t_pr_secondarytest;
     </select>
+
+    <!--作废污水送样-->
+    <update id="cancelSewaGeregistration" parameterType="String">
+        update t_pr_sewageregistration set  checkState='Invalid' where id=#{id}
+    </update>
+
+    <!--作废软水送样-->
+    <update id="cancelSoftGeregistration" parameterType="String">
+         update t_pr_softgeregistration set  checkState='Invalid' where id=#{id}
+    </update>
+
+    <!--作废次生送样-->
+    <update id="cancelSecondaryGeregistration" parameterType="String">
+           update t_pr_secondarysample set  checkState='Invalid' where id=#{id}
+    </update>
 </mapper>
 
 

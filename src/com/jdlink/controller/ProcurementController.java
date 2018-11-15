@@ -765,4 +765,48 @@ public class ProcurementController {
 
     }
 
+    //获取采购单明细
+    @RequestMapping("getProcurement")
+    @ResponseBody
+    public String getProcurement(){
+        JSONObject res=new JSONObject();
+
+        try {
+        List<Material> materialList=procurementService.getProcurement();
+            res.put("status", "success");
+            res.put("message", "采购明细获取成功");
+            res.put("data", materialList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "采购明细获取失败");
+
+        }
+
+        return res.toString();
+    }
+
+
+    //采购计划单新增列表高级查询时间
+    @RequestMapping("searchNewProcurementPlan")
+    @ResponseBody
+    public String searchNewProcurementPlan(@RequestBody Material material){
+        JSONObject res=new JSONObject();
+
+        try {
+            List<Material> materialList=procurementService.searchNewProcurementPlan(material);
+            res.put("status", "success");
+            res.put("message", "时间查询成功");
+            res.put("data", materialList);
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "时间查询失败");
+        }
+
+        return res.toString();
+    }
 }
