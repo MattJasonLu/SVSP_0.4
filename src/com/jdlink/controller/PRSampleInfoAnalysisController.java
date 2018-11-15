@@ -34,16 +34,15 @@ public class PRSampleInfoAnalysisController {
 
     /**
      * 获取仓储部化验单的
-     * @param page 分页数据
      * @param sampleInfoAnalysis 仓储部化验单的查询参数
      * @return 查询所得数据
      */
     @RequestMapping("getSampleInfoAnalysis")
     @ResponseBody
-    public String getSampleInfoAnalysis(Page page, SampleInfoAnalysis sampleInfoAnalysis) {
+    public String getSampleInfoAnalysis(@RequestBody SampleInfoAnalysis sampleInfoAnalysis) {
         JSONObject res = new JSONObject();
         try {
-            List<SampleInfoAnalysis> sampleInfoAnalysisList = sampleInfoAnalysisService.get(page, sampleInfoAnalysis);
+            List<SampleInfoAnalysis> sampleInfoAnalysisList = sampleInfoAnalysisService.get(sampleInfoAnalysis.getPage(), sampleInfoAnalysis);
             JSONArray data = JSONArray.fromArray(sampleInfoAnalysisList.toArray(new SampleInfoAnalysis[sampleInfoAnalysisList.size()]));
             res.put("status", "success");
             res.put("message", "仓储部化验单获取数据成功");
