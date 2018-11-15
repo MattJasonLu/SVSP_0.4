@@ -890,6 +890,8 @@ function exportExcel() {
  * @param e
  */
 function showEditModal(e) {
+    // 清楚残留行
+    $(".addTr").remove();
     var number = getDocNumber(e);   //number为单据号
     //设置状态下拉框
     $.ajax({
@@ -934,13 +936,16 @@ function showEditModal(e) {
                 var editTr = $("#editTr");
                 for (var i = 0; i < obj.length; i++) {
                     var clonedTr = editTr.clone();
-                    clonedTr.find("td[name='id']").text(i+1);
+                    clonedTr.find("td[name='index']").text(i+1);
+                    clonedTr.find("select[name='id']").val(obj[i].id);
                     clonedTr.find("select[name='equipment']").val(obj[i].equipment.index);
                     clonedTr.find("input[name='runningTime']").val(parseFloat(obj[i].runningTime).toFixed(2));
                     clonedTr.find("input[name='stopTime']").val(parseFloat(obj[i].stopTime).toFixed(2));
                     clonedTr.find("input[name='stopResult']").val(obj[i].stopResult);
-                    clonedTr.insertAfter(editTr);
+                    editTr.parent().append(clonedTr);
+                    clonedTr.addClass("addTr");
                     clonedTr.show();
+                    clonedTr.removeAttr('id');
                 }
                 editTr.hide();
             } else {
@@ -959,6 +964,36 @@ function showEditModal(e) {
  * 修改数据
  */
 function editData() {
-    alert("功能调整中");
-    window.location.reload();
+    var data = [];
+    var editTrs = $("tr[name='editTr']");
+    editTrs.each(function () {
+        var item = {};
+        item.documentNumber = $(this).find("td[name='id']").text();
+        item.equipment = $(this).find("select[name='equipment']").val();
+        item.runningTime = $(this).find("input[name='runningTime']").val();
+        item.stopTime = $(this).find("input[name='stopTime']").val();
+        item.stopResult = $(this).find("input[name='stopResult']").val();
+        data.push(item);
+    });
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "updateEquipmentItem",            // url
+        async: false,
+        dataType: "json",
+        data: JSON.stringify(data),
+        contentType: 'application/json;charset=utf-8',
+        success: function (result) {
+            if (result != undefined ) {//&& result.status == "success"
+                console.log(result);
+                alert(result.message);
+                window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+            alert("服务器异常");
+        }
+    });
 }

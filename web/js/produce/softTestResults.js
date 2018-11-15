@@ -361,7 +361,7 @@ function setSoftTestList(result) {
                     }
                     else
                     // ph
-                    $(this).html(obj.PH.toFixed(2));
+                    $(this).html(obj.PH.toFixed(0));
                     break;
                 case (6):
                     if(obj.electricalConductivity==0){

@@ -3,6 +3,8 @@ package com.jdlink.service.impl;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Material;
 import com.jdlink.domain.Produce.Procurement;
+import com.jdlink.domain.Produce.ProcurementPlan;
+import com.jdlink.domain.Produce.ProcurementPlanItem;
 import com.jdlink.mapper.ProcurementMapper;
 import com.jdlink.service.ProcurementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,6 +112,36 @@ public class ProcurementServiceImpl implements ProcurementService {
     @Override
     public List<Material> searchNewProcurementPlan(Material material) {
         return procurementMapper.searchNewProcurementPlan(material);
+    }
+
+    @Override
+    public int getPrefixCount(String prefix) {
+        return procurementMapper.getPrefixCount(prefix);
+    }
+
+    @Override
+    public void addProcurementPlan(ProcurementPlan procurementPlan) {
+        procurementMapper.addProcurementPlan(procurementPlan);
+    }
+
+    @Override
+    public String getApplyDepartmentByReceiptNumber(String id) {
+        return procurementMapper.getApplyDepartmentByReceiptNumber(id);
+    }
+
+    @Override
+    public void addProcurementPlanItem(ProcurementPlanItem procurementPlanItem) {
+        procurementMapper.addProcurementPlanItem(procurementPlanItem);
+    }
+
+    @Override
+    public List<ProcurementPlan> getProcurementPlanList(Page page) {
+        return procurementMapper.getProcurementPlanList(page);
+    }
+
+    @Override
+    public void updateProcurementState(String id) {
+        procurementMapper.updateProcurementState(id);
     }
 
     @Override

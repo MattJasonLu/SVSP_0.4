@@ -41,60 +41,60 @@ function importExcel() {
         });
     });
 }
-function importExcel() {
-    document.getElementById("idExcel").click();
-    document.getElementById("idExcel").addEventListener("change", function () {
-        var id = '0000';
-        console.log("change");
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getCurrentCompatibilityId",              // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            contentType: false,
-            success: function (result) {
-                if (result != undefined || result != NaN) {
-                    id = result.compatibilityId;
-                } else {
-                    alert("数据获取失败！ " + result);
-                }
-            },
-            error: function (result) {
-                alert("导入失败，请检查后重试！")
-                console.log("error" + result);
-            }
-        });
-        var eFile = document.getElementById("idExcel").files[0];
-        var formFile = new FormData();
-        formFile.append("excelFile", eFile);
-        formFile.append("tableName", 't_pr_pw');
-        formFile.append("id", id);
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "importCompatibilityExcel",              // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data: formFile,
-            processData: false,
-            contentType: false,
-            success: function (result) {
-                if (result != undefined) {
-                    console.log(result);
-                    if (result.status == "success") {
-                        alert(result.message);
-                        window.location.reload();         //刷新
-                    } else {
-                        alert(result.message);
-                    }
-                }
-            },
-            error: function (result) {
-                console.log(result);
-            }
-        });
-    });
-
-}
+// function importExcel() {
+//     document.getElementById("idExcel").click();
+//     document.getElementById("idExcel").addEventListener("change", function () {
+//         var id = '0000';
+//         console.log("change");
+//         $.ajax({
+//             type: "POST",                       // 方法类型
+//             url: "getCurrentCompatibilityId",              // url
+//             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+//             dataType: "json",
+//             contentType: false,
+//             success: function (result) {
+//                 if (result != undefined || result != NaN) {
+//                     id = result.compatibilityId;
+//                 } else {
+//                     alert("数据获取失败！ " + result);
+//                 }
+//             },
+//             error: function (result) {
+//                 alert("导入失败，请检查后重试！")
+//                 console.log("error" + result);
+//             }
+//         });
+//         var eFile = document.getElementById("idExcel").files[0];
+//         var formFile = new FormData();
+//         formFile.append("excelFile", eFile);
+//         formFile.append("tableName", 't_pr_pw');
+//         formFile.append("id", id);
+//         $.ajax({
+//             type: "POST",                       // 方法类型
+//             url: "importCompatibilityExcel",              // url
+//             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+//             dataType: "json",
+//             data: formFile,
+//             processData: false,
+//             contentType: false,
+//             success: function (result) {
+//                 if (result != undefined) {
+//                     console.log(result);
+//                     if (result.status == "success") {
+//                         alert(result.message);
+//                         window.location.reload();         //刷新
+//                     } else {
+//                         alert(result.message);
+//                     }
+//                 }
+//             },
+//             error: function (result) {
+//                 console.log(result);
+//             }
+//         });
+//     });
+//
+// }
 /**
  * 下载模板
  * */
@@ -1168,7 +1168,7 @@ function confirmCompatibilityId() {
                     //比例
                     case (3):
                         $(this).html(obj.proportion.toFixed(2));
-                        proportionTotal+=parseFloat(obj.proportion);
+                        proportionTotal+=parseFloat(obj.proportion.toFixed(2));
                         break;
                     //每日配置量
                     case (4):
@@ -1556,6 +1556,7 @@ function confirmCompatibilityId() {
                     console.log(result)
                     $('.myclass2').each(function () {
                         var data = {
+                            compatibilityId: $('#compatibilityId2').text(),
                             handleCategory: $(this).children('td').eq(1).children('select').get(0).selectedIndex,
                             formType: $(this).children('td').eq(2).children('select').get(0).selectedIndex,
                             // id: $(this).children('td').eq(14).html(),
@@ -1841,6 +1842,20 @@ function enterSearch() {
 
 //添加配伍计划单==>添加的是配伍明细
 function addPw() {
+
+    $.ajax({
+        type:'POST',
+        url:"getNewCompatibilityId",
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success:function (result) {
+            console.log(result)
+            $('#compatibilityId4').text(result)
+        },
+        error:function (result) {
+
+        }
+    })
     $('#appointModal4').modal('show');
 
     $('#cloneTr4').siblings().not($('#plusBtn')).remove();
@@ -2151,6 +2166,7 @@ function addCompatibility() {
 
 
     var data={
+        compatibilityId: $('#compatibilityId4').text(),
         totalDailyAmount:$("#dailyRatioTota4").html(),
         weeklyDemandTotalAggregate:$("#weeklyDemandTotalAdd4").html(),
         calorificAvg:parseFloat(calorificSum/index1).toFixed(2),
@@ -2174,6 +2190,7 @@ function addCompatibility() {
                  //1添加明细
                  $('.myclass3').each(function () {
                      var dataItem={
+                         compatibilityId: $('#compatibilityId4').text(),
                          handleCategory:$(this).children('td').eq(1).find('select').get(0).selectedIndex,
                          formType:$(this).children('td').eq(2).find('select').get(0).selectedIndex,
                          proportion:$(this).children('td').eq(5).html(),
