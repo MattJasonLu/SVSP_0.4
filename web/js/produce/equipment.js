@@ -954,3 +954,11 @@ function showEditModal(e) {
     });
     $("#editModal").modal("show");
 }
+
+/**
+ * 修改数据
+ */
+function editData() {
+    alert("功能调整中");
+    window.location.reload();
+}
