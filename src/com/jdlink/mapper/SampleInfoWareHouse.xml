@@ -36,7 +36,7 @@
         </if>
     </insert>
 
-    <select id="listPage" resultType="SampleInformation">
+    <select id="listPage" resultMap="SampleInformationRM">
         select * from t_pr_sampleinfowarehouse
         where applyState in ('Rejected','Appointed','Received')
         ORDER BY creationTime DESC
@@ -105,13 +105,13 @@
     </select>
 
     <select id="searchCount" parameterType="SampleInformation" resultType="int">
-        SELECT COUNT(*) FROM t_pr_sampleinfowarehouse
+        SELECT COUNT(*) FROM t_pr_sampleinfowarehouse as a join t_pr_sampleinfowarehouseitem as b on a.id=b.sampleId
         <where>
             <if test="keywords != null and keywords != ''">
-                or companyCode LIKE "%"#{keywords}"%"
-                or wastesCode like "%"#{keywords}"%"
-                or wastesName like "%"#{keywords}"%"
-                or laboratorySigner like "%"#{keywords}"%"
+                or a.companyName LIKE "%"#{keywords}"%"
+                or a.wastesCode like "%"#{keywords}"%"
+                or a.wastesName like "%"#{keywords}"%"
+                or a.laboratorySigner like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -121,79 +121,65 @@
                 or DATE_FORMAT(samplingDate,'%Y.%m.%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y.%c.%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y.%c.%e') like "%"#{keywords}"%"
-                or id like "%"#{keywords}"%"
-            </if>
-            <if test='keywords == "已"'>
-                or applyState = 'SampleTaked' or applyState = 'Appointed'
-            </if>
-            <if test='keywords == "预约"'>
-                or applyState = 'Appointed' or applyState = 'Canceld'
-            </if>
-            <if test='keywords == "已取样" or keywords == "取样"'>
-                or applyState = 'SampleTaked'
-            </if>
-            <if test='keywords == "已预约"'>
-                or applyState = 'Appointed'
-            </if>
-            <if test='keywords == "预约取消"'>
-                or applyState = 'Canceld'
+                or b.transferId like "%"#{keywords}"%"
+                or a.applyState like "%"#{keywords}"%"
             </if>
             <if test="id != null and id != ''">
-                and id LIKE "%"#{id}"%"
+                and b.transferId LIKE "%"#{id}"%"
             </if>
-            <if test='companyCode != null and companyCode != ""'>
-                and companyCode LIKE "%"#{companyCode}"%"
+            <if test='companyName != null and companyName != ""'>
+                and a.companyName LIKE "%"#{companyName}"%"
             </if>
             <if test='wastesCode != null and wastesCode != ""'>
-                and wastesCode LIKE "%"#{wastesCode}"%"
+                and a.wastesCode LIKE "%"#{wastesCode}"%"
             </if>
             <if test='applyState != null and applyState != ""'>
-                and applyState LIKE "%"#{applyState}"%"
+                and a.applyState LIKE "%"#{applyState}"%"
             </if>
             <if test='laboratorySigner != null and laboratorySigner != ""'>
-                and laboratorySigner LIKE "%"#{laboratorySigner}"%"
+                and a.laboratorySigner LIKE "%"#{laboratorySigner}"%"
             </if>
             <if test='isPH != null and isPH != ""'>
-                and isPH = #{isPH}
+                and b.isPH = #{isPH}
             </if>
             <if test='isAsh != null and isAsh != ""'>
-                and isAsh = #{isAsh}
+                and b.isAsh = #{isAsh}
             </if>
             <if test='isWater != null and isWater != ""'>
-                and isWater = #{isWater}
+                and b.isWater = #{isWater}
             </if>
             <if test='isHeat != null and isHeat != ""'>
-                and isHeat = #{isHeat}
+                and b.isHeat = #{isHeat}
             </if>
             <if test='isSulfur != null and isSulfur != ""'>
-                and isSulfur = #{isSulfur}
+                and b.isSulfur = #{isSulfur}
             </if>
             <if test='isChlorine != null and isChlorine != ""'>
-                and isChlorine = #{isChlorine}
+                and b.isChlorine = #{isChlorine}
             </if>
             <if test='isFluorine != null and isFluorine != ""'>
-                and isFluorine = #{isFluorine}
+                and b.isFluorine = #{isFluorine}
             </if>
             <if test='isPhosphorus != null and isPhosphorus != ""'>
-                and isPhosphorus = #{isPhosphorus}
+                and b.isPhosphorus = #{isPhosphorus}
             </if>
             <if test='isFlashPoint != null and isFlashPoint != ""'>
-                and isFlashPoint = #{isFlashPoint}
+                and b.isFlashPoint = #{isFlashPoint}
             </if>
             <if test='isViscosity != null and isViscosity != ""'>
-                and isViscosity = #{isViscosity}
+                and b.isViscosity = #{isViscosity}
             </if>
         </where>
     </select>
 
-    <select id="search" parameterType="SampleInformation" resultType="SampleInformation">
-        SELECT * FROM t_pr_sampleinfowarehouse
+    <select id="search" parameterType="SampleInformation" resultMap="SampleInformationRM">
+        SELECT a.* FROM t_pr_sampleinfowarehouse as a join t_pr_sampleinfowarehouseitem as b on a.id=b.sampleId
         <where>
             <if test="keywords != null and keywords != ''">
-                or companyCode LIKE "%"#{keywords}"%"
-                or wastesCode like "%"#{keywords}"%"
-                or wastesName like "%"#{keywords}"%"
-                or laboratorySigner like "%"#{keywords}"%"
+                or a.companyName LIKE "%"#{keywords}"%"
+                or a.wastesCode like "%"#{keywords}"%"
+                or a.wastesName like "%"#{keywords}"%"
+                or a.laboratorySigner like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -203,70 +189,53 @@
                 or DATE_FORMAT(samplingDate,'%Y.%m.%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y.%c.%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y.%c.%e') like "%"#{keywords}"%"
-                or id like "%"#{keywords}"%"
-            </if>
-            <if test='keywords == "已"'>
-                or applyState = 'SampleTaked' or applyState = 'Appointed'
-            </if>
-            <if test='keywords == "预约"'>
-                or applyState = 'Appointed' or applyState = 'Canceld'
-            </if>
-            <if test='keywords == "已取样" or keywords == "取样"'>
-                or applyState = 'SampleTaked'
-            </if>
-            <if test='keywords == "已预约"'>
-                or applyState = 'Appointed'
-            </if>
-            <if test='keywords == "预约取消"'>
-                or applyState = 'Canceld'
+                or b.transferId like "%"#{keywords}"%"
+                or a.applyState like "%"#{keywords}"%"
             </if>
             <if test="id != null and id != ''">
-                and id LIKE "%"#{id}"%"
+                and b.transferId LIKE "%"#{id}"%"
             </if>
-            <if test='companyCode != null and companyCode != ""'>
-                and companyCode LIKE "%"#{companyCode}"%"
+            <if test='companyName != null and companyName != ""'>
+                and a.companyName LIKE "%"#{companyName}"%"
             </if>
             <if test='wastesCode != null and wastesCode != ""'>
-                and wastesCode LIKE "%"#{wastesCode}"%"
+                and a.wastesCode LIKE "%"#{wastesCode}"%"
             </if>
             <if test='applyState != null and applyState != ""'>
-                and applyState LIKE "%"#{applyState}"%"
+                and a.applyState LIKE "%"#{applyState}"%"
             </if>
             <if test='laboratorySigner != null and laboratorySigner != ""'>
-                and laboratorySigner LIKE "%"#{laboratorySigner}"%"
+                and a.laboratorySigner LIKE "%"#{laboratorySigner}"%"
             </if>
             <if test='isPH != null and isPH != ""'>
-                and isPH = #{isPH}
+                and b.isPH = #{isPH}
             </if>
             <if test='isAsh != null and isAsh != ""'>
-                and isAsh = #{isAsh}
+                and b.isAsh = #{isAsh}
             </if>
             <if test='isWater != null and isWater != ""'>
-                and isWater = #{isWater}
+                and b.isWater = #{isWater}
             </if>
             <if test='isHeat != null and isHeat != ""'>
-                and isHeat = #{isHeat}
+                and b.isHeat = #{isHeat}
             </if>
             <if test='isSulfur != null and isSulfur != ""'>
-                and isSulfur = #{isSulfur}
+                and b.isSulfur = #{isSulfur}
             </if>
             <if test='isChlorine != null and isChlorine != ""'>
-                and isChlorine = #{isChlorine}
+                and b.isChlorine = #{isChlorine}
             </if>
             <if test='isFluorine != null and isFluorine != ""'>
-                and isFluorine = #{isFluorine}
+                and b.isFluorine = #{isFluorine}
             </if>
             <if test='isPhosphorus != null and isPhosphorus != ""'>
-                and isPhosphorus = #{isPhosphorus}
+                and b.isPhosphorus = #{isPhosphorus}
             </if>
             <if test='isFlashPoint != null and isFlashPoint != ""'>
-                and isFlashPoint = #{isFlashPoint}
+                and b.isFlashPoint = #{isFlashPoint}
             </if>
             <if test='isViscosity != null and isViscosity != ""'>
-                and isViscosity = #{isViscosity}
-            </if>
-            <if test='isHotMelt != null and isHotMelt != ""'>
-                and isHotMelt = #{isHotMelt}
+                and b.isViscosity = #{isViscosity}
             </if>
         </where>
         order by creationTime desc
