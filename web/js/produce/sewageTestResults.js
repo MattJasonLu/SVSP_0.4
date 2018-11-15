@@ -330,7 +330,7 @@ function setSewageTestList(result) {
                         $(this).html('--')
                     }
                     else
-                    $(this).html((obj.ph).toFixed(2));
+                    $(this).html((obj.ph).toFixed(0));
                     break;
                 case (4):
                     // COD

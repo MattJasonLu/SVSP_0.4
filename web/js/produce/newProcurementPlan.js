@@ -5,6 +5,32 @@
 //加载月度采购申请表数据列表
 function getProcurement() {
     var page={}
+    $('#tbody1'). find("input[name='select']").prop('checked', true);
+
+    //获取采购计划单号
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getNewestProcurementPlanId",
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            console.log(result)
+            $('#procurementPlanId').val(result)
+        },
+        error:function (result) {
+
+        }
+    })
+
+  //获取等路人信息
+   var data= getCurrentUserData();
+    if(data!=null){
+        $('#createName').val(data.username)
+    }
+
+    $('#createDate').val(dateToString(new Date()))
+
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getProcurement",
@@ -92,6 +118,10 @@ function setMonthProcurementList(result) {
                     case (8):
                         $(this).html(getDateStr(obj.createDate));
                         break;
+                    //存放采购主键
+                    case (9):
+                        $(this).html((obj.receiptNumber));
+                        break;
                 }
             });
             // 把克隆好的tr追加到原来的tr前面
@@ -142,4 +172,69 @@ function searchData() {
         }
     })
 
+}
+
+
+//添加采购计划单
+function add() {
+
+    if(confirm("确定添加?")){
+        //点击确定后操作
+        var data={
+            procurementPlanId:$('#procurementPlanId').val(),
+            createName:$('#createName').val(),
+            createDate:$('#createDate').val(),
+        }
+        //添加主表
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "addProcurementPlan",
+            data:JSON.stringify(data),
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+
+                    $('.myclass').each(function () {
+                        var dataItem={
+                            wareHouseName:$('#procurementPlanId').val(),
+                            receiptNumber:$(this).children('td').eq(9).html(),
+                            suppliesName:$(this).children('td').eq(2).html(),
+                            specifications:$(this).children('td').eq(3).html(),
+                            unit:getFormTypeByFromStr($(this).children('td').eq(4).html()),
+                            demandQuantity:$(this).children('td').eq(6).html(),
+                            note:$(this).children('td').eq(7).html(),
+                        }
+                        $.ajax({
+                            type: "POST",                       // 方法类型
+                            url: "addProcurementPlanItem",
+                            data:JSON.stringify(dataItem),
+                            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+                            dataType: "json",
+                            contentType: 'application/json;charset=utf-8',
+                            success:function (result) {
+                                if (result != undefined && result.status == "success"){
+
+
+                                }
+                            },
+                            error:function (result) {
+
+                            }
+                        })
+                    })
+                  alert("添加成功！")
+                    window.location.href='procurementPlan.html';
+
+                }
+            },
+            error:function (result) {
+
+            }
+        })
+    }
+
+    
+    
 }
