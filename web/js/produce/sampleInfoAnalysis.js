@@ -358,15 +358,15 @@ function setDataList(result) {
         clonedTr.find("td[name='wastesCode']").text(obj.wastesCode);
         if(obj.formType != null)
         clonedTr.find("td[name='formType']").text(obj.formType.name);
-        clonedTr.find("td[name='PH']").text(setNumber2Line(parseFloat(obj.PH).toFixed(2)));
+        clonedTr.find("td[name='PH']").text(setNumber2Line(parseFloat(obj.PH).toFixed(0)));
         clonedTr.find("td[name='ash']").text(setNumber2Line(parseFloat(obj.ash).toFixed(2)));
         clonedTr.find("td[name='water']").text(setNumber2Line(parseFloat(obj.water).toFixed(2)));
-        clonedTr.find("td[name='heat']").text(setNumber2Line(parseFloat(obj.heat).toFixed(2)));
+        clonedTr.find("td[name='heat']").text(setNumber2Line(parseFloat(obj.heat).toFixed(0)));
         clonedTr.find("td[name='sulfur']").text(setNumber2Line(parseFloat(obj.sulfur).toFixed(2)));
         clonedTr.find("td[name='chlorine']").text(setNumber2Line(parseFloat(obj.chlorine).toFixed(2)));
         clonedTr.find("td[name='fluorine']").text(setNumber2Line(parseFloat(obj.fluorine).toFixed(2)));
         clonedTr.find("td[name='phosphorus']").text(setNumber2Line(parseFloat(obj.phosphorus).toFixed(2)));
-        clonedTr.find("td[name='flashPoint']").text(setNumber2Line(parseFloat(obj.flashPoint).toFixed(2)));
+        clonedTr.find("td[name='flashPoint']").text(setNumber2Line(parseFloat(obj.flashPoint).toFixed(0)));
         clonedTr.find("td[name='viscosity']").text(setNumber2Line(obj.viscosity));
         clonedTr.find("td[name='hotMelt']").text(setNumber2Line(obj.hotMelt));
         clonedTr.find("td[name='signer']").text(obj.signer);
@@ -775,15 +775,15 @@ function showEditModal(e) {
                 $("#editWastesCode").selectpicker('val', data.wastesCode);
                 if (data.formType != null)
                     $("#editFormType").val(data.formType.index-1);
-                $("#editPH").val(setNumber2Line(parseFloat(data.PH).toFixed(2)));
+                $("#editPH").val(setNumber2Line(parseFloat(data.PH).toFixed(0)));
                 $("#editAsh").val(setNumber2Line(parseFloat(data.ash).toFixed(2)));
                 $("#editWater").val(setNumber2Line(parseFloat(data.water).toFixed(2)));
-                $("#editHeat").val(setNumber2Line(parseFloat(data.heat).toFixed(2)));
+                $("#editHeat").val(setNumber2Line(parseFloat(data.heat).toFixed(0)));
                 $("#editFluorine").val(setNumber2Line(parseFloat(data.fluorine).toFixed(2)));
                 $("#editChlorine").val(setNumber2Line(parseFloat(data.chlorine).toFixed(2)));
                 $("#editSulfur").val(setNumber2Line(parseFloat(data.sulfur).toFixed(2)));
                 $("#editPhosphorus").val(setNumber2Line(parseFloat(data.phosphorus).toFixed(2)));
-                $("#editFlashPoint").val(setNumber2Line(parseFloat(data.flashPoint).toFixed(2)));
+                $("#editFlashPoint").val(setNumber2Line(parseFloat(data.flashPoint).toFixed(0)));
                 $("#editViscosity").val(data.viscosity);
                 $("#editHotMelt").val(data.hotMelt);
                 $("#editRemark").val(data.remark);
@@ -1141,15 +1141,15 @@ function viewData(e) {
                 $("#viewWastesCategory").text(data.wastesCategory);
                 if (data.formType != null)
                 $("#viewFormType").text(data.formType.name);
-                $("#viewPH").text(parseFloat(data.PH).toFixed(2));
+                $("#viewPH").text(parseFloat(data.PH).toFixed(0));
                 $("#viewAsh").text(parseFloat(data.ash).toFixed(2));
                 $("#viewWater").text(parseFloat(data.water).toFixed(2));
-                $("#viewHeat").text(parseFloat(data.heat).toFixed(2));
+                $("#viewHeat").text(parseFloat(data.heat).toFixed(0));
                 $("#viewFluorine").text(parseFloat(data.fluorine).toFixed(2));
                 $("#viewChlorine").text(parseFloat(data.chlorine).toFixed(2));
                 $("#viewSulfur").text(parseFloat(data.sulfur).toFixed(2));
                 $("#viewPhosphorus").text(parseFloat(data.phosphorus).toFixed(2));
-                $("#viewFlashPoint").text(parseFloat(data.flashPoint).toFixed(2));
+                $("#viewFlashPoint").text(parseFloat(data.flashPoint).toFixed(0));
                 $("#viewViscosity").text(data.viscosity);
                 $("#viewHotMelt").text(data.hotMelt);
                 $("#viewRemark").text(data.remark);
