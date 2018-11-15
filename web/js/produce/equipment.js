@@ -884,3 +884,73 @@ function exportExcel() {
     console.log("sql:"+sqlWords);
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
+
+/**
+ * 显示编辑框
+ * @param e
+ */
+function showEditModal(e) {
+    var number = getDocNumber(e);   //number为单据号
+    //设置状态下拉框
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getEquipmentNameList",        // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                console.log(result);
+                // 高级检索下拉框数据填充
+                var state = $("#editTr").find("select[name='equipment']");
+                state.children().remove();
+                $.each(data.equipmentList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    state.append(option);
+                });
+                state.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getEquipment",            // url
+        async: false,
+        dataType: "json",
+        data: {
+            documentNumber: number
+        },
+        success: function (result) {
+            if (result != undefined ) {//&& result.status == "success"
+                console.log(result);
+                var obj = eval(result.data);
+                var editTr = $("#editTr");
+                for (var i = 0; i < obj.length; i++) {
+                    var clonedTr = editTr.clone();
+                    clonedTr.find("td[name='id']").text(i+1);
+                    clonedTr.find("select[name='equipment']").val(obj[i].equipment.index);
+                    clonedTr.find("input[name='runningTime']").val(parseFloat(obj[i].runningTime).toFixed(2));
+                    clonedTr.find("input[name='stopTime']").val(parseFloat(obj[i].stopTime).toFixed(2));
+                    clonedTr.find("input[name='stopResult']").val(obj[i].stopResult);
+                    clonedTr.insertAfter(editTr);
+                    clonedTr.show();
+                }
+                editTr.hide();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+            alert("服务器异常");
+        }
+    });
+    $("#editModal").modal("show");
+}
