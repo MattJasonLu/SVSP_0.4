@@ -46,4 +46,11 @@ public interface WayBillService  {
     WayBill getWayBillById(String id);
     void deleteItem(String id);
     void updateSalesmanNameByCompanyName(String salesmanName,String companyName);
+
+    /**
+     * 根据合同ID获取接运单数据
+     * @param id
+     * @return
+     */
+    WayBill getWayBillByContractId(String id);
 }
