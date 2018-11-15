@@ -344,4 +344,25 @@ public class EquipmentController {
         }
         return res.toString();
     }
+
+    /**
+     * 更新设备条目
+     * @param equipmentItemList 设备
+     * @return 成功与否
+     */
+    @RequestMapping("updateEquipmentItem")
+    @ResponseBody
+    public String updateEquipmentItem(@RequestBody List<EquipmentItem> equipmentItemList) {
+        JSONObject res = new JSONObject();
+        try {
+
+            res.put("status", "success");
+            res.put("message", "更新成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+        return res.toString();
+    }
 }
