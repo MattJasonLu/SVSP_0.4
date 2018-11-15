@@ -36,7 +36,9 @@
     </select>
 
     <select id="listPageIn" resultMap="IngredientsInRM">
-        select * from t_pr_ingredients_in order by creationDate desc
+        select * from t_pr_ingredients_in
+        where state != 'Invalid'
+        order by creationTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -44,7 +46,9 @@
 
     <select id="listPageInItem" resultMap="InIngredientsRM">
         select a.*,b.companyName,b.creationDate,b.state from t_pr_ingredients as a join t_pr_ingredients_in as b on
-        a.inId=b.id order by creationDate desc
+        a.inId=b.id
+        where b.state != 'Invalid'
+        order by creationTime desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -94,7 +98,7 @@
                 and companyName like "%"#{companyName}"%"
             </if>
         </where>
-        order by creationDate desc
+        order by creationTime desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count};
         </if>
@@ -147,7 +151,7 @@
                 and specification like "%"#{specification}"%"
             </if>
         </where>
-        order by creationDate desc
+        order by creationTime desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count};
         </if>
@@ -366,10 +370,10 @@
         <!--</if>-->
         insert into
         t_pr_ingredients_in
-        (id,companyName,creationDate,fileId,totalPrice,bookkeeper,approver,keeper,acceptor,handlers,state,nowTime)
+        (id,companyName,creationDate,fileId,totalPrice,bookkeeper,approver,keeper,acceptor,handlers,state,nowTime,creationTime)
         values
         (#{id},#{companyName},#{creationDate},#{fileId},#{totalPrice},#{bookkeeper},#{approver},#{keeper},#{acceptor},
-        #{handlers},'NewBuild',NOW());
+        #{handlers},'NewBuild',NOW(),NOW());
         <if test="ingredientsList != null and ingredientsList.size() > 0">
             <foreach index="index" item="ingredients" collection="ingredientsList">
                 update t_pl_material set state = 'ToPick' where id = #{ingredients.procurementItemId};
@@ -435,7 +439,9 @@
     </select>
 
     <select id="listPageReceive" resultMap="IngredientsReceiveRM">
-        select * from t_pr_ingredients_receive order by creationDate desc
+        select * from t_pr_ingredients_receive
+        where state != 'Invalid'
+        order by creationTime desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -443,7 +449,8 @@
 
     <select id="listPageReceiveItem" resultMap="ReceiveIngredientsRM">
         select * from t_pr_ingredients as a join t_pr_ingredients_receive as b on a.receiveId=b.id
-        order by b.id desc
+        where b.state != 'Invalid'
+        order by b.creationTime desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -494,7 +501,7 @@
                 and department like "%"#{department}"%"
             </if>
         </where>
-        order by creationDate desc
+        order by creationTime desc
         <if test="page != null and page.start != null and page.count != null and page.count != 0">
             limit #{page.start}, #{page.count};
         </if>
@@ -592,7 +599,7 @@
                 and a.wareHouseName like "%"#{wareHouseName}"%"
             </if>
         </where>
-        order by b.id desc
+        order by b.creationTime desc
         <if test="page != null and page.start != null and page.count != null and page.count != 0">
             limit #{page.start}, #{page.count};
         </if>
@@ -808,10 +815,10 @@
     <insert id="addAllReceive" parameterType="IngredientsReceive">
         insert into t_pr_ingredients_receive
         (id, department,creationDate,fileId,totalAmount,vicePresident,warehouseSupervisor,keeper,
-        pickingSupervisor,pickingMan,state,nowTime)
+        pickingSupervisor,pickingMan,state,nowTime,creationTime)
         values
         (#{id},#{department},NOW(),#{fileId},#{totalAmount},#{vicePresident},#{warehouseSupervisor},#{keeper},
-        #{pickingSupervisor},#{pickingMan},'NewBuild',NOW());
+        #{pickingSupervisor},#{pickingMan},'NewBuild',NOW(),NOW());
         <if test="ingredientsList.size() > 0">
             <foreach collection="ingredientsList" item="ingredients" index="index">
                 insert into t_pr_ingredients
@@ -863,7 +870,9 @@
     </select>
 
     <select id="listPageOut" resultMap="IngredientsOutRM">
-        select * from t_pr_ingredients_out order by creationDate desc
+        select * from t_pr_ingredients_out
+        where state != 'Invalid'
+        order by creationTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -871,6 +880,8 @@
 
     <select id="listPageOutItem" resultMap="OutIngredientsRM">
         select * from t_pr_ingredients as a join t_pr_ingredients_out as b on a.outId=b.id
+        where b.state != 'Invalid'
+        order by b.creationTime desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -932,7 +943,7 @@
                 and department like "%"#{department}"%"
             </if>
         </where>
-        order by creationDate desc
+        order by creationTime desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count};
         </if>
@@ -1031,7 +1042,7 @@
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
         </where>
-        order by creationDate desc
+        order by creationTime desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count};
         </if>
@@ -1169,10 +1180,10 @@
     <insert id="addOut" parameterType="IngredientsOut">
         insert into t_pr_ingredients_out
         (id,department,creationDate,fileId,totalPrice,totalAmount,bookkeeper,approver,keeper,
-        handlers,state,nowTime)
+        handlers,state,nowTime,creationTime)
         values
         (#{id},#{department},#{creationDate},#{fileId},#{totalPrice},#{totalAmount},#{bookkeeper},#{approver},#{keeper},
-        #{handlers},'NewBuild',NOW());
+        #{handlers},'NewBuild',NOW(),NOW());
         <if test="ingredientsList.size() > 0">
             <foreach collection="ingredientsList" item="ingredients" index="index">
                 insert into t_pr_ingredients

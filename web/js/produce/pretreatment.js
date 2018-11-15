@@ -1576,22 +1576,22 @@ function confirmInsert() {
     pretreatment.suspensionProportion = suspensionProportion;
     pretreatment.pretreatmentItemList = pretreatmentItemList;
     $("#pretreatmentId").text(pretreatment.id);
-    $("#weightTotal").text(pretreatment.weightTotal);
-    $("#calorificTotal").text(pretreatment.calorificTotal);
-    $("#ashPercentageTotal").text(pretreatment.ashPercentageTotal);
-    $("#wetPercentageTotal").text(pretreatment.wetPercentageTotal);
-    $("#volatileNumberTotal").text(pretreatment.volatileNumberTotal);
-    $("#chlorinePercentageTotal").text(pretreatment.chlorinePercentageTotal);
-    $("#sulfurPercentageTotal").text(pretreatment.sulfurPercentageTotal);
-    $("#phTotal").text(pretreatment.phTotal);
-    $("#phosphorusPercentageTotal").text(pretreatment.phosphorusPercentageTotal);
-    $("#fluorinePercentageTotal").text(pretreatment.fluorinePercentageTotal);
-    $("#distillationProportion").text(pretreatment.distillationProportion);
-    $("#wasteLiquidProportion").text(pretreatment.wasteLiquidProportion);
-    $("#sludgeProportion").text(pretreatment.sludgeProportion);
-    $("#bulkProportion").text(pretreatment.bulkProportion);
-    $("#crushingProportion").text(pretreatment.crushingProportion);
-    $("#suspensionProportion").text(pretreatment.suspensionProportion);
+    $("#weightTotal").text(pretreatment.weightTotal.toFixed(2));
+    $("#calorificTotal").text(pretreatment.calorificTotal.toFixed(2));
+    $("#ashPercentageTotal").text(pretreatment.ashPercentageTotal.toFixed(2));
+    $("#wetPercentageTotal").text(pretreatment.wetPercentageTotal.toFixed(2));
+    $("#volatileNumberTotal").text(pretreatment.volatileNumberTotal.toFixed(2));
+    $("#chlorinePercentageTotal").text(pretreatment.chlorinePercentageTotal.toFixed(2));
+    $("#sulfurPercentageTotal").text(pretreatment.sulfurPercentageTotal.toFixed(2));
+    $("#phTotal").text(pretreatment.phTotal.toFixed(2));
+    $("#phosphorusPercentageTotal").text(pretreatment.phosphorusPercentageTotal.toFixed(2));
+    $("#fluorinePercentageTotal").text(pretreatment.fluorinePercentageTotal.toFixed(2));
+    $("#distillationProportion").text(pretreatment.distillationProportion.toFixed(2));
+    $("#wasteLiquidProportion").text(pretreatment.wasteLiquidProportion.toFixed(2));
+    $("#sludgeProportion").text(pretreatment.sludgeProportion.toFixed(2));
+    $("#bulkProportion").text(pretreatment.bulkProportion.toFixed(2));
+    $("#crushingProportion").text(pretreatment.crushingProportion.toFixed(2));
+    $("#suspensionProportion").text(pretreatment.suspensionProportion.toFixed(2));
 }
 
 /**

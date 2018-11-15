@@ -1256,6 +1256,7 @@ function addWayBill() {
     wayBill.freight = $("#modal-freight").val();
     wayBill.produceCompanyOperator = $("#modal-produceCompanyOperator").val();
     wayBill.remarks = $("#modal-remarks").val();
+    wayBill.contractId = contractId;
     var lineCount = $("input[id^='modal'][id$='receiveCompany']").length;
     console.log(lineCount);
     var total = 0;
@@ -1478,6 +1479,7 @@ function autoSetSalesman() {
     });
     autoSetWastesInfo(companyName);  //设置危废信息
 }
+var contractId = '';
 
 /**
  * 选择公司后自动匹配危废信息
@@ -1498,7 +1500,8 @@ function autoSetWastesInfo(companyName) {
                 //alert("数据获取成功！");
                 if (result != null && result.status == "success" && result.data != null) {
                     console.log(result);
-                    var wastesList = result.data;
+                    var wastesList = result.data.quotationItemList;
+                    contractId = result.data.contractId;
                     for (var i = 0; i < wastesList.length; i++) {
                         if (i > 0) addNewItemLine();
                         var $i = i;

@@ -776,8 +776,8 @@ function showEditModal(e) {
                 $("#editSulfur").val(setNumber2Line(parseFloat(data.sulfur).toFixed(2)));
                 $("#editPhosphorus").val(setNumber2Line(parseFloat(data.phosphorus).toFixed(2)));
                 $("#editFlashPoint").val(setNumber2Line(parseFloat(data.flashPoint).toFixed(2)));
-                $("#editViscosity").val(setNumber2Line(data.viscosity));
-                $("#editHotMelt").val(setNumber2Line(data.hotMelt));
+                $("#editViscosity").val(data.viscosity);
+                $("#editHotMelt").val(data.hotMelt);
                 $("#editRemark").val(data.remark);
             } else {
                 alert(result.message);

@@ -43,4 +43,10 @@ public interface ReceiveSampleAnalysisMapper {
       * @param newId 新编号
       */
      void setState(@Param("id") String id, @Param("checkState") CheckState checkState, @Param("newId") String newId);
+
+     /**
+      * 更新
+      * @param receiveSampleAnalysis
+      */
+     void update(ReceiveSampleAnalysis receiveSampleAnalysis);
 }
