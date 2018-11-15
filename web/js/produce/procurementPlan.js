@@ -420,3 +420,258 @@ function setProcurementPlan(result) {
 
     });
 }
+
+//查看
+function viewProcurementPlan(item) {
+    var procurementPlanId=$(item).parent().parent().children('td').eq(2).html();
+    $('#appointModal2').modal('show')
+    $.ajax({
+        type: "POST",
+        url: "getProcurementPlanById",
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:{"procurementPlanId":procurementPlanId},
+        dataType: "json",
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                  console.log(result)
+                setViewModal(result)
+            }
+        },
+        error:function (result) {
+            
+        }
+        
+    })
+}
+//设置查看模态框数据
+function setViewModal(result) {
+
+    var tr = $('#cloneTr2');
+
+    tr.siblings().remove();
+
+    $.each(result.data,function (index,item) {
+
+        var obj = eval(item);
+
+        var clonedTr = tr.clone();
+
+        clonedTr.show();
+
+            //序号
+            $(clonedTr).children('td').eq(0).html(index+1)
+        //物资名称
+          $(clonedTr).children('td').eq(1).html(obj.suppliesName)
+        //规格型号
+        $(clonedTr).children('td').eq(2).html(obj.specifications)
+        //申购部门
+        $(clonedTr).children('td').eq(3).html(obj.proposer)
+        //需求数量
+        $(clonedTr).children('td').eq(4).html(obj.demandQuantity)
+        //单位
+        if(obj.unit!=null){
+            $(clonedTr).children('td').eq(5).html(obj.unit.name)
+        }
+        //单价
+        $(clonedTr).children('td').eq(6).html(obj.price.toFixed(2))
+        //统计金额
+        $(clonedTr).children('td').eq(7).html(obj.priceTotal.toFixed(2))
+        //备注
+        $(clonedTr).children('td').eq(8).html(obj.remarks)
+            clonedTr.removeAttr('id');
+            clonedTr.insertBefore(tr);
+
+
+        tr.hide();
+    })
+    
+    
+}
+
+//修改
+function procurementPlanModify(item) {
+
+    var procurementPlanId=$(item).parent().parent().children('td').eq(2).html();
+    $('#appointModal3').modal('show')
+   $.ajax({
+        type: "POST",
+        url: "getProcurementPlanById",
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:{"procurementPlanId":procurementPlanId},
+        dataType: "json",
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                setAdjustModal(result)
+            }
+        },
+        error:function (result) {
+
+        }
+
+    })
+}
+
+//设置修改模态框数据
+function setAdjustModal(result) {
+
+    var tr = $('#cloneTr3');
+
+    tr.siblings().remove();
+
+    $.each(result.data,function (index,item) {
+
+        var obj = eval(item);
+
+        var clonedTr = tr.clone();
+
+        clonedTr.show();
+
+        clonedTr.attr('class','myclass3')
+        //序号
+        $(clonedTr).children('td').eq(0).html(index+1)
+        //物资名称
+        $(clonedTr).children('td').eq(1).html(obj.suppliesName)
+        //规格型号
+        $(clonedTr).children('td').eq(2).html(obj.specifications)
+        //申购部门
+        $(clonedTr).children('td').eq(3).html(obj.proposer)
+        //需求数量
+        $(clonedTr).children('td').eq(4).find('input').val(obj.demandQuantity)
+        //单位
+        if(obj.unit!=null){
+            $(clonedTr).children('td').eq(5).html(obj.unit.name)
+        }
+        //单价
+        $(clonedTr).children('td').eq(6).find('input').val(obj.price.toFixed(2))
+        //统计金额
+        $(clonedTr).children('td').eq(7).html(obj.priceTotal.toFixed(2))
+        //备注
+        $(clonedTr).children('td').eq(8).html(obj.remarks)
+
+        $(clonedTr).children('td').eq(9).html(obj.id)
+
+        $('#procurementPlanId').val(obj.procurementPlanId);
+        clonedTr.removeAttr('id');
+        clonedTr.insertBefore(tr);
+
+
+        tr.hide();
+    })
+
+
+}
+
+//需求数量输入框的计算
+function Cal(item) {
+
+    var demandQuantity=$(item).val();
+    if(demandQuantity.length<0){
+        demandQuantity=0;
+    }
+    if(isNaN(demandQuantity)){
+        demandQuantity=0
+    }
+    if(!isNaN(demandQuantity)){
+        var price=$(item).parent().next().next().find('input').val();
+        if(price.length<0){
+            price=0;
+        }
+        if(isNaN(price)){
+            price=0
+        }
+        if(!isNaN(price)){
+            var priceTotal=parseFloat(demandQuantity)*parseFloat(price);
+            $(item).parent().next().next().next().html(parseFloat(priceTotal).toFixed(2))
+        }
+
+    }
+
+
+}
+
+//单价输入框计算
+function Cal2(item) {
+    var price=$(item).val();
+    if(price.length<0){
+        price=0;
+    }
+    if(isNaN(price)){
+        price=0
+    }
+    if(!isNaN(price)){
+        var demandQuantity=$(item).parent().prev().prev().find('input').val();
+
+        if(demandQuantity.length<0){
+            demandQuantity=0;
+        }
+        if(isNaN(demandQuantity)){
+            demandQuantity=0
+        }
+        if(!isNaN(demandQuantity)){
+            var priceTotal=parseFloat(demandQuantity)*parseFloat(price);
+            $(item).parent().next().html(parseFloat(priceTotal).toFixed(2))
+        }
+
+
+    }
+
+
+}
+
+//确认修改
+function confirmAdjust() {
+  //先更新主表
+    var data={
+        procurementPlanId:$('#procurementPlanId').val(),
+        adjustName:$('#adjustName').val(),
+        adjustDate:$('#adjustDate').val(),
+    }
+    $.ajax({
+        type: "POST",
+        url: "adjustProcurementPlan",
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:JSON.stringify(data),
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                $('.myclass3').each(function () {
+                    var dataItem={
+                        id:$(this).children('td').eq(9).html(),
+                        demandQuantity:$(this).children('td').eq(4).find('input').val(),
+                        price:$(this).children('td').eq(6).find('input').val(),
+                        priceTotal:$(this).children('td').eq(7).html(),
+                    }
+
+                   $.ajax({
+                       type: "POST",
+                       url: "adjustProcurementPlanItem",
+                       async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+                       data:JSON.stringify(dataItem),
+                       dataType: "json",
+                       contentType: 'application/json;charset=utf-8',
+                       success:function (result) {
+
+                       },
+                       error:function (result) {
+
+                       }
+                   })
+
+
+                })
+                alert("修改成功")
+                window.location.reload()
+            }
+        },
+        error:function (result) {
+            
+        }
+    })
+    console.log(data)
+
+
+}
