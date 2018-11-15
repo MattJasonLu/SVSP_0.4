@@ -944,7 +944,7 @@ function addNextLine() {
  */
 function adjustSample(menu) {
     var state = $(menu).parent().prev().text();
-    if (state == "已预约") {
+    if (state == "已预约" || state == "已收样" || state == "已拒收") {
         num = 0;
         setSelectList();        // 设置危废代码和公司名下拉框数据
         $(".newLine").remove();
@@ -1002,10 +1002,6 @@ function adjustSample(menu) {
         });
     }else if(state == '已作废'){
         alert("单据已作废，不可修改！");
-    }else if(state == '已收样'){
-        alert("单据已收样，不可修改！");
-    }else if(state == '已拒收'){
-        alert("单据已拒收，不可修改！");
     }else {
         alert("单据不可修改！");
     }
