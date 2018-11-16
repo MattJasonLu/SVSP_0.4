@@ -5,7 +5,11 @@ import java.util.Date;
 
 public class EquipmentItem {
     /**
-     * 单据号
+     * 主键
+     */
+    private String itemID;
+    /**
+     * 外键：单据号
      */
     private String documentNumber;
     /**
@@ -25,6 +29,13 @@ public class EquipmentItem {
      */
     private String stopResult;
 
+    public String getItemID() {
+        return itemID;
+    }
+
+    public void setItemID(String itemID) {
+        this.itemID = itemID;
+    }
 
     public String getDocumentNumber() {
         return documentNumber;
