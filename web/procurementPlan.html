@@ -338,6 +338,62 @@
         </div>
     </div>
 
+    <!--修改模态框-->
+    <div class="modal fade bs-example-modal-lg" id="appointModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document"  style="width: 85%">
+            <div class="modal-content" >
+                <div class="modal-header">
+                    <h4 class="modal-title">计划单明细修改</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p style="display: inline">修改人:<input class="form-control" style="width: 35%;display: inline" id="adjustName"></p>
+
+                        </div>
+                        <div class="col-md-4">
+                            <p style="display: inline">修改日期:<input class="form-control"  type="date" style="width: 35%;display: inline" id="adjustDate"></p>
+                        </div>
+                    </div>
+                    <br>
+                            <input class="hidden" id="procurementPlanId">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <td class="text-center">序号</td>
+                            <td class="text-center">物资名称</td>
+                            <td class="text-center">规格型号</td>
+                            <td class="text-center">申购部门</td>
+                            <td class="text-center" style="width: 15%;">需求数量</td>
+                            <td class="text-center">单位</td>
+                            <td class="text-center" style="width: 15%;">单价</td>
+                            <td class="text-center">统计金额</td>
+                            <td class="text-center">备注</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr id="cloneTr3">
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"><input  style="width: 35%;" onkeyup="Cal(this)"></td><!--需求数量-->
+                            <td class="text-center"></td>
+                            <td class="text-center"><input  style="width: 35%;" onkeyup="Cal2(this)"></td><!--单价-->
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center hidden"></td>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row text-center">
+                    <a class="btn btn-primary hidden-print" onclick="confirmAdjust()" >确认修改</a>
+                    <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!--导入模态框-->
     <div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">

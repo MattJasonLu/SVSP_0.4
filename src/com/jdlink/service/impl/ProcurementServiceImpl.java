@@ -145,6 +145,21 @@ public class ProcurementServiceImpl implements ProcurementService {
     }
 
     @Override
+    public List<ProcurementPlanItem> getProcurementPlanById(String id) {
+        return procurementMapper.getProcurementPlanById(id);
+    }
+
+    @Override
+    public void adjustProcurementPlan(ProcurementPlan procurementPlan) {
+        procurementMapper.adjustProcurementPlan(procurementPlan);
+    }
+
+    @Override
+    public void adjustProcurementPlanItem(ProcurementPlanItem procurementPlanItem) {
+        procurementMapper.adjustProcurementPlanItem(procurementPlanItem);
+    }
+
+    @Override
     public List<Material> searchMaterial(Material material){ return procurementMapper.searchMaterial(material);}
 
     @Override

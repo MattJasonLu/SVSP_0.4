@@ -264,7 +264,7 @@
     <!--添加采购计划单主表-->
     <insert id="addProcurementPlan" parameterType="ProcurementPlan">
         insert into t_pr_procumentplan (procurementPlanId, createName, createDate, adjustName, adjustDate, approvalName, checkState, nowTime) values
-      (#{procurementPlanId},#{createName},#{createDate},#{adjustName},#{adjustDate},#{approvalName},'ToSubmit',NOW());
+      (#{procurementPlanId},#{createName},NOW(),#{adjustName},#{adjustDate},#{approvalName},'ToSubmit',NOW());
     </insert>
 
 <!--根据主键查出申购部门-->
@@ -298,4 +298,20 @@
             limit #{start}, #{count}
         </if>
     </select>
+
+    <!--根据计划单号查询-->
+    <select id="getProcurementPlanById" parameterType="String" resultType="ProcurementPlanItem">
+   select * from t_pr_procumentplanitem where procurementPlanId=#{procurementPlanId}
+    </select>
+
+    <!--修改采购计划主表-->
+    <update id="adjustProcurementPlan" parameterType="ProcurementPlan">
+        update t_pr_procumentplan set  adjustDate=#{adjustDate},adjustName=#{adjustName} where procurementPlanId=#{procurementPlanId}
+    </update>
+
+    <!--修改采购计划字表-->
+    <update id="adjustProcurementPlanItem" parameterType="ProcurementPlanItem">
+        update t_pr_procumentplanitem set demandQuantity=#{demandQuantity},price=#{price},priceTotal=#{priceTotal}
+        where id=#{id};
+    </update>
 </mapper>

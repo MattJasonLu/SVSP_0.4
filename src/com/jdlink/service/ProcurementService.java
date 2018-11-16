@@ -39,4 +39,7 @@ public interface ProcurementService {
     void addProcurementPlanItem(ProcurementPlanItem procurementPlanItem);
     List<ProcurementPlan>getProcurementPlanList(Page page);
     void updateProcurementState(String id);
+    List<ProcurementPlanItem>getProcurementPlanById(String id);
+    void adjustProcurementPlan(ProcurementPlan procurementPlan);
+    void adjustProcurementPlanItem(ProcurementPlanItem procurementPlanItem);
 }

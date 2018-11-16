@@ -907,4 +907,71 @@ public class ProcurementController {
         }
       return res.toString();
     }
+
+    //根据计划单号查询
+    @RequestMapping("getProcurementPlanById")
+    @ResponseBody
+    public String getProcurementPlanById(String procurementPlanId){
+        JSONObject res=new JSONObject();
+
+        try {
+            List<ProcurementPlanItem> procurementPlanItemList=procurementService.getProcurementPlanById(procurementPlanId);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", procurementPlanItemList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+
+        }
+
+        return res.toString();
+
+    }
+
+    //修改采购计划单主表
+    @RequestMapping("adjustProcurementPlan")
+    @ResponseBody
+    public String adjustProcurementPlan(@RequestBody ProcurementPlan procurementPlan){
+        JSONObject res=new JSONObject();
+
+
+        try {
+            procurementService.adjustProcurementPlan(procurementPlan);
+            res.put("status", "success");
+            res.put("message", "修改成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "修改失败");
+        }
+        return res.toString();
+    }
+
+
+    //修改采购计划单明细
+    @RequestMapping("adjustProcurementPlanItem")
+    @ResponseBody
+    public String adjustProcurementPlanItem (@RequestBody ProcurementPlanItem procurementPlanItem ){
+        JSONObject res=new JSONObject();
+
+        try {
+   procurementService.adjustProcurementPlanItem(procurementPlanItem);
+            res.put("status", "success");
+            res.put("message", "更新成功");
+        }
+        catch (Exception e){
+
+            e.printStackTrace();
+
+            res.put("status", "fail");
+
+            res.put("message", "更新失败");
+        }
+     return res.toString();
+    }
+
 }
