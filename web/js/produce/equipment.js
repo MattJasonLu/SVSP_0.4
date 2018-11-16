@@ -937,7 +937,7 @@ function showEditModal(e) {
                 for (var i = 0; i < obj.length; i++) {
                     var clonedTr = editTr.clone();
                     clonedTr.find("td[name='index']").text(i+1);
-                    clonedTr.find("select[name='id']").val(obj[i].id);
+                    clonedTr.find("td[name='itemID']").text(obj[i].itemID);
                     clonedTr.find("select[name='equipment']").val(obj[i].equipment.index);
                     clonedTr.find("input[name='runningTime']").val(parseFloat(obj[i].runningTime).toFixed(2));
                     clonedTr.find("input[name='stopTime']").val(parseFloat(obj[i].stopTime).toFixed(2));
@@ -967,13 +967,15 @@ function editData() {
     var data = [];
     var editTrs = $("tr[name='editTr']");
     editTrs.each(function () {
-        var item = {};
-        item.documentNumber = $(this).find("td[name='id']").text();
-        item.equipment = $(this).find("select[name='equipment']").val();
-        item.runningTime = $(this).find("input[name='runningTime']").val();
-        item.stopTime = $(this).find("input[name='stopTime']").val();
-        item.stopResult = $(this).find("input[name='stopResult']").val();
-        data.push(item);
+        if ($(this).attr('id') != 'editTr') {
+            var item = {};
+            item.itemID = $(this).find("td[name='itemID']").text();
+            item.equipment = $(this).find("select[name='equipment']").val();
+            item.runningTime = $(this).find("input[name='runningTime']").val();
+            item.stopTime = $(this).find("input[name='stopTime']").val();
+            item.stopResult = $(this).find("input[name='stopResult']").val();
+            data.push(item);
+        }
     });
     $.ajax({
         type: "POST",                       // 方法类型
@@ -983,7 +985,7 @@ function editData() {
         data: JSON.stringify(data),
         contentType: 'application/json;charset=utf-8',
         success: function (result) {
-            if (result != undefined ) {//&& result.status == "success"
+            if (result != undefined && result.status == "success" ) {
                 console.log(result);
                 alert(result.message);
                 window.location.reload();

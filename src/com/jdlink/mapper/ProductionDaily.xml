@@ -633,9 +633,9 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
         select * from t_rp_productiondaily
         <where>
             <if test="keyword != null and keyword != ''">
-                and (DATE_FORMAT(date,'%Y-%m-%d') like "%"#{keyword}"%")
-                or companyName like "%"#{keyword}"%"
-                or checkState=#{keyword}
+                and ((DATE_FORMAT(date,'%Y-%m-%d') like "%"#{keyword}"%")
+                or clientId in (select clientId from client where companyName like "%"#{keyword}"%")
+                or checkState=#{keyword})
             </if>
             <if test="parkingReason != null and parkingReason != ''">
                 <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
@@ -664,9 +664,9 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
         select count(*) from t_rp_productiondaily
         <where>
             <if test="keyword != null and keyword != ''">
-                and (DATE_FORMAT(date,'%Y-%m-%d') like "%"#{keyword}"%")
-                or companyName like "%"#{keyword}"%"
-                or checkState=#{keyword}
+                and ((DATE_FORMAT(date,'%Y-%m-%d') like "%"#{keyword}"%")
+                or clientId in (select clientId from client where companyName like "%"#{keyword}"%")
+                or checkState=#{keyword})
             </if>
             <if test="parkingReason != null and parkingReason != ''">
                 <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->

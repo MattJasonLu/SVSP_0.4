@@ -196,7 +196,7 @@ public class Contract implements Serializable {
     /**
      * 合同总价款
      */
-    private String totalPrice;
+    private float totalPrice;
     /**
      * 供应商名称
      */
@@ -374,11 +374,11 @@ public class Contract implements Serializable {
         this.suppier = suppier;
     }
 
-    public String getTotalPrice() {
+    public float getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(String totalPrice) {
+    public void setTotalPrice(float totalPrice) {
         this.totalPrice = totalPrice;
     }
 

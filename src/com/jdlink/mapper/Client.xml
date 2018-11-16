@@ -31,14 +31,14 @@
           operationType, contingencyPlan, operationRecord, location, street, applicationStatus,
           materialAttachmentUrl, processAttachmentUrl, processDesp, contactName, phone, mobile,
           email, state, industry, product, checkState, bankName, bankAccount, taxNumber, ticketType,
-           isDisposal, clientType, nowTime, taxAddress, taxMobile)
+           isDisposal, clientType, nowTime, taxAddress, taxMobile, creator, createTime)
         values (#{clientId}, #{groupId}, #{companyName},
           #{organizationCode}, #{licenseCode}, #{representative}, #{postCode}, #{enterpriseType},
           #{operationMode}, #{operationType}, #{contingencyPlan}, #{operationRecord}, #{location},
           #{street}, #{applicationStatus}, #{materialAttachmentUrl}, #{processAttachmentUrl},
           #{processDesp}, #{contactName}, #{phone}, #{mobile}, #{email}, 'Enabled', #{industry},
           #{product}, #{checkState}, #{bankName}, #{bankAccount}, #{taxNumber}, #{ticketType}, #{isDisposal},
-          #{clientType}, NOW(), #{taxAddress}, #{taxMobile});
+          #{clientType}, NOW(), #{taxAddress}, #{taxMobile}, #{creator}, #{createTime});
           INSERT INTO t_document (clientId, filePath, documentType) VALUES (#{clientId}, #{materialAttachmentUrl}, 'EIA');
           INSERT INTO t_document (clientId, filePath, documentType) VALUES (#{clientId}, #{processAttachmentUrl}, 'EIA');
     </insert>
@@ -111,7 +111,7 @@
                 and salesmanId = #{salesman.salesmanId}
             </if>
         </where>
-        order by nowTime desc
+        order by createTime desc
         <if test="page != null and page.start != null and page.count != null and page.count != 0">
             limit #{page.start}, #{page.count}
         </if>
@@ -217,14 +217,14 @@
     </select>
 
     <select id="list" resultMap="ClientRM">
-        select client.*, salesman.name, salesman.age, salesman.sex from client LEFT JOIN salesman ON client.salesmanId = salesman.salesmanId where client.state = 'Enabled' order by nowTime desc
+        select client.*, salesman.name, salesman.age, salesman.sex from client LEFT JOIN salesman ON client.salesmanId = salesman.salesmanId where client.state = 'Enabled' order by createTime desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
     </select>
 
     <select id="listAllocated" resultMap="ClientRM">
-        SELECT client.*, salesman.name, salesman.age, salesman.sex from client, salesman WHERE client.salesmanId = salesman.salesmanId AND client.salesmanId IS NOT NULL order by nowTime desc;;
+        SELECT client.*, salesman.name, salesman.age, salesman.sex from client, salesman WHERE client.salesmanId = salesman.salesmanId AND client.salesmanId IS NOT NULL order by createTime desc;;
     </select>
 
     <select id="listClientId" resultType="String">
