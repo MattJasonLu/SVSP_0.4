@@ -1332,7 +1332,7 @@ function loadProcurementItemList() {
                         clonedTr.find("span[name='amount']").text(obj.amount.toFixed(3));
                         clonedTr.find("input[name='unitPrice']").val(obj.unitPrice.toFixed(2));
                         clonedTr.find("input[name='post']").val(obj.post);
-                        clonedTr.find("input[name='wareHouseName']").val(obj.wareHouseName);
+                        clonedTr.find("select[name='wareHouseName']").val(obj.wareHouseName);
                         clonedTr.find("span[name='remarks']").text(obj.remarks);
                         clonedTr.find("span[name='procurementId']").text(obj.procurementId);
                         if (obj.equipment != null)
@@ -1470,6 +1470,33 @@ function setSelectedList() {
                     var option = $('<option />');
                     option.val(index);
                     option.text(item.name);
+                    state.append(option);
+                });
+                state.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    //设置仓库下拉框
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getWareHouseList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var state = $("select[name='wareHouseName']");
+                state.children().remove();
+                $.each(data.array, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.wareHouseName);
+                    option.text(item.wareHouseName);
                     state.append(option);
                 });
                 state.get(0).selectedIndex = -1;
@@ -1724,7 +1751,7 @@ function save() {
                 ingredientsIn.ingredientsList[i].unitPrice = $("#unitPrice" + $i).val();
                 ingredientsIn.ingredientsList[i].amount = $("#amount" + $i).val();
                 ingredientsIn.ingredientsList[i].post = $("#post" + $i).val();
-                ingredientsIn.ingredientsList[i].wareHouseName = $("#wareHouseName" + $i).val();
+                ingredientsIn.ingredientsList[i].wareHouseName = $("#wareHouseName" + $i).find("option:selected").text();
                 ingredientsIn.ingredientsList[i].totalPrice = ingredientsIn.ingredientsList[i].unitPrice * ingredientsIn.ingredientsList[i].amount;
                 var equitment = parseInt($("#equipment" + $i).find("option:selected").val());
                 switch (equitment) {
