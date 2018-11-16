@@ -31,6 +31,10 @@ public class ProcurementPlanItem {
     //单位
     private Unit unit;
 
+    public Unit getUnit() {
+        return unit;
+    }
+
     //单价
     private float price;
 

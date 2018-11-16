@@ -183,7 +183,6 @@ function add() {
         var data={
             procurementPlanId:$('#procurementPlanId').val(),
             createName:$('#createName').val(),
-            createDate:$('#createDate').val(),
         }
         //添加主表
         $.ajax({
