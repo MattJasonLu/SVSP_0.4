@@ -822,10 +822,9 @@ function print5() {
  * 详情6（企业相关附件）
  */
 function viewData6() {
-    // $("#detail6").preventDefault();
     if (resultData != null && resultData.clientList[0] != null){
         $("#modal6_companyName").text(resultData.clientList[0].companyName);
-     //   setFileList(resultData.clientList[0]);
+        setFileList(resultData.clientList[0]);
     }
     $("#modal6").modal("show");
 }
@@ -844,37 +843,48 @@ function setFileList(result) {
     fileList.push(result.processAttachmentUrl);
     fileList.push(result.materialAttachmentUrl);
     //tr.siblings().remove();
+   var i = 0;
     $.each(fileList,function(index,item){ // 总共两个附件
+        i++;
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
         clonedTr.addClass("myclass5");
         clonedTr.show();
+        console.log(item);
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
-            var obj = eval(item);
             // 根据索引为部分td赋值
             switch (inner_index) {
                 // 序号
                 case (0):
-                    $(this).html(i + 1);
+                    $(this).html(i);
                     break;
                 // 文件名称
                 case (1):
-                    $(this).html(obj);
+                    $(this).html(item);
                     break;
                 // 上传日期
                 case (2):
-                    $(this).html(obj.wastesName);
+                    $(this).html(getDateStr(result.createTime));
                     break;
                 // 文件类型
                 case (3):
-                    if (obj.packageType != null)
-                        $(this).html(obj.packageType.name);
+                    var index1 = item.indexOf(".");
+                    var result1 = item.substr(index1 + 1,item.length);
+                    $(this).html(result1);
                     break;
                 // 上传人
                 case (4):
-                    if (obj.outboundNumber != null)
-                        $(this).html(obj.outboundNumber.toFixed(2));
+                    $(this).html(result.creator);
+                    break;
+                case (5):
+                    $(this).find("#modal6_contractAppendices").click(function () {
+                        if (item != null && item != "") {
+                            window.open('downloadFile?filePath=' + item);
+                        } else {
+                            alert("未上传文件");
+                        }
+                    });
                     break;
             }
         });
@@ -887,7 +897,6 @@ function setFileList(result) {
 // 隐藏无数据的tr
 tr.hide();
 }
-
 
 /**
  * 合同附件模态框打印功能
