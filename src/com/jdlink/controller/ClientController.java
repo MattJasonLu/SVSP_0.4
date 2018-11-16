@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,6 +43,8 @@ public class ClientController {
     OutboundOrderService outboundOrderService;
     @Autowired
     InboundService inboundService;
+    @Autowired
+    UserService userService;
 
     /**
      * 新增客户
@@ -50,11 +53,14 @@ public class ClientController {
      */
     @RequestMapping("addClient")
     @ResponseBody
-    public String addClient(@RequestBody Client client) {
+    public String addClient(@RequestBody Client client, HttpSession session) {
         JSONObject res = new JSONObject();
         // 启用账户
         client.setClientState(ClientState.Enabled);
         client.setClientType(ClientType.EnquiryClient);
+        User user = userService.getCurrentUserInfo(session);
+        client.setCreator(user.getName());
+        client.setCreateTime(new Date());
         try {
             clientService.add(client);
             res.put("status", "success");
@@ -74,12 +80,12 @@ public class ClientController {
      */
     @RequestMapping("saveClient")//保存客户
     @ResponseBody
-    public String saveClient(@RequestBody Client client) {
+    public String saveClient(@RequestBody Client client, HttpSession session) {
         Client resultClient = clientService.getByClientId(client.getClientId());
         if (resultClient == null) {
             // 审核状态为待提交
             client.setCheckState(CheckState.ToSubmit);
-            return addClient(client);
+            return addClient(client, session);
         } else {
             JSONObject res = new JSONObject();
             try {
@@ -102,12 +108,12 @@ public class ClientController {
      */
     @RequestMapping("submitClient")
     @ResponseBody
-    public String submitClient(@RequestBody Client client) {
+    public String submitClient(@RequestBody Client client, HttpSession session) {
         // 审核状态为审批中
         client.setCheckState(CheckState.Examining);
         Client resultClient = clientService.getByClientId(client.getClientId());
         if (resultClient == null) {
-            return addClient(client);
+            return addClient(client, session);
         } else {
             JSONObject res = new JSONObject();
             try {
