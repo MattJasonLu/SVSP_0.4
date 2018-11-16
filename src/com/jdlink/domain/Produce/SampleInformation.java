@@ -114,7 +114,7 @@ public class SampleInformation {
      */
     private Page page;
     /**
-     * 新预约单号（送样登记修改用）
+     * 新预约单号（送样登记修改用）/化验单单号
      */
     private String newId;
 

@@ -26,6 +26,7 @@
         <result property="contactName" column="contactName" javaType="String"></result>
         <result property="telephone" column="telephone" javaType="String"></result>
         <result property="clientId" column="clientId" javaType="String"></result>
+        <association property="salesmanName" column="clientId" select="getSalesmanName"/>
         <collection property="hazardousList" select="getHazardous" column="contractId"
                     ofType="com.jdlink.domain.Hazardous" javaType="ArrayList"/>
         <collection property="quotationItemList" select="getQuotationItem" column="contractId"
@@ -87,6 +88,11 @@
     <select id="getModel2" parameterType="String" resultMap="ContractRM">
         select * from t_contract where modelName=#{modelName} and period!=""and year !="";
     </select>
+
+    <select id="getSalesmanName" parameterType="String" resultType="String">
+        select name from salesman where salesmanId in (select salesmanId from client where clientId=#{clientId});
+    </select>
+
     <update id="update" parameterType="Contract">
         UPDATE t_contract SET companyName=#{companyName}, clientId=#{clientId}, isCompanyContract=#{isCompanyContract},
         area=#{area}, beginTime=#{beginTime}, endTime=#{endTime}, agreedQuantity=#{agreedQuantity},

@@ -537,7 +537,6 @@
                         <td class="text-center">开始日期</td>
                         <td class="text-center">截止日期</td>
                         <td class="text-center">业务员</td>
-                        <td class="text-center">备注</td>
                         <td class="text-center">整单金额</td>
                         <td class="text-center">合同附件名</td>
                         <td class="text-center">经营合同详情</td>
@@ -553,8 +552,7 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
+                        <td class="text-center"><button class="btn btn-default" id="modal_contractAppendices">下载查看</button></td>
                     </tr>
                     </tbody>
                 </table>
@@ -791,7 +789,7 @@
     <div class="modal-dialog modal-lg" role="document" id="print6">
         <div class="modal-content" >
             <div class="modal-header">
-                <p><b>危废接收详情</b></p>
+                <p><b>企业相关附件详情</b></p>
                 <!--<div class="alert alert-success alert-dismissable" id="close1" >-->
                 <!--<butaton type="button" class="close" onclick="close1()" title="close it">-->
                 <!--&times;-->
@@ -805,9 +803,6 @@
                             <p class="text-left">产废单位: <span id="modal6_companyName"></span></p>
                         </div>
                     </div>
-                    <div class="col-md-6 text-right">
-                        上传附件
-                    </div>
                 </div>
                 <table class="table">
                     <tr>
@@ -818,13 +813,13 @@
                         <td class="text-center">上传人</td>
                         <td class="text-center">文件详情</td>
                     </tr>
-                    <tr>
+                    <tr id="clone6">
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
-                        <td class="text-center"></td>
+                        <td class="text-center"><button class="btn btn-default" id="modal6_contractAppendices">下载查看</button></td>
                     </tr>
                 </table>
             </div>
