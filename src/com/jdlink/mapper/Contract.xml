@@ -51,10 +51,10 @@
     <insert id="add" parameterType="Contract">
         insert into t_contract (contractId,contractType, companyName, clientId, contractVersion,
         checkState, beginTime, endTime, agreedQuantity,contactName,telephone,reviewer,reviewDepartment,
-        reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification,modelName,year,period,contractContent,contractName,modelVersion,nowTime,company1,content,suppierId)
+        reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification,modelName,year,period,contractContent,contractName,modelVersion,nowTime,company1,content,suppierId,totalPrice)
         values (#{contractId},#{contractType}, #{companyName}, #{client.clientId}, #{contractVersion},
         #{checkState}, #{beginTime}, #{endTime}, #{agreedQuantity}, #{contactName}, #{telephone}, #{reviewer},
-        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion},NOW(),#{company1},#{content},#{supplier.supplierId})
+        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion},NOW(),#{company1},#{content},#{supplier.supplierId},#{totalPrice})
     </insert>
     <insert id="addEm" parameterType="Contract">
      insert into t_contract(contractId,contractType, companyName,checkState,telephone,bankName,bankAccount,area,companyLegal,companyAgent,clientLegal,clientAgent,address,thing,province,beginTime,nowTime,ticketRate1,contractVersion,city,endTime,modelName,company1,contactName,contractName)
@@ -375,7 +375,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         update t_contract set nowTime=NOW(),bankAccount=#{bankAccount},bankName=#{bankName},
         beginTime=#{beginTime},clientId=#{client.clientId},contactName=#{contactName},
         contractName=#{contractName},contractType=#{contractType},contractVersion=#{contractVersion},
-        endTime=#{endTime},isFreight=#{freight},telephone=#{telephone},ticketRate1=#{ticketRate1}
+        endTime=#{endTime},isFreight=#{freight},telephone=#{telephone},ticketRate1=#{ticketRate1},totalPrice=#{totalPrice}
         where  contractId=#{contractId}
     </update>
     <!--删除字表的明细-->

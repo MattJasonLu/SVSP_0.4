@@ -1048,6 +1048,8 @@ function setSubmit(item)  {
                         clonedTr.children('td').eq(0).html(index + 1);
                         clonedTr.children('td').eq(1).html(obj.wastesCode);
                         clonedTr.children('td').eq(2).html(obj.wastesName);
+
+                             $('#wastesName').val(obj.wastesName)
                         project = "";
                         if (obj.cod == 1) {
                             project += "COD ";
@@ -1120,12 +1122,14 @@ function confirmSample() {
 
     var   laboratorySignatory = $('#laboratorySignatory1').val();
 
+    var wastesName=$('#wastesName').val()
+
     $.ajax({
         type: "POST",                       // 方法类型
         url: "confirmSecondarySampleById",              // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data:{"id":id,'laboratorySignatory':laboratorySignatory},
+        data:{"id":id,'laboratorySignatory':laboratorySignatory,'wastesName':wastesName},
         //contentType: 'application/json;charset=utf-8',
         success:function (result) {
             if (result != undefined && result.status == "success"){

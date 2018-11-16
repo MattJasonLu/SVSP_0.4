@@ -233,7 +233,7 @@ public class WasteIntoController {
     //确认收样==>预约登记
     @RequestMapping("confirmSecondarySampleById")
     @ResponseBody
-    public String confirmSecondarySampleById(String id,String laboratorySignatory){
+    public String confirmSecondarySampleById(String id,String laboratorySignatory,String wastesName){
         JSONObject res=new JSONObject();
  try {
      wasteIntoService.confirmSecondarySampleById(id,laboratorySignatory);
@@ -249,12 +249,12 @@ public class WasteIntoController {
          //根据编号获取次生化验信息
          if(sewageTestService.getSecondaryTestById(secondarySampleItemList.get(i).getId())!=null){
              //更新
-             wasteIntoService.updateSecondarySample(secondarySampleItemList.get(i).getId());
+             wasteIntoService.updateSecondarySample(secondarySampleItemList.get(i).getId(),wastesName);
          }
 
          if(sewageTestService.getSecondaryTestById(secondarySampleItemList.get(i).getId())==null){
             //新增
-             wasteIntoService.SecondarySample(secondarySampleItemList.get(i).getId());
+             wasteIntoService.SecondarySample(secondarySampleItemList.get(i).getId(),wastesName);
          }
 
      }
