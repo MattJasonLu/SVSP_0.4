@@ -915,10 +915,10 @@ public class ProcurementController {
         JSONObject res=new JSONObject();
 
         try {
-            List<ProcurementPlanItem> procurementPlanItemList=procurementService.getProcurementPlanById(procurementPlanId);
+            List<ProcurementPlan> procurementPlanList=procurementService.getProcurementPlanById(procurementPlanId);
             res.put("status", "success");
             res.put("message", "查询成功");
-            res.put("data", procurementPlanItemList);
+            res.put("data", procurementPlanList.get(0));
         }
         catch (Exception e){
             e.printStackTrace();
@@ -972,6 +972,87 @@ public class ProcurementController {
             res.put("message", "更新失败");
         }
      return res.toString();
+    }
+
+
+    //提交采购计划单
+    @RequestMapping("submitProcurementPlan")
+    @ResponseBody
+    public String submitProcurementPlan(String procurementPlanId){
+        JSONObject res=new JSONObject();
+
+          try {
+              procurementService.submitProcurementPlan(procurementPlanId);
+              res.put("status", "success");
+              res.put("message", "提交成功");
+          }
+          catch (Exception e){
+              e.printStackTrace();
+              res.put("status", "fail");
+              res.put("message", "提交失败");
+
+          }
+             return res.toString();
+    }
+
+    //审批采购单
+    @RequestMapping("approvalProcurementPlan")
+    @ResponseBody
+    public String approvalProcurementPlan(String procurementPlanId,String approvalName,String advice){
+        JSONObject res=new JSONObject();
+
+
+             try {
+                   procurementService.approvalProcurementPlan(procurementPlanId, approvalName, advice);
+                 res.put("status", "success");
+                 res.put("message", "审批通过");
+             }
+             catch (Exception e){
+                 e.printStackTrace();
+                 res.put("status", "fail");
+                 res.put("message", "审批失败");
+             }
+           return res.toString();
+    }
+
+    //驳回采购计划单
+    @RequestMapping("backProcurementPlan")
+    @ResponseBody
+    public String backProcurementPlan(String procurementPlanId,String advice){
+        JSONObject res=new JSONObject();
+
+
+        try {
+            procurementService.backProcurementPlan(procurementPlanId, advice);
+            res.put("status", "success");
+            res.put("message", "驳回成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+       return res.toString();
+    }
+
+    //作废采购计划单
+    @RequestMapping("cancelProcurementPlanById")
+    @ResponseBody
+    public String cancelProcurementPlanById(String procurementPlanId){
+        JSONObject res=new JSONObject();
+
+                      try {
+ procurementService.cancelProcurementPlanById(procurementPlanId);
+                          res.put("status", "success");
+                          res.put("message", "作废成功");
+                      }
+                      catch (Exception e){
+                          e.printStackTrace();
+                          res.put("status", "fail");
+                          res.put("message", "作废失败");
+
+                      }
+          return res.toString();
     }
 
 }

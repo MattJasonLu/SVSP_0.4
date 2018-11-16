@@ -435,7 +435,7 @@ function viewProcurementPlan(item) {
         success:function (result) {
             if (result != undefined && result.status == "success"){
                   console.log(result)
-                setViewModal(result)
+                setViewModal(result.data)
             }
         },
         error:function (result) {
@@ -451,7 +451,7 @@ function setViewModal(result) {
 
     tr.siblings().remove();
 
-    $.each(result.data,function (index,item) {
+    $.each(result.procurementPlanItemList,function (index,item) {
 
         var obj = eval(item);
 
@@ -492,26 +492,33 @@ function setViewModal(result) {
 //修改
 function procurementPlanModify(item) {
 
-    var procurementPlanId=$(item).parent().parent().children('td').eq(2).html();
-    $('#appointModal3').modal('show')
-   $.ajax({
-        type: "POST",
-        url: "getProcurementPlanById",
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data:{"procurementPlanId":procurementPlanId},
-        dataType: "json",
-        //contentType: 'application/json;charset=utf-8',
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                console.log(result)
-                setAdjustModal(result)
+    var checkState=$(item).parent().parent().children('td').eq(8).html();
+    if(checkState=='待提交'){
+        var procurementPlanId=$(item).parent().parent().children('td').eq(2).html();
+        $('#appointModal3').modal('show')
+        $.ajax({
+            type: "POST",
+            url: "getProcurementPlanById",
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            data:{"procurementPlanId":procurementPlanId},
+            dataType: "json",
+            //contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(result)
+                    setAdjustModal(result.data)
+                    $('#adjustName').val(result.data.adjustName);
+                    $('#adjustDate').val(getDateStr(result.data.adjustDate));
+                }
+            },
+            error:function (result) {
+
             }
-        },
-        error:function (result) {
 
-        }
+        })
+    }
+    else {alert("只可修改待提交的数据！")}
 
-    })
 }
 
 //设置修改模态框数据
@@ -521,7 +528,7 @@ function setAdjustModal(result) {
 
     tr.siblings().remove();
 
-    $.each(result.data,function (index,item) {
+    $.each(result.procurementPlanItemList,function (index,item) {
 
         var obj = eval(item);
 
@@ -674,4 +681,193 @@ function confirmAdjust() {
     console.log(data)
 
 
+}
+
+
+//提交
+function submitProcurementPlan(item) {
+    if(confirm("确认提交?")){
+        //点击确定后操作
+        var procurementPlanId=$(item).parent().parent().children('td').eq(2).html();
+        $.ajax({
+            type: "POST",
+            url: "submitProcurementPlan",
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            data:{"procurementPlanId":procurementPlanId},
+            dataType: "json",
+            //contentType: 'application/json;charset=utf-8',
+               success:function (result) {
+                   if (result != undefined && result.status == "success"){
+                       alert(result.message)
+                       window.location.reload()
+                   }
+                   else {
+                       alert(result.message)
+                   }
+               },
+            error:function (result) {
+                alert('服务器异常')
+            }
+        })
+
+
+    }
+}
+
+//审批模态框显示
+function approvalProcurementPlan(item) {
+
+    var procurementPlanId=$(item).parent().parent().children('td').eq(2).html();
+
+    $('#procurementPlanId2').text(procurementPlanId)
+
+    $.ajax({
+        type: "POST",
+        url: "getProcurementPlanById",
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:{"procurementPlanId":procurementPlanId},
+        dataType: "json",
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                $('#approvalName').val(result.data.approvalName);
+                $('#advice').val(result.data.advice)
+            }
+        },
+        error:function (result) {
+
+        }
+
+    })
+
+
+    $('#contractInfoForm2').modal('show');
+
+
+
+
+}
+
+//审批通过
+function confirmProcurementPlan() {
+
+    var procurementPlanId= $('#procurementPlanId2').text();
+
+    var approvalName =$('#approvalName').val();
+
+    var advice=$('#advice').val();
+
+
+    $.ajax({
+        type: "POST",
+        url: "approvalProcurementPlan",
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:{"procurementPlanId":procurementPlanId,'approvalName':approvalName,'advice':advice},
+        dataType: "json",
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                alert(result.message)
+                window.location.reload()
+            }
+            else {
+                alert(result.message);
+
+            }
+        },
+        error:function (result) {
+            alert('服务器异常！');
+        }
+    })
+
+}
+
+//驳回模态框显示
+function backProcurementPlan(item) {
+    var procurementPlanId=$(item).parent().parent().children('td').eq(2).html();
+
+    $('#procurementPlanId3').text(procurementPlanId)
+
+    $.ajax({
+        type: "POST",
+        url: "getProcurementPlanById",
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:{"procurementPlanId":procurementPlanId},
+        dataType: "json",
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                // $('#approvalName').val(result.data.approvalName);
+                $('#advice2').val(result.data.advice)
+            }
+        },
+        error:function (result) {
+
+        }
+
+    })
+
+
+    $('#contractInfoForm3').modal('show');
+}
+
+//确认驳回
+function back() {
+
+    var procurementPlanId= $('#procurementPlanId3').text();
+
+
+    var advice=$('#advice2').val();
+
+
+    $.ajax({
+        type: "POST",
+        url: "backProcurementPlan",
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:{"procurementPlanId":procurementPlanId,'advice':advice},
+        dataType: "json",
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                alert(result.message)
+                window.location.reload()
+            }
+            else {
+                alert(result.message);
+
+            }
+        },
+        error:function (result) {
+            alert('服务器异常！');
+        }
+    })
+
+
+}
+
+//作废采购计划单
+function cancelProcurementPlan(item) {
+    var procurementPlanId=$(item).parent().parent().children('td').eq(2).html();
+
+    if(confirm("确定作废该计划单?")){
+        //点击确定后操作
+         $.ajax({
+             type: "POST",
+             url: "cancelProcurementPlanById",
+             async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+             data:{"procurementPlanId":procurementPlanId},
+             dataType: "json",
+             //contentType: 'application/json;charset=utf-8',
+             success:function (result) {
+                 if (result != undefined && result.status == "success"){
+                     console.log(result)
+                 }
+             },
+             error:function (result) {
+
+             }
+         })
+    }
 }

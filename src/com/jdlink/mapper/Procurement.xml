@@ -300,8 +300,8 @@
     </select>
 
     <!--根据计划单号查询-->
-    <select id="getProcurementPlanById" parameterType="String" resultType="ProcurementPlanItem">
-   select * from t_pr_procumentplanitem where procurementPlanId=#{procurementPlanId}
+    <select id="getProcurementPlanById" parameterType="String" resultMap="ProcurementPlanRM">
+   select * from t_pr_procumentplan where procurementPlanId=#{procurementPlanId}
     </select>
 
     <!--修改采购计划主表-->
@@ -313,5 +313,25 @@
     <update id="adjustProcurementPlanItem" parameterType="ProcurementPlanItem">
         update t_pr_procumentplanitem set demandQuantity=#{demandQuantity},price=#{price},priceTotal=#{priceTotal}
         where id=#{id};
+    </update>
+
+    <!--提交采购计划单-->
+    <update id="submitProcurementPlan" parameterType="String">
+        update t_pr_procumentplan set checkState='Submitted' where procurementPlanId=#{procurementPlanId}
+    </update>
+
+    <!--审批采购计划单-->
+    <update id="approvalProcurementPlan">
+        update t_pr_procumentplan set approvalName=#{1},advice=#{2},checkState='Approval' where procurementPlanId=#{0}
+    </update>
+
+    <!--驳回采购计划单-->
+    <update id="backProcurementPlan">
+        update t_pr_procumentplan set advice=#{1},checkState='Backed' where procurementPlanId=#{0}
+    </update>
+
+    <!--作废采购计划单-->
+    <update id="cancelProcurementPlanById" parameterType="String">
+        update t_pr_procumentplan set checkState='Invalid' where procurementPlanId=#{procurementPlanId}
     </update>
 </mapper>
