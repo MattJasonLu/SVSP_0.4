@@ -262,7 +262,7 @@ public class PRSampleInfoController {
             if(sampleInformation.getWastesList() != null && sampleInformation.getWastesList().size() > 0){
                 for(Wastes wastes :sampleInformation.getWastesList()){
                     ReceiveSampleAnalysis receiveSampleAnalysis = new ReceiveSampleAnalysis();
-                    receiveSampleAnalysis.setId(wastes.getId());
+                    receiveSampleAnalysis.setId(sampleInformation.getId()); // 化验单号与预约单号保持一致
                     receiveSampleAnalysis.setSampleId(sampleInformation.getId());
                     receiveSampleAnalysis.setFinishDate(new Date());
                     receiveSampleAnalysis.setWastesName(wastes.getName());
@@ -422,16 +422,16 @@ public class PRSampleInfoController {
         return res.toString();
     }
 
-    @RequestMapping("getSampleInfoSeniorSelectedList")
-    @ResponseBody
-    public String getSampleInfoSeniorSelectedList() {
-        JSONObject res = new JSONObject();
-        // 获取枚举
-        ApplyState[] applyStates = new ApplyState[]{ApplyState.Appointed, ApplyState.Received, ApplyState.Rejected, ApplyState.Invalid};
-        JSONArray applyStateList = JSONArray.fromArray(applyStates);
-        res.put("applyStateList", applyStateList);
-        return res.toString();
-    }
+//    @RequestMapping("getSampleInfoSeniorSelectedList")
+//    @ResponseBody
+//    public String getSampleInfoSeniorSelectedList() {
+//        JSONObject res = new JSONObject();
+//        // 获取枚举
+//        ApplyState[] applyStates = new ApplyState[]{ApplyState.Appointed, ApplyState.Received, ApplyState.Rejected, ApplyState.Invalid};
+//        JSONArray applyStateList = JSONArray.fromArray(applyStates);
+//        res.put("applyStateList", applyStateList);
+//        return res.toString();
+//    }
 
     @RequestMapping("getClientAndWastesCodeSelectedList")
     @ResponseBody
@@ -528,6 +528,7 @@ public class PRSampleInfoController {
                 if (!map.keySet().contains(id)) {
                     map.put(id, new SampleInformation());
                     map.get(id).setId(id);
+                    map.get(id).setNewId(id);
                     String companyName = data[i][1].toString().trim();
                     Client client = clientService.getClientByCompanyName(companyName);
                     String produceCompanyId = "";

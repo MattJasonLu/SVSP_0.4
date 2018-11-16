@@ -38,6 +38,8 @@ public class ClientController {
     @Autowired
     SampleInformationService sampleInformationService;
     @Autowired
+    SampleInfoWareHouseService sampleInfoWareHouseService;
+    @Autowired
     ContractService contractService;
     @Autowired
     OutboundOrderService outboundOrderService;
@@ -329,7 +331,12 @@ public class ClientController {
                 client1 = clientList.get(0);
             }
             // 获取企业的接运单数据
-            List<SampleInformation> sampleInformationList = sampleInformationService.getSampleInfoByClientId(client1.getClientId());
+            List<SampleInformation> sampleInformationList = sampleInformationService.getSampleInfoByClientId(client1.getClientId());//市场
+            List<SampleInformation> sampleInformationList1 = sampleInfoWareHouseService.getSampleInfoByClientId(client1.getClientId());//仓储
+            for(SampleInformation sampleInformation : sampleInformationList1){
+                sampleInformation.setSignOrderId("仓储部送样登记");
+                sampleInformationList.add(sampleInformation);
+            }
             JSONArray sampleInfoList = JSONArray.fromArray(sampleInformationList.toArray(new SampleInformation[sampleInformationList.size()]));
             // 获取企业的有效合同数据
             List<Contract> contractList = contractService.getContractByClientId(client1.getClientId());

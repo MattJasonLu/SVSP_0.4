@@ -234,7 +234,7 @@ public class PRSampleInfoWareHouseController {
             if(sampleInformation.getWastesList() != null && sampleInformation.getWastesList().size() > 0){
                 for(Wastes wastes :sampleInformation.getWastesList()){
                     SampleInfoAnalysis sampleAnalysis = new SampleInfoAnalysis();
-                    sampleAnalysis.setId(wastes.getId());
+                    sampleAnalysis.setId(sampleInformation.getId());
                     sampleAnalysis.setSampleId(sampleInformation.getId());
                     sampleAnalysis.setSignDate(new Date());   // 签收日期
                     sampleAnalysis.setWastesName(wastes.getName());
@@ -371,7 +371,7 @@ public class PRSampleInfoWareHouseController {
     public String getSampleInfoSeniorSelectedList() {
         JSONObject res = new JSONObject();
         // 获取枚举
-        ApplyState[] applyStates = new ApplyState[] { ApplyState.Appointed,ApplyState.Received,ApplyState.Rejected,ApplyState.Invalid };
+        ApplyState[] applyStates = new ApplyState[] { ApplyState.ToCollected,ApplyState.Received,ApplyState.Rejected,ApplyState.Invalid };
         JSONArray applyStateList = JSONArray.fromArray(applyStates);
         res.put("applyStateList", applyStateList);
         return res.toString();
@@ -432,6 +432,7 @@ public class PRSampleInfoWareHouseController {
                 if (!map.keySet().contains(id)) {
                     map.put(id, new SampleInformation());
                     map.get(id).setId(id);
+                    map.get(id).setNewId(id);
                     String companyName = data[i][1].toString().trim();
                     Client client = clientService.getClientByCompanyName(companyName);
                     String produceCompanyId = "";
