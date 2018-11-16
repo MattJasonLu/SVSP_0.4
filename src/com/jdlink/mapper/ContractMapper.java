@@ -122,4 +122,5 @@ public interface ContractMapper {
 
     void updatePictureUrl(String wastesCode,String wastesName,int contractId,String url);
 
+    List<QuotationItem> searchContractVolume(QuotationItem quotationItem);
 }

@@ -639,7 +639,9 @@ public class SewageTestController {
         JSONObject res=new JSONObject();
 
         try {
-          sewageTestService.cancelSewageTest(id);
+           sewageTestService.cancelSewageTest(id);
+          //污水收样状态为待收样
+            sewageTestService.cancelSewageTestAfter(id);
             res.put("status", "success");
             res.put("message", "已作废");
         }
@@ -752,6 +754,7 @@ public class SewageTestController {
 
         try {
             sewageTestService.cancelSoftTest(id);
+            sewageTestService.cancelSoftTestAfter(id);
             res.put("status", "success");
             res.put("message", "已作废");
         }
@@ -862,6 +865,9 @@ public class SewageTestController {
 
         try {
             sewageTestService.cancelSecondaryTest(id);
+            //次生送样待收样
+            sewageTestService. cancelSecondaryTestAfter(id);
+
             res.put("status", "success");
             res.put("message", "已作废");
         }

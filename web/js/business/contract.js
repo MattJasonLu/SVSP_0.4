@@ -1307,7 +1307,7 @@ function viewContract(item) {
                 })
 
                 //合同总金额
-                $('#modal3_totalPrice').text(data.totalPrice);
+                $('#modal3_totalPrice').text(data.totalPrice.toFixed(2));
 
 
                 //赋值报价单明细
@@ -2537,6 +2537,9 @@ function contractWastesSave() {
             var totalPrice = 0;
             $('.myclass').each(function () {
                 var price = parseFloat($(this).children('td').eq(7).children('input').val());
+                if(isNaN(price)){
+                    price=0
+                }
                 totalPrice += price;
 
 
@@ -2573,32 +2576,36 @@ function contractWastesSave() {
                         formFile.append("contractId", $('#contractId').html());
                         if ($('#contractAppendices').prop('type') != 'text') {
                             var pictureFile = $('#contractAppendices')[0].files[0];
+                            console.log('合同附件:'+pictureFile)
                             formFile.append("contractAppendices", pictureFile);
+                            if(pictureFile!=undefined){
+                                //保存合同附件
+                                $.ajax({
+                                    type: "POST",                            // 方法类型
+                                    url: "saveContractAppendices",                     // url
+                                    cache: false,
+                                    async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                                    data: formFile,
+                                    dataType: "json",
+                                    processData: false,
+                                    contentType: false,
+                                    success: function (result) {
+                                        if (result != undefined && result.status == "success") {
+
+                                        }
+                                        else {
+
+                                        }
+                                    },
+                                    error: function (result) {
+                                        console.log("error: " + result);
+                                        alert("服务器异常!");
+                                    }
+                                });
+                            }
 
                         }
-                        //保存合同附件
-                        $.ajax({
-                            type: "POST",                            // 方法类型
-                            url: "saveContractAppendices",                     // url
-                            cache: false,
-                            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-                            data: formFile,
-                            dataType: "json",
-                            processData: false,
-                            contentType: false,
-                            success: function (result) {
-                                if (result != undefined && result.status == "success") {
 
-                                }
-                                else {
-
-                                }
-                            },
-                            error: function (result) {
-                                console.log("error: " + result);
-                                alert("服务器异常!");
-                            }
-                        });
                         //console.log(result);
                         $('.myclass').each(function () {
                             var quotationItemData = {
@@ -2724,6 +2731,10 @@ function contractWastesSave() {
             var totalPrice = 0;
             $('.myclass').each(function () {
                 var price = parseFloat($(this).children('td').eq(7).children('input').val());
+                console.log('price:'+price)
+               if(isNaN(price)){
+                   price=0
+               }
                 totalPrice += price;
 
 
@@ -2756,37 +2767,42 @@ function contractWastesSave() {
                 success: function (result) {
                     if (result != undefined && result.status == "success") {
 
-                        //添加图片地址
+                        //添加合同地址
                         var formFile = new FormData();
                         formFile.append("contractId", $('#contractId').html());
                         if ($('#contractAppendices').prop('type') != 'text') {
                             var pictureFile = $('#contractAppendices').get(0).files[0];
+                            console.log('合同附件:'+pictureFile)
                             formFile.append("contractAppendices", pictureFile);
+                            if(pictureFile!=undefined){
+                                //保存合同附件
+                                $.ajax({
+                                    type: "POST",                            // 方法类型
+                                    url: "saveContractAppendices",                     // url
+                                    cache: false,
+                                    async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                                    data: formFile,
+                                    dataType: "json",
+                                    processData: false,
+                                    contentType: false,
+                                    success: function (result) {
+                                        if (result != undefined && result.status == "success") {
+
+                                        }
+                                        else {
+
+                                        }
+                                    },
+                                    error: function (result) {
+                                        console.log("error: " + result);
+                                        alert("服务器异常!");
+                                    }
+                                });
+                            }
 
                         }
-                        //保存合同附件
-                        $.ajax({
-                            type: "POST",                            // 方法类型
-                            url: "saveContractAppendices",                     // url
-                            cache: false,
-                            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-                            data: formFile,
-                            dataType: "json",
-                            processData: false,
-                            contentType: false,
-                            success: function (result) {
-                                if (result != undefined && result.status == "success") {
 
-                                }
-                                else {
 
-                                }
-                            },
-                            error: function (result) {
-                                console.log("error: " + result);
-                                alert("服务器异常!");
-                            }
-                        });
 
 
                         // console.log(result);
@@ -2839,7 +2855,6 @@ function contractWastesSave() {
                             formFile.append('wastesCode', wastesCode);
                             formFile.append('wastesName', wastesName);
                             formFile.append("contractId", $('#contractId').html());
-                            console.log($(this).children('td').eq(10).children('input').prop('type'))
                             if ($(this).children('td').eq(10).children('input').prop('type') != 'text') {
                                 var pictureFile = $(this).children('td').eq(10).find("input[name='picture']").get(0).files[0];
                                 formFile.append("pictureFile", pictureFile);
@@ -5027,6 +5042,9 @@ function contractAdjustSave() {
         var totalPrice = 0;
         $('.myclass').each(function () {
             var price = parseFloat($(this).children('td').eq(7).children('input').val());
+            if(isNaN(price)){
+                price=0
+            }
             totalPrice += price;
 
 
@@ -5088,34 +5106,7 @@ function contractAdjustSave() {
                             }
                         });
                     }
-                    // if(file==undefined){
-                    //     var contractId=$('#contractId').html();
-                    //     var contractAppendicesUrl=$('#contractAppendices').val();
-                    //     //更新合同附件
-                    //     $.ajax({
-                    //         type: "POST",                            // 方法类型
-                    //         url: "updateContractAppendicesUrl",                     // url
-                    //         cache: false,
-                    //         async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-                    //         data: {'contractId':contractId,"contractAppendicesUrl":contractAppendicesUrl},
-                    //         dataType: "json",
-                    //         // processData: false,
-                    //         // contentType: false,
-                    //         success: function (result) {
-                    //             if (result != undefined && result.status == "success")
-                    //             {
-                    //
-                    //             }
-                    //             else {
-                    //
-                    //             }
-                    //         },
-                    //         error: function (result) {
-                    //             console.log("error: " + result);
-                    //             alert("服务器异常!");
-                    //         }
-                    //     });
-                    // }
+
 
 
                     $('.myclass').each(function () {
