@@ -43,6 +43,17 @@ public class ProcurementPlan {
     //粗查询
     private String keyword;
 
+    //意见
+    private String advice;
+
+    public String getAdvice() {
+        return advice;
+    }
+
+    public void setAdvice(String advice) {
+        this.advice = advice;
+    }
+
     public Page getPage() {
         return page;
     }
