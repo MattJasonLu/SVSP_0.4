@@ -359,11 +359,11 @@ function setWayBillList(result) {
                     //减去总运费
                     obj.total = total - obj.freight;
                 }
-                    $(this).html(obj.total.toFixed(3));
+                    $(this).html(obj.total.toFixed(2));
                     break;
                 case (4):
                     //总运费
-                    $(this).html(obj.freight);
+                    $(this).html(obj.freight.toFixed(2));
                     break;
                 case (5):
                     // 创建人

@@ -209,8 +209,8 @@ public class ProductionDailyController {
         // 创建一个新的生产日报
         ProductionDaily productionDaily = new ProductionDaily();
         // 设置公司为常州北控
-        Client client = clientService.getByClientId("0038");
-        productionDaily.setClient(client);
+        Client client = clientService.getByName("北控安耐得环保科技发展常州有限公司");
+        if (client != null) productionDaily.setClient(client);
         // 设置编号
         productionDaily.setId(productionDailyService.getProductionDailyId());
         // 设置时间

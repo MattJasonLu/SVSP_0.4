@@ -136,10 +136,8 @@ function searchData() {
  */
 function setDataList(result) {
     // 设置企业数据
-    console.log("设置数据:");
-    console.log(result.clientList[0].clientState);
-    for(var i = 0;i < result.clientList.length;i++){
-        if(result.clientList[i] != null && result.clientList[i].clientState != null && result.clientList[i].clientState.name != "已禁用"){
+    for (var i = 0; i < result.clientList.length; i++) {
+        if (result.clientList[i] != null && result.clientList[i].clientState != null && result.clientList[i].clientState.name != "已禁用") {
             $("#companyName").text(result.clientList[0].companyName);
             $("#companyId").text(result.clientList[0].clientId);
             $("#companyArea").text(result.clientList[0].location);
@@ -192,13 +190,13 @@ function setDataList(result) {
         }
     }
     $("#wastesSpeciesTotal").text(wastesSpeciesTotal);
-    $("#wastesAmountTotal").text(wastesAmountTotal);
-    $("#wastesResidueAmountTotal").text(wastesResidueAmountTotal);
+    $("#wastesAmountTotal").text(wastesAmountTotal.toFixed(2));
+    $("#wastesResidueAmountTotal").text(wastesResidueAmountTotal.toFixed(2));
     $("#currentValidContractTotal").text(sum1);    // 当前有效合同
     $("#currentWastesSpeciesTotal").text(currentWastesSpeciesTotal);
-    $("#currentWastesAmountTotal").text(currentWastesAmountTotal);
-    $("#currentWastesReceiveAmountTotal").text(currentWastesReceiveAmountTotal);
-    $("#currentWastesResidueAmountTotal").text(currentWastesAmountTotal - currentWastesReceiveAmountTotal);
+    $("#currentWastesAmountTotal").text(currentWastesAmountTotal.toFixed(2));
+    $("#currentWastesReceiveAmountTotal").text(currentWastesReceiveAmountTotal.toFixed(2));
+    $("#currentWastesResidueAmountTotal").text((currentWastesAmountTotal - currentWastesReceiveAmountTotal).toFixed(2));
     // 派车统计
     $("#sentCarTotalNumber").text(0);
     $("#totalMileage").text(0);
@@ -206,7 +204,7 @@ function setDataList(result) {
 }
 
 /**
- * 详情1
+ * 详情1（送样）
  */
 function viewData1() {
     // $("#detail1").preventDefault();
@@ -236,9 +234,8 @@ function viewData1() {
  * @param result
  */
 function setSampleList(result) {
-    $(".newLine").remove();                 // 删除旧数据
-    console.log("克隆数据为：");
     console.log(result);
+    $(".newLine").remove();                 // 删除旧数据
     // 获取id为cloneTr的tr元素
     var tr = $("#clone1");
     //tr.siblings().remove();
@@ -262,11 +259,12 @@ function setSampleList(result) {
                             break;
                         // 送样单位
                         case (1):
-                            $(this).html(resultData.clientList[0].companyName);
+                            if (resultData != null && resultData.clientList[0] != null)
+                                $(this).html(resultData.clientList[0].companyName);
                             break;
                         // 单据类型
                         case (2):
-                            // $(this).html();
+                            $(this).html("--");
                             break;
                         // 单据号
                         case (3):
@@ -290,7 +288,11 @@ function setSampleList(result) {
                             break;
                         // 来源数据类型
                         case (8):
-                            //   $(this).html();
+                            if (item.signOrderId == "仓储部送样登记") {
+                                $(this).html("仓储部送样登记");
+                            } else {
+                                $(this).html("市场部送样登记");
+                            }
                             break;
                         // 单据状态
                         case (9):
@@ -299,11 +301,11 @@ function setSampleList(result) {
                             break;
                         // 送样类型
                         case (10):
-                            //  $(this).html();
+                            $(this).html("--");
                             break;
-                        // 对应分析单单号
+                        // 对应分析单单号(化验单单号)
                         case (11):
-                            //  $(this).html();
+                            $(this).html(item.newId);
                             break;
                     }
                 });
@@ -356,7 +358,7 @@ function searchDate1() {
             $('#tBody1').append(this);
         });
     }
-   // 若输入框未数据则将全部数据显示
+    // 若输入框未数据则将全部数据显示
     if (beginTime.length <= 0 && endTime.length <= 0) {
         $('.myclass1').each(function () {
             $(this).show();
@@ -370,12 +372,11 @@ function searchDate1() {
 function print1() {
     //打印模态框
     $("#date1").hide();
-    $("#modal1").printThis({
-    });
+    $("#modal1").printThis({});
 }
 
 /**
- * 详情2
+ * 详情2（经营合同统计）
  */
 function viewData2() {
     $('#modal2-beginTime').val("");
@@ -392,6 +393,7 @@ function viewData2() {
  * 设置合同模态框数据
  */
 function setContractList(result) {
+    console.log(result);
     $(".newLine").remove();                 // 删除旧数据
     // 获取id为cloneTr的tr元素
     var tr = $("#clone2");
@@ -433,21 +435,25 @@ function setContractList(result) {
                 case (5):
                     $(this).html(obj.salesmanName);
                     break;
-                // 备注
-                case (6):
-                    // $(this).html();
-                    break;
                 // 整单金额
-                case (7):
-                    $(this).html(obj.totalPrice);
+                case (6):
+                    if (obj.totalPrice != "" && obj.totalPrice != null)
+                        $(this).html(obj.totalPrice.toFixed(2));
                     break;
                 // 合同附件名
-                case (8):
-                    // $(this).html();
+                case (7):
+                    $(this).html(obj.contractAppendicesUrl);
                     break;
                 // 经营合同详情（暂用正文数据）
-                case (9):
+                case (8):
                     //$(this).html();
+                    $(this).find("#modal_contractAppendices").click(function () {
+                        if (obj.contractAppendicesUrl != null && obj.contractAppendicesUrl != "") {
+                            window.open('downloadFile?filePath=' + obj.contractAppendicesUrl);
+                        } else {
+                            alert("未上传文件");
+                        }
+                    });
                     break;
             }
         });
@@ -511,11 +517,11 @@ function searchDate2() {
 function print2() {
     //打印模态框
     $("#date2").hide();
-    $("#modal2").printThis({
-    });
+    $("#modal2").printThis({});
 }
+
 /**
- * 详情3
+ * 详情3（派车统计）
  */
 function viewData3() {
     $('#modal3-beginTime').val("");
@@ -531,11 +537,11 @@ function viewData3() {
 function print3() {
     //打印模态框
     $("#date3").hide();
-    $("#modal3").printThis({
-    });
+    $("#modal3").printThis({});
 }
+
 /**
- * 详情4
+ * 详情4(危废接收)
  */
 function viewData4() {
     $('#modal4-beginTime').val("");
@@ -575,12 +581,12 @@ function setInboundOrderItemList(result) {
                     break;
                 // 八位码
                 case (1):
-                    if(obj.wastes != null)
+                    if (obj.wastes != null)
                         $(this).html(obj.wastes.wastesId);
                     break;
                 // 危废名称
                 case (2):
-                    if(obj.wastes != null)
+                    if (obj.wastes != null)
                         $(this).html(obj.wastes.name);
                     break;
                 // 包装类型
@@ -590,7 +596,7 @@ function setInboundOrderItemList(result) {
                     break;
                 // 数量
                 case (4):
-                    $(this).html(obj.wastesAmount.toFixed(3));
+                    $(this).html(obj.wastesAmount.toFixed(2));
                     break;
                 // 单位
                 case (5):
@@ -606,7 +612,7 @@ function setInboundOrderItemList(result) {
                     break;
                 // 生命周期
                 case (8):
-                    // $(this).html();
+                    $(this).html("--");
                     break;
             }
         });
@@ -670,11 +676,11 @@ function searchDate4() {
 function print4() {
     //打印模态框
     $("#date4").hide();
-    $("#modal4").printThis({
-    });
+    $("#modal4").printThis({});
 }
+
 /**
- * 详情5
+ * 详情5（危废处置）
  */
 function viewData5() {
     $('#modal5-beginTime').val("");
@@ -715,13 +721,11 @@ function setOutBoundList(result) {
                     break;
                 // 八位码
                 case (1):
-                    if(obj.wastes != null)
-                    $(this).html(obj.wastes.wastesId);
+                    $(this).html(obj.wasteCategory);
                     break;
                 // 危废名称
                 case (2):
-                    if(obj.wastes != null)
-                    $(this).html(obj.wastes.name);
+                    $(this).html(obj.wastesName);
                     break;
                 // 包装类型
                 case (3):
@@ -730,7 +734,8 @@ function setOutBoundList(result) {
                     break;
                 // 数量
                 case (4):
-                    // $(this).html(obj.);
+                    if (obj.outboundNumber != null)
+                        $(this).html(obj.outboundNumber.toFixed(2));
                     break;
                 // 单位
                 case (5):
@@ -746,7 +751,7 @@ function setOutBoundList(result) {
                     break;
                 // 生命周期
                 case (8):
-                    // $(this).html();
+                    $(this).html("--");
                     break;
             }
         });
@@ -810,15 +815,87 @@ function searchDate5() {
 function print5() {
     //打印模态框
     $("#date5").hide();
-    $("#modal5").printThis({
-    });
+    $("#modal5").printThis({});
 }
+
 /**
- * 详情6
+ * 详情6（企业相关附件）
  */
 function viewData6() {
-    // $("#detail6").preventDefault();
-    $("#modal6").modal("show")
+    if (resultData != null && resultData.clientList[0] != null){
+        $("#modal6_companyName").text(resultData.clientList[0].companyName);
+        setFileList(resultData.clientList[0]);
+    }
+    $("#modal6").modal("show");
+}
+
+
+/**
+ * 设置危废处置模态框数据
+ */
+function setFileList(result) {
+    console.log("数据：");
+    console.log(result);
+    $(".newLine").remove();                 // 删除旧数据
+    // 获取id为cloneTr的tr元素
+    var tr = $("#clone6");
+    var fileList = [];
+    fileList.push(result.processAttachmentUrl);
+    fileList.push(result.materialAttachmentUrl);
+    //tr.siblings().remove();
+   var i = 0;
+    $.each(fileList,function(index,item){ // 总共两个附件
+        i++;
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        clonedTr.addClass("myclass5");
+        clonedTr.show();
+        console.log(item);
+        // 循环遍历cloneTr的每一个td元素，并赋值
+        clonedTr.children("td").each(function (inner_index) {
+            // 根据索引为部分td赋值
+            switch (inner_index) {
+                // 序号
+                case (0):
+                    $(this).html(i);
+                    break;
+                // 文件名称
+                case (1):
+                    $(this).html(item);
+                    break;
+                // 上传日期
+                case (2):
+                    $(this).html(getDateStr(result.createTime));
+                    break;
+                // 文件类型
+                case (3):
+                    var index1 = item.indexOf(".");
+                    var result1 = item.substr(index1 + 1,item.length);
+                    $(this).html(result1);
+                    break;
+                // 上传人
+                case (4):
+                    $(this).html(result.creator);
+                    break;
+                case (5):
+                    $(this).find("#modal6_contractAppendices").click(function () {
+                        if (item != null && item != "") {
+                            window.open('downloadFile?filePath=' + item);
+                        } else {
+                            alert("未上传文件");
+                        }
+                    });
+                    break;
+            }
+        });
+        // 把克隆好的tr追加到原来的tr前面
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+        clonedTr.addClass("newLine");
+    }
+);
+// 隐藏无数据的tr
+tr.hide();
 }
 
 /**
@@ -826,6 +903,5 @@ function viewData6() {
  */
 function print6() {
     //打印模态框
-    $("#modal6").printThis({
-    });
+    $("#modal6").printThis({});
 }

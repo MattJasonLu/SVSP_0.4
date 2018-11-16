@@ -873,7 +873,7 @@ function delLine(item) {
  * 显示确认收样框
  */
 function checkModal(menu) {
-    if ($(menu).parent().prev().text() == "已预约") {
+    if ($(menu).parent().prev().text() == "待收样") {
         $(".newLine").remove();
         sampleId = getSampleIdByMenu(menu);
         // 更新数据
@@ -956,7 +956,7 @@ function addNextLine() {
  */
 function adjustSample(menu) {
     var state = $(menu).parent().prev().text();
-    if (state == "已预约" || state == "已收样" || state == "已拒收") {
+    if (state == "待收样") {
         num = 0;
         setSelectList();        // 设置危废代码和公司名下拉框数据
         $(".newLine").remove();
@@ -1014,6 +1014,10 @@ function adjustSample(menu) {
         });
     }else if(state == '已作废'){
         alert("单据已作废，不可修改！");
+    }else if(state == '已拒收'){
+        alert("单据已拒收，不可修改！");
+    }else if(state == '已收样'){
+        alert("单据已收样，不可修改！");
     }else {
         alert("单据不可修改！");
     }
@@ -1024,11 +1028,8 @@ function adjustSample(menu) {
  */
 function updateAppointBySampleId() {
     var sampleInformation = {};
-    if ($("#model3-id").val() != null || $("#model-id").val() == "") {
-        sampleInformation.id = $("#model3-id").val();
-    } else {
-        sampleInformation.id = sampleId;
-    }
+    sampleInformation.newId = $("#model3-id").val();
+    sampleInformation.id = sampleId;
     sampleInformation.companyName = $("#model3-companyName").find("option:selected").text();
     sampleInformation.companyCode = $("#model3-companyName").find("option:selected").val();
     sampleInformation.sendingPerson = $("#model3-sendingPerson").val();
@@ -1194,7 +1195,7 @@ function searchSampleInfo() {
     page.start = (pageNumber - 1) * page.count;
     // 精确查询
     var applyState = null;
-    if ($("#search-state").val() == 0) applyState = "Appointed";
+    if ($("#search-state").val() == 0) applyState = "ToCollected";
     if ($("#search-state").val() == 1) applyState = "Received";
     if ($("#search-state").val() == 2) applyState = "Rejected";
     if ($("#search-state").val() == 3) applyState = "Invalid";
@@ -1283,11 +1284,11 @@ function searchSampleInfo() {
                 var isHotMelt = true;
                 keywords = "";
                 break;
-            case "已预约":
-                keywords = "Appointed";
+            case "待":
+                keywords = "ToCollected";
                 break;
-            case "预约":
-                keywords = "Appointed";
+            case "待收样":
+                keywords = "ToCollected";
                 break;
             case "已收样":
                 keywords = "Received";
@@ -1497,7 +1498,7 @@ function addAppoint() {
  */
 function deleteSample(menu) {
     var state = $(menu).parent().prev().text();
-    if (state == "已预约" || state == "已拒收") {
+    if (state == "待收样") {
         sampleId = getSampleIdByMenu(menu);
         var msg = "是否作废该条记录？";
         if (confirm(msg) == true) {
@@ -1523,8 +1524,10 @@ function deleteSample(menu) {
                 }
             });
         }
-    } else if(state == "已收样"){
+    }else if(state == "已收样"){
         alert("单据已收样，不可作废！");
+    }else if(state == "已拒收"){
+        alert("单据已拒收，不可作废！");
     }else if(state == "已作废"){
         alert("单据已作废！");
     }else {
@@ -1597,7 +1600,7 @@ function print() {
  * 显示拒收模态框
  */
 function rejection(menu) {
-    if ($(menu).parent().prev().text() == "已预约") {
+    if ($(menu).parent().prev().text() == "待收样" || $(menu).parent().prev().text() == "已拒收") {
         sampleId = getSampleIdByMenu(menu);
         //根据编号查找
         $.ajax({
@@ -1623,6 +1626,8 @@ function rejection(menu) {
         alert("单据已收样，不可拒收！");
     } else if ($(menu).parent().prev().text() == "已作废") {
         alert("单据已作废，不可拒收！");
+    }else{
+        alert("单据不可拒收！")
     }
 }
 

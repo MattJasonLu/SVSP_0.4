@@ -9,6 +9,7 @@
         <result property="companyCode" column="companyCode"/>
         <result property="applyState" column="applyState"/>
         <result property="laboratorySigner" column="laboratorySigner"/>
+        <association property="newId" column="id" select="getAnalysisId"/>
         <collection property="wastesList" select="getWastes" column="id" ofType="com.jdlink.domain.Wastes"
                     javaType="ArrayList"/>
     </resultMap>
@@ -16,7 +17,7 @@
     <insert id="add" parameterType="SampleInformation">
         INSERT INTO t_pr_sampleinformation (id,companyCode,companyName,wastesCode,wastesName,wastesFormType,applyState,sendingPerson,laboratorySigner,isPH,isAsh,
         isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity,isHotMelt,nowTime,creationDate,creationTime)
-        VALUES (#{id},#{companyCode},#{companyName},#{wastesList[0].code},#{wastesList[0].name},#{wastesList[0].formType},'Appointed',#{sendingPerson},#{laboratorySigner},#{wastesList[0].isPH},
+        VALUES (#{id},#{companyCode},#{companyName},#{wastesList[0].code},#{wastesList[0].name},#{wastesList[0].formType},'ToCollected',#{sendingPerson},#{laboratorySigner},#{wastesList[0].isPH},
         #{wastesList[0].isAsh}, #{wastesList[0].isWater}, #{wastesList[0].isHeat},
         #{wastesList[0].isSulfur}, #{wastesList[0].isChlorine}, #{wastesList[0].isFluorine},
         #{wastesList[0].isPhosphorus}, #{wastesList[0].isFlashPoint}, #{wastesList[0].isViscosity},#{wastesList[0].isHotMelt}, NOW(),NOW(),NOW());
@@ -34,7 +35,7 @@
 
     <select id="listPage" resultType="SampleInformation">
         select * from t_pr_sampleinformation
-        where applyState in ('Rejected','Appointed','Received')
+        where applyState != 'Invalid'
         ORDER BY creationTime DESC
         <if test="start != null and count != null">
             limit #{start}, #{count}
@@ -43,7 +44,7 @@
 
     <select id="listItemPage" resultType="SampleInformationItem">
         select a.*,b.companyName,b.sendingPerson,b.laboratorySigner,b.applyState from t_pr_sampleinformationItem as a join t_pr_sampleinformation as b on a.sampleId=b.id
-        where b.applyState in ('Rejected','Appointed','Received')
+        where b.applyState in != 'Invalid'
         ORDER BY b.creationTime DESC
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
@@ -68,6 +69,10 @@
 
     <select id="getBySampleInformationId" parameterType="String" resultMap="SampleInformationRM">
         SELECT * FROM t_pr_sampleinformation WHERE id = #{id}
+    </select>
+
+    <select id="getAnalysisId" parameterType="String" resultType="String">
+        select id from t_pr_receivesampleanalysis where sampleId=#{id};
     </select>
 
     <select id="getById" resultMap="SampleInformationRM">
@@ -412,7 +417,7 @@
     <update id="update" parameterType="SampleInformation">
         UPDATE t_pr_sampleinformation
         SET
-        companyCode=#{companyCode},companyName=#{companyName},wastesCode =#{wastesList[0].code},
+        id=#{newId},companyCode=#{companyCode},companyName=#{companyName},wastesName=#{wastesList[0].name},wastesCode =#{wastesList[0].code},
         sendingPerson = #{sendingPerson},isPH = #{wastesList[0].isPH},isAsh = #{wastesList[0].isAsh},
         isWater = #{wastesList[0].isWater},isHeat = #{wastesList[0].isHeat},isSulfur =#{wastesList[0].isSulfur},
         isChlorine = #{wastesList[0].isChlorine},isFluorine = #{wastesList[0].isFluorine},isPhosphorus =#{wastesList[0].isPhosphorus},
@@ -425,7 +430,7 @@
             (id,sampleId,code,name,formType,category,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,
             isFlashPoint,isViscosity,isHotMelt)
             values
-            (#{wastes.id},#{id},#{wastes.code},#{wastes.name},#{wastes.formType},#{wastes.category},#{wastes.isPH},#{wastes.isAsh},#{wastes.isWater},
+            (#{wastes.id},#{newId},#{wastes.code},#{wastes.name},#{wastes.formType},#{wastes.category},#{wastes.isPH},#{wastes.isAsh},#{wastes.isWater},
             #{wastes.isHeat},#{wastes.isSulfur},#{wastes.isChlorine},#{wastes.isFluorine},#{wastes.isPhosphorus},
             #{wastes.isFlashPoint},#{wastes.isViscosity},#{wastes.isHotMelt});
             </if>
@@ -435,7 +440,7 @@
                 code=#{wastes.code},name=#{wastes.name},formType=#{wastes.formType},category=#{wastes.category},
                 isPH=#{wastes.isPH},isAsh=#{wastes.isAsh},isWater=#{wastes.isWater},isHeat=#{wastes.isHeat},isSulfur=#{wastes.isSulfur},
                 isChlorine=#{wastes.isChlorine},isFluorine=#{wastes.isFluorine},isPhosphorus=#{wastes.isPhosphorus},
-                isFlashPoint=#{wastes.isFlashPoint},isViscosity=#{wastes.isViscosity},isHotMelt=#{wastes.isHotMelt},sampleId=#{id}
+                isFlashPoint=#{wastes.isFlashPoint},isViscosity=#{wastes.isViscosity},isHotMelt=#{wastes.isHotMelt},sampleId=#{newId}
                 where id =#{wastes.id};
             </if>
         </foreach>

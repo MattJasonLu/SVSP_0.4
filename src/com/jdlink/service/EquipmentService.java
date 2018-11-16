@@ -42,6 +42,12 @@ public interface EquipmentService {
     void addEquipmentItem(EquipmentItem equipmentItem);
 
     /**
+     * 更新设备明细
+     * @param equipmentItemList 设备明细条目
+     */
+    void updateEquipmentItem(List<EquipmentItem> equipmentItemList);
+
+    /**
      * 设置下拉框数据
      */
     List<Equipment> getEquipmentNameList(Equipment equipment);
