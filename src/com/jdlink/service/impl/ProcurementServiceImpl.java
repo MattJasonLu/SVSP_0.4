@@ -182,6 +182,21 @@ public class ProcurementServiceImpl implements ProcurementService
     }
 
     @Override
+    public int totalProcurementPlanRecord() {
+        return procurementMapper.totalProcurementPlanRecord();
+    }
+
+    @Override
+    public List<ProcurementPlan> searchProcurementPlan(ProcurementPlan procurementPlan) {
+        return procurementMapper.searchProcurementPlan(procurementPlan);
+    }
+
+    @Override
+    public int searchProcurementPlanCount(ProcurementPlan procurementPlan) {
+        return procurementMapper.searchProcurementPlanCount(procurementPlan);
+    }
+
+    @Override
     public List<Material> searchMaterial(Material material){ return procurementMapper.searchMaterial(material);}
 
     @Override

@@ -1055,4 +1055,43 @@ public class ProcurementController {
           return res.toString();
     }
 
+    //计算采购计划表总数
+    @RequestMapping("totalProcurementPlanRecord")
+    @ResponseBody
+    public int  totalProcurementPlanRecord(){
+        return procurementService.totalProcurementPlanRecord();
+
+    }
+
+    //采购计划查询
+    @RequestMapping("searchProcurementPlan")
+    @ResponseBody
+    public String searchProcurementPlan(@RequestBody ProcurementPlan procurementPlan){
+        JSONObject res=new JSONObject();
+
+        try {
+            List<ProcurementPlan> procurementPlanList=procurementService.searchProcurementPlan(procurementPlan);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", procurementPlanList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+
+
+
+        return res.toString();
+    }
+
+    //采购计划查询计数
+    @RequestMapping("searchProcurementPlanCount")
+    @ResponseBody
+    public int searchProcurementPlanCount(@RequestBody ProcurementPlan procurementPlan){
+
+        return procurementService.searchProcurementPlanCount(procurementPlan);
+    }
+
 }

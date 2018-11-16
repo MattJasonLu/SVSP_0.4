@@ -122,7 +122,7 @@
                     <div class="input-group col-md-4 pull-right">
                         <input type="text" class="form-control"  placeholder="搜索..." id="searchContent" name="searchContent">
                         <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="searchProcurement();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="searchData();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
                             <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
                         </span>
@@ -141,74 +141,73 @@
                                 <!--</div>-->
                             <!--</div>-->
                             <div class="form-group">
-                                <label for="search-divisionHead" class="col-sm-4 control-label">申购部门分管领导</label>
+                                <label for="search-procurementPlanId" class="col-sm-4 control-label">月度采购计划单号</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-divisionHead" name="search-divisionHead" placeholder="" onkeyup="enterSearch()">
+                                    <input type="text" class="form-control" id="search-procurementPlanId" name="search-procurementPlanId" placeholder="" onkeyup="enterSearch()">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="search-proposer" class="col-sm-4 control-label">申购&nbsp;部&nbsp;门&nbsp;负&nbsp;责人</label>
+                                <label for="search-createName" class="col-sm-4 control-label">创&nbsp;&nbsp;&nbsp;&nbsp;建&nbsp;&nbsp;&nbsp;&nbsp;人</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-proposer" name="search-proposer" placeholder="" onkeyup="enterSearch()">
+                                    <input type="text" class="form-control" id="search-createName" name="search-proposer" placeholder="" onkeyup="enterSearch()">
                                 </div>
                             </div>
                         </div>
                         <div class="form-horizontal col-md-4">
                             <div class="form-group">
-                                <label for="search-applyMouth" class="col-sm-4 control-label">申&nbsp;&nbsp;&nbsp;&nbsp;请&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;份</label>
+                                <label for="search-adjustName" class="col-sm-4 control-label">修&nbsp;&nbsp;&nbsp;&nbsp;改&nbsp;&nbsp;&nbsp;&nbsp;人</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-applyMouth" name="search-applyMouth" placeholder="" onkeyup="enterSearch()">
+                                    <input type="text" class="form-control" id="search-adjustName" name="search-applyMouth" placeholder="" onkeyup="enterSearch()">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="search-purchasingDirector" class="col-sm-4 control-label">采购部门负责人</label>
+                                <label for="search-checkState" class="col-sm-4 control-label">状态</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-purchasingDirector" name="search-purchasingDirector" placeholder="" onkeyup="enterSearch()">
+                                    <select type="text" class="form-control" id="search-checkState" name="search-applyDepartment" placeholder="" onchange="searchData()">
+                                        <option></option>
+                                        <option value="ToSubmit">待提交</option>
+                                        <option value="Submitted">已提交</option>
+                                        <option value="Approval">审批通过</option>
+                                        <option value="Backed">已驳回</option>
+                                    </select>
                                 </div>
                             </div>
 
                         </div>
                         <div class="form-horizontal col-md-4">
                             <div class="form-group">
-                                <label for="search-applyDepartment" class="col-sm-4 control-label">申&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;门</label>
+                                <label for="search-approvalName" class="col-sm-4 control-label">审&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;批&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-applyDepartment" name="search-applyDepartment" placeholder="" onkeyup="enterSearch()">
+                                    <input type="text" class="form-control" id="search-approvalName" name="search-applyDepartment" placeholder="" onkeyup="enterSearch()">
                                 </div>
                             </div>
-                            <!--<div class="form-group">-->
-                                <!--<label for="search-demandTime" class="col-sm-4 control-label">需求时间</label>-->
-                                <!--<div class="col-xs-7">-->
-                                    <!--<input type="date" class="form-control" id="search-demandTime" name="search-demandTime" placeholder="">-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <div class="form-group">
-                                <label for="search-purchasingHead" class="col-sm-4 control-label">采购部门分管领导</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-purchasingHead" name="search-purchasingHead" placeholder="" onkeyup="enterSearch()">
-                                </div>
-                            </div>
+
+
+
+
 
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-horizontal col-md-4">
-                            <div class="form-group">
-                                <label for="search-generalManager" class="col-sm-4 control-label">总&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;经&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;理</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-generalManager" name="search-generalManager" placeholder="" onkeyup="enterSearch()">
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group" style="margin-left: -30px;">
+                                <label class="col-sm-3 control-label">创&nbsp;&nbsp;&nbsp;&nbsp;建&nbsp;&nbsp;&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;期 </label>
+                                <div class="input-group">
+                                    <input type="date" class="input-sm form-control" id="search-createDateStart" title="" onkeyup="enterSearch()"/>
+                                    <span class="input-group-addon">-</span>
+                                    <input type="date" class="input-sm form-control" id="search-createDateEnd" title="" onkeyup="enterSearch()"/>
                                 </div>
                             </div>
                         </div>
                         <div class="form-horizontal col-md-6">
                             <div class="form-group" style="margin-left: -30px;">
-                                <label class="col-sm-3 control-label">创&nbsp;&nbsp;&nbsp;&nbsp;建&nbsp;&nbsp;&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;期 </label>
+                                <label class="col-sm-3 control-label">修&nbsp;&nbsp;&nbsp;&nbsp;改&nbsp;&nbsp;&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;期 </label>
                                 <div class="input-group">
-                                    <input type="date" class="input-sm form-control" id="search-inDate" title="" onkeyup="enterSearch()"/>
+                                    <input type="date" class="input-sm form-control" id="search-adjustDateStart" title="" onkeyup="enterSearch()"/>
                                     <span class="input-group-addon">-</span>
-                                    <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeyup="enterSearch()"/>
+                                    <input type="date" class="input-sm form-control" id="search-adjustDateEnd" title="" onkeyup="enterSearch()"/>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
