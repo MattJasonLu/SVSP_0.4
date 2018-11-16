@@ -1504,7 +1504,7 @@ function autoSetSalesman() {
                     $("input[id='modal" + $i + "-receiveDate']").get(0).value = getCurrentDate();
                 }
             }else{
-                alert("为获取到合同数据，请检查该公司合同是否存在、审核或过期！");
+                alert("未检测到合同数据，请检查该公司合同是否存在、审核或过期！");
             }
         },
         error: function (result) {
