@@ -26,7 +26,7 @@
 
     <!--加载初始化页面-->
     <select id="loadSewageTestResultsList" resultType="SewageTest">
-        select  * from t_pr_sewagetest order by dateTime desc
+        select  * from t_pr_sewagetest where checkState!='Invalid' order by dateTime desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -40,8 +40,8 @@
 
     <!--添加软水化验单-->
     <select id="addSoftTest" parameterType="SoftTest">
-        insert into t_pr_softest (id, address, remarks, sampleId, turbidity, hardness, PH, electricalConductivity, basicity, phenolphthalein, nowTime,checkState) values
-        (#{id},#{address},#{remarks},#{sampleId},#{turbidity},#{hardness},#{PH},#{electricalConductivity},#{basicity},#{phenolphthalein},NOW(),'ToSubmit');
+        insert into t_pr_softest (id, address, remarks, sampleId, turbidity, hardness, PH, electricalConductivity, basicity, phenolphthalein, nowTime,checkState,dateTime) values
+        (#{id},#{address},#{remarks},#{sampleId},#{turbidity},#{hardness},#{PH},#{electricalConductivity},#{basicity},#{phenolphthalein},NOW(),'ToSubmit',NOW());
     </select>
 
     <!--根据编号获取软水化验单信息-->

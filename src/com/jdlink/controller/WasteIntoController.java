@@ -238,20 +238,40 @@ public class WasteIntoController {
  try {
      wasteIntoService.confirmSecondarySampleById(id,laboratorySignatory);
 
+    SecondarySample secondarySample= wasteIntoService.getSecondarysampleById(id);
+
+    SecondarySampleItem secondarySampleItem=secondarySample.getSecondarySampleItemList().get(0);
+
+    SecondaryTest secondaryTest=new SecondaryTest();
+    secondaryTest.setId(id);
+    secondaryTest.setWastesName(wastesName);
      //如果存在就更新 否则就添加
      //根据编号获得次生送样明细
+    if(secondarySampleItem.getWater()==1){
+        secondaryTest.setWater(0);
 
-
+    }
+    else
+    {
+        secondaryTest.setWater(-9999);
+    }
+     if(secondarySampleItem.getScorchingRate()==1){
+         secondaryTest.setScorchingRate(0);
+     }
+     else
+     {
+         secondaryTest.setScorchingRate(-9999);
+     }
          //根据编号获取次生化验信息
 
 
          if(sewageTestService.getSecondaryTestById(id)==null){
             //新增
-             wasteIntoService.SecondarySample(id,wastesName);
+             sewageTestService.addSecondaryTest(secondaryTest);
          }
          else {
              //更新
-             wasteIntoService.updateSecondarySample(id,wastesName);
+             wasteIntoService.updateSecondarySample(secondaryTest);
          }
 
 

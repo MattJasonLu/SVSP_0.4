@@ -122,6 +122,10 @@ function setMonthProcurementList(result) {
                 case (9):
                     $(this).html((obj.receiptNumber));
                     break;
+                    //存放物资主键
+                case (10):
+                    $(this).html((obj.id));
+                    break;
             }
         });
         // 把克隆好的tr追加到原来的tr前面
@@ -206,6 +210,7 @@ function add() {
                     $.each(items, function () {
                         if ($(this).parent().parent().parent().children('td').eq(1).html().length > 0) {
                             var dataItem = {
+
                                 wareHouseName: $('#procurementPlanId').val(),
                                 receiptNumber: $(this).parent().parent().parent().children('td').eq(9).html(),
                                 suppliesName: $(this).parent().parent().parent().children('td').eq(2).html(),
@@ -213,7 +218,7 @@ function add() {
                                 unit: getFormTypeByFromStr($(this).parent().parent().parent().children('td').eq(4).html()),
                                 demandQuantity: $(this).parent().parent().parent().children('td').eq(6).html(),
                                 note: $(this).parent().parent().parent().children('td').eq(7).html(),
-
+                                id:$(this).parent().parent().parent().children('td').eq(10).html(),
                             }
                             $.ajax({
                                 type: "POST",                       // 方法类型

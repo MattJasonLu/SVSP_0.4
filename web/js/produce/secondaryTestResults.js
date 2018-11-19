@@ -332,19 +332,12 @@ function setDataList(result) {
                     break;
                 // 热灼减率%
                 case (3):
-                    if(obj.scorchingRate==0){
-                        $(this).html('--')
-                    }
-                    else
-                    $(this).html(obj.scorchingRate.toFixed(2));
+                    $(this).html(setNumber2Line(parseFloat(obj.scorchingRate).toFixed(2)));
                     break;
                 // 水分%
                 case (4):
-                    if(obj.water==0){
-                        $(this).html('--')
-                    }
-                    else
-                    $(this).html(obj.water.toFixed(2));
+
+                    $(this).html(setNumber2Line(parseFloat(obj.water).toFixed(2)));
                     break;
                 // 备注
                 case (5):

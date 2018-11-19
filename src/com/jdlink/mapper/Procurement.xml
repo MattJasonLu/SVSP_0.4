@@ -239,7 +239,7 @@
 
     <!--获取采购单明细-->
     <select id="getProcurement" resultType="Material">
-        select * from t_pl_material where receiptNumber in(select receiptNumber from t_pl_procurement where t_pl_procurement.state='Submitted' and procurementCategory=1)
+        select * from t_pl_material where receiptNumber in(select receiptNumber from t_pl_procurement where t_pl_procurement.state='Submitted' and procurementCategory=1) and t_pl_material.state='Enabled'
     </select>
 
     <!--采购计划单新增页面高级查询-->
@@ -430,4 +430,10 @@
             </if>
         </where>
     </select>
+
+    <!--添加至采购计划单后更新物资状态-->
+    <update id="updateMaterialState" parameterType="int">
+        update t_pl_material set state='Disabled' where id=#{id}
+
+    </update>
 </mapper>

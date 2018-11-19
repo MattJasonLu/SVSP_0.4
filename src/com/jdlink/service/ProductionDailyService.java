@@ -133,9 +133,9 @@ public interface ProductionDailyService {
 
     void sampleTest(String id, String address);
 
-    void updateSampleTest(String id, String address);
+    void updateSampleTest(SewageTest sewageTest);
 
     void sampleTestSoft(String id, String address);
 
-    void updateSampleSoftTest(String id, String address);
+    void updateSampleSoftTest(SoftTest softTest);
 }
