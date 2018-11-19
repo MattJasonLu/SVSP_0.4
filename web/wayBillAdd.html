@@ -201,20 +201,14 @@
             <table class="table table-bordered col-sm-12" style="overflow: scroll;">
                 <thead style="border:none">
                 <tr style="border:none">
-                    <th class="text-center"></th>
-                    <th class="text-center">产废单位</th>
-                    <th class="text-center"><select
-                            class="selectpicker input-xlarge form-control" data-live-search="true"
+                    <th></th>
+                    <th class="text-left">产废单位</th>
+                    <th colspan="2"><select class="selectpicker input-xlarge form-control" data-live-search="true"
                             data-live-search-placeholder="搜索..." id="modal-produceCompanyName"
                             name="modal-produceCompanyName" title="未选择" onchange="autoSetSalesman()"></select></th>
-                    <th class="text-center"></th>
-                    <th class="text-center"></th>
-                    <th class="text-center"></th>
-                    <th class="text-center"></th>
-                    <th class="text-center"></th>
-                    <th class="text-center"></th>
+                    <th colspan="5"></th>
                     <th class="text-right">创建人</th>
-                    <th class="text-center"><input type="text" id="modal-founder" class="text-left form-control pull-left" /></th>
+                    <th><input type="text" style="display: inline;width: 50%" id="modal-founder" class="form-control pull-left" /></th>
                 </tr>
                 <tr>
                     <th class="text-center">序号</th>
@@ -264,16 +258,16 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td class="text-left" colspan="4">运费：<input title="" value="0" type="number" class="form-control" id="modal-freight" style="width: 70%"></td>
-                    <td class="text-left" colspan="5">产废单位经手人：<input title="" type="text" class="form-control" id="modal-produceCompanyOperator" style="width: 70%"></td>
-                    <td class="text-left" colspan="2">备注：<input title="" type="text" id="modal-remarks" class="form-control" style="width: 70%"></td>
+                    <td class="text-left" colspan="4"><p style="display: inline">运费：<input title="" value="0" type="number" class="form-control" id="modal-freight" style="display: inline;width: 50%"></p></td>
+                    <td class="text-left" colspan="5"><p style="display: inline">产废单位经手人：<input title="" type="text" class="form-control" id="modal-produceCompanyOperator" style="display: inline;width: 50%"></p></td>
+                    <td class="text-left" colspan="2"><p style="display: inline"></p>备注：<input title="" type="text" id="modal-remarks" class="form-control" style="display: inline;width: 50%"></td>
                 </tr>
                 </tbody>
             </table>
         </div>
         <div class="row text-center">
-            <a class="btn btn-danger hidden-print" href="wayBill1.html">返回主页</a>
             <a class="btn btn-primary hidden-print" onclick="addWayBill();">保存</a>
+            <a class="btn btn-danger hidden-print" href="wayBill1.html">返回</a>
         </div>
     </div>
 </div>

@@ -355,7 +355,8 @@ public class EquipmentController {
     public String updateEquipmentItem(@RequestBody List<EquipmentItem> equipmentItemList) {
         JSONObject res = new JSONObject();
         try {
-
+            // 更新数据
+            equipmentService.updateEquipmentItem(equipmentItemList);
             res.put("status", "success");
             res.put("message", "更新成功");
         } catch (Exception e) {

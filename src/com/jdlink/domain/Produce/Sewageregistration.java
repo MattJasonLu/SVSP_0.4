@@ -41,6 +41,30 @@ public class Sewageregistration {
     //关键字
     private String keywords;
 
+
+    //修改后的ID
+    private String newId;
+
+    //
+    private Date createTime;
+
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getNewId() {
+        return newId;
+    }
+
+    public void setNewId(String newId) {
+        this.newId = newId;
+    }
+
     public String getKeywords() {
         return keywords;
     }

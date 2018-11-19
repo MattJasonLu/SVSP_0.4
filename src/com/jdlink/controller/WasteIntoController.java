@@ -233,31 +233,48 @@ public class WasteIntoController {
     //确认收样==>预约登记
     @RequestMapping("confirmSecondarySampleById")
     @ResponseBody
-    public String confirmSecondarySampleById(String id,String laboratorySignatory){
+    public String confirmSecondarySampleById(String id,String laboratorySignatory,String wastesName){
         JSONObject res=new JSONObject();
  try {
      wasteIntoService.confirmSecondarySampleById(id,laboratorySignatory);
 
+    SecondarySample secondarySample= wasteIntoService.getSecondarysampleById(id);
+
+    SecondarySampleItem secondarySampleItem=secondarySample.getSecondarySampleItemList().get(0);
+
+    SecondaryTest secondaryTest=new SecondaryTest();
+    secondaryTest.setId(id);
+    secondaryTest.setWastesName(wastesName);
      //如果存在就更新 否则就添加
      //根据编号获得次生送样明细
-     SecondarySample secondarySample=wasteIntoService.getSecondarysampleById(id);
+    if(secondarySampleItem.getWater()==1){
+        secondaryTest.setWater(0);
 
-     List<SecondarySampleItem> secondarySampleItemList=secondarySample.getSecondarySampleItemList();
-
-     for(int i=0;i<secondarySampleItemList.size();i++){
-
-         //根据编号获取次生化验信息
-         if(sewageTestService.getSecondaryTestById(secondarySampleItemList.get(i).getId())!=null){
-             //更新
-             wasteIntoService.updateSecondarySample(secondarySampleItemList.get(i).getId());
-         }
-
-         if(sewageTestService.getSecondaryTestById(secondarySampleItemList.get(i).getId())==null){
-            //新增
-             wasteIntoService.SecondarySample(secondarySampleItemList.get(i).getId());
-         }
-
+    }
+    else
+    {
+        secondaryTest.setWater(-9999);
+    }
+     if(secondarySampleItem.getScorchingRate()==1){
+         secondaryTest.setScorchingRate(0);
      }
+     else
+     {
+         secondaryTest.setScorchingRate(-9999);
+     }
+         //根据编号获取次生化验信息
+
+
+         if(sewageTestService.getSecondaryTestById(id)==null){
+            //新增
+             sewageTestService.addSecondaryTest(secondaryTest);
+         }
+         else {
+             //更新
+             wasteIntoService.updateSecondarySample(secondaryTest);
+         }
+
+
 
 
      res.put("status", "success");

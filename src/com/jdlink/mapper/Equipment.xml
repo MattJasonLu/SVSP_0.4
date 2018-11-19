@@ -8,7 +8,7 @@
     </resultMap>
     <!--查询当天的设备运行情况-->
     <select id="getEquipment" resultType="EquipmentItem">
-        select equipment,runningTime,stopTime,stopResult,note from t_rp_equipmentchild where documentNumber = #{documentNumber};
+        select equipment,runningTime,stopTime,stopResult,note,itemID,documentNumber from t_rp_equipmentchild where documentNumber = #{documentNumber};
     </select>
 
     <!--网页列表数据-->
@@ -27,6 +27,24 @@
    insert into t_rp_equipmentchild(equipment, runningTime, stopTime, stopResult, documentNumber) values
    (#{equipment},#{runningTime},#{stopTime},#{stopResult},#{documentNumber})
     </insert>
+
+    <!--更新设备明细-->
+    <update id="updateEquipmentItem" parameterType="java.util.List">
+        <if test="list != null">
+            <foreach collection="list" item="equipmentItem" index= "index" open="" close=";" separator =";">
+                update t_rp_equipmentchild
+                <set>
+                    equipment=#{equipmentItem.equipment},
+                    runningTime=#{equipmentItem.runningTime},
+                    stopTime=#{equipmentItem.stopTime},
+                    stopResult=#{equipmentItem.stopResult}
+                </set>
+                <where>
+                    itemID=#{equipmentItem.itemID}
+                </where>
+            </foreach>
+        </if>
+    </update>
 
     <!--查找最新的单据号-->
     <select id="getNewestId" resultType="String">

@@ -22,11 +22,24 @@ public class ProcurementPlan {
     //创建日期
     private Date createDate;
 
+    //创建日期开始
+    private Date createDateStart;
+
+    //创建日期结束
+    private Date createDateEnd;
+
+
     //修改人
     private String adjustName;
 
     //修改日期
     private Date adjustDate;
+
+    //修改日起开始
+    private Date adjustDateStart;
+
+    //修改日起结束
+    private Date adjustDateEnd;
 
     //审批人
     private String approvalName;
@@ -41,7 +54,50 @@ public class ProcurementPlan {
     private Page page;
 
     //粗查询
-    private String keyword;
+    private String keywords;
+
+    //意见
+    private String advice;
+
+    public Date getCreateDateStart() {
+        return createDateStart;
+    }
+
+    public void setCreateDateStart(Date createDateStart) {
+        this.createDateStart = createDateStart;
+    }
+
+    public Date getCreateDateEnd() {
+        return createDateEnd;
+    }
+
+    public void setCreateDateEnd(Date createDateEnd) {
+        this.createDateEnd = createDateEnd;
+    }
+
+    public Date getAdjustDateStart() {
+        return adjustDateStart;
+    }
+
+    public void setAdjustDateStart(Date adjustDateStart) {
+        this.adjustDateStart = adjustDateStart;
+    }
+
+    public Date getAdjustDateEnd() {
+        return adjustDateEnd;
+    }
+
+    public void setAdjustDateEnd(Date adjustDateEnd) {
+        this.adjustDateEnd = adjustDateEnd;
+    }
+
+    public String getAdvice() {
+        return advice;
+    }
+
+    public void setAdvice(String advice) {
+        this.advice = advice;
+    }
 
     public Page getPage() {
         return page;
@@ -51,13 +107,15 @@ public class ProcurementPlan {
         this.page = page;
     }
 
-    public String getKeyword() {
-        return keyword;
+    public String getKeywords() {
+        return keywords;
     }
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
+
+
 
     public List<ProcurementPlanItem> getProcurementPlanItemList() {
         return procurementPlanItemList;

@@ -438,7 +438,7 @@ function setSampleList(result) {
 function setSeniorSelectedList() {
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getSampleInfoSeniorSelectedList",                  // url
+        url: "getSampleInfoWareHouseSeniorSelectedList",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
@@ -839,7 +839,7 @@ function delLine(item) {
  * 显示确认收样框
  */
 function checkModal(menu) {
-    if ($(menu).parent().prev().text() == "已预约") {
+    if ($(menu).parent().prev().text() == "待收样") {
         $(".newLine").remove();
         sampleId = getSampleIdByMenu(menu);
         // 更新数据
@@ -888,6 +888,8 @@ function checkModal(menu) {
         alert("单据已拒收，不可收样！");
     }else if ($(menu).parent().prev().text() == "已作废") {
         alert("单据已作废，不可收样！");
+    }else if($(menu).parent().prev().text() == "已收样"){
+        alert("单据已收样！");
     }
 }
 
@@ -917,7 +919,7 @@ function addNextLine() {
  */
 function adjustSample(menu) {
     var state = $(menu).parent().prev().text();
-    if (state == "已预约" || state == "已收样" || state == "已拒收") {
+    if (state == "待收样") {
         num = 0;
         setSelectList();        // 设置危废代码和公司名下拉框数据
         $(".newLine").remove();
@@ -974,6 +976,10 @@ function adjustSample(menu) {
         });
     }else if(state == '已作废'){
         alert("单据已作废，不可修改！");
+    }else if(state == '已拒收'){
+        alert("单据已拒收，不可修改！");
+    }else if(state == '已收样'){
+        alert("单据已收样，不可修改！");
     }else {
         alert("单据不可修改！");
     }
@@ -985,6 +991,7 @@ function adjustSample(menu) {
 function updateAppointBySampleId() {
     var sampleInformation = {};
     sampleInformation.id = sampleId;
+    sampleInformation.newId = $("#model3-id").val();  // 获取新ID
     sampleInformation.companyName = $("#model3-companyName").find("option:selected").text();
     sampleInformation.companyCode = $("#model3-companyName").find("option:selected").val();
     sampleInformation.sendingPerson = $("#model3-sendingPerson").val();
@@ -1149,7 +1156,7 @@ function searchSampleInfo() {
     var applyState = null;
     var state = $("#search-state").val();
     console.log(state);
-    if (state == 0) applyState = "Appointed";
+    if (state == 0) applyState = "ToCollected";
     if (state == 1) applyState = "Received";
     if (state == 2) applyState = "Rejected";
     if (state == 3) applyState = "Invalid";
@@ -1235,11 +1242,11 @@ function searchSampleInfo() {
                 var isHotMelt = true;
                 keywords = "";
                 break;
-            case "已预约":
-                keywords = "Appointed";
+            case "待收样":
+                keywords = "ToCollected";
                 break;
-            case "预约":
-                keywords = "Appointed";
+            case "待":
+                keywords = "ToCollected";
                 break;
             case "已收样":
                 keywords = "Rejected";
@@ -1431,7 +1438,7 @@ function addAppoint() {
  */
 function deleteSample(menu) {
     var state = $(menu).parent().prev().text();
-    if (state == "已预约" || state == "已拒收") {
+    if (state == "待收样") {
         sampleId = getSampleIdByMenu(menu);
         var msg = "是否作废该条记录？";
         if (confirm(msg) == true) {
@@ -1459,6 +1466,8 @@ function deleteSample(menu) {
         }
     }else if(state == "已收样"){
         alert("单据已收样，不可作废！");
+    }else if(state == "已拒收"){
+        alert("单据已拒收，不可作废！");
     }else if(state == "已作废"){
         alert("单据已作废！");
     }else {
@@ -1508,7 +1517,7 @@ function exportExcel(e) {
     } else {
         sqlWords = "select b.id,a.companyName,b.name,b.code,b.formType,a.sendingPerson,b.isPH,b.isHeat,b.isAsh,b.isWater,b.isFluorine,b.isChlorine,b.isSulfur,b.isPhosphorus,b.isFlashPoint,b.isViscosity,b.isHotMelt from t_pr_sampleinformation as a join t_pr_sampleinformationitem as b where a.id=b.sampleId;";
     }
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    window.open('exportExcelSampleInfo?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**
@@ -1531,7 +1540,7 @@ function print() {
  * 显示拒收模态框
  */
 function rejection(menu) {
-    if ($(menu).parent().prev().text() == "已预约") {
+    if ($(menu).parent().prev().text() == "待收样" || $(menu).parent().prev().text() == "已拒收") {
         sampleId = getSampleIdByMenu(menu);
         //根据编号查找
         $.ajax({
@@ -1557,6 +1566,8 @@ function rejection(menu) {
         alert("单据已收样，不可拒收！");
     }else if ($(menu).parent().prev().text() == "已作废") {
         alert("单据已作废，不可拒收！");
+    }else{
+        alert("单据不可拒收！")
     }
 }
 
@@ -1651,5 +1662,38 @@ function importExcel() {
 
 function readOnly(){
     alert("预约单号不允许修改，如需修改请作废后新建！");
+}
+
+
+//预约单号检测
+function testing(item) {
+    $('#pass').hide();
+    $('#break').hide();
+    var id = $.trim($(item).val());
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSampleInformation",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{
+            'sampleId' : id
+        },
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                if(result.data != null && result.data != "null"){
+                    $('#break').show();
+                }else{
+                    $('#pass').show();
+                }
+                if($.trim(id).length<=0){
+                    $('#pass').hide();
+                    $('#break').hide();
+                }
+            }
+        },
+        error:function (result) {
+
+        }
+    })
 }
 

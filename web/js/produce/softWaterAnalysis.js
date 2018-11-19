@@ -1074,6 +1074,19 @@ function view(item) {
 
 //确认收样
 function setSubmit(item) {
+
+    var state=$(item).parent().parent().children('td').eq(6).html();
+
+    if(state=='已作废'){
+        alert("单据已作废,无法收样")
+    }
+    if(state=='已拒收'){
+        alert("单据已拒收,无法收样")
+    }
+    if(state=='已收样'){
+        alert("单据已收样,无法收样")
+    }
+
     if($(item).parent().parent().children('td').eq(6).html()!='已收样'){
         var id=$(item).parent().parent().children('td').eq(1).html();
         console.log(id)
@@ -1193,9 +1206,7 @@ function setSubmit(item) {
             }
         });
     }
-    else {
-        alert("已收样，无法再次收样！")
-    }
+
 
 }
 //确认送样方法==>真正的方法
@@ -1232,31 +1243,42 @@ function confirmSample() {
  */
 function rejection(item) {
     var id=$(item).parent().parent().children('td').eq(1).html();
-    $('#id1').text(id);
-    $("#rejection1").modal('show')
+    var state=$(item).parent().parent().children('td').eq(6).html();
+    if(state=='已收样'){
+        alert('单据已收样,不可拒收!')
+    }
+    if(state=='已作废'){
+        alert('单据已作废,不可拒收!')
+    }
 
-    //根据编号查找
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getSoftGeregistrationById",              // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        data:{"id":id},
-        //contentType: 'application/json;charset=utf-8',
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                console.log(result)
-                $('#advice').val(result.data.advice);
+    if(state=='待收样'||state=='已拒收'){
+        $('#id1').text(id);
+        $("#rejection1").modal('show')
+
+        //根据编号查找
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getSoftGeregistrationById",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data:{"id":id},
+            //contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(result)
+                    $('#advice').val(result.data.advice);
+
+                }
+                else {
+
+                }
+            },
+            error:function (result) {
 
             }
-            else {
+        });
+    }
 
-            }
-        },
-        error:function (result) {
-
-        }
-    });
 }
 
 //真正的拒收方法
@@ -1289,13 +1311,26 @@ function rejection1() {
 //软水送样修改
 function softWaterAnalysisModify(item) {
 
+    $('#pass1').hide();
+    $('#break1').hide();
     var checkState=$(item).parent().parent().children('td').eq(6).html();
 
+    if(checkState=='已收样'){
+        alert('单据已收样,不可修改!')
+    }
+
+    if(checkState=='已拒收'){
+        alert('单据已拒收,不可修改!')
+    }
+    if(checkState=='已作废'){
+        alert('单据已作废,不可修改!')
+    }
 
     if(checkState!='已作废'&&checkState!='已拒收'&&checkState!='已收样'){
         $('#addClone1').siblings().not($('#plusBtn1')).remove();
         var id=$(item).parent().parent().children('td').eq(1).html();
         $('#reservationId2').val(id)
+        $('#reservationId3').val(id)
         //根据编号查找
         $.ajax({
             type: "POST",                       // 方法类型
@@ -1423,9 +1458,7 @@ function softWaterAnalysisModify(item) {
 
     }
 
-    else {
-        alert('不能修改已拒收已收样已作废的数据！')
-    }
+
 
 
 
@@ -1435,7 +1468,8 @@ function softWaterAnalysisModify(item) {
 function adjust() {
 
     var data={
-        id:$('#reservationId2').val(),
+        newId:$('#reservationId2').val(),
+        id:$('#reservationId3').val(),
         sendingPerson:$('#sendingPerson2').val(),
         address:$('#address2').val(),
         laboratorySignatory:$('#laboratorySignatory2').val(),
@@ -1537,32 +1571,45 @@ function adjust() {
 
 //作废
 function setInvalid(item) {
+    var state=$(item).parent().parent().children('td').eq(6).html();
     var id=$(item).parent().parent().children('td').eq(1).html();
-    if(confirm("确认作废?")){
-        //点击确定后操作
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "cancelSoftGeregistration",              // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data: {'id':id},
-            //processData: false,
-            //contentType: 'application/json;charset=utf-8',
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
-                    alert(result.message)
-                    window.location.reload();
-                }
-            },
-            error:function (result) {
-
-            }
-        })
+    if(state=='已收样'){
+        alert("单据已收样,无法作废!")
     }
+    if(state=='已拒收'){
+        alert("单据已拒收,无法作废!")
+    }
+    if(state=='已作废'){
+        alert("单据已作废,无法再次作废!")
+    }
+    if(state=='待收样') {
+        if(confirm("确认作废?")){
+            //点击确定后操作
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "cancelSoftGeregistration",              // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: {'id':id},
+                //processData: false,
+                //contentType: 'application/json;charset=utf-8',
+                success:function (result) {
+                    if (result != undefined && result.status == "success"){
+                        alert(result.message)
+                        window.location.reload();
+                    }
+                },
+                error:function (result) {
+
+                }
+            })
+        }
+    }
+
 
 }
 
-//预约单号检测
+//预约单号检测==>新增
 function testing(item) {
     $('#pass').hide();
     $('#break').hide();
@@ -1596,5 +1643,36 @@ function testing(item) {
     })
 }
 
+//预约单号检测==>修改
+function testing1(item) {
+    $('#pass1').hide();
+    $('#break1').hide();
 
+    var id=$.trim($(item).val());
 
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "testingSoftId",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{'id':id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                if(result.data==true){
+                    $('#break1').show();
+                }
+                if(result.data==false){
+                    $('#pass1').show();
+                }
+                if($.trim(id).length<=0){
+                    $('#pass1').hide();
+                    $('#break1').hide();
+                }
+            }
+        },
+        error:function (result) {
+
+        }
+    })
+}

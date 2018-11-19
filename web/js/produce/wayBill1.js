@@ -359,11 +359,11 @@ function setWayBillList(result) {
                     //减去总运费
                     obj.total = total - obj.freight;
                 }
-                    $(this).html(obj.total.toFixed(3));
+                    $(this).html(obj.total.toFixed(2));
                     break;
                 case (4):
                     //总运费
-                    $(this).html(obj.freight);
+                    $(this).html(obj.freight.toFixed(2));
                     break;
                 case (5):
                     // 创建人
@@ -452,7 +452,7 @@ function exportExcel() {
         sqlWords = "select id,produceCompanyName,total,freight,founder,wayBillDate,remarks,produceCompanyOperator,state from t_pr_waybill;";
     }
     console.log("sql:" + sqlWords);
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    window.open('exportExcelWayBill?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**
@@ -1504,7 +1504,7 @@ function autoSetSalesman() {
                     $("input[id='modal" + $i + "-receiveDate']").get(0).value = getCurrentDate();
                 }
             }else{
-                alert("为获取到合同数据，请检查该公司合同是否存在、审核或过期！");
+                alert("未检测到合同数据，请检查该公司合同是否存在、审核或过期！");
             }
         },
         error: function (result) {

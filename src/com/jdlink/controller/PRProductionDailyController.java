@@ -453,16 +453,69 @@ public class PRProductionDailyController {
             productionDailyService.confirmSewaGeregistrationById(id,laboratorySignatory);
             //获取样品单号
             Sewageregistration sewageregistration=productionDailyService.getSewaGeregistrationById(id);
-            List<SewageregistrationItem> sewageregistrationItemList=sewageregistration.getSewageregistrationItemList();
-            for(int i=0;i<sewageregistrationItemList.size();i++){
-                if(sewageTestService.getSewageTestById(sewageregistrationItemList.get(i).getId())==null){
-                    productionDailyService.sampleTest(sewageregistrationItemList.get(i).getId(),sewageregistration.getAddress());
+
+
+            SewageregistrationItem sewageregistrationItem=sewageregistration.getSewageregistrationItemList().get(0);
+
+            SewageTest sewageTest=new SewageTest();
+
+            sewageTest.setId(id);
+
+            sewageTest.setAddress(sewageregistration.getAddress());
+
+            if(sewageregistrationItem.getCod()==1){
+                sewageTest.setCOD(0);
+            }
+            else {
+                sewageTest.setCOD(-9999);
+            }
+            if(sewageregistrationItem.getPh()==1){
+                sewageTest.setPh(0);
+            }
+            else {
+                sewageTest.setPh(-9999);
+            }
+            if(sewageregistrationItem.getBod5()==1){
+                sewageTest.setBOD5(0);
+            }
+            else {
+                sewageTest.setBOD5(-9999);
+            }
+            if(sewageregistrationItem.getBod5()==1){
+                sewageTest.setBOD5(0);
+            }
+            else {
+                sewageTest.setBOD5(-9999);
+            }
+            if(sewageregistrationItem.getN2()==1){
+                sewageTest.setN2(0);
+            }
+            else {
+                sewageTest.setN2(-9999);
+            }
+            if(sewageregistrationItem.getNitrogen()==1){
+                sewageTest.setNitrogen(0);
+            }
+            else {
+                sewageTest.setNitrogen(-9999);
+            }
+            if(sewageregistrationItem.getPhosphorus()==1){
+                sewageTest.setPhosphorus(0);
+            }
+            else {
+                sewageTest.setPhosphorus(-9999);
+            }
+
+
+
+                if(sewageTestService.getSewageTestById(id)==null){
+                    sewageTestService.addSewageTest(sewageTest);
                 }
-                if(sewageTestService.getSewageTestById(sewageregistrationItemList.get(i).getId())!=null){
-                    productionDailyService.updateSampleTest(sewageregistrationItemList.get(i).getId(),sewageregistration.getAddress());
+                else {
+                    productionDailyService.updateSampleTest(sewageTest);
                 }
 
-            }
+
 
             res.put("status", "success");
             res.put("message", "收样成功");
@@ -487,16 +540,58 @@ public class PRProductionDailyController {
             productionDailyService.confirmSoftGeregistrationById(id,laboratorySignatory);
             //获取样品单号
             Sewageregistration sewageregistration=productionDailyService.getSoftGeregistrationById(id);
-            List<SewageregistrationItem> sewageregistrationItemList=sewageregistration.getSewageregistrationItemList();
-            for(int i=0;i<sewageregistrationItemList.size();i++){
-                if(sewageTestService.getSoftTestById(sewageregistrationItemList.get(i).getId())==null){
-                    productionDailyService.sampleTestSoft(sewageregistrationItemList.get(i).getId(),sewageregistration.getAddress());
+
+              SewageregistrationItem sewageregistrationItem=sewageregistration.getSewageregistrationItemList().get(0);
+            System.out.println("软水样品情况:"+sewageregistrationItem);
+
+            SoftTest softTest=new SoftTest();
+            softTest.setId(id);
+            softTest.setAddress(sewageregistration.getAddress());
+            if(sewageregistrationItem.getPh()==1){
+                softTest.setPH(0);
+            }
+            else {
+                softTest.setPH(-9999);
+            }
+            if(sewageregistrationItem.getElectricalConductivity()==1){
+                softTest.setElectricalConductivity(0);
+            }
+            else {
+                softTest.setElectricalConductivity(-9999);
+            }
+            if(sewageregistrationItem.getHardness()==1){
+                softTest.setHardness("0");
+            }
+            else {
+                softTest.setHardness("-9999");
+            }
+            if(sewageregistrationItem.getTurbidity()==1){
+                softTest.setTurbidity(0);
+            }
+            else {
+                softTest.setTurbidity(-9999);
+            }
+            if(sewageregistrationItem.getBasicity()==1){
+                softTest.setBasicity(0);
+            }
+            else {
+                softTest.setBasicity(-9999);
+            }
+            if(sewageregistrationItem.getPhenolphthalein()==1){
+                softTest.setPhenolphthalein(0);
+            }
+            else {
+                softTest.setPhenolphthalein(-9999);
+            }
+
+                if(sewageTestService.getSoftTestById(id)==null){
+                    sewageTestService.addSoftTest(softTest);
                 }
-                if(sewageTestService.getSoftTestById(sewageregistrationItemList.get(i).getId())!=null){
-                    productionDailyService.updateSampleSoftTest(sewageregistrationItemList.get(i).getId(),sewageregistration.getAddress());
+                else {
+                    productionDailyService.updateSampleSoftTest(softTest);
                 }
 
-            }
+
 
             res.put("status", "success");
             res.put("message", "收样成功");

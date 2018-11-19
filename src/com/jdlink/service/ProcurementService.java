@@ -39,4 +39,15 @@ public interface ProcurementService {
     void addProcurementPlanItem(ProcurementPlanItem procurementPlanItem);
     List<ProcurementPlan>getProcurementPlanList(Page page);
     void updateProcurementState(String id);
+    List<ProcurementPlan>getProcurementPlanById(String id);
+    void adjustProcurementPlan(ProcurementPlan procurementPlan);
+    void adjustProcurementPlanItem(ProcurementPlanItem procurementPlanItem);
+    void submitProcurementPlan(String id);
+    void approvalProcurementPlan(String procurementPlanId,String approvalName,String advice);
+    void backProcurementPlan(String procurementPlanId,String advice);
+    void cancelProcurementPlanById(String id);
+    int totalProcurementPlanRecord();
+    List<ProcurementPlan>searchProcurementPlan(ProcurementPlan procurementPlan);
+    int searchProcurementPlanCount(ProcurementPlan procurementPlan);
+    void updateMaterialState(int id);
 }

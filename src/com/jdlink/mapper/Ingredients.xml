@@ -817,7 +817,7 @@
         (id, department,creationDate,fileId,totalAmount,vicePresident,warehouseSupervisor,keeper,
         pickingSupervisor,pickingMan,state,nowTime,creationTime)
         values
-        (#{id},#{department},NOW(),#{fileId},#{totalAmount},#{vicePresident},#{warehouseSupervisor},#{keeper},
+        (#{id},#{department},#{creationDate},#{fileId},#{totalAmount},#{vicePresident},#{warehouseSupervisor},#{keeper},
         #{pickingSupervisor},#{pickingMan},'NewBuild',NOW(),NOW());
         <if test="ingredientsList.size() > 0">
             <foreach collection="ingredientsList" item="ingredients" index="index">
@@ -1102,7 +1102,9 @@
     </select>
 
     <update id="invalidOut" parameterType="String">
-        update t_pr_ingredients_out set state = 'Invalid' where id = #{id};
+        update t_pr_ingredients_out set
+        state = 'Invalid'
+        where id = #{id};
         <if test="ingredientsList != null and ingredientsList.size() > 0">
             <foreach collection="ingredientsList" item="ingredients" index="index">
                 <!--将领料单状态重置为新建-->

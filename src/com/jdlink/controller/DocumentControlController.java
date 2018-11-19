@@ -98,12 +98,12 @@ public class DocumentControlController {
             DocumentControl documentControl = documentControlService.get(ID);
             JSONObject data = JSONObject.fromBean(documentControl);
             res.put("status", "success");
-            res.put("message", "新增成功");
+            res.put("message", "查询成功");
             res.put("data", data);
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
-            res.put("message", "新增失败");
+            res.put("message", "查询失败");
             res.put("exception", e.getMessage());
         }
         return res.toString();

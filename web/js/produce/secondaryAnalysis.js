@@ -165,7 +165,7 @@ function switchPage(pageNumber) {
             success:function (result) {
                 if (result != undefined && result.status == "success"){
                     console.log(result);
-                    setSecIntoList(result);
+                    setSecIntoList(result.data);
                 }
                 else {
                     alert(result.message);
@@ -238,7 +238,7 @@ function inputSwitchPage()  {
                 success: function (result) {
                     if (result != undefined) {
                         console.log(result);
-                        setSecIntoList(result);
+                        setSecIntoList(result.data);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -1002,115 +1002,130 @@ function view(item) {
 //确认收样
 function setSubmit(item)  {
     var id=$(item).parent().parent().children('td').eq(1).html();
-    $('#reservationId1').text(id)
-    $("#appointModa2").modal('show');
-    $('#confirm').show();
-    //根据编号查找
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getSecondarysampleById",              // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        data:{"id":id},
-        //contentType: 'application/json;charset=utf-8',
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                console.log(result)
-                //赋值
-                // 公司名称
-                if(result.data.client!=null){
-                    $('#companyName').val(result.data.client.companyName);
+    var state=$(item).parent().parent().children('td').eq(7).html();
+    if(state=='已作废'){
+        alert("单据已作废,无法收样")
+    }
+    if(state=='已拒收'){
+        alert("单据已拒收,无法收样")
+    }
+    if(state=='已收样'){
+        alert("单据已收样,无法收样")
+    }
+    if(state=='待收样'){
+        $('#reservationId1').text(id)
+        $("#appointModa2").modal('show');
+        $('#confirm').show();
+        //根据编号查找
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getSecondarysampleById",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data:{"id":id},
+            //contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(result)
+                    //赋值
+                    // 公司名称
+                    if(result.data.client!=null){
+                        $('#companyName').val(result.data.client.companyName);
+                    }
+                    //化验室签收人
+                    $('#laboratorySignatory1').val(result.data.laboratorySignatory)
+
+                    //送样人
+                    $('#sendingPerson1').text(result.data.sendingPerson)
+
+                    //采样点
+                    $('#address1').text(result.data.address)
+
+
+                    if(result.data.secondarySampleItemList!=null){
+
+                        var tr=$('#clonrTr');
+                        tr.siblings().remove();
+
+                        $.each(result.data.secondarySampleItemList,function (index,item) {
+
+                            var clonedTr = tr.clone();
+
+                            clonedTr.show();
+
+                            var obj = eval(item);
+
+
+                            clonedTr.children('td').eq(0).html(index + 1);
+                            clonedTr.children('td').eq(1).html(obj.wastesCode);
+                            clonedTr.children('td').eq(2).html(obj.wastesName);
+
+                            $('#wastesName').val(obj.wastesName)
+                            project = "";
+                            if (obj.cod == 1) {
+                                project += "COD ";
+                            }
+                            if (obj.bod5 == 1) {
+                                project += "BOD5 ";
+                            }
+                            if (obj.ph == 1) {
+                                project += "PH ";
+                            }
+                            if (obj.dissolvedSolidForm == 1) {
+                                project += "溶解固形物 ";
+                            }
+                            if (obj.electricalConductivity == 1) {
+                                project += "电导率 ";
+                            }
+                            if (obj.hardness == 1) {
+                                project += "硬度 ";
+                            }
+                            if (obj.lye == 1) {
+                                project += "碱度 ";
+                            }
+                            if (obj.n2 == 1) {
+                                project += "氮气 ";
+                            }
+                            if (obj.o2 == 1) {
+                                project += "氧气 ";
+                            }
+                            if (obj.relativeAlkalinity == 1) {
+                                project += "相对碱度 ";
+                            }
+                            if (obj.scorchingRate == 1) {
+                                project += "热灼减率 ";
+                            }
+                            if (obj.water == 1) {
+                                project += "水分 ";
+                            }
+                            clonedTr.children('td').eq(3).html(obj.identifie);
+
+                            clonedTr.children('td').eq(4).html(project);
+
+                            clonedTr.removeAttr("id");
+                            clonedTr.insertBefore(tr);
+
+                        });
+
+                        // 隐藏无数据的tr
+                        tr.hide();
+                        tr.removeAttr('class');
+
+
+
+                    }
+
                 }
-                //化验室签收人
-                $('#laboratorySignatory1').val(result.data.laboratorySignatory)
-
-                //送样人
-                $('#sendingPerson1').text(result.data.sendingPerson)
-
-                //采样点
-                $('#address1').text(result.data.address)
-
-
-                if(result.data.secondarySampleItemList!=null){
-
-                    var tr=$('#clonrTr');
-                    tr.siblings().remove();
-
-                    $.each(result.data.secondarySampleItemList,function (index,item) {
-
-                        var clonedTr = tr.clone();
-
-                        clonedTr.show();
-
-                        var obj = eval(item);
-
-
-                        clonedTr.children('td').eq(0).html(index + 1);
-                        clonedTr.children('td').eq(1).html(obj.wastesCode);
-                        clonedTr.children('td').eq(2).html(obj.wastesName);
-                        project = "";
-                        if (obj.cod == 1) {
-                            project += "COD ";
-                        }
-                        if (obj.bod5 == 1) {
-                            project += "BOD5 ";
-                        }
-                        if (obj.ph == 1) {
-                            project += "PH ";
-                        }
-                        if (obj.dissolvedSolidForm == 1) {
-                            project += "溶解固形物 ";
-                        }
-                        if (obj.electricalConductivity == 1) {
-                            project += "电导率 ";
-                        }
-                        if (obj.hardness == 1) {
-                            project += "硬度 ";
-                        }
-                        if (obj.lye == 1) {
-                            project += "碱度 ";
-                        }
-                        if (obj.n2 == 1) {
-                            project += "氮气 ";
-                        }
-                        if (obj.o2 == 1) {
-                            project += "氧气 ";
-                        }
-                        if (obj.relativeAlkalinity == 1) {
-                            project += "相对碱度 ";
-                        }
-                        if (obj.scorchingRate == 1) {
-                            project += "热灼减率 ";
-                        }
-                        if (obj.water == 1) {
-                            project += "水分 ";
-                        }
-                        clonedTr.children('td').eq(3).html(obj.identifie);
-
-                        clonedTr.children('td').eq(4).html(project);
-
-                        clonedTr.removeAttr("id");
-                        clonedTr.insertBefore(tr);
-
-                    });
-
-                    // 隐藏无数据的tr
-                    tr.hide();
-                    tr.removeAttr('class');
-
-
+                else {
 
                 }
+            },
+            error:function (result) {
 
             }
-            else {
+        });
+    }
 
-            }
-        },
-        error:function (result) {
-
-        }
-    });
 
 }
 
@@ -1120,12 +1135,14 @@ function confirmSample() {
 
     var   laboratorySignatory = $('#laboratorySignatory1').val();
 
+    var wastesName=$('#wastesName').val()
+
     $.ajax({
         type: "POST",                       // 方法类型
         url: "confirmSecondarySampleById",              // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data:{"id":id,'laboratorySignatory':laboratorySignatory},
+        data:{"id":id,'laboratorySignatory':laboratorySignatory,'wastesName':wastesName},
         //contentType: 'application/json;charset=utf-8',
         success:function (result) {
             if (result != undefined && result.status == "success"){
@@ -1149,32 +1166,42 @@ function confirmSample() {
  */
 function rejection(item) {
     var id=$(item).parent().parent().children('td').eq(1).html();
+    var state=$(item).parent().parent().children('td').eq(7).html();
+    if(state=='已收样'){
+        alert('单据已收样,不可拒收!')
+    }
+    if(state=='已作废'){
+        alert('单据已作废,不可拒收!')
+    }
     console.log(id)
-    $('#id1').text(id);
-    $("#rejection1").modal('show')
+    if(state=='待收样'||state=='已拒收'){
+        $('#id1').text(id);
+        $("#rejection1").modal('show')
 
-    //根据编号查找
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getSecondarysampleById",              // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        data:{"id":id},
-        //contentType: 'application/json;charset=utf-8',
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                console.log(result)
-                $('#advice').val(result.data.advice);
+        //根据编号查找
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getSecondarysampleById",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data:{"id":id},
+            //contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(result)
+                    $('#advice').val(result.data.advice);
+
+                }
+                else {
+
+                }
+            },
+            error:function (result) {
 
             }
-            else {
+        });
+    }
 
-            }
-        },
-        error:function (result) {
-
-        }
-    });
 }
 
 //真正的拒收方法
@@ -1255,8 +1282,22 @@ function importExcel() {
 
 //次生修改
 function secondaryAnalysisModify(item) {
-
+    $('#pass1').hide();
+    $('#break1').hide();
     var checkState=$(item).parent().parent().children('td').eq(7).html();
+
+    if(checkState=='已收样'){
+        alert('单据已收样,不可修改!')
+    }
+
+    if(checkState=='已拒收'){
+        alert('单据已拒收,不可修改!')
+    }
+    if(checkState=='已作废'){
+        alert('单据已作废,不可修改!')
+    }
+
+
     if(checkState!='已作废'&&checkState!='已拒收'&&checkState!='已收样'){
         $('.selectpicker').selectpicker({
             language: 'zh_CN',
@@ -1269,6 +1310,7 @@ function secondaryAnalysisModify(item) {
         var id=$(item).parent().parent().children('td').eq(1).html();
         console.log(id)
         $('#reservationId2').val(id)
+        $('#reservationId3').val(id)
         $("#appointModa3").modal('show');
         $('#confirm').hide();
 
@@ -1375,9 +1417,7 @@ function secondaryAnalysisModify(item) {
             }
         });
     }
-    else {
-        alert('不能修改已拒收已收样已作废的数据！')
-    }
+
 
 
 
@@ -1387,7 +1427,8 @@ function secondaryAnalysisModify(item) {
 function adjust() {
 
     var data={
-        id:$('#reservationId2').val(),
+        newId:$('#reservationId2').val(),
+        id:$('#reservationId3').val(),
         sendingPerson:$('#sendingPerson2').val(),
         address:$('#address2').val(),
         laboratorySignatory:$('#laboratorySignatory2').val(),
@@ -1456,32 +1497,45 @@ function adjust() {
 function setInvalid(item) {
     var id=$(item).parent().parent().children('td').eq(1).html();
 
-    if(confirm("确认作废?")){
-        //点击确定后操作
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "cancelSecondaryGeregistration",              // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data: {'id':id},
-            //processData: false,
-            //contentType: 'application/json;charset=utf-8',
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
-                    alert(result.message)
-                    window.location.reload();
-                }
-            },
-            error:function (result) {
-
-            }
-        })
+    var state=$(item).parent().parent().children('td').eq(7).html();
+    if(state=='已收样'){
+        alert("单据已收样,无法作废!")
     }
+    if(state=='已拒收'){
+        alert("单据已拒收,无法作废!")
+    }
+    if(state=='已作废'){
+        alert("单据已作废,无法再次作废!")
+    }
+    if(state=='待收样') {
+        if(confirm("确认作废?")){
+            //点击确定后操作
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "cancelSecondaryGeregistration",              // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: {'id':id},
+                //processData: false,
+                //contentType: 'application/json;charset=utf-8',
+                success:function (result) {
+                    if (result != undefined && result.status == "success"){
+                        alert(result.message)
+                        window.location.reload();
+                    }
+                },
+                error:function (result) {
+
+                }
+            })
+        }
+    }
+
 
 }
 
 
-//预约单号检测
+//预约单号检测==>新增
 function testing(item) {
     $('#pass').hide();
     $('#break').hide();
@@ -1506,6 +1560,40 @@ function testing(item) {
                 if($.trim(id).length<=0){
                     $('#pass').hide();
                     $('#break').hide();
+                }
+            }
+        },
+        error:function (result) {
+
+        }
+    })
+}
+
+//预约单号检测==>检测
+function testing1(item) {
+    $('#pass1').hide();
+    $('#break1').hide();
+
+    var id=$.trim($(item).val());
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "testingSecondaryId",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{'id':id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                if(result.data==true){
+                    $('#break1').show();
+                }
+                if(result.data==false){
+                    $('#pass1').show();
+                }
+                if($.trim(id).length<=0){
+                    $('#pass1').hide();
+                    $('#break1').hide();
                 }
             }
         },

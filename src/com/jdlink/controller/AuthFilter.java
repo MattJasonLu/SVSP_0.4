@@ -41,11 +41,6 @@ public class AuthFilter implements Filter {
         String targetURL = currentURL.substring(currentURL.indexOf("/", 0), currentURL.length());
         // 截取到当前文件名用于比较
         HttpSession session = request.getSession(false);
-        //if (!"/SVSP/admin.html".equals(targetURL)) {// 判断当前页是否是重定向以后的登录页面页面，如果是就不做session的判断，防止出现死循环
-//
-//        String errFileName = "print.txt";
-//        response.setContentType("application/x-msdownload");
-//        response.setHeader("Content-Disposition", "attachment;filename=" + errFileName);
         if (session == null || session.getAttribute("user") == null) { //获取用户如果为空则重定向
             // *用户登录以后需手动添加session
             response.sendRedirect(request.getContextPath() + "/SVSP/admin.html");

@@ -29,6 +29,16 @@ public class SecondarySample {
     //原因
     private String advice;
 
+    private Date createTime;
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
     private List<SecondarySampleItem> secondarySampleItemList=new ArrayList<>();
     /**
      * 送样日期
@@ -36,6 +46,17 @@ public class SecondarySample {
     private Date creationDate;
 
     private String keywords;
+
+    private String newId;
+
+
+    public String getNewId() {
+        return newId;
+    }
+
+    public void setNewId(String newId) {
+        this.newId = newId;
+    }
 
     public String getKeywords() {
         return keywords;

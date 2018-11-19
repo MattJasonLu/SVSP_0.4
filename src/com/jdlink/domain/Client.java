@@ -164,6 +164,14 @@ public class Client {
      */
     private boolean isDisposal;
     /**
+     * 创建人
+     */
+    private String creator;
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+    /**
      * 当前时间
      */
     private Date nowTime;
@@ -510,6 +518,22 @@ public class Client {
 
     public void setPage(Page page) {
         this.page = page;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     @Override

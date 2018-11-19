@@ -655,6 +655,10 @@ function searchSewage() {
         if(keywords=='已拒收'){
             keywords='Rejected'
         }
+        if(keywords=='已作废'){
+            keywords='Invalid'
+        }
+
         if(keywords=='PH'){
            ph=1;
             keywords='';
@@ -1149,7 +1153,8 @@ function view(item) {
 
 //确认收样
 function setSubmit(item) {
-    if($(item).parent().parent().children('td').eq(6).html()!='已收样'){
+    var state=$(item).parent().parent().children('td').eq(6).html();
+    if($(item).parent().parent().children('td').eq(6).html()=='待收样'){
         var id=$(item).parent().parent().children('td').eq(1).html();
         console.log(id)
         $("#reservationId1").text(id)
@@ -1207,9 +1212,6 @@ function setSubmit(item) {
                             if (obj.ph == 1) {
                                 project += "PH ";
                             }
-                            if (obj.dissolvedSolidForm == 1) {
-                                project += "溶解固形物 ";
-                            }
                             if (obj.electricalConductivity == 1) {
                                 project += "电导率 ";
                             }
@@ -1222,13 +1224,6 @@ function setSubmit(item) {
                             if (obj.n2 == 1) {
                                 project += "氨氮 ";
                             }
-                            if (obj.o2 == 1) {
-                                project += "氧气 ";
-                            }
-                            if (obj.relativeAlkalinity == 1) {
-                                project += "相对碱度 ";
-                            }
-
                             if (obj.nitrogen == 1) {
                                 project += "总氮 ";
                             }
@@ -1267,17 +1262,45 @@ function setSubmit(item) {
             }
         });
     }
-    else
-        alert("已收样，无法再次收样！")
 
+    if(state=='已作废'){
+        alert("单据已作废,无法收样")
+    }
+    if(state=='已拒收'){
+        alert("单据已拒收,无法收样")
+    }
+    if(state=='已收样'){
+        alert("单据已收样,无法收样")
+    }
 }
+
 //确认送样方法==>真正的方法
 function confirmSample() {
+
+
+
+
 var id=$("#reservationId1").text();
 
 var laboratorySignatory=$('#laboratorySignatory').val();
 
-$.ajax({
+    var ph;
+
+    var cod;
+
+    var bod5;
+
+    var n2;
+
+    var phosphorus;
+
+    var nitrogen;
+
+    var lye;
+
+
+
+    $.ajax({
     type: "POST",                       // 方法类型
     url: "confirmSewaGeregistrationById",              // url
     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
@@ -1305,32 +1328,45 @@ $.ajax({
  * 拒收框
  */
 function rejection(item) {
-    var id=$(item).parent().parent().children('td').eq(1).html();
-    $('#id1').text(id);
-    $("#rejection1").modal('show')
 
-    //根据编号查找
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getSewaGeregistrationById",              // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        data:{"id":id},
-        //contentType: 'application/json;charset=utf-8',
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                console.log(result)
-                $('#advice').val(result.data.advice);
+    var state=$(item).parent().parent().children('td').eq(6).html();
+    if(state=='已收样'){
+      alert('单据已收样,不可拒收!')
+    }
+    if(state=='已作废'){
+        alert('单据已作废,不可拒收!')
+    }
+
+    if(state=='待收样'||state=='已拒收'){
+        var id=$(item).parent().parent().children('td').eq(1).html();
+        $('#id1').text(id);
+        $("#rejection1").modal('show')
+
+        //根据编号查找
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getSewaGeregistrationById",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data:{"id":id},
+            //contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(result)
+                    $('#advice').val(result.data.advice);
+
+                }
+                else {
+
+                }
+            },
+            error:function (result) {
 
             }
-            else {
+        });
+    }
 
-            }
-        },
-        error:function (result) {
 
-        }
-    });
 }
 
 //真正的拒收方法
@@ -1361,12 +1397,30 @@ function rejection1() {
 
 //修改
 function adjust(item) {
+    $('#pass1').hide();
+    $('#break1').hide();
+
     var checkState=$(item).parent().parent().children('td').eq(6).html();
+
+   if(checkState=='已收样'){
+         alert('单据已收样,不可修改!')
+   }
+
+    if(checkState=='已拒收'){
+        alert('单据已拒收,不可修改!')
+    }
+    if(checkState=='已作废'){
+        alert('单据已作废,不可修改!')
+    }
+
+
+
 
     if(checkState!='已作废'&&checkState!='已拒收'&&checkState!='已收样'){
         $('#addClone1').siblings().not($('#plusBtn1')).remove();
         var id=$(item).parent().parent().children('td').eq(1).html();
         $("#reservationId2").val(id)
+        $("#reservationId3").val(id)
         $.ajax({
             type: "POST",                       // 方法类型
             url: "getSewaGeregistrationById",              // url
@@ -1498,9 +1552,7 @@ function adjust(item) {
         });
         $("#appointModa3").modal('show');
     }
-    else {
-        alert('不能修改已拒收已收样已作废的数据！')
-    }
+
 
 
 
@@ -1511,7 +1563,8 @@ function adjust(item) {
 function adjustConfir() {
 
     var data={
-        id:$('#reservationId2').val(),
+        newId: $("#reservationId2").val(),
+        id:$('#reservationId3').val(),
         sendingPerson:$('#sendingPerson2').val(),
         address:$('#address2').val(),
         laboratorySignatory:$('#laboratorySignatory2').val(),
@@ -1595,7 +1648,7 @@ function adjustConfir() {
         else
             lye=0;
         var dataItem={
-            sampleinformationId:$('#reservationId2').val(),
+            sampleinformationId:$("#reservationId2").val(),
             ph:isPH,
             cod:isCOD,
             bod5:isBOD5,
@@ -1622,29 +1675,44 @@ function adjustConfir() {
 
 //作废
 function setInvalid(item) {
-    var id=$(item).parent().parent().children('td').eq(1).html();
 
-    if(confirm("确认作废?")){
-        //点击确定后操作
-             $.ajax({
-                 type: "POST",                       // 方法类型
-                 url: "cancelSewaGeregistration",              // url
-                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                 dataType: "json",
-                 data: {'id':id},
-                 //processData: false,
-                 //contentType: 'application/json;charset=utf-8',
-                 success:function (result) {
-                     if (result != undefined && result.status == "success"){
-                            alert(result.message)
-                         window.location.reload();
-                     }
-                 },
-                 error:function (result) {
-                     
-                 }
-             })
+    var state=$(item).parent().parent().children('td').eq(6).html();
+
+    if(state=='已收样'){
+         alert("单据已收样,无法作废!")
     }
+    if(state=='已拒收'){
+        alert("单据已拒收,无法作废!")
+    }
+    if(state=='已作废'){
+        alert("单据已作废,无法再次作废!")
+    }
+    if(state=='待收样') {
+        var id=$(item).parent().parent().children('td').eq(1).html();
+
+        if(confirm("确认作废?")){
+            //点击确定后操作
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "cancelSewaGeregistration",              // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: {'id':id},
+                //processData: false,
+                //contentType: 'application/json;charset=utf-8',
+                success:function (result) {
+                    if (result != undefined && result.status == "success"){
+                        alert(result.message)
+                        window.location.reload();
+                    }
+                },
+                error:function (result) {
+
+                }
+            })
+        }
+    }
+
 
 
 
@@ -1702,7 +1770,7 @@ function importExcel() {
     });
 }
 
-//预约单号检测
+//预约单号检测==>新增
 function testing(item) {
     $('#pass').hide();
     $('#break').hide();
@@ -1732,6 +1800,40 @@ function testing(item) {
         },
         error:function (result) {
             
+        }
+    })
+}
+
+//预约单号检测==>修改
+function testing1(item) {
+    $('#pass1').hide();
+    $('#break1').hide();
+
+    var id=$.trim($(item).val());
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "testingSewageId",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{'id':id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                if(result.data==true){
+                    $('#break1').show();
+                }
+                if(result.data==false){
+                    $('#pass1').show();
+                }
+                if($.trim(id).length<=0){
+                    $('#pass1').hide();
+                    $('#break1').hide();
+                }
+            }
+        },
+        error:function (result) {
+
         }
     })
 }

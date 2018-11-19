@@ -1255,7 +1255,7 @@ public class ContractController {
 
             res.put("status", "success");
             res.put("message", "合同查询成功");
-            res.put("data", contractList1);
+            res.put("data", contractList);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -1402,6 +1402,36 @@ public class ContractController {
 
         return res.toString();
 
+    }
+
+   //合同合约量页面查询
+    @RequestMapping("searchContractVolume")
+    @ResponseBody
+    public String searchContractVolume(@RequestBody QuotationItem quotationItem){
+        JSONObject res=new JSONObject();
+
+        try {
+            List<QuotationItem> quotationItemList1=new ArrayList<>() ;
+            List<QuotationItem> quotationItemList=contractService.searchContractVolume(quotationItem) ;
+//            for(int i=0;i<quotationItemList.size();i++){
+//                Contract contract=quotationItemList.get(i).getContract();
+//                if(contract!=null){
+//                    if(contract.getContractType()!=null&&contract.getPeriod().length()==0&&contract.getContractContent().length()==0&&contract.getModelVersion().length()==0){
+//                        quotationItemList1.add(quotationItemList.get(i));
+//                    }
+//                }
+//            }
+
+            res.put("message", "查询成功");
+            res.put("status", "success");
+            res.put("data", quotationItemList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
     }
 
 }

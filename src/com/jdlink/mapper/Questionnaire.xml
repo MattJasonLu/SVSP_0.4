@@ -41,7 +41,7 @@
         <result property="applyState" column="state" javaType="com.jdlink.domain.ApplyState"/>
         <result property="author" column="author"/>
         <result property="time" column="time"/>
-        <association property="client" javaType="Client" resultMap="ClientRM"/>
+        <association property="client" column="clientId" select="getClient"/>
         <collection property="rawWastesList" select="getRawWastes" column="questionnaireId"
                     ofType="com.jdlink.domain.RawWastes" javaType="ArrayList"/>
         <collection property="wasteInclusionTypeList" select="getInclusionType" column="questionnaireId"
@@ -51,6 +51,11 @@
         <collection property="deriveWastesList" select="getDeriveWastes" column="questionnaireId"
                     ofType="com.jdlink.domain.DeriveWastes" javaType="ArrayList"/>
     </resultMap>
+
+    <select id="getClient" resultType="Client">
+        select * from client where clientId=#{clientId};
+    </select>
+
     <insert id="add" parameterType="Questionnaire" >
         insert into questionnaire ( questionnaireId, clientId, time, author, state, nowTime)
         values ( #{questionnaireId}, #{client.clientId}, #{time}, #{author}, #{applyState}, NOW());
@@ -298,20 +303,19 @@
     </update>
 
     <select id="list" resultMap="QuestionnaireRM">
-        SELECT questionnaire.questionnaireId, client.companyName, client.industry, client.clientId, client.phone,
-          client.product, client.contactName, client.location, questionnaire.state, questionnaire.author, questionnaire.time
-            FROM questionnaire JOIN client WHERE questionnaire.clientId=client.clientId ORDER BY questionnaire.time DESC;
+        SELECT * FROM questionnaire where state != 'Backed' ORDER BY questionnaire.time DESC;
     </select>
 
+    <!--数据分页-->
    <select id="listPage" resultMap="QuestionnaireRM">
-        SELECT questionnaire.questionnaireId, client.companyName, client.industry,
-          client.product, questionnaire.state, questionnaire.author, questionnaire.time
-            FROM questionnaire JOIN client WHERE questionnaire.clientId=client.clientId ORDER BY questionnaire.time DESC
+        SELECT * FROM questionnaire where state != 'Backed'
+        ORDER BY questionnaire.time DESC
         <if test="start != null and count != null">
-         limit #{start}, #{count}
-   </if>
+         limit #{start}, #{count};
+        </if>
    </select>
 
+    <!--获取数量-->
     <select id="count" resultType="int">
         SELECT COUNT(*) FROM questionnaire;
     </select>
@@ -321,52 +325,48 @@
           client.product, questionnaire.state, questionnaire.author AS contactName, questionnaire.time
             FROM questionnaire JOIN client WHERE questionnaire.clientId=client.clientId order by nowTime desc;;
     </select>
+
     <!--高级查询-->
-    <resultMap id="QuestionnaireManage1" type="Questionnaire" autoMapping="true" >
-        <result property="applyState" column="state" javaType="com.jdlink.domain.ApplyState"/>
-        <result  property="questionnaireId" column="questionnaireId" javaType="String"></result>
-        <result  property="author" column="author" javaType="String"></result>
-        <result  property="time" column="time" javaType="Date"></result>
-        <collection property="client"  resultMap="ClientRM" javaType="Client"></collection>
-    </resultMap>
-    <select id="searchQuestionnaireManage" parameterType="Questionnaire" resultMap="QuestionnaireManage1">
-      select  questionnaire.*,client.companyName,industry,product from  questionnaire  join  client
+    <select id="searchQuestionnaireManage" parameterType="Questionnaire" resultMap="QuestionnaireRM">
+      select * from questionnaire
       <where>
           <if test="keyword != null and keyword != ''">
-              and questionnaire.questionnaireId like binary"%"#{keyword}"%"
-              or questionnaire.time like binary"%"#{keyword}"%" or questionnaire.author like "%"#{keyword}"%"
-              or questionnaire.state like binary"%"#{keyword}"%"
-              or client.companyName like binary"%"#{keyword}"%" or client.industry like binary"%"#{keyword}"%"
-              or client.product like  binary"%"#{keyword}"%"
-          </if>
-          <if test="keyword == ''">
-              and client.clientId=questionnaire.clientId
+              and (questionnaire.questionnaireId like "%"#{keyword}"%"
+              or questionnaire.time like binary "%"#{keyword}"%"
+              or questionnaire.author like "%"#{keyword}"%"
+              or questionnaire.state like "%"#{keyword}"%"
+              or questionnaire.clientId in (select clientId from client where companyName like "%"#{keyword}"%")
+              or questionnaire.clientId in (select clientId from client where industry like "%"#{keyword}"%")
+              or questionnaire.clientId in (select clientId from client where product like "%"#{keyword}"%"))
           </if>
           <if test="client!=null">
               <if test="client.companyName!=null and client.companyName!=''">
-                  and client.companyName Like binary"%"#{client.companyName}"%" and client.clientId=questionnaire.clientId
+                  and questionnaire.clientId in (select clientId from client where companyName like "%"#{client.companyName}"%")
               </if>
               <if test="client.industry!=null and client.industry!=''">
-                  and client.industry Like binary"%"#{client.industry}"%" and client.clientId=questionnaire.clientId
+                  and questionnaire.clientId in (select clientId from client where industry like "%"#{client.industry}"%")
               </if>
               <if test="client.product!=null and client.product!=''">
-                  and client.product Like binary"%"#{client.product}"%" and client.clientId=questionnaire.clientId
+                  and questionnaire.clientId in (select clientId from client where product like "%"#{client.product}"%")
               </if>
           </if>
-              <if test="questionnaireId!=null and questionnaireId!=''">
-                  and questionnaire.questionnaireId Like binary"%"#{questionnaireId}"%"
-              </if>
-              <if test="applyState!=null and applyState!=''">
-                  and questionnaire.state = #{applyState} and client.clientId=questionnaire.clientId
-              </if>
-              <if test="author!=null and author!=''">
-                  and author Like binary"%"#{author}"%" and client.clientId=questionnaire.clientId
-              </if>
-              <if test="time!=null and time!=''">
-                  and questionnaire.time Like binary"%"#{time}"%"
-              </if>
+          <if test="questionnaireId!=null and questionnaireId!=''">
+              and questionnaire.questionnaireId Like "%"#{questionnaireId}"%"
+          </if>
+          <if test="applyState!=null and applyState!=''">
+              and questionnaire.state = #{applyState}
+          </if>
+          <if test="author!=null and author!=''">
+              and author Like "%"#{author}"%"
+          </if>
+          <if test="time!=null and time!=''">
+              and questionnaire.time Like binary "%"#{time}"%"
+          </if>
+          <if test="true">
+              and state != 'Backed'
+          </if>
       </where>
-        order by  nowTime desc
+        order by questionnaire.time desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>

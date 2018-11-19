@@ -458,7 +458,7 @@
 
                             </td>
                         </tr>
-                        <tr id="plusBtn">
+                        <tr id="plusBtn" class="hidden">
                             <td>
                                 <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
                             </td>
@@ -541,6 +541,7 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     <button type="button" class="btn btn-primary" id="confirm" onclick="confirmSample()">确认收样</button>
                 </div>
+                <input class="hidden" id="wastesName">
             </div>
 
         </div>
@@ -562,7 +563,10 @@
                         <div class="form-group col-md-6">
                             <label for="reservationId2" class="col-sm-4 control-label">预约单号</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" id="reservationId2"  name="signer" readonly="">
+                                <input type="text" class="form-control" id="reservationId2"  name="signer" onkeyup="testing1(this)">
+                                <input type="text" class="form-control hidden" id="reservationId3"  name="signer" >
+                                <p id="pass1"  style="color: green">通过</p>
+                                <p id="break1" style="color: red">预约单号已存在</p>
                             </div>
                         </div>
                         <div class="form-group col-md-6">
@@ -622,7 +626,7 @@
 
                         </td>
                     </tr>
-                    <tr id="plusBtn1">
+                    <tr id="plusBtn1" class="hidden">
                         <td>
                             <a class="btn btn-default btn-xs" onclick="addNewLine1(this);"><span class="glyphicon glyphicon-plus"></span></a>
                         </td>

@@ -1276,6 +1276,7 @@ function loadProcurementItemList() {
         }
     });
     setSelectedList();
+    setfileId();  // 设置文件编号
     if (localStorage.id != null && localStorage.id != "null") { // 如果ID非空，加载需要修改的数据
         $("#save").text("修改");   // 修改按钮名称
         $("#head").text("辅料/备件入库单修改");
@@ -1332,7 +1333,7 @@ function loadProcurementItemList() {
                         clonedTr.find("span[name='amount']").text(obj.amount.toFixed(3));
                         clonedTr.find("input[name='unitPrice']").val(obj.unitPrice.toFixed(2));
                         clonedTr.find("input[name='post']").val(obj.post);
-                        clonedTr.find("input[name='wareHouseName']").val(obj.wareHouseName);
+                        clonedTr.find("select[name='wareHouseName']").val(obj.wareHouseName);
                         clonedTr.find("span[name='remarks']").text(obj.remarks);
                         clonedTr.find("span[name='procurementId']").text(obj.procurementId);
                         if (obj.equipment != null)
@@ -1409,7 +1410,7 @@ function delLine(e) {
     var j = $(tr).find("span[name='serialNumber']").text();  // 获取编号，据此获取ID
     ingredientsIn1.ingredientsList[j - 1].serialNumberA = "del";
     ingredientsListDel.push(ingredientsIn1.ingredientsList[j - 1]);  // 将删除的数据暂存到数组中
-    ingredientsIn1.ingredientsList.splice(j-1,1);  // 将数据中对象中删除
+    ingredientsIn1.ingredientsList.splice(j - 1, 1);  // 将数据中对象中删除
     var length = $(tr.parentNode).children().length - 3;         // 行数
     var tBody = $(tr.parentNode);                                  // 删除前获取父节点
     tr.parentNode.removeChild(tr);
@@ -1475,6 +1476,58 @@ function setSelectedList() {
                 state.get(0).selectedIndex = -1;
             } else {
                 console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    //设置仓库下拉框
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getWareHouseList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var state = $("select[name='wareHouseName']");
+                state.children().remove();
+                $.each(data.array, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.wareHouseName);
+                    option.text(item.wareHouseName);
+                    state.append(option);
+                });
+                state.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+}
+
+/**
+ * 设置文件编号
+ */
+function setfileId() {
+    var id = "1"; // 入库单ID为1
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getDocumentControl",          // url
+        async: false, // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            ID: id
+        },
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                if (result.data != null)
+                    $("#fileId").val(result.data.fileNO); // 赋值
             }
         },
         error: function (result) {
@@ -1724,7 +1777,7 @@ function save() {
                 ingredientsIn.ingredientsList[i].unitPrice = $("#unitPrice" + $i).val();
                 ingredientsIn.ingredientsList[i].amount = $("#amount" + $i).val();
                 ingredientsIn.ingredientsList[i].post = $("#post" + $i).val();
-                ingredientsIn.ingredientsList[i].wareHouseName = $("#wareHouseName" + $i).val();
+                ingredientsIn.ingredientsList[i].wareHouseName = $("#wareHouseName" + $i).find("option:selected").text();
                 ingredientsIn.ingredientsList[i].totalPrice = ingredientsIn.ingredientsList[i].unitPrice * ingredientsIn.ingredientsList[i].amount;
                 var equitment = parseInt($("#equipment" + $i).find("option:selected").val());
                 switch (equitment) {

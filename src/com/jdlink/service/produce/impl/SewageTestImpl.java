@@ -212,5 +212,20 @@ public class SewageTestImpl implements SewageTestService{
         sewageTestMapper.cancelSecondaryGeregistration(id);
     }
 
+    @Override
+    public void cancelSewageTestAfter(String id) {
+        sewageTestMapper.cancelSewageTestAfter(id);
+    }
+
+    @Override
+    public void cancelSoftTestAfter(String id) {
+        sewageTestMapper.cancelSoftTestAfter(id);
+    }
+
+    @Override
+    public void cancelSecondaryTestAfter(String id) {
+        sewageTestMapper.cancelSecondaryTestAfter(id);
+    }
+
 
 }

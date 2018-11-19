@@ -45,6 +45,11 @@ public class EquimentServiceImpl implements  EquipmentService {
     }
 
     @Override
+    public void updateEquipmentItem(List<EquipmentItem> equipmentItemList) {
+        equipmentMapper.updateEquipmentItem(equipmentItemList);
+    }
+
+    @Override
     public List<Equipment> getEquipmentNameList(Equipment equipment) {
         return equipmentMapper.getEquipmentNameList(equipment);
     }

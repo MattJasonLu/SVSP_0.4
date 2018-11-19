@@ -14,7 +14,9 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class ProcurementServiceImpl implements ProcurementService {
+public class ProcurementServiceImpl implements ProcurementService
+
+{
     @Autowired
     ProcurementMapper procurementMapper;
     @Override
@@ -142,6 +144,61 @@ public class ProcurementServiceImpl implements ProcurementService {
     @Override
     public void updateProcurementState(String id) {
         procurementMapper.updateProcurementState(id);
+    }
+
+    @Override
+    public List<ProcurementPlan> getProcurementPlanById(String id) {
+        return procurementMapper.getProcurementPlanById(id);
+    }
+
+    @Override
+    public void adjustProcurementPlan(ProcurementPlan procurementPlan) {
+        procurementMapper.adjustProcurementPlan(procurementPlan);
+    }
+
+    @Override
+    public void adjustProcurementPlanItem(ProcurementPlanItem procurementPlanItem) {
+        procurementMapper.adjustProcurementPlanItem(procurementPlanItem);
+    }
+
+    @Override
+    public void submitProcurementPlan(String id) {
+        procurementMapper.submitProcurementPlan(id);
+    }
+
+    @Override
+    public void approvalProcurementPlan(String procurementPlanId, String approvalName, String advice) {
+        procurementMapper.approvalProcurementPlan(procurementPlanId, approvalName, advice);
+    }
+
+    @Override
+    public void backProcurementPlan(String procurementPlanId, String advice) {
+        procurementMapper.backProcurementPlan(procurementPlanId, advice);
+    }
+
+    @Override
+    public void cancelProcurementPlanById(String id) {
+        procurementMapper.cancelProcurementPlanById(id);
+    }
+
+    @Override
+    public int totalProcurementPlanRecord() {
+        return procurementMapper.totalProcurementPlanRecord();
+    }
+
+    @Override
+    public List<ProcurementPlan> searchProcurementPlan(ProcurementPlan procurementPlan) {
+        return procurementMapper.searchProcurementPlan(procurementPlan);
+    }
+
+    @Override
+    public int searchProcurementPlanCount(ProcurementPlan procurementPlan) {
+        return procurementMapper.searchProcurementPlanCount(procurementPlan);
+    }
+
+    @Override
+    public void updateMaterialState(int id) {
+        procurementMapper.updateMaterialState(id);
     }
 
     @Override

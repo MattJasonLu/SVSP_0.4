@@ -345,47 +345,29 @@ function setSoftTestList(result) {
                     break;
                 //浊度FTU
                 case (3):
-                    if(obj.turbidity==0){
-                        $(this).html('--')
-                    }
-                    else
-                    $(this).html((obj.turbidity).toFixed(2));
+                    $(this).html(setNumber2Line(parseFloat(obj.turbidity).toFixed(2)));
                     break;
                 case (4):
                     // 硬度
-                    $(this).html(obj.hardness);
+                    $(this).html(setNumber2Line((obj.hardness)));
                     break;
                 case (5):
-                    if(obj.PH==0){
-                        $(this).html('--')
-                    }
-                    else
+
                     // ph
-                    $(this).html(obj.PH.toFixed(0));
+                        $(this).html(setNumber2Line(parseFloat(obj.PH).toFixed(2)));
                     break;
                 case (6):
-                    if(obj.electricalConductivity==0){
-                        $(this).html('--')
-                    }
-                    else
                     // 电导率
-                    $(this).html(obj.electricalConductivity.toFixed(2));
+                        $(this).html(setNumber2Line(parseFloat(obj.electricalConductivity).toFixed(2)));
                     break;
                 case (7):
-                    if(obj.basicity==0){
-                        $(this).html('--')
-                    }
-                    else
                     // 全碱度
-                    $(this).html(obj.basicity.toFixed(2));
+                        $(this).html(setNumber2Line(parseFloat(obj.electricalConductivity).toFixed(2)));
                     break;
                 case (8):
-                    if(obj.phenolphthalein==0){
-                        $(this).html('--')
-                    }
-                    else
+
                     // 酚酞碱度
-                    $(this).html(obj.phenolphthalein.toFixed(2));
+                        $(this).html(setNumber2Line(parseFloat(obj.phenolphthalein).toFixed(2)));
                     break;
                 case (9):
                     // 备注

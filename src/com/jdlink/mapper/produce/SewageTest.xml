@@ -26,7 +26,7 @@
 
     <!--加载初始化页面-->
     <select id="loadSewageTestResultsList" resultType="SewageTest">
-        select  * from t_pr_sewagetest order by dateTime desc
+        select  * from t_pr_sewagetest where checkState!='Invalid' order by dateTime desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -40,8 +40,8 @@
 
     <!--添加软水化验单-->
     <select id="addSoftTest" parameterType="SoftTest">
-        insert into t_pr_softest (id, address, remarks, sampleId, turbidity, hardness, PH, electricalConductivity, basicity, phenolphthalein, nowTime,checkState) values
-        (#{id},#{address},#{remarks},#{sampleId},#{turbidity},#{hardness},#{PH},#{electricalConductivity},#{basicity},#{phenolphthalein},NOW(),'ToSubmit');
+        insert into t_pr_softest (id, address, remarks, sampleId, turbidity, hardness, PH, electricalConductivity, basicity, phenolphthalein, nowTime,checkState,dateTime) values
+        (#{id},#{address},#{remarks},#{sampleId},#{turbidity},#{hardness},#{PH},#{electricalConductivity},#{basicity},#{phenolphthalein},NOW(),'ToSubmit',NOW());
     </select>
 
     <!--根据编号获取软水化验单信息-->
@@ -75,13 +75,13 @@
     <!--更新污水-->
     <update id="updateSewaGeregistration" parameterType="SewaGeregistration">
         update t_pr_sewageregistration set sendingPerson=#{sendingPerson},address=#{address},
-        laboratorySignatory=#{laboratorySignatory},nowTime=NOW() where id=#{id}
+        laboratorySignatory=#{laboratorySignatory},nowTime=NOW(),id=#{newId} where id=#{id}
     </update>
 
     <!--更新软水/-->
     <update id="updateSoftGeregistration" parameterType="SewaGeregistration">
         update t_pr_softgeregistration set laboratorySignatory=#{laboratorySignatory},
-        sendingPerson=#{sendingPerson},nowTime=NOW(),address=#{address},advice=#{advice}
+        sendingPerson=#{sendingPerson},nowTime=NOW(),address=#{address},advice=#{advice},id=#{newId}
         where  id=#{id};
     </update>
 
@@ -126,7 +126,7 @@
     <!--更新次生送样信息主表-->
     <update id="updateSecondarySample" parameterType="SecondarySample">
         update t_pr_secondarysample set sendingPerson=#{sendingPerson},sendingPerson=#{sendingPerson},
-        address=#{address}, laboratorySignatory=#{laboratorySignatory},nowTime=NOW()
+        address=#{address}, laboratorySignatory=#{laboratorySignatory},nowTime=NOW(),id=#{newId}
         where  id=#{id}
     </update>
     <delete id="deleteSecondarySampleItem" parameterType="String">
@@ -147,6 +147,10 @@
     <update id="cancelSewageTest" parameterType="String">
         update t_pr_sewagetest set  checkState='Invalid' where id=#{id};
     </update>
+    <!--污水收样状态为待收样-->
+    <update id="cancelSewageTestAfter" parameterType="String">
+        update t_pr_sewageregistration set checkState ='ToCollected'  where id=#{id} ;
+    </update>
 
     <!--提交软水化验单-->
     <update id="submitSoftTest" parameterType="String">
@@ -160,6 +164,10 @@
     <!--作废软水化验单-->
     <update id="cancelSoftTest" parameterType="String">
            update t_pr_softest set   checkState='Invalid' where id=#{id};
+    </update>
+    <!--作废软水化验单软水送样待收样-->
+    <update id="cancelSoftTestAfter" parameterType="String">
+           update t_pr_softgeregistration set   checkState='ToCollected' where id=#{id};
     </update>
 
     <!--提交次生化验单-->
@@ -175,6 +183,12 @@
     <!--作废次生化验-->
     <update id="cancelSecondaryTest" parameterType="String">
            update t_pr_secondarytest set   checkState='Invalid' where id=#{id};
+    </update>
+
+
+    <!--作废次生化验次生送样待收样-->
+    <update id="cancelSecondaryTestAfter" parameterType="String">
+           update t_pr_secondarysample set   checkState='ToCollected' where id=#{id};
     </update>
 
     <!--查询所有的污水送样编号-->

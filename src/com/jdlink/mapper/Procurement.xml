@@ -239,7 +239,7 @@
 
     <!--获取采购单明细-->
     <select id="getProcurement" resultType="Material">
-        select * from t_pl_material where receiptNumber in(select receiptNumber from t_pl_procurement where t_pl_procurement.state='Submitted' and procurementCategory=1)
+        select * from t_pl_material where receiptNumber in(select receiptNumber from t_pl_procurement where t_pl_procurement.state='Submitted' and procurementCategory=1) and t_pl_material.state='Enabled'
     </select>
 
     <!--采购计划单新增页面高级查询-->
@@ -264,7 +264,7 @@
     <!--添加采购计划单主表-->
     <insert id="addProcurementPlan" parameterType="ProcurementPlan">
         insert into t_pr_procumentplan (procurementPlanId, createName, createDate, adjustName, adjustDate, approvalName, checkState, nowTime) values
-      (#{procurementPlanId},#{createName},#{createDate},#{adjustName},#{adjustDate},#{approvalName},'ToSubmit',NOW());
+      (#{procurementPlanId},#{createName},NOW(),#{adjustName},#{adjustDate},#{approvalName},'ToSubmit',NOW());
     </insert>
 
 <!--根据主键查出申购部门-->
@@ -298,4 +298,142 @@
             limit #{start}, #{count}
         </if>
     </select>
+
+    <!--根据计划单号查询-->
+    <select id="getProcurementPlanById" parameterType="String" resultMap="ProcurementPlanRM">
+   select * from t_pr_procumentplan where procurementPlanId=#{procurementPlanId}
+    </select>
+
+    <!--修改采购计划主表-->
+    <update id="adjustProcurementPlan" parameterType="ProcurementPlan">
+        update t_pr_procumentplan set  adjustDate=#{adjustDate},adjustName=#{adjustName} where procurementPlanId=#{procurementPlanId}
+    </update>
+
+    <!--修改采购计划字表-->
+    <update id="adjustProcurementPlanItem" parameterType="ProcurementPlanItem">
+        update t_pr_procumentplanitem set demandQuantity=#{demandQuantity},price=#{price},priceTotal=#{priceTotal}
+        where id=#{id};
+    </update>
+
+    <!--提交采购计划单-->
+    <update id="submitProcurementPlan" parameterType="String">
+        update t_pr_procumentplan set checkState='Submitted' where procurementPlanId=#{procurementPlanId}
+    </update>
+
+    <!--审批采购计划单-->
+    <update id="approvalProcurementPlan">
+        update t_pr_procumentplan set approvalName=#{1},advice=#{2},checkState='Approval' where procurementPlanId=#{0}
+    </update>
+
+    <!--驳回采购计划单-->
+    <update id="backProcurementPlan">
+        update t_pr_procumentplan set advice=#{1},checkState='Backed' where procurementPlanId=#{0}
+    </update>
+
+    <!--作废采购计划单-->
+    <update id="cancelProcurementPlanById" parameterType="String">
+        update t_pr_procumentplan set checkState='Invalid' where procurementPlanId=#{procurementPlanId}
+    </update>
+
+    <!--计算采购计划单总数-->
+    <select id="totalProcurementPlanRecord" resultType="int">
+        select count(*) from t_pr_procumentplan;
+    </select>
+
+
+    <!--采购计划单查询-->
+    <select id="searchProcurementPlan" parameterType="ProcurementPlan" resultMap="ProcurementPlanRM">
+        select * from t_pr_procumentplan
+        <where>
+            <if test="keywords!='' and keywords!=null">
+            or procurementPlanId like "%"#{keywords}"%"
+            or createName like "%"#{keywords}"%"
+            or createDate like "%"#{keywords}"%"
+            or adjustName like "%"#{keywords}"%"
+            or adjustDate like "%"#{keywords}"%"
+            or approvalName like "%"#{keywords}"%"
+            or checkState like "%"#{keywords}"%"
+            </if>
+            <if test="procurementPlanId!=null and procurementPlanId!=''">
+                and procurementPlanId like "%"#{procurementPlanId}"%"
+            </if>
+            <if test="adjustName!=null and adjustName!=''">
+                and adjustName like "%"#{adjustName}"%"
+            </if>
+            <if test="approvalName!=null and approvalName!=''">
+                and approvalName like "%"#{approvalName}"%"
+            </if>
+            <if test="createName!=null and createName!=''">
+                and createName like "%"#{createName}"%"
+            </if>
+            <if test="checkState!=null and checkState!=''">
+                and checkState = #{checkState}
+            </if>
+            <if test="createDateStart!=null and createDateStart!=''">
+                and createDate <![CDATA[ >= ]]> DATE_FORMAT(#{createDateStart}, '%Y-%m-%d %H:%i:%S')
+            </if>
+            <if test="createDateEnd!=null and createDateEnd!=''">
+                and createDate <![CDATA[ <= ]]> DATE_FORMAT(#{createDateEnd}, '%Y-%m-%d %H:%i:%S')
+            </if>
+            <if test="adjustDateStart!=null and adjustDateStart!=''">
+                and adjustDate <![CDATA[ >= ]]> DATE_FORMAT(#{adjustDateStart}, '%Y-%m-%d %H:%i:%S')
+            </if>
+            <if test="adjustDateEnd!=null and adjustDateEnd!=''">
+                and adjustDate <![CDATA[ <= ]]> DATE_FORMAT(#{adjustDateEnd}, '%Y-%m-%d %H:%i:%S')
+            </if>
+        </where>
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+
+    <!--采购计划单查询查询计数-->
+    <select id="searchProcurementPlanCount" parameterType="ProcurementPlan" resultType="int">
+    select  count(*) from t_pr_procumentplan
+        <where>
+            <if test="keywords!='' and keywords!=null">
+                or procurementPlanId like "%"#{keywords}"%"
+                or createName like "%"#{keywords}"%"
+                or createDate like "%"#{keywords}"%"
+                or adjustName like "%"#{keywords}"%"
+                or adjustDate like "%"#{keywords}"%"
+                or approvalName like "%"#{keywords}"%"
+                or checkState like "%"#{keywords}"%"
+            </if>
+            <if test="procurementPlanId!=null and procurementPlanId!=''">
+                and procurementPlanId like "%"#{procurementPlanId}"%"
+            </if>
+            <if test="adjustName!=null and adjustName!=''">
+                and adjustName like "%"#{adjustName}"%"
+            </if>
+            <if test="approvalName!=null and approvalName!=''">
+                and approvalName like "%"#{approvalName}"%"
+            </if>
+            <if test="createName!=null and createName!=''">
+                and createName like "%"#{createName}"%"
+            </if>
+            <if test="checkState!=null and checkState!=''">
+                and checkState = #{checkState}
+            </if>
+            <if test="createDateStart!=null and createDateStart!=''">
+                and createDate <![CDATA[ >= ]]> DATE_FORMAT(#{createDateStart}, '%Y-%m-%d %H:%i:%S')
+            </if>
+            <if test="createDateEnd!=null and createDateEnd!=''">
+                and createDate <![CDATA[ <= ]]> DATE_FORMAT(#{createDateEnd}, '%Y-%m-%d %H:%i:%S')
+            </if>
+            <if test="adjustDateStart!=null and adjustDateStart!=''">
+                and adjustDate <![CDATA[ >= ]]> DATE_FORMAT(#{adjustDateStart}, '%Y-%m-%d %H:%i:%S')
+            </if>
+            <if test="adjustDateEnd!=null and adjustDateEnd!=''">
+                and adjustDate <![CDATA[ <= ]]> DATE_FORMAT(#{adjustDateEnd}, '%Y-%m-%d %H:%i:%S')
+            </if>
+        </where>
+    </select>
+
+    <!--添加至采购计划单后更新物资状态-->
+    <update id="updateMaterialState" parameterType="int">
+        update t_pl_material set state='Disabled' where id=#{id}
+
+    </update>
 </mapper>

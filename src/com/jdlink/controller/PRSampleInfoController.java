@@ -6,6 +6,7 @@ import com.jdlink.service.ClientService;
 import com.jdlink.service.SampleInformationService;
 import com.jdlink.service.WayBillService;
 import com.jdlink.service.produce.ReceiveSampleAnalysisService;
+import com.jdlink.util.DBUtil;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -262,7 +265,7 @@ public class PRSampleInfoController {
             if(sampleInformation.getWastesList() != null && sampleInformation.getWastesList().size() > 0){
                 for(Wastes wastes :sampleInformation.getWastesList()){
                     ReceiveSampleAnalysis receiveSampleAnalysis = new ReceiveSampleAnalysis();
-                    receiveSampleAnalysis.setId(wastes.getId());
+                    receiveSampleAnalysis.setId(sampleInformation.getId()); // 化验单号与预约单号保持一致
                     receiveSampleAnalysis.setSampleId(sampleInformation.getId());
                     receiveSampleAnalysis.setFinishDate(new Date());
                     receiveSampleAnalysis.setWastesName(wastes.getName());
@@ -274,6 +277,61 @@ public class PRSampleInfoController {
                     receiveSampleAnalysis.setFormType(wastes.getFormType());
                     receiveSampleAnalysis.setCheckState(CheckState.NewBuild);
                     receiveSampleAnalysis.setSender(sampleInformation.getSendingPerson());
+                    if(wastes.getIsPH()){
+                        receiveSampleAnalysis.setPH(0); // 如果检测项目存在设置初始值为0
+                    }else {
+                        receiveSampleAnalysis.setPH(-9999);  // 如果不存在则设置为不可能值-9999
+                    }
+                    if(wastes.getIsAsh()){
+                        receiveSampleAnalysis.setAsh(0); // 如果检测项目存在设置初始值为0
+                    }else {
+                        receiveSampleAnalysis.setAsh(-9999);  // 如果不存在则设置为不可能值-9999
+                    }
+                    if(wastes.getIsWater()){
+                        receiveSampleAnalysis.setWater(0); // 如果检测项目存在设置初始值为0
+                    }else {
+                        receiveSampleAnalysis.setWater(-9999);  // 如果不存在则设置为不可能值-9999
+                    }
+                    if(wastes.getIsHeat()){
+                        receiveSampleAnalysis.setHeat(0); // 如果检测项目存在设置初始值为0
+                    }else {
+                        receiveSampleAnalysis.setHeat(-9999);  // 如果不存在则设置为不可能值-9999
+                    }
+                    if(wastes.getIsSulfur()){
+                        receiveSampleAnalysis.setSulfur(0); // 如果检测项目存在设置初始值为0
+                    }else {
+                        receiveSampleAnalysis.setSulfur(-9999);  // 如果不存在则设置为不可能值-9999
+                    }
+                    if(wastes.getIsChlorine()){
+                        receiveSampleAnalysis.setChlorine(0); // 如果检测项目存在设置初始值为0
+                    }else {
+                        receiveSampleAnalysis.setChlorine(-9999);  // 如果不存在则设置为不可能值-9999
+                    }
+                    if(wastes.getIsFluorine()){
+                        receiveSampleAnalysis.setFluorine(0); // 如果检测项目存在设置初始值为0
+                    }else {
+                        receiveSampleAnalysis.setFluorine(-9999);  // 如果不存在则设置为不可能值-9999
+                    }
+                    if(wastes.getIsPhosphorus()){
+                        receiveSampleAnalysis.setPhosphorus(0); // 如果检测项目存在设置初始值为0
+                    }else {
+                        receiveSampleAnalysis.setPhosphorus(-9999);  // 如果不存在则设置为不可能值-9999
+                    }
+                    if(wastes.getIsFlashPoint()){
+                        receiveSampleAnalysis.setFlashPoint(0); // 如果检测项目存在设置初始值为0
+                    }else {
+                        receiveSampleAnalysis.setFlashPoint(-9999);  // 如果不存在则设置为不可能值-9999
+                    }
+                    if(wastes.getIsViscosity()){
+                        receiveSampleAnalysis.setViscosity("0"); // 如果检测项目存在设置初始值为0
+                    }else {
+                        receiveSampleAnalysis.setViscosity("-9999");  // 如果不存在则设置为不可能值-9999
+                    }
+                    if(wastes.getIsHotMelt()){
+                        receiveSampleAnalysis.setHotMelt("0"); // 如果检测项目存在设置初始值为0
+                    }else {
+                        receiveSampleAnalysis.setHotMelt("-9999");  // 如果不存在则设置为不可能值-9999
+                    }
                     receiveSampleAnalysisService.add(receiveSampleAnalysis);  // 添加新的化验结果单
                 }
             }
@@ -422,16 +480,16 @@ public class PRSampleInfoController {
         return res.toString();
     }
 
-    @RequestMapping("getSampleInfoSeniorSelectedList")
-    @ResponseBody
-    public String getSampleInfoSeniorSelectedList() {
-        JSONObject res = new JSONObject();
-        // 获取枚举
-        ApplyState[] applyStates = new ApplyState[]{ApplyState.Appointed, ApplyState.Received, ApplyState.Rejected, ApplyState.Invalid};
-        JSONArray applyStateList = JSONArray.fromArray(applyStates);
-        res.put("applyStateList", applyStateList);
-        return res.toString();
-    }
+//    @RequestMapping("getSampleInfoSeniorSelectedList")
+//    @ResponseBody
+//    public String getSampleInfoSeniorSelectedList() {
+//        JSONObject res = new JSONObject();
+//        // 获取枚举
+//        ApplyState[] applyStates = new ApplyState[]{ApplyState.Appointed, ApplyState.Received, ApplyState.Rejected, ApplyState.Invalid};
+//        JSONArray applyStateList = JSONArray.fromArray(applyStates);
+//        res.put("applyStateList", applyStateList);
+//        return res.toString();
+//    }
 
     @RequestMapping("getClientAndWastesCodeSelectedList")
     @ResponseBody
@@ -528,6 +586,7 @@ public class PRSampleInfoController {
                 if (!map.keySet().contains(id)) {
                     map.put(id, new SampleInformation());
                     map.get(id).setId(id);
+                    map.get(id).setNewId(id);
                     String companyName = data[i][1].toString().trim();
                     Client client = clientService.getClientByCompanyName(companyName);
                     String produceCompanyId = "";
@@ -626,6 +685,34 @@ public class PRSampleInfoController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "导入失败，请重试！");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 导出(带表头字段)
+     *
+     * @param name
+     * @param response
+     * @param sqlWords
+     * @return
+     */
+    @RequestMapping("exportExcelSampleInfo")
+    @ResponseBody
+    public String exportExcel(String name, HttpServletResponse response, String sqlWords) {
+        JSONObject res = new JSONObject();
+        try {
+            DBUtil db = new DBUtil();
+            // 设置表头
+            String tableHead = "预约单号/产废单位/危废名称/危废代码/危废形态/送样人/PH/热值/灰分/水分/氟/氯/硫/磷/闪点/黏度/热融";
+            name = "市场部送样登记单";   // 重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
         }
         return res.toString();
     }

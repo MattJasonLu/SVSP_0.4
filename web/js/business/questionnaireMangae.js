@@ -126,15 +126,15 @@ function setQuestionnaireList(result) {
                     break;
                 // 企业名称
                 case (2):
-                    $(this).html(obj.client.companyName);
+                    if (obj.client != null) $(this).html(obj.client.companyName);
                     break;
                 // 所属行业
                 case (3):
-                    $(this).html(obj.client.industry);
+                    if (obj.client != null) $(this).html(obj.client.industry);
                     break;
                 // 主要产品
                 case (4):
-                    $(this).html(obj.client.product);
+                    if (obj.client != null) $(this).html(obj.client.product);
                     break;
                 // 审批状态
                 case (5):
@@ -149,40 +149,6 @@ function setQuestionnaireList(result) {
                 case (7):
                     $(this).html(getTimeStr(obj.time));
                     break;
-//                    case (8):
-//                        if(obj.applyState.name == "已退回"){
-//                            $(this).children().eq(1).attr("class","disabled");
-//                            $(this).children().eq(1).removeAttr("onclick");
-//                            $(this).children().eq(2).attr("class","disabled");
-//                            $(this).children().eq(2).removeAttr("onclick");
-//                            $(this).children().eq(4).attr("class","disabled");
-//                            $(this).children().eq(4).removeAttr("onclick");
-//                            $(this).children().eq(5).attr("class","disabled");
-//                            $(this).children().eq(5).removeAttr("onclick");
-//                        }else if(obj.applyState.name == "已签收"){
-//                            $(this).children().eq(1).attr("class","disabled");
-//                            $(this).children().eq(1).removeAttr("onclick");
-//                            $(this).children().eq(2).attr("class","disabled");
-//                            $(this).children().eq(2).removeAttr("onclick");
-//                            $(this).children().eq(3).attr("class","disabled");
-//                            $(this).children().eq(3).removeAttr("onclick");
-//                            $(this).children().eq(4).attr("class","disabled");
-//                            $(this).children().eq(4).removeAttr("onclick");
-//                            $(this).children().eq(5).attr("class","disabled");
-//                            $(this).children().eq(5).removeAttr("onclick");
-//                        }else{
-//                            $(this).children().eq(0).attr("class","disabled");
-//                            $(this).children().eq(0).removeAttr("onclick");
-//                            $(this).children().eq(1).attr("class","disabled");
-//                            $(this).children().eq(1).removeAttr("onclick");
-//                            $(this).children().eq(2).attr("class","disabled");
-//                            $(this).children().eq(2).removeAttr("onclick");
-//                            $(this).children().eq(3).attr("class","disabled");
-//                            $(this).children().eq(3).removeAttr("onclick");
-//                            $(this).children().eq(4).attr("class","disabled");
-//                            $(this).children().eq(4).removeAttr("onclick");
-//                        }
-//                        break;
             }
         });
         // 把克隆好的tr追加到原来的tr前面

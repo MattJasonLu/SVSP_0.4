@@ -865,7 +865,7 @@ public class ProcurementController {
             String receiptNumber=material.getReceiptNumber();
 
             //更新采购申请的状态为生效中
-            procurementService.updateProcurementState(receiptNumber);
+           // procurementService.updateProcurementState(receiptNumber);
             //根据主键查出申购部门
             String proposer=procurementService.getApplyDepartmentByReceiptNumber(receiptNumber);
 
@@ -877,6 +877,9 @@ public class ProcurementController {
             procurementPlanItem.setDemandQuantity((int)material.getDemandQuantity());//需求数量
             procurementPlanItem.setRemarks(material.getNote());//备注
             procurementService.addProcurementPlanItem(procurementPlanItem);
+
+            //物资的状态更新为失效
+            procurementService.updateMaterialState(material.getId());
             res.put("status", "success");
             res.put("message", "添加成功");
         }
@@ -907,4 +910,191 @@ public class ProcurementController {
         }
       return res.toString();
     }
+
+    //根据计划单号查询
+    @RequestMapping("getProcurementPlanById")
+    @ResponseBody
+    public String getProcurementPlanById(String procurementPlanId){
+        JSONObject res=new JSONObject();
+
+        try {
+            List<ProcurementPlan> procurementPlanList=procurementService.getProcurementPlanById(procurementPlanId);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", procurementPlanList.get(0));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+
+        }
+
+        return res.toString();
+
+    }
+
+    //修改采购计划单主表
+    @RequestMapping("adjustProcurementPlan")
+    @ResponseBody
+    public String adjustProcurementPlan(@RequestBody ProcurementPlan procurementPlan){
+        JSONObject res=new JSONObject();
+
+
+        try {
+            procurementService.adjustProcurementPlan(procurementPlan);
+            res.put("status", "success");
+            res.put("message", "修改成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "修改失败");
+        }
+        return res.toString();
+    }
+
+
+    //修改采购计划单明细
+    @RequestMapping("adjustProcurementPlanItem")
+    @ResponseBody
+    public String adjustProcurementPlanItem (@RequestBody ProcurementPlanItem procurementPlanItem ){
+        JSONObject res=new JSONObject();
+
+        try {
+   procurementService.adjustProcurementPlanItem(procurementPlanItem);
+            res.put("status", "success");
+            res.put("message", "更新成功");
+        }
+        catch (Exception e){
+
+            e.printStackTrace();
+
+            res.put("status", "fail");
+
+            res.put("message", "更新失败");
+        }
+     return res.toString();
+    }
+
+
+    //提交采购计划单
+    @RequestMapping("submitProcurementPlan")
+    @ResponseBody
+    public String submitProcurementPlan(String procurementPlanId){
+        JSONObject res=new JSONObject();
+
+          try {
+              procurementService.submitProcurementPlan(procurementPlanId);
+              res.put("status", "success");
+              res.put("message", "提交成功");
+          }
+          catch (Exception e){
+              e.printStackTrace();
+              res.put("status", "fail");
+              res.put("message", "提交失败");
+
+          }
+             return res.toString();
+    }
+
+    //审批采购单
+    @RequestMapping("approvalProcurementPlan")
+    @ResponseBody
+    public String approvalProcurementPlan(String procurementPlanId,String approvalName,String advice){
+        JSONObject res=new JSONObject();
+
+
+             try {
+                   procurementService.approvalProcurementPlan(procurementPlanId, approvalName, advice);
+                 res.put("status", "success");
+                 res.put("message", "审批通过");
+             }
+             catch (Exception e){
+                 e.printStackTrace();
+                 res.put("status", "fail");
+                 res.put("message", "审批失败");
+             }
+           return res.toString();
+    }
+
+    //驳回采购计划单
+    @RequestMapping("backProcurementPlan")
+    @ResponseBody
+    public String backProcurementPlan(String procurementPlanId,String advice){
+        JSONObject res=new JSONObject();
+
+
+        try {
+            procurementService.backProcurementPlan(procurementPlanId, advice);
+            res.put("status", "success");
+            res.put("message", "驳回成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+       return res.toString();
+    }
+
+    //作废采购计划单
+    @RequestMapping("cancelProcurementPlanById")
+    @ResponseBody
+    public String cancelProcurementPlanById(String procurementPlanId){
+        JSONObject res=new JSONObject();
+
+                      try {
+ procurementService.cancelProcurementPlanById(procurementPlanId);
+                          res.put("status", "success");
+                          res.put("message", "作废成功");
+                      }
+                      catch (Exception e){
+                          e.printStackTrace();
+                          res.put("status", "fail");
+                          res.put("message", "作废失败");
+
+                      }
+          return res.toString();
+    }
+
+    //计算采购计划表总数
+    @RequestMapping("totalProcurementPlanRecord")
+    @ResponseBody
+    public int  totalProcurementPlanRecord(){
+        return procurementService.totalProcurementPlanRecord();
+
+    }
+
+    //采购计划查询
+    @RequestMapping("searchProcurementPlan")
+    @ResponseBody
+    public String searchProcurementPlan(@RequestBody ProcurementPlan procurementPlan){
+        JSONObject res=new JSONObject();
+
+        try {
+            List<ProcurementPlan> procurementPlanList=procurementService.searchProcurementPlan(procurementPlan);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", procurementPlanList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+
+
+
+        return res.toString();
+    }
+
+    //采购计划查询计数
+    @RequestMapping("searchProcurementPlanCount")
+    @ResponseBody
+    public int searchProcurementPlanCount(@RequestBody ProcurementPlan procurementPlan){
+
+        return procurementService.searchProcurementPlanCount(procurementPlan);
+    }
+
 }
