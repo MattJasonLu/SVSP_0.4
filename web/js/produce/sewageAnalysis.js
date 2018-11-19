@@ -1212,9 +1212,6 @@ function setSubmit(item) {
                             if (obj.ph == 1) {
                                 project += "PH ";
                             }
-                            if (obj.dissolvedSolidForm == 1) {
-                                project += "溶解固形物 ";
-                            }
                             if (obj.electricalConductivity == 1) {
                                 project += "电导率 ";
                             }
@@ -1227,13 +1224,6 @@ function setSubmit(item) {
                             if (obj.n2 == 1) {
                                 project += "氨氮 ";
                             }
-                            if (obj.o2 == 1) {
-                                project += "氧气 ";
-                            }
-                            if (obj.relativeAlkalinity == 1) {
-                                project += "相对碱度 ";
-                            }
-
                             if (obj.nitrogen == 1) {
                                 project += "总氮 ";
                             }
@@ -1283,13 +1273,34 @@ function setSubmit(item) {
         alert("单据已收样,无法收样")
     }
 }
+
 //确认送样方法==>真正的方法
 function confirmSample() {
+
+
+
+
 var id=$("#reservationId1").text();
 
 var laboratorySignatory=$('#laboratorySignatory').val();
 
-$.ajax({
+    var ph;
+
+    var cod;
+
+    var bod5;
+
+    var n2;
+
+    var phosphorus;
+
+    var nitrogen;
+
+    var lye;
+
+
+
+    $.ajax({
     type: "POST",                       // 方法类型
     url: "confirmSewaGeregistrationById",              // url
     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序

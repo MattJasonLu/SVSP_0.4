@@ -14,8 +14,8 @@
     </select>
     <!--添加物料表-->
     <insert id="addMaterial" parameterType="Material">
-        insert into t_pl_material (suppliesName, specifications, inventory, note, purchaseQuantity, demandQuantity, receiptNumber,unit,state,createDate)
-        values (#{suppliesName},#{specifications},#{inventory},#{note},#{purchaseQuantity},#{demandQuantity},#{receiptNumber},#{unit},'ToInbound',NOW());
+        insert into t_pl_material (suppliesName, specifications, inventory, note, purchaseQuantity, demandQuantity, receiptNumber,unit,state,createDate,checkState)
+        values (#{suppliesName},#{specifications},#{inventory},#{note},#{purchaseQuantity},#{demandQuantity},#{receiptNumber},#{unit},'ToInbound',NOW(),'Enabled');
     </insert>
     <!--加载采购列表-->
     <resultMap id="ProcurementRM" type="Procurement" autoMapping="true">
@@ -233,13 +233,13 @@
     <!--更新采购单明细-->
     <update id="updateMaterial" parameterType="Material">
         update t_pl_material set inventory=#{inventory},demandQuantity=#{demandQuantity},
-        note=#{note} where  id=#{id}
+        note=#{note},purchaseQuantity=#{purchaseQuantity} where  id=#{id}
     </update>
 
 
     <!--获取采购单明细-->
     <select id="getProcurement" resultType="Material">
-        select * from t_pl_material where receiptNumber in(select receiptNumber from t_pl_procurement where t_pl_procurement.state='Submitted' and procurementCategory=1)
+        select * from t_pl_material where (receiptNumber in(select receiptNumber from t_pl_procurement where t_pl_procurement.state='Submitted' and procurementCategory=1))and (t_pl_material.checkState='Enabled');
     </select>
 
     <!--采购计划单新增页面高级查询-->
@@ -252,7 +252,7 @@
             <if test="createDateEnd!=null and createDateEnd!=''">
                 and createDate &lt;= DATE_FORMAT(#{createDateEnd}, '%Y-%m-%d')
             </if>
-            and t_pl_material.receiptNumber in(select t_pl_procurement.receiptNumber from t_pl_procurement where t_pl_procurement.state='Submitted' and t_pl_procurement.procurementCategory=1)
+            and t_pl_material.receiptNumber in(select t_pl_procurement.receiptNumber from t_pl_procurement where t_pl_procurement.state='Submitted' and t_pl_procurement.procurementCategory=1) and (t_pl_material.checkState='Enabled');
         </where>
     </select>
     
@@ -430,4 +430,10 @@
             </if>
         </where>
     </select>
+
+    <!--添加至采购计划单后更新物资状态-->
+    <update id="updateMaterialState" parameterType="int">
+        update t_pl_material set checkState='Disabled' where id=#{id}
+
+    </update>
 </mapper>

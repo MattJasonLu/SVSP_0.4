@@ -700,9 +700,9 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
 
     <!--添加污水登记主表-->
     <insert id="addSewaGeregistration" parameterType="Sewageregistration">
-        insert into  t_pr_sewageregistration(id,laboratorySignatory,sendingPerson,nowTime,water,address,clientId,checkState)
+        insert into  t_pr_sewageregistration(id,laboratorySignatory,sendingPerson,nowTime,water,address,clientId,checkState,createTime)
         values
-        (#{id},#{laboratorySignatory},#{sendingPerson},NOW(),#{water},#{address},#{client.clientId},'ToCollected')
+        (#{id},#{laboratorySignatory},#{sendingPerson},NOW(),#{water},#{address},#{client.clientId},'ToCollected',NOW())
     </insert>
 
     <!--获得主表最新的主键-->
@@ -718,8 +718,8 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
 
     <!--添加软水登记主表-->
     <insert id="addSoftGeregistration" parameterType="Sewageregistration">
-        insert into t_pr_softgeregistration (id, laboratorySignatory, sendingPerson, nowTime, address, clientId, checkState, advice)
-        values (#{id},#{laboratorySignatory},#{sendingPerson},NOW(),#{address},#{client.clientId},'ToCollected',#{advice});
+        insert into t_pr_softgeregistration (id, laboratorySignatory, sendingPerson, nowTime, address, clientId, checkState, advice,createTime)
+        values (#{id},#{laboratorySignatory},#{sendingPerson},NOW(),#{address},#{client.clientId},'ToCollected',#{advice},NOW());
     </insert>
     <!--添加软水登记字表表-->
     <insert id="addSoftGeregistrationItem" parameterType="SewageregistrationItem">
@@ -743,7 +743,7 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
     </select>
     <!--获取污水送样登记-->
     <select id="sewageList" resultMap="SewageregistrationRM">
-        select * from t_pr_sewageregistration where water='1' and checkState!='Invalid' order by nowTime desc
+        select * from t_pr_sewageregistration where water='1' and checkState!='Invalid' order by createTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -751,7 +751,7 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
 
     <!--获取软水送样登记-->
     <select id="softList" resultMap="SoftgeregistrationRM">
-        select * from t_pr_softgeregistration  order by nowTime desc
+        select * from t_pr_softgeregistration  order by createTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -816,25 +816,29 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
     </select>
     
     <!--污水送样完成后加入污水化验单-->
-    <insert id="sampleTest">
-        insert into t_pr_sewagetest (id,address,checkState,dateTime) values (#{0},#{1},'ToSubmit',NOW());
-    </insert>
+    <!--<insert id="sampleTest" parameterType="SewageTest">-->
+        <!--insert into t_pr_sewagetest (id, address, ph, COD, BOD5, N2, alkalinity, bicarbonate, nitrogen, phosphorus, remarks, sampleId, nowTime, alkalinityCaCo3, alkalinityHCO3, bicarbonateCaCo3, bicarbonateHCO3, checkState, dateTime) values-->
+        <!--(#{id},#{address},#{ph},#{COD},#{BOD5},#{N2},#{alkalinity},#{},#{},#{},#{},#{},#{},#{},#{},#{},#{},#{},#{})-->
+    <!--</insert>-->
 
 
 
     <!--污水送样完成后加入污水化验单==>有更新-->
-    <insert id="updateSampleTest">
-        insert  into t_pr_sewagetest (id,address,dateTime) values (CONCAT('I-',#{0}),#{1},NOW())
+    <insert id="updateSampleTest" parameterType="SewageTest">
+ insert into t_pr_sewagetest(id, address, ph, COD, BOD5, N2, alkalinity, bicarbonate, nitrogen, phosphorus, remarks, sampleId,nowTime,alkalinityCaCo3,alkalinityHCO3,bicarbonateCaCo3,bicarbonateHCO3,checkState,dateTime)
+    values
+    (CONCAT('I-',#{id}),#{address},#{ph},#{COD},#{BOD5},#{N2},#{alkalinity},#{bicarbonate},#{nitrogen},#{phosphorus},#{remarks},#{sampleId},NOW(),#{alkalinityCaCo3},#{alkalinityHCO3},#{bicarbonateCaCo3},#{bicarbonateHCO3},'ToSubmit',NOW());
        </insert>
 
     <!--软水送样完成后加入污水化验单-->
-    <insert id="sampleTestSoft">
-        insert into t_pr_softest (id,address,checkState,dateTime) values (#{0},#{1},'ToSubmit',NOW());
-    </insert>
+    <!--<insert id="sampleTestSoft" >-->
+     <!---->
+    <!--</insert>-->
 
     <!--软水送样完成后加入软水化验单==>有更新-->
-    <insert id="updateSampleSoftTest">
-       insert  into t_pr_softest(id,address,dateTime) values (CONCAT('I-',#{0}),#{1},NOW())
+    <insert id="updateSampleSoftTest" parameterType="SoftTest">
+       insert into t_pr_softest (id, address, remarks, sampleId, turbidity, hardness, PH, electricalConductivity, basicity, phenolphthalein, nowTime,checkState,dateTime) values
+        (CONCAT('I-',#{id}),#{address},#{remarks},#{sampleId},#{turbidity},#{hardness},#{PH},#{electricalConductivity},#{basicity},#{phenolphthalein},NOW(),'ToSubmit',NOW());
 
     </insert>
 

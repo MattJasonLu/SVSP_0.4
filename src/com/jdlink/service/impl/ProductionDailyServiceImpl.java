@@ -207,17 +207,17 @@ public class ProductionDailyServiceImpl implements ProductionDailyService
     }
 
     @Override
-    public void updateSampleTest(String id, String address) {
-        productionDailyMapper.updateSampleTest(id, address);
+    public void updateSampleTest(SewageTest sewageTest) {
+        productionDailyMapper.updateSampleTest(sewageTest);
     }
 
     @Override
-    public void sampleTestSoft(String id, String address) {
+    public void sampleTestSoft(String id,String address) {
         productionDailyMapper.sampleTestSoft(id, address);
     }
 
     @Override
-    public void updateSampleSoftTest(String id, String address) {
-        productionDailyMapper.updateSampleSoftTest(id, address);
+    public void updateSampleSoftTest(SoftTest softTest) {
+        productionDailyMapper.updateSampleSoftTest(softTest);
     }
 }

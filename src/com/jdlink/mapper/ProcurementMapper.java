@@ -46,5 +46,6 @@ public interface ProcurementMapper {
     int totalProcurementPlanRecord();
     List<ProcurementPlan>searchProcurementPlan(ProcurementPlan procurementPlan);
     int searchProcurementPlanCount(ProcurementPlan procurementPlan);
+    void updateMaterialState(int id);
 
 }

@@ -865,7 +865,7 @@ public class ProcurementController {
             String receiptNumber=material.getReceiptNumber();
 
             //更新采购申请的状态为生效中
-            procurementService.updateProcurementState(receiptNumber);
+           // procurementService.updateProcurementState(receiptNumber);
             //根据主键查出申购部门
             String proposer=procurementService.getApplyDepartmentByReceiptNumber(receiptNumber);
 
@@ -877,6 +877,9 @@ public class ProcurementController {
             procurementPlanItem.setDemandQuantity((int)material.getDemandQuantity());//需求数量
             procurementPlanItem.setRemarks(material.getNote());//备注
             procurementService.addProcurementPlanItem(procurementPlanItem);
+
+            //物资的状态更新为失效
+            procurementService.updateMaterialState(material.getId());
             res.put("status", "success");
             res.put("message", "添加成功");
         }
@@ -1094,4 +1097,11 @@ public class ProcurementController {
         return procurementService.searchProcurementPlanCount(procurementPlan);
     }
 
+
+//    //作废急需物资购置申请表
+//    @RequestMapping("cancelEmergencyProcurementById")
+//    @ResponseBody
+//    public String cancelEmergencyProcurementById(String){
+//
+//    }
 }
