@@ -968,6 +968,7 @@ function loadIngredientsReceiveList() {
     // 设置高级检索的下拉框数据
     setSeniorSelectedList1();
     setSelectedList();
+    setfileId();
     if (localStorage.id != null && localStorage.id != "null") { // 如果ID非空，加载需要修改的数据
         $("#save").text("修改");   // 修改按钮名称
         $("#head").text("辅料/备件出库单修改");  // 修改标题
@@ -1087,6 +1088,31 @@ function loadIngredientsReceiveList() {
             }
         });
     }
+}
+
+/**
+ * 设置文件编号
+ */
+function setfileId() {
+    var id = "2"; // 出库单为2
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getDocumentControl",          // url
+        async: false, // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            ID: id
+        },
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                if (result.data != null)
+                    $("#fileId").val(result.data.fileNO); // 赋值
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
 }
 
 /**

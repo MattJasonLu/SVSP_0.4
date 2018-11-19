@@ -489,7 +489,7 @@ public class SupplierController {
 
     @RequestMapping("loadPageSupplierList")
     @ResponseBody
-    public String loadPageQuestionnaireList(@RequestBody Page page) {
+    public String loadPageSupplierList(@RequestBody Page page) {
         JSONObject res = new JSONObject();
         try {
             // 取出查询客户

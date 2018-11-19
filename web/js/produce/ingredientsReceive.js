@@ -6,18 +6,11 @@ var data1;
 function getDayDate(date) {
     //获取时间
     var obj = date;
-    if (obj == null) return "";
-    var year = (parseInt(obj.year) + 1900).toString();
-    var mouth = parseInt((obj.month) + 1).toString();
-    if (mouth.length != 2) {
-        mouth = 0 + mouth;
-    }
-    var day = parseInt((obj.date)).toString();
-    if (day.length != 2) {
-        day = 0 + day;
-    }
-    var time1 = year + "年" + mouth + "月" + day + "日";
-    return time1;
+    var year = obj.getFullYear();
+    var month = obj.getMonth() + 1;
+    var day = obj.getDate();
+    if (day % 7 > 0) var a = 1; else a = 0;
+    return year + "-" + month + "-" + day;
 }
 
 /**
@@ -1225,7 +1218,7 @@ function loadInventoryListData() {
     $("#save").text("领料");   // 修改按钮名称
     $("#head").text("辅料/备件领料单新增");  // 标题修改
     $("#view-id").text(getCurrentIngredientsReceiveId());
-    $("#creationDate").text(getcurrentDaydate());
+    $("#creationDate").val(getDayDate(new Date()));
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").attr("disabled", "true");
@@ -1260,6 +1253,7 @@ function loadInventoryListData() {
             console.log("获取失败");
         }
     });
+    setfileId();
     if (localStorage.id != null && localStorage.id != "null") { // 如果ID非空，加载需要修改的数据
         $("#save").text("修改");   // 修改按钮名称
         $("#head").text("辅料/备件领料单修改");
@@ -1368,6 +1362,30 @@ function loadInventoryListData() {
     }
 }
 
+/**
+ * 设置文件编号
+ */
+function setfileId() {
+    var id = "3"; // 领料单为3
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getDocumentControl",          // url
+        async: false, // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            ID: id
+        },
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                if (result.data != null)
+                    $("#fileId").val(result.data.fileNO); // 赋值
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+}
 
 /**
  * 减行
@@ -1592,6 +1610,7 @@ function save() {
     ingredientsReceive.pickingSupervisor = $("#pickingSupervisor").val();
     ingredientsReceive.pickingMan = $("#pickingMan").val();
     ingredientsReceive.id = $("#view-id").text();
+    ingredientsReceive.creationDate = $("#creationDate").val();
     totalReceiveAmount = 0;  // 总领料数
     if (ingredientsReceive != null && ingredientsReceive.ingredientsList != null)//如果有新添的数据则获取最新的输入数据
         for (var i = 0; i < ingredientsReceive.ingredientsList.length; i++) {

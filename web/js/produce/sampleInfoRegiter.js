@@ -1722,6 +1722,35 @@ function importExcel() {
         });
     });
 }
-function readOnly(){
-    alert("预约单号不允许修改，如需修改请作废后新建！");
+
+//预约单号检测
+function testing(item) {
+    $('#pass').hide();
+    $('#break').hide();
+    var id = $.trim($(item).val());
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSampleInformationWareHouse",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{
+            'sampleId' : id
+        },
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                if(result.data != null){
+                    $('#break').show();
+                }else{
+                    $('#pass').show();
+                }
+                if($.trim(id).length<=0){
+                    $('#pass').hide();
+                    $('#break').hide();
+                }
+            }
+        },
+        error:function (result) {
+
+        }
+    })
 }
