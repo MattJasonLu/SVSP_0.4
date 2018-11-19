@@ -41,6 +41,19 @@ public class Sewageregistration {
     //关键字
     private String keywords;
 
+
+    //修改后的ID
+    private String newId;
+
+
+    public String getNewId() {
+        return newId;
+    }
+
+    public void setNewId(String newId) {
+        this.newId = newId;
+    }
+
     public String getKeywords() {
         return keywords;
     }

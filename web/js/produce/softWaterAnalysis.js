@@ -1311,6 +1311,8 @@ function rejection1() {
 //软水送样修改
 function softWaterAnalysisModify(item) {
 
+    $('#pass1').hide();
+    $('#break1').hide();
     var checkState=$(item).parent().parent().children('td').eq(6).html();
 
     if(checkState=='已收样'){
@@ -1328,6 +1330,7 @@ function softWaterAnalysisModify(item) {
         $('#addClone1').siblings().not($('#plusBtn1')).remove();
         var id=$(item).parent().parent().children('td').eq(1).html();
         $('#reservationId2').val(id)
+        $('#reservationId3').val(id)
         //根据编号查找
         $.ajax({
             type: "POST",                       // 方法类型
@@ -1465,7 +1468,8 @@ function softWaterAnalysisModify(item) {
 function adjust() {
 
     var data={
-        id:$('#reservationId2').val(),
+        newId:$('#reservationId2').val(),
+        id:$('#reservationId3').val(),
         sendingPerson:$('#sendingPerson2').val(),
         address:$('#address2').val(),
         laboratorySignatory:$('#laboratorySignatory2').val(),
@@ -1605,7 +1609,7 @@ function setInvalid(item) {
 
 }
 
-//预约单号检测
+//预约单号检测==>新增
 function testing(item) {
     $('#pass').hide();
     $('#break').hide();
@@ -1639,5 +1643,36 @@ function testing(item) {
     })
 }
 
+//预约单号检测==>修改
+function testing1(item) {
+    $('#pass1').hide();
+    $('#break1').hide();
 
+    var id=$.trim($(item).val());
 
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "testingSoftId",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{'id':id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                if(result.data==true){
+                    $('#break1').show();
+                }
+                if(result.data==false){
+                    $('#pass1').show();
+                }
+                if($.trim(id).length<=0){
+                    $('#pass1').hide();
+                    $('#break1').hide();
+                }
+            }
+        },
+        error:function (result) {
+
+        }
+    })
+}

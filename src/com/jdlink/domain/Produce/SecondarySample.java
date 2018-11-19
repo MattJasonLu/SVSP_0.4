@@ -37,6 +37,17 @@ public class SecondarySample {
 
     private String keywords;
 
+    private String newId;
+
+
+    public String getNewId() {
+        return newId;
+    }
+
+    public void setNewId(String newId) {
+        this.newId = newId;
+    }
+
     public String getKeywords() {
         return keywords;
     }
