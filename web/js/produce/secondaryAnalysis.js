@@ -1282,7 +1282,8 @@ function importExcel() {
 
 //次生修改
 function secondaryAnalysisModify(item) {
-
+    $('#pass1').hide();
+    $('#break1').hide();
     var checkState=$(item).parent().parent().children('td').eq(7).html();
 
     if(checkState=='已收样'){
@@ -1309,6 +1310,7 @@ function secondaryAnalysisModify(item) {
         var id=$(item).parent().parent().children('td').eq(1).html();
         console.log(id)
         $('#reservationId2').val(id)
+        $('#reservationId3').val(id)
         $("#appointModa3").modal('show');
         $('#confirm').hide();
 
@@ -1425,7 +1427,8 @@ function secondaryAnalysisModify(item) {
 function adjust() {
 
     var data={
-        id:$('#reservationId2').val(),
+        newId:$('#reservationId2').val(),
+        id:$('#reservationId3').val(),
         sendingPerson:$('#sendingPerson2').val(),
         address:$('#address2').val(),
         laboratorySignatory:$('#laboratorySignatory2').val(),
@@ -1532,7 +1535,7 @@ function setInvalid(item) {
 }
 
 
-//预约单号检测
+//预约单号检测==>新增
 function testing(item) {
     $('#pass').hide();
     $('#break').hide();
@@ -1557,6 +1560,40 @@ function testing(item) {
                 if($.trim(id).length<=0){
                     $('#pass').hide();
                     $('#break').hide();
+                }
+            }
+        },
+        error:function (result) {
+
+        }
+    })
+}
+
+//预约单号检测==>检测
+function testing1(item) {
+    $('#pass1').hide();
+    $('#break1').hide();
+
+    var id=$.trim($(item).val());
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "testingSecondaryId",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{'id':id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                if(result.data==true){
+                    $('#break1').show();
+                }
+                if(result.data==false){
+                    $('#pass1').show();
+                }
+                if($.trim(id).length<=0){
+                    $('#pass1').hide();
+                    $('#break1').hide();
                 }
             }
         },
