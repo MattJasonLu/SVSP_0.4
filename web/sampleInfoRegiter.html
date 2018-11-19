@@ -542,7 +542,9 @@
                             <tr id="addClone">
                                 <!--<td class="text-center">1</td>-->
                                 <td class="text-center" ><input type="text" class="form-control" id="model-id"
-                                                                name="id" required></td>
+                                                                name="id" required onkeyup="testing(this)">
+                                    <p id="pass"  style="color: green;display: none">通过</p>
+                                    <p id="break" style="color: red;display: none">预约单号已存在</p></td>
                                 <td class="text-center"><select onchange="autoSetCategory(this)" class="selectpicker form-control"
                                                                 data-live-search="true"
                                                                 data-live-search-placeholder="搜索..."
