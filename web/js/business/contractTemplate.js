@@ -477,7 +477,7 @@ function allSelect() {
     else $("input[name='select']").prop('checked',false);
 }
 
-function check(item) {
+function check1(item) {
     //模板名称
     var contractId=item.parentElement.previousElementSibling.innerHTML;
 
