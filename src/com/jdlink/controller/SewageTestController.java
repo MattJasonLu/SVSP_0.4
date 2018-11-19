@@ -409,10 +409,11 @@ public class SewageTestController {
         JSONObject res=new JSONObject();
 
         try {
+            //删除字表
+            sewageTestService.deleteSecondarySampleItem(secondarySample.getId());
             //更新完成
         sewageTestService.updateSecondarySample(secondarySample);
-        //删除字表
-            sewageTestService.deleteSecondarySampleItem(secondarySample.getId());
+
             res.put("status", "success");
             res.put("message", "更新主表,删除字表完成");
 

@@ -431,12 +431,12 @@ function getCurrentUserInfo(){
 }
 
 /**
- * 判断数字是否为0，若为0，则变为--
+ * 判断数字是否为-9999，若为-9999，则变为--
  * @param number 数字
  * @returns {*}
  */
 function setNumber2Line(number) {
-    if (number == null || number == 0 || number == '' || number == '0' || number == 'null')
+    if (number == null || number == -9999 || number == '' || number == '-9999' || number == 'null')
         return "--";
     else return number;
 }

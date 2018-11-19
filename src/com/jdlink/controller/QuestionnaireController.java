@@ -668,7 +668,8 @@ public class QuestionnaireController {
         JSONObject res = new JSONObject();
         try {
             Questionnaire oldQuestionnaire = questionnaireService.getById(questionnaire.getQuestionnaireId());
-            if (oldQuestionnaire.getApplyState() == ApplyState.ToSignIn) throw new RuntimeException("未审批");
+            if (oldQuestionnaire.getApplyState() != null && oldQuestionnaire.getApplyState() == ApplyState.ToSignIn)
+                throw new RuntimeException("未审批");
             questionnaireService.back(questionnaire);
             res.put("status", "success");
             res.put("message", "驳回成功!");

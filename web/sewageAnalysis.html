@@ -572,7 +572,10 @@
                     <div class="form-group col-md-6">
                         <label for="reservationId" class="col-sm-4 control-label">预约单号</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" id="reservationId2"  name="signer" readonly>
+                            <input type="text" class="form-control" id="reservationId2"  name="signer"  onkeyup="testing1(this)">
+                            <p id="pass1"  style="color: green">通过</p>
+                            <p id="break1" style="color: red">预约单号已存在</p>
+                            <input type="text" class="form-control hidden" id="reservationId3"  name="signer" >
                         </div>
                     </div>
                     <div class="form-group col-md-6">
