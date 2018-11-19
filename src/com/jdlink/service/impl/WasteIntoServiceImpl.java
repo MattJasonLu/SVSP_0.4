@@ -106,8 +106,8 @@ public class WasteIntoServiceImpl implements WasteIntoService {
     }
 
     @Override
-    public void updateSecondarySample(String id,String wastesName) {
-        wasteIntoMapper.updateSecondarySample(id,wastesName);
+    public void updateSecondarySample(SecondaryTest secondaryTest) {
+        wasteIntoMapper.updateSecondarySample(secondaryTest);
     }
 
     @Override

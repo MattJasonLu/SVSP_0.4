@@ -27,7 +27,7 @@ public interface WasteIntoMapper {
    List<SecondarySample>searchSecondary(SecondarySample secondarySample);
    int searchSecondaryCount(SecondarySample secondarySample);
    void SecondarySample(String id,String wastesName);
-   void updateSecondarySample(String id,String wastesName);
+   void updateSecondarySample(SecondaryTest secondaryTest);
    List<SampleInfoAnalysis>searchWastesDaily(SampleInfoAnalysis sampleInfoAnalysis);
    int searchWastesDailyCount(SampleInfoAnalysis sampleInfoAnalysis);
    List<SecondaryTest> searchSecondaryDaily(SecondaryTest secondaryTest);

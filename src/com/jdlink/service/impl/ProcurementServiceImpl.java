@@ -197,6 +197,11 @@ public class ProcurementServiceImpl implements ProcurementService
     }
 
     @Override
+    public void updateMaterialState(int id) {
+        procurementMapper.updateMaterialState(id);
+    }
+
+    @Override
     public List<Material> searchMaterial(Material material){ return procurementMapper.searchMaterial(material);}
 
     @Override

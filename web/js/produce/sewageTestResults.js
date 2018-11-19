@@ -326,100 +326,57 @@ function setSewageTestList(result) {
                     break;
                 //PH
                 case (3):
-                    if(obj.ph==0){
-                        $(this).html('--')
-                    }
-                    else
-                    $(this).html((obj.ph).toFixed(0));
+
+                    $(this).html(setNumber2Line(parseFloat(obj.ph).toFixed(0)));
                     break;
                 case (4):
-                    // COD
-                    if(obj.COD==0){
-                        $(this).html('--')
-                    }
-                    else
-                    $(this).html(obj.COD.toFixed(2));
+               console.log(obj.COD)
+                    $(this).html(setNumber2Line(parseFloat(obj.COD).toFixed(2)));
                     break;
                 case (5):
                     // BOD5
-                    if(obj.BOD5==0){
-                        $(this).html('--')
-                    }
-                    else
-                    $(this).html(obj.BOD5.toFixed(2));
+                        $(this).html(setNumber2Line(parseFloat(obj.BOD5).toFixed(2)));
                     break;
                 case (6):
                     // 氨氮
-                    if(obj.n2==0){
-                        $(this).html('--')
-                    }
-                    else
-                    $(this).html(obj.n2.toFixed(2));
+                        $(this).html(setNumber2Line(parseFloat(obj.n2).toFixed(2)));
                     break;
                 case (7):
-                    if(obj.alkalinity==0){
-                        $(this).html('--')
-                    }
-                    else
                     // 碳酸盐碱度(Cao)
-                    $(this).html(obj.alkalinity.toFixed(2));
+                        $(this).html(setNumber2Line(parseFloat(obj.alkalinity).toFixed(2)));
                     break;
                 case (8):
-                    if(obj.alkalinityCaCo3==0){
-                        $(this).html('--')
-                    }
-                    else
-                    // 碳酸盐碱度(CaCo3)
-                    $(this).html(obj.alkalinityCaCo3.toFixed(2));
+
+                        $(this).html(setNumber2Line(parseFloat(obj.alkalinityCaCo3).toFixed(2)));
                     break;
                 case (9):
-                    if(obj.alkalinityHCO3==0){
-                        $(this).html('--')
-                    }
-                    else
+
                     // 碳酸盐碱度(HCO3-))
-                    $(this).html(obj.alkalinityHCO3.toFixed(2));
+                        $(this).html(setNumber2Line(parseFloat(obj.alkalinityHCO3).toFixed(2)));
                     break;
                 case (10):
-                    if(obj.bicarbonate==0){
-                        $(this).html('--')
-                    }
-                    else
+
                     // 重碳酸盐碱度(Cao)
-                    $(this).html(obj.bicarbonate.toFixed(2));
+                        $(this).html(setNumber2Line(parseFloat(obj.bicarbonate).toFixed(2)));
                     break;
                 case (11):
-                    if(obj.bicarbonateCaCo3==0){
-                        $(this).html('--')
-                    }
-                    else
                     // 重碳酸盐碱度(CaCo3)
-                    $(this).html(obj.bicarbonateCaCo3.toFixed(2));
+                        $(this).html(setNumber2Line(parseFloat(obj.bicarbonateCaCo3).toFixed(2)));
                     break;
                 case (12):
-                    if(obj.bicarbonateHCO3==0){
-                        $(this).html('--')
-                    }
-                    else
                     // 重碳酸盐碱度(HCO3-)
-                    $(this).html(obj.bicarbonateHCO3.toFixed(2));
+                        $(this).html(setNumber2Line(parseFloat(obj.bicarbonateHCO3).toFixed(2)));
                     break;
 
                 case (13):
-                    if(obj.nitrogen==0){
-                        $(this).html('--')
-                    }
-                    else
+
                     // 总氮
-                    $(this).html(obj.nitrogen.toFixed(2));
+                        $(this).html(setNumber2Line(parseFloat(obj.nitrogen).toFixed(2)));
                     break;
                 case (14):
-                    if(obj.phosphorus==0){
-                        $(this).html('--')
-                    }
-                    else
+
                     // 总磷
-                    $(this).html(obj.phosphorus.toFixed(2));
+                        $(this).html(setNumber2Line(parseFloat(obj.phosphorus).toFixed(2)));
                     break;
                 case (15):
                     // 备注
