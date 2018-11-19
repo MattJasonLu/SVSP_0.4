@@ -85,8 +85,8 @@ public interface ContractMapper {
     List<Contract> searchModel(Contract contract);
     List<Contract> getContractListByMonth(String month);
 
-    List<Contract> getAllContractBySalesmanId(String salesmanId);
-
+    List<Contract> getAllContractBySalesmanId(Contract contract);
+    int getAllContractCountBySalesmanId(String salesmanId);
     /**
      * 添加合同中的报价单明细
      */
