@@ -274,6 +274,61 @@ public class PRSampleInfoController {
                     receiveSampleAnalysis.setFormType(wastes.getFormType());
                     receiveSampleAnalysis.setCheckState(CheckState.NewBuild);
                     receiveSampleAnalysis.setSender(sampleInformation.getSendingPerson());
+                    if(wastes.getIsPH()){
+                        receiveSampleAnalysis.setPH(0); // 如果检测项目存在设置初始值为0
+                    }else {
+                        receiveSampleAnalysis.setPH(-9999);  // 如果不存在则设置为不可能值-9999
+                    }
+                    if(wastes.getIsAsh()){
+                        receiveSampleAnalysis.setAsh(0); // 如果检测项目存在设置初始值为0
+                    }else {
+                        receiveSampleAnalysis.setAsh(-9999);  // 如果不存在则设置为不可能值-9999
+                    }
+                    if(wastes.getIsWater()){
+                        receiveSampleAnalysis.setWater(0); // 如果检测项目存在设置初始值为0
+                    }else {
+                        receiveSampleAnalysis.setWater(-9999);  // 如果不存在则设置为不可能值-9999
+                    }
+                    if(wastes.getIsHeat()){
+                        receiveSampleAnalysis.setHeat(0); // 如果检测项目存在设置初始值为0
+                    }else {
+                        receiveSampleAnalysis.setHeat(-9999);  // 如果不存在则设置为不可能值-9999
+                    }
+                    if(wastes.getIsSulfur()){
+                        receiveSampleAnalysis.setSulfur(0); // 如果检测项目存在设置初始值为0
+                    }else {
+                        receiveSampleAnalysis.setSulfur(-9999);  // 如果不存在则设置为不可能值-9999
+                    }
+                    if(wastes.getIsChlorine()){
+                        receiveSampleAnalysis.setChlorine(0); // 如果检测项目存在设置初始值为0
+                    }else {
+                        receiveSampleAnalysis.setChlorine(-9999);  // 如果不存在则设置为不可能值-9999
+                    }
+                    if(wastes.getIsFluorine()){
+                        receiveSampleAnalysis.setFluorine(0); // 如果检测项目存在设置初始值为0
+                    }else {
+                        receiveSampleAnalysis.setFluorine(-9999);  // 如果不存在则设置为不可能值-9999
+                    }
+                    if(wastes.getIsPhosphorus()){
+                        receiveSampleAnalysis.setPhosphorus(0); // 如果检测项目存在设置初始值为0
+                    }else {
+                        receiveSampleAnalysis.setPhosphorus(-9999);  // 如果不存在则设置为不可能值-9999
+                    }
+                    if(wastes.getIsFlashPoint()){
+                        receiveSampleAnalysis.setFlashPoint(0); // 如果检测项目存在设置初始值为0
+                    }else {
+                        receiveSampleAnalysis.setFlashPoint(-9999);  // 如果不存在则设置为不可能值-9999
+                    }
+                    if(wastes.getIsViscosity()){
+                        receiveSampleAnalysis.setViscosity("0"); // 如果检测项目存在设置初始值为0
+                    }else {
+                        receiveSampleAnalysis.setViscosity("-9999");  // 如果不存在则设置为不可能值-9999
+                    }
+                    if(wastes.getIsHotMelt()){
+                        receiveSampleAnalysis.setHotMelt("0"); // 如果检测项目存在设置初始值为0
+                    }else {
+                        receiveSampleAnalysis.setHotMelt("-9999");  // 如果不存在则设置为不可能值-9999
+                    }
                     receiveSampleAnalysisService.add(receiveSampleAnalysis);  // 添加新的化验结果单
                 }
             }
