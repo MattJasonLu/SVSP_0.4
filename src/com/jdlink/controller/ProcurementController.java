@@ -1097,4 +1097,11 @@ public class ProcurementController {
         return procurementService.searchProcurementPlanCount(procurementPlan);
     }
 
+
+//    //作废急需物资购置申请表
+//    @RequestMapping("cancelEmergencyProcurementById")
+//    @ResponseBody
+//    public String cancelEmergencyProcurementById(String){
+//
+//    }
 }
