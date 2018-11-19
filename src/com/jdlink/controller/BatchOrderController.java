@@ -9,6 +9,7 @@ import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.produce.BatchOrderService;
+import com.jdlink.util.DBUtil;
 import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -1085,5 +1087,31 @@ public class BatchOrderController {
 
         return res.toString();
 
+    }
+
+    //配料单导出
+    @RequestMapping("exportExcelBatchingOrder")
+    @ResponseBody
+    public String exportExcelBatchingOrder(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "配料单号/仓库/产废单位/废物名称/配料数量(吨)/配料日期/创建日期/联单号/进料方式/处置方式";
+            name = "配料单";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
     }
 }
