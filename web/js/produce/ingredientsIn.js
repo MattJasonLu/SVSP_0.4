@@ -1330,7 +1330,7 @@ function loadProcurementItemList() {
                         clonedTr.find("span[name='specification']").text(obj.specification);
                         if (obj.unit != null)
                             clonedTr.find("td[name='unit']").text(obj.unit.name);
-                        clonedTr.find("span[name='amount']").text(obj.amount.toFixed(3));
+                        clonedTr.find("input[name='amount']").val(obj.amount.toFixed(2));
                         clonedTr.find("input[name='unitPrice']").val(obj.unitPrice.toFixed(2));
                         clonedTr.find("input[name='post']").val(obj.post);
                         clonedTr.find("select[name='wareHouseName']").val(obj.wareHouseName);

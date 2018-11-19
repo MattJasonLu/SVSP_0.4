@@ -22,5 +22,6 @@ public interface PretreatmentService {
     String getCurrentPretreatmentId();
     int getCurrentItemId();
     PretreatmentItem getItemsById(int id);
+    void confirm(String id);
 
 }

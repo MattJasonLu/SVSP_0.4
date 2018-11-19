@@ -704,7 +704,7 @@ function showViewModal(id) {
                 setViewClone(result.data);
                 $("#view-id").text(data.id);
                 $("#view-department").text(data.department);
-                $("#view-creationDate").text(getDayDate(data.creationDate));
+                $("#view-creationDate").text(getDateStr(data.creationDate));
                 $("#view-fileId").text(data.fileId);
                 $("#view-totalAmount").text(data.totalAmount);
                 $("#view-vicePresident").text(data.vicePresident);

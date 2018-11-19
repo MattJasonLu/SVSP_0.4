@@ -21,4 +21,5 @@ public interface PretreatmentMapper {
     void invalid(Pretreatment pretreatment);
     void adjust(Pretreatment pretreatment);
     PretreatmentItem getItemsById(int id);
+    void confirm(String id);
 }
