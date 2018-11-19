@@ -73,6 +73,7 @@ public class PRWayBillController {
             DBUtil db = new DBUtil();
             // 设置表头
             String tableHead = "接运单号/产废单位/总额/总运费/接运单创建人/创建日期/备注/产废单位经手人/接运单状态";
+            name = "接运单";   //重写文件名
             db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
             res.put("status", "success");
             res.put("message", "导出成功");
