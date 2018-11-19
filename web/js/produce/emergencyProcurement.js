@@ -615,6 +615,13 @@ function setEmProcurementList(result) {
                     case (9):
                         $(this).html(getDateStr(obj.applyDate));
                         break;
+                    //单据状态
+                    case (10):
+                        if(obj.state!=null){
+                            $(this).html((obj.state.name));
+                        }
+
+                        break;
                 }
             });
             // 把克隆好的tr追加到原来的tr前面
@@ -681,7 +688,7 @@ function check(item) {
     $('#appointModal2').modal('show');
 }
 
-//设置月度采购申请表数据模态框数据
+//设置月度采购申请表数据模态框数据==>查看
 function setEmProcurementListModal(result) {
     //$('.myclass1').hide();
     var tr = $("#cloneTr2");
@@ -999,4 +1006,184 @@ function downloadModal() {
     }
 }
 
+//作废
+function cancel(item) {
+    if(confirm("确定作废?")){
+        //点击确定后操作
+        var receiptNumber=$(item).parent().parent().children('td').eq(1).text();
 
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "setProcurementListCancel",          // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data:{'receiptNumber':receiptNumber},
+            //contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    alert(result.message)
+                    window.location.reload()
+                }
+                    },
+            error:function (result) {
+                
+            }
+        })
+    }
+
+
+}
+
+//提交
+function submit(item) {
+    if(confirm("确定提交?")) {
+        //点击确定后操作
+        var receiptNumber = $(item).parent().parent().children('td').eq(1).text();
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "setProcurementListSubmit",          // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'receiptNumber': receiptNumber},
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    alert(result.message);
+                    window.location.reload();
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                alert("服务器异常!");
+            }
+        });
+    }
+}
+
+//修改
+function emergencyProcurementModify(item) {
+    var receiptNumber=$(item).parent().parent().children('td').eq(1).text();
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getProcurementListById",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{'receiptNumber':receiptNumber},
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                setEmProcurementListModal1(result.data[0].materialList);
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!");
+        }
+    });
+    $('#appointModal3').modal('show');
+}
+
+
+//设置月度采购申请表数据模态框数据==>修改
+function setEmProcurementListModal1(result) {
+    //$('.myclass1').hide();
+    var tr = $("#cloneTr3");
+    tr.siblings().remove();
+    tr.attr('class','myclass2');
+    $.each(result, function (index, item) {
+        //console.log(item);
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        clonedTr.show();
+        clonedTr.attr('class','myclass2');
+        // 循环遍历cloneTr的每一个td元素，并赋值
+        clonedTr.children("td").each(function (inner_index) {
+            //1生成领料单号
+            var obj = eval(item);
+            // 根据索引为部分td赋值
+            switch (inner_index) {
+                // 物资名称
+                case (0):
+                    $(this).html(obj.suppliesName);
+                    break;
+                // 规格型号
+                case (1):
+                    $(this).html(obj.specifications);
+                    break;
+                // 单位
+                case (2):
+                    if(obj.unit!=null){
+                        $(this).html(obj.unit.name);
+                    }
+
+                    break;
+                // 库存量
+                case (3):
+                    $(this).find('input').val(obj.inventory);
+                    break;
+                // 需求数量
+                case (4):
+                    $(this).find('input').val(obj.demandQuantity);
+                    break;
+                //采购数量
+                case (5):
+                    $(this).find('input').val(obj.purchaseQuantity);
+                    break;
+                // 备注
+                case (6):
+                    $(this).find('input').val(obj.note);
+                    break;
+
+                    //隐藏域
+                case (7):
+                    $(this).html(obj.id);
+                    break;
+            }
+        });
+        // 把克隆好的tr追加到原来的tr前面
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+
+
+    });
+    // 隐藏无数据的tr
+    tr.hide();
+    tr.removeAttr('class');
+}
+
+//确认修改
+function confirmAdjust() {
+
+$('.myclass2').each(function () {
+    var data={
+        inventory:$(this).children('td').eq(3).find('input').val(),
+        purchaseQuantity:$(this).children('td').eq(4).find('input').val(),
+        demandQuantity:$(this).children('td').eq(5).find('input').val(),
+        id:$(this).children('td').eq(7).html(),
+        note:$(this).children('td').eq(6).find('input').val(),
+    }
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "updateMaterial",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:JSON.stringify(data),
+        contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+
+        },
+        error:function (result) {
+
+        }
+    })
+    console.log(data)
+})
+    alert("修改成功")
+    window.location.reload()
+
+}

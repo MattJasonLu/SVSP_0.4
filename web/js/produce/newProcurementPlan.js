@@ -6,6 +6,7 @@
 function getProcurement() {
     var page = {}
     $('#tbody1').find("input[name='select']").prop('checked', true);
+    $("input[name='allSel']").prop('checked', true);
 
     //获取采购计划单号
     $.ajax({
@@ -167,6 +168,7 @@ function searchData() {
         contentType: 'application/json;charset=utf-8',
         success: function (result) {
             if (result != undefined && result.status == "success") {
+                console.log(result)
                 setPageClone(result);
 
             }

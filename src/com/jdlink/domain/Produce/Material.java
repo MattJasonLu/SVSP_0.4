@@ -86,6 +86,17 @@ public class Material {
     //创建日期结束
     private Date createDateEnd;
 
+    //
+    private CheckState checkState;
+
+
+    public CheckState getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(CheckState checkState) {
+        this.checkState = checkState;
+    }
 
     public Date getCreateDateStart() {
         return createDateStart;
