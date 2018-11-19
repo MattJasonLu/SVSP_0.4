@@ -280,4 +280,9 @@ contractMapper.updateFreight2(id);
         contractMapper.updatePictureUrl(wastesCode, wastesName, contractId, url);
     }
 
+    @Override
+    public List<QuotationItem> searchContractVolume(QuotationItem quotationItem) {
+        return contractMapper.searchContractVolume(quotationItem);
+    }
+
 }

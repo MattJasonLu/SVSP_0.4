@@ -183,14 +183,15 @@
 
     <!--次生化验对象不存在就新增-->
     <insert id="SecondarySample" >
-        insert into t_pr_secondarytest (id,dateTime,wastesName) values (#{0},NOW(),#{1});
+        insert into t_pr_secondarytest (id,wastesName,dateTime) values (#{0},#{1},NOW());
     </insert>
 
     <!--次生化验对象存在就更新-->
-    <update id="updateSecondarySample" >
-        update t_pr_secondarytest set dateTime=NOW(),wastesName=#{1} where id=#{0};
+    <insert id="updateSecondarySample" >
+insert into t_pr_secondarytest(id,wastesName,dateTime) values (CONCAT('I-',#{0}),#{1},NOW())
 
-    </update>
+
+    </insert>
 
 
     <resultMap id="SampleInfoAnalysisRM" type="SampleInfoAnalysis" autoMapping="true">

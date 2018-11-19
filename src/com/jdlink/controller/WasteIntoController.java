@@ -240,24 +240,21 @@ public class WasteIntoController {
 
      //如果存在就更新 否则就添加
      //根据编号获得次生送样明细
-     SecondarySample secondarySample=wasteIntoService.getSecondarysampleById(id);
 
-     List<SecondarySampleItem> secondarySampleItemList=secondarySample.getSecondarySampleItemList();
-
-     for(int i=0;i<secondarySampleItemList.size();i++){
 
          //根据编号获取次生化验信息
-         if(sewageTestService.getSecondaryTestById(secondarySampleItemList.get(i).getId())!=null){
-             //更新
-             wasteIntoService.updateSecondarySample(secondarySampleItemList.get(i).getId(),wastesName);
-         }
 
-         if(sewageTestService.getSecondaryTestById(secondarySampleItemList.get(i).getId())==null){
+
+         if(sewageTestService.getSecondaryTestById(id)==null){
             //新增
-             wasteIntoService.SecondarySample(secondarySampleItemList.get(i).getId(),wastesName);
+             wasteIntoService.SecondarySample(id,wastesName);
+         }
+         else {
+             //更新
+             wasteIntoService.updateSecondarySample(id,wastesName);
          }
 
-     }
+
 
 
      res.put("status", "success");

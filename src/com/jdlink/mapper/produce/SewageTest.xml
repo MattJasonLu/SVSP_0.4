@@ -147,6 +147,10 @@
     <update id="cancelSewageTest" parameterType="String">
         update t_pr_sewagetest set  checkState='Invalid' where id=#{id};
     </update>
+    <!--污水收样状态为待收样-->
+    <update id="cancelSewageTestAfter" parameterType="String">
+        update t_pr_sewageregistration set checkState ='ToCollected'  where id=#{id} ;
+    </update>
 
     <!--提交软水化验单-->
     <update id="submitSoftTest" parameterType="String">
@@ -160,6 +164,10 @@
     <!--作废软水化验单-->
     <update id="cancelSoftTest" parameterType="String">
            update t_pr_softest set   checkState='Invalid' where id=#{id};
+    </update>
+    <!--作废软水化验单软水送样待收样-->
+    <update id="cancelSoftTestAfter" parameterType="String">
+           update t_pr_softgeregistration set   checkState='ToCollected' where id=#{id};
     </update>
 
     <!--提交次生化验单-->
@@ -175,6 +183,12 @@
     <!--作废次生化验-->
     <update id="cancelSecondaryTest" parameterType="String">
            update t_pr_secondarytest set   checkState='Invalid' where id=#{id};
+    </update>
+
+
+    <!--作废次生化验次生送样待收样-->
+    <update id="cancelSecondaryTestAfter" parameterType="String">
+           update t_pr_secondarysample set   checkState='ToCollected' where id=#{id};
     </update>
 
     <!--查询所有的污水送样编号-->

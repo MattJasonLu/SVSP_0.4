@@ -299,7 +299,7 @@ function loadContractVolumeList() {
         success: function (result) {
             if (result != undefined && result.status == 'success') {
                 console.log(result);
-                 setPageClone(result.data);
+                setPageClone(result.data);
                 setPageCloneAfter(pageNumber);        // 重新设置页码
             } else {
                 console.log("fail: " + result);
@@ -313,7 +313,7 @@ function loadContractVolumeList() {
 
     isSearch = false;
 
-   CalculateAggregate() ;
+    CalculateAggregate() ;
 
 
 
@@ -324,7 +324,7 @@ function loadContractVolumeList() {
  * @param result
  */
 function setContractVolume(result) {
-   // 获取id为cloneTr的tr元素
+    // 获取id为cloneTr的tr元素
     var tr = $("#cloneTr");
     tr.siblings().remove();
     $.each(result,function (index,item) {
@@ -339,39 +339,39 @@ function setContractVolume(result) {
                     $(this).html(index+1);
                     break;
 
-                    //公司
+                //公司
                 case (2):
                     if(obj.client!=null){
                         $(this).html(obj.client.companyName);
                     }
                     break;
-                    //危废名称
+                //危废名称
                 case (3):
-                        $(this).html(obj.wastesName);
+                    $(this).html(obj.wastesName);
                     break;
-                    //危废代码
+                //危废代码
                 case (4):
                     $(this).html(obj.wastesCode);
                     break;
-                    //合约量
+                //合约量
                 case (5):
                     $(this).html(obj.contractAmount.toFixed(2));
                     break;
-                    //处置金额
+                //处置金额
                 case (6):
                     $(this).html(obj.unitPriceTax.toFixed(2));
                     break;
-                    //签订日期
+                //签订日期
                 case (7):
                     $(this).html(getDateStr(obj.contract.beginTime));
                     break;
-                    //截止日期
+                //截止日期
                 case (8):
                     $(this).html(getDateStr(obj.contract.endTime));
                     break;
             }
             clonedTr.removeAttr("id");
-          clonedTr.insertBefore(tr);
+            clonedTr.insertBefore(tr);
 
 
         })
@@ -472,7 +472,7 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 //合约量粗查询
 
 function searchFuzzy() {
-        // $("#circleChart").show();
+    // $("#circleChart").show();
     isSearch=false;
     //分页模糊查询
     array.length=0;//清空数组
@@ -582,7 +582,7 @@ function searchContract() {
     var companyName=$.trim($('#search-companyName').val());//产废单位
 
 
-   var wastesName=$.trim($('#search-wastesName').val());//危废名称
+    var wastesName=$.trim($('#search-wastesName').val());//危废名称
 
     var wastesCode=$.trim($('#search-wastesCode').val());//危废编码
 
@@ -597,11 +597,11 @@ function searchContract() {
 
 
 
-        for(var i=totalPage();i>0;i--){
-            switchPage(parseInt(i));
-            array.push($('.myclass'));
-        }
-        console.log(array.length)
+    for(var i=totalPage();i>0;i--){
+        switchPage(parseInt(i));
+        array.push($('.myclass'));
+    }
+    console.log(array.length)
 
 
 

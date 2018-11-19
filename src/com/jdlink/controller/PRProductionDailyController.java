@@ -453,16 +453,16 @@ public class PRProductionDailyController {
             productionDailyService.confirmSewaGeregistrationById(id,laboratorySignatory);
             //获取样品单号
             Sewageregistration sewageregistration=productionDailyService.getSewaGeregistrationById(id);
-            List<SewageregistrationItem> sewageregistrationItemList=sewageregistration.getSewageregistrationItemList();
-            for(int i=0;i<sewageregistrationItemList.size();i++){
-                if(sewageTestService.getSewageTestById(sewageregistrationItemList.get(i).getId())==null){
-                    productionDailyService.sampleTest(sewageregistrationItemList.get(i).getId(),sewageregistration.getAddress());
+
+
+                if(sewageTestService.getSewageTestById(id)==null){
+                    productionDailyService.sampleTest(id,sewageregistration.getAddress());
                 }
-                if(sewageTestService.getSewageTestById(sewageregistrationItemList.get(i).getId())!=null){
-                    productionDailyService.updateSampleTest(sewageregistrationItemList.get(i).getId(),sewageregistration.getAddress());
+                else {
+                    productionDailyService.updateSampleTest(id,sewageregistration.getAddress());
                 }
 
-            }
+
 
             res.put("status", "success");
             res.put("message", "收样成功");
@@ -489,11 +489,11 @@ public class PRProductionDailyController {
             Sewageregistration sewageregistration=productionDailyService.getSoftGeregistrationById(id);
             List<SewageregistrationItem> sewageregistrationItemList=sewageregistration.getSewageregistrationItemList();
             for(int i=0;i<sewageregistrationItemList.size();i++){
-                if(sewageTestService.getSoftTestById(sewageregistrationItemList.get(i).getId())==null){
-                    productionDailyService.sampleTestSoft(sewageregistrationItemList.get(i).getId(),sewageregistration.getAddress());
+                if(sewageTestService.getSoftTestById(id)==null){
+                    productionDailyService.sampleTestSoft(id,sewageregistration.getAddress());
                 }
-                if(sewageTestService.getSoftTestById(sewageregistrationItemList.get(i).getId())!=null){
-                    productionDailyService.updateSampleSoftTest(sewageregistrationItemList.get(i).getId(),sewageregistration.getAddress());
+                else {
+                    productionDailyService.updateSampleSoftTest(id,sewageregistration.getAddress());
                 }
 
             }

@@ -87,4 +87,6 @@ public interface ContractService {
     void setContractFilePath(Contract contract);
 
     void updatePictureUrl(String wastesCode,String wastesName,int contractId,String url);
+
+    List<QuotationItem> searchContractVolume(QuotationItem quotationItem);
 }
