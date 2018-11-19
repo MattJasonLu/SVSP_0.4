@@ -150,6 +150,28 @@ public class QuotationItem {
     //图片地址
     private String picture;
 
+    //分页
+    private Page page;
+
+    //关键字
+    private String keywords;
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
     public String getPicture() {
         return picture;
     }

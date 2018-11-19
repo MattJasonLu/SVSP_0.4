@@ -45,4 +45,7 @@ public interface SewageTestService {
     void cancelSewaGeregistration(String id);
     void cancelSoftGeregistration(String id);
     void cancelSecondaryGeregistration(String id);
+    void cancelSewageTestAfter(String id);
+    void cancelSoftTestAfter(String id);
+    void cancelSecondaryTestAfter(String id);
 }

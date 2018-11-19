@@ -44,7 +44,7 @@
     <select id="getSupplier" resultType="Supplier">
       select * from  t_supplier where supplierId=#{suppierId};
     </select>
-<!--通过报价单查询危废信息-->
+    <!--通过报价单查询危废信息-->
     <select id="getQuotationItem" resultType="QuotationItem">
         select * from t_quotationitem where t_quotationitem.contractId=#{contractId} order by wastesCode;
 
@@ -58,25 +58,27 @@
         #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion},NOW(),#{company1},#{content},#{supplier.supplierId},#{totalPrice})
     </insert>
     <insert id="addEm" parameterType="Contract">
-     insert into t_contract(contractId,contractType, companyName,checkState,telephone,bankName,bankAccount,area,companyLegal,companyAgent,clientLegal,clientAgent,address,thing,province,beginTime,nowTime,ticketRate1,contractVersion,city,endTime,modelName,company1,contactName,contractName)
-     values (#{contractId},#{contractType},#{companyName},#{checkState},#{telephone},#{bankName},#{bankAccount},#{area},#{companyLegal},#{companyAgent},#{clientLegal},#{clientAgent},#{address},#{thing},#{province},#{beginTime},NOW(),#{ticketRate1},#{contractVersion},#{city},#{endTime},#{modelName},#{company1},#{contactName},#{contractName});
+        insert into t_contract(contractId,contractType,
+        companyName,checkState,telephone,bankName,bankAccount,area,companyLegal,companyAgent,clientLegal,clientAgent,address,thing,province,beginTime,nowTime,ticketRate1,contractVersion,city,endTime,modelName,company1,contactName,contractName)
+        values
+        (#{contractId},#{contractType},#{companyName},#{checkState},#{telephone},#{bankName},#{bankAccount},#{area},#{companyLegal},#{companyAgent},#{clientLegal},#{clientAgent},#{address},#{thing},#{province},#{beginTime},NOW(),#{ticketRate1},#{contractVersion},#{city},#{endTime},#{modelName},#{company1},#{contactName},#{contractName});
         <if test="hazardousList.size() > 0 ">
-          <foreach collection="hazardousList"  item="hazardous" index="index">
-              insert into r_contractandhazardous(contractId,hazardousId) values (#{contractId}, #{hazardous.id});
-              insert into t_hazardous(id,name,num) values (#{hazardous.id}, #{hazardous.name}, #{hazardous.num});
-          </foreach>
+            <foreach collection="hazardousList" item="hazardous" index="index">
+                insert into r_contractandhazardous(contractId,hazardousId) values (#{contractId}, #{hazardous.id});
+                insert into t_hazardous(id,name,num) values (#{hazardous.id}, #{hazardous.name}, #{hazardous.num});
+            </foreach>
         </if>
-</insert>
+    </insert>
 
-    <delete id="delete" parameterType="Contract" >
+    <delete id="delete" parameterType="Contract">
         delete from t_contract where contractId;
     </delete>
 
-    <select id="getByKeyword"  resultType="Contract" parameterType="Contract">
+    <select id="getByKeyword" resultType="Contract" parameterType="Contract">
         select * from t_contract where (contractId like  binary "%"#{0}"%" or checkState like binary "%"#{0}"%" or companyName like binary "%"#{0}"%"
         or city like binary "%"#{0}"%"  or province like binary  "%"#{0}"%" or contactName like binary "%"#{0}"%" or telephone like  binary  "%"#{0}"%" or beginTime like binary  "%"#{0}"%" or contractType like binary  "%"#{0}"%" )and contractType like  "%"#{1}"%";
     </select>
-<select id="getContent" parameterType="String"  resultType="String">
+    <select id="getContent" parameterType="String" resultType="String">
     select content from t_contract where contractId=#{contractId};
 </select>
     <select id="getByContractId" parameterType="String" resultMap="ContractRM">
@@ -99,7 +101,7 @@
         contactName=#{contactName}, telephone=#{telephone}, reviewer=#{reviewer}, reviewDepartment=#{reviewDepartment},
         reviewDate=#{reviewDate},contractType=#{contractType},province=#{province},city=#{city},order1=#{order1},contractVersion=#{contractVersion},bankName=#{bankName},bankAccount=#{bankAccount},ticketRate1=#{ticketRate1},logisticsQualification=#{logisticsQualification},beginQualification=#{beginQualification},endQualification=#{endQualification},modelName=#{modelName},year=#{year},period=#{period},contractContent=#{contractContent},companyLegal=#{companyLegal},companyAgent=#{companyAgent},clientLegal=#{clientLegal},companyAgent=#{companyAgent},address=#{address},contractName=#{contractName},modelVersion=#{modelVersion},nowTime=NOW(),suppierName=#{suppierName},totalPrice=#{totalPrice},company1=#{company1},content=#{content} WHERE contractId=#{contractId};
     </update>
-<update id="updateEm" parameterType="Contract">
+    <update id="updateEm" parameterType="Contract">
 UPDATE t_contract SET companyName=#{companyName},area=#{area},beginTime=#{beginTime},endTime=#{endTime},contactName=#{contactName},
 telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount=#{bankAccount},wasteName=#{wasteName},tonNumber=#{tonNumber},companyLegal=#{companyLegal},companyAgent=#{companyAgent},clientLegal=#{clientLegal},companyAgent=#{companyAgent},address=#{address},contractName=#{contractName}, nowTime=NOW() WHERE contractId=#{contractId};
 </update>
@@ -110,7 +112,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <update id="setCheckStateKeeping" parameterType="Contract">
         UPDATE t_contract SET checkState='Keeping', nowTime=NOW() WHERE contractId=#{contractId};
     </update>
-<update id="updateFreight1" parameterType="String">
+    <update id="updateFreight1" parameterType="String">
     update t_contract  set  isFreight='1', nowTime=NOW() where contractId=#{id}
 </update>
     <update id="updateFreight2" parameterType="String">
@@ -119,7 +121,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <update id="setCheckStateInvalid" parameterType="Contract">
         UPDATE t_contract SET checkState='Invalid', nowTime=NOW() WHERE contractId=#{contractId};
     </update>
-    <update id="toSubmit"  parameterType="String">
+    <update id="toSubmit" parameterType="String">
         UPDATE t_contract SET checkState='ToExamine', nowTime=NOW() WHERE contractId=#{id} ;
     </update>
     <select id="list" resultMap="ContractRM">
@@ -137,10 +139,10 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <select id="listRate1">
         select rate1 from ticketrate1;
     </select>
-    <select id="listRate2" >
+    <select id="listRate2">
         select rate2 from ticketrate2;
     </select>
-    <update id="cancel" >
+    <update id="cancel">
         update t_contract set checkState="Invalid",nowTime=#{1} where contractId=#{0}
     </update>
     <delete id="cancel1" parameterType="String">
@@ -149,13 +151,13 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <update id="approval" parameterType="String">
         update t_contract set checkState="Keeping", nowTime=NOW() where contractId=#{contractId}
     </update>
-    <select id="modelName" resultMap="ContractRM" >
+    <select id="modelName" resultMap="ContractRM">
         select distinct modelName from t_contract where modelName like CONCAT('%',#{key},'%') and period!="";
     </select>
     <update id="back" parameterType="Contract">
         update t_contract set checkState="Backed",backContent=#{1},nowTime=#{2} where contractId=#{0}
     </update>
-<update id="opinion" parameterType="Contract">
+    <update id="opinion" parameterType="Contract">
     update t_contract set opinion=#{1},checkState="Keeping",nowTime=#{2} where contractId=#{0};
 </update>
     <select id="getHazardous" resultType="Hazardous">
@@ -217,9 +219,9 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <!--列出合同中的所有涉及到的业务员-->
     <select id="listSalesmanByContract" resultType="Salesman">
         SELECT * FROM salesman WHERE salesmanId IN (
-          SELECT salesmanId FROM client WHERE clientId IN (
-            SELECT DISTINCT clientId FROM t_contract WHERE clientId IS NOT NULL
-          )
+        SELECT salesmanId FROM client WHERE clientId IN (
+        SELECT DISTINCT clientId FROM t_contract WHERE clientId IS NOT NULL
+        )
         )
         <if test="start != null and count != null">
             limit #{start}, #{count}
@@ -240,26 +242,27 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         or DATE_FORMAT(beginTime,'%Y%m%d') like "%"#{year}"%")
         order by beginTime asc;
     </select>
-    
+
     <select id="searchMonthData" resultMap="ContractRM">
         select * from t_contract
-       <where>
-           <if test="1 == 1 ">
-               and contractType='Wastes'
-           </if>
-           <if test="startDate != null and startDate != ''">
-               <![CDATA[ and DATE_FORMAT(beginTime,'%Y%m')  >= DATE_FORMAT(#{startDate},'%Y%m') ]]>
-           </if>
-           <if test="endDate != null and endDate != ''">
-               <![CDATA[ and DATE_FORMAT(beginTime,'%Y%m')  <= DATE_FORMAT(#{endDate},'%Y%m') ]]>
-           </if>
-           <if test="salesmanName != null and salesmanName != ''">
-               and clientId in (select clientId from client where salesmanId in (select salesmanId from salesman where name like "%"#{salesmanName}"%"))
-           </if>
-       </where>
+        <where>
+            <if test="1 == 1 ">
+                and contractType='Wastes'
+            </if>
+            <if test="startDate != null and startDate != ''">
+                <![CDATA[ and DATE_FORMAT(beginTime,'%Y%m')  >= DATE_FORMAT(#{startDate},'%Y%m') ]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[ and DATE_FORMAT(beginTime,'%Y%m')  <= DATE_FORMAT(#{endDate},'%Y%m') ]]>
+            </if>
+            <if test="salesmanName != null and salesmanName != ''">
+                and clientId in (select clientId from client where salesmanId in (select salesmanId from salesman where
+                name like "%"#{salesmanName}"%"))
+            </if>
+        </where>
         order by beginTime asc;
     </select>
-    
+
     <!--根据月份获取合同数据-->
     <select id="getContractListByMonth" parameterType="String" resultMap="ContractRM">
         select * from t_contract
@@ -285,7 +288,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         order by beginTime asc;
     </select>
 
-   <!--获取业务员所有的合同-->
+    <!--获取业务员所有的合同-->
     <select id="getAllContractBySalesmanId" parameterType="String" resultMap="ContractRM">
         SELECT * FROM t_contract
         WHERE
@@ -293,38 +296,38 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         order by beginTime asc;
     </select>
 
-<!--高级查询-->
+    <!--高级查询-->
     <select id="search" parameterType="Contract" resultType="Contract">
-         select * from t_contract
-         <where>
-             <if test="keyword != null and keyword != ''">
-                 and contractId like "%"#{keyword}"%" or company1 like "%"#{keyword}"%" or
-                 contractName like "%"#{keyword}"%" or telephone like "%"#{keyword}"%" or
-                 suppierName like "%"#{keyword}"%" or modelName="%"#{keyword}"%"
-             </if>
-             <if test="contractId != null and contractId != ''">
-                 and contractId LIKE "%"#{contractId}"%"
-             </if>
-             <if test="companyName != null and companyName != ''">
-                 and company1 LIKE "%"#{companyName}"%"
-             </if>
-             <if test="contractName != null and contractName != ''">
-                 and contractName LIKE "%"#{contractName}"%"
-             </if>
-             <if test="telephone != null and telephone != ''">
-                 and telephone LIKE "%"#{telephone}"%"
-             </if>
-             <if test="suppierName != null and suppierName != ''">
-                 and suppierName LIKE "%"#{suppierName}"%"
-             </if>
-             <if test="checkState != null and checkState != ''">
-                 and checkState = #{checkState}
-             </if>
-             <if test="beginTime != null and beginTime != ''">
-                 <![CDATA[  and DATE_FORMAT(t_contract.beginTime, '%Y-%m-%d %H:%T:%s') =
+        select * from t_contract
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and contractId like "%"#{keyword}"%" or company1 like "%"#{keyword}"%" or
+                contractName like "%"#{keyword}"%" or telephone like "%"#{keyword}"%" or
+                suppierName like "%"#{keyword}"%" or modelName="%"#{keyword}"%"
+            </if>
+            <if test="contractId != null and contractId != ''">
+                and contractId LIKE "%"#{contractId}"%"
+            </if>
+            <if test="companyName != null and companyName != ''">
+                and company1 LIKE "%"#{companyName}"%"
+            </if>
+            <if test="contractName != null and contractName != ''">
+                and contractName LIKE "%"#{contractName}"%"
+            </if>
+            <if test="telephone != null and telephone != ''">
+                and telephone LIKE "%"#{telephone}"%"
+            </if>
+            <if test="suppierName != null and suppierName != ''">
+                and suppierName LIKE "%"#{suppierName}"%"
+            </if>
+            <if test="checkState != null and checkState != ''">
+                and checkState = #{checkState}
+            </if>
+            <if test="beginTime != null and beginTime != ''">
+                <![CDATA[  and DATE_FORMAT(t_contract.beginTime, '%Y-%m-%d %H:%T:%s') =
                         DATE_FORMAT(#{beginTime}, '%Y-%m-%d %H:%T:%s')   ]]>
-             </if>
-         </where>
+            </if>
+        </where>
         order by nowTime desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count};
@@ -390,8 +393,8 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     </delete>
     <!--更新合同字表-->
     <!--<update id="updateQuotationItem" parameterType="QuotationItem">-->
-          <!--insert into t_quotationitem(contractId,clientId,wastesCode,wastesName,packageType,util,unitPriceTax,contractAmount,totalPrice,transport,supplierId) values-->
-         <!--(#{contractId},#{client.clientId},#{wastesCode},#{wastesName},#{packageType},#{util},#{unitPriceTax},#{contractAmount},#{totalPrice},#{transport},#{supplier.supplierId});-->
+    <!--insert into t_quotationitem(contractId,clientId,wastesCode,wastesName,packageType,util,unitPriceTax,contractAmount,totalPrice,transport,supplierId) values-->
+    <!--(#{contractId},#{client.clientId},#{wastesCode},#{wastesName},#{packageType},#{util},#{unitPriceTax},#{contractAmount},#{totalPrice},#{transport},#{supplier.supplierId});-->
     <!--</update>-->
 
     <!--获得最新的合同编号-->
@@ -420,8 +423,9 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
       select  count(*) from t_quotationitem  where
   t_quotationitem.contractId in(select contractId from t_contract where  contractType is NOT  NULL  and period is NULL and contractContent is NULL  and  modelVersion is null);
     </select>
-    <select id="ContractList" resultMap="QuotationItemRM"  >
-        select * from t_quotationitem where t_quotationitem.contractId in(select contractId from t_contract where  contractType is NOT  NULL  and period is NULL and contractContent is NULL  and  modelVersion is null)
+    <select id="ContractList" resultMap="QuotationItemRM">
+        select * from t_quotationitem where t_quotationitem.contractId in(select contractId from t_contract where
+        contractType is NOT NULL and period is NULL and contractContent is NULL and modelVersion is null)
 
         <if test="start != null and count != null">
             limit #{start}, #{count}
@@ -432,7 +436,8 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <!--插入文件-->
     <update id="setFilePath" parameterType="QuotationItem">
         <if test="picture != null and picture != ''">
-            UPDATE t_quotationitem SET picture=#{picture} WHERE contractId=#{contractId} and wastesName=#{wastesName} and wastesCode=#{wastesCode};
+            UPDATE t_quotationitem SET picture=#{picture} WHERE contractId=#{contractId} and wastesName=#{wastesName}
+            and wastesCode=#{wastesCode};
             INSERT INTO t_document (contractId, filePath, documentType) VALUES (#{contractId}, #{picture},'Contract');
         </if>
     </update>
@@ -441,7 +446,8 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <update id="setContractFilePath" parameterType="Contract">
         <if test="contractAppendicesUrl != null and contractAppendicesUrl != ''">
             UPDATE t_contract SET contractAppendicesUrl=#{contractAppendicesUrl} WHERE contractId=#{contractId};
-            INSERT INTO t_document (contractId, filePath, documentType) VALUES (#{contractId}, #{contractAppendicesUrl},'Contract');
+            INSERT INTO t_document (contractId, filePath, documentType) VALUES (#{contractId},
+            #{contractAppendicesUrl},'Contract');
         </if>
     </update>
 
@@ -451,7 +457,67 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         contractId=#{2}
     </update>
 
+    <!--合同合约量页面查询-->
+    <select id="searchContractVolume" resultMap="QuotationItemRM" parameterType="QuotationItem">
+        select * from t_quotationitem
 
+        <if test="keywords!=null and keywords!=''">
+            where (
+            t_quotationitem.clientId in(select client.clientId from client
+            where client.
+            companyName like "%"#{keywords
+            }"%")
+            or
+            wastesName like "%"#{keywords}"%"
+            or wastesCode like "%"#{keywords}"%"
+            or contractAmount like "%"#{keywords}"%"
+            or unitPriceTax like "%"#{keywords}"%"
+            or unitPriceTax like "%"#{keywords}"%"
+            or t_quotationitem.contractId in(select contractId from t_contract where t_contract.beginTime like
+            binary "%"#{keywords}"%")
+            or t_quotationitem.contractId in(select contractId from t_contract where t_contract.endTime like
+            binary "%"#{keywords}"%")
+            )
+            and (t_quotationitem.contractId in(select contractId from t_contract where contractType is NOT NULL and
+            period is NULL and contractContent is NULL and modelVersion is null) and t_quotationitem.contractId is not null)
+        </if>
+        <if test="client!=null">
+                             <if test="client.companyName!=''">
+                                 where t_quotationitem.clientId in(select client.clientId from client where client.companyName like "%"#{client.companyName}"%") and (t_quotationitem.contractId in(select contractId from t_contract where contractType is NOT NULL and
+                                 period is NULL and contractContent is NULL and modelVersion is null)
+                             </if>
+                             <if test="client.companyName==''">
+                                 where (t_quotationitem.contractId in(select contractId from t_contract where contractType is NOT NULL and
+                                 period is NULL and contractContent is NULL and modelVersion is null)
+                             </if>
+                         </if>
+
+        <if test="contract!=null">
+            <if test="contract.beginTime!=''">
+               and t_quotationitem.contractId in(select contractId from t_contract where  t_contract.beginTime <![CDATA[ <= ]]> DATE_FORMAT(#{contract.beginTime}, '%Y-%m-%d %H:%i:%S') and t_contract.endTime <![CDATA[ >= ]]> DATE_FORMAT(#{contract.beginTime}, '%Y-%m-%d %H:%i:%S')
+
+            </if>
+            <if test="contract.endTime!=''">
+                and t_quotationitem.contractId in(select contractId from t_contract where  t_contract.beginTime <![CDATA[ <= ]]> DATE_FORMAT(#{contract.endTime}, '%Y-%m-%d %H:%i:%S') and t_contract.endTime <![CDATA[ >= ]]> DATE_FORMAT(#{contract.endTime}, '%Y-%m-%d %H:%i:%S')
+
+            </if>
+        </if>
+
+
+
+
+
+
+
+        <if test="keywords==''">
+            where (t_quotationitem.contractId in(select contractId from t_contract where contractType is NOT NULL and
+            period is NULL and contractContent is NULL and modelVersion is null) and t_quotationitem.contractId is not null)
+        </if>
+
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
 </mapper>
 
 

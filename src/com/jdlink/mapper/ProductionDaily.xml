@@ -743,7 +743,7 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
     </select>
     <!--获取污水送样登记-->
     <select id="sewageList" resultMap="SewageregistrationRM">
-        select * from t_pr_sewageregistration where water='1' order by nowTime desc
+        select * from t_pr_sewageregistration where water='1' and checkState!='Invalid' order by nowTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -823,9 +823,9 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
 
 
     <!--污水送样完成后加入污水化验单==>有更新-->
-    <update id="updateSampleTest">
-        update t_pr_sewagetest set address=#{1},dateTime=NOW() where id=#{0};
-    </update>
+    <insert id="updateSampleTest">
+        insert  into t_pr_sewagetest (id,address,dateTime) values (CONCAT('I-',#{0}),#{1},NOW())
+       </insert>
 
     <!--软水送样完成后加入污水化验单-->
     <insert id="sampleTestSoft">
@@ -833,8 +833,9 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
     </insert>
 
     <!--软水送样完成后加入软水化验单==>有更新-->
-    <update id="updateSampleSoftTest">
-        update t_pr_softest set address=#{1},dateTime=NOW() where id=#{0};
-    </update>
+    <insert id="updateSampleSoftTest">
+       insert  into t_pr_softest(id,address,dateTime) values (CONCAT('I-',#{0}),#{1},NOW())
+
+    </insert>
 
 </mapper>
