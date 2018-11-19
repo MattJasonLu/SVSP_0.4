@@ -452,7 +452,7 @@ function exportExcel() {
         sqlWords = "select id,produceCompanyName,total,freight,founder,wayBillDate,remarks,produceCompanyOperator,state from t_pr_waybill;";
     }
     console.log("sql:" + sqlWords);
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    window.open('exportExcelWayBill?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**
