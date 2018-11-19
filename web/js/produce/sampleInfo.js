@@ -1517,7 +1517,7 @@ function exportExcel(e) {
     } else {
         sqlWords = "select b.id,a.companyName,b.name,b.code,b.formType,a.sendingPerson,b.isPH,b.isHeat,b.isAsh,b.isWater,b.isFluorine,b.isChlorine,b.isSulfur,b.isPhosphorus,b.isFlashPoint,b.isViscosity,b.isHotMelt from t_pr_sampleinformation as a join t_pr_sampleinformationitem as b where a.id=b.sampleId;";
     }
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    window.open('exportExcelSampleInfo?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**
