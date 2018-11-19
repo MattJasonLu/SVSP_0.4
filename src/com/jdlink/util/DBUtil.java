@@ -392,7 +392,7 @@ public class DBUtil {
             //为了让各种浏览器可以识别,需要将中文转换成Byte形式,然后通过ISO-8859-1进行编码
             // OutputStream os = response.getOutputStream();
             String file = name;//初始文件名
-            name = new String(file.getBytes("iso8859-1"), "utf-8");
+            name = new String(file.getBytes("gb2312"), "ISO8859-1" );
             response.reset();
             //设置content-disposition响应头控制浏览器以下载的形式打开文件
             //报头用于提供一个推荐的文件名，并强制浏览器显示保存对话框
