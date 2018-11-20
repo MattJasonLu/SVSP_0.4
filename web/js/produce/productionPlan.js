@@ -431,11 +431,19 @@ function exportExcel() {
             if (i < idArry.length - 1) sql += idArry[i] + ",";
             else if (i == idArry.length - 1) sql += idArry[i] + ");"
         }
-        sqlWords = "select * from t_pr_productionplan where id" + sql;
+        sqlWords = "select id,creationDate,founder,state,transportRate,planQuantity,calcareousLime,waterScaleInhibitor,\n" +
+            "commonActivatedCarbon,naclo,activatedCarbon,standardBox,activatedCarbonParticles,woodenPallets,lye,standardTray_1m,\n" +
+            "causticSoda,standardTray_1_2m,urea,slagBag,hydrochloricAcid,flyAshBag,nahco3,tonBox,flour,steam,defoamer,dieselOil,\n" +
+            "flocculant,naturalGas,softWaterReducingAgent,electricQuantity,softWaterScaleInhibitor,industrialWater,pH,tapWaterQuantity,waterReducingAgent \n" +
+            "from t_pr_productionplan where id" + sql;
     } else {
-        sqlWords = "select * from t_pr_productionplan;";
+        sqlWords = "select id,creationDate,founder,state,transportRate,planQuantity,calcareousLime,waterScaleInhibitor,\n" +
+            "commonActivatedCarbon,naclo,activatedCarbon,standardBox,activatedCarbonParticles,woodenPallets,lye,standardTray_1m,\n" +
+            "causticSoda,standardTray_1_2m,urea,slagBag,hydrochloricAcid,flyAshBag,nahco3,tonBox,flour,steam,defoamer,dieselOil,\n" +
+            "flocculant,naturalGas,softWaterReducingAgent,electricQuantity,softWaterScaleInhibitor,industrialWater,pH,tapWaterQuantity,waterReducingAgent \n" +
+            "from t_pr_productionplan;";
     }
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    window.open('exportExcelProductionPlan?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**

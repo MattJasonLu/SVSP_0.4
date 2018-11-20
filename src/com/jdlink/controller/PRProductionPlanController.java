@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -182,6 +184,37 @@ public class PRProductionPlanController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "导入失败，请重试！");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 导出(带表头字段)
+     *
+     * @param name
+     * @param response
+     * @param sqlWords
+     * @return
+     */
+    @RequestMapping("exportExcelProductionPlan")
+    @ResponseBody
+    public String exportExcel(String name, HttpServletResponse response, String sqlWords) {
+        JSONObject res = new JSONObject();
+        try {
+            DBUtil db = new DBUtil();
+            // 设置表头
+            String tableHead = "产量计划单编号/创建日期/创建人/单据状态/计划运转率/计划数量/消石灰/污水用阻垢剂/" +
+                    "普通活性炭粉/消毒液/高活性碳粉/标准箱/活性炭颗粒/木托盘/碱液/1m标准托盘/片碱/1.2m标准托盘/尿素" +
+                    "/炉渣用吨袋/盐酸/飞灰用吨袋/小苏打(NaHCO3)/吨箱/面粉/蒸汽/消泡剂/柴油/絮凝剂(聚丙烯酰胺)/天然气/软水用还原剂/" +
+                    "电量/软水用阻垢剂/工业水量/氨水(PH调节剂)/自来水量/污水用还原剂";
+            name = "产量计划单";   // 重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
         }
         return res.toString();
     }
