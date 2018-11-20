@@ -89,8 +89,8 @@ function setDataList(result) {
  */
 function exportExcel() {
     var name = 't_loginlog';
-    var sqlWords = "select * from t_loginlog;";
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    var sqlWords = "select userId,username,name,time,ip from t_loginlog order by nowTime desc;";
+    window.open('exportExcelConlog?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 var currentPage = 1;                          //当前页数

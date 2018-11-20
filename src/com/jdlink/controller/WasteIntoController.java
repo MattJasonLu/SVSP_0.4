@@ -512,4 +512,7 @@ public class WasteIntoController {
         return wasteIntoService.searchSecondaryDailyCount(secondaryTest);
 
     }
+
+
+
 }

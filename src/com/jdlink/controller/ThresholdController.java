@@ -6,6 +6,7 @@ import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.Threshold;
 import com.jdlink.domain.Produce.ThresholdList;
 import com.jdlink.service.ThresholdService;
+import com.jdlink.util.DBUtil;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -217,5 +220,33 @@ public class ThresholdController {
         return res.toString();
     }
 
+    /**
+     * 导出(带表头字段)
+     *
+     * @param name
+     * @param response
+     * @param sqlWords
+     * @return
+     */
+    @RequestMapping("exportExcelThresholdTable")
+    @ResponseBody
+    public String exportExcelThresholdTable(String name, HttpServletResponse response, String sqlWords) {
+        JSONObject res = new JSONObject();
+        try {
+            DBUtil db = new DBUtil();
+            // 设置表头
+            String tableHead = "阈值表编号/序号/处置类别/危废形态/热值MAX/热值MIN/灰分MAX/灰分MIN/水分MAX/水分MIN/" +
+                    "硫MAX/硫MIN/氯MAX/氯MIN/磷MAX/磷MIN/氟MAX/氟MIN/PH MAX/PH MIN/安全库存量/起始日期/结束日期";
+            name = "处置类别阈值表";   // 重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+        }
+        return res.toString();
+    }
 
 }

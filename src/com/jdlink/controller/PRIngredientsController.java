@@ -6,6 +6,7 @@ import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.domain.Wastes;
 import com.jdlink.service.IngredientsService;
+import com.jdlink.util.DBUtil;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -350,6 +353,36 @@ public class PRIngredientsController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "导入失败，请重试！");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 导出(带表头字段)
+     *
+     * @param name
+     * @param response
+     * @param sqlWords
+     * @return
+     */
+    @RequestMapping("exportExcelIngredientsIn")
+    @ResponseBody
+    public String exportExcel(String name, HttpServletResponse response, String sqlWords) {
+        JSONObject res = new JSONObject();
+        try {
+            DBUtil db = new DBUtil();
+            // 设置表头
+            String tableHead = "入库单号/单位名称/入库单创建日期/入库单状态/序号/物品名称/规格/单价/入库数/计量单位/物品总额/仓库/过账" +
+                    "/附注/文件编号/记账人/审批人/保管人/验收人/经手人" +
+                    "";
+            name = "辅料备件入库单";   // 重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
         }
         return res.toString();
     }
@@ -788,6 +821,35 @@ public class PRIngredientsController {
     }
 
     /**
+     * 导出(带表头字段)
+     *
+     * @param name
+     * @param response
+     * @param sqlWords
+     * @return
+     */
+    @RequestMapping("exportExcelIngredientsReceive")
+    @ResponseBody
+    public String exportExcelIngredientsReceive(String name, HttpServletResponse response, String sqlWords) {
+        JSONObject res = new JSONObject();
+        try {
+            DBUtil db = new DBUtil();
+            // 设置表头
+            String tableHead = "领料单号/部门/单据状态/创建日期/序号/物品名称/规格/领料数/计量单位/附注/仓库/主管副总经理" +
+                    "/仓库部门主管/保管员/领料部门主管/领料人";
+            name = "辅料备件领料单";   // 重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+        }
+        return res.toString();
+    }
+
+    /**
      * 获取查询总数
      *
      * @param
@@ -989,6 +1051,34 @@ public class PRIngredientsController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "更新失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 导出(带表头字段)
+     *
+     * @param name
+     * @param response
+     * @param sqlWords
+     * @return
+     */
+    @RequestMapping("exportExcelIngredientsInventory")
+    @ResponseBody
+    public String exportExcelIngredientsInventory(String name, HttpServletResponse response, String sqlWords) {
+        JSONObject res = new JSONObject();
+        try {
+            DBUtil db = new DBUtil();
+            // 设置表头
+            String tableHead = "编号/物品名称/库存量/计量单位/规格/仓库";
+            name = "辅料备件库存";   // 重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
         }
         return res.toString();
     }
@@ -1322,6 +1412,35 @@ public class PRIngredientsController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "导入失败，请重试！");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 导出(带表头字段)
+     *
+     * @param name
+     * @param response
+     * @param sqlWords
+     * @return
+     */
+    @RequestMapping("exportExcelIngredientsOut")
+    @ResponseBody
+    public String exportExcelIngredientsOut(String name, HttpServletResponse response, String sqlWords) {
+        JSONObject res = new JSONObject();
+        try {
+            DBUtil db = new DBUtil();
+            // 设置表头
+            String tableHead = "出库单号/部门/单据创建日期/单据状态/序号/物品名称/规格/单价/出库数/计量单位/物品总额/仓库/过账" +
+                    "/附注/文件编号/记账人/审批人/保管人/经手人";
+            name = "辅料备件出库单";   // 重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
         }
         return res.toString();
     }

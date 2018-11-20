@@ -389,19 +389,19 @@ function searchData() {
     // 精确查询
     if ($("#senior").is(':visible')) {
         data = {
-            sampleId: $("#search-sampleId").val(),
-            finishDate: $("#search-finishDate").val(),
+            sampleId: $.trim($("#search-sampleId").val()),
+            finishDate: $.trim($("#search-finishDate").val()),
             produceCompany:{
-                 companyName: $("#search-produceCompany").val()
+                 companyName: $.trim($("#search-produceCompany").val())
             },
-            wastesName: $("#search-wastesName").val(),
+            wastesName: $.trim($("#search-wastesName").val()),
             page: page
         };
         console.log(data);
         // 模糊查询
     } else {
         data = {
-            keyword: $("#searchContent").val(),
+            keyword: $.trim($("#searchContent").val()),
             page: page
         };
     }
@@ -1178,11 +1178,11 @@ function getIdByMenu(e) {
 }
 
 /**
- * 导出excel
+ * 化验结果导出excel
  * @param e
  */
 function exportExcel() {
-    var name = 't_pr_transferdraft';
+    var name = '1';
     // 获取勾选项
     var idArry = [];
     $.each($("input[name='select']:checked"),function(index,item){
@@ -1195,12 +1195,50 @@ function exportExcel() {
             if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
             else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
         }
-        sqlWords = "select * from t_pr_transferdraft where id" + sql;
+        sqlWords = "select sampleId,(select companyName from client where clientId = produceCompanyId),wastesName,wastesCode,\n" +
+            "finishDate,replace(PH,-9999,''),replace(ash,-9999,''),replace(water,-9999,''),replace(heat,-9999,''),replace(sulfur,-9999,''),\n" +
+            "replace(chlorine,-9999,''),replace(fluorine,-9999,''),replace(phosphorus,-9999,''),replace(flashPoint,-9999,''),replace(viscosity,'-9999',''),\n" +
+            "replace(hotMelt,'-9999','') from t_pr_receivesampleanalysis where sampleId" + sql;
     }else {          // 若无勾选项则导出全部
-        sqlWords = "select * from t_pr_transferdraft;";
+        sqlWords = "select sampleId,(select companyName from client where clientId = produceCompanyId),wastesName,wastesCode,\n" +
+            "finishDate,replace(PH,-9999,''),replace(ash,-9999,''),replace(water,-9999,''),replace(heat,-9999,''),replace(sulfur,-9999,''),\n" +
+            "replace(chlorine,-9999,''),replace(fluorine,-9999,''),replace(phosphorus,-9999,''),replace(flashPoint,-9999,''),replace(viscosity,'-9999',''),\n" +
+            "replace(hotMelt,'-9999','') from t_pr_receivesampleanalysis;";
     }
     console.log("sql:"+sqlWords);
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    window.open('exportExcelReceiveSampleAnalysis?name=' + name + '&sqlWords=' + sqlWords);
+}
+
+/**
+ * 日报导出excel
+ * @param e
+ */
+function exportExcel1() {
+    var name = '2';
+    // 获取勾选项
+    var idArry = [];
+    $.each($("input[name='select']:checked"),function(index,item){
+        idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
+    });
+    var sqlWords = '';
+    var sql = ' in (';
+    if (idArry.length > 0) {
+        for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+            if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
+            else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
+        }
+        sqlWords = "select sampleId,(select companyName from client where clientId = produceCompanyId),wastesName,wastesCode,\n" +
+            "finishDate,replace(PH,-9999,''),replace(ash,-9999,''),replace(water,-9999,''),replace(heat,-9999,''),replace(sulfur,-9999,''),\n" +
+            "replace(chlorine,-9999,''),replace(fluorine,-9999,''),replace(phosphorus,-9999,''),replace(flashPoint,-9999,''),replace(viscosity,'-9999',''),\n" +
+            "replace(hotMelt,'-9999','') from t_pr_receivesampleanalysis where sampleId" + sql;
+    }else {          // 若无勾选项则导出全部
+        sqlWords = "select sampleId,(select companyName from client where clientId = produceCompanyId),wastesName,wastesCode,\n" +
+            "finishDate,replace(PH,-9999,''),replace(ash,-9999,''),replace(water,-9999,''),replace(heat,-9999,''),replace(sulfur,-9999,''),\n" +
+            "replace(chlorine,-9999,''),replace(fluorine,-9999,''),replace(phosphorus,-9999,''),replace(flashPoint,-9999,''),replace(viscosity,'-9999',''),\n" +
+            "replace(hotMelt,'-9999','') from t_pr_receivesampleanalysis;";
+    }
+    console.log("sql:"+sqlWords);
+    window.open('exportExcelReceiveSampleAnalysis?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**

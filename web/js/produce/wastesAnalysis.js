@@ -1,9 +1,6 @@
 /**
  * 危废入场分析日报
  * */
-function reset() {
-    window.location.reload();
-}
 var currentPage = 1;                          //当前页数
 var isSearch = false;
 var data1;
@@ -126,17 +123,17 @@ function setDataList(result) {
         clonedTr.find("td[name='wastesCode']").text(obj.wastesCode);
         if(obj.formType != null)
             clonedTr.find("td[name='formType']").text(obj.formType.name);
-        clonedTr.find("td[name='PH']").text(parseFloat(obj.PH).toFixed(2));
-        clonedTr.find("td[name='ash']").text(parseFloat(obj.ash).toFixed(2));
-        clonedTr.find("td[name='water']").text(parseFloat(obj.water).toFixed(2));
-        clonedTr.find("td[name='heat']").text(parseFloat(obj.heat).toFixed(2));
-        clonedTr.find("td[name='sulfur']").text(parseFloat(obj.sulfur).toFixed(2));
-        clonedTr.find("td[name='chlorine']").text(parseFloat(obj.chlorine).toFixed(2));
-        clonedTr.find("td[name='fluorine']").text(parseFloat(obj.fluorine).toFixed(2));
-        clonedTr.find("td[name='phosphorus']").text(parseFloat(obj.phosphorus).toFixed(2));
-        clonedTr.find("td[name='flashPoint']").text(parseFloat(obj.flashPoint).toFixed(2));
-        clonedTr.find("td[name='viscosity']").text(parseFloat(obj.viscosity).toFixed(2));
-        clonedTr.find("td[name='hotMelt']").text(obj.hotMelt);
+        clonedTr.find("td[name='PH']").text(setNumber2Line(parseFloat(obj.PH).toFixed(2)));
+        clonedTr.find("td[name='ash']").text(setNumber2Line(parseFloat(obj.ash).toFixed(2)));
+        clonedTr.find("td[name='water']").text(setNumber2Line(parseFloat(obj.water).toFixed(2)));
+        clonedTr.find("td[name='heat']").text(setNumber2Line(parseFloat(obj.heat).toFixed(2)));
+        clonedTr.find("td[name='sulfur']").text(setNumber2Line(parseFloat(obj.sulfur).toFixed(2)));
+        clonedTr.find("td[name='chlorine']").text(setNumber2Line(parseFloat(obj.chlorine).toFixed(2)));
+        clonedTr.find("td[name='fluorine']").text(setNumber2Line(parseFloat(obj.fluorine).toFixed(2)));
+        clonedTr.find("td[name='phosphorus']").text(setNumber2Line(parseFloat(obj.phosphorus).toFixed(2)));
+        clonedTr.find("td[name='flashPoint']").text(setNumber2Line(parseFloat(obj.flashPoint).toFixed(2)));
+        clonedTr.find("td[name='viscosity']").text(setNumber2Line(obj.viscosity));
+        clonedTr.find("td[name='hotMelt']").text(setNumber2Line(obj.hotMelt));
         clonedTr.find("td[name='signer']").text(obj.signer);
         clonedTr.find("td[name='remark']").text(obj.remark);
         // 把克隆好的tr追加到原来的tr前面
@@ -552,42 +549,37 @@ function enterSearch() {
     }
 }
 
-
-
-
-
 /**
 *
 * 导出
 * @returns {string}
 */
 function exportExcel() {
-    console.log("export");
-    var name = 't_pl_wasteinto';
-    var idArry = [];//存放主键
-    var items = $("input[name='select']:checked");//判断复选框是否选中
-    if (items.length <= 0) { //如果不勾选
-        var sqlWords = "select id 序号,wastesCode 危废代码,querynumber 联单号,handleCategory 进料方式,processWay 处置类别, packageType 包装方式, remarks 备注,wastesCategory 危废类别                                                               from  t_pl_wasteinto;";
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
-    }
-
-    if (items.length > 0) {
-        $.each(items, function (index, item) {
-            if ($(this).parent().parent().parent().children('td').eq(20).html().length > 0) {
-                idArry.push($(this).parent().parent().parent().children('td').eq(20).html());        // 将选中项的编号存到集合中
-            }
-        });
-        var sql = ' in (';
-        if (idArry.length > 0) {
-            for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
-                if (i < idArry.length - 1) sql += idArry[i] + ",";
-                else if (i == idArry.length - 1) sql += idArry[i] + ");"
-            }
-            var sqlWords = "select id 序号,wastesCode 危废代码,querynumber 联单号,handleCategory 进料方式,processWay 处置类别, packageType 包装方式, remarks 备注,wastesCategory 危废类别 from  t_pl_wasteinto where id "+sql;
-
+    var name = 'wastesAnalysis';
+    // 获取勾选项
+    var idArry = [];
+    $.each($("input[name='select']:checked"), function (index, item) {
+        idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
+    });
+    var sqlWords = '';
+    var sql = ' in (';
+    if (idArry.length > 0) {
+        for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+            if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
+            else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
         }
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+        sqlWords = "select transferDraftId,(select companyName from client where clientId = produceCompanyId),\n" +
+            "wastesName,wastesCode,formType,replace(PH,-9999,''),replace(ash,-9999,''),replace(water,-9999,''),\n" +
+            "replace(heat,-9999,''),replace(sulfur,-9999,''),replace(fluorine,-9999,''),replace(chlorine,-9999,''),\n" +
+            "replace(phosphorus,-9999,''),replace(flashPoint,-9999,''),replace(viscosity,'-9999',''),replace(hotMelt,'-9999','') \n" +
+            "from t_pr_sampleinfoanalysis where transferDraftId " + sql;
+    } else {          // 若无勾选项则导出全部
+        sqlWords = "select transferDraftId,(select companyName from client where clientId = produceCompanyId),\n" +
+            "wastesName,wastesCode,formType,replace(PH,-9999,''),replace(ash,-9999,''),replace(water,-9999,''),\n" +
+            "replace(heat,-9999,''),replace(sulfur,-9999,''),replace(fluorine,-9999,''),replace(chlorine,-9999,''),\n" +
+            "replace(phosphorus,-9999,''),replace(flashPoint,-9999,''),replace(viscosity,'-9999',''),replace(hotMelt,'-9999','') \n" +
+            "from t_pr_sampleinfoanalysis;";
     }
-
+    window.open('exportExcelWastesDaily?name=' + name + '&sqlWords=' + sqlWords);
 }
 

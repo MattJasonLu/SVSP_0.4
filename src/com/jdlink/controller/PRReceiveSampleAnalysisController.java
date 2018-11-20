@@ -9,6 +9,7 @@ import com.jdlink.domain.Produce.SampleInfoAnalysis;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.produce.ReceiveSampleAnalysisService;
 import com.jdlink.service.produce.SampleInfoAnalysisService;
+import com.jdlink.util.DBUtil;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONArray;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -223,6 +226,38 @@ public class PRReceiveSampleAnalysisController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "增加失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 导出(带表头字段)
+     *
+     * @param name
+     * @param response
+     * @param sqlWords
+     * @return
+     */
+    @RequestMapping("exportExcelReceiveSampleAnalysis")
+    @ResponseBody
+    public String exportExcel(String name, HttpServletResponse response, String sqlWords) {
+        JSONObject res = new JSONObject();
+        try {
+            DBUtil db = new DBUtil();
+            // 设置表头
+            String tableHead = "样品编号/产废单位/危废名称/危废代码/完成日期/PH/灰分/水分/热值/硫/氯/氟/磷/闪点/黏度/热融";
+            if(name.equals("1")){
+                name = "市场部化验结果";   // 重写文件名
+            }else {
+                name = "危废预准入分析日报";   // 重写文件名
+            }
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
         }
         return res.toString();
     }
