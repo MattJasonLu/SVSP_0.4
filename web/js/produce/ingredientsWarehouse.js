@@ -464,10 +464,9 @@ function exportExcel() {
             if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
             else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
         }
-        sqlWords = "select itemId as '编号',name as '物品名称',wareHouseName as '所在仓库',amount as '库存量',specification as '规格' from t_pr_ingredients_inventory where itemId" + sql;
+        sqlWords = "select itemId as '编号',name as '物品名称',amount as '库存量',unit as '计量单位',specification as '规格',wareHouseName as '所在仓库' from t_pr_ingredients_inventory where itemId" + sql;
     }else {          // 若无勾选项则导出全部
-        sqlWords = "select itemId as '编号',name as '物品名称',wareHouseName as '所在仓库',amount as '库存量',specification as '规格' from t_pr_ingredients_inventory;";
+        sqlWords = "select itemId as '编号',name as '物品名称',amount as '库存量',unit as '计量单位',specification as '规格',wareHouseName as '所在仓库' from t_pr_ingredients_inventory;";
     }
-    console.log("sql:"+sqlWords);
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    window.open('exportExcelIngredientsInventory?name=' + name + '&sqlWords=' + sqlWords);
 }

@@ -469,20 +469,20 @@ function exportInExcel() {
             if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
             else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
         }
-        sqlWords = "select id,companyName as '单位名称',creationDate as '入库单创建日期',fileId as '文件编号',a.totalPrice as '总额',bookkeeper as '记账人',\n" +
-            "approver as '审批人',keeper as '保管人',acceptor as '验收人',handlers as '经手人',state as '入库单状态',serialNumberIn as '序号',\n" +
-            "name as '物品名称',unitPrice as '单价',amount as '入库数',b.totalPrice as '物品总额',receiveAmount as '已领用数量',wareHouseName as '仓库',\n" +
-            "post as '过账',specification as '规格',unit as '单位', ingredientState as '物品状态',remarks as '附注'\n" +
+        sqlWords = "select id,companyName as '单位名称',creationDate as '入库单创建日期',state as '入库单状态',serialNumberIn as '序号',\n" +
+            "name as '物品名称',specification as '规格',unitPrice as '单价',amount as '入库数',unit as '计量单位',\n" +
+            "b.totalPrice as '物品总额',wareHouseName as '仓库',post as '过账',remarks as '附注',fileId as '文件编号',\n" +
+            "bookkeeper as '记账人',approver as '审批人',keeper as '保管人',acceptor as '验收人',handlers as '经手人' \n" +
             "from t_pr_ingredients_in as a join t_pr_ingredients as b where inId = id and id" + sql;
     } else {          // 若无勾选项则导出全部
-        sqlWords = "select id,companyName as '单位名称',creationDate as '入库单创建日期',fileId as '文件编号',a.totalPrice as '总额',bookkeeper as '记账人',\n" +
-            "approver as '审批人',keeper as '保管人',acceptor as '验收人',handlers as '经手人',state as '入库单状态',serialNumberIn as '序号',\n" +
-            "name as '物品名称',unitPrice as '单价',amount as '入库数',b.totalPrice as '物品总额',receiveAmount as '已领用数量',wareHouseName as '仓库',\n" +
-            "post as '过账',specification as '规格',unit as '单位', ingredientState as '物品状态',remarks as '附注'\n" +
-            "from t_pr_ingredients_in as a join t_pr_ingredients as b where inId = id;";
+        sqlWords = "select id,companyName as '单位名称',creationDate as '入库单创建日期',state as '入库单状态',serialNumberIn as '序号',\n" +
+            "name as '物品名称',specification as '规格',unitPrice as '单价',amount as '入库数',unit as '计量单位',\n" +
+            "b.totalPrice as '物品总额',wareHouseName as '仓库',post as '过账',remarks as '附注',fileId as '文件编号',\n" +
+            "bookkeeper as '记账人',approver as '审批人',keeper as '保管人',acceptor as '验收人',handlers as '经手人' \n" +
+            "from t_pr_ingredients_in as a join t_pr_ingredients as b on inId = id;";
     }
     console.log("sql:" + sqlWords);
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    window.open('exportExcelIngredientsIn?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**

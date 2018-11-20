@@ -452,12 +452,17 @@ function exportExcel() {
             if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
             else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
         }
-        sqlWords = "select * from t_pr_ingredients_receive as a join t_pr_ingredients as b where receiveId = id and id" + sql;
+        sqlWords = "select a.id,a.department,a.state,a.creationDate,b.serialNumberReceive,b.name,b.specification,\n" +
+            "b.receiveAmount,b.unit,b.remarks,b.wareHouseName,a.vicePresident,a.warehouseSupervisor,\n" +
+            "a.keeper,a.pickingSupervisor,a.pickingMan from t_pr_ingredients_receive as a join t_pr_ingredients as b \n" +
+            "on receiveId = id where id" + sql;
     } else {          // 若无勾选项则导出全部
-        sqlWords = "select * from t_pr_ingredients_receive as a join t_pr_ingredients as b where receiveId = id;";
+        sqlWords = "select a.id,a.department,a.state,a.creationDate,b.serialNumberReceive,b.name,b.specification,\n" +
+            "b.receiveAmount,b.unit,b.remarks,b.wareHouseName,a.vicePresident,a.warehouseSupervisor,\n" +
+            "a.pickingSupervisor,a.pickingMan from t_pr_ingredients_receive as a join t_pr_ingredients as b on receiveId = id;";
     }
     console.log("sql:" + sqlWords);
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    window.open('exportExcelIngredientsReceive?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**

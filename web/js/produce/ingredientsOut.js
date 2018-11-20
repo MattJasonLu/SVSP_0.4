@@ -474,12 +474,20 @@ function exportExcel() {
             if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
             else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
         }
-        sqlWords = "select * from t_pr_ingredients_out as a join t_pr_ingredients as b where outId = id and id" + sql;
+        sqlWords = "select id,department as '部门',creationDate as '单据创建日期',state as '单据状态',serialNumberOut as '序号',\n" +
+            "name as '物品名称',specification as '规格',unitPrice as '单价',receiveAmount as '出库数',unit as '计量单位',\n" +
+            "b.totalPrice as '物品总额',wareHouseName as '仓库',post as '过账',remarks as '附注',fileId as '文件编号',\n" +
+            "bookkeeper as '记账人',approver as '审批人',keeper as '保管人',handlers as '经手人' \n" +
+            "from t_pr_ingredients_out as a join t_pr_ingredients as b on outId = id where id" + sql;
     } else {          // 若无勾选项则导出全部
-        sqlWords = "select * from t_pr_ingredients_out as a join t_pr_ingredients as b where outId = id;";
+        sqlWords = "select id,department as '部门',creationDate as '单据创建日期',state as '单据状态',serialNumberOut as '序号',\n" +
+            "name as '物品名称',specification as '规格',unitPrice as '单价',amount as '入库数',unit as '计量单位',\n" +
+            "b.totalPrice as '物品总额',wareHouseName as '仓库',post as '过账',remarks as '附注',fileId as '文件编号',\n" +
+            "bookkeeper as '记账人',approver as '审批人',keeper as '保管人',handlers as '经手人' " +
+            "from t_pr_ingredients_out as a join t_pr_ingredients as b on outId = id;";
     }
     console.log("sql:" + sqlWords);
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    window.open('exportExcelIngredientsOut?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**

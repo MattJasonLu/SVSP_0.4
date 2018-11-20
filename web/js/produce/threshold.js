@@ -623,12 +623,14 @@ function exportExcelList() {
             if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
             else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
         }
-        sqlWords = "select * from t_pr_threshold where id" + sql;
+        sqlWords = "select id,thresholdId,handleCategory,formType,calorificmax,calorificmin,ashmax,ashmin,watermax,watermin,\n" +
+            "Smax,Smin,CLmax,CLmin,Pmax,Pmin,Fmax,Fmin,PHmax,PHmin,Safety,beginTime,endTime from t_pr_threshold where id" + sql;
     } else {          // 若无勾选项则导出全部
-        sqlWords = "select * from t_pr_threshold";
+        sqlWords = "select id,thresholdId,handleCategory,formType,calorificmax,calorificmin,ashmax,ashmin,watermax,watermin,\n" +
+            "Smax,Smin,CLmax,CLmin,Pmax,Pmin,Fmax,Fmin,PHmax,PHmin,Safety,beginTime,endTime from t_pr_threshold";
     }
     console.log("sql:" + sqlWords);
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    window.open('exportExcelThresholdTable?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**
@@ -841,8 +843,9 @@ function getWeekDate() {
 function exportExcel() {
     var name = 't_pr_threshold';
     // 获取勾选项
-    var sqlWords = "select * from t_pr_threshold where id = " + localStorage.id;
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    var sqlWords = "select id,thresholdId,handleCategory,formType,calorificmax,calorificmin,ashmax,ashmin,watermax,watermin,\n" +
+        "Smax,Smin,CLmax,CLmin,Pmax,Pmin,Fmax,Fmin,PHmax,PHmin,Safety,beginTime,endTime from t_pr_threshold where id = " + localStorage.id;
+    window.open('exportExcelThresholdTable?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 ////////////////////////编辑/新增页面//////////////////////////
