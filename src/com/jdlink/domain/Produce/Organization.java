@@ -33,6 +33,30 @@ public class Organization {
      * 上一级ID（新增用）
      */
     private int oldId;
+    /**
+     * 页面链接(菜单)
+     */
+    private String url;
+    /**
+     * 图标(菜单)
+     */
+    private String picture;
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public int getOldId() {
         return oldId;
