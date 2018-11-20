@@ -4,6 +4,7 @@
 var isSearch = false;
 var currentPage = 1;                          //当前页数
 var data;
+
 /**********************客户部分**********************/
 /**
  * 返回count值
@@ -70,6 +71,7 @@ function totalPage() {
     var count = countValue();                         // 可选
     return loadPages(totalRecord, count);
 }
+
 /**
  * 计算分页总页数
  * @param totalRecord
@@ -123,7 +125,7 @@ function setPageClone(result) {
  * @param pageNumber 跳转页数
  * */
 function switchPage(pageNumber) {
-    if(pageNumber > totalPage()){
+    if (pageNumber > totalPage()) {
         pageNumber = totalPage();
     }
     if (pageNumber === 0) {                 //首页
@@ -215,7 +217,7 @@ function switchPage(pageNumber) {
  * */
 function inputSwitchPage() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
-    if(pageNumber > totalPage()){
+    if (pageNumber > totalPage()) {
         pageNumber = totalPage();
     }
     $("#current").find("a").text("当前页：" + pageNumber);
@@ -356,8 +358,8 @@ function setDataList(result) {
         if (obj.produceCompany != null) clonedTr.find("td[name='produceCompanyName']").text(obj.produceCompany.companyName);
         clonedTr.find("td[name='wastesName']").text(obj.wastesName);
         clonedTr.find("td[name='wastesCode']").text(obj.wastesCode);
-        if(obj.formType != null)
-        clonedTr.find("td[name='formType']").text(obj.formType.name);
+        if (obj.formType != null)
+            clonedTr.find("td[name='formType']").text(obj.formType.name);
         clonedTr.find("td[name='PH']").text(setNumber2Line(parseFloat(obj.PH).toFixed(0)));
         clonedTr.find("td[name='ash']").text(setNumber2Line(parseFloat(obj.ash).toFixed(2)));
         clonedTr.find("td[name='water']").text(setNumber2Line(parseFloat(obj.water).toFixed(2)));
@@ -664,6 +666,7 @@ function setSubmit(e) {    //已提交
 }
 
 var editId;
+
 /**
  * 修改数据
  * @param e
@@ -774,7 +777,7 @@ function showEditModal(e) {
                 $("#editWastesName").val(data.wastesName);
                 $("#editWastesCode").selectpicker('val', data.wastesCode);
                 if (data.formType != null)
-                    $("#editFormType").val(data.formType.index-1);
+                    $("#editFormType").val(data.formType.index - 1);
                 $("#editPH").val(setNumber2Line(parseFloat(data.PH).toFixed(0)));
                 $("#editAsh").val(setNumber2Line(parseFloat(data.ash).toFixed(2)));
                 $("#editWater").val(setNumber2Line(parseFloat(data.water).toFixed(2)));
@@ -890,14 +893,14 @@ function loadData() {
                         $("#wastesPrepareTransferCount").val(data.wastes.prepareTransferCount);
                         $("#wastesCharacter").val(data.wastes.wastesCharacter);
                         if (data.wastes.handleCategory != null)
-                            $("#wastesCategory").val(data.wastes.handleCategory.index-1);
+                            $("#wastesCategory").val(data.wastes.handleCategory.index - 1);
                         $("#wastesTransferCount").val(data.wastes.transferCount);
                         $("#wastesCode").val(data.wastes.wastesId);
                         $("#wastesSignCount").val(data.wastes.signCount);
                         if (data.wastes.formType != null)
-                            $("#wastesFormType").val(data.wastes.formType.index-1);
+                            $("#wastesFormType").val(data.wastes.formType.index - 1);
                         if (data.wastes.packageType != null)
-                            $("#wastesPackageType").val(data.wastes.packageType.index-1);
+                            $("#wastesPackageType").val(data.wastes.packageType.index - 1);
                     }
                     $("#outwardIsTransit").prop('checked', data.outwardIsTransit);
                     $("#outwardIsUse").prop('checked', data.outwardIsUse);
@@ -1135,12 +1138,12 @@ function viewData(e) {
                 var data = eval(result.data);
                 $("#viewTransferDraftId").text(data.transferDraftId);
                 if (data.produceCompany != null)
-                $("#viewProduceCompanyName").text(data.produceCompany.companyName);
+                    $("#viewProduceCompanyName").text(data.produceCompany.companyName);
                 $("#viewWastesName").text(data.wastesName);
                 $("#viewWastesCode").text(data.wastesCode);
                 $("#viewWastesCategory").text(data.wastesCategory);
                 if (data.formType != null)
-                $("#viewFormType").text(data.formType.name);
+                    $("#viewFormType").text(data.formType.name);
                 $("#viewPH").text(parseFloat(data.PH).toFixed(0));
                 $("#viewAsh").text(parseFloat(data.ash).toFixed(2));
                 $("#viewWater").text(parseFloat(data.water).toFixed(2));
@@ -1179,26 +1182,32 @@ function getIdByMenu(e) {
  * @param e
  */
 function exportExcel() {
-    alert("功能调整中");
-    // var name = 't_pr_transferdraft';
-    // // 获取勾选项
-    // var idArry = [];
-    // $.each($("input[name='select']:checked"),function(index,item){
-    //     idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
-    // });
-    // var sqlWords = '';
-    // var sql = ' in (';
-    // if (idArry.length > 0) {
-    //     for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
-    //         if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
-    //         else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
-    //     }
-    //     sqlWords = "select * from t_pr_transferdraft where id" + sql;
-    // } else {          // 若无勾选项则导出全部
-    //     sqlWords = "select * from t_pr_transferdraft;";
-    // }
-    // console.log("sql:"+sqlWords);
-    // window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    var name = 'sampleInfoAnalysis';
+    // 获取勾选项
+    var idArry = [];
+    $.each($("input[name='select']:checked"), function (index, item) {
+        idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
+    });
+    var sqlWords = '';
+    var sql = ' in (';
+    if (idArry.length > 0) {
+        for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+            if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
+            else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
+        }
+        sqlWords = "select transferDraftId,(select companyName from client where clientId = produceCompanyId),\n" +
+            "wastesName,wastesCode,formType,replace(PH,-9999,''),replace(ash,-9999,''),replace(water,-9999,''),\n" +
+            "replace(heat,-9999,''),replace(sulfur,-9999,''),replace(fluorine,-9999,''),replace(chlorine,-9999,''),\n" +
+            "replace(phosphorus,-9999,''),replace(flashPoint,-9999,''),replace(viscosity,'-9999',''),replace(hotMelt,'-9999','') \n" +
+            "from t_pr_sampleinfoanalysis where id" + sql;
+    } else {          // 若无勾选项则导出全部
+        sqlWords = "select transferDraftId,(select companyName from client where clientId = produceCompanyId),\n" +
+            "wastesName,wastesCode,formType,replace(PH,-9999,''),replace(ash,-9999,''),replace(water,-9999,''),\n" +
+            "replace(heat,-9999,''),replace(sulfur,-9999,''),replace(fluorine,-9999,''),replace(chlorine,-9999,''),\n" +
+            "replace(phosphorus,-9999,''),replace(flashPoint,-9999,''),replace(viscosity,'-9999',''),replace(hotMelt,'-9999','') \n" +
+            "from t_pr_sampleinfoanalysis;";
+    }
+    window.open('exportExcelWastesDaily?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**
@@ -1262,11 +1271,11 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
     $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
-            if(last-event.timeStamp == 0){
+            if (last - event.timeStamp == 0) {
                 searchData();
-            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+            } else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
                 searchData();      //
             }
-        },400);
+        }, 400);
     });
 });

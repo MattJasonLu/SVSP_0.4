@@ -201,12 +201,11 @@ function exportExcel(){
             if (i < idArry.length - 1) sql += idArry[i]+ ",";
             else if (i == idArry.length - 1) sql += idArry[i] + ") order by beginTime asc;";
         }
-        sqlWords = "select a.beginTime,d.salesmanId,d.name,c.companyName,b.total,b.remarks from t_contract as a join t_pr_waybill as b join client as c join salesman as d where contractType='Wastes' and a.clientId = c.clientId and c.salesmanId = d.salesmanId and a.clientId = b.produceCompanyId and a.contractId" + sql;
+        sqlWords = "select a.contractId,a.beginTime,d.salesmanId,d.name,c.companyName,b.total,b.remarks from t_contract as a join t_pr_waybill as b join client as c join salesman as d where contractType='Wastes' and a.clientId = c.clientId and c.salesmanId = d.salesmanId and a.contractId = b.contractId and a.contractId" + sql;
     }else {          // 若无勾选项则导出全部
-        sqlWords = "select a.beginTime,d.salesmanId,d.name,c.companyName,b.total,b.remarks from t_contract as a join t_pr_waybill as b join client as c join salesman as d where contractType='Wastes' and a.clientId = c.clientId and c.salesmanId = d.salesmanId and a.clientId = b.produceCompanyId order by beginTime asc;";
+        sqlWords = "select a.contractId,a.beginTime,d.salesmanId,d.name,c.companyName,b.total,b.remarks from t_contract as a join t_pr_waybill as b join client as c join salesman as d where contractType='Wastes' and a.clientId = c.clientId and c.salesmanId = d.salesmanId and a.contractId = b.contractId order by beginTime asc;";
     }
-    console.log("sql:"+sqlWords);
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    window.open('exportExcelAssessment?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**

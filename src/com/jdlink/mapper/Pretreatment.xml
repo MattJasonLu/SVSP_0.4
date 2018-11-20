@@ -60,7 +60,9 @@
     </select>
 
     <select id="list" resultMap="PretreatmentRM">
-        select * from t_pr_pretreatment order by nowTime desc;
+        select * from t_pr_pretreatment
+        where state = 'Confirm'
+        order by creationTime desc;
     </select>
 
     <select id="search" parameterType="Pretreatment" resultMap="PretreatmentRM">
@@ -168,6 +170,12 @@
                 where outboundOrderId =#{pretreatmentItem.outboundOrderId};
             </foreach>
         </if>
+    </update>
+
+    <update id="confirm" parameterType="String">
+        update t_pr_pretreatment
+        set state = 'Confirm',nowTime = NOW()
+        where id = #{id};
     </update>
 
     <update id="adjust" parameterType="Pretreatment">

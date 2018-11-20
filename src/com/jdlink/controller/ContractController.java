@@ -950,21 +950,36 @@ public class ContractController {
         return res.toString();
     }
 
-
+    /**
+     * 根据业务员ID获取其合同
+     *
+     * @return 业务员数量
+     */
+    @RequestMapping("getAllContractCountBySalesmanId")
+    @ResponseBody
+    public int getAllContractCountBySalesmanId(String salesmanId) {
+        int count = 0;
+        try {
+            count = contractService.getAllContractCountBySalesmanId(salesmanId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
     /**
      * 根据业务员的编号筛选出历年所有的合同
      *
-     * @param salesmanId 业务员编号
+     * @param
      * @return 合同列表
      */
     @RequestMapping("getAllContractBySalesmanId")
     @ResponseBody
-    public String getAllContractBySalesmanId(String salesmanId) {
+    public String getAllContractBySalesmanId(@RequestBody Contract contract1) {
         JSONObject res = new JSONObject();
         try {
             Integer serialNumber = 0;
             // 获取该业务员名下所有合同
-            List<Contract> contractList = contractService.getAllContractBySalesmanId(salesmanId);
+            List<Contract> contractList = contractService.getAllContractBySalesmanId(contract1);
             // 危废信息
             Map<Integer, List<LaboratoryTest>> map = new HashMap<>();
             // 客户联系信息

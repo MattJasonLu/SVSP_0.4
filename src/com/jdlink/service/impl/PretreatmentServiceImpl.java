@@ -112,4 +112,7 @@ public class PretreatmentServiceImpl implements PretreatmentService {
         pretreatmentMapper.update(pretreatment);
     }
 
+    @Override
+    public void confirm(String id){ pretreatmentMapper.confirm(id);}
+
 }

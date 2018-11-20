@@ -8,6 +8,7 @@ import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.SampleInfoAnalysis;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.produce.SampleInfoAnalysisService;
+import com.jdlink.util.DBUtil;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONArray;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.nio.channels.FileLock;
 import java.text.Normalizer;
 import java.util.List;
@@ -251,6 +254,38 @@ public class PRSampleInfoAnalysisController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "增加失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 危废入厂分析日报导出(带表头字段)
+     *
+     * @param name
+     * @param response
+     * @param sqlWords
+     * @return
+     */
+    @RequestMapping("exportExcelWastesDaily")
+    @ResponseBody
+    public String exportExcelWastesDaily(String name, HttpServletResponse response, String sqlWords) {
+        JSONObject res = new JSONObject();
+        try {
+            DBUtil db = new DBUtil();
+            // 设置表头
+            String tableHead = "联单号/产废单位/危废名称/危废代码/危废形态/PH/灰分/水分/热值/硫含量/氯含量/氟含量/磷含量/闪点/黏度/热融";
+            if(name.equals("wastesAnalysis")){
+                name = "危废入厂分析日报";   // 重写文件名
+            }else{
+                name= "仓储部化验结果";
+            }
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
         }
         return res.toString();
     }

@@ -27,7 +27,6 @@ var burnOrder = {};    // 焚烧工单对象
  * 设置预处理单列表数据
  */
 function loadPretreatmentList() {
-
     i1 = 0;                         //刷新页面时重新计数
     //获取数据
     $.ajax({
@@ -95,9 +94,6 @@ function setPretreatmentList(result) {
     var serialNumber = 0;
     $.each(result, function (index, item) {
         //已作废的数据不显示
-        if (item.state.name === '已作废' || item.state.name === '已确认') {
-            return true;
-        }
         serialNumber++;
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
@@ -367,6 +363,7 @@ var pretreatmentIdArray = [];
  */
 function confirmInsert() {
 // 定义焚烧工单，存储勾选预处理单
+    i1 = 0;
     $(".newLine").remove();
     var burnOrderList = [];
     pretreatmentIdArray = [];
@@ -434,7 +431,8 @@ function confirmInsert() {
                     break;
                 case (5):
                     //总重量
-                    $(this).html(obj.weightTotal.toFixed(2));
+                    if (obj.weightTotal != null)
+                        $(this).html(obj.weightTotal);
                     break;
                 case (6):
                     //备注
@@ -442,19 +440,19 @@ function confirmInsert() {
                     break;
                 case (7):
                     //散装比例
-                    $(this).html(obj.bulkProportion.toFixed(2));
+                    $(this).html(obj.bulkProportion);
                     break;
                 case (8):
                     //残渣比例
-                    $(this).html(obj.distillationProportion.toFixed(2));
+                    $(this).html(obj.distillationProportion);
                     break;
                 case (9):
                     //废液比例
-                    $(this).html(obj.wasteLiquidProportion.toFixed(2));
+                    $(this).html(obj.wasteLiquidProportion);
                     break;
                 case (10):
                     //污泥比例
-                    $(this).html(obj.sludgeProportion.toFixed(2));
+                    $(this).html(obj.sludgeProportion);
                     break;
             }
         });
@@ -1184,12 +1182,18 @@ function exportExcel() {
             if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
             else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
         }
-        sqlWords = "select * from t_pr_burnorder join t_pr_burnorderitem where id = burnOrderId and id" + sql;
+        sqlWords = "select a.id,a.state,a.creationDate,a.remarks,b.serialNumber,b.produceCompanyName,b.requirements,\n" +
+            "b.wastesName,b.proportion,b.weight,b.calorific,b.ashPercentage,b.wetPercentage,b.volatileNumber,\n" +
+            "b.chlorinePercentage,b.sulfurPercentage,b.ph,b.phosphorusPercentage,b.fluorinePercentage,b.remarks,b.processWay,\n" +
+            "b.handleCategory,b.temporaryAddress from t_pr_burnorder as a join t_pr_burnorderitem as b on id = burnOrderId \n" +
+            "where a.id" + sql;
     } else {          // 若无勾选项则导出全部
-        sqlWords = "select * from t_pr_burnorder join t_pr_burnorderitem where id = burnOrderId;";
+        sqlWords = "select a.id,a.state,a.creationDate,a.remarks,b.serialNumber,b.produceCompanyName,b.requirements,\n" +
+            "b.wastesName,b.proportion,b.weight,b.calorific,b.ashPercentage,b.wetPercentage,b.volatileNumber,\n" +
+            "b.chlorinePercentage,b.sulfurPercentage,b.ph,b.phosphorusPercentage,b.fluorinePercentage,b.remarks,b.processWay,\n" +
+            "b.handleCategory,b.temporaryAddress from t_pr_burnorder as a join t_pr_burnorderitem as b on id = burnOrderId;";
     }
-    console.log("sql:" + sqlWords);
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    window.open('exportExcelBurnOrder?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**
@@ -1718,9 +1722,9 @@ function burnOrderListModify(item) {
             }
         });
         $("#editModal").modal('show');
-    }else if(state == "已作废"){
+    } else if (state == "已作废") {
         alert("单据已作废，不可修改！");
-    }else{
+    } else {
         alert("单据不可修改！");
     }
 }

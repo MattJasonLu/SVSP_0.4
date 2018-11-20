@@ -146,7 +146,7 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" href="#" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                    <a class="btn btn-primary btn-xs" href="#" onclick="exportExcel1()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
                 <div class="input-group col-md-4 pull-right" style="margin-right: 23px;">
@@ -204,13 +204,20 @@
                         <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
                     </label>
                 </th>
-                <th class="text-center">序号</th>
+                <th class="text-center">样品单号</th>
                 <th class="text-center">采样点</th>
-                <th class="text-center">pH</th>
-                <th class="text-center">CODCr mg/l</th>
-                <th class="text-center">BOD5 mg/l</th>
-                <th class="text-center">氨氮 mg/l</th>
-                <th class="text-center">碳酸盐碱度</th>
+                <th class="text-center">PH</th>
+                <th class="text-center">COD</th>
+                <th class="text-center">BOD5</th>
+                <th class="text-center">氨氮</th>
+                <th class="text-center">碳酸盐碱度(Cao)</th>
+                <th class="text-center">碳酸盐碱度(CaCo3)</th>
+                <th class="text-center">碳酸盐碱度(HCO3-)</th>
+                <th class="text-center">重碳酸盐碱度(Cao)</th>
+                <th class="text-center">重碳酸盐碱度(CaCo3)</th>
+                <th class="text-center">重碳酸盐碱度(HCO3-)</th>
+                <th class="text-center">总氮</th>
+                <th class="text-center">总磷</th>
                 <th class="text-center">备注</th>
             </tr>
             </thead>
@@ -221,6 +228,13 @@
                         <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
                     </label>
                 </td>
+                <td class="text-center" name="id"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
                 <td class="text-center"></td>
                 <td class="text-center"></td>
                 <td class="text-center"></td>

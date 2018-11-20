@@ -8,6 +8,7 @@ import com.jdlink.domain.Produce.WayBillItem;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.InboundService;
 import com.jdlink.service.PoundsService;
+import com.jdlink.util.DBUtil;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
 import jxl.write.DateTime;
@@ -493,6 +494,33 @@ public class PRPoundsController {
         return res.toString();
     }
 
+    /**
+     * 导出(带表头字段)
+     *
+     * @param name
+     * @param response
+     * @param sqlWords
+     * @return
+     */
+    @RequestMapping("exportExcelPounds")
+    @ResponseBody
+    public String exportExcel(String name, HttpServletResponse response, String sqlWords) {
+        JSONObject res = new JSONObject();
+        try {
+            DBUtil db = new DBUtil();
+            // 设置表头
+            String tableHead = "磅单号/转移联单号/入厂车号/货物名/毛重/净重/皮重/发货单位/接收单位/业务类型/入厂时间/出厂时间/司机/司磅员/备注/出厂车号/磅单状态/磅单创建人/创建日期";
+            name = "磅单";   // 重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+        }
+        return res.toString();
+    }
 
 
 }

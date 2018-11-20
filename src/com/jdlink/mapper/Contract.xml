@@ -289,12 +289,22 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     </select>
 
     <!--获取业务员所有的合同-->
-    <select id="getAllContractBySalesmanId" parameterType="String" resultMap="ContractRM">
+    <select id="getAllContractBySalesmanId" resultMap="ContractRM">
         SELECT * FROM t_contract
         WHERE
         clientId in (SELECT clientId FROM client WHERE salesmanId=#{salesmanId}) and contractType='Wastes'
-        order by beginTime asc;
+        order by beginTime asc
+        <if test="page != null and page.start != null and page.count != null and page.count != 0">
+            limit #{page.start}, #{page.count};
+        </if>
     </select>
+
+    <select id="getAllContractCountBySalesmanId" parameterType="String" resultType="int">
+        SELECT count(*) FROM t_contract
+        WHERE
+        clientId in (SELECT clientId FROM client WHERE salesmanId=#{salesmanId}) and contractType='Wastes'
+    </select>
+
 
     <!--高级查询-->
     <select id="search" parameterType="Contract" resultType="Contract">

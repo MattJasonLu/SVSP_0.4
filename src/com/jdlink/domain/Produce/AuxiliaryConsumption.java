@@ -7,7 +7,7 @@ public class AuxiliaryConsumption {
     private Float calcareousLime;
     // 污水用阻垢剂
     private Float waterScaleInhibitor;
-            // 普通活性炭粉
+    // 普通活性炭粉
     private Float commonActivatedCarbon;
     // 消毒液
     private Float naclo;

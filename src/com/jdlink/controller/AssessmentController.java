@@ -4,6 +4,7 @@ package com.jdlink.controller;
 import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.service.*;
+import com.jdlink.util.DBUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.*;
 
 @Controller
@@ -358,5 +361,34 @@ public class AssessmentController {
         }
         return res.toString();
     }
+
+    /**
+     * 导出(带表头字段)
+     *
+     * @param name
+     * @param response
+     * @param sqlWords
+     * @return
+     */
+    @RequestMapping("exportExcelAssessment")
+    @ResponseBody
+    public String exportExcelAssessment(String name, HttpServletResponse response, String sqlWords) {
+        JSONObject res = new JSONObject();
+        try {
+            DBUtil db = new DBUtil();
+            // 设置表头
+            String tableHead = "合同编号/合同起始时间/业务员编号/业务员姓名/产废单位/接运单总额/备注";
+            name = "月份考核";   // 重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+        }
+        return res.toString();
+    }
+
 }
 

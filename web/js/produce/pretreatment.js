@@ -477,13 +477,18 @@ function exportExcel() {
             if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
             else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
         }
-        sqlWords = "select * from t_pr_pretreatment join t_pr_pretreatmentitem where pretreatmentId = id and id" + sql;
+        sqlWords = "select a.id,b.serialNumber,b.produceCompanyName,b.requirements,b.wastesName,b.proportion,b.weight,\n" +
+            "b.calorific,b.ashPercentage,b.wetPercentage,b.volatileNumber,b.chlorinePercentage,b.sulfurPercentage,b.ph, \n" +
+            "b.phosphorusPercentage,b.fluorinePercentage,b.remarks,b.processWay,b.handleCategory,a.state from t_pr_pretreatment as a \n" +
+            "join t_pr_pretreatmentitem as b where pretreatmentId = id and id" + sql;
 
     } else {
-        sqlWords = "select * from t_pr_pretreatment join t_pr_pretreatmentitem where pretreatmentId = id";
+        sqlWords = "select a.id,b.serialNumber,b.produceCompanyName,b.requirements,b.wastesName,b.proportion,b.weight,\n" +
+            "b.calorific,b.ashPercentage,b.wetPercentage,b.volatileNumber,b.chlorinePercentage,b.sulfurPercentage,b.ph,\n" +
+            "b.phosphorusPercentage,b.fluorinePercentage,b.remarks,b.processWay,b.handleCategory,a.state \n" +
+            "from t_pr_pretreatment as a join t_pr_pretreatmentitem as b where pretreatmentId = id";
     }
-    console.log(sqlWords);
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    window.open('exportExcelPretreatment?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**
@@ -2130,4 +2135,44 @@ function calculate() {
     $("#edit-bulkProportion").text(bulkProportion);
     $("#edit-crushingProportion").text(crushingProportion);
     $("#edit-suspensionProportion").text(suspensionProportion);
+}
+
+/**
+ * 确认
+ * @param item
+ */
+function confirm1(item){
+    var state = $(item).parent().parent().children().eq(2).text();
+    if (state == "新建") {
+        var id = getPretreatmentId(item);
+        if (confirm("是否确认？")) {
+            $.ajax({
+                type: "POST",
+                url: "confirmPretreatment",
+                async: false,
+                data: {
+                    id: id
+                },
+                dataType: "json",
+                success: function (result) {
+                    if (result.status == "success") {
+                        alert("确认成功!");
+                        window.location.reload();
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                    alert("服务器异常!");
+                }
+            });
+        }
+    }else if(state == "已作废"){
+        alert("单据已作废,不可确认！");
+    }else if(state == "已确认"){
+        alert("单据已确认!");
+    }else{
+        alert("单据不可确认！");
+    }
 }
