@@ -1668,19 +1668,20 @@ function exportExcel() {
     }
     if (items.length > 0) {
         $.each(items, function (index, item) {
-            if ($(this).parent().parent().next().next().html().length > 0) {
-                idArry.push($(this).parent().parent().next().next().html());        // 将选中项的编号存到集合中
+            if ($(this).parent().parent().next().html().length > 0) {
+                idArry.push($(this).parent().parent().next().html());        // 将选中项的编号存到集合中
             }
         });
         var sql = ' in (';
         if (idArry.length > 0) {
             for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
                 if (i < idArry.length - 1) sql += idArry[i] + ",";
-                else if (i == idArry.length - 1) sql += idArry[i] + ");"
+                else if (i == idArry.length - 1) sql += idArry[i] + ")"
             }
-            var sqlWords = "select batchingOrderId 配料单号,batchingDate 配料日期,createDate 创建日期,remarks 备注,wareHouseId 仓库编号,produceCompany 产废单位编号,acceptCompany 接收单位编号,batchingNumber 配料数量,handelCategory 进料方式, packageType 包装方式,unitPrice 单价, inboundOrderId 入库单号,creator 创建人,wastesCode 危废编码,wasteCategory 危废类别,processWay 处置方式, formType 物质形态 from t_pl_batchingorder  where  batchingOrderId" + sql;
+            var sqlWords = "select batchingOrderId ,("+"select  wareHouseName from t_pl_warehouse where wareHouseId in (select t_pl_batchingorder.wareHouseId from t_pl_batchingorder where batchingOrderId"+sql+")) ,produceCompany ,wastesName   ,batchingNumber ,batchingDate ,createDate  ,transferDraftId , handelCategory ,processWay  from t_pl_batchingorder  where  batchingOrderId" + sql;
 
         }
+        console.log(sqlWords)
         window.open('exportExcelBatchingOrder?name=' + name + '&sqlWords=' + sqlWords);
     }
 
