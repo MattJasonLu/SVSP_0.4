@@ -165,6 +165,7 @@ function switchPage(pageNumber) {
     //addClass("active");
     page.start = (pageNumber - 1) * page.count;
     if (!isSearch) { //分页用的
+
         $.ajax({
             type: "POST",                       // 方法类型
             url: "loadContractVolumeList",         // url
@@ -176,6 +177,7 @@ function switchPage(pageNumber) {
                 if (result != undefined) {
                     // console.log(result);
                     setContractVolume(result.data);
+
                 } else {
                     console.log("fail: " + result);
                     // setClientList(result);
@@ -598,6 +600,7 @@ function searchContract() {
 
 
     for(var i=totalPage();i>0;i--){
+
         switchPage(parseInt(i));
         array.push($('.myclass'));
     }
@@ -727,8 +730,10 @@ function searchContract() {
     }
 
 
+    $('.loader').hide();
 
     CalculateAggregate();
+
 }
 
 
