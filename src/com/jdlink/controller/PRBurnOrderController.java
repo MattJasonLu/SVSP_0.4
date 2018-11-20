@@ -417,7 +417,8 @@ public class PRBurnOrderController {
         try {
             DBUtil db = new DBUtil();
             // 设置表头
-            String tableHead = "焚烧工单号/单据状态/创建日期/备注/序号/产废单位/指标要求及来源/危废名称/比例/重量/危废热值/灰分/水分/挥发分/氯/硫/PH/磷/氟/危废备注/处置方式/进料方式/预处理暂存点";
+            String tableHead = "焚烧工单号/单据状态/创建日期/备注/序号/产废单位/指标要求及来源/危废名称/比例/重量/" +
+                    "危废热值/灰分/水分/挥发分/氯/硫/PH/磷/氟/危废备注/处置方式/进料方式/预处理暂存点";
             name = "焚烧工单";   // 重写文件名
             db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
             res.put("status", "success");
