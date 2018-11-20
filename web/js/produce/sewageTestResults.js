@@ -403,11 +403,11 @@ function setSewageTestList(result) {
 
 
 /**
- * 导出excel
+ * 化验结果导出excel
  * @param e
  */
 function exportExcel() {
-    var name = 't_pr_sewage';
+    var name = '1';
     // 获取勾选项
     var idArry = [];
     $.each($("input[name='select']:checked"), function (index, item) {
@@ -420,12 +420,48 @@ function exportExcel() {
             if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
             else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
         }
-        sqlWords = "select id as '编号', name as '污水名称',receiveDate as '污水接收日期',COD,BOD5,oxygen as '氧',nitrogen as '氮',lye as '碱液',PH,remarks as '备注' from t_pr_sewage where id" + sql;
+        sqlWords = "select id,address,replace(ph,-9999,''),replace(COD,-9999,''),replace(BOD5,-9999,''),replace(N2,-9999,''),\n" +
+            "replace(alkalinity,-9999,''),replace(alkalinityCaCo3,-9999,''),replace(alkalinityHCO3,-9999,''),replace(bicarbonate,-9999,''),\n" +
+            "replace(bicarbonateCaCo3,-9999,''),replace(bicarbonateHCO3,-9999,''),replace(nitrogen,-9999,''),replace(phosphorus,-9999,''),remarks \n" +
+            "from t_pr_sewagetest where id" + sql;
     } else {          // 若无勾选项则导出全部
-        sqlWords = "select id as '编号', name as '污水名称',receiveDate as '污水接收日期',COD,BOD5,oxygen as '氧',nitrogen as '氮',lye as '碱液',PH,remarks as '备注' from t_pr_sewage;";
+        sqlWords = "select id,address,replace(ph,-9999,''),replace(COD,-9999,''),replace(BOD5,-9999,''),replace(N2,-9999,''),\n" +
+            "replace(alkalinity,-9999,''),replace(alkalinityCaCo3,-9999,''),replace(alkalinityHCO3,-9999,''),replace(bicarbonate,-9999,''),\n" +
+            "replace(bicarbonateCaCo3,-9999,''),replace(bicarbonateHCO3,-9999,''),replace(nitrogen,-9999,''),replace(phosphorus,-9999,''),remarks \n" +
+            "from t_pr_sewagetest;";
     }
-    console.log("sql:" + sqlWords);
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    window.open('exportExcelSewage?name=' + name + '&sqlWords=' + sqlWords);
+}
+
+/**
+ * 污水日报导出excel
+ * @param e
+ */
+function exportExcel1() {
+    var name = '2';
+    // 获取勾选项
+    var idArry = [];
+    $.each($("input[name='select']:checked"), function (index, item) {
+        idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
+    });
+    var sqlWords = '';
+    var sql = ' in (';
+    if (idArry.length > 0) {
+        for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+            if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
+            else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
+        }
+        sqlWords = "select id,address,replace(ph,-9999,''),replace(COD,-9999,''),replace(BOD5,-9999,''),replace(N2,-9999,''),\n" +
+            "replace(alkalinity,-9999,''),replace(alkalinityCaCo3,-9999,''),replace(alkalinityHCO3,-9999,''),replace(bicarbonate,-9999,''),\n" +
+            "replace(bicarbonateCaCo3,-9999,''),replace(bicarbonateHCO3,-9999,''),replace(nitrogen,-9999,''),replace(phosphorus,-9999,''),remarks \n" +
+            "from t_pr_sewagetest where id" + sql;
+    } else {          // 若无勾选项则导出全部
+        sqlWords = "select id,address,replace(ph,-9999,''),replace(COD,-9999,''),replace(BOD5,-9999,''),replace(N2,-9999,''),\n" +
+            "replace(alkalinity,-9999,''),replace(alkalinityCaCo3,-9999,''),replace(alkalinityHCO3,-9999,''),replace(bicarbonate,-9999,''),\n" +
+            "replace(bicarbonateCaCo3,-9999,''),replace(bicarbonateHCO3,-9999,''),replace(nitrogen,-9999,''),replace(phosphorus,-9999,''),remarks \n" +
+            "from t_pr_sewagetest;";
+    }
+    window.open('exportExcelSewage?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**

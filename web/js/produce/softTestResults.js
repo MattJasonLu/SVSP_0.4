@@ -395,11 +395,11 @@ function setSoftTestList(result) {
 
 
 /**
- * 导出excel
+ * 软水化验结果导出excel
  * @param e
  */
 function exportExcel() {
-    var name = 't_pr_sewage';
+    var name = '1';
     // 获取勾选项
     var idArry = [];
     $.each($("input[name='select']:checked"),function(index,item){
@@ -412,12 +412,44 @@ function exportExcel() {
             if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
             else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
         }
-        sqlWords = "select id as '编号', name as '污水名称',receiveDate as '污水接收日期',COD,BOD5,oxygen as '氧',nitrogen as '氮',lye as '碱液',PH,remarks as '备注' from t_pr_sewage where id" + sql;
+        sqlWords = "select id,address,replace(turbidity,-9999,''),replace(hardness,'-9999',''),replace(PH,-9999,''),\n" +
+            "replace(electricalConductivity,'-9999',''),replace(basicity,'-9999',''),replace(phenolphthalein,'-9999',''),remarks\n" +
+            " from t_pr_softest where id" + sql;
     }else {          // 若无勾选项则导出全部
-        sqlWords = "select id as '编号', name as '污水名称',receiveDate as '污水接收日期',COD,BOD5,oxygen as '氧',nitrogen as '氮',lye as '碱液',PH,remarks as '备注' from t_pr_sewage;";
+        sqlWords = "select id,address,replace(turbidity,-9999,''),replace(hardness,'-9999',''),replace(PH,-9999,''),\n" +
+            "replace(electricalConductivity,'-9999',''),replace(basicity,'-9999',''),replace(phenolphthalein,'-9999',''),remarks\n" +
+            "from t_pr_softest;";
     }
-    console.log("sql:"+sqlWords);
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    window.open('exportExcelSoftWater?name=' + name + '&sqlWords=' + sqlWords);
+}
+
+/**
+ * 软水日报导出excel
+ * @param e
+ */
+function exportExcel1() {
+    var name = '2';
+    // 获取勾选项
+    var idArry = [];
+    $.each($("input[name='select']:checked"),function(index,item){
+        idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
+    });
+    var sqlWords = '';
+    var sql = ' in (';
+    if (idArry.length > 0) {
+        for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+            if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
+            else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
+        }
+        sqlWords = "select id,address,replace(turbidity,-9999,''),replace(hardness,'-9999',''),replace(PH,-9999,''),\n" +
+            "replace(electricalConductivity,'-9999',''),replace(basicity,'-9999',''),replace(phenolphthalein,'-9999',''),remarks\n" +
+            " from t_pr_softest where id" + sql;
+    }else {          // 若无勾选项则导出全部
+        sqlWords = "select id,address,replace(turbidity,-9999,''),replace(hardness,'-9999',''),replace(PH,-9999,''),\n" +
+            "replace(electricalConductivity,'-9999',''),replace(basicity,'-9999',''),replace(phenolphthalein,'-9999',''),remarks\n" +
+            "from t_pr_softest;";
+    }
+    window.open('exportExcelSoftWater?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**

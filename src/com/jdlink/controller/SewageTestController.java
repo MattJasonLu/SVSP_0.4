@@ -3,6 +3,7 @@ package com.jdlink.controller;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.service.produce.SewageTestService;
+import com.jdlink.util.DBUtil;
 import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -296,14 +299,7 @@ public class SewageTestController {
                     }
 
                 }
-
-
-
-
-
-
             }
-
             res.put("status", "success");
             res.put("message", "软水化验单导入成功");
         }
@@ -313,8 +309,38 @@ public class SewageTestController {
             res.put("message", "软水化验单导入失败");
         }
         return res.toString();
+    }
 
-
+    /**
+     * 导出(带表头字段)
+     *
+     * @param name
+     * @param response
+     * @param sqlWords
+     * @return
+     */
+    @RequestMapping("exportExcelSoftWater")
+    @ResponseBody
+    public String exportExcelSoftWater(String name, HttpServletResponse response, String sqlWords) {
+        JSONObject res = new JSONObject();
+        try {
+            DBUtil db = new DBUtil();
+            // 设置表头
+            String tableHead = "序号/采样点/浊度/硬度/PH/电导率/全碱度/酚酞碱度/备注";
+            if(name.equals("1")){
+                name = "软水化验单";   // 重写文件名
+            }else{
+                name = "软水分析日报";   // 重写文件名
+            }
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+        }
+        return res.toString();
     }
 
     /**
@@ -1136,8 +1162,39 @@ public class SewageTestController {
             res.put("message", "作废失败");
 
         }
+        return res.toString();
+    }
 
-
+    /**
+     * 导出(带表头字段)
+     *
+     * @param name
+     * @param response
+     * @param sqlWords
+     * @return
+     */
+    @RequestMapping("exportExcelSewage")
+    @ResponseBody
+    public String exportExcel(String name, HttpServletResponse response, String sqlWords) {
+        JSONObject res = new JSONObject();
+        try {
+            DBUtil db = new DBUtil();
+            // 设置表头
+            String tableHead = "样品编号/采样点/PH/COD/BOD5/氨氮/碳酸盐碱度(Cao)/碳酸盐碱度(CaCo3)/碳酸盐碱度(HCo3-)/重碳酸盐碱度(Cao)/" +
+                    "重碳酸盐碱度(CaCo3)/重碳酸盐碱度(HCo3-)/总氮/总磷/备注";
+            if(name.equals("1")){
+                  name = "污水化验结果";
+            }else{
+                name = "污水分析日报";
+            }
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+        }
         return res.toString();
     }
 
