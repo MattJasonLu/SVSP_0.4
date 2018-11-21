@@ -288,6 +288,7 @@ function inputSwitchPage() {
 
 /**加载合约量统计页面*/
 function loadContractVolumeList() {
+
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
@@ -300,6 +301,13 @@ function loadContractVolumeList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
+    if(array0.length==0){
+        for (var i = 1; i <= totalPage(); i++) {
+            switchPage(parseInt(i));
+
+            array0.push($('.myclass'));
+        }
+    }
     $.ajax({
         type: "POST",                       // 方法类型
         url: "loadContractVolumeList",          // url
@@ -309,9 +317,12 @@ function loadContractVolumeList() {
         contentType: 'application/json;charset=utf-8',
         success: function (result) {
             if (result != undefined && result.status == 'success') {
-                console.log(result);
+                // $("#ajaxloader,#ajaxloader_zz").fadeOut("normal");
+                // $("#ajaxloader,#ajaxloader_zz").remove();
+                $('.loader').hide();
                 setPageClone(result.data);
                 setPageCloneAfter(pageNumber);        // 重新设置页码
+
             } else {
                 console.log("fail: " + result);
             }
@@ -324,13 +335,7 @@ function loadContractVolumeList() {
     console.log("初始化的长度:"+array0.length)
 
     isSearch = false;
-    if(array0.length==0){
-        for (var i = 1; i <= totalPage(); i++) {
-            switchPage(parseInt(i));
 
-            array0.push($('.myclass'));
-        }
-    }
     switchPage(1)
 
 
@@ -338,6 +343,18 @@ function loadContractVolumeList() {
 
 
 
+}
+
+function run(){
+    var bar = document.getElementById("bar");
+    var total = document.getElementById("total");
+    bar.style.width=parseInt(bar.style.width) + 1 + "%";
+    total.innerHTML = bar.style.width;
+    if(bar.style.width == "100%"){
+        window.clearTimeout(timeout);
+        return;
+    }
+    var timeout=window.setTimeout("run()",100);
 }
 
 /**
@@ -408,8 +425,22 @@ function setContractVolume(result) {
 
 
 
+function loader(m) {
+    var left = (window.innerWidth / 2) - 83;
+    var top = window.innerHeight / 2 - 60;
+    var height = 50;
+    var html =
+        '<div id="ajaxloader_zz" style="z-index: 9999998; position: absolute; top: 0px; left: 0; width: 100%; height: 100%; opacity: 0; "></div>' +
+        '<div id="ajaxloader" style="width:200px;height:100px; text-align:center;background-color:snow;border-radius:5px; position:fixed;top:' + top + 'px;left:' + left + 'px;z-index:9999999;">' +
+        '<table style="vertical-align:middle;text-align:center; width:100%;height:100%;">' +
+        '<tr><td><div style="margin-top:20px;"><img src="../images/loading.gif" /></div></td></tr>' +
+        '<tr><td><span style="color:black;font-family:Helvetica-Regular;font-weight:bold;font-size:16px">' + m + '</span></td></tr></table></div>';
+    return html;
+}
 
 $(document).ready(function () {//页面载入是就会进行加载里面的内容
+    // $("body").append(loader("请稍候..."));
+    $('.loader').show();
     var last;
     $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
