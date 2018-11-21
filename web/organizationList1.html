@@ -28,12 +28,12 @@
             addHoverDom: addHoverDom,     //鼠标悬停时显示用户自定义的控件，如zTree内部的编辑，删除等
             removeHoverDom: removeHoverDom,//鼠标失去悬停焦点时隐藏用户自定义的控件
             selectedMulti: false,         //设置是否允许同事选中多个节点
-            fontCss: { 'font-family': '宋体' } // 设置字体
+            fontCss: { } // 设置字体
         },
         edit: {
             enable: true,                  //设置zTree是否处于编辑状态
             editNameSelectAll: true,    //节点编辑名称input初次显示时，设置txt内容是否为权限状态
-            removeTitle: "删除1",            // 设置删除按钮名称
+            removeTitle: "删除",            // K
             renameTitle: "编辑",        // 设置修改按钮名称
             showRemoveBtn: true,   // 控制是否显示删除按钮
             showRenameBtn: true    // 控制是否显示修改按钮
@@ -260,11 +260,11 @@
                         if (data[i].id < 10 || (data[i].id == 11)) // 公司默认展开
                             organization.open = true;   // 设置下拉是否展开
                         if (data[i].id < 10) { // 设置功能图标
-                            organization.icon = "";
+                            organization.icon = "image/organization-company.png";
                         } else if (data[i].id < 100) { // 设置部门图标
-                            organization.icon = "";
+                            organization.icon = "image/organization-department.png";
                         } else if (data[i].id < 1000) { // 设置项目组图标
-                            organization.icon = "";
+                            organization.icon = "image/organization-team.png";
                         }
                         zNodes.push(organization);  // 将节点添加到LIST中
                     }
