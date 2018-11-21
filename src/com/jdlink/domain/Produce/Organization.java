@@ -1,5 +1,7 @@
 package com.jdlink.domain.Produce;
 
+import java.util.Date;
+
 public class Organization {
     /**
      * 主节点
@@ -40,14 +42,50 @@ public class Organization {
     /**
      * 图标(菜单)
      */
-    private String picture;
+    private String icon;
+    /**
+     * 创建人（菜单）
+     */
+    private String founder;
+    /**
+     * 创建日期（菜单）
+     */
+    private Date creationDate;
+    /**
+     * 菜单层级（菜单）
+     */
+    private int level;
 
-    public String getPicture() {
-        return picture;
+    public String getFounder() {
+        return founder;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setFounder(String founder) {
+        this.founder = founder;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public String getUrl() {
