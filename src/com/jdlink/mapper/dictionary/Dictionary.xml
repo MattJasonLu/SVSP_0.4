@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdlink.mapper.dictionary.DictionaryMapper" >
+
+ <!--查询主表个数，便于赋值主键-->
+    <select id="getIdCount" resultType="int">
+        select count(*) from datadictionary;
+    </select>
+
+
+    <!--主表新增-->
+    <insert id="addDataDictionary" parameterType="DataDictionary">
+        insert into datadictionary(dictionaryType, dictionaryName, dateTime) values
+        (#{dictionaryType},#{dictionaryName},NOW())
+    </insert>
+
+    <!--字表新建-->
+    <insert id="addDataDictionaryItem" parameterType="DataDictionaryItem">
+        insert into datadictionaryitem (dataDictionaryId, dictionaryItemType, dictionaryItemName) values
+        (#{dataDictionaryId},#{dictionaryItemType},#{dictionaryItemName})
+    </insert>
+
+    <!--根据创建时间寻找最新的主表编号-->
+    <select id="getNewestId" resultType="int">
+        select dataDictionaryId from datadictionary order by  dateTime limit 0,1;
+    </select>
+
+
+    <resultMap id="DataDictionaryRM" type="DataDictionary" autoMapping="true">
+        <result property="dataDictionaryId" column="dataDictionaryId"></result>
+        <result property="dateTime" column="dateTime"></result>
+        <collection property="dataDictionaryItemList" column="dataDictionaryId" select="getDataDictionaryItemList"></collection>
+    </resultMap>
+
+    <!--查询明细-->
+    <select id="getDataDictionaryItemList" resultType="DataDictionaryItem">
+        select * from datadictionaryitem where dataDictionaryId=#{dataDictionaryId}
+    </select>
+    <!--加载页面数据-->
+    <select id="getDictionariesDataList" resultMap="DataDictionaryRM">
+        select * from datadictionary
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <!--根据主键获取字典信息-->
+    <select id="getDataDictionaryById" parameterType="String" resultMap="DataDictionaryRM">
+        select * from datadictionary where dataDictionaryId=#{dataDictionaryId}
+    </select>
+
+    <!--更新主表-->
+    <update id="updateDataDictionary" parameterType="DataDictionary">
+        update datadictionary set dictionaryType=#{dictionaryType},dictionaryName=#{dictionaryName} where dataDictionaryId=#{dataDictionaryId}
+    </update>
+
+    <!--更新后删除字表-->
+    <update id="deleteDataDictionaryById" parameterType="int">
+        delete from  datadictionaryitem where  dataDictionaryId=#{dataDictionaryId}
+    </update>
+</mapper>

@@ -15,6 +15,8 @@
     <script src="js/business/contractVolume.js"></script>
     <script src="js/util.js"></script>
     <script src="js/dist/circleChart.es5.min.js"></script>
+    <!--<link href="css/loading1.css" rel="stylesheet">-->
+    <!--<link href="css/loading2.css" rel="stylesheet">-->
 </head>
 
 <body onload="loadContractVolumeList();keyLogin()">
@@ -121,7 +123,7 @@
                 <li><a class="withripple" href="procurementManagement.html"id="function_9" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span class="iright pull-right">&gt;</span></a></li>
                 <li><a class="withripple" href="reportManagement.html"id="function_10" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
                 <li><a class="withripple" href="basicData.html" id="function_11" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="#" id="function_12" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="infrastructure.html" id="function_12" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
             </ul>
         </div>
     </div>
@@ -298,6 +300,13 @@
         </nav>
     </div>
 </div>
+<div class="loader hidden">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+</div>
 <!--查看页面模态框-->
 <div class="modal fade bs-example-modal-lg" id="stockInfoForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document" id="print1">
@@ -373,7 +382,7 @@
         </div>
     </div>
 </div>
-!--审批页面-->
+<!--审批页面-->
 <div class="modal fade" id="contractInfoForm3" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
