@@ -15,7 +15,7 @@ function totalPage() {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "totalCompatibilityRecord",                  // url
+            url: "totalDataDictionaryCount",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             contentType: "application/json; charset=utf-8",
@@ -243,14 +243,14 @@ function switchPage(pageNumber) {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "getList1",         // url
+            url: "getDictionariesDataList",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(page),
             dataType: "json",
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined) {
-                    setCompatibility(result);
+                    setDataDictionary(result);
                 } else {
                     console.log("fail: " + result);
                 }
@@ -263,7 +263,7 @@ function switchPage(pageNumber) {
     else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchCompatibilityTotal",                  // url
+            url: "searchDictionaryCount",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
@@ -329,7 +329,7 @@ function inputSwitchPage() {
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "getList1",         // url
+                url: "getDictionariesDataList",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(page),
                 dataType: "json",
@@ -337,7 +337,7 @@ function inputSwitchPage() {
                 success: function (result) {
                     if (result != undefined) {
                         console.log(result);
-                        setCompatibility(result);
+                        setDataDictionary(result);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -349,7 +349,7 @@ function inputSwitchPage() {
         } else {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "searchCompatibilityTotal",                  // url
+                url: "searchDictionaryCount",                  // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data1),
                 dataType: "json",
@@ -617,6 +617,7 @@ function edit(item) {
                         clonedTr.children('td').eq(0).append(delBtn)
                     }
                     clonedTr.children('td').eq(1).find('input').val(data.dictionaryItemName)
+                    clonedTr.children('td').eq(2).html(data.dataDictionaryItemId)
                     clonedTr.insertBefore(tr);
 
 
@@ -653,6 +654,7 @@ function adjust() {
             if (result != undefined && result.status == "success"){
                 $('.myclass3').each(function () {
                     var dataItem={
+                        dataDictionaryItemId:$(this).children('td').eq(2).html(),
                         dataDictionaryId:$('#dataDictionaryId2').val(),
                         dictionaryItemType:$(this).children('td').eq(0).find('input').val(),
                         dictionaryItemName:$(this).children('td').eq(1).find('input').val(),
@@ -680,4 +682,94 @@ function adjust() {
 
 
 
+}
+
+
+/**
+ * 延时自动查询
+ */
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    // 主页
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp=== 0){
+                searchData();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchData();      //
+            }
+        },600);
+    });
+    // 新增页面
+    $('#searchContent1').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp=== 0){
+                search1();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                search1();      //
+            }
+        },600);
+    });
+});
+
+/**
+ * 查询功能
+ */
+function searchData() {
+    isSearch = true;
+    var page = {};
+    var pageNumber = 1;                       // 显示首页
+    page.pageNumber = pageNumber;
+    page.count = countValue();
+    page.start = (pageNumber - 1) * page.count;
+    var state = null;
+    if ($("#search-state").val() == 0) state = "NewBuild";//新建
+    if ($("#search-state").val() == 1) state = "Invalid";//已作废
+    if ($("#search-state").val() == 2) state = "OutBounded";//已出库
+    var keywords = $.trim($("#searchContent").val());
+
+    if ($("#senior").is(':visible')) {
+        data1 = {
+            id: $.trim($("#search-Id").val()),
+            department: $.trim($("#search-department").val()),
+            name: $.trim($("#search-name").val()),
+            specification: $.trim($("#search-specification").val()),
+            wareHouseName: $.trim($("#search-wareHouseName").val()),
+            startDate: $("#search-startDate").val(),
+            endDate: $("#search-endDate").val(),
+            state: state,
+            page: page
+        };
+    } else {
+        data1 = {
+            keywords: keywords,
+            page: page
+        };
+    }
+    if (data1 == null) alert("请输入查询内容!");
+    else {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "searchDictionary",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                console.log(result);
+                if (result.data != undefined || result.status == "success") {
+                    setPageClone(result);
+                    setPageCloneAfter(pageNumber);        // 重新设置页码
+                } else {
+                    console.log(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器错误！");
+            }
+        });
+    }
 }

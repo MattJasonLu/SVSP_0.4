@@ -171,4 +171,32 @@ public class DictionaryController {
 
         return res.toString();
     }
+
+   //数据字典查询
+    @RequestMapping("searchDictionary")
+    @ResponseBody
+    public String searchDictionary(@RequestBody DataDictionary dataDictionary){
+        JSONObject res=new JSONObject();
+
+        try {
+             List<DataDictionary> dataDictionaryList=dictionaryService.searchDictionary(dataDictionary);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", dataDictionaryList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+             return res.toString();
+    }
+
+    //数据字典查询计数
+    @RequestMapping("searchDictionaryCount")
+    @ResponseBody
+    public int searchDictionaryCount(@RequestBody DataDictionary dataDictionary){
+
+        return dictionaryService.searchDictionaryCount(dataDictionary);
+    }
 }
