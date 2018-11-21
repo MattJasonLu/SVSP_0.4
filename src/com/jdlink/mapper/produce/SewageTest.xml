@@ -102,7 +102,7 @@
 
     <!--更新次生化验单-->
     <update id="updateSecondaryTestById" parameterType="SecondaryTest">
-        update t_pr_secondarytest set dateTime=#{dateTime}, wastesName=#{wastesName},
+        update t_pr_secondarytest set wastesName=#{wastesName},
         scorchingRate=#{scorchingRate},water=#{water},remarks=#{remarks},nowTime=NOW() where id=#{id}
     </update>
 

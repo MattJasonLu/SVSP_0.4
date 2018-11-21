@@ -1087,7 +1087,7 @@ function setSubmit(item) {
         alert("单据已收样,无法收样")
     }
 
-    if($(item).parent().parent().children('td').eq(6).html()!='已收样'){
+    if($(item).parent().parent().children('td').eq(6).html()=='待收样'){
         var id=$(item).parent().parent().children('td').eq(1).html();
         console.log(id)
         $("#appointModa2").modal('show');
