@@ -4,6 +4,7 @@ import com.jdlink.domain.*;
 import com.jdlink.domain.Inventory.RecordState;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.service.PretreatmentService;
+import com.jdlink.util.DBUtil;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONArray;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -377,6 +380,28 @@ public class PRPretreatmentController {
         }
         return res.toString();
     }
+    /**
+     * 确认功能
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping("confirmPretreatment")
+    @ResponseBody
+    public String confirmPretreatment(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            pretreatmentService.confirm(id);
+            res.put("status", "success");
+            res.put("message", "确认成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "确认失败");
+        }
+        return res.toString();
+    }
+
 
     @RequestMapping("adjustPretreatment")
     @ResponseBody
@@ -483,6 +508,32 @@ public class PRPretreatmentController {
         return res.toString();
     }
 
-
+    /**
+     * 导出(带表头字段)
+     *
+     * @param name
+     * @param response
+     * @param sqlWords
+     * @return
+     */
+    @RequestMapping("exportExcelPretreatment")
+    @ResponseBody
+    public String exportExcel(String name, HttpServletResponse response, String sqlWords) {
+        JSONObject res = new JSONObject();
+        try {
+            DBUtil db = new DBUtil();
+            // 设置表头
+            String tableHead = "预处理单号/危废序号/产废单位/指标要求及来源/危废名称/比例/重量/危废热值/灰分/水分/挥发分/氯/硫/PH/磷/氟/备注/处置方式/进料方式/单据状态";
+            name = "预处理单";   // 重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+        }
+        return res.toString();
+    }
 
 }

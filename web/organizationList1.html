@@ -2,20 +2,19 @@
 <HTML>
 <HEAD>
     <TITLE>组织架构管理表</TITLE>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <!--<meta http-equiv="content-type" content="text/html; charset=UTF-8">-->
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
-    <script src="js/jquery/jquery2.0.3/jquery-2.0.3.min.js"></script>
-    <script src="js/jquery/jquery2.0.3/jquery-2.0.3.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
-    <link href="css/bootstrap/3.3.6/bootstrap.css" rel="stylesheet">
-    <script src="js/data-format.js"></script>
+    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
+    <!--<script src="js/data-format.js"></script>-->
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <link rel="stylesheet" href="zTree_v3-master/css/demo.css" type="text/css">
+    <!--<link rel="stylesheet" href="zTree_v3-master/css/demo.css" type="text/css">--><!--会改变原有样式-->
     <link rel="stylesheet" href="zTree_v3-master/css/zTreeStyle/zTreeStyle.css" type="text/css">
     <script type="text/javascript" src="zTree_v3-master/js/jquery-1.4.4.min.js"></script>
     <script type="text/javascript" src="zTree_v3-master/js/jquery.ztree.core.js"></script>
@@ -28,7 +27,8 @@
         view: {
             addHoverDom: addHoverDom,     //鼠标悬停时显示用户自定义的控件，如zTree内部的编辑，删除等
             removeHoverDom: removeHoverDom,//鼠标失去悬停焦点时隐藏用户自定义的控件
-            selectedMulti: false          //设置是否允许同事选中多个节点
+            selectedMulti: false,         //设置是否允许同事选中多个节点
+            fontCss: { 'font-family': '宋体' } // 设置字体
         },
         edit: {
             enable: true,                  //设置zTree是否处于编辑状态
@@ -80,25 +80,6 @@
 
     var log, className = "dark";
 
-    function beforeDrag(treeId, treeNodes) {
-        return false;
-    }
-
-    function beforeEditName(treeId, treeNode) {
-        className = (className === "dark" ? "" : "dark");
-        showLog("[ " + getTime() + " beforeEditName ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
-        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-        zTree.selectNode(treeNode);
-        setTimeout(function () {
-            // if (confirm("进入节点 -- " + treeNode.name + " 的编辑状态吗？")) {
-            setTimeout(function () {
-                zTree.editName(treeNode);
-            }, 0);
-            //  }
-        }, 0);
-        return false;
-    }
-
     function beforeRemove(treeId, treeNode) {
         return confirm("确认删除" + treeNode.name + " 吗？");
     }
@@ -135,20 +116,6 @@
         }
     }
 
-    function beforeRename(treeId, treeNode, newName, isCancel) {
-        className = (className === "dark" ? "" : "dark");
-        showLog((isCancel ? "<span style='color:red'>" : "") + "[ " + getTime() + " beforeRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>" : ""));
-        if (newName.length == 0) {
-            setTimeout(function () {
-                var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-                zTree.cancelEditName();
-                alert("节点名称不能为空.");
-            }, 0);
-            return false;
-        }
-        return true;
-    }
-
     /**
      * 重命名
      * */
@@ -179,16 +146,6 @@
                 }
             });
         }
-    }
-
-    function showRemoveBtn(treeId, treeNode) {
-        //return !treeNode.isFirstNode;
-        return false;
-    }
-
-    function showRenameBtn(treeId, treeNode) {
-        //return !treeNode.isLastNode;
-        return true;
     }
 
     function showLog(str) {
