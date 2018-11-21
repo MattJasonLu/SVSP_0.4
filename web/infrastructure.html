@@ -2,25 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>配伍周计划</title>
+    <title>产废服务平台</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
-    <script src="js/data-format.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/materialDemand.js"></script>
-    <script src="js/produce/compatibility.js"></script>
-    <script src="js/produce/weekPlan.js"></script>
 </head>
-<script type="text/javascript">
-    $('#embed').load('embed/loginLogModal.html');     //当前页数
-</script>
-<body onload="adjustCom()">
+<style>
+    .sidebar-collapse .sidenav > li > a:after {color: rgb(229,229,229);background-color: rgb(17,79,142)}
+    .sidebar-collapse .sidenav > li > a:visited{
+        color: rgb(229,229,229);
+        background-color: #0088cc;
+    }
+    .sidebar-collapse .sidenav > li > a:hover {
+        color: rgb(229,229,229);
+        background-color: #0088cc;
+    }
+    .sidebar-collapse .sidenav > li > a:active{
+        color: rgb(229,229,229);
+        background-color: #0088cc;
+    }
+    .sidebar-collapse .sidenav > li > a:after{
+        color: rgb(229,229,229);
+        background-color: #0088cc;
+    }
+</style>
+<body>
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -32,16 +44,16 @@
             </li>
         </ul>
     </div>
-    <div class="container navbar-left" style="width: 920px;">
+    <div class="container navbar-left" style="width: 70%;">
         <div class="navbar-header">
             <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
         </div>
         <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
             <ul class="nav navbar-nav">
-                <li><a href="basicData.html">首页</a></li>
+                <li class="active"><a href="basicData.html">首页</a></li>
                 <li><a href="invoice.html">企业信息</a></li>
                 <li><a href="Conlog.html">登录日志</a></li>
-                <li class="dropdown active">
+                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">账号管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -57,6 +69,7 @@
                 <li><a href="thresholdTableList.html">处置类别阈值表</a></li>
                 <li><a href="documentControl.html">受控文档表</a></li>
                 <li><a href="contractCommission.html">合同提成比例计算</a></li>
+                <li><a href="dictionariesData.html">数据字典</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
@@ -73,6 +86,7 @@
         </li>
     </ul>
 </nav>
+
 <div class="container-fluid">
     <div class="row">
         <div class="sidebar">
@@ -88,73 +102,24 @@
                 <li><a class="withripple" href="secondaryManagement.html"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
                 <li><a class="withripple" href="procurementManagement.html"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span class="iright pull-right">&gt;</span></a></li>
                 <li><a class="withripple" href="reportManagement.html"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li class="active"><a class="withripple" href="basicData.html"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="infrastructure.html"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="basicData.html"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li class="active"><a class="withripple" href="infrastructure.html"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
             </ul>
         </div>
     </div>
 
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main ">
-        <h4 class="sub-header">产废单位信息编辑</h4>
-        <table class="table table-bordered">
-            <tr>
-                <td class="text-center" style="width: 150px;">企业名称</td>
-                <td class="text-center" style="width: 750px;"><input id="companyName" title=""></td>
-                <td class="text-center" style="width: 150px;">组织机构代码</td>
-                <td class="text-center" style="width: 750px;"><input id="organizationCode" title=""></td>
-            </tr>
-            <tr>
-                <td class="text-center" style="width: 150px;">法人代表</td>
-                <td class="text-center" style="width: 750px;"><input id="representative" title=""></td>
-                <td class="text-center" style="width: 150px;">所属行业</td>
-                <td class="text-center" style="width: 750px;"><input id="industry" title=""></td>
-            </tr>
-            <tr>
-                <td class="text-center" style="width: 150px;">企业类型</td>
-                <td class="text-center" style="width: 750px;"><input id="enterpriseType" title=""></td>
-                <td class="text-center" style="width: 150px;">经营单位类别</td>
-                <td class="text-center" style="width: 750px;"><input id="operationType" title=""></td>
-            </tr>
-            <tr>
-                <td class="text-center" style="width: 150px;">危废经营记录情况</td>
-                <td class="text-center" style="width: 750px;"><input id="operationRecord" title=""></td>
-                <td class="text-center" style="width: 150px;">所属街道</td>
-                <td class="text-center" style="width: 750px;"><input id="street" title=""></td>
-            </tr>
-            <tr>
-                <td class="text-center" style="width: 150px;">产废单位编码</td>
-                <td class="text-center" style="width: 750px;"><input id="clientId" title=""></td>
-                <td class="text-center" style="width: 150px;">营业执照注册号</td>
-                <td class="text-center" style="width: 750px;"><input id="licenseCode" title=""></td>
-            </tr>
-            <tr>
-                <td class="text-center" style="width: 150px;">工商注册地邮编</td>
-                <td class="text-center" style="width: 750px;"><input id="postCode" title=""></td>
-                <td class="text-center" style="width: 150px;">主要产品</td>
-                <td class="text-center" style="width: 750px;"><input id="product" title=""></td>
-            </tr>
-            <tr>
-                <td class="text-center" style="width: 150px;">经营方式</td>
-                <td class="text-center" style="width: 750px;"><input id="operationMode" title=""></td>
-                <td class="text-center" style="width: 150px;">事故防范应急预案</td>
-                <td class="text-center" style="width: 750px;"><input id="contingencyPlan" title=""></td>
-            </tr>
-            <tr>
-                <td class="text-center" style="width: 150px;">申报状态</td>
-                <td class="text-center" style="width: 750px;"><input id="applicationStatus" title=""></td>
-                <td class="text-center" style="width: 150px;">工商注册地址</td>
-                <td class="text-center" style="width: 750px;"><input id="location" title=""></td>
-            </tr>
-        </table>
-        <div class="row text-center">
-            <!--<input type="submit"  value="保存"   class="btn btn-primary" onclick="contractWastesSave()"/>-->
-            <a class="btn btn-success" onclick="adjustConfirm()">确认修改</a>
-            <!--<a class="btn btn-primary" onclick="contractWastesSubmit()">提交</a>-->
-            <a class="btn btn-danger" href="weekPlan.html" id="back">返回</a>
-        </div>
-        <br>
-    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"></div>
 </div>
 <div id="embed"></div>
 </body>
+<style>
+    img {
+        width: 80px;
+        height: 80px;
+        border-radius: 1px;
+    }
+</style>
+<script>
+    $('#embed').load('embed/loginLogModal.html');
+</script>
 </html>
