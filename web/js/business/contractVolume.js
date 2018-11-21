@@ -195,7 +195,11 @@ function switchPage(pageNumber) {
         }
         var i=parseInt((pageNumber-1)*countValue());
         var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
+        var index=0;
         for(var i=i;i<=j;i++){
+            index++
+            $(array1[i]).children('td').eq(1).html(index)
+            $('#cloneTr').hide()
             $('#tbody1').append(array1[i]);
             $(array1[i]).show();
         }
@@ -232,6 +236,7 @@ function inputSwitchPage() {
             $("#next").removeClass("disabled");
             $("#endPage").removeClass("disabled");
         }
+        addPageClass(pageNumber);           // 设置页码标蓝
         currentPage = pageNumber;
         setPageCloneAfter(pageNumber);        // 重新设置页码
         addPageClass(pageNumber);           // 设置页码标蓝
@@ -268,8 +273,12 @@ function inputSwitchPage() {
             }
             var i = parseInt((pageNumber - 1) * countValue());
             var j = parseInt((pageNumber - 1) * countValue()) + parseInt(countValue() - 1);
+            var index=0;
             for (var i = i; i <= j; i++) {
+                index++
+                $(array1[i]).children('td').eq(1).html(index)
                 $('#tbody1').append(array1[i]);
+                $('#cloneTr').hide()
                 $(array1[i]).show();
             }
         }
@@ -312,8 +321,18 @@ function loadContractVolumeList() {
             console.log("失败");
         }
     });
+    console.log("初始化的长度:"+array0.length)
 
     isSearch = false;
+    if(array0.length==0){
+        for (var i = 1; i <= totalPage(); i++) {
+            switchPage(parseInt(i));
+
+            array0.push($('.myclass'));
+        }
+    }
+    switchPage(1)
+
 
     CalculateAggregate() ;
 
@@ -383,64 +402,7 @@ function setContractVolume(result) {
 
 }
 
-/**
- * 省略显示页码
- */
-function setPageCloneAfter(currentPageNumber) {
-    var total = totalPage();
-    var pageNumber = 5;         // 页码数
-    if (total > pageNumber) { // 大于5页时省略显示
-        $(".beforeClone").remove();          // 删除之前克隆页码
-        $("#next").prev().hide();            // 将页码克隆模板隐藏
-        if (currentPageNumber <= (parseInt(pageNumber/2) + 1)) {   // 如果pageNumber = 5,当前页小于3显示前五页
-            for (var i = 0; i < pageNumber; i++) {
-                var li = $("#next").prev();
-                var clonedLi = li.clone();
-                clonedLi.show();
-                clonedLi.find('a:first-child').text(i + 1);          // 页数赋值
-                clonedLi.find('a:first-child').click(function () {    // 设置点击事件
-                    var num = $(this).text();
-                    switchPage(num);        // 跳转页面
-                });
-                clonedLi.addClass("beforeClone");
-                clonedLi.removeAttr("id");
-                clonedLi.insertAfter(li);
-            }
-        } else if(currentPageNumber <= total - parseInt(pageNumber/2)){  // 如果pageNumber = 5,大于3时显示其前后两页
-            for (var i = currentPage - parseInt(pageNumber/2); i <= parseInt(currentPage) + parseInt(pageNumber/2); i++) {
-                var li = $("#next").prev();
-                var clonedLi = li.clone();
-                clonedLi.show();
-                clonedLi.find('a:first-child').text(i);          // 页数赋值
-                clonedLi.find('a:first-child').click(function () {    // 设置点击事件
-                    var num = $(this).text();
-                    switchPage(num);        // 跳转页面
-                });
-                clonedLi.addClass("beforeClone");
-                clonedLi.removeAttr("id");
-                clonedLi.insertAfter(li);
-            }
-        } else if(currentPageNumber > total - parseInt(pageNumber/2)){    // 如果pageNumber = 5,显示最后五页
-            for (var i = total - pageNumber + 1; i <= total; i++) {
-                var li = $("#next").prev();
-                var clonedLi = li.clone();
-                clonedLi.show();
-                clonedLi.find('a:first-child').text(i);          // 页数赋值
-                clonedLi.find('a:first-child').click(function () {    // 设置点击事件
-                    var num = $(this).text();
-                    switchPage(num);        // 跳转页面
-                });
-                clonedLi.addClass("beforeClone");
-                clonedLi.removeAttr("id");
-                clonedLi.insertAfter(li);
-            }
-        }
-    }
-    if(currentPageNumber == 1){
-        $("#previous").next().next().eq(0).addClass("oldPageClass");
-        $("#previous").next().next().eq(0).addClass("active");       // 将首页页码标蓝
-    }
-}
+
 
 
 
@@ -474,24 +436,15 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 //合约量粗查询
 
 function searchFuzzy() {
-    // $("#circleChart").show();
-    isSearch=false;
-    //分页模糊查询
-    array.length=0;//清空数组
 
-    array1.length=0;
-    // console.log("刚进来:"+end)
 
-    for (var i = totalPage(); i > 0; i--) {
-        switchPage(parseInt(i));
-        // $("#circleChart").circleChart({
-        //     size:200,
-        //     value:100,
-        //     text: '加载中', // 进度条内容
-        //
-        // });
-        array.push($('.myclass'));
-    }
+    $('#tbody1').empty();
+     array.length=0;//清空数组
+    array1.length=0;//清空数组
+     array=[].concat(array0);
+
+
+
 
     isSearch=true;
 
@@ -508,6 +461,8 @@ function searchFuzzy() {
             }
         });
     }
+
+    console.log(array1)
     var total;
 
     if(array1.length%countValue()==0){
@@ -545,29 +500,31 @@ function searchFuzzy() {
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
+    setPageCloneAfter(1);
 
     for(var i=0;i<array1.length;i++){
         array1[i].hide();
     }
 
+
+
     for(var i=0;i<countValue();i++){
+        $(array1[i]).children('td').eq(1).html(i+1)
         $(array1[i]).show();
-        $('#tbody1').append((array1[i]));
 
-
+        $('#tbody1').append($(array1[i]));
     }
+    console.log(array1)
 
+  var tr=  "<tr id='cloneTr'><td class='text-center'> <label> <input class='checkbox' type='checkbox' id='blankCheckbox1'  name='blankCheckbox1'  value='option1' > </label> </td><!--checkbox--> <td class='text-center'></td><!--编号--> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> </tr>"
+    $('#tbody1').append($(tr));
 
-    //  end=1;
-    //
-    // if(end==1){
-    //
-    // }
 
     // $("#circleChart").hide();
     CalculateAggregate() ;
 
     if(text.length<=0){
+        $('#tbody1').find('.myclass').empty();
         loadContractVolumeList();
     }
 }
@@ -575,9 +532,11 @@ function searchFuzzy() {
 
 //合约量高级查询
 function searchContract() {
-    isSearch=false;
+
+    $('#tbody1').empty();
     array.length=0;//清空数组
-    array1.length=0;
+    array1.length=0;//清空数组
+    array=[].concat(array0);
 
     var text=$.trim($('#searchContent').val());//输入框
 
@@ -596,19 +555,6 @@ function searchContract() {
     var startDate=getDateByStr(beginTime);
 
     var endDate=getDateByStr(endTime);
-
-
-
-    for(var i=totalPage();i>0;i--){
-
-        switchPage(parseInt(i));
-        array.push($('.myclass'));
-    }
-    console.log(array.length)
-
-
-
-
 
 
 
@@ -719,7 +665,7 @@ function searchContract() {
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
-
+    setPageCloneAfter(1);
     for(var i=0;i<array1.length;i++){
         array1[i].hide();
     }
@@ -728,9 +674,10 @@ function searchContract() {
         $(array1[i]).show();
         $('#tbody1').append((array1[i]));
     }
+    var tr=  "<tr id='cloneTr'><td class='text-center'> <label> <input class='checkbox' type='checkbox' id='blankCheckbox1'  name='blankCheckbox1'  value='option1' > </label> </td><!--checkbox--> <td class='text-center'></td><!--编号--> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> </tr>"
+    $('#tbody1').append($(tr));
 
 
-    $('.loader').hide();
 
     CalculateAggregate();
 
