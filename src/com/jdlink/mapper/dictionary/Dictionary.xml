@@ -70,7 +70,12 @@
                 or dictionaryName like "%"#{keywords}"%"
                 or dateTime like binary"%"#{keywords}"%"
             </if>
-
+          <if test="dictionaryType!=null and dictionaryType!=''">
+              and dictionaryType like "%"#{dictionaryType}"%"
+          </if>
+            <if test="dictionaryName!=null and dictionaryName!=''">
+                and dictionaryName like "%"#{dictionaryName}"%"
+            </if>
         </where>
         order by dateTime
         <if test="page != null and page.start != null and page.count != null and page.count != 0">
@@ -87,8 +92,20 @@
                 or dictionaryName like "%"#{keywords}"%"
                 or dateTime like binary"%"#{keywords}"%"
             </if>
-
+            <if test="dictionaryType!=null and dictionaryType!=''">
+                and dictionaryType like "%"#{dictionaryType}"%"
+            </if>
+            <if test="dictionaryName!=null and dictionaryName!=''">
+                and dictionaryName like "%"#{dictionaryName}"%"
+            </if>
         </where>
     </select>
+
+    <!-- 获取包装方式字典数据-->
+    <select id="getSelectListByDataDictionary" resultType="DataDictionaryItem" parameterType="int">
+        select  * from datadictionaryitem where dataDictionaryId=#{dataDictionaryId};
+    </select>
+
+
 
 </mapper>

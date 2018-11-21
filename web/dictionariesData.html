@@ -162,24 +162,21 @@
         <div class="panel panel-default" id="senior" style="display: none;">
             <div class="panel-body">
                 <div class="row">
-                    <div class="form-horizontal col-md-4">
+                    <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="search-id" class="col-sm-4 control-label">编号</label>
+                            <label for="search-id" class="col-sm-4 control-label">字典类型编码</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-id" name="search-id"
-                                       placeholder="" onkeyup="searchData();">
+                                       placeholder="" onkeyup="enterSearch();">
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-7">
+                    <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">创建时间</label>
+                            <label class="col-sm-3 control-label">字典类型名称</label>
                             <div class="input-group">
-                                <input type="date" class="input-sm form-control" id="search-startDate" title=""
-                                       onkeyup="searchData();"/>
-                                <span class="input-group-addon">-</span>
-                                <input type="date" class="input-sm form-control" id="search-endDate" title=""
-                                       onkeyup="searchData();"/>
+                                <input type="text" class="form-control" id="search-name" name="search-id"
+                                       placeholder="" onkeyup="enterSearch();">
                             </div>
                         </div>
                     </div>

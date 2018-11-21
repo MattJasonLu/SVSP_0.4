@@ -343,29 +343,57 @@ function setSewageTestList(result) {
                     break;
                 case (7):
                     // 碳酸盐碱度(Cao)
-                        $(this).html(setNumber2Line(parseFloat(obj.alkalinity).toFixed(2)));
+                    if(parseFloat(obj.alkalinity)==0){
+                        $(this).html('--');
+                    }
+
                     break;
                 case (8):
 
-                        $(this).html(setNumber2Line(parseFloat(obj.alkalinityCaCo3).toFixed(2)));
+                    if(parseFloat(obj.alkalinityCaCo3)==0){
+                        $(this).html('--');
+                    }
+                    else {
+                        $(this).html(parseFloat(obj.alkalinityCaCo3).toFixed(2))
+                    }
                     break;
                 case (9):
 
                     // 碳酸盐碱度(HCO3-))
-                        $(this).html(setNumber2Line(parseFloat(obj.alkalinityHCO3).toFixed(2)));
+                    if(parseFloat(obj.alkalinityHCO3)==0){
+                        $(this).html('--');
+                    }
+                    else {
+                        $(this).html(parseFloat(obj.alkalinityHCO3).toFixed(2))
+                    }
                     break;
                 case (10):
 
                     // 重碳酸盐碱度(Cao)
-                        $(this).html(setNumber2Line(parseFloat(obj.bicarbonate).toFixed(2)));
+                    if(parseFloat(obj.bicarbonate)==0){
+                        $(this).html('--');
+                    }
+                    else {
+                        $(this).html(parseFloat(obj.bicarbonate).toFixed(2))
+                    }
                     break;
                 case (11):
                     // 重碳酸盐碱度(CaCo3)
-                        $(this).html(setNumber2Line(parseFloat(obj.bicarbonateCaCo3).toFixed(2)));
+                    if(parseFloat(obj.bicarbonateCaCo3)==0){
+                        $(this).html('--');
+                    }
+                    else {
+                        $(this).html(parseFloat(obj.bicarbonateCaCo3).toFixed(2))
+                    }
                     break;
                 case (12):
                     // 重碳酸盐碱度(HCO3-)
-                        $(this).html(setNumber2Line(parseFloat(obj.bicarbonateHCO3).toFixed(2)));
+                    if(parseFloat(obj.bicarbonateHCO3)==0){
+                        $(this).html('--');
+                    }
+                    else {
+                        $(this).html(parseFloat(obj.bicarbonateHCO3).toFixed(2))
+                    }
                     break;
 
                 case (13):

@@ -64,4 +64,9 @@ public class DictionaryServiceImpl implements DictionaryService
     public int searchDictionaryCount(DataDictionary dataDictionary) {
         return dictionaryMapper.searchDictionaryCount(dataDictionary);
     }
+
+    @Override
+    public List<DataDictionaryItem> getSelectListByDataDictionary(int id) {
+        return dictionaryMapper.getSelectListByDataDictionary(id);
+    }
 }

@@ -36,7 +36,7 @@ function totalPage() {
     else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchCompatibilityTotal",                  // url
+            url: "searchDictionaryCount",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
@@ -102,7 +102,22 @@ function load() {
         }
     });
     // 设置高级检索的下拉框数据
-
+      
+    $.ajax({
+        type: "POST",
+        url: "getFormTypeByDataDictionary",
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8', 
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+            }
+        },
+        error:function (result) {
+            
+        }
+    })
 
     isSearch = false;
 }
@@ -724,22 +739,12 @@ function searchData() {
     page.pageNumber = pageNumber;
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
-    var state = null;
-    if ($("#search-state").val() == 0) state = "NewBuild";//新建
-    if ($("#search-state").val() == 1) state = "Invalid";//已作废
-    if ($("#search-state").val() == 2) state = "OutBounded";//已出库
     var keywords = $.trim($("#searchContent").val());
 
     if ($("#senior").is(':visible')) {
         data1 = {
-            id: $.trim($("#search-Id").val()),
-            department: $.trim($("#search-department").val()),
-            name: $.trim($("#search-name").val()),
-            specification: $.trim($("#search-specification").val()),
-            wareHouseName: $.trim($("#search-wareHouseName").val()),
-            startDate: $("#search-startDate").val(),
-            endDate: $("#search-endDate").val(),
-            state: state,
+            dictionaryType:$('#search-id').val(),
+            dictionaryName:$('#search-name').val(),
             page: page
         };
     } else {
@@ -771,5 +776,13 @@ function searchData() {
                 alert("服务器错误！");
             }
         });
+    }
+}
+/**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchData();      //
     }
 }

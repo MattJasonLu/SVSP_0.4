@@ -58,4 +58,8 @@ public interface DictionaryMapper {
      *
      */
     int searchDictionaryCount(DataDictionary dataDictionary);
+
+    List<DataDictionaryItem>getSelectListByDataDictionary(int id);
+
+
 }
