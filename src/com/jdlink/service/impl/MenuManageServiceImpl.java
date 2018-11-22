@@ -17,6 +17,9 @@ public class MenuManageServiceImpl implements MenuManageService {
     public List<Organization> list(){ return menuManageMapper.list();}
 
     @Override
+    public List<Organization> listMenuPage(){ return menuManageMapper.listMenuPage(); }
+
+    @Override
     public int count(){return menuManageMapper.count();}
 
     @Override
@@ -30,6 +33,9 @@ public class MenuManageServiceImpl implements MenuManageService {
 
     @Override
     public void updateName(Organization organization){ menuManageMapper.updateName(organization); }
+
+    @Override
+    public void updateMenuUrl(Organization organization){ menuManageMapper.updateMenuUrl(organization);}
 
     @Override
     public void delete(Organization organization){ menuManageMapper.delete(organization);}

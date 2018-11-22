@@ -8,10 +8,15 @@
          select * from menu_management;
     </select>
 
+    <select id="listMenuPage" resultType="Organization">
+        select * from menu_page;
+    </select>
+
     <select id="count" resultType="int">
          select count(*) from menu_management;
     </select>
 
+    <!--获取子节点个数-->
     <select id="countById" parameterType="int" resultType="int">
         select count(*) from menu_management
         where pId=#{id};
@@ -40,8 +45,16 @@
         where id=#{oldId};
     </update>
 
+    <update id="updateMenuUrl" parameterType="Organization">
+        update menu_management
+        set url=#{url},icon=#{icon}
+        where id=#{id};
+    </update>
+
     <delete id="delete" parameterType="Organization">
-        delete from menu_management where id=#{id}
+        delete from menu_management where id=#{id};
+
+        delete from menu_management where pId=#{id};
     </delete>
 
 </mapper>
