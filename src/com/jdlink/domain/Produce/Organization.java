@@ -32,7 +32,7 @@ public class Organization {
      */
     private String employees;
     /**
-     * 上一级ID（新增用）
+     * 上一级ID（新增用,菜单调换顺序用,被调换顺序的ID）
      */
     private int oldId;
     /**
