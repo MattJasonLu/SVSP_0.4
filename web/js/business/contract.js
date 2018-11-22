@@ -7,6 +7,10 @@ var currentPage = 1;                          //当前页数
 var data;
 //合同索引值
 var contractIndex = 0;
+//模糊查询
+array = [];//存放所有的tr
+array1 = [];//存放目标的tr
+array0=[]
 
 //重置
 function reset() {
@@ -66,6 +70,7 @@ function totalPage(contractIndex) {
  * 省略显示页码
  */
 function setPageCloneAfter(contractIndex, currentPageNumber) {
+    console.log("合同索引值" + contractIndex);
     var total = totalPage(contractIndex);//合同页面特殊 需加入标记
     console.log("总页数:" + total)
     var pageNumber = 5;         // 页码数
@@ -330,6 +335,7 @@ function inputSwitchPage() {
  * 分页 获取首页内容
  * */
 function loadPageContractManageList() {
+    $('.loader').show()
     //让修改操作提交后页面刷新仍然停留在当前页面而不是刷新到首页
     var state = $("#state").find("option:selected").text();
     $('#back').hide();
@@ -350,13 +356,13 @@ function loadPageContractManageList() {
         $('#Lo').click();
         localStorage.clear();
     }
-    if (name == "Derive") {
-        $('#De').click();
-        localStorage.clear();
-    }
-    if (name == "Purchase") {
-
-    }
+    // if (name == "Derive") {
+    //     $('#De').click();
+    //     localStorage.clear();
+    // }
+    // if (name == "Purchase") {
+    //
+    // }
     //分页
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
@@ -369,28 +375,29 @@ function loadPageContractManageList() {
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
     page.contractIndex = contractIndex;
-    //page.contractIndex = 0;                                    //首页默认为危废合同
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "loadPageContractManageList",          // url
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(page),
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (result) {
-            if (result != undefined && result.status == "success") {
-                console.log(result);
-                setPageClone(result);
-                setPageCloneAfter(contractIndex, pageNumber);        // 重新设置页码
-            } else {
-                console.log(result.message);
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-            console.log("失败");
-        }
-    });
+    page.contractIndex = 0;                                    //首页默认为危废合同
+    // $.ajax({
+    //     type: "POST",                       // 方法类型
+    //     url: "loadPageContractManageList",          // url
+    //     async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     data: JSON.stringify(page),
+    //     dataType: "json",
+    //     contentType: 'application/json;charset=utf-8',
+    //     success: function (result) {
+    //         if (result != undefined && result.status == "success") {
+    //             console.log(result);
+    //             setPageClone(result);
+    //             console.log(contractIndex,pageNumber)
+    //             setPageCloneAfter(contractIndex, pageNumber);        // 重新设置页码
+    //         } else {
+    //             console.log(result.message);
+    //         }
+    //     },
+    //     error: function (result) {
+    //         console.log("error: " + result);
+    //         console.log("失败");
+    //     }
+    // });
     setSeniorSelectedList();
 }
 
@@ -406,7 +413,6 @@ function ContractListByName(item) {
         page.pageNumber = pageNumber;
         page.start = (pageNumber - 1) * page.count;
         page.contractIndex = contractIndex;
-        $('#toggleName').text("产废单位名称");
         $.ajax({
             type: "POST",                       // 方法类型
             url: "loadPageContractManageList",                  // url
@@ -416,8 +422,10 @@ function ContractListByName(item) {
             data: JSON.stringify(page),
             success: function (result) {
                 if (result != undefined) {
+                    $('.loader').hide()
                     console.log(result);
                     setPageClone(result);
+                    setPageCloneAfter(contractIndex,1)
                     //setContractList(result);
                 } else {
                     console.log("fail: " + result);
@@ -427,6 +435,7 @@ function ContractListByName(item) {
                 console.log("error: " + result);
             }
         });
+
     }
     if (nameBykey == "应急处置合同") {
         contractIndex = 1;
@@ -436,7 +445,8 @@ function ContractListByName(item) {
         page.pageNumber = pageNumber;
         page.start = (pageNumber - 1) * page.count;
         page.contractIndex = contractIndex;
-        $('#toggleName').text("产废单位名称");
+        localStorage.clear();
+        //如果是物流就改为处置单位
         $.ajax({
             type: "POST",                       // 方法类型
             url: "loadPageContractManageList",                  // url
@@ -448,6 +458,7 @@ function ContractListByName(item) {
                 if (result != undefined) {
                     console.log(result);
                     setContractList(result);
+                    setPageCloneAfter(contractIndex,1)
                 } else {
                     console.log("fail: " + result);
                 }
@@ -466,18 +477,18 @@ function ContractListByName(item) {
         page.pageNumber = 1;
         page.start = (pageNumber - 1) * page.count;
         page.contractIndex = contractIndex;
-        $('#toggleName').text("处置单位名称");
         $.ajax({
             type: "POST",                       // 方法类型
             url: "loadPageContractManageList",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
-            data: JSON.stringify(page),
             contentType: "application/json; charset=gbk",
+            data: JSON.stringify(page),
             success: function (result) {
                 if (result != undefined) {
                     console.log(result);
                     setContractList(result);
+                    setPageCloneAfter(contractIndex,1)
                 } else {
                     console.log("fail: " + result);
                 }
@@ -530,7 +541,49 @@ function ContractListByName(item) {
             }
         });
     }
-    console.log("合同索引值" + contractIndex);
+
+    if(array0.length==0){
+
+        contractIndex=2;
+        for (var i = 1; i <= totalPage(contractIndex); i++) {
+            switchPage(parseInt(i));
+            array0.push($('.myclass1'));
+        }
+        contractIndex=1;
+        for (var i = 1; i <= totalPage(contractIndex); i++) {
+            switchPage(parseInt(i));
+            array0.push($('.myclass1'));
+        }
+        contractIndex=0;
+        for (var i = 1; i <= totalPage(contractIndex); i++) {
+            switchPage(parseInt(i));
+            array0.push($('.myclass1'));
+        }
+        switchPage(1)
+        // if (text.length <= 0) {
+        //     localStorage.name = "Logistics";
+        //     loadPageContractManageList();
+        // }
+        // $.ajax({
+        //     type: "POST",                       // 方法类型
+        //     url: "loadPageContractManageList",                  // url
+        //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        //     dataType: "json",
+        //     data: JSON.stringify(page),
+        //     contentType: "application/json; charset=gbk",
+        //     success: function (result) {
+        //         if (result != undefined) {
+        //             console.log(result);
+        //             setContractList(result);
+        //         } else {
+        //             console.log("fail: " + result);
+        //         }
+        //     },
+        //     error: function (result) {
+        //         console.log("error: " + result);
+        //     }
+        // });
+    }
 }
 
 /**
@@ -584,9 +637,10 @@ function setSeniorSelectedList() {
 
 //合同列表高级查询
 function searchContract() {
-    isSearch = false;
-    array.length = 0;//清空数组
-    array1.length = 0;
+    $('#tbody1').find('.myclass1').hide();
+    array.length=0;//清空数组
+    array1.length=0;//清空数组
+    array=[].concat(array0);
 
     var text = $.trim($('#searchContent').val());
 
@@ -618,45 +672,6 @@ function searchContract() {
         small = '大额合同';
     }
     console.log(small)
-
-    if (nameBykey == '危废合同' || nameBykey == "Wastes" || nameBykey == undefined) {
-        $('#Wa').click();
-        localStorage.clear();
-        $('#toggleName').text("产废单位名称");
-
-        for (var i = totalPage(contractIndex); i > 0; i--) {
-            switchPage(parseInt(i));
-            array.push($('.myclass1'));
-        }
-        console.log(array.length)
-    }
-
-    if (nameBykey == "应急处置合同") {
-        $('#Em').click();
-        localStorage.clear();
-        //如果是物流就改为处置单位
-        $('#toggleName').text("产废单位名称");
-
-        for (var i = totalPage(contractIndex); i > 0; i--) {
-            switchPage(parseInt(i));
-            array.push($('.myclass1'));
-        }
-
-
-    }
-
-    if (nameBykey == "物流合同") {
-        $('#Lo').click();
-        localStorage.clear();
-
-        for (var i = totalPage(contractIndex); i > 0; i--) {
-            switchPage(parseInt(i));
-            array.push($('.myclass1'));
-        }
-
-
-    }
-
 
     isSearch = true;
     var arraydate = [];
@@ -710,7 +725,7 @@ function searchContract() {
                 && $(this).children('td').text().indexOf(text) != -1 &&
                 $(this).children('td').eq(4).text().indexOf(checkState) != -1
                 && $(this).children('td').eq(6).text().indexOf(contactName) != -1 && (new Date(start).getTime() >= new Date(startDate).getTime())
-                && (new Date(end).getTime() <= new Date(endDate).getTime() && $(this).children('td').eq(10).text() == small)
+                && (new Date(end).getTime() <= new Date(endDate).getTime() && $(this).children('td').eq(10).text() == small)&& $(this).children('td').eq(11).text().indexOf(nameBykey)!=-1
             )) {
                 $(this).hide();
             }
@@ -718,15 +733,18 @@ function searchContract() {
                 && $(this).children('td').text().indexOf(text) != -1 &&
                 $(this).children('td').eq(4).text().indexOf(checkState) != -1 && (new Date(start).getTime() >= new Date(startDate).getTime())
                 && $(this).children('td').eq(6).text().indexOf(contactName) != -1
-                && (new Date(end).getTime() <= new Date(endDate).getTime()) && $(this).children('td').eq(10).text() == small)
+                && (new Date(end).getTime() <= new Date(endDate).getTime()) && $(this).children('td').eq(10).text() == small)&& $(this).children('td').eq(11).text().indexOf(nameBykey)!=-1
             ) {
                 array1.push($(this));
             }
         });
     }
+  console.log(nameBykey)
 
 
-    console.log(array1)
+    for(x=0;x<array1.length;x++){
+        console.log($(array1[x].children('td').eq(1).html()))
+    }
 
     var total;
 
@@ -765,6 +783,7 @@ function searchContract() {
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
+    setPageCloneAfter(contractIndex,1)
 
     for (var i = 0; i < array1.length; i++) {
         array1[i].hide();
@@ -779,10 +798,7 @@ function searchContract() {
 }
 
 
-//模糊查询
-array = [];//存放所有的tr
-array1 = [];//存放目标的tr
-//危废出库查询
+
 
 $(document).ready(function () {//页面载入是就会进行加载里面的内容
     var last;
@@ -800,63 +816,21 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 });
 
 function searchFuzzy() {
-    isSearch = false;
-    //分页模糊查询
-    array.length = 0;//清空数组
-    array1.length = 0;
+    console.log(nameBykey)
+    $('#tbody1').find('.myclass1').hide();
+    array.length=0;//清空数组
+    array1.length=0;//清空数组
+    array=[].concat(array0);
+   console.log(array)
     var text = $.trim($('#searchContent').val());
-    if (nameBykey == '危废合同' || nameBykey == "Wastes" || nameBykey == undefined) {
-        $('#Wa').click();
-        localStorage.clear();
-        $('#toggleName').text("产废单位名称");
-        for (var i = totalPage(contractIndex); i > 0; i--) {
-            switchPage(parseInt(i));
-            array.push($('.myclass1'));
-        }
-        if (text.length <= 0) {
-            localStorage.name = "Wastes";
-            loadPageContractManageList();
-        }
-    }
-    if (nameBykey == "应急处置合同") {
-        $('#Em').click();
-        localStorage.clear();
-        //如果是物流就改为处置单位
-        $('#toggleName').text("产废单位名称");
-        for (var i = totalPage(contractIndex); i > 0; i--) {
-            switchPage(parseInt(i));
-            array.push($('.myclass1'));
-        }
-        if (text.length <= 0) {
-            localStorage.name = "Emergency";
-            loadPageContractManageList();
-        }
-
-
-    }
-    if (nameBykey == "物流合同") {
-        $('#Lo').click();
-        localStorage.clear();
-        for (var i = totalPage(contractIndex); i > 0; i--) {
-            switchPage(parseInt(i));
-            array.push($('.myclass1'));
-        }
-        if (text.length <= 0) {
-            localStorage.name = "Logistics";
-            loadPageContractManageList();
-        }
-
-    }
-
-
     isSearch = true;
     for (var j = 0; j < array.length; j++) {
         $.each(array[j], function () {
             //console.log(this);
-            if (($(this).children('td').text().indexOf(text) == -1)) {
+            if (($(this).children('td').text().indexOf(text) == -1)||$(this).children('td').eq(11).text().indexOf(nameBykey.toString())==-1) {
                 $(this).hide();
             }
-            if ($(this).children('td').text().indexOf(text) != -1) {
+            if ($(this).children('td').text().indexOf(text) != -1&&$(this).children('td').eq(11).text().indexOf(nameBykey.toString())!=-1) {
                 array1.push($(this));
             }
         });
@@ -899,6 +873,7 @@ function searchFuzzy() {
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
+    setPageCloneAfter(contractIndex,1);
 
     for (var i = 0; i < array1.length; i++) {
         array1[i].hide();
@@ -909,6 +884,100 @@ function searchFuzzy() {
         $('#tbody1').append((array1[i]));
     }
 
+    if(text.length<=0){
+        console.log(nameBykey)
+        if(nameBykey=='危废合同'){
+            contractIndex = 0;
+            var page = {};
+            var pageNumber = 1;
+            page.count = countValue();                                 // 可选
+            page.pageNumber = pageNumber;
+            page.start = (pageNumber - 1) * page.count;
+            page.contractIndex = contractIndex;
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "loadPageContractManageList",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                contentType: "application/json; charset=gbk",
+                data: JSON.stringify(page),
+                success: function (result) {
+                    if (result != undefined) {
+                        console.log(result);
+                        setPageClone(result);
+                        setPageCloneAfter(contractIndex,1)
+                        //setContractList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+        if(nameBykey=='应急处置合同'){
+            contractIndex = 1;
+            var page = {};
+            var pageNumber = 1;
+            page.count = countValue();                                 // 可选
+            page.pageNumber = pageNumber;
+            page.start = (pageNumber - 1) * page.count;
+            page.contractIndex = contractIndex;
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "loadPageContractManageList",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                contentType: "application/json; charset=gbk",
+                data: JSON.stringify(page),
+                success: function (result) {
+                    if (result != undefined) {
+                        console.log(result);
+                        setPageClone(result);
+                        setPageCloneAfter(contractIndex,1)
+                        //setContractList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+        if(nameBykey=='物流合同'){
+            contractIndex = 2;
+            var page = {};
+            var pageNumber = 1;
+            page.count = countValue();                                 // 可选
+            page.pageNumber = pageNumber;
+            page.start = (pageNumber - 1) * page.count;
+            page.contractIndex = contractIndex;
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "loadPageContractManageList",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                contentType: "application/json; charset=gbk",
+                data: JSON.stringify(page),
+                success: function (result) {
+                    if (result != undefined) {
+                        console.log(result);
+                        setPageClone(result);
+                        setPageCloneAfter(contractIndex,1)
+                        //setContractList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+
+    }
 
 }
 
@@ -1053,7 +1122,7 @@ function setContractList(result) {
                             $(this).html("");
                         }
                         break;
-
+                    //大小额合同
                     case (10):
                         var total = 0;
                         $.each(obj.quotationItemList, function (index, item) {
@@ -1066,6 +1135,14 @@ function setContractList(result) {
                             $(this).html("大额合同");
                         }
                         break;
+                        //合同类型
+                    case (11):
+                       if(obj.contractType!=null){
+                       $(this).html(obj.contractType.name)
+                       }
+
+                        break;
+
                 }
             });
 
