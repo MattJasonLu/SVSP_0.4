@@ -7,7 +7,10 @@ function reset() {
 var isSearch = false;
 var currentPage = 1;                          //当前页数
 var data;
-
+var array0=[];//初始化时存放的数组
+var array=[];//存放所有的tr
+var array1=[];//存放目标的tr
+//危废出库查询
 /**********************出库部分**********************/
 /**
  * 返回count值
@@ -260,6 +263,7 @@ function setPageClone(result) {
 
 //加载次生出库信息==>次生出库页面
 function onLoadSecondary() {
+    $('.loader').show();
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
@@ -272,6 +276,13 @@ function onLoadSecondary() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
+    if(array0.length==0){
+        for (var i = 1; i <= totalPage(); i++) {
+            switchPage(parseInt(i));
+
+            array0.push($('.myclass'));
+        }
+    }
     $.ajax({
         type: "POST",                       // 方法类型
         url: "loadSecOutBoundList",                  // url
@@ -281,6 +292,7 @@ function onLoadSecondary() {
         contentType: "application/json; charset=utf-8",
         success:function (result) {
             if (result != undefined && result.status == "success"){
+                $('.loader').hide();
                 console.log(result);
                 setPageClone(result.data);
                 setPageCloneAfter(pageNumber);        // 重新设置页码
@@ -1465,23 +1477,14 @@ function confirmCancel(){
 
 }
 
-array=[];
-array1=[];
+
 
 //次生出库信息高级查询
 function searchSecOutbound() {
-    isSearch=false;
-    //1分页模糊查询
-    $('.myclass').each(function () {
-        $(this).show();
-    });
+    $('#tbody1').find('.myclass').hide();
     array.length=0;//清空数组
-    array1.length=0;
-
-    for(var i=totalPage();i>0;i--){
-        switchPage(parseInt(i));
-        array.push($('.myclass'));
-    }
+    array1.length=0;//清空数组
+    array=[].concat(array0);
     isSearch=true;
 
     //如果需要按日期范围查询 寻找最早入库的日期
@@ -1591,6 +1594,7 @@ function searchSecOutbound() {
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
+    setPageCloneAfter(1);
     for(var i=0;i<array1.length;i++){
         array1[i].hide();
     }
@@ -1637,15 +1641,10 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 
 //粗查询
 function searchSecondaryOuntBound() {
-    isSearch=false;
-    //onLoadSecondary();
-    //1分页模糊查询
+    $('#tbody1').find('.myclass').hide();
     array.length=0;//清空数组
-    array1.length=0;
-    for(var i=totalPage();i>0;i--){
-        switchPage(parseInt(i));
-        array.push($('.myclass'));
-    }
+    array1.length=0;//清空数组
+    array=[].concat(array0);
     isSearch=true;
     var text=$.trim($('#searchContent').val());
     for(var j=0;j<array.length;j++){
@@ -1697,6 +1696,7 @@ function searchSecondaryOuntBound() {
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
+    setPageCloneAfter(1);
     for(var i=0;i<array1.length;i++){
         $(array1[i]).hide();
     }

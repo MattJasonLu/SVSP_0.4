@@ -5,8 +5,10 @@
 var currentPage = 1;                          //当前页数
 var data1;
 var isSearch = false;
+array0=[];
 array=[];
 array1=[]
+
 /**
  * 返回count值
  * */
@@ -306,20 +308,13 @@ function AddAndRemoveClass(item) {
 /**
  * 配料单页面高级查询
  */
-//查询功能
-array=[];
-array1=[];
+
 function searchBatchOrder() {
-   isSearch=false;
+    $('#tbody1').find('.myclass').hide();
     array.length=0;//清空数组
-    array1.length=0;
-    $('.myclass').each(function () {
-        $(this).show();
-    });
-    for(var i=totalPage();i>0;i--){
-        switchPage(parseInt(i));
-        array.push($('.myclass'));
-    }
+    array1.length=0;//清空数组
+    array=[].concat(array0);
+    isSearch=true;
     var text=$.trim($('#searchContent').val());
     //创建日期
     var createDate=$("#search-batchingDate").val();
@@ -440,6 +435,8 @@ function searchBatchOrder() {
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
+
+    setPageCloneAfter(1);
     for(var i=0;i<array1.length;i++){
         array1[i].hide();
     }
@@ -984,6 +981,13 @@ function loadBatchingOrderList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
+    if(array0.length==0){
+        for (var i = 1; i <= totalPage(); i++) {
+            switchPage(parseInt(i));
+
+            array0.push($('.myclass'));
+        }
+    }
     //1执行ajax取数据
     $.ajax({
         type: "POST",                       // 方法类型
@@ -994,6 +998,7 @@ function loadBatchingOrderList() {
         contentType: "application/json; charset=utf-8",
         success:function (result) {
             if (result != undefined && result.status == "success"){
+                $('.loader').hide()
                 console.log(result);
                //setBatchingOrderList(result.batchingOrderList);
                 setPageClone(result);
@@ -1522,19 +1527,10 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 //粗查询
 function searchBatchingList() {
 
-    isSearch=false;
-
-    //loadBatchingOrderList();
-
-    //1分页模糊查询
+    $('#tbody1').find('.myclass').hide();
     array.length=0;//清空数组
-
-    array1.length=0;
-
-    for(var i=totalPage();i>0;i--){
-        switchPage(parseInt(i));
-        array.push($('.myclass'));
-    }
+    array1.length=0;//清空数组
+    array=[].concat(array0);
 
     isSearch=true;
 
@@ -1589,6 +1585,7 @@ function searchBatchingList() {
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
+    setPageCloneAfter(1);
     for(var i=0;i<array1.length;i++){
         $(array1[i]).hide();
     }

@@ -288,7 +288,7 @@ function inputSwitchPage() {
 
 /**加载合约量统计页面*/
 function loadContractVolumeList() {
-
+    $('.loader').show();
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
@@ -336,7 +336,7 @@ function loadContractVolumeList() {
 
     isSearch = false;
 
-    switchPage(1)
+
 
 
     CalculateAggregate() ;
@@ -440,7 +440,7 @@ function loader(m) {
 
 $(document).ready(function () {//页面载入是就会进行加载里面的内容
     // $("body").append(loader("请稍候..."));
-    $('.loader').show();
+
     var last;
     $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
@@ -468,8 +468,7 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 
 function searchFuzzy() {
 
-
-    $('#tbody1').empty();
+    $('#tbody1').find('.myclass').hide();
      array.length=0;//清空数组
     array1.length=0;//清空数组
      array=[].concat(array0);
@@ -524,6 +523,7 @@ function searchFuzzy() {
             var num = $(this).text();
             switchPage(num);
             AddAndRemoveClass(this);
+
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -540,22 +540,22 @@ function searchFuzzy() {
 
 
     for(var i=0;i<countValue();i++){
+
         $(array1[i]).children('td').eq(1).html(i+1)
         $(array1[i]).show();
-
         $('#tbody1').append($(array1[i]));
     }
     console.log(array1)
 
-  var tr=  "<tr id='cloneTr'><td class='text-center'> <label> <input class='checkbox' type='checkbox' id='blankCheckbox1'  name='blankCheckbox1'  value='option1' > </label> </td><!--checkbox--> <td class='text-center'></td><!--编号--> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> </tr>"
-    $('#tbody1').append($(tr));
+  // var tr=  "<tr id='cloneTr'><td class='text-center'> <label> <input class='checkbox' type='checkbox' id='blankCheckbox1'  name='blankCheckbox1'  value='option1' > </label> </td><!--checkbox--> <td class='text-center'></td><!--编号--> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> </tr>"
+  //   $('#tbody1').append($(tr));
 
 
     // $("#circleChart").hide();
     CalculateAggregate() ;
 
     if(text.length<=0){
-        $('#tbody1').find('.myclass').empty();
+
         loadContractVolumeList();
     }
 }
@@ -563,8 +563,7 @@ function searchFuzzy() {
 
 //合约量高级查询
 function searchContract() {
-
-    $('#tbody1').empty();
+    $('#tbody1').find('.myclass').hide();
     array.length=0;//清空数组
     array1.length=0;//清空数组
     array=[].concat(array0);
@@ -689,6 +688,7 @@ function searchContract() {
             var num = $(this).text();
             switchPage(num);
             AddAndRemoveClass(this);
+
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -698,15 +698,16 @@ function searchContract() {
     $("#previous").next().next().eq(0).addClass("oldPageClass");
     setPageCloneAfter(1);
     for(var i=0;i<array1.length;i++){
-        array1[i].hide();
+        $(array1[i]).hide();
     }
 
     for(var i=0;i<countValue();i++){
+        $(array1[i]).children('td').eq(1).html(i+1)
         $(array1[i]).show();
         $('#tbody1').append((array1[i]));
     }
-    var tr=  "<tr id='cloneTr'><td class='text-center'> <label> <input class='checkbox' type='checkbox' id='blankCheckbox1'  name='blankCheckbox1'  value='option1' > </label> </td><!--checkbox--> <td class='text-center'></td><!--编号--> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> </tr>"
-    $('#tbody1').append($(tr));
+    // var tr=  "<tr id='cloneTr'><td class='text-center'> <label> <input class='checkbox' type='checkbox' id='blankCheckbox1'  name='blankCheckbox1'  value='option1' > </label> </td><!--checkbox--> <td class='text-center'></td><!--编号--> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> <td class='text-center'></td> </tr>"
+
 
 
 
