@@ -10,6 +10,9 @@ var currentPage = 1;                          //当前页数
 var isSearch = false;
 var data1;
 
+array=[];
+array1=[];
+array0=[];
 /**
  * 返回count值
  * */
@@ -267,6 +270,7 @@ function loadPages(totalRecord, count) {
  *加载危废数据
  */
 function loadWasteInventoryList() {
+    $('.loader').show();
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
@@ -281,6 +285,13 @@ function loadWasteInventoryList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
+    if(array0.length==0){
+        for (var i = 1; i <= totalPage(); i++) {
+            switchPage(parseInt(i));
+
+            array0.push($('.myclass'));
+        }
+    }
     //查询危废仓库信息
     $.ajax({
         type: "POST",                       // 方法类型
@@ -291,6 +302,7 @@ function loadWasteInventoryList() {
         contentType: 'application/json;charset=utf-8',
         success:function (result) {
             if(result != undefined && result.status == "success"){
+                $('.loader').hide();
                 console.log(result);
                 //设置危废查询列表
                 setPageClone(result);
@@ -408,44 +420,12 @@ function setWasteInventoryList(result) {
     tr.removeAttr('class');
 }
 
-array=[];
-array1=[];
 //危废库存查询功能
 function searchWastesInventory() {
-    isSearch=false;
-    //如果需要按日期范围查询 寻找最早入库的日期
-    var date;
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getNewestInBoundDate",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        //data:{'outboundOrderId':outboundOrderId},
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                date=getDateStr(result.dateList[0]);
-                console.log(result);
-            }
-            else {
-                alert(result.message);
-            }
-        },
-        error:function (result) {
-            alert("服务器异常！");
-        }
-
-    });
-    //1分页模糊查询
+    $('#tbody1').find('.myclass').hide();
     array.length=0;//清空数组
-    array1.length=0;
-    $('.myclass').each(function () {
-        $(this).show();
-    });
-    for(var i=totalPage();i>0;i--){
-        switchPage(parseInt(i));
-        array.push($('.myclass'));
-    }
+    array1.length=0;//清空数组
+    array=[].concat(array0);
     isSearch=true;
     var text=$.trim($('#searchContent').val());
     //1入库日期
@@ -521,6 +501,7 @@ function searchWastesInventory() {
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
+    setPageCloneAfter(1);
     for(var i=0;i<array1.length;i++){
         array1[i].hide();
     }
@@ -570,15 +551,11 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 
 //粗查询
 function searchWastesInventory1() {
-    isSearch=false;
-    //loadWasteInventoryList();
-    //1分页模糊查询
+    $('#tbody1').find('.myclass').hide();
     array.length=0;//清空数组
-    array1.length=0;
-    for(var i=totalPage();i>0;i--){
-        switchPage(parseInt(i));
-        array.push($('.myclass'));
-    }
+    array1.length=0;//清空数组
+    array=[].concat(array0);
+
     isSearch=true;
 
     var text=$.trim($('#searchContent').val());
@@ -633,6 +610,7 @@ function searchWastesInventory1() {
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
+    setPageCloneAfter(1);
     for(var i=0;i<array1.length;i++){
         $(array1[i]).hide();
     }
