@@ -203,8 +203,8 @@ public class ContractController {
         List list1 = removeDuplicate(modelName);
 
         //查询最新的合同编号
-        List<String> contractIdList = contractService.getNewestContractId1();
-        res.put("contractId", String.valueOf((Integer.parseInt(contractIdList.get(0)) + 1)));
+
+        res.put("contractId", contractService.getNewestContractId1()+ 1);
         JSONArray json1 = JSONArray.fromObject(list1);
         res.put("modelNameList", json1);
         return res.toString();
