@@ -3,7 +3,7 @@ var currentPage = 1;                          //当前页数
 var data;
 array=[];//存放所有的tr
 array1=[];//存放目标的tr
-
+array0=[];//存放所有的tr
 /**********************客户部分**********************/
 /**
  * 返回count值
@@ -263,6 +263,7 @@ function inputSwitchPage() {
 
 //加载应急物资采购列表
 function getEmProcurement() {
+    $('.loader').show();
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
@@ -276,6 +277,13 @@ function getEmProcurement() {
     var pageNumber = 1;                       // 显示首页
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
+    if(array0.length==0){
+        for (var i = 1; i <= totalPage(); i++) {
+            switchPage(parseInt(i));
+
+            array0.push($('.myclass'));
+        }
+    }
     page.start = (pageNumber - 1) * page.count;
     $.ajax({
         type: "POST",                       // 方法类型
@@ -286,6 +294,7 @@ function getEmProcurement() {
         contentType: 'application/json;charset=utf-8',
         success:function (result) {
             if (result != undefined && result.status == "success"){
+                $('.loader').hide();
                 console.log(result)
                 //设置月度采购申请表数据
                 setPageClone(result);
@@ -322,19 +331,10 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 //粗查询
 function  searchStock1() {
 
-    isSearch=false;
-
-    //getEmProcurement();
-    //1分页模糊查询
+    $('#tbody1').find('.myclass').hide();
     array.length=0;//清空数组
-
-    array1.length=0;
-
-    for(var i=totalPage();i>0;i--){
-        switchPage(parseInt(i));
-        array.push($('.myclass'));
-    }
-
+    array1.length=0;//清空数组
+    array=[].concat(array0);
     isSearch = true;
 
     var text=$.trim($('#searchContent').val());
@@ -389,6 +389,7 @@ function  searchStock1() {
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
+    setPageCloneAfter(1);
     for(var i=0;i<array1.length;i++){
         $(array1[i]).hide();
     }
@@ -752,16 +753,10 @@ function setEmProcurementListModal(result) {
 //应急采购高级查询
 function searchEm() {
 
-    isSearch=false;
-
+    $('#tbody1').find('.myclass').hide();
     array.length=0;//清空数组
-
     array1.length=0;//清空数组
-    //1分页模糊查询
-    for(var i=totalPage();i>0;i--){
-        switchPage(parseInt(i));
-        array.push($('.myclass'));
-    }
+    array=[].concat(array0);
     var date;
     $.ajax({
         type: "POST",                       // 方法类型
@@ -894,6 +889,7 @@ console.log(array1)
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
+    setPageCloneAfter(1);
     for(var i=0;i<array1.length;i++){
         array1[i].hide();
     }

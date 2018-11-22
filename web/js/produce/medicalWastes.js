@@ -3,6 +3,7 @@ var currentPage = 1;                          //当前页数
 var data;
 array = [];
 array1 = [];
+array0=[];
 
 /**********************客户部分**********************/
 
@@ -287,20 +288,11 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 
 //粗查询
 function searchMedicalWastes1() {
-    isSearch = false;
+    $('#tbody1').find('.myclass').hide();
+    array.length=0;//清空数组
+    array1.length=0;//清空数组
+    array=[].concat(array0);
 
-    //loadMedicalWastesList();
-    //1分页模糊查询
-    array.length = 0;//清空数组
-
-    array1.length = 0;
-
-    for (var i = totalPage(); i > 0; i--) {
-        switchPage(parseInt(i));
-        array.push($('.myclass'));
-    }
-
-    console.log((array));
     isSearch = true;
 
     var text = $.trim($('#searchContent').val());
@@ -357,6 +349,7 @@ function searchMedicalWastes1() {
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
+    setPageCloneAfter(1);
     for (var i = 0; i < array1.length; i++) {
         (array1[i]).hide();
     }
@@ -364,7 +357,7 @@ function searchMedicalWastes1() {
     //首页展示
     for (var i = 0; i < countValue(); i++) {
         $(array1[i]).show();
-        //$('#tbody1').append((array1[i]));
+        $('#tbody1').append((array1[i]));
     }
 
 
@@ -480,6 +473,7 @@ function saveMedicalWastes() {
 
 //加载医危废数据
 function loadMedicalWastesList() {
+    $('.loader').show();
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
@@ -492,6 +486,13 @@ function loadMedicalWastesList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
+    if(array0.length==0){
+        for (var i = 1; i <= totalPage(); i++) {
+            switchPage(parseInt(i));
+
+            array0.push($('.myclass'));
+        }
+    }
     $.ajax({
         type: "POST",                            // 方法类型
         url: "loadMedicalWastesList",                  // url
@@ -500,6 +501,7 @@ function loadMedicalWastesList() {
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result != undefined && result.status == "success") {
+                $('.loader').hide();
                 console.log(result);
                 setPageClone(result);
                 setPageCloneAfter(pageNumber);        // 重新设置页码
@@ -612,15 +614,10 @@ function setMedicalWastesList(result) {
 
 //高级查询
 function searchMedicalWastes() {
-    isSearch = false;
-    array.length = 0;//清空数组
-    array1.length = 0;//清空数组
-    //1分页模糊查询
-
-    for (var i = totalPage(); i > 0; i--) {
-        switchPage(parseInt(i));
-        array.push($('.myclass'));
-    }
+    $('#tbody1').find('.myclass').hide();
+    array.length=0;//清空数组
+    array1.length=0;//清空数组
+    array=[].concat(array0);
 
     isSearch = true;
 
@@ -721,6 +718,7 @@ function searchMedicalWastes() {
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
+    setPageCloneAfter(1);
     for (var i = 0; i < array1.length; i++) {
         array1[i].hide();
     }
