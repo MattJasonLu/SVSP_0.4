@@ -83,7 +83,6 @@ function showIcon(treeNode){
  * 显示所有页面url
  */
 function showUrl(treeNode){
-    console.log("显示URL选择");
     $.ajax({
         type: "POST",                       // 方法类型
         url: "loadMenuPageList",                  // url
@@ -188,7 +187,7 @@ function save(){
                 // console.log(result);
                 if (result != null && result.status == "success") {
                     alert("保存成功！");
-                    window.location.reload(); // 重新设置页面
+                    //window.location.reload(); // 重新设置页面
                 } else {
                     alert(result.message);
                 }
@@ -359,7 +358,7 @@ function onRename(e, treeId, treeNode, isCancel) {
                         success: function (result) {
                             // console.log(result);
                             if (result != null && result.status == "success") {
-                                window.location.reload(); // 重新设置页面
+                               // window.location.reload(); // 重新设置页面
                             } else {
                                 alert(result.message);
                             }
@@ -455,7 +454,7 @@ function addMenu(item) {
             success: function (result) {
                 // console.log(result);
                 if (result != null && result.status == "success") {
-                    window.location.reload(); // 刷新页面
+                    //window.location.reload(); // 刷新页面
                 } else {
                     alert(result.message);
                 }

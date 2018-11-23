@@ -1,6 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import java.util.Date;
+import java.util.List;
 
 public class Organization {
     /**
@@ -55,6 +56,18 @@ public class Organization {
      * 菜单层级（菜单）
      */
     private int level;
+    /**
+     * 子节点
+     */
+    private List<Organization> organizationList;
+
+    public List<Organization> getOrganizationList() {
+        return organizationList;
+    }
+
+    public void setOrganizationList(List<Organization> organizationList) {
+        this.organizationList = organizationList;
+    }
 
     public String getFounder() {
         return founder;
