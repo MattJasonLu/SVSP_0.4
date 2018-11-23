@@ -26,6 +26,16 @@
         select * from menu_management where id=#{id};
     </select>
 
+    <select id="getMenuByName" resultType="Organization">
+        select * from menu_management
+        where pId=#{id} and name=#{name};
+    </select>
+
+    <select id="getMenuIdListByPId" parameterType="int" resultType="int">
+        select id from menu_management
+        where pId=#{pId};
+    </select>
+
     <insert id="add" parameterType="Organization">
         insert into menu_management
         (id,pId,name,icon,url,level,founder,creationDate)
@@ -39,7 +49,7 @@
         where id=#{id};
     </update>
 
-    <update id="updateOrder" parameterType="Organization">
+    <update id="updateMenuOrder" parameterType="Organization">
         update menu_management
         set id=#{id}
         where id=#{oldId};
@@ -47,7 +57,13 @@
 
     <update id="updateMenuUrl" parameterType="Organization">
         update menu_management
-        set url=#{url},icon=#{icon}
+        set url=#{url}
+        where id=#{id};
+    </update>
+
+    <update id="updateMenuIcon" parameterType="Organization">
+        update menu_management
+        set icon=#{icon}
         where id=#{id};
     </update>
 

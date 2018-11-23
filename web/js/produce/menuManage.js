@@ -58,14 +58,14 @@ function beforeClick(treeId, treeNode){
     if (treeNode.isParent) { //是否有子节点
         $("#url").hide(); // 隐藏
         if(treeNode.id < 100){// 判断是否是一级菜单
-            showIcon(treeNode);
+        //    showIcon(treeNode);
         }else {
             return false;
         }
     }else{  // 没有则显示出选择页面
         showUrl(treeNode);
         if(treeNode.id < 100){// 判断是否是一级菜单
-            showIcon(treeNode);
+        //    showIcon(treeNode);
         }
     }
 }
@@ -75,6 +75,8 @@ function beforeClick(treeId, treeNode){
  */
 function showIcon(treeNode){
     console.log("显示图标选择！");
+    // 获取数据
+    $("#icon").show(); // 显示
 }
 
 /**
@@ -102,7 +104,10 @@ function showUrl(treeNode){
     $("#url").show(); // 显示
 }
 
-
+/**
+ * 设置页面链接数据
+ * @param result
+ */
 function setDataList(result){
     var data = {};
     $.ajax({  // 获取该页面的链接
@@ -157,17 +162,55 @@ function cancel(){
 }
 
 /**
- * 保存选择
+ * 取消
+ */
+function cancel1(){
+    $("#icon").hide(); // 隐藏
+}
+
+/**
+ * 保存链接
  */
 function save(){
      console.log(organization1);
      var tr = $("input[name='select']:checked").parent().parent().parent();
      organization1.url =  tr.find("td[name='url']").text(); // 获取链接
-     organization1.icon = tr.find("td[name='icon']").text(); // 获取图标
+     // organization1.icon = tr.find("td[name='icon']").text(); // 获取图标
     if (organization1 != null && organization1.url != '') {
         $.ajax({
             type: "POST",                       // 方法类型
             url: "updateMenuUrl",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(organization1),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                // console.log(result);
+                if (result != null && result.status == "success") {
+                    alert("保存成功！");
+                    window.location.reload(); // 重新设置页面
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                alert(result.message);
+            }
+        });
+    }
+}
+
+/**
+ * 保存图标
+ */
+function saveIcon(){
+    var tr = $("input[name='select1']:checked").parent().parent().parent();
+    organization1.icon =  tr.find("td[name='icon']").text(); // 获取图标
+    console.log(organization1);
+    if (organization1 != null && organization1.icon != '') {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "updateMenuIcon",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(organization1),
             dataType: "json",
@@ -211,13 +254,40 @@ function beforeDrop(treeId, treeNodes, targetNode, moveType){
  * @param targetNode
  * @param moveType
  */
-function onDrop(treeId, treeNode, targetNode, moveType) {
-    console.log("节点数据");
-    console.log(treeId);
-    console.log("被拖动的节点");
-    console.log(treeNode);
-    console.log("目标节点");
-    console.log(targetNode);
+function onDrop(treeId, treeNodes, targetNode, moveType) {
+    var childrenNodes = targetNode[0].getParentNode().children;
+    var result = "";
+    for (var i = 0; i < childrenNodes.length; i++) {
+        if(i > 0)result += "/";
+        result += childrenNodes[i].id;
+    }
+    var pId = targetNode[0].pId;
+    console.log("ID");
+    console.log(result);
+    if (result != "") {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "updateMenuOrder",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                idList: result,
+                pId: pId,
+            },
+            dataType: "json",
+            success: function (result) {
+                // console.log(result);
+                if (result != null && result.status == "success") {
+                    window.location.reload(); // 重新设置页面
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                alert(result.message);
+            }
+        });
+    }
+
 }
 
 function beforeRemove(treeId, treeNode) {
@@ -265,27 +335,46 @@ function onRename(e, treeId, treeNode, isCancel) {
     organization1.name = treeNode.name;
     console.log("数据：");
     console.log(organization1);
-    if (organization1 != null) {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "updateMenuName",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(organization1),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                // console.log(result);
-                if (result != null && result.status == "success") {
-                    window.location.reload(); // 重新设置页面
-                } else {
-                    alert(result.message);
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getMenuByName",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(organization1),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            // console.log(result);
+            if (result != null && result.status == "success" && result.data != null) {
+                alert("名称重复！");
+                window.location.reload();
+            } else if(result != null && result.data == null ){ // 如果不存在改名字则进行改名
+                if (organization1 != null) {
+                    $.ajax({
+                        type: "POST",                       // 方法类型
+                        url: "updateMenuName",                  // url
+                        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                        data: JSON.stringify(organization1),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (result) {
+                            // console.log(result);
+                            if (result != null && result.status == "success") {
+                                window.location.reload(); // 重新设置页面
+                            } else {
+                                alert(result.message);
+                            }
+                        },
+                        error: function (result) {
+                            alert(result.message);
+                        }
+                    });
                 }
-            },
-            error: function (result) {
-                alert(result.message);
             }
-        });
-    }
+        },
+        error: function (result) {
+            alert(result.message);
+        }
+    });
 }
 
 function showLog(str) {
@@ -458,4 +547,12 @@ function search(){
             $(this).show();
         })
     }
+}
+
+/**
+ * 点击跳转页面
+ * @param item
+ */
+function toUrl(item){
+    window.location.href = $(item).text();
 }

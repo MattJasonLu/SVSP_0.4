@@ -29,6 +29,15 @@ public class MenuManageServiceImpl implements MenuManageService {
     public Organization getMenuById(int id){ return menuManageMapper.getMenuById(id);}
 
     @Override
+    public Organization getMenuByName(String name,int id){ return menuManageMapper.getMenuByName(name,id);}
+
+    @Override
+    public List<Integer> getMenuIdListByPId(int pId){ return menuManageMapper.getMenuIdListByPId(pId);}
+
+    @Override
+    public void updateMenuOrder(Organization organization){ menuManageMapper.updateMenuOrder(organization);}
+
+    @Override
     public void add(Organization organization){ menuManageMapper.add(organization);}
 
     @Override
@@ -36,6 +45,9 @@ public class MenuManageServiceImpl implements MenuManageService {
 
     @Override
     public void updateMenuUrl(Organization organization){ menuManageMapper.updateMenuUrl(organization);}
+
+    @Override
+    public void updateMenuIcon(Organization organization){ menuManageMapper.updateMenuIcon(organization);}
 
     @Override
     public void delete(Organization organization){ menuManageMapper.delete(organization);}
