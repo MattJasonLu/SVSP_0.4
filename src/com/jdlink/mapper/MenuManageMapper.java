@@ -13,6 +13,7 @@ public interface MenuManageMapper {
     int countById(int id);
     Organization getMenuById(int id);
     Organization getMenuByName(@Param("name") String name,@Param("id") int id);
+    List<Organization> getChildrenMenuByName(Organization organization);
     List<Integer> getMenuIdListByPId(int pId);
     void updateMenuOrder(Organization organization);
     void add(Organization organization);
