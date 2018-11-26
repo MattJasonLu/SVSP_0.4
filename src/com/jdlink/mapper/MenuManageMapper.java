@@ -1,6 +1,7 @@
 package com.jdlink.mapper;
 
 import com.jdlink.domain.Produce.Organization;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -11,9 +12,13 @@ public interface MenuManageMapper {
     int count();
     int countById(int id);
     Organization getMenuById(int id);
+    Organization getMenuByName(@Param("name") String name,@Param("id") int id);
+    List<Integer> getMenuIdListByPId(int pId);
+    void updateMenuOrder(Organization organization);
     void add(Organization organization);
     void updateName(Organization organization);
     void updateMenuUrl(Organization organization);
+    void updateMenuIcon(Organization organization);
     void delete(Organization organization);
 
 }
