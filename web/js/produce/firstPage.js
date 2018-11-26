@@ -96,25 +96,20 @@ function setMenuTwo(organizationList) {
                         "aria-haspopup='true' aria-expanded='false'>" + organization.name + "<span class='caret'></span>" +
                         "</a><ul class='dropdown-menu' name='" + organization.level + "'>" +
                         "</ul></li>";
-                    console.log("下垂");
                 } else if (organization.pId > 99) {     // 三级菜单及以后设置为右开
                     li = "<li name='dropdown' class='dropdown-submenu'><a href=''>" + organization.name + "</a><ul class='dropdown-menu' name='" + organization.level + "'>" +
                         "</ul></li>";
-                    console.log("右开");
                 }
                 var drop = null;
                 for (var j = 0; j < $("#navbar").children().eq(0).find(".dropdown-menu").length; j++) { // 在所有drop中查找父级的最后一个
-                    if ($("#navbar").children().eq(0).find(".dropdown-menu").eq(j).attr("name") == (organization.level - 1).toString()) // 插入到父辈
+                    if ($("#navbar").children().eq(0).find(".dropdown-menu").eq(j).attr("name") === (organization.level - 1).toString()) { // 插入到父辈
                         drop = $("#navbar").children().eq(0).find(".dropdown-menu").eq(j);
+                    }
                 }
                 if (drop != null) {
                     //  $("#navbar").children().eq(0).find(".dropdown-menu:last").append(li); // 将其插入到新建的下拉框之中
                     drop.append(li);
-                    console.log("存在下拉框");
-                    console.log(li);
                 } else {
-                    console.log("插入二级菜单后");
-                    console.log(li);
                     $("#navbar").children().eq(0).append(li); // 插入到二级菜单内最后
                 }
                 setMenuTwo(organization.organizationList);  // 递归设置
@@ -123,19 +118,19 @@ function setMenuTwo(organizationList) {
                     var li3 = "<li><a href='" + organization.url + "' >" + organization.name + "</a></li>";  // 赋值
                     $("#navbar").children().eq(0).append(li3);      //插入
                 } else { // 非二级菜单的页面需要将其插入到下拉菜单中
-                    console.log("插入下拉菜单");
                     var dropdown = null;
                     for (var j = 0; j < $("#navbar").children().eq(0).find("li[name='dropdown']").length; j++) { // 在所有drop中查找父级的最后一个
-                        if ($("#navbar").children().eq(0).find("li[name='dropdown']").eq(j).find("ul").attr("name") == (organization.level - 1).toString()) // 插入到父辈
+                        if ($("#navbar").children().eq(0).find("li[name='dropdown']").eq(j).find("ul").attr("name") === (organization.level - 1).toString()){ // 插入到父辈
                             dropdown = $("#navbar").children().eq(0).find("li[name='dropdown']").eq(j); // 获取最后一个菜单下拉框(即最近添加的一个)
+                        }
                     }
                     if (dropdown.attr("class") == "dropdown") { //如果父类是向下的下拉框
                         var li1 = "<li><a href='" + organization.url + "' >" + organization.name + "</a></li>";  // 赋值
-                        dropdown.find("ul").append(li1);
+                        dropdown.find("ul[name='"+(organization.level - 1).toString()+"']").append(li1);
                     } else if (dropdown.attr("class") == "dropdown-submenu") {  // 如果父类是向右的下拉框
                         var li2 = "<li><a href='" + organization.url + "'>" + organization.name + "</a></li>" +
                             "<li role='separator' class='divider'></li>";
-                        dropdown.find("ul").append(li2);
+                        dropdown.find("ul[name='"+(organization.level - 1).toString()+"']").append(li2);
                     }
                 }
             }

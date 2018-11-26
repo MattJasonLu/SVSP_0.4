@@ -454,7 +454,7 @@ function addMenu(item) {
             success: function (result) {
                 // console.log(result);
                 if (result != null && result.status == "success") {
-                    //window.location.reload(); // 刷新页面
+                    window.location.reload(); // 刷新页面
                 } else {
                     alert(result.message);
                 }
