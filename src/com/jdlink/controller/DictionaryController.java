@@ -787,4 +787,14 @@ public class DictionaryController {
         }
         return res.toString();
     }
+
+
+        /**
+          * 根据明细名称获取编号
+          */
+        public int getdatadictionaryitemIdByName(String name,int id){
+            return dictionaryService.getdatadictionaryitemIdByName(name,id);
+        }
+
+
 }

@@ -1,6 +1,8 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Dictionary.DataDictionaryItem;
+import com.jdlink.domain.Dictionary.UnitDataItem;
 import com.jdlink.domain.Inventory.WareHouse;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Unit;
@@ -88,6 +90,28 @@ public class Material {
 
     //
     private CheckState checkState;
+
+   //单位数据字典
+    private UnitDataItem unitDataItem;
+
+    public UnitDataItem getUnitDataItem() {
+        return unitDataItem;
+    }
+
+    public void setUnitDataItem(UnitDataItem unitDataItem) {
+        this.unitDataItem = unitDataItem;
+    }
+
+    //    //数据库字典明细对象(用于去数据)
+//    private DataDictionaryItem dataDictionaryItem;
+//
+//    public DataDictionaryItem getDataDictionaryItem() {
+//        return dataDictionaryItem;
+//    }
+//
+//    public void setDataDictionaryItem(DataDictionaryItem dataDictionaryItem) {
+//        this.dataDictionaryItem = dataDictionaryItem;
+//    }
 
 
     public CheckState getCheckState() {

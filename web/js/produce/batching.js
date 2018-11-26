@@ -969,6 +969,7 @@ function save() {
 
 //配料单显示页面加载
 function loadBatchingOrderList() {
+    $('.loader').show()
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");

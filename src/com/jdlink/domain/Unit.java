@@ -1,5 +1,7 @@
 package com.jdlink.domain;
 
+import com.jdlink.domain.Dictionary.DataDictionaryItem;
+
 public enum  Unit {
     Kg("公斤", 1),
     T("吨",2),
