@@ -174,7 +174,7 @@ function save(){
      console.log(organization1);
      var tr = $("input[name='select']:checked").parent().parent().parent();
      organization1.url =  tr.find("td[name='url']").text(); // 获取链接
-     // organization1.icon = tr.find("td[name='icon']").text(); // 获取图标
+     organization1.icon = tr.find("td[name='icon']").text(); // 获取图标
     if (organization1 != null && organization1.url != '') {
         $.ajax({
             type: "POST",                       // 方法类型
@@ -454,7 +454,7 @@ function addMenu(item) {
             success: function (result) {
                 // console.log(result);
                 if (result != null && result.status == "success") {
-                    window.location.reload(); // 刷新页面
+                  //  window.location.reload(); // 刷新页面
                 } else {
                     alert(result.message);
                 }

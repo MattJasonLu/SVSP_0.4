@@ -62,7 +62,7 @@
 
     <update id="updateMenuUrl" parameterType="Organization">
         update menu_management
-        set url=#{url}
+        set url=#{url},icon=#{icon}
         where id=#{id};
     </update>
 
