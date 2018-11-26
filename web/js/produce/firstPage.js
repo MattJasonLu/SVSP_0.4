@@ -23,7 +23,7 @@ function loadNavigationList() {
                         j++;
                         // if(j === 1)localStorage.name = name; // 第一次进去加载第一个首页数据  (写在登陆页面中)
                         var li = "<li onclick='toUrl(this)'><a class='withripple' href='#' id='function_" + j + "' onclick=''><span class='" + icon + "'" +
-                            "aria-hidden='true'></span><span class='sidespan'>&nbsp;&nbsp;" + name + " </span><span class='iright pull-right'>" +
+                            "aria-hidden='true'></span><span class='sidespan' name='"+name+"'>&nbsp;&nbsp;" + name + " </span><span class='iright pull-right'>" +
                             "&gt;</span><span class='sr-only'>(current)</span></a></li>";
                         // $("#end").before(li);
                         $(".fadeInUp").append(li); // 插入到内部的最后
@@ -68,6 +68,8 @@ function loadNavigationList() {
                 alert(result.message);
             }
         });
+        // 设置一级菜单选中标蓝
+        $("ul[class='sidenav animated fadeInUp']").children().find("span[name='"+localStorage.name+"']").parent().parent().addClass("active");
     }
 }
 
@@ -87,21 +89,35 @@ function toUrl(item) {
  */
 function setMenuTwo(organizationList) {
     if (organizationList != null) {
-        console.log("设置数据");
-        console.log(organizationList);
         for (var i = 0; i < organizationList.length; i++) {
             var organization = organizationList[i];
             if (organization.organizationList != null && organization.organizationList.length > 0) { //菜单存在子节点
                 var li = "";
                 console.log(organization);
                 if (9 < organization.pId && organization.pId < 100) {  // 二级菜单设置下拉框为下垂
-                    li = "<li name='dropdown' class='dropdown'><a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' " +
-                        "aria-haspopup='true' aria-expanded='false'>" + organization.name + "<span class='caret'></span>" +
-                        "</a><ul class='dropdown-menu' name='" + organization.level + "'>" +
-                        "</ul></li>";
+                   if(i > 0) {
+                       li = "<li role='separator' class='divider'></li>" +
+                           "<li name='dropdown' class='dropdown'><a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' " +
+                           "aria-haspopup='true' aria-expanded='false'>" + organization.name + "<span class='caret'></span>" +
+                           "</a><ul class='dropdown-menu' name='" + organization.level + "'>" +
+                           "</ul></li>";
+                   }else if(i === 0){ // 第一个子节点不设置分割线
+                       li = "<li name='dropdown' class='dropdown'><a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' " +
+                           "aria-haspopup='true' aria-expanded='false'>" + organization.name + "<span class='caret'></span>" +
+                           "</a><ul class='dropdown-menu' name='" + organization.level + "'>" +
+                           "</ul></li>";
+                   }
                 } else if (organization.pId > 99) {     // 三级菜单及以后设置为右开
-                    li = "<li name='dropdown' class='dropdown-submenu'><a href=''>" + organization.name + "</a><ul class='dropdown-menu' name='" + organization.level + "'>" +
-                        "</ul></li>";
+                    if(i > 0){
+                        li = "<li role='separator' class='divider'></li>"+
+                            "<li name='dropdown' class='dropdown-submenu'><a href=''>" + organization.name +
+                            "</a><ul class='dropdown-menu' name='" + organization.level + "'>" +
+                            "</ul></li>";
+                    }else if(i === 0){// 第一个子节点不设置分割线
+                        li = "<li name='dropdown' class='dropdown-submenu'><a href=''>" + organization.name +
+                            "</a><ul class='dropdown-menu' name='" + organization.level + "'>" +
+                            "</ul></li>";
+                    }
                 }
                 var drop = null;
                 for (var j = 0; j < $("#navbar").children().eq(0).find(".dropdown-menu").length; j++) { // 在所有drop中查找父级的最后一个
@@ -127,14 +143,14 @@ function setMenuTwo(organizationList) {
                             dropdown = $("#navbar").children().eq(0).find("li[name='dropdown']").eq(j); // 获取最后一个菜单下拉框(即最近添加的一个)
                         }
                     }
-                    if (dropdown.attr("class") == "dropdown") { //如果父类是向下的下拉框
-                        var li1 = "<li><a href='" + organization.url + "' >" + organization.name + "</a></li>";  // 赋值
-                        dropdown.find("ul[name='" + (organization.level - 1).toString() + "']").append(li1);
-                    } else if (dropdown.attr("class") == "dropdown-submenu") {  // 如果父类是向右的下拉框
-                        var li2 = "<li><a href='" + organization.url + "'>" + organization.name + "</a></li>" +
-                            "<li role='separator' class='divider'></li>";
-                        dropdown.find("ul[name='" + (organization.level - 1).toString() + "']").append(li2);
+                    var li2 = "";
+                    if(i > 0){
+                        li2 = "<li role='separator' class='divider'></li>"+
+                            "<li><a href='" + organization.url + "'>" + organization.name + "</a></li>";
+                    }else if(i === 0){ // 第一个子节点不设置分割线
+                        li2 = "<li><a href='" + organization.url + "'>" + organization.name + "</a></li>";
                     }
+                    dropdown.find("ul[name='" + (organization.level - 1).toString() + "']").append(li2);
                 }
             }
         }
@@ -148,8 +164,6 @@ var name = "";  // 暂存二级菜单名
  * @param result
  */
 function setProcessIcon(organizationList) {
-    console.log("流程数据：");
-    console.log(organizationList);
     for (var i = 0; i < organizationList.length; i++) {  // 首页排除
         var organization = organizationList[i];
         name = organization.name;
@@ -187,6 +201,5 @@ function setProcessIcon1(organizationList) {
             "<a href='" + organization1.url + "'><img src='" + organization1.icon + "' style='width: 80px;height: 80px;border-radius:1px' alt='Generic placeholder thumbnail'></a>" +
             "<h4>" + name + "</h4></div>";
         $(".page-header").find("div[class='row placeholders']:last").append(div2);  // 将节点插入到最新行
-        console.log($(".page-header").find("div[class='row placeholders']:last"));
     }
 }

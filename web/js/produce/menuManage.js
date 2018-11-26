@@ -3,7 +3,7 @@ var setting = {
         addHoverDom: addHoverDom,     //鼠标悬停时显示用户自定义的控件，如zTree内部的编辑，删除等
         removeHoverDom: removeHoverDom,//鼠标失去悬停焦点时隐藏用户自定义的控件
         selectedMulti: false,         //设置是否允许同事选中多个节点
-        fontCss: { } // 设置字体
+        fontCss: {} // 设置字体
     },
     edit: {
         enable: true,                  //设置zTree是否处于编辑状态
@@ -12,18 +12,24 @@ var setting = {
         renameTitle: "命名",        // 设置修改按钮名称
         showRemoveBtn: true,      // 控制是否显示删除按钮
         showRenameBtn: true,      // 控制是否显示修改按钮
-         drag: {
-             autoExpandTrigger: true, //托拽节点时父节点是否自动展开
-             prev: false,            // 是否允许拖拽到目标节点之前
-             inner: false,        // 是否允许拖拽到目标节点子节点中
-             next: true           // 是否允许拖拽到目标节点之后
-         },
+        drag: {
+            autoExpandTrigger: true, //托拽节点时父节点是否自动展开
+            prev: true,            // 是否允许拖拽到目标节点之前
+            inner: false,        // 是否允许拖拽到目标节点子节点中
+            next: true,           // 是否允许拖拽到目标节点之后
+            isCopy: false,        // 拖拽是否进行复制
+            isMove: true
+        },
     },
     data: {
         simpleData: {
             enable: true  //确定zTree初始化时的节点数据、异步加载时的节点数据、或addNodes方法中输入的newNodes诗句是否采用简单数据模式(Array)，不需要
             // 用户再把数据库中取出的List强行转换为复杂的JSON嵌套格式
-        }
+        },
+        keep: {
+            leaf: true,    // 表示叶子节点不能变成根节点
+            parent: true   // 表示根节点不能变成叶子节点
+        },
     },
     callback: {
         //    beforeDrag: beforeDrag,   //用于捕获节点被拖拽之前的事件回调函数，并且根据返回值确定是否开始拖拽操作
@@ -33,39 +39,42 @@ var setting = {
         beforeClick: beforeClick, // 选中前事件
         onRemove: onRemove,// 删除按钮点击后事件
         onRename: onRename, // 编辑按钮点击后事件
-      //  beforeDrag: zTreeBeforeDrag,// 拖拽执行前事件
+        //  beforeDrag: zTreeBeforeDrag,// 拖拽执行前事件
         beforeDrop: beforeDrop, // 拖拽释放前执行事件（用于提示是否执行顺序调换）
         onDrop: onDrop, // 拖拽事件结束之后执行事件
-    //    onClick:onclick, // 点击后事件
+        //    onClick:onclick, // 点击后事件
     }
 };
 
-var zNodes = [
-
-];
+var zNodes = [];
 
 var log, className = "dark";
-
+var organizationId;
+var organizationPId;
+var organizationName;
 /**
  *
  * @param treeId
  * @param treeNode
  */
-function beforeClick(treeId, treeNode){
+function beforeClick(treeId, treeNode) {
     organization1.id = treeNode.id;
     organization1.pId = treeNode.pId;
     organization1.name = treeNode.name;
+    organizationId = organization1.id;
+    organizationPId =  organization1.pId;
+    organizationName = organization1.name;
     if (treeNode.isParent) { //是否有子节点
         $("#url").hide(); // 隐藏
-        if(treeNode.id < 100){// 判断是否是一级菜单
-        //    showIcon(treeNode);
-        }else {
+        if (treeNode.id < 100) {// 判断是否是一级菜单
+            //    showIcon(treeNode);
+        } else {
             return false;
         }
-    }else{  // 没有则显示出选择页面
+    } else {  // 没有则显示出选择页面
         showUrl(treeNode);
-        if(treeNode.id < 100){// 判断是否是一级菜单
-        //    showIcon(treeNode);
+        if (treeNode.id < 100) {// 判断是否是一级菜单
+            //    showIcon(treeNode);
         }
     }
 }
@@ -73,7 +82,7 @@ function beforeClick(treeId, treeNode){
 /**
  * 显示一级菜单图标
  */
-function showIcon(treeNode){
+function showIcon(treeNode) {
     console.log("显示图标选择！");
     // 获取数据
     $("#icon").show(); // 显示
@@ -82,7 +91,7 @@ function showIcon(treeNode){
 /**
  * 显示所有页面url
  */
-function showUrl(treeNode){
+function showUrl(treeNode) {
     $.ajax({
         type: "POST",                       // 方法类型
         url: "loadMenuPageList",                  // url
@@ -107,14 +116,14 @@ function showUrl(treeNode){
  * 设置页面链接数据
  * @param result
  */
-function setDataList(result){
+function setDataList(result) {
     var data = {};
     $.ajax({  // 获取该页面的链接
         type: "POST",                       // 方法类型
         url: "getMenuById",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data:{
-            id : organization1.id
+        data: {
+            id: organization1.id
         },
         dataType: "json",
         success: function (result) {
@@ -137,7 +146,7 @@ function setDataList(result){
             var clonedTr = tr.clone();
             clonedTr.show();
             // 循环遍历cloneTr的每一个td元素，并赋值
-            if(data.url != null && data.url != "" && data.url === item.url){ // 如果设置过超链接则将其单选项选中
+            if (data.url != null && data.url != "" && data.url === item.url) { // 如果设置过超链接则将其单选项选中
                 clonedTr.find("input[name='select']").attr("checked", true);
             }
             clonedTr.find("td[name='id']").text(item.id);
@@ -156,26 +165,30 @@ function setDataList(result){
 /**
  * 取消
  */
-function cancel(){
+function cancel() {
     $("#url").hide(); // 隐藏
 }
 
 /**
  * 取消
  */
-function cancel1(){
+function cancel1() {
     $("#icon").hide(); // 隐藏
 }
 
 /**
  * 保存链接
  */
-function save(){
-     console.log(organization1);
-     var tr = $("input[name='select']:checked").parent().parent().parent();
-     organization1.url =  tr.find("td[name='url']").text(); // 获取链接
-     organization1.icon = tr.find("td[name='icon']").text(); // 获取图标
-    if (organization1 != null && organization1.url != '') {
+function save() {
+    var tr = $("input[name='select']:checked").parent().parent().parent();
+    organization1.id = organizationId;
+    organization1.pId = organizationPId;
+    organization1.name = organizationName;
+    organization1.url = tr.find("td[name='url']").text(); // 获取链接
+    organization1.icon = tr.find("td[name='icon']").text(); // 获取图标
+    console.log("保存：");
+    console.log(organization1);
+    if (organization1 != null && organization1.url != '' && organization1.id != null) {
         $.ajax({
             type: "POST",                       // 方法类型
             url: "updateMenuUrl",                  // url
@@ -196,15 +209,17 @@ function save(){
                 alert(result.message);
             }
         });
+    } else if (organization1.id == null) {
+        alert("保存失败，编号丢失！");
     }
 }
 
 /**
  * 保存图标
  */
-function saveIcon(){
+function saveIcon() {
     var tr = $("input[name='select1']:checked").parent().parent().parent();
-    organization1.icon =  tr.find("td[name='icon']").text(); // 获取图标
+    organization1.icon = tr.find("td[name='icon']").text(); // 获取图标
     console.log(organization1);
     if (organization1 != null && organization1.icon != '') {
         $.ajax({
@@ -237,10 +252,10 @@ function saveIcon(){
  * @param targetNode
  * @param moveType
  */
-function beforeDrop(treeId, treeNodes, targetNode, moveType){
-    var oldPid=treeNodes[0].pId;
-    var  targetPid=targetNode.pId;
-    if(oldPid!=targetPid){
+function beforeDrop(treeId, treeNodes, targetNode, moveType) {
+    var oldPid = treeNodes[0].pId;
+    var targetPid = targetNode.pId;
+    if (oldPid != targetPid) {
         alert("只能移动同一级菜单下的节点");
         return false;
     }
@@ -257,7 +272,7 @@ function onDrop(treeId, treeNodes, targetNode, moveType) {
     var childrenNodes = targetNode[0].getParentNode().children;
     var result = "";
     for (var i = 0; i < childrenNodes.length; i++) {
-        if(i > 0)result += "/";
+        if (i > 0) result += "/";
         result += childrenNodes[i].id;
     }
     var pId = targetNode[0].pId;
@@ -346,7 +361,7 @@ function onRename(e, treeId, treeNode, isCancel) {
             if (result != null && result.status == "success" && result.data != null) {
                 alert("名称重复！");
                 window.location.reload();
-            } else if(result != null && result.data == null ){ // 如果不存在改名字则进行改名
+            } else if (result != null && result.data == null) { // 如果不存在改名字则进行改名
                 if (organization1 != null) {
                     $.ajax({
                         type: "POST",                       // 方法类型
@@ -358,7 +373,7 @@ function onRename(e, treeId, treeNode, isCancel) {
                         success: function (result) {
                             // console.log(result);
                             if (result != null && result.status == "success") {
-                               // window.location.reload(); // 重新设置页面
+                                // window.location.reload(); // 重新设置页面
                             } else {
                                 alert(result.message);
                             }
@@ -404,7 +419,7 @@ function addHoverDom(treeId, treeNode) {
     var addStr = "<span class='button add buttonOrganizationAdd' id='addBtn_" + treeNode.tId
         + "' title='新增' onfocus='this.blur();' ></span>";
     sObj.after(addStr); // 插入新增按钮
-   // if (treeNode.id > 99)   // 最后一层不设新增按钮
+    // if (treeNode.id > 99)   // 最后一层不设新增按钮
     //$("#addBtn_" + treeNode.tId).hide(); // 最后一层隐藏新增按钮
     organization1 = {};  // 初始化
     var btn1 = $(".buttonOrganizationAdd"); // 获取对象
@@ -431,6 +446,7 @@ function selectAll() {
 }
 
 $(document).ready(function () {
+    loadNavigationList(); // 设置动态菜单
     loadMenu();  // 获取并设置节点数据
     $.fn.zTree.init($("#treeDemo"), setting, zNodes);//根据参数初始化树
     $("#selectAll").bind("click", selectAll);
@@ -454,7 +470,7 @@ function addMenu(item) {
             success: function (result) {
                 // console.log(result);
                 if (result != null && result.status == "success") {
-                  //  window.location.reload(); // 刷新页面
+                    window.location.reload(); // 刷新页面
                 } else {
                     alert(result.message);
                 }
@@ -486,17 +502,17 @@ function loadMenu() {
                     organization.id = data[i].id; // 设置节点数据
                     organization.pId = data[i].pId;
                     organization.name = data[i].name;
-                   // if (data[i].id < 10 || (data[i].id == 11)) // 公司默认展开
+                    // if (data[i].id < 10 || (data[i].id == 11)) // 公司默认展开
                     if (data[i].pId === 0) { // 设置
                         organization.icon = "image/page/menu-one.png";
                         organization.open = true;   // 设置下拉是否展开
                     } else if (0 < data[i].pId && data[i].pId < 10) { // 设置一级菜单
-                        organization.open = true;   // 设置下拉是否展开
+                        organization.open = false;   // 设置下拉是否展开
                         organization.icon = "image/page/menu-two.png";
                     } else if (data[i].pId < 100) { // 设置二级菜单
                         organization.icon = "image/page/menu-three.png";
                         organization.open = false;   // 设置下拉是否展开
-                    }else if (data[i].pId >= 100){ // 设置图标
+                    } else if (data[i].pId >= 100) { // 设置图标
                         organization.icon = "image/page/menu-four.png";
                         organization.open = false;   // 设置下拉是否展开
                     }
@@ -517,7 +533,7 @@ function loadMenu() {
 /**
  * 查询
  */
-function search(){
+function search() {
     $('.myclass').each(function () {
         $(this).show();
     });
@@ -552,6 +568,6 @@ function search(){
  * 点击跳转页面
  * @param item
  */
-function toUrl(item){
+function toUrl(item) {
     window.location.href = $(item).text();
 }
