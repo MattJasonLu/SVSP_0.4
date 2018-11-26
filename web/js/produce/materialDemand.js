@@ -632,8 +632,12 @@ function setMaterialList(result) {
                     break;
                 //状态
                 case (15):
-                    if (data.checkState != null) {
-                        $(this).html(data.checkState.name);
+                    if (data.checkStateItem != null) {
+                        $(this).html(data.checkStateItem.dictionaryItemName)
+
+                        if($(this).html()=='已作废'){
+                            $(this).parent().hide()
+                        }
                     }
                     break;
             }
@@ -1179,21 +1183,21 @@ function setCompatibilityModal(result) {
 
                 //进料方式
                 case (1):
-                    if (obj.handleCategory != null) {
-                        $(this).html(obj.handleCategory.name);
+                    if (obj.handleCategoryItem != null) {
+                        $(this).html(obj.handleCategoryItem.dictionaryItemName);
                     }
                     break;
 
                 //物质形态
                 case (2):
-                    if (obj.formType != null) {
-                        $(this).html(obj.formType.name);
+                    if (obj.formTypeItem != null) {
+                        $(this).html(obj.formTypeItem.dictionaryItemName);
                     }
                     break;
                 //包装方式
                 case (3):
-                if(obj.packageType!=null){
-                    $(this).html(obj.packageType.name);
+                if(obj.packageTypeItem!=null){
+                    $(this).html(obj.packageTypeItem.dictionaryItemName);
                 }
 
                     break;
@@ -1418,10 +1422,10 @@ function adjustMater() {
                     //
                     // cloneTr.children('td').eq(23).children('input').val(obj.phMin);
 
-                    if(obj.handleCategory != null){
+                    if(obj.handleCategoryItem != null){
                         $.ajax({
                             type: 'POST',
-                            url: "getHandleCategory",
+                            url: "getHandleCategoryByDataDictionary",
                             //data:JSON.stringify(data),
                             dataType: "json",
                             contentType: "application/json;charset=utf-8",
@@ -1430,13 +1434,13 @@ function adjustMater() {
                                     // console.log(result);
                                     var handelCategory = cloneTr.children('td').eq(1).children('select');
                                     handelCategory.children().remove();
-                                    $.each(result.handleCategoryList, function (index, item) {
+                                    $.each(result.data, function (index, item) {
                                         var option = $('<option/>');
-                                        option.val(item.index);
-                                        option.text(item.name);
+                                        option.val(item.dataDictionaryItemId);
+                                        option.text(item.dictionaryItemName);
                                         handelCategory.append(option);
                                     });
-                                    handelCategory.get(0).selectedIndex = item.handleCategory.index - 1;
+                                    handelCategory.val(obj.handleCategoryItem.dataDictionaryItemId);
                                 }
                                 else {
                                     alert(result.message);
@@ -1449,11 +1453,11 @@ function adjustMater() {
                         });
                     }
 
-                    if (item.formType != null) {
+                    if (item.formTypeItem != null) {
                         //形态
                         $.ajax({
                             type: 'POST',
-                            url: "getFormTypeAndPackageType",
+                            url: "getFormTypeByDataDictionary",
                             //data:JSON.stringify(data),
                             dataType: "json",
                             contentType: "application/json;charset=utf-8",
@@ -1462,13 +1466,13 @@ function adjustMater() {
                                     // console.log(result);
                                     var formType = cloneTr.children('td').eq(2).children('select');
                                     formType.children().remove();
-                                    $.each(result.formTypeList, function (index, item) {
+                                    $.each(result.data, function (index, item) {
                                         var option = $('<option/>');
-                                        option.val(item.index);
-                                        option.text(item.name);
+                                        option.val(item.dataDictionaryItemId);
+                                        option.text(item.dictionaryItemName);
                                         formType.append(option);
                                     });
-                                    formType.get(0).selectedIndex = obj.formType.index - 1;
+                                    formType.val(obj.formTypeItem.dataDictionaryItemId);
                                 }
                                 else {
                                     alert(result.message);
@@ -1486,7 +1490,7 @@ function adjustMater() {
                         //包装
                         $.ajax({
                             type: 'POST',
-                            url: "getFormTypeAndPackageType",
+                            url: "getPackageTypeByDataDictionary",
                             //data:JSON.stringify(data),
                             dataType: "json",
                             contentType: "application/json;charset=utf-8",
@@ -1495,13 +1499,13 @@ function adjustMater() {
                                     // console.log(result);
                                     var packageType = cloneTr.children('td').eq(3).children('select');
                                     packageType.children().remove();
-                                    $.each(result.packageTypeList, function (index, item) {
+                                    $.each(result.data, function (index, item) {
                                         var option = $('<option/>');
-                                        option.val(item.index);
-                                        option.text(item.name);
+                                        option.val(item.dataDictionaryItemId);
+                                        option.text(item.dictionaryItemName);
                                         packageType.append(option);
                                     });
-                                    packageType.get(0).selectedIndex = obj.packageType.index - 1;
+                                    packageType.val(obj.packageTypeItem.dataDictionaryItemId);
                                 }
                                 else {
                                     alert(result.message);
@@ -1549,9 +1553,9 @@ function adjustConfirm() {
 
     $('.myclass2').each(function () {
         var materialRequireItem={
-            handleCategory: $(this).children('td').eq(1).children('select').get(0).selectedIndex,
-            formType: $(this).children('td').eq(2).children('select').get(0).selectedIndex,
-            packageType:$(this).children('td').eq(3).children('select').get(0).selectedIndex,
+            handleCategoryItem:{dataDictionaryItemId:$(this).children('td').eq(1).children('select').val()} ,
+            formTypeItem:{dataDictionaryItemId:$(this).children('td').eq(2).children('select').val()} ,
+            packageTypeItem:{dataDictionaryItemId:$(this).children('td').eq(3).children('select').val()},
             weeklyDemand:$(this).children('td').eq(4).children('input').val(),
             currentInventory:$(this).children('td').eq(5).children('input').val(),
             safety:$(this).children('td').eq(6).children('input').val(),

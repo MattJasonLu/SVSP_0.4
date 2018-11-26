@@ -628,8 +628,8 @@ function setCompatibility(result) {
 
                 //状态
                 case (13):
-                    if (data.checkState != null) {
-                        $(this).html(data.checkState.name);
+                    if (data.checkStateItem != null) {
+                        $(this).html(data.checkStateItem.dictionaryItemName);
                     }
                     break;
             }
@@ -958,6 +958,7 @@ array1 = [];
  * 生成物料需求单==》勾选生成
  */
 function generate() {
+    alert("此功能正在紧急修复！")
     var items = $("input[name='select']:checked");//判断复选框是否选中
     if (items.length > 0) {
         if (confirm("是否生成物料需求?")) {
@@ -1140,15 +1141,15 @@ function setCompatibilityItemModal(result) {
 
                 //处理类别
                 case (1):
-                    if (obj.handleCategory != null) {
-                        $(this).html(obj.handleCategory.name);
+                    if (obj.handleCategoryItem != null) {
+                        $(this).html(obj.handleCategoryItem.dictionaryItemName);
                     }
                     break;
 
                 //物质形态
                 case (2):
-                    if (obj.formType != null) {
-                        $(this).html(obj.formType.name);
+                    if (obj.formTypeItem != null) {
+                        $(this).html(obj.formTypeItem.dictionaryItemName);
                     }
                     break;
                 //比例
@@ -1300,6 +1301,9 @@ function adjustCom() {
     $("#compatibilityId2").text(compatibilityId);
 
 
+
+
+
     //找出物料明细
     $.ajax({
         type: "POST",
@@ -1377,11 +1381,11 @@ function adjustCom() {
                     cloneTr.children('td').eq(22).html(obj.id);
 
 
-                    if (obj.handleCategory != null) {
+                    if (obj.handleCategoryItem != null) {
                         //进料方式
                         $.ajax({
                             type: 'POST',
-                            url: "getHandleCategory",
+                            url: "getHandleCategoryByDataDictionary",
                             //data:JSON.stringify(data),
                             dataType: "json",
                             contentType: "application/json;charset=utf-8",
@@ -1390,13 +1394,13 @@ function adjustCom() {
                                     // console.log(result);
                                     var handelCategory = cloneTr.children('td').eq(1).children('select');
                                     handelCategory.children().remove();
-                                    $.each(result.handleCategoryList, function (index, item) {
+                                    $.each(result.data, function (index, item) {
                                         var option = $('<option/>');
-                                        option.val(item.index);
-                                        option.text(item.name);
+                                        option.val(item.dataDictionaryItemId);
+                                        option.text(item.dictionaryItemName);
                                         handelCategory.append(option);
                                     });
-                                    handelCategory.get(0).selectedIndex = item.handleCategory.index - 1;
+                                    handelCategory.val(obj.handleCategoryItem.dataDictionaryItemId);
                                 }
                                 else {
                                     alert(result.message);
@@ -1410,11 +1414,11 @@ function adjustCom() {
 
 
                     }
-                    if (item.formType != null) {
-                        //形态
+                    if (item.formTypeItem != null) {
+                        //物质形态
                         $.ajax({
                             type: 'POST',
-                            url: "getFormTypeAndPackageType",
+                            url: "getFormTypeByDataDictionary",
                             //data:JSON.stringify(data),
                             dataType: "json",
                             contentType: "application/json;charset=utf-8",
@@ -1423,13 +1427,13 @@ function adjustCom() {
                                     // console.log(result);
                                     var formType = cloneTr.children('td').eq(2).children('select');
                                     formType.children().remove();
-                                    $.each(result.formTypeList, function (index, item) {
+                                    $.each(result.data, function (index, item) {
                                         var option = $('<option/>');
-                                        option.val(item.index);
-                                        option.text(item.name);
+                                        option.val(item.dataDictionaryItemId);
+                                        option.text(item.dictionaryItemName);
                                         formType.append(option);
                                     });
-                                    formType.get(0).selectedIndex = obj.formType.index - 1;
+                                    formType.val(obj.formTypeItem.dataDictionaryItemId)
                                 }
                                 else {
                                     alert(result.message);
@@ -1440,7 +1444,7 @@ function adjustCom() {
                             }
 
                         });
-                        //cloneTr.children('td').eq(2).children('select').selectedIndex=3;
+
                     }
                     // cloneTr.removeAttr('id');
                     cloneTr.insertBefore(tr);
@@ -1543,8 +1547,8 @@ function adjustConfirmPw() {
                 $('.myclass2').each(function () {
                     var data = {
                         compatibilityId: $('#compatibilityId2').text(),
-                        handleCategory: $(this).children('td').eq(1).children('select').get(0).selectedIndex,
-                        formType: $(this).children('td').eq(2).children('select').get(0).selectedIndex,
+                        handleCategoryItem: {dataDictionaryItemId:$(this).children('td').eq(1).children('select').val()},
+                        formTypeItem: {dataDictionaryItemId:$(this).children('td').eq(2).children('select').val()},
                         // id: $(this).children('td').eq(14).html(),
                         weeklyDemandTotal: $(this).children('td').eq(3).children('input').val(),
                         dailyRatio: $(this).children('td').eq(4).html(),
@@ -1850,7 +1854,7 @@ function addPw() {
     //进料方式
     $.ajax({
         type: 'POST',
-        url: "getHandleCategory",
+        url: "getHandleCategoryByDataDictionary",
         //data:JSON.stringify(data),
         dataType: "json",
         contentType: "application/json;charset=utf-8",
@@ -1859,10 +1863,10 @@ function addPw() {
                 //console.log(result);
                 var handleCategory = $('#handleCategory');
                 handleCategory.children().remove();
-                $.each(result.handleCategoryList, function (index, item) {
+                $.each(result.data, function (index, item) {
                     var option = $('<option/>');
-                    option.val(index + 1);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     handleCategory.append(option);
                 });
                 handleCategory.get(0).selectedIndex = 0;
@@ -1880,7 +1884,7 @@ function addPw() {
     //物质形态
     $.ajax({
         type: 'POST',
-        url: "getFormTypeAndPackageType",
+        url: "getFormTypeByDataDictionary",
         //data:JSON.stringify(data),
         dataType: "json",
         contentType: "application/json;charset=utf-8",
@@ -1889,10 +1893,10 @@ function addPw() {
                 //console.log(result);
                 var formType = $('#formType');
                 formType.children().remove();
-                $.each(result.formTypeList, function (index, item) {
+                $.each(result.data, function (index, item) {
                     var option = $('<option/>');
-                    option.val(index + 1);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     formType.append(option);
                 });
                 formType.get(0).selectedIndex = 0;
@@ -2171,8 +2175,8 @@ function addCompatibility() {
                 $('.myclass3').each(function () {
                     var dataItem = {
                         compatibilityId: $('#compatibilityId4').text(),
-                        handleCategory: $(this).children('td').eq(1).find('select').get(0).selectedIndex,
-                        formType: $(this).children('td').eq(2).find('select').get(0).selectedIndex,
+                        handleCategoryItem: {dataDictionaryItemId:$(this).children('td').eq(1).find('select').val()},
+                        formTypeItem:{dataDictionaryItemId:$(this).children('td').eq(2).find('select').val()} ,
                         proportion: $(this).children('td').eq(5).html(),
                         dailyRatio: $(this).children('td').eq(4).html(),
                         weeklyDemandTotal: $(this).children('td').eq(3).find("input").val(),
