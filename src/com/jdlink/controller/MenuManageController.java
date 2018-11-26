@@ -94,8 +94,10 @@ public class MenuManageController {
                 id += 1;
             }
             String name = "新页面";
+            int i = 1;
             while (menuManageService.getMenuByName(name,organization.getId()) != null) { // 同一节点下名称不予许重复
-                name += "1";
+                i++;
+                name += i;
             }
             organization1.setId(id);
             organization1.setpId(organization.getId());
@@ -313,6 +315,43 @@ public class MenuManageController {
             res.put("message", "获取失败！");
         }
         return res.toString();
+    }
+
+    /**
+     * 根据name 和 pId获取子类对象及其树状结构
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("getChildrenMenuByName")
+    @ResponseBody
+    public String getChildrenMenuByName(@RequestBody Organization organization) {
+        JSONObject res = new JSONObject();
+        try {
+            List<Organization> organizationList = getTreeMenuList(organization);
+            JSONArray data = JSONArray.fromArray(organizationList.toArray(new Organization[organizationList.size()]));
+            res.put("data",data);
+            res.put("status", "success");
+            res.put("message", "获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取失败！");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 递归获取树状结构
+     * @param organization
+     * @return
+     */
+    public List<Organization> getTreeMenuList(Organization organization){
+        List<Organization> organizationList = menuManageService.getChildrenMenuByName(organization);
+        for(int i = 0; i < organizationList.size(); i++){
+                 organizationList.get(i).setOrganizationList(getTreeMenuList(organizationList.get(i)));
+        }
+        return organizationList;
     }
 
     public User getUser() {

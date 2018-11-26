@@ -31,6 +31,11 @@
         where pId=#{id} and name=#{name};
     </select>
 
+    <select id="getChildrenMenuByName" parameterType="Organization" resultType="Organization">
+        select * from menu_management
+        where pId in (select id from menu_management where pId=#{pId} and name = #{name});
+    </select>
+
     <select id="getMenuIdListByPId" parameterType="int" resultType="int">
         select id from menu_management
         where pId=#{pId};

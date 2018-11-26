@@ -12,6 +12,7 @@ public interface MenuManageService {
     int countById(int id);
     Organization getMenuById(int id);
     Organization getMenuByName(String name,int id);
+    List<Organization> getChildrenMenuByName(Organization organization);
     List<Integer> getMenuIdListByPId(int pId);
     void updateMenuOrder(Organization organization);
     void add(Organization organization);
