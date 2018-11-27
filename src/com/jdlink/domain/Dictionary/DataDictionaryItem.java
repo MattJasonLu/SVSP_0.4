@@ -6,16 +6,16 @@ package com.jdlink.domain.Dictionary;
 public class DataDictionaryItem {
 
     //明细字段编号
-    private int dataDictionaryItemId;
+    public int dataDictionaryItemId;
 
     //外键(主表编号)
-    private int dataDictionaryId;
+    public int dataDictionaryId;
 
     //明细类型编码
-    private String dictionaryItemType;
+    public String dictionaryItemType;
 
     //明细类型名称
-    private String dictionaryItemName;
+    public String dictionaryItemName;
 
     public int getDataDictionaryItemId() {
         return dataDictionaryItemId;

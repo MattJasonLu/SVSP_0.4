@@ -69,4 +69,9 @@ public class DictionaryServiceImpl implements DictionaryService
     public List<DataDictionaryItem> getSelectListByDataDictionary(int id) {
         return dictionaryMapper.getSelectListByDataDictionary(id);
     }
+
+    @Override
+    public int getdatadictionaryitemIdByName(String name,int id) {
+        return dictionaryMapper.getdatadictionaryitemIdByName(name,id);
+    }
 }

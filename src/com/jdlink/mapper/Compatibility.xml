@@ -52,21 +52,21 @@
         update t_pr_pw set checkState='Keeping',approvalContent=#{1},nowTime=NOW() where pwId=#{0};
     </update>
     <update id="back" >
-        update t_pr_pw set checkState='Backed',backContent=#{1},nowTime=NOW() where compatibilityId=#{0};
+        update t_pr_pw set checkStateId=66,backContent=#{1},nowTime=NOW() where compatibilityId=#{0};
     </update>
     <select id="getByPwId1" resultMap="CompatibilityRM" parameterType="String">
         select * from t_pr_pw where pwId=#{pwId};
     </select>
     <update id="cancel" parameterType="String">
-        update t_pr_pw set checkState='Invalid',nowTime=NOW() where compatibilityId=#{compatibilityId}
+        update t_pr_pw set checkStateId=69,nowTime=NOW() where compatibilityId=#{compatibilityId}
     </update>
 
     <update id="submit" parameterType="String">
-        update t_pr_pw set checkState='ToExamine',nowTime=NOW() where compatibilityId=#{compatibilityId}
+        update t_pr_pw set checkStateId=67,nowTime=NOW() where compatibilityId=#{compatibilityId}
     </update>
 
     <update id="approvalCompatibility" >
-        update t_pr_pw set checkState='Approval',nowTime=NOW(),approvalContent=#{1} where compatibilityId=#{0} ;
+        update t_pr_pw set checkStateId=76,nowTime=NOW(),approvalContent=#{1} where compatibilityId=#{0} ;
     </update>
 
     <select id="search" parameterType="Compatibility" resultMap="CompatibilityRM">
@@ -148,20 +148,35 @@
 
     <!--添加配伍计划单的明细-->
     <insert id="addCompatibilityItem" parameterType="CompatibilityItem">
-        insert into t_pr_pwitem(compatibilityId, handleCategory, formType, proportion, dailyRatio, weeklyDemandTotal, calorific, ash, water, cl, s, p, f, ph,calorificThreshold,ashThreshold,waterThreshold,fThreshold,phThreshold,sThreshold,clThreshold,pThreshold) values
-        (#{compatibilityId},#{handleCategory},#{formType},#{proportion},#{dailyRatio},#{weeklyDemandTotal},#{calorific},#{ash},#{water},#{cl},#{s},#{p},#{f},#{ph},#{calorificThreshold},#{ashThreshold},#{waterThreshold},#{fThreshold},#{phThreshold},#{sThreshold},#{clThreshold},#{pThreshold});
+        insert into t_pr_pwitem(compatibilityId, handleCategory, formType, proportion, dailyRatio, weeklyDemandTotal, calorific, ash, water, cl, s, p, f, ph,calorificThreshold,ashThreshold,waterThreshold,fThreshold,phThreshold,sThreshold,clThreshold,pThreshold,handleCategoryId,formTypeId) values
+        (#{compatibilityId},#{handleCategory},#{formType},#{proportion},#{dailyRatio},#{weeklyDemandTotal},#{calorific},#{ash},#{water},#{cl},#{s},#{p},#{f},#{ph},#{calorificThreshold},#{ashThreshold},#{waterThreshold},#{fThreshold},#{phThreshold},#{sThreshold},#{clThreshold},#{pThreshold},#{handleCategoryItem.dataDictionaryItemId},#{formTypeItem.dataDictionaryItemId});
     </insert>
     <!--添加配伍周计划主表-->
     <insert id="addCompatibility" parameterType="Compatibility">
-        insert into t_pr_pw(compatibilityId, totalDailyAmount, checkState, nowTime,  approvalContent, backContent, calorificAvg, ashAvg, waterAvg, clAvg, sAvg, phAvg, importDate, weeklyDemandTotalAggregate,fAvg,pAvg) values
-        (#{compatibilityId},#{totalDailyAmount},'ToSubmit',NOW(),#{approvalContent},#{backContent},#{calorificAvg},#{ashAvg},#{waterAvg},#{clAvg},#{sAvg},#{phAvg},NOW(),#{weeklyDemandTotalAggregate},#{fAvg},#{pAvg})
+        insert into t_pr_pw(compatibilityId, totalDailyAmount, checkState, nowTime,  approvalContent, backContent, calorificAvg, ashAvg, waterAvg, clAvg, sAvg, phAvg, importDate, weeklyDemandTotalAggregate,fAvg,pAvg,checkStateId) values
+        (#{compatibilityId},#{totalDailyAmount},'ToSubmit',NOW(),#{approvalContent},#{backContent},#{calorificAvg},#{ashAvg},#{waterAvg},#{clAvg},#{sAvg},#{phAvg},NOW(),#{weeklyDemandTotalAggregate},#{fAvg},#{pAvg},64)
     </insert>
     <resultMap id="WeekPlan" type="Compatibility" autoMapping="true">
         <result column="compatibilityId" property="compatibilityId"></result>
         <collection property="compatibilityItemList" column="compatibilityId" select="getCompatibilityItem"></collection>
+        <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
     </resultMap>
+    <!--获取状态数据字典-->
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
+    </select>
     <!--获取明细-->
-    <select id="getCompatibilityItem" resultType="CompatibilityItem">
+    <resultMap id="CompatibilityItemRM" type="CompatibilityItem">
+        <collection property="formTypeItem" column="formTypeId" select="getFormTypeItem"></collection>
+        <collection property="handleCategoryItem" column="handleCategoryId" select="getHandleCategoryItem"></collection>
+    </resultMap>
+    <select id="getFormTypeItem" resultType="FormTypeItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{formTypeId}
+    </select>
+    <select id="getHandleCategoryItem" resultType="HandleCategoryItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{handleCategoryId}
+    </select>
+    <select id="getCompatibilityItem" resultMap="CompatibilityItemRM">
         select * from t_pr_pwitem where compatibilityId=#{compatibilityId};
     </select>
     <select id="getWeekPlanList" resultMap="WeekPlan">
@@ -173,7 +188,7 @@
     </select>
 
     <!--根据配伍编号获取明细-->
-    <select id="getWeekById" parameterType="String" resultType="CompatibilityItem">
+    <select id="getWeekById" parameterType="String" resultMap="CompatibilityItemRM">
         select * from  t_pr_pwitem where compatibilityId=#{compatibilityId};
     </select>
 

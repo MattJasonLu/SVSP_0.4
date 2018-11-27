@@ -378,8 +378,11 @@ function setStockList(result) {
                     break;
                 // 申报状态
                 case (4):
-                    if (obj.checkState != null) {
-                        $(this).html(obj.checkState.name);
+                    if (obj.checkStateItem != null) {
+                        $(this).html(obj.checkStateItem.dictionaryItemName);
+                        if(obj.checkStateItem.dictionaryItemName=='已作废'){
+                            $(this).parent().hide()
+                        }
                     }
                     break;
                 // 运输公司
@@ -1344,36 +1347,40 @@ function contractSubmit() {
     //在此提交
     var items = $("input[name='blankCheckbox1']:checked");//判断复选框是否选中
     if (items.length > 0) {
-        function getContractById(id) {
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "submitStock",              // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                dataType: "json",
-                data: {
-                    'stockId': id
-                },
-                success: function (result) {
-                    if (result != undefined && result.status == "success") {
-                    } else {
-                        alert(result.message)
+        if(confirm("确认提交?")){
+            //点击确定后操作
+            function getContractById(id) {
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "submitStock",              // url
+                    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    dataType: "json",
+                    data: {
+                        'stockId': id
+                    },
+                    success: function (result) {
+                        if (result != undefined && result.status == "success") {
+                        } else {
+                            alert(result.message)
+                        }
+                    },
+                    error: function (result) {
+                        alert("服务器异常！");
+                        console.log("error: " + result);
                     }
-                },
-                error: function (result) {
-                    alert("服务器异常！");
-                    console.log("error: " + result);
-                }
+                });
+            }
+
+            items.each(function () {//遍历
+                var id = getContractId1(this);//获得合同编号
+                //console.log(id);
+                getContractById(id);
+
             });
+            alert("提交成功!");
+            location.reload();
         }
 
-        items.each(function () {//遍历
-            var id = getContractId1(this);//获得合同编号
-            //console.log(id);
-            getContractById(id);
-
-        });
-        alert("提交成功!");
-        location.reload();
     }
     else {
         alert("请勾选要提交的合同！")

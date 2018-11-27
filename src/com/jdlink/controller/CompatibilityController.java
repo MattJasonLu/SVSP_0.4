@@ -2,9 +2,12 @@ package com.jdlink.controller;
 
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 import com.jdlink.domain.*;
+import com.jdlink.domain.Dictionary.FormTypeItem;
+import com.jdlink.domain.Dictionary.HandleCategoryItem;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.service.CompatibilityService;
 import com.jdlink.service.ThresholdService;
+import com.jdlink.service.dictionary.DictionaryService;
 import com.jdlink.util.DBUtil;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
@@ -37,6 +40,8 @@ public class CompatibilityController {
     CompatibilityService compatibilityService;
     @Autowired
     ThresholdService thresholdService;
+    @Autowired
+    DictionaryService dictionaryService;
 
 @RequestMapping("importCompatibilityExcel")
 @ResponseBody
@@ -137,35 +142,34 @@ public String importCompatibilityExcel(MultipartFile excelFile){
                      //第二列是处理类别
 
                      if (data.get(i)[j][1].toString() != "null") {
-                         HandleCategory handleCategory = (HandleCategory.getHandleCategory(data.get(i)[j][1].toString()));
-                         compatibilityItem.setHandleCategory(handleCategory);//射入
+                         HandleCategoryItem handleCategoryItem=new HandleCategoryItem();
+                         handleCategoryItem.setDataDictionaryItemId(dictionaryService.getdatadictionaryitemIdByName(data.get(i)[j][1].toString(),6));
+                         compatibilityItem.setHandleCategoryItem(handleCategoryItem);
+//                         HandleCategory handleCategory = (HandleCategory.getHandleCategory(data.get(i)[j][1].toString()));
+//                         compatibilityItem.setHandleCategory(handleCategory);//射入
                      }
 
                      if (data.get(i)[j][1] == "null") {
-                         compatibilityItem.setHandleCategory(null);//射入
+                         compatibilityItem.setHandleCategoryItem(null);//射入
                      }
 
                      //第三列是物质形态
 
                      if (data.get(i)[j][2].toString() != "null") {
-
+                         FormTypeItem formTypeItem=new FormTypeItem();
                          if(data.get(i)[j][2].toString().indexOf("固")!=-1&&data.get(i)[j][2].toString().indexOf("半")==-1){
-                             compatibilityItem.setFormType(Solid);
+                             formTypeItem.setDataDictionaryItemId(3);
                          }
                         else if(data.get(i)[j][2].toString().indexOf("液")!=-1){
-                             compatibilityItem.setFormType(Liquid);
+                             formTypeItem.setDataDictionaryItemId(2);
                          }
                          else if(data.get(i)[j][2].toString().indexOf("半")!=-1){
-                             compatibilityItem.setFormType(HalfSolid);
+                             formTypeItem.setDataDictionaryItemId(4);
                          }
-                         else {
-                             FormType formType = FormType.getFormType(data.get(i)[j][2].toString());
-                             compatibilityItem.setFormType(formType);
-                         }
-
+                         compatibilityItem.setFormTypeItem(formTypeItem);
                      }
                      if (data.get(i)[j][2] == "null") {
-                         compatibilityItem.setFormType(null);
+                         compatibilityItem.setFormTypeItem(null);
                      }
 
 
@@ -713,7 +717,30 @@ public String importCompatibilityExcel(MultipartFile excelFile){
 
           //2对明细进行循环 做数据加减操作
             for(int i=0;i<compatibilityItemList.size();i++){
-                Threshold threshold=thresholdService.getThresholdByHandleCategoryAndFormType(compatibilityItemList.get(i).getHandleCategory().toString(),compatibilityItemList.get(i).getFormType().toString());
+                Threshold threshold=null;
+//                Threshold threshold=thresholdService.getThresholdByHandleCategoryAndFormType(compatibilityItemList.get(i).getHandleCategory().toString(),compatibilityItemList.get(i).getFormType().toString());
+
+                if(threshold==null){
+                    threshold=new Threshold();
+                    threshold.setCalorificMax(0);
+                    threshold.setCalorificMin(0);
+                    threshold.setAshMax(0);
+                    threshold.setAshMin(0);
+                    threshold.setWaterMax(0);
+                    threshold.setWaterMin(0);
+                    threshold.setsMax(0);
+                    threshold.setsMin(0);
+                    threshold.setClMax(0);
+                    threshold.setClMin(0);
+                    threshold.setpMax(0);
+                    threshold.setpMin(0);
+                    threshold.setfMax(0);
+                    threshold.setfMin(0);
+                    threshold.setPhMax(0);
+                    threshold.setPhMin(0);
+                    threshold.setSafety(0);
+                }
+
                 MaterialRequireItem materialRequireItem=new MaterialRequireItem();//创建物料明细对象
 
                 //射入外键物料编号

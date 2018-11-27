@@ -61,5 +61,5 @@ public interface DictionaryMapper {
 
     List<DataDictionaryItem>getSelectListByDataDictionary(int id);
 
-
+  int getdatadictionaryitemIdByName(String name,int id);
 }
