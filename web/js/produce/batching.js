@@ -930,14 +930,14 @@ function save() {
             produceCompany:{clientId:$(this).children('td').eq(12).html()},
             wastesName:$(this).children('td').eq(3).html(),
             wasteCategory:$(this).children('td').eq(5).html(),
-            handelCategory:getHandleCategoryFromStr($(this).children('td').eq(6).html()),
+            handleCategoryItem:{dataDictionaryItemId:getIdFromHandleCategory($(this).children('td').eq(6).html())},
             batchingNumber:$(this).children('td').eq(8).children('input').val(),//配料的数量
             batchingDate:$("#date").val(),//配料日期
             createDate:$("#createDate").val(),//创建日期
             creator:$("#creator").val(),
             inboundOrderItemId:$(this).children('td').eq(11).html(),
             transferDraftId:$(this).children('td').eq(14).html(),
-            processWay:getProcessWayFromStr($(this).children('td').eq(7).html()),
+            processWayItem:{dataDictionaryItemId:getIdFromProcessWay($(this).children('td').eq(7).html())},
     };
         console.log(data);
         $.ajax({
@@ -1108,21 +1108,21 @@ function setBatchingOrderList(result) {
                             break;
                             //进料方式
                         case (9):
-                            if(obj.handelCategory!=null){
-                                $(this).html((obj.handelCategory.name));
+                            if(obj.handleCategoryItem!=null){
+                                $(this).html((obj.handleCategoryItem.dictionaryItemName));
                             }
                             break;
                             //处置方式
                         case (10):
-                            if(obj.processWay!=null){
-                                $(this).html((obj.processWay.name));
+                            if(obj.processWayItem!=null){
+                                $(this).html((obj.processWayItem.dictionaryItemName));
                             }
                             break;
 
                         //状态
                         case (11):
-                            if(obj.checkState!=null){
-                                $(this).html(obj.checkState.name);
+                            if(obj.checkStateItem!=null){
+                                $(this).html(obj.checkStateItem.dictionaryItemName);
                             }
 
                             break;
@@ -1330,14 +1330,14 @@ function setMaterialRequisitionList(result) {
                             break;
                        //进料方式
                         case (7):
-                            if(obj.handelCategory!=null){
-                                $(this).html(obj.handelCategory.name);
+                            if(obj.handleCategoryItem!=null){
+                                $(this).html(obj.handleCategoryItem.dictionaryItemName);
                             }
                             break;
                             //处置方式
                         case (8):
-                            if(obj.processWay!=null){
-                                $(this).html(obj.processWay.name);
+                            if(obj.processWayItem!=null){
+                                $(this).html(obj.processWayItem.dictionaryItemName);
                             }
                             break;
                             //入库单明细
@@ -1464,8 +1464,8 @@ function updateMaterialRequisitionOrder() {
                wastesName:$(this).children("td").eq(2).html(),
                wasteCategory:$(this).children("td").eq(3).html(),
                recipientsNumber:parseFloat($(this).children("td").eq(6).children('input').val()).toFixed(2),
-               handelCategory:getHandleCategoryFromStr($(this).children("td").eq(7).html()),
-               processWay:getProcessWayFromStr($(this).children("td").eq(8).html()),
+               handleCategoryItem:{dataDictionaryItemId:getIdFromHandleCategory($(this).children("td").eq(7).html())},
+               processWayItem:{dataDictionaryItemId:getIdFromProcessWay($(this).children("td").eq(8).html())},
                inboundOrderItemId:$(this).children("td").eq(9).html(),
                client:{clientId:$(this).children("td").eq(10).html()},
                wareHouse:{wareHouseId:$(this).children("td").eq(11).html()},
@@ -1814,11 +1814,11 @@ function view(item) {
                 $('#batchingDate').val(getDateStr(obj.batchingDate));
                 $('#createDate').val(getDateStr(obj.createDate));
                 $('#transferDraftId').val(obj.transferDraftId);
-                if(obj.handelCategory!=null){
-                    $('#handelCategory').val(obj.handelCategory.name);
+                if(obj.handleCategoryItem!=null){
+                    $('#handelCategory').val(obj.handleCategoryItem.dictionaryItemName);
                 }
-                if(obj.processWay!=null){
-                    $('#processWay').val(obj.processWay.name);
+                if(obj.processWayItem!=null){
+                    $('#processWay').val(obj.processWayItem.dictionaryItemName);
                 }
 
 

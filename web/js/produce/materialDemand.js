@@ -1486,7 +1486,7 @@ function adjustMater() {
                         //cloneTr.children('td').eq(2).children('select').selectedIndex=3;
                     }
 
-                    if(obj.packageType!=null){
+                    if(obj.packageTypeItem!=null){
                         //包装
                         $.ajax({
                             type: 'POST',

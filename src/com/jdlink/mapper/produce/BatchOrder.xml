@@ -13,8 +13,20 @@
 <resultMap id="BatchingOrderRM" type="BatchingOrder">
     <association property="produceCompany" column="produceCompany" select="getClient"></association>
     <association property="wareHouse" column="wareHouseId" select="getwareHouse"></association>
+    <collection property="handleCategoryItem" column="handleCategoryId" select="getHandleCategoryItem"></collection>
+    <collection property="processWayItem" column="processWayId" select="getProcessWayItem"></collection>
+    <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
 </resultMap>
 
+    <!--进料放式查询数据字典-->
+<select id="getHandleCategoryItem" resultType="HandleCategoryItem">
+    select * from datadictionaryitem where dataDictionaryItemId=#{handleCategoryId}
+</select>
+
+    <!--处置方式查询数据字典-->
+    <select id="getProcessWayItem" resultType="ProcessWayItem">
+    select * from datadictionaryitem where dataDictionaryItemId=#{processWayId}
+</select>
     <!--获取客户信息-->
     <select id="getClient" resultType="Client">
         select * from client where clientId=#{produceCompany};
@@ -81,8 +93,8 @@
 
     <!--添加配料单-->
     <insert id="addBatchingOrderBat" parameterType="BatchingOrder">
-        insert into t_pl_batchingorder(batchingOrderId,batchingDate,batchingNumber,createDate,creator,handelCategory,inboundOrderId,inboundOrderItemId,produceCompany,wareHouseId,wasteCategory,wastesName,nowTime,transferDraftId,checkState,processWay) values
-        (#{batchingOrderId},#{batchingDate},#{batchingNumber},#{createDate},#{creator},#{handelCategory},#{inboundOrder.inboundOrderId},#{inboundOrderItemId},#{produceCompany.clientId},#{wareHouse.wareHouseId},#{wasteCategory},#{wastesName},NOW(),#{transferDraftId},'ToPick',#{processWay})
+        insert into t_pl_batchingorder(batchingOrderId,batchingDate,batchingNumber,createDate,creator,handelCategory,inboundOrderId,inboundOrderItemId,produceCompany,wareHouseId,wasteCategory,wastesName,nowTime,transferDraftId,checkState,processWay,handleCategoryId,processWayId,checkStateId) values
+        (#{batchingOrderId},#{batchingDate},#{batchingNumber},#{createDate},#{creator},#{handelCategory},#{inboundOrder.inboundOrderId},#{inboundOrderItemId},#{produceCompany.clientId},#{wareHouse.wareHouseId},#{wasteCategory},#{wastesName},NOW(),#{transferDraftId},'ToPick',#{processWay},#{handleCategoryItem.dataDictionaryItemId},#{processWayItem.dataDictionaryItemId},79)
     </insert>
 
     <!--配料成功后扣减库存-->
@@ -92,8 +104,8 @@
 
     <!--添加领料单-->
     <insert id="addRequisition" parameterType="MaterialRequisitionOrder">
-        insert into t_pl_materialrequisitionorder (materialRequisitionId,wastesName,transferDraftId,wareHouseId,clientId,wasteCategory,recipientsNumber,inboundOrderItemId,nowTime,checkState,departmentName,deputyGeneral,warehouseManager,guardian,materialManager,picker,pickerDate,handelCategory,processWay) values
-        (#{materialRequisitionId},#{wastesName},#{transferDraftId},#{wareHouse.wareHouseId},#{client.clientId},#{wasteCategory},#{recipientsNumber},#{inboundOrderItemId},NOW(),'ToOutbound',#{departmentName},#{deputyGeneral},#{warehouseManager},#{guardian},#{materialManager},#{picker},#{pickerDate},#{handelCategory},#{processWay});
+        insert into t_pl_materialrequisitionorder (materialRequisitionId,wastesName,transferDraftId,wareHouseId,clientId,wasteCategory,recipientsNumber,inboundOrderItemId,nowTime,checkState,departmentName,deputyGeneral,warehouseManager,guardian,materialManager,picker,pickerDate,handelCategory,processWay,handleCategoryId,processWayId,checkStateId) values
+        (#{materialRequisitionId},#{wastesName},#{transferDraftId},#{wareHouse.wareHouseId},#{client.clientId},#{wasteCategory},#{recipientsNumber},#{inboundOrderItemId},NOW(),'ToOutbound',#{departmentName},#{deputyGeneral},#{warehouseManager},#{guardian},#{materialManager},#{picker},#{pickerDate},#{handelCategory},#{processWay},#{handleCategoryItem.dataDictionaryItemId},#{processWayItem.dataDictionaryItemId},78);
     </insert>
 
     <!--领料成功后更新配料单的信息状态为已领料-->
@@ -105,6 +117,8 @@
     <resultMap id="MaterialRequisitionListRM" type="MaterialRequisitionOrder">
         <association property="client" column="clientId" select="getClientMar"></association>
         <association property="wareHouse" column="wareHouseId" select="getwareHouse"></association>
+       <collection property="handleCategoryItem" column="handleCategoryId" select="getHandleCategoryItem"></collection>
+        <collection property="processWayItem" column="processWayId" select="getProcessWayItem"></collection>
     </resultMap>
 
     <!--获得客户信息-->
@@ -139,9 +153,9 @@
 
     <!--添加出库信息==》危废-->
     <insert id="addOutBoundOrder" parameterType="OutboundOrder">
-        insert into  t_pl_outboundorder (outboundOrderId,clientId,wareHouseId,transferDraftId,wastesName,wasteCategory,outboundDate,creator,auditor,outboundNumber,equipment,nowTime,checkState,boundType,handelCategory,processWay,inboundOrderItemId)
+        insert into  t_pl_outboundorder (outboundOrderId,clientId,wareHouseId,transferDraftId,wastesName,wasteCategory,outboundDate,creator,auditor,outboundNumber,equipment,nowTime,checkState,boundType,handelCategory,processWay,inboundOrderItemId,handleCategoryId,processWayId,equipmentId,checkStateId)
         values
-        (#{outboundOrderId},#{client.clientId},#{wareHouse.wareHouseId},#{transferDraftId},#{wastesName},#{wasteCategory},#{outboundDate},#{creator},#{auditor},#{outboundNumber},#{equipment},NOW(),'OutBounded','WasteOutbound',#{handelCategory},#{processWay},#{inboundOrderItemId})
+        (#{outboundOrderId},#{client.clientId},#{wareHouse.wareHouseId},#{transferDraftId},#{wastesName},#{wasteCategory},#{outboundDate},#{creator},#{auditor},#{outboundNumber},#{equipment},NOW(),'OutBounded','WasteOutbound',#{handelCategory},#{processWay},#{inboundOrderItemId},#{handleCategoryItem.dataDictionaryItemId},#{processWayItem.dataDictionaryItemId},#{equipmentDataItem.dataDictionaryItemId},81)
     </insert>
 
     <!--出库完毕后更新领料单的信息为已出库-->
@@ -163,7 +177,19 @@
         <association property="client" column="clientId" select="getClientMar"></association>
         <association property="wareHouse" column="wareHouseId" select="getwareHouse"></association>
         <association property="inventoryNumber" column="inboundOrderItemId" select="getInventoryNumber"></association>
+      <collection property="handleCategoryItem" column="handleCategoryId" select="getHandleCategoryItem"></collection>
+        <collection property="equipmentDataItem" column="equipmentId" select="getEquipmentDataItem"></collection>
+        <collection property="processWayItem" column="processWayId" select="getProcessWayItem"></collection>
+        <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
     </resultMap>
+    <!--获取状态数据字典-->
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select  * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
+    </select>
+    <!--获取和处置设备数据字典-->
+    <select id="getEquipmentDataItem" resultType="EquipmentDataItem">
+        select  * from datadictionaryitem where dataDictionaryItemId=#{equipmentId}
+    </select>
 <select id="getInboundOrderId" resultType="String">
     select inboundOrderId from t_pl_wasteinventory where inboundOrderItemId=#{inboundOrderItemId};
 </select>
@@ -211,6 +237,7 @@
     <resultMap id="MaterialRequisitionOrderRM" type="MaterialRequisitionOrder">
         <collection property="client" column="clientId" select="getClientMar"></collection>
    <collection property="wareHouse" column="wareHouseId" select="getwareHouse"></collection>
+    <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
     </resultMap>
 
     <!--加载领料单列表-->
@@ -283,7 +310,7 @@
 
     <!--配料单作废-->
     <update id="cancelBatchingOrder" parameterType="BatchingOrder">
-        update t_pl_batchingorder set checkState='Invalid' where batchingOrderId=#{batchingOrderId}
+        update t_pl_batchingorder set checkStateId=69 where batchingOrderId=#{batchingOrderId}
     </update>
 
     <!--配料单作废后更新库存-->
@@ -293,7 +320,7 @@
 
     <!--领料单作废-->
     <update id="cancelMaterialRequisitionOrder" parameterType="MaterialRequisitionOrder">
-        update t_pl_materialrequisitionorder set checkState='Invalid' where  materialRequisitionId=#{materialRequisitionId}
+        update t_pl_materialrequisitionorder set checkStateId=69 where  materialRequisitionId=#{materialRequisitionId}
     </update>
 
     <!--领料单作废后更新配料单-->
@@ -303,7 +330,7 @@
 
     <!--出库单作废-->
     <update id="cancelOutBoundOrder" parameterType="OutboundOrder">
-        update t_pl_outboundorder set  checkState='Invalid' where outboundOrderId=#{outboundOrderId};
+        update t_pl_outboundorder set  checkStateId=69 where outboundOrderId=#{outboundOrderId};
     </update>
 
     <!--出库单作废后更新库存数量-->
@@ -313,7 +340,7 @@
 
     <!--退库-->
     <update id="retireOutBoundOrder" parameterType="OutboundOrder">
-        update t_pl_outboundorder set  checkState='Retired' where outboundOrderId=#{outboundOrderId};
+        update t_pl_outboundorder set  checkStateId=85 where outboundOrderId=#{outboundOrderId};
     </update>
 
 

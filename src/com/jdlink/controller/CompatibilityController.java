@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor
 import com.jdlink.domain.*;
 import com.jdlink.domain.Dictionary.FormTypeItem;
 import com.jdlink.domain.Dictionary.HandleCategoryItem;
+import com.jdlink.domain.Dictionary.PackageTypeItem;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.service.CompatibilityService;
 import com.jdlink.service.ThresholdService;
@@ -643,9 +644,9 @@ public String importCompatibilityExcel(MultipartFile excelFile){
     @ResponseBody
     public String generateSheet(String compatibilityId){
         JSONObject res=new JSONObject();
-        try{
+        try {
             //1根据配伍单号获取明细
-            List<CompatibilityItem> compatibilityItemList=compatibilityService.getCompatibilityItemById(compatibilityId);
+            List<CompatibilityItem> compatibilityItemList = compatibilityService.getCompatibilityItemById(compatibilityId);
 
             //Threshold threshold=thresholdService.list().get(0);//基础数据表对象
 
@@ -653,234 +654,240 @@ public String importCompatibilityExcel(MultipartFile excelFile){
 
             Calendar cal = Calendar.getInstance();
             //获取年
-            String year=String.valueOf(cal.get(Calendar.YEAR));
+            String year = String.valueOf(cal.get(Calendar.YEAR));
             //获取月
-            String mouth= getMouth(String.valueOf(cal.get(Calendar.MONTH)+1));
+            String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
             //序列号
             String number = "001";
-            List<String> materialRequireIdList=compatibilityService.getNewestMaterialRequireId();
+            List<String> materialRequireIdList = compatibilityService.getNewestMaterialRequireId();
 
 
-
-            if(materialRequireIdList.size()==0){
+            if (materialRequireIdList.size() == 0) {
                 number = "001";
+            } else {
+                String s = materialRequireIdList.get(0);//原字符串
+                String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
+                number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
             }
-            else {
-                String s= materialRequireIdList.get(0);//原字符串
-                String s2=s.substring(s.length()-3,s.length());//最后一个3字符
-                number=getString3(String.valueOf( Integer.parseInt(s2)+1));
-            }
-          //最新的物料编号
-            String materialRequireId=year+mouth+number;
+            //最新的物料编号
+            String materialRequireId = year + mouth + number;
 
             //主表的结构
 
             //周生产计划量汇总
-            float weeklyDemandTotal=0;
+            float weeklyDemandTotal = 0;
 
             //目前库存量汇总
-            float currentInventoryTotal=0;
+            float currentInventoryTotal = 0;
 
             //安全库存量汇总
-            float safetyTotal=0;
+            float safetyTotal = 0;
 
             //市场采购量汇总
-            float marketPurchasesTotal=0;
+            float marketPurchasesTotal = 0;
 
             //热值总量
-            float calorificMaxSum=0;
-            float calorificMinSum=0;
+            float calorificMaxSum = 0;
+            float calorificMinSum = 0;
 
-            float ashMaxSum=0;
-            float ashMinSum=0;
+            float ashMaxSum = 0;
+            float ashMinSum = 0;
 
-            float waterMaxSum=0;
-            float waterMinSum=0;
+            float waterMaxSum = 0;
+            float waterMinSum = 0;
 
-            float clMaxSum=0;
-            float clMinSum=0;
+            float clMaxSum = 0;
+            float clMinSum = 0;
 
-            float sMaxSum=0;
-            float sMinSum=0;
+            float sMaxSum = 0;
+            float sMinSum = 0;
 
-            float pMaxSum=0;
-            float pMinSum=0;
+            float pMaxSum = 0;
+            float pMinSum = 0;
 
-            float fMaxSum=0;
-            float fMinSum=0;
+            float fMaxSum = 0;
+            float fMinSum = 0;
 
-            float phMaxSum=0;
-            float phMinSum=0;
+            float phMaxSum = 0;
+            float phMinSum = 0;
 
-             //主表数据结构
-            MaterialRequire materialRequire=new MaterialRequire();
+            //主表数据结构
+            MaterialRequire materialRequire = new MaterialRequire();
 
-          //2对明细进行循环 做数据加减操作
-            for(int i=0;i<compatibilityItemList.size();i++){
-                Threshold threshold=null;
+            //2对明细进行循环 做数据加减操作
+            for (int i = 0; i < compatibilityItemList.size(); i++) {
 //                Threshold threshold=thresholdService.getThresholdByHandleCategoryAndFormType(compatibilityItemList.get(i).getHandleCategory().toString(),compatibilityItemList.get(i).getFormType().toString());
-
-                if(threshold==null){
-                    threshold=new Threshold();
-                    threshold.setCalorificMax(0);
-                    threshold.setCalorificMin(0);
-                    threshold.setAshMax(0);
-                    threshold.setAshMin(0);
-                    threshold.setWaterMax(0);
-                    threshold.setWaterMin(0);
-                    threshold.setsMax(0);
-                    threshold.setsMin(0);
-                    threshold.setClMax(0);
-                    threshold.setClMin(0);
-                    threshold.setpMax(0);
-                    threshold.setpMin(0);
-                    threshold.setfMax(0);
-                    threshold.setfMin(0);
-                    threshold.setPhMax(0);
-                    threshold.setPhMin(0);
-                    threshold.setSafety(0);
-                }
-
-                MaterialRequireItem materialRequireItem=new MaterialRequireItem();//创建物料明细对象
+                MaterialRequireItem materialRequireItem = new MaterialRequireItem();//创建物料明细对象
 
                 //射入外键物料编号
                 materialRequireItem.setMaterialRequireId(materialRequireId);
 
                 //1周生产计划量
                 materialRequireItem.setWeeklyDemand(compatibilityItemList.get(i).getWeeklyDemandTotal());
-                weeklyDemandTotal+=compatibilityItemList.get(i).getWeeklyDemandTotal();
+                weeklyDemandTotal += compatibilityItemList.get(i).getWeeklyDemandTotal();
                 //2目前库存量
                 materialRequireItem.setCurrentInventory(0);
-                currentInventoryTotal+=0;
+                currentInventoryTotal += 0;
                 //3安全库存量
-                materialRequireItem.setSafety(threshold.getSafety());
-                System.out.println("安全库存量"+threshold.getSafety());
-                safetyTotal+=threshold.getSafety();
+                materialRequireItem.setSafety(0);
+//                System.out.println("安全库存量" + threshold.getSafety());
+                safetyTotal += 0;
                 //4市场采购量
                 materialRequireItem.setMarketPurchases(0);
-                marketPurchasesTotal+=0;
-                //5处置类别
-                if(compatibilityItemList.get(i).getHandleCategory()!=null){
-                    materialRequireItem.setHandleCategory(compatibilityItemList.get(i).getHandleCategory());
+                marketPurchasesTotal += 0;
+                //5进料方式
+
+                if (compatibilityItemList.get(i).getHandleCategoryItem() != null) {
+                    materialRequireItem.setHandleCategoryItem(compatibilityItemList.get(i).getHandleCategoryItem());
                 }
 
                 //6形态
-                if(compatibilityItemList.get(i).getFormType()!=null){
-                    materialRequireItem.setFormType(compatibilityItemList.get(i).getFormType());
+                if (compatibilityItemList.get(i).getFormTypeItem() != null) {
+                    materialRequireItem.setFormTypeItem(compatibilityItemList.get(i).getFormTypeItem());
                 }
 
                 //包装形式
-               //污泥+半固态==>标准箱
-                if(compatibilityItemList.get(i).getHandleCategory().toString()=="Sludge"&&compatibilityItemList.get(i).getFormType().toString()=="HalfSolid"){
-                    materialRequireItem.setPackageType(Box);
+                //散装料+固体==>吨袋
+                if (compatibilityItemList.get(i).getHandleCategoryItem().getDataDictionaryItemId() == 30 && compatibilityItemList.get(i).getFormTypeItem().getDataDictionaryItemId() == 3) {
+                    PackageTypeItem packageTypeItem = new PackageTypeItem();
+                    packageTypeItem.setDataDictionaryItemId(121);
+                    materialRequireItem.setPackageTypeItem(packageTypeItem);
+                }
+                //破碎料+固体==>标准箱
+                else if (compatibilityItemList.get(i).getHandleCategoryItem().getDataDictionaryItemId() == 31 && compatibilityItemList.get(i).getFormTypeItem().getDataDictionaryItemId() == 3) {
+                    PackageTypeItem packageTypeItem = new PackageTypeItem();
+                    packageTypeItem.setDataDictionaryItemId(122);
+                    materialRequireItem.setPackageTypeItem(packageTypeItem);
                 }
                 //废液+液态==>吨箱
-                else if (compatibilityItemList.get(i).getHandleCategory().toString()=="WasteLiquid"&&compatibilityItemList.get(i).getFormType().toString()=="Liquid"){
-                    materialRequireItem.setPackageType(Ton);
+                else if (compatibilityItemList.get(i).getHandleCategoryItem().getDataDictionaryItemId() == 29 && compatibilityItemList.get(i).getFormTypeItem().getDataDictionaryItemId() == 2) {
+                    PackageTypeItem packageTypeItem = new PackageTypeItem();
+                    packageTypeItem.setDataDictionaryItemId(123);
+                    materialRequireItem.setPackageTypeItem(packageTypeItem);
                 }
-                //散装料+固态==>吨袋
-                else if (compatibilityItemList.get(i).getHandleCategory().toString()=="Bulk"&&compatibilityItemList.get(i).getFormType().toString()=="Solid"){
-                    materialRequireItem.setPackageType(Bag);
+                //悬挂连+固态==>小袋
+                else if (compatibilityItemList.get(i).getHandleCategoryItem().getDataDictionaryItemId() == 33 && compatibilityItemList.get(i).getFormTypeItem().getDataDictionaryItemId() == 3) {
+                    PackageTypeItem packageTypeItem = new PackageTypeItem();
+                    packageTypeItem.setDataDictionaryItemId(124);
+                    materialRequireItem.setPackageTypeItem(packageTypeItem);
                 }
-                //破碎料+固态==>标准箱
-                else if(compatibilityItemList.get(i).getHandleCategory().toString()=="Crushing"&&compatibilityItemList.get(i).getFormType().toString()=="Solid"){
-                    materialRequireItem.setPackageType(Box);
+                //污泥+半固态==>标准箱
+                else if  (compatibilityItemList.get(i).getHandleCategoryItem().getDataDictionaryItemId() == 28 && compatibilityItemList.get(i).getFormTypeItem().getDataDictionaryItemId() == 4) {
+                    PackageTypeItem packageTypeItem = new PackageTypeItem();
+                    packageTypeItem.setDataDictionaryItemId(122);
+                    materialRequireItem.setPackageTypeItem(packageTypeItem);
                 }
                 //精馏残渣+固态==>铁桶
-                else if(compatibilityItemList.get(i).getHandleCategory().toString()=="Distillation"&&compatibilityItemList.get(i).getFormType().toString()=="Solid"){
-                    materialRequireItem.setPackageType(Iron);
+                else if  (compatibilityItemList.get(i).getHandleCategoryItem().getDataDictionaryItemId() == 32 && compatibilityItemList.get(i).getFormTypeItem().getDataDictionaryItemId() == 3) {
+                    PackageTypeItem packageTypeItem = new PackageTypeItem();
+                    packageTypeItem.setDataDictionaryItemId(125);
+                    materialRequireItem.setPackageTypeItem(packageTypeItem);
                 }
-                else {
-                    materialRequireItem.setPackageType(Pouch);
+                //精馏残渣+液态==>吨箱
+                else if  (compatibilityItemList.get(i).getHandleCategoryItem().getDataDictionaryItemId() == 32 && compatibilityItemList.get(i).getFormTypeItem().getDataDictionaryItemId() == 2) {
+                    PackageTypeItem packageTypeItem = new PackageTypeItem();
+                    packageTypeItem.setDataDictionaryItemId(123);
+                    materialRequireItem.setPackageTypeItem(packageTypeItem);
                 }
-                //热值最大
-                materialRequireItem.setCalorificMax(compatibilityItemList.get(i).getCalorific()+compatibilityItemList.get(i).getCalorificThreshold());
-                calorificMaxSum+=compatibilityItemList.get(i).getCalorific()+compatibilityItemList.get(i).getCalorificThreshold();
-                //热值最小
-                materialRequireItem.setCalorificMin(compatibilityItemList.get(i).getCalorific()-compatibilityItemList.get(i).getCalorificThreshold());
-               calorificMinSum+=compatibilityItemList.get(i).getCalorific()-compatibilityItemList.get(i).getCalorificThreshold();
-                //灰分最大
-                materialRequireItem.setAshMax(compatibilityItemList.get(i).getAsh()+compatibilityItemList.get(i).getAshThreshold());
-                 ashMaxSum+=compatibilityItemList.get(i).getAsh()+compatibilityItemList.get(i).getAshThreshold();
-                //灰分最小
-                materialRequireItem.setAshMin(compatibilityItemList.get(i).getAsh()-compatibilityItemList.get(i).getAshThreshold());
-                  ashMinSum+=compatibilityItemList.get(i).getAsh()-compatibilityItemList.get(i).getAshThreshold();
-                //水分最大
-                materialRequireItem.setWaterMax(compatibilityItemList.get(i).getWater()+compatibilityItemList.get(i).getWaterThreshold());
-                waterMaxSum+=compatibilityItemList.get(i).getWater()+compatibilityItemList.get(i).getWaterThreshold();
-                //水分最小
-                materialRequireItem.setWaterMin(compatibilityItemList.get(i).getWater()-compatibilityItemList.get(i).getWaterThreshold());
-                 waterMinSum+=compatibilityItemList.get(i).getWater()-compatibilityItemList.get(i).getWaterThreshold();
-                //氯最大
-                materialRequireItem.setClMax(compatibilityItemList.get(i).getCl()+compatibilityItemList.get(i).getClThreshold());
-               clMaxSum+=compatibilityItemList.get(i).getCl()+compatibilityItemList.get(i).getClThreshold();
-                //氯最小
-                materialRequireItem.setClMin(compatibilityItemList.get(i).getCl()-compatibilityItemList.get(i).getClThreshold());
-               clMinSum+=compatibilityItemList.get(i).getCl()-compatibilityItemList.get(i).getClThreshold();
-                //硫最大
-                materialRequireItem.setsMax(compatibilityItemList.get(i).getS()+compatibilityItemList.get(i).getsThreshold());
-                sMaxSum+=compatibilityItemList.get(i).getS()+compatibilityItemList.get(i).getsThreshold();
-                //硫最小
-                materialRequireItem.setsMin(compatibilityItemList.get(i).getS()-compatibilityItemList.get(i).getsThreshold());
-                sMinSum+=compatibilityItemList.get(i).getS()-compatibilityItemList.get(i).getsThreshold();
-                //磷最大
-                materialRequireItem.setpMax(compatibilityItemList.get(i).getP()+compatibilityItemList.get(i).getpThreshold());
-                pMaxSum+=compatibilityItemList.get(i).getP()+compatibilityItemList.get(i).getpThreshold();
-                //磷最小
-                materialRequireItem.setpMin(compatibilityItemList.get(i).getP()-compatibilityItemList.get(i).getpThreshold());
-                pMinSum+=compatibilityItemList.get(i).getP()-compatibilityItemList.get(i).getpThreshold();
-                //氟最大
-                materialRequireItem.setfMax(compatibilityItemList.get(i).getF()+compatibilityItemList.get(i).getfThreshold());
-               fMaxSum+=compatibilityItemList.get(i).getF()+compatibilityItemList.get(i).getfThreshold();
-                //氟最小
-                materialRequireItem.setfMin(compatibilityItemList.get(i).getF()-compatibilityItemList.get(i).getfThreshold());
-               fMinSum+=compatibilityItemList.get(i).getF()-compatibilityItemList.get(i).getfThreshold();
-                //ph最大
-                materialRequireItem.setPhMax(compatibilityItemList.get(i).getPh()+compatibilityItemList.get(i).getPhThreshold());
-              phMaxSum+=compatibilityItemList.get(i).getPh()+compatibilityItemList.get(i).getPhThreshold();
-                //ph最小
-                materialRequireItem.setPhMin(compatibilityItemList.get(i).getPh()-compatibilityItemList.get(i).getPhThreshold());
-               phMinSum+=compatibilityItemList.get(i).getPh()-compatibilityItemList.get(i).getPhThreshold();
-              compatibilityService.addMaterialRequireItem(materialRequireItem);
-            }
-            //主表添加数据
-            materialRequire.setMaterialRequireId(materialRequireId);
+                //精馏残渣+半固态==>铁桶
+                else if  (compatibilityItemList.get(i).getHandleCategoryItem().getDataDictionaryItemId() == 32 && compatibilityItemList.get(i).getFormTypeItem().getDataDictionaryItemId() == 4) {
+                    PackageTypeItem packageTypeItem = new PackageTypeItem();
+                    packageTypeItem.setDataDictionaryItemId(125);
+                    materialRequireItem.setPackageTypeItem(packageTypeItem);
+                }
+                else{
+                    PackageTypeItem packageTypeItem = new PackageTypeItem();
+                    packageTypeItem.setDataDictionaryItemId(127);
+                    materialRequireItem.setPackageTypeItem(packageTypeItem);
+                    }
+                    //热值最大
+                    materialRequireItem.setCalorificMax(compatibilityItemList.get(i).getCalorific() + compatibilityItemList.get(i).getCalorificThreshold());
+                    calorificMaxSum += compatibilityItemList.get(i).getCalorific() + compatibilityItemList.get(i).getCalorificThreshold();
+                    //热值最小
+                    materialRequireItem.setCalorificMin(compatibilityItemList.get(i).getCalorific() - compatibilityItemList.get(i).getCalorificThreshold());
+                    calorificMinSum += compatibilityItemList.get(i).getCalorific() - compatibilityItemList.get(i).getCalorificThreshold();
+                    //灰分最大
+                    materialRequireItem.setAshMax(compatibilityItemList.get(i).getAsh() + compatibilityItemList.get(i).getAshThreshold());
+                    ashMaxSum += compatibilityItemList.get(i).getAsh() + compatibilityItemList.get(i).getAshThreshold();
+                    //灰分最小
+                    materialRequireItem.setAshMin(compatibilityItemList.get(i).getAsh() - compatibilityItemList.get(i).getAshThreshold());
+                    ashMinSum += compatibilityItemList.get(i).getAsh() - compatibilityItemList.get(i).getAshThreshold();
+                    //水分最大
+                    materialRequireItem.setWaterMax(compatibilityItemList.get(i).getWater() + compatibilityItemList.get(i).getWaterThreshold());
+                    waterMaxSum += compatibilityItemList.get(i).getWater() + compatibilityItemList.get(i).getWaterThreshold();
+                    //水分最小
+                    materialRequireItem.setWaterMin(compatibilityItemList.get(i).getWater() - compatibilityItemList.get(i).getWaterThreshold());
+                    waterMinSum += compatibilityItemList.get(i).getWater() - compatibilityItemList.get(i).getWaterThreshold();
+                    //氯最大
+                    materialRequireItem.setClMax(compatibilityItemList.get(i).getCl() + compatibilityItemList.get(i).getClThreshold());
+                    clMaxSum += compatibilityItemList.get(i).getCl() + compatibilityItemList.get(i).getClThreshold();
+                    //氯最小
+                    materialRequireItem.setClMin(compatibilityItemList.get(i).getCl() - compatibilityItemList.get(i).getClThreshold());
+                    clMinSum += compatibilityItemList.get(i).getCl() - compatibilityItemList.get(i).getClThreshold();
+                    //硫最大
+                    materialRequireItem.setsMax(compatibilityItemList.get(i).getS() + compatibilityItemList.get(i).getsThreshold());
+                    sMaxSum += compatibilityItemList.get(i).getS() + compatibilityItemList.get(i).getsThreshold();
+                    //硫最小
+                    materialRequireItem.setsMin(compatibilityItemList.get(i).getS() - compatibilityItemList.get(i).getsThreshold());
+                    sMinSum += compatibilityItemList.get(i).getS() - compatibilityItemList.get(i).getsThreshold();
+                    //磷最大
+                    materialRequireItem.setpMax(compatibilityItemList.get(i).getP() + compatibilityItemList.get(i).getpThreshold());
+                    pMaxSum += compatibilityItemList.get(i).getP() + compatibilityItemList.get(i).getpThreshold();
+                    //磷最小
+                    materialRequireItem.setpMin(compatibilityItemList.get(i).getP() - compatibilityItemList.get(i).getpThreshold());
+                    pMinSum += compatibilityItemList.get(i).getP() - compatibilityItemList.get(i).getpThreshold();
+                    //氟最大
+                    materialRequireItem.setfMax(compatibilityItemList.get(i).getF() + compatibilityItemList.get(i).getfThreshold());
+                    fMaxSum += compatibilityItemList.get(i).getF() + compatibilityItemList.get(i).getfThreshold();
+                    //氟最小
+                    materialRequireItem.setfMin(compatibilityItemList.get(i).getF() - compatibilityItemList.get(i).getfThreshold());
+                    fMinSum += compatibilityItemList.get(i).getF() - compatibilityItemList.get(i).getfThreshold();
+                    //ph最大
+                    materialRequireItem.setPhMax(compatibilityItemList.get(i).getPh() + compatibilityItemList.get(i).getPhThreshold());
+                    phMaxSum += compatibilityItemList.get(i).getPh() + compatibilityItemList.get(i).getPhThreshold();
+                    //ph最小
+                    materialRequireItem.setPhMin(compatibilityItemList.get(i).getPh() - compatibilityItemList.get(i).getPhThreshold());
+                    phMinSum += compatibilityItemList.get(i).getPh() - compatibilityItemList.get(i).getPhThreshold();
+                    compatibilityService.addMaterialRequireItem(materialRequireItem);
+                }
+                //主表添加数据
+                materialRequire.setMaterialRequireId(materialRequireId);
 
-            materialRequire.setCompatibilityId(compatibilityId);
+                materialRequire.setCompatibilityId(compatibilityId);
 
-            materialRequire.setWeeklyDemandTotal(weeklyDemandTotal);
+                materialRequire.setWeeklyDemandTotal(weeklyDemandTotal);
 
-            materialRequire.setCurrentInventoryTotal(currentInventoryTotal);
+                materialRequire.setCurrentInventoryTotal(currentInventoryTotal);
 
-            materialRequire.setSafetyTotal(safetyTotal);
+                materialRequire.setSafetyTotal(safetyTotal);
 
-            materialRequire.setMarketPurchasesTotal(marketPurchasesTotal);
+                materialRequire.setMarketPurchasesTotal(marketPurchasesTotal);
 
-            materialRequire.setCalorificAvg((calorificMaxSum+calorificMinSum)/2);
+                materialRequire.setCalorificAvg((calorificMaxSum + calorificMinSum) / 2);
 
-            materialRequire.setAshAvg((ashMaxSum+ashMinSum)/2);
+                materialRequire.setAshAvg((ashMaxSum + ashMinSum) / 2);
 
-            materialRequire.setWaterAvg((waterMaxSum+waterMinSum)/2);
+                materialRequire.setWaterAvg((waterMaxSum + waterMinSum) / 2);
 
-            materialRequire.setClAvg((clMaxSum+clMinSum)/2);
+                materialRequire.setClAvg((clMaxSum + clMinSum) / 2);
 
-            materialRequire.setsAvg((sMaxSum+sMinSum)/2);
+                materialRequire.setsAvg((sMaxSum + sMinSum) / 2);
 
-            materialRequire.setpAvg((pMaxSum+pMinSum)/2);
+                materialRequire.setpAvg((pMaxSum + pMinSum) / 2);
 
-            materialRequire.setfAvg((fMaxSum+fMinSum)/2);
+                materialRequire.setfAvg((fMaxSum + fMinSum) / 2);
 
-            materialRequire.setPhAvg((phMaxSum+phMinSum)/2);
+                materialRequire.setPhAvg((phMaxSum + phMinSum) / 2);
 
-            compatibilityService.addMaterialRequire(materialRequire);
+                compatibilityService.addMaterialRequire(materialRequire);
 
-            //最后将已生成的配伍计划单失效即可
-            compatibilityService.disabledMaterialRequire(compatibilityId);
+                //最后将已生成的配伍计划单失效即可
+                compatibilityService.disabledMaterialRequire(compatibilityId);
 
-            res.put("status", "success");
-            res.put("message", "生成物料需求单成功");
+                res.put("status", "success");
+                res.put("message", "生成物料需求单成功");
+
         }
-
         catch (Exception e){
             e.printStackTrace();
             res.put("status", "fail");
