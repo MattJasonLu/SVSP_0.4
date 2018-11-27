@@ -300,6 +300,7 @@ function inputSwitchPage() {
  * 分页 获取首页内容
  * */
 function loadPagePretreatmentList() {
+    loadNavigationList();   // 动态菜单部署
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
@@ -1108,6 +1109,7 @@ var i1 = 0;           //焚烧工单序号
  * 设置预处理单列表数据
  */
 function loadOutBoundOrderList() {
+    loadNavigationList();   // 动态菜单部署
     $("#createDate").val(getWeekDate());
     i1 = 0;                         //刷新页面时重新计数
     //获取数据

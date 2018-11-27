@@ -14,9 +14,11 @@
     <script src="js/bootstrap/treeview/bootstrap-treeview.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/base-loading.js"></script>
+    <!--<script src="js/produce/base-loading.js"></script>-->
     <!--<script src="js/produce/loading.js"></script>-->
     <script src="js/business/userManage.js"></script>
+    <link href="css/loading1.css" rel="stylesheet">
+    <link href="css/loading2.css" rel="stylesheet">
     <!--<link rel="stylesheet" type="text/css" href="./index_files/lato.css">-->
     <!--<link rel="stylesheet" type="text/css" href="./index_files/fontawesome.css">-->
     <!--<link rel="stylesheet" type="text/css" href="./index_files/default.css">-->
@@ -40,7 +42,7 @@
             </li>
         </ul>
     </div>
-    <div class="container navbar-left" style="width: 920px;">
+    <div class="container navbar-left" style="width: 70%;">
         <div class="navbar-header">
             <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
         </div>
@@ -109,7 +111,15 @@
         <!--</div>-->
     <!--</div>-->
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h4 class="page-header">功能权限管理</h4>
+        <div class="row">
+            <div>
+                <ol class="breadcrumb"><!--历史记录导航栏-->
+                    <!--<li><a href="infrastructure.html">系统设置</a></li>-->
+                    <!--<li class="active">动态菜单管理</li>-->
+                </ol>
+            </div>
+            <h4 class="sub-header">功能权限管理</h4>
+        </div>
         <div class="row">
             <div class="col-md-3">
                 <div class="panel panel-default">
@@ -154,6 +164,13 @@
             <!--<span id="msgDiv" style="font-size: 20px;color: #2f3d4c"></span>-->
         </div>
     </div>
+</div>
+<div class="loader"><!--进度条-->
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
 </div>
 <div id="embed"></div>
 </body>

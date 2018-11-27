@@ -584,7 +584,6 @@ function loadNavigationList() {
         // 设置二级菜单选中
         var secondName = $("ol[class='breadcrumb']").find("li").eq(1).text();  // 获取二级菜单名
         $("#navbar").find("a:contains('" + secondName + "')").parent().addClass("active");  // 设置二级菜单标蓝
-
     }
     if ($("ol[class='breadcrumb']").length > 0) { // 如果是网页则设置历史记录抬头导航
         var url = window.location.href.toString();

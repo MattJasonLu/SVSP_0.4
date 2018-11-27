@@ -203,6 +203,7 @@
     }
 
     $(document).ready(function () {
+        loadNavigationList();  // 设置动态菜单
         loadOrganization();  // 获取并设置节点数据
         $.fn.zTree.init($("#treeDemo"), setting, zNodes);//根据参数初始化树
         $("#selectAll").bind("click", selectAll);
@@ -308,7 +309,7 @@
             </li>
         </ul>
     </div>
-    <div class="container navbar-left" style="width: 920px;">
+    <div class="container navbar-left" style="width: 70%;">
         <div class="navbar-header">
             <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
         </div>

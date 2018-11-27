@@ -1019,6 +1019,7 @@ function addWayBillModal() {
  * 加载接运单新增页面数据
  */
 function showAddData() {
+    loadNavigationList();   // 动态菜单部署
     getCurrentWayBillId();
     $("#modal-id").text(wayBillId);
     $("#modal-creationDate").text(getcurrentDaydate());

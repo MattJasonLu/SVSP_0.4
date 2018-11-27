@@ -302,6 +302,7 @@ function inputSwitchPage() {
  * 分页 获取首页内容
  * */
 function loadPageOutList() {
+    loadNavigationList();   // 动态菜单部署
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").attr("disabled", "true");
@@ -946,6 +947,7 @@ var ingredientsOut1 = {}; // 用于暂存修改的出库单数据
  * 设置领料单列表
  * */
 function loadIngredientsReceiveList() {
+    loadNavigationList();   // 动态菜单部署
     $("#head").text("辅料/备件出库单新增");  // 标题修改
     $("#save").text("出库");                  // 按钮名称修改
     $("#view-id").text(getCurrentIngredientsOutId());
