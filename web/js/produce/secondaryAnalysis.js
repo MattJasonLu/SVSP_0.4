@@ -404,9 +404,9 @@ function setSecIntoList(result) {
                     $(this).html(obj.address);
                     break;
                 case (7):
-                    // 备注
-                    if(obj.checkState!=null){
-                        $(this).html(obj.checkState.name);
+                    // 状态
+                    if(obj.checkStateItem!=null){
+                        $(this).html(obj.checkStateItem.dictionaryItemName);
                     }
 
                     break;

@@ -34,7 +34,7 @@
 
     <!--获取配料单信息-->
     <select id="BatchList" resultMap="BatchingOrderRM">
-        select * from t_pl_batchingorder order by batchingOrderId desc
+        select * from t_pl_batchingorder where checkStateId!=69 order by batchingOrderId desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -166,9 +166,9 @@
 
     <!--添加出库信息==》次生-->
     <insert id="addSecondary" parameterType="OutboundOrder">
-        insert into  t_pl_outboundorder (outboundOrderId,clientId,wareHouseId,transferDraftId,wastesName,wasteCategory,outboundDate,creator,auditor,outboundNumber,equipment,nowTime,checkState,boundType,processWay,handelCategory,inboundOrderItemId,departmentName)
+        insert into  t_pl_outboundorder (outboundOrderId,clientId,wareHouseId,transferDraftId,wastesName,wasteCategory,outboundDate,creator,auditor,outboundNumber,equipment,nowTime,checkState,boundType,processWay,handelCategory,inboundOrderItemId,departmentName,checkStateId,processWayId,equipmentId)
         values
-        (#{outboundOrderId},#{client.clientId},#{wareHouse.wareHouseId},#{transferDraftId},#{wastesName},#{wasteCategory},#{outboundDate},#{creator},#{auditor},#{outboundNumber},#{equipment},NOW(),'OutBounded','SecondaryOutbound',#{processWay},#{handelCategory},#{inboundOrderItemId},#{departmentName})
+        (#{outboundOrderId},#{client.clientId},#{wareHouse.wareHouseId},#{transferDraftId},#{wastesName},#{wasteCategory},#{outboundDate},#{creator},#{auditor},#{outboundNumber},#{equipment},NOW(),'OutBounded','SecondaryOutbound',#{processWay},#{handelCategory},#{inboundOrderItemId},#{departmentName},81,#{processWayItem.dataDictionaryItemId},#{equipmentDataItem.dataDictionaryItemId})
     </insert>
 
     <resultMap id="WastesOutBoundRM" type="OutboundOrder">
@@ -199,7 +199,7 @@
     </select>
     <!--加载危废出库-->
     <select id="loadWastesOutBoundList" resultMap="WastesOutBoundRM">
-        select * from t_pl_outboundorder where  boundType='WasteOutbound' order by outboundOrderId desc
+        select * from t_pl_outboundorder where  boundType='WasteOutbound'  and checkStateId not in(69,85)order by outboundOrderId desc
         <if test="start != null and count != null">
             limit #{start}, #{count};
         </if>
@@ -228,7 +228,7 @@
 
     <!--加载次生出库-->
     <select id="loadSecOutBoundList" resultMap="WastesOutBoundRM">
-        select * from t_pl_outboundorder where boundType='SecondaryOutbound' order by outboundOrderId desc
+        select * from t_pl_outboundorder where boundType='SecondaryOutbound' and checkStateId not in(69,85)      order by outboundOrderId desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -242,7 +242,7 @@
 
     <!--加载领料单列表-->
     <select id="getMaterialRequisitionOrderList" resultMap="MaterialRequisitionOrderRM">
-        select * from t_pl_materialrequisitionorder order by  materialRequisitionId desc
+        select * from t_pl_materialrequisitionorder where checkStateId!=69 order by  materialRequisitionId desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>

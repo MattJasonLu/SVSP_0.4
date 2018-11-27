@@ -345,8 +345,8 @@ function setDataList(result) {
                     break;
                 // 单据状态
                 case (6):
-                    if (obj.checkState != null) {
-                        $(this).html((obj.checkState.name));
+                    if (obj.checkStateItem != null) {
+                        $(this).html((obj.checkStateItem.dictionaryItemName));
                     }
 
                     break;

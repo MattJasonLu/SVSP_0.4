@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Dictionary.ProcessWayItem;
 import com.jdlink.domain.Inventory.BatchingOrder;
 import com.jdlink.domain.Inventory.MaterialRequisitionOrder;
 import com.jdlink.domain.Inventory.OutboundOrder;
@@ -8,6 +9,7 @@ import com.jdlink.domain.Inventory.WasteInventory;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.service.ClientService;
+import com.jdlink.service.dictionary.DictionaryService;
 import com.jdlink.service.produce.BatchOrderService;
 import com.jdlink.util.DBUtil;
 import com.jdlink.util.ImportUtil;
@@ -38,6 +40,8 @@ public class BatchOrderController {
     BatchOrderService batchOrderService;
 @Autowired
     ClientService clientService;
+    @Autowired
+    DictionaryService dictionaryService;
 
     //获取两位月数
     public  static  String getMouth(String mouth){
@@ -715,6 +719,13 @@ public class BatchOrderController {
             String outBoundOrderId = prefix + count;
 
             outboundOrder.setOutboundOrderId(outBoundOrderId);
+
+            //处置方式适配
+
+            ProcessWayItem processWayItem =outboundOrder.getProcessWayItem();
+           int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(processWayItem.getDictionaryItemName(),8);
+            processWayItem.setDataDictionaryItemId(dataDictionaryItemId);
+            outboundOrder.setProcessWayItem(processWayItem);
             batchOrderService.addSecondary(outboundOrder);
 
             //同步更新库存数量

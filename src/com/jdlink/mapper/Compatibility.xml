@@ -180,7 +180,7 @@
         select * from t_pr_pwitem where compatibilityId=#{compatibilityId};
     </select>
     <select id="getWeekPlanList" resultMap="WeekPlan">
-        select * from t_pr_pw   order by nowTime desc
+        select * from t_pr_pw   where checkStateId!=69 order by nowTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>

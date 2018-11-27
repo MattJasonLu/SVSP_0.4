@@ -1054,7 +1054,7 @@ public class ProcurementController {
         JSONObject res=new JSONObject();
 
                       try {
- procurementService.cancelProcurementPlanById(procurementPlanId);
+                   procurementService.cancelProcurementPlanById(procurementPlanId);
                           res.put("status", "success");
                           res.put("message", "作废成功");
                       }
