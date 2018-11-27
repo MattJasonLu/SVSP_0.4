@@ -97,6 +97,7 @@ public class MenuManageController {
             int i = 1;
             while (menuManageService.getMenuByName(name,organization.getId()) != null) { // 同一节点下名称不予许重复
                 i++;
+                name = "新页面";
                 name += i;
             }
             organization1.setId(id);
@@ -201,17 +202,17 @@ public class MenuManageController {
         JSONObject res = new JSONObject();
         try {
             List<Integer> oldIdList = menuManageService.getMenuIdListByPId(pId);
-            System.out.println("旧顺序");
+           // System.out.println("旧顺序");
             for(Integer integer : oldIdList){
                 System.out.print(integer+"/");
             }
-            System.out.println();
+           // System.out.println();
             String idOrder[] = idList.split("/");
             List<Integer> newIdList = new ArrayList<>();
             int j = 0;
             int id = -1;   // 用于储存第一个顺序发生变化的ID
             for(int i = 0; i < idOrder.length; i++){
-                System.out.print(idOrder[i]+"/");
+             //   System.out.print(idOrder[i]+"/");
                 int newId = Integer.parseInt(idOrder[i]);
                 int oldId = oldIdList.get(i);
                 newIdList.add(newId);
@@ -257,7 +258,9 @@ public class MenuManageController {
     public String deleteMenu(@RequestBody Organization organization) {
         JSONObject res = new JSONObject();
         try {
-            menuManageService.delete(organization);
+            List<Organization> organizationList = getTreeMenuList(organization);  // 获取孩子节点
+            organization.setOrganizationList(organizationList); // 设置树状结构
+            delete(organization);
             res.put("status", "success");
             res.put("message", "删除成功!");
         } catch (Exception e) {
@@ -268,6 +271,18 @@ public class MenuManageController {
         return res.toString();
     }
 
+    /**
+     * 递归删除节点及其子节点
+     * @param organization
+     */
+    public void delete(Organization organization){
+        menuManageService.delete(organization);
+        if(organization.getOrganizationList() != null && organization.getOrganizationList().size() > 0){
+            for(Organization organization1 : organization.getOrganizationList()){
+                delete(organization1);
+            }
+        }
+    }
 
     /**
      * 根据ID获取对象
