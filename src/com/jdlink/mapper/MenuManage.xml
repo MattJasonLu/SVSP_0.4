@@ -58,11 +58,15 @@
         update menu_management
         set id=#{id}
         where id=#{oldId};
+
+        update menu_management
+        set pId=#{id}
+        where pId=#{oldId};
     </update>
 
     <update id="updateMenuUrl" parameterType="Organization">
         update menu_management
-        set url=#{url}
+        set url=#{url},icon=#{icon}
         where id=#{id};
     </update>
 
@@ -74,8 +78,6 @@
 
     <delete id="delete" parameterType="Organization">
         delete from menu_management where id=#{id};
-
-        delete from menu_management where pId=#{id};
     </delete>
 
 </mapper>

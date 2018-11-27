@@ -778,17 +778,106 @@ function showEditModal(e) {
                 $("#editWastesCode").selectpicker('val', data.wastesCode);
                 if (data.formType != null)
                     $("#editFormType").val(data.formType.index - 1);
-                $("#editPH").val(setNumber2Line(parseFloat(data.PH).toFixed(0)));
-                $("#editAsh").val(setNumber2Line(parseFloat(data.ash).toFixed(2)));
-                $("#editWater").val(setNumber2Line(parseFloat(data.water).toFixed(2)));
-                $("#editHeat").val(setNumber2Line(parseFloat(data.heat).toFixed(0)));
-                $("#editFluorine").val(setNumber2Line(parseFloat(data.fluorine).toFixed(2)));
-                $("#editChlorine").val(setNumber2Line(parseFloat(data.chlorine).toFixed(2)));
-                $("#editSulfur").val(setNumber2Line(parseFloat(data.sulfur).toFixed(2)));
-                $("#editPhosphorus").val(setNumber2Line(parseFloat(data.phosphorus).toFixed(2)));
-                $("#editFlashPoint").val(setNumber2Line(parseFloat(data.flashPoint).toFixed(0)));
-                $("#editViscosity").val(data.viscosity);
-                $("#editHotMelt").val(data.hotMelt);
+                var ph = setNumber2Line(parseFloat(data.PH).toFixed(0));
+                if (ph == "--") {
+                    $("#editPH").attr("disabled","disabled");
+                    $("#editPH").val("");
+                }
+                else {
+                    $("#editPH").removeAttr("disabled");
+                    $("#editPH").val(ph);
+                }
+                var ash = setNumber2Line(parseFloat(data.ash).toFixed(2));
+                if (ash == "--") {
+                    $("#editAsh").attr("disabled","disabled");
+                    $("#editAsh").val("");
+                }
+                else {
+                    $("#editAsh").removeAttr("disabled");
+                    $("#editAsh").val(ash);
+                }
+                var water = setNumber2Line(parseFloat(data.water).toFixed(2));
+                if (water == "--") {
+                    $("#editWater").attr("disabled","disabled");
+                    $("#editWater").val("");
+                }
+                else {
+                    $("#editWater").removeAttr("disabled");
+                    $("#editWater").val(water);
+                }
+                var heat = setNumber2Line(parseFloat(data.heat).toFixed(2));
+                if (heat == "--") {
+                    $("#editHeat").attr("disabled","disabled");
+                    $("#editHeat").val("");
+                }
+                else {
+                    $("#editHeat").removeAttr("disabled");
+                    $("#editHeat").val(heat);
+                }
+                var fluorine = setNumber2Line(parseFloat(data.fluorine).toFixed(2));
+                if (fluorine == "--") {
+                    $("#editFluorine").attr("disabled","disabled");
+                    $("#editFluorine").val("");
+                }
+                else {
+                    $("#editFluorine").removeAttr("disabled");
+                    $("#editFluorine").val(fluorine);
+                }
+                var chlorine = setNumber2Line(parseFloat(data.chlorine).toFixed(2));
+                if (chlorine == "--") {
+                    $("#editChlorine").attr("disabled","disabled");
+                    $("#editChlorine").val("");
+                }
+                else {
+                    $("#editChlorine").removeAttr("disabled");
+                    $("#editChlorine").val(chlorine);
+                }
+                var sulfur = setNumber2Line(parseFloat(data.sulfur).toFixed(2));
+                if (sulfur == "--") {
+                    $("#editSulfur").attr("disabled","disabled");
+                    $("#editSulfur").val("");
+                }
+                else {
+                    $("#editSulfur").removeAttr("disabled");
+                    $("#editSulfur").val(sulfur);
+                }
+                var phosphorus = setNumber2Line(parseFloat(data.phosphorus).toFixed(2));
+                if (phosphorus == "--") {
+                    $("#editPhosphorus").attr("disabled","disabled");
+                    $("#editPhosphorus").val("");
+                }
+                else {
+                    $("#editPhosphorus").removeAttr("disabled");
+                    $("#editPhosphorus").val(phosphorus);
+                }
+                var flashPoint = setNumber2Line(parseFloat(data.flashPoint).toFixed(2));
+                if (flashPoint == "--") {
+                    $("#editFlashPoint").attr("disabled","disabled");
+                    $("#editFlashPoint").val("");
+                }
+                else {
+                    $("#editFlashPoint").removeAttr("disabled");
+                    $("#editFlashPoint").val(flashPoint);
+                }
+                var viscosity = setNumber2Line(data.viscosity);
+                if (viscosity == "--") {
+                    $("#editViscosity").attr("disabled","disabled");
+                    $("#editViscosity").val("");
+                }
+                else {
+                    $("#editViscosity").removeAttr("disabled");
+                    $("#editViscosity").val(viscosity);
+                }
+                var hotMelt = setNumber2Line(data.hotMelt);
+                if (hotMelt == "--") {
+                    $("#editHotMelt").attr("disabled","disabled");
+                    $("#editHotMelt").val("");
+                }
+                else {
+                    $("#editHotMelt").removeAttr("disabled");
+                    $("#editHotMelt").val(hotMelt);
+                }
+
                 $("#editRemark").val(data.remark);
             } else {
                 alert(result.message);
