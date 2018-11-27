@@ -512,7 +512,7 @@ function getFormTypeByFromStr(str) {
  * 加载导航条
  */
 function loadNavigationList() {
-    $(".fadeInUp").children().remove();   // 删除之前旧一级菜单
+    $(".fadeInUp").children().remove();   // 删除之前一级菜单
     $.ajax({
         type: "POST",                       // 方法类型
         url: "loadMenuList",                  // url
@@ -578,12 +578,8 @@ function loadNavigationList() {
                 alert(result.message);
             }
         });
-
         // 设置一级菜单选中标蓝
         $("ul[class='sidenav animated fadeInUp']").children().find("span[name='" + localStorage.name + "']").parent().parent().addClass("active");
-        // 设置二级菜单选中
-        var secondName = $("ol[class='breadcrumb']").find("li").eq(1).text();  // 获取二级菜单名
-        $("#navbar").find("a:contains('" + secondName + "')").parent().addClass("active");  // 设置二级菜单标蓝
     }
     if ($("ol[class='breadcrumb']").length > 0) { // 如果是网页则设置历史记录抬头导航
         var url = window.location.href.toString();
@@ -608,6 +604,10 @@ function loadNavigationList() {
                     $("ol[class='breadcrumb']").children().remove();  // 删除历史数据
                     localStorage.name = name1;    // 设置一级菜单名，点击首页时方便定位
                     setOLMenu(data); // 动态递归设置历史导航栏
+                    // 设置二级菜单选中
+                    var secondName = $("ol[class='breadcrumb']").find("li").eq(1).text();  // 获取二级菜单名
+                    console.log("二级菜单标蓝："+secondName);
+                    $("#navbar").find("a:contains('" + secondName + "')").parent().addClass("active");  // 设置二级菜单标蓝
                 } else {
                     console.log(result.message);
                 }
