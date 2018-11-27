@@ -355,14 +355,14 @@ function saveMonth() {
     $('.myclass').each(function () {
    var suppliesName=$(this).children('td').eq(1).children('div').find('button').attr('title');
    var specifications=$(this).children('td').eq(2).children('input').val();
-   var unit=$(this).children('td').eq(3).children('select').get(0).selectedIndex;
+   var unitId=$(this).children('td').eq(3).children('select').val();
    var inventory=$(this).children('td').eq(4).children('input').val();
    var demandQuantity=$(this).children('td').eq(5).children('input').val();
    var note=$(this).children('td').eq(6).children('input').val();
    var materialdata={
         suppliesName:suppliesName,
         specifications:specifications,
-        unit:unit,
+        unitDataItem:{dataDictionaryItemId:unitId},
         inventory:inventory,
         demandQuantity:demandQuantity,
         note:note,
@@ -501,9 +501,13 @@ function setMonthProcurementList(result) {
                             break;
                         //状态
                         case (10):
-                            if(obj.state!=null){
-                                $(this).html(obj.state.name);
+                            if(obj.checkStateItem!=null){
+                                $(this).html(obj.checkStateItem.dictionaryItemName);
+                                if(obj.checkStateItem.dictionaryItemName=='已作废'){
+                                    $(this).parent().hide();
+                                }
                             }
+
                             break;
                             //创建日期
                         case (11):
@@ -725,8 +729,8 @@ function setMonthProcurementListModal(result) {
                         break;
                     // 单位
                     case (2):
-                        if(obj.unit!=null){
-                            $(this).html(obj.unit.name);
+                        if(obj.unitDataItem!=null){
+                            $(this).html(obj.unitDataItem.dictionaryItemName);
                         }
                         break;
                     // 库存量
@@ -783,8 +787,8 @@ function setMonthProcurementListModalAdjust(result) {
                     break;
                 // 单位
                 case (2):
-                    if(obj.unit!=null){
-                        $(this).html(obj.unit.name);
+                    if(obj.unitDataItem!=null){
+                        $(this).html(obj.unitDataItem.dictionaryItemName);
                     }
                     break;
                 // 库存量
@@ -1026,19 +1030,19 @@ function getIngredientsList() {
     //单位
     $.ajax({
         type:'POST',
-        url:"getUnitList",
+        url:"getUnitByDataDictionary",
         //data:JSON.stringify(data),
         dataType: "json",
         contentType: "application/json;charset=utf-8",
         success: function (result){
             if (result != undefined){
-                // console.log(result);
+                console.log(result);
                 var unit=$('#unit');
                 unit.children().remove();
-                $.each(result.unitList,function (index,item) {
+                $.each(result.data,function (index,item) {
                     var option=$('<option/>');
-                    option.val(index+1);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     unit.append(option);
                 });
                 unit.get(0).selectedIndex=0;

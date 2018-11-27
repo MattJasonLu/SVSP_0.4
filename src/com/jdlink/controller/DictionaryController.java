@@ -198,7 +198,7 @@ public class DictionaryController {
 
 
     /*
-    获取包装方式字典数据
+    获取物质形态字典数据
     * */
     @RequestMapping("getFormTypeByDataDictionary")
     @ResponseBody
@@ -209,11 +209,11 @@ public class DictionaryController {
             JSONArray data = JSONArray.fromArray(formTypeList.toArray());
             res.put("data", data);
             res.put("status", "success");
-            res.put("message", "获取包装方式成功");
+            res.put("message", "获取物质形态成功");
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
-            res.put("message", "获取包装方式失败");
+            res.put("message", "获取物质形态失败");
 
         }
         return res.toString();
@@ -787,4 +787,14 @@ public class DictionaryController {
         }
         return res.toString();
     }
+
+
+        /**
+          * 根据明细名称获取编号
+          */
+        public int getdatadictionaryitemIdByName(String name,int id){
+            return dictionaryService.getdatadictionaryitemIdByName(name,id);
+        }
+
+
 }

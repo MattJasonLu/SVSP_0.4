@@ -1,5 +1,6 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.Dictionary.UnitDataItem;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Material;
 import com.jdlink.domain.Produce.Procurement;
@@ -7,6 +8,7 @@ import com.jdlink.domain.Produce.ProcurementPlan;
 import com.jdlink.domain.Produce.ProcurementPlanItem;
 import com.jdlink.domain.Unit;
 import com.jdlink.service.ProcurementService;
+import com.jdlink.service.dictionary.DictionaryService;
 import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -31,6 +33,8 @@ import static com.jdlink.util.NumberToDate.double2Date;
 public class ProcurementController {
     @Autowired
     ProcurementService procurementService;
+    @Autowired
+    DictionaryService dictionaryService;
 
     /**
      * 添加购物对象
@@ -482,13 +486,16 @@ public class ProcurementController {
                             material.setSpecifications(" ");
                         }//设置规格型号
 
+                        //单位
                         if (String.valueOf(data.get(i)[j][11]) != "null") {
-                            material.setUnit(Unit.getUnit(data.get(i)[j][11].toString()));
+                            UnitDataItem unitDataItem=new UnitDataItem();
+                            unitDataItem.setDataDictionaryItemId(dictionaryService.getdatadictionaryitemIdByName(String.valueOf(data.get(i)[j][11]),25));
+                            material.setUnitDataItem(unitDataItem);
 
 
                         }
                         if (String.valueOf(data.get(i)[j][11]) == "null") {
-                            material.setUnit(null);
+                            material.setUnitDataItem(null);
                         }//设置单位
 
                         if (String.valueOf(data.get(i)[j][12]) != "null") {
@@ -633,11 +640,13 @@ public class ProcurementController {
                             material.setSpecifications(" ");
                         }//设置规格型号
                         if (String.valueOf(data.get(i)[j][6]) != "null") {
-
-                            material.setUnit(Unit.getUnit(String.valueOf(data.get(i)[j][6])));
+                                  UnitDataItem unitDataItem=new UnitDataItem();
+                                  unitDataItem.setDataDictionaryItemId(dictionaryService.getdatadictionaryitemIdByName(String.valueOf(data.get(i)[j][6]),25));
+                                     material.setUnitDataItem(unitDataItem);
+                                  material.setUnit(Unit.getUnit(String.valueOf(data.get(i)[j][6])));
                         }
                         if (String.valueOf(data.get(i)[j][6]) == "null") {
-                            material.setUnit(null);
+                            material.setUnitDataItem(null);
                         }//设置单位
                         if (String.valueOf(data.get(i)[j][8]) != "null") {
                             material.setInventory(Float.parseFloat(data.get(i)[j][8].toString()));

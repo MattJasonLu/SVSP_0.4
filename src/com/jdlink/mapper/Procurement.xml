@@ -5,8 +5,8 @@
 <mapper namespace="com.jdlink.mapper.ProcurementMapper" >
    <!--添加采购-->
     <insert id="add" parameterType="Procurement">
-        insert into t_pl_procurement(receiptNumber, applyMouth, demandTime, applyDepartment, proposer, divisionHead, purchasingDirector, generalManager, id1, procurementCategory,nowTIme,purchasingHead,applyDate,suppliesCategory,state,createDate)
-      values (#{receiptNumber},#{applyMouth},#{demandTime},#{applyDepartment},#{proposer},#{divisionHead},#{purchasingDirector},#{generalManager},#{id1},#{procurementCategory},NOW(),#{purchasingHead},#{applyDate},#{suppliesCategory},'ToSubmit',NOW());
+        insert into t_pl_procurement(receiptNumber, applyMouth, demandTime, applyDepartment, proposer, divisionHead, purchasingDirector, generalManager, id1, procurementCategory,nowTIme,purchasingHead,applyDate,suppliesCategory,state,createDate,checkStateId)
+      values (#{receiptNumber},#{applyMouth},#{demandTime},#{applyDepartment},#{proposer},#{divisionHead},#{purchasingDirector},#{generalManager},#{id1},#{procurementCategory},NOW(),#{purchasingHead},#{applyDate},#{suppliesCategory},'ToSubmit',NOW(),64);
     </insert>
     <!--寻找最新的采购主键-->
     <select id="getNewestId" resultType="String">
@@ -14,17 +14,33 @@
     </select>
     <!--添加物料表-->
     <insert id="addMaterial" parameterType="Material">
-        insert into t_pl_material (suppliesName, specifications, inventory, note, purchaseQuantity, demandQuantity, receiptNumber,unit,state,createDate,checkState)
-        values (#{suppliesName},#{specifications},#{inventory},#{note},#{purchaseQuantity},#{demandQuantity},#{receiptNumber},#{unit},'ToInbound',NOW(),'Enabled');
+        insert into t_pl_material (suppliesName, specifications, inventory, note, purchaseQuantity, demandQuantity, receiptNumber,unit,state,createDate,checkState,unitId)
+        values (#{suppliesName},#{specifications},#{inventory},#{note},#{purchaseQuantity},#{demandQuantity},#{receiptNumber},#{unit},'ToInbound',NOW(),'Enabled',#{unitDataItem.dataDictionaryItemId});
     </insert>
     <!--加载采购列表-->
     <resultMap id="ProcurementRM" type="Procurement" autoMapping="true">
         <result property="receiptNumber" column="receiptNumber" javaType="String"></result>
         <result property="unit" column="unit" javaType="Unit"></result>
         <collection property="materialList" column="receiptNumber" select="getMaterial" ofType="Material"></collection>
+          <collection property="checkStateItem" column="checkStateId" select="getCheckState"></collection>
     </resultMap>
+
+    <!--获取状态数据字典-->
+    <select id="getCheckState" resultType="CheckStateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
+    </select>
+
+    
+    <resultMap id="MaterialRM" type="Material">
+        <collection property="unitDataItem" column="unitId" select="getUnitDataItem"></collection>
+    </resultMap>
+
+    <!--获取数据字典明细（单位）-->
+    <select id="getUnitDataItem" resultType="UnitDataItem">
+        select  * from datadictionaryitem where dataDictionaryItemId=#{unitDataItem.dataDictionaryItemId}
+    </select>
     <!--获取所有的物料信息-->
-    <select id="getMaterial" resultType="Material">
+    <select id="getMaterial" resultMap="MaterialRM">
         select * from t_pl_material where receiptNumber=#{receiptNumber};
     </select>
     <!--获取月季采购-->
@@ -134,10 +150,10 @@
     </select>
     <!--作废-->
     <update id="setProcurementListCancel" parameterType="String">
-        update t_pl_procurement set state='Invalid',nowTIme=NOW() where receiptNumber=#{receiptNumber};
+        update t_pl_procurement set checkStateId=69,nowTIme=NOW() where receiptNumber=#{receiptNumber};
     </update>
     <update id="setProcurementListSubmit" parameterType="String">
-        update t_pl_procurement set state='Submitted',nowTIme=NOW() where receiptNumber=#{receiptNumber};
+        update t_pl_procurement set checkStateId=73,nowTIme=NOW() where receiptNumber=#{receiptNumber};
     </update>
 
     <!--获取月度采购总数-->
@@ -227,7 +243,7 @@
 
     <!--提交采购单-->
     <update id="submitProcurementListById" parameterType="String">
-    update t_pl_procurement set  state='Submitted' where receiptNumber=#{receiptNumber}
+    update t_pl_procurement set  checkStateId=73 where receiptNumber=#{receiptNumber}
     </update>
 
     <!--更新采购单明细-->

@@ -61,4 +61,6 @@ public interface DictionaryService {
     int searchDictionaryCount(DataDictionary dataDictionary);
 
     List<DataDictionaryItem>getSelectListByDataDictionary(int id);
+
+    int getdatadictionaryitemIdByName(String name,int id);
 }

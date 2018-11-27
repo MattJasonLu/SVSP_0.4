@@ -569,6 +569,7 @@ function toView(item) {
                  $('#dictionaryType1').val(result.data.dictionaryType)
                  $('#dictionaryName1').val(result.data.dictionaryName)
                  var tr=$('#cloneTr');
+                 tr.siblings().remove();
                $.each(result.data.dataDictionaryItemList,function (index,item) {
                    var data=eval(item);
 

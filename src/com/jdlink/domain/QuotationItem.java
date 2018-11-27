@@ -1,5 +1,8 @@
 package com.jdlink.domain;
 
+import com.jdlink.domain.Dictionary.PackageTypeItem;
+import com.jdlink.domain.Dictionary.TransportItem;
+import com.jdlink.domain.Dictionary.UnitDataItem;
 import com.jdlink.domain.Produce.HandleCategory;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -155,6 +158,39 @@ public class QuotationItem {
 
     //关键字
     private String keywords;
+
+    //包装方式数据字典
+    private PackageTypeItem packageTypeItem;
+
+    //运输方式数据字典
+    private TransportItem transportItem;
+
+    //单位数据字典
+    private UnitDataItem unitDataItem;
+
+    public UnitDataItem getUnitDataItem() {
+        return unitDataItem;
+    }
+
+    public void setUnitDataItem(UnitDataItem unitDataItem) {
+        this.unitDataItem = unitDataItem;
+    }
+
+    public PackageTypeItem getPackageTypeItem() {
+        return packageTypeItem;
+    }
+
+    public void setPackageTypeItem(PackageTypeItem packageTypeItem) {
+        this.packageTypeItem = packageTypeItem;
+    }
+
+    public TransportItem getTransportItem() {
+        return transportItem;
+    }
+
+    public void setTransportItem(TransportItem transportItem) {
+        this.transportItem = transportItem;
+    }
 
     public Page getPage() {
         return page;

@@ -16,8 +16,11 @@
         <collection property="client" column="clientId" select="getClient"></collection>
         <collection property="supplier" column="supplierId" select="getSupplier"></collection>
         <collection property="stockItemList" column="stockId" select="getStockItem"></collection>
-
+       <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
     </resultMap>
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select  * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
+    </select>
     <select id="getStockItem" resultType="StockItem" parameterType="String">
         select  * from t_pr_stockitem where stockId=#{stockId}
     </select>
@@ -28,8 +31,8 @@
         select * from client where clientId=#{clientId};
     </select>
     <insert id="add" parameterType="Stock">
-insert into t_pr_stock(stockId,proContactName,proTelephone,transport,transportTelephone,plateNumber,selfEmployed,nowTime,checkState,proWasteCompany,clientId,supplierId)
-values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTelephone},#{plateNumber},#{selfEmployed},NOW(),'ToSubmit',#{proWasteCompany},#{client.clientId},#{supplier.supplierId});
+insert into t_pr_stock(stockId,proContactName,proTelephone,transport,transportTelephone,plateNumber,selfEmployed,nowTime,checkState,proWasteCompany,clientId,supplierId,checkStateId)
+values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTelephone},#{plateNumber},#{selfEmployed},NOW(),'ToSubmit',#{proWasteCompany},#{client.clientId},#{supplier.supplierId},64);
 </insert>
     <select id="getStockIdList" resultType="String">
         select  stockId from  t_pr_stock order by (CAST(stockId AS SIGNED)) desc;
@@ -65,10 +68,10 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
         <!--</if>-->
     </update>
     <update id="submitStock" parameterType="String">
-        update t_pr_stock set  checkState='ToExamine' ,nowTime=NOW() where stockId=#{stockId};
+        update t_pr_stock set  checkStateId=67 ,nowTime=NOW() where stockId=#{stockId};
     </update>
     <update id="cancelStock" parameterType="String">
-          update t_pr_stock set  checkState='Invalid' ,nowTime=NOW() where stockId=#{stockId};
+          update t_pr_stock set  checkStateId=69 ,nowTime=NOW() where stockId=#{stockId};
     </update>
     <!--查询-->
     <select id="search" parameterType="Stock" resultMap="StockRM">
@@ -143,7 +146,7 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
         </where>
     </select>
     <update id="opinion" parameterType="Stock">
-    update t_pr_stock set opinion=#{1},checkState="Keeping",nowTime=NOW() where stockId=#{0};
+    update t_pr_stock set opinion=#{1},checkStateId=68,nowTime=NOW() where stockId=#{0};
    </update>
     <update id="back" parameterType="Stock">
         update t_pr_stock set checkState="Backed",backContent=#{1},nowTime=NOW() where stockId=#{0}

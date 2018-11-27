@@ -62,16 +62,16 @@
         select * from t_pr_materialrequire where id=#{id};
     </select>
     <update id="approval" >
-        update t_pr_materialrequire set checkState='Approval',opinion=#{1},nowTime=NOW() where materialRequireId=#{0};
+        update t_pr_materialrequire set checkStateId=76,opinion=#{1},nowTime=NOW() where materialRequireId=#{0};
     </update>
     <update id="submit" parameterType="String">
-        update t_pr_materialrequire set checkState='ToExamine',nowTime=NOW() where materialRequireId=#{materialRequireId};
+        update t_pr_materialrequire set checkStateId=67,nowTime=NOW() where materialRequireId=#{materialRequireId};
     </update>
     <update id="cancel" parameterType="String">
-        update t_pr_materialrequire set checkState='Invalid',nowTime=NOW() where materialRequireId=#{materialRequireId};
+        update t_pr_materialrequire set checkStateId=69,nowTime=NOW() where materialRequireId=#{materialRequireId};
     </update>
     <update id="back" parameterType="String">
-        update t_pr_materialrequire set checkState='Backed',remarks=#{1},nowTime=NOW() where materialRequireId=#{0};
+        update t_pr_materialrequire set checkStateId=66,remarks=#{1},nowTime=NOW() where materialRequireId=#{0};
     </update>
     <update id="updatemarketPurchases" >
         update  t_pr_materialrequire set marketPurchasesTotal=#{1} where
@@ -81,7 +81,12 @@
     <resultMap id="MaterialList" type="MaterialRequire">
         <result property="materialRequireId" column="materialRequireId"></result>
         <collection property="materialRequireItemList" column="materialRequireId" select="getMaterialRequireItem"></collection>
+    <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
     </resultMap>
+    <!--获取状态数据字典-->
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
+    </select>
     <select id="getMaterialRequireItem" resultType="MaterialRequireItem" parameterType="String">
         select * from t_pr_materialrequireitem where materialRequireId=#{materialRequireId}
     </select>
@@ -92,8 +97,26 @@
             limit #{start}, #{count}
         </if>
     </select>
+    <resultMap id="MaterialRequireItemRM" type="MaterialRequireItem">
+        <collection property="handleCategoryItem" column="handleCategoryId" select="getHandleCategoryItem"></collection>
+        <collection property="formTypeItem" column="formTypeId" select="getFormTypeItem"></collection>
+        <collection property="packageTypeItem" column="packageTypeId" select="getPackageTypeItem"></collection>
+    </resultMap>
+
+    <!--获取进料方式数据字典-->
+    <select id="getHandleCategoryItem" resultType="HandleCategoryItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{handleCategoryId}
+    </select>
+    <!--获取进物质形态数据字典-->
+    <select id="getFormTypeItem" resultType="FormTypeItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{formTypeId}
+    </select>
+    <!--获取包装方式数据字典-->
+    <select id="getPackageTypeItem" resultType="PackageTypeItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{packageTypeId}
+    </select>
     <!--通过编号获取物料信息-->
-    <select id="getMaterialRequireById" parameterType="String" resultType="MaterialRequireItem">
+    <select id="getMaterialRequireById" parameterType="String" resultMap="MaterialRequireItemRM">
            select  * from t_pr_materialrequireitem  where materialRequireId=#{materialRequireId};
     </select>
 
@@ -102,7 +125,7 @@
     <update id="updateMaterialRequireItem" parameterType="MaterialRequireItem">
         update t_pr_materialrequireitem set  handleCategory=#{handleCategory},formType=#{formType},
         packageType=#{packageType},weeklyDemand=#{weeklyDemand},currentInventory=#{currentInventory},
-        safety=#{safety},marketPurchases=#{marketPurchases} where id=#{id};
+        safety=#{safety},marketPurchases=#{marketPurchases},handleCategoryId=#{handleCategoryItem.dataDictionaryItemId},formTypeId=#{formTypeItem.dataDictionaryItemId},packageTypeId=#{packageTypeItem.dataDictionaryItemId} where id=#{id};
     </update>
     <!--更新主表信息-->
     <update id="updateMaterialRequire" parameterType="MaterialRequire">

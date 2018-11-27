@@ -1,5 +1,7 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.Dictionary.FormTypeItem;
+import com.jdlink.domain.Dictionary.HandleCategoryItem;
 import com.jdlink.domain.FormType;
 import com.jdlink.domain.Page;
 
@@ -105,6 +107,28 @@ public class CompatibilityItem {
     private float sBeg;
 
     private float sEnd;
+
+    //进料方式数据字典
+    private FormTypeItem formTypeItem;
+
+    //物质形态数据字典
+    private HandleCategoryItem handleCategoryItem;
+
+    public FormTypeItem getFormTypeItem() {
+        return formTypeItem;
+    }
+
+    public void setFormTypeItem(FormTypeItem formTypeItem) {
+        this.formTypeItem = formTypeItem;
+    }
+
+    public HandleCategoryItem getHandleCategoryItem() {
+        return handleCategoryItem;
+    }
+
+    public void setHandleCategoryItem(HandleCategoryItem handleCategoryItem) {
+        this.handleCategoryItem = handleCategoryItem;
+    }
 
     public float getCalorificThreshold() {
         return calorificThreshold;

@@ -107,5 +107,10 @@
     </select>
 
 
+    <!--根据明细名称获取编号(加入主表的编号是因为会重复)-->
+    <select id="getdatadictionaryitemIdByName"  resultType="int">
+        select dataDictionaryItemId from  datadictionaryitem where dictionaryItemName=#{0} and dataDictionaryId=#{1}
+    </select>
+
 
 </mapper>
