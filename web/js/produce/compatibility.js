@@ -958,7 +958,6 @@ array1 = [];
  * 生成物料需求单==》勾选生成
  */
 function generate() {
-    alert("此功能正在紧急修复！")
     var items = $("input[name='select']:checked");//判断复选框是否选中
     if (items.length > 0) {
         if (confirm("是否生成物料需求?")) {

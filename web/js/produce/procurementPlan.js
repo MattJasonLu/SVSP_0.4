@@ -396,8 +396,8 @@ function setProcurementPlan(result) {
 
                 // 状态
                 case (8):
-                    if(data.checkState!=null){
-                        $(this).html(data.checkState.name);
+                    if(data.checkStateItem!=null){
+                        $(this).html(data.checkStateItem.dictionaryItemName);
                     }
 
                     break;
@@ -863,6 +863,8 @@ function cancelProcurementPlan(item) {
              success:function (result) {
                  if (result != undefined && result.status == "success"){
                      console.log(result)
+                     alert(result.message)
+                     window.location.reload()
                  }
              },
              error:function (result) {

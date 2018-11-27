@@ -4,6 +4,8 @@ import com.jdlink.domain.Dictionary.DataDictionary;
 import com.jdlink.domain.Dictionary.DataDictionaryItem;
 import com.jdlink.domain.Dictionary.SecondaryCategory;
 import com.jdlink.domain.Page;
+import com.jdlink.domain.Produce.HandleCategory;
+import com.jdlink.service.OutboundOrderService;
 import com.jdlink.service.dictionary.DictionaryService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -21,6 +23,8 @@ public class DictionaryController {
 
     @Autowired
     DictionaryService dictionaryService;
+    @Autowired
+    OutboundOrderService outboundOrderService;
 
     //获取主表总数
     @RequestMapping("getIdCount")

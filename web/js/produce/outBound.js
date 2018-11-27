@@ -423,15 +423,15 @@ function setOutboutList(result,index) {
                         break;
                     // 进料方式
                     case (5):
-                       if(obj.handelCategory!=null){
-                           $(this).html(obj.handelCategory.name);
+                       if(obj.handleCategoryItem!=null){
+                           $(this).html(obj.handleCategoryItem.dictionaryItemName);
                        }
                         break;
 
                     // 处置方式
                     case (6):
-                        if(obj.processWay!=null){
-                            $(this).html(obj.processWay.name);
+                        if(obj.processWayItem!=null){
+                            $(this).html(obj.processWayItem.dictionaryItemName);
                         }
                         break;
                     //仓库
@@ -488,7 +488,7 @@ function saveOutBound(){
                 var auditor=$('#auditor').val();
 
                 //6处置设备
-                var equipment=$('#equipment').selectpicker('val')-1;
+                var equipment=$('#equipment').selectpicker('val');
 
                 var outboundOrderId=$(this).children('td').eq(0).html();
 
@@ -506,9 +506,9 @@ function saveOutBound(){
 
                 var inboundOrderItemId=$(this).children('td').eq(11).html();
 
-                var handelCategory=getHandleCategoryFromStr($(this).children('td').eq(5).html())
+                var handelCategory=getIdFromHandleCategory($(this).children('td').eq(5).html())
 
-               var processWay=getProcessWayFromStr($(this).children('td').eq(6).html())
+               var processWay=getIdFromProcessWay($(this).children('td').eq(6).html())
                 data={
                     outboundOrderId:outboundOrderId,
                     client:{clientId:clientId},
@@ -520,10 +520,10 @@ function saveOutBound(){
                     creator:creator,
                     auditor:auditor,
                     outboundNumber:outboundNumber,
-                    equipment:equipment,
+                    equipmentDataItem:{dataDictionaryItemId:equipment},
                     inboundOrderItemId:inboundOrderItemId,
-                    handelCategory:handelCategory,
-                    processWay:processWay
+                    handleCategoryItem:{dataDictionaryItemId:handelCategory},
+                    processWayItem:{dataDictionaryItemId:processWay}
                 }
                 console.log(data);
                addOutBoundOrder(data);
@@ -641,8 +641,8 @@ function setOutBoundList(result) {
                         break;
                     //审批状态
                     case (9):
-                        if(obj.checkState!=null){
-                            $(this).html(obj.checkState.name);
+                        if(obj.checkStateItem!=null){
+                            $(this).html(obj.checkStateItem.dictionaryItemName);
                         }
                         break;
                     //转移联单号
@@ -778,16 +778,16 @@ function adjustAttr(item) {
         //contentType: "application/json; charset=utf-8",
         success:function (result) {
             if (result != undefined && result.status == "success"){
-               index1=result.handelCategory.index;
+              console.log(result)
                 var type=$('#modal-type');
                 type.children().remove();
-                $.each(result.array1,function (index,item) {
+                $.each(result.data,function (index,item) {
                     var option=$('<option/>');
-                    option.val(item.index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     type.append(option);
                 })
-                type.get(0).selectedIndex=index1-1;
+                type.val(result.handelCategoryId)
             }
             else {
                 alert(result.message);
@@ -945,19 +945,19 @@ function view1(item){
                 //     $('#fAvg').text(result.data[0].laboratoryTest.fluorineContentAverage);
                 //     $('#fMin').text(result.data[0].laboratoryTest.fluorineContentMinimum);
                 // }
-                if(result.data.processWay!=null){
+                if(result.data.processWayItem!=null){
                     //处理方式
-                    $('#processingMethod').text(result.data.processWay.name);
+                    $('#processingMethod').text(result.data.processWayItem.dictionaryItemName);
                 }
-                if(result.data.handelCategory!=null){
+                if(result.data.handleCategoryItem!=null){
                     //进料方式
-                    $('#handelCategory').text(result.data.handelCategory.name);
+                    $('#handelCategory').text(result.data.handleCategoryItem.dictionaryItemName);
                 }
                 //出库单号
                 $("#outboundOrderId").val(result.data.outboundOrderId);
                 //处置设备
-                if(result.data.equipment!=null){
-                    $('#equipment').text(result.data.equipment.name);
+                if(result.data.equipmentDataItem!=null){
+                    $('#equipment').text(result.data.equipmentDataItem.dictionaryItemName);
                 }
                 $('#appointModal2').modal('show');
             }

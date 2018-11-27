@@ -427,9 +427,9 @@ function setSewageList(result) {
                             $(this).html(obj.laboratorySignatory);
                             break;
                         case (6):
-                            // 备注
-                            if(obj.checkState!=null){
-                                $(this).html(obj.checkState.name);
+                            // 状态
+                            if(obj.checkStateItem!=null){
+                                $(this).html(obj.checkStateItem.dictionaryItemName);
                             }
 
                             break;

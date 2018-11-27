@@ -1,6 +1,9 @@
 package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Dictionary.CheckStateItem;
+import com.jdlink.domain.Dictionary.HandleCategoryItem;
+import com.jdlink.domain.Dictionary.ProcessWayItem;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.LaboratoryTest;
 import com.jdlink.domain.Produce.ProcessWay;
@@ -96,6 +99,18 @@ public class BatchingOrder {
 
     private InboundOrder inboundOrder;
 
+    //进料方式数据字典
+    private HandleCategoryItem handleCategoryItem;
+
+    //处置类别数据字典
+    private ProcessWayItem processWayItem;
+
+    //状态数据字典
+    private CheckStateItem checkStateItem;
+
+
+
+
 /********以下数据结构暂时不用************/
     /*接收单位*/
     private Client acceptCompany;
@@ -140,6 +155,31 @@ public class BatchingOrder {
      * 入库单号
      */
     private String inboundOrderId;
+
+
+    public CheckStateItem getCheckStateItem() {
+        return checkStateItem;
+    }
+
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
+    }
+
+    public HandleCategoryItem getHandleCategoryItem() {
+        return handleCategoryItem;
+    }
+
+    public void setHandleCategoryItem(HandleCategoryItem handleCategoryItem) {
+        this.handleCategoryItem = handleCategoryItem;
+    }
+
+    public ProcessWayItem getProcessWayItem() {
+        return processWayItem;
+    }
+
+    public void setProcessWayItem(ProcessWayItem processWayItem) {
+        this.processWayItem = processWayItem;
+    }
 
     public String getInboundOrderId() {
         return inboundOrderId;

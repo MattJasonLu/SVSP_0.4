@@ -416,8 +416,8 @@ function setSoftWaterList(result) {
                         break;
                     case (6):
                         // 备注
-                        if(obj.checkState!=null){
-                            $(this).html(obj.checkState.name);
+                        if(obj.checkStateItem!=null){
+                            $(this).html(obj.checkStateItem.dictionaryItemName);
                         }
                         break;
                 }

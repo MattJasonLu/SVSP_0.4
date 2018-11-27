@@ -1,12 +1,14 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Dictionary.DataDictionaryItem;
 import com.jdlink.domain.Inventory.*;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.MaterialRequire;
 import com.jdlink.domain.Produce.Stock;
 import com.jdlink.domain.Produce.StockItem;
 import com.jdlink.service.*;
+import com.jdlink.service.dictionary.DictionaryService;
 import com.jdlink.service.produce.BatchOrderService;
 import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONArray;
@@ -46,6 +48,8 @@ public class WasteInventoryController {
     StockService stockService;
     @Autowired
     BatchOrderService batchOrderService;
+    @Autowired
+    DictionaryService dictionaryService;
    //获得库存信息==》危废（无参数）
 
     //获得库存信息==》次生（无参数）
@@ -508,12 +512,12 @@ catch (Exception e){
     public String getHandelCategoryList(String outboundOrderId){
         JSONObject res=new JSONObject();
         try {
-            //获得进料方式下拉列表
-            JSONArray array1 = JSONArray.fromArray(HandleCategory.values());
+            List<DataDictionaryItem> formTypeList = dictionaryService.getSelectListByDataDictionary(6);
+            JSONArray data = JSONArray.fromArray(formTypeList.toArray());
             //根据出库单号获取进料方式
-            HandleCategory handelCategory=outboundOrderService.getHandelCategoryById(outboundOrderId);
-             res.put("handelCategory",handelCategory);
-             res.put("array1",array1);
+            int handelCategoryId=outboundOrderService.getHandelCategoryById(outboundOrderId);
+             res.put("handelCategoryId",handelCategoryId);
+             res.put("data",data);
              res.put("status", "success");
              res.put("message", "获取成功");
 
@@ -557,8 +561,7 @@ catch (Exception e){
     public String upHandelCategoryById(String outboundOrderId,int index){
         JSONObject res=new JSONObject();
         try {
-          String  handleCategory=HandleCategory.get(index).toString();
-          outboundOrderService.upHandelCategoryById(outboundOrderId,handleCategory);
+          outboundOrderService.upHandelCategoryById(outboundOrderId,index);
             res.put("status", "success");
             res.put("message", "更新成功");
         }

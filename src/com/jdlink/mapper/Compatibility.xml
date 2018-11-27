@@ -180,7 +180,7 @@
         select * from t_pr_pwitem where compatibilityId=#{compatibilityId};
     </select>
     <select id="getWeekPlanList" resultMap="WeekPlan">
-        select * from t_pr_pw   order by nowTime desc
+        select * from t_pr_pw   where checkStateId!=69 order by nowTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -414,7 +414,7 @@
 
     </select>
 <!--根据配伍单号获取明细-->
-    <select id="getCompatibilityItemById" resultType="CompatibilityItem" parameterType="String">
+    <select id="getCompatibilityItemById" resultMap="CompatibilityItemRM" parameterType="String">
    select * from t_pr_pwitem where compatibilityId=#{compatibilityId};
     </select>
 
@@ -424,15 +424,15 @@
 </select>
 <!--添加物料需求明细-->
     <insert id="addMaterialRequireItem" parameterType="MaterialRequireItem">
-        insert into t_pr_materialrequireitem(materialRequireId, handleCategory, formType, packageType, weeklyDemand, currentInventory, safety, marketPurchases, calorificMax, calorificMin, ashMax, ashMin, waterMax, waterMin, clMax, clMin, sMax, sMin, pMax, pMin, fMax, fMin, phMax, phMin) values
-        (#{materialRequireId},#{handleCategory},#{formType},#{packageType},#{weeklyDemand},#{currentInventory},#{safety},#{marketPurchases},#{calorificMax},#{calorificMin},#{ashMax},#{ashMin},#{waterMax},#{waterMin},#{clMax},#{clMin},#{sMax},#{sMin},#{pMax},#{pMin},#{fMax},#{fMin},#{phMax},#{phMin});
+        insert into t_pr_materialrequireitem(materialRequireId, handleCategory, formType, packageType, weeklyDemand, currentInventory, safety, marketPurchases, calorificMax, calorificMin, ashMax, ashMin, waterMax, waterMin, clMax, clMin, sMax, sMin, pMax, pMin, fMax, fMin, phMax, phMin,handleCategoryId,formTypeId,packageTypeId) values
+        (#{materialRequireId},#{handleCategory},#{formType},#{packageType},#{weeklyDemand},#{currentInventory},#{safety},#{marketPurchases},#{calorificMax},#{calorificMin},#{ashMax},#{ashMin},#{waterMax},#{waterMin},#{clMax},#{clMin},#{sMax},#{sMin},#{pMax},#{pMin},#{fMax},#{fMin},#{phMax},#{phMin},#{handleCategoryItem.dataDictionaryItemId},#{formTypeItem.dataDictionaryItemId},#{packageTypeItem.dataDictionaryItemId});
     </insert>
     <!--添加物料需求主表-->
     <insert id="addMaterialRequire" parameterType="MaterialRequire">
-        insert  into t_pr_materialrequire( materialRequireId, currentInventoryTotal, marketPurchasesTotal, compatibilityId, remarks, nowTime, checkState, weeklyDemandTotal, safetyTotal, calorificAvg, ashAvg, waterAvg, clAvg, sAvg, pAvg, fAvg, phAvg) values
-        (#{materialRequireId},#{currentInventoryTotal},#{marketPurchasesTotal},#{compatibilityId},#{remarks},NOW(),'ToSubmit',#{weeklyDemandTotal},#{safetyTotal},#{calorificAvg},#{ashAvg},#{waterAvg},#{clAvg},#{sAvg},#{pAvg},#{fAvg},#{phAvg});
+        insert  into t_pr_materialrequire( materialRequireId, currentInventoryTotal, marketPurchasesTotal, compatibilityId, remarks, nowTime, checkState, weeklyDemandTotal, safetyTotal, calorificAvg, ashAvg, waterAvg, clAvg, sAvg, pAvg, fAvg, phAvg,checkStateId) values
+        (#{materialRequireId},#{currentInventoryTotal},#{marketPurchasesTotal},#{compatibilityId},#{remarks},NOW(),'ToSubmit',#{weeklyDemandTotal},#{safetyTotal},#{calorificAvg},#{ashAvg},#{waterAvg},#{clAvg},#{sAvg},#{pAvg},#{fAvg},#{phAvg},64);
     </insert>
     <update id="disabledMaterialRequire" parameterType="String">
-        update t_pr_pw set checkState='Enabled' where  compatibilityId=#{compatibilityId};
+        update t_pr_pw set checkStateId=70 where  compatibilityId=#{compatibilityId};
     </update>
 </mapper>

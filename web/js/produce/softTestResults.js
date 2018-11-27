@@ -375,8 +375,8 @@ function setSoftTestList(result) {
                     break;
                 case (10):
                     // 单据状态
-                    if(obj.checkState!=null){
-                        $(this).html((obj.checkState.name))
+                    if(obj.checkStateItem!=null){
+                        $(this).html((obj.checkStateItem.dictionaryItemName))
                     }
                     break;
 

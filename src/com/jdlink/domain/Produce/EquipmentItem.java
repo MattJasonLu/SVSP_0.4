@@ -79,7 +79,7 @@ public class EquipmentItem {
 
     @Override
     public String toString() {
-        return "EquipmentItem{" +
+        return "EquipmentDataItem{" +
                 "documentNumber='" + documentNumber + '\'' +
                 ", equipment='" + equipment + '\'' +
                 ", runningTime=" + runningTime +

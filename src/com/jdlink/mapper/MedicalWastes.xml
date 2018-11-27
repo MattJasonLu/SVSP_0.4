@@ -8,11 +8,23 @@
         select medicalWastesId from t_pl_medicalwastes order by (CAST(medicalWastesId AS SIGNED) )desc ;
     </select>
     <insert id="addMedicalWastes" parameterType="MedicalWastes">
-        insert into  t_pl_medicalwastes(medicalWastesId, department, departmentName, adjustName, adjustDate, dateTime, thisMonthWastes, directDisposal, cookingWastes, afterCookingNumber, afterCookingInbound, thisMonthSendCooking, errorNumber, wetNumber, nowTime,equipment,checkState)
-        values(#{medicalWastesId},#{department},#{departmentName},#{adjustName},#{adjustDate},#{dateTime},#{thisMonthWastes},#{directDisposal},#{cookingWastes},#{afterCookingNumber},#{afterCookingInbound},#{thisMonthSendCooking},#{errorNumber},#{wetNumber},NOW(),#{equipment},'Enabled')
+        insert into  t_pl_medicalwastes(medicalWastesId, department, departmentName, adjustName, adjustDate, dateTime, thisMonthWastes, directDisposal, cookingWastes, afterCookingNumber, afterCookingInbound, thisMonthSendCooking, errorNumber, wetNumber, nowTime,equipment,checkState,checkStateId,equipmentId)
+        values(#{medicalWastesId},#{department},#{departmentName},#{adjustName},#{adjustDate},#{dateTime},#{thisMonthWastes},#{directDisposal},#{cookingWastes},#{afterCookingNumber},#{afterCookingInbound},#{thisMonthSendCooking},#{errorNumber},#{wetNumber},NOW(),#{equipment},'Enabled',70,#{equipmentDataItem.dataDictionaryItemId})
     </insert>
-    <select id="loadMedicalWastesList" resultType="MedicalWastes">
-        select  * from t_pl_medicalwastes  order by nowTime desc
+    <resultMap id="MedicalWastesRM" type="MedicalWastes">
+        <collection property="equipmentDataItem" column="equipmentId" select="getEquipmentDataItem"></collection>
+        <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
+    </resultMap>
+    <!--获取处置设备数据字典-->
+    <select id="getEquipmentDataItem" resultType="EquipmentDataItem">
+        select  * from datadictionaryitem where dataDictionaryItemId=#{equipmentId}
+    </select>
+    <!--获取状态数据字典-->
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select  * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
+    </select>
+    <select id="loadMedicalWastesList" resultMap="MedicalWastesRM">
+        select  * from t_pl_medicalwastes where checkStateId!=71 order by nowTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -52,11 +64,11 @@
    </select>
     <!--作废-->
     <update id="cancelMedicalWastes" parameterType="String">
-        update t_pl_medicalwastes set checkState='Disabled',nowTime=NOW() where medicalWastesId=#{medicalWastesId};
+        update t_pl_medicalwastes set checkStateId=71,nowTime=NOW() where medicalWastesId=#{medicalWastesId};
     </update>
 
     <!--根据编号获取信息-->
-    <select id="getMedicalWasteById" parameterType="String" resultType="MedicalWastes">
+    <select id="getMedicalWasteById" parameterType="String" resultMap="MedicalWastesRM">
         select  * from t_pl_medicalwastes where medicalWastesId=#{medicalWastesId}
     </select>
 
@@ -66,7 +78,7 @@
         adjustName=#{adjustName},adjustDate=#{adjustDate},dateTime=#{dateTime},thisMonthWastes=#{thisMonthWastes},
         directDisposal=#{directDisposal},cookingWastes=#{cookingWastes},afterCookingNumber=#{afterCookingNumber},
         afterCookingInbound=#{afterCookingInbound},thisMonthSendCooking=#{thisMonthSendCooking},
-        errorNumber=#{errorNumber},wetNumber=#{wetNumber},nowTime=NOW(),equipment=#{equipment}
+        errorNumber=#{errorNumber},wetNumber=#{wetNumber},nowTime=NOW(),equipment=#{equipment},equipmentId=#{equipmentDataItem.dataDictionaryItemId}
         where medicalWastesId=#{medicalWastesId};
     </update>
 </mapper>

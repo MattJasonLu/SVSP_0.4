@@ -44,7 +44,13 @@
         <result property="id" column="id"></result>
         <collection property="client" column="clientId" select="getClient"></collection>
         <collection property="secondarySampleItemList" column="id" select="getSecondarysampleItem"></collection>
+   <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
     </resultMap>
+
+    <!--获取状态数据字典-->
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select  * from datadictionaryitem where  dataDictionaryItemId=#{checkStateId}
+    </select>
     <select id="getSecondarysampleItem" resultType="SecondarySampleItem">
         select  * from t_pr_secondarysampleitem where sampleinformationId=#{id};
     </select>
@@ -57,8 +63,8 @@
     </select>
     <!--添加次生废物送样主表-->
     <insert id="addSecondarySample" parameterType="SecondarySample">
-        insert into t_pr_secondarysample(id,laboratorySignatory, sendingPerson, address, checkState, advice,nowTime,createTime) values
-        (#{id},#{laboratorySignatory},#{sendingPerson},#{address},'ToCollected',#{advice},NOW(),NOW());
+        insert into t_pr_secondarysample(id,laboratorySignatory, sendingPerson, address, checkState, advice,nowTime,createTime,checkStateId) values
+        (#{id},#{laboratorySignatory},#{sendingPerson},#{address},'ToCollected',#{advice},NOW(),NOW(),86);
     </insert>
     <!--添加次生废物送样子表-->
     <insert id="addSecondarySampleItem" parameterType="SecondarySampleItem">
@@ -72,7 +78,7 @@
 
     <!--查询次生废物送样-->
     <select id="getSecondarysample" resultMap="SecondarysampleRM">
-        select * from t_pr_secondarysample order by createTime desc
+        select * from t_pr_secondarysample  where checkStateId!=69 order by createTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -80,11 +86,11 @@
 
     <!--确认登记-->
     <update id="confirmSecondarySampleById" >
-        update t_pr_secondarysample set  checkState='Collected',nowTime=NOW(),laboratorySignatory=#{1} where id=#{0};
+        update t_pr_secondarysample set  checkStateId=87,nowTime=NOW(),laboratorySignatory=#{1} where id=#{0};
     </update>
     <!--拒收-->
     <update id="rejectSecondarySampleById" >
-        update t_pr_secondarysample set checkState='Rejected',advice=#{1} ,nowTime=NOW() where id=#{0}
+        update t_pr_secondarysample set checkStateId=88,advice=#{1} ,nowTime=NOW() where id=#{0}
     </update>
 
 
@@ -189,8 +195,8 @@
     <!--次生化验对象存在就更新-->
     <insert id="updateSecondarySample" parameterType="SecondaryTest" >
 
- insert into t_pr_secondarytest (id, dateTime, wastesName, scorchingRate, water, remarks, nowTime,checkState) values
-        (CONCAT('I-',#{id}),NOW(),#{wastesName},#{scorchingRate},#{water},#{remarks},NOW(),'ToSubmit');
+ insert into t_pr_secondarytest (id, dateTime, wastesName, scorchingRate, water, remarks, nowTime,checkState,checkStateId) values
+        (CONCAT('I-',#{id}),NOW(),#{wastesName},#{scorchingRate},#{water},#{remarks},NOW(),'ToSubmit',64);
 
     </insert>
 

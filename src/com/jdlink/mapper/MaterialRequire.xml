@@ -92,7 +92,7 @@
     </select>
     <!--获取物料信息-->
     <select id="getMaterialList" resultMap="MaterialList">
-        select  * from t_pr_materialrequire  order  by nowTime desc
+        select  * from t_pr_materialrequire  where checkStateId!=69 order  by nowTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
