@@ -17,6 +17,8 @@
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
     <script src="js/produce/assessment.js"></script>
+    <link href="css/loading1.css" rel="stylesheet">
+    <link href="css/loading2.css" rel="stylesheet">
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');     //当前页数
@@ -227,8 +229,13 @@
         </div>
     </div>
 </div>
-
-
+<div class="loader"><!--进度条-->
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+</div>
 <div id="embed"></div>
 </body>
 </html>

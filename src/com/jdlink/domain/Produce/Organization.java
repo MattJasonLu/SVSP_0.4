@@ -1,5 +1,6 @@
 package com.jdlink.domain.Produce;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class Organization {
     /**
      * 名称
      */
-    private String name;
+    private String name = "";
     /**
      * 公司名
      */
@@ -59,7 +60,7 @@ public class Organization {
     /**
      * 子节点
      */
-    private List<Organization> organizationList;
+    private List<Organization> organizationList = new ArrayList<>();
 
     public List<Organization> getOrganizationList() {
         return organizationList;

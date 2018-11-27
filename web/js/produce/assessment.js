@@ -28,6 +28,7 @@ var year = "";
  * 加载列表数据
  */
 function loadMonthData() {
+    $('.loader').show();  // 显示进度条
     $(".newLine").remove();
     // setYearListSelect();               // 设置年份下拉框
     // year = $("#selectYear").find("option:selected").text();
@@ -44,8 +45,10 @@ function loadMonthData() {
         success: function (result) {
             if (result != null) {
                 console.log(result);
-                if (result.status == "success")
+                if (result.status === "success"){
+                    $('.loader').hide();   // 隐藏进度条
                     setMonthDataList(result);
+                }
             }
         },
         error: function (result) {
@@ -293,6 +296,7 @@ function searchData(){
 
 //-----------------------业务员列表页面-----------------
 function loadMonthSalesmanData() {
+    $('.loader').show();  // 显示进度条
     var m = localStorage.month;
     var y = localStorage.year;
     if (parseInt(m) < 10) m = "0" + m;
@@ -310,8 +314,10 @@ function loadMonthSalesmanData() {
         success: function (result) {
             if (result != null) {
                 console.log(result);
-                if (result.status === "success")
+                if (result.status === "success"){
                     setSalesmanMonthDataList(result);
+                    $('.loader').hide();  // 隐藏进度条
+                }
             }
         },
         error: function (result) {

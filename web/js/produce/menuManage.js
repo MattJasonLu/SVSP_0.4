@@ -518,7 +518,6 @@ function loadMenu() {
                     }
                     zNodes.push(organization);  // 将节点添加到LIST中
                 }
-                console.log(zNodes);
             } else {
                 console.log(result.message);
             }
