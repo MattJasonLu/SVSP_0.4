@@ -507,6 +507,7 @@
     }
 //    console.log(Request['type']);
     function loadPage2Info() {
+        loadNavigationList();   // 设置动态菜单
         // 添加危废信息
         $.ajax({
             type: "POST",                       // 方法类型

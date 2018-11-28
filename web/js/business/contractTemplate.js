@@ -246,6 +246,7 @@ function loadPages(totalRecord, count) {
  * 分页 获取首页内容
  * */
 function loadPageContractTemplateList() {
+    loadNavigationList();   // 设置动态菜单
     var pageNumber = 1;               // 显示首页
     $('#contractId').hide();
     $('#cId').hide();

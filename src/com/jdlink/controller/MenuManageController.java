@@ -431,6 +431,49 @@ public class MenuManageController {
         return organization2;
     }
 
+    /**
+     * 根据子类url获取一级菜单
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("getLevelOneMenuByUrl")
+    @ResponseBody
+    public String getLevelOneMenuByUrl(String url) {
+        JSONObject res = new JSONObject();
+        try {
+            Organization organization = getLevelOneMenuByUrl1(url); // 获取一级菜单
+            res.put("name", organization.getName());  // 返回一级菜单名
+            res.put("status", "success");
+            res.put("message", "获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取失败！");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 递归获取一级菜单
+     * @param url
+     * @return
+     */
+    public Organization getLevelOneMenuByUrl1(String url){
+        Organization organization1 = new Organization();
+        List<Organization> organizationList = menuManageService.getMenuByCUrl(url);
+        for(Organization organization : organizationList){
+            if(organization.getpId() == 1){ // 获取到一级菜单直接返回
+                organization1 = organization;
+                return organization1;
+            }else {
+                  Organization organization2 = getLevelOneMenuByUrl1(organization.getUrl());
+                  if(!organization2.getName().equals(""))organization1 =organization2;
+            }
+        }
+        return organization1;
+    }
+
     public MenuManageService getMenuManageService() {
         return menuManageService;
     }

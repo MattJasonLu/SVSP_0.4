@@ -278,6 +278,7 @@
         }
     }
     function loadSelectList() {
+        loadNavigationList();   // 设置动态菜单
         var enterpriseTypeIndex, operationTypeIndex, operationRecordIndex,
                 operationModeIndex, contingencyPlanIndex, applicationStatusIndex, ticketTypeIndex;
         if (Request['id'] == null) {

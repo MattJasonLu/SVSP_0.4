@@ -16,6 +16,7 @@ public interface MenuManageMapper {
     List<Organization> getChildrenMenuByName(Organization organization);
     Organization getMenuByUrlAndPName(Organization organization);
     List<Integer> getMenuIdListByPId(int pId);
+    List<Organization> getMenuByCUrl(String url);
     void updateMenuOrder(Organization organization);
     void add(Organization organization);
     void updateName(Organization organization);

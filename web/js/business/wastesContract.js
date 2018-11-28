@@ -267,6 +267,7 @@ function inputSwitchPage() {
 
 /*页面加载*/
 function loadWastesContractList() {
+    loadNavigationList();   // 设置动态菜单
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");

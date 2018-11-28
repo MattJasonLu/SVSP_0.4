@@ -335,7 +335,8 @@ function inputSwitchPage() {
  * 分页 获取首页内容
  * */
 function loadPageContractManageList() {
-    $('.loader').show()
+    $('.loader').show();
+    loadNavigationList();   // 设置动态菜单
     //让修改操作提交后页面刷新仍然停留在当前页面而不是刷新到首页
     var state = $("#state").find("option:selected").text();
     $('#back').hide();
@@ -1672,6 +1673,7 @@ function adjustContract(item) {
 
 //危废合同页面新增
 function loadWastesContractSelectList() {
+    loadNavigationList();   // 设置动态菜单
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
         size: 6
@@ -6128,6 +6130,7 @@ function adjust(item) {
 
 //合同修改页面初始化
 function adjustNewContract() {
+    loadNavigationList();   // 设置动态菜单
     //赋值合同编号
     var contractId = localStorage['contractId'];
     $('#contractId').html(contractId);
