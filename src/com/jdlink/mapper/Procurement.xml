@@ -255,7 +255,7 @@
 
     <!--获取采购单明细-->
     <select id="getProcurement" resultType="Material">
-        select * from t_pl_material where (receiptNumber in(select receiptNumber from t_pl_procurement where t_pl_procurement.state='Submitted' and procurementCategory=1))and (t_pl_material.checkState='Enabled');
+        select * from t_pl_material where (receiptNumber in(select receiptNumber from t_pl_procurement where t_pl_procurement.checkStateId=64 and procurementCategory=1))and (t_pl_material.checkStateId=70);
     </select>
 
     <!--采购计划单新增页面高级查询-->
@@ -279,8 +279,8 @@
 
     <!--添加采购计划单主表-->
     <insert id="addProcurementPlan" parameterType="ProcurementPlan">
-        insert into t_pr_procumentplan (procurementPlanId, createName, createDate, adjustName, adjustDate, approvalName, checkState, nowTime) values
-      (#{procurementPlanId},#{createName},NOW(),#{adjustName},#{adjustDate},#{approvalName},'ToSubmit',NOW());
+        insert into t_pr_procumentplan (procurementPlanId, createName, createDate, adjustName, adjustDate, approvalName, checkState, nowTime,checkStateId) values
+      (#{procurementPlanId},#{createName},NOW(),#{adjustName},#{adjustDate},#{approvalName},'ToSubmit',NOW(),64);
     </insert>
 
 <!--根据主键查出申购部门-->
@@ -302,14 +302,18 @@
 
     <resultMap id="ProcurementPlanRM" type="ProcurementPlan">
         <result  property="procurementPlanId" column="procurementPlanId"></result>
-        <collection property="procurementPlanItemList" column="procurementPlanId" select="getProcurementPlanItemList">
-        </collection>
+        <collection property="procurementPlanItemList" column="procurementPlanId" select="getProcurementPlanItemList"></collection>
+    <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
     </resultMap>
+    <!--状态数据字典-->
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select  * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
+    </select>
     <select id="getProcurementPlanItemList" resultType="ProcurementPlanItem">
         select  *from t_pr_procumentplanitem where procurementPlanId=#{procurementPlanId}
     </select>
     <select id="getProcurementPlanList" resultMap="ProcurementPlanRM">
-        select * from t_pr_procumentplan order by createDate desc
+        select * from t_pr_procumentplan  where checkStateId!=69 order by createDate desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -333,22 +337,22 @@
 
     <!--提交采购计划单-->
     <update id="submitProcurementPlan" parameterType="String">
-        update t_pr_procumentplan set checkState='Submitted' where procurementPlanId=#{procurementPlanId}
+        update t_pr_procumentplan set checkStateId=73 where procurementPlanId=#{procurementPlanId}
     </update>
 
     <!--审批采购计划单-->
     <update id="approvalProcurementPlan">
-        update t_pr_procumentplan set approvalName=#{1},advice=#{2},checkState='Approval' where procurementPlanId=#{0}
+        update t_pr_procumentplan set approvalName=#{1},advice=#{2},checkStateId=76 where procurementPlanId=#{0}
     </update>
 
     <!--驳回采购计划单-->
     <update id="backProcurementPlan">
-        update t_pr_procumentplan set advice=#{1},checkState='Backed' where procurementPlanId=#{0}
+        update t_pr_procumentplan set advice=#{1},checkStateId=66 where procurementPlanId=#{0}
     </update>
 
     <!--作废采购计划单-->
     <update id="cancelProcurementPlanById" parameterType="String">
-        update t_pr_procumentplan set checkState='Invalid' where procurementPlanId=#{procurementPlanId}
+        update t_pr_procumentplan set checkStateId=69 where procurementPlanId=#{procurementPlanId}
     </update>
 
     <!--计算采购计划单总数-->
@@ -449,7 +453,7 @@
 
     <!--添加至采购计划单后更新物资状态-->
     <update id="updateMaterialState" parameterType="int">
-        update t_pl_material set checkState='Disabled' where id=#{id}
+        update t_pl_material set checkStateId=71 where id=#{id}
 
     </update>
 </mapper>

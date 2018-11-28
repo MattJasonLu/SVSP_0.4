@@ -322,7 +322,7 @@ function loadWasteInventoryList() {
     //加载进料方式列表
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getHandelCategoryList",                  // url
+        url: "getHandleCategoryByDataDictionary",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         //contentType: "application/json; charset=utf-8",
@@ -330,10 +330,10 @@ function loadWasteInventoryList() {
             if (result != undefined && result.status == "success"){
                 var type=$('#search-type');
                 type.children().remove();
-                $.each(result.array1,function (index,item) {
+                $.each(result.data,function (index,item) {
                     var option=$('<option/>');
-                    option.val(item.index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     type.append(option);
                 })
                 type.get(0).selectedIndex=-1;
@@ -435,32 +435,54 @@ function searchWastesInventory() {
     var client=$.trim($('#search-client').val());
     //3进料方式
     var handelCategory=$.trim($('#search-type option:selected').text());
+
     var startDate=getDateByStr(inboundOrderId);
+
     var endDate=getDateByStr(endDate);
+
+    var arraydate = [];
+    for (var j = 0; j < array.length; j++) {
+        $.each(array[j], function () {
+            arraydate.push(($(this).children('td').eq(2).text()))
+        });
+    }
+
+    var dateMin = (arraydate[0]);
+    var dateMax = (arraydate[0]);
+
+    for (var i = 0; i < arraydate.length; i++) {
+        if (new Date(arraydate[i]).getTime() < new Date(dateMin) || dateMin.length == 0) {
+            dateMin = (arraydate[i]);
+        }
+        if (new Date(arraydate[i]).getTime() > new Date(dateMax) || dateMax.length == 0) {
+            dateMax = (arraydate[i]);
+        }
+
+    }
 
     var wareHouseName=$.trim($('#search-storageType').val());
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
             if(startDate.toString()=='Invalid Date'){
-                startDate=getDateByStr(date);
+                startDate = dateMin;
             }
             if(endDate.toString()=='Invalid Date'){
-                endDate=new Date();
+                endDate = dateMax;
             }
             var start=$(this).children('td').eq(2).text();
             if(start.length==0){
-                start=date;
+                start=dateMin;
             }
             //console.log(this);
             if(!($(this).children('td').eq(3).text().indexOf(client)!=-1&&$(this).children('td').text().indexOf(text)!=-1
                 &&$(this).children('td').eq(5).text().indexOf(handelCategory)!=-1&&$(this).children('td').eq(4).text().indexOf(wareHouseName)!=-1
-                &&(getDateByStr(start)<=endDate&&getDateByStr(start)>=startDate)
+                && (new Date(start).getTime() >= new Date(startDate).getTime() && new Date(start).getTime() <= new Date(endDate).getTime())
             )){
                 $(this).hide();
             }
             if(($(this).children('td').eq(3).text().indexOf(client)!=-1&&$(this).children('td').text().indexOf(text)!=-1
                 &&$(this).children('td').eq(5).text().indexOf(handelCategory)!=-1&&$(this).children('td').eq(4).text().indexOf(wareHouseName)!=-1
-                &&(getDateByStr(start)<=endDate&&getDateByStr(start)>=startDate)
+                && (new Date(start).getTime() >= new Date(startDate).getTime() && new Date(start).getTime() <= new Date(endDate).getTime())
             )){
                 array1.push($(this));
             }

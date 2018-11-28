@@ -1,6 +1,9 @@
 package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Dictionary.CheckStateItem;
+import com.jdlink.domain.Dictionary.HandleCategoryItem;
+import com.jdlink.domain.Dictionary.ProcessWayItem;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.LaboratoryTest;
 import com.jdlink.domain.Produce.ProcessWay;
@@ -92,6 +95,39 @@ public class MaterialRequisitionOrder {
 
     private Page page;
 
+    //进料方式数据字典
+    private HandleCategoryItem handleCategoryItem;
+
+    //处置方式数据字典
+    private ProcessWayItem processWayItem;
+
+    //状态数据字典
+    private CheckStateItem checkStateItem;
+
+
+    public CheckStateItem getCheckStateItem() {
+        return checkStateItem;
+    }
+
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
+    }
+
+    public HandleCategoryItem getHandleCategoryItem() {
+        return handleCategoryItem;
+    }
+
+    public void setHandleCategoryItem(HandleCategoryItem handleCategoryItem) {
+        this.handleCategoryItem = handleCategoryItem;
+    }
+
+    public ProcessWayItem getProcessWayItem() {
+        return processWayItem;
+    }
+
+    public void setProcessWayItem(ProcessWayItem processWayItem) {
+        this.processWayItem = processWayItem;
+    }
 
     public float getBatchingNumber() {
         return batchingNumber;

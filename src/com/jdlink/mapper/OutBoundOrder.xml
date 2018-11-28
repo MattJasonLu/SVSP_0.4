@@ -310,12 +310,12 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
         where t_pl_wasteinventory.inboundOrderItemId=#{inboundOrderItemId};
     </update>
     <!--根据出库单号获取进料方式-->
-    <select id="getHandelCategoryById" resultType="HandleCategory" parameterType="String">
-        select handelCategory from t_pl_outboundorder where  outboundOrderId=#{outboundOrderId};
+    <select id="getHandelCategoryById" resultType="int" parameterType="String">
+        select handleCategoryId from t_pl_outboundorder where  outboundOrderId=#{outboundOrderId};
     </select>
     <!--修改属性-->
     <update id="upHandelCategoryById">
-        update t_pl_outboundorder set handelCategory=#{1},nowTime=NOW() WHERE outboundOrderId=#{0};
+        update t_pl_outboundorder set handleCategoryId=#{1},nowTime=NOW() WHERE outboundOrderId=#{0};
     </update>
     <!--根据时间范围查询出库单-->
     <select id="getOutBoundByRange" resultMap="OutBoundOrderList" >

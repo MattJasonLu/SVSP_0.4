@@ -1,10 +1,11 @@
 package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.*;
-import com.jdlink.domain.Produce.Equipment;
-import com.jdlink.domain.Produce.HandleCategory;
-import com.jdlink.domain.Produce.LaboratoryTest;
-import com.jdlink.domain.Produce.ProcessWay;
+import com.jdlink.domain.Dictionary.CheckStateItem;
+import com.jdlink.domain.Dictionary.EquipmentDataItem;
+import com.jdlink.domain.Dictionary.HandleCategoryItem;
+import com.jdlink.domain.Dictionary.ProcessWayItem;
+import com.jdlink.domain.Produce.*;
 
 import java.util.Date;
 import java.util.List;
@@ -46,6 +47,25 @@ public class OutboundOrder {
     /*仓库*/
     private WareHouse wareHouse;
 
+    //进料方式数据字典
+    private HandleCategoryItem handleCategoryItem;
+
+    //处置方式数据字典
+    private ProcessWayItem processWayItem;
+
+    //处置设备数据字典
+    private EquipmentDataItem equipmentDataItem;
+
+    //状态数据字典
+    private CheckStateItem checkStateItem;
+
+    public CheckStateItem getCheckStateItem() {
+        return checkStateItem;
+    }
+
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
+    }
 
     /*领料单对列表
     * 1:N
@@ -120,6 +140,31 @@ public class OutboundOrder {
      * 入库单号
      */
     private String inboundOrderId;
+
+
+    public HandleCategoryItem getHandleCategoryItem() {
+        return handleCategoryItem;
+    }
+
+    public void setHandleCategoryItem(HandleCategoryItem handleCategoryItem) {
+        this.handleCategoryItem = handleCategoryItem;
+    }
+
+    public ProcessWayItem getProcessWayItem() {
+        return processWayItem;
+    }
+
+    public void setProcessWayItem(ProcessWayItem processWayItem) {
+        this.processWayItem = processWayItem;
+    }
+
+    public EquipmentDataItem getEquipmentDataItem() {
+        return equipmentDataItem;
+    }
+
+    public void setEquipmentDataItem(EquipmentDataItem equipmentDataItem) {
+        this.equipmentDataItem = equipmentDataItem;
+    }
 
     public String getWastesName() {
         return wastesName;

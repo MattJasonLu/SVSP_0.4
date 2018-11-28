@@ -619,6 +619,7 @@ function loadNavigationList() {
     }
 }
 
+
 function setOLMenu(organization) {
     var ol = $("ol[class='breadcrumb']");
     var li = "";
@@ -631,8 +632,91 @@ function setOLMenu(organization) {
         li = "<li class='active'>" + organization.name + "</li>"; // 设置插入对象
         ol.append(li);  // 插入
     }
+
+/*
+ * 进料方式转化为数据字典编号
+ */
+function getIdFromHandleCategory(HandleCategory) {
+    var res;
+    switch (HandleCategory) {
+        case "污泥":
+            res = 28;
+            break;
+        case "废液":
+            res =29;
+            break;
+        case "散装料":
+            res = 30;
+            break;
+        case "破碎料":
+            res = 31;
+            break;
+        case "精馏残渣":
+            res = 32;
+            break;
+        case "悬挂链":
+            res = 33;
+            break;
+        default:
+            res = "";
+            break;
+    }
+    return res;
 }
 
+
+/*
+ * 处置方式转化为数据字典编号
+ */
+function getIdFromProcessWay(ProcessWay) {
+    var res;
+    switch (ProcessWay) {
+        case "焚烧":
+            res = 44;
+            break;
+        case "填埋":
+            res =45;
+            break;
+        case "清洗":
+            res = 46;
+            break;
+        default:
+            res = "";
+            break;
+    }
+    return res;
+}
+
+/*
+ * 处置设备转化为数据字典编号
+ */
+function getIdFromEquipment(Equipment) {
+    var res;
+    switch (Equipment) {
+        case "医疗蒸煮系统":
+            res = 22;
+            break;
+        case "A2":
+            res =23;
+            break;
+        case "B2":
+            res = 24;
+            break;
+        case "二期二燃室":
+            res = 25;
+            break;
+        case "三期预处理系统":
+            res = 26;
+            break;
+        case "备2":
+            res = 27;
+            break;
+        default:
+            res = "";
+            break;
+    }
+    return res;
+}
 
 /**
  * 根据名字获取一级菜单的子节点并设置二级菜单
@@ -642,6 +726,7 @@ function toMenuUrl(item) {
     localStorage.name = $.trim($(item).children().find("span").eq(1).text());
     window.location.href = "firstPage.html"; //跳转首页
 }
+
 
 /**
  * 递归设置导航条

@@ -1,6 +1,8 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Dictionary.CheckStateItem;
+import com.jdlink.domain.Dictionary.EquipmentDataItem;
 
 import java.util.Date;
 
@@ -79,6 +81,28 @@ public class MedicalWastes {
 
     //焚烧量
     private float incineration;
+
+    //处置设备数据字典
+    private EquipmentDataItem equipmentDataItem;
+
+    //状态数据字典
+    private CheckStateItem checkStateItem;
+
+    public CheckStateItem getCheckStateItem() {
+        return checkStateItem;
+    }
+
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
+    }
+
+    public EquipmentDataItem getEquipmentDataItem() {
+        return equipmentDataItem;
+    }
+
+    public void setEquipmentDataItem(EquipmentDataItem equipmentDataItem) {
+        this.equipmentDataItem = equipmentDataItem;
+    }
 
     public float getIncineration() {
         return incineration;

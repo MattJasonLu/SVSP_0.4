@@ -396,8 +396,8 @@ function setMaterialRequisitionList(result) {
                         break;
                     //状态
                     case (13):
-                        if (obj.checkState != null) {
-                            $(this).html(obj.checkState.name);
+                        if (obj.checkStateItem != null) {
+                            $(this).html(obj.checkStateItem.dictionaryItemName);
                         }
                         break;
 
@@ -509,7 +509,7 @@ function loadRequisitionList() {
 
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getEquipmentNameList",                  // url
+        url: "getEquipmentByDataDictionary",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         contentType: "application/json; charset=utf-8",
@@ -518,10 +518,10 @@ function loadRequisitionList() {
                 console.log(result)
                 var equipment = $("#equipment");
                 equipment.children().remove();
-                $.each(result.equipmentList, function (index, item) {
+                $.each(result.data, function (index, item) {
                     var option = $('<option/>')
-                    option.val(item.index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     equipment.append(option);
                     $('.selectpicker').selectpicker('refresh');
                 });
@@ -636,17 +636,17 @@ function setRequisitionList(result) {
                         break;
                     //进料方式
                     case (9):
-                        if (obj.handelCategory != null) {
-
+                        if (obj.handleCategoryItem != null) {
+                            $(this).html(obj.handleCategoryItem.dictionaryItemName);
                         }
-                        $(this).html(obj.handelCategory.name);
+
                         break;
                     //处置方式
                     case (10):
-                        if (obj.processWay != null) {
-
+                        if (obj.processWayItem != null) {
+                            $(this).html(obj.processWayItem.dictionaryItemName);
                         }
-                        $(this).html(obj.processWay.name);
+
                         break;
                     //
                 }

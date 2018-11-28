@@ -1,6 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Dictionary.CheckStateItem;
 import com.jdlink.domain.Dictionary.DataDictionaryItem;
 import com.jdlink.domain.Dictionary.UnitDataItem;
 import com.jdlink.domain.Inventory.WareHouse;
@@ -79,6 +80,11 @@ public class Material {
      */
     private CheckState state;
 
+
+
+    //状态数据字典
+    private CheckStateItem checkStateItem;
+
     //创建日期
     private Date createDate;
 
@@ -93,6 +99,14 @@ public class Material {
 
    //单位数据字典
     private UnitDataItem unitDataItem;
+
+    public CheckStateItem getCheckStateItem() {
+        return checkStateItem;
+    }
+
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
+    }
 
     public UnitDataItem getUnitDataItem() {
         return unitDataItem;

@@ -23,8 +23,8 @@ public interface OutboundOrderService {
     OutboundOrder  getOutBoundByInId(String inboundOrderId);
     void updateSecOutBoundOrder(OutboundOrder outboundOrder);
     void upWastesInventoryNumber(OutboundOrder outboundOrder);
-    HandleCategory getHandelCategoryById(String outboundNumber);
-    void upHandelCategoryById(String outboundOrderId,String  handelCategory);
+    int getHandelCategoryById(String outboundNumber);
+    void upHandelCategoryById(String outboundOrderId,int   id);
     void  updateSecondart(OutboundOrder outboundOrder);
     List<OutboundOrder>  getOutBoundByRange(Date startDate, Date endDate);
     List<OutboundOrder> getOutBoundByDate (Date date);
