@@ -8,7 +8,9 @@
         <collection property="thresholdList" select="getThresholdList" column="id"
                     ofType="com.jdlink.domain.Produce.Threshold"
                     javaType="ArrayList"/>
+        <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
     </resultMap>
+
 
     <resultMap id="ThresholdRM" type="Threshold" autoMapping="true">
         <result property="thresholdId" column="thresholdId"></result>
@@ -39,6 +41,10 @@
         select * from t_pr_threshold where id= #{id};
     </select>
 
+    <!--获取状态数据字典-->
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select  * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
+    </select>
     <select id="listOut" resultMap="ThresholdListRM">
         select * from t_pr_thresholdlist order by creationDate desc
         <if test="start != null and count != null and count != 0">
@@ -145,20 +151,20 @@
     </update>
 
     <update id="updateStateEnable" parameterType="String">
-        update t_pr_thresholdlist set state='Enabled' where id=#{id};
+        update t_pr_thresholdlist set checkStateId=70 where id=#{id};
     </update>
 
     <update id="updateStateDisabled" parameterType="String">
-        update t_pr_thresholdlist set state='Disabled' where id=#{id};
+        update t_pr_thresholdlist set checkStateId=71 where id=#{id};
     </update>
 
 
     <insert id="add" parameterType="ThresholdList">
         <if test="keywords == null">
             insert into t_pr_thresholdlist
-            (id,creationDate,nowTime,state)
+            (id,creationDate,nowTime,checkStateId)
             values
-            (#{id},NOW(),NOW(),'Disabled');
+            (#{id},NOW(),NOW(),71);
         </if>
         <if test="keywords != null">
             update t_pr_thresholdlist
@@ -169,13 +175,13 @@
         <foreach collection="thresholdList" index="index" item="threshold">
             insert into t_pr_threshold
             (thresholdId,id,handleCategory,formType,calorificMax,calorificMin,ashMax,ashMin,waterMax,waterMin,sMax,sMin,clMax,
-            clMin,pMax,pMin,fMax,fMin,phMax,phMin,safety,beginTime,endTime)
+            clMin,pMax,pMin,fMax,fMin,phMax,phMin,safety,beginTime,endTime,handleCategoryId,formTypeId)
             values
             (#{threshold.thresholdId},#{id},#{threshold.handleCategory},#{threshold.formType},#{threshold.calorificMax},
             #{threshold.calorificMin},#{threshold.ashMax},#{threshold.ashMin},#{threshold.waterMax},#{threshold.waterMin},
             #{threshold.sMax},#{threshold.sMin},#{threshold.clMax},#{threshold.clMin},#{threshold.pMax},#{threshold.pMin},
             #{threshold.fMax},#{threshold.fMin},#{threshold.phMax},#{threshold.phMin},#{threshold.safety},#{threshold.beginTime},
-            #{threshold.endTime});
+            #{threshold.endTime},#{threshold.handleCategoryItem.dataDictionaryItemId},#{threshold.formTypeItem.dataDictionaryItemId});
         </foreach>
     </insert>
 
