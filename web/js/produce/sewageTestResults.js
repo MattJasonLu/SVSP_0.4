@@ -263,7 +263,7 @@ function inputSwitchPage() {
 function loadPageList() {
 
     $('.loader').show();
-=======
+
     loadNavigationList(); // 设置动态菜单
 
     var pageNumber = 1;               // 显示首页
