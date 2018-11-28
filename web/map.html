@@ -22,7 +22,7 @@
     </style>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=OcqSk1RGOIhd1nHCQdfFUAAGLrTcNH0j"></script>
 </head>
-<body>
+<body >
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1">
         <div class="main-title">
@@ -88,6 +88,11 @@
         </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div>
+                <ol class="breadcrumb">
+
+                </ol>
+            </div>
             <h1 class="page-header">工作台</h1>
             <div class="row">
                 <!--百度地图容器-->
@@ -215,6 +220,7 @@
     }
     //载入全景信息
     window.onload = function () {
+        loadNavigationList();  // 设置动态菜单
         var panorama = new BMap.Panorama("panorama");
         panorama.setPosition(new BMap.Point(119.972394,31.979135));  //设置全景中心
         panorama.setPov({heading: -40, pitch: 6});                 // 设置全景上下左右边距

@@ -13,6 +13,7 @@ public interface MenuManageService {
     Organization getMenuById(int id);
     Organization getMenuByName(String name,int id);
     Organization getMenuByUrlAndPName(Organization organization);
+    List<Organization> getMenuByCUrl(String url);
     List<Organization> getChildrenMenuByName(Organization organization);
     List<Integer> getMenuIdListByPId(int pId);
     void updateMenuOrder(Organization organization);

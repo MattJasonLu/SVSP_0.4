@@ -92,6 +92,7 @@
     });
     var id1;
     function loadSelectList() {
+        loadNavigationList();   // 设置动态菜单
         // 设置下拉列表
         $.ajax({
             type: "POST",                            // 方法类型
