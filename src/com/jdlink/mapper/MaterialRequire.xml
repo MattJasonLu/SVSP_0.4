@@ -139,8 +139,8 @@
         select * from t_pr_materialrequire where materialRequireId=#{materialRequireId};
     </select>
 
-    <!--粗查询-->
-    <select id="searchMaterialRequire" parameterType="MaterialRequire" resultType="MaterialRequire">
+    <!--查询-->
+    <select id="searchMaterialRequire" parameterType="MaterialRequire" resultMap="MaterialList">
           select * from t_pr_materialrequire
           <where>
               <if test="keywords != null and keywords != ''">
@@ -157,8 +157,52 @@
                   or  pAvg  like "%"#{keywords}"%"
                   or  fAvg  like "%"#{keywords}"%"
                   or  phAvg  like "%"#{keywords}"%"
-                  or checkState like "%"#{keywords}"%"
+                  or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
               </if>
+               <if test="materialRequireItemList.size()>0">
+                   <if test="materialRequireItemList[0].materialRequireId!='' and  materialRequireItemList[0].materialRequireId!=null">
+                       and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.materialRequireId  like "%"#{materialRequireItemList[0].materialRequireId}"%" )
+                   </if>
+                   <if test="materialRequireItemList[0].formTypeItem.dataDictionaryItemId!=0">
+                       and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.formTypeId  =materialRequireItemList[0].formTypeItem.dataDictionaryItemId )
+                   </if>
+                   <if test="materialRequireItemList[0].handleCategoryItem.dataDictionaryItemId!=0">
+                       and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.handleCategoryId  =materialRequireItemList[0].handleCategoryItem.dataDictionaryItemId )
+                   </if>
+                   <if test="materialRequireItemList[0].formTypeItem.dataDictionaryItemId!=0">
+                       and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.packageTypeId  =materialRequireItemList[0].formTypeItem.dataDictionaryItemId )
+                   </if>
+                   <if test="materialRequireItemList[0].weeklyDemandBeg!='' and materialRequireItemList[0].weeklyDemandBeg!=null">
+                       and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.weeklyDemand <![CDATA[ >= ]]>#{materialRequireItemList[0].weeklyDemandBeg})
+                   </if>
+                   <if test="materialRequireItemList[0].weeklyDemandEnd!='' and materialRequireItemList[0].weeklyDemandEnd!=null">
+                       and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.weeklyDemand <![CDATA[ <= ]]>#{materialRequireItemList[0].weeklyDemandEnd})
+                   </if>
+                   <if test="materialRequireItemList[0].currentInventoryBeg!='' and materialRequireItemList[0].currentInventoryBeg!=null">
+                       and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.currentInventory <![CDATA[ >= ]]>#{materialRequireItemList[0].currentInventoryBeg})
+                   </if>
+                   <if test="materialRequireItemList[0].currentInventoryEnd!='' and materialRequireItemList[0].currentInventoryEnd!=null">
+                       and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.currentInventory <![CDATA[ <= ]]>#{materialRequireItemList[0].currentInventoryEnd})
+                   </if>
+                   <if test="materialRequireItemList[0].safetyBeg!='' and materialRequireItemList[0].safetyBeg!=null">
+                       and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.safety <![CDATA[ >= ]]>#{materialRequireItemList[0].safetyBeg})
+                   </if>
+                   <if test="materialRequireItemList[0].safetyEnd!='' and materialRequireItemList[0].safetyEnd!=null">
+                       and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.safety <![CDATA[ <= ]]>#{materialRequireItemList[0].safetyEnd})
+                   </if>
+                   <if test="materialRequireItemList[0].marketPurchasesBeg!='' and materialRequireItemList[0].marketPurchasesBeg!=null">
+                       and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.marketPurchases <![CDATA[ >= ]]>#{materialRequireItemList[0].marketPurchasesBeg})
+                   </if>
+                   <if test="materialRequireItemList[0].marketPurchasesEnd!='' and materialRequireItemList[0].marketPurchasesEnd!=null">
+                       and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.marketPurchases <![CDATA[ <= ]]>#{materialRequireItemList[0].marketPurchasesEnd})
+                   </if>
+               </if>
+              <if test="checkStateItem!=null">
+                  <if test="checkStateItem.dataDictionaryItemId!=0">
+                      and checkStateId=#{checkStateItem.dataDictionaryItemId}
+                  </if>
+              </if>
+
           </where>
         order by nowTime desc
         <if test="page != null and page.start != null and page.count != null">
@@ -166,7 +210,7 @@
         </if>
     </select>
 
-    <!--粗查询总数-->
+    <!--查询总数-->
     <select id="searchMaterialRequireCount" parameterType="MaterialRequire" resultType="int">
     select count(*) from t_pr_materialrequire
         <where>
@@ -184,12 +228,55 @@
                 or  pAvg  like "%"#{keywords}"%"
                 or  fAvg  like "%"#{keywords}"%"
                 or  phAvg  like "%"#{keywords}"%"
-                or checkState like "%"#{keywords}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
+            </if>
+            <if test="materialRequireItemList.size()>0">
+                <if test="materialRequireItemList[0].materialRequireId!='' and  materialRequireItemList[0].materialRequireId!=null">
+                    and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.materialRequireId  like "%"#{materialRequireItemList[0].materialRequireId}"%" )
+                </if>
+                <if test="materialRequireItemList[0].formTypeItem.dataDictionaryItemId!=0">
+                    and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.formTypeId  =materialRequireItemList[0].formTypeItem.dataDictionaryItemId )
+                </if>
+                <if test="materialRequireItemList[0].handleCategoryItem.dataDictionaryItemId!=0">
+                    and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.handleCategoryId  =materialRequireItemList[0].handleCategoryItem.dataDictionaryItemId )
+                </if>
+                <if test="materialRequireItemList[0].formTypeItem.dataDictionaryItemId!=0">
+                    and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.packageTypeId  =materialRequireItemList[0].formTypeItem.dataDictionaryItemId )
+                </if>
+                <if test="materialRequireItemList[0].weeklyDemandBeg!='' and materialRequireItemList[0].weeklyDemandBeg!=null">
+                    and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.weeklyDemand <![CDATA[ >= ]]>#{materialRequireItemList[0].weeklyDemandBeg})
+                </if>
+                <if test="materialRequireItemList[0].weeklyDemandEnd!='' and materialRequireItemList[0].weeklyDemandEnd!=null">
+                    and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.weeklyDemand <![CDATA[ <= ]]>#{materialRequireItemList[0].weeklyDemandEnd})
+                </if>
+                <if test="materialRequireItemList[0].currentInventoryBeg!='' and materialRequireItemList[0].currentInventoryBeg!=null">
+                    and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.currentInventory <![CDATA[ >= ]]>#{materialRequireItemList[0].currentInventoryBeg})
+                </if>
+                <if test="materialRequireItemList[0].currentInventoryEnd!='' and materialRequireItemList[0].currentInventoryEnd!=null">
+                    and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.currentInventory <![CDATA[ <= ]]>#{materialRequireItemList[0].currentInventoryEnd})
+                </if>
+                <if test="materialRequireItemList[0].safetyBeg!='' and materialRequireItemList[0].safetyBeg!=null">
+                    and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.safety <![CDATA[ >= ]]>#{materialRequireItemList[0].safetyBeg})
+                </if>
+                <if test="materialRequireItemList[0].safetyEnd!='' and materialRequireItemList[0].safetyEnd!=null">
+                    and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.safety <![CDATA[ <= ]]>#{materialRequireItemList[0].safetyEnd})
+                </if>
+                <if test="materialRequireItemList[0].marketPurchasesBeg!='' and materialRequireItemList[0].marketPurchasesBeg!=null">
+                    and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.marketPurchases <![CDATA[ >= ]]>#{materialRequireItemList[0].marketPurchasesBeg})
+                </if>
+                <if test="materialRequireItemList[0].marketPurchasesEnd!='' and materialRequireItemList[0].marketPurchasesEnd!=null">
+                    and t_pr_materialrequire.materialRequireId in(select DISTINCT  materialRequireId from t_pr_materialrequireitem where t_pr_materialrequireitem.marketPurchases <![CDATA[ <= ]]>#{materialRequireItemList[0].marketPurchasesEnd})
+                </if>
+            </if>
+            <if test="checkStateItem!=null">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId=#{checkStateItem.dataDictionaryItemId}
+                </if>
             </if>
         </where>
     </select>
 
-    <!--高级查询-->
+
     <select id="searchMaterialRequireItem" parameterType="MaterialRequireItem" resultType="String">
         select DISTINCT materialRequireId from t_pr_materialrequireitem
         <where>
@@ -237,7 +324,7 @@
         </if>
     </select>
 
-    <!--高级查询总数-->
+
     <select id="searchMaterialRequireItemCount" parameterType="MaterialRequireItem" resultType="int">
          select count( DISTINCT materialRequireId)  from t_pr_materialrequireitem
         <where>
