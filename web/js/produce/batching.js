@@ -930,14 +930,14 @@ function save() {
             produceCompany:{clientId:$(this).children('td').eq(12).html()},
             wastesName:$(this).children('td').eq(3).html(),
             wasteCategory:$(this).children('td').eq(5).html(),
-            handleCategoryItem:{dataDictionaryItemId:getIdFromHandleCategory($(this).children('td').eq(6).html())},
+            handleCategoryItem:{dictionaryItemName:($(this).children('td').eq(6).html())},
             batchingNumber:$(this).children('td').eq(8).children('input').val(),//配料的数量
             batchingDate:$("#date").val(),//配料日期
             createDate:$("#createDate").val(),//创建日期
             creator:$("#creator").val(),
             inboundOrderItemId:$(this).children('td').eq(11).html(),
             transferDraftId:$(this).children('td').eq(14).html(),
-            processWayItem:{dataDictionaryItemId:getIdFromProcessWay($(this).children('td').eq(7).html())},
+            processWayItem:{dictionaryItemName:($(this).children('td').eq(7).html())},
     };
         console.log(data);
         $.ajax({
@@ -1464,8 +1464,8 @@ function updateMaterialRequisitionOrder() {
                wastesName:$(this).children("td").eq(2).html(),
                wasteCategory:$(this).children("td").eq(3).html(),
                recipientsNumber:parseFloat($(this).children("td").eq(6).children('input').val()).toFixed(2),
-               handleCategoryItem:{dataDictionaryItemId:getIdFromHandleCategory($(this).children("td").eq(7).html())},
-               processWayItem:{dataDictionaryItemId:getIdFromProcessWay($(this).children("td").eq(8).html())},
+               handleCategoryItem:{dictionaryItemName:($(this).children("td").eq(7).html())},
+               processWayItem:{dictionaryItemName:($(this).children("td").eq(8).html())},
                inboundOrderItemId:$(this).children("td").eq(9).html(),
                client:{clientId:$(this).children("td").eq(10).html()},
                wareHouse:{wareHouseId:$(this).children("td").eq(11).html()},

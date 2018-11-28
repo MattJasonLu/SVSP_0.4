@@ -34,7 +34,7 @@
 
     <!--获取配料单信息-->
     <select id="BatchList" resultMap="BatchingOrderRM">
-        select * from t_pl_batchingorder where checkStateId!=69 order by batchingOrderId desc
+        select * from t_pl_batchingorder  order by checkStateId=69,batchingOrderId desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>

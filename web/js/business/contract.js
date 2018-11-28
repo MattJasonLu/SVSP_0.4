@@ -1047,9 +1047,9 @@ function setContractList(result) {
                     case (4):
                         if (obj.checkStateItem != null){
                             $(this).html(obj.checkStateItem.dictionaryItemName);
-                            if(obj.checkStateItem.dictionaryItemName=='已作废'){
-                                $(this).parent().hide();
-                            }
+                            // if(obj.checkStateItem.dictionaryItemName=='已作废'){
+                            //     $(this).parent().hide();
+                            // }
                         }
 
                         break;

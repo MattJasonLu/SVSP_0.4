@@ -170,7 +170,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         select distinct modelName from t_contract where modelName like CONCAT('%',#{key},'%') and period!="";
     </select>
     <update id="back" parameterType="Contract">
-        update t_contract set checkState="Backed",backContent=#{1},nowTime=#{2} where contractId=#{0}
+        update t_contract set checkStateId=66,backContent=#{1},nowTime=#{2} where contractId=#{0}
     </update>
     <update id="opinion" parameterType="Contract">
     update t_contract set opinion=#{1},checkStateId=68,nowTime=#{2} where contractId=#{0};
@@ -221,7 +221,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 and contractType = 'Logistics'
             </if>
         </where>
-        order by nowTime desc
+        order by  checkStateId=69,nowTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>

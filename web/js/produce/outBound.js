@@ -506,9 +506,9 @@ function saveOutBound(){
 
                 var inboundOrderItemId=$(this).children('td').eq(11).html();
 
-                var handelCategory=getIdFromHandleCategory($(this).children('td').eq(5).html())
+                var handelCategory=($(this).children('td').eq(5).html())
 
-               var processWay=getIdFromProcessWay($(this).children('td').eq(6).html())
+               var processWay=($(this).children('td').eq(6).html())
                 data={
                     outboundOrderId:outboundOrderId,
                     client:{clientId:clientId},
@@ -522,8 +522,8 @@ function saveOutBound(){
                     outboundNumber:outboundNumber,
                     equipmentDataItem:{dataDictionaryItemId:equipment},
                     inboundOrderItemId:inboundOrderItemId,
-                    handleCategoryItem:{dataDictionaryItemId:handelCategory},
-                    processWayItem:{dataDictionaryItemId:processWay}
+                    handleCategoryItem:{dictionaryItemName:handelCategory},
+                    processWayItem:{dictionaryItemName:processWay}
                 }
                 console.log(data);
                addOutBoundOrder(data);

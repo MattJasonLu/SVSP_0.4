@@ -405,9 +405,9 @@ function setProcurementPlan(result) {
 
             }
             clonedTr.removeAttr("id");
-            if(clonedTr.children('td').eq(8).html()=='已作废'){
-                $(clonedTr).hide();
-            }
+            // if(clonedTr.children('td').eq(8).html()=='已作废'){
+            //     $(clonedTr).hide();
+            // }
             clonedTr.insertBefore(tr);
         });
         //把克隆好的tr追加到原来的tr前面
@@ -908,7 +908,7 @@ function searchData() {
             approvalName:$('#search-approvalName').val(),
             createName:$('#search-createName').val(),
             page: page,
-            checkState:checkState,
+            checkStateItem:{dataDictionaryItemId:checkState},
             createDateStart:$('#search-createDateStart').val(),
             createDateEnd:$('#search-createDateEnd').val(),
             adjustDateStart:$('#search-adjustDateStart').val(),
@@ -919,18 +919,6 @@ function searchData() {
     }
     else{
         var keywords = $.trim($("#searchContent").val());
-        if(keywords=='已提交'){
-            keywords='Submitted'
-        }
-        if(keywords=='待提交'){
-            keywords='ToSubmit'
-        }
-        if(keywords=='审批通过'){
-            keywords='Approval'
-        }
-        if(keywords=='已驳回'){
-            keywords='Backed'
-        }
 
         data1 = {
             page: page,
