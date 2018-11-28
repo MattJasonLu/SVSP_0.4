@@ -66,6 +66,7 @@ function totalPage() {
 
 /*加载页面数据*/
 function load() {
+    loadNavigationList();  // 动态菜单设置
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");

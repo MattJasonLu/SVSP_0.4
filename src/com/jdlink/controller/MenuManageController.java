@@ -24,6 +24,8 @@ public class MenuManageController {
 
     private User user; // 当前登陆用户
 
+    private Organization organizationA; // 暂存菜单树状结构数据
+
     /**
      * 获取菜单数据
      *
@@ -95,7 +97,7 @@ public class MenuManageController {
             }
             String name = "新页面";
             int i = 1;
-            while (menuManageService.getMenuByName(name,organization.getId()) != null) { // 同一节点下名称不予许重复
+            while (menuManageService.getMenuByName(name, organization.getId()) != null) { // 同一节点下名称不予许重复
                 i++;
                 name = "新页面";
                 name += i;
@@ -198,32 +200,32 @@ public class MenuManageController {
      */
     @RequestMapping("updateMenuOrder")
     @ResponseBody
-    public String updateMenuOrder(String idList,int pId) {
+    public String updateMenuOrder(String idList, int pId) {
         JSONObject res = new JSONObject();
         try {
             List<Integer> oldIdList = menuManageService.getMenuIdListByPId(pId);
-           // System.out.println("旧顺序");
-            for(Integer integer : oldIdList){
-                System.out.print(integer+"/");
+            // System.out.println("旧顺序");
+            for (Integer integer : oldIdList) {
+                System.out.print(integer + "/");
             }
-           // System.out.println();
+            // System.out.println();
             String idOrder[] = idList.split("/");
             List<Integer> newIdList = new ArrayList<>();
             int j = 0;
             int id = -1;   // 用于储存第一个顺序发生变化的ID
-            for(int i = 0; i < idOrder.length; i++){
-             //   System.out.print(idOrder[i]+"/");
+            for (int i = 0; i < idOrder.length; i++) {
+                //   System.out.print(idOrder[i]+"/");
                 int newId = Integer.parseInt(idOrder[i]);
                 int oldId = oldIdList.get(i);
                 newIdList.add(newId);
                 Organization organization = new Organization();
-                if(newId != oldId) { // 如果顺序发生改变则进行调整
-                    if(j == 0){ // 第一次设置
+                if (newId != oldId) { // 如果顺序发生改变则进行调整
+                    if (j == 0) { // 第一次设置
                         organization.setId(id);  // 将第一个对象的ID暂时设为-1,避免冲突
                         id = newId; // 将新ID暂存到ID中
                         organization.setOldId(oldId);
                         menuManageService.updateMenuOrder(organization);
-                    }else{
+                    } else {
                         organization.setId(newId);
                         organization.setOldId(oldId);
                         menuManageService.updateMenuOrder(organization);
@@ -231,7 +233,7 @@ public class MenuManageController {
                     j++;   // 计时器
                 }
             }
-            if(j != 0) {
+            if (j != 0) {
                 Organization organization1 = new Organization(); // 将第一个对象的顺序调整回来
                 organization1.setId(id);
                 organization1.setOldId(-1);
@@ -273,12 +275,13 @@ public class MenuManageController {
 
     /**
      * 递归删除节点及其子节点
+     *
      * @param organization
      */
-    public void delete(Organization organization){
+    public void delete(Organization organization) {
         menuManageService.delete(organization);
-        if(organization.getOrganizationList() != null && organization.getOrganizationList().size() > 0){
-            for(Organization organization1 : organization.getOrganizationList()){
+        if (organization.getOrganizationList() != null && organization.getOrganizationList().size() > 0) {
+            for (Organization organization1 : organization.getOrganizationList()) {
                 delete(organization1);
             }
         }
@@ -297,7 +300,7 @@ public class MenuManageController {
         try {
             Organization organization = menuManageService.getMenuById(id);
             JSONObject data = JSONObject.fromBean(organization);
-            res.put("data",data);
+            res.put("data", data);
             res.put("status", "success");
             res.put("message", "获取成功!");
         } catch (Exception e) {
@@ -319,9 +322,9 @@ public class MenuManageController {
     public String getMenuByName(@RequestBody Organization organization) {
         JSONObject res = new JSONObject();
         try {
-            Organization organization1 = menuManageService.getMenuByName(organization.getName(),organization.getpId());
+            Organization organization1 = menuManageService.getMenuByName(organization.getName(), organization.getpId());
             JSONObject data = JSONObject.fromBean(organization1);
-            res.put("data",data);
+            res.put("data", data);
             res.put("status", "success");
             res.put("message", "获取成功!");
         } catch (Exception e) {
@@ -345,7 +348,7 @@ public class MenuManageController {
         try {
             List<Organization> organizationList = getTreeMenuList(organization);
             JSONArray data = JSONArray.fromArray(organizationList.toArray(new Organization[organizationList.size()]));
-            res.put("data",data);
+            res.put("data", data);
             res.put("status", "success");
             res.put("message", "获取成功!");
         } catch (Exception e) {
@@ -358,15 +361,90 @@ public class MenuManageController {
 
     /**
      * 递归获取树状结构
+     *
      * @param organization
      * @return
      */
-    public List<Organization> getTreeMenuList(Organization organization){
+    public List<Organization> getTreeMenuList(Organization organization) {
         List<Organization> organizationList = menuManageService.getChildrenMenuByName(organization);
-        for(int i = 0; i < organizationList.size(); i++){
-                 organizationList.get(i).setOrganizationList(getTreeMenuList(organizationList.get(i)));
+        for (int i = 0; i < organizationList.size(); i++) {
+            organizationList.get(i).setOrganizationList(getTreeMenuList(organizationList.get(i)));
         }
         return organizationList;
+    }
+
+    /**
+     * 获取一级菜单父节点及其树状结构
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("getLevelOneMenuByUrlAndPName")
+    @ResponseBody
+    public String getLevelOneMenuByUrlAndPName(@RequestBody Organization organization) {
+        JSONObject res = new JSONObject();
+        try {
+            organization.setpId(1);  // 设置一级菜单父节点
+            List<Organization> organizationList = getTreeMenuList(organization); // 获取一级菜单及其树状结构
+            organization.setOrganizationList(organizationList);
+            Organization organization1 = new Organization();
+            if (organizationList != null && organizationList.size() > 0) {
+                organization1 = getChildMenuByUrl(organization);
+            }
+            organization1.setUrl("firstPage.html");
+            organization1.setName(organization.getName());
+            JSONObject data = JSONObject.fromBean(organization1);
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取失败！");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 递归根据URL查询子节点
+     *
+     * @param organization1
+     * @return
+     */
+    public Organization getChildMenuByUrl(Organization organization1) {
+        Organization organization2 = new Organization();
+        for (Organization organization : organization1.getOrganizationList()) {
+            if (organization.getUrl() != null && organization.getUrl().equals(organization1.getUrl())) { // 如果相等则说明是要寻找的子节点
+                organization2.setName(organization1.getName());
+                organization2.getOrganizationList().add(organization);  // 添加子节点路径
+            } else { // 如果不相等则寻找子节点的子节点是否相等
+                if (organization.getOrganizationList() != null && organization.getOrganizationList().size() > 0) {
+                    organization.setUrl(organization1.getUrl());
+                    Organization organization3 = getChildMenuByUrl(organization);
+                    if (organization3 != null && !organization3.getName().equals("")){
+                        organization2.setName(organization1.getName());
+                        organization2.getOrganizationList().add(organization3);  // 添加路径
+                    }
+                }
+            }
+        }
+        return organization2;
+    }
+
+    public MenuManageService getMenuManageService() {
+        return menuManageService;
+    }
+
+    public void setMenuManageService(MenuManageService menuManageService) {
+        this.menuManageService = menuManageService;
+    }
+
+    public Organization getOrganizationA() {
+        return organizationA;
+    }
+
+    public void setOrganizationA(Organization organizationA) {
+        this.organizationA = organizationA;
     }
 
     public User getUser() {

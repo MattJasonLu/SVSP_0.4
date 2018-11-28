@@ -164,11 +164,12 @@ function allSelect() {
     if (isChecked) $("input[name='select']").prop('checked', true);
     else $("input[name='select']").prop('checked', false);
 }
+
 ///
 /**
  * 校验权限
  * @param e 要进入的功能
-//  */
+ //  */
 function checkAuthority(e) {
     var flag = false;
     // 获取功能编号
@@ -267,8 +268,8 @@ function reset() {
 /**
  * 回车跳转（输入页数回车跳转页面）
  */
-function enterSwitchPage(){
-    if(event.keyCode === 13){
+function enterSwitchPage() {
+    if (event.keyCode === 13) {
         inputSwitchPage();
     }
 }
@@ -277,7 +278,7 @@ function enterSwitchPage(){
  * 分页：设置选中页页码标蓝
  * @param item
  */
-function addAndRemoveClass(item){
+function addAndRemoveClass(item) {
     $(".oldPageClass").removeClass("active");         // 将之前标蓝的页码取消
     $(".oldPageClass").removeClass("oldPageClass");
     console.log($(item).parent());
@@ -289,11 +290,11 @@ function addAndRemoveClass(item){
 /**
  * 分页：点击上下页按钮时页码标蓝
  */
-function addPageClass(pageNumber){
+function addPageClass(pageNumber) {
     $(".oldPageClass").removeClass("active");                 // 移除上一次页码标蓝
     $(".oldPageClass").removeClass("oldPageClass");
-    $.each($("#previous").next().nextAll(),function(index,item){
-        if($(item).find("a").text() == pageNumber){
+    $.each($("#previous").next().nextAll(), function (index, item) {
+        if ($(item).find("a").text() == pageNumber) {
             $(item).addClass("active");
             $(item).addClass("oldPageClass");
         }
@@ -310,7 +311,7 @@ function setPageCloneAfter(currentPageNumber) {
     if (total > pageNumber) { // 大于5页时省略显示
         $(".beforeClone").remove();          // 删除之前克隆页码
         $("#next").prev().hide();            // 将页码克隆模板隐藏
-        if (currentPageNumber <= (parseInt(pageNumber/2) + 1)) {   // 如果pageNumber = 5,当前页小于3显示前五页
+        if (currentPageNumber <= (parseInt(pageNumber / 2) + 1)) {   // 如果pageNumber = 5,当前页小于3显示前五页
             for (var i = 0; i < pageNumber; i++) {
                 var li = $("#next").prev();
                 var clonedLi = li.clone();
@@ -324,8 +325,8 @@ function setPageCloneAfter(currentPageNumber) {
                 clonedLi.removeAttr("id");
                 clonedLi.insertAfter(li);
             }
-        } else if(currentPageNumber <= total - parseInt(pageNumber/2)){  // 如果pageNumber = 5,大于3时显示其前后两页
-            for (var i = currentPage - parseInt(pageNumber/2); i <= parseInt(currentPage) + parseInt(pageNumber/2); i++) {
+        } else if (currentPageNumber <= total - parseInt(pageNumber / 2)) {  // 如果pageNumber = 5,大于3时显示其前后两页
+            for (var i = currentPage - parseInt(pageNumber / 2); i <= parseInt(currentPage) + parseInt(pageNumber / 2); i++) {
                 var li = $("#next").prev();
                 var clonedLi = li.clone();
                 clonedLi.show();
@@ -338,7 +339,7 @@ function setPageCloneAfter(currentPageNumber) {
                 clonedLi.removeAttr("id");
                 clonedLi.insertAfter(li);
             }
-        } else if(currentPageNumber > total - parseInt(pageNumber/2)){    // 如果pageNumber = 5,显示最后五页
+        } else if (currentPageNumber > total - parseInt(pageNumber / 2)) {    // 如果pageNumber = 5,显示最后五页
             for (var i = total - pageNumber + 1; i <= total; i++) {
                 var li = $("#next").prev();
                 var clonedLi = li.clone();
@@ -354,7 +355,7 @@ function setPageCloneAfter(currentPageNumber) {
             }
         }
     }
-    if(currentPageNumber == 1){
+    if (currentPageNumber == 1) {
         $("#previous").next().next().eq(0).addClass("oldPageClass");
         $("#previous").next().next().eq(0).addClass("active");       // 将首页页码标蓝
     }
@@ -363,14 +364,14 @@ function setPageCloneAfter(currentPageNumber) {
 /**
  * 返回上一页
  */
-function backLastPage(){
+function backLastPage() {
     history.back();
 }
 
 /**
  * 获取当前登陆用户数据
  */
-function getCurrentUserData(){
+function getCurrentUserData() {
     var data = null;
     $.ajax({
         type: "POST",                       // 方法类型
@@ -383,7 +384,7 @@ function getCurrentUserData(){
                 data = eval(result.data);
                 console.log(data);
                 // 各下拉框数据填充
-        // return result.data;
+                // return result.data;
             } else {
                 console.log(result.message);
             }
@@ -398,17 +399,17 @@ function getCurrentUserData(){
 /**
  * 数组去重
  * */
-function unique1(arr){
-    var hash=[];
+function unique1(arr) {
+    var hash = [];
     for (var i = 0; i < arr.length; i++) {
-        if(hash.indexOf(arr[i])==-1){
+        if (hash.indexOf(arr[i]) == -1) {
             hash.push(arr[i]);
         }
     }
     return hash;
 }
 
-function getCurrentUserInfo(){
+function getCurrentUserInfo() {
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getCurrentUserInfo",              // url
@@ -417,8 +418,8 @@ function getCurrentUserInfo(){
         dataType: "json",
         success: function (result) {
             if (result.status == "fail") {
-                if(data == null || result.message == "用户未正常登陆"){
-                    window.location.href="admin.html";
+                if (data == null || result.message == "用户未正常登陆") {
+                    window.location.href = "admin.html";
                 }
             } else {
                 console.log(result.message);
@@ -446,64 +447,64 @@ function setNumber2Line(number) {
  * **/
 function getFormTypeByFromStr(str) {
     var name;
-    switch (str){
+    switch (str) {
         case ('公斤'):
-            name='Kg'
+            name = 'Kg'
             break;
         case ('吨'):
-            name='T'
+            name = 'T'
             break;
         case ('斤'):
-            name='Catty'
+            name = 'Catty'
             break;
         case ('套'):
-            name='Set'
+            name = 'Set'
             break;
         case ('台'):
-            name='Platform'
+            name = 'Platform'
             break;
         case ('只'):
-            name='Only'
+            name = 'Only'
             break;
         case ('根'):
-            name='Root'
+            name = 'Root'
             break;
         case ('盒'):
-            name='Box'
+            name = 'Box'
             break;
-            case ('箱'):
-        name='Chest'
-        break;
+        case ('箱'):
+            name = 'Chest'
+            break;
         case ('张'):
-        name='Spread'
-        break;
+            name = 'Spread'
+            break;
         case ('把'):
-            name='Hold'
+            name = 'Hold'
             break;
         case ('米'):
-            name='Metre'
+            name = 'Metre'
             break;
         case ('桶'):
-            name='Bucket'
+            name = 'Bucket'
             break;
         case ('包'):
-            name='Package'
+            name = 'Package'
             break;
         case ('个'):
-            name='Individual'
+            name = 'Individual'
             break;
         case ('卷'):
-            name='Volume'
+            name = 'Volume'
             break;
         case ('平方'):
-            name='Square'
+            name = 'Square'
             break;
         case ('盘'):
-            name='Disc'
+            name = 'Disc'
             break;
     }
 
-   return name;
+    return name;
 }
 
 //////////////////动态菜单///////////////////////
@@ -511,7 +512,7 @@ function getFormTypeByFromStr(str) {
  * 加载导航条
  */
 function loadNavigationList() {
-    $(".fadeInUp").children().remove();   // 删除之前旧一级菜单
+    $(".fadeInUp").children().remove();   // 删除之前一级菜单
     $.ajax({
         type: "POST",                       // 方法类型
         url: "loadMenuList",                  // url
@@ -533,7 +534,7 @@ function loadNavigationList() {
                         j++;
                         // if(j === 1)localStorage.name = name; // 第一次进去加载第一个首页数据  (写在登陆页面中)
                         var li = "<li onclick='toMenuUrl(this)'><a class='withripple' href='#' id='function_" + j + "'><span class='" + icon + "'" +
-                            "aria-hidden='true'></span><span class='sidespan' name='"+name+"'>&nbsp;&nbsp;" + name + "</span><span class='iright pull-right'>" +
+                            "aria-hidden='true'></span><span class='sidespan' name='" + name + "'>&nbsp;&nbsp;" + name + "</span><span class='iright pull-right'>" +
                             "&gt;</span><span class='sr-only'>(current)</span></a></li>";
                         // $("#end").before(li);
                         $(".fadeInUp").append(li); // 插入到内部的最后
@@ -551,7 +552,7 @@ function loadNavigationList() {
     if (localStorage.name != "" && localStorage.name != null) {    // 根据名字获取一级菜单的子节点并设置二级菜单
         $("#navbar").children().eq(0).children().remove();  // 删除之前二级菜单数据
         console.log(localStorage.name);
-        var organization = {}; // 获取并设置数据
+        var organization = {};                 // 获取并设置数据
         organization.name = localStorage.name;
         organization.pId = 1;
         $.ajax({                                // 根据名称和父节点获取子节点对象
@@ -578,10 +579,59 @@ function loadNavigationList() {
             }
         });
         // 设置一级菜单选中标蓝
-        $("ul[class='sidenav animated fadeInUp']").children().find("span[name='"+localStorage.name+"']").parent().parent().addClass("active");
+        $("ul[class='sidenav animated fadeInUp']").children().find("span[name='" + localStorage.name + "']").parent().parent().addClass("active");
+    }
+    if ($("ol[class='breadcrumb']").length > 0) { // 如果是网页则设置历史记录抬头导航
+        var url = window.location.href.toString();
+        url = (url.substring(url.lastIndexOf("/") + 1)).replace("#", "");        // 获取当前url
+        var name1 = $.trim($("ul[class='sidenav animated fadeInUp']").find("li[class='active']").find("span").eq(1).text());    // 获取一级菜单名
+        var organization2 = {};
+        organization2.name = name1;
+        organization2.url = url;
+        $.ajax({                                // 根据名称和父节点获取子节点对象
+            type: "POST",                       // 方法类型
+            url: "getLevelOneMenuByUrlAndPName",       // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(organization2),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                // console.log(result);
+                if (result != null && result.status === "success" && result.data != null) {
+                    var data = result.data;
+                    console.log("导航栏数据");
+                    console.log(data);
+                    $("ol[class='breadcrumb']").children().remove();  // 删除历史数据
+                    localStorage.name = name1;    // 设置一级菜单名，点击首页时方便定位
+                    setOLMenu(data); // 动态递归设置历史导航栏
+                    // 设置二级菜单选中
+                    var secondName = $("ol[class='breadcrumb']").find("li").eq(1).text();  // 获取二级菜单名
+                    console.log("二级菜单标蓝："+secondName);
+                    $("#navbar").find("a:contains('" + secondName + "')").parent().addClass("active");  // 设置二级菜单标蓝
+                } else {
+                    console.log(result.message);
+                }
+            },
+            error: function (result) {
+                alert(result.message);
+            }
+        });
     }
 }
 
+
+function setOLMenu(organization) {
+    var ol = $("ol[class='breadcrumb']");
+    var li = "";
+    if (organization.organizationList != null && organization.organizationList.length > 0) { // 如果不是最后一页
+        if (organization.url === "") organization.url = "#";
+        li = "<li><a href='" + organization.url + "'>" + organization.name + "</a></li>"; // 设置插入对象
+        ol.append(li);  // 插入
+        setOLMenu(organization.organizationList[0]);  // 递归设置,一直到最后一页
+    } else { // 如果是最后一页
+        li = "<li class='active'>" + organization.name + "</li>"; // 设置插入对象
+        ol.append(li);  // 插入
+    }
 
 /*
  * 进料方式转化为数据字典编号
@@ -668,7 +718,6 @@ function getIdFromEquipment(Equipment) {
     return res;
 }
 
-
 /**
  * 根据名字获取一级菜单的子节点并设置二级菜单
  * @param item
@@ -689,27 +738,26 @@ function setMenuTwo(organizationList) {
             var organization = organizationList[i];
             if (organization.organizationList != null && organization.organizationList.length > 0) { //菜单存在子节点
                 var li = "";
-                console.log(organization);
                 if (9 < organization.pId && organization.pId < 100) {  // 二级菜单设置下拉框为下垂
-                    if(i > 0) {
+                    if (i > 0) {
                         li = "<li role='separator' class='divider'></li>" +
                             "<li name='dropdown' class='dropdown'><a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' " +
                             "aria-haspopup='true' aria-expanded='false'>" + organization.name + "<span class='caret'></span>" +
                             "</a><ul class='dropdown-menu' name='" + organization.level + "'>" +
                             "</ul></li>";
-                    }else if(i === 0){ // 第一个子节点不设置分割线
+                    } else if (i === 0) { // 第一个子节点不设置分割线
                         li = "<li name='dropdown' class='dropdown'><a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' " +
                             "aria-haspopup='true' aria-expanded='false'>" + organization.name + "<span class='caret'></span>" +
                             "</a><ul class='dropdown-menu' name='" + organization.level + "'>" +
                             "</ul></li>";
                     }
                 } else if (organization.pId > 99) {     // 三级菜单及以后设置为右开
-                    if(i > 0){
-                        li = "<li role='separator' class='divider'></li>"+
+                    if (i > 0) {
+                        li = "<li role='separator' class='divider'></li>" +
                             "<li name='dropdown' class='dropdown-submenu'><a href=''>" + organization.name +
                             "</a><ul class='dropdown-menu' name='" + organization.level + "'>" +
                             "</ul></li>";
-                    }else if(i === 0){// 第一个子节点不设置分割线
+                    } else if (i === 0) {// 第一个子节点不设置分割线
                         li = "<li name='dropdown' class='dropdown-submenu'><a href=''>" + organization.name +
                             "</a><ul class='dropdown-menu' name='" + organization.level + "'>" +
                             "</ul></li>";
@@ -730,7 +778,7 @@ function setMenuTwo(organizationList) {
                 setMenuTwo(organization.organizationList);  // 递归设置
             } else { // 菜单不存在子节点
                 if (9 < organization.pId && organization.pId < 100) { // 二级菜单没有子类直接设置导航条
-                    var li3 = "<li><a href='" + organization.url + "' >" + organization.name + "</a></li>";  // 赋值
+                    var li3 = "<li><a href='" + organization.url + "'>" + organization.name + "</a></li>";  // 赋值
                     $("#navbar").children().eq(0).append(li3);      //插入
                 } else { // 非二级菜单的页面需要将其插入到下拉菜单中
                     var dropdown = null;
@@ -740,10 +788,10 @@ function setMenuTwo(organizationList) {
                         }
                     }
                     var li2 = "";
-                    if(i > 0){
-                        li2 = "<li role='separator' class='divider'></li>"+
+                    if (i > 0) {
+                        li2 = "<li role='separator' class='divider'></li>" +
                             "<li><a href='" + organization.url + "'>" + organization.name + "</a></li>";
-                    }else if(i === 0){ // 第一个子节点不设置分割线
+                    } else if (i === 0) { // 第一个子节点不设置分割线
                         li2 = "<li><a href='" + organization.url + "'>" + organization.name + "</a></li>";
                     }
                     dropdown.find("ul[name='" + (organization.level - 1).toString() + "']").append(li2);
@@ -760,13 +808,17 @@ var name = "";  // 暂存二级菜单名
  * @param result
  */
 function setProcessIcon(organizationList) {
+    $("ul[class='nav navbar-nav']").find("li").eq(0).addClass("active");   // 设置首页二级菜单导航栏标蓝
     for (var i = 0; i < organizationList.length; i++) {  // 首页排除
+        // if(i == 0){
+        //     var br = "<div class='row'></div>";
+        //     $(".page-header").append(br);  // 在首行插入空行调节样式
+        // }
         var organization = organizationList[i];
         name = organization.name;
         if (organization.name != "首页") {
             var div = "<div class='row placeholders'></div>";
             if ((i - 1) % 3 === 0) { // 三个设置为一行
-                console.log($(".page-header"));
                 $(".page-header").append(div); // 插入新行
             }
             if (organization.icon != null && organization.icon != "" && organization.url != null && organization.url != "") {
@@ -774,7 +826,6 @@ function setProcessIcon(organizationList) {
                     "<a href='" + organization.url + "'><img src='" + organization.icon + "' style='width: 80px;height: 80px;border-radius:1px' alt='Generic placeholder thumbnail'></a>" +
                     "<h4>" + organization.name + "</h4></div>";
                 $(".page-header").find("div[class='row placeholders']:last").append(div1);  // 将节点插入到最新行
-                console.log($(".page-header").find("div[class='row placeholders']:last"));
             } else {
                 if (organization.organizationList != null && organization.organizationList.length > 0) {
                     setProcessIcon1(organization.organizationList);  // 如果二级菜单不是网页，则用它的第一个网页节点代替
@@ -799,4 +850,5 @@ function setProcessIcon1(organizationList) {
         $(".page-header").find("div[class='row placeholders']:last").append(div2);  // 将节点插入到最新行
     }
 }
+
 //////////////////////////////////////////

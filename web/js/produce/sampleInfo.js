@@ -285,6 +285,8 @@ function inputSwitchPage() {
  * 分页 获取首页内容
  * */
 function loadPageSampleInformationList() {
+    $('.loader').show();  // 显示进度条
+    loadNavigationList(); // 设置动态菜单
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
@@ -311,6 +313,7 @@ function loadPageSampleInformationList() {
                 console.log(result);
                 setPageClone(result.data);
                 setPageCloneAfter(pageNumber);        // 重新设置页码
+                $('.loader').hide();   // 隐藏进度条
             } else {
                 console.log(result.message);
             }
@@ -323,6 +326,7 @@ function loadPageSampleInformationList() {
     // 设置高级检索的下拉框数据
     setSeniorSelectedList();
     isSearch = false;
+
 }
 
 /**

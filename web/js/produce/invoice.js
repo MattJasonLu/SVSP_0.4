@@ -4,6 +4,7 @@ var client = {};
  * 显示信息
  */
 function viewClient() {
+    loadNavigationList();   // 动态菜单部署
     $.ajax({
         type: "POST",                // 方法类型
         url: "getClient",            // url

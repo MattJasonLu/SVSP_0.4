@@ -27,6 +27,7 @@ var burnOrder = {};    // 焚烧工单对象
  * 设置预处理单列表数据
  */
 function loadPretreatmentList() {
+    loadNavigationList();   // 动态菜单部署
     i1 = 0;                         //刷新页面时重新计数
     //获取数据
     $.ajax({
@@ -1013,6 +1014,7 @@ function inputSwitchPage() {
  * 分页 获取首页内容
  * */
 function loadPageBurnOrderList() {
+    loadNavigationList();   // 动态菜单部署
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");

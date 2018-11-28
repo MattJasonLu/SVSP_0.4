@@ -284,6 +284,7 @@ function inputSwitchPage() {
 }
 
 function loadInventoryList() {
+    loadNavigationList();   // 动态菜单部署
     var pageNumber = 1;               // 显示首页
     currentPage = pageNumber;
     $("#current").find("a").text("当前页：1");

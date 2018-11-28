@@ -296,6 +296,7 @@ function inputSwitchPage() {
  * 分页 获取首页内容
  * */
 function loadPageIngredientsInList() {
+    loadNavigationList();   // 动态菜单部署
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
@@ -1237,6 +1238,7 @@ function loadPages1(totalRecord, count) {
 }
 
 function loadProcurementItemList() {
+    loadNavigationList();   // 动态菜单部署
     $("#save").text("入库");   // 修改按钮名称
     $("#head").text("辅料/备件入库单新增");  // 标题修改
     $("#view-id").text(getCurrentIngredientsInId());

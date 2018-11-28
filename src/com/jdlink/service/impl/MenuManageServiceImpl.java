@@ -38,6 +38,9 @@ public class MenuManageServiceImpl implements MenuManageService {
     public List<Organization> getChildrenMenuByName(Organization organization){ return menuManageMapper.getChildrenMenuByName(organization);}
 
     @Override
+    public Organization getMenuByUrlAndPName(Organization organization){return menuManageMapper.getMenuByUrlAndPName(organization);}
+
+    @Override
     public void updateMenuOrder(Organization organization){ menuManageMapper.updateMenuOrder(organization);}
 
     @Override
