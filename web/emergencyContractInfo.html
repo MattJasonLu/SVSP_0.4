@@ -25,7 +25,8 @@
 </head>
 <script type="text/javascript">
     function loadContractSelectList() {
-//取得下拉菜单的选项
+        loadNavigationList();   // 设置动态菜单
+        //取得下拉菜单的选项
         $.ajax({
             type: "POST",                            // 方法类型
             url: "getContractList",                  // url

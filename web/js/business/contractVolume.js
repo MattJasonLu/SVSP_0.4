@@ -289,6 +289,7 @@ function inputSwitchPage() {
 /**加载合约量统计页面*/
 function loadContractVolumeList() {
     $('.loader').show();
+    loadNavigationList();   // 设置动态菜单
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");

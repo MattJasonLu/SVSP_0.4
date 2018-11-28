@@ -7,6 +7,7 @@ var resultData;         // 搜索后获取数据
  * 加载下拉框数据
  * */
 function loadPageClientList() {
+    loadNavigationList();   // 设置动态菜单
     setSelectList();
 }
 
