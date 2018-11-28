@@ -119,11 +119,6 @@
         <div class="panel panel-default" id="senior">
             <div class="panel-body">
                 <div class="row">
-                    <div class="form-horizontal col-md-2">
-                        <span class="input-group-btn">
-                            <a class="btn btn-primary" onclick="reset();">重置</a>
-                        </span>
-                    </div>
                     <div class="form-horizontal col-md-6">
                         <div class="form-group" >
                             <label class="col-sm-3 control-label">创建时间</label>
@@ -134,6 +129,11 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-horizontal col-md-2">
+                        <span class="input-group-btn">
+                            <a class="btn btn-primary" onclick="reset();">重置</a>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -142,47 +142,57 @@
             <h4 class="sub-header">采购申请单列表</h4>
         </div>
         <div style="height:500px; overflow-y:scroll; ">
-            <table class="table table-bordered" id="J_tab_fam">
-                <input id="procurementPlanId" class="hidden">
-                <input id="createName" class="hidden">
-                <input id="createDate" class="hidden">
-                <thead>
-                <tr>
-                    <th class="text-center">
-                        <label>
-                            <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
-                        </label>
-                    </th>
-                    <td class="text-center">序号</td>
-                    <td class="text-center">物资名称</td>
-                    <td class="text-center">规格型号</td>
-                    <td class="text-center">单位</td>
-                    <td class="text-center">库存量</td>
-                    <td class="text-center">需求数量</td>
-                    <td class="text-center">备注</td>
-                    <td class="text-center">创建时间</td>
-                </tr>
-                </thead>
-                <tbody id="tbody1">
-                <tr id="cloneTr" class="myclass">
-                    <td class="text-center">
-                        <label>
-                            <input class="checkbox" type="checkbox" value="option1" name="select">
-                        </label>
-                    </td>
-                    <td class="text-center inboundOrderId"></td><!--入库单号-->
-                    <td class="text-center produceCompany "></td><!--产废单位-->
-                    <td class="text-left model-wastesName"></td>
-                    <td class="text-left model-wastesName"></td>
-                    <td class="text-left model-wastesName"></td>
-                    <td class="text-center model-wastesCode"></td>
-                    <td class="text-center model-wastesCode"></td>
-                    <td class="text-right modal-weight"></td>
-                    <td class="text-right modal-weight hidden"></td>
-                    <td class="text-right modal-weight hidden"></td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="table-head">
+                <table>
+                    <colgroup>
+                        <col style="width: 10%">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th class="text-center">
+                            <label>
+                                <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
+                            </label>
+                        </th>
+                        <td class="text-center">序号</td>
+                        <td class="text-center">物资名称</td>
+                        <td class="text-center">规格型号</td>
+                        <td class="text-center">单位</td>
+                        <td class="text-center">库存量</td>
+                        <td class="text-center">需求数量</td>
+                        <td class="text-center">备注</td>
+                        <td class="text-center">创建时间</td>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="table-body">
+                <table class="table table-bordered" id="J_tab_fam">
+                    <input id="procurementPlanId" class="hidden">
+                    <input id="createName" class="hidden">
+                    <input id="createDate" class="hidden">
+                    <colgroup><col style="width: 10%"></colgroup>
+                    <tbody id="tbody1">
+                    <tr id="cloneTr" class="myclass">
+                        <td class="text-center">
+                            <label>
+                                <input class="checkbox" type="checkbox" value="option1" name="select">
+                            </label>
+                        </td>
+                        <td class="text-center inboundOrderId"></td><!--入库单号-->
+                        <td class="text-center produceCompany "></td><!--产废单位-->
+                        <td class="text-left model-wastesName"></td>
+                        <td class="text-left model-wastesName"></td>
+                        <td class="text-left model-wastesName"></td>
+                        <td class="text-center model-wastesCode"></td>
+                        <td class="text-center model-wastesCode"></td>
+                        <td class="text-right modal-weight"></td>
+                        <td class="text-right modal-weight hidden"></td>
+                        <td class="text-right modal-weight hidden"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div class="row text-center">
             <a class="btn btn-primary" onclick="add(this);">添加采购计划单</a>
@@ -204,5 +214,11 @@
     .pagination > li {
         display: inline;
     }
+</style>
+<style>
+    .table-head{padding-right: 17px;background-color: #999;color: #000}
+    .table-body{width: 100%;height: 100%;overflow-y: scroll}
+    .table-head table,.table-body table{width:100%;}
+    .table-body table tr:nth-child(2n+1){background-color:#f2f2f2;}
 </style>
 </html>
