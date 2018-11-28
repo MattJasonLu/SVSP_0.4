@@ -9,6 +9,7 @@ public interface MenuManageMapper {
 
     List<Organization> list();
     List<Organization> listMenuPage();
+    List<Organization> loadFirstMenuIconList();
     int count();
     int countById(int id);
     Organization getMenuById(int id);
