@@ -276,6 +276,7 @@
     $('#embed').load('embed/loginLogModal.html');
     // 页面准备完成后载入产废单位信息
     function getContractList() {
+        loadNavigationList();   // 设置动态菜单
         $.ajax({
             type: "POST",                            // 方法类型
             url: "getContractList",                  // url

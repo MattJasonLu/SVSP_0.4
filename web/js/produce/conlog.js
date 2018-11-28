@@ -3,6 +3,7 @@
  * 分页 获取登陆日志首页内容
  * */
 function showLog() {
+    loadNavigationList();   // 动态菜单部署
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");

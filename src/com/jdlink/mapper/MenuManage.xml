@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdlink.mapper.MenuManageMapper">
+
+    <select id="list" resultType="Organization">
+         select * from menu_management;
+    </select>
+
+    <select id="listMenuPage" resultType="Organization">
+        select * from menu_page;
+    </select>
+
+    <select id="count" resultType="int">
+         select count(*) from menu_management;
+    </select>
+
+    <!--获取子节点个数-->
+    <select id="countById" parameterType="int" resultType="int">
+        select count(*) from menu_management
+        where pId=#{id};
+    </select>
+
+    <select id="getMenuById" parameterType="int" resultType="Organization">
+        select * from menu_management where id=#{id};
+    </select>
+
+    <select id="getMenuByName" resultType="Organization">
+        select * from menu_management
+        where pId=#{id} and name=#{name};
+    </select>
+
+    <select id="getChildrenMenuByName" parameterType="Organization" resultType="Organization">
+        select * from menu_management
+        where pId in (select id from menu_management where pId=#{pId} and name = #{name});
+    </select>
+
+    <select id="getMenuIdListByPId" parameterType="int" resultType="int">
+        select id from menu_management
+        where pId=#{pId};
+    </select>
+
+    <select id="getMenuByCUrl" parameterType="String" resultType="Organization">
+        select * from menu_management
+        where id in (select pId from menu_management where url=#{url});
+    </select>
+
+    <insert id="add" parameterType="Organization">
+        insert into menu_management
+        (id,pId,name,icon,url,level,founder,creationDate)
+        values
+        (#{id},#{pId},#{name},#{icon},#{url},#{level},#{founder},#{creationDate});
+    </insert>
+
+    <update id="updateName" parameterType="Organization">
+        update menu_management
+        set name=#{name}
+        where id=#{id};
+    </update>
+
+    <update id="updateMenuOrder" parameterType="Organization">
+        update menu_management
+        set id=#{id}
+        where id=#{oldId};
+
+        update menu_management
+        set pId=#{id}
+        where pId=#{oldId};
+    </update>
+
+    <update id="updateMenuUrl" parameterType="Organization">
+        update menu_management
+        set url=#{url},icon=#{icon}
+        where id=#{id};
+    </update>
+
+    <update id="updateMenuIcon" parameterType="Organization">
+        update menu_management
+        set icon=#{icon}
+        where id=#{id};
+    </update>
+
+    <delete id="delete" parameterType="Organization">
+        delete from menu_management where id=#{id};
+    </delete>
+
+</mapper>

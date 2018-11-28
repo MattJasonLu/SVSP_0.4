@@ -14,8 +14,11 @@
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
     <script src="js/produce/stock.js"></script>
+    <link href="css/loading1.css" rel="stylesheet">
+    <link href="css/loading2.css" rel="stylesheet">
 </head>
 <body onload="loadPageStocktList();keyLogin()">
+
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -300,6 +303,13 @@
             </ol>
         </nav>
     </div>
+</div>
+<div class="loader ">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
 </div>
 <!--查看页面模态框-->
 <div class="modal fade bs-example-modal-lg" id="stockInfoForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

@@ -7,6 +7,10 @@ var currentPage = 1;                          //当前页数
 var data;
 //合同索引值
 var contractIndex = 0;
+//模糊查询
+array = [];//存放所有的tr
+array1 = [];//存放目标的tr
+array0=[]
 
 //重置
 function reset() {
@@ -66,6 +70,7 @@ function totalPage(contractIndex) {
  * 省略显示页码
  */
 function setPageCloneAfter(contractIndex, currentPageNumber) {
+    console.log("合同索引值" + contractIndex);
     var total = totalPage(contractIndex);//合同页面特殊 需加入标记
     console.log("总页数:" + total)
     var pageNumber = 5;         // 页码数
@@ -330,6 +335,8 @@ function inputSwitchPage() {
  * 分页 获取首页内容
  * */
 function loadPageContractManageList() {
+    $('.loader').show();
+    loadNavigationList();   // 设置动态菜单
     //让修改操作提交后页面刷新仍然停留在当前页面而不是刷新到首页
     var state = $("#state").find("option:selected").text();
     $('#back').hide();
@@ -350,13 +357,13 @@ function loadPageContractManageList() {
         $('#Lo').click();
         localStorage.clear();
     }
-    if (name == "Derive") {
-        $('#De').click();
-        localStorage.clear();
-    }
-    if (name == "Purchase") {
-
-    }
+    // if (name == "Derive") {
+    //     $('#De').click();
+    //     localStorage.clear();
+    // }
+    // if (name == "Purchase") {
+    //
+    // }
     //分页
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
@@ -369,28 +376,29 @@ function loadPageContractManageList() {
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
     page.contractIndex = contractIndex;
-    //page.contractIndex = 0;                                    //首页默认为危废合同
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "loadPageContractManageList",          // url
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(page),
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (result) {
-            if (result != undefined && result.status == "success") {
-                console.log(result);
-                setPageClone(result);
-                setPageCloneAfter(contractIndex, pageNumber);        // 重新设置页码
-            } else {
-                console.log(result.message);
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-            console.log("失败");
-        }
-    });
+    page.contractIndex = 0;                                    //首页默认为危废合同
+    // $.ajax({
+    //     type: "POST",                       // 方法类型
+    //     url: "loadPageContractManageList",          // url
+    //     async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     data: JSON.stringify(page),
+    //     dataType: "json",
+    //     contentType: 'application/json;charset=utf-8',
+    //     success: function (result) {
+    //         if (result != undefined && result.status == "success") {
+    //             console.log(result);
+    //             setPageClone(result);
+    //             console.log(contractIndex,pageNumber)
+    //             setPageCloneAfter(contractIndex, pageNumber);        // 重新设置页码
+    //         } else {
+    //             console.log(result.message);
+    //         }
+    //     },
+    //     error: function (result) {
+    //         console.log("error: " + result);
+    //         console.log("失败");
+    //     }
+    // });
     setSeniorSelectedList();
 }
 
@@ -406,7 +414,6 @@ function ContractListByName(item) {
         page.pageNumber = pageNumber;
         page.start = (pageNumber - 1) * page.count;
         page.contractIndex = contractIndex;
-        $('#toggleName').text("产废单位名称");
         $.ajax({
             type: "POST",                       // 方法类型
             url: "loadPageContractManageList",                  // url
@@ -416,8 +423,10 @@ function ContractListByName(item) {
             data: JSON.stringify(page),
             success: function (result) {
                 if (result != undefined) {
+                    $('.loader').hide()
                     console.log(result);
                     setPageClone(result);
+                    setPageCloneAfter(contractIndex,1)
                     //setContractList(result);
                 } else {
                     console.log("fail: " + result);
@@ -427,6 +436,7 @@ function ContractListByName(item) {
                 console.log("error: " + result);
             }
         });
+
     }
     if (nameBykey == "应急处置合同") {
         contractIndex = 1;
@@ -436,7 +446,8 @@ function ContractListByName(item) {
         page.pageNumber = pageNumber;
         page.start = (pageNumber - 1) * page.count;
         page.contractIndex = contractIndex;
-        $('#toggleName').text("产废单位名称");
+        localStorage.clear();
+        //如果是物流就改为处置单位
         $.ajax({
             type: "POST",                       // 方法类型
             url: "loadPageContractManageList",                  // url
@@ -448,6 +459,7 @@ function ContractListByName(item) {
                 if (result != undefined) {
                     console.log(result);
                     setContractList(result);
+                    setPageCloneAfter(contractIndex,1)
                 } else {
                     console.log("fail: " + result);
                 }
@@ -466,18 +478,18 @@ function ContractListByName(item) {
         page.pageNumber = 1;
         page.start = (pageNumber - 1) * page.count;
         page.contractIndex = contractIndex;
-        $('#toggleName').text("处置单位名称");
         $.ajax({
             type: "POST",                       // 方法类型
             url: "loadPageContractManageList",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
-            data: JSON.stringify(page),
             contentType: "application/json; charset=gbk",
+            data: JSON.stringify(page),
             success: function (result) {
                 if (result != undefined) {
                     console.log(result);
                     setContractList(result);
+                    setPageCloneAfter(contractIndex,1)
                 } else {
                     console.log("fail: " + result);
                 }
@@ -530,7 +542,49 @@ function ContractListByName(item) {
             }
         });
     }
-    console.log("合同索引值" + contractIndex);
+
+    if(array0.length==0){
+
+        contractIndex=2;
+        for (var i = 1; i <= totalPage(contractIndex); i++) {
+            switchPage(parseInt(i));
+            array0.push($('.myclass1'));
+        }
+        contractIndex=1;
+        for (var i = 1; i <= totalPage(contractIndex); i++) {
+            switchPage(parseInt(i));
+            array0.push($('.myclass1'));
+        }
+        contractIndex=0;
+        for (var i = 1; i <= totalPage(contractIndex); i++) {
+            switchPage(parseInt(i));
+            array0.push($('.myclass1'));
+        }
+        switchPage(1)
+        // if (text.length <= 0) {
+        //     localStorage.name = "Logistics";
+        //     loadPageContractManageList();
+        // }
+        // $.ajax({
+        //     type: "POST",                       // 方法类型
+        //     url: "loadPageContractManageList",                  // url
+        //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        //     dataType: "json",
+        //     data: JSON.stringify(page),
+        //     contentType: "application/json; charset=gbk",
+        //     success: function (result) {
+        //         if (result != undefined) {
+        //             console.log(result);
+        //             setContractList(result);
+        //         } else {
+        //             console.log("fail: " + result);
+        //         }
+        //     },
+        //     error: function (result) {
+        //         console.log("error: " + result);
+        //     }
+        // });
+    }
 }
 
 /**
@@ -584,9 +638,10 @@ function setSeniorSelectedList() {
 
 //合同列表高级查询
 function searchContract() {
-    isSearch = false;
-    array.length = 0;//清空数组
-    array1.length = 0;
+    $('#tbody1').find('.myclass1').hide();
+    array.length=0;//清空数组
+    array1.length=0;//清空数组
+    array=[].concat(array0);
 
     var text = $.trim($('#searchContent').val());
 
@@ -618,45 +673,6 @@ function searchContract() {
         small = '大额合同';
     }
     console.log(small)
-
-    if (nameBykey == '危废合同' || nameBykey == "Wastes" || nameBykey == undefined) {
-        $('#Wa').click();
-        localStorage.clear();
-        $('#toggleName').text("产废单位名称");
-
-        for (var i = totalPage(contractIndex); i > 0; i--) {
-            switchPage(parseInt(i));
-            array.push($('.myclass1'));
-        }
-        console.log(array.length)
-    }
-
-    if (nameBykey == "应急处置合同") {
-        $('#Em').click();
-        localStorage.clear();
-        //如果是物流就改为处置单位
-        $('#toggleName').text("产废单位名称");
-
-        for (var i = totalPage(contractIndex); i > 0; i--) {
-            switchPage(parseInt(i));
-            array.push($('.myclass1'));
-        }
-
-
-    }
-
-    if (nameBykey == "物流合同") {
-        $('#Lo').click();
-        localStorage.clear();
-
-        for (var i = totalPage(contractIndex); i > 0; i--) {
-            switchPage(parseInt(i));
-            array.push($('.myclass1'));
-        }
-
-
-    }
-
 
     isSearch = true;
     var arraydate = [];
@@ -710,7 +726,7 @@ function searchContract() {
                 && $(this).children('td').text().indexOf(text) != -1 &&
                 $(this).children('td').eq(4).text().indexOf(checkState) != -1
                 && $(this).children('td').eq(6).text().indexOf(contactName) != -1 && (new Date(start).getTime() >= new Date(startDate).getTime())
-                && (new Date(end).getTime() <= new Date(endDate).getTime() && $(this).children('td').eq(10).text() == small)
+                && (new Date(end).getTime() <= new Date(endDate).getTime() && $(this).children('td').eq(10).text() == small)&& $(this).children('td').eq(11).text().indexOf(nameBykey)!=-1
             )) {
                 $(this).hide();
             }
@@ -718,15 +734,18 @@ function searchContract() {
                 && $(this).children('td').text().indexOf(text) != -1 &&
                 $(this).children('td').eq(4).text().indexOf(checkState) != -1 && (new Date(start).getTime() >= new Date(startDate).getTime())
                 && $(this).children('td').eq(6).text().indexOf(contactName) != -1
-                && (new Date(end).getTime() <= new Date(endDate).getTime()) && $(this).children('td').eq(10).text() == small)
+                && (new Date(end).getTime() <= new Date(endDate).getTime()) && $(this).children('td').eq(10).text() == small)&& $(this).children('td').eq(11).text().indexOf(nameBykey)!=-1
             ) {
                 array1.push($(this));
             }
         });
     }
+  console.log(nameBykey)
 
 
-    console.log(array1)
+    for(x=0;x<array1.length;x++){
+        console.log($(array1[x].children('td').eq(1).html()))
+    }
 
     var total;
 
@@ -765,6 +784,7 @@ function searchContract() {
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
+    setPageCloneAfter(contractIndex,1)
 
     for (var i = 0; i < array1.length; i++) {
         array1[i].hide();
@@ -779,10 +799,7 @@ function searchContract() {
 }
 
 
-//模糊查询
-array = [];//存放所有的tr
-array1 = [];//存放目标的tr
-//危废出库查询
+
 
 $(document).ready(function () {//页面载入是就会进行加载里面的内容
     var last;
@@ -800,63 +817,21 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 });
 
 function searchFuzzy() {
-    isSearch = false;
-    //分页模糊查询
-    array.length = 0;//清空数组
-    array1.length = 0;
+    console.log(nameBykey)
+    $('#tbody1').find('.myclass1').hide();
+    array.length=0;//清空数组
+    array1.length=0;//清空数组
+    array=[].concat(array0);
+   console.log(array)
     var text = $.trim($('#searchContent').val());
-    if (nameBykey == '危废合同' || nameBykey == "Wastes" || nameBykey == undefined) {
-        $('#Wa').click();
-        localStorage.clear();
-        $('#toggleName').text("产废单位名称");
-        for (var i = totalPage(contractIndex); i > 0; i--) {
-            switchPage(parseInt(i));
-            array.push($('.myclass1'));
-        }
-        if (text.length <= 0) {
-            localStorage.name = "Wastes";
-            loadPageContractManageList();
-        }
-    }
-    if (nameBykey == "应急处置合同") {
-        $('#Em').click();
-        localStorage.clear();
-        //如果是物流就改为处置单位
-        $('#toggleName').text("产废单位名称");
-        for (var i = totalPage(contractIndex); i > 0; i--) {
-            switchPage(parseInt(i));
-            array.push($('.myclass1'));
-        }
-        if (text.length <= 0) {
-            localStorage.name = "Emergency";
-            loadPageContractManageList();
-        }
-
-
-    }
-    if (nameBykey == "物流合同") {
-        $('#Lo').click();
-        localStorage.clear();
-        for (var i = totalPage(contractIndex); i > 0; i--) {
-            switchPage(parseInt(i));
-            array.push($('.myclass1'));
-        }
-        if (text.length <= 0) {
-            localStorage.name = "Logistics";
-            loadPageContractManageList();
-        }
-
-    }
-
-
     isSearch = true;
     for (var j = 0; j < array.length; j++) {
         $.each(array[j], function () {
             //console.log(this);
-            if (($(this).children('td').text().indexOf(text) == -1)) {
+            if (($(this).children('td').text().indexOf(text) == -1)||$(this).children('td').eq(11).text().indexOf(nameBykey.toString())==-1) {
                 $(this).hide();
             }
-            if ($(this).children('td').text().indexOf(text) != -1) {
+            if ($(this).children('td').text().indexOf(text) != -1&&$(this).children('td').eq(11).text().indexOf(nameBykey.toString())!=-1) {
                 array1.push($(this));
             }
         });
@@ -899,6 +874,7 @@ function searchFuzzy() {
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
+    setPageCloneAfter(contractIndex,1);
 
     for (var i = 0; i < array1.length; i++) {
         array1[i].hide();
@@ -909,6 +885,100 @@ function searchFuzzy() {
         $('#tbody1').append((array1[i]));
     }
 
+    if(text.length<=0){
+        console.log(nameBykey)
+        if(nameBykey=='危废合同'){
+            contractIndex = 0;
+            var page = {};
+            var pageNumber = 1;
+            page.count = countValue();                                 // 可选
+            page.pageNumber = pageNumber;
+            page.start = (pageNumber - 1) * page.count;
+            page.contractIndex = contractIndex;
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "loadPageContractManageList",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                contentType: "application/json; charset=gbk",
+                data: JSON.stringify(page),
+                success: function (result) {
+                    if (result != undefined) {
+                        console.log(result);
+                        setPageClone(result);
+                        setPageCloneAfter(contractIndex,1)
+                        //setContractList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+        if(nameBykey=='应急处置合同'){
+            contractIndex = 1;
+            var page = {};
+            var pageNumber = 1;
+            page.count = countValue();                                 // 可选
+            page.pageNumber = pageNumber;
+            page.start = (pageNumber - 1) * page.count;
+            page.contractIndex = contractIndex;
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "loadPageContractManageList",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                contentType: "application/json; charset=gbk",
+                data: JSON.stringify(page),
+                success: function (result) {
+                    if (result != undefined) {
+                        console.log(result);
+                        setPageClone(result);
+                        setPageCloneAfter(contractIndex,1)
+                        //setContractList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+        if(nameBykey=='物流合同'){
+            contractIndex = 2;
+            var page = {};
+            var pageNumber = 1;
+            page.count = countValue();                                 // 可选
+            page.pageNumber = pageNumber;
+            page.start = (pageNumber - 1) * page.count;
+            page.contractIndex = contractIndex;
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "loadPageContractManageList",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                contentType: "application/json; charset=gbk",
+                data: JSON.stringify(page),
+                success: function (result) {
+                    if (result != undefined) {
+                        console.log(result);
+                        setPageClone(result);
+                        setPageCloneAfter(contractIndex,1)
+                        //setContractList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+
+    }
 
 }
 
@@ -976,8 +1046,13 @@ function setContractList(result) {
                         break;
                     // 状态
                     case (4):
-                        if (obj.checkState != null)
-                            $(this).html(obj.checkState.name);
+                        if (obj.checkStateItem != null){
+                            $(this).html(obj.checkStateItem.dictionaryItemName);
+                            if(obj.checkStateItem.dictionaryItemName=='已作废'){
+                                $(this).parent().hide();
+                            }
+                        }
+
                         break;
                     // 公司名称
                     // case (5):
@@ -1053,7 +1128,7 @@ function setContractList(result) {
                             $(this).html("");
                         }
                         break;
-
+                    //大小额合同
                     case (10):
                         var total = 0;
                         $.each(obj.quotationItemList, function (index, item) {
@@ -1066,6 +1141,14 @@ function setContractList(result) {
                             $(this).html("大额合同");
                         }
                         break;
+                        //合同类型
+                    case (11):
+                       if(obj.contractType!=null){
+                       $(this).html(obj.contractType.name)
+                       }
+
+                        break;
+
                 }
             });
 
@@ -1208,8 +1291,8 @@ function viewContract(item) {
                     var end = "";
                 }
                 //合同状态
-                if (data.checkState != null) {
-                    $("#modal3_contractState").text(data.checkState.name);
+                if (data.checkStateItem != null) {
+                    $("#modal3_contractState").text(data.checkStateItem.dictionaryItemName);
                 }
                 else {
                     $("#modal3_contractState").text("");
@@ -1373,15 +1456,15 @@ function setContractListModal(result) {
                     break;
                 // 库存量
                 case (3):
-                    if (obj.packageType != null) {
-                        $(this).html(obj.packageType.name);
+                    if (obj.packageTypeItem != null) {
+                        $(this).html(obj.packageTypeItem.dictionaryItemName);
                     }
 
                     break;
                 // 需求数量
                 case (4):
-                    if (obj.util != null) {
-                        $(this).html(obj.util.name);
+                    if (obj.unitDataItem != null) {
+                        $(this).html(obj.unitDataItem.dictionaryItemName);
                     }
 
                     break;
@@ -1396,8 +1479,8 @@ function setContractListModal(result) {
                     $(this).html(obj.totalPrice.toFixed(2));
                     break;
                 case (8):
-                    if (obj.transport != null) {
-                        $(this).html(obj.transport.name);
+                    if (obj.transportItem != null) {
+                        $(this).html(obj.transportItem.dictionaryItemName);
                     }
                     break;
                 case (9):
@@ -1590,6 +1673,7 @@ function adjustContract(item) {
 
 //危废合同页面新增
 function loadWastesContractSelectList() {
+    loadNavigationList();   // 设置动态菜单
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
         size: 6
@@ -1604,7 +1688,7 @@ function loadWastesContractSelectList() {
     var contractName1 = $('#contractName1');
     contractName1.hide();//默认公司合同 隐藏掉客户合同
 
-
+   $("#contractType1").val('危废')
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getContractList",                  // url
@@ -1614,78 +1698,22 @@ function loadWastesContractSelectList() {
             if (result != undefined) {
                 console.log(result);
                 var data = eval(result);
-
                 //赋值合同编号
                 $('#contractId').html(data.contractId);
                 // 各下拉框数据填充
-
-                var contractType1 = $("#contractType1");//模板名称下拉框
-
-                contractType1.children().remove();
-
-                $.each(data.modelNameList, function (index, item) {
-                    if (item != null && item.modelName != "") {
-                        //console.log(item);
-                        var option = $('<option />');
-                        option.val(item.modelName);
-                        option.text(item.modelName);
-                        contractType1.append(option);
-                    }
-                });
-
-                contractType1.get(0).selectedIndex = -1;
-                // var province = $("#province");
-                //                 // province.children().remove();
-                //                 // $.each(data.provinceStrList, function (index, item) {
-                //                 //     var option = $('<option />');
-                //                 //     option.val(index);
-                //                 //     option.text(item.name);
-                //                 //     province.append(option);
-                //                 // });
-                //                 // $('.selectpicker').selectpicker('refresh');
-                //                 // //获取相应的市级
-                //                 // $.ajax({
-                //                 //     type: "POST",                            // 方法类型
-                //                 //     url: "getCityList",                  // url
-                //                 //     dataType: "json",
-                //                 //     data:{
-                //                 //         'provinceId': 1
-                //                 //     },
-                //                 //     success: function (result) {
-                //                 //         if (result != undefined) {
-                //                 //             var data = eval(result);
-                //                 //             //console.log(data);
-                //                 //             //var contractName = $("#contractName");
-                //                 //             //下拉框填充
-                //                 //             var city=$("#city");
-                //                 //             city.children().remove();
-                //                 //             cityIndex="";
-                //                 //             $.each(data, function (index, item) {
-                //                 //                 //  console.log(item);
-                //                 //                 var option1 = $('<option />');
-                //                 //                 option1.val(item.cityname);
-                //                 //                 option1.text(item.cityname);
-                //                 //                 if(item.cityname=='${contract.city}'){
-                //                 //                     cityIndex=index;
-                //                 //                 }
-                //                 //                 city.append(option1);
-                //                 //             });
-                //                 //             $('.selectpicker').selectpicker('refresh');
-                //                 //
-                //                 //
-                //                 //         } else {
-                //                 //             //console.log(result);
-                //                 //         }
-                //                 //     },
-                //                 //     error:function (result) {
-                //                 //         console.log(result);
-                //                 //     }
-                //                 // });
-
+                // contractType1.children().remove();
+                // $.each(data.modelNameList, function (index, item) {
+                //     if (item != null && item.modelName != "") {
+                //         //console.log(item);
+                //         var option = $('<option />');
+                //         option.val(item.modelName);
+                //         option.text(item.modelName);
+                //         contractType1.append(option);
+                //     }
+                // });
+                // contractType1.get(0).selectedIndex = -1;
                 var clientName = $('#companyName');//产废单位
-
                 clientName.children().remove();
-
                 $.each(data.companyNameList, function (index, item) {
                     var option = $('<option />');
                     option.val(item.clientId);
@@ -1821,7 +1849,7 @@ function loadWastesContractSelectList() {
     //运输方式
     $.ajax({
         type: 'POST',
-        url: "getTransportTypeList",
+        url: "getTransportTypeByDataDictionary",
         //data:JSON.stringify(data),
         dataType: "json",
         contentType: "application/json;charset=utf-8",
@@ -1830,10 +1858,10 @@ function loadWastesContractSelectList() {
                 // console.log(result);
                 var transportType = $('#transportType');
                 transportType.children().remove();
-                $.each(result.transportTypeList, function (index, item) {
+                $.each(result.data, function (index, item) {
                     var option = $('<option/>');
-                    option.val(index + 1);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     transportType.append(option);
                 });
                 transportType.get(0).selectedIndex = 0;
@@ -1851,7 +1879,7 @@ function loadWastesContractSelectList() {
     //包装类型
     $.ajax({
         type: 'POST',
-        url: "getFormTypeAndPackageType",
+        url: "getPackageTypeByDataDictionary",
         //data:JSON.stringify(data),
         dataType: "json",
         contentType: "application/json;charset=utf-8",
@@ -1860,10 +1888,10 @@ function loadWastesContractSelectList() {
                 console.log(result);
                 var packageType = $('#packageType');
                 packageType.children().remove();
-                $.each(result.packageTypeList, function (index, item) {
+                $.each(result.data, function (index, item) {
                     var option = $('<option/>');
-                    option.val(index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     packageType.append(option);
                 });
 
@@ -1913,7 +1941,7 @@ function loadWastesContractSelectList() {
     //单位
     $.ajax({
         type: 'POST',
-        url: "getUnitList",
+        url: "getUnitByDataDictionary",
         //data:JSON.stringify(data),
         dataType: "json",
         contentType: "application/json;charset=utf-8",
@@ -1922,10 +1950,10 @@ function loadWastesContractSelectList() {
                 // console.log(result);
                 var unit = $('#unit');
                 unit.children().remove();
-                $.each(result.unitList, function (index, item) {
+                $.each(result.data, function (index, item) {
                     var option = $('<option/>');
-                    option.val(index + 1);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     unit.append(option);
                 });
                 unit.get(0).selectedIndex = 0;
@@ -1949,8 +1977,10 @@ function findModel() {
     var contractType = ($('#contractType option:selected').text()).substring(0, 2);
 
     console.log(contractType)
+    $("#contractType1").val(contractType)
 
     if (contractType == '物流') {
+
         $('#supplier').show();//供应商显示
         $('#client').hide();//产废单位隐藏
         $('#name').text('处置单位名称')
@@ -1964,19 +1994,17 @@ function findModel() {
                 if (result != undefined) {
                     var data = eval(result);
                     //console.log(data);
-                    //1赋值
-                    // $('#contacts').prop("value",obj.contactName);//联系人
-                    // $('#telephone').prop("value",obj.phone);//联系电话
-                    // 各下拉框数据填充
-                    var contractType1 = $("#contractType1");
-                    contractType1.children().remove();
-                    $.each(data.modelNameList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(item.modelName);
-                        option.text(item.modelName);
-                        contractType1.append(option);
-                    });
-                    contractType1.get(0).selectedIndex = -1;
+
+
+
+                    // contractType1.children().remove();
+                    // $.each(data.modelNameList, function (index, item) {
+                    //     var option = $('<option />');
+                    //     option.val(item.modelName);
+                    //     option.text(item.modelName);
+                    //     contractType1.append(option);
+                    // });
+                    // contractType1.get(0).selectedIndex = -1;
                     $('.selectpicker').selectpicker('refresh');
                     var suppier = $('#suppier');
                     suppier.children().remove();
@@ -2069,22 +2097,21 @@ function findModel() {
                     //赋值合同编号
                     $('#contractId').html(data.contractId);
                     // 各下拉框数据填充
-
-                    var contractType1 = $("#contractType1");//模板名称下拉框
-
-                    contractType1.children().remove();
-
-                    $.each(data.modelNameList, function (index, item) {
-                        if (item != null && item.modelName != "") {
-                            //console.log(item);
-                            var option = $('<option />');
-                            option.val(item.modelName);
-                            option.text(item.modelName);
-                            contractType1.append(option);
-                        }
-                    });
-
-                    contractType1.get(0).selectedIndex = -1;
+                    // var contractType1 = $("#contractType1");//模板名称下拉框
+                    //
+                    // contractType1.children().remove();
+                    //
+                    // $.each(data.modelNameList, function (index, item) {
+                    //     if (item != null && item.modelName != "") {
+                    //         //console.log(item);
+                    //         var option = $('<option />');
+                    //         option.val(item.modelName);
+                    //         option.text(item.modelName);
+                    //         contractType1.append(option);
+                    //     }
+                    // });
+                    //
+                    // contractType1.get(0).selectedIndex = -1;
                     // var province = $("#province");
                     //                 // province.children().remove();
                     //                 // $.each(data.provinceStrList, function (index, item) {
@@ -2613,9 +2640,9 @@ function contractWastesSave() {
                                 client: {clientId: $('#companyName').selectpicker('val')},
                                 wastesCode: $(this).children('td').eq(1).children('div').find('button').attr('title'),
                                 wastesName: $(this).children('td').eq(2).children('input').val(),
-                                packageType: $(this).children('td').eq(3).find('select').get(0).selectedIndex,
-                                transport: $(this).children('td').eq(8).children('select').get(0).selectedIndex,
-                                util: $(this).children('td').eq(4).children('select').get(0).selectedIndex,
+                                packageTypeItem:{dataDictionaryItemId:$(this).children('td').eq(3).find('select').val()} ,
+                                transportItem: {dataDictionaryItemId:$(this).children('td').eq(8).children('select').val()},
+                                unitDataItem:{dataDictionaryItemId:$(this).children('td').eq(4).children('select').val()},
                                 // packageType: $(this).children('td').eq(3).children('select').val(),
                                 // transport: $(this).children('td').eq(8).children('select').val(),
                                 // util: $(this).children('td').eq(4).children('select').val(),
@@ -2813,9 +2840,9 @@ function contractWastesSave() {
                                 client: {clientId: $('#companyName').selectpicker('val')},
                                 wastesCode: $(this).children('td').eq(1).children('div').find('button').attr('title'),
                                 wastesName: $(this).children('td').eq(2).children('input').val(),
-                                packageType: $(this).children('td').eq(3).find('select').get(0).selectedIndex,
-                                transport: $(this).children('td').eq(8).children('select').get(0).selectedIndex,
-                                util: $(this).children('td').eq(4).children('select').get(0).selectedIndex,
+                                packageTypeItem:{dataDictionaryItemId:$(this).children('td').eq(3).find('select').val()} ,
+                                transportItem: {dataDictionaryItemId:$(this).children('td').eq(8).children('select').val()},
+                                unitDataItem:{dataDictionaryItemId:$(this).children('td').eq(4).children('select').val()},
                                 // packageType: $(this).children('td').eq(3).children('select').val(),
                                 // transport: $(this).children('td').eq(8).children('select').val(),
                                 // util: $(this).children('td').eq(4).children('select').val(),
@@ -4870,9 +4897,9 @@ function contractAdjustSave() {
                             client: {clientId: $('#companyName').selectpicker('val')},
                             wastesCode: $(this).children('td').eq(1).children('div').find('button').attr('title'),
                             wastesName: $(this).children('td').eq(2).children('input').val(),
-                            packageType: $(this).children('td').eq(3).children('select').get(0).selectedIndex,
-                            transport: $(this).children('td').eq(8).children('select').get(0).selectedIndex,
-                            util: $(this).children('td').eq(4).children('select').get(0).selectedIndex,
+                            packageTypeItem: {dataDictionaryItemId:$(this).children('td').eq(3).children('select').val()},
+                            transportItem: {dataDictionaryItemId:$(this).children('td').eq(8).children('select').val()},
+                            unitDataItem: {dataDictionaryItemId:$(this).children('td').eq(4).children('select').val()},
                             unitPriceTax: $(this).children('td').eq(6).children('input').val(),
                             contractAmount: $(this).children('td').eq(5).children('input').val(),
                             totalPrice: $(this).children('td').eq(7).children('input').val(),
@@ -5115,9 +5142,9 @@ function contractAdjustSave() {
                             client: {clientId: $('#companyName').selectpicker('val')},
                             wastesCode: $(this).children('td').eq(1).children('div').find('button').attr('title'),
                             wastesName: $(this).children('td').eq(2).children('input').val(),
-                            packageType: $(this).children('td').eq(3).children('select').get(0).selectedIndex,
-                            transport: $(this).children('td').eq(8).children('select').get(0).selectedIndex,
-                            util: $(this).children('td').eq(4).children('select').get(0).selectedIndex,
+                            packageTypeItem: {dataDictionaryItemId:$(this).children('td').eq(3).children('select').val()},
+                            transportItem: {dataDictionaryItemId:$(this).children('td').eq(8).children('select').val()},
+                            unitDataItem: {dataDictionaryItemId:$(this).children('td').eq(4).children('select').val()},
                             unitPriceTax: $(this).children('td').eq(6).children('input').val(),
                             contractAmount: $(this).children('td').eq(5).children('input').val(),
                             totalPrice: $(this).children('td').eq(7).children('input').val(),
@@ -6103,6 +6130,7 @@ function adjust(item) {
 
 //合同修改页面初始化
 function adjustNewContract() {
+    loadNavigationList();   // 设置动态菜单
     //赋值合同编号
     var contractId = localStorage['contractId'];
     $('#contractId').html(contractId);
@@ -6141,7 +6169,7 @@ function adjustNewContract() {
     //运输方式
     $.ajax({
         type: 'POST',
-        url: "getTransportTypeList",
+        url: "getTransportTypeByDataDictionary",
         //data:JSON.stringify(data),
         dataType: "json",
         contentType: "application/json;charset=utf-8",
@@ -6150,10 +6178,10 @@ function adjustNewContract() {
                 // console.log(result);
                 var transportType = $('#transportType');
                 transportType.children().remove();
-                $.each(result.transportTypeList, function (index, item) {
+                $.each(result.data, function (index, item) {
                     var option = $('<option/>');
-                    option.val(item.index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     transportType.append(option);
                 });
                 transportType.get(0).selectedIndex = 0;
@@ -6170,7 +6198,7 @@ function adjustNewContract() {
     //包装类型
     $.ajax({
         type: 'POST',
-        url: "getFormTypeAndPackageType",
+        url: "getPackageTypeByDataDictionary",
         //data:JSON.stringify(data),
         dataType: "json",
         contentType: "application/json;charset=utf-8",
@@ -6179,10 +6207,10 @@ function adjustNewContract() {
                 // console.log(result);
                 var packageType = $('#packageType');
                 packageType.children().remove();
-                $.each(result.packageTypeList, function (index, item) {
+                $.each(result.data, function (index, item) {
                     var option = $('<option/>');
-                    option.val(item.index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     packageType.append(option);
                 });
                 packageType.get(0).selectedIndex = 0;
@@ -6200,7 +6228,7 @@ function adjustNewContract() {
     //单位
     $.ajax({
         type: 'POST',
-        url: "getUnitList",
+        url: "getUnitByDataDictionary",
         //data:JSON.stringify(data),
         dataType: "json",
         contentType: "application/json;charset=utf-8",
@@ -6209,10 +6237,10 @@ function adjustNewContract() {
                 // console.log(result);
                 var unit = $('#unit');
                 unit.children().remove();
-                $.each(result.unitList, function (index, item) {
+                $.each(result.data, function (index, item) {
                     var option = $('<option/>');
-                    option.val(item.index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     unit.append(option);
                 });
                 unit.get(0).selectedIndex = 0;
@@ -6258,7 +6286,7 @@ function adjustNewContract() {
                 if (contractVersion == '公司合同') {
                     contractVersion = 'companyContract'
                     //赋值合同名称
-                    $('#contractName').prop("value", contract.contractName);
+                    $('#contractType1').prop("value", contract.contractName);
                 }
 
                 if (contractVersion == '产废单位合同') {
@@ -6302,37 +6330,6 @@ function adjustNewContract() {
                         });
                         supplier.get(0).selectedIndex = index2;
                         $('.selectpicker').selectpicker('refresh');
-
-                        //赋值模板列表
-                        $.ajax({
-                            type: "POST",                            // 方法类型
-                            url: "getModelByContractId",                  // url
-                            dataType: "json",
-                            data: {'key': (contract.contractType.name).substring(0, 2)},//如果是公司合同就会有合同模板名称作为合同名称
-                            success: function (result) {
-                                if (result != undefined && result.status == "success") {
-                                    console.log(result)
-                                    var contractType1 = $('#contractType1');
-                                    contractType1.children().remove();
-                                    index3 = "";
-                                    $.each(result.modelNameList, function (index, item) {
-                                        var option = $('<option />');
-                                        option.val(item.modelName);
-                                        option.text(item.modelName);
-                                        if (item.modelName == contract.contractName) {
-                                            index3 = index;
-                                        }
-                                        contractType1.append(option);
-                                    });
-                                    contractType1.get(0).selectedIndex = index3;
-                                }
-
-                            },
-                            error: function (result) {
-
-                            }
-                        })
-
                         //开票税率1下拉框
                         var ticketRate1 = $('#taxRate1');
                         ticketRate1.children().remove();
@@ -6380,14 +6377,14 @@ function adjustNewContract() {
                             cloneTr.children('td').eq(5).children('input').val(item.contractAmount.toFixed(2));
                             cloneTr.children('td').eq(6).children('input').val(item.unitPriceTax.toFixed(2));
                             cloneTr.children('td').eq(7).children('input').val(item.totalPrice.toFixed(2));
-                            if (item.packageType != null) {
-                                cloneTr.children('td').eq(3).children('select').val(item.packageType.index);
+                            if (item.packageTypeItem != null) {
+                                cloneTr.children('td').eq(3).children('select').val(item.packageTypeItem.dataDictionaryItemId);
                             }
-                            if (item.util != null) {
-                                cloneTr.children('td').eq(4).children('select').val(item.util.index);
+                            if (item.transportItem != null) {
+                                cloneTr.children('td').eq(8).children('select').val(item.transportItem.dataDictionaryItemId);
                             }
-                            if (item.transport != null) {
-                                cloneTr.children('td').eq(8).children('select').val(item.transport.index);
+                            if (item.unitDataItem != null) {
+                                cloneTr.children('td').eq(4).children('select').val(item.unitDataItem.dataDictionaryItemId);
                             }
                             cloneTr.children('td').eq(9).children('input').val(item.remarks);
 
@@ -6476,35 +6473,35 @@ function adjustNewContract() {
                         });
                         clientName.get(0).selectedIndex = index2;
                         $('.selectpicker').selectpicker('refresh');
-                        //赋值模板列表
-                        $.ajax({
-                            type: "POST",                            // 方法类型
-                            url: "getModelByContractId",                  // url
-                            dataType: "json",
-                            data: {'key': (contract.contractType.name).substring(0, 2)},//如果是公司合同就会有合同模板名称作为合同名称
-                            success: function (result) {
-                                if (result != undefined && result.status == "success") {
-                                    console.log(result)
-                                    var contractType1 = $('#contractType1');
-                                    contractType1.children().remove();
-                                    index3 = "";
-                                    $.each(result.modelNameList, function (index, item) {
-                                        var option = $('<option />');
-                                        option.val(item.modelName);
-                                        option.text(item.modelName);
-                                        if (item.modelName == contract.contractName) {
-                                            index3 = index;
-                                        }
-                                        contractType1.append(option);
-                                    });
-                                    contractType1.get(0).selectedIndex = index3;
-                                }
-
-                            },
-                            error: function (result) {
-
-                            }
-                        })
+                        // //赋值模板列表
+                        // $.ajax({
+                        //     type: "POST",                            // 方法类型
+                        //     url: "getModelByContractId",                  // url
+                        //     dataType: "json",
+                        //     data: {'key': (contract.contractType.name).substring(0, 2)},//如果是公司合同就会有合同模板名称作为合同名称
+                        //     success: function (result) {
+                        //         if (result != undefined && result.status == "success") {
+                        //             console.log(result)
+                        //             var contractType1 = $('#contractType1');
+                        //             contractType1.children().remove();
+                        //             index3 = "";
+                        //             $.each(result.modelNameList, function (index, item) {
+                        //                 var option = $('<option />');
+                        //                 option.val(item.modelName);
+                        //                 option.text(item.modelName);
+                        //                 if (item.modelName == contract.contractName) {
+                        //                     index3 = index;
+                        //                 }
+                        //                 contractType1.append(option);
+                        //             });
+                        //             contractType1.get(0).selectedIndex = index3;
+                        //         }
+                        //
+                        //     },
+                        //     error: function (result) {
+                        //
+                        //     }
+                        // })
 
                         //开票税率1下拉框
                         var ticketRate1 = $('#taxRate1');
@@ -6552,14 +6549,14 @@ function adjustNewContract() {
                             cloneTr.children('td').eq(6).children('input').val(item.unitPriceTax.toFixed(2));
                             cloneTr.children('td').eq(5).children('input').val(item.contractAmount.toFixed(2));
                             cloneTr.children('td').eq(7).children('input').val(item.totalPrice.toFixed(2));
-                            if (item.packageType != null) {
-                                cloneTr.children('td').eq(3).children('select').val(item.packageType.index);
+                            if (item.packageTypeItem != null) {
+                                cloneTr.children('td').eq(3).children('select').val(item.packageTypeItem.dataDictionaryItemId);
                             }
-                            if (item.transport != null) {
-                                cloneTr.children('td').eq(8).children('select').val(item.transport.index);
+                            if (item.transportItem != null) {
+                                cloneTr.children('td').eq(8).children('select').val(item.transportItem.dataDictionaryItemId);
                             }
-                            if (item.util != null) {
-                                cloneTr.children('td').eq(4).children('select').val(item.util.index);
+                            if (item.unitDataItem != null) {
+                                cloneTr.children('td').eq(4).children('select').val(item.unitDataItem.dataDictionaryItemId);
                             }
                             cloneTr.children('td').eq(9).children('input').val(item.remarks);
                             //危废编码赋值
@@ -6623,23 +6620,23 @@ function adjustNewContract() {
                 }
 
 
-                $.ajax({
-                    type: "POST",                            // 方法类型
-                    url: "getContractBymodelName1",                  // url
-                    dataType: "json",
-                    data: {'modelName': contract.modelName},//如果是公司合同就会有合同模板名称作为合同名称
-                    success: function (result) {
-                        var obj = eval(result);
-                        if (obj != null) {
-                            $('#content').val(obj.contractContent);//获得模板的内容
-                        }
-
-                    },
-                    error: function (result) {
-                        alert("服务器异常！")
-
-                    }
-                });
+                // $.ajax({
+                //     type: "POST",                            // 方法类型
+                //     url: "getContractBymodelName1",                  // url
+                //     dataType: "json",
+                //     data: {'modelName': contract.modelName},//如果是公司合同就会有合同模板名称作为合同名称
+                //     success: function (result) {
+                //         var obj = eval(result);
+                //         if (obj != null) {
+                //             $('#content').val(obj.contractContent);//获得模板的内容
+                //         }
+                //
+                //     },
+                //     error: function (result) {
+                //         alert("服务器异常！")
+                //
+                //     }
+                // });
 
                 if (contract.beginTime != null) {
                     $("#beginTime").prop("value", getDateStr(contract.beginTime));

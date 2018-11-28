@@ -11,6 +11,7 @@ var roleId = -1;
  * 读取账号列表
  */
 function loadUserList() {
+    loadNavigationList();  // 设置动态菜单
     $.ajax({
         type: "POST",                       // 方法类型
         url: "listUser",                  // url
@@ -110,6 +111,7 @@ function addUser() {
  * 读取角色列表
  */
 function loadRoleList() {
+    loadNavigationList();  // 设置动态菜单
     $.ajax({
         type: "POST",                       // 方法类型
         url: "listRole",                  // url
@@ -227,6 +229,8 @@ function getUserId(e) {
  * 读取权限列表
  */
 function loadRoleAndFunction() {
+    $('.loader').show();  // 显示进度条
+    loadNavigationList();  // 设置动态菜单
     // 读取角色列表
     $.ajax({
         type: "POST",                       // 方法类型
@@ -235,6 +239,7 @@ function loadRoleAndFunction() {
         dataType: "json",
         success: function (result) {
             if (result != undefined && result.status == "success") {
+                $('.loader').hide();   // 隐藏进度条
                 setDataList(result.data);
             }
         },
@@ -331,6 +336,7 @@ function loadRoleAndFunction() {
  */
 function showAuthorityById(e) {
     //$("#span_content").text("数据处理中...").show(1500);
+    $('.loader').show();  // 显示进度条
     roleId = e.prop('id');
     $.ajax({
         type: "POST",
@@ -346,6 +352,7 @@ function showAuthorityById(e) {
                 setTimeout(function () {
                     $("#span_content").text("数据处理完成").delay(1500).hide(0);
                 }, 0);
+                $('.loader').hide();  // 隐藏进度条
             } else {
                 console.log(result);
             }

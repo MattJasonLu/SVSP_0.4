@@ -2,6 +2,7 @@
  * 获取首页内容1
  * */
 function loadPageWayBillDetailList() {
+    loadNavigationList();   // 动态菜单部署
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
         // style: 'btn-info',

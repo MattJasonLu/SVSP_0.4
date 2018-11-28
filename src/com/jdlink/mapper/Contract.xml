@@ -35,7 +35,13 @@
                     ofType="com.jdlink.domain.Client" javaType="Client"/>
         <collection property="supplier" select="getSupplier" column="suppierId"
                     ofType="com.jdlink.domain.Supplier" javaType="Supplier"/>
+        <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
     </resultMap>
+
+    <!--查询状态字典-->
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{dataDictionaryItemId}
+    </select>
     <!--查询客户-->
     <select id="getClient" resultType="Client">
         select * from  client where clientId=#{clientId};
@@ -44,18 +50,27 @@
     <select id="getSupplier" resultType="Supplier">
       select * from  t_supplier where supplierId=#{suppierId};
     </select>
+    <select id="getPackageTypeItem" resultType="PackageTypeItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{packageTypeId}
+    </select>
+    <select id="getTransportItem" resultType="TransportItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{transportId}
+    </select>
+    <select id="getUnitDataItem" resultType="UnitDataItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{unitId}
+    </select>
     <!--通过报价单查询危废信息-->
-    <select id="getQuotationItem" resultType="QuotationItem">
+    <select id="getQuotationItem" resultMap="QuotationItemRM">
         select * from t_quotationitem where t_quotationitem.contractId=#{contractId} order by wastesCode;
 
     </select>
     <insert id="add" parameterType="Contract">
         insert into t_contract (contractId,contractType, companyName, clientId, contractVersion,
         checkState, beginTime, endTime, agreedQuantity,contactName,telephone,reviewer,reviewDepartment,
-        reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification,modelName,year,period,contractContent,contractName,modelVersion,nowTime,company1,content,suppierId,totalPrice)
+        reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification,modelName,year,period,contractContent,contractName,modelVersion,nowTime,company1,content,suppierId,totalPrice,checkStateId)
         values (#{contractId},#{contractType}, #{companyName}, #{client.clientId}, #{contractVersion},
         #{checkState}, #{beginTime}, #{endTime}, #{agreedQuantity}, #{contactName}, #{telephone}, #{reviewer},
-        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion},NOW(),#{company1},#{content},#{supplier.supplierId},#{totalPrice})
+        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion},NOW(),#{company1},#{content},#{supplier.supplierId},#{totalPrice},64)
     </insert>
     <insert id="addEm" parameterType="Contract">
         insert into t_contract(contractId,contractType,
@@ -122,7 +137,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         UPDATE t_contract SET checkState='Invalid', nowTime=NOW() WHERE contractId=#{contractId};
     </update>
     <update id="toSubmit" parameterType="String">
-        UPDATE t_contract SET checkState='ToExamine', nowTime=NOW() WHERE contractId=#{id} ;
+        UPDATE t_contract SET checkStateId=67, nowTime=NOW() WHERE contractId=#{id} ;
     </update>
     <select id="list" resultMap="ContractRM">
         select * from t_contract order by year desc ;
@@ -143,7 +158,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         select rate2 from ticketrate2;
     </select>
     <update id="cancel">
-        update t_contract set checkState="Invalid",nowTime=#{1} where contractId=#{0}
+        update t_contract set checkStateId=69,nowTime=#{1} where contractId=#{0}
     </update>
     <delete id="cancel1" parameterType="String">
         delete from  t_contract  where contractId=#{contractId}
@@ -158,7 +173,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         update t_contract set checkState="Backed",backContent=#{1},nowTime=#{2} where contractId=#{0}
     </update>
     <update id="opinion" parameterType="Contract">
-    update t_contract set opinion=#{1},checkState="Keeping",nowTime=#{2} where contractId=#{0};
+    update t_contract set opinion=#{1},checkStateId=68,nowTime=#{2} where contractId=#{0};
 </update>
     <select id="getHazardous" resultType="Hazardous">
         SELECT * FROM t_hazardous WHERE id in (
@@ -381,8 +396,8 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     </select>
     <!--添加合同中的报价单明细1223-->
     <insert id="addQuotationItem" parameterType="QuotationItem">
-        insert into t_quotationitem(contractId,clientId,wastesCode,wastesName,packageType,util,unitPriceTax,contractAmount,totalPrice,transport,supplierId,packageTypeList,remarks) values
-         (#{contractId},#{client.clientId},#{wastesCode},#{wastesName},#{packageType},#{util},#{unitPriceTax},#{contractAmount},#{totalPrice},#{transport},#{supplier.supplierId},#{packageTypeList},#{remarks});
+        insert into t_quotationitem(contractId,clientId,wastesCode,wastesName,packageType,util,unitPriceTax,contractAmount,totalPrice,transport,supplierId,packageTypeList,remarks,packageTypeId,transportId,unitId) values
+         (#{contractId},#{client.clientId},#{wastesCode},#{wastesName},#{packageType},#{util},#{unitPriceTax},#{contractAmount},#{totalPrice},#{transport},#{supplier.supplierId},#{packageTypeList},#{remarks},#{packageTypeItem.dataDictionaryItemId},#{transportItem.dataDictionaryItemId},#{unitDataItem.dataDictionaryItemId});
     </insert>
     <!--根据供应商编号查询供应商-->
     <select id="getSupplierListById" parameterType="String" resultType="Supplier">
@@ -408,8 +423,8 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <!--</update>-->
 
     <!--获得最新的合同编号-->
-    <select id="getNewestContractId1" resultType="String">
-        select contractId from  t_contract order by contractId desc;
+    <select id="getNewestContractId1" resultType="int">
+        select count(*) from  t_contract;
     </select>
 
     <select id="getWastesInfoByCompanyName" resultMap="ContractRM">
@@ -425,6 +440,9 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <resultMap id="QuotationItemRM" type="QuotationItem">
         <association property="contract" column="contractId" select="getContractById"></association>
         <association property="client" column="clientId" select="getClient"></association>
+        <collection property="packageTypeItem" column="packageTypeId" select="getPackageTypeItem"></collection>
+        <collection property="transportItem" column="transportId" select="getTransportItem"></collection>
+        <collection property="unitDataItem" column="unitId" select="getUnitDataItem"></collection>
     </resultMap>
     <select id="getContractById" resultType="Contract">
         select * from t_contract where contractId=#{contractId};

@@ -288,6 +288,7 @@ function inputSalesSwitchPage() {
  * 分页 获取首页内容
  * */
 function loadPageSalesManList() {
+    loadNavigationList();   // 设置动态菜单
     isSearch = false;
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");

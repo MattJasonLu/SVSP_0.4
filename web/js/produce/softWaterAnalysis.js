@@ -416,8 +416,8 @@ function setSoftWaterList(result) {
                         break;
                     case (6):
                         // 备注
-                        if(obj.checkState!=null){
-                            $(this).html(obj.checkState.name);
+                        if(obj.checkStateItem!=null){
+                            $(this).html(obj.checkStateItem.dictionaryItemName);
                         }
                         break;
                 }
@@ -590,22 +590,13 @@ function searchSoftWater() {
             address: $.trim($("#search-address").val()),
             sendingPerson: $.trim($("#search-remarks").val()),
             laboratorySignatory: $.trim($("#search-laboratorySignatory").val()),
-            //remarks: $.trim($("#search-remarks").val()),
-            checkState:state,
+            checkStateItem:{dataDictionaryItemId:state},
             sewageregistrationItemList:[{turbidity:turbidity,hardness:hardness,ph:ph,phenolphthalein:phenolphthalein,basicity:basicity,electricalConductivity:electricalConductivity}],
             page: page
         };
     }else{
         var keywords= $.trim($("#searchContent").val());;
-        if(keywords=='已收样'){
-            keywords='Collected'
-        }
-        if(keywords=='待收样'){
-            keywords='ToCollected'
-        }
-        if(keywords=='已拒收'){
-            keywords='Rejected'
-        }
+
 
         if(keywords=='浊度'){
             turbidity=1;
@@ -1087,7 +1078,7 @@ function setSubmit(item) {
         alert("单据已收样,无法收样")
     }
 
-    if($(item).parent().parent().children('td').eq(6).html()!='已收样'){
+    if($(item).parent().parent().children('td').eq(6).html()=='待收样'){
         var id=$(item).parent().parent().children('td').eq(1).html();
         console.log(id)
         $("#appointModa2").modal('show');

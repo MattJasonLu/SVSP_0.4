@@ -737,7 +737,7 @@ public class MaterialRequireController {
         return res.toString();
     }
 
-    //粗查询总数
+    //查询总数
     @RequestMapping("searchMaterialRequireCount")
     @ResponseBody
     public int searchMaterialRequireCount(@RequestBody MaterialRequire materialRequire){

@@ -287,6 +287,7 @@ function inputSwitchPage() {
  * 分页 获取首页内容
  * */
 function loadPageWayBillList() {
+    loadNavigationList(); // 设置动态菜单
     var pageNumber = 1;               // 显示首页
     currentPage = pageNumber;
     $("#current").find("a").text("当前页：1");
@@ -1018,6 +1019,7 @@ function addWayBillModal() {
  * 加载接运单新增页面数据
  */
 function showAddData() {
+    loadNavigationList();   // 动态菜单部署
     getCurrentWayBillId();
     $("#modal-id").text(wayBillId);
     $("#modal-creationDate").text(getcurrentDaydate());

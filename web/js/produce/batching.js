@@ -5,8 +5,10 @@
 var currentPage = 1;                          //当前页数
 var data1;
 var isSearch = false;
+array0=[];
 array=[];
 array1=[]
+
 /**
  * 返回count值
  * */
@@ -306,20 +308,13 @@ function AddAndRemoveClass(item) {
 /**
  * 配料单页面高级查询
  */
-//查询功能
-array=[];
-array1=[];
+
 function searchBatchOrder() {
-   isSearch=false;
+    $('#tbody1').find('.myclass').hide();
     array.length=0;//清空数组
-    array1.length=0;
-    $('.myclass').each(function () {
-        $(this).show();
-    });
-    for(var i=totalPage();i>0;i--){
-        switchPage(parseInt(i));
-        array.push($('.myclass'));
-    }
+    array1.length=0;//清空数组
+    array=[].concat(array0);
+    isSearch=true;
     var text=$.trim($('#searchContent').val());
     //创建日期
     var createDate=$("#search-batchingDate").val();
@@ -440,6 +435,8 @@ function searchBatchOrder() {
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
+
+    setPageCloneAfter(1);
     for(var i=0;i<array1.length;i++){
         array1[i].hide();
     }
@@ -933,14 +930,14 @@ function save() {
             produceCompany:{clientId:$(this).children('td').eq(12).html()},
             wastesName:$(this).children('td').eq(3).html(),
             wasteCategory:$(this).children('td').eq(5).html(),
-            handelCategory:getHandleCategoryFromStr($(this).children('td').eq(6).html()),
+            handleCategoryItem:{dataDictionaryItemId:getIdFromHandleCategory($(this).children('td').eq(6).html())},
             batchingNumber:$(this).children('td').eq(8).children('input').val(),//配料的数量
             batchingDate:$("#date").val(),//配料日期
             createDate:$("#createDate").val(),//创建日期
             creator:$("#creator").val(),
             inboundOrderItemId:$(this).children('td').eq(11).html(),
             transferDraftId:$(this).children('td').eq(14).html(),
-            processWay:getProcessWayFromStr($(this).children('td').eq(7).html()),
+            processWayItem:{dataDictionaryItemId:getIdFromProcessWay($(this).children('td').eq(7).html())},
     };
         console.log(data);
         $.ajax({
@@ -972,6 +969,7 @@ function save() {
 
 //配料单显示页面加载
 function loadBatchingOrderList() {
+    $('.loader').show()
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
@@ -984,6 +982,13 @@ function loadBatchingOrderList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
+    if(array0.length==0){
+        for (var i = 1; i <= totalPage(); i++) {
+            switchPage(parseInt(i));
+
+            array0.push($('.myclass'));
+        }
+    }
     //1执行ajax取数据
     $.ajax({
         type: "POST",                       // 方法类型
@@ -994,6 +999,7 @@ function loadBatchingOrderList() {
         contentType: "application/json; charset=utf-8",
         success:function (result) {
             if (result != undefined && result.status == "success"){
+                $('.loader').hide()
                 console.log(result);
                //setBatchingOrderList(result.batchingOrderList);
                 setPageClone(result);
@@ -1102,21 +1108,21 @@ function setBatchingOrderList(result) {
                             break;
                             //进料方式
                         case (9):
-                            if(obj.handelCategory!=null){
-                                $(this).html((obj.handelCategory.name));
+                            if(obj.handleCategoryItem!=null){
+                                $(this).html((obj.handleCategoryItem.dictionaryItemName));
                             }
                             break;
                             //处置方式
                         case (10):
-                            if(obj.processWay!=null){
-                                $(this).html((obj.processWay.name));
+                            if(obj.processWayItem!=null){
+                                $(this).html((obj.processWayItem.dictionaryItemName));
                             }
                             break;
 
                         //状态
                         case (11):
-                            if(obj.checkState!=null){
-                                $(this).html(obj.checkState.name);
+                            if(obj.checkStateItem!=null){
+                                $(this).html(obj.checkStateItem.dictionaryItemName);
                             }
 
                             break;
@@ -1324,14 +1330,14 @@ function setMaterialRequisitionList(result) {
                             break;
                        //进料方式
                         case (7):
-                            if(obj.handelCategory!=null){
-                                $(this).html(obj.handelCategory.name);
+                            if(obj.handleCategoryItem!=null){
+                                $(this).html(obj.handleCategoryItem.dictionaryItemName);
                             }
                             break;
                             //处置方式
                         case (8):
-                            if(obj.processWay!=null){
-                                $(this).html(obj.processWay.name);
+                            if(obj.processWayItem!=null){
+                                $(this).html(obj.processWayItem.dictionaryItemName);
                             }
                             break;
                             //入库单明细
@@ -1458,8 +1464,8 @@ function updateMaterialRequisitionOrder() {
                wastesName:$(this).children("td").eq(2).html(),
                wasteCategory:$(this).children("td").eq(3).html(),
                recipientsNumber:parseFloat($(this).children("td").eq(6).children('input').val()).toFixed(2),
-               handelCategory:getHandleCategoryFromStr($(this).children("td").eq(7).html()),
-               processWay:getProcessWayFromStr($(this).children("td").eq(8).html()),
+               handleCategoryItem:{dataDictionaryItemId:getIdFromHandleCategory($(this).children("td").eq(7).html())},
+               processWayItem:{dataDictionaryItemId:getIdFromProcessWay($(this).children("td").eq(8).html())},
                inboundOrderItemId:$(this).children("td").eq(9).html(),
                client:{clientId:$(this).children("td").eq(10).html()},
                wareHouse:{wareHouseId:$(this).children("td").eq(11).html()},
@@ -1522,19 +1528,10 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 //粗查询
 function searchBatchingList() {
 
-    isSearch=false;
-
-    //loadBatchingOrderList();
-
-    //1分页模糊查询
+    $('#tbody1').find('.myclass').hide();
     array.length=0;//清空数组
-
-    array1.length=0;
-
-    for(var i=totalPage();i>0;i--){
-        switchPage(parseInt(i));
-        array.push($('.myclass'));
-    }
+    array1.length=0;//清空数组
+    array=[].concat(array0);
 
     isSearch=true;
 
@@ -1589,6 +1586,7 @@ function searchBatchingList() {
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
+    setPageCloneAfter(1);
     for(var i=0;i<array1.length;i++){
         $(array1[i]).hide();
     }
@@ -1816,11 +1814,11 @@ function view(item) {
                 $('#batchingDate').val(getDateStr(obj.batchingDate));
                 $('#createDate').val(getDateStr(obj.createDate));
                 $('#transferDraftId').val(obj.transferDraftId);
-                if(obj.handelCategory!=null){
-                    $('#handelCategory').val(obj.handelCategory.name);
+                if(obj.handleCategoryItem!=null){
+                    $('#handelCategory').val(obj.handleCategoryItem.dictionaryItemName);
                 }
-                if(obj.processWay!=null){
-                    $('#processWay').val(obj.processWay.name);
+                if(obj.processWayItem!=null){
+                    $('#processWay').val(obj.processWayItem.dictionaryItemName);
                 }
 
 

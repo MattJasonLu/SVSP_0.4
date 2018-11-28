@@ -371,26 +371,26 @@ function switchPage(pageNumber) {
         });
     }
     else {
+        data1['page'] = page;
         $.ajax({
-            type: "POST",                       // 方法类型
-            url: "searchCompatibilityTotal",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            type: "POST",                            // 方法类型
+            url: "searchCompatibility",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
-                // console.log(result);
-                if (result > 0) {
-                    totalRecord = result;
-                    console.log("总记录数为:" + result);
+                if (result != undefined && result.status == "success") {
+                    console.log(result)
+                    setCompatibility(result)
                 } else {
-                    console.log("fail: " + result);
-                    totalRecord = 0;
+                    alert(result.message);
+
                 }
             },
             error: function (result) {
-                console.log("error: " + result);
-                totalRecord = 0;
+                console.log(result);
+                alert("服务器错误！");
             }
         });
     }
@@ -457,6 +457,7 @@ function inputSwitchPage() {
                 }
             });
         } else {
+            data1['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
                 url: "searchCompatibilityTotal",                  // url
@@ -628,15 +629,12 @@ function setCompatibility(result) {
 
                 //状态
                 case (13):
-                    if (data.checkState != null) {
-                        $(this).html(data.checkState.name);
+                    if (data.checkStateItem != null) {
+                        $(this).html(data.checkStateItem.dictionaryItemName);
                     }
                     break;
             }
             clonedTr.removeAttr("id");
-            if (clonedTr.children('td').eq(13).html() == '已作废') {
-                $(clonedTr).hide();
-            }
             clonedTr.insertBefore(tr);
         });
         //把克隆好的tr追加到原来的tr前面
@@ -911,9 +909,11 @@ function confirmCompatibilityId() {
  * 设置高级检索的下拉框数据
  */
 function setPwList() {
+
+    //进料方式
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getSelectList",                  // url
+        url: "getHandleCategoryByDataDictionary",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
@@ -922,24 +922,13 @@ function setPwList() {
                 //处理类别
                 var handleCategory = $('#search-handleCategory');
                 handleCategory.children().remove();
-                $.each(data.handleCategoryList, function (index, item) {
+                $.each(data.data, function (index, item) {
                     var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     handleCategory.append(option);
                 });
                 handleCategory.get(0).selectedIndex = -1;
-                //形态
-                var formType = $('#search-formType');
-                formType.children().remove();
-                $.each(data.formTypeList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    formType.append(option);
-                });
-                formType.get(0).selectedIndex = -1;
-
             } else {
                 console.log("fail: " + result);
             }
@@ -949,6 +938,33 @@ function setPwList() {
         }
     });
 
+   //物质形态
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getFormTypeByDataDictionary",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                //处理类别
+                var formType = $('#search-formType');
+                formType.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    formType.append(option);
+                });
+                formType.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
 }
 
 array = [];
@@ -1140,15 +1156,15 @@ function setCompatibilityItemModal(result) {
 
                 //处理类别
                 case (1):
-                    if (obj.handleCategory != null) {
-                        $(this).html(obj.handleCategory.name);
+                    if (obj.handleCategoryItem != null) {
+                        $(this).html(obj.handleCategoryItem.dictionaryItemName);
                     }
                     break;
 
                 //物质形态
                 case (2):
-                    if (obj.formType != null) {
-                        $(this).html(obj.formType.name);
+                    if (obj.formTypeItem != null) {
+                        $(this).html(obj.formTypeItem.dictionaryItemName);
                     }
                     break;
                 //比例
@@ -1300,6 +1316,9 @@ function adjustCom() {
     $("#compatibilityId2").text(compatibilityId);
 
 
+
+
+
     //找出物料明细
     $.ajax({
         type: "POST",
@@ -1377,11 +1396,11 @@ function adjustCom() {
                     cloneTr.children('td').eq(22).html(obj.id);
 
 
-                    if (obj.handleCategory != null) {
+                    if (obj.handleCategoryItem != null) {
                         //进料方式
                         $.ajax({
                             type: 'POST',
-                            url: "getHandleCategory",
+                            url: "getHandleCategoryByDataDictionary",
                             //data:JSON.stringify(data),
                             dataType: "json",
                             contentType: "application/json;charset=utf-8",
@@ -1390,13 +1409,13 @@ function adjustCom() {
                                     // console.log(result);
                                     var handelCategory = cloneTr.children('td').eq(1).children('select');
                                     handelCategory.children().remove();
-                                    $.each(result.handleCategoryList, function (index, item) {
+                                    $.each(result.data, function (index, item) {
                                         var option = $('<option/>');
-                                        option.val(item.index);
-                                        option.text(item.name);
+                                        option.val(item.dataDictionaryItemId);
+                                        option.text(item.dictionaryItemName);
                                         handelCategory.append(option);
                                     });
-                                    handelCategory.get(0).selectedIndex = item.handleCategory.index - 1;
+                                    handelCategory.val(obj.handleCategoryItem.dataDictionaryItemId);
                                 }
                                 else {
                                     alert(result.message);
@@ -1410,11 +1429,11 @@ function adjustCom() {
 
 
                     }
-                    if (item.formType != null) {
-                        //形态
+                    if (item.formTypeItem != null) {
+                        //物质形态
                         $.ajax({
                             type: 'POST',
-                            url: "getFormTypeAndPackageType",
+                            url: "getFormTypeByDataDictionary",
                             //data:JSON.stringify(data),
                             dataType: "json",
                             contentType: "application/json;charset=utf-8",
@@ -1423,13 +1442,13 @@ function adjustCom() {
                                     // console.log(result);
                                     var formType = cloneTr.children('td').eq(2).children('select');
                                     formType.children().remove();
-                                    $.each(result.formTypeList, function (index, item) {
+                                    $.each(result.data, function (index, item) {
                                         var option = $('<option/>');
-                                        option.val(item.index);
-                                        option.text(item.name);
+                                        option.val(item.dataDictionaryItemId);
+                                        option.text(item.dictionaryItemName);
                                         formType.append(option);
                                     });
-                                    formType.get(0).selectedIndex = obj.formType.index - 1;
+                                    formType.val(obj.formTypeItem.dataDictionaryItemId)
                                 }
                                 else {
                                     alert(result.message);
@@ -1440,7 +1459,7 @@ function adjustCom() {
                             }
 
                         });
-                        //cloneTr.children('td').eq(2).children('select').selectedIndex=3;
+
                     }
                     // cloneTr.removeAttr('id');
                     cloneTr.insertBefore(tr);
@@ -1543,8 +1562,8 @@ function adjustConfirmPw() {
                 $('.myclass2').each(function () {
                     var data = {
                         compatibilityId: $('#compatibilityId2').text(),
-                        handleCategory: $(this).children('td').eq(1).children('select').get(0).selectedIndex,
-                        formType: $(this).children('td').eq(2).children('select').get(0).selectedIndex,
+                        handleCategoryItem: {dataDictionaryItemId:$(this).children('td').eq(1).children('select').val()},
+                        formTypeItem: {dataDictionaryItemId:$(this).children('td').eq(2).children('select').val()},
                         // id: $(this).children('td').eq(14).html(),
                         weeklyDemandTotal: $(this).children('td').eq(3).children('input').val(),
                         dailyRatio: $(this).children('td').eq(4).html(),
@@ -1713,43 +1732,17 @@ function searchPw() {
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
     if ($("#senior").is(':visible')) {
-        var formType = null;
-        var handleCategory = null;
-        if ($("#search-formType").val() == 0)
-            formType = "Gas";
-        if ($("#search-formType").val() == 1)
-            formType = "Liquid";
-        if ($("#search-formType").val() == 2)
-            formType = "Solid";
-        if ($("#search-formType").val() == 3)
-            formType = "HalfSolid";
-
-        if ($("#search-handleCategory").val() == 0)
-            handleCategory = "Sludge"
-
-        if ($("#search-handleCategory").val() == 1)
-            handleCategory = "WasteLiquid"
-
-        if ($("#search-handleCategory").val() == 2)
-            handleCategory = "Bulk"
-
-        if ($("#search-handleCategory").val() == 3)
-            handleCategory = "Crushing"
-
-        if ($("#search-handleCategory").val() == 4)
-            handleCategory = "Distillation"
-
-        if ($("#search-handleCategory").val() == 5)
-            handleCategory = "Suspension"
         var checkState = $('#search-checkState').val()
+        var formType=$('#search-formType').val()
+        var handleCategory=$('#search-handleCategory').val()
         if (checkState.length <= 0) {
             checkState = null;
         }
         data1 = {
             compatibilityItemList: [{
                 compatibilityId: $.trim($("#search-pwId").val()),
-                formType: formType,
-                handleCategory: handleCategory,
+                formTypeItem:{dataDictionaryItemId:formType} ,
+                handleCategoryItem:{dataDictionaryItemId:handleCategory} ,
                 weeklyDemandTotal: $.trim($('#search-weeklyDemandTotalAggregate').val()),
                 calorificBeg: $.trim($('#search-calorificBeg').val()),
                 calorificEnd: $.trim($('#search-calorificEnd').val()),
@@ -1761,27 +1754,12 @@ function searchPw() {
                 sEnd: $.trim($('#search-sEnd').val()),
             }],
             page: page,
-            checkState: checkState
+            checkStateItem:{dataDictionaryItemId:checkState}
 
         };
     }
     else {
         var keywords = $.trim($("#searchContent").val());
-        if (keywords == '已失效') {
-            keywords = 'Disabled'
-        }
-        if (keywords == '待提交') {
-            keywords = 'ToSubmit'
-        }
-        if (keywords == '审批通过') {
-            keywords = 'Approval'
-        }
-        if (keywords == '待审批') {
-            keywords = 'ToExamine'
-        }
-        if (keywords == '生效中') {
-            keywords = 'Enabled'
-        }
         data1 = {
             page: page,
             keywords: keywords
@@ -1850,7 +1828,7 @@ function addPw() {
     //进料方式
     $.ajax({
         type: 'POST',
-        url: "getHandleCategory",
+        url: "getHandleCategoryByDataDictionary",
         //data:JSON.stringify(data),
         dataType: "json",
         contentType: "application/json;charset=utf-8",
@@ -1859,10 +1837,10 @@ function addPw() {
                 //console.log(result);
                 var handleCategory = $('#handleCategory');
                 handleCategory.children().remove();
-                $.each(result.handleCategoryList, function (index, item) {
+                $.each(result.data, function (index, item) {
                     var option = $('<option/>');
-                    option.val(index + 1);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     handleCategory.append(option);
                 });
                 handleCategory.get(0).selectedIndex = 0;
@@ -1880,7 +1858,7 @@ function addPw() {
     //物质形态
     $.ajax({
         type: 'POST',
-        url: "getFormTypeAndPackageType",
+        url: "getFormTypeByDataDictionary",
         //data:JSON.stringify(data),
         dataType: "json",
         contentType: "application/json;charset=utf-8",
@@ -1889,10 +1867,10 @@ function addPw() {
                 //console.log(result);
                 var formType = $('#formType');
                 formType.children().remove();
-                $.each(result.formTypeList, function (index, item) {
+                $.each(result.data, function (index, item) {
                     var option = $('<option/>');
-                    option.val(index + 1);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     formType.append(option);
                 });
                 formType.get(0).selectedIndex = 0;
@@ -2171,8 +2149,8 @@ function addCompatibility() {
                 $('.myclass3').each(function () {
                     var dataItem = {
                         compatibilityId: $('#compatibilityId4').text(),
-                        handleCategory: $(this).children('td').eq(1).find('select').get(0).selectedIndex,
-                        formType: $(this).children('td').eq(2).find('select').get(0).selectedIndex,
+                        handleCategoryItem: {dataDictionaryItemId:$(this).children('td').eq(1).find('select').val()},
+                        formTypeItem:{dataDictionaryItemId:$(this).children('td').eq(2).find('select').val()} ,
                         proportion: $(this).children('td').eq(5).html(),
                         dailyRatio: $(this).children('td').eq(4).html(),
                         weeklyDemandTotal: $(this).children('td').eq(3).find("input").val(),

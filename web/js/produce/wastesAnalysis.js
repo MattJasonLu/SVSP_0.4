@@ -364,6 +364,7 @@ function loadPages(totalRecord, count) {
  * 分页 获取首页内容
  * */
 function loadPageList() {
+    loadNavigationList(); // 设置动态菜单
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");

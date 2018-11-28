@@ -79,13 +79,13 @@ public class OutboundOrderServiceImpl implements OutboundOrderService{
     }
 
     @Override
-    public HandleCategory getHandelCategoryById(String outboundNumber) {
+    public int getHandelCategoryById(String outboundNumber) {
         return outboundOrderMapper.getHandelCategoryById(outboundNumber);
     }
 
     @Override
-    public void upHandelCategoryById(String outboundOrderId, String handelCategory) {
-        outboundOrderMapper.upHandelCategoryById(outboundOrderId,handelCategory);
+    public void upHandelCategoryById(String outboundOrderId, int id) {
+        outboundOrderMapper.upHandelCategoryById(outboundOrderId,id);
     }
 
     @Override

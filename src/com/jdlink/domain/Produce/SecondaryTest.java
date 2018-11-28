@@ -1,6 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Dictionary.CheckStateItem;
 import com.jdlink.domain.Page;
 
 import java.util.Date;
@@ -36,6 +37,18 @@ public class SecondaryTest {
     private  Date dateTimeStart;
 
     private  Date dateTimeEnd;
+
+    //状态数据字典
+    private CheckStateItem checkStateItem;
+
+    public CheckStateItem getCheckStateItem() {
+
+        return checkStateItem;
+    }
+
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
+    }
 
     public Date getDateTimeStart() {
         return dateTimeStart;

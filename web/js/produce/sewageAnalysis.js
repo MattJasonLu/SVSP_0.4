@@ -164,7 +164,7 @@ function switchPage(pageNumber) {
             }
         });
     } else {
-        data['page'] = page;
+        data1['page'] = page;
         $.ajax({
             type: "POST",                       // 方法类型
             url: "searchSewage",         // url
@@ -427,9 +427,9 @@ function setSewageList(result) {
                             $(this).html(obj.laboratorySignatory);
                             break;
                         case (6):
-                            // 备注
-                            if(obj.checkState!=null){
-                                $(this).html(obj.checkState.name);
+                            // 状态
+                            if(obj.checkStateItem!=null){
+                                $(this).html(obj.checkStateItem.dictionaryItemName);
                             }
 
                             break;
@@ -639,25 +639,13 @@ function searchSewage() {
             sendingPerson: $.trim($("#search-remarks").val()),
             laboratorySignatory: $.trim($("#search-laboratorySignatory").val()),
             // remarks: $.trim($("#search-remarks").val()),
-            checkState:state,
+            checkStateItem:{dataDictionaryItemId:state},
             sewageregistrationItemList:[{ph:ph,lye:lye,cod:cod,bod5:bod5,n2:n2,nitrogen:nitrogen,phosphorus:phosphorus}],
             page: page
         };
             console.log(data1)
     }else{             //模糊查询
         var keywords= $.trim($("#searchContent").val());
-        if(keywords=='已收样'){
-            keywords='Collected'
-        }
-        if(keywords=='待收样'){
-            keywords='ToCollected'
-        }
-        if(keywords=='已拒收'){
-            keywords='Rejected'
-        }
-        if(keywords=='已作废'){
-            keywords='Invalid'
-        }
 
         if(keywords=='PH'){
            ph=1;

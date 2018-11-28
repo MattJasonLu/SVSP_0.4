@@ -177,17 +177,28 @@ function switchPage(pageNumber) {
             }
         });
     }
-    if (isSearch) {//查询用的
-        for(var i=0;i<array1.length;i++){
-            $(array1[i]).hide();
+    else{
+        data1['page'] = page;
+        $.ajax({
+        type: "POST",                            // 方法类型
+        url: "searchSecondary",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(data1),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            console.log(result);
+            if (result.data != undefined || result.status == "success") {
+                setSecIntoList(result.data);
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器错误！");
         }
-        var i=parseInt((pageNumber-1)*countValue());
-        var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
-        for(var i=i;i<=j;i++){
-            $('#tbody1').append(array1[i]);
-            $(array1[i]).show();
-        }
-    }
+    });}
 }
 
 /**
@@ -248,17 +259,28 @@ function inputSwitchPage()  {
                 }
             });
         }
-        if (isSearch) {//查询用的
-            for(var i=0;i<array1.length;i++){
-                $(array1[i]).hide();
-            }
-            var i=parseInt((pageNumber-1)*countValue());
-            var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
-            for(var i=i;i<=j;i++){
-                $('#tbody1').append(array1[i]);
-                $(array1[i]).show();
-            }
-        }
+        if (isSearch){
+            data1['page'] = page;
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "searchSecondary",                 // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data1),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    console.log(result);
+                    if (result.data != undefined || result.status == "success") {
+                        setSecIntoList(result.data);
+                    } else {
+                        console.log(result.message);
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                    alert("服务器错误！");
+                }
+            });}
     }
 }
 
@@ -404,9 +426,9 @@ function setSecIntoList(result) {
                     $(this).html(obj.address);
                     break;
                 case (7):
-                    // 备注
-                    if(obj.checkState!=null){
-                        $(this).html(obj.checkState.name);
+                    // 状态
+                    if(obj.checkStateItem!=null){
+                        $(this).html(obj.checkStateItem.dictionaryItemName);
                     }
 
                     break;
@@ -470,22 +492,14 @@ function searchSecInto() {
             sendingPerson: $.trim($("#search-remarks").val()),
             laboratorySignatory: $.trim($("#search-laboratorySignatory").val()),
             //remarks: $.trim($("#search-remarks").val()),
-            checkState:state,
+            checkStateItem:{dataDictionaryItemId:state},
             secondarySampleItemList:[{water:water,scorchingRate:scorchingRate,  wastesName:$.trim($("#search-wastesName").val()),}],
             page: page
         };
     }
     else{
         var keywords= $.trim($("#searchContent").val());
-        if(keywords=='已收样'){
-            keywords='Collected'
-        }
-        if(keywords=='待收样'){
-            keywords='ToCollected'
-        }
-        if(keywords=='已拒收'){
-            keywords='Rejected'
-        }
+
 
         var scorchingRate;
 

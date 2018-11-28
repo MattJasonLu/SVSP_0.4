@@ -4,7 +4,9 @@
 var currentPage = 1;                          //当前页数
 var isSearch = false;
 var data1;
-
+array = [];//存放所有的tr
+array1 = [];//存放目标的tr
+array0=[];
 /**
  * 返回count值
  * */
@@ -39,28 +41,7 @@ function totalPage() {
             }
         });
     } else {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "searchSewageTotal",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data1),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                // console.log(result);
-                if (result > 0) {
-                    totalRecord = result;
-                    console.log("总记录数为:" + result);
-                } else {
-                    console.log("fail: " + result);
-                    totalRecord = 0;
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-                totalRecord = 0;
-            }
-        });
+        totalRecord = array1.length;
     }
     var count = countValue();                         // 可选
     var total = loadPages(totalRecord, count);
@@ -274,6 +255,11 @@ function inputSwitchPage() {
  * 加载
  */
 function loadPageList() {
+
+    $('.loader').show();
+
+    loadNavigationList(); // 设置动态菜单
+
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
@@ -288,6 +274,13 @@ function loadPageList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
+    if(array0.length==0){
+        for (var i = 1; i <= totalPage(); i++) {
+            switchPage(parseInt(i));
+
+            array0.push($('.myclass'));
+        }
+    }
     $.ajax({
         type: "POST",                       // 方法类型
         url: "loadSoftTestResultsList",          // url
@@ -297,6 +290,7 @@ function loadPageList() {
         contentType: 'application/json;charset=utf-8',
         success: function (result) {
             if (result != undefined && result.status == "success") {
+                $('.loader').hide();
                 console.log(result);
                 setPageClone(result);
                 setPageCloneAfter(pageNumber);        // 重新设置页码
@@ -375,8 +369,8 @@ function setSoftTestList(result) {
                     break;
                 case (10):
                     // 单据状态
-                    if(obj.checkState!=null){
-                        $(this).html((obj.checkState.name))
+                    if(obj.checkStateItem!=null){
+                        $(this).html((obj.checkStateItem.dictionaryItemName))
                     }
                     break;
 
@@ -393,6 +387,15 @@ function setSoftTestList(result) {
 
 }
 
+/**
+ * 设置选中页页码标蓝
+ */
+function AddAndRemoveClass(item) {
+    $('.oldPageClass').removeClass("active");
+    $('.oldPageClass').removeClass("oldPageClass");
+    $(item).parent().addClass("active");
+    $(item).parent().addClass("oldPageClass");
+}
 
 /**
  * 软水化验结果导出excel
@@ -507,8 +510,6 @@ function importExcel() {
     });
 }
 
-array = [];//存放所有的tr
-array1 = [];//存放目标的tr
 
 /**
  * 延时自动查询
@@ -529,15 +530,10 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 
 //查询
 function searchData() {
-    isSearch = false;
-    array.length = 0;//清空数组
-    array1.length = 0;//清空数组
-    //1分页模糊查询
-
-    for (var i = totalPage(); i > 0; i--) {
-        switchPage(parseInt(i));
-        array.push($('.myclass'));
-    }
+    $('#tbody1').find('.myclass').hide();
+    array.length=0;//清空数组
+    array1.length=0;//清空数组
+    array=[].concat(array0);
 
     isSearch = true;
 
@@ -627,6 +623,7 @@ function searchData() {
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
+    setPageCloneAfter(1);
     for (var i = 0; i < array1.length; i++) {
         array1[i].hide();
     }

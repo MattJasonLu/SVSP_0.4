@@ -15,8 +15,11 @@
     <script src="js/produce/medicalWastes.js"></script>
     <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
     <script src="js/bootstrap/bootstrap-select.min.js"></script>
+    <link href="css/loading1.css" rel="stylesheet">
+    <link href="css/loading2.css" rel="stylesheet">
 </head>
 <body onload="loadMedicalWastesList()"  >
+
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -363,6 +366,13 @@
             </div>
         </div>
     </div>
+</div>
+<div class="loader ">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
 </div>
 <!--导入模态框-->
 <div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

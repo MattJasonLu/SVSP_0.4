@@ -3,6 +3,7 @@ package com.jdlink.domain.Produce;
 import com.jdlink.domain.ApplyState;
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Dictionary.CheckStateItem;
 import com.jdlink.domain.Page;
 
 import java.util.ArrayList;
@@ -48,6 +49,16 @@ public class Sewageregistration {
     //
     private Date createTime;
 
+    //状态数据字典
+    private CheckStateItem checkStateItem;
+
+    public CheckStateItem getCheckStateItem() {
+        return checkStateItem;
+    }
+
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
+    }
 
     public Date getCreateTime() {
         return createTime;

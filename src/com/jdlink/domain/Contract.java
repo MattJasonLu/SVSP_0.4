@@ -1,5 +1,6 @@
 package com.jdlink.domain;
 
+import com.jdlink.domain.Dictionary.CheckStateItem;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
@@ -242,6 +243,17 @@ public class Contract implements Serializable {
 
     //合同附件地址
     private String  contractAppendicesUrl;
+
+    //审核状态数据字典
+    private CheckStateItem checkStateItem;
+
+    public CheckStateItem getCheckStateItem() {
+        return checkStateItem;
+    }
+
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
+    }
 
     public MultipartFile getContractAppendices() {
         return contractAppendices;

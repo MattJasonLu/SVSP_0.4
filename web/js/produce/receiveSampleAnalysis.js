@@ -297,6 +297,7 @@ function inputSwitchPage() {
  * 分页 获取首页内容
  * */
 function loadPageList() {
+    loadNavigationList(); // 设置动态菜单
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
@@ -775,17 +776,105 @@ function showEditModal(e) {
                 $("#editWastesCode").selectpicker('val', obj.wastesCode);
                 if (obj.formType != null) $("#editFormType").val(obj.formType.index - 1);
                 $("#editRemark").val(obj.remark);
-                $("#editPH").val(parseFloat(obj.PH).toFixed(0));
-                $("#editAsh").val(parseFloat(obj.ash).toFixed(2));
-                $("#editWater").val(parseFloat(obj.water).toFixed(2));
-                $("#editHeat").val(parseFloat(obj.heat).toFixed(0));
-                $("#editFluorine").val(parseFloat(obj.fluorine).toFixed(2));
-                $("#editChlorine").val(parseFloat(obj.chlorine).toFixed(2));
-                $("#editSulfur").val(parseFloat(obj.sulfur).toFixed(2));
-                $("#editPhosphorus").val(parseFloat(obj.phosphorus).toFixed(2));
-                $("#editFlashPoint").val(parseFloat(obj.flashPoint).toFixed(0));
-                $("#editViscosity").val(obj.viscosity);
-                $("#editHotMelt").val(obj.hotMelt);
+                var ph = setNumber2Line(parseFloat(obj.PH).toFixed(0));
+                if (ph == "--") {
+                    $("#editPH").attr("disabled","disabled");
+                    $("#editPH").val("");
+                }
+                else {
+                    $("#editPH").removeAttr("disabled");
+                    $("#editPH").val(ph);
+                }
+                var ash = setNumber2Line(parseFloat(obj.ash).toFixed(2));
+                if (ash == "--") {
+                    $("#editAsh").attr("disabled","disabled");
+                    $("#editAsh").val("");
+                }
+                else {
+                    $("#editAsh").removeAttr("disabled");
+                    $("#editAsh").val(ash);
+                }
+                var water = setNumber2Line(parseFloat(obj.water).toFixed(2));
+                if (water == "--") {
+                    $("#editWater").attr("disabled","disabled");
+                    $("#editWater").val("");
+                }
+                else {
+                    $("#editWater").removeAttr("disabled");
+                    $("#editWater").val(water);
+                }
+                var heat = setNumber2Line(parseFloat(obj.heat).toFixed(0));
+                if (heat == "--") {
+                    $("#editHeat").attr("disabled","disabled");
+                    $("#editHeat").val("");
+                }
+                else {
+                    $("#editHeat").removeAttr("disabled");
+                    $("#editHeat").val(heat);
+                }
+                var fluorine = setNumber2Line(parseFloat(obj.fluorine).toFixed(2));
+                if (fluorine == "--") {
+                    $("#editFluorine").attr("disabled","disabled");
+                    $("#editFluorine").val("");
+                }
+                else {
+                    $("#editFluorine").removeAttr("disabled");
+                    $("#editFluorine").val(fluorine);
+                }
+                var chlorine = setNumber2Line(parseFloat(obj.chlorine).toFixed(2));
+                if (chlorine == "--") {
+                    $("#editChlorine").attr("disabled","disabled");
+                    $("#editChlorine").val("");
+                }
+                else {
+                    $("#editChlorine").removeAttr("disabled");
+                    $("#editChlorine").val(chlorine);
+                }
+                var sulfur = setNumber2Line(parseFloat(obj.sulfur).toFixed(2));
+                if (sulfur == "--") {
+                    $("#editSulfur").attr("disabled","disabled");
+                    $("#editSulfur").val("");
+                }
+                else {
+                    $("#editSulfur").removeAttr("disabled");
+                    $("#editSulfur").val(sulfur);
+                }
+                var phosphorus = setNumber2Line(parseFloat(obj.phosphorus).toFixed(2));
+                if (phosphorus == "--") {
+                    $("#editPhosphorus").attr("disabled","disabled");
+                    $("#editPhosphorus").val("");
+                }
+                else {
+                    $("#editPhosphorus").removeAttr("disabled");
+                    $("#editPhosphorus").val(phosphorus);
+                }
+                var flashPoint = setNumber2Line(parseFloat(obj.flashPoint).toFixed(0));
+                if (flashPoint == "--") {
+                    $("#editFlashPoint").attr("disabled","disabled");
+                    $("#editFlashPoint").val("");
+                }
+                else {
+                    $("#editFlashPoint").removeAttr("disabled");
+                    $("#editFlashPoint").val(flashPoint);
+                }
+                var viscosity = setNumber2Line(obj.viscosity);
+                if (viscosity == "--") {
+                    $("#editViscosity").attr("disabled","disabled");
+                    $("#editViscosity").val("");
+                }
+                else {
+                    $("#editViscosity").removeAttr("disabled");
+                    $("#editViscosity").val(viscosity);
+                }
+                var hotMelt = setNumber2Line(obj.hotMelt);
+                if (hotMelt == "--") {
+                    $("#editHotMelt").attr("disabled","disabled");
+                    $("#editHotMelt").val("");
+                }
+                else {
+                    $("#editHotMelt").removeAttr("disabled");
+                    $("#editHotMelt").val(hotMelt);
+                }
                 $("#editSender").val(obj.sender);
             } else {
                 alert(result.message);

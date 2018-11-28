@@ -4,6 +4,7 @@ import com.jdlink.domain.Dictionary.DataDictionary;
 import com.jdlink.domain.Dictionary.DataDictionaryItem;
 import com.jdlink.domain.Page;
 
+import java.util.Dictionary;
 import java.util.List;
 
 public interface DictionaryService {
@@ -46,4 +47,20 @@ public interface DictionaryService {
      */
     void  deleteDataDictionaryById(int id);
 
+
+    /**
+     * 数据字典查询
+     *
+     */
+    List<DataDictionary> searchDictionary(DataDictionary dataDictionary);
+
+    /**
+     * 查看计数
+     *
+     */
+    int searchDictionaryCount(DataDictionary dataDictionary);
+
+    List<DataDictionaryItem>getSelectListByDataDictionary(int id);
+
+    int getdatadictionaryitemIdByName(String name,int id);
 }

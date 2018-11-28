@@ -1,6 +1,11 @@
 var isSearch = false;
 var currentPage = 1;                          //当前页数
 var data;
+
+array0=[];
+array=[];//存放所有的tr
+array1=[];//存放目标的tr
+//危废出库查询
 /**********************出库部分**********************/
 function reset() {
     window.location.reload();
@@ -257,6 +262,7 @@ function inputSwitchPage() {
  * 分页 获取首页内容==>危废
  * */
 function loadOutBoundList() {
+    $('.loader').show();
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
@@ -269,6 +275,13 @@ function loadOutBoundList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
+    if(array0.length==0){
+        for (var i = 1; i <= totalPage(); i++) {
+            switchPage(parseInt(i));
+
+            array0.push($('.myclass'));
+        }
+    }
     $.ajax({
         type: "POST",                       // 方法类型
         url: "loadWastesOutBoundList",                  // url
@@ -279,6 +292,7 @@ function loadOutBoundList() {
         success:function (result) {
             if (result != undefined && result.status == "success"){
                 console.log(result);
+                $('.loader').hide();
                 //设置下拉列表
                 setPageClone(result.data);
             }
@@ -409,15 +423,15 @@ function setOutboutList(result,index) {
                         break;
                     // 进料方式
                     case (5):
-                       if(obj.handelCategory!=null){
-                           $(this).html(obj.handelCategory.name);
+                       if(obj.handleCategoryItem!=null){
+                           $(this).html(obj.handleCategoryItem.dictionaryItemName);
                        }
                         break;
 
                     // 处置方式
                     case (6):
-                        if(obj.processWay!=null){
-                            $(this).html(obj.processWay.name);
+                        if(obj.processWayItem!=null){
+                            $(this).html(obj.processWayItem.dictionaryItemName);
                         }
                         break;
                     //仓库
@@ -474,7 +488,7 @@ function saveOutBound(){
                 var auditor=$('#auditor').val();
 
                 //6处置设备
-                var equipment=$('#equipment').selectpicker('val')-1;
+                var equipment=$('#equipment').selectpicker('val');
 
                 var outboundOrderId=$(this).children('td').eq(0).html();
 
@@ -492,9 +506,9 @@ function saveOutBound(){
 
                 var inboundOrderItemId=$(this).children('td').eq(11).html();
 
-                var handelCategory=getHandleCategoryFromStr($(this).children('td').eq(5).html())
+                var handelCategory=getIdFromHandleCategory($(this).children('td').eq(5).html())
 
-               var processWay=getProcessWayFromStr($(this).children('td').eq(6).html())
+               var processWay=getIdFromProcessWay($(this).children('td').eq(6).html())
                 data={
                     outboundOrderId:outboundOrderId,
                     client:{clientId:clientId},
@@ -506,10 +520,10 @@ function saveOutBound(){
                     creator:creator,
                     auditor:auditor,
                     outboundNumber:outboundNumber,
-                    equipment:equipment,
+                    equipmentDataItem:{dataDictionaryItemId:equipment},
                     inboundOrderItemId:inboundOrderItemId,
-                    handelCategory:handelCategory,
-                    processWay:processWay
+                    handleCategoryItem:{dataDictionaryItemId:handelCategory},
+                    processWayItem:{dataDictionaryItemId:processWay}
                 }
                 console.log(data);
                addOutBoundOrder(data);
@@ -627,8 +641,8 @@ function setOutBoundList(result) {
                         break;
                     //审批状态
                     case (9):
-                        if(obj.checkState!=null){
-                            $(this).html(obj.checkState.name);
+                        if(obj.checkStateItem!=null){
+                            $(this).html(obj.checkStateItem.dictionaryItemName);
                         }
                         break;
                     //转移联单号
@@ -764,16 +778,16 @@ function adjustAttr(item) {
         //contentType: "application/json; charset=utf-8",
         success:function (result) {
             if (result != undefined && result.status == "success"){
-               index1=result.handelCategory.index;
+              console.log(result)
                 var type=$('#modal-type');
                 type.children().remove();
-                $.each(result.array1,function (index,item) {
+                $.each(result.data,function (index,item) {
                     var option=$('<option/>');
-                    option.val(item.index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     type.append(option);
                 })
-                type.get(0).selectedIndex=index1-1;
+                type.val(result.handelCategoryId)
             }
             else {
                 alert(result.message);
@@ -931,19 +945,19 @@ function view1(item){
                 //     $('#fAvg').text(result.data[0].laboratoryTest.fluorineContentAverage);
                 //     $('#fMin').text(result.data[0].laboratoryTest.fluorineContentMinimum);
                 // }
-                if(result.data.processWay!=null){
+                if(result.data.processWayItem!=null){
                     //处理方式
-                    $('#processingMethod').text(result.data.processWay.name);
+                    $('#processingMethod').text(result.data.processWayItem.dictionaryItemName);
                 }
-                if(result.data.handelCategory!=null){
+                if(result.data.handleCategoryItem!=null){
                     //进料方式
-                    $('#handelCategory').text(result.data.handelCategory.name);
+                    $('#handelCategory').text(result.data.handleCategoryItem.dictionaryItemName);
                 }
                 //出库单号
                 $("#outboundOrderId").val(result.data.outboundOrderId);
                 //处置设备
-                if(result.data.equipment!=null){
-                    $('#equipment').text(result.data.equipment.name);
+                if(result.data.equipmentDataItem!=null){
+                    $('#equipment').text(result.data.equipmentDataItem.dictionaryItemName);
                 }
                 $('#appointModal2').modal('show');
             }
@@ -1069,12 +1083,8 @@ function confirmCancel(){
 
 
 
-
-array=[];//存放所有的tr
-array1=[];//存放目标的tr
-//危废出库查询
 function searchWasteOut() {
-    isSearch=false;
+
     //如果需要按日期范围查询 寻找最早的日期
     var date;
     $.ajax({
@@ -1099,13 +1109,10 @@ function searchWasteOut() {
 
     });
 
+    $('#tbody1').find('.myclass').hide();
     array.length=0;//清空数组
     array1.length=0;//清空数组
-    //1分页模糊查询
-    for(var i=totalPage();i>0;i--){
-        switchPage(parseInt(i));
-        array.push($('.myclass'));
-    }
+    array=[].concat(array0);
     isSearch=true;
 // console.log(array);
     var text=$.trim($('#searchContent').val());
@@ -1233,17 +1240,11 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 //粗查询
 function searchOutBound() {
 
-    isSearch=false;
-
-    //loadOutBoundList();
-
-    //1分页模糊查询
+    $('#tbody1').find('.myclass').hide();
     array.length=0;//清空数组
-    array1.length=0;
-    for(var i=totalPage();i>0;i--){
-        switchPage(parseInt(i));
-        array.push($('.myclass'));
-    }
+    array1.length=0;//清空数组
+    array=[].concat(array0);
+
     isSearch=true;
     var text=$.trim($('#searchContent').val());
     for(var j=0;j<array.length;j++){
@@ -1295,6 +1296,7 @@ function searchOutBound() {
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
+    setPageCloneAfter(1);
     for(var i=0;i<array1.length;i++){
         $(array1[i]).hide();
     }

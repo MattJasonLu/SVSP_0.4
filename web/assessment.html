@@ -16,12 +16,11 @@
     <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/base-loading.js"></script>
+    <!--//<script src="js/produce/base-loading.js"></script>--><!--进度条页面加载（暂不用）-->
     <script src="js/produce/assessment.js"></script>
+    <link href="css/loading1.css" rel="stylesheet">
+    <link href="css/loading2.css" rel="stylesheet">
 </head>
-<script type="text/javascript">
-    $('#embed').load('embed/loginLogModal.html');     //当前页数
-</script>
 <style>
     textarea {
         resize: none;
@@ -158,7 +157,7 @@
                                     class="glyphicon glyphicon-search" aria-hidden="true"></span> 高级查询</a>
                             <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog"
                                                                                 aria-hidden="true"></span> 重置</a>
-                    </span>
+                </span>
             </div>
         </div>
         <!--查询框-->
@@ -232,6 +231,13 @@
         </table>
         <!--分页-->
     </div>
+</div>
+<div class="loader"><!--进度条-->
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
 </div>
 <div id="embed"></div>
 </body>

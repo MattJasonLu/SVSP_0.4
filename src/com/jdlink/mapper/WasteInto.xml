@@ -44,7 +44,13 @@
         <result property="id" column="id"></result>
         <collection property="client" column="clientId" select="getClient"></collection>
         <collection property="secondarySampleItemList" column="id" select="getSecondarysampleItem"></collection>
+   <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
     </resultMap>
+
+    <!--获取状态数据字典-->
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select  * from datadictionaryitem where  dataDictionaryItemId=#{checkStateId}
+    </select>
     <select id="getSecondarysampleItem" resultType="SecondarySampleItem">
         select  * from t_pr_secondarysampleitem where sampleinformationId=#{id};
     </select>
@@ -57,8 +63,8 @@
     </select>
     <!--添加次生废物送样主表-->
     <insert id="addSecondarySample" parameterType="SecondarySample">
-        insert into t_pr_secondarysample(id,laboratorySignatory, sendingPerson, address, checkState, advice,nowTime,createTime) values
-        (#{id},#{laboratorySignatory},#{sendingPerson},#{address},'ToCollected',#{advice},NOW(),NOW());
+        insert into t_pr_secondarysample(id,laboratorySignatory, sendingPerson, address, checkState, advice,nowTime,createTime,checkStateId) values
+        (#{id},#{laboratorySignatory},#{sendingPerson},#{address},'ToCollected',#{advice},NOW(),NOW(),86);
     </insert>
     <!--添加次生废物送样子表-->
     <insert id="addSecondarySampleItem" parameterType="SecondarySampleItem">
@@ -72,7 +78,7 @@
 
     <!--查询次生废物送样-->
     <select id="getSecondarysample" resultMap="SecondarysampleRM">
-        select * from t_pr_secondarysample order by createTime desc
+        select * from t_pr_secondarysample  where checkStateId!=69 order by createTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -80,11 +86,11 @@
 
     <!--确认登记-->
     <update id="confirmSecondarySampleById" >
-        update t_pr_secondarysample set  checkState='Collected',nowTime=NOW(),laboratorySignatory=#{1} where id=#{0};
+        update t_pr_secondarysample set  checkStateId=87,nowTime=NOW(),laboratorySignatory=#{1} where id=#{0};
     </update>
     <!--拒收-->
     <update id="rejectSecondarySampleById" >
-        update t_pr_secondarysample set checkState='Rejected',advice=#{1} ,nowTime=NOW() where id=#{0}
+        update t_pr_secondarysample set checkStateId=88,advice=#{1} ,nowTime=NOW() where id=#{0}
     </update>
 
 
@@ -97,7 +103,7 @@
                 or address like "%"#{keywords}"%"
                 or sendingPerson like "%"#{keywords}"%"
                 or laboratorySignatory like "%"#{keywords}"%"
-                or checkState = #{keywords}
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
                 or id in(select sampleinformationId from t_pr_secondarysampleitem where t_pr_secondarysampleitem.wastesName like  #{keywords})
             </if>
 
@@ -128,8 +134,11 @@
                 and laboratorySignatory LIKE "%"#{laboratorySignatory}"%"
             </if>
 
-            <if test="checkState !='' and checkState !=null">
-                and checkState =#{checkState}
+            <if test="checkStateItem !=null">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId =#{checkStateItem.dataDictionaryItemId}
+                </if>
+
             </if>
 
 
@@ -140,7 +149,7 @@
     </select>
 
     <!--次生送样查询总数-->
-    <select id="searchSecondaryCount" resultType="int">
+    <select id="searchSecondaryCount" resultType="int" parameterType="SecondarySample" >
        select count(*) from t_pr_secondarysample
         <where>
             <if test="keywords != null and keywords != ''">
@@ -148,7 +157,7 @@
                 or address like "%"#{keywords}"%"
                 or sendingPerson like "%"#{keywords}"%"
                 or laboratorySignatory like "%"#{keywords}"%"
-                or checkState = #{keywords}
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
                 or id in(select sampleinformationId from t_pr_secondarysampleitem where t_pr_secondarysampleitem.wastesName like  #{keywords})
             </if>
 
@@ -174,8 +183,11 @@
                 and laboratorySignatory LIKE "%"#{laboratorySignatory}"%"
             </if>
 
-            <if test="checkState !='' and checkState !=null">
-                and checkState =#{checkState}
+            <if test="checkStateItem !=null">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId =#{checkStateItem.dataDictionaryItemId}
+                </if>
+
             </if>
         </where>
     </select>
@@ -189,8 +201,8 @@
     <!--次生化验对象存在就更新-->
     <insert id="updateSecondarySample" parameterType="SecondaryTest" >
 
- insert into t_pr_secondarytest (id, dateTime, wastesName, scorchingRate, water, remarks, nowTime,checkState) values
-        (CONCAT('I-',#{id}),NOW(),#{wastesName},#{scorchingRate},#{water},#{remarks},NOW(),'ToSubmit');
+ insert into t_pr_secondarytest (id, dateTime, wastesName, scorchingRate, water, remarks, nowTime,checkState,checkStateId) values
+        (CONCAT('I-',#{id}),NOW(),#{wastesName},#{scorchingRate},#{water},#{remarks},NOW(),'ToSubmit',64);
 
     </insert>
 
@@ -215,17 +227,17 @@
                 or wastesName like "%"#{keyword}"%"
                 or wastesCode like "%"#{keyword}"%"
                 or formType = #{keyword}
-                or PH like "%"#{keyword}"%"
-                or ash like "%"#{keyword}"%"
-                or water like "%"#{keyword}"%"
-                or heat like "%"#{keyword}"%"
-                or sulfur like "%"#{keyword}"%"
-                or chlorine like "%"#{keyword}"%"
-                or fluorine like "%"#{keyword}"%"
-                or phosphorus like "%"#{keyword}"%"
-                or flashPoint like "%"#{keyword}"%"
-                or viscosity like "%"#{keyword}"%"
-                or hotMelt like "%"#{keyword}"%"
+                or ROUND(PH,2) like "%"#{keyword}"%"
+                or ROUND(ash,2) like "%"#{keyword}"%"
+                or ROUND(water,2) like "%"#{keyword}"%"
+                or ROUND(heat,2) like "%"#{keyword}"%"
+                or ROUND(sulfur,2) like "%"#{keyword}"%"
+                or ROUND(chlorine,2) like "%"#{keyword}"%"
+                or ROUND(fluorine,2) like "%"#{keyword}"%"
+                or ROUND(phosphorus,2) like "%"#{keyword}"%"
+                or ROUND(flashPoint,2) like "%"#{keyword}"%"
+                or ROUND(viscosity,2) like "%"#{keyword}"%"
+                or ROUND(hotMelt,2) like "%"#{keyword}"%"
             </if>
             <if test="produceCompany!=null">
             <if test="produceCompany.companyName!=null and produceCompany.companyName!=''">
@@ -261,17 +273,17 @@
                 or wastesName like "%"#{keyword}"%"
                 or wastesCode like "%"#{keyword}"%"
                 or formType = #{keyword}
-                or PH like "%"#{keyword}"%"
-                or ash like "%"#{keyword}"%"
-                or water like "%"#{keyword}"%"
-                or heat like "%"#{keyword}"%"
-                or sulfur like "%"#{keyword}"%"
-                or chlorine like "%"#{keyword}"%"
-                or fluorine like "%"#{keyword}"%"
-                or phosphorus like "%"#{keyword}"%"
-                or flashPoint like "%"#{keyword}"%"
-                or viscosity like "%"#{keyword}"%"
-                or hotMelt like "%"#{keyword}"%"
+                or ROUND(PH,2) like "%"#{keyword}"%"
+                or ROUND(ash,2) like "%"#{keyword}"%"
+                or ROUND(water,2) like "%"#{keyword}"%"
+                or ROUND(heat,2) like "%"#{keyword}"%"
+                or ROUND(sulfur,2) like "%"#{keyword}"%"
+                or ROUND(chlorine,2) like "%"#{keyword}"%"
+                or ROUND(fluorine,2) like "%"#{keyword}"%"
+                or ROUND(phosphorus,2) like "%"#{keyword}"%"
+                or ROUND(flashPoint,2) like "%"#{keyword}"%"
+                or ROUND(viscosity,2) like "%"#{keyword}"%"
+                or ROUND(hotMelt,2) like "%"#{keyword}"%"
             </if>
             <if test="produceCompany!=null">
                 <if test="produceCompany.companyName!=null and produceCompany.companyName!=''">

@@ -18,13 +18,13 @@
 
     <!--字表新建-->
     <insert id="addDataDictionaryItem" parameterType="DataDictionaryItem">
-        insert into datadictionaryitem (dataDictionaryId, dictionaryItemType, dictionaryItemName) values
-        (#{dataDictionaryId},#{dictionaryItemType},#{dictionaryItemName})
+        insert into datadictionaryitem (dataDictionaryItemId,dataDictionaryId, dictionaryItemType, dictionaryItemName) values
+        (#{dataDictionaryItemId},#{dataDictionaryId},#{dictionaryItemType},#{dictionaryItemName})
     </insert>
 
     <!--根据创建时间寻找最新的主表编号-->
     <select id="getNewestId" resultType="int">
-        select dataDictionaryId from datadictionary order by  dateTime limit 0,1;
+        select dataDictionaryId from datadictionary order by  dateTime  desc  limit 0,1;
     </select>
 
 
@@ -40,7 +40,7 @@
     </select>
     <!--加载页面数据-->
     <select id="getDictionariesDataList" resultMap="DataDictionaryRM">
-        select * from datadictionary
+        select * from datadictionary order  by dateTime
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -60,4 +60,57 @@
     <update id="deleteDataDictionaryById" parameterType="int">
         delete from  datadictionaryitem where  dataDictionaryId=#{dataDictionaryId}
     </update>
+
+    <!--数据字典查询-->
+    <select id="searchDictionary" parameterType="DataDictionary" resultMap="DataDictionaryRM">
+        select * from datadictionary
+        <where>
+            <if test="keywords!=null and keywords!=''">
+                or dictionaryType like "%"#{keywords}"%"
+                or dictionaryName like "%"#{keywords}"%"
+                or dateTime like binary"%"#{keywords}"%"
+            </if>
+          <if test="dictionaryType!=null and dictionaryType!=''">
+              and dictionaryType like "%"#{dictionaryType}"%"
+          </if>
+            <if test="dictionaryName!=null and dictionaryName!=''">
+                and dictionaryName like "%"#{dictionaryName}"%"
+            </if>
+        </where>
+        order by dateTime
+        <if test="page != null and page.start != null and page.count != null and page.count != 0">
+            limit #{page.start}, #{page.count};
+        </if>
+    </select>
+
+    <!--查看计数-->
+    <select id="searchDictionaryCount" resultType="int" parameterType="DataDictionary">
+    select count(*) from datadictionary
+        <where>
+            <if test="keywords!=null and keywords!=''">
+                or dictionaryType like "%"#{keywords}"%"
+                or dictionaryName like "%"#{keywords}"%"
+                or dateTime like binary"%"#{keywords}"%"
+            </if>
+            <if test="dictionaryType!=null and dictionaryType!=''">
+                and dictionaryType like "%"#{dictionaryType}"%"
+            </if>
+            <if test="dictionaryName!=null and dictionaryName!=''">
+                and dictionaryName like "%"#{dictionaryName}"%"
+            </if>
+        </where>
+    </select>
+
+    <!-- 获取包装方式字典数据-->
+    <select id="getSelectListByDataDictionary" resultType="DataDictionaryItem" parameterType="int">
+        select  * from datadictionaryitem where dataDictionaryId=#{dataDictionaryId};
+    </select>
+
+
+    <!--根据明细名称获取编号(加入主表的编号是因为会重复)-->
+    <select id="getdatadictionaryitemIdByName"  resultType="int">
+        select dataDictionaryItemId from  datadictionaryitem where dictionaryItemName=#{0} and dataDictionaryId=#{1}
+    </select>
+
+
 </mapper>

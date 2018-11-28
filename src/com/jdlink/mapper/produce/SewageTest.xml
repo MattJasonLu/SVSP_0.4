@@ -7,9 +7,9 @@
     <!--添加污水化验单-->
 
 <insert id="addSewageTest" parameterType="SewageTest">
-    insert into t_pr_sewagetest(id, address, ph, COD, BOD5, N2, alkalinity, bicarbonate, nitrogen, phosphorus, remarks, sampleId,nowTime,alkalinityCaCo3,alkalinityHCO3,bicarbonateCaCo3,bicarbonateHCO3,checkState,dateTime)
+    insert into t_pr_sewagetest(id, address, ph, COD, BOD5, N2, alkalinity, bicarbonate, nitrogen, phosphorus, remarks, sampleId,nowTime,alkalinityCaCo3,alkalinityHCO3,bicarbonateCaCo3,bicarbonateHCO3,checkState,dateTime,checkStateId)
     values
-    (#{id},#{address},#{ph},#{COD},#{BOD5},#{N2},#{alkalinity},#{bicarbonate},#{nitrogen},#{phosphorus},#{remarks},#{sampleId},NOW(),#{alkalinityCaCo3},#{alkalinityHCO3},#{bicarbonateCaCo3},#{bicarbonateHCO3},'ToSubmit',NOW());
+    (#{id},#{address},#{ph},#{COD},#{BOD5},#{N2},#{alkalinity},#{bicarbonate},#{nitrogen},#{phosphorus},#{remarks},#{sampleId},NOW(),#{alkalinityCaCo3},#{alkalinityHCO3},#{bicarbonateCaCo3},#{bicarbonateHCO3},'ToSubmit',NOW(),64);
 </insert>
 
     <select id="getSewageTestById" parameterType="String" resultType="SewageTest">
@@ -23,10 +23,17 @@
         bicarbonateHCO3=#{bicarbonateHCO3},bicarbonateCaCo3=#{bicarbonateCaCo3},dateTime=NOW()
         where id=#{id};
     </update>
+<resultMap id="SewageTestRM" type="SewageTest">
+    <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
+</resultMap>
 
+    <!--获取状态数据字典-->
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
+    </select>
     <!--加载初始化页面-->
-    <select id="loadSewageTestResultsList" resultType="SewageTest">
-        select  * from t_pr_sewagetest where checkState!='Invalid' order by dateTime desc
+    <select id="loadSewageTestResultsList" resultMap="SewageTestRM">
+        select  * from t_pr_sewagetest order by checkStateId=69,dateTime desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -40,8 +47,8 @@
 
     <!--添加软水化验单-->
     <select id="addSoftTest" parameterType="SoftTest">
-        insert into t_pr_softest (id, address, remarks, sampleId, turbidity, hardness, PH, electricalConductivity, basicity, phenolphthalein, nowTime,checkState,dateTime) values
-        (#{id},#{address},#{remarks},#{sampleId},#{turbidity},#{hardness},#{PH},#{electricalConductivity},#{basicity},#{phenolphthalein},NOW(),'ToSubmit',NOW());
+        insert into t_pr_softest (id, address, remarks, sampleId, turbidity, hardness, PH, electricalConductivity, basicity, phenolphthalein, nowTime,checkState,dateTime,checkStateId) values
+        (#{id},#{address},#{remarks},#{sampleId},#{turbidity},#{hardness},#{PH},#{electricalConductivity},#{basicity},#{phenolphthalein},NOW(),'ToSubmit',NOW(),64);
     </select>
 
     <!--根据编号获取软水化验单信息-->
@@ -62,10 +69,12 @@
     <select id="totalSoftTestRecord" resultType="int">
         select count(*) from t_pr_softest;
     </select>
-
+<resultMap id="SoftTestRM" type="SoftTest">
+    <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
+</resultMap>
     <!--软水化验单初始化-->
-    <select id="loadSoftTestResultsList" resultType="SoftTest">
-        select * from t_pr_softest order  by  dateTime desc
+    <select id="loadSoftTestResultsList" resultMap="SoftTestRM">
+        select * from t_pr_softest   order  by checkStateId=69 ,dateTime  desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -102,18 +111,20 @@
 
     <!--更新次生化验单-->
     <update id="updateSecondaryTestById" parameterType="SecondaryTest">
-        update t_pr_secondarytest set dateTime=#{dateTime}, wastesName=#{wastesName},
+        update t_pr_secondarytest set wastesName=#{wastesName},
         scorchingRate=#{scorchingRate},water=#{water},remarks=#{remarks},nowTime=NOW() where id=#{id}
     </update>
 
     <!--添加次生化验单-->
     <insert id="addSecondaryTest" parameterType="SecondaryTest">
-        insert into t_pr_secondarytest (id, dateTime, wastesName, scorchingRate, water, remarks, nowTime,checkState) values
-        (#{id},NOW(),#{wastesName},#{scorchingRate},#{water},#{remarks},NOW(),'ToSubmit');
+        insert into t_pr_secondarytest (id, dateTime, wastesName, scorchingRate, water, remarks, nowTime,checkState,checkStateId) values
+        (#{id},NOW(),#{wastesName},#{scorchingRate},#{water},#{remarks},NOW(),'ToSubmit',64);
     </insert>
-
-    <select id="loadPageSecondaryTestResultsList" resultType="SecondaryTest">
-        select * from t_pr_secondarytest order  by dateTime desc
+<resultMap id="SecondaryTestRM" type="SecondaryTest">
+    <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
+</resultMap>
+    <select id="loadPageSecondaryTestResultsList" resultMap="SecondaryTestRM">
+        select * from t_pr_secondarytest    order  by checkStateId=69, dateTime desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -135,60 +146,60 @@
 
     <!--提交污水化验单-->
     <update id="submitSewageTest" parameterType="String">
-        update t_pr_sewagetest set  checkState='Submitted' where id=#{id};
+        update t_pr_sewagetest set  checkStateId=73 where id=#{id};
     </update>
 
     <!--签收污水化验单-->
     <update id="confirmSewageTest" parameterType="String">
-        update t_pr_sewagetest set  checkState='Confirm' where id=#{id};
+        update t_pr_sewagetest set  checkStateId=74 where id=#{id};
     </update>
 
     <!--作废污水化验单-->
     <update id="cancelSewageTest" parameterType="String">
-        update t_pr_sewagetest set  checkState='Invalid' where id=#{id};
+        update t_pr_sewagetest set  checkStateId=69 where id=#{id};
     </update>
     <!--污水收样状态为待收样-->
     <update id="cancelSewageTestAfter" parameterType="String">
-        update t_pr_sewageregistration set checkState ='ToCollected'  where id=#{id} ;
+        update t_pr_sewageregistration set checkStateId =86  where id=#{id} ;
     </update>
 
     <!--提交软水化验单-->
     <update id="submitSoftTest" parameterType="String">
-      update t_pr_softest set   checkState='Submitted' where id=#{id};
+      update t_pr_softest set   checkStateId=73 where id=#{id};
     </update>
 
     <!--签收软水化验单-->
     <update id="confirmSoftTest" parameterType="String">
-           update t_pr_softest set   checkState='Confirm' where id=#{id};
+           update t_pr_softest set   checkStateId=74 where id=#{id};
     </update>
     <!--作废软水化验单-->
     <update id="cancelSoftTest" parameterType="String">
-           update t_pr_softest set   checkState='Invalid' where id=#{id};
+           update t_pr_softest set   checkStateId=69 where id=#{id};
     </update>
     <!--作废软水化验单软水送样待收样-->
     <update id="cancelSoftTestAfter" parameterType="String">
-           update t_pr_softgeregistration set   checkState='ToCollected' where id=#{id};
+           update t_pr_softgeregistration set   checkStateId=86 where id=#{id};
     </update>
 
     <!--提交次生化验单-->
     <update id="submitSecondaryTest" parameterType="String">
-        update t_pr_secondarytest set   checkState='Submitted' where id=#{id};
+        update t_pr_secondarytest set   checkStateId=73 where id=#{id};
     </update>
 
     <!--签收次生化验单-->
     <update id="confirmSecondaryTest" parameterType="String">
-           update t_pr_secondarytest set   checkState='Confirm' where id=#{id};
+           update t_pr_secondarytest set   checkStateId=74 where id=#{id};
     </update>
 
     <!--作废次生化验-->
     <update id="cancelSecondaryTest" parameterType="String">
-           update t_pr_secondarytest set   checkState='Invalid' where id=#{id};
+           update t_pr_secondarytest set   checkStateId=69 where id=#{id};
     </update>
 
 
     <!--作废次生化验次生送样待收样-->
     <update id="cancelSecondaryTestAfter" parameterType="String">
-           update t_pr_secondarysample set   checkState='ToCollected' where id=#{id};
+           update t_pr_secondarysample set   checkStateId=86 where id=#{id};
     </update>
 
     <!--查询所有的污水送样编号-->
@@ -223,17 +234,17 @@
 
     <!--作废污水送样-->
     <update id="cancelSewaGeregistration" parameterType="String">
-        update t_pr_sewageregistration set  checkState='Invalid' where id=#{id}
+        update t_pr_sewageregistration set  checkStateId=69 where id=#{id}
     </update>
 
     <!--作废软水送样-->
     <update id="cancelSoftGeregistration" parameterType="String">
-         update t_pr_softgeregistration set  checkState='Invalid' where id=#{id}
+         update t_pr_softgeregistration set  checkStateId=69 where id=#{id}
     </update>
 
     <!--作废次生送样-->
     <update id="cancelSecondaryGeregistration" parameterType="String">
-           update t_pr_secondarysample set  checkState='Invalid' where id=#{id}
+           update t_pr_secondarysample set  checkStateId=69 where id=#{id}
     </update>
 </mapper>
 

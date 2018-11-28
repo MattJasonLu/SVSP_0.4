@@ -7,6 +7,7 @@ import com.jdlink.mapper.dictionary.DictionaryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Dictionary;
 import java.util.List;
 
 @Service
@@ -52,5 +53,25 @@ public class DictionaryServiceImpl implements DictionaryService
     @Override
     public void deleteDataDictionaryById(int id) {
         dictionaryMapper.deleteDataDictionaryById(id);
+    }
+
+    @Override
+    public List<DataDictionary> searchDictionary(DataDictionary dataDictionary) {
+        return dictionaryMapper.searchDictionary(dataDictionary);
+    }
+
+    @Override
+    public int searchDictionaryCount(DataDictionary dataDictionary) {
+        return dictionaryMapper.searchDictionaryCount(dataDictionary);
+    }
+
+    @Override
+    public List<DataDictionaryItem> getSelectListByDataDictionary(int id) {
+        return dictionaryMapper.getSelectListByDataDictionary(id);
+    }
+
+    @Override
+    public int getdatadictionaryitemIdByName(String name,int id) {
+        return dictionaryMapper.getdatadictionaryitemIdByName(name,id);
     }
 }

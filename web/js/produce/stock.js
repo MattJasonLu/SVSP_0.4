@@ -5,6 +5,7 @@
 var isSearch = false;
 var currentPage = 1;                          //当前页数
 var data;
+array0=[]
 array = [];//存放所有的tr
 array1 = [];//存放目标的tr
 
@@ -195,7 +196,11 @@ function switchPage(pageNumber) {
         }
         var i = parseInt((pageNumber - 1) * countValue());
         var j = parseInt((pageNumber - 1) * countValue()) + parseInt(countValue() - 1);
+      var index=0;
         for (var i = i; i <= j; i++) {
+            index++;
+            // $(array1[i]).children('td').eq(1).html(index)
+            $('#cloneTr').hide()
             $('#tbody1').append(array1[i]);
             $(array1[i]).show();
         }
@@ -267,7 +272,11 @@ function inputSwitchPage() {
             }
             var i = parseInt((pageNumber - 1) * countValue());
             var j = parseInt((pageNumber - 1) * countValue()) + parseInt(countValue() - 1);
+            var index=0;
             for (var i = i; i <= j; i++) {
+                index++;
+                // $(array1[i]).children('td').eq(1).html(index)
+                $('#cloneTr').hide()
                 $('#tbody1').append(array1[i]);
                 $(array1[i]).show();
             }
@@ -279,6 +288,8 @@ function inputSwitchPage() {
  * 分页 获取首页内容
  * */
 function loadPageStocktList() {
+    $('.loader').show();
+    loadNavigationList();   // 设置动态菜单
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
@@ -291,6 +302,13 @@ function loadPageStocktList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
+    if(array0.length==0){
+        for (var i = 1; i <= totalPage(); i++) {
+            switchPage(parseInt(i));
+
+            array0.push($('.myclass'));
+        }
+    }
     $.ajax({
         type: "POST",                       // 方法类型
         url: "loadPageStocktList",          // url
@@ -300,6 +318,7 @@ function loadPageStocktList() {
         contentType: 'application/json;charset=utf-8',
         success: function (result) {
             if (result != undefined && result.status == 'success') {
+                $('.loader').hide();
                 console.log(result);
                 setPageClone(result.stocktList);
                 setPageCloneAfter(pageNumber);        // 重新设置页码
@@ -360,8 +379,11 @@ function setStockList(result) {
                     break;
                 // 申报状态
                 case (4):
-                    if (obj.checkState != null) {
-                        $(this).html(obj.checkState.name);
+                    if (obj.checkStateItem != null) {
+                        $(this).html(obj.checkStateItem.dictionaryItemName);
+                        if(obj.checkStateItem.dictionaryItemName=='已作废'){
+                            $(this).parent().hide()
+                        }
                     }
                     break;
                 // 运输公司
@@ -494,14 +516,11 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 
 //高级查询
 function searchStock() {
-    isSearch = false;
-    array.length = 0;//清空数组
-    array1.length = 0;//清空数组
-    //1分页模糊查询
-    for (var i = totalPage(); i > 0; i--) {
-        switchPage(parseInt(i));
-        array.push($('.myclass'));
-    }
+    $('#tbody1').find('.myclass').hide();
+
+    array.length=0;//清空数组
+    array1.length=0;//清空数组
+    array=[].concat(array0);
     isSearch = true;
     var text = $.trim($('#searchContent').val());
     //审核状态
@@ -565,11 +584,13 @@ function searchStock() {
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
+    setPageCloneAfter(1);
     for (var i = 0; i < array1.length; i++) {
         array1[i].hide();
     }
 
     for (var i = 0; i < countValue(); i++) {
+        $(array1[i]).children('td').eq(1).html(i+1)
         $(array1[i]).show();
         $('#tbody1').append((array1[i]));
     }
@@ -588,19 +609,10 @@ function enterSearch() {
 
 //粗查询
 function searchStock1() {
-
-    isSearch = false;
-
-    //loadPageStocktList();
-    //1分页模糊查询
-    array.length = 0;//清空数组
-
-    array1.length = 0;
-
-    for (var i = totalPage(); i > 0; i--) {
-        switchPage(parseInt(i));
-        array.push($('.myclass'));
-    }
+    $('#tbody1').find('.myclass').hide();
+    array.length=0;//清空数组
+    array1.length=0;//清空数组
+    array=[].concat(array0);
 
     isSearch = true;
 
@@ -649,6 +661,7 @@ function searchStock1() {
             var num = $(this).text();
             switchPage(num);
             AddAndRemoveClass(this);
+
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -656,16 +669,17 @@ function searchStock1() {
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
+    setPageCloneAfter(1);
     for (var i = 0; i < array1.length; i++) {
         $(array1[i]).hide();
     }
 
     //首页展示
     for (var i = 0; i < countValue(); i++) {
+        // $(array1[i]).children('td').eq(1).html(i+1)
         $(array1[i]).show();
         $('#tbody1').append((array1[i]));
     }
-
     if (text.length <= 0) {
         loadPageStocktList();
     }
@@ -676,6 +690,7 @@ function searchStock1() {
  * 8位危废代码获取
  */
 function init1() {
+    loadNavigationList();   // 设置动态菜单
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
         // style: 'btn-info',
@@ -1334,36 +1349,40 @@ function contractSubmit() {
     //在此提交
     var items = $("input[name='blankCheckbox1']:checked");//判断复选框是否选中
     if (items.length > 0) {
-        function getContractById(id) {
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "submitStock",              // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                dataType: "json",
-                data: {
-                    'stockId': id
-                },
-                success: function (result) {
-                    if (result != undefined && result.status == "success") {
-                    } else {
-                        alert(result.message)
+        if(confirm("确认提交?")){
+            //点击确定后操作
+            function getContractById(id) {
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "submitStock",              // url
+                    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    dataType: "json",
+                    data: {
+                        'stockId': id
+                    },
+                    success: function (result) {
+                        if (result != undefined && result.status == "success") {
+                        } else {
+                            alert(result.message)
+                        }
+                    },
+                    error: function (result) {
+                        alert("服务器异常！");
+                        console.log("error: " + result);
                     }
-                },
-                error: function (result) {
-                    alert("服务器异常！");
-                    console.log("error: " + result);
-                }
+                });
+            }
+
+            items.each(function () {//遍历
+                var id = getContractId1(this);//获得合同编号
+                //console.log(id);
+                getContractById(id);
+
             });
+            alert("提交成功!");
+            location.reload();
         }
 
-        items.each(function () {//遍历
-            var id = getContractId1(this);//获得合同编号
-            //console.log(id);
-            getContractById(id);
-
-        });
-        alert("提交成功!");
-        location.reload();
     }
     else {
         alert("请勾选要提交的合同！")
