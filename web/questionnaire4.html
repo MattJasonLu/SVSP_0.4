@@ -377,6 +377,7 @@
         e.firstChild.focus();
     }
     function loadPage4Info() {
+        loadNavigationList();   // 设置动态菜单
         if (Request["type"] != null && Request["type"] != '') {
             $("#btnCfm").text("打印");
             $("#btnSave").remove();

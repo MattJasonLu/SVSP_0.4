@@ -133,6 +133,7 @@
         });
     });
     function loadSelectList() {
+        loadNavigationList();   // 设置动态菜单
         var supplierTypeIndex, enterpriseTypeIndex, operationTypeIndex,
                 operationRecordIndex, ticketRateIndex;
         if (Request['id'] == null) {

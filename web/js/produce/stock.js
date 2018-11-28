@@ -289,6 +289,7 @@ function inputSwitchPage() {
  * */
 function loadPageStocktList() {
     $('.loader').show();
+    loadNavigationList();   // 设置动态菜单
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
@@ -689,6 +690,7 @@ function searchStock1() {
  * 8位危废代码获取
  */
 function init1() {
+    loadNavigationList();   // 设置动态菜单
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
         // style: 'btn-info',

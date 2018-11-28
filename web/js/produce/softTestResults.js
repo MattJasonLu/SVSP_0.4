@@ -255,7 +255,11 @@ function inputSwitchPage() {
  * 加载
  */
 function loadPageList() {
+
     $('.loader').show();
+
+    loadNavigationList(); // 设置动态菜单
+
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");

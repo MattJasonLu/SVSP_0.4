@@ -41,6 +41,11 @@
         where pId=#{pId};
     </select>
 
+    <select id="getMenuByCUrl" parameterType="String" resultType="Organization">
+        select * from menu_management
+        where id in (select pId from menu_management where url=#{url});
+    </select>
+
     <insert id="add" parameterType="Organization">
         insert into menu_management
         (id,pId,name,icon,url,level,founder,creationDate)

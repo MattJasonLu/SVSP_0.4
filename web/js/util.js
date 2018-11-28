@@ -726,9 +726,7 @@ function setOLMenu(organization) {
  */
 function toMenuUrl(item) {
     localStorage.name = $.trim($(item).children().find("span").eq(1).text());
-    setTimeout(function() {
-        window.location.href = "firstPage.html"; //根据一级菜单名跳转首页
-        },600);
+    window.location.href = "firstPage.html"; //根据一级菜单名跳转首页
 }
 
 /**
