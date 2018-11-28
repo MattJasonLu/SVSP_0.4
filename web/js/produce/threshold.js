@@ -290,6 +290,7 @@ function loadPages(totalRecord, count) {
  * 加载数据
  */
 function loadThresholdOutList() {
+    loadNavigationList();  // 设置动态菜单
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
@@ -646,6 +647,7 @@ function addNewData(){      // 新增时将ID清零
  * 加载基础数据阈值表数据
  */
 function loadThresholdList() {
+    loadNavigationList();  // 设置动态菜单
     var id = localStorage.id;            // 获取编号
     $("#data1-thresholdListId").text(id);
     //通过ajax从后台获取
@@ -854,7 +856,7 @@ function exportExcel() {
  * 加载基础数据阈值表数据
  */
 function loadThresholdList1() {
-    console.log("localStorage.id=" + localStorage.id);
+    loadNavigationList();  // 设置动态菜单
     var id = getCurrentThresholdListId();
     console.log("id:"+id);
     if (localStorage.id != null && localStorage.id != "null") {

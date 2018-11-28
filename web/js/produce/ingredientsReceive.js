@@ -281,6 +281,7 @@ function inputSwitchPage() {
  * 分页 获取首页内容
  * */
 function loadPageList() {
+    loadNavigationList();   // 动态菜单部署
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
@@ -1220,6 +1221,7 @@ var ingredientsReceive1 = {}; // 暂存出库单数据
  * 设置首页数据
  */
 function loadInventoryListData() {
+    loadNavigationList();   // 动态菜单部署
     $("#save").text("领料");   // 修改按钮名称
     $("#head").text("辅料/备件领料单新增");  // 标题修改
     $("#view-id").text(getCurrentIngredientsReceiveId());

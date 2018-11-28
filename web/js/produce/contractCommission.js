@@ -2,6 +2,7 @@
  * 获取数据
  */
 function loadContractPercentage() {
+    loadNavigationList();  // 设置动态菜单
     $.ajax({
         type: "POST",                       // 方法类型
         url: "loadContractPercentage",          // url
@@ -77,6 +78,7 @@ function setDataList(result) {
  * 获取数据
  */
 function loadContractPercentage1() {
+    loadNavigationList();  // 设置动态菜单
     $.ajax({
         type: "POST",                       // 方法类型
         url: "loadContractPercentage",          // url
