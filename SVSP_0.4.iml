@@ -20,9 +20,9 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="SSM" level="project" />
-    <orderEntry type="library" name="jsonLib" level="project" />
+    <orderEntry type="library" exported="" name="jsonLib" level="project" />
     <orderEntry type="library" name="pdf" level="project" />
+    <orderEntry type="library" exported="" name="joda-time-2.10" level="project" />
     <orderEntry type="library" name="upload" level="project" />
-    <orderEntry type="library" name="joda-time-2.10" level="project" />
   </component>
 </module>
