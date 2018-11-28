@@ -371,26 +371,26 @@ function switchPage(pageNumber) {
         });
     }
     else {
+        data1['page'] = page;
         $.ajax({
-            type: "POST",                       // 方法类型
-            url: "searchCompatibilityTotal",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            type: "POST",                            // 方法类型
+            url: "searchCompatibility",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
-                // console.log(result);
-                if (result > 0) {
-                    totalRecord = result;
-                    console.log("总记录数为:" + result);
+                if (result != undefined && result.status == "success") {
+                    console.log(result)
+                    setCompatibility(result)
                 } else {
-                    console.log("fail: " + result);
-                    totalRecord = 0;
+                    alert(result.message);
+
                 }
             },
             error: function (result) {
-                console.log("error: " + result);
-                totalRecord = 0;
+                console.log(result);
+                alert("服务器错误！");
             }
         });
     }
@@ -457,6 +457,7 @@ function inputSwitchPage() {
                 }
             });
         } else {
+            data1['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
                 url: "searchCompatibilityTotal",                  // url
@@ -634,9 +635,6 @@ function setCompatibility(result) {
                     break;
             }
             clonedTr.removeAttr("id");
-            if (clonedTr.children('td').eq(13).html() == '已作废') {
-                $(clonedTr).hide();
-            }
             clonedTr.insertBefore(tr);
         });
         //把克隆好的tr追加到原来的tr前面
@@ -911,9 +909,11 @@ function confirmCompatibilityId() {
  * 设置高级检索的下拉框数据
  */
 function setPwList() {
+
+    //进料方式
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getSelectList",                  // url
+        url: "getHandleCategoryByDataDictionary",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
@@ -922,24 +922,13 @@ function setPwList() {
                 //处理类别
                 var handleCategory = $('#search-handleCategory');
                 handleCategory.children().remove();
-                $.each(data.handleCategoryList, function (index, item) {
+                $.each(data.data, function (index, item) {
                     var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     handleCategory.append(option);
                 });
                 handleCategory.get(0).selectedIndex = -1;
-                //形态
-                var formType = $('#search-formType');
-                formType.children().remove();
-                $.each(data.formTypeList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    formType.append(option);
-                });
-                formType.get(0).selectedIndex = -1;
-
             } else {
                 console.log("fail: " + result);
             }
@@ -949,6 +938,33 @@ function setPwList() {
         }
     });
 
+   //物质形态
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getFormTypeByDataDictionary",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                //处理类别
+                var formType = $('#search-formType');
+                formType.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    formType.append(option);
+                });
+                formType.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
 }
 
 array = [];
@@ -1716,43 +1732,17 @@ function searchPw() {
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
     if ($("#senior").is(':visible')) {
-        var formType = null;
-        var handleCategory = null;
-        if ($("#search-formType").val() == 0)
-            formType = "Gas";
-        if ($("#search-formType").val() == 1)
-            formType = "Liquid";
-        if ($("#search-formType").val() == 2)
-            formType = "Solid";
-        if ($("#search-formType").val() == 3)
-            formType = "HalfSolid";
-
-        if ($("#search-handleCategory").val() == 0)
-            handleCategory = "Sludge"
-
-        if ($("#search-handleCategory").val() == 1)
-            handleCategory = "WasteLiquid"
-
-        if ($("#search-handleCategory").val() == 2)
-            handleCategory = "Bulk"
-
-        if ($("#search-handleCategory").val() == 3)
-            handleCategory = "Crushing"
-
-        if ($("#search-handleCategory").val() == 4)
-            handleCategory = "Distillation"
-
-        if ($("#search-handleCategory").val() == 5)
-            handleCategory = "Suspension"
         var checkState = $('#search-checkState').val()
+        var formType=$('#search-formType').val()
+        var handleCategory=$('#search-handleCategory').val()
         if (checkState.length <= 0) {
             checkState = null;
         }
         data1 = {
             compatibilityItemList: [{
                 compatibilityId: $.trim($("#search-pwId").val()),
-                formType: formType,
-                handleCategory: handleCategory,
+                formTypeItem:{dataDictionaryItemId:formType} ,
+                handleCategoryItem:{dataDictionaryItemId:handleCategory} ,
                 weeklyDemandTotal: $.trim($('#search-weeklyDemandTotalAggregate').val()),
                 calorificBeg: $.trim($('#search-calorificBeg').val()),
                 calorificEnd: $.trim($('#search-calorificEnd').val()),
@@ -1764,27 +1754,12 @@ function searchPw() {
                 sEnd: $.trim($('#search-sEnd').val()),
             }],
             page: page,
-            checkState: checkState
+            checkStateItem:{dataDictionaryItemId:checkState}
 
         };
     }
     else {
         var keywords = $.trim($("#searchContent").val());
-        if (keywords == '已失效') {
-            keywords = 'Disabled'
-        }
-        if (keywords == '待提交') {
-            keywords = 'ToSubmit'
-        }
-        if (keywords == '审批通过') {
-            keywords = 'Approval'
-        }
-        if (keywords == '待审批') {
-            keywords = 'ToExamine'
-        }
-        if (keywords == '生效中') {
-            keywords = 'Enabled'
-        }
         data1 = {
             page: page,
             keywords: keywords

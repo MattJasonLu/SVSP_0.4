@@ -33,7 +33,7 @@
     </select>
     <!--加载初始化页面-->
     <select id="loadSewageTestResultsList" resultMap="SewageTestRM">
-        select  * from t_pr_sewagetest where checkStateId!= 69 order by dateTime desc
+        select  * from t_pr_sewagetest order by checkStateId=69,dateTime desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -74,7 +74,7 @@
 </resultMap>
     <!--软水化验单初始化-->
     <select id="loadSoftTestResultsList" resultMap="SoftTestRM">
-        select * from t_pr_softest  where checkStateId!=69 order  by  dateTime desc
+        select * from t_pr_softest   order  by checkStateId=69 ,dateTime  desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -124,7 +124,7 @@
     <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
 </resultMap>
     <select id="loadPageSecondaryTestResultsList" resultMap="SecondaryTestRM">
-        select * from t_pr_secondarytest  where  checkStateId!=69 order  by dateTime desc
+        select * from t_pr_secondarytest    order  by checkStateId=69, dateTime desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>

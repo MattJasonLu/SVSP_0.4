@@ -590,22 +590,13 @@ function searchSoftWater() {
             address: $.trim($("#search-address").val()),
             sendingPerson: $.trim($("#search-remarks").val()),
             laboratorySignatory: $.trim($("#search-laboratorySignatory").val()),
-            //remarks: $.trim($("#search-remarks").val()),
-            checkState:state,
+            checkStateItem:{dataDictionaryItemId:state},
             sewageregistrationItemList:[{turbidity:turbidity,hardness:hardness,ph:ph,phenolphthalein:phenolphthalein,basicity:basicity,electricalConductivity:electricalConductivity}],
             page: page
         };
     }else{
         var keywords= $.trim($("#searchContent").val());;
-        if(keywords=='已收样'){
-            keywords='Collected'
-        }
-        if(keywords=='待收样'){
-            keywords='ToCollected'
-        }
-        if(keywords=='已拒收'){
-            keywords='Rejected'
-        }
+
 
         if(keywords=='浊度'){
             turbidity=1;
