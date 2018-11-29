@@ -503,9 +503,9 @@ function setMonthProcurementList(result) {
                         case (10):
                             if(obj.checkStateItem!=null){
                                 $(this).html(obj.checkStateItem.dictionaryItemName);
-                                if(obj.checkStateItem.dictionaryItemName=='已作废'){
-                                    $(this).parent().hide();
-                                }
+                                // if(obj.checkStateItem.dictionaryItemName=='已作废'){
+                                //     $(this).parent().hide();
+                                // }
                             }
 
                             break;
@@ -889,6 +889,8 @@ function searchProcurement() {
     var startDate=getDateByStr(startTime);
     var endDate=getDateByStr(endTime);
 
+
+
     var text=$.trim($('#searchContent').val());
         data = {
             //receiptNumber: $.trim($("#search-receiptNumber").val()),
@@ -900,6 +902,7 @@ function searchProcurement() {
             purchasingDirector: $.trim($("#search-purchasingDirector").val()),
             purchasingHead:$.trim($("#search-purchasingHead").val()),
             generalManager:$.trim($("#search-generalManager").val()),
+            checkState:$("#search-checkState option:selected").text()
         };
 
 
@@ -914,7 +917,7 @@ function searchProcurement() {
             if(!($(this).children('td').eq(2).text().indexOf(data.applyMouth)!=-1&&$(this).children('td').eq(4).text().indexOf(data.applyDepartment)!=-1
                 &&$(this).children('td').eq(5).text().indexOf(data.proposer)!=-1&&$(this).children('td').eq(6).text().indexOf(data.divisionHead)!=-1&&$(this).children('td').text().indexOf(text)!=-1
                 &&$(this).children('td').eq(7).text().indexOf(data.purchasingDirector)!=-1 &&$(this).children('td').eq(8).text().indexOf(data.purchasingHead)!=-1
-                &&$(this).children('td').eq(9).text().indexOf(data.generalManager)!=-1
+                &&$(this).children('td').eq(9).text().indexOf(data.generalManager)!=-1&&$(this).children('td').eq(10).text().indexOf(data.checkState)!=-1
                 &&(getDateByStr($(this).children('td').eq(11).text())<=endDate&&getDateByStr($(this).children('td').eq(11).text())>=startDate)
 
             )){
@@ -923,7 +926,7 @@ function searchProcurement() {
             if(($(this).children('td').eq(2).text().indexOf(data.applyMouth)!=-1&&$(this).children('td').eq(4).text().indexOf(data.applyDepartment)!=-1
                 &&$(this).children('td').eq(5).text().indexOf(data.proposer)!=-1&&$(this).children('td').eq(6).text().indexOf(data.divisionHead)!=-1&&$(this).children('td').text().indexOf(text)!=-1
                 &&$(this).children('td').eq(7).text().indexOf(data.purchasingDirector)!=-1 &&$(this).children('td').eq(8).text().indexOf(data.purchasingHead)!=-1
-                &&$(this).children('td').eq(9).text().indexOf(data.generalManager)!=-1
+                &&$(this).children('td').eq(9).text().indexOf(data.generalManager)!=-1&&$(this).children('td').eq(10).text().indexOf(data.checkState)!=-1
                 &&(getDateByStr($(this).children('td').eq(11).text())<=endDate&&getDateByStr($(this).children('td').eq(11).text())>=startDate)
             )){
                 array1.push($(this));

@@ -282,6 +282,7 @@ function LoadMaterialRequisitionOrder() {
                 //赋值配料单
                 //1重新做一个方法用来生成领料单号
                 setPageClone(result);
+                setPageCloneAfter(pageNumber);        // 重新设置页码
             }
             else {
 
