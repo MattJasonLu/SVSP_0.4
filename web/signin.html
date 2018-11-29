@@ -26,28 +26,41 @@
                         if (data.status == "success") {
 //                            console.log(data.user.isAdmin);
 //                            if (data.user.isAdmin == true)
+                            // 获取动态菜单数据
+                            localStorage.clear();  // 每次重登需清空内存
                             $.ajax({
-                                type: "POST",                       // 方法类型
-                                url: "getLevelOneMenuByUrl",                  // url
-                                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                                data: {
-                                    url: "map.html"
-                                },
-                                dataType: "json",
-                                success: function (result) {
-                                    // console.log(result);
-                                    if (result != null && result.status === "success") {
-                                        localStorage.name = result.name;
-                                    }
-                                },
+                                    type: "POST",                       // 方法类型
+                                    url: "getMenuTree",                  // url
+                                    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                                    dataType: "json",
+                                    success: function (result) {
+                                        if (result != null && result.status === "success") {
+                                            var obj = JSON.stringify(result.data);
+                                            if (result.data != null) {
+                                                // 获取map.html的一级菜单父类名
+                                                var name = "";
+                                                for (var i = 0; i < result.data.organizationList.length; i++) { // 一级菜单
+                                                    var organization = result.data.organizationList[i];
+                                                    if (organization.url === "map.html") {
+                                                        name = organization.name;
+                                                    } else if (organization.organizationList != null && organization.organizationList.length > 0) {
+                                                        //二级开始递归
+                                                        var name1 = getLevelOneMenuByUrl(organization);
+                                                        if (name1 !== "") {
+                                                            name = name1;
+                                                        }
+                                                    }
+                                                }
+                                                localStorage.name = name;   // 寻找字节点中URL为map.html的一级菜单
+                                            }
+                                            localStorage.setItem("menuOrganization", obj);
+                                            window.location.href = 'map.html';
+                                        }
+                                    },
                                 error: function (result) {
-                                    alert(result.message);
+                                    console.log(result.message);
                                 }
                             });
-                            window.location.href = 'map.html';
-//                            else {
-//                                window.location.href = 'client/wastesPlatform.html';
-//                            }
                         } else {
                             alert(data.message);
                         }

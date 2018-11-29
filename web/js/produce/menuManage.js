@@ -648,10 +648,12 @@ function selectAll() {
 }
 
 $(document).ready(function () {
+    $('.loader').show();  // 显示进度条
     getMenuTree();   // 更新动态菜单树状结构数据
     loadNavigationList(); // 设置动态菜单
     loadMenu();  // 获取并设置节点数据
     $.fn.zTree.init($("#treeDemo"), setting, zNodes);//根据参数初始化树
+    $('.loader').hide();  // 隐藏进度条
     $("#selectAll").bind("click", selectAll);
 });
 

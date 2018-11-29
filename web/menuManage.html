@@ -10,6 +10,8 @@
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
+    <link href="css/loading1.css" rel="stylesheet">
+    <link href="css/loading2.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
@@ -19,6 +21,7 @@
     <script type="text/javascript" src="zTree_v3-master/js/jquery.ztree.excheck.js"></script>
     <script type="text/javascript" src="zTree_v3-master/js/jquery.ztree.exedit.js"></script>
     <script src="js/produce/menuManage.js"></script>
+
 </HEAD>
 <body>
 <!--导航条-->
@@ -57,7 +60,6 @@
         </li>
     </ul>
 </nav>
-
 <div class="container-fluid">
     <div class="row">
         <div class="sidebar">
@@ -125,6 +127,13 @@
             </div>
         </div>
     </div>
+</div>
+<div class="loader"><!--进度条-->
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
 </div>
 <script>
     $('#embed').load('embed/loginLogModal.html');
