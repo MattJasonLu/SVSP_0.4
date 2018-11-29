@@ -22,8 +22,6 @@ public class MenuManageController {
     @Autowired
     MenuManageService menuManageService;
 
-    private User user; // 当前登陆用户
-
     private Organization organizationA; // 暂存菜单树状结构数据
 
     /**
@@ -74,8 +72,28 @@ public class MenuManageController {
         return res.toString();
     }
 
-    public void getCurrentUserInfo(HttpSession session) {
-        user = (User) session.getAttribute("user");   // 获取用户信息
+    /**
+     * 获取一级菜单图标数据
+     *
+     * @return
+     */
+    @RequestMapping("loadFirstMenuIconList")
+    @ResponseBody
+    public String loadFirstMenuIconList() {
+        JSONObject res = new JSONObject();
+        try {
+            List<Organization> organizationList = menuManageService.loadFirstMenuIconList();
+            JSONArray data = JSONArray.fromArray(organizationList.toArray(new Organization[organizationList.size()]));
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "数据获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "数据获取失败！");
+        }
+        // 返回结果
+        return res.toString();
     }
 
     /**
@@ -109,11 +127,7 @@ public class MenuManageController {
             organization1.setIcon(organization.getIcon()); // 为空
             organization1.setLevel(organization.getLevel());
             organization1.setCreationDate(new Date());
-            if (user != null) {
-                organization1.setFounder(user.getName());
-            } else {
-                organization1.setFounder("未登录");
-            }
+            organization1.setFounder(organization.getFounder());
             menuManageService.add(organization1);
             res.put("status", "success");
             res.put("message", "新增成功!");
@@ -490,12 +504,5 @@ public class MenuManageController {
         this.organizationA = organizationA;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
 }
