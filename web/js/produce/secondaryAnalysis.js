@@ -303,6 +303,7 @@ function loadPages(totalRecord, count) {
 
 //加载次生入场分析日报数据列表
 function secondaryAnalysis() {
+    loadNavigationList();   // 设置动态菜单
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");

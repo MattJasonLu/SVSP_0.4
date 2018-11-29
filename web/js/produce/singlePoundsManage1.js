@@ -276,6 +276,7 @@ function inputSwitchPage() {
  * 分页 获取首页内容
  * */
 function loadPagePoundsList() {
+    loadNavigationList();   // 设置动态菜单
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
@@ -747,6 +748,7 @@ function invalid(item) {
 
 //----------------------查看页面-----------------------
 function loadPoundsItems() {
+    loadNavigationList();   // 设置动态菜单
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getPounds",          // url
@@ -914,6 +916,7 @@ function cancel() {
  * 初始化数据
  */
 function loadPoundsAdd(){
+    loadNavigationList();   // 设置动态菜单
     $("#head").text("磅单新增");
     //$("#save").text("新增");
     setSelectedListAdd();  // 填充下拉框数据
