@@ -20,6 +20,9 @@ public class MenuManageServiceImpl implements MenuManageService {
     public List<Organization> listMenuPage(){ return menuManageMapper.listMenuPage(); }
 
     @Override
+    public List<Organization> listFirstMenu(){ return menuManageMapper.listFirstMenu();}
+
+    @Override
     public List<Organization> loadFirstMenuIconList(){ return menuManageMapper.loadFirstMenuIconList();}
 
     @Override

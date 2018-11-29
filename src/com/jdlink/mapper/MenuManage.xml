@@ -8,6 +8,10 @@
          select * from menu_management;
     </select>
 
+    <select id="listFirstMenu" resultType="Organization">
+        select * from menu_management where pId = 1;
+    </select>
+
     <select id="listMenuPage" resultType="Organization">
         select * from menu_page;
     </select>

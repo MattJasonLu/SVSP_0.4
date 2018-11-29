@@ -345,19 +345,19 @@ function loadPageContractManageList() {
     console.log("合同类型"+name);
     if (name == 'undefined' || name == "Wastes" || name == undefined) {
         $('#Wa').click();
-        localStorage.clear();
+     //   localStorage.clear();
         $('#toggleName').text("产废单位名称");
     }
     if (name == "Emergency") {
         console.log('点击了')
         $('#Em').click();
-        localStorage.clear();
+     //   localStorage.clear();
         //如果是物流就改为处置单位
         $('#toggleName').text("产废单位名称");
     }
     if (name == "Logistics") {
         $('#Lo').click();
-        localStorage.clear();
+     //   localStorage.clear();
     }
     // if (name == "Derive") {
     //     $('#De').click();
@@ -448,7 +448,7 @@ function ContractListByName(item) {
         page.pageNumber = pageNumber;
         page.start = (pageNumber - 1) * page.count;
         page.contractIndex = contractIndex;
-        localStorage.clear();
+      //  localStorage.clear();
         //如果是物流就改为处置单位
         $.ajax({
             type: "POST",                       // 方法类型
@@ -1687,14 +1687,13 @@ function loadWastesContractSelectList() {
 //取得下拉菜单的选项
 //     var contractType=$('#contractType');
 //     contractType.hide();
-
     $('#supplier').hide();//供应商隐藏
     $('#client').show();//产废单位显示
-    $('#name').text('产废单位')
+    $('#name').text('产废单位');
     var contractName1 = $('#contractName1');
     contractName1.hide();//默认公司合同 隐藏掉客户合同
 
-   $("#contractType1").val('危废')
+   $("#contractType1").val('危废');
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getContractList",                  // url
@@ -2733,7 +2732,7 @@ function contractWastesSave() {
             if (addType == 'break') {
                 // $("#commentForm").attr('action','contractManage.html');
                 window.location.href = "contractManage.html";
-                localStorage.clear();
+              //  localStorage.clear();
                 localStorage.name1 = contractType1;
             }
         }
@@ -2938,7 +2937,7 @@ function contractWastesSave() {
             if (addType == 'break') {
                 $("#commentForm").attr('action', 'contractManage.html');
                 window.location.href = "contractManage.html";
-                localStorage.clear();
+              //  localStorage.clear();
                 localStorage.name1 = contractType1;
             }
         }
@@ -3047,7 +3046,7 @@ function contractWastesSubmit() {
                 alert("提交成功!");
                 if (addType == "continue") $(location).attr('href', 'wastesContractInfo.html');
                 else {
-                    localStorage.clear();
+                   // localStorage.clear();
                     $(location).attr('href', 'contractManage.html');
                     localStorage.name1 = "Wastes";
                     location.href = "contractManage.html";
@@ -3537,7 +3536,7 @@ function contractEmSave() {
             }
             if (addType == 'break') {
                 console.log("来了")
-                localStorage.clear();
+             //   localStorage.clear();
                 window.location.href = "contractManage.html";
                 localStorage.name1 = "Emergency";
 
@@ -3630,7 +3629,7 @@ function contractEmSave() {
             }
             if (addType == 'break') {
                 console.log("来了")
-                localStorage.clear();
+              //  localStorage.clear();
                 window.location.href = "contractManage.html";
                 localStorage.name1 = "Emergency";
 
@@ -4091,7 +4090,7 @@ function contractLogicSave() {
             }
             else {
                 window.location.href = 'contractManage.html';
-                localStorage.clear();
+             //   localStorage.clear();
                 localStorage.name1 = "Logistics";
 
             }
@@ -4183,7 +4182,7 @@ function contractLogicSave() {
                 $(location).attr('href', 'logisticsContractInfo.html');
             }
             if (addType == 'break') {
-                localStorage.clear();
+             //   localStorage.clear();
                 window.location.href = 'contractManage.html';
                 localStorage.name1 = "Logistics";
 
@@ -4288,7 +4287,7 @@ function contractLogicSave() {
             }
             else {
                 window.location.href = 'contractManage.html';
-                localStorage.clear();
+             //   localStorage.clear();
                 localStorage.name1 = "Logistics";
 
             }
@@ -4380,7 +4379,7 @@ function contractLogicSave() {
                 $(location).attr('href', 'logisticsContractInfo.html');
             }
             if (addType == 'break') {
-                localStorage.clear();
+           //     localStorage.clear();
                 window.location.href = 'contractManage.html';
                 localStorage.name1 = "Logistics";
 

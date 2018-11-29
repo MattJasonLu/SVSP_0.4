@@ -503,6 +503,10 @@ function onDrop(treeId, treeNodes, targetNode, moveType) {
 }
 
 function beforeRemove(treeId, treeNode) {
+    if(treeNode.id === 1){ // 主节点不可删除
+        alert("不可删除！");
+        return false;
+    }
     return confirm("确认删除" + treeNode.name + " 吗？");
 }
 
@@ -644,11 +648,31 @@ function selectAll() {
 }
 
 $(document).ready(function () {
+    getMenuTree();   // 更新动态菜单树状结构数据
     loadNavigationList(); // 设置动态菜单
     loadMenu();  // 获取并设置节点数据
     $.fn.zTree.init($("#treeDemo"), setting, zNodes);//根据参数初始化树
     $("#selectAll").bind("click", selectAll);
 });
+
+function getMenuTree(){
+    // 获取动态菜单数据
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getMenuTree",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != null && result.status === "success") {
+                var obj = JSON.stringify(result.data);
+                localStorage.setItem("menuOrganization", obj);
+            }
+        },
+        error: function (result) {
+            console.log(result.message);
+        }
+    });
+}
 
 /**
  * 新增功能
