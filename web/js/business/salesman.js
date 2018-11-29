@@ -29,7 +29,7 @@ function loadPages(totalRecord, count) {
 /**
  * 计算总页数
  * */
-function totalSalesPage() {
+function totalPage() {
     var totalRecord = 0;
     if (!isSearch) {
         $.ajax({
@@ -82,7 +82,7 @@ function totalSalesPage() {
 function setSalesPageClone(result) {
     $(".beforeClone").remove();
     setSalesmanList(result);
-    var total = totalSalesPage();
+    var total = totalPage();
     $("#next").prev().hide();
     var st = "共" + total + "页";
     $("#totalPage").text(st);
@@ -120,7 +120,7 @@ function switchSalesPage(pageNumber) {
         pageNumber = 1;
     }
     if (pageNumber == -2) {
-        pageNumber = totalSalesPage();        //尾页
+        pageNumber = totalPage();        //尾页
     }
     if (pageNumber == null || pageNumber == undefined) {
         console.log("参数为空,返回首页!");
@@ -219,7 +219,7 @@ function inputSalesSwitchPage() {
             $("#next").removeClass("disabled");
             $("#endPage").removeClass("disabled");
         }
-        if (pageNumber == totalSalesPage()) {
+        if (pageNumber == totalPage()) {
             $("#next").addClass("disabled");
             $("#endPage").addClass("disabled");
             $("#previous").removeClass("disabled");
@@ -229,7 +229,7 @@ function inputSalesSwitchPage() {
             $("#previous").removeClass("disabled");
             $("#firstPage").removeClass("disabled");
         }
-        if(pageNumber < totalSalesPage()){
+        if(pageNumber < totalPage()){
             $("#next").removeClass("disabled");
             $("#endPage").removeClass("disabled");
         }
