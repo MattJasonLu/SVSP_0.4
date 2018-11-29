@@ -4,7 +4,8 @@
 
 //加载月度采购申请表数据列表
 function getProcurement() {
-    var page = {}
+    loadNavigationList();   // 设置动态菜单
+    var page = {};
     $('#tbody1').find("input[name='select']").prop('checked', true);
     $("input[name='allSel']").prop('checked', true);
 
