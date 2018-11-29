@@ -503,6 +503,7 @@ function receive() {
 
 //加载出库增加页面的领料单
 function loadRequisitionList() {
+    loadNavigationList();   // 设置动态菜单
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
         size: 4
@@ -580,7 +581,7 @@ function loadRequisitionList() {
         $('#creator').val(data.username)
     }
 
-    localStorage.clear();
+  //  localStorage.clear();
 }
 
 //设置出库增加页面的领料单数据
