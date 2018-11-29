@@ -243,7 +243,7 @@
      */
     function loadPages(totalRecord, count) {
         if (totalRecord == 0) {
-            window.alert("总记录数为0，请检查！");
+            console.log("总记录数为0，请检查！");
             return 0;
         }
         else if (totalRecord % count == 0)
@@ -393,7 +393,6 @@
         clonedTr.find("input[name='rawWastes[" + temp + "].auxMaterial']").attr('name', "rawWastes[" + temp2 + "].auxMaterial");
         clonedTr.find("input[name='rawWastes[" + temp + "].draginMaterial']").attr('name', "rawWastes[" + temp2 + "].draginMaterial");
         clonedTr.addClass("newLine");
-        clonedTr.removeClass("hidden");
         clonedTr.insertAfter(tr);
     }
     /**
@@ -414,7 +413,6 @@
         clonedTr.find("input[name='rawWastes[" + temp + "].auxMaterial']").attr('name', "rawWastes[" + temp2 + "].auxMaterial");
         clonedTr.find("input[name='rawWastes[" + temp + "].draginMaterial']").attr('name', "rawWastes[" + temp2 + "].draginMaterial");
         clonedTr.addClass("newLine");
-        clonedTr.removeClass("hidden");
         clonedTr.insertAfter(tr);
     }
     /**
@@ -438,7 +436,6 @@
         clonedTr.find("input[name='wasteProcess[" + temp + "].lastProcessTime']").attr('name', "wasteProcess[" + temp2 + "].lastProcessTime");
         clonedTr.find("input[name='wasteProcess[" + temp + "].yearQuantity']").attr('name', "wasteProcess[" + temp2 + "].yearQuantity");
         clonedTr.addClass("newLine");
-        clonedTr.removeClass("hidden");
         clonedTr.insertAfter(tr);
     }
     /**
@@ -462,7 +459,6 @@
         clonedTr.find("input[name='wasteProcess[" + temp + "].lastProcessTime']").attr('name', "wasteProcess[" + temp2 + "].lastProcessTime");
         clonedTr.find("input[name='wasteProcess[" + temp + "].yearQuantity']").attr('name', "wasteProcess[" + temp2 + "].yearQuantity");
         clonedTr.addClass("newLine");
-        clonedTr.removeClass("hidden");
         clonedTr.insertAfter(tr);
     }
     function addRow3() {
@@ -560,17 +556,6 @@
         clonedTr9.addClass("newLine");
         clonedTr10.addClass("newLine");
         clonedTr11.addClass("newLine");
-        clonedTr1.removeClass("hidden");
-        clonedTr2.removeClass("hidden");
-        clonedTr3.removeClass("hidden");
-        clonedTr4.removeClass("hidden");
-        clonedTr5.removeClass("hidden");
-        clonedTr6.removeClass("hidden");
-        clonedTr7.removeClass("hidden");
-        clonedTr8.removeClass("hidden");
-        clonedTr9.removeClass("hidden");
-        clonedTr10.removeClass("hidden");
-        clonedTr11.removeClass("hidden");
         clonedTr1.insertAfter(tr11);
         clonedTr2.insertAfter(clonedTr1);
         clonedTr3.insertAfter(clonedTr2);
@@ -639,12 +624,6 @@
         clonedTr4.addClass("newLine");
         clonedTr5.addClass("newLine");
         clonedTr6.addClass("newLine");
-        clonedTr1.removeClass("hidden");
-        clonedTr2.removeClass("hidden");
-        clonedTr3.removeClass("hidden");
-        clonedTr4.removeClass("hidden");
-        clonedTr5.removeClass("hidden");
-        clonedTr6.removeClass("hidden");
         clonedTr1.insertAfter(tr6);
         clonedTr2.insertAfter(clonedTr1);
         clonedTr3.insertAfter(clonedTr2);
@@ -748,17 +727,6 @@
         clonedTr9.addClass("newLine");
         clonedTr10.addClass("newLine");
         clonedTr11.addClass("newLine");
-        clonedTr1.removeClass("hidden");
-        clonedTr2.removeClass("hidden");
-        clonedTr3.removeClass("hidden");
-        clonedTr4.removeClass("hidden");
-        clonedTr5.removeClass("hidden");
-        clonedTr6.removeClass("hidden");
-        clonedTr7.removeClass("hidden");
-        clonedTr8.removeClass("hidden");
-        clonedTr9.removeClass("hidden");
-        clonedTr10.removeClass("hidden");
-        clonedTr11.removeClass("hidden");
         clonedTr1.insertAfter(tr11);
         clonedTr2.insertAfter(clonedTr1);
         clonedTr3.insertAfter(clonedTr2);
@@ -827,12 +795,6 @@
         clonedTr4.addClass("newLine");
         clonedTr5.addClass("newLine");
         clonedTr6.addClass("newLine");
-        clonedTr1.removeClass("hidden");
-        clonedTr2.removeClass("hidden");
-        clonedTr3.removeClass("hidden");
-        clonedTr4.removeClass("hidden");
-        clonedTr5.removeClass("hidden");
-        clonedTr6.removeClass("hidden");
         clonedTr1.insertAfter(tr6);
         clonedTr2.insertAfter(clonedTr1);
         clonedTr3.insertAfter(clonedTr2);
@@ -1129,35 +1091,33 @@
                     </li>
                 </ol>
             </nav>
+        </div>
+    </div>
 
-            <!--导入模态框-->
-            <div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                    aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="TitleMyModalLabel">导入表格数据</h4>
+    <!--导入模态框-->
+    <div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="TitleMyModalLabel">导入表格数据</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="modelAssign" method="post">
+                        <div class="form-group">
+                            <font size="+2">提示：</font>
+                            <font size="+1" class="text-center">请按照模板格式导入数据！</font>
                         </div>
-                        <div class="modal-body">
-                            <form id="modelAssign" method="post">
-                                <div class="form-group">
-                                    <font size="+2">提示：</font>
-                                    <font size="+1" class="text-center">请按照模板格式导入数据！</font>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer center">
-                            <button type="button" class="btn btn-default" onclick="downloadModal()">下载模板</button>
-                            <button type="button" class="btn btn-primary" onclick="importExcel()">导入数据</button>
-                        </div>
-                    </div>
+                    </form>
+                </div>
+                <div class="modal-footer center">
+                    <button type="button" class="btn btn-default" onclick="downloadModal()">下载模板</button>
+                    <button type="button" class="btn btn-primary" onclick="importExcel()">导入数据</button>
                 </div>
             </div>
         </div>
     </div>
-
-
     <!-- 预约模态框 -->
     <div class="modal fade" id="appointModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -1296,7 +1256,7 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td class="text-center">0</td>
+                                <td class="text-center">1</td>
                                 <td class="text-center"><input class="focus" type="text" maxlength="20" name="rawWastes[0].mainMaterial"></td>
                                 <td class="text-center"><input class="focus" type="text" maxlength="20" name="rawWastes[0].auxMaterial"></td>
                                 <td class="text-center"><input class="focus" type="text" maxlength="20" name="rawWastes[0].draginMaterial"></td>
@@ -1419,7 +1379,7 @@
                             </thead>
                             <tbody id="body2">
                             <tr>
-                                <td onclick="focusInput(this);">0</td>
+                                <td onclick="focusInput(this);">1</td>
                                 <td onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20" name="wasteProcess[0].code"></td>
                                 <td onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20" name="wasteProcess[0].description"></td>
                                 <td onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20" name="wasteProcess[0].quantity"></td>
@@ -1447,7 +1407,7 @@
                                 <th class="text-center" colspan="3">敏感酸性组份</th>
                             </tr>
                             <tr>
-                                <td class="text-center" rowspan="11">0</td>
+                                <td class="text-center" rowspan="11">1</td>
                                 <td class="text-center" rowspan="11" onclick="focusInput(this);"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].name"></td>
                                 <td class="text-center" rowspan="11"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].code"></td>
                                 <td class="text-center" rowspan="2">物质形态</td>
@@ -1618,7 +1578,7 @@
                                         </thead>
                                         <tbody>
                                         <tr>
-                                            <td rowspan="6" class="text-center">0</td>
+                                            <td rowspan="6" class="text-center">1</td>
                                             <td rowspan="6" style="width: 270px" onclick="focusInput(this);" class="text-center"><input type="text" style="width:256px" class="focus" name="deriveWastesList[0].name"></td>
                                             <td rowspan="6" style="width: 120px" align="left">
                                                 <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[0]" value="Virulence">毒性<br>
@@ -1927,8 +1887,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="hidden">
-                                        <td class="text-center">0</td>
+                                    <tr>
+                                        <td class="text-center">1</td>
                                         <td class="text-center"><input class="focus" type="text" maxlength="20" name="rawWastes[0].mainMaterial" readonly></td>
                                         <td class="text-center"><input class="focus" type="text" maxlength="20" name="rawWastes[0].auxMaterial" readonly></td>
                                         <td class="text-center"><input class="focus" type="text" maxlength="20" name="rawWastes[0].draginMaterial" readonly></td>
@@ -2049,8 +2009,8 @@
                                 </tr>
                                 </thead>
                                 <tbody id="body1">
-                                <tr class="hidden">
-                                    <td onclick="focusInput(this);">0</td>
+                                <tr>
+                                    <td onclick="focusInput(this);">1</td>
                                     <td onclick="focusInput(this);"><input readonly class="focus" type="text" style="width: 100px" maxlength="20" name="wasteProcess[0].code"></td>
                                     <td onclick="focusInput(this);"><input readonly class="focus" type="text" style="width: 100px" maxlength="20" name="wasteProcess[0].description"></td>
                                     <td onclick="focusInput(this);"><input readonly class="focus" type="text" style="width: 100px" maxlength="20" name="wasteProcess[0].quantity"></td>
@@ -2077,8 +2037,8 @@
                                     <th class="text-center" colspan="6">均质与混合多项物</th>
                                     <th class="text-center" colspan="3">敏感酸性组份</th>
                                 </tr>
-                                <tr class="hidden">
-                                    <td class="text-center" rowspan="11">0</td>
+                                <tr>
+                                    <td class="text-center" rowspan="11">1</td>
                                     <td class="text-center" rowspan="11" onclick="focusInput(this);"><input readonly maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].name"></td>
                                     <td class="text-center" rowspan="11"><input readonly maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].code"></td>
                                     <td class="text-center" rowspan="2">物质形态</td>
@@ -2091,7 +2051,7 @@
                                     <td class="text-center">有机</td>
                                     <td class="text-center">无机</td>
                                 </tr>
-                                <tr class="hidden">
+                                <tr>
                                     <td class="text-center"><input readonly maxlength="8" type="text" placeholder="说明" class="focus" style="width:100px" name="deriveWastesList[0].formTypeDetail"></td>
                                     <td class="text-center" rowspan="2" colspan="3">混合多项物混合成分</td>
                                     <td class="text-center" colspan="3">预估含量(%)</td>
@@ -2105,7 +2065,7 @@
                                         <input readonly maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[0].isOrganic" value="false">
                                     </td>
                                 </tr>
-                                <tr class="hidden">
+                                <tr>
                                     <td class="text-center" rowspan="2">物质气味</td>
                                     <td class="text-center"><input readonly maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].smellType"></td>
                                     <td class="text-center">最低</td>
@@ -2121,7 +2081,7 @@
                                         <input readonly maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[1].isOrganic" value="false">
                                     </td>
                                 </tr>
-                                <tr class="hidden">
+                                <tr>
                                     <td class="text-center"><input readonly maxlength="8" type="text" placeholder="说明" class="focus" style="width:100px" name="deriveWastesList[0].smellTypeDetail"></td>
                                     <td class="text-center" colspan="3"><input readonly maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[0].name"></td>
                                     <td class="text-center"><input readonly type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[0].minimum"></td>
@@ -2137,7 +2097,7 @@
                                         <input readonly maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[2].isOrganic" value="false">
                                     </td>
                                 </tr>
-                                <tr class="hidden">
+                                <tr>
                                     <td class="text-center" rowspan="2">可溶性</td>
                                     <td class="text-center"><input readonly maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].solubility"></td>
                                     <td class="text-center" colspan="3"><input readonly maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[1].name"></td>
@@ -2154,7 +2114,7 @@
                                         <input readonly maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[3].isOrganic" value="false">
                                     </td>
                                 </tr>
-                                <tr class="hidden">
+                                <tr>
                                     <td class="text-center"><input readonly maxlength="8" type="text" placeholder="说明" class="focus" style="width:100px" name="deriveWastesList[0].solubilityDetail"></td>
                                     <td class="text-center" colspan="3"><input readonly maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[2].name"></td>
                                     <td class="text-center"><input readonly type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[2].minimum"></td>
@@ -2170,7 +2130,7 @@
                                         <input readonly maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[4].isOrganic" value="false">
                                     </td>
                                 </tr>
-                                <tr class="hidden">
+                                <tr>
                                     <td class="text-center" rowspan="2">储存温度</td>
                                     <td class="text-center">
                                         <input readonly maxlength="8" type="radio" name="deriveWastesList[0].isLowTemp" value="false">常温
@@ -2189,7 +2149,7 @@
                                         <input readonly maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[5].isOrganic" value="false">
                                     </td>
                                 </tr>
-                                <tr class="hidden">
+                                <tr>
                                     <td class="text-center">
                                         <input readonly maxlength="8" type="radio" name="deriveWastesList[0].isLowTemp" value="true">低温<br><input maxlength="8" type="text" style="width:50px" name="deriveWastesList[0].lowTemp">℃
                                     </td>
@@ -2207,7 +2167,7 @@
                                         <input readonly maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[6].isOrganic" value="false">
                                     </td>
                                 </tr>
-                                <tr class="hidden">
+                                <tr>
                                     <td class="text-center" rowspan="3">其他</td>
                                     <td class="text-center" rowspan="3">如为精馏残渣其可溶温度:<input readonly maxlength="8" type="text" style="width:50px" name="deriveWastesList[0].solubleTemp">℃</td>
                                     <td class="text-center" colspan="3"><input readonly maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[5].name"></td>
@@ -2218,13 +2178,13 @@
                                         <p class="text-danger">备注:主要成分避免使用废溶剂、废油等笼统描述，尽可能详尽估算出含量</p>
                                     </td>
                                 </tr>
-                                <tr class="hidden">
+                                <tr>
                                     <td class="text-center" colspan="3"><input readonly maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[6].name"></td>
                                     <td class="text-center"><input readonly type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[6].minimum"></td>
                                     <td class="text-center"><input readonly type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[6].average"></td>
                                     <td class="text-center"><input readonly type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[6].maximum"></td>
                                 </tr>
-                                <tr id="row5" class="hidden">
+                                <tr id="row5">
                                     <td class="text-center" colspan="3"><input readonly maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[7].name"></td>
                                     <td class="text-center"><input readonly type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[7].minimum"></td>
                                     <td class="text-center"><input readonly type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[7].average"></td>
@@ -2248,8 +2208,8 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr class="hidden">
-                                                <td rowspan="6" class="text-center">0</td>
+                                            <tr>
+                                                <td rowspan="6" class="text-center">1</td>
                                                 <td rowspan="6" style="width: 270px" onclick="focusInput(this);" class="text-center"><input readonly type="text" style="width:256px" class="focus" name="deriveWastesList[0].name"></td>
                                                 <td rowspan="6" style="width: 120px" align="left">
                                                     <input readonly type="checkbox" name="deriveWastesList[0].wasteCharacterList[0]" value="Virulence">毒性<br>
@@ -2275,23 +2235,23 @@
                                                 <td style="width: 130px">若不慎入眼</td><br>
                                                 <td style="width: 245px"><input readonly type="text" style="width:240px" class="focus" name="deriveWastesList[0].eyeMeasures"></td>
                                             </tr>
-                                            <tr class="hidden">
+                                            <tr>
                                                 <td style="width: 130px">若接触到皮肤</td>
                                                 <td style="width: 245px"><input readonly type="text" style="width:240px" class="focus" name="deriveWastesList[0].skinMeasures"></td>
                                             </tr>
-                                            <tr class="hidden">
+                                            <tr>
                                                 <td style="width: 130px">若吞食</td>
                                                 <td style="width: 245px"><input readonly type="text" style="width:240px" class="focus" name="deriveWastesList[0].swallowMeasures"></td>
                                             </tr>
-                                            <tr class="hidden">
+                                            <tr>
                                                 <td style="width: 130px">若吸入</td>
                                                 <td style="width: 245px"><input readonly type="text" style="width:240px" class="focus" name="deriveWastesList[0].suctionMeasures"></td>
                                             </tr>
-                                            <tr class="hidden">
+                                            <tr>
                                                 <td style="width: 130px">灭火方法</td>
                                                 <td style="width: 245px"><input readonly type="text" style="width:240px" class="focus" name="deriveWastesList[0].putOutFireMeasures"></td>
                                             </tr>
-                                            <tr id="row6" class="hidden">
+                                            <tr id="row6">
                                                 <td style="width: 130px">泄露处理方法</td>
                                                 <td style="width: 245px"><input readonly type="text" style="width:240px" class="focus" name="deriveWastesList[0].leakMeasures"></td>
                                             </tr>
