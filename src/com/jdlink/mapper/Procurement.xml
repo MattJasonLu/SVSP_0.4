@@ -53,7 +53,7 @@
     <!--获取采购明细-->
     <select id="getProcurementItemList" resultType="Material">
         select a.* from t_pl_material as a join t_pl_procurement as b on a.receiptNumber=b.receiptNumber
-        where b.state = 'Submitted'
+        where b.checkStateId = 73
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count};
         </if>
@@ -236,7 +236,7 @@
         </if>
     </select>
 
-    <select id="getMaterialById" parameterType="String" resultType="Material">
+    <select id="getMaterialById" parameterType="String" resultMap="MaterialRM">
         select * from t_pl_material where id=#{id};
     </select>
 
