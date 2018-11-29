@@ -399,6 +399,7 @@ function saveMonth() {
 //加载月度采购申请表数据列表
 function getMontnProcurement() {
     $('.loader').show();
+    loadNavigationList();   // 设置动态菜单
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
@@ -994,6 +995,7 @@ function enterSearch() {
 }
 //加载辅料列表
 function getIngredientsList() {
+    loadNavigationList();   // 设置动态菜单
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
         size: 4
