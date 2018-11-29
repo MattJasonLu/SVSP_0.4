@@ -217,6 +217,7 @@ function inputSwitchPage() {
 }
 
 function  batchingList() {
+    loadNavigationList();    // 设置动态菜单
     var page={};
     $.ajax({
         type: "POST",                       // 方法类型
@@ -970,6 +971,7 @@ function save() {
 //配料单显示页面加载
 function loadBatchingOrderList() {
     $('.loader').show()
+    loadNavigationList();    // 设置动态菜单
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
@@ -1246,6 +1248,7 @@ function add(data) {
 
 //领料单新增页面预加载
 function loadMaterialRequisitionList(){
+    loadNavigationList();    // 设置动态菜单
     var b=(localStorage.getItem("temp"));//1,2,3
     console.log("b:"+b);
   if(b!=null){
