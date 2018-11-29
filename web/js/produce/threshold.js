@@ -353,8 +353,8 @@ function setThresholdOutList(result) {
                     break;
                 // 状态
                 case (3):
-                    if (obj.state != null)
-                        $(this).html(obj.state.name);
+                    if (obj.checkStateItem != null)
+                        $(this).html(obj.checkStateItem.dictionaryItemName);
                     break;
             }
         });
@@ -694,14 +694,14 @@ function setThresholdList(result) {
                     break;
                 //处理类别
                 case (1):
-                    if (obj.handleCategory != null) {
-                        $(this).html(obj.handleCategory.name);
+                    if (obj.handleCategoryItem != null) {
+                        $(this).html(obj.handleCategoryItem.dictionaryItemName);
                     }
                     break;
                 //物质形态
                 case (2):
-                    if (obj.formType != null) {
-                        $(this).html(obj.formType.name);
+                    if (obj.formTypeItem != null) {
+                        $(this).html(obj.formTypeItem.dictionaryItemName);
                     }
                     break;
                 //最大热值
@@ -862,30 +862,34 @@ function loadThresholdList1() {
     if (localStorage.id != null && localStorage.id != "null") {
         $("#data-thresholdListId").text(localStorage.id); // 设置编号
         //通过ajax从后台获取
-        setSelectedList();    // 设置下拉框数据
-        $.ajax({
-            type: "POST",
-            url: "thresholdList",
-            data: {
-                id: localStorage.id
-            },
-            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            success: function (result) {
-                if (result !== undefined && result.status == "success" && result.data.length > 0) {
-                    console.log(result);
-                    setThresholdList1(result);
-                }else if (result.data.length == 0){
-                    $("#thresholdId0").text(1);      // 设置首行序号
+       setSelectedList();    // 设置下拉框数据
+
+
+            $.ajax({
+                type: "POST",
+                url: "thresholdList",
+                data: {
+                    id: localStorage.id
+                },
+                async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                success: function (result) {
+                    if (result !== undefined && result.status == "success" && result.data.length > 0) {
+                        console.log(result);
+                        setThresholdList1(result);
+                    }else if (result.data.length == 0){
+                        $("#thresholdId0").text(1);      // 设置首行序号
+                    }
+                    else {
+                        console.log(result.message);
+                    }
+                },
+                error: function (result) {
+                    alert("服务器异常！");
                 }
-                else {
-                    console.log(result.message);
-                }
-            },
-            error: function (result) {
-                alert("服务器异常！");
-            }
-        });
+            });
+
+
     } else {
         $("#data-thresholdListId").text(id); // 设置编号
         $("#thresholdId0").text(1);      // 设置首行序号
@@ -924,16 +928,17 @@ function setThresholdList1(result) {
                     break;
                 //处理类别
                 case (1):
-                    if (obj.handleCategory != null) {
-                        $(this).find("select").val(obj.handleCategory.index);
-                        selectAuto($(this).find("select"));             // 自动匹配物质形态
+                    if (obj.handleCategoryItem != null) {
+                        $(this).find("select[id^='handleCategory']").val(obj.handleCategoryItem.dataDictionaryItemId);
+                       // selectAuto($(this).find("select"));             // 自动匹配物质形态
                     }
                     break;
                 //物质形态
                 case (2):
-                    if (obj.formType != null) {
-                        $(this).find("select").val(obj.formType.index);
+                    if (obj.formTypeItem != null) {
+                        $(this).find("select").val(obj.formTypeItem.dataDictionaryItemId);
                     }
+                    // console.log(obj.formTypeItem.dataDictionaryItemId)
                     break;
                 //最大热值
                 case (3):
@@ -1089,43 +1094,103 @@ function delLine(e) {
  */
 function setSelectedList() {
     //添加产废单位信息
+//     $.ajax({
+//         type: "POST",                       // 方法类型
+//         url: "getThresholdSelectedList",              // url
+//         cache: false,
+//         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+//         dataType: "json",
+//         success: function (result) {
+//             if (result != undefined) {
+//                 var data = eval(result);
+//                 // 各下拉框数据填充
+//                 var handleCategoryList = $("select[name='handleCategory']");
+//                 // 清空遗留元素
+//                 handleCategoryList.children().first().siblings().remove();
+//                 $.each(data.handleCategoryList, function (index, item) {
+//                     var option = $('<option />');
+//                     option.val(item.index);
+//                     option.text(item.name);
+//                     handleCategoryList.append(option);
+//                 });
+//                 handleCategoryList.get(0).selectedIndex = -1; // 初始化
+//                 var formTypeList = $("select[name='formType']");
+//                 // 清空遗留元素
+//                 formTypeList.children().first().siblings().remove();
+//                 $.each(data.formTypeList, function (index, item) {
+//                     var option = $('<option />');
+//                     option.val(item.index);
+//                     option.text(item.name);
+//                     formTypeList.append(option);
+//                 });
+//                 formTypeList.get(0).selectedIndex = -1; // 初始化
+//             } else {
+// //                    console.log(result);
+//             }
+//         },
+//         error: function (result) {
+//             console.log(result);
+//         }
+//     });
+
+    //进料方式
     $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getThresholdSelectedList",              // url
-        cache: false,
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        type: 'POST',
+        url: "getHandleCategoryByDataDictionary",
+        async:false,
         dataType: "json",
+        contentType: "application/json;charset=utf-8",
         success: function (result) {
             if (result != undefined) {
-                var data = eval(result);
-                // 各下拉框数据填充
+                //console.log(result);
                 var handleCategoryList = $("select[name='handleCategory']");
-                // 清空遗留元素
-                handleCategoryList.children().first().siblings().remove();
-                $.each(data.handleCategoryList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(item.index);
-                    option.text(item.name);
+                handleCategoryList.children().remove();
+                $.each(result.data, function (index, item) {
+                    var option = $('<option/>');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     handleCategoryList.append(option);
                 });
-                handleCategoryList.get(0).selectedIndex = -1; // 初始化
-                var formTypeList = $("select[name='formType']");
-                // 清空遗留元素
-                formTypeList.children().first().siblings().remove();
-                $.each(data.formTypeList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(item.index);
-                    option.text(item.name);
-                    formTypeList.append(option);
-                });
-                formTypeList.get(0).selectedIndex = -1; // 初始化
-            } else {
-//                    console.log(result);
+                handleCategoryList.get(0).selectedIndex = -1;
+            }
+            else {
+                alert(result.message);
             }
         },
         error: function (result) {
             console.log(result);
         }
+
+    });
+
+    //物质形态
+    $.ajax({
+        type: 'POST',
+        url: "getFormTypeByDataDictionary",
+        async:false,
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success: function (result) {
+            if (result != undefined) {
+                //console.log(result);
+                var formTypeList = $("select[name='formType']");
+                formTypeList.children().remove();
+                $.each(result.data, function (index, item) {
+                    var option = $('<option/>');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    formTypeList.append(option);
+                });
+                formTypeList.get(0).selectedIndex =-1;
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+
     });
 }
 
@@ -1140,49 +1205,55 @@ function saveData() {
         var threshold = {};
         var handleCategory = $("#handleCategory" + $i).val();
         var formType = $("#formType" + $i).val();
-        switch (parseInt(handleCategory)) {
-            case(1):
-                handleCategory = 'Sludge';
-                break;
-            case(2):
-                handleCategory = 'WasteLiquid';
-                break;
-            case(3):
-                handleCategory = 'Bulk';
-                break;
-            case(4):
-                handleCategory = 'Crushing';
-                break;
-            case(5):
-                handleCategory = 'Distillation';
-                break;
-            case(6):
-                handleCategory = 'Suspension';
-                break;
-        }
-        switch (parseInt(formType)) {
-            case(1):
-                formType = 'Gas';
-                break;
-            case(2):
-                formType = 'Liquid';
-                break;
-            case(3):
-                formType = 'Solid';
-                break;
-            case(4):
-                formType = 'HalfSolid';
-                break;
-            case(5):
-                formType = 'Liquid1';
-                break;
-            case(6):
-                formType = 'Solid1';
-                break;
-        }
+        // switch (parseInt(handleCategory)) {
+        //     case(1):
+        //         handleCategory = 'Sludge';
+        //         break;
+        //     case(2):
+        //         handleCategory = 'WasteLiquid';
+        //         break;
+        //     case(3):
+        //         handleCategory = 'Bulk';
+        //         break;
+        //     case(4):
+        //         handleCategory = 'Crushing';
+        //         break;
+        //     case(5):
+        //         handleCategory = 'Distillation';
+        //         break;
+        //     case(6):
+        //         handleCategory = 'Suspension';
+        //         break;
+        // }
+        // switch (parseInt(formType)) {
+        //     case(1):
+        //         formType = 'Gas';
+        //         break;
+        //     case(2):
+        //         formType = 'Liquid';
+        //         break;
+        //     case(3):
+        //         formType = 'Solid';
+        //         break;
+        //     case(4):
+        //         formType = 'HalfSolid';
+        //         break;
+        //     case(5):
+        //         formType = 'Liquid1';
+        //         break;
+        //     case(6):
+        //         formType = 'Solid1';
+        //         break;
+        // }
+        var handleCategoryItem={};
+        var formTypeItem={};
+        handleCategoryItem.dataDictionaryItemId=handleCategory
+        formTypeItem.dataDictionaryItemId=formType;
+        threshold.handleCategoryItem=handleCategoryItem;
+        threshold.formTypeItem=formTypeItem;
         threshold.thresholdId = $("#thresholdId" + $i).text();
-        threshold.handleCategory = handleCategory;
-        threshold.formType = formType;
+        // threshold.handleCategoryItem.dataDictionaryItemId = handleCategory;
+        // threshold.formTypeItem.dataDictionaryItemId = formType;
         threshold.calorificMax = $("#calorificMax" + $i).val();
         threshold.calorificMin = $("#calorificMin" + $i).val();
         threshold.ashMax = $("#ashMax" + $i).val();
