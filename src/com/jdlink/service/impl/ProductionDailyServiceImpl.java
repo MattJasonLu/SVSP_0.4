@@ -1,6 +1,7 @@
 package com.jdlink.service.impl;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Dictionary.CheckStateItem;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.mapper.ProductionDailyMapper;
@@ -90,8 +91,8 @@ public class ProductionDailyServiceImpl implements ProductionDailyService
     }
 
     @Override
-    public void setProductionDailyState(int id, CheckState checkState) {
-        productionDailyMapper.setProductionDailyState(id, checkState);
+    public void setProductionDailyState(ProductionDaily productionDaily) {
+        productionDailyMapper.setProductionDailyState(productionDaily);
     }
 
     @Override

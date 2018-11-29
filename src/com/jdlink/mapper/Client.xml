@@ -23,8 +23,38 @@
         <result property="checkState" column="checkState" javaType="com.jdlink.domain.CheckState"/>
         <result property="clientType" column="clientType" javaType="com.jdlink.domain.ClientType"/>
         <association property="salesman" column="salesmanId" select="getSalesman"/>
+        <collection property="applicationStatusItem" column="applicationStatusId" select="getApplicationStatusItem"></collection>
+        <collection property="contingencyPlanItem" column="contingencyPlanId" select="getContingencyPlanItem"></collection>
+        <collection property="enterpriseTypeItem" column="enterpriseTypeId" select="getEnterpriseTypeItem"></collection>
+        <collection property="operationModelItem" column="operationModelId" select="getOperationModelItem"></collection>
+        <collection property="operationRecordItem" column="operationRecordId" select="getOperationRecordItem"></collection>
+        <collection property="operationTypeItem" column="operationTypeId" select="getOperationTypeItem"></collection>
     </resultMap>
 
+    <!--获取申报状态数据字典-->
+    <select id="getApplicationStatusItem" resultType="ApplicationStatusItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{applicationStatusId}
+    </select>
+    <!--获取事故防范和应急预案数据字典-->
+    <select id="getContingencyPlanItem" resultType="ContingencyPlanItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{contingencyPlanId}
+    </select>
+    <!--获企业类型数据字典-->
+    <select id="getEnterpriseTypeItem" resultType="EnterpriseTypeItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{enterpriseTypeId}
+    </select>
+    <!--获取经营方式数据字典-->
+    <select id="getOperationModelItem" resultType="OperationModelItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{operationModelId}
+    </select>
+    <!--获取危废经营记录情况数据字典-->
+    <select id="getOperationRecordItem" resultType="OperationRecordItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{operationRecordId}
+    </select>
+    <!--经营单位类别数据字典-->
+    <select id="getOperationTypeItem" resultType="OperationTypeItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{operationTypeId}
+    </select>
     <insert id="add" parameterType="Client" >
         insert into client ( clientId, groupId, companyName,
           organizationCode, licenseCode, representative, postCode, enterpriseType, operationMode,
@@ -168,7 +198,9 @@
          street=#{street}, applicationStatus=#{applicationStatus}, processDesp=#{processDesp}, contactName=#{contactName},
          phone=#{phone}, mobile=#{mobile}, email=#{email}, industry=#{industry}, product=#{product}, bankName=#{bankName},
          bankAccount=#{bankAccount}, taxNumber=#{taxNumber}, ticketType=#{ticketType}, isDisposal=#{isDisposal},nowTime=NOW(),
-         taxAddress=#{taxAddress}, taxMobile=#{taxMobile}
+         taxAddress=#{taxAddress}, taxMobile=#{taxMobile},enterpriseTypeId=#{enterpriseTypeItem.dataDictionaryItemId},operationTypeId=#{operationTypeItem.dataDictionaryItemId},operationRecordId=#{operationRecordItem.dataDictionaryItemId},
+         operationModelId=#{operationModelItem.dataDictionaryItemId},contingencyPlanId=#{contingencyPlanItem.dataDictionaryItemId},
+         applicationStatusId=#{applicationStatusItem.dataDictionaryItemId}
          WHERE clientId=#{clientId} order by nowTime desc;
     </update>
 

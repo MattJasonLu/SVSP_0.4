@@ -633,7 +633,7 @@ public class DictionaryController {
 
 
     /*
-         获取操作类别字典数据
+         获取经营单位类别字典数据
           */
     @RequestMapping("getOperationTypeByDataDictionary")
     @ResponseBody
@@ -791,6 +791,28 @@ public class DictionaryController {
         }
         return res.toString();
     }
+
+     /*
+         获取事故防范和应急预案字典数据
+          */
+     @RequestMapping("getContingencyPlanByDataDictionary")
+     @ResponseBody
+     public String getContingencyPlanByDataDictionary() {
+         JSONObject res = new JSONObject();
+         try {
+             List<DataDictionaryItem> formTypeList = dictionaryService.getSelectListByDataDictionary(27);
+             JSONArray data = JSONArray.fromArray(formTypeList.toArray());
+             res.put("data", data);
+             res.put("status", "success");
+             res.put("message", "获取事故防范和应急预案成功");
+         } catch (Exception e) {
+             e.printStackTrace();
+             res.put("status", "fail");
+             res.put("message", "获取事故防范和应急预案失败");
+
+         }
+         return res.toString();
+     }
 
 
         /**

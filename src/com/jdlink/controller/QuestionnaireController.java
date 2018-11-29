@@ -153,7 +153,7 @@ public class QuestionnaireController {
             if (QuestionnaireController.questionnaire.getRawWastesList() != null)
                 oldCount = QuestionnaireController.questionnaire.getRawWastesList().size();
             int newCount = questionnaire.getRawWastesList().size();
-            // 固定旧编号
+            // 固定旧编号8
             for (int i = 0; i < oldCount; i++) {
                 questionnaire.getRawWastesList().get(i).setMaterialId(QuestionnaireController.questionnaire.getRawWastesList().get(i).getMaterialId());
             }
@@ -170,16 +170,16 @@ public class QuestionnaireController {
             if (oldCount <= newCount) {
                 for (int i = 0; i < oldCount; i++) {
                     questionnaire.getWasteProcessList().get(i).setProcessId(QuestionnaireController.questionnaire.getWasteProcessList().get(i).getProcessId());
-                    questionnaire.getDeriveWastesList().get(i).setId(QuestionnaireController.questionnaire.getDeriveWastesList().get(i).getId());
+//                    questionnaire.getDeriveWastesList().get(i).setId(QuestionnaireController.questionnaire.getDeriveWastesList().get(i).getId());
                 }
                 for (int i = oldCount; i < newCount; i++) {
                     questionnaire.getWasteProcessList().get(i).setProcessId(RandomUtil.getRandomEightNumber());
-                    questionnaire.getDeriveWastesList().get(i).setId(RandomUtil.getRandomEightNumber());
+//                    questionnaire.getDeriveWastesList().get(i).setId(RandomUtil.getRandomEightNumber());
                 }
             } else {    // 旧数据比新数据多时
                 for (int i = 0; i < newCount; i++) {
                     questionnaire.getWasteProcessList().get(i).setProcessId(QuestionnaireController.questionnaire.getWasteProcessList().get(i).getProcessId());
-                    questionnaire.getDeriveWastesList().get(i).setId(QuestionnaireController.questionnaire.getDeriveWastesList().get(i).getId());
+//                    questionnaire.getDeriveWastesList().get(i).setId(QuestionnaireController.questionnaire.getDeriveWastesList().get(i).getId());
                 }
             }
             // 更新原材料的信息
@@ -189,7 +189,7 @@ public class QuestionnaireController {
             // 更新工艺流程的信息
             QuestionnaireController.questionnaire.setWasteProcessList(questionnaire.getWasteProcessList());
             // 设置下一页初始数据
-            QuestionnaireController.questionnaire.setDeriveWastesList(questionnaire.getDeriveWastesList());
+//            QuestionnaireController.questionnaire.setDeriveWastesList(questionnaire.getDeriveWastesList());
             res.put("status", "success");
             res.put("message", "页面2数据保存成功");
         } catch (Exception e) {

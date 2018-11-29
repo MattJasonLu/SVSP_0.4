@@ -1,6 +1,7 @@
 package com.jdlink.mapper;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Dictionary.CheckStateItem;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
 import org.apache.ibatis.annotations.Param;
@@ -74,7 +75,8 @@ public interface ProductionDailyMapper {
      * @param id 编号
      * @param checkState 校验状态
      */
-    void setProductionDailyState(@Param("id") int id, @Param("checkState") CheckState checkState);
+   // void setProductionDailyState(@Param("id") int id, @Param("checkStateItem") CheckStateItem checkStateItem);
+    void setProductionDailyState(ProductionDaily productionDailyState);
 
     /**
      * 删除日报

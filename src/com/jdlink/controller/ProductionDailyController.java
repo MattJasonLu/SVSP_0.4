@@ -2,6 +2,7 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Dictionary.CheckStateItem;
 import com.jdlink.domain.Inventory.BoundType;
 import com.jdlink.domain.Inventory.InboundOrderItem;
 import com.jdlink.domain.Inventory.OutboundOrder;
@@ -98,10 +99,10 @@ public class ProductionDailyController {
      */
     @RequestMapping("setProductionDailyState")
     @ResponseBody
-    public String setProductionDailyState(int id, CheckState checkState) {
+    public String setProductionDailyState(@RequestBody ProductionDaily productionDaily) {
         JSONObject res = new JSONObject();
         try {
-            productionDailyService.setProductionDailyState(id, checkState);
+            productionDailyService.setProductionDailyState(productionDaily);
             res.put("status", "success");
             res.put("message", "设置状态成功");
         } catch (Exception e) {
