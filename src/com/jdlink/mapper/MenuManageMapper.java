@@ -8,6 +8,7 @@ import java.util.List;
 public interface MenuManageMapper {
 
     List<Organization> list();
+    List<Organization> listFirstMenu();
     List<Organization> listMenuPage();
     List<Organization> loadFirstMenuIconList();
     int count();
