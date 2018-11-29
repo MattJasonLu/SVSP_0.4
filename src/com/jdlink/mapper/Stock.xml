@@ -31,14 +31,14 @@
         select * from client where clientId=#{clientId};
     </select>
     <insert id="add" parameterType="Stock">
-insert into t_pr_stock(stockId,proContactName,proTelephone,transport,transportTelephone,plateNumber,selfEmployed,nowTime,checkState,proWasteCompany,clientId,supplierId,checkStateId)
-values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTelephone},#{plateNumber},#{selfEmployed},NOW(),'ToSubmit',#{proWasteCompany},#{client.clientId},#{supplier.supplierId},64);
+insert into t_pr_stock(stockId,proContactName,proTelephone,transport,transportTelephone,plateNumber,selfEmployed,nowTime,checkState,proWasteCompany,clientId,supplierId,checkStateId,createTime)
+values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTelephone},#{plateNumber},#{selfEmployed},NOW(),'ToSubmit',#{proWasteCompany},#{client.clientId},#{supplier.supplierId},64,NOW());
 </insert>
     <select id="getStockIdList" resultType="String">
         select  stockId from  t_pr_stock order by (CAST(stockId AS SIGNED)) desc;
     </select>
     <select id="list" resultMap="StockRM">
-    select * from t_pr_stock order by nowTime desc
+    select * from t_pr_stock order by checkStateId=69,createTime desc
     <if test="start != null and count != null">
         limit #{start}, #{count}
     </if>
@@ -149,7 +149,7 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
     update t_pr_stock set opinion=#{1},checkStateId=68,nowTime=NOW() where stockId=#{0};
    </update>
     <update id="back" parameterType="Stock">
-        update t_pr_stock set checkState="Backed",backContent=#{1},nowTime=NOW() where stockId=#{0}
+        update t_pr_stock set checkStateId=66,backContent=#{1},nowTime=NOW() where stockId=#{0}
     </update>
     <delete id="delete" parameterType="Stock">
            delete  from  t_wastes where t_wastes.stockId=#{stockId};

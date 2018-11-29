@@ -35,8 +35,18 @@
         <result property="waterMin" column="watermin"></result>
         <result property="waterMin" column="watermin"></result>
         <result property="ashMin" column="ashmin"></result>
+        <collection property="handleCategoryItem" column="handleCategoryId" select="getHandleCategoryItem"></collection>
+        <collection property="formTypeItem" column="formTypeId" select="getFormTypeItem"></collection>
     </resultMap>
 
+    <!--获取进料方式数据字典-->
+    <select id="getHandleCategoryItem" resultType="HandleCategoryItem">
+        select  *  from datadictionaryitem where dataDictionaryItemId=#{handleCategoryId}
+    </select>
+    <!--获取物质形态数据字典-->
+    <select id="getFormTypeItem" resultType="FormTypeItem">
+        select  *  from datadictionaryitem where dataDictionaryItemId=#{formTypeId}
+    </select>
     <select id="getThresholdList" parameterType="String" resultMap="ThresholdRM">
         select * from t_pr_threshold where id= #{id};
     </select>

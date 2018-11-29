@@ -177,9 +177,9 @@ $('.form_datetime2').datetimepicker({
                             <div class="form-group" style="margin-left: -10px;">
                                 <label class="col-sm-3 control-label">日报时间 </label>
                                 <div class="input-group">
-                                    <input type="date" class="input-sm form-control" id="beginTime" title=""/>
+                                    <input type="date" class="input-sm form-control" id="beginTime" title="" onkeyup="enterSearch()"/>
                                     <span class="input-group-addon">-</span>
-                                    <input type="date" class="input-sm form-control" id="endTime" title=""/>
+                                    <input type="date" class="input-sm form-control" id="endTime" title="" onkeyup="enterSearch()"/>
                                 </div>
                             </div>
                         </div>
@@ -187,7 +187,12 @@ $('.form_datetime2').datetimepicker({
                             <div class="form-group">
                                 <label for="search-checkState" class="col-sm-4 control-label">日报状态</label>
                                 <div class="col-xs-7">
-                                    <select class="form-control" id="search-checkState" name="search-checkState" onchange="searchData();"></select>
+                                    <select class="form-control" id="search-checkState" name="search-checkState" onchange="searchData();">
+                                        <option></option>
+                                        <option value=75>新建</option>
+                                        <option value=83>已锁定</option>
+                                        <option value=69>已作废</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

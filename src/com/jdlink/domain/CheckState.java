@@ -27,11 +27,11 @@ public enum CheckState implements CodeBaseEnum{
     OutBounded("已出库",19),
     Processed("已处理",20),
     Locked("已锁定", 21),
-    ToGenerated("待生成物料", 21),
-    Retired("已退库",22),
-    ToCollected("待收样",23),
-    Collected("已收样",24),
-    Rejected("已拒收",25),
+    ToGenerated("待生成物料", 22),
+    Retired("已退库",23),
+    ToCollected("待收样",24),
+    Collected("已收样",25),
+    Rejected("已拒收",26),
     ;
 
     private String name;

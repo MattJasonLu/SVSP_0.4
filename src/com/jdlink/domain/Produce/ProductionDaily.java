@@ -2,6 +2,7 @@ package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Dictionary.CheckStateItem;
 import com.jdlink.domain.Inventory.InboundOrderItem;
 import com.jdlink.domain.Inventory.OutboundOrder;
 import com.jdlink.domain.Page;
@@ -3872,6 +3873,17 @@ public class ProductionDaily {
      * 关键字
      */
     private String keyword;
+
+    //状态数据字典
+    private CheckStateItem checkStateItem;
+
+    public CheckStateItem getCheckStateItem() {
+        return checkStateItem;
+    }
+
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
+    }
 
     public int getId() {
         return id;

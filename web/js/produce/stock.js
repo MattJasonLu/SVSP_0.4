@@ -332,7 +332,7 @@ function loadPageStocktList() {
         }
     });
     // 设置高级检索的下拉框数据
-    setSeniorSelectedList();
+   //setSeniorSelectedList();
     isSearch = false;
 }
 
@@ -381,9 +381,9 @@ function setStockList(result) {
                 case (4):
                     if (obj.checkStateItem != null) {
                         $(this).html(obj.checkStateItem.dictionaryItemName);
-                        if(obj.checkStateItem.dictionaryItemName=='已作废'){
-                            $(this).parent().hide()
-                        }
+                        // if(obj.checkStateItem.dictionaryItemName=='已作废'){
+                        //     $(this).parent().hide()
+                        // }
                     }
                     break;
                 // 运输公司
@@ -532,15 +532,20 @@ function searchStock() {
     //运输公司
     var transport = $.trim($('#search-transport').val());
 
+    //状态
+    var checkState=$('#search-checkState option:selected').text();
+
+
+
     for (var j = 0; j < array.length; j++) {
         $.each(array[j], function () {
             //console.log(this);
-            if (!($(this).children('td').eq(4).text().indexOf(checkState) != -1 && $(this).children('td').eq(2).text().indexOf(companyContact) != -1
+            if (!($(this).children('td').eq(4).text().indexOf(checkState) != -1 && $(this).children('td').eq(2).text().indexOf(companyContact) != -1&& $(this).children('td').eq(4).text().indexOf(checkState) != -1
                 && $(this).children('td').eq(3).text().indexOf(phone) != -1 && $(this).children('td').eq(5).text().indexOf(transport) != -1 && $(this).children('td').text().indexOf(text) != -1
             )) {
                 $(this).hide();
             }
-            if (($(this).children('td').eq(4).text().indexOf(checkState) != -1 && $(this).children('td').eq(2).text().indexOf(companyContact) != -1
+            if (($(this).children('td').eq(4).text().indexOf(checkState) != -1 && $(this).children('td').eq(2).text().indexOf(companyContact) != -1&& $(this).children('td').eq(4).text().indexOf(checkState) != -1
                 && $(this).children('td').eq(3).text().indexOf(phone) != -1 && $(this).children('td').eq(5).text().indexOf(transport) != -1) && $(this).children('td').text().indexOf(text) != -1) {
                 array1.push($(this));
             }
