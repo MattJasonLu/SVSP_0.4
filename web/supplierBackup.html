@@ -15,6 +15,9 @@
     <script src="js/util.js"></script>
 </head>
 <script type="text/javascript">
+    var isSearch = false;
+    var currentPage = 1;                          //当前页数
+    var data;
     /**
      * 返回count值
      * */
@@ -232,7 +235,7 @@
     /**
      * 计算总页数
      * */
-    function totalSupplierPage() {
+    function totalPage() {
         var totalRecord = 0;
         if (!isSearch) {
             $.ajax({
@@ -285,7 +288,7 @@
     function setSupplierPageClone(result) {
         $(".beforeClone").remove();
         setSupplierList(result);
-        var total = totalSupplierPage();
+        var total = totalPage();
         $("#next").prev().hide();
         var st = "共" + total + "页";
         $("#totalSupplierPage").text(st);
@@ -322,7 +325,7 @@
             pageNumber = 1;
         }
         if (pageNumber == -2) {
-            pageNumber = totalSupplierPage();        //尾页
+            pageNumber = totalPage();        //尾页
         }
         if (pageNumber == null || pageNumber == undefined) {
             console.log("参数为空,返回首页!");
@@ -335,7 +338,7 @@
             $("#next").removeClass("disabled");
             $("#endPage").removeClass("disabled");
         }
-        if (pageNumber == totalSupplierPage()) {
+        if (pageNumber == totalPage()) {
             $("#next").addClass("disabled");
             $("#endPage").addClass("disabled");
             $("#previous").removeClass("disabled");
@@ -345,7 +348,7 @@
             $("#previous").removeClass("disabled");
             $("#firstPage").removeClass("disabled");
         }
-        if(pageNumber < totalSupplierPage()){
+        if(pageNumber < totalPage()){
             $("#next").removeClass("disabled");
             $("#endPage").removeClass("disabled");
         }
@@ -421,7 +424,7 @@
                 $("#next").removeClass("disabled");
                 $("#endPage").removeClass("disabled");
             }
-            if (pageNumber == totalSupplierPage()) {
+            if (pageNumber == totalPage()) {
                 $("#next").addClass("disabled");
                 $("#endPage").addClass("disabled");
                 $("#previous").removeClass("disabled");
@@ -431,7 +434,7 @@
                 $("#previous").removeClass("disabled");
                 $("#firstPage").removeClass("disabled");
             }
-            if(pageNumber < totalSupplierPage()){
+            if(pageNumber < totalPage()){
                 $("#next").removeClass("disabled");
                 $("#endPage").removeClass("disabled");
             }
