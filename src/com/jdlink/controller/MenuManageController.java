@@ -49,6 +49,32 @@ public class MenuManageController {
     }
 
     /**
+     * 获取菜单数据
+     *
+     * @return
+     */
+    @RequestMapping("loadFirstMenuList")
+    @ResponseBody
+    public String loadFirstMenuList() {
+        JSONObject res = new JSONObject();
+        try {
+            List<Organization> organizationList = menuManageService.listFirstMenu();
+            JSONArray data = JSONArray.fromArray(organizationList.toArray(new Organization[organizationList.size()]));
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "数据获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "数据获取失败！");
+        }
+        // 返回结果
+        return res.toString();
+    }
+
+
+
+    /**
      * 获取页面数据
      *
      * @return
@@ -362,6 +388,32 @@ public class MenuManageController {
         try {
             List<Organization> organizationList = getTreeMenuList(organization);
             JSONArray data = JSONArray.fromArray(organizationList.toArray(new Organization[organizationList.size()]));
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取失败！");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 获取动态菜单树状结构
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("getMenuTree")
+    @ResponseBody
+    public String getMenuTree() {
+        JSONObject res = new JSONObject();
+        try {
+            Organization organization = menuManageService.getMenuById(1);  // 获取动态菜单树状结构
+            List<Organization> organizationList = getTreeMenuList(organization);
+            organization.setOrganizationList(organizationList);
+            JSONObject data = JSONObject.fromBean(organization);
             res.put("data", data);
             res.put("status", "success");
             res.put("message", "获取成功!");

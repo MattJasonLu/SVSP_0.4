@@ -8,6 +8,7 @@ public interface MenuManageService {
 
     List<Organization> list();
     List<Organization> listMenuPage();
+    List<Organization> listFirstMenu();
     List<Organization> loadFirstMenuIconList();
     int count();
     int countById(int id);
