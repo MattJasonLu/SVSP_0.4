@@ -12,6 +12,10 @@
         select * from menu_page;
     </select>
 
+    <select id="loadFirstMenuIconList" resultType="Organization">
+        select * from menu_icon;
+    </select>
+
     <select id="count" resultType="int">
          select count(*) from menu_management;
     </select>
