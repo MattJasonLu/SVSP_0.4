@@ -237,14 +237,14 @@
                 insert into t_pr_burnorderitem
                 (itemId,burnOrderId,serialNumber,produceCompanyName,requirements,proportion,weight,volatileNumber,
                 calorific,ashPercentage,wetPercentage,chlorinePercentage,sulfurPercentage,ph,phosphorusPercentage,
-                fluorinePercentage,remarks,processWay,handleCategory,wastesName,temporaryAddress)
+                fluorinePercentage,remarks,processWay,handleCategory,wastesName,temporaryAddress,handleCategoryId,processWayId)
                 values
                 (#{pretreatmentItem.itemId},#{id},#{pretreatmentItem.serialNumber},#{pretreatmentItem.produceCompanyName},#{pretreatmentItem.requirements},
                 #{pretreatmentItem.proportion},#{pretreatmentItem.wastes.weight},#{pretreatmentItem.wastes.volatileNumber},
                 #{pretreatmentItem.wastes.calorific},#{pretreatmentItem.wastes.ashPercentage},#{pretreatmentItem.wastes.wetPercentage},
                 #{pretreatmentItem.wastes.chlorinePercentage},#{pretreatmentItem.wastes.sulfurPercentage},#{pretreatmentItem.wastes.ph},
                 #{pretreatmentItem.wastes.phosphorusPercentage},#{pretreatmentItem.wastes.fluorinePercentage},#{pretreatmentItem.wastes.remarks},
-                #{pretreatmentItem.wastes.processWay},#{pretreatmentItem.wastes.handleCategory},#{pretreatmentItem.wastes.name},#{pretreatmentItem.temporaryAddress});
+                #{pretreatmentItem.wastes.processWay},#{pretreatmentItem.wastes.handleCategory},#{pretreatmentItem.wastes.name},#{pretreatmentItem.temporaryAddress},#{pretreatmentItem.wastes.handleCategoryItem.dataDictionaryItemId},#{pretreatmentItem.wastes.processWayItem.dataDictionaryItemId});
             </foreach>
         </if>
         <if test="pretreatmentId != null and pretreatmentId != '' " >

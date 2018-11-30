@@ -48,8 +48,15 @@
     <resultMap id="WasteInventoryListBatRM" type="WasteInventory">
         <association property="produceCompany" column="clientId" select="getClientBat"></association>
      <association property="wareHouse" column="wareHouseId" select="getwareHouse"></association>
+    <association property="handleCategoryItem" column="handleCategoryId"  select="getHandleCategoryItem"></association>
+        <association property="processWayItem" column="processWayId"  select="getProcessWayItem"></association>
+   <association property="secondaryCategoryItem" column="secondaryCategoryId" select="getSecondaryCategoryItem"></association>
     </resultMap>
 
+    <!--获取次生危废名称数据字典-->
+    <select id="getSecondaryCategoryItem" resultType="SecondaryCategoryItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{secondaryCategoryId}
+    </select>
     <!--查找客户信息-->
     <select id="getClientBat" resultType="Client">
         select * from client where clientId=#{clientId};
@@ -181,6 +188,7 @@
         <collection property="equipmentDataItem" column="equipmentId" select="getEquipmentDataItem"></collection>
         <collection property="processWayItem" column="processWayId" select="getProcessWayItem"></collection>
         <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
+        <collection property="secondaryCategoryItem" column="secondaryCategoryId" select="getSecondaryCategoryItem"></collection>
     </resultMap>
     <!--获取状态数据字典-->
     <select id="getCheckStateItem" resultType="CheckStateItem">

@@ -1,8 +1,11 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Dictionary.HandleCategoryItem;
+import com.jdlink.domain.Dictionary.ProcessWayItem;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.service.BurnOrderService;
+import com.jdlink.service.dictionary.DictionaryService;
 import com.jdlink.util.DBUtil;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
@@ -27,7 +30,8 @@ import java.util.*;
 public class PRBurnOrderController {
     @Autowired
     BurnOrderService burnOrderService;
-
+    @Autowired
+    DictionaryService dictionaryService;
     /**
      * 获取当前焚烧单编号
      *
@@ -258,8 +262,19 @@ public class PRBurnOrderController {
             pretreatmentItem.setTemporaryAddress(data[i][19].toString());
             Wastes wastes = new Wastes();
             wastes.setName(data[i][3].toString());
-            wastes.setHandleCategory(HandleCategory.getHandleCategory(data[i][5].toString()));
-            wastes.setProcessWay(ProcessWay.getProcessWay(data[i][6].toString()));
+            //进料方式适配
+            HandleCategoryItem handleCategoryItem=new HandleCategoryItem();
+            int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(data[i][5].toString(),6);
+            handleCategoryItem.setDataDictionaryItemId(dataDictionaryItemId);
+            wastes.setHandleCategoryItem(handleCategoryItem);
+//            wastes.setHandleCategory(HandleCategory.getHandleCategory(data[i][5].toString()));
+
+            //处置方式适配
+            ProcessWayItem processWayItem =new ProcessWayItem();
+            int  dataDictionaryItemId1= dictionaryService.getdatadictionaryitemIdByName(data[i][6].toString(),8);
+            processWayItem.setDataDictionaryItemId(dataDictionaryItemId1);
+            wastes.setProcessWayItem(processWayItem);
+//            wastes.setProcessWay(ProcessWay.getProcessWay(data[i][6].toString()));
             wastes.setWeight(Float.parseFloat(data[i][8].toString()));
             wastes.setVolatileNumber(Float.parseFloat(data[i][9].toString()));
             wastes.setCalorific(Float.parseFloat(data[i][10].toString()));

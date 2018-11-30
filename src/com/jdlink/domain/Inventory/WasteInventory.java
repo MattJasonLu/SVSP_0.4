@@ -1,6 +1,9 @@
 package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Dictionary.HandleCategoryItem;
+import com.jdlink.domain.Dictionary.ProcessWayItem;
+import com.jdlink.domain.Dictionary.SecondaryCategoryItem;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.LaboratoryTest;
 import com.jdlink.domain.Produce.ProcessWay;
@@ -138,6 +141,40 @@ public class WasteInventory {
 
 
     private String remarks;
+
+    //进料方式数据字典
+    private HandleCategoryItem handleCategoryItem;
+
+    //处置类别进料方式
+    private ProcessWayItem processWayItem;
+
+    //次生危废名称数据字典
+    private SecondaryCategoryItem secondaryCategoryItem;
+
+
+    public SecondaryCategoryItem getSecondaryCategoryItem() {
+        return secondaryCategoryItem;
+    }
+
+    public void setSecondaryCategoryItem(SecondaryCategoryItem secondaryCategoryItem) {
+        this.secondaryCategoryItem = secondaryCategoryItem;
+    }
+
+    public HandleCategoryItem getHandleCategoryItem() {
+        return handleCategoryItem;
+    }
+
+    public void setHandleCategoryItem(HandleCategoryItem handleCategoryItem) {
+        this.handleCategoryItem = handleCategoryItem;
+    }
+
+    public ProcessWayItem getProcessWayItem() {
+        return processWayItem;
+    }
+
+    public void setProcessWayItem(ProcessWayItem processWayItem) {
+        this.processWayItem = processWayItem;
+    }
 
     public String getWastesCode() {
         return wastesCode;

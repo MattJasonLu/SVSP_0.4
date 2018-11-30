@@ -15,7 +15,24 @@
         <collection property="wareHouse" column="wareHouseId" select="getWareHouse"/>
         <collection property="client" column="clientId" select="getClient"></collection>
         <collection property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"></collection>
+         <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
+        <collection property="handleCategoryItem" column="handleCategoryId" select="getHandleCategoryItem"></collection>
+        <collection property="processWayItem" column="processWayId" select="getProcessWayItem"></collection>
+
+
     </resultMap>
+    <!--获取进料方式数据字典-->
+    <select id="getHandleCategoryItem" resultType="HandleCategoryItem">
+        select  * from datadictionaryitem where dataDictionaryItemId=#{handleCategoryId}
+    </select>
+    <!--获取处置方式数据字典-->
+    <select id="getProcessWayItem" resultType="ProcessWayItem">
+        select  * from datadictionaryitem where dataDictionaryItemId=#{processWayId}
+    </select>
+    <!--获取状态数据字典-->
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select  * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
+    </select>
     <select id="getMaterialRequisition" resultType="MaterialRequisitionOrder">
         select * from t_pl_materialrequisitionorder where materialRequisitionId=#{materialRequisitionId}
     </select>
@@ -220,7 +237,7 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
                 or DATE_FORMAT(outboundDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or wareHouseId like "%"#{keywords}"%"
                 or recordState like "%"#{keywords}"%"
-                or checkState like "%"#{keywords}"%"
+                or checkStateId in( select  dataDictionaryItemId from  datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
                 or transferDraftId like "%"#{keywords}"%"
                 or clientId in (select clientId from client where companyName like "%"#{keywords}"%")
                 or laboratoryTestId in (select laboratorytestnumber from t_pr_laboratorytest where wastesName=#{keywords})

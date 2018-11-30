@@ -6,9 +6,17 @@
     <resultMap id="EquipmentRM" type="Equipment" autoMapping="true">
         <result property="" column=""></result>
     </resultMap>
+    <resultMap id="EquipmentItemRM" type="EquipmentItem">
+        <association property="equipmentDataItem" column="equipmentId" select="getEquipmentDataItem"></association>
+    </resultMap>
+
+    <!--获取处置设备数据字典-->
+    <select id="getEquipmentDataItem" resultType="EquipmentDataItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{equipmentId}
+    </select>
     <!--查询当天的设备运行情况-->
-    <select id="getEquipment" resultType="EquipmentItem">
-        select equipment,runningTime,stopTime,stopResult,note,itemID,documentNumber from t_rp_equipmentchild where documentNumber = #{documentNumber};
+    <select id="getEquipment" resultMap="EquipmentItemRM">
+        select * from t_rp_equipmentchild where documentNumber = #{documentNumber};
     </select>
 
     <!--网页列表数据-->
@@ -24,8 +32,8 @@
 
     <!--新增设备明细-->
     <insert id="addEquipmentItem" parameterType="EquipmentItem">
-   insert into t_rp_equipmentchild(equipment, runningTime, stopTime, stopResult, documentNumber) values
-   (#{equipment},#{runningTime},#{stopTime},#{stopResult},#{documentNumber})
+   insert into t_rp_equipmentchild(equipment, runningTime, stopTime, stopResult, documentNumber,equipmentId) values
+   (#{equipment},#{runningTime},#{stopTime},#{stopResult},#{documentNumber},#{equipmentDataItem.dataDictionaryItemId})
     </insert>
 
     <!--更新设备明细-->
@@ -34,7 +42,7 @@
             <foreach collection="list" item="equipmentItem" index= "index" open="" close=";" separator =";">
                 update t_rp_equipmentchild
                 <set>
-                    equipment=#{equipmentItem.equipment},
+                    equipmentId=#{equipmentItem.equipmentDataItem.dataDictionaryItemId},
                     runningTime=#{equipmentItem.runningTime},
                     stopTime=#{equipmentItem.stopTime},
                     stopResult=#{equipmentItem.stopResult}
@@ -182,7 +190,8 @@
     </select>
 
     <delete id="deleteEquipment" parameterType="EquipmentDate" >
-        delete from t_rp_equipment where documentNumber = #{documentNumber}
+        delete from t_rp_equipment where documentNumber = #{documentNumber};
+        delete from  t_rp_equipmentchild where documentNumber=#{documentNumber};
     </delete>
 
     <!--通过编号获取-->

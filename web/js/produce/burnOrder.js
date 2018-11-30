@@ -485,6 +485,7 @@ function save() {
             dataType: "json",
             success: function (result) {
                 if (result.status == "success") {
+                    console.log(result)
                     //将数据转移至焚烧工单数据库
                     var data = eval(result.data);
                     console.log("预处理单数据:");
@@ -526,8 +527,12 @@ function save() {
                         wastes.remarks = data.pretreatmentItemList[i].wastes.remarks;
                         wastes.weight = data.pretreatmentItemList[i].wastes.weight;
                         wastes.volatileNumber = data.pretreatmentItemList[i].wastes.volatileNumber;
-                        wastes.handleCategory = data.pretreatmentItemList[i].wastes.handleCategory.index;
-                        wastes.processWay = data.pretreatmentItemList[i].wastes.processWay.index - 1; // ?
+                        var handleCategoryItem={};
+                        handleCategoryItem.dataDictionaryItemId=data.pretreatmentItemList[i].handleCategoryItem.dataDictionaryItemId;
+                        wastes.handleCategoryItem = handleCategoryItem;
+                        var processWayItem={};
+                        processWayItem.dataDictionaryItemId=data.pretreatmentItemList[i].processWayItem.dataDictionaryItemId;
+                        wastes.processWayItem = processWayItem;
                         wastes.name = data.pretreatmentItemList[i].wastes.name;
                         pretreatmentItem.wastes = wastes;
                         pretreatmentItem.proportion = data.pretreatmentItemList[i].proportion;
@@ -674,17 +679,15 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
  */
 function search1() {
     isSearch = true;
-    var state = null;
-    if ($("#search1-state").val() == 0) state = "NewBuild";//新建
-    if ($("#search1-state").val() == 1) state = "Confirm";//已确认
-    if ($("#search1-state").val() == 2) state = "Invalid";//已作废
+    var state = $("#search1-state").val();
+
     if ($("#senior1").is(':visible')) {
         var data = {
             id: $.trim($("#search1-id").val()),
             startDate: $("#search1-startDate").val(),
             endDate: $("#search1-endDate").val(),
             remarks: $.trim($("#search1-remarks").val()),
-            state: state
+            checkStateItem: {dataDictionaryItemId:state}
         };
     } else {
         var keywords = $.trim($("#searchContent1").val());
