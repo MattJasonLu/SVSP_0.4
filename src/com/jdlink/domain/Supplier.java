@@ -1,5 +1,6 @@
 package com.jdlink.domain;
 
+import com.jdlink.domain.Dictionary.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
@@ -52,25 +53,49 @@ public class Supplier {
      */
     private EnterpriseType enterpriseType;
     /**
+     * 企业类型条目
+     */
+    private EnterpriseTypeItem enterpriseTypeItem;
+    /**
      * 经营方式
      */
     private OperationMode operationMode;
+    /**
+     * 经营方式条目
+     */
+    private OperationModelItem operationModelItem;
     /**
      * 经营单位类别
      */
     private OperationType operationType;
     /**
+     * 经营单位类别条目
+     */
+    private OperationTypeItem operationTypeItem;
+    /**
      * 事故防范和应急预案
      */
     private ContingencyPlan contingencyPlan;
+    /**
+     * 事故防范和应急预案
+     */
+    private ContingencyPlanItem contingencyPlanItem;
     /**
      * 建立危废经营记录情况
      */
     private OperationRecord operationRecord;
     /**
+     * 危废经营记录情况条目
+     */
+    private OperationRecordItem operationRecordItem;
+    /**
      * 供应商类型
      */
     private SupplierType supplierType;
+    /**
+     * 供应商类型条目
+     */
+    private SupplierTypeItem supplierTypeItem;
     /**
      * 工商注册地址
      */
@@ -83,6 +108,10 @@ public class Supplier {
      * 申报状态
      */
     private ApplicationStatus applicationStatus;
+    /**
+     * 申报状态条目
+     */
+    private ApplicationStatusItem applicationStatusItem;
 
     // 环评信息
     /**
@@ -129,9 +158,17 @@ public class Supplier {
      */
     private CheckState checkState;
     /**
+     * 审核状态条目
+     */
+    private CheckStateItem checkStateItem;
+    /**
      * 账号状态
      */
     private ClientState supplierState;
+    /**
+     * 账号状态条目
+     */
+    private ClientStateItem supplierStateItem;
     /**
      * 税号
      */
@@ -168,6 +205,10 @@ public class Supplier {
      * 开票税率
      */
     private TicketRate1 ticketRate;
+    /**
+     * 开票税率条目
+     */
+    private TicketRateItem ticketRateItem;
     /**
      * 当前时间
      */
@@ -527,6 +568,86 @@ public class Supplier {
 
     public void setPage(Page page) {
         this.page = page;
+    }
+
+    public EnterpriseTypeItem getEnterpriseTypeItem() {
+        return enterpriseTypeItem;
+    }
+
+    public void setEnterpriseTypeItem(EnterpriseTypeItem enterpriseTypeItem) {
+        this.enterpriseTypeItem = enterpriseTypeItem;
+    }
+
+    public OperationModelItem getOperationModelItem() {
+        return operationModelItem;
+    }
+
+    public void setOperationModelItem(OperationModelItem operationModelItem) {
+        this.operationModelItem = operationModelItem;
+    }
+
+    public OperationTypeItem getOperationTypeItem() {
+        return operationTypeItem;
+    }
+
+    public void setOperationTypeItem(OperationTypeItem operationTypeItem) {
+        this.operationTypeItem = operationTypeItem;
+    }
+
+    public ContingencyPlanItem getContingencyPlanItem() {
+        return contingencyPlanItem;
+    }
+
+    public void setContingencyPlanItem(ContingencyPlanItem contingencyPlanItem) {
+        this.contingencyPlanItem = contingencyPlanItem;
+    }
+
+    public OperationRecordItem getOperationRecordItem() {
+        return operationRecordItem;
+    }
+
+    public void setOperationRecordItem(OperationRecordItem operationRecordItem) {
+        this.operationRecordItem = operationRecordItem;
+    }
+
+    public SupplierTypeItem getSupplierTypeItem() {
+        return supplierTypeItem;
+    }
+
+    public void setSupplierTypeItem(SupplierTypeItem supplierTypeItem) {
+        this.supplierTypeItem = supplierTypeItem;
+    }
+
+    public ApplicationStatusItem getApplicationStatusItem() {
+        return applicationStatusItem;
+    }
+
+    public void setApplicationStatusItem(ApplicationStatusItem applicationStatusItem) {
+        this.applicationStatusItem = applicationStatusItem;
+    }
+
+    public CheckStateItem getCheckStateItem() {
+        return checkStateItem;
+    }
+
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
+    }
+
+    public ClientStateItem getSupplierStateItem() {
+        return supplierStateItem;
+    }
+
+    public void setSupplierStateItem(ClientStateItem supplierStateItem) {
+        this.supplierStateItem = supplierStateItem;
+    }
+
+    public TicketRateItem getTicketRateItem() {
+        return ticketRateItem;
+    }
+
+    public void setTicketRateItem(TicketRateItem ticketRateItem) {
+        this.ticketRateItem = ticketRateItem;
     }
 
     @Override

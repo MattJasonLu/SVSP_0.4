@@ -136,105 +136,146 @@
         loadNavigationList();   // 设置动态菜单
         var supplierTypeIndex, enterpriseTypeIndex, operationTypeIndex,
                 operationRecordIndex, ticketRateIndex;
+
+        // 设置企业类型
+        $.ajax({
+            type: "POST",
+            url: "getEnterpriseTypeByDataDictionary",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    var data = eval(result);
+                    console.log(result);
+                    // 高级检索下拉框数据填充
+                    var enterpriseType = $("#enterpriseType");
+                    enterpriseType.children().remove();
+                    $.each(data.data, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.dataDictionaryItemId);
+                        option.text(item.dictionaryItemName);
+                        enterpriseType.append(option);
+                    });
+                    enterpriseType.get(0).selectedIndex = -1;
+                } else {
+                    console.log(result.message);
+                }
+            }, error: function (result) {
+                console.log(result);
+            }
+        });
+        // 设置单位类别
+        $.ajax({
+            type: "POST",
+            url: "getOperationTypeByDataDictionary",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    var data = eval(result);
+                    console.log(result);
+                    var operationType = $("#operationType");
+                    operationType.children().remove();
+                    $.each(data.data, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.dataDictionaryItemId);
+                        option.text(item.dictionaryItemName);
+                        operationType.append(option);
+                    });
+                    operationType.get(0).selectedIndex = -1;
+                } else {
+                    console.log(result.message);
+                }
+            }, error: function (result) {
+                console.log(result);
+            }
+        });
+        // 操作记录
+        $.ajax({
+            type: "POST",
+            url: "getOperationRecordByDataDictionary",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    var data = eval(result);
+                    console.log(result);
+                    var operationRecord = $("#operationRecord");
+                    operationRecord.children().remove();
+                    $.each(data.data, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.dataDictionaryItemId);
+                        option.text(item.dictionaryItemName);
+                        operationRecord.append(option);
+                    });
+                    operationRecord.get(0).selectedIndex = -1;
+                } else {
+                    console.log(result.message);
+                }
+            }, error: function (result) {
+                console.log(result);
+            }
+        });
+        // 供应商类型
+        $.ajax({
+            type: "POST",
+            url: "getSupplierTypeByDataDictionary",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    var data = eval(result);
+                    console.log(result);
+                    var supplierType = $("#supplierType");
+                    supplierType.children().remove();
+                    $.each(data.data, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.dataDictionaryItemId);
+                        option.text(item.dictionaryItemName);
+                        supplierType.append(option);
+                    });
+                    supplierType.get(0).selectedIndex = -1;
+                } else {
+                    console.log(result.message);
+                }
+            }, error: function (result) {
+                console.log(result);
+            }
+        });
+        // 开票税率
+        $.ajax({
+            type: "POST",
+            url: "getTicketRate1ByDataDictionary",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    var data = eval(result);
+                    console.log(result);
+                    var ticketRate = $("#ticketRate");
+                    ticketRate.children().remove();
+                    $.each(data.data, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.dataDictionaryItemId);
+                        option.text(item.dictionaryItemName);
+                        ticketRate.append(option);
+                    });
+                    ticketRate.get(0).selectedIndex = -1;
+                } else {
+                    console.log(result.message);
+                }
+            }, error: function (result) {
+                console.log(result);
+            }
+        });
+
         if (Request['id'] == null) {
             // 获取供应商编号
             getCurrentSupplierId();
         } else {
             loadSupplier();
         }
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "getSelectedList",                  // url
-            dataType: "json",
-            success: function (result) {
-                if (result != undefined) {
-                    var data = eval(result);
-                    // 各下拉框数据填充
-                    var enterpriseType = $("#enterpriseType");
-                    enterpriseType.children().remove();
-                    $.each(data.enterpriseTypeStrList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(index);
-                        option.text(item.name);
-                        enterpriseType.append(option);
-                    });
-                    if (enterpriseTypeIndex != null) enterpriseType.get(0).selectedIndex = enterpriseTypeIndex;
-                    else enterpriseType.get(0).selectedIndex = -1;
-                     var operationType = $("#operationType");
-                     operationType.children().remove();
-                     $.each(data.operationTypeStrList, function (index, item) {
-                         var option = $('<option />');
-                         option.val(index);
-                         option.text(item.name);
-                         operationType.append(option);
-                     });
-                    if (operationTypeIndex != null) operationType.get(0).selectedIndex = operationTypeIndex;
-                    else operationType.get(0).selectedIndex = -1;
-                    var operationRecord = $("#operationRecord");
-                    operationRecord.children().remove();
-                    $.each(data.operationRecordStrList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(index);
-                        option.text(item.name);
-                        operationRecord.append(option);
-                    });
-                    if (operationRecordIndex != null) operationRecord.get(0).selectedIndex = operationRecordIndex;
-                    else operationRecord.get(0).selectedIndex = -1;
-//                    var operationMode = $("#operationMode");
-//                    operationMode.children().remove();
-//                    $.each(data.operationModeStrList, function (index, item) {
-//                        var option = $('<option />');
-//                        option.val(index);
-//                        option.text(item.name);
-//                        operationMode.append(option);
-//                    });
-//                    operationMode.get(0).selectedIndex = -1;
-//                    var contingencyPlan = $("#contingencyPlan");
-//                    contingencyPlan.children().remove();
-//                    $.each(data.contingencyPlanStrList, function (index, item) {
-//                        var option = $('<option />');
-//                        option.val(index);
-//                        option.text(item.name);
-//                        contingencyPlan.append(option);
-//                    });
-//                    contingencyPlan.get(0).selectedIndex = -1;
-//                    var applicationStatus = $("#applicationStatus");
-//                    applicationStatus.children().remove();
-//                    $.each(data.applicationStatusStrList, function (index, item) {
-//                        var option = $('<option />');
-//                        option.val(index);
-//                        option.text(item.name);
-//                        applicationStatus.append(option);
-//                    });
-//                    applicationStatus.get(0).selectedIndex = -1;
-                    var supplierType = $("#supplierType");
-                    supplierType.children().remove();
-                    $.each(data.supplierTypeStrList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(index);
-                        option.text(item.name);
-                        supplierType.append(option);
-                    });
-                    if (supplierTypeIndex != null) supplierType.get(0).selectedIndex = supplierTypeIndex;
-                    else supplierType.get(0).selectedIndex = 1;
-                    var ticketRate = $("#ticketRate");
-                    ticketRate.children().remove();
-                    $.each(data.ticketRate1StrList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(index);
-                        option.text(item.name);
-                        ticketRate.append(option);
-                    });
-                    if (ticketRateIndex != null) ticketRate.get(0).selectedIndex = ticketRateIndex;
-                    else ticketRate.get(0).selectedIndex = -1;
-                } else {
-                    console.log(result);
-                }
-            },
-            error:function (result) {
-                console.log(result);
-            }
-        });
+
         function loadSupplier() {
             $.ajax({
                 type: "POST",                            // 方法类型
@@ -267,11 +308,11 @@
                         $("#bankAccount").val(data.bankAccount);
                         $("#addType2").prop('checked', true);
 
-                        if (data.supplierType != null) supplierTypeIndex = data.supplierType.index - 1;
-                        if (data.enterpriseType != null) enterpriseTypeIndex = data.enterpriseType.index - 1;
-                        if (data.operationType != null) operationTypeIndex = data.operationType.index - 1;
-                        if (data.operationRecord != null) operationRecordIndex = data.operationRecord.index - 1;
-                        if (data.ticketRate != null) ticketRateIndex = data.ticketRate.index - 1;
+                        if (data.supplierTypeItem != null) $("#supplierType").val(data.supplierTypeItem.dataDictionaryItemId);
+                        if (data.enterpriseTypeItem != null) $("#enterpriseType").val(data.enterpriseTypeItem.dataDictionaryItemId);
+                        if (data.operationTypeItem != null) $("#operationType").val(data.operationTypeItem.dataDictionaryItemId);
+                        if (data.operationRecordItem != null) $("#operationRecord").val(data.operationRecordItem.dataDictionaryItemId);
+                        if (data.ticketRateItem != null) $("#ticketRate").val(data.ticketRateItem.dataDictionaryItemId);
 
                         $("#licenseFile1").addClass("form-control");
                         $("#licenseFile1").prop('type', 'text');
@@ -305,24 +346,39 @@
             var data = {
                 supplierId:$('#supplierId').text(),
                 companyName: $("#companyName").val(),
-                supplierType:$("#supplierType").val(),
+                // supplierType:$("#supplierType").val(),
+                supplierTypeItem: {
+                    dataDictionaryItemId: $("#supplierType").val()
+                },
                 licenseCode: $("#licenseCode").val(),
                 postCode: $("#postCode").val(),
                 organizationCode: $("#organizationCode").val(),
                 taxNumber: $("#taxNumber").val(),
-                enterpriseType: $("#enterpriseType").val(),
+                // enterpriseType: $("#enterpriseType").val(),
+                enterpriseTypeItem: {
+                    dataDictionaryItemId: $("#enterpriseType").val()
+                },
                 location: $("#location").val(),
                 representative: $("#representative").val(),
                 registeredCapital: $("#registeredCapital").val(),
                 createDate: $("#createDate").val(),
                 businessLimit: $("#businessLimit").val(),
-                operationType: $("#operationType").val(),
-                operationRecord: $("#operationRecord").val(),
+                // operationType: $("#operationType").val(),
+                operationTypeItem: {
+                    dataDictionaryItemId: $("#operationType").val()
+                },
+                // operationRecord: $("#operationRecord").val(),
+                operationRecordItem: {
+                    dataDictionaryItemId: $("#operationRecord").val()
+                },
                 transportLicense: $("#transportLicense").val(),
                 expirationDate: $("#expirationDate").val(),
                 bankName: $("#bankName").val(),
                 bankAccount: $("#bankAccount").val(),
-                ticketRate: $("#ticketRate").val(),
+                // ticketRate: $("#ticketRate").val(),
+                ticketRateItem: {
+                    dataDictionaryItemId: $("#ticketRate").val()
+                },
                 contactName: $("#contactName").val(),
                 mobile: $("#mobile").val(),
                 phone: $("#phone").val(),
@@ -362,24 +418,39 @@
             var data = {
                 supplierId:$('#supplierId').text(),
                 companyName: $("#companyName").val(),
-                supplierType:$("#supplierType").val(),
+                // supplierType:$("#supplierType").val(),
+                supplierTypeItem: {
+                    dataDictionaryItemId: $("#supplierType").val()
+                },
                 licenseCode: $("#licenseCode").val(),
                 postCode: $("#postCode").val(),
                 organizationCode: $("#organizationCode").val(),
                 taxNumber: $("#taxNumber").val(),
-                enterpriseType: $("#enterpriseType").val(),
+                // enterpriseType: $("#enterpriseType").val(),
+                enterpriseTypeItem: {
+                    dataDictionaryItemId: $("#enterpriseType").val()
+                },
                 location: $("#location").val(),
                 representative: $("#representative").val(),
                 registeredCapital: $("#registeredCapital").val(),
                 createDate: $("#createDate").val(),
                 businessLimit: $("#businessLimit").val(),
-                operationType: $("#operationType").val(),
-                operationRecord: $("#operationRecord").val(),
+                // operationType: $("#operationType").val(),
+                operationTypeItem: {
+                    dataDictionaryItemId: $("#operationType").val()
+                },
+                // operationRecord: $("#operationRecord").val(),
+                operationRecordItem: {
+                    dataDictionaryItemId: $("#operationRecord").val()
+                },
                 transportLicense: $("#transportLicense").val(),
                 expirationDate: $("#expirationDate").val(),
                 bankName: $("#bankName").val(),
                 bankAccount: $("#bankAccount").val(),
-                ticketRate: $("#ticketRate").val(),
+                // ticketRate: $("#ticketRate").val(),
+                ticketRateItem: {
+                    dataDictionaryItemId: $("#ticketRate").val()
+                },
                 contactName: $("#contactName").val(),
                 mobile: $("#mobile").val(),
                 phone: $("#phone").val(),
