@@ -1,10 +1,7 @@
 package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.*;
-import com.jdlink.domain.Dictionary.CheckStateItem;
-import com.jdlink.domain.Dictionary.EquipmentDataItem;
-import com.jdlink.domain.Dictionary.HandleCategoryItem;
-import com.jdlink.domain.Dictionary.ProcessWayItem;
+import com.jdlink.domain.Dictionary.*;
 import com.jdlink.domain.Produce.*;
 
 import java.util.Date;
@@ -56,6 +53,10 @@ public class OutboundOrder {
     //处置设备数据字典
     private EquipmentDataItem equipmentDataItem;
 
+    //次生危废名称数据字典
+    private SecondaryCategoryItem secondaryCategoryItem;
+
+
     //状态数据字典
     private CheckStateItem checkStateItem;
 
@@ -65,6 +66,15 @@ public class OutboundOrder {
 
     public void setCheckStateItem(CheckStateItem checkStateItem) {
         this.checkStateItem = checkStateItem;
+    }
+
+
+    public SecondaryCategoryItem getSecondaryCategoryItem() {
+        return secondaryCategoryItem;
+    }
+
+    public void setSecondaryCategoryItem(SecondaryCategoryItem secondaryCategoryItem) {
+        this.secondaryCategoryItem = secondaryCategoryItem;
     }
 
     /*领料单对列表

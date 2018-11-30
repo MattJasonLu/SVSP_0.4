@@ -564,7 +564,13 @@ function setWasteInventoryList(result) {
                         break;
                     // 危废名称
                     case (5):
-                        $(this).html(convertStrToWastesName(obj.wastesName));
+                        if(obj.secondaryCategoryItem!=null){
+                            $(this).html((obj.secondaryCategoryItem.dictionaryItemName));
+                        }
+                        else {
+                            $(this).html((obj.wastesName));
+                        }
+
                         break;
                     // 危废代码
                     case (6):
@@ -1161,7 +1167,16 @@ function view1(item) {
 
 
                 // //废物名称
-                        $('#name').text(convertStrToWastesName(result.data.wastesName));
+                //    if(obj.){
+                //
+                //    }
+                if(result.data.secondaryCategoryItem!=null){
+                    $('#name').text(convertStrToWastesName(result.data.secondaryCategoryItem.dictionaryItemName));
+                }
+                else {
+                    $('#name').text(convertStrToWastesName(result.data.wastesName));
+                }
+
 
 
 
@@ -1215,16 +1230,16 @@ function view1(item) {
                 //     $('#fMin').text(result.data[0].laboratoryTest.fluorineContentMinimum);
                 // }
                 //处理方式
-                if(result.data.processWay!=null){
-                    $('#processingMethod').text(result.data.processWay.name);
+                if(result.data.processWayItem!=null){
+                    $('#processingMethod').text(result.data.processWayItem.dictionaryItemName);
                 }
-                if(result.data.handelCategory!=null){
+                if(result.data.handleCategoryItem!=null){
                     //进料方式
-                    $('#handelCategory').text(result.data.handelCategory.name);
+                    $('#handelCategory').text(result.data.handleCategoryItem.dictionaryItemName);
                 }
                 //处置设备
-                if(result.data.equipment!=null){
-                    $('#equipment').text(result.data.equipment.name);
+                if(result.data.equipmentDataItem!=null){
+                    $('#equipment').text(result.data.equipmentDataItem.dictionaryItemName);
                 }
                 //出库
                 $("#outBoundId1").html(result.data.outboundOrderId);

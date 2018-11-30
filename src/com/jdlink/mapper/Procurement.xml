@@ -14,8 +14,8 @@
     </select>
     <!--添加物料表-->
     <insert id="addMaterial" parameterType="Material">
-        insert into t_pl_material (suppliesName, specifications, inventory, note, purchaseQuantity, demandQuantity, receiptNumber,unit,state,createDate,checkState,unitId)
-        values (#{suppliesName},#{specifications},#{inventory},#{note},#{purchaseQuantity},#{demandQuantity},#{receiptNumber},#{unit},'ToInbound',NOW(),'Enabled',#{unitDataItem.dataDictionaryItemId});
+        insert into t_pl_material (suppliesName, specifications, inventory, note, purchaseQuantity, demandQuantity, receiptNumber,unit,state,createDate,checkState,unitId,checkStateId)
+        values (#{suppliesName},#{specifications},#{inventory},#{note},#{purchaseQuantity},#{demandQuantity},#{receiptNumber},#{unit},'ToInbound',NOW(),'Enabled',#{unitDataItem.dataDictionaryItemId},70);
     </insert>
     <!--加载采购列表-->
     <resultMap id="ProcurementRM" type="Procurement" autoMapping="true">
@@ -253,9 +253,10 @@
     </update>
 
 
+
     <!--获取采购单明细-->
-    <select id="getProcurement" resultType="Material">
-        select * from t_pl_material where (receiptNumber in(select receiptNumber from t_pl_procurement where t_pl_procurement.checkStateId=64 and procurementCategory=1))and (t_pl_material.checkStateId=70);
+    <select id="getProcurement" resultMap="MaterialRM">
+        select * from t_pl_material where (receiptNumber in(select receiptNumber from t_pl_procurement where t_pl_procurement.checkStateId=73 and procurementCategory=1))and (t_pl_material.checkStateId=70);
     </select>
 
     <!--采购计划单新增页面高级查询-->
@@ -268,7 +269,7 @@
             <if test="createDateEnd!=null and createDateEnd!=''">
                 and createDate &lt;= DATE_FORMAT(#{createDateEnd}, '%Y-%m-%d')
             </if>
-            and t_pl_material.receiptNumber in(select t_pl_procurement.receiptNumber from t_pl_procurement where t_pl_procurement.state='Submitted' and t_pl_procurement.procurementCategory=1) and (t_pl_material.checkState='Enabled');
+            and t_pl_material.receiptNumber in(select t_pl_procurement.receiptNumber from t_pl_procurement where t_pl_procurement.checkStateId=73 and t_pl_procurement.procurementCategory=1) and (t_pl_material.checkStateId=70);
         </where>
     </select>
     
@@ -295,8 +296,8 @@
 
     <!--添加采购单明细-->
     <insert id="addProcurementPlanItem" parameterType="procurementPlanItem">
-        insert into t_pr_procumentplanitem(procurementPlanId, category, suppliesName, specifications, proposer, demandQuantity, unit, price, priceTotal, remarks) values
-     (#{procurementPlanId},#{category},#{suppliesName},#{specifications},#{proposer},#{demandQuantity},#{unit},#{price},#{priceTotal},#{remarks});
+        insert into t_pr_procumentplanitem(procurementPlanId, category, suppliesName, specifications, proposer, demandQuantity, unit, price, priceTotal, remarks,unitId) values
+     (#{procurementPlanId},#{category},#{suppliesName},#{specifications},#{proposer},#{demandQuantity},#{unit},#{price},#{priceTotal},#{remarks},#{unitDataItem.dataDictionaryItemId});
 
 </insert>
 
@@ -304,12 +305,18 @@
         <result  property="procurementPlanId" column="procurementPlanId"></result>
         <collection property="procurementPlanItemList" column="procurementPlanId" select="getProcurementPlanItemList"></collection>
     <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
+
     </resultMap>
     <!--状态数据字典-->
     <select id="getCheckStateItem" resultType="CheckStateItem">
         select  * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
     </select>
-    <select id="getProcurementPlanItemList" resultType="ProcurementPlanItem">
+<resultMap id="ProcurementPlanItemRM" type="ProcurementPlanItem">
+    <collection property="unitDataItem" column="unitId" select="getUnitDataItem">
+    </collection>
+</resultMap>
+
+    <select id="getProcurementPlanItemList" resultMap="ProcurementPlanItemRM">
         select  *from t_pr_procumentplanitem where procurementPlanId=#{procurementPlanId}
     </select>
     <select id="getProcurementPlanList" resultMap="ProcurementPlanRM">
@@ -462,4 +469,22 @@
         update t_pl_material set checkStateId=71 where id=#{id}
 
     </update>
+
+    <!--采购计划单明细修改页面查询-->
+    <select id="searchAdjust" parameterType="ProcurementPlanItem" resultType="ProcurementPlanItem">
+        select * from t_pr_procumentplanitem
+        <where>
+        <if test="suppliesName!='' and suppliesName!=null">
+         and suppliesName like "%"#{suppliesName}"%"
+        </if>
+            <if test="specifications!='' and specifications!=null">
+                and specifications like "%"#{specifications}"%"
+            </if>
+            <if test="proposer!='' and proposer!=null">
+                and proposer like "%"#{proposer}"%"
+            </if>
+            and procurementPlanId=#{procurementPlanId}
+       </where>
+
+    </select>
 </mapper>

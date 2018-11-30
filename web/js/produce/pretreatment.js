@@ -1193,8 +1193,8 @@ function setOutBoundOrderList(result) {
                     break;
                 case (6):
                     // 单据状态
-                    if (obj.checkState != null)
-                        $(this).html(obj.checkState.name);
+                    if (obj.checkStateItem != null)
+                        $(this).html(obj.checkStateItem.dictionaryItemName);
                     break;
                 case (7):
                     // 转移联单号
@@ -1667,62 +1667,7 @@ function searchOutBoundOrder() {
         };
     } else {
         var keywords = $.trim($("#searchContent").val());
-        switch (keywords) {
-            case("删除"):
-                keywords = "Delete";
-                break;
-            case("可用"):
-                keywords = "Usable";
-                break;
-            case("不可用"):
-                keywords = "Disabled";
-                break;
-            case("新建"):
-                keywords = "NewBuild";
-                break;
-            case("待领料"):
-                keywords = "ToPick";
-                break;
-            case("已领料"):
-                keywords = "Picked";
-                break;
-            case("已出库"):
-                keywords = "OutBounded";
-                break;
-            case("出库"):
-                keywords = "OutBounded";
-                break;
-            case("已作废"):
-                keywords = "Invalid";
-                break;
-            case("作废"):
-                keywords = "Invalid";
-                break;
-            case("污泥"):
-                keywords = "Sludge";
-                break;
-            case("废液"):
-                keywords = "WasteLiquid";
-                break;
-            case("散装料"):
-                keywords = "Bulk";
-                break;
-            case("破碎料"):
-                keywords = "Crushing";
-                break;
-            case("精馏残渣"):
-                keywords = "Distillation";
-                break;
-            case("悬挂连"):
-                keywords = "Suspension";
-                break;
-            case("焚烧"):
-                keywords = "Burning";
-                break;
-            case("填埋"):
-                keywords = "Landfill";
-                break;
-        }
+
         data = {
             keywords: keywords
         }

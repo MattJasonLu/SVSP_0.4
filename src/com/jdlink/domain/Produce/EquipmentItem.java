@@ -1,6 +1,8 @@
 package com.jdlink.domain.Produce;
 
 
+import com.jdlink.domain.Dictionary.EquipmentDataItem;
+
 import java.util.Date;
 
 public class EquipmentItem {
@@ -28,6 +30,17 @@ public class EquipmentItem {
      * 停止原因
      */
     private String stopResult;
+
+    //处置设备数据字典
+    private EquipmentDataItem equipmentDataItem;
+
+    public EquipmentDataItem getEquipmentDataItem() {
+        return equipmentDataItem;
+    }
+
+    public void setEquipmentDataItem(EquipmentDataItem equipmentDataItem) {
+        this.equipmentDataItem = equipmentDataItem;
+    }
 
     public String getItemID() {
         return itemID;
