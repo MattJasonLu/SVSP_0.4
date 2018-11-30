@@ -173,7 +173,7 @@ function allSelect() {
 function checkAuthority(e) {
     var flag = false;
     // 获取功能编号
-    var functionId = e.prop('id').split('_')[1];
+    var functionId = e.attr('id').split('_')[1];
     $.ajax({
         type: "POST",                            // 方法类型
         url: "checkAuthority",                           // url
