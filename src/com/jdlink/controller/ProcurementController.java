@@ -882,7 +882,13 @@ public class ProcurementController {
             procurementPlanItem.setProposer(proposer);//申请部门
             procurementPlanItem.setSuppliesName(material.getSuppliesName());//物资名称
             procurementPlanItem.setSpecifications(material.getSpecifications());//规格
-            procurementPlanItem.setUnit(material.getUnit());//单位
+
+            //单位适配
+            UnitDataItem unitDataItem=new UnitDataItem();
+            int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(material.getUnitDataItem().getDictionaryItemName(),25);
+            unitDataItem.setDataDictionaryItemId(dataDictionaryItemId);
+            procurementPlanItem.setUnitDataItem(unitDataItem);
+//            procurementPlanItem.setUnit(material.getUnit());//单位
             procurementPlanItem.setDemandQuantity((int)material.getDemandQuantity());//需求数量
             procurementPlanItem.setRemarks(material.getNote());//备注
             procurementService.addProcurementPlanItem(procurementPlanItem);
@@ -1106,7 +1112,27 @@ public class ProcurementController {
         return procurementService.searchProcurementPlanCount(procurementPlan);
     }
 
+   //采购计划单明细修改页面查询
+    @RequestMapping("searchAdjust")
+    @ResponseBody
+    public String searchAdjust(@RequestBody ProcurementPlanItem procurementPlanItem){
+        JSONObject res=new JSONObject();
 
+        try {
+            List<ProcurementPlanItem> procurementPlanItemList=procurementService.searchAdjust(procurementPlanItem);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("procurementPlanItemList", procurementPlanItemList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+
+        }
+
+        return res.toString();
+    }
 //    //作废急需物资购置申请表
 //    @RequestMapping("cancelEmergencyProcurementById")
 //    @ResponseBody

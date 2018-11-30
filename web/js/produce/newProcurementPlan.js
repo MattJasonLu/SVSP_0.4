@@ -99,8 +99,8 @@ function setMonthProcurementList(result) {
                     break;
                 // 单位
                 case (4):
-                    if (obj.unit) {
-                        $(this).html(obj.unit.name);
+                    if (obj.unitDataItem) {
+                        $(this).html(obj.unitDataItem.dictionaryItemName);
                     }
 
                     break;
@@ -218,7 +218,7 @@ function add() {
                                 receiptNumber: $(this).parent().parent().parent().children('td').eq(9).html(),
                                 suppliesName: $(this).parent().parent().parent().children('td').eq(2).html(),
                                 specifications: $(this).parent().parent().parent().children('td').eq(3).html(),
-                                unit: getFormTypeByFromStr($(this).parent().parent().parent().children('td').eq(4).html()),
+                                unitDataItem:{dictionaryItemName:($(this).parent().parent().parent().children('td').eq(4).html())} ,
                                 demandQuantity: $(this).parent().parent().parent().children('td').eq(6).html(),
                                 note: $(this).parent().parent().parent().children('td').eq(7).html(),
                                 id:$(this).parent().parent().parent().children('td').eq(10).html(),
