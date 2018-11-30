@@ -593,7 +593,6 @@ function getIdFromEquipment(Equipment) {
     return res;
 }
 
-
 //////////////////动态菜单///////////////////////
 /**
  * 加载导航条
