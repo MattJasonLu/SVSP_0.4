@@ -54,16 +54,40 @@
         where id in (select pId from menu_management where url=#{url});
     </select>
 
+    <select id="getPageFunctionByUrl" parameterType="String" resultType="Organization">
+        select * from t_ur_pagefunction where url=#{url};
+    </select>
+
     <insert id="add" parameterType="Organization">
         insert into menu_management
         (id,pId,name,icon,url,level,founder,creationDate)
         values
         (#{id},#{pId},#{name},#{icon},#{url},#{level},#{founder},#{creationDate});
+
+        insert into t_ur_function
+        (id,parentFunctionId,functionName)
+        values
+        (#{id},#{pId},#{name});
     </insert>
+
+    <select id="addFunctionTree" parameterType="Organization">
+        insert into t_ur_function
+        (id,functionName,parentFunctionId)
+        values
+        (#{id},#{name},#{pId});
+    </select>
+
+    <select id="getFunctionCountById" parameterType="int" resultType="int">
+        select count(*) from t_ur_function where id=#{id};
+    </select>
 
     <update id="updateName" parameterType="Organization">
         update menu_management
         set name=#{name}
+        where id=#{id};
+
+        update t_ur_function
+        set functionName=#{name}
         where id=#{id};
     </update>
 
@@ -75,6 +99,14 @@
         update menu_management
         set pId=#{id}
         where pId=#{oldId};
+
+        update t_ur_function
+        set id=#{id}
+        where id=#{oldId};
+
+        update t_ur_function
+        set parentFunctionId=#{id}
+        where parentFunctionId=#{oldId};
     </update>
 
     <update id="updateMenuUrl" parameterType="Organization">
@@ -91,6 +123,16 @@
 
     <delete id="delete" parameterType="Organization">
         delete from menu_management where id=#{id};
+
+        delete from t_ur_function where id=#{id};
+    </delete>
+
+    <delete id="deleteFunction">
+        delete from t_ur_function;
+    </delete>
+
+    <delete id="deleteFunctionByPId" parameterType="int">
+        delete from t_ur_function where parentFunctionId=#{id};
     </delete>
 
 </mapper>
