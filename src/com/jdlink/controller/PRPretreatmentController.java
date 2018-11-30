@@ -1,9 +1,13 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Dictionary.DataDictionary;
+import com.jdlink.domain.Dictionary.HandleCategoryItem;
+import com.jdlink.domain.Dictionary.ProcessWayItem;
 import com.jdlink.domain.Inventory.RecordState;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.service.PretreatmentService;
+import com.jdlink.service.dictionary.DictionaryService;
 import com.jdlink.util.DBUtil;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
@@ -29,12 +33,28 @@ public class PRPretreatmentController {
 
     @Autowired
     PretreatmentService pretreatmentService;
-
+    @Autowired
+    DictionaryService dictionaryService;
     @RequestMapping("addPretreatment")
     @ResponseBody
     public String addPretreatment(@RequestBody Pretreatment pretreatment) {
         JSONObject res = new JSONObject();
         try {
+
+
+            for(int i=0;i<pretreatment.getPretreatmentItemList().size();i++){
+                Wastes wastes=pretreatment.getPretreatmentItemList().get(i).getWastes();
+                //处置方式适配
+                ProcessWayItem processWayItem =wastes.getProcessWayItem();
+                int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(processWayItem.getDictionaryItemName(),8);
+                processWayItem.setDataDictionaryItemId(dataDictionaryItemId);
+               wastes.setProcessWayItem(processWayItem);
+                //进料方式适配
+                HandleCategoryItem handleCategoryItem=wastes.getHandleCategoryItem();
+                int  dataDictionaryItemId1= dictionaryService.getdatadictionaryitemIdByName(handleCategoryItem.getDictionaryItemName(),6);
+                handleCategoryItem.setDataDictionaryItemId(dataDictionaryItemId1);
+                wastes.setHandleCategoryItem(handleCategoryItem);
+            }
             pretreatmentService.add(pretreatment);
             res.put("status", "success");
             res.put("message", "添加成功！");

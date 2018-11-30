@@ -1,6 +1,8 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Dictionary.HandleCategoryItem;
+import com.jdlink.domain.Dictionary.ProcessWayItem;
 import com.jdlink.domain.Wastes;
 
 public class PretreatmentItem {
@@ -40,6 +42,28 @@ public class PretreatmentItem {
      * 预处理暂存点
      */
     private String temporaryAddress;
+
+    //进料方式数据字典
+    private HandleCategoryItem handleCategoryItem;
+
+    //处置方式数据字典
+    private ProcessWayItem processWayItem;
+
+    public HandleCategoryItem getHandleCategoryItem() {
+        return handleCategoryItem;
+    }
+
+    public void setHandleCategoryItem(HandleCategoryItem handleCategoryItem) {
+        this.handleCategoryItem = handleCategoryItem;
+    }
+
+    public ProcessWayItem getProcessWayItem() {
+        return processWayItem;
+    }
+
+    public void setProcessWayItem(ProcessWayItem processWayItem) {
+        this.processWayItem = processWayItem;
+    }
 
     public int getItemId() {
         return itemId;
