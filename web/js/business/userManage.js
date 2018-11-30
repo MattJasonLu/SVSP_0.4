@@ -361,7 +361,6 @@ function showAuthorityById(e) {
             console.log(result);
         }
     });
-    // if(bar == 0)count();  // 滚动条加载
 }
 /**
  * 设置功能勾选
