@@ -190,10 +190,10 @@ function checkAuthority(e) {
                 flag = true;
             } else {
                 // 提示没有权限进入
-                //if (result.message == undefined)alert("账号过期，请重新登录！");
-                //   else alert(result.message);
-                //e.prop('href', '#');
-                flag = true;
+                if (result.message == undefined)alert("账号过期，请重新登录！");
+                  else alert(result.message);
+                e.prop('href', '#');
+                flag = false;
             }
         },
         error: function (result) {
@@ -638,7 +638,8 @@ function loadNavigationList() {
                 console.log("一级菜单名:" + localStorage.name);
                 if (0 < data[i].pId && data[i].pId < 10) {
                     j++;
-                    var li = "<li onclick='toMenuUrl(this)'><a class='withripple' href='#' id='function_" + j + "'><span class='" + icon + "'" +
+                    var li = "<li ><a class='withripple' href='#' id='function_"+id+"'" +
+                        "onclick='check(this); function check(e){if(checkAuthority($(e))){toMenuUrl(e);}} '><span class='" + icon + "'" +
                         "aria-hidden='true'></span><span class='sidespan' name='" + name + "'>&nbsp;&nbsp;" + name + "</span><span class='iright pull-right'>" +
                         "&gt;</span><span class='sr-only'>(current)</span></a></li>";
                     // $("#end").before(li);
@@ -740,7 +741,7 @@ function setOLMenu(organization) {
  * @param item
  */
 function toMenuUrl(item) {
-    localStorage.name = $.trim($(item).children().find("span").eq(1).text());
+    localStorage.name = $.trim($(item).find("span").eq(1).text());
     window.location.href = "firstPage.html"; //根据一级菜单名跳转首页
 }
 
@@ -794,7 +795,8 @@ function setMenuTwo(organizationList) {
                 setMenuTwo(organization.organizationList);  // 递归设置
             } else { // 菜单不存在子节点
                 if (9 < organization.pId && organization.pId < 100) { // 二级菜单没有子类直接设置导航条
-                    var li3 = "<li><a href='" + organization.url + "'>" + organization.name + "</a></li>";  // 赋值
+                    var li3 = "<li><a href='" + organization.url + "' id='function_"+organization.id+"' " +
+                        "onclick='checkAuthority($(this))'> "+ organization.name + "</a></li>";  // 赋值
                     $("#navbar").children().eq(0).append(li3);      //插入
                 } else { // 非二级菜单的页面需要将其插入到下拉菜单中
                     var dropdown = null;
@@ -806,9 +808,11 @@ function setMenuTwo(organizationList) {
                     var li2 = "";
                     if (i > 0) {
                         li2 = "<li role='separator' class='divider'></li>" +
-                            "<li><a href='" + organization.url + "'>" + organization.name + "</a></li>";
+                            "<li><a href='" + organization.url + "' id='function_"+organization.id+"' " +
+                            "onclick='checkAuthority($(this))'>" + organization.name + "</a></li>";
                     } else if (i === 0) { // 第一个子节点不设置分割线
-                        li2 = "<li><a href='" + organization.url + "'>" + organization.name + "</a></li>";
+                        li2 = "<li><a href='" + organization.url + "' id='function_"+organization.id+"' " +
+                            "onclick='checkAuthority($(this))'>" + organization.name + "</a></li>";
                     }
                     dropdown.find("ul[name='" + (organization.level - 1).toString() + "']").append(li2);
                 }
@@ -839,7 +843,7 @@ function setProcessIcon(organizationList) {
             }
             if (organization.icon != null && organization.icon != "" && organization.url != null && organization.url != "") {
                 var div1 = "<div class='col-xs-4 col-sm-4 placeholder'>" +
-                    "<a href='" + organization.url + "'><img src='" + organization.icon + "' style='width: 80px;height: 80px;border-radius:1px' alt='Generic placeholder thumbnail'></a>" +
+                    "<a href='" + organization.url + "' id='function_"+organization.id+"' onclick='checkAuthority($(this));'><img src='" + organization.icon + "' style='width: 80px;height: 80px;border-radius:1px' alt='Generic placeholder thumbnail'></a>" +
                     "<h4>" + organization.name + "</h4></div>";
                 $(".page-header").find("div[class='row placeholders']:last").append(div1);  // 将节点插入到最新行
             } else {

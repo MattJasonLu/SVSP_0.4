@@ -22,8 +22,6 @@ public class MenuManageController {
     @Autowired
     MenuManageService menuManageService;
 
-    private Organization organizationA; // 暂存菜单树状结构数据
-
     /**
      * 获取菜单数据
      *
@@ -71,7 +69,6 @@ public class MenuManageController {
         // 返回结果
         return res.toString();
     }
-
 
 
     /**
@@ -199,6 +196,14 @@ public class MenuManageController {
         JSONObject res = new JSONObject();
         try {
             menuManageService.updateMenuUrl(organization);
+            // 获取网页对应的功能列表
+            List<Organization> organizationList = menuManageService.getPageFunctionByUrl(organization.getUrl());
+            menuManageService.deleteFunctionByPId(organization.getpId()); // 删除之前的功能
+            for (Organization organization1 : organizationList) {
+                int pId = organization.getId();
+                organization1.setpId(pId);
+                menuManageService.addFunctionTree(organization1);  // 添加网页功能
+            }
             res.put("status", "success");
             res.put("message", "设置成功!");
         } catch (Exception e) {
@@ -487,7 +492,7 @@ public class MenuManageController {
                 if (organization.getOrganizationList() != null && organization.getOrganizationList().size() > 0) {
                     organization.setUrl(organization1.getUrl());
                     Organization organization3 = getChildMenuByUrl(organization);
-                    if (organization3 != null && !organization3.getName().equals("")){
+                    if (organization3 != null && !organization3.getName().equals("")) {
                         organization2.setName(organization1.getName());
                         organization2.getOrganizationList().add(organization3);  // 添加路径
                     }
@@ -522,39 +527,95 @@ public class MenuManageController {
 
     /**
      * 递归获取一级菜单
+     *
      * @param url
      * @return
      */
-    public Organization getLevelOneMenuByUrl1(String url){
+    public Organization getLevelOneMenuByUrl1(String url) {
         Organization organization1 = new Organization();
         List<Organization> organizationList = menuManageService.getMenuByCUrl(url);
-        for(Organization organization : organizationList){
-            if(organization.getpId() == 1){ // 获取到一级菜单直接返回
+        for (Organization organization : organizationList) {
+            if (organization.getpId() == 1) { // 获取到一级菜单直接返回
                 organization1 = organization;
                 return organization1;
-            }else {
-                  Organization organization2 = getLevelOneMenuByUrl1(organization.getUrl());
-                  if(!organization2.getName().equals(""))organization1 =organization2;
+            } else {
+                Organization organization2 = getLevelOneMenuByUrl1(organization.getUrl());
+                if (!organization2.getName().equals("")) organization1 = organization2;
             }
         }
         return organization1;
     }
 
-    public MenuManageService getMenuManageService() {
-        return menuManageService;
+    /**
+     * 根据动态菜单同步设置权限表树状结构
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("setFunctionTreeByMenuTree")
+    @ResponseBody
+    public String setFunctionTreeByMenuTree() {
+        JSONObject res = new JSONObject();
+        try {
+            Organization organization = menuManageService.getMenuById(1);  // 获取动态菜单树状结构
+            List<Organization> organizationList = getTreeMenuAndFunctionList(organization); // 一级菜单及树状结构
+            organization.setOrganizationList(organizationList);
+            menuManageService.deleteFunction(); // 删除旧数据
+            System.out.println("重复数据为");
+            for (Organization organization1 : organizationList) {
+                if (organization1.getpId() == 1) { // 一级菜单
+                    organization1.setpId(0);   // 一级菜单在权限表中父节点为0
+                }
+                setFunctionTree(organization1);  // 设置权限表
+            }
+            JSONObject data = JSONObject.fromBean(organization);
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "更新成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败！");
+        }
+        return res.toString();
     }
 
-    public void setMenuManageService(MenuManageService menuManageService) {
-        this.menuManageService = menuManageService;
+    /**
+     * 递归获取菜单及功能树状结构
+     *
+     * @param organization
+     * @return
+     */
+    public List<Organization> getTreeMenuAndFunctionList(Organization organization) {
+        List<Organization> organizationList = menuManageService.getChildrenMenuByName(organization);
+        for (int i = 0; i < organizationList.size(); i++) {
+            organizationList.get(i).setOrganizationList(getTreeMenuAndFunctionList(organizationList.get(i)));
+        }
+        if (organization.getUrl() != null && !organization.getUrl().equals("")) {  // 如果URL非空则获取其功能表的功能节点并设置
+            List<Organization> organizationList1 = menuManageService.getPageFunctionByUrl(organization.getUrl());
+            for (Organization organization1 : organizationList1) {
+                int pId = organization.getId();
+                organization1.setpId(pId);
+                organizationList.add(organization1);
+            }
+        }
+        return organizationList;
     }
 
-    public Organization getOrganizationA() {
-        return organizationA;
+    /**
+     * 递归设置权限表
+     */
+    public void setFunctionTree(Organization organization) {
+        if (menuManageService.getFunctionCountById(organization.getId()) == 0){
+            menuManageService.addFunctionTree(organization); // 新增
+        }else{
+            System.out.println(organization);
+        }
+        if (organization.getOrganizationList() != null && organization.getOrganizationList().size() > 0) { // 存在字节点继续设置
+            for (Organization organization1 : organization.getOrganizationList()) {
+                setFunctionTree(organization1);
+            }
+        }
     }
-
-    public void setOrganizationA(Organization organizationA) {
-        this.organizationA = organizationA;
-    }
-
 
 }

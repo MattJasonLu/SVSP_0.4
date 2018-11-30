@@ -61,4 +61,8 @@
         <url-pattern>/SVSP/*</url-pattern>
     </filter-mapping>
 
+    <session-config><!--设置登陆保护时间为30分钟-->
+        <session-timeout>30</session-timeout>
+    </session-config>
+
 </web-app>
