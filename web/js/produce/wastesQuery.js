@@ -388,8 +388,8 @@ function setWasteInventoryList(result) {
                         break;
                     // 进料方式
                     case (5):
-                        if(obj.handleCategory!=null){
-                            $(this).html(obj.handleCategory.name);
+                        if(obj.handleCategoryItem!=null){
+                            $(this).html(obj.handleCategoryItem.dictionaryItemName);
                         }
                         break;
                     // 危废名称
@@ -712,13 +712,13 @@ function setByInboundOrderItemId(result) {
                     $(this).html(obj.wastesCode);
                     break;
                 case (5):
-                    if(obj.handleCategory!=null){
-                        $(this).html(obj.handleCategory.name);
+                    if(obj.handleCategoryItem!=null){
+                        $(this).html(obj.handleCategoryItem.dictionaryItemName);
                     }
                     break;
                 case (6):
-                    if(obj.processWay!=null){
-                        $(this).html(obj.processWay.name);
+                    if(obj.processWayItem!=null){
+                        $(this).html(obj.processWayItem.dictionaryItemName);
                     }
                     break;
             }

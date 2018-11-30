@@ -225,8 +225,21 @@ public class PRPretreatmentController {
                 System.out.println("proportion" + Float.parseFloat(data[i][7].toString()));
                 Wastes wastes = new Wastes();
                 wastes.setName(data[i][3].toString());
-                wastes.setHandleCategory(HandleCategory.getHandleCategory(data[i][5].toString()));
-                wastes.setProcessWay(ProcessWay.getProcessWay(data[i][6].toString()));
+                //进料方式适配
+                HandleCategoryItem handleCategoryItem=new HandleCategoryItem();
+                int dataDictionaryItemId=dictionaryService.getdatadictionaryitemIdByName(data[i][5].toString(),6);
+                handleCategoryItem.setDataDictionaryItemId(dataDictionaryItemId);
+                wastes.setHandleCategoryItem(handleCategoryItem);
+//                wastes.setHandleCategory(HandleCategory.getHandleCategory(data[i][5].toString()));
+
+
+                //处置方式适配
+                ProcessWayItem processWayItem =new ProcessWayItem();
+                int  dataDictionaryItemId1= dictionaryService.getdatadictionaryitemIdByName(data[i][6].toString(),8);
+                processWayItem.setDataDictionaryItemId(dataDictionaryItemId1);
+                wastes.setProcessWayItem(processWayItem);
+
+//                wastes.setProcessWay(ProcessWay.getProcessWay(data[i][6].toString()));
                 wastes.setWeight(Float.parseFloat(data[i][8].toString()));
                 wastes.setVolatileNumber(Float.parseFloat(data[i][9].toString()));
                 wastes.setCalorific(Float.parseFloat(data[i][10].toString()));

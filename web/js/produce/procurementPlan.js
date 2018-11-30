@@ -4,6 +4,9 @@
 var currentPage = 1;                          //当前页数
 var isSearch = false;
 var data1;
+var array0=[];
+var array=[];
+var array1=[];
 
 
 /**
@@ -471,8 +474,8 @@ function setViewModal(result) {
         //需求数量
         $(clonedTr).children('td').eq(4).html(obj.demandQuantity)
         //单位
-        if(obj.unit!=null){
-            $(clonedTr).children('td').eq(5).html(obj.unit.name)
+        if(obj.unitDataItem!=null){
+            $(clonedTr).children('td').eq(5).html(obj.unitDataItem.dictionaryItemName)
         }
         //单价
         $(clonedTr).children('td').eq(6).html(obj.price.toFixed(2))
@@ -496,6 +499,7 @@ function procurementPlanModify(item) {
     var checkState=$(item).parent().parent().children('td').eq(8).html();
     if(checkState=='待提交'){
         var procurementPlanId=$(item).parent().parent().children('td').eq(2).html();
+        $('#procurementPlanIdAdjust').val(procurementPlanId)
         $('#appointModal3').modal('show')
         $.ajax({
             type: "POST",
@@ -525,6 +529,7 @@ function procurementPlanModify(item) {
 //设置修改模态框数据
 function setAdjustModal(result) {
 
+
     var tr = $('#cloneTr3');
 
     tr.siblings().remove();
@@ -549,8 +554,8 @@ function setAdjustModal(result) {
         //需求数量
         $(clonedTr).children('td').eq(4).find('input').val(obj.demandQuantity)
         //单位
-        if(obj.unit!=null){
-            $(clonedTr).children('td').eq(5).html(obj.unit.name)
+        if(obj.unitDataItem!=null){
+            $(clonedTr).children('td').eq(5).html(obj.unitDataItem.dictionaryItemName)
         }
         //单价
         $(clonedTr).children('td').eq(6).find('input').val(obj.price.toFixed(2))
@@ -569,6 +574,12 @@ function setAdjustModal(result) {
         tr.hide();
     })
 
+
+    if(array0.length==0){
+        $('.myclass3').each(function () {
+            array0.push(this)
+        })
+    }
 
 }
 
@@ -959,4 +970,78 @@ function enterSearch() {
     if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
         searchData();      //
     }
+}
+
+//修改模态框页面的查询
+function adjustSearch() {
+ //    $('#tbody1').find('.myclass3').hide();
+ //    array.length=0;//清空数组
+ //
+ //    array1.length=0;//清空数组
+ //
+ //    array=[].concat(array0);
+ //
+ //    console.log(array)
+ //
+ //    var  suppliesName=$('#search-suppliesName').val();
+ //
+ //    var  specifications=$('#search-specifications').val();
+ //
+ //    var  proposer=$('#search-proposer').val();
+ //
+ //
+ //    for (var j = 0; j < array.length; j++) {
+ //        $.each(array[j], function () {
+ //            //console.log(this);
+ //            if (!($(this).children('td').eq(1).text().indexOf(suppliesName) != -1 && $(this).children('td').eq(2).text().indexOf(specifications) != -1&& $(this).children('td').eq(3).text().indexOf(proposer) != -1
+ //            )) {
+ //                $(this).hide();
+ //            }
+ //            if (($(this).children('td').eq(1).text().indexOf(suppliesName) != -1 && $(this).children('td').eq(2).text().indexOf(specifications) != -1&& $(this).children('td').eq(3).text().indexOf(proposer) != -1
+ //            )) {
+ //                array1.push($(this));
+ //            }
+ //        });
+ //    }
+ // console.log(array1)
+ //    for(var i=0;i<array1.length;i++){
+ //        $.each(array1[i],function () {
+ //            $('#tbody1').append(this) ;
+ //        });
+ //    }
+
+    var data={
+        suppliesName:$('#search-suppliesName').val(),
+        specifications:$('#search-specifications').val(),
+        proposer:$('#search-proposer').val(),
+        procurementPlanId:$('#procurementPlanIdAdjust').val()
+    };
+
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "searchAdjust",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            console.log(result);
+            if (result != undefined && result.status == "success") {
+                setAdjustModal(result)
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器错误！");
+        }
+    });
+}
+
+//修改页面重置
+function resetAdjust() {
+    $('#search-suppliesName').val("")
+    $('#search-specifications').val("")
+    $('#search-proposer').val("")
 }

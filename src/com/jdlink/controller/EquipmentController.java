@@ -1,8 +1,10 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.Dictionary.EquipmentDataItem;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.service.EquipmentService;
+import com.jdlink.service.dictionary.DictionaryService;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONArray;
@@ -27,6 +29,8 @@ public class EquipmentController {
      */
     @Autowired
     EquipmentService equipmentService;
+    @Autowired
+    DictionaryService dictionaryService;
 
     /**
      * 新增设备
@@ -243,6 +247,9 @@ public class EquipmentController {
         try {
             // 删除设备
             equipmentService.deleteEquipment(documentNumber);
+
+
+
             res.put("status", "success");
             res.put("message", "操作成功");
         } catch (Exception e) {
@@ -290,30 +297,37 @@ public class EquipmentController {
                     map.get(id).setCreator(data[i][5].toString());
                     map.get(id).setCreateDept(data[i][6].toString());
                     map.get(id).setNote(data[i][7].toString());
+
                     //新存储一个id对象时，将以下两个累计数据清零
                     equipmentItemArrayList = new ArrayList<>();
                 }
-                switch (data[i][1].toString()) {
-                    case "医疗蒸煮系统":
-                        equipmentItem.setEquipment(Equipment.MedicalCookingSystem);
-                        break;
-                    case "A2":
-                        equipmentItem.setEquipment(Equipment.A2);
-                        break;
-                    case "B2":
-                        equipmentItem.setEquipment(Equipment.B2);
-                        break;
-                    case "二期二燃室":
-                        equipmentItem.setEquipment(Equipment.SecondaryTwoCombustionChamber);
-                        break;
-                    case "三期预处理系统":
-                        equipmentItem.setEquipment(Equipment.ThirdPhasePretreatmentSystem);
-                        break;
-                    case "备2":
-                        equipmentItem.setEquipment(Equipment.Prepare2);
-                        break;
-                    default: break;
-                }
+                //数值设备管理数据字典射入
+
+                int dataDictionaryItemId=dictionaryService.getdatadictionaryitemIdByName(data[i][1].toString(),5);
+                EquipmentDataItem equipmentDataItem=new EquipmentDataItem();
+                equipmentDataItem.setDataDictionaryItemId(dataDictionaryItemId);
+                equipmentItem.setEquipmentDataItem(equipmentDataItem);
+//                switch (data[i][1].toString()) {
+//                    case "医疗蒸煮系统":
+//                        equipmentItem.setEquipment(Equipment.MedicalCookingSystem);
+//                        break;
+//                    case "A2":
+//                        equipmentItem.setEquipment(Equipment.A2);
+//                        break;
+//                    case "B2":
+//                        equipmentItem.setEquipment(Equipment.B2);
+//                        break;
+//                    case "二期二燃室":
+//                        equipmentItem.setEquipment(Equipment.SecondaryTwoCombustionChamber);
+//                        break;
+//                    case "三期预处理系统":
+//                        equipmentItem.setEquipment(Equipment.ThirdPhasePretreatmentSystem);
+//                        break;
+//                    case "备2":
+//                        equipmentItem.setEquipment(Equipment.Prepare2);
+//                        break;
+//                    default: break;
+//                }
                 equipmentItem.setRunningTime(Float.parseFloat(data[i][2].toString()));
                 equipmentItem.setStopTime(24 - Float.parseFloat(data[i][2].toString()));
                 equipmentItem.setStopResult(data[i][3].toString());

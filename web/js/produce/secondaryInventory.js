@@ -706,7 +706,13 @@ function setWasteInventoryList1(result) {
                         break;
                     // 危废名称
                     case (5):
-                            $(this).html(convertStrToWastesName(obj.wastesName));
+                        if(obj.secondaryCategoryItem!=null){
+                            $(this).html(obj.secondaryCategoryItem.dictionaryItemName);
+                        }
+                        if(obj.secondaryCategoryItem==null){
+                            $(this).html(obj.wastesName);
+                        }
+
                         break;
                         //危废类型
                     case (6):

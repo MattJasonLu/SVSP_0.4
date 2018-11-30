@@ -234,7 +234,7 @@
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>
-                <tbody id="tbody1">
+                <tbody>
                 <tr id="cloneTr"  ondblclick="view(this)">
                     <td class="text-center">
                         <label>
@@ -349,14 +349,26 @@
                     <h4 class="modal-title">计划单明细修改</h4>
                 </div>
                 <div class="modal-body">
+                    <input class="hidden" id="procurementPlanIdAdjust">
                     <div class="row">
-                        <div class="col-md-4">
-                            <p style="display: inline">修改人:<input class="form-control" style="width: 35%;display: inline" id="adjustName"></p>
+                        <p style="display: inline">物资名称: <input class="form-control" style="width: 10%;display: inline" id="search-suppliesName"></p>
+                        &nbsp; &nbsp;&nbsp;&nbsp;
+                        <p style="display: inline">规格型号: <input class="form-control" style="width: 10%;display: inline" id="search-specifications"></p>
+                        &nbsp; &nbsp;&nbsp;&nbsp;
+                        <p style="display: inline">申请部门: <input class="form-control" style="width: 10%;display: inline" id="search-proposer"></p>
+                        <p style="display: inline">  <a class="btn btn-default" onclick="adjustSearch();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a></p>
+                        <p style="display: inline">
+                            <a class="btn btn-default" onclick="resetAdjust();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
+                        </p>
 
-                        </div>
-                        <div class="col-md-4">
-                            <p style="display: inline">修改日期:<input class="form-control"  type="date" style="width: 35%;display: inline" id="adjustDate"></p>
-                        </div>
+
+                    </div>
+                    <br>
+                    <br>
+                    <div class="row">
+                        <p style="display: inline">修改人:<input class="form-control" style="width: 10%;display: inline" id="adjustName"></p>
+                        &nbsp; &nbsp;&nbsp;&nbsp;
+                        <p style="display: inline">修改日期:<input class="form-control"  type="date" style="width: 10%;display: inline" id="adjustDate"></p>
                     </div>
                     <br>
                             <input class="hidden" id="procurementPlanId">
@@ -374,7 +386,7 @@
                             <td class="text-center">备注</td>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tbody1">
                         <tr id="cloneTr3">
                             <td class="text-center"></td>
                             <td class="text-center"></td>

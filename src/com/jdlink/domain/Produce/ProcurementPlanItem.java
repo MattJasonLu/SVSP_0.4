@@ -1,5 +1,6 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.Dictionary.UnitDataItem;
 import com.jdlink.domain.Unit;
 
 /*
@@ -43,6 +44,17 @@ public class ProcurementPlanItem {
 
     //备注
     private String remarks;
+
+    //单位数据字典
+    private UnitDataItem unitDataItem;
+
+    public UnitDataItem getUnitDataItem() {
+        return unitDataItem;
+    }
+
+    public void setUnitDataItem(UnitDataItem unitDataItem) {
+        this.unitDataItem = unitDataItem;
+    }
 
     public String getProcurementPlanId() {
         return procurementPlanId;
