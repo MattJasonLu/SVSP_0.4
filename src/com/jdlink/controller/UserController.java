@@ -429,6 +429,7 @@ public class UserController {
         try {
             // 获取session中保存的用户信息
             User user = (User) session.getAttribute("user");
+           // session.setMaxInactiveInterval(30*60);//以秒为单位，即在没有活动30分钟后，session将失效
             // 获取user对象中的角色编号
             if (user != null) {
                 int roleId = user.getRole().getId();
