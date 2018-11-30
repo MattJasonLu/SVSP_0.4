@@ -9,6 +9,7 @@
         <collection property="pretreatmentItemList" select="getItems" column="id"
                     ofType="com.jdlink.domain.Produce.PretreatmentItem"
                     javaType="ArrayList"/>
+        <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
     </resultMap>
     <resultMap id="PretreatmentItemRM" type="PretreatmentItem" autoMapping="true">
         <id column="itemId" property="itemId"/>
@@ -27,9 +28,27 @@
             <result property="remarks" column="remarks"/>
             <result property="processWay" column="processWay"/>
             <result property="handleCategory" column="handleCategory"/>
+
+            <!--<result property="handleCategoryItem" column="handleCategoryId"/>-->
+            <!--<result property="processWayItem" column="processWayId"/>-->
         </association>
+        <association property="handleCategoryItem" column="handleCategoryId" select="getHandleCategoryItem"></association>
+        <association property="processWayItem" column="processWayId" select="getProcessWayItem"></association>
     </resultMap>
 
+    <!--获取进料方式数据字典-->
+    <select id="getHandleCategoryItem" resultType="HandleCategoryItem">
+   select * from  datadictionaryitem where dataDictionaryItemId=#{handleCategoryId}
+    </select>
+
+    <!--获取处置方式-->
+    <select id="getProcessWayItem" resultType="ProcessWayItem">
+   select * from  datadictionaryitem where dataDictionaryItemId=#{processWayId}
+    </select>
+    <!--获取状态数据字典-->
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select  * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
+    </select>
     <select id="getItems" parameterType="String" resultMap="PretreatmentItemRM">
         select  * from t_pr_pretreatmentitem where pretreatmentId = #{id};
     </select>
@@ -52,7 +71,7 @@
 
     <select id="listPage" resultMap="PretreatmentRM">
         select * from t_pr_pretreatment
-        where state != 'Invalid'
+        where checkStateId != 69
         order by creationTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count};
@@ -70,7 +89,7 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
-                or state like "%"#{keywords}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=11)
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -92,8 +111,10 @@
             <if test="id != null and id != ''">
                 and id like "%"#{id}"%"
             </if>
-            <if test="state != null and state != ''">
-                and state = #{state}
+            <if test="checkStateItem != null ">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId = #{checkStateItem.dataDictionaryItemId}
+                </if>
             </if>
             <if test="startDate !=null and startDate !=''">
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
@@ -116,7 +137,7 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
-                or state like "%"#{keywords}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=11)
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -138,8 +159,10 @@
             <if test="id != null and id != ''">
                 and id like "%"#{id}"%"
             </if>
-            <if test="state != null and state != ''">
-                and state = #{state}
+            <if test="checkStateItem != null ">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId = #{checkStateItem.dataDictionaryItemId}
+                </if>
             </if>
             <if test="startDate !=null and startDate !=''">
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
@@ -159,7 +182,7 @@
 
     <update id="invalid" parameterType="Pretreatment">
         update t_pr_pretreatment
-        set state = 'Invalid',nowTime = NOW(),id=CONCAT('I-',id)
+        set checkStateId =69,nowTime = NOW(),id=CONCAT('I-',id)
         where id = #{id};
 
         <if test="pretreatmentItemList != null and pretreatmentItemList.size() > 0 ">
@@ -174,7 +197,7 @@
 
     <update id="confirm" parameterType="String">
         update t_pr_pretreatment
-        set state = 'Confirm',nowTime = NOW()
+        set checkStateId=74,nowTime = NOW()
         where id = #{id};
     </update>
 
@@ -215,7 +238,7 @@
                 chlorinePercentage=#{pretreatmentItem.wastes.chlorinePercentage},sulfurPercentage=#{pretreatmentItem.wastes.sulfurPercentage},
                 ph=#{pretreatmentItem.wastes.ph},phosphorusPercentage=#{pretreatmentItem.wastes.phosphorusPercentage},fluorinePercentage=#{pretreatmentItem.wastes.fluorinePercentage},
                 remarks=#{pretreatmentItem.wastes.remarks},processWay=#{pretreatmentItem.wastes.processWay},handleCategory=#{pretreatmentItem.wastes.handleCategory},wastesName
-                =#{pretreatmentItem.wastes.name}
+                =#{pretreatmentItem.wastes.name},processWayId=#{pretreatmentItem.wastes.processWayItem.dataDictionaryItemId},handleCategoryId=#{pretreatmentItem.wastes.handleCategoryItem.dataDictionaryItemId}
                 where serialNumber = #{pretreatmentItem.serialNumber} and pretreatmentId = #{id};
             </foreach>
         </if>
@@ -227,33 +250,33 @@
         wetPercentageTotal,volatileNumberTotal,chlorinePercentageTotal,sulfurPercentageTotal,
         phTotal,phosphorusPercentageTotal,fluorinePercentageTotal,distillationProportion,
         wasteLiquidProportion,sludgeProportion,bulkProportion,crushingProportion,suspensionProportion,
-        nowTime,creationTime)
+        nowTime,creationTime,checkStateId)
         values
         (#{id},NOW(),'NewBuild',#{remarks},#{weightTotal},#{calorificTotal},#{ashPercentageTotal},
         #{wetPercentageTotal},#{volatileNumberTotal},#{chlorinePercentageTotal},#{sulfurPercentageTotal},
         #{phTotal},#{phosphorusPercentageTotal},#{fluorinePercentageTotal},#{distillationProportion},
         #{wasteLiquidProportion},#{sludgeProportion},#{bulkProportion},#{crushingProportion},#{suspensionProportion},
-        NOW(),NOW());
+        NOW(),NOW(),75);
         <if test="pretreatmentItemList.size() > 0">
             <foreach collection="pretreatmentItemList" item="pretreatmentItem" index="index">
                 insert into t_pr_pretreatmentitem
                 (itemId,serialNumber,pretreatmentId,outboundOrderId,produceCompanyName,requirements,proportion,weight,volatileNumber,
                 calorific,ashPercentage,wetPercentage,chlorinePercentage,sulfurPercentage,ph,phosphorusPercentage,
-                fluorinePercentage,remarks,processWay,handleCategory,wastesName)
+                fluorinePercentage,remarks,processWayId,handleCategoryId,wastesName)
                 values
                 (#{pretreatmentItem.itemId},#{pretreatmentItem.serialNumber},#{id},#{pretreatmentItem.outboundOrderId},#{pretreatmentItem.produceCompanyName},#{pretreatmentItem.requirements},
                 #{pretreatmentItem.proportion},#{pretreatmentItem.wastes.weight},#{pretreatmentItem.wastes.volatileNumber},
                 #{pretreatmentItem.wastes.calorific},#{pretreatmentItem.wastes.ashPercentage},#{pretreatmentItem.wastes.wetPercentage},
                 #{pretreatmentItem.wastes.chlorinePercentage},#{pretreatmentItem.wastes.sulfurPercentage},#{pretreatmentItem.wastes.ph},
                 #{pretreatmentItem.wastes.phosphorusPercentage},#{pretreatmentItem.wastes.fluorinePercentage},#{pretreatmentItem.wastes.remarks},
-                #{pretreatmentItem.wastes.processWay},#{pretreatmentItem.wastes.handleCategory},#{pretreatmentItem.wastes.name});
+                #{pretreatmentItem.wastes.processWayItem.dataDictionaryItemId},#{pretreatmentItem.wastes.handleCategoryItem.dataDictionaryItemId},#{pretreatmentItem.wastes.name});
             </foreach>
         </if>
         <if test="outBoundOrderIdList != null and outBoundOrderIdList.size() > 0">
             <foreach collection="outBoundOrderIdList" item="outBoundOrderId" index="index">
                 update t_pl_outboundorder
                 set
-                checkState = "Processed"
+                checkStateId =82
                 where outboundOrderId = #{outBoundOrderId};
             </foreach>
         </if>

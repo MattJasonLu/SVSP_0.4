@@ -1,5 +1,7 @@
 package com.jdlink.domain;
 
+import com.jdlink.domain.Dictionary.HandleCategoryItem;
+import com.jdlink.domain.Dictionary.ProcessWayItem;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.ProcessWay;
 
@@ -236,6 +238,28 @@ public class Wastes {
      * 转移联单编号（送样用）
      */
     private String transferId;
+
+    //进料方式数据字典
+    private HandleCategoryItem handleCategoryItem;
+
+    //处置方式数据字典
+     private ProcessWayItem processWayItem;
+
+    public HandleCategoryItem getHandleCategoryItem() {
+        return handleCategoryItem;
+    }
+
+    public void setHandleCategoryItem(HandleCategoryItem handleCategoryItem) {
+        this.handleCategoryItem = handleCategoryItem;
+    }
+
+    public ProcessWayItem getProcessWayItem() {
+        return processWayItem;
+    }
+
+    public void setProcessWayItem(ProcessWayItem processWayItem) {
+        this.processWayItem = processWayItem;
+    }
 
     public ApplyState getApplyState() {
         return applyState;
