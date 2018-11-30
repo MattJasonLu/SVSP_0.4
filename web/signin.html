@@ -73,6 +73,29 @@
             });
         }
 
+        /**
+         * 寻找子节点中有map.html的一级菜单名
+         * @param organization
+         */
+        function getLevelOneMenuByUrl(organization) {
+            var name = "";
+            for (var i = 0; i < organization.organizationList.length; i++) {
+                var organizationA = organization.organizationList[i];
+                organizationA.name = organization.name;  // 将name全部设置称一级菜单名，方便返回
+                if (organizationA.url === "map.html") {
+                    name = organizationA.name;
+                } else {
+                    if (organizationA.organizationList != null && organizationA.organizationList.length > 0) {
+                        var name1 = getLevelOneMenuByUrl(organizationA);
+                        if (name1 !== "") {
+                            name = name1;
+                        }
+                    }
+                }
+            }
+            return name;
+        }
+
         function keyLogin(){
             if (event.keyCode==13)  //回车键的键值为13
                 document.getElementById("input1").click(); //调用登录按钮的登录事件
