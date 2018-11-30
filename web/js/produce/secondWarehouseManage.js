@@ -625,6 +625,7 @@ function inputSwitchPage() {
  * 分页 获取首页内容
  * */
 function loadPageList() {
+    loadNavigationList();   // 设置动态菜单
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
@@ -1071,6 +1072,7 @@ function delLine(e) {
  * 设置下拉框数据
  */
 function setSelectList() {
+    loadNavigationList();   // 设置动态菜单
     // 设置下拉列表
     // 设置次生类别
     $.ajax({

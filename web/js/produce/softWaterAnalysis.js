@@ -277,6 +277,7 @@ function inputSwitchPage() {
  * 分页 获取首页内容
  * */
 function loadPageSoftWaterList() {
+    loadNavigationList();   // 设置动态菜单
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");

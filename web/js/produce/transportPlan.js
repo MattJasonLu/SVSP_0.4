@@ -2,6 +2,7 @@
  * 分页 获取首页内容
  * */
 function loadData() {
+    loadNavigationList();   // 设置动态菜单
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getRecentTransportPlan",   // url

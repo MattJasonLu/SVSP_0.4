@@ -264,6 +264,7 @@ function setPageClone(result) {
 //加载次生出库信息==>次生出库页面
 function onLoadSecondary() {
     $('.loader').show();
+    loadNavigationList();    // 设置动态菜单
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
@@ -431,6 +432,7 @@ function setOutBoundList(result) {
 
 //加载次生列表==>次生出库新增页面
 function loadSecondaryList() {
+    loadNavigationList();    // 设置动态菜单
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
         size: 4

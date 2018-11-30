@@ -302,6 +302,7 @@ function addEquipment() {
 
 //生成单据号
 function createDocNumber() {
+    loadNavigationList();    // 设置动态菜单
     // 设置单据号
     $.ajax({
         type: "POST",                       // 方法类型

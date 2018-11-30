@@ -245,7 +245,8 @@ function inputSwitchPage() {
 
 //加载领料单列表
 function LoadMaterialRequisitionOrder() {
-    $('.loader').show()
+    $('.loader').show();
+    loadNavigationList();    // 设置动态菜单
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
@@ -503,6 +504,7 @@ function receive() {
 
 //加载出库增加页面的领料单
 function loadRequisitionList() {
+    loadNavigationList();   // 设置动态菜单
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
         size: 4
@@ -580,7 +582,7 @@ function loadRequisitionList() {
         $('#creator').val(data.username)
     }
 
-    localStorage.clear();
+  //  localStorage.clear();
 }
 
 //设置出库增加页面的领料单数据
