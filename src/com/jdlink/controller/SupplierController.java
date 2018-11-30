@@ -1,6 +1,8 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Dictionary.CheckStateItem;
+import com.jdlink.domain.Dictionary.ClientStateItem;
 import com.jdlink.service.SupplierService;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
@@ -87,6 +89,9 @@ public class SupplierController {
         JSONObject res = new JSONObject();
         try {
             supplier.setSupplierState(ClientState.Enabled);
+            ClientStateItem clientStateItem = new ClientStateItem();
+            clientStateItem.setDataDictionaryItemId(89);
+            supplier.setSupplierStateItem(clientStateItem);
             supplierService.add(supplier);
             res.put("status", "success");
             res.put("message", "操作成功");
@@ -111,6 +116,9 @@ public class SupplierController {
         if (resultSupplier == null) {
             // 审核状态为待提交
             supplier.setCheckState(CheckState.ToSubmit);
+            CheckStateItem checkStateItem = new CheckStateItem();
+            checkStateItem.setDataDictionaryItemId(64);
+            supplier.setCheckStateItem(checkStateItem);
             return addSupplier(supplier);
         } else {
             JSONObject res = new JSONObject();
@@ -137,6 +145,9 @@ public class SupplierController {
     @ResponseBody
     public String submitSupplier(@RequestBody Supplier supplier) {
         supplier.setCheckState(CheckState.Examining);
+        CheckStateItem checkStateItem = new CheckStateItem();
+        checkStateItem.setDataDictionaryItemId(63);
+        supplier.setCheckStateItem(checkStateItem);
         Supplier resultSupplier = supplierService.getBySupplierId(supplier.getSupplierId());
         if (resultSupplier == null) {
             return addSupplier(supplier);
@@ -439,32 +450,34 @@ public class SupplierController {
     public String saveSupplierFiles(String supplierId, MultipartFile licenseFile1, MultipartFile licenseFile2) {
         JSONObject res = new JSONObject();
         try {
-            Supplier supplier = new Supplier();
-            supplier.setSupplierId(supplierId);
-            // 若文件夹不存在则创建文件夹
-            String supplierPath = "Files/Supplier";
-            File supplierDir = new File(supplierPath);
-            if (!supplierDir.exists()) {
-                supplierDir.mkdirs();
+            if (licenseFile1 != null || licenseFile2 != null) {
+                Supplier supplier = new Supplier();
+                supplier.setSupplierId(supplierId);
+                // 若文件夹不存在则创建文件夹
+                String supplierPath = "Files/Supplier";
+                File supplierDir = new File(supplierPath);
+                if (!supplierDir.exists()) {
+                    supplierDir.mkdirs();
+                }
+                if (licenseFile1 != null) {
+                    String licenseFile1Name = supplierId + "-" + licenseFile1.getOriginalFilename();
+                    String licenseFile1Path = supplierPath + "/" + licenseFile1Name;
+                    File licenseFile1File = new File(licenseFile1Path);
+                    licenseFile1.transferTo(licenseFile1File);
+                    supplier.setLicenseFile1Url(licenseFile1Path);
+                }
+                if (licenseFile2 != null) {
+                    // 获取文件名字
+                    String processName = supplierId + "-" + licenseFile2.getOriginalFilename();
+                    String licenseFile2Path = supplierPath + "/" + processName;
+                    File licenseFile2File = new File(licenseFile2Path);
+                    licenseFile2.transferTo(licenseFile2File);
+                    // 更新客户保存文件的路径
+                    supplier.setLicenseFile2Url(licenseFile2Path);
+                }
+                // 更新供应商文件路径
+                supplierService.setFilePath(supplier);
             }
-            if (licenseFile1 != null) {
-                String licenseFile1Name = supplierId + "-" + licenseFile1.getOriginalFilename();
-                String licenseFile1Path = supplierPath + "/" + licenseFile1Name;
-                File licenseFile1File = new File(licenseFile1Path);
-                licenseFile1.transferTo(licenseFile1File);
-                supplier.setLicenseFile1Url(licenseFile1Path);
-            }
-            if (licenseFile2 != null) {
-                // 获取文件名字
-                String processName = supplierId + "-" + licenseFile2.getOriginalFilename();
-                String licenseFile2Path = supplierPath + "/" + processName;
-                File licenseFile2File = new File(licenseFile2Path);
-                licenseFile2.transferTo(licenseFile2File);
-                // 更新客户保存文件的路径
-                supplier.setLicenseFile2Url(licenseFile2Path);
-            }
-            // 更新供应商文件路径
-            supplierService.setFilePath(supplier);
         } catch (Exception e) {
             e.printStackTrace();
         }

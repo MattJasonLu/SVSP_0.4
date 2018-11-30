@@ -557,18 +557,18 @@
                         break;
                     // 供应商类型
                     case (3):
-                        if (obj.supplierType != null)
-                            $(this).html(obj.supplierType.name);
+                        if (obj.supplierTypeItem != null)
+                            $(this).html(obj.supplierTypeItem.dictionaryItemName);
                         break;
                     // 供应商状态
                     case (4):
-                        if (obj.checkState != null)
-                            $(this).html(obj.checkState.name);
+                        if (obj.checkStateItem != null)
+                            $(this).html(obj.checkStateItem.dictionaryItemName);
                         break;
                     // 账号状态
                     case (5):
-                        if (obj.supplierState != null)
-                            $(this).html(obj.supplierState.name);
+                        if (obj.supplierStateItem != null)
+                            $(this).html(obj.supplierStateItem.dictionaryItemName);
                         break;
                     // 联系人
                     case (6):
@@ -629,11 +629,17 @@
         if ($("#senior").is(':visible')) {
             data = {
                 supplierId: $("#search-supplierId").val(),
-                supplierState: $("#search-supplierState").val(),
+                supplierStateItem: {
+                    dataDictionaryItemId: $("#search-supplierState").val()
+                },
                 companyName: $("#search-contactName").val(),
-                supplierType: $("#search-supplierType").val(),
+                supplierTypeItem: {
+                    dataDictionaryItemId: $("#search-supplierType").val()
+                },
                 contactName: $("#search-contactName").val(),
-                checkState: $("#search-checkState").val(),
+                checkStateItem: {
+                    dataDictionaryItemId: $("#search-checkState").val()
+                },
                 phone: $("#search-phone").val(),
                 page: page
             };
@@ -670,50 +676,85 @@
      * 设置高级检索的下拉框数据
      */
     function setSupplierSeniorSelectedList() {
+        // 设置审批状态
         $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getSupplierSeniorSelectedList",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            type: "POST",
+            url: "getCheckStateDataByDictionary",
             dataType: "json",
+            async: false,
             success: function (result) {
-                if (result != undefined) {
+                if (result != undefined && result.status == "success") {
                     var data = eval(result);
+                    console.log(result);
                     // 高级检索下拉框数据填充
                     var checkState = $("#search-checkState");
                     checkState.children().remove();
-                    $.each(data.checkStateList, function (index, item) {
-                        if (item.index >= 2 && item.index <= 4) {
-                            var option = $('<option />');
-                            option.val(index);
-                            option.text(item.name);
-                            checkState.append(option);
-                        }
+                    $.each(data.data, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.dataDictionaryItemId);
+                        option.text(item.dictionaryItemName);
+                        checkState.append(option);
                     });
                     checkState.get(0).selectedIndex = -1;
+                } else {
+                    console.log(result.message);
+                }
+            }, error: function (result) {
+                console.log(result);
+            }
+        });
+        // 设置审批状态
+        $.ajax({
+            type: "POST",
+            url: "getClientStateByDataDictionary",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    var data = eval(result);
+                    console.log(result);
+                    // 高级检索下拉框数据填充
                     var supplierState = $("#search-supplierState");
                     supplierState.children().remove();
-                    $.each(data.supplierStateList, function (index, item) {
+                    $.each(data.data, function (index, item) {
                         var option = $('<option />');
-                        option.val(index);
-                        option.text(item.name);
+                        option.val(item.dataDictionaryItemId);
+                        option.text(item.dictionaryItemName);
                         supplierState.append(option);
                     });
                     supplierState.get(0).selectedIndex = -1;
+                } else {
+                    console.log(result.message);
+                }
+            }, error: function (result) {
+                console.log(result);
+            }
+        });
+        // 设置审批状态
+        $.ajax({
+            type: "POST",
+            url: "getSupplierTypeByDataDictionary",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    var data = eval(result);
+                    console.log(result);
+                    // 高级检索下拉框数据填充
                     var supplierType = $("#search-supplierType");
                     supplierType.children().remove();
-                    $.each(data.supplierTypeList, function (index, item) {
+                    $.each(data.data, function (index, item) {
                         var option = $('<option />');
-                        option.val(index);
-                        option.text(item.name);
+                        option.val(item.dataDictionaryItemId);
+                        option.text(item.dictionaryItemName);
                         supplierType.append(option);
                     });
                     supplierType.get(0).selectedIndex = -1;
                 } else {
-                    console.log("fail: " + result);
+                    console.log(result.message);
                 }
-            },
-            error: function (result) {
-                console.log("error: " + result);
+            }, error: function (result) {
+                console.log(result);
             }
         });
     }
@@ -1333,11 +1374,11 @@
                 $('#modal3_email').text(data.email);
                 $('#modal3_bankName').text(data.bankName);
                 $('#modal3_bankAccount').text(data.bankAccount);
-                if (data.supplierType != null) $('#modal3_supplierType').text(data.supplierType.name);
-                if (data.enterpriseType != null) $('#modal3_enterpriseType').text(data.enterpriseType.name);
-                if (data.operationRecord != null) $('#modal3_operationRecord').text(data.operationRecord.name);
-                if (data.operationType != null) $('#modal3_operationType').text(data.operationType.name);
-                if (data.ticketRate != null) $('#modal3_ticketRate').text(data.ticketRate.name);
+                if (data.supplierTypeItem != null) $('#modal3_supplierType').text(data.supplierTypeItem.dictionaryItemName);
+                if (data.enterpriseTypeItem != null) $('#modal3_enterpriseType').text(data.enterpriseTypeItem.dictionaryItemName);
+                if (data.operationRecordItem != null) $('#modal3_operationRecord').text(data.operationRecordItem.dictionaryItemName);
+                if (data.operationTypeItem != null) $('#modal3_operationType').text(data.operationTypeItem.dictionaryItemName);
+                if (data.ticketRateItem != null) $('#modal3_ticketRate').text(data.ticketRateItem.dictionaryItemName);
                 $("#modal3_licenseFile1Url").click(function () {
                     if (data.licenseFile1Url != null && data.licenseFile1Url != "") {
                         window.open('downloadFile?filePath=' + data.licenseFile1Url);
