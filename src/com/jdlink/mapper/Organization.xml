@@ -54,7 +54,7 @@
         (#{id},#{pId},#{name});
     </insert>
 
-    <update id="updateCompany" parameterType="Organization">
+    <update id="updateCompanyName" parameterType="Organization">
         update organization_company
         set name=#{name}
         where id=#{id};

@@ -558,12 +558,15 @@ function searchWayBill() {
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
     var state = null;
-    if ($("#search-wayBillState").val() === 0) state = "NewBuild";//新建
-    if ($("#search-wayBillState").val() === 1) state = "ToExamine";//待审批
-    if ($("#search-wayBillState").val() === 2) state = "Examining";//审批中
-    if ($("#search-wayBillState").val() === 3) state = "Approval";//审批通过
-    if ($("#search-wayBillState").val() === 4) state = "Backed";//驳回
     if ($("#senior").is(':visible')) {
+        switch($("#search-wayBillState").val()){
+            case "0":state = "NewBuild"; break;//新建
+            case "1":state = "ToExamine"; break;//待审批
+            case "2":state = "Examining"; break;//审批中
+            case "3":state = "Approval"; break;//审批通过
+            case "4":state = "Backed"; break;//驳回
+            case "5":state = "Invalid"; break; // 作废
+        }
         data = {
             id: $.trim($("#search-id").val()),
             produceCompanyName: $.trim($("#search-companyName").val()),
@@ -621,7 +624,7 @@ function searchWayBill() {
             keywords: keywords
         }
     }
-    console.log("data");
+    console.log("查询数据");
     console.log(data);
     if (data == null) alert("请点击'查询设置'输入查询内容!");
     else {

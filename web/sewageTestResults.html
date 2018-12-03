@@ -168,14 +168,14 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" href="#" onclick="addData();"><span
+                        <a class="btn btn-primary btn-xs" href="#" id="function_-223" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; addData();}"><span
                                 class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary btn-xs" onclick="importExcelChoose();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                        <a class="btn btn-primary btn-xs" id="function_-224" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose();}"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <!--<a class="btn btn-primary btn-xs" onclick="setInvalidMulti();"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 作废</a>-->
                         <!--<a class="btn btn-primary btn-xs disabled" onclick=""><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 化验</a>-->
                         <!--<a class="btn btn-primary btn-xs" onclick="setSubmitMulti();"><span class="glyphicon glyphicon-share" aria-hidden="true"></span> 提交</a>-->
                         <!--<a class="btn btn-primary btn-xs" onclick="setConfirmMulti();"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 签收</a>-->
-                        <a class="btn btn-primary btn-xs" onclick="exportExcel();"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                        <a class="btn btn-primary btn-xs" id="function_-225" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel();}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
                     <!--查询框-->
                     <div class="input-group col-md-4 pull-right">
@@ -324,10 +324,10 @@
                             <!--<a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>-->
                             <!--<a href="#" onclick="setInvalid(this);" title="修改"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span></a>-->
                             <!--&lt;!&ndash;<a href="#" onclick="setInvalid(this);" title="修改"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span></a>&ndash;&gt;-->
-                            <a href="#" onclick="setAdjust(this);" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                            <a href="#" onclick="setSubmit(this);" title="提交"><span class="glyphicon glyphicon-export" aria-hidden="true"></span></a>
-                            <a href="#" onclick="setConfirm(this);" title="签收"><span class="glyphicon glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>
-                            <a href="#" onclick="setCancel(this);" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                            <a href="#" id="function_-226" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; setAdjust(e);}" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                            <a href="#" id="function_-227" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; setSubmit(e);}" title="提交"><span class="glyphicon glyphicon-export" aria-hidden="true"></span></a>
+                            <a href="#" id="function_-228" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; setConfirm(e);}" title="签收"><span class="glyphicon glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>
+                            <a href="#" id="function_-229" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; setCancel(e);}" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
                         </td>
                     </tr>
                     </tbody>

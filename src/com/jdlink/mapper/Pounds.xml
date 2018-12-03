@@ -6,12 +6,8 @@
 <mapper namespace="com.jdlink.mapper.PoundsMapper">
     <resultMap id="PoundsRM" type="Pounds" autoMapping="true">
         <id property="id" column="id"/>
-        <association property="receiveCompany" column="receiveCompanyId" select="getReceiveCompany"/>
         <association property="deliveryCompany" column="deliveryCompanyId" select="getDeliveryCompany"/>
     </resultMap>
-    <select id="getReceiveCompany" parameterType="String" resultType="Client">
-        SELECT * FROM client WHERE clientId=#{receiveCompanyId};
-    </select>
     <select id="getDeliveryCompany" parameterType="String" resultType="Client">
         SELECT * FROM client WHERE clientId=#{deliveryCompanyId};
     </select>
@@ -57,8 +53,7 @@
                 or transferId like "%"#{keywords}"%"
                 or deliveryCompanyId in (select clientId from client where companyName like
                 "%"#{keywords}"%")
-                or receiveCompanyId in (select clientId from client where companyName like
-                "%"#{keywords}"%")
+                or receiveCompanyName like "%"#{keywords}"%"
                 or enterLicencePlate like "%"#{keywords}"%"
                 or founder like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
@@ -83,9 +78,8 @@
                 and deliveryCompanyId in (select clientId from client where companyName like
                 "%"#{deliveryCompany.companyName}"%")
             </if>
-            <if test="receiveCompany != null and receiveCompany.companyName != null and receiveCompany.companyName != ''">
-                and receiveCompanyId in (select clientId from client where companyName like
-                "%"#{receiveCompany.companyName}"%")
+            <if test="receiveCompanyName != null and receiveCompanyName != ''">
+                and receiveCompanyName like "%"#{receiveCompanyName}"%"
             </if>
             <if test="goodsName != null and goodsName != ''">
                 and goodsName like "%"#{goodsName}"%"
@@ -114,8 +108,7 @@
                 or transferId like "%"#{keywords}"%"
                 or deliveryCompanyId in (select clientId from client where companyName like
                 "%"#{keywords}"%")
-                or receiveCompanyId in (select clientId from client where companyName like
-                "%"#{keywords}"%")
+                or receiveCompanyName like "%"#{keywords}"%"
                 or enterLicencePlate like "%"#{keywords}"%"
                 or founder like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
@@ -140,9 +133,8 @@
                 and deliveryCompanyId in (select clientId from client where companyName like
                 "%"#{deliveryCompany.companyName}"%")
             </if>
-            <if test="receiveCompany != null and receiveCompany.companyName != null and receiveCompany.companyName != ''">
-                and receiveCompanyId in (select clientId from client where companyName like
-                "%"#{receiveCompany.companyName}"%")
+            <if test="receiveCompanyName != null and receiveCompanyName != ''">
+                and receiveCompanyName like "%"#{receiveCompanyName}"%"
             </if>
             <if test="goodsName != null and goodsName != ''">
                 and goodsName like "%"#{goodsName}"%"
