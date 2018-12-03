@@ -26,8 +26,8 @@ public class InboundServiceImpl implements InboundService {
     InboundMapper inboundMapper;
 
     @Override
-    public List<InboundPlanOrder> listInboundPlanOrder(InboundPlanOrder inboundPlanOrder, Page page) {
-        return inboundMapper.listInboundPlanOrder(inboundPlanOrder, page);
+    public List<InboundPlanOrder> listInboundPlanOrder(InboundPlanOrder inboundPlanOrder) {
+        return inboundMapper.listInboundPlanOrder(inboundPlanOrder);
     }
 
     @Override

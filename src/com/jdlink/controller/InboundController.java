@@ -56,10 +56,10 @@ public class InboundController {
      */
     @RequestMapping("listInboundPlanOrder")
     @ResponseBody
-    public String listInboundPlanOrder(Page page, InboundPlanOrder inboundPlanOrder) {
+    public String listInboundPlanOrder(@RequestBody InboundPlanOrder inboundPlanOrder) {
         JSONObject res = new JSONObject();
         try {
-            List<InboundPlanOrder> inboundPlanOrderList = inboundService.listInboundPlanOrder(inboundPlanOrder, page);
+            List<InboundPlanOrder> inboundPlanOrderList = inboundService.listInboundPlanOrder(inboundPlanOrder);
             JSONArray data = JSONArray.fromArray(inboundPlanOrderList.toArray(new InboundPlanOrder[inboundPlanOrderList.size()]));
 //            JSONArray data = JSONArray.fromArray(inboundPlanOrderList.toArray(new InboundPlanOrder[inboundPlanOrderList.size()]));
 //            for (int i = 0; i < inboundPlanOrderList.size(); i++) {
@@ -87,7 +87,7 @@ public class InboundController {
 
     @RequestMapping("countInboundPlanOrder")
     @ResponseBody
-    public String countInboundPlanOrder(InboundPlanOrder inboundPlanOrder) {
+    public String countInboundPlanOrder(@RequestBody InboundPlanOrder inboundPlanOrder) {
         JSONObject res = new JSONObject();
         try {
             int count = inboundService.countInboundPlanOrder(inboundPlanOrder);
