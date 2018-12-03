@@ -37,6 +37,7 @@ var setting = {
         beforeRemove: beforeRemove,//用于捕获节点被删除之前的事件回调函数，并且根据返回值确定是否允许删除操作。
         //  beforeRename: beforeRename,//用于捕获节点编辑名称结束(input失去焦点或按下Enter键)之后，更新节点名称数据之前的事件回调函数，并根据返回值确定是否允许
         beforeClick: beforeClick, // 选中前事件
+        beforeRename:beforeRename,
         onRemove: onRemove,// 删除按钮点击后事件
         onRename: onRename, // 编辑按钮点击后事件
         //  beforeDrag: zTreeBeforeDrag,// 拖拽执行前事件
@@ -54,6 +55,13 @@ var organizationPId;
 var organizationName;
 
 /**
+ * 重命名事件之前
+ */
+function beforeRename(){
+   return checkAuthorityById(-533);  // 验证权限
+}
+
+/**
  *
  * @param treeId
  * @param treeNode
@@ -68,15 +76,15 @@ function beforeClick(treeId, treeNode) {
     if (treeNode.isParent) { //是否有子节点
         $("#url").hide(); // 隐藏
         if (treeNode.pId === 1) {// 判断是否是一级菜单
-
-            showIcon(treeNode);
+            if(checkAuthorityById(-544)) {  // 验证权限
+                showIcon(treeNode);
+            }
         } else {
             return false;
         }
     } else {  // 没有则显示出选择页面
-        showUrl(treeNode);
-        if (treeNode.id < 100) {// 判断是否是一级菜单
-            //    showIcon(treeNode);
+        if(checkAuthorityById(-543)) {  // 验证权限
+            showUrl(treeNode);
         }
     }
 }
@@ -451,10 +459,14 @@ function saveIcon() {
  * @param moveType
  */
 function beforeDrop(treeId, treeNodes, targetNode, moveType) {
-    var oldPid = treeNodes[0].pId;
-    var targetPid = targetNode.pId;
-    if (oldPid != targetPid) {
-        alert("只能移动同一级菜单下的节点");
+    if(checkAuthorityById(-542)) {  // 验证权限
+        var oldPid = treeNodes[0].pId;
+        var targetPid = targetNode.pId;
+        if (oldPid != targetPid) {
+            alert("只能移动同一级菜单下的节点");
+            return false;
+        }
+    }else{
         return false;
     }
 }
@@ -503,11 +515,15 @@ function onDrop(treeId, treeNodes, targetNode, moveType) {
 }
 
 function beforeRemove(treeId, treeNode) {
-    if(treeNode.id === 1){ // 主节点不可删除
-        alert("不可删除！");
+    if(checkAuthorityById(-534)) {  // 验证权限
+        if (treeNode.id === 1) { // 主节点不可删除
+            alert("不可删除！");
+            return false;
+        }
+        return confirm("确认删除" + treeNode.name + " 吗？");
+    }else{
         return false;
     }
-    return confirm("确认删除" + treeNode.name + " 吗？");
 }
 
 /**
@@ -681,45 +697,47 @@ function getMenuTree(){
  * @param item
  */
 function addMenu(item) {
-    organization1.level = organization1.id.toString().length;
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getCurrentUserInfo",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            // console.log(result);
-            if (result != null && result.status === "success") {
-                organization1.founder = result.data.name;  // 设置登陆用户名
-            } else {
-                console.log(result.message);
-            }
-        },
-        error: function (result) {
-            alert(result.message);
-        }
-    });
-    console.log(organization1);
-    if (organization1 != null) {
+    if(checkAuthorityById(-532)) {  // 验证权限
+        organization1.level = organization1.id.toString().length;
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "addMenu",                  // url
+            url: "getCurrentUserInfo",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(organization1),
             dataType: "json",
-            contentType: "application/json; charset=utf-8",
             success: function (result) {
                 // console.log(result);
-                if (result != null && result.status == "success") {
-                    window.location.reload(); // 刷新页面
+                if (result != null && result.status === "success") {
+                    organization1.founder = result.data.name;  // 设置登陆用户名
                 } else {
-                    alert(result.message);
+                    console.log(result.message);
                 }
             },
             error: function (result) {
                 alert(result.message);
             }
         });
+        console.log(organization1);
+        if (organization1 != null) {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "addMenu",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(organization1),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    // console.log(result);
+                    if (result != null && result.status == "success") {
+                        window.location.reload(); // 刷新页面
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function (result) {
+                    alert(result.message);
+                }
+            });
+        }
     }
 }
 

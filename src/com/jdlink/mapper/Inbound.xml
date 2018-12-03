@@ -42,36 +42,55 @@
     <select id="listInboundPlanOrder" resultMap="InboundPlanOrderRM">
         SELECT * FROM t_pl_inboundplanorder
         <where>
-            <if test="inboundPlanOrder != null and inboundPlanOrder.keyword != null and inboundPlanOrder.keyword != ''">
-                and inboundPlanOrderId LIKE "%"#{inboundPlanOrder.keyword}"%" or planDate like binary "%"#{inboundPlanOrder.keyword}"%"
-                or transferDate like binary "%"#{inboundPlanOrder.keyword}"%" or transferDraftId like "%"#{inboundPlanOrder.keyword}"%"
-                or wastesName like "%"#{inboundPlanOrder.keyword}"%" or wastesCode like "%"#{inboundPlanOrder.keyword}"%"
+            <if test="keyword != null and keyword != ''">
+                and inboundPlanOrderId LIKE "%"#{keyword}"%"
+                or DATE_FORMAT(planDate,'%Y-%m-%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(planDate,'%Y-%c-%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(planDate,'%Y-%c-%e') like "%"#{keyword}"%"
+                or DATE_FORMAT(planDate,'%Y%m%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(planDate,'%Y%c%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(planDate,'%Y%c%e') like "%"#{keyword}"%"
+                or DATE_FORMAT(planDate,'%Y.%m.%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(planDate,'%Y.%c.%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(planDate,'%Y.%c.%e') like "%"#{keyword}"%"
+                or DATE_FORMAT(transferDate,'%Y-%m-%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(transferDate,'%Y-%c-%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(transferDate,'%Y-%c-%e') like "%"#{keyword}"%"
+                or DATE_FORMAT(transferDate,'%Y%m%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(transferDate,'%Y%c%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(transferDate,'%Y%c%e') like "%"#{keyword}"%"
+                or DATE_FORMAT(transferDate,'%Y.%m.%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(transferDate,'%Y.%c.%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(transferDate,'%Y.%c.%e') like "%"#{keyword}"%"
+                or transferDraftId like "%"#{keyword}"%"
+                or wastesName like "%"#{keyword}"%"
+                or wastesCode like "%"#{keyword}"%"
             </if>
-            <if test="inboundPlanOrder != null and inboundPlanOrder.inboundPlanOrderId != null and inboundPlanOrder.inboundPlanOrderId != ''">
-                and inboundPlanOrderId LIKE "%"#{inboundPlanOrder.inboundPlanOrderId}"%"
+            <if test="inboundPlanOrderId != null and inboundPlanOrderId != ''">
+                and inboundPlanOrderId LIKE "%"#{inboundPlanOrderId}"%"
             </if>
-            <if test="inboundPlanOrder != null and inboundPlanOrder.produceCompany != null">
-                and produceCompanyId in (select clientId from client where companyName like "%"#{inboundPlanOrder.produceCompany.companyName}"%")
+            <if test="produceCompany != null and produceCompany.companyName != null">
+                and produceCompanyId in (select clientId from client where companyName like "%"#{produceCompany.companyName}"%")
             </if>
-            <if test="inboundPlanOrder != null and inboundPlanOrder.departmentId != null and inboundPlanOrder.departmentId != ''">
+            <if test="departmentId != null and departmentId != ''">
                 <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
-                and (DATE_FORMAT(planDate,'%Y-%m-%d') like "%"#{inboundPlanOrder.departmentId}"%"
-                or DATE_FORMAT(planDate,'%Y%m%d') like "%"#{inboundPlanOrder.departmentId}"%")
+                and (DATE_FORMAT(planDate,'%Y-%m-%d') like "%"#{departmentId}"%"
+                or DATE_FORMAT(planDate,'%Y%m%d') like "%"#{departmentId}"%")
             </if>
-            <if test="inboundPlanOrder != null and inboundPlanOrder.companyId != null and inboundPlanOrder.companyId != ''">
+            <if test="companyId != null and companyId != ''">
                 <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
-                and (DATE_FORMAT(transferDate,'%Y-%m-%d') like "%"#{inboundPlanOrder.companyId}"%"
-                or DATE_FORMAT(transferDate,'%Y%m%d') like "%"#{inboundPlanOrder.companyId}"%")
+                and (DATE_FORMAT(transferDate,'%Y-%m-%d') like "%"#{companyId}"%"
+                or DATE_FORMAT(transferDate,'%Y%m%d') like "%"#{companyId}"%")
             </if>
-            <if test="inboundPlanOrder != null and inboundPlanOrder.transferDraftId != null and inboundPlanOrder.transferDraftId != ''">
-                and transferDraftId LIKE "%"#{inboundPlanOrder.transferDraftId}"%"
+            <if test="transferDraftId != null and transferDraftId != ''">
+                and transferDraftId LIKE "%"#{transferDraftId}"%"
             </if>
-            <if test="inboundPlanOrder != null and inboundPlanOrder.wastes != null">
-                <if test="inboundPlanOrder.wastes.name != null and inboundPlanOrder.wastes.name != ''">
-                    and wastesName LIKE "%"#{inboundPlanOrder.wastes.name}"%"
+            <if test="wastes != null">
+                <if test="wastes.name != null and wastes.name != ''">
+                    and wastesName LIKE "%"#{wastes.name}"%"
                 </if>
-                <if test="inboundPlanOrder.wastes.wastesId != null and inboundPlanOrder.wastes.wastesId != ''">
-                    and wastesCode LIKE "%"#{inboundPlanOrder.wastes.wastesId}"%"
+                <if test="wastes.wastesId != null and wastes.wastesId != ''">
+                    and wastesCode LIKE "%"#{wastes.wastesId}"%"
                 </if>
             </if>
             <if test="true">
@@ -79,7 +98,7 @@
             </if>
         </where>
         order by createDate desc
-        <if test="page != null and page.start != null and page.count != null">
+        <if test="page != null and page.start != null and page.count != null and page.count != 0">
             limit #{page.start}, #{page.count}
         </if>
     </select>
@@ -88,12 +107,34 @@
         select count(*) from t_pl_inboundplanorder
         <where>
             <if test="keyword != null and keyword != ''">
-                and inboundPlanOrderId LIKE "%"#{keyword}"%" or planDate like binary "%"#{keyword}"%"
-                or transferDate like binary "%"#{keyword}"%" or transferDraftId like "%"#{keyword}"%"
-                or wastesName like "%"#{keyword}"%" or wastesCode like "%"#{keyword}"%"
+                and inboundPlanOrderId LIKE "%"#{keyword}"%"
+                or DATE_FORMAT(planDate,'%Y-%m-%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(planDate,'%Y-%c-%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(planDate,'%Y-%c-%e') like "%"#{keyword}"%"
+                or DATE_FORMAT(planDate,'%Y%m%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(planDate,'%Y%c%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(planDate,'%Y%c%e') like "%"#{keyword}"%"
+                or DATE_FORMAT(planDate,'%Y.%m.%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(planDate,'%Y.%c.%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(planDate,'%Y.%c.%e') like "%"#{keyword}"%"
+                or DATE_FORMAT(transferDate,'%Y-%m-%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(transferDate,'%Y-%c-%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(transferDate,'%Y-%c-%e') like "%"#{keyword}"%"
+                or DATE_FORMAT(transferDate,'%Y%m%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(transferDate,'%Y%c%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(transferDate,'%Y%c%e') like "%"#{keyword}"%"
+                or DATE_FORMAT(transferDate,'%Y.%m.%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(transferDate,'%Y.%c.%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(transferDate,'%Y.%c.%e') like "%"#{keyword}"%"
+                or transferDraftId like "%"#{keyword}"%"
+                or wastesName like "%"#{keyword}"%"
+                or wastesCode like "%"#{keyword}"%"
             </if>
             <if test="inboundPlanOrderId != null and inboundPlanOrderId != ''">
                 and inboundPlanOrderId LIKE "%"#{inboundPlanOrderId}"%"
+            </if>
+            <if test="produceCompany != null and produceCompany.companyName != null">
+                and produceCompanyId in (select clientId from client where companyName like "%"#{produceCompany.companyName}"%")
             </if>
             <if test="departmentId != null and departmentId != ''">
                 <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
@@ -335,7 +376,8 @@
 
     <!--列出入库单-->
     <select id="listInboundOrder" resultMap="InboundOrderRM">
-        SELECT * FROM t_pl_inboundorder WHERE boundType='WasteInbound'
+        SELECT * FROM t_pl_inboundorder
+        WHERE boundType='WasteInbound'and checkState != 'Invalid'
         order by  nowTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
@@ -349,9 +391,19 @@
             <if test="keyword != null and keyword != ''">
                 and boundType=#{boundType}
                 and (inboundOrderId like "%"#{keyword}"%"
-                or (DATE_FORMAT(inboundDate,'%Y-%m-%d') like "%"#{keyword}"%")
+                or DATE_FORMAT(inboundDate,'%Y-%m-%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y-%c-%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y-%c-%e') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y%m%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y%c%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y%c%e') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y.%m.%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y.%c.%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y.%c.%e') like "%"#{keyword}"%"
                 or recordState=#{keyword}
                 or checkState=#{keyword})
+                or warehouseId in (select warehouseId from t_pl_warehouse where warehouseName like "%"#{keyword}"%")
+                or remarks like "%"#{keyword}"%"
             </if>
             <if test="inboundOrderId != null and inboundOrderId != ''">
                 and inboundOrderId LIKE "%"#{inboundOrderId}"%"
@@ -376,6 +428,9 @@
             </if>
             <if test="checkState != null and checkState != ''">
                 and checkState = #{checkState}
+            </if>
+            <if test="wareHouse != null and wareHouse.wareHouseName != null and wareHouse.wareHouseName != ''">
+                and warehouseId in (select warehouseId from t_pl_warehouse where warehouseName like "%"#{wareHouse.wareHouseName}"%")
             </if>
         </where>
     </select>
@@ -387,9 +442,19 @@
             <if test="keyword != null and keyword != ''">
                 and boundType=#{boundType}
                 and (inboundOrderId like "%"#{keyword}"%"
-                or (DATE_FORMAT(inboundDate,'%Y-%m-%d') like "%"#{keyword}"%")
+                or DATE_FORMAT(inboundDate,'%Y-%m-%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y-%c-%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y-%c-%e') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y%m%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y%c%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y%c%e') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y.%m.%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y.%c.%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y.%c.%e') like "%"#{keyword}"%"
                 or recordState=#{keyword}
                 or checkState=#{keyword})
+                or remarks like "%"#{keyword}"%"
+                or warehouseId in (select warehouseId from t_pl_warehouse where warehouseName like "%"#{keyword}"%")
             </if>
             <if test="inboundOrderId != null and inboundOrderId != ''">
                 and inboundOrderId LIKE "%"#{inboundOrderId}"%"
@@ -414,6 +479,9 @@
             </if>
             <if test="checkState != null and checkState != ''">
                 and checkState = #{checkState}
+            </if>
+            <if test="wareHouse != null and wareHouse.wareHouseName != null and wareHouse.wareHouseName != ''">
+                and warehouseId in (select warehouseId from t_pl_warehouse where warehouseName like "%"#{wareHouse.wareHouseName}"%")
             </if>
         </where>
         order by  nowTime desc
@@ -428,9 +496,19 @@
         <where>
             <if test="keyword != null and keyword != ''">
                 and (inboundOrderId like "%"#{keyword}"%"
-                or (DATE_FORMAT(inboundDate,'%Y-%m-%d') like "%"#{keyword}"%")
+                or DATE_FORMAT(inboundDate,'%Y-%m-%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y-%c-%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y-%c-%e') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y%m%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y%c%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y%c%e') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y.%m.%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y.%c.%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y.%c.%e') like "%"#{keyword}"%"
+                or warehouseId in (select warehouseId from t_pl_warehouse where warehouseName like "%"#{keyword}"%")
                 or recordState=#{keyword}
                 or checkState=#{keyword})
+                or remarks like "%"#{keyword}"%"
             </if>
             <if test="inboundOrderId != null and inboundOrderId != ''">
                 and inboundOrderId like "%"#{inboundOrderId}"%"
@@ -457,7 +535,7 @@
                 ]]>
             </if>
             <if test="true">
-                and boundType='SecondaryInbound' and checkState != 'Invalid'
+                and boundType='SecondaryInbound'
             </if>
         </where>
         order by createDate desc
@@ -473,9 +551,19 @@
         <where>
             <if test="keyword != null and keyword != ''">
                 and (inboundOrderId like "%"#{keyword}"%"
-                or (DATE_FORMAT(inboundDate,'%Y-%m-%d') like "%"#{keyword}"%")
+                or DATE_FORMAT(inboundDate,'%Y-%m-%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y-%c-%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y-%c-%e') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y%m%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y%c%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y%c%e') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y.%m.%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y.%c.%d') like "%"#{keyword}"%"
+                or DATE_FORMAT(inboundDate,'%Y.%c.%e') like "%"#{keyword}"%"
+                or warehouseId in (select warehouseId from t_pl_warehouse where warehouseName like "%"#{keyword}"%")
                 or recordState=#{keyword}
                 or checkState=#{keyword})
+                or remarks like "%"#{keyword}"%"
             </if>
             <if test="inboundOrderId != null and inboundOrderId != ''">
                 and inboundOrderId like "%"#{inboundOrderId}"%"
@@ -502,7 +590,7 @@
                 ]]>
             </if>
             <if test="true">
-                and boundType='SecondaryInbound' and checkState != 'Invalid'
+                and boundType='SecondaryInbound'
             </if>
         </where>
     </select>

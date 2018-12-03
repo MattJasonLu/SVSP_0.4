@@ -115,11 +115,11 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" href="newIngredientsList.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary btn-xs" onclick="generateRequisition()"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> 生成领料单</a>
-                        <a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose();"><span class="glyphicon glyphicon-arrow-down"
+                        <a class="btn btn-primary btn-xs" href="newIngredientsList.html" id="function_-261" onclick="checkAuthority(this)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" id="function_-262" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; generateRequisition();}"onclick="generateRequisition()"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> 生成领料单</a>
+                        <a class="btn btn-primary btn-xs" id="function_-263" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose();}"onclick="importExcelChoose();"><span class="glyphicon glyphicon-arrow-down"
                                                                                                         aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary btn-xs" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                        <a class="btn btn-primary btn-xs" id="function_-264" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel();}"onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
                     <!--查询框-->
                     <div class="input-group col-md-4 pull-right">
@@ -231,9 +231,9 @@
                             <td class="text-center hidden"></td>
                             <td class="text-center hidden"></td>
                             <td class="text-center">
-                                <a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                                <a href="#" onclick="ingreadientsListModify(this);" title="编辑"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                                <a title="作废" href="#" onclick="cancel(this)"><span
+                                <a href="#" id="function_-265" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; view(e);}" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                                <a href="#" id="function_-266" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; ingreadientsListModify(e);}" title="编辑"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                                <a title="作废" href="#" id="function_-267" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; cancel(e);}"><span
                                         class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> </a>
                             </td>
                         </tr>
