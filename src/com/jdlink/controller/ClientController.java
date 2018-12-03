@@ -1,6 +1,9 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Dictionary.CheckStateItem;
+import com.jdlink.domain.Dictionary.ClientStateItem;
+import com.jdlink.domain.Dictionary.ClientTypeItem;
 import com.jdlink.domain.Inventory.InboundOrder;
 import com.jdlink.domain.Inventory.InboundOrderItem;
 import com.jdlink.domain.Inventory.OutboundOrder;
@@ -59,9 +62,20 @@ public class ClientController {
         JSONObject res = new JSONObject();
         // 启用账户
         client.setClientState(ClientState.Enabled);
+        ClientStateItem clientStateItem = new ClientStateItem();
+        clientStateItem.setDataDictionaryItemId(89);
+        client.setClientStateItem(clientStateItem);
         client.setClientType(ClientType.EnquiryClient);
+        ClientTypeItem clientTypeItem = new ClientTypeItem();
+        clientTypeItem.setDataDictionaryItemId(91);
+        client.setClientTypeItem(clientTypeItem);
+        CheckStateItem checkStateItem = new CheckStateItem();
+        checkStateItem.setDataDictionaryItemId(64);
+        client.setCheckStateItem(checkStateItem);
         User user = userService.getCurrentUserInfo(session);
-        client.setCreator(user.getName());
+        if (user != null) {
+            client.setCreator(user.getName());
+        }
         client.setCreateTime(new Date());
         try {
             clientService.add(client);
@@ -87,6 +101,9 @@ public class ClientController {
         if (resultClient == null) {
             // 审核状态为待提交
             client.setCheckState(CheckState.ToSubmit);
+            CheckStateItem checkStateItem = new CheckStateItem();
+            checkStateItem.setDataDictionaryItemId(64);
+            client.setCheckStateItem(checkStateItem);
             return addClient(client, session);
         } else {
             JSONObject res = new JSONObject();
@@ -113,6 +130,9 @@ public class ClientController {
     public String submitClient(@RequestBody Client client, HttpSession session) {
         // 审核状态为审批中
         client.setCheckState(CheckState.Examining);
+        CheckStateItem checkStateItem = new CheckStateItem();
+        checkStateItem.setDataDictionaryItemId(63);
+        client.setCheckStateItem(checkStateItem);
         Client resultClient = clientService.getByClientId(client.getClientId());
         if (resultClient == null) {
             return addClient(client, session);
@@ -136,36 +156,38 @@ public class ClientController {
     public String saveFiles(String clientId, MultipartFile materialAttachment, MultipartFile processAttachment) {
         JSONObject res = new JSONObject();
         try {
-            Client client = new Client();
-            client.setClientId(clientId);
-            // 若文件夹不存在则创建文件夹
-            if (materialAttachment != null) {
-                String materialPath = "Files/EIA/Material";
-                File materialDir = new File(materialPath);
-                if (!materialDir.exists()) {
-                    materialDir.mkdirs();
+            if (materialAttachment != null || processAttachment != null) {
+                Client client = new Client();
+                client.setClientId(clientId);
+                // 若文件夹不存在则创建文件夹
+                if (materialAttachment != null) {
+                    String materialPath = "Files/EIA/Material";
+                    File materialDir = new File(materialPath);
+                    if (!materialDir.exists()) {
+                        materialDir.mkdirs();
+                    }
+                    String materialName = clientId + "-" + materialAttachment.getOriginalFilename();
+                    String materialFilePath = materialPath + "/" + materialName;
+                    File materialFile = new File(materialFilePath);
+                    materialAttachment.transferTo(materialFile);
+                    client.setMaterialAttachmentUrl(materialFilePath);
                 }
-                String materialName = clientId + "-" +  materialAttachment.getOriginalFilename();
-                String materialFilePath = materialPath + "/" + materialName;
-                File materialFile = new File(materialFilePath);
-                materialAttachment.transferTo(materialFile);
-                client.setMaterialAttachmentUrl(materialFilePath);
-            }
-            if (processAttachment != null) {
-                String processPath = "Files/EIA/Process";
-                File processDir = new File(processPath);
-                if (!processDir.exists()) {
-                    processDir.mkdirs();
+                if (processAttachment != null) {
+                    String processPath = "Files/EIA/Process";
+                    File processDir = new File(processPath);
+                    if (!processDir.exists()) {
+                        processDir.mkdirs();
+                    }
+                    // 获取文件名字
+                    String processName = clientId + "-" + processAttachment.getOriginalFilename();
+                    String processFilePath = processPath + "/" + processName;
+                    File processFile = new File(processFilePath);
+                    processAttachment.transferTo(processFile);
+                    // 更新客户保存文件的路径
+                    client.setProcessAttachmentUrl(processFilePath);
                 }
-                // 获取文件名字
-                String processName = clientId + "-" + processAttachment.getOriginalFilename();
-                String processFilePath = processPath + "/" + processName;
-                File processFile = new File(processFilePath);
-                processAttachment.transferTo(processFile);
-                // 更新客户保存文件的路径
-                client.setProcessAttachmentUrl(processFilePath);
+                clientService.setFilePath(client);
             }
-            clientService.setFilePath(client);
         } catch (Exception e) {
             e.printStackTrace();
         }
