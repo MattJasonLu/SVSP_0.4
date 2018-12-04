@@ -384,8 +384,8 @@ function setWayBillList(result) {
                     break;
                 case (9):
                     //接运单状态
-                    if (obj.state != null) {
-                        $(this).html(obj.state.name);
+                    if (obj.checkStateItem != null) {
+                        $(this).html(obj.checkStateItem.dictionaryItemName);
                         break;
                     }
             }
@@ -402,32 +402,41 @@ function setWayBillList(result) {
  * 设置高级检索的下拉框数据
  */
 function setSeniorSelectedList() {
+    // 设置审批状态
     $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getWayBillSeniorSelectedList",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        type: "POST",
+        url: "getCheckStateDataByDictionary",
         dataType: "json",
+        async: false,
         success: function (result) {
-            if (result != undefined) {
+            if (result != undefined && result.status == "success") {
                 var data = eval(result);
+                console.log(result);
                 // 高级检索下拉框数据填充
-                var state = $("#search-wayBillState");
-                state.children().remove();
-                $.each(data.stateList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    state.append(option);
+                var checkState = $("#search-wayBillState");
+                checkState.children().remove();
+                $.each(data.data, function (index, item) {
+                    if (item.dataDictionaryItemId == 76 ||
+                        item.dataDictionaryItemId == 63 ||
+                        item.dataDictionaryItemId == 67 ||
+                        item.dataDictionaryItemId == 66 ||
+                        item.dataDictionaryItemId == 69 ||
+                        item.dataDictionaryItemId == 75) {
+                        var option = $('<option />');
+                        option.val(item.dataDictionaryItemId);
+                        option.text(item.dictionaryItemName);
+                        checkState.append(option);
+                    }
                 });
-                state.get(0).selectedIndex = -1;
+                checkState.get(0).selectedIndex = -1;
             } else {
-                console.log("fail: " + result);
+                console.log(result.message);
             }
-        },
-        error: function (result) {
-            console.log("error: " + result);
+        }, error: function (result) {
+            console.log(result);
         }
     });
+
 }
 
 /**
@@ -576,6 +585,9 @@ function searchWayBill() {
             startDate: $("#search-startDate").val(),
             endDate: $("#search-endDate").val(),
             produceCompanyOperator: $.trim($("#search-operator").val()),
+            checkStateItem: {
+                dataDictionaryItemId: $("#search-wayBillState").val()
+            },
             state: state,
             page: page
         };

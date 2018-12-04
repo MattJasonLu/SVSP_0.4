@@ -1,6 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Dictionary.CheckStateItem;
 
 import java.util.Date;
 import java.util.List;
@@ -50,6 +51,10 @@ public class WayBill {
      * 接运单状态
      */
     private CheckState state;
+    /**
+     * 审批状态数据字典
+     */
+    private CheckStateItem checkStateItem;
     /**
      *审批意见
      */
@@ -209,6 +214,14 @@ public class WayBill {
 
     public void setFreight(Float freight) {
         this.freight = freight;
+    }
+
+    public CheckStateItem getCheckStateItem() {
+        return checkStateItem;
+    }
+
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
     }
 
     @Override
