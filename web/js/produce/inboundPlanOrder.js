@@ -2,7 +2,6 @@ var inboundPlanOrderIdArray = [];
 var itemIndex = 0;
 
 
-
 /**
  * 入库计划单查询
  */
@@ -183,13 +182,20 @@ function countValue() {
  * 计算总页数
  * */
 function totalPage() {
+    var data = {};
     var totalRecord = 0;
+    var page = {};
+    page.count = 0;
+    page.start = 0;
+    data.page = page;
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
             url: "countInboundPlanOrder",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data),
             dataType: "json",
+            contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result.data > 0) {
                     totalRecord = result.data;
@@ -208,8 +214,9 @@ function totalPage() {
             type: "POST",                       // 方法类型
             url: "countInboundPlanOrder",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: data,
+            data: JSON.stringify(data),
             dataType: "json",
+            contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result.data > 0) {
                     totalRecord = result.data;
@@ -309,6 +316,7 @@ function switchPage(pageNumber) {
         $("#next").removeClass("disabled");
         $("#endPage").removeClass("disabled");
     }
+    var data = {};
     var page = {};
     page.count = countValue();                        //可选
     page.pageNumber = pageNumber;
@@ -317,13 +325,15 @@ function switchPage(pageNumber) {
     addPageClass(pageNumber);           // 设置页码标蓝
     //addClass("active");
     page.start = (pageNumber - 1) * page.count;
+    data.page = page;
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
             url: "listInboundPlanOrder",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(page),
+            data: JSON.stringify(data),
             dataType: "json",
+            contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     setInboundOrderDataList(result.data);
@@ -343,6 +353,7 @@ function switchPage(pageNumber) {
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data),
             dataType: "json",
+            contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     setInboundOrderDataList(result.data);
@@ -390,16 +401,19 @@ function inputSwitchPage() {
         setPageCloneAfter(pageNumber);        // 重新设置页码
         addPageClass(pageNumber);           // 设置页码标蓝
         var page = {};
+        var data = {};
         page.count = countValue();//可选
         page.pageNumber = pageNumber;
         page.start = (pageNumber - 1) * page.count;
+        data.page = page;
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
                 url: "listInboundPlanOrder",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: page,
+                data: JSON.stringify(data),
                 dataType: "json",
+                contentType: 'application/json;charset=utf-8',
                 success: function (result) {
                     if (result != undefined && result.status == "success") {
                         console.log(result);
@@ -418,8 +432,9 @@ function inputSwitchPage() {
                 type: "POST",                       // 方法类型
                 url: "listInboundPlanOrder",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: data,
+                data: JSON.stringify(data),
                 dataType: "json",
+                contentType: 'application/json;charset=utf-8',
                 success: function (result) {
                     if (result !== undefined && result.status === "success") {
                         // console.log(result);
@@ -446,15 +461,18 @@ function loadPageList() {
     $("#firstPage").addClass("disabled");
     var page = {};
     var pageNumber = 1;                       // 显示首页
+    var data = {};
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
+    data.page = page;
     $.ajax({
         type: "POST",                       // 方法类型
         url: "listInboundPlanOrder",   // url
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: page,
+        data: JSON.stringify(data),
         dataType: "json",
+        contentType: 'application/json;charset=utf-8',
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 console.log(result);
@@ -621,20 +639,22 @@ function addInboundPlanOrder() {
 function searchData() {
     var page = {};
     var pageNumber = 1;                       // 显示首页
+    var data = {};
     page.pageNumber = pageNumber;
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
     // 精确查询
+   var wastes = {};
+   wastes.name = $.trim($("#search-wastesName").val());
+   wastes.wastesId = $.trim($("#search-wastesCode").val());
+   var produceCompany = {};
+    produceCompany.companyName = $.trim($("#search-companyName").val());
     if ($("#senior").is(':visible')) {
         data = {
-            inboundOrderId: $("#inboundOrderId").val(),
-            wareHouse: {
-                wareHouseName: $("#search-warehouseName").val()
-            },
-            recordState: $("#search-recordState").val(),
-            checkState: $("#search-checkState").val(),
-            companyId: $("#search-beginTime").val(), // 起始时间
-            modifierId: $("#search-endTime").val(),   // 结束时间
+            inboundPlanOrderId: $.trim($("#search-inboundPlanOrderId").val()),
+            transferDraftId:$.trim($("#search-transferDraftId").val()),
+            wastes : wastes,
+            produceCompany : produceCompany,
             page: page
         };
         console.log(data);
@@ -649,8 +669,9 @@ function searchData() {
         type: "POST",                       // 方法类型
         url: "listInboundPlanOrder",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: data,
+        data: JSON.stringify(data),
         dataType: "json",
+        contentType: 'application/json;charset=utf-8',
         success: function (result) {
             if (result !== undefined && result.status === "success") {
                 console.log(result);

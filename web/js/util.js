@@ -204,6 +204,42 @@ function checkAuthority(e) {
 }
 
 /**
+ * 根据ID校验权限
+ * @param functionId
+ //  */
+function checkAuthorityById(functionId) {
+    var flag = false;
+    // 获取功能编号
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "checkAuthority",                           // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            functionId: functionId
+        },
+        dataType: "json",
+        success: function (result) {
+            console.log(result);
+            if (result != undefined && result.status == "success") {
+                var data = eval(result);
+                // 进入功能
+                flag = true;
+            } else {
+                // 提示没有权限进入
+                if (result.message == undefined)alert("账号过期，请重新登录！");
+                else alert(result.message);
+                flag = false;
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+    return flag;
+}
+
+
+/**
  * 将危废英文名转换成中文
  * @param str
  * @returns {*}
@@ -638,6 +674,7 @@ function loadNavigationList() {
                 console.log("一级菜单名:" + localStorage.name);
                 if (0 < data[i].pId && data[i].pId < 10) {
                     j++;
+                    // 设置需要插入的标签
                     var li = "<li ><a class='withripple' href='#' id='function_"+id+"'" +
                         "onclick='check(this); function check(e){if(checkAuthority($(e))){toMenuUrl(e);}} '><span class='" + icon + "'" +
                         "aria-hidden='true'></span><span class='sidespan' name='" + name + "'>&nbsp;&nbsp;" + name + "</span><span class='iright pull-right'>" +

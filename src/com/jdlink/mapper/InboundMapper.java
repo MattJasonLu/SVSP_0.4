@@ -21,7 +21,7 @@ public interface InboundMapper {
      * 列出所有入库计划单
      * @return 入库计划单
      */
-    List<InboundPlanOrder> listInboundPlanOrder(@Param("inboundPlanOrder") InboundPlanOrder inboundPlanOrder, @Param("page") Page page);
+    List<InboundPlanOrder> listInboundPlanOrder(InboundPlanOrder inboundPlanOrder);
 
     /**
      * 获取入库单的数量

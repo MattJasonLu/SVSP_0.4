@@ -165,11 +165,11 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" href="newWarehouse.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose();"><span
+                        <a class="btn btn-primary btn-xs" id="function_-249" onclick="checkAuthority(this)" href="newWarehouse.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" href="#" id="function_-250" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose();}"><span
                                 class="glyphicon glyphicon-arrow-down"
                                 aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary btn-xs" href="#" onclick="exportExcel()"><span
+                        <a class="btn btn-primary btn-xs" href="#" id="function_-251" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel();}"><span
                                 class="glyphicon glyphicon-arrow-up"
                                 aria-hidden="true"></span> 导出</a>
                     </div>
@@ -290,8 +290,8 @@
                         <td class="text-center" name="remarks">备注</td>
                         <!--<td class="text-center">转移联单号</td>-->
                         <td class="text-center">
-                            <a href="#" onclick="viewData($(this));" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                            <a href="#" onclick="setInvalid($(this));" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                            <a href="#" id="function_-252" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; viewData(e);}" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                            <a href="#" id="function_-253" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; setInvalid(e);}" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
                             <!--<a href="#" onclick="submit();" title="提交"><span class="glyphicon glyphicon-export" aria-hidden="true"></span></a>-->
                             <!--<a href="#" onclick="signIn();" title="签收"><span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>-->
                             <!--<a href="#" onclick="changeAttribute();" title="属性调整"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></a>-->

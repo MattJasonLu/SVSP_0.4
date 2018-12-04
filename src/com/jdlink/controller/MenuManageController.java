@@ -587,13 +587,13 @@ public class MenuManageController {
      * @return
      */
     public List<Organization> getTreeMenuAndFunctionList(Organization organization) {
-        List<Organization> organizationList = menuManageService.getChildrenMenuByName(organization);
-        for (int i = 0; i < organizationList.size(); i++) {
+        List<Organization> organizationList = menuManageService.getChildrenMenuByName(organization); // 获取其子节点
+        for (int i = 0; i < organizationList.size(); i++) {  // 递归获取子节点的子节点
             organizationList.get(i).setOrganizationList(getTreeMenuAndFunctionList(organizationList.get(i)));
         }
         if (organization.getUrl() != null && !organization.getUrl().equals("")) {  // 如果URL非空则获取其功能表的功能节点并设置
             List<Organization> organizationList1 = menuManageService.getPageFunctionByUrl(organization.getUrl());
-            for (Organization organization1 : organizationList1) {
+            for (Organization organization1 : organizationList1) {  // 设置父节点ID
                 int pId = organization.getId();
                 organization1.setpId(pId);
                 organizationList.add(organization1);
