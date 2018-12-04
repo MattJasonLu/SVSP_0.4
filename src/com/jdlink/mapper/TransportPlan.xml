@@ -7,6 +7,7 @@
     <resultMap id="TransportPlanRM" type="TransportPlan" autoMapping="true">
         <id property="id" column="id"/>
         <result property="group" column="group"/>
+        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"/>
         <collection property="transportPlanItemList" select="getTransportPlanItemList" column="id"
                     ofType="com.jdlink.domain.Produce.TransportPlanItem" javaType="ArrayList"/>
     </resultMap>
@@ -19,10 +20,15 @@
         <id property="clientId" column="clientId"/>
         <association property="salesman" column="salesmanId" select="getSalesman"/>
     </resultMap>
+
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{checkStateId};
+    </select>
+
     <!--增加运输计划-->
     <insert id="add" parameterType="TransportPlan">
-        INSERT INTO t_pr_transportplan (id, author, departmentDirector, productionDirector, `group`, nowTime, checkState, createDate)
-        VALUES (#{id}, #{author}, #{departmentDirector}, #{productionDirector}, #{group}, NOW(), #{checkState}, NOW());
+        INSERT INTO t_pr_transportplan (id, author, departmentDirector, productionDirector, `group`, nowTime, checkState, createDate, checkStateId)
+        VALUES (#{id}, #{author}, #{departmentDirector}, #{productionDirector}, #{group}, NOW(), #{checkState}, NOW(), #{checkStateItem.dataDictionaryItemId});
         <if test="transportPlanItemList.size() > 0">
             <foreach collection="transportPlanItemList" item="transportPlanItem" index="index">
                 INSERT INTO t_pr_transportplanitem (id, produceCompanyId, handleCategory, approachTime,
@@ -72,16 +78,16 @@
     </select>
 
     <update id="setStateConfirm" parameterType="String">
-        UPDATE t_pr_transportplan SET checkState='Confirm' WHERE id = #{id};
+        UPDATE t_pr_transportplan SET checkState='Confirm', checkStateId=74 WHERE id = #{id};
     </update>
     <update id="setStateSubmit" parameterType="String">
-        UPDATE t_pr_transportplan SET checkState='Submitted' WHERE id = #{id};
+        UPDATE t_pr_transportplan SET checkState='Submitted', checkStateId=73 WHERE id = #{id};
     </update>
     <update id="setStateExamined" parameterType="String">
-        UPDATE t_pr_transportplan SET checkState='Approval' WHERE id = #{id};
+        UPDATE t_pr_transportplan SET checkState='Approval', checkStateId=76 WHERE id = #{id};
     </update>
     <update id="setStateInvalid" parameterType="String">
-        UPDATE t_pr_transportplan SET checkState='Invalid' WHERE id = #{id};
+        UPDATE t_pr_transportplan SET checkState='Invalid', checkStateId=69 WHERE id = #{id};
     </update>
 
     <!--按页列出所有运输计划单-->
@@ -112,8 +118,8 @@
             <if test="author != null and author != ''">
                 and author like "%"#{author}"%"
             </if>
-            <if test="checkState != null and checkState != ''">
-                and checkState = #{checkState}
+            <if test="checkStateItem != null and checkStateItem.dataDictionaryItemId != 0">
+                and checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
             <if test="departmentDirector != null and departmentDirector != ''">
                 <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
@@ -149,8 +155,8 @@
             <if test="author != null and author != ''">
                 and author like "%"#{author}"%"
             </if>
-            <if test="checkState != null and checkState != ''">
-                and checkState = #{checkState}
+            <if test="checkStateItem != null and checkStateItem.dataDictionaryItemId != 0">
+                and checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
             <if test="departmentDirector != null and departmentDirector != ''">
                 <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
