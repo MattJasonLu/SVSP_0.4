@@ -715,7 +715,10 @@ public String importCompatibilityExcel(MultipartFile excelFile){
             MaterialRequire materialRequire = new MaterialRequire();
 
             //2对明细进行循环 做数据加减操作
+            int length=0;
             for (int i = 0; i < compatibilityItemList.size(); i++) {
+                length=compatibilityItemList.size();
+//                System.out.println("长度:"+compatibilityItemList.size());
 //                Threshold threshold=thresholdService.getThresholdByHandleCategoryAndFormType(compatibilityItemList.get(i).getHandleCategory().toString(),compatibilityItemList.get(i).getFormType().toString());
                 MaterialRequireItem materialRequireItem = new MaterialRequireItem();//创建物料明细对象
 
@@ -863,21 +866,21 @@ public String importCompatibilityExcel(MultipartFile excelFile){
 
                 materialRequire.setMarketPurchasesTotal(marketPurchasesTotal);
 
-                materialRequire.setCalorificAvg((calorificMaxSum + calorificMinSum) / 2);
+                materialRequire.setCalorificAvg(((calorificMaxSum/length) + (calorificMinSum/length)) / 2);
 
-                materialRequire.setAshAvg((ashMaxSum + ashMinSum) / 2);
+                materialRequire.setAshAvg(((ashMaxSum/length) + (ashMinSum/length)) / 2);
 
-                materialRequire.setWaterAvg((waterMaxSum + waterMinSum) / 2);
+                materialRequire.setWaterAvg(((waterMaxSum/length) + (waterMinSum/length)) / 2);
 
-                materialRequire.setClAvg((clMaxSum + clMinSum) / 2);
+                materialRequire.setClAvg(((clMaxSum/length) + (clMinSum/length)) / 2);
 
-                materialRequire.setsAvg((sMaxSum + sMinSum) / 2);
+                materialRequire.setsAvg(((sMaxSum/length) + (sMinSum/length)) / 2);
 
-                materialRequire.setpAvg((pMaxSum + pMinSum) / 2);
+                materialRequire.setpAvg(((pMaxSum/length) + (pMinSum/length)) / 2);
 
-                materialRequire.setfAvg((fMaxSum + fMinSum) / 2);
+                materialRequire.setfAvg(((fMaxSum/length) + (fMinSum/length)) / 2);
 
-                materialRequire.setPhAvg((phMaxSum + phMinSum) / 2);
+                materialRequire.setPhAvg(((phMaxSum/length) + (phMinSum/length)) / 2);
 
                 compatibilityService.addMaterialRequire(materialRequire);
 

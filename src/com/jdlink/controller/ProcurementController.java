@@ -9,6 +9,7 @@ import com.jdlink.domain.Produce.ProcurementPlanItem;
 import com.jdlink.domain.Unit;
 import com.jdlink.service.ProcurementService;
 import com.jdlink.service.dictionary.DictionaryService;
+import com.jdlink.util.DBUtil;
 import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -1139,4 +1141,32 @@ public class ProcurementController {
 //    public String cancelEmergencyProcurementById(String){
 //
 //    }
+
+    //采购计划表导出
+    @RequestMapping("exportExcelProcurementPlan")
+    @ResponseBody
+    public String exportExcelProcurementPlan(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "月度采购计划单号/创建人/创建日期/修改人/修改日期/审批人/物资名称/规格型号/申购部门/需求数量/单位/单价/统计金额/备注";
+            name = "次生出库单";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
+    }
+
+
 }
