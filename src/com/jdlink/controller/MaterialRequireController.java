@@ -6,6 +6,7 @@ import com.jdlink.service.CompatibilityService;
 import com.jdlink.service.MaterialRequireService;
 import com.jdlink.service.MixingElementService;
 import com.jdlink.service.ThresholdService;
+import com.jdlink.util.DBUtil;
 import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
@@ -834,5 +835,31 @@ public class MaterialRequireController {
             mouth="0"+mouth;
         }
         return mouth;
+    }
+
+    //物料需求单导出
+    @RequestMapping("exportExcelMaterialRequire")
+    @ResponseBody
+    public String exportExcelMaterialRequire(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "物料单号/进料方式/物质形态/包装方式/周生产计划量/目前库存量(T)/市场采购量/热值max/热值Min/灰分Max/灰分Min/水分Max/水分Min/CLMax/CLMin/SMax/SMin/PMax/PMin/FMax/FMin/PHMax/PHMin";
+            name = "物料需求单";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
     }
 }

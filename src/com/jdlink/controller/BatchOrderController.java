@@ -1229,7 +1229,7 @@ public class BatchOrderController {
         try {
             DBUtil db = new DBUtil();
             String tableHead = "入库单号/仓库/创建日期/入库日期/实际数量/产废单位/危废编码/危废名称/进料方式/处置方式";
-            name = "危废出库单";   //重写文件名
+            name = "危废库存单";   //重写文件名
             db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
             res.put("status", "success");
             res.put("message", "导出成功");
@@ -1281,7 +1281,7 @@ public class BatchOrderController {
         try {
             DBUtil db = new DBUtil();
             String tableHead = "入库单号/仓库/创建日期/入库日期/实际数量/产废单位/危废编码/危废名称";
-            name = "次生出库单";   //重写文件名
+            name = "次生库存单";   //重写文件名
             db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
             res.put("status", "success");
             res.put("message", "导出成功");

@@ -157,12 +157,12 @@ $(".canModify").click(function () {
  * @returns {string}
  */
 function exportExcel() {
-    var name = 't_pr_pw';
+    var name = '配伍周计划';
     var idArry = [];//存放主键
     var items = $("input[name='select']:checked");//判断复选框是否选中
     if (items.length <= 0) { //如果不勾选
-        var sqlWords = "select  compatibilityId as '配伍编号' ,totalDailyAmount  as '比例总计',calorificAvg 热值平均,ashAvg 灰分平均,waterAvg 水分平均,clAvg 氯平均,sAvg 硫平均,phAvg 酸碱度平均,weeklyDemandTotalAggregate 周产量总和,fAvg 氟平均,pAvg 磷平均 from t_pr_pw;";
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+        var sqlWords = "select a.compatibilityId,c.dictionaryItemName,d.dictionaryItemName , b.proportion,b.dailyRatio,b.weeklyDemandTotal,b.calorific,b.ash,b.water,b.cl,b.s,b.p,b.f,b.ph from t_pr_pw a join t_pr_pwitem b on a.compatibilityId=b.compatibilityId join datadictionaryitem c on c.dataDictionaryItemId=b.handleCategoryId join datadictionaryitem d on d.dataDictionaryItemId=b.formTypeId   " ;
+        window.open('exportExcelWeekPlan?name=' + name + '&sqlWords=' + sqlWords);
     }
     if (items.length > 0) {
         $.each(items, function (index, item) {
@@ -176,10 +176,11 @@ function exportExcel() {
                 if (i < idArry.length - 1) sql += idArry[i] + ",";
                 else if (i == idArry.length - 1) sql += idArry[i] + ");"
             }
-            var sqlWords = "select  compatibilityId as '配伍编号' ,totalDailyAmount  as '比例总计',calorificAvg 热值平均,ashAvg 灰分平均,waterAvg 水分平均,clAvg 氯平均,sAvg 硫平均,phAvg 酸碱度平均,weeklyDemandTotalAggregate 周产量总和,fAvg 氟平均,pAvg 磷平均  from t_pr_pw where  compatibilityId" + sql;
+            var sqlWords = "select a.compatibilityId,c.dictionaryItemName,d.dictionaryItemName , b.proportion,b.dailyRatio,b.weeklyDemandTotal,b.calorific,b.ash,b.water,b.cl,b.s,b.p,b.f,b.ph from t_pr_pw a join t_pr_pwitem b on a.compatibilityId=b.compatibilityId join datadictionaryitem c on c.dataDictionaryItemId=b.handleCategoryId join datadictionaryitem d on d.dataDictionaryItemId=b.formTypeId  and a.compatibilityId " + sql;
 
         }
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+        console.log(sqlWords)
+        window.open('exportExcelWeekPlan?name=' + name + '&sqlWords=' + sqlWords);
     }
 }
 
