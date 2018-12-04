@@ -1165,4 +1165,136 @@ public class BatchOrderController {
 
         return res.toString();
     }
+
+
+    //领料单导出
+    @RequestMapping("exportExcelMaterialRequisitionOrder")
+    @ResponseBody
+    public String exportExcelMaterialRequisitionOrder(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "领料单号/仓库名称/危废类别/危废名称/配料数量/领用数量/产废单位/转移联单/进料方式/处置方式/保管员/领料部门主管/领料人/领料日期/部门/主管副总经理/部门仓库主管";
+            name = "领料单";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
+    }
+
+
+    //危废出库导出
+    @RequestMapping("exportExcelWastesOutBound")
+    @ResponseBody
+    public String exportExcelWastesOutBound(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "出库单号/出库日期/产废单位/危废名称/危废类别/仓库/出库数量/转移联单/进料方式/处置方式/处置设备";
+            name = "危废出库单";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
+    }
+
+    //危废库存导出
+    @RequestMapping("exportExcelWasteInventory")
+    @ResponseBody
+    public String exportExcelWasteInventory(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "入库单号/仓库/创建日期/入库日期/实际数量/产废单位/危废编码/危废名称/进料方式/处置方式";
+            name = "危废出库单";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
+    }
+
+    //次生出库导出
+    @RequestMapping("exportExcelSecOutBound")
+    @ResponseBody
+    public String exportExcelSecOutBound(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "出库单号/出库日期/产废单位/危废名称/危废类别/仓库/出库数量/转移联单/处置方式/处置设备";
+            name = "次生出库单";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
+    }
+
+    //次生库存导出
+    @RequestMapping("exportExcelSecInventory")
+    @ResponseBody
+    public String exportExcelSecInventory(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "入库单号/仓库/创建日期/入库日期/实际数量/产废单位/危废编码/危废名称";
+            name = "次生出库单";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
+    }
 }

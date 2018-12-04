@@ -872,7 +872,7 @@ function exportExcel() {
 
     var items = $("input[name='select']:checked");//判断复选框是否选中
     if (items.length <= 0) { //如果不勾选
-        var sqlWords = "select materialRequisitionId 领料单号,guardian 保管员,materialManager 领料部门主管,picker 领料人,pickerDate 领料日期,departmentName 部门,deputyGeneral 部门经理,warehouseManager 部门仓库主管,recipientsNumber 领用数量,wastesCode 危废编码,processWay 处置方式,wasteCategory 危废类别, handelCategory 进料方式, remarks 备注,unitPriceTax 单价, formType 物质形态, packageType 包装方式  from t_pl_materialrequisitionorder;";
+        var sqlWords = "select materialRequisitionId,(select  wareHouseName from t_pl_warehouse where wareHouseId =t_pl_materialrequisitionorder.wareHouseId),wasteCategory,wastesName,batchingNumber,recipientsNumber,(select companyName from client where client.clientId=t_pl_materialrequisitionorder.clientId),transferDraftId,(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=handleCategoryId),(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=processWayId),guardian,materialManager,picker,pickerDate,departmentName,deputyGeneral,warehouseManager   from t_pl_materialrequisitionorder   " ;
         window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
     }
 
@@ -888,10 +888,11 @@ function exportExcel() {
                 if (i < idArry.length - 1) sql += idArry[i] + ",";
                 else if (i == idArry.length - 1) sql += idArry[i] + ");"
             }
-            var sqlWords = "select materialRequisitionId 领料单号,guardian 保管员,materialManager 领料部门主管,picker 领料人,pickerDate 领料日期,departmentName 部门,deputyGeneral 部门经理,warehouseManager 部门仓库主管,recipientsNumber 领用数量,wastesCode 危废编码,processWay 处置方式,wasteCategory 危废类别, handelCategory 进料方式, remarks 备注,unitPriceTax 单价, formType 物质形态, packageType 包装方式 from t_pl_materialrequisitionorder  where  materialRequisitionId" + sql;
+            var sqlWords = "select materialRequisitionId,(select  wareHouseName from t_pl_warehouse where wareHouseId =t_pl_materialrequisitionorder.wareHouseId),wasteCategory,wastesName,batchingNumber,recipientsNumber,(select companyName from client where client.clientId=t_pl_materialrequisitionorder.clientId),transferDraftId,(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=handleCategoryId),(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=processWayId),guardian,materialManager,picker,pickerDate,departmentName,deputyGeneral,warehouseManager   from t_pl_materialrequisitionorder  where  materialRequisitionId" + sql;
 
         }
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+        console.log(sqlWords)
+        window.open('exportExcelMaterialRequisitionOrder?name=' + name + '&sqlWords=' + sqlWords);
     }
 
 }
