@@ -3,6 +3,7 @@ package com.jdlink.controller;
 import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.service.*;
+import com.jdlink.util.DBUtil;
 import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
 import com.jdlink.util.UpdateVersion;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -1449,6 +1451,32 @@ public class ContractController {
         return res.toString();
     }
 
+
+    //合约量导出
+    @RequestMapping("exportContractVolume")
+    @ResponseBody
+    public String exportContractVolume(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "产废单位/危废名称/危废代码/合约量/处置金额/签订日期/截止日期";
+            name = "合约量统计";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
+    }
 }
 
 
