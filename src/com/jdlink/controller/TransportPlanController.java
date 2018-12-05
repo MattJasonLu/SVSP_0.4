@@ -375,7 +375,7 @@ public class TransportPlanController {
      */
     @RequestMapping("listTransportPlanByPage")
     @ResponseBody
-    public String listTransportPlanByPage(Page page) {
+    public String listTransportPlanByPage(@RequestBody Page page) {
         JSONObject res = new JSONObject();
         try {
             List<TransportPlan> transportPlanList = transportPlanService.list(page);

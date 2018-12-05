@@ -366,8 +366,8 @@ function setDataList(result) {
                     $(this).html(getTimeStr(obj.transferTime));
                     break;
                 case (8):
-                    if (obj.checkState != null)
-                        $(this).html(obj.checkState.name);
+                    if (obj.checkStateItem != null)
+                        $(this).html(obj.checkStateItem.dictionaryItemName);
                     break;
             }
         });
@@ -392,7 +392,10 @@ function searchData() {
     if ($("#senior").is(':visible')) {
         data = {
             id: $("#search-draftId").val(),
-            checkState: $("#search-checkState").val(),
+            // checkState: $("#search-checkState").val(),
+            checkStateItem: {
+                dataDictionaryItemId: $("#search-checkState").val()
+            },
             produceCompany: {
                 companyName: $("#search-produceCompanyName").val()
             },
@@ -489,12 +492,18 @@ function addData(state) {
             name: $("#wastesName").val(),
             prepareTransferCount: $("#wastesPrepareTransferCount").val(),
             wastesCharacter: $("#wastesCharacter").val(),
-            handleCategory: $("#wastesCategory").val(),
+            handleCategoryItem: {
+                dataDictionaryItemId: $("#wastesCategory").val()
+            },
             transferCount: $("#wastesTransferCount").val(),
-            formType: $("#wastesFormType").val(),
+            formTypeItem: {
+                dataDictionaryItemId: $("#wastesFormType").val()
+            },
             wastesId: $('#wastesCode').selectpicker('val'),
             signCount: $("#wastesSignCount").val(),
-            packageType: $("#wastesPackageType").val()
+            packageTypeItem: {
+                dataDictionaryItemId: $("#wastesPackageType").val()
+            }
         },
         outwardIsTransit: $("#outwardIsTransit").prop("checked"),
         outwardIsUse: $("#outwardIsUse").prop("checked"),
@@ -571,32 +580,36 @@ function addData(state) {
  * 设置高级查询的审核状态数据
  */
 function getCheckState() {
+    // 设置审批状态
     $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getCheckState",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        type: "POST",
+        url: "getCheckStateDataByDictionary",
         dataType: "json",
+        async: false,
         success: function (result) {
-            if (result !== undefined) {
+            if (result != undefined && result.status == "success") {
                 var data = eval(result);
+                console.log(result);
                 // 高级检索下拉框数据填充
                 var checkState = $("#search-checkState");
                 checkState.children().remove();
-                $.each(data.checkStateList, function (index, item) {
-                    if (item.index === 13 || item.index === 2 || item.index === 5 || item.index === 25 || item.index === 7) {
+                $.each(data.data, function (index, item) {
+                    if (item.dataDictionaryItemId == 87 ||
+                        item.dataDictionaryItemId == 69 ||
+                        item.dataDictionaryItemId == 67 ||
+                        item.dataDictionaryItemId == 75) {
                         var option = $('<option />');
-                        option.val(index);
-                        option.text(item.name);
+                        option.val(item.dataDictionaryItemId);
+                        option.text(item.dictionaryItemName);
                         checkState.append(option);
                     }
                 });
                 checkState.get(0).selectedIndex = -1;
             } else {
-                console.log("fail: " + result);
+                console.log(result.message);
             }
-        },
-        error: function (result) {
-            console.log("error: " + result);
+        }, error: function (result) {
+            console.log(result);
         }
     });
 }
@@ -708,6 +721,9 @@ function adjustData(e) {
  * 根据编号来获取对应的联单信息
  */
 function loadData() {
+    // 设置下拉框数据
+    getSelectedInfo();
+
     var id = localStorage.transferDraftId;
     if (id != null) {
         $.ajax({
@@ -744,15 +760,15 @@ function loadData() {
                         $("#wastesName").val(data.wastes.name);
                         $("#wastesPrepareTransferCount").val(data.wastes.prepareTransferCount);
                         $("#wastesCharacter").val(data.wastes.wastesCharacter);
-                        if (data.wastes.handleCategory != null)
-                        $("#wastesCategory").val(data.wastes.handleCategory.index-1);
+                        if (data.wastes.handleCategoryItem != null)
+                        $("#wastesCategory").val(data.wastes.handleCategoryItem.dataDictionaryItemId);
                         $("#wastesTransferCount").val(data.wastes.transferCount);
                         $("#wastesCode").val(data.wastes.wastesId);
                         $("#wastesSignCount").val(data.wastes.signCount);
-                        if (data.wastes.formType != null)
-                        $("#wastesFormType").val(data.wastes.formType.index-1);
-                        if (data.wastes.packageType != null)
-                        $("#wastesPackageType").val(data.wastes.packageType.index-1);
+                        if (data.wastes.formTypeItem != null)
+                        $("#wastesFormType").val(data.wastes.formTypeItem.dataDictionaryItemId);
+                        if (data.wastes.packageTypeItem != null)
+                        $("#wastesPackageType").val(data.wastes.packageTypeItem.dataDictionaryItemId);
                     }
                     $("#outwardIsTransit").prop('checked', data.outwardIsTransit);
                     $("#outwardIsUse").prop('checked', data.outwardIsUse);
@@ -802,9 +818,6 @@ function loadData() {
                 alert("服务器异常");
             }
         });
-    } else {
-        // 设置三个单位的数据
-        getSelectedInfo();
     }
 
 }
@@ -874,74 +887,93 @@ function getSelectedInfo() {
             console.log("error: " + result);
         }
     });
-    // 设置物质形态和包装方式的枚举信息
+
+    // 设置物质形态
     $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getFormTypeAndPackageType",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        type: "POST",
+        url: "getFormTypeByDataDictionary",
         dataType: "json",
+        async: false,
         success: function (result) {
-            if (result !== undefined) {
+            if (result != undefined && result.status == "success") {
                 var data = eval(result);
+                console.log(result);
                 // 高级检索下拉框数据填充
-                var wastesFormType = $("#wastesFormType");
-                wastesFormType.children().remove();
-                $.each(data.formTypeList, function (index, item) {
+                var checkState = $("#wastesFormType");
+                checkState.children().remove();
+                $.each(data.data, function (index, item) {
                     var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    wastesFormType.append(option);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    checkState.append(option);
                 });
-                wastesFormType.get(0).selectedIndex = -1;
-                var wastespackagetype = $("#wastesPackageType");
-                wastespackagetype.children().remove();
-                $.each(data.packageTypeList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    wastespackagetype.append(option);
-                });
-                wastespackagetype.get(0).selectedIndex = -1;
+                checkState.get(0).selectedIndex = -1;
             } else {
-                console.log("fail: " + result);
+                console.log(result.message);
             }
-        },
-        error: function (result) {
-            console.log("error: " + result);
+        }, error: function (result) {
+            console.log(result);
         }
     });
+    // 设置包装方式
+    $.ajax({
+        type: "POST",
+        url: "getPackageTypeByDataDictionary",
+        dataType: "json",
+        async: false,
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                var data = eval(result);
+                console.log(result);
+                // 高级检索下拉框数据填充
+                var checkState = $("#wastesPackageType");
+                checkState.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    checkState.append(option);
+                });
+                checkState.get(0).selectedIndex = -1;
+            } else {
+                console.log(result.message);
+            }
+        }, error: function (result) {
+            console.log(result);
+        }
+    });
+
     // 进料方式
     $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getHandleCategory",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        type: "POST",
+        url: "getHandleCategoryByDataDictionary",
         dataType: "json",
+        async: false,
         success: function (result) {
-            if (result !== undefined) {
+            if (result != undefined && result.status == "success") {
                 var data = eval(result);
+                console.log(result);
                 // 高级检索下拉框数据填充
-                var wastesCategory = $("#wastesCategory");
-                wastesCategory.children().remove();
-                $.each(data.handleCategoryList, function (index, item) {
+                var checkState = $("#wastesCategory");
+                checkState.children().remove();
+                $.each(data.data, function (index, item) {
                     var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    wastesCategory.append(option);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    checkState.append(option);
                 });
-                wastesCategory.get(0).selectedIndex = -1;
+                checkState.get(0).selectedIndex = -1;
             } else {
-                console.log("fail: " + result);
+                console.log(result.message);
             }
-        },
-        error: function (result) {
-            console.log("error: " + result);
+        }, error: function (result) {
+            console.log(result);
         }
     });
     // 八位码
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getWastesInfoList",              // url
-        cache: false,
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         contentType: "application/json; charset=utf-8",
@@ -1011,12 +1043,12 @@ function viewData(e) {
                     $("#wastesName").val(data.wastes.name);
                     $("#wastesPrepareTransferCount").val(data.wastes.prepareTransferCount.toFixed(4));
                     $("#wastesCharacter").val(data.wastes.wastesCharacter);
-                    if (data.wastes.handleCategory != null) $("#wastesCategory").val(data.wastes.handleCategory.name);
+                    if (data.wastes.handleCategoryItem != null) $("#wastesCategory").val(data.wastes.handleCategoryItem.dictionaryItemName);
                     $("#wastesTransferCount").val(data.wastes.transferCount.toFixed(4));
-                    if (data.wastes.formType != null) $("#wastesFormType").val(data.wastes.formType.name);
+                    if (data.wastes.formTypeItem != null) $("#wastesFormType").val(data.wastes.formTypeItem.dictionaryItemName);
                     $("#wastesCode").val(data.wastes.wastesId);
                     $("#wastesSignCount").val(data.wastes.signCount.toFixed(4));
-                    if (data.wastes.formType != null) $("#wastesPackageType").val(data.wastes.packageType.name);
+                    if (data.wastes.packageTypeItem != null) $("#wastesPackageType").val(data.wastes.packageTypeItem.dictionaryItemName);
                 }
                 $("#outwardIsTransit").prop('checked', data.outwardIsTransit);
                 $("#outwardIsUse").prop('checked', data.outwardIsUse);
