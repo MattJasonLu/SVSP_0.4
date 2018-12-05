@@ -192,7 +192,7 @@ function switchPage(pageNumber) {
             success: function (result) {
                 if (result != undefined) {
                     // console.log(result);
-                    setClientList(result.data);
+                    setClientList(result);
                 } else {
                     console.log("fail: " + result);
                     // setClientList(result);
@@ -277,7 +277,7 @@ function inputSwitchPage() {
                 success: function (result) {
                     if (result != undefined) {
                         // console.log(result);
-                        setClientList(result.data);
+                        setClientList(result);
                     } else {
                         console.log("fail: " + result);
                         // setClientList(result);
@@ -341,6 +341,8 @@ function setClientList(result) {
     // 获取id为cloneTr的tr元素
     var tr = $("#cloneTr");
     tr.siblings().remove();
+    console.log("Test");
+    console.log(result);
     $.each(result.data, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();

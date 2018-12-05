@@ -1,6 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Dictionary.CheckStateItem;
 
 import java.util.Date;
 
@@ -17,6 +18,10 @@ public class TransferDraft {
      * 状态
      */
     private CheckState checkState;
+    /**
+     * 审批状态数据字典
+     */
+    private CheckStateItem checkStateItem;
     // 生产单位填写信息
     /**
      * 产生单位
@@ -589,6 +594,14 @@ public class TransferDraft {
 
     public void setSecondBrand(String secondBrand) {
         this.secondBrand = secondBrand;
+    }
+
+    public CheckStateItem getCheckStateItem() {
+        return checkStateItem;
+    }
+
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
     }
 
     @Override

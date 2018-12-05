@@ -1,6 +1,8 @@
 package com.jdlink.domain;
 
+import com.jdlink.domain.Dictionary.FormTypeItem;
 import com.jdlink.domain.Dictionary.HandleCategoryItem;
+import com.jdlink.domain.Dictionary.PackageTypeItem;
 import com.jdlink.domain.Dictionary.ProcessWayItem;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.ProcessWay;
@@ -31,9 +33,17 @@ public class Wastes {
      */
     private FormType formType;
     /**
+     * 物质形态数据字典
+     */
+    private FormTypeItem formTypeItem;
+    /**
      * 包装方式
      */
     private PackageType packageType;
+    /**
+     * 包装方式数据字典
+     */
+    private PackageTypeItem packageTypeItem;
     /**
      * 进料方式
      */
@@ -239,11 +249,15 @@ public class Wastes {
      */
     private String transferId;
 
-    //进料方式数据字典
+    /**
+     * 进料方式数据字典
+     */
     private HandleCategoryItem handleCategoryItem;
 
-    //处置方式数据字典
-     private ProcessWayItem processWayItem;
+    /**
+     * 处置方式数据字典
+     */
+    private ProcessWayItem processWayItem;
 
     public HandleCategoryItem getHandleCategoryItem() {
         return handleCategoryItem;
@@ -747,6 +761,22 @@ public class Wastes {
 
     public void setIsHotMelt(boolean HotMelt) {
         isHotMelt = HotMelt;
+    }
+
+    public FormTypeItem getFormTypeItem() {
+        return formTypeItem;
+    }
+
+    public void setFormTypeItem(FormTypeItem formTypeItem) {
+        this.formTypeItem = formTypeItem;
+    }
+
+    public PackageTypeItem getPackageTypeItem() {
+        return packageTypeItem;
+    }
+
+    public void setPackageTypeItem(PackageTypeItem packageTypeItem) {
+        this.packageTypeItem = packageTypeItem;
     }
 
     @Override
