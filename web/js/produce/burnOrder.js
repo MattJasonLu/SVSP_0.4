@@ -1190,16 +1190,17 @@ function exportExcel() {
             if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
             else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
         }
-        sqlWords = "select a.id,a.state,a.creationDate,a.remarks,b.serialNumber,b.produceCompanyName,b.requirements,\n" +
+        sqlWords = "select a.id,c.dictionaryItemName,a.creationDate,a.remarks,b.serialNumber,b.produceCompanyName,b.requirements,\n" +
             "b.wastesName,b.proportion,b.weight,b.calorific,b.ashPercentage,b.wetPercentage,b.volatileNumber,\n" +
-            "b.chlorinePercentage,b.sulfurPercentage,b.ph,b.phosphorusPercentage,b.fluorinePercentage,b.remarks,b.processWay,\n" +
-            "b.handleCategory,b.temporaryAddress from t_pr_burnorder as a join t_pr_burnorderitem as b on id = burnOrderId \n" +
+            "b.chlorinePercentage,b.sulfurPercentage,b.ph,b.phosphorusPercentage,b.fluorinePercentage,b.remarks,d.dictionaryItemName,\n" +
+            "e.dictionaryItemName,b.temporaryAddress from t_pr_burnorder as a join t_pr_burnorderitem as b on id = burnOrderId \n join datadictionaryitem c on c.dataDictionaryItemId=a.checkStateId join  datadictionaryitem d on d.dataDictionaryItemId=b.processWayId  join  datadictionaryitem e on e.dataDictionaryItemId=b.handleCategoryId " +
             "where a.id" + sql;
     } else {          // 若无勾选项则导出全部
-        sqlWords = "select a.id,a.state,a.creationDate,a.remarks,b.serialNumber,b.produceCompanyName,b.requirements,\n" +
+        sqlWords = "select a.id,c.dictionaryItemName,a.creationDate,a.remarks,b.serialNumber,b.produceCompanyName,b.requirements,\n" +
             "b.wastesName,b.proportion,b.weight,b.calorific,b.ashPercentage,b.wetPercentage,b.volatileNumber,\n" +
-            "b.chlorinePercentage,b.sulfurPercentage,b.ph,b.phosphorusPercentage,b.fluorinePercentage,b.remarks,b.processWay,\n" +
-            "b.handleCategory,b.temporaryAddress from t_pr_burnorder as a join t_pr_burnorderitem as b on id = burnOrderId;";
+            "b.chlorinePercentage,b.sulfurPercentage,b.ph,b.phosphorusPercentage,b.fluorinePercentage,b.remarks,d.dictionaryItemName,\n" +
+            "e.dictionaryItemName,b.temporaryAddress from t_pr_burnorder as a join t_pr_burnorderitem as b on id = burnOrderId \n join datadictionaryitem c on c.dataDictionaryItemId=a.checkStateId join  datadictionaryitem d on d.dataDictionaryItemId=b.processWayId  join  datadictionaryitem e on e.dataDictionaryItemId=b.handleCategoryId "
+            ;
     }
     window.open('exportExcelBurnOrder?name=' + name + '&sqlWords=' + sqlWords);
 }

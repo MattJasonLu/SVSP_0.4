@@ -752,13 +752,17 @@ function setWasteInventoryList1(result) {
 //导出
 function exportExcel() {
     console.log("export");
-    var name = 't_pl_wasteinventory';
+    var name = '次生库存单';
     var idArry = [];//存放主键
     var items = $("input[name='select']:checked");//判断复选框是否选中
+  console.log(items)
+
     if (items.length <= 0) { //如果不勾选
-        var sqlWords = "select   inboundOrderId,(select  wareHouseName from t_pl_warehouse where wareHouseId =t_pl_wasteinventory.wareHouseId),creatorDate, inboundDate,actualCount,(select companyName from client where client.clientId=t_pl_wasteinventory.clientId),wastesCode,(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=secondaryCategoryId )  from  t_pl_wasteinventory  ";
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+        console.log('长度:'+items.length)
+        var sqlWords = "select   inboundOrderId,(select  wareHouseName from t_pl_warehouse where wareHouseId =t_pl_wasteinventory.wareHouseId),creatorDate, inboundDate,actualCount,(select companyName from client where client.clientId=t_pl_wasteinventory.clientId),wastesCode,(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=secondaryCategoryId )  from  t_pl_wasteinventory  where boundType='SecondaryInbound' ";
+        window.open('exportExcelSecInventory?name=' + name + '&sqlWords=' + sqlWords);
     }
+    console.log(sqlWords)
     if (items.length > 0) {
         $.each(items, function (index, item) {
             if ($(this).parent().parent().parent().children('td').eq(9).html().length > 0) {
@@ -775,7 +779,7 @@ function exportExcel() {
 
 
         }
-        window.open('exportExcelWasteInventory?name=' + name + '&sqlWords=' + sqlWords);
+        window.open('exportExcelSecInventory?name=' + name + '&sqlWords=' + sqlWords);
     }
 
 }

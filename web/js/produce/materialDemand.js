@@ -669,13 +669,13 @@ $(function () {
  * @returns {string}
  */
 function exportExcel() {
-    var name = 't_pr_materialrequire';
+    var name = '物料需求单';
     var idArry = [];//存放主键
     var items = $("input[name='select']:checked");//判断复选框是否选中
     if (items.length <= 0) { //如果不勾选
         var sqlWords = "select materialRequireId 物料编号,currentInventoryTotal 库存现有量总和, marketPurchasesTotal 市场采购量总和," + "weeklyDemandTotal 周生产量总和,safetyTotal 安全库存量总和,calorificAvg 热值平均," + "ashAvg 灰分平均,waterAvg 水分平均,clAvg 氯平均,sAvg 硫平均,pAvg 磷平均, " + "fAvg 氟平均,phAvg 酸碱度平均 from t_pr_materialrequire";
 
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+        window.open('exportExcelMaterialRequire?name=' + name + '&sqlWords=' + sqlWords);
     }
     if (items.length > 0) {
         $.each(items, function (index, item) {
@@ -689,10 +689,10 @@ function exportExcel() {
                 if (i < idArry.length - 1) sql += idArry[i] + ",";
                 else if (i == idArry.length - 1) sql += idArry[i] + ");"
             }
-            var sqlWords = "select materialRequireId 物料编号,currentInventoryTotal 库存现有量总和, marketPurchasesTotal 市场采购量总和,weeklyDemandTotal 周生产量总和,safetyTotal 安全库存量总和,calorificAvg 热值平均,ashAvg 灰分平均,waterAvg 水分平均,clAvg 氯平均,sAvg 硫平均,pAvg 磷平均, fAvg 氟平均,phAvg 酸碱度平均 from t_pr_materialrequire where  materialRequireId" + sql;
+            var sqlWords = "select a.materialRequireId,c.dictionaryItemName,d.dictionaryItemName,e.dictionaryItemName,b.weeklyDemand,b.currentInventory,b.marketPurchases,b.calorificMax,b.calorificMin,b.ashMax,b.ashMin,b.waterMax,b.waterMin,b.clMax,b.clMin,b.sMax,b.sMin,b.pMax,b.pMin,b.fMax,b.fMin,b.phMax,b.phMin from t_pr_materialrequire a join t_pr_materialrequireitem b on a.materialRequireId=b.materialRequireId join datadictionaryitem c on c.dataDictionaryItemId=b.handleCategoryId  join datadictionaryitem d on d.dataDictionaryItemId=b.formTypeId  join datadictionaryitem e on e.dataDictionaryItemId=b.packageTypeId   and   a.materialRequireId" + sql;
 
         }
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+        window.open('exportExcelMaterialRequire?name=' + name + '&sqlWords=' + sqlWords);
     }
 
 }

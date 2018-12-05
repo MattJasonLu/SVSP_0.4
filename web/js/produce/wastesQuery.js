@@ -742,8 +742,8 @@ function exportExcel() {
     var items = $("input[name='select']:checked");//判断复选框是否选中
     if (items.length <= 0) { //如果不勾选
         var sqlWords = "select   inboundOrderId,(select  wareHouseName from t_pl_warehouse where wareHouseId =t_pl_wasteinventory.wareHouseId),creatorDate, inboundDate,actualCount,(select companyName from client where client.clientId=t_pl_wasteinventory.clientId),wastesCode,wastesName,(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=handleCategoryId ) ,\n" +
-            "(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=processWayId )   from  t_pl_wasteinventory  ";
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+            "(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=processWayId )   from  t_pl_wasteinventory  where boundType='WasteInbound' ";
+        window.open('exportExcelWasteInventory?name=' + name + '&sqlWords=' + sqlWords);
     }
 
     if (items.length > 0) {

@@ -4,6 +4,7 @@ import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Equipment;
 import com.jdlink.domain.Produce.MedicalWastes;
 import com.jdlink.service.MedicalWastesService;
+import com.jdlink.util.DBUtil;
 import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -406,4 +408,29 @@ public class MedicalWastesController {
 
     }
 
+    //医危废出入库导出
+    @RequestMapping("exportExcelMedicalWastes")
+    @ResponseBody
+    public String exportExcelMedicalWastes(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "登记单号/登记日期/登记部门/登记人/修改人/修改时间/本日进厂危废/本日直接转外处置量/本日蒸煮医废(过磅)/蒸煮后重量/蒸煮后入库量/本日蒸煮后外送量/误差量/水分含量/处置设备";
+            name = "医危废出入库单";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
+    }
 }
