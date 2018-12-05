@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Dictionary.HandleCategoryItem;
 import com.jdlink.domain.Dictionary.ProcessWayItem;
 import com.jdlink.domain.Inventory.BatchingOrder;
 import com.jdlink.domain.Inventory.MaterialRequisitionOrder;
@@ -501,6 +502,18 @@ public class BatchOrderController {
         try {
             //添加配料单
                batchingOrder.setBatchingOrderId(batchingOrderId);
+
+            //处置方式适配
+            ProcessWayItem processWayItem =batchingOrder.getProcessWayItem();
+            int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(processWayItem.getDictionaryItemName(),8);
+            processWayItem.setDataDictionaryItemId(dataDictionaryItemId);
+            batchingOrder.setProcessWayItem(processWayItem);
+
+            //进料方式适配
+            HandleCategoryItem handleCategoryItem=batchingOrder.getHandleCategoryItem();
+            int  dataDictionaryItemId1= dictionaryService.getdatadictionaryitemIdByName(handleCategoryItem.getDictionaryItemName(),6);
+            handleCategoryItem.setDataDictionaryItemId(dataDictionaryItemId1);
+            batchingOrder.setHandleCategoryItem(handleCategoryItem);
                batchOrderService.addBatchingOrderBat(batchingOrder);
             //配料完成后扣除库存数据
             batchOrderService.deducNumber(batchingOrder.getInboundOrderItemId(),batchingOrder.getBatchingNumber());
@@ -539,6 +552,19 @@ public class BatchOrderController {
 
             String materialRequisitionOrderId=prefix+count;
             materialRequisitionOrder.setMaterialRequisitionId(materialRequisitionOrderId);
+
+            //处置方式适配
+
+            ProcessWayItem processWayItem =materialRequisitionOrder.getProcessWayItem();
+            int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(processWayItem.getDictionaryItemName(),8);
+            processWayItem.setDataDictionaryItemId(dataDictionaryItemId);
+            materialRequisitionOrder.setProcessWayItem(processWayItem);
+
+            //进料方式适配
+            HandleCategoryItem handleCategoryItem=materialRequisitionOrder.getHandleCategoryItem();
+            int  dataDictionaryItemId1= dictionaryService.getdatadictionaryitemIdByName(handleCategoryItem.getDictionaryItemName(),6);
+            handleCategoryItem.setDataDictionaryItemId(dataDictionaryItemId1);
+            materialRequisitionOrder.setHandleCategoryItem(handleCategoryItem);
             batchOrderService.addRequisition(materialRequisitionOrder);
             //紧接着更新配料单的状态==>现在不更新状态，更新数量（配料单号和领用数量）
             //batchOrderService.updateBatchOrderState(materialRequisitionOrder.getMaterialRequisitionId());
@@ -634,6 +660,20 @@ public class BatchOrderController {
         JSONObject res=new JSONObject();
 
         try{
+
+            //处置方式适配
+
+            ProcessWayItem processWayItem =outboundOrder.getProcessWayItem();
+            int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(processWayItem.getDictionaryItemName(),8);
+            processWayItem.setDataDictionaryItemId(dataDictionaryItemId);
+            outboundOrder.setProcessWayItem(processWayItem);
+
+
+            //进料方式适配
+            HandleCategoryItem handleCategoryItem=outboundOrder.getHandleCategoryItem();
+            int  dataDictionaryItemId1= dictionaryService.getdatadictionaryitemIdByName(handleCategoryItem.getDictionaryItemName(),6);
+            handleCategoryItem.setDataDictionaryItemId(dataDictionaryItemId1);
+            outboundOrder.setHandleCategoryItem(handleCategoryItem);
            batchOrderService.addOutBoundOrder(outboundOrder);
            //改变领料单的状态
             batchOrderService.updateMaterialRequisitionOrderCheck(outboundOrder.getOutboundOrderId());
@@ -1110,6 +1150,138 @@ public class BatchOrderController {
             DBUtil db = new DBUtil();
             String tableHead = "配料单号/仓库/产废单位/废物名称/配料数量(吨)/配料日期/创建日期/联单号/进料方式/处置方式";
             name = "配料单";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
+    }
+
+
+    //领料单导出
+    @RequestMapping("exportExcelMaterialRequisitionOrder")
+    @ResponseBody
+    public String exportExcelMaterialRequisitionOrder(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "领料单号/仓库名称/危废类别/危废名称/配料数量/领用数量/产废单位/转移联单/进料方式/处置方式/保管员/领料部门主管/领料人/领料日期/部门/主管副总经理/部门仓库主管";
+            name = "领料单";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
+    }
+
+
+    //危废出库导出
+    @RequestMapping("exportExcelWastesOutBound")
+    @ResponseBody
+    public String exportExcelWastesOutBound(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "出库单号/出库日期/产废单位/危废名称/危废类别/仓库/出库数量/转移联单/进料方式/处置方式/处置设备";
+            name = "危废出库单";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
+    }
+
+    //危废库存导出
+    @RequestMapping("exportExcelWasteInventory")
+    @ResponseBody
+    public String exportExcelWasteInventory(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "入库单号/仓库/创建日期/入库日期/实际数量/产废单位/危废编码/危废名称/进料方式/处置方式";
+            name = "危废出库单";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
+    }
+
+    //次生出库导出
+    @RequestMapping("exportExcelSecOutBound")
+    @ResponseBody
+    public String exportExcelSecOutBound(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "出库单号/出库日期/产废单位/危废名称/危废类别/仓库/出库数量/转移联单/处置方式/处置设备";
+            name = "次生出库单";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
+    }
+
+    //次生库存导出
+    @RequestMapping("exportExcelSecInventory")
+    @ResponseBody
+    public String exportExcelSecInventory(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "入库单号/仓库/创建日期/入库日期/实际数量/产废单位/危废编码/危废名称";
+            name = "次生出库单";   //重写文件名
             db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
             res.put("status", "success");
             res.put("message", "导出成功");

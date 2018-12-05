@@ -583,7 +583,7 @@ function getCheckState() {
                 var checkState = $("#search-checkState");
                 checkState.children().remove();
                 $.each(data.checkStateList, function (index, item) {
-                    if (item.index >= 1 && item.index <= 5) {
+                    if (item.index === 13 || item.index === 2 || item.index === 5 || item.index === 25 || item.index === 7) {
                         var option = $('<option />');
                         option.val(index);
                         option.text(item.name);

@@ -485,6 +485,7 @@ function save() {
             dataType: "json",
             success: function (result) {
                 if (result.status == "success") {
+                    console.log(result)
                     //将数据转移至焚烧工单数据库
                     var data = eval(result.data);
                     console.log("预处理单数据:");
@@ -526,8 +527,12 @@ function save() {
                         wastes.remarks = data.pretreatmentItemList[i].wastes.remarks;
                         wastes.weight = data.pretreatmentItemList[i].wastes.weight;
                         wastes.volatileNumber = data.pretreatmentItemList[i].wastes.volatileNumber;
-                        wastes.handleCategory = data.pretreatmentItemList[i].wastes.handleCategory.index;
-                        wastes.processWay = data.pretreatmentItemList[i].wastes.processWay.index - 1; // ?
+                        var handleCategoryItem={};
+                        handleCategoryItem.dataDictionaryItemId=data.pretreatmentItemList[i].handleCategoryItem.dataDictionaryItemId;
+                        wastes.handleCategoryItem = handleCategoryItem;
+                        var processWayItem={};
+                        processWayItem.dataDictionaryItemId=data.pretreatmentItemList[i].processWayItem.dataDictionaryItemId;
+                        wastes.processWayItem = processWayItem;
                         wastes.name = data.pretreatmentItemList[i].wastes.name;
                         pretreatmentItem.wastes = wastes;
                         pretreatmentItem.proportion = data.pretreatmentItemList[i].proportion;
@@ -674,37 +679,35 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
  */
 function search1() {
     isSearch = true;
-    var state = null;
-    if ($("#search1-state").val() == 0) state = "NewBuild";//新建
-    if ($("#search1-state").val() == 1) state = "Confirm";//已确认
-    if ($("#search1-state").val() == 2) state = "Invalid";//已作废
+    var state = $("#search1-state").val();
+
     if ($("#senior1").is(':visible')) {
         var data = {
             id: $.trim($("#search1-id").val()),
             startDate: $("#search1-startDate").val(),
             endDate: $("#search1-endDate").val(),
             remarks: $.trim($("#search1-remarks").val()),
-            state: state
+            checkStateItem: {dataDictionaryItemId:state}
         };
     } else {
         var keywords = $.trim($("#searchContent1").val());
-        switch (keywords) {
-            case("新建"):
-                keywords = "NewBuild";
-                break;
-            case("已作废"):
-                keywords = "Invalid";
-                break;
-            case("作废"):
-                keywords = "Invalid";
-                break;
-            case("已确认"):
-                keywords = "Confirm";
-                break;
-            case("确认"):
-                keywords = "Confirm";
-                break;
-        }
+        // switch (keywords) {
+        //     case("新建"):
+        //         keywords = "NewBuild";
+        //         break;
+        //     case("已作废"):
+        //         keywords = "Invalid";
+        //         break;
+        //     case("作废"):
+        //         keywords = "Invalid";
+        //         break;
+        //     case("已确认"):
+        //         keywords = "Confirm";
+        //         break;
+        //     case("确认"):
+        //         keywords = "Confirm";
+        //         break;
+        // }
         data = {
             keywords: keywords
         }
@@ -1051,7 +1054,7 @@ function loadPageBurnOrderList() {
         }
     });
     // 设置高级检索的下拉框数据
-    setSeniorSelectedList();
+    //setSeniorSelectedList();
     isSearch = false;
 
 
@@ -1093,7 +1096,10 @@ function setBurnOrderList(result) {
                     break;
                 case (2):
                     // 状态
-                    $(this).html(obj.state.name);
+                    if(obj.checkStateItem!=null){
+                        $(this).html(obj.checkStateItem.dictionaryItemName);
+                    }
+
                     break;
                 case (3):
                     // 创建日期
@@ -1271,53 +1277,56 @@ function searchBurnOrder() {
     page.pageNumber = pageNumber;
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
-    var state = null;
-    if ($("#search-state").val() == 0) state = "NewBuild";//新建
-    if ($("#search-state").val() == 1) state = "Confirm";//已确认
-    if ($("#search-state").val() == 2) state = "Invalid";//已作废
+    var state = $('#search-state').val();
+    if(state.length==0){
+        state=null
+    }
+    // if ($("#search-state").val() == 0) state = "NewBuild";//新建
+    // if ($("#search-state").val() == 1) state = "Confirm";//已确认
+    // if ($("#search-state").val() == 2) state = "Invalid";//已作废
     if ($("#senior").is(':visible')) {
         data1 = {
             id: $.trim($("#search-id").val()),
             startDate: $("#search-startDate").val(),
             endDate: $("#search-endDate").val(),
             remarks: $.trim($("#search-remarks").val()),
-            state: state,
+            checkStateItem:{dataDictionaryItemId:state},
             page: page
         };
     } else {
         var keywords = $.trim($("#searchContent").val());
-        switch (keywords) {
-            case("新建"):
-                keywords = "NewBuild";
-                break;
-            case("待审批"):
-                keywords = "ToExamine";
-                break;
-            case("审批中"):
-                keywords = "Examining";
-                break;
-            case("审批通过"):
-                keywords = "Approval";
-                break;
-            case("已驳回"):
-                keywords = "Backed";
-                break;
-            case("驳回"):
-                keywords = "Backed";
-                break;
-            case("已作废"):
-                keywords = "Invalid";
-                break;
-            case("作废"):
-                keywords = "Invalid";
-                break;
-            case("已确认"):
-                keywords = "Confirm";
-                break;
-            case("确认"):
-                keywords = "Confirm";
-                break;
-        }
+        // switch (keywords) {
+        //     case("新建"):
+        //         keywords = "NewBuild";
+        //         break;
+        //     case("待审批"):
+        //         keywords = "ToExamine";
+        //         break;
+        //     case("审批中"):
+        //         keywords = "Examining";
+        //         break;
+        //     case("审批通过"):
+        //         keywords = "Approval";
+        //         break;
+        //     case("已驳回"):
+        //         keywords = "Backed";
+        //         break;
+        //     case("驳回"):
+        //         keywords = "Backed";
+        //         break;
+        //     case("已作废"):
+        //         keywords = "Invalid";
+        //         break;
+        //     case("作废"):
+        //         keywords = "Invalid";
+        //         break;
+        //     case("已确认"):
+        //         keywords = "Confirm";
+        //         break;
+        //     case("确认"):
+        //         keywords = "Confirm";
+        //         break;
+        // }
         data1 = {
             page: page,
             keywords: keywords
@@ -1547,11 +1556,15 @@ function setViewBurnOrderClone(result) {
                     break;
                 case (16):
                     // 处置方式
-                    $(this).html(obj.wastes.processWay.name);
+                    if(obj.processWayItem!=null){
+                        $(this).html(obj.processWayItem.dictionaryItemName);
+                    }
                     break;
                 case (17):
                     // 进料方式
-                    $(this).html(obj.wastes.handleCategory.name);
+                    if(obj.handleCategoryItem!=null){
+                        $(this).html(obj.handleCategoryItem.dictionaryItemName);
+                    }
                     break;
                 case (18):
                     //预处理暂存点
@@ -1732,9 +1745,56 @@ function burnOrderListModify(item) {
 }
 
 function setSelectedList() {
+    // $.ajax({
+    //     type: "POST",                       // 方法类型
+    //     url: "getProcessWay",                  // url
+    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     dataType: "json",
+    //     success: function (result) {
+    //         if (result != undefined) {
+    //             var data = eval(result);
+    //             // 高级检索下拉框数据填充
+    //             var state = $("select[name='processWay']");
+    //             state.children().remove();
+    //             $.each(data.processWayList, function (index, item) {
+    //                 var option = $('<option />');
+    //                 option.val(item.index);
+    //                 option.text(item.name);
+    //                 state.append(option);
+    //             });
+    //             state.get(0).selectedIndex = -1;
+    //         }
+    //     }
+    // });
+    // $.ajax({
+    //     type: "POST",                       // 方法类型
+    //     url: "getHandleCategory",                  // url
+    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     dataType: "json",
+    //     success: function (result) {
+    //         if (result != undefined) {
+    //             var data = eval(result);
+    //             var state1 = $("select[name='handleCategory']");
+    //             state1.children().remove();
+    //             $.each(data.handleCategoryList, function (index, item) {
+    //                 var option = $('<option />');
+    //                 option.val(item.index);
+    //                 option.text(item.name);
+    //                 state1.append(option);
+    //             });
+    //             state1.get(0).selectedIndex = -1;
+    //         } else {
+    //             console.log("fail: " + result);
+    //         }
+    //     },
+    //     error: function (result) {
+    //         console.log("error: " + result);
+    //     }
+    // });
+
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getProcessWay",                  // url
+        url: "getProcessWayByDataDictionary",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
@@ -1743,19 +1803,21 @@ function setSelectedList() {
                 // 高级检索下拉框数据填充
                 var state = $("select[name='processWay']");
                 state.children().remove();
-                $.each(data.processWayList, function (index, item) {
+                $.each(data.data, function (index, item) {
                     var option = $('<option />');
-                    option.val(item.index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     state.append(option);
                 });
                 state.get(0).selectedIndex = -1;
             }
         }
     });
+
+
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getHandleCategory",                  // url
+        url: "getHandleCategoryByDataDictionary",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
@@ -1763,10 +1825,10 @@ function setSelectedList() {
                 var data = eval(result);
                 var state1 = $("select[name='handleCategory']");
                 state1.children().remove();
-                $.each(data.handleCategoryList, function (index, item) {
+                $.each(data.data, function (index, item) {
                     var option = $('<option />');
-                    option.val(item.index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     state1.append(option);
                 });
                 state1.get(0).selectedIndex = -1;
@@ -1806,6 +1868,10 @@ function setEditDataClone(result) {
         clonedTr.find("input[name='requirements']").val(obj.requirements);
         clonedTr.find("input[name='proportion']").val(obj.proportion.toFixed(2));
         clonedTr.find("input[name='temporaryAddress']").val(obj.temporaryAddress);
+        if (obj.processWayItem != null)
+            clonedTr.find("select[name='processWay']").val(obj.processWayItem.dataDictionaryItemId)
+        if (obj.handleCategoryItem != null)
+            clonedTr.find("select[name='handleCategory']").val(obj.handleCategoryItem.dataDictionaryItemId);
         if (obj.wastes != null) {
             clonedTr.find("input[name='wastesName']").val(obj.wastes.name);
             clonedTr.find("input[name='weight']").val(obj.wastes.weight);
@@ -1819,10 +1885,7 @@ function setEditDataClone(result) {
             clonedTr.find("input[name='phosphorusPercentage']").val(obj.wastes.phosphorusPercentage);
             clonedTr.find("input[name='fluorinePercentage']").val(obj.wastes.fluorinePercentage);
             clonedTr.find("input[name='remarks']").val(obj.wastes.remarks);
-            if (obj.wastes.processWay != null)
-                clonedTr.find("select[name='processWay']").get(0).selectedIndex = obj.wastes.processWay.index - 1;
-            if (obj.wastes.handleCategory != null)
-                clonedTr.find("select[name='handleCategory']").get(0).selectedIndex = obj.wastes.handleCategory.index - 1;
+
         }
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.addClass("newLine");
@@ -1881,40 +1944,48 @@ function edit() {
         wastes.phosphorusPercentage = $("#edit-phosphorusPercentage" + $i).val();
         wastes.fluorinePercentage = $("#edit-fluorinePercentage" + $i).val();
         wastes.remarks = $("#edit-remarks" + $i).val();
-        switch ($("#edit-processWay" + $i).val()) {
-            case "1":
-                wastes.processWay = 'Burning';
-                break;
-            case "2":
-                wastes.processWay = 'Landfill';
-                break;
-            case "3":
-                wastes.processWay = 'Clean';
-                break;
-        }
-        switch ($("#edit-handleCategory" + $i).val()) {
-            case "1":
-                wastes.handleCategory = 'Sludge';
-                break;
-            case "2":
-                wastes.handleCategory = 'WasteLiquid';
-                break;
-            case "3":
-                wastes.handleCategory = 'Bulk';
-                break;
-            case "4":
-                wastes.handleCategory = 'Crushing';
-                break;
-            case "5":
-                wastes.handleCategory = 'Distillation';
-                break;
-            case "6":
-                wastes.handleCategory = 'Suspension';
-                break;
-            case "7":
-                wastes.handleCategory = 'Jelly';
-                break;
-        }
+        var handleCategoryItem={};
+        handleCategoryItem.dataDictionaryItemId=$("#edit-handleCategory" + $i).val();
+        wastes.handleCategoryItem=handleCategoryItem;
+
+        var processWayItem={};
+        processWayItem.dataDictionaryItemId=$("#edit-processWay" + $i).val();
+        wastes.processWayItem=processWayItem;
+
+        // switch ($("#edit-processWay" + $i).val()) {
+        //     case "1":
+        //         wastes.processWay = 'Burning';
+        //         break;
+        //     case "2":
+        //         wastes.processWay = 'Landfill';
+        //         break;
+        //     case "3":
+        //         wastes.processWay = 'Clean';
+        //         break;
+        // }
+        // switch ($("#edit-handleCategory" + $i).val()) {
+        //     case "1":
+        //         wastes.handleCategory = 'Sludge';
+        //         break;
+        //     case "2":
+        //         wastes.handleCategory = 'WasteLiquid';
+        //         break;
+        //     case "3":
+        //         wastes.handleCategory = 'Bulk';
+        //         break;
+        //     case "4":
+        //         wastes.handleCategory = 'Crushing';
+        //         break;
+        //     case "5":
+        //         wastes.handleCategory = 'Distillation';
+        //         break;
+        //     case "6":
+        //         wastes.handleCategory = 'Suspension';
+        //         break;
+        //     case "7":
+        //         wastes.handleCategory = 'Jelly';
+        //         break;
+        // }
         pretreatmentItem.wastes = wastes;
         pretreatmentItemList.push(pretreatmentItem);
     }

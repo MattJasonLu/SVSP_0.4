@@ -15,7 +15,67 @@
         <result property="checkState" column="checkState" javaType="com.jdlink.domain.CheckState"/>
         <result property="supplierType" column="supplierType" javaType="com.jdlink.domain.SupplierType"/>
         <result property="supplierState" column="supplierState" javaType="com.jdlink.domain.ClientState"/>
+        <association property="enterpriseTypeItem" column="enterpriseTypeId" select="getEnterpriseTypeItem"/>
+        <association property="operationModelItem" column="operationModeId" select="getOperationModelItem"/>
+        <association property="operationTypeItem" column="operationTypeId" select="getOperationTypeItem"/>
+        <association property="contingencyPlanItem" column="contingencyPlanId" select="getContingencyPlanItem"/>
+        <association property="operationRecordItem" column="operationRecordId" select="getOperationRecordItem"/>
+        <association property="supplierTypeItem" column="supplierTypeId" select="getSupplierTypeItem"/>
+        <association property="applicationStatusItem" column="applicationStatusId" select="getApplicationStatusItem"/>
+        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"/>
+        <association property="supplierStateItem" column="supplierStateId" select="getSupplierStateItem"/>
+        <association property="ticketRateItem" column="ticketRateId" select="getTicketRateItem"/>
     </resultMap>
+
+    <!--获取企业类型条目-->
+    <select id="getEnterpriseTypeItem" resultType="EnterpriseTypeItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{enterpriseTypeId};
+    </select>
+
+    <!--获取经营模式条目-->
+    <select id="getOperationModelItem" resultType="OperationModelItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{operationModeId};
+    </select>
+
+    <!--获取经营模式条目-->
+    <select id="getOperationTypeItem" resultType="OperationTypeItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{operationTypeId};
+    </select>
+
+    <!--获取计划条目-->
+    <select id="getContingencyPlanItem" resultType="ContingencyPlanItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{contingencyPlanId};
+    </select>
+
+    <!--获取经营记录条目-->
+    <select id="getOperationRecordItem" resultType="OperationRecordItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{operationRecordId};
+    </select>
+
+    <!--获取供应商状态条目-->
+    <select id="getSupplierTypeItem" resultType="SupplierTypeItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{supplierTypeId};
+    </select>
+
+    <!--获取申请状态条目-->
+    <select id="getApplicationStatusItem" resultType="ApplicationStatusItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{applicationStatusId};
+    </select>
+
+    <!--获取审批状态条目-->
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{checkStateId};
+    </select>
+
+    <!--获取供应商状态条目-->
+    <select id="getSupplierStateItem" resultType="ClientStateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{supplierStateId};
+    </select>
+
+    <!--获取票据条目-->
+    <select id="getTicketRateItem" resultType="TicketRateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{ticketRateId};
+    </select>
 
     <insert id="add" parameterType="Supplier" >
         INSERT INTO t_supplier ( supplierId, groupId, companyName,
@@ -23,14 +83,20 @@
           operationType, contingencyPlan, operationRecord, location, street, applicationStatus,
           contactName, phone, mobile, email, industry, product, supplierType, checkState, supplierState,
           taxNumber, registeredCapital, createDate, businessLimit, transportLicense, expirationDate,
-          bankName, bankAccount, ticketRate,nowTime)
+          bankName, bankAccount, ticketRate,nowTime,enterpriseTypeId,operationModeId,operationTypeId,
+          operationRecordId, applicationStatusId, supplierTypeId, checkStateId, supplierStateId,
+          ticketRateId)
         VALUES (#{supplierId}, #{groupId}, #{companyName}, #{organizationCode}, #{licenseCode},
         #{representative}, #{postCode}, #{enterpriseType}, #{operationMode}, #{operationType},
         #{contingencyPlan}, #{operationRecord}, #{location}, #{street}, #{applicationStatus},
         #{contactName}, #{phone}, #{mobile}, #{email}, #{industry}, #{product}, #{supplierType},
         #{checkState}, #{supplierState}, #{taxNumber}, #{registeredCapital},
         #{createDate}, #{businessLimit}, #{transportLicense}, #{expirationDate}, #{bankName},
-        #{bankAccount}, #{ticketRate}, NOW())
+        #{bankAccount}, #{ticketRate}, NOW(), #{enterpriseTypeItem.dataDictionaryItemId},
+        #{operationModelItem.dataDictionaryItemId}, #{operationTypeItem.dataDictionaryItemId},
+        #{operationRecordItem.dataDictionaryItemId}, #{applicationStatusItem.dataDictionaryItemId},
+        #{supplierTypeItem.dataDictionaryItemId}, #{checkStateItem.dataDictionaryItemId},
+        #{supplierStateItem.dataDictionaryItemId}, #{ticketRateItem.dataDictionaryItemId})
     </insert>
 
     <delete id="delete" parameterType="String" >
@@ -41,10 +107,10 @@
         SELECT * FROM t_supplier
         <where>
             <if test="keyword != null and keyword != ''">
-                and companyName like "%"#{keyword}"%" or supplierId like "%"#{keyword}"%"
+                and (companyName like "%"#{keyword}"%" or supplierId like "%"#{keyword}"%"
                 or contactName like "%"#{keyword}"%" or phone like "%"#{keyword}"%"
                 or supplierType like "%"#{keyword}"%" or checkState like "%"#{keyword}"%"
-                or supplierState like "%"#{keyword}"%"
+                or supplierState like "%"#{keyword}"%")
             </if>
             <if test="supplierId != null and supplierId != ''">
                 and supplierId LIKE "%"#{supplierId}"%"
@@ -58,14 +124,14 @@
             <if test="phone != null and phone != ''">
                 and phone LIKE "%"#{phone}"%"
             </if>
-            <if test="checkState != null and checkState != ''">
-                and checkState = #{checkState}
+            <if test="checkStateItem != null and checkStateItem.dataDictionaryItemId != ''">
+                and checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
-            <if test="supplierState != null and supplierState != ''">
-                and supplierState = #{supplierState}
+            <if test="supplierStateItem != null and supplierStateItem.dataDictionaryItemId != ''">
+                and supplierStateId = #{supplierStateItem.dataDictionaryItemId}
             </if>
-            <if test="supplierType != null and supplierType != ''">
-                and supplierType = #{supplierType}
+            <if test="supplierTypeItem != null and supplierTypeItem.dataDictionaryItemId != ''">
+                and supplierTypeId = #{supplierTypeItem.dataDictionaryItemId}
             </if>
         </where>
         order by nowTime desc
@@ -78,10 +144,10 @@
         SELECT COUNT(*) FROM t_supplier
         <where>
             <if test="keyword != null and keyword != ''">
-                and companyName like "%"#{keyword}"%" or supplierId like "%"#{keyword}"%"
+                and (companyName like "%"#{keyword}"%" or supplierId like "%"#{keyword}"%"
                 or contactName like "%"#{keyword}"%" or phone like "%"#{keyword}"%"
                 or supplierType like "%"#{keyword}"%" or checkState like "%"#{keyword}"%"
-                or supplierState like "%"#{keyword}"%"
+                or supplierState like "%"#{keyword}"%")
             </if>
             <if test="supplierId != null and supplierId != ''">
                 and supplierId LIKE "%"#{supplierId}"%"
@@ -95,14 +161,14 @@
             <if test="phone != null and phone != ''">
                 and phone LIKE "%"#{phone}"%"
             </if>
-            <if test="checkState != null and checkState != ''">
-                and checkState = #{checkState}
+            <if test="checkStateItem != null and checkStateItem.dataDictionaryItemId != ''">
+                and checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
-            <if test="supplierState != null and supplierState != ''">
-                and supplierState = #{supplierState}
+            <if test="supplierStateItem != null and supplierStateItem.dataDictionaryItemId != ''">
+                and supplierStateId = #{supplierStateItem.dataDictionaryItemId}
             </if>
-            <if test="supplierType != null and supplierType != ''">
-                and supplierType = #{supplierType}
+            <if test="supplierTypeItem != null and supplierTypeItem.dataDictionaryItemId != ''">
+                and supplierTypeId = #{supplierTypeItem.dataDictionaryItemId}
             </if>
         </where>
     </select>
@@ -124,32 +190,36 @@
          mobile=#{mobile}, email=#{email}, industry=#{industry}, product=#{product},applicationStatus=#{applicationStatus},
          taxNumber=#{taxNumber}, registeredCapital=#{registeredCapital}, createDate=#{createDate}, businessLimit=#{businessLimit},
          transportLicense=#{transportLicense}, expirationDate=#{expirationDate}, bankName=#{bankName},
-         bankAccount=#{bankAccount}, ticketRate=#{ticketRate}, nowTime=NOW()
+         bankAccount=#{bankAccount}, ticketRate=#{ticketRate}, nowTime=NOW(),
+         enterpriseTypeId=#{enterpriseTypeItem.dataDictionaryItemId}, operationModeId=#{operationModelItem.dataDictionaryItemId},
+         operationTypeId=#{operationTypeItem.dataDictionaryItemId}, contingencyPlanId=#{contingencyPlanItem.dataDictionaryItemId},
+         operationRecordId=#{operationRecordItem.dataDictionaryItemId}, supplierTypeId=#{supplierTypeItem.dataDictionaryItemId},
+         applicationStatusId=#{applicationStatusItem.dataDictionaryItemId}, ticketRateId=#{ticketRateItem.dataDictionaryItemId}
          WHERE supplierId=#{supplierId}
     </update>
 
     <update id="enable" parameterType="String">
-        UPDATE t_supplier SET supplierState='Enabled', nowTime=NOW() WHERE supplierId=#{supplierId};
+        UPDATE t_supplier SET supplierStateId=89, nowTime=NOW() WHERE supplierId=#{supplierId};
     </update>
 
     <update id="disable" parameterType="String">
-        UPDATE t_supplier SET supplierState='Disabled', nowTime=NOW() WHERE supplierId=#{supplierId};
+        UPDATE t_supplier SET supplierStateId=90, nowTime=NOW() WHERE supplierId=#{supplierId};
     </update>
 
     <update id="setCheckStateToSubmit" parameterType="String">
-        UPDATE t_supplier SET checkState='ToSubmit', nowTime=NOW() WHERE supplierId=#{supplierId};
+        UPDATE t_supplier SET checkStateId=64, nowTime=NOW() WHERE supplierId=#{supplierId};
     </update>
 
     <update id="setCheckStateExamining" parameterType="String">
-        UPDATE t_supplier SET checkState='Examining', nowTime=NOW() WHERE supplierId=#{supplierId};
+        UPDATE t_supplier SET checkStateId=63, nowTime=NOW() WHERE supplierId=#{supplierId};
     </update>
 
     <update id="setCheckStateFinished" parameterType="String">
-        UPDATE t_supplier SET checkState='Finished', nowTime=NOW() WHERE supplierId=#{supplierId};
+        UPDATE t_supplier SET checkStateId=65, nowTime=NOW() WHERE supplierId=#{supplierId};
     </update>
 
     <update id="setCheckStateBacked" parameterType="String">
-        UPDATE t_supplier SET checkState='Backed', nowTime=NOW() WHERE supplierId=#{supplierId};
+        UPDATE t_supplier SET checkStateId=66, nowTime=NOW() WHERE supplierId=#{supplierId};
     </update>
 
     <select id="list" resultMap="SupplierRM">
@@ -157,7 +227,7 @@
     </select>
     <!--获取运输类供应商-->
     <select id="transportList" resultMap="SupplierRM">
-        select * from t_supplier  where supplierType='Transport' order by nowTime desc ;
+        select * from t_supplier  where supplierTypeId=129 order by nowTime desc ;
     </select>
     <select id="listPage" resultMap="SupplierRM">
        select * from t_supplier order by nowTime desc

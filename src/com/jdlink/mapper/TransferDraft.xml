@@ -127,9 +127,11 @@
     </update>
 
     <select id="list" resultType="TransferDraft">
-        SELECT * FROM t_pr_transferdraft ORDER BY nowTime DESC
+        SELECT * FROM t_pr_transferdraft
+        where checkState != 'Invalid'
+        ORDER BY nowTime DESC
         <if test="start != null and count != null">
-            limit #{start}, #{count}
+            limit #{start}, #{count};
         </if>
     </select>
 

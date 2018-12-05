@@ -24,7 +24,7 @@
         select  * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
     </select>
     <select id="loadMedicalWastesList" resultMap="MedicalWastesRM">
-        select  * from t_pl_medicalwastes where checkStateId!=71 order by nowTime desc
+        select  * from t_pl_medicalwastes  order by checkStateId=71, nowTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>

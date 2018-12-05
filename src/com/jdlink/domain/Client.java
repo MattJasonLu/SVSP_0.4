@@ -1,5 +1,6 @@
 package com.jdlink.domain;
 
+import com.jdlink.domain.Dictionary.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
@@ -183,6 +184,89 @@ public class Client {
      * 审批 驳回意见
      */
     private String advice;
+
+    //申报状态数据字典
+    private ApplicationStatusItem applicationStatusItem;
+
+    //事故防范和应急预案数据字典
+    private ContingencyPlanItem contingencyPlanItem;
+
+    //企业类型数据字典
+    private EnterpriseTypeItem enterpriseTypeItem;
+
+    //经营方式数据字典
+    private OperationModelItem operationModelItem;
+
+    //危废经营记录情况数据字典
+    private OperationRecordItem operationRecordItem;
+
+    //经营单位类别数据字典
+    private OperationTypeItem operationTypeItem;
+
+    /**
+     * 开票类型
+     */
+    private TicketRateItem ticketRateItem;
+    /**
+     * 客户类型
+     */
+    private ClientTypeItem clientTypeItem;
+    /**
+     * 审批状态
+     */
+    private CheckStateItem checkStateItem;
+    /**
+     * 客户状态
+     */
+    private ClientStateItem clientStateItem;
+
+    public ApplicationStatusItem getApplicationStatusItem() {
+        return applicationStatusItem;
+    }
+
+    public void setApplicationStatusItem(ApplicationStatusItem applicationStatusItem) {
+        this.applicationStatusItem = applicationStatusItem;
+    }
+
+    public ContingencyPlanItem getContingencyPlanItem() {
+        return contingencyPlanItem;
+    }
+
+    public void setContingencyPlanItem(ContingencyPlanItem contingencyPlanItem) {
+        this.contingencyPlanItem = contingencyPlanItem;
+    }
+
+    public EnterpriseTypeItem getEnterpriseTypeItem() {
+        return enterpriseTypeItem;
+    }
+
+    public void setEnterpriseTypeItem(EnterpriseTypeItem enterpriseTypeItem) {
+        this.enterpriseTypeItem = enterpriseTypeItem;
+    }
+
+    public OperationModelItem getOperationModelItem() {
+        return operationModelItem;
+    }
+
+    public void setOperationModelItem(OperationModelItem operationModelItem) {
+        this.operationModelItem = operationModelItem;
+    }
+
+    public OperationRecordItem getOperationRecordItem() {
+        return operationRecordItem;
+    }
+
+    public void setOperationRecordItem(OperationRecordItem operationRecordItem) {
+        this.operationRecordItem = operationRecordItem;
+    }
+
+    public OperationTypeItem getOperationTypeItem() {
+        return operationTypeItem;
+    }
+
+    public void setOperationTypeItem(OperationTypeItem operationTypeItem) {
+        this.operationTypeItem = operationTypeItem;
+    }
 
     public boolean isDisposal() {
         return isDisposal;
@@ -534,6 +618,38 @@ public class Client {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public TicketRateItem getTicketRateItem() {
+        return ticketRateItem;
+    }
+
+    public void setTicketRateItem(TicketRateItem ticketRateItem) {
+        this.ticketRateItem = ticketRateItem;
+    }
+
+    public ClientTypeItem getClientTypeItem() {
+        return clientTypeItem;
+    }
+
+    public void setClientTypeItem(ClientTypeItem clientTypeItem) {
+        this.clientTypeItem = clientTypeItem;
+    }
+
+    public CheckStateItem getCheckStateItem() {
+        return checkStateItem;
+    }
+
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
+    }
+
+    public ClientStateItem getClientStateItem() {
+        return clientStateItem;
+    }
+
+    public void setClientStateItem(ClientStateItem clientStateItem) {
+        this.clientStateItem = clientStateItem;
     }
 
     @Override

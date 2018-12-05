@@ -264,6 +264,7 @@ function setPageClone(result) {
 //加载次生出库信息==>次生出库页面
 function onLoadSecondary() {
     $('.loader').show();
+    loadNavigationList();    // 设置动态菜单
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
@@ -431,6 +432,7 @@ function setOutBoundList(result) {
 
 //加载次生列表==>次生出库新增页面
 function loadSecondaryList() {
+    loadNavigationList();    // 设置动态菜单
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
         size: 4
@@ -562,7 +564,13 @@ function setWasteInventoryList(result) {
                         break;
                     // 危废名称
                     case (5):
-                        $(this).html(convertStrToWastesName(obj.wastesName));
+                        if(obj.secondaryCategoryItem!=null){
+                            $(this).html((obj.secondaryCategoryItem.dictionaryItemName));
+                        }
+                        else {
+                            $(this).html((obj.wastesName));
+                        }
+
                         break;
                     // 危废代码
                     case (6):
@@ -1109,14 +1117,14 @@ function exportExcel() {
     var idArry = [];//存放主键
     var items = $("input[name='select']:checked");//判断复选框是否选中
     if (items.length <= 0) { //如果不勾选
-        var sqlWords = "select t_pl_outboundorder.outboundOrderId 出库单号,t_pl_outboundorder.outboundDate 出库日期 ,t_pl_outboundorder.creator  创建人,t_pl_outboundorder.auditor 审核人, t_pl_outboundorder.outboundNumber   出库数量,t_pl_outboundorder.handelCategory 进料方式, t_pl_outboundorder.processWay 处置方式,t_pl_outboundorder.wasteCategory 危废类别,t_pl_outboundorder.wastesCode 危废编码,t_pl_outboundorder.guardian 保管员,  t_pl_outboundorder.unitPriceTax 单价,  t_pl_outboundorder.packageType 包装形式,t_pl_outboundorder.formType   物质形态 from t_pl_outboundorder  join t_pr_laboratorytest where t_pl_outboundorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber and t_pl_outboundorder.boundType='SecondaryOutbound';";
+        var sqlWords = "select outboundOrderId,outboundDate ,(select companyName from client where client.clientId=t_pl_outboundorder.clientId), (select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=secondaryCategoryId ), wasteCategory,(select  wareHouseName from t_pl_warehouse where wareHouseId =t_pl_outboundorder.wareHouseId),outboundNumber,transferDraftId ,(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=processWayId ), (select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=equipmentId ) from t_pl_outboundorder  ";
         window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
     }
 
     if (items.length > 0) {
         $.each(items, function (index, item) {
-            if ($(this).parent().parent().next().next().next().next().next().html().length > 0) {
-                idArry.push($(this).parent().parent().next().next().next().next().next().html());        // 将选中项的编号存到集合中
+            if ($(this).parent().parent().next().html().length > 0) {
+                idArry.push($(this).parent().parent().next().html());        // 将选中项的编号存到集合中
             }
         });
         var sql = ' in (';
@@ -1125,10 +1133,10 @@ function exportExcel() {
                 if (i < idArry.length - 1) sql += idArry[i] + ",";
                 else if (i == idArry.length - 1) sql += idArry[i] + ");"
             }
-            var sqlWords = "select t_pl_outboundorder.outboundOrderId 出库单号,t_pl_outboundorder.outboundDate 出库日期 ,t_pl_outboundorder.creator  创建人,t_pl_outboundorder.auditor 审核人, t_pl_outboundorder.outboundNumber   出库数量,t_pl_outboundorder.handelCategory 进料方式, t_pl_outboundorder.processWay 处置方式,t_pl_outboundorder.wasteCategory 危废类别,t_pl_outboundorder.wastesCode 危废编码,t_pl_outboundorder.guardian 保管员,  t_pl_outboundorder.unitPriceTax 单价,  t_pl_outboundorder.packageType 包装形式,t_pl_outboundorder.formType   物质形态 from t_pl_outboundorder  join t_pr_laboratorytest where t_pl_outboundorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber and t_pl_outboundorder.boundType='SecondaryOutbound' and outboundOrderId"+sql;
+            var sqlWords = "select outboundOrderId,outboundDate ,(select companyName from client where client.clientId=t_pl_outboundorder.clientId), (select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=secondaryCategoryId ), wasteCategory,(select  wareHouseName from t_pl_warehouse where wareHouseId =t_pl_outboundorder.wareHouseId),outboundNumber,transferDraftId ,(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=processWayId ), (select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=equipmentId ) from t_pl_outboundorder  where outboundOrderId" + sql;
 
         }
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+        window.open('exportExcelSecOutBound?name=' + name + '&sqlWords=' + sqlWords);
     }
 
 
@@ -1159,7 +1167,16 @@ function view1(item) {
 
 
                 // //废物名称
-                        $('#name').text(convertStrToWastesName(result.data.wastesName));
+                //    if(obj.){
+                //
+                //    }
+                if(result.data.secondaryCategoryItem!=null){
+                    $('#name').text(convertStrToWastesName(result.data.secondaryCategoryItem.dictionaryItemName));
+                }
+                else {
+                    $('#name').text(convertStrToWastesName(result.data.wastesName));
+                }
+
 
 
 
@@ -1213,16 +1230,16 @@ function view1(item) {
                 //     $('#fMin').text(result.data[0].laboratoryTest.fluorineContentMinimum);
                 // }
                 //处理方式
-                if(result.data.processWay!=null){
-                    $('#processingMethod').text(result.data.processWay.name);
+                if(result.data.processWayItem!=null){
+                    $('#processingMethod').text(result.data.processWayItem.dictionaryItemName);
                 }
-                if(result.data.handelCategory!=null){
+                if(result.data.handleCategoryItem!=null){
                     //进料方式
-                    $('#handelCategory').text(result.data.handelCategory.name);
+                    $('#handelCategory').text(result.data.handleCategoryItem.dictionaryItemName);
                 }
                 //处置设备
-                if(result.data.equipment!=null){
-                    $('#equipment').text(result.data.equipment.name);
+                if(result.data.equipmentDataItem!=null){
+                    $('#equipment').text(result.data.equipmentDataItem.dictionaryItemName);
                 }
                 //出库
                 $("#outBoundId1").html(result.data.outboundOrderId);

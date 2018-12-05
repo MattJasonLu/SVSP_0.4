@@ -373,6 +373,7 @@ function searchMedicalWastes1() {
  */
 //加载医废出入库新增页面的登记单号
 function getNewestId() {
+    loadNavigationList();    // 设置动态菜单
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getNewestMedicalWastesId",                  // url
@@ -474,6 +475,7 @@ function saveMedicalWastes() {
 //加载医危废数据
 function loadMedicalWastesList() {
     $('.loader').show();
+    loadNavigationList();    // 设置动态菜单
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
@@ -633,6 +635,9 @@ function searchMedicalWastes() {
 
     var endDate = getDateByStr(endTime);
 
+    var checkState= $('#search-checkState option:selected').text();
+
+
     var arraydate = [];
     for (var j = 0; j < array.length; j++) {
         $.each(array[j], function () {
@@ -665,14 +670,14 @@ function searchMedicalWastes() {
             }
             console.log(startDate + endDate)
             // console.log($(this).children('td').eq(2).text())
-            if (!($(this).children('td').eq(4).text().indexOf(person) != -1
+            if (!($(this).children('td').eq(4).text().indexOf(person) != -1&&$(this).children('td').eq(16).text().indexOf(checkState) != -1
                 && $(this).children('td').text().indexOf(text) != -1
                 && (new Date($(this).children('td').eq(2).text()).getTime() >= new Date(startDate).getTime() && new Date($(this).children('td').eq(2).text()).getTime() <= new Date(endDate).getTime())
 
             )) {
                 $(this).hide();
             }
-            if (($(this).children('td').eq(4).text().indexOf(person) != -1
+            if (($(this).children('td').eq(4).text().indexOf(person) != -1&&$(this).children('td').eq(16).text().indexOf(checkState) != -1
                 && $(this).children('td').text().indexOf(text) != -1
                 && (new Date($(this).children('td').eq(2).text()).getTime() >= new Date(startDate).getTime() && new Date($(this).children('td').eq(2).text()).getTime() <= new Date(endDate).getTime())
             )) {

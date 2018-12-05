@@ -1,9 +1,13 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Dictionary.DataDictionary;
+import com.jdlink.domain.Dictionary.HandleCategoryItem;
+import com.jdlink.domain.Dictionary.ProcessWayItem;
 import com.jdlink.domain.Inventory.RecordState;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.service.PretreatmentService;
+import com.jdlink.service.dictionary.DictionaryService;
 import com.jdlink.util.DBUtil;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
@@ -29,12 +33,28 @@ public class PRPretreatmentController {
 
     @Autowired
     PretreatmentService pretreatmentService;
-
+    @Autowired
+    DictionaryService dictionaryService;
     @RequestMapping("addPretreatment")
     @ResponseBody
     public String addPretreatment(@RequestBody Pretreatment pretreatment) {
         JSONObject res = new JSONObject();
         try {
+
+
+            for(int i=0;i<pretreatment.getPretreatmentItemList().size();i++){
+                Wastes wastes=pretreatment.getPretreatmentItemList().get(i).getWastes();
+                //处置方式适配
+                ProcessWayItem processWayItem =wastes.getProcessWayItem();
+                int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(processWayItem.getDictionaryItemName(),8);
+                processWayItem.setDataDictionaryItemId(dataDictionaryItemId);
+               wastes.setProcessWayItem(processWayItem);
+                //进料方式适配
+                HandleCategoryItem handleCategoryItem=wastes.getHandleCategoryItem();
+                int  dataDictionaryItemId1= dictionaryService.getdatadictionaryitemIdByName(handleCategoryItem.getDictionaryItemName(),6);
+                handleCategoryItem.setDataDictionaryItemId(dataDictionaryItemId1);
+                wastes.setHandleCategoryItem(handleCategoryItem);
+            }
             pretreatmentService.add(pretreatment);
             res.put("status", "success");
             res.put("message", "添加成功！");
@@ -205,8 +225,21 @@ public class PRPretreatmentController {
                 System.out.println("proportion" + Float.parseFloat(data[i][7].toString()));
                 Wastes wastes = new Wastes();
                 wastes.setName(data[i][3].toString());
-                wastes.setHandleCategory(HandleCategory.getHandleCategory(data[i][5].toString()));
-                wastes.setProcessWay(ProcessWay.getProcessWay(data[i][6].toString()));
+                //进料方式适配
+                HandleCategoryItem handleCategoryItem=new HandleCategoryItem();
+                int dataDictionaryItemId=dictionaryService.getdatadictionaryitemIdByName(data[i][5].toString(),6);
+                handleCategoryItem.setDataDictionaryItemId(dataDictionaryItemId);
+                wastes.setHandleCategoryItem(handleCategoryItem);
+//                wastes.setHandleCategory(HandleCategory.getHandleCategory(data[i][5].toString()));
+
+
+                //处置方式适配
+                ProcessWayItem processWayItem =new ProcessWayItem();
+                int  dataDictionaryItemId1= dictionaryService.getdatadictionaryitemIdByName(data[i][6].toString(),8);
+                processWayItem.setDataDictionaryItemId(dataDictionaryItemId1);
+                wastes.setProcessWayItem(processWayItem);
+
+//                wastes.setProcessWay(ProcessWay.getProcessWay(data[i][6].toString()));
                 wastes.setWeight(Float.parseFloat(data[i][8].toString()));
                 wastes.setVolatileNumber(Float.parseFloat(data[i][9].toString()));
                 wastes.setCalorific(Float.parseFloat(data[i][10].toString()));

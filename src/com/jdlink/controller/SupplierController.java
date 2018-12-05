@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Dictionary.*;
 import com.jdlink.service.SupplierService;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
@@ -87,6 +88,9 @@ public class SupplierController {
         JSONObject res = new JSONObject();
         try {
             supplier.setSupplierState(ClientState.Enabled);
+            ClientStateItem clientStateItem = new ClientStateItem();
+            clientStateItem.setDataDictionaryItemId(89);
+            supplier.setSupplierStateItem(clientStateItem);
             supplierService.add(supplier);
             res.put("status", "success");
             res.put("message", "操作成功");
@@ -111,6 +115,9 @@ public class SupplierController {
         if (resultSupplier == null) {
             // 审核状态为待提交
             supplier.setCheckState(CheckState.ToSubmit);
+            CheckStateItem checkStateItem = new CheckStateItem();
+            checkStateItem.setDataDictionaryItemId(64);
+            supplier.setCheckStateItem(checkStateItem);
             return addSupplier(supplier);
         } else {
             JSONObject res = new JSONObject();
@@ -137,6 +144,9 @@ public class SupplierController {
     @ResponseBody
     public String submitSupplier(@RequestBody Supplier supplier) {
         supplier.setCheckState(CheckState.Examining);
+        CheckStateItem checkStateItem = new CheckStateItem();
+        checkStateItem.setDataDictionaryItemId(63);
+        supplier.setCheckStateItem(checkStateItem);
         Supplier resultSupplier = supplierService.getBySupplierId(supplier.getSupplierId());
         if (resultSupplier == null) {
             return addSupplier(supplier);
@@ -439,32 +449,34 @@ public class SupplierController {
     public String saveSupplierFiles(String supplierId, MultipartFile licenseFile1, MultipartFile licenseFile2) {
         JSONObject res = new JSONObject();
         try {
-            Supplier supplier = new Supplier();
-            supplier.setSupplierId(supplierId);
-            // 若文件夹不存在则创建文件夹
-            String supplierPath = "Files/Supplier";
-            File supplierDir = new File(supplierPath);
-            if (!supplierDir.exists()) {
-                supplierDir.mkdirs();
+            if (licenseFile1 != null || licenseFile2 != null) {
+                Supplier supplier = new Supplier();
+                supplier.setSupplierId(supplierId);
+                // 若文件夹不存在则创建文件夹
+                String supplierPath = "Files/Supplier";
+                File supplierDir = new File(supplierPath);
+                if (!supplierDir.exists()) {
+                    supplierDir.mkdirs();
+                }
+                if (licenseFile1 != null) {
+                    String licenseFile1Name = supplierId + "-" + licenseFile1.getOriginalFilename();
+                    String licenseFile1Path = supplierPath + "/" + licenseFile1Name;
+                    File licenseFile1File = new File(licenseFile1Path);
+                    licenseFile1.transferTo(licenseFile1File);
+                    supplier.setLicenseFile1Url(licenseFile1Path);
+                }
+                if (licenseFile2 != null) {
+                    // 获取文件名字
+                    String processName = supplierId + "-" + licenseFile2.getOriginalFilename();
+                    String licenseFile2Path = supplierPath + "/" + processName;
+                    File licenseFile2File = new File(licenseFile2Path);
+                    licenseFile2.transferTo(licenseFile2File);
+                    // 更新客户保存文件的路径
+                    supplier.setLicenseFile2Url(licenseFile2Path);
+                }
+                // 更新供应商文件路径
+                supplierService.setFilePath(supplier);
             }
-            if (licenseFile1 != null) {
-                String licenseFile1Name = supplierId + "-" + licenseFile1.getOriginalFilename();
-                String licenseFile1Path = supplierPath + "/" + licenseFile1Name;
-                File licenseFile1File = new File(licenseFile1Path);
-                licenseFile1.transferTo(licenseFile1File);
-                supplier.setLicenseFile1Url(licenseFile1Path);
-            }
-            if (licenseFile2 != null) {
-                // 获取文件名字
-                String processName = supplierId + "-" + licenseFile2.getOriginalFilename();
-                String licenseFile2Path = supplierPath + "/" + processName;
-                File licenseFile2File = new File(licenseFile2Path);
-                licenseFile2.transferTo(licenseFile2File);
-                // 更新客户保存文件的路径
-                supplier.setLicenseFile2Url(licenseFile2Path);
-            }
-            // 更新供应商文件路径
-            supplierService.setFilePath(supplier);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -534,16 +546,35 @@ public class SupplierController {
                 switch (data[i][7].toString()) {
                     case "国有企业":
                         supplier.setEnterpriseType(EnterpriseType.StateOwnedEnterprises);
+                        EnterpriseTypeItem enterpriseTypeItem1 = new EnterpriseTypeItem();
+                        enterpriseTypeItem1.setDataDictionaryItemId(108);
+                        supplier.setEnterpriseTypeItem(enterpriseTypeItem1);
                         break;
                     case "集体企业":
                         supplier.setEnterpriseType(EnterpriseType.CollectiveEnterprise);
+                        EnterpriseTypeItem enterpriseTypeItem2 = new EnterpriseTypeItem();
+                        enterpriseTypeItem2.setDataDictionaryItemId(109);
+                        supplier.setEnterpriseTypeItem(enterpriseTypeItem2);
                         break;
                     case "国有企业改组的股份合作企业":
                         supplier.setEnterpriseType(EnterpriseType.JointStockByStateOwnedEnterprises);
+                        EnterpriseTypeItem enterpriseTypeItem3 = new EnterpriseTypeItem();
+                        enterpriseTypeItem3.setDataDictionaryItemId(170);
+                        supplier.setEnterpriseTypeItem(enterpriseTypeItem3);
                         break;
                     case "集体企业改组的股份合作企业":
                         supplier.setEnterpriseType(EnterpriseType.JointStockByCollectiveEnterprise);
+                        EnterpriseTypeItem enterpriseTypeItem4 = new EnterpriseTypeItem();
+                        enterpriseTypeItem4.setDataDictionaryItemId(171);
+                        supplier.setEnterpriseTypeItem(enterpriseTypeItem4);
                         break;
+                    case "私营企业":
+                        supplier.setEnterpriseType(EnterpriseType.JointStockByCollectiveEnterprise);
+                        EnterpriseTypeItem enterpriseTypeItem5 = new EnterpriseTypeItem();
+                        enterpriseTypeItem5.setDataDictionaryItemId(111);
+                        supplier.setEnterpriseTypeItem(enterpriseTypeItem5);
+                        break;
+
                     default:
                         break;
                 }
@@ -551,9 +582,15 @@ public class SupplierController {
                 switch (data[i][8].toString()) {
                     case "综合":
                         supplier.setOperationMode(OperationMode.Comprehensive);
+                        OperationModelItem operationModelItem1 = new OperationModelItem();
+                        operationModelItem1.setDataDictionaryItemId(112);
+                        supplier.setOperationModelItem(operationModelItem1);
                         break;
                     case "收集":
                         supplier.setOperationMode(OperationMode.Collect);
+                        OperationModelItem operationModelItem2 = new OperationModelItem();
+                        operationModelItem2.setDataDictionaryItemId(113);
+                        supplier.setOperationModelItem(operationModelItem2);
                         break;
                     default:
                         break;
@@ -562,15 +599,27 @@ public class SupplierController {
                 switch (data[i][9].toString()) {
                     case "利用处置危险废物及医疗废物":
                         supplier.setOperationType(OperationType.WasteAndClinical);
+                        OperationTypeItem operationTypeItem1 = new OperationTypeItem();
+                        operationTypeItem1.setDataDictionaryItemId(117);
+                        supplier.setOperationTypeItem(operationTypeItem1);
                         break;
                     case "只从事收集活动":
                         supplier.setOperationType(OperationType.CollectOnly);
+                        OperationTypeItem operationTypeItem2 = new OperationTypeItem();
+                        operationTypeItem2.setDataDictionaryItemId(118);
+                        supplier.setOperationTypeItem(operationTypeItem2);
                         break;
                     case "只利用处置危险废物":
                         supplier.setOperationType(OperationType.WasteOnly);
+                        OperationTypeItem operationTypeItem3 = new OperationTypeItem();
+                        operationTypeItem3.setDataDictionaryItemId(119);
+                        supplier.setOperationTypeItem(operationTypeItem3);
                         break;
                     case "只处置医疗废物":
                         supplier.setOperationType(OperationType.ClinicalOnly);
+                        OperationTypeItem operationTypeItem4 = new OperationTypeItem();
+                        operationTypeItem4.setDataDictionaryItemId(120);
+                        supplier.setOperationTypeItem(operationTypeItem4);
                         break;
                     default:
                         break;
@@ -579,12 +628,21 @@ public class SupplierController {
                 switch (data[i][10].toString()) {
                     case "制定并确定了应急协调人":
                         supplier.setContingencyPlan(ContingencyPlan.Identify);
+                        ContingencyPlanItem contingencyPlanItem1 = new ContingencyPlanItem();
+                        contingencyPlanItem1.setDataDictionaryItemId(167);
+                        supplier.setContingencyPlanItem(contingencyPlanItem1);
                         break;
                     case "已制定":
                         supplier.setContingencyPlan(ContingencyPlan.Developed);
+                        ContingencyPlanItem contingencyPlanItem2 = new ContingencyPlanItem();
+                        contingencyPlanItem2.setDataDictionaryItemId(168);
+                        supplier.setContingencyPlanItem(contingencyPlanItem2);
                         break;
                     case "未制定":
                         supplier.setContingencyPlan(ContingencyPlan.Undeveloped);
+                        ContingencyPlanItem contingencyPlanItem3 = new ContingencyPlanItem();
+                        contingencyPlanItem3.setDataDictionaryItemId(169);
+                        supplier.setContingencyPlanItem(contingencyPlanItem3);
                         break;
                     default:
                         break;
@@ -593,9 +651,15 @@ public class SupplierController {
                 switch (data[i][11].toString()) {
                     case "已建立":
                         supplier.setOperationRecord(OperationRecord.Established);
+                        OperationRecordItem operationRecordItem1 = new OperationRecordItem();
+                        operationRecordItem1.setDataDictionaryItemId(115);
+                        supplier.setOperationRecordItem(operationRecordItem1);
                         break;
                     case "未建立":
                         supplier.setOperationRecord(OperationRecord.Unestablished);
+                        OperationRecordItem operationRecordItem2 = new OperationRecordItem();
+                        operationRecordItem2.setDataDictionaryItemId(116);
+                        supplier.setOperationRecordItem(operationRecordItem2);
                         break;
                     default:
                         break;
@@ -606,8 +670,14 @@ public class SupplierController {
                 // 申报状态
                 switch (data[i][14].toString()) {
                     case "已申报":
+                        ApplicationStatusItem applicationStatusItem1 = new ApplicationStatusItem();
+                        applicationStatusItem1.setDataDictionaryItemId(47);
+                        supplier.setApplicationStatusItem(applicationStatusItem1);
                         break;
                     case "未申报":
+                        ApplicationStatusItem applicationStatusItem2 = new ApplicationStatusItem();
+                        applicationStatusItem2.setDataDictionaryItemId(48);
+                        supplier.setApplicationStatusItem(applicationStatusItem2);
                         break;
                     default:
                         break;
@@ -622,15 +692,27 @@ public class SupplierController {
                 switch (data[i][21].toString()) {
                     case "次生处置供方":
                         supplier.setSupplierType(SupplierType.DeriveDisposal);
+                        SupplierTypeItem supplierTypeItem1 = new SupplierTypeItem();
+                        supplierTypeItem1.setDataDictionaryItemId(128);
+                        supplier.setSupplierTypeItem(supplierTypeItem1);
                         break;
                     case "运输类供方":
                         supplier.setSupplierType(SupplierType.Transport);
+                        SupplierTypeItem supplierTypeItem2 = new SupplierTypeItem();
+                        supplierTypeItem2.setDataDictionaryItemId(129);
+                        supplier.setSupplierTypeItem(supplierTypeItem2);
                         break;
                     case "采购供方":
                         supplier.setSupplierType(SupplierType.Purchase);
+                        SupplierTypeItem supplierTypeItem3 = new SupplierTypeItem();
+                        supplierTypeItem3.setDataDictionaryItemId(130);
+                        supplier.setSupplierTypeItem(supplierTypeItem3);
                         break;
                     case "其他供方":
                         supplier.setSupplierType(SupplierType.Others);
+                        SupplierTypeItem supplierTypeItem4 = new SupplierTypeItem();
+                        supplierTypeItem4.setDataDictionaryItemId(131);
+                        supplier.setSupplierTypeItem(supplierTypeItem4);
                         break;
                     default:
                         break;
@@ -639,18 +721,33 @@ public class SupplierController {
                 switch (data[i][22].toString()) {
                     case "审批中":
                         supplier.setCheckState(CheckState.Examining);
+                        CheckStateItem checkStateItem1 = new CheckStateItem();
+                        checkStateItem1.setDataDictionaryItemId(63);
+                        supplier.setCheckStateItem(checkStateItem1);
                         break;
                     case "待提交":
                         supplier.setCheckState(CheckState.ToSubmit);
+                        CheckStateItem checkStateItem2 = new CheckStateItem();
+                        checkStateItem2.setDataDictionaryItemId(64);
+                        supplier.setCheckStateItem(checkStateItem2);
                         break;
                     case "已完成":
                         supplier.setCheckState(CheckState.Finished);
+                        CheckStateItem checkStateItem3 = new CheckStateItem();
+                        checkStateItem3.setDataDictionaryItemId(65);
+                        supplier.setCheckStateItem(checkStateItem3);
                         break;
                     case "已驳回":
                         supplier.setCheckState(CheckState.Backed);
+                        CheckStateItem checkStateItem4 = new CheckStateItem();
+                        checkStateItem4.setDataDictionaryItemId(66);
+                        supplier.setCheckStateItem(checkStateItem4);
                         break;
                     case "待审批":
                         supplier.setCheckState(CheckState.ToExamine);
+                        CheckStateItem checkStateItem5 = new CheckStateItem();
+                        checkStateItem5.setDataDictionaryItemId(67);
+                        supplier.setCheckStateItem(checkStateItem5);
                         break;
                     default:
                         break;
@@ -659,9 +756,15 @@ public class SupplierController {
                 switch (data[i][23].toString()) {
                     case "已启用":
                         supplier.setSupplierState(ClientState.Enabled);
+                        ClientStateItem clientStateItem1 = new ClientStateItem();
+                        clientStateItem1.setDataDictionaryItemId(89);
+                        supplier.setSupplierStateItem(clientStateItem1);
                         break;
                     case "已禁用":
                         supplier.setSupplierState(ClientState.Disabled);
+                        ClientStateItem clientStateItem2 = new ClientStateItem();
+                        clientStateItem2.setDataDictionaryItemId(90);
+                        supplier.setSupplierStateItem(clientStateItem2);
                         break;
                     default:
                         break;
@@ -679,9 +782,15 @@ public class SupplierController {
                 switch (data[i][32].toString()) {
                     case "增值税专用发票16%":
                         supplier.setTicketRate(TicketRate1.Rate1);
+                        TicketRateItem ticketRateItem1 = new TicketRateItem();
+                        ticketRateItem1.setDataDictionaryItemId(132);
+                        supplier.setTicketRateItem(ticketRateItem1);
                         break;
                     case "增值税专用发票3%":
                         supplier.setTicketRate(TicketRate1.Rate2);
+                        TicketRateItem ticketRateItem2 = new TicketRateItem();
+                        ticketRateItem2.setDataDictionaryItemId(133);
+                        supplier.setTicketRateItem(ticketRateItem2);
                         break;
                     default:
                         break;

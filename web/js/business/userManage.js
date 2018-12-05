@@ -361,7 +361,6 @@ function showAuthorityById(e) {
             console.log(result);
         }
     });
-    // if(bar == 0)count();  // 滚动条加载
 }
 /**
  * 设置功能勾选
@@ -381,24 +380,6 @@ function setFunctionChecked(result) {
         $('#tree').treeview('selectNode', nodes[0]);
     }
 }
-/**
- * 设置页面加载滚动条
- * @type {number}
- */
-// var bar = 0;
-// function count() {
-//     bar = bar + 1;
-//     var barp = bar + '%';
-//     $("#load-id").width(barp);
-//     if (bar < 101) {
-//         if (bar < 100) {
-//             setTimeout("count()",10);
-//         }else if (bar >= 100) {
-//             $("#load-id").width('0%');
-//             bar = 0;
-//         }
-//     }
-// }
 
 /**
  * 保存选中的节点到数据库
@@ -428,6 +409,31 @@ function saveAuthority() {
             if (result != undefined && result.status == "success") {
                 alert(result.message);
             } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+}
+
+/**
+ * 更新权限表
+ */
+function setFunctionTreeByMenuTree(){
+    $('.loader').show();  // 显示进度条
+    $.ajax({
+        type: "post",
+        url: "setFunctionTreeByMenuTree",
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                $('.loader').hide();  // 隐藏进度条
+                alert(result.message);
+                window.location.reload();
+            } else {
+                $('.loader').hide();  // 隐藏进度条
                 alert(result.message);
             }
         },

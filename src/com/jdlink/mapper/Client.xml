@@ -23,22 +23,79 @@
         <result property="checkState" column="checkState" javaType="com.jdlink.domain.CheckState"/>
         <result property="clientType" column="clientType" javaType="com.jdlink.domain.ClientType"/>
         <association property="salesman" column="salesmanId" select="getSalesman"/>
+        <association property="applicationStatusItem" column="applicationStatusId" select="getApplicationStatusItem"/>
+        <association property="contingencyPlanItem" column="contingencyPlanId" select="getContingencyPlanItem"/>
+        <association property="enterpriseTypeItem" column="enterpriseTypeId" select="getEnterpriseTypeItem"/>
+        <association property="operationModelItem" column="operationModelId" select="getOperationModelItem"/>
+        <association property="operationRecordItem" column="operationRecordId" select="getOperationRecordItem"/>
+        <association property="operationTypeItem" column="operationTypeId" select="getOperationTypeItem"/>
+        <association property="ticketRateItem" column="ticketRateId" select="getTicketRateItem"/>
+        <association property="clientTypeItem" column="clientTypeId" select="getClientTypeItem"/>
+        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"/>
+        <association property="clientStateItem" column="clientStateId" select="getClientStateItem"/>
     </resultMap>
 
+    <!--获取申报状态数据字典-->
+    <select id="getApplicationStatusItem" resultType="ApplicationStatusItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{applicationStatusId}
+    </select>
+    <!--获取事故防范和应急预案数据字典-->
+    <select id="getContingencyPlanItem" resultType="ContingencyPlanItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{contingencyPlanId}
+    </select>
+    <!--获企业类型数据字典-->
+    <select id="getEnterpriseTypeItem" resultType="EnterpriseTypeItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{enterpriseTypeId}
+    </select>
+    <!--获取经营方式数据字典-->
+    <select id="getOperationModelItem" resultType="OperationModelItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{operationModelId}
+    </select>
+    <!--获取危废经营记录情况数据字典-->
+    <select id="getOperationRecordItem" resultType="OperationRecordItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{operationRecordId}
+    </select>
+    <!--经营单位类别数据字典-->
+    <select id="getOperationTypeItem" resultType="OperationTypeItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{operationTypeId}
+    </select>
+    <!--开票类型数据字典-->
+    <select id="getTicketRateItem" resultType="TicketRateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{ticketRateId}
+    </select>
+    <!--客户类型数据字典-->
+    <select id="getClientTypeItem" resultType="ClientTypeItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{clientTypeId}
+    </select>
+    <!--审批状态数据字典-->
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
+    </select>
+    <!--客户状态数据字典-->
+    <select id="getClientStateItem" resultType="ClientStateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{clientStateId}
+    </select>
     <insert id="add" parameterType="Client" >
         insert into client ( clientId, groupId, companyName,
           organizationCode, licenseCode, representative, postCode, enterpriseType, operationMode,
           operationType, contingencyPlan, operationRecord, location, street, applicationStatus,
           materialAttachmentUrl, processAttachmentUrl, processDesp, contactName, phone, mobile,
           email, state, industry, product, checkState, bankName, bankAccount, taxNumber, ticketType,
-           isDisposal, clientType, nowTime, taxAddress, taxMobile, creator, createTime)
+           isDisposal, clientType, nowTime, taxAddress, taxMobile, creator, createTime, applicationStatusId,
+           contingencyPlanId, enterpriseTypeId, operationModelId, operationRecordId, operationTypeId,
+           ticketRateId, clientTypeId, checkStateId, clientStateId)
         values (#{clientId}, #{groupId}, #{companyName},
           #{organizationCode}, #{licenseCode}, #{representative}, #{postCode}, #{enterpriseType},
           #{operationMode}, #{operationType}, #{contingencyPlan}, #{operationRecord}, #{location},
           #{street}, #{applicationStatus}, #{materialAttachmentUrl}, #{processAttachmentUrl},
           #{processDesp}, #{contactName}, #{phone}, #{mobile}, #{email}, 'Enabled', #{industry},
           #{product}, #{checkState}, #{bankName}, #{bankAccount}, #{taxNumber}, #{ticketType}, #{isDisposal},
-          #{clientType}, NOW(), #{taxAddress}, #{taxMobile}, #{creator}, #{createTime});
+          #{clientType}, NOW(), #{taxAddress}, #{taxMobile}, #{creator}, #{createTime}, #{applicationStatusItem.dataDictionaryItemId},
+          #{contingencyPlanItem.dataDictionaryItemId}, #{enterpriseTypeItem.dataDictionaryItemId},
+          #{operationModelItem.dataDictionaryItemId}, #{operationRecordItem.dataDictionaryItemId},
+          #{operationTypeItem.dataDictionaryItemId}, #{ticketRateItem.dataDictionaryItemId},
+          #{clientTypeItem.dataDictionaryItemId}, #{checkStateItem.dataDictionaryItemId},
+          #{clientStateItem.dataDictionaryItemId});
           INSERT INTO t_document (clientId, filePath, documentType) VALUES (#{clientId}, #{materialAttachmentUrl}, 'EIA');
           INSERT INTO t_document (clientId, filePath, documentType) VALUES (#{clientId}, #{processAttachmentUrl}, 'EIA');
     </insert>
@@ -95,17 +152,17 @@
             <if test="phone != null and phone != ''">
                 and phone LIKE "%"#{phone}"%"
             </if>
-            <if test="checkState != null">
-                and checkState = #{checkState}
+            <if test="checkStateItem != null and checkStateItem.dataDictionaryItemId != 0">
+                and checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
-            <if test="clientState != null">
-                and state = #{clientState}
+            <if test="clientStateItem != null and clientStateItem.dataDictionaryItemId != 0">
+                and clientStateId = #{clientStateItem.dataDictionaryItemId}
             </if>
-            <if test="clientType != null">
-                and clientType = #{clientType}
+            <if test="clientTypeItem != null and clientTypeItem.dataDictionaryItemId != 0">
+                and clientTypeId = #{clientTypeItem.dataDictionaryItemId}
             </if>
-            <if test="applicationStatus != null">
-                and applicationStatus = #{applicationStatus}
+            <if test="applicationStatusItem != null and applicationStatusItem.dataDictionaryItemId != 0">
+                and applicationStatusId = #{applicationStatusItem.dataDictionaryItemId}
             </if>
             <if test="salesman != null and salesman.name != null and salesman.name != ''">
                 and salesmanId = #{salesman.salesmanId}
@@ -134,17 +191,17 @@
             <if test="phone != null and phone != ''">
                 and phone LIKE "%"#{phone}"%"
             </if>
-            <if test="checkState != null">
-                and checkState = #{checkState}
+            <if test="checkStateItem != null and checkStateItem.dataDictionaryItemId != 0">
+                and checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
-            <if test="clientState != null">
-                and state = #{clientState}
+            <if test="clientStateItem != null and clientStateItem.dataDictionaryItemId != 0">
+                and clientStateId = #{clientStateItem.dataDictionaryItemId}
             </if>
-            <if test="clientType != null">
-                and clientType = #{clientType}
+            <if test="clientTypeItem != null and clientTypeItem.dataDictionaryItemId != 0">
+                and clientTypeId = #{clientTypeItem.dataDictionaryItemId}
             </if>
-            <if test="applicationStatus != null">
-                and applicationStatus = #{applicationStatus}
+            <if test="applicationStatusItem != null and applicationStatusItem.dataDictionaryItemId != 0">
+                and applicationStatusId = #{applicationStatusItem.dataDictionaryItemId}
             </if>
             <if test="salesman != null and salesman.name != null and salesman.name != ''">
                 and salesmanId = #{salesman.salesmanId}
@@ -168,32 +225,34 @@
          street=#{street}, applicationStatus=#{applicationStatus}, processDesp=#{processDesp}, contactName=#{contactName},
          phone=#{phone}, mobile=#{mobile}, email=#{email}, industry=#{industry}, product=#{product}, bankName=#{bankName},
          bankAccount=#{bankAccount}, taxNumber=#{taxNumber}, ticketType=#{ticketType}, isDisposal=#{isDisposal},nowTime=NOW(),
-         taxAddress=#{taxAddress}, taxMobile=#{taxMobile}
+         taxAddress=#{taxAddress}, taxMobile=#{taxMobile},enterpriseTypeId=#{enterpriseTypeItem.dataDictionaryItemId},operationTypeId=#{operationTypeItem.dataDictionaryItemId},operationRecordId=#{operationRecordItem.dataDictionaryItemId},
+         operationModelId=#{operationModelItem.dataDictionaryItemId},contingencyPlanId=#{contingencyPlanItem.dataDictionaryItemId},
+         applicationStatusId=#{applicationStatusItem.dataDictionaryItemId},ticketRateId=#{ticketRateItem.dataDictionaryItemId}
          WHERE clientId=#{clientId} order by nowTime desc;
     </update>
 
     <update id="enableState" parameterType="String">
-        UPDATE client SET state='Enabled', nowTime=NOW() WHERE clientId=#{clientId};
+        UPDATE client SET state='Enabled', nowTime=NOW(), clientStateId=89 WHERE clientId=#{clientId};
     </update>
 
     <update id="disableState" parameterType="String">
-        UPDATE client SET state='Disabled', nowTime=NOW() WHERE clientId=#{clientId};
+        UPDATE client SET state='Disabled', nowTime=NOW(), clientStateId=90 WHERE clientId=#{clientId};
     </update>
 
     <update id="setCheckStateToSubmit" parameterType="String">
-        UPDATE client SET checkState='ToSubmit', nowTime=NOW() WHERE clientId=#{clientId};
+        UPDATE client SET checkState='ToSubmit', nowTime=NOW(), checkStateId=64 WHERE clientId=#{clientId};
     </update>
 
     <update id="setCheckStateExamining" parameterType="String">
-        UPDATE client SET checkState='Examining', nowTime=NOW() WHERE clientId=#{clientId};
+        UPDATE client SET checkState='Examining', nowTime=NOW(), checkStateId=63 WHERE clientId=#{clientId};
     </update>
 
     <update id="setCheckStateFinished"  >
-        UPDATE client SET checkState='Finished',advice=#{1}, nowTime=NOW() WHERE clientId=#{0};
+        UPDATE client SET checkState='Finished',advice=#{1}, nowTime=NOW(), checkStateId=65 WHERE clientId=#{0};
     </update>
 
     <update id="setCheckStateBacked" >
-        UPDATE client SET checkState='Backed', nowTime=NOW(),advice=#{1} WHERE clientId=#{0};
+        UPDATE client SET checkState='Backed', nowTime=NOW(),advice=#{1}, checkStateId=66 WHERE clientId=#{0};
     </update>
 
     <update id="assignSalesman" parameterType="Client">

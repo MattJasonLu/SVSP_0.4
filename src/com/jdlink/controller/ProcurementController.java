@@ -9,6 +9,7 @@ import com.jdlink.domain.Produce.ProcurementPlanItem;
 import com.jdlink.domain.Unit;
 import com.jdlink.service.ProcurementService;
 import com.jdlink.service.dictionary.DictionaryService;
+import com.jdlink.util.DBUtil;
 import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -882,7 +884,13 @@ public class ProcurementController {
             procurementPlanItem.setProposer(proposer);//申请部门
             procurementPlanItem.setSuppliesName(material.getSuppliesName());//物资名称
             procurementPlanItem.setSpecifications(material.getSpecifications());//规格
-            procurementPlanItem.setUnit(material.getUnit());//单位
+
+            //单位适配
+            UnitDataItem unitDataItem=new UnitDataItem();
+            int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(material.getUnitDataItem().getDictionaryItemName(),25);
+            unitDataItem.setDataDictionaryItemId(dataDictionaryItemId);
+            procurementPlanItem.setUnitDataItem(unitDataItem);
+//            procurementPlanItem.setUnit(material.getUnit());//单位
             procurementPlanItem.setDemandQuantity((int)material.getDemandQuantity());//需求数量
             procurementPlanItem.setRemarks(material.getNote());//备注
             procurementService.addProcurementPlanItem(procurementPlanItem);
@@ -1106,11 +1114,59 @@ public class ProcurementController {
         return procurementService.searchProcurementPlanCount(procurementPlan);
     }
 
+   //采购计划单明细修改页面查询
+    @RequestMapping("searchAdjust")
+    @ResponseBody
+    public String searchAdjust(@RequestBody ProcurementPlanItem procurementPlanItem){
+        JSONObject res=new JSONObject();
 
+        try {
+            List<ProcurementPlanItem> procurementPlanItemList=procurementService.searchAdjust(procurementPlanItem);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("procurementPlanItemList", procurementPlanItemList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+
+        }
+
+        return res.toString();
+    }
 //    //作废急需物资购置申请表
 //    @RequestMapping("cancelEmergencyProcurementById")
 //    @ResponseBody
 //    public String cancelEmergencyProcurementById(String){
 //
 //    }
+
+    //采购计划表导出
+    @RequestMapping("exportExcelProcurementPlan")
+    @ResponseBody
+    public String exportExcelProcurementPlan(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "月度采购计划单号/创建人/创建日期/修改人/修改日期/审批人/物资名称/规格型号/申购部门/需求数量/单位/单价/统计金额/备注";
+            name = "次生出库单";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
+    }
+
+
 }

@@ -8,6 +8,8 @@
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <link href="css/signin.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
+    <link href="css/loading1.css" rel="stylesheet">
+    <link href="css/loading2.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
@@ -17,7 +19,7 @@
                 type: "POST",                       // 方法类型
                 url: "getUser",                     // url
                 cache: false,
-                async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: $('#loginForm').serialize(),  // 请求参数
                 dataType: "json",
                 success: function (result) {
@@ -26,46 +28,82 @@
                         if (data.status === "success") {
 //                            console.log(data.user.isAdmin);
 //                            if (data.user.isAdmin == true)
-                            // 获取map.html的一级菜单父类
+                            // 获取动态菜单数据
+                            $('.loader').show();  // 显示进度条
+                            localStorage.clear();  // 每次重登需清空内存
                             $.ajax({
                                 type: "POST",                       // 方法类型
-                                url: "getLevelOneMenuByUrl",                  // url
+                                url: "getMenuTree",                  // url
                                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                                data: {
-                                    url: "map.html"
-                                },
                                 dataType: "json",
                                 success: function (result) {
-                                    // console.log(result);
                                     if (result != null && result.status === "success") {
-                                        localStorage.name = result.name;
+                                        var obj = JSON.stringify(result.data);
+                                        if (result.data != null) {
+                                            // 获取map.html的一级菜单父类名
+                                            var name = "";
+                                            for (var i = 0; i < result.data.organizationList.length; i++) { // 一级菜单
+                                                var organization = result.data.organizationList[i];
+                                                if (organization.url === "map.html") {
+                                                    name = organization.name;
+                                                } else if (organization.organizationList != null && organization.organizationList.length > 0) {
+                                                    //二级开始递归
+                                                    var name1 = getLevelOneMenuByUrl(organization);
+                                                    if (name1 !== "") {
+                                                        name = name1;
+                                                    }
+                                                }
+                                            }
+                                            localStorage.name = name;   // 寻找字节点中URL为map.html的一级菜单
+                                        }
+                                        $('.loader').hide();  // 隐藏进度条
+                                        localStorage.setItem("menuOrganization", obj);
+                                        window.location.href = 'map.html';
                                     }
                                 },
                                 error: function (result) {
-                                    alert(result.message);
+                                    console.log(result.message);
                                 }
                             });
-                            window.location.href = 'map.html';
-//                            else {
-//                                window.location.href = 'client/wastesPlatform.html';
-//                            }
                         } else {
                             alert(data.message);
                         }
                     }
                 },
-                error:function (result) {
+                error: function (result) {
                     var data = eval(result);
                     alert(data.message);
                 }
             });
         }
 
-        function keyLogin(){
-            if (event.keyCode===13)  //回车键的键值为13
-                document.getElementById("input1").click(); //调用登录按钮的登录事件
+        /**
+         * 寻找子节点中有map.html的一级菜单名
+         * @param organization
+         */
+        function getLevelOneMenuByUrl(organization) {
+            var name = "";
+            for (var i = 0; i < organization.organizationList.length; i++) {
+                var organizationA = organization.organizationList[i];
+                organizationA.name = organization.name;  // 将name全部设置称一级菜单名，方便返回
+                if (organizationA.url === "map.html") {
+                    name = organizationA.name;
+                } else {
+                    if (organizationA.organizationList != null && organizationA.organizationList.length > 0) {
+                        var name1 = getLevelOneMenuByUrl(organizationA);
+                        if (name1 !== "") {
+                            name = name1;
+                        }
+                    }
+                }
+            }
+            return name;
         }
 
+        function keyLogin() {
+            if (event.keyCode === 13)  //回车键的键值为13
+                document.getElementById("input1").click(); //调用登录按钮的登录事件
+        }
         $('#embed').load('embed/loginLogModal.html');
     </script>
 </head>
@@ -73,30 +111,42 @@
     .gap {
         margin-top: 10%;
     }
+
     body {
         background-image: url(image/B2.jpg);
         background-size: 100%;
     }
+
     form {
         background-color: #fff;
     }
 </style>
 <body onkeydown="keyLogin();">
 <!--登录表单-->
-<form class="form-signin gap" id="loginForm" method="post">
-    <h2 class="form-signin-heading">登录</h2>
-    <label for="inputAccount" class="sr-only">账号</label>
-    <input type="text" id="inputAccount" class="form-control" name="username" placeholder="账号" required autofocus>
-    <label for="inputPassword" class="sr-only">密码</label>
-    <input type="password" id="inputPassword" class="form-control" name="password" placeholder="密码" required>
-    <div class="checkbox">
-        <label>
-            <input type="checkbox" value="rememberMe" id="rememberMe"> 记住我
-        </label>
-    </div>
-    <button type="button" class="btn btn-lg btn-primary btn-block" id="input1" onclick="login()">登录</button>
-    <span>还没有账号？<a class="text-primary" href="signup.html">注册</a></span>
-</form>
+<div class="container-fluid">
+    <form class="form-signin gap" id="loginForm" method="post">
+        <h2 class="form-signin-heading">登录</h2>
+        <label for="inputAccount" class="sr-only">账号</label>
+        <input type="text" id="inputAccount" class="form-control" name="username" placeholder="账号" required autofocus>
+        <label for="inputPassword" class="sr-only">密码</label>
+        <input type="password" id="inputPassword" class="form-control" name="password" placeholder="密码" required>
+        <div class="checkbox" hidden>
+            <label>
+                <input type="checkbox" value="rememberMe" id="rememberMe"> 记住我
+            </label>
+        </div>
+        <br>
+        <button type="button" class="btn btn-lg btn-primary btn-block" id="input1" onclick="login()">登录</button>
+        <!--<span>还没有账号？<a class="text-primary" href="signup.html">注册</a></span>-->
+    </form>
+</div>
+<div class="loader" style="display: none"><!--进度条-->
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+</div>
 <div id="embed"></div>
 </body>
 </html>

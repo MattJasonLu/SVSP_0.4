@@ -384,8 +384,8 @@ function setWayBillList(result) {
                     break;
                 case (9):
                     //接运单状态
-                    if (obj.state != null) {
-                        $(this).html(obj.state.name);
+                    if (obj.checkStateItem != null) {
+                        $(this).html(obj.checkStateItem.dictionaryItemName);
                         break;
                     }
             }
@@ -402,32 +402,41 @@ function setWayBillList(result) {
  * 设置高级检索的下拉框数据
  */
 function setSeniorSelectedList() {
+    // 设置审批状态
     $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getWayBillSeniorSelectedList",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        type: "POST",
+        url: "getCheckStateDataByDictionary",
         dataType: "json",
+        async: false,
         success: function (result) {
-            if (result != undefined) {
+            if (result != undefined && result.status == "success") {
                 var data = eval(result);
+                console.log(result);
                 // 高级检索下拉框数据填充
-                var state = $("#search-wayBillState");
-                state.children().remove();
-                $.each(data.stateList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    state.append(option);
+                var checkState = $("#search-wayBillState");
+                checkState.children().remove();
+                $.each(data.data, function (index, item) {
+                    if (item.dataDictionaryItemId == 76 ||
+                        item.dataDictionaryItemId == 63 ||
+                        item.dataDictionaryItemId == 67 ||
+                        item.dataDictionaryItemId == 66 ||
+                        item.dataDictionaryItemId == 69 ||
+                        item.dataDictionaryItemId == 75) {
+                        var option = $('<option />');
+                        option.val(item.dataDictionaryItemId);
+                        option.text(item.dictionaryItemName);
+                        checkState.append(option);
+                    }
                 });
-                state.get(0).selectedIndex = -1;
+                checkState.get(0).selectedIndex = -1;
             } else {
-                console.log("fail: " + result);
+                console.log(result.message);
             }
-        },
-        error: function (result) {
-            console.log("error: " + result);
+        }, error: function (result) {
+            console.log(result);
         }
     });
+
 }
 
 /**
@@ -558,12 +567,15 @@ function searchWayBill() {
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
     var state = null;
-    if ($("#search-wayBillState").val() === 0) state = "NewBuild";//新建
-    if ($("#search-wayBillState").val() === 1) state = "ToExamine";//待审批
-    if ($("#search-wayBillState").val() === 2) state = "Examining";//审批中
-    if ($("#search-wayBillState").val() === 3) state = "Approval";//审批通过
-    if ($("#search-wayBillState").val() === 4) state = "Backed";//驳回
     if ($("#senior").is(':visible')) {
+        switch($("#search-wayBillState").val()){
+            case "0":state = "NewBuild"; break;//新建
+            case "1":state = "ToExamine"; break;//待审批
+            case "2":state = "Examining"; break;//审批中
+            case "3":state = "Approval"; break;//审批通过
+            case "4":state = "Backed"; break;//驳回
+            case "5":state = "Invalid"; break; // 作废
+        }
         data = {
             id: $.trim($("#search-id").val()),
             produceCompanyName: $.trim($("#search-companyName").val()),
@@ -573,6 +585,9 @@ function searchWayBill() {
             startDate: $("#search-startDate").val(),
             endDate: $("#search-endDate").val(),
             produceCompanyOperator: $.trim($("#search-operator").val()),
+            checkStateItem: {
+                dataDictionaryItemId: $("#search-wayBillState").val()
+            },
             state: state,
             page: page
         };
@@ -621,7 +636,7 @@ function searchWayBill() {
             keywords: keywords
         }
     }
-    console.log("data");
+    console.log("查询数据");
     console.log(data);
     if (data == null) alert("请点击'查询设置'输入查询内容!");
     else {

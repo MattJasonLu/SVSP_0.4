@@ -37,6 +37,7 @@ public interface ProcurementMapper {
     List<ProcurementPlan>getProcurementPlanList(Page page);
     void updateProcurementState(String id);
     List<ProcurementPlan>getProcurementPlanById(String id);
+    List<ProcurementPlanItem> searchAdjust(ProcurementPlanItem procurementPlanItem);
     void adjustProcurementPlan(ProcurementPlan procurementPlan);
     void adjustProcurementPlanItem(ProcurementPlanItem procurementPlanItem);
     void submitProcurementPlan(String id);

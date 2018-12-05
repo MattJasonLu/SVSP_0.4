@@ -1,6 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Dictionary.CheckStateItem;
 import com.jdlink.domain.Page;
 
 import java.util.ArrayList;
@@ -46,6 +47,10 @@ public class TransportPlan {
      * 审核状态
      */
     private CheckState checkState;
+    /**
+     * 审批状态数据字典
+     */
+    private CheckStateItem checkStateItem;
     /**
      * 页码
      */
@@ -133,6 +138,14 @@ public class TransportPlan {
 
     public void setKeyword(String keyword) {
         this.keyword = keyword;
+    }
+
+    public CheckStateItem getCheckStateItem() {
+        return checkStateItem;
+    }
+
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
     }
 
     @Override

@@ -87,8 +87,8 @@ function viewEquipment1(data) {
         var clonedTr = tr.clone();
         // 赋值
         clonedTr.find("td[name='documentNumber']").text(index+1);//index + 1
-        if (obj.equipment != null)
-        clonedTr.find("td[name='equipment']").text(obj.equipment.name);
+        if (obj.equipmentDataItem != null)
+        clonedTr.find("td[name='equipment']").text(obj.equipmentDataItem.dictionaryItemName);
         clonedTr.find("td[name='runningTime']").text(obj.runningTime);
         clonedTr.find("td[name='stopTime']").text(obj.stopTime);
         clonedTr.find("td[name='stopResult']").text(obj.stopResult);
@@ -270,7 +270,7 @@ function addEquipment() {
     console.log(data);
    $('.myclass').each(function () {
        var dataItem={
-           equipment: $('#equipment').selectpicker('val'),
+           equipmentDataItem: {dataDictionaryItemId:$(this).children('td').eq(1).find('select').val()},
            runningTime:$(this).children('td').eq(2).children('input').val(),
            stopTime:$(this).children('td').eq(3).children('input').val(),
            stopResult: $(this).children('td').eq(4).children('input').val()
@@ -302,6 +302,7 @@ function addEquipment() {
 
 //生成单据号
 function createDocNumber() {
+    loadNavigationList();    // 设置动态菜单
     // 设置单据号
     $.ajax({
         type: "POST",                       // 方法类型
@@ -419,7 +420,7 @@ function setSeniorSelectList() {
     //设置状态下拉框
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getEquipmentNameList",        // url
+        url: "getEquipmentByDataDictionary",        // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
@@ -429,10 +430,10 @@ function setSeniorSelectList() {
                 // 高级检索下拉框数据填充
                 var state = $("#equipment");
                 state.children().remove();
-                $.each(data.equipmentList, function (index, item) {
+                $.each(data.data, function (index, item) {
                     var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     state.append(option);
                 });
                 state.get(0).selectedIndex = -1;
@@ -897,7 +898,7 @@ function showEditModal(e) {
     //设置状态下拉框
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getEquipmentNameList",        // url
+        url: "getEquipmentByDataDictionary",        // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
@@ -907,10 +908,10 @@ function showEditModal(e) {
                 // 高级检索下拉框数据填充
                 var state = $("#editTr").find("select[name='equipment']");
                 state.children().remove();
-                $.each(data.equipmentList, function (index, item) {
+                $.each(data.data, function (index, item) {
                     var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     state.append(option);
                 });
                 state.get(0).selectedIndex = -1;
@@ -939,7 +940,7 @@ function showEditModal(e) {
                     var clonedTr = editTr.clone();
                     clonedTr.find("td[name='index']").text(i+1);
                     clonedTr.find("td[name='itemID']").text(obj[i].itemID);
-                    clonedTr.find("select[name='equipment']").val(obj[i].equipment.index);
+                    clonedTr.find("select[name='equipment']").val(obj[i].equipmentDataItem.dataDictionaryItemId);
                     clonedTr.find("input[name='runningTime']").val(parseFloat(obj[i].runningTime).toFixed(2));
                     clonedTr.find("input[name='stopTime']").val(parseFloat(obj[i].stopTime).toFixed(2));
                     clonedTr.find("input[name='stopResult']").val(obj[i].stopResult);
@@ -971,7 +972,10 @@ function editData() {
         if ($(this).attr('id') != 'editTr') {
             var item = {};
             item.itemID = $(this).find("td[name='itemID']").text();
-            item.equipment = $(this).find("select[name='equipment']").val();
+            var equipmentDataItem={};
+            equipmentDataItem.dataDictionaryItemId=$(this).find("select[name='equipment']").val();
+            item.equipmentDataItem=equipmentDataItem;
+            // item.equipment = $(this).find("select[name='equipment']").val();
             item.runningTime = $(this).find("input[name='runningTime']").val();
             item.stopTime = $(this).find("input[name='stopTime']").val();
             item.stopResult = $(this).find("input[name='stopResult']").val();

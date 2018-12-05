@@ -145,13 +145,13 @@
                 <!--操作按钮-->
 
                 <div class="pull-left">
-                    <a class="btn btn-primary btn-xs" href="clientInfo.html" id="function_85" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-plus"
+                    <a class="btn btn-primary btn-xs" href="clientInfo.html" id="function_-18" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-plus"
                                                                                    aria-hidden="true"></span> 新增</a>
                     <!--<a class="btn btn-primary btn-xs" id="function_360" onclick="check(this);function check(e){if(!checkAuthority($(e))) return false; submitClients(e);}"><span class="glyphicon glyphicon-ok"-->
                                                                                        <!--aria-hidden="true"></span> 提交</a>-->
-                    <a class="btn btn-primary btn-xs" id="function_84" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose(e);}"><span
+                    <a class="btn btn-primary btn-xs" id="function_-19" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose(e);}"><span
                             class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                    <a class="btn btn-primary btn-xs" id="function_86" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel(e);}"><span
+                    <a class="btn btn-primary btn-xs" id="function_-20" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel(e);}"><span
                             class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
@@ -174,32 +174,32 @@
                 <div class="row">
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-clientId" class="col-sm-4 control-label">单位编号</label>
+                            <label for="search-clientId" class="col-sm-5 control-label">单位编号</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-clientId" name="search-clientId"
-                                       placeholder="">
+                                       placeholder="" onkeyup="searchClient();">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="search-checkState" class="col-sm-4 control-label">审核状态</label>
+                            <label for="search-checkState" class="col-sm-5 control-label">审核状态</label>
                             <div class="col-xs-7">
-                                <select class="form-control" id="search-checkState" name="search-checkState"></select>
+                                <select class="form-control" id="search-checkState" name="search-checkState" onchange="searchClient();"></select>
                             </div>
                         </div>
 
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-companyName" class="col-sm-4 control-label">单位名称</label>
+                            <label for="search-companyName" class="col-sm-5 control-label">单位名称</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-companyName"
-                                       name="search-companyName" placeholder="">
+                                       name="search-companyName" placeholder="" onkeyup="searchClient();">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="search-clientState" class="col-sm-4 control-label">账号状态</label>
+                            <label for="search-clientState" class="col-sm-5 control-label">账号状态</label>
                             <div class="col-xs-7">
-                                <select class="form-control" id="search-clientState" name="search-clientState"></select>
+                                <select class="form-control" id="search-clientState" name="search-clientState" onchange="searchClient();"></select>
                             </div>
                         </div>
 
@@ -207,32 +207,32 @@
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
                             <label for="search-contactName"
-                                   class="col-sm-4 control-label">联&nbsp;&nbsp;系&nbsp;&nbsp;人</label>
+                                   class="col-sm-5 control-label">联&nbsp;&nbsp;系&nbsp;&nbsp;人</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-contactName"
-                                       name="search-contactName" placeholder="">
+                                       name="search-contactName" placeholder="" onkeyup="searchClient();">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="search-applicationStatus" class="col-sm-4 control-label">申报状态</label>
+                            <label for="search-applicationStatus" class="col-sm-5 control-label">申报状态</label>
                             <div class="col-xs-7">
                                 <select class="form-control" id="search-applicationStatus"
-                                        name="search-applicationStatus"></select>
+                                        name="search-applicationStatus" onchange="searchClient();"></select>
                             </div>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-phone" class="col-sm-4 control-label">联系电话</label>
+                            <label for="search-phone" class="col-sm-5 control-label">联系电话</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-phone" name="search-phone"
-                                       placeholder="">
+                                       placeholder="" onkeyup="searchClient();">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="search-clientType" class="col-sm-4 control-label">单位类型</label>
+                            <label for="search-clientType" class="col-sm-5 control-label">单位类型</label>
                             <div class="col-xs-7">
-                                <select class="form-control" id="search-clientType" name="search-clientType"></select>
+                                <select class="form-control" id="search-clientType" name="search-clientType" onchange="searchClient();"></select>
                             </div>
                         </div>
                     </div>
@@ -276,19 +276,19 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">
-                        <a href="#" onclick="check(this); function check(e) { if(!checkAuthority($(e))) return false; viewClient(e);}" title="查看" id="function_88"><span
+                        <a href="#" onclick="check(this); function check(e) { if(!checkAuthority($(e))) return false; viewClient(e);}" title="查看" id="function_-21"><span
                                 class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
                         <!--<a href="#" onclick="check(this); function check(e) { if(!checkAuthority($(e))) return false; commitClient(e);}" title="提交" id="function_87"><span-->
                                 <!--class="glyphicon glyphicon glyphicon-export" aria-hidden="true"></span></a>-->
-                        <a href="#" onclick="check(this); function check(e) { if(!checkAuthority($(e))) return false; adjustClient(e);}" title="修改" id="function_89"><span
+                        <a href="#" onclick="check(this); function check(e) { if(!checkAuthority($(e))) return false; adjustClient(e);}" title="修改" id="function_-22"><span
                                 class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
                         <!--<a href="#" onclick="check(this); function check(e) { if(!checkAuthority($(e))) return false; examineClient(e);}" title="审批" id="function_90"><span-->
                                 <!--class="glyphicon glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>-->
-                        <a href="#" onclick="check(this); function check(e) { if(!checkAuthority($(e))) return false; enableClient(e);}" title="启用" id="function_92"><span
+                        <a href="#" onclick="check(this); function check(e) { if(!checkAuthority($(e))) return false; enableClient(e);}" title="启用" id="function_-23"><span
                                 class="glyphicon glyphicon glyphicon-ok-circle" aria-hidden="true"></span></a>
-                        <a href="#" onclick="check(this); function check(e) { if(!checkAuthority($(e))) return false; disableClient(e);}" title="禁用" id="function_91"><span
+                        <a href="#" onclick="check(this); function check(e) { if(!checkAuthority($(e))) return false; disableClient(e);}" title="禁用" id="function_-24"><span
                                 class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
-                        <a href="#" onclick="check(this); function check(e) { if(!checkAuthority($(e))) return false; setSales(e);}" title="分配业务员" id="function_93"><span
+                        <a href="#" onclick="check(this); function check(e) { if(!checkAuthority($(e))) return false; setSales(e);}" title="分配业务员" id="function_-25"><span
                                 class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span></a>
                     <td>
                 </tr>
@@ -553,9 +553,9 @@
                                     id="modal3_industry"></span></p>
                             <p class="text-left"><b>企&nbsp;&nbsp;&nbsp;业&nbsp;&nbsp;类&nbsp;&nbsp;&nbsp;型&nbsp;&nbsp;</b><span
                                     id="modal3_enterpriseType"></span></p>
-                            <p class="text-left"><b>经营单位类别&nbsp;&nbsp;</b><span id="modal3_operationType"></span></p>
-                            <p class="text-left"><b>危废经营记录情况&nbsp;&nbsp;</b><span id="modal3_operationRecord"></span>
-                            </p>
+                            <!--<p class="text-left"><b>经营单位类别&nbsp;&nbsp;</b><span id="modal3_operationType"></span></p>-->
+                            <!--<p class="text-left"><b>危废经营记录情况&nbsp;&nbsp;</b><span id="modal3_operationRecord"></span></p>-->
+                            <p class="text-left"><b>工商注册地址&nbsp;&nbsp;</b><span id="modal3_location"></span></p>
                             <p class="text-left"><b>所&nbsp;&nbsp;&nbsp;属&nbsp;&nbsp;街&nbsp;&nbsp;&nbsp;道&nbsp;&nbsp;</b><span
                                     id="modal3_street"></span></p>
                         </div>
@@ -568,11 +568,10 @@
                                     id="modal3_product"></span></p>
                             <p class="text-left"><b>经&nbsp;&nbsp;&nbsp;营&nbsp;&nbsp;方&nbsp;&nbsp;&nbsp;式&nbsp;&nbsp;</b><span
                                     id="modal3_operationMode"></span></p>
-                            <p class="text-left"><b>事故防范应急预案&nbsp;&nbsp;</b><span id="modal3_contingencyPlan"></span>
-                            </p>
+                            <!--<p class="text-left"><b>事故防范应急预案&nbsp;&nbsp;</b><span id="modal3_contingencyPlan"></span></p>-->
                             <p class="text-left"><b>申&nbsp;&nbsp;&nbsp;报&nbsp;&nbsp;状&nbsp;&nbsp;&nbsp;态&nbsp;&nbsp;</b><span
                                     id="modal3_applicationStatus"></span></p>
-                            <p class="text-left"><b>工商注册地址&nbsp;&nbsp;</b><span id="modal3_location"></span></p>
+
                         </div>
                     </div>
                     <h4 class="text-info">环评信息</h4>
@@ -878,23 +877,23 @@
                     $("#modal3_organizationCode").text(data.organizationCode);
                     $("#modal3_representative").text(data.representative);
                     $("#modal3_industry").text(data.industry);
-                    if (data.enterpriseType != null)
-                        $("#modal3_enterpriseType").text(data.enterpriseType.name);
-                    if (data.operationType != null)
-                        $("#modal3_operationType").text(data.operationType.name);
-                    if (data.operationRecord != null)
-                        $("#modal3_operationRecord").text(data.operationRecord.name);
+                    if (data.enterpriseTypeItem != null)
+                        $("#modal3_enterpriseType").text(data.enterpriseTypeItem.dictionaryItemName);
+                    if (data.operationTypeItem != null)
+                        $("#modal3_operationType").text(data.operationTypeItem.dictionaryItemName);
+                    if (data.operationRecordItem != null)
+                        $("#modal3_operationRecord").text(data.operationRecordItem.dictionaryItemName);
                     $("#modal3_street").text(data.street);
                     $("#modal3_clientId").text(data.clientId);
                     $("#modal3_licenseCode").text(data.licenseCode);
                     $("#modal3_postCode").text(data.postCode);
                     $("#modal3_product").text(data.product);
-                    if (data.operationMode != null)
-                        $("#modal3_operationMode").text(data.operationMode.name);
-                    if (data.contingencyPlan != null)
-                        $("#modal3_contingencyPlan").text(data.contingencyPlan.name);
-                    if (data.applicationStatus != null)
-                        $("#modal3_applicationStatus").text(data.applicationStatus.name);
+                    if (data.operationModelItem != null)
+                        $("#modal3_operationMode").text(data.operationModelItem.dictionaryItemName);
+                    if (data.contingencyPlanItem != null)
+                        $("#modal3_contingencyPlan").text(data.contingencyPlanItem.dictionaryItemName);
+                    if (data.applicationStatusItem != null)
+                        $("#modal3_applicationStatus").text(data.applicationStatusItem.dictionaryItemName);
                     $("#modal3_location").text(data.location);
                     $("#modal3_processDesp").text(data.processDesp);
                     $("#modal3_contactName").text(data.contactName);
@@ -904,7 +903,8 @@
                     $("#modal3_bankName").text(data.bankName);
                     $("#modal3_bankAccount").text(data.bankAccount);
                     $("#modal3_taxNumber").text(data.taxNumber);
-                    if (data.ticketType != null) $("#modal4_ticketType").text(data.ticketType.name);
+                    if (data.ticketRateItem != null)
+                        $("#modal4_ticketType").text(data.ticketRateItem.dictionaryItemName);
                     $("#modal3_materialAttachment").click(function () {
                         if (data.materialAttachmentUrl != null && data.materialAttachmentUrl != "") {
                             window.open('downloadFile?filePath=' + data.materialAttachmentUrl);

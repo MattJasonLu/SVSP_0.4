@@ -275,10 +275,22 @@
     <resultMap id="InboundOrderItemIdRM" type="WasteInventory">
         <collection property="produceCompany" column="=clientId=clientId" select="getClient"></collection>
         <collection property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"></collection>
+        <collection property="processWayItem" column="processWayId" select="getProcessWayItem"></collection>
+        <collection property="handleCategoryItem" column="handleCategoryId" select="getHandleCategoryItem"></collection>
     </resultMap>
     <select id="getByInboundOrderItemId" resultMap="InboundOrderItemIdRM" parameterType="String">
         select * from t_pl_wasteinventory where inboundOrderItemId=#{inboundOrderItemId};
     </select>
+
+    <!--进料放式查询数据字典-->
+    <select id="getHandleCategoryItem" resultType="HandleCategoryItem">
+    select * from datadictionaryitem where dataDictionaryItemId=#{handleCategoryId}
+</select>
+
+    <!--处置方式查询数据字典-->
+    <select id="getProcessWayItem" resultType="ProcessWayItem">
+    select * from datadictionaryitem where dataDictionaryItemId=#{processWayId}
+</select>
     <!--寻找最新的入库日期 危废-->
     <select id="getNewestInBoundDate" resultType="Date">
          select  inboundDate from t_pl_wasteinventory  where  inboundDate is not null  and boundType='WasteInbound' order  by inboundDate;

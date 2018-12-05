@@ -322,13 +322,13 @@ function loadPageList() {
         }
     });
     isSearch = false;
-    getSelectedInfo();
+    //getSelectedInfo();
 }
 
 /**
  * 设置高级查询的审核状态数据
  */
-function getSelectedInfo() {
+function getSelectedInfo(){
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getCheckState",                  // url
@@ -376,7 +376,7 @@ function setDataList(result) {
         clonedTr.find("td[name='index']").text(index + 1);
         clonedTr.find("td[name='id']").text(obj.id);
         clonedTr.find("td[name='date']").text(getDateStr(obj.date));
-        if (obj.checkState != null) clonedTr.find("td[name='checkState']").text(obj.checkState.name);
+        if (obj.checkStateItem != null) clonedTr.find("td[name='checkState']").text(obj.checkStateItem.dictionaryItemName);
         clonedTr.find("td[name='author']").text(obj.author);
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
@@ -398,16 +398,16 @@ function searchData() {
     // 精确查询
     if ($("#senior").is(':visible')) {
         data = {
-            parkingReason: $("#beginTime").val(),
-            otherIssue: $("#endTime").val(),
-            checkState: $("#search-checkState").val(),
+            startDate: $("#beginTime").val(),
+            endDate: $("#endTime").val(),
+            checkStateItem: {dataDictionaryItemId:$("#search-checkState").val()},
             page: page
         };
         console.log(data);
         // 模糊查询
     } else {
         data = {
-            keyword: $("#searchContent").val(),
+            keyword: $.trim($("#searchContent").val()),
             page: page
         };
     }
@@ -431,6 +431,15 @@ function searchData() {
         }
     });
     isSearch = true;
+}
+
+/**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchData();      //
+    }
 }
 
 /**
@@ -1485,16 +1494,20 @@ function calculate(e) {
 function setInvalid(e) {
     var r = confirm("确认作废该日报？");
     if (r) {
+
         var id = getIdByMenu(e);
+
+        var data={
+            id:id,
+            checkStateItem:{dataDictionaryItemId:69}
+        };
         $.ajax({
             type: "POST",                       // 方法类型
             url: "setProductionDailyState",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
-            data: {
-                id: id,
-                checkState: 'Invalid'
-            },
+            data:JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     alert(result.message);
@@ -1518,15 +1531,17 @@ function setLocked(e) {
     var r = confirm("确认锁定该日报？");
     if (r) {
         var id = getIdByMenu(e);
+        var data={
+            id:id,
+            checkStateItem:{dataDictionaryItemId:83}
+        };
         $.ajax({
             type: "POST",                       // 方法类型
             url: "setProductionDailyState",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
-            data: {
-                id: id,
-                checkState: 'Locked'
-            },
+            data:JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     alert(result.message);

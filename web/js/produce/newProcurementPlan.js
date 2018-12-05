@@ -4,7 +4,8 @@
 
 //加载月度采购申请表数据列表
 function getProcurement() {
-    var page = {}
+    loadNavigationList();   // 设置动态菜单
+    var page = {};
     $('#tbody1').find("input[name='select']").prop('checked', true);
     $("input[name='allSel']").prop('checked', true);
 
@@ -98,8 +99,8 @@ function setMonthProcurementList(result) {
                     break;
                 // 单位
                 case (4):
-                    if (obj.unit) {
-                        $(this).html(obj.unit.name);
+                    if (obj.unitDataItem) {
+                        $(this).html(obj.unitDataItem.dictionaryItemName);
                     }
 
                     break;
@@ -217,7 +218,7 @@ function add() {
                                 receiptNumber: $(this).parent().parent().parent().children('td').eq(9).html(),
                                 suppliesName: $(this).parent().parent().parent().children('td').eq(2).html(),
                                 specifications: $(this).parent().parent().parent().children('td').eq(3).html(),
-                                unit: getFormTypeByFromStr($(this).parent().parent().parent().children('td').eq(4).html()),
+                                unitDataItem:{dictionaryItemName:($(this).parent().parent().parent().children('td').eq(4).html())} ,
                                 demandQuantity: $(this).parent().parent().parent().children('td').eq(6).html(),
                                 note: $(this).parent().parent().parent().children('td').eq(7).html(),
                                 id:$(this).parent().parent().parent().children('td').eq(10).html(),

@@ -217,6 +217,7 @@ function inputSwitchPage() {
 }
 
 function  batchingList() {
+    loadNavigationList();    // 设置动态菜单
     var page={};
     $.ajax({
         type: "POST",                       // 方法类型
@@ -930,14 +931,14 @@ function save() {
             produceCompany:{clientId:$(this).children('td').eq(12).html()},
             wastesName:$(this).children('td').eq(3).html(),
             wasteCategory:$(this).children('td').eq(5).html(),
-            handleCategoryItem:{dataDictionaryItemId:getIdFromHandleCategory($(this).children('td').eq(6).html())},
+            handleCategoryItem:{dictionaryItemName:($(this).children('td').eq(6).html())},
             batchingNumber:$(this).children('td').eq(8).children('input').val(),//配料的数量
             batchingDate:$("#date").val(),//配料日期
             createDate:$("#createDate").val(),//创建日期
             creator:$("#creator").val(),
             inboundOrderItemId:$(this).children('td').eq(11).html(),
             transferDraftId:$(this).children('td').eq(14).html(),
-            processWayItem:{dataDictionaryItemId:getIdFromProcessWay($(this).children('td').eq(7).html())},
+            processWayItem:{dictionaryItemName:($(this).children('td').eq(7).html())},
     };
         console.log(data);
         $.ajax({
@@ -970,6 +971,7 @@ function save() {
 //配料单显示页面加载
 function loadBatchingOrderList() {
     $('.loader').show()
+    loadNavigationList();    // 设置动态菜单
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
@@ -1246,6 +1248,7 @@ function add(data) {
 
 //领料单新增页面预加载
 function loadMaterialRequisitionList(){
+    loadNavigationList();    // 设置动态菜单
     var b=(localStorage.getItem("temp"));//1,2,3
     console.log("b:"+b);
   if(b!=null){
@@ -1464,8 +1467,8 @@ function updateMaterialRequisitionOrder() {
                wastesName:$(this).children("td").eq(2).html(),
                wasteCategory:$(this).children("td").eq(3).html(),
                recipientsNumber:parseFloat($(this).children("td").eq(6).children('input').val()).toFixed(2),
-               handleCategoryItem:{dataDictionaryItemId:getIdFromHandleCategory($(this).children("td").eq(7).html())},
-               processWayItem:{dataDictionaryItemId:getIdFromProcessWay($(this).children("td").eq(8).html())},
+               handleCategoryItem:{dictionaryItemName:($(this).children("td").eq(7).html())},
+               processWayItem:{dictionaryItemName:($(this).children("td").eq(8).html())},
                inboundOrderItemId:$(this).children("td").eq(9).html(),
                client:{clientId:$(this).children("td").eq(10).html()},
                wareHouse:{wareHouseId:$(this).children("td").eq(11).html()},
@@ -1661,7 +1664,7 @@ function exportExcel() {
     var items = $("input[name='select']:checked");//判断复选框是否选中
 
     if (items.length <= 0) { //如果不勾选
-        var sqlWords = "select batchingOrderId 配料单号,batchingDate 配料日期,createDate 创建日期,remarks 备注,wareHouseId 仓库编号,produceCompany 产废单位编号,acceptCompany 接收单位编号,batchingNumber 配料数量,handelCategory 进料方式, packageType 包装方式,unitPrice 单价, inboundOrderId 入库单号,creator 创建人,wastesCode 危废编码,wasteCategory 危废类别,processWay 处置方式, formType 物质形态  from t_pl_batchingorder;";
+        var sqlWords = "select batchingOrderId ,(select  wareHouseName from t_pl_warehouse where wareHouseId =t_pl_batchingorder.wareHouseId) ,(select companyName from client where client.clientId=t_pl_batchingorder.produceCompany) ,wastesName   ,batchingNumber ,batchingDate ,createDate  ,transferDraftId , (select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=handleCategoryId ) ,(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=processWayId )  from t_pl_batchingorder ";
         window.open('exportExcelBatchingOrder?name=' + name + '&sqlWords=' + sqlWords);
     }
     if (items.length > 0) {
@@ -1676,7 +1679,7 @@ function exportExcel() {
                 if (i < idArry.length - 1) sql += idArry[i] + ",";
                 else if (i == idArry.length - 1) sql += idArry[i] + ")"
             }
-            var sqlWords = "select batchingOrderId ,("+"select  wareHouseName from t_pl_warehouse where wareHouseId in (select t_pl_batchingorder.wareHouseId from t_pl_batchingorder where batchingOrderId"+sql+")) ,produceCompany ,wastesName   ,batchingNumber ,batchingDate ,createDate  ,transferDraftId , handelCategory ,processWay  from t_pl_batchingorder  where  batchingOrderId" + sql;
+            var sqlWords = "select batchingOrderId ,(select  wareHouseName from t_pl_warehouse where wareHouseId =t_pl_batchingorder.wareHouseId) ,(select companyName from client where client.clientId=t_pl_batchingorder.produceCompany) ,wastesName   ,batchingNumber ,batchingDate ,createDate  ,transferDraftId , (select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=handleCategoryId ) ,(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=processWayId )  from t_pl_batchingorder  where  batchingOrderId" + sql;
 
         }
         console.log(sqlWords)

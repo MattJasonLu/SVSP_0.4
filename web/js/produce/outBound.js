@@ -263,6 +263,7 @@ function inputSwitchPage() {
  * */
 function loadOutBoundList() {
     $('.loader').show();
+    loadNavigationList();    // 设置动态菜单
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
@@ -506,9 +507,9 @@ function saveOutBound(){
 
                 var inboundOrderItemId=$(this).children('td').eq(11).html();
 
-                var handelCategory=getIdFromHandleCategory($(this).children('td').eq(5).html())
+                var handelCategory=($(this).children('td').eq(5).html())
 
-               var processWay=getIdFromProcessWay($(this).children('td').eq(6).html())
+               var processWay=($(this).children('td').eq(6).html())
                 data={
                     outboundOrderId:outboundOrderId,
                     client:{clientId:clientId},
@@ -522,8 +523,8 @@ function saveOutBound(){
                     outboundNumber:outboundNumber,
                     equipmentDataItem:{dataDictionaryItemId:equipment},
                     inboundOrderItemId:inboundOrderItemId,
-                    handleCategoryItem:{dataDictionaryItemId:handelCategory},
-                    processWayItem:{dataDictionaryItemId:processWay}
+                    handleCategoryItem:{dictionaryItemName:handelCategory},
+                    processWayItem:{dictionaryItemName:processWay}
                 }
                 console.log(data);
                addOutBoundOrder(data);
@@ -830,41 +831,7 @@ function comfirm() {
      });
 }
 
-//导出
-function exportExcel() {
-    var name = 't_pl_outboundorder';
 
-    var idArry = [];//存放主键
-    var items = $("input[name='select']:checked");//判断复选框是否选中
-
-    if (items.length <= 0) { //如果不勾选
-        var sqlWords = "select t_pl_outboundorder.outboundOrderId 出库单号,t_pl_outboundorder.outboundDate 出库日期 ,t_pl_outboundorder.creator  创建人,t_pl_outboundorder.auditor 审核人, t_pl_outboundorder.outboundNumber   出库数量,t_pl_outboundorder.handelCategory 进料方式, t_pl_outboundorder.processWay 处置方式,t_pl_outboundorder.wasteCategory 危废类别,t_pl_outboundorder.wastesCode 危废编码,t_pl_outboundorder.guardian 保管员,  t_pl_outboundorder.unitPriceTax 单价,  t_pl_outboundorder.packageType 包装形式,t_pl_outboundorder.formType   物质形态  from t_pl_outboundorder join t_pr_laboratorytest where t_pl_outboundorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber;";
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
-    }
-
-    if (items.length > 0) {
-        $.each(items, function (index, item) {
-            if ($(this).parent().parent().next().next().next().next().next().html().length > 0) {
-                idArry.push($(this).parent().parent().next().next().next().next().next().html());        // 将选中项的编号存到集合中
-            }
-        });
-        console.log(idArry)
-        var sql = ' in (';
-        if (idArry.length > 0) {
-            for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
-                if (i < idArry.length - 1) sql += idArry[i] + ",";
-                else if (i == idArry.length - 1) sql += idArry[i] + ");"
-            }
-            var sqlWords = "select t_pl_outboundorder.outboundOrderId 出库单号,t_pl_outboundorder.outboundDate 出库日期 ,t_pl_outboundorder.creator  创建人,t_pl_outboundorder.auditor 审核人, t_pl_outboundorder.outboundNumber   出库数量,t_pl_outboundorder.handelCategory 进料方式, t_pl_outboundorder.processWay 处置方式,t_pl_outboundorder.wasteCategory 危废类别,t_pl_outboundorder.wastesCode 危废编码,t_pl_outboundorder.guardian 保管员,  t_pl_outboundorder.unitPriceTax 单价,  t_pl_outboundorder.packageType 包装形式,t_pl_outboundorder.formType   物质形态 from t_pl_outboundorder join t_pr_laboratorytest where t_pl_outboundorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber and outboundOrderId" + sql;
-
-        }
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
-    }
-
-
-
-
-}
 
 /**
  * 单击查看

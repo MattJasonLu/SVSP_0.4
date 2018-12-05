@@ -276,6 +276,7 @@ function inputSwitchPage() {
  * 分页 获取首页内容
  * */
 function loadPagePoundsList() {
+    loadNavigationList();   // 设置动态菜单
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
@@ -597,17 +598,18 @@ function searchPounds() {
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
     var state = null;
-    if ($("#search-state").val() == 0) state = "Confirm";//已确认
-    if ($("#search-state").val() == 1) state = "Invalid";//已作废
     if ($("#senior").is(':visible')) {
         var deliveryCompany = {};
         deliveryCompany.companyName = $.trim($("#search-deliveryCompany").val());
-        var receiveCompany = {};
-        receiveCompany.companyName = $.trim($("#search-receiveCompany").val());
+        switch($("#search-state").val()){
+            case "0":state="NewBuild";break;
+            case "1":state="Confirm";break;
+            case "2":state="Invalid";break;
+        }
         data = {
             transferId: $.trim($("#search-transferId").val()),
             deliveryCompany: deliveryCompany,
-            receiveCompany: receiveCompany,
+            receiveCompanyName: $.trim($("#search-receiveCompany").val()),
             goodsName: $.trim($("#search-goods").val()),
             startDate: $("#search-startDate").val(),
             endDate: $("#search-endDate").val(),
@@ -653,6 +655,7 @@ function searchPounds() {
             keywords: keywords
         }
     }
+    console.log(data);
     if (data == null) alert("请点击'查询设置'输入查询内容!");
     else {
         $.ajax({
@@ -747,6 +750,7 @@ function invalid(item) {
 
 //----------------------查看页面-----------------------
 function loadPoundsItems() {
+    loadNavigationList();   // 设置动态菜单
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getPounds",          // url
@@ -914,6 +918,7 @@ function cancel() {
  * 初始化数据
  */
 function loadPoundsAdd(){
+    loadNavigationList();   // 设置动态菜单
     $("#head").text("磅单新增");
     //$("#save").text("新增");
     setSelectedListAdd();  // 填充下拉框数据

@@ -34,7 +34,7 @@
             enable: true,                  //设置zTree是否处于编辑状态
             editNameSelectAll: true,    //节点编辑名称input初次显示时，设置txt内容是否为权限状态
             removeTitle: "删除",            // K
-            renameTitle: "编辑",        // 设置修改按钮名称
+            renameTitle: "命名",        // 设置修改按钮名称
             showRemoveBtn: true,   // 控制是否显示删除按钮
             showRenameBtn: true    // 控制是否显示修改按钮
         },
@@ -48,7 +48,7 @@
             //    beforeDrag: beforeDrag,   //用于捕获节点被拖拽之前的事件回调函数，并且根据返回值确定是否开始拖拽操作
             //   beforeEditName: beforeEditName, //用于捕获及诶单编辑按钮的click事件，并且根据返回值确定是否允许进入名称编辑状态
             beforeRemove: beforeRemove,//用于捕获节点被删除之前的事件回调函数，并且根据返回值确定是否允许删除操作。
-            //  beforeRename: beforeRename,//用于捕获节点编辑名称结束(input失去焦点或按下Enter键)之后，更新节点名称数据之前的事件回调函数，并根据返回值确定是否允许
+            beforeRename: beforeRename,//用于捕获节点编辑名称结束(input失去焦点或按下Enter键)之后，更新节点名称数据之前的事件回调函数，并根据返回值确定是否允许
             onRemove: onRemove,// 删除按钮点击后事件
             onRename: onRename // 编辑按钮点击后事件
         }
@@ -81,7 +81,15 @@
     var log, className = "dark";
 
     function beforeRemove(treeId, treeNode) {
-        return confirm("确认删除" + treeNode.name + " 吗？");
+        if(checkAuthorityById(-531)){  // 验证权限
+            return confirm("确认删除" + treeNode.name + " 吗？");
+        }else{
+            return false;
+        }
+    }
+
+    function beforeRename(treeId, treeNode){
+       return checkAuthorityById(-530);   // 验证权限
     }
 
     /**
@@ -214,27 +222,29 @@
      * @param item
      */
     function addOrganization(item) {
-        console.log(organization1);
-        if (organization1 != null) {
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "addOrganization",                  // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(organization1),
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (result) {
-                    // console.log(result);
-                    if (result != null && result.status == "success") {
-                        window.location.reload(); // 刷新页面
-                    } else {
+        if(checkAuthorityById(-529)){  // 验证是否有权限
+            console.log(organization1);
+            if (organization1 != null) {
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "addOrganization",                  // url
+                    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    data: JSON.stringify(organization1),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        // console.log(result);
+                        if (result != null && result.status == "success") {
+                            window.location.reload(); // 刷新页面
+                        } else {
+                            alert(result.message);
+                        }
+                    },
+                    error: function (result) {
                         alert(result.message);
                     }
-                },
-                error: function (result) {
-                    alert(result.message);
-                }
-            });
+                });
+            }
         }
     }
 

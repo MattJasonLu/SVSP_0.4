@@ -17,6 +17,8 @@
     <script src="js/bootstrap/bootstrap-select.min.js"></script>
     <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
     <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
+    <link href="css/loading1.css" rel="stylesheet">
+    <link href="css/loading2.css" rel="stylesheet">
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');     //当前页数
@@ -144,9 +146,9 @@
                 <!--查询框-->
                 <div class="input-group col-md-4 pull-right">
                     <input type="text" class="form-control"  placeholder="搜索..." id="searchContent"
-                           name="searchContent" onkeydown="enterSearch()">
+                           name="searchContent" >
                     <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="searchSoftWater();"><span
+                            <a class="btn btn-default" onclick="searchData();"><span
                                     class="glyphicon glyphicon-search"
                                     aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span
@@ -162,31 +164,78 @@
         <div class="panel panel-default" id="senior" style="display: none;">
             <div class="panel-body">
                 <div class="row">
-                    <div class="form-horizontal col-md-4">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">接收日期</label>
-                            <div class="input-group">
-                                <input type="date" class="input-sm form-control" id="search-startDate" title="" onkeydown="enterSearch()"/>
-                                <span class="input-group-addon">-</span>
-                                <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown="enterSearch()"/>
-                            </div>
-                        </div>
-                    </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-softWaterName" class="col-sm-4 control-label">软水名称</label>
+                            <label for="search-id" class="col-sm-4 control-label">样品单号</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-softWaterName" name="search-softWaterName"
-                                       placeholder="" onkeydown="enterSearch()">
+                                <input type="text" class="form-control" id="search-id" name="search-laboratoryTestNumber" placeholder="" onkeyup="enterSearch();">
                             </div>
                         </div>
-                    </div>
-                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-address" class="col-sm-4 control-label">采&nbsp;&nbsp;样&nbsp;&nbsp;点</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-address" name="search-address" placeholder="" onkeyup="enterSearch();">
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label for="search-remarks" class="col-sm-4 control-label">备注</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-remarks" name="search-remarks"
-                                       placeholder="" onkeydown="enterSearch()">
+                                <input type="text" class="form-control" id="search-remarks" name="search-address" placeholder="" onkeyup="enterSearch();">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-turbidity" class="col-sm-4 control-label">浊度FTU</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-turbidity" name="search-queryNumber" placeholder="" onkeyup="enterSearch();">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="search-hardness" class="col-sm-4 control-label">硬度</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-hardness" name="search-laboratoryDate" placeholder="" onkeyup="enterSearch();">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="search-checkState" class="col-sm-4 control-label">单据状态</label>
+                            <div class="col-xs-7">
+                                <select type="text" class="form-control" id="search-checkState" name="search-laboratoryDate"  onchange="searchData();">
+                                    <option></option>
+                                    <option>待提交</option>
+                                    <option>已提交</option>
+                                    <option>已作废</option>
+                                    <option>已确认</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-PH" class="col-sm-4 control-label">PH</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-PH" name="search-companyName" placeholder="" onkeyup="enterSearch();">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="search-electricalConductivity" class="col-sm-4 control-label">电导率</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-electricalConductivity" name="search-laboratoryCompany" placeholder="" onkeyup="enterSearch();">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-basicity" class="col-sm-4 control-label">全碱度</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-basicity" name="search-record" placeholder="" onkeyup="enterSearch();">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="search-phenolphthalein" class="col-sm-4 control-label">酚酞碱度</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-phenolphthalein" name="search-record" placeholder="" onkeyup="enterSearch();">
                             </div>
                         </div>
                     </div>
@@ -213,7 +262,7 @@
                 <th class="text-center">备注</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="tbody1">
             <tr id="clone">
                 <td class="text-center">
                     <label>
@@ -297,6 +346,13 @@
     <!--导入-->
     <input type="file" name="excelPath" id="idExcel" style="display:none">
     <div id="embed"></div>
+</div>
+<div class="loader ">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
 </div>
 <!-- 预约登记模态框 新增-->
 <div class="modal fade bs-example-modal-lg" id="appointModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

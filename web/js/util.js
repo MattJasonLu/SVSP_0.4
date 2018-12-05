@@ -173,7 +173,7 @@ function allSelect() {
 function checkAuthority(e) {
     var flag = false;
     // 获取功能编号
-    var functionId = e.prop('id').split('_')[1];
+    var functionId = e.attr('id').split('_')[1];
     $.ajax({
         type: "POST",                            // 方法类型
         url: "checkAuthority",                           // url
@@ -190,10 +190,10 @@ function checkAuthority(e) {
                 flag = true;
             } else {
                 // 提示没有权限进入
-                //if (result.message == undefined)alert("账号过期，请重新登录！");
-                //   else alert(result.message);
-                //e.prop('href', '#');
-                flag = true;
+                if (result.message == undefined)alert("账号过期，请重新登录！");
+                  else alert(result.message);
+                e.prop('href', '#');
+                flag = false;
             }
         },
         error: function (result) {
@@ -202,6 +202,42 @@ function checkAuthority(e) {
     });
     return flag;
 }
+
+/**
+ * 根据ID校验权限
+ * @param functionId
+ //  */
+function checkAuthorityById(functionId) {
+    var flag = false;
+    // 获取功能编号
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "checkAuthority",                           // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            functionId: functionId
+        },
+        dataType: "json",
+        success: function (result) {
+            console.log(result);
+            if (result != undefined && result.status == "success") {
+                var data = eval(result);
+                // 进入功能
+                flag = true;
+            } else {
+                // 提示没有权限进入
+                if (result.message == undefined)alert("账号过期，请重新登录！");
+                else alert(result.message);
+                flag = false;
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+    return flag;
+}
+
 
 /**
  * 将危废英文名转换成中文
@@ -518,7 +554,7 @@ function getIdFromHandleCategory(HandleCategory) {
             res = 28;
             break;
         case "废液":
-            res =29;
+            res = 29;
             break;
         case "散装料":
             res = 30;
@@ -550,7 +586,7 @@ function getIdFromProcessWay(ProcessWay) {
             res = 44;
             break;
         case "填埋":
-            res =45;
+            res = 45;
             break;
         case "清洗":
             res = 46;
@@ -572,7 +608,7 @@ function getIdFromEquipment(Equipment) {
             res = 22;
             break;
         case "A2":
-            res =23;
+            res = 23;
             break;
         case "B2":
             res = 24;
@@ -593,119 +629,136 @@ function getIdFromEquipment(Equipment) {
     return res;
 }
 
-
 //////////////////动态菜单///////////////////////
 /**
  * 加载导航条
  */
 function loadNavigationList() {
-    $(".fadeInUp").children().remove();   // 删除之前一级菜单
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "loadMenuList",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            if (result != null && result.status == 'success') {
-                var data = result.data;
-                // 设置数组
-                var j = 0;
-                for (var i = 0; i < data.length; i++) {
-                    var id = data[i].id; // 设置节点数据
-                    var pId = data[i].pId;
-                    var name = data[i].name;
-                    var url = data[i].url;
-                    var icon = data[i].icon;
-                    // 设置一级菜单
-                    if (0 < data[i].pId && data[i].pId < 10) {
-                        j++;
-                        // if(j === 1)localStorage.name = name; // 第一次进去加载第一个首页数据  (写在登陆页面中)
-                        var li = "<li onclick='toMenuUrl(this)'><a class='withripple' href='#' id='function_" + j + "'><span class='" + icon + "'" +
-                            "aria-hidden='true'></span><span class='sidespan' name='" + name + "'>&nbsp;&nbsp;" + name + "</span><span class='iright pull-right'>" +
-                            "&gt;</span><span class='sr-only'>(current)</span></a></li>";
-                        // $("#end").before(li);
-                        $(".fadeInUp").append(li); // 插入到内部的最后
-                    }
-                }
-            } else {
-                console.log(result.message);
-            }
-        },
-        error: function (result) {
-            console.log(result.message);
-            alert("服务器错误！");
-        }
-    });
-    if (localStorage.name != "" && localStorage.name != null) {    // 根据名字获取一级菜单的子节点并设置二级菜单
-        $("#navbar").children().eq(0).children().remove();  // 删除之前二级菜单数据
-        console.log(localStorage.name);
-        var organization = {};                 // 获取并设置数据
-        organization.name = localStorage.name;
-        organization.pId = 1;
-        $.ajax({                                // 根据名称和父节点获取子节点对象
+    console.log("旧动态菜单数据");
+    console.log(JSON.parse(localStorage.getItem("menuOrganization")));
+    if (JSON.parse(localStorage.getItem("menuOrganization")) == null) {  // 如果数据为空则进行查询
+        // 获取动态菜单数据
+        $.ajax({
             type: "POST",                       // 方法类型
-            url: "getChildrenMenuByName",       // url
+            url: "getMenuTree",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(organization),
             dataType: "json",
-            contentType: "application/json; charset=utf-8",
             success: function (result) {
-                // console.log(result);
-                if (result != null && result.status == "success" && result.data != null) {
-                    var organizationList = result.data;
-                    console.log(result);
-                    setMenuTwo(organizationList);//递归设置二级菜单导航条
-                    var href = window.location.href.toString();
-                    if (href.substring(href.length - 14) === "firstPage.html") { // 判断是否为板块首页
-                        setProcessIcon(organizationList); // 首页设置流程节点图标
-                    }
+                if (result != null && result.status === "success") {
+                    var obj = JSON.stringify(result.data);
+                    localStorage.setItem("menuOrganization", obj);
                 }
             },
             error: function (result) {
-                alert(result.message);
+                console.log(result.message);
             }
         });
+    }
+    if (JSON.parse(localStorage.getItem("menuOrganization")) != null) { // 如果获取到数据就直接用
+        $(".fadeInUp").children().remove();   // 删除之前一级菜单
+        var result = JSON.parse(localStorage.getItem("menuOrganization"));
+        var data = result.organizationList;
+        console.log("动态菜单数据：");
+        console.log(result);
+        // 设置以及菜单
+        var j = 0;
+        var secondMenuList = [];  // 存放需要设置的二级菜单列表
+        if (data != null) {
+            for (var i = 0; i < data.length; i++) {
+                var id = data[i].id; // 设置节点数据
+                var pId = data[i].pId;
+                var name = data[i].name;
+                var url = data[i].url;
+                var icon = data[i].icon;
+                // 设置一级菜单
+                console.log("一级菜单名:" + localStorage.name);
+                if (0 < data[i].pId && data[i].pId < 10) {
+                    j++;
+                    // 设置需要插入的标签
+                    var li = "<li ><a class='withripple' href='#' id='function_"+id+"'" +
+                        "onclick='check(this); function check(e){if(checkAuthority($(e))){toMenuUrl(e);}} '><span class='" + icon + "'" +
+                        "aria-hidden='true'></span><span class='sidespan' name='" + name + "'>&nbsp;&nbsp;" + name + "</span><span class='iright pull-right'>" +
+                        "&gt;</span><span class='sr-only'>(current)</span></a></li>";
+                    // $("#end").before(li);
+                    $(".fadeInUp").append(li); // 插入到内部的最后
+                    if (localStorage.name != "" && localStorage.name != null) {
+                        if (localStorage.name === data[i].name) {
+                            secondMenuList = data[i].organizationList;  // 将一级菜单的二级菜单列表设置给一级菜单
+                        }
+                    }
+                }
+            }
+        }
+        // 设置二级菜单
+        if (secondMenuList != null && secondMenuList.length > 0) {    //设置二级菜单
+            console.log("设置二级菜单");
+            console.log(secondMenuList);
+            $("#navbar").children().eq(0).children().remove();  // 删除之前二级菜单数据
+            setMenuTwo(secondMenuList);//递归设置二级菜单导航条
+            var href = window.location.href.toString();
+            if (href.substring(href.length - 14) === "firstPage.html") { // 判断是否为板块首页
+                setProcessIcon(secondMenuList); // 首页设置流程节点图标
+            }
+            // 如果是网页则设置历史记录抬头导航
+            if ($("ol[class='breadcrumb']").length > 0) {  // 有历史导航栏的判定为网页
+                var url = window.location.href.toString();
+                url = (url.substring(url.lastIndexOf("/") + 1)).replace("#", "");        // 获取当前url
+                // 在secondMenuList中查找路径
+                var organizationA = {};
+                organizationA.url = url;
+                organizationA.name = localStorage.name;
+                organizationA.organizationList = secondMenuList;
+                if (organizationA.organizationList != null && organizationA.organizationList.length > 0) {
+                    var orga = findWayTree(organizationA);
+                    organizationA.organizationList = orga.organizationList;
+                }
+                $("ol[class='breadcrumb']").children().remove();  // 删除历史数据
+                setOLMenu(organizationA); // 动态递归设置历史导航栏
+                // 设置二级菜单选中
+                if ($("ol[class='breadcrumb']").find("li").eq(1).length > 0)  // 更新二级菜单名
+                    localStorage.secondMenuName = $("ol[class='breadcrumb']").find("li").eq(1).text();  // 获取二级菜单名
+                console.log("二级菜单标蓝：" + localStorage.secondMenuName);
+                $("#navbar").find("a:contains('" + localStorage.secondMenuName + "')").parent().addClass("active");  // 设置二级菜单标蓝
+            }
+        }
         // 设置一级菜单选中标蓝
         $("ul[class='sidenav animated fadeInUp']").children().find("span[name='" + localStorage.name + "']").parent().parent().addClass("active");
     }
-    if ($("ol[class='breadcrumb']").length > 0) { // 如果是网页则设置历史记录抬头导航
-        var url = window.location.href.toString();
-        url = (url.substring(url.lastIndexOf("/") + 1)).replace("#", "");        // 获取当前url
-        var name1 = $.trim($("ul[class='sidenav animated fadeInUp']").find("li[class='active']").find("span").eq(1).text());    // 获取一级菜单名
-        var organization2 = {};
-        organization2.name = name1;
-        organization2.url = url;
-        $.ajax({                                // 根据名称和父节点获取子节点对象
-            type: "POST",                       // 方法类型
-            url: "getLevelOneMenuByUrlAndPName",       // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(organization2),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                // console.log(result);
-                if (result != null && result.status === "success" && result.data != null) {
-                    var data = result.data;
-                    console.log("导航栏数据");
-                    console.log(data);
-                    $("ol[class='breadcrumb']").children().remove();  // 删除历史数据
-                    localStorage.name = name1;    // 设置一级菜单名，点击首页时方便定位
-                    setOLMenu(data); // 动态递归设置历史导航栏
-                    // 设置二级菜单选中
-                    var secondName = $("ol[class='breadcrumb']").find("li").eq(1).text();  // 获取二级菜单名
-                    console.log("二级菜单标蓝："+secondName);
-                    $("#navbar").find("a:contains('" + secondName + "')").parent().addClass("active");  // 设置二级菜单标蓝
-                } else {
-                    console.log(result.message);
-                }
-            },
-            error: function (result) {
-                alert(result.message);
-            }
-        });
-    }
 }
 
+/**
+ * 根据URL寻找在一级菜单树中的路径
+ * @param organization1
+ */
+function findWayTree(organization1) {
+    var organization2 = {};// 初始化
+    organization2.name = "";
+    var organizationList = [];
+    for (var i = 0; i < organization1.organizationList.length; i++) {
+        var organization = organization1.organizationList[i];
+        if (organization.url !== "" && organization.url === organization1.url) {
+            organization2.name = organization1.name;
+            organizationList.push(organization);
+            organization2.organizationList = organizationList;
+        } else {
+            if (organization.organizationList != null && organization.organizationList.length > 0) {
+                organization.url = organization1.url;// 将url 传递给孩子用于查找
+                var organization3 = findWayTree(organization);
+                if (organization3 != null && organization3.name !== "") {
+                    organization2.name = organization1.name;
+                    organizationList.push(organization3);
+                    organization2.organizationList = organizationList;
+                }
+            }
+        }
+    }
+    return organization2;
+}
+
+/**
+ * 设置历史导航栏
+ * @param organization
+ */
 function setOLMenu(organization) {
     var ol = $("ol[class='breadcrumb']");
     var li = "";
@@ -725,7 +778,7 @@ function setOLMenu(organization) {
  * @param item
  */
 function toMenuUrl(item) {
-    localStorage.name = $.trim($(item).children().find("span").eq(1).text());
+    localStorage.name = $.trim($(item).find("span").eq(1).text());
     window.location.href = "firstPage.html"; //根据一级菜单名跳转首页
 }
 
@@ -779,7 +832,8 @@ function setMenuTwo(organizationList) {
                 setMenuTwo(organization.organizationList);  // 递归设置
             } else { // 菜单不存在子节点
                 if (9 < organization.pId && organization.pId < 100) { // 二级菜单没有子类直接设置导航条
-                    var li3 = "<li><a href='" + organization.url + "'>" + organization.name + "</a></li>";  // 赋值
+                    var li3 = "<li><a href='" + organization.url + "' id='function_"+organization.id+"' " +
+                        "onclick='checkAuthority($(this))'> "+ organization.name + "</a></li>";  // 赋值
                     $("#navbar").children().eq(0).append(li3);      //插入
                 } else { // 非二级菜单的页面需要将其插入到下拉菜单中
                     var dropdown = null;
@@ -791,9 +845,11 @@ function setMenuTwo(organizationList) {
                     var li2 = "";
                     if (i > 0) {
                         li2 = "<li role='separator' class='divider'></li>" +
-                            "<li><a href='" + organization.url + "'>" + organization.name + "</a></li>";
+                            "<li><a href='" + organization.url + "' id='function_"+organization.id+"' " +
+                            "onclick='checkAuthority($(this))'>" + organization.name + "</a></li>";
                     } else if (i === 0) { // 第一个子节点不设置分割线
-                        li2 = "<li><a href='" + organization.url + "'>" + organization.name + "</a></li>";
+                        li2 = "<li><a href='" + organization.url + "' id='function_"+organization.id+"' " +
+                            "onclick='checkAuthority($(this))'>" + organization.name + "</a></li>";
                     }
                     dropdown.find("ul[name='" + (organization.level - 1).toString() + "']").append(li2);
                 }
@@ -824,7 +880,7 @@ function setProcessIcon(organizationList) {
             }
             if (organization.icon != null && organization.icon != "" && organization.url != null && organization.url != "") {
                 var div1 = "<div class='col-xs-4 col-sm-4 placeholder'>" +
-                    "<a href='" + organization.url + "'><img src='" + organization.icon + "' style='width: 80px;height: 80px;border-radius:1px' alt='Generic placeholder thumbnail'></a>" +
+                    "<a href='" + organization.url + "' id='function_"+organization.id+"' onclick='checkAuthority($(this));'><img src='" + organization.icon + "' style='width: 80px;height: 80px;border-radius:1px' alt='Generic placeholder thumbnail'></a>" +
                     "<h4>" + organization.name + "</h4></div>";
                 $(".page-header").find("div[class='row placeholders']:last").append(div1);  // 将节点插入到最新行
             } else {

@@ -1,6 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Dictionary.CheckStateItem;
 import com.jdlink.domain.Page;
 
 import java.util.Date;
@@ -111,6 +112,18 @@ public class BurnOrder {
      * 日期查询 终止时间
      */
     private Date endDate;
+
+    //状态数据字典
+    private CheckStateItem checkStateItem;
+
+
+    public CheckStateItem getCheckStateItem() {
+        return checkStateItem;
+    }
+
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
+    }
 
     public Date getStartDate() {
         return startDate;

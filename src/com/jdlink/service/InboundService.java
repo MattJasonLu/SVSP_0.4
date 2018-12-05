@@ -19,7 +19,7 @@ public interface InboundService {
      * 列出所有入库计划单
      * @return 入库计划单
      */
-    List<InboundPlanOrder> listInboundPlanOrder(InboundPlanOrder inboundPlanOrder, Page page);
+    List<InboundPlanOrder> listInboundPlanOrder(InboundPlanOrder inboundPlanOrder);
 
     /**
      * 获取入库单的数量

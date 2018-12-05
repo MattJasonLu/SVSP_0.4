@@ -264,6 +264,7 @@ function inputSwitchPage() {
 //加载应急物资采购列表
 function getEmProcurement() {
     $('.loader').show();
+    loadNavigationList();   // 设置动态菜单
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
@@ -620,9 +621,9 @@ function setEmProcurementList(result) {
                     case (10):
                         if(obj.checkStateItem!=null){
                             $(this).html((obj.checkStateItem.dictionaryItemName));
-                            if((obj.checkStateItem.dictionaryItemName)=='已作废'){
-                                $(this).parent().hide()
-                            }
+                            // if((obj.checkStateItem.dictionaryItemName)=='已作废'){
+                            //     $(this).parent().hide()
+                            // }
                         }
 
                         break;
@@ -802,6 +803,7 @@ function searchEm() {
             purchasingDirector: $.trim($("#search-purchasingDirector").val()),
             generalManager:$.trim($("#search-generalManager").val()),
             suppliesCategory:$.trim($("#search-suppliesCategory").val()),
+            checkState:$("#search-checkState option:selected").text()
         };
   console.log(data)
     for(var j=0;j<array.length;j++){
@@ -814,37 +816,20 @@ function searchEm() {
                 endDate=new Date();
                 console.log(endDate)
             }
-            console.log($(this).children('td').eq(2).text()+"人")
-            console.log($(this).children('td').eq(2).text().indexOf(data.suppliesCategory)!=-1)
-
-
-            console.log($(this).children('td').eq(4).text().indexOf(data.applyDepartment)!=-1)
-
-            console.log($(this).children('td').eq(5).text().indexOf(data.proposer)!=-1)
-
-            console.log($(this).children('td').eq(6).text().indexOf(data.divisionHead)!=-1)
-
-            console.log($(this).children('td').text().indexOf(text)!=-1)
-
-            console.log($(this).children('td').eq(7).text().indexOf(data.purchasingDirector)!=-1)
-
-            console.log($(this).children('td').eq(8).text().indexOf(data.generalManager)!=-1)
-
-            console.log((getDateByStr($(this).children('td').eq(9).text())<=endDate&&getDateByStr($(this).children('td').eq(9).text())>=startDate))
 
 
 
             if(!($(this).children('td').eq(2).text().indexOf(data.suppliesCategory)!=-1&&$(this).children('td').eq(4).text().indexOf(data.applyDepartment)!=-1
                 &&$(this).children('td').eq(5).text().indexOf(data.proposer)!=-1&&$(this).children('td').eq(6).text().indexOf(data.divisionHead)!=-1&&$(this).children('td').text().indexOf(text)!=-1
                 &&$(this).children('td').eq(7).text().indexOf(data.purchasingDirector)!=-1
-                &&$(this).children('td').eq(8).text().indexOf(data.generalManager)!=-1
+                &&$(this).children('td').eq(8).text().indexOf(data.generalManager)!=-1&&$(this).children('td').eq(10).text().indexOf(data.checkState)!=-1
                 &&(getDateByStr($(this).children('td').eq(9).text())<=endDate&&getDateByStr($(this).children('td').eq(9).text())>=startDate)
             )){
                 $(this).hide();
             }
             if(($(this).children('td').eq(2).text().indexOf(data.suppliesCategory)!=-1&&$(this).children('td').eq(4).text().indexOf(data.applyDepartment)!=-1
                 &&$(this).children('td').eq(5).text().indexOf(data.proposer)!=-1&&$(this).children('td').eq(6).text().indexOf(data.divisionHead)!=-1&&$(this).children('td').text().indexOf(text)!=-1
-                &&$(this).children('td').eq(7).text().indexOf(data.purchasingDirector)!=-1
+                &&$(this).children('td').eq(7).text().indexOf(data.purchasingDirector)!=-1&&$(this).children('td').eq(10).text().indexOf(data.checkState)!=-1
                 &&$(this).children('td').eq(8).text().indexOf(data.generalManager)!=-1
                 &&(getDateByStr($(this).children('td').eq(9).text())<=endDate&&getDateByStr($(this).children('td').eq(9).text())>=startDate)
             )

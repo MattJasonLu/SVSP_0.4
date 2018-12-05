@@ -14,8 +14,8 @@
     </select>
     <!--添加物料表-->
     <insert id="addMaterial" parameterType="Material">
-        insert into t_pl_material (suppliesName, specifications, inventory, note, purchaseQuantity, demandQuantity, receiptNumber,unit,state,createDate,checkState,unitId)
-        values (#{suppliesName},#{specifications},#{inventory},#{note},#{purchaseQuantity},#{demandQuantity},#{receiptNumber},#{unit},'ToInbound',NOW(),'Enabled',#{unitDataItem.dataDictionaryItemId});
+        insert into t_pl_material (suppliesName, specifications, inventory, note, purchaseQuantity, demandQuantity, receiptNumber,unit,state,createDate,checkState,unitId,checkStateId)
+        values (#{suppliesName},#{specifications},#{inventory},#{note},#{purchaseQuantity},#{demandQuantity},#{receiptNumber},#{unit},'ToInbound',NOW(),'Enabled',#{unitDataItem.dataDictionaryItemId},70);
     </insert>
     <!--加载采购列表-->
     <resultMap id="ProcurementRM" type="Procurement" autoMapping="true">
@@ -45,7 +45,7 @@
     </select>
     <!--获取月季采购-->
     <select id="getProcurementList" resultMap="ProcurementRM">
-        select * from t_pl_procurement where procurementCategory='1'order by nowTime desc
+        select * from t_pl_procurement where procurementCategory='1'order by checkStateId=69,nowTime desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -53,7 +53,7 @@
     <!--获取采购明细-->
     <select id="getProcurementItemList" resultType="Material">
         select a.* from t_pl_material as a join t_pl_procurement as b on a.receiptNumber=b.receiptNumber
-        where b.state = 'Submitted'
+        where b.checkStateId = 73
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count};
         </if>
@@ -64,7 +64,7 @@
     </select>
     <!--获取应急采购-->
     <select id="getEmergencyProcurementList" resultMap="ProcurementRM">
-        select * from t_pl_procurement   where procurementCategory='0'order by nowTime desc
+        select * from t_pl_procurement   where procurementCategory='0'order by checkStateId=69, nowTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -236,7 +236,7 @@
         </if>
     </select>
 
-    <select id="getMaterialById" parameterType="String" resultType="Material">
+    <select id="getMaterialById" parameterType="String" resultMap="MaterialRM">
         select * from t_pl_material where id=#{id};
     </select>
 
@@ -253,9 +253,10 @@
     </update>
 
 
+
     <!--获取采购单明细-->
-    <select id="getProcurement" resultType="Material">
-        select * from t_pl_material where (receiptNumber in(select receiptNumber from t_pl_procurement where t_pl_procurement.checkStateId=64 and procurementCategory=1))and (t_pl_material.checkStateId=70);
+    <select id="getProcurement" resultMap="MaterialRM">
+        select * from t_pl_material where (receiptNumber in(select receiptNumber from t_pl_procurement where t_pl_procurement.checkStateId=73 and procurementCategory=1))and (t_pl_material.checkStateId=70);
     </select>
 
     <!--采购计划单新增页面高级查询-->
@@ -268,7 +269,7 @@
             <if test="createDateEnd!=null and createDateEnd!=''">
                 and createDate &lt;= DATE_FORMAT(#{createDateEnd}, '%Y-%m-%d')
             </if>
-            and t_pl_material.receiptNumber in(select t_pl_procurement.receiptNumber from t_pl_procurement where t_pl_procurement.state='Submitted' and t_pl_procurement.procurementCategory=1) and (t_pl_material.checkState='Enabled');
+            and t_pl_material.receiptNumber in(select t_pl_procurement.receiptNumber from t_pl_procurement where t_pl_procurement.checkStateId=73 and t_pl_procurement.procurementCategory=1) and (t_pl_material.checkStateId=70);
         </where>
     </select>
     
@@ -295,8 +296,8 @@
 
     <!--添加采购单明细-->
     <insert id="addProcurementPlanItem" parameterType="procurementPlanItem">
-        insert into t_pr_procumentplanitem(procurementPlanId, category, suppliesName, specifications, proposer, demandQuantity, unit, price, priceTotal, remarks) values
-     (#{procurementPlanId},#{category},#{suppliesName},#{specifications},#{proposer},#{demandQuantity},#{unit},#{price},#{priceTotal},#{remarks});
+        insert into t_pr_procumentplanitem(procurementPlanId, category, suppliesName, specifications, proposer, demandQuantity, unit, price, priceTotal, remarks,unitId) values
+     (#{procurementPlanId},#{category},#{suppliesName},#{specifications},#{proposer},#{demandQuantity},#{unit},#{price},#{priceTotal},#{remarks},#{unitDataItem.dataDictionaryItemId});
 
 </insert>
 
@@ -304,16 +305,22 @@
         <result  property="procurementPlanId" column="procurementPlanId"></result>
         <collection property="procurementPlanItemList" column="procurementPlanId" select="getProcurementPlanItemList"></collection>
     <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
+
     </resultMap>
     <!--状态数据字典-->
     <select id="getCheckStateItem" resultType="CheckStateItem">
         select  * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
     </select>
-    <select id="getProcurementPlanItemList" resultType="ProcurementPlanItem">
+<resultMap id="ProcurementPlanItemRM" type="ProcurementPlanItem">
+    <collection property="unitDataItem" column="unitId" select="getUnitDataItem">
+    </collection>
+</resultMap>
+
+    <select id="getProcurementPlanItemList" resultMap="ProcurementPlanItemRM">
         select  *from t_pr_procumentplanitem where procurementPlanId=#{procurementPlanId}
     </select>
     <select id="getProcurementPlanList" resultMap="ProcurementPlanRM">
-        select * from t_pr_procumentplan  where checkStateId!=69 order by createDate desc
+        select * from t_pr_procumentplan   order by checkStateId=69,createDate desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -366,13 +373,13 @@
         select * from t_pr_procumentplan
         <where>
             <if test="keywords!='' and keywords!=null">
-            or procurementPlanId like "%"#{keywords}"%"
-            or createName like "%"#{keywords}"%"
-            or createDate like "%"#{keywords}"%"
-            or adjustName like "%"#{keywords}"%"
-            or adjustDate like "%"#{keywords}"%"
-            or approvalName like "%"#{keywords}"%"
-            or checkState like "%"#{keywords}"%"
+                or procurementPlanId like "%"#{keywords}"%"
+                or createName like "%"#{keywords}"%"
+                or createDate like binary"%"#{keywords}"%"
+                or adjustName like "%"#{keywords}"%"
+                or adjustDate like binary"%"#{keywords}"%"
+                or approvalName like "%"#{keywords}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
             </if>
             <if test="procurementPlanId!=null and procurementPlanId!=''">
                 and procurementPlanId like "%"#{procurementPlanId}"%"
@@ -386,8 +393,11 @@
             <if test="createName!=null and createName!=''">
                 and createName like "%"#{createName}"%"
             </if>
-            <if test="checkState!=null and checkState!=''">
-                and checkState = #{checkState}
+            <if test="checkStateItem!=null">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId = #{checkStateItem.dataDictionaryItemId}
+                </if>
+
             </if>
             <if test="createDateStart!=null and createDateStart!=''">
                 and createDate <![CDATA[ >= ]]> DATE_FORMAT(#{createDateStart}, '%Y-%m-%d %H:%i:%S')
@@ -415,11 +425,11 @@
             <if test="keywords!='' and keywords!=null">
                 or procurementPlanId like "%"#{keywords}"%"
                 or createName like "%"#{keywords}"%"
-                or createDate like "%"#{keywords}"%"
+                or createDate like binary"%"#{keywords}"%"
                 or adjustName like "%"#{keywords}"%"
-                or adjustDate like "%"#{keywords}"%"
+                or adjustDate like binary"%"#{keywords}"%"
                 or approvalName like "%"#{keywords}"%"
-                or checkState like "%"#{keywords}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
             </if>
             <if test="procurementPlanId!=null and procurementPlanId!=''">
                 and procurementPlanId like "%"#{procurementPlanId}"%"
@@ -433,8 +443,11 @@
             <if test="createName!=null and createName!=''">
                 and createName like "%"#{createName}"%"
             </if>
-            <if test="checkState!=null and checkState!=''">
-                and checkState = #{checkState}
+            <if test="checkStateItem!=null">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId = #{checkStateItem.dataDictionaryItemId}
+                </if>
+
             </if>
             <if test="createDateStart!=null and createDateStart!=''">
                 and createDate <![CDATA[ >= ]]> DATE_FORMAT(#{createDateStart}, '%Y-%m-%d %H:%i:%S')
@@ -456,4 +469,22 @@
         update t_pl_material set checkStateId=71 where id=#{id}
 
     </update>
+
+    <!--采购计划单明细修改页面查询-->
+    <select id="searchAdjust" parameterType="ProcurementPlanItem" resultType="ProcurementPlanItem">
+        select * from t_pr_procumentplanitem
+        <where>
+        <if test="suppliesName!='' and suppliesName!=null">
+         and suppliesName like "%"#{suppliesName}"%"
+        </if>
+            <if test="specifications!='' and specifications!=null">
+                and specifications like "%"#{specifications}"%"
+            </if>
+            <if test="proposer!='' and proposer!=null">
+                and proposer like "%"#{proposer}"%"
+            </if>
+            and procurementPlanId=#{procurementPlanId}
+       </where>
+
+    </select>
 </mapper>

@@ -1,6 +1,7 @@
 package com.jdlink.service;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Dictionary.CheckStateItem;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
 import org.apache.ibatis.annotations.Param;
@@ -75,8 +76,8 @@ public interface ProductionDailyService {
      * @param id 编号
      * @param checkState 校验状态
      */
-    void setProductionDailyState(int id, CheckState checkState);
-
+    //void setProductionDailyState(int id, CheckStateItem checkStateItem);
+    void setProductionDailyState(ProductionDaily productionDailyState);
     /**
      * 删除日报
      * @param id 日报编号

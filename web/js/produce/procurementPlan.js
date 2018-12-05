@@ -4,6 +4,9 @@
 var currentPage = 1;                          //当前页数
 var isSearch = false;
 var data1;
+var array0=[];
+var array=[];
+var array1=[];
 
 
 /**
@@ -275,6 +278,7 @@ function loadPages(totalRecord, count) {
 
 /**页面加载*/
 function loadPage() {
+    loadNavigationList();   // 设置动态菜单
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
@@ -405,9 +409,9 @@ function setProcurementPlan(result) {
 
             }
             clonedTr.removeAttr("id");
-            if(clonedTr.children('td').eq(8).html()=='已作废'){
-                $(clonedTr).hide();
-            }
+            // if(clonedTr.children('td').eq(8).html()=='已作废'){
+            //     $(clonedTr).hide();
+            // }
             clonedTr.insertBefore(tr);
         });
         //把克隆好的tr追加到原来的tr前面
@@ -470,8 +474,8 @@ function setViewModal(result) {
         //需求数量
         $(clonedTr).children('td').eq(4).html(obj.demandQuantity)
         //单位
-        if(obj.unit!=null){
-            $(clonedTr).children('td').eq(5).html(obj.unit.name)
+        if(obj.unitDataItem!=null){
+            $(clonedTr).children('td').eq(5).html(obj.unitDataItem.dictionaryItemName)
         }
         //单价
         $(clonedTr).children('td').eq(6).html(obj.price.toFixed(2))
@@ -495,6 +499,7 @@ function procurementPlanModify(item) {
     var checkState=$(item).parent().parent().children('td').eq(8).html();
     if(checkState=='待提交'){
         var procurementPlanId=$(item).parent().parent().children('td').eq(2).html();
+        $('#procurementPlanIdAdjust').val(procurementPlanId)
         $('#appointModal3').modal('show')
         $.ajax({
             type: "POST",
@@ -524,6 +529,7 @@ function procurementPlanModify(item) {
 //设置修改模态框数据
 function setAdjustModal(result) {
 
+
     var tr = $('#cloneTr3');
 
     tr.siblings().remove();
@@ -548,8 +554,8 @@ function setAdjustModal(result) {
         //需求数量
         $(clonedTr).children('td').eq(4).find('input').val(obj.demandQuantity)
         //单位
-        if(obj.unit!=null){
-            $(clonedTr).children('td').eq(5).html(obj.unit.name)
+        if(obj.unitDataItem!=null){
+            $(clonedTr).children('td').eq(5).html(obj.unitDataItem.dictionaryItemName)
         }
         //单价
         $(clonedTr).children('td').eq(6).find('input').val(obj.price.toFixed(2))
@@ -568,6 +574,12 @@ function setAdjustModal(result) {
         tr.hide();
     })
 
+
+    if(array0.length==0){
+        $('.myclass3').each(function () {
+            array0.push(this)
+        })
+    }
 
 }
 
@@ -908,7 +920,7 @@ function searchData() {
             approvalName:$('#search-approvalName').val(),
             createName:$('#search-createName').val(),
             page: page,
-            checkState:checkState,
+            checkStateItem:{dataDictionaryItemId:checkState},
             createDateStart:$('#search-createDateStart').val(),
             createDateEnd:$('#search-createDateEnd').val(),
             adjustDateStart:$('#search-adjustDateStart').val(),
@@ -919,18 +931,6 @@ function searchData() {
     }
     else{
         var keywords = $.trim($("#searchContent").val());
-        if(keywords=='已提交'){
-            keywords='Submitted'
-        }
-        if(keywords=='待提交'){
-            keywords='ToSubmit'
-        }
-        if(keywords=='审批通过'){
-            keywords='Approval'
-        }
-        if(keywords=='已驳回'){
-            keywords='Backed'
-        }
 
         data1 = {
             page: page,
@@ -970,4 +970,116 @@ function enterSearch() {
     if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
         searchData();      //
     }
+}
+
+//修改模态框页面的查询
+function adjustSearch() {
+ //    $('#tbody1').find('.myclass3').hide();
+ //    array.length=0;//清空数组
+ //
+ //    array1.length=0;//清空数组
+ //
+ //    array=[].concat(array0);
+ //
+ //    console.log(array)
+ //
+ //    var  suppliesName=$('#search-suppliesName').val();
+ //
+ //    var  specifications=$('#search-specifications').val();
+ //
+ //    var  proposer=$('#search-proposer').val();
+ //
+ //
+ //    for (var j = 0; j < array.length; j++) {
+ //        $.each(array[j], function () {
+ //            //console.log(this);
+ //            if (!($(this).children('td').eq(1).text().indexOf(suppliesName) != -1 && $(this).children('td').eq(2).text().indexOf(specifications) != -1&& $(this).children('td').eq(3).text().indexOf(proposer) != -1
+ //            )) {
+ //                $(this).hide();
+ //            }
+ //            if (($(this).children('td').eq(1).text().indexOf(suppliesName) != -1 && $(this).children('td').eq(2).text().indexOf(specifications) != -1&& $(this).children('td').eq(3).text().indexOf(proposer) != -1
+ //            )) {
+ //                array1.push($(this));
+ //            }
+ //        });
+ //    }
+ // console.log(array1)
+ //    for(var i=0;i<array1.length;i++){
+ //        $.each(array1[i],function () {
+ //            $('#tbody1').append(this) ;
+ //        });
+ //    }
+
+    var data={
+        suppliesName:$('#search-suppliesName').val(),
+        specifications:$('#search-specifications').val(),
+        proposer:$('#search-proposer').val(),
+        procurementPlanId:$('#procurementPlanIdAdjust').val()
+    };
+
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "searchAdjust",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            console.log(result);
+            if (result != undefined && result.status == "success") {
+                setAdjustModal(result)
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器错误！");
+        }
+    });
+}
+
+//修改页面重置
+function resetAdjust() {
+    $('#search-suppliesName').val("")
+    $('#search-specifications').val("")
+    $('#search-proposer').val("")
+}
+
+
+//导出
+function exportExcel() {
+    var name = 't_pr_procumentplan';
+
+    var idArry = [];//存放主键
+    var items = $("input[name='select']:checked");//判断复选框是否选中
+
+    if (items.length <= 0) { //如果不勾选
+        var sqlWords = "select a.procurementPlanId,a.createName,a.createDate,a.adjustName,a.adjustDate,a.approvalName,b.suppliesName,b.specifications,b.proposer,b.demandQuantity,c.dictionaryItemName,b.price,b.priceTotal,b.remarks  from  t_pr_procumentplan a  join t_pr_procumentplanitem b on  a.procurementPlanId=b.procurementPlanId join datadictionaryitem c on c.dataDictionaryItemId=b.unitId   " ;
+        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    }
+
+    if (items.length > 0) {
+        $.each(items, function (index, item) {
+            if ($(this).parent().parent().next().next().html().length > 0) {
+                idArry.push($(this).parent().parent().next().next().html());        // 将选中项的编号存到集合中
+            }
+        });
+        console.log(idArry)
+        var sql = ' in (';
+        if (idArry.length > 0) {
+            for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+                if (i < idArry.length - 1) sql += idArry[i] + ",";
+                else if (i == idArry.length - 1) sql += idArry[i] + ");"
+            }
+            var sqlWords = "select a.procurementPlanId,a.createName,a.createDate,a.adjustName,a.adjustDate,a.approvalName,b.suppliesName,b.specifications,b.proposer,b.demandQuantity,c.dictionaryItemName,b.price,b.priceTotal,b.remarks  from  t_pr_procumentplan a  join t_pr_procumentplanitem b on  a.procurementPlanId=b.procurementPlanId join datadictionaryitem c on c.dataDictionaryItemId=b.unitId  and a.procurementPlanId " + sql;
+
+        }
+        console.log(sqlWords)
+        window.open('exportExcelProcurementPlan?name=' + name + '&sqlWords=' + sqlWords);
+    }
+
+
+
+
 }

@@ -6,6 +6,7 @@
 <mapper namespace="com.jdlink.mapper.WayBillMapper">
     <resultMap id="WayBillRM" type="WayBill" autoMapping="true">
         <id column="id" property="id"/>
+        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"/>
         <collection property="wayBillItemList" select="getItems" column="id"
                     ofType="com.jdlink.domain.Produce.WayBillItem"
                     javaType="ArrayList"/>
@@ -16,7 +17,12 @@
     </resultMap>
 
     <select id="getItems" parameterType="String" resultMap="WayBillItemRM">
-        select  * from t_pr_waybillitem where wayBillId = #{id};
+        select * from t_pr_waybillitem where wayBillId = #{id};
+    </select>
+
+    <!--获取申报状态数据字典-->
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
     </select>
 
     <select id="count" resultType="int">
@@ -118,8 +124,8 @@
             <if test="produceCompanyOperator != null and produceCompanyOperator != ''">
                 and produceCompanyOperator like "%"#{produceCompanyOperator}"%"
             </if>
-            <if test="state != null and state != ''">
-                and t_pr_waybill.state = #{state}
+            <if test="checkStateItem != null and checkStateItem.dataDictionaryItemId != 0">
+                and t_pr_waybill.checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
         </where>
         order by creationTime desc
@@ -174,8 +180,8 @@
             <if test="produceCompanyOperator != null and produceCompanyOperator != ''">
                 and produceCompanyOperator like "%"#{produceCompanyOperator}"%"
             </if>
-            <if test="state != null and state != ''">
-                and t_pr_waybill.state = #{state}
+            <if test="checkStateItem != null and checkStateItem.dataDictionaryItemId != 0">
+                and t_pr_waybill.checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
         </where>
     </select>
@@ -195,19 +201,19 @@
     </select>
 
     <update id="approval" parameterType="WayBill">
-        update t_pr_waybill set state = 'Approval',advice = #{advice} where id = #{id}
+        update t_pr_waybill set state = 'Approval',advice = #{advice}, checkStateId=76 where id = #{id}
     </update>
 
     <update id="reject" parameterType="WayBill">
-        update t_pr_waybill set state = 'Backed',advice = #{advice} where id = #{id}
+        update t_pr_waybill set state = 'Backed',advice = #{advice}, checkStateId=66 where id = #{id}
     </update>
 
     <update id="submit" parameterType="String">
-        update t_pr_waybill set state = 'Examining' where id = #{id}
+        update t_pr_waybill set state = 'Examining', checkStateId=63 where id = #{id}
     </update>
 
     <update id="invalid" parameterType="String">
-        update t_pr_waybill set state = 'Invalid',id=CONCAT('I-',id)
+        update t_pr_waybill set state = 'Invalid',id=CONCAT('I-',id), checkStateId=69
         where id = #{id};
     </update>
 
@@ -249,10 +255,10 @@
     <insert id="addWayBill" parameterType="WayBill">
         insert into t_pr_waybill
         (id,total,freight,remarks,wayBillDate,produceCompanyId,nowTime,produceCompanyOperator,state,produceCompanyName,
-        founder,creationTime,contractId)
+        founder,creationTime,contractId, checkStateId)
         values
         (#{id},#{total},#{freight},#{remarks},#{wayBillItemList[0].receiveDate},#{produceCompanyId},NOW(),
-        #{produceCompanyOperator},'NewBuild',#{produceCompanyName},#{founder},NOW(),#{contractId});
+        #{produceCompanyOperator},'NewBuild',#{produceCompanyName},#{founder},NOW(),#{contractId},#{checkStateItem.dataDictionaryItemId});
         <foreach collection="wayBillItemList" index="index" item="wayBillItem">
             insert into t_pr_waybillitem
             (itemId,wayBillId,receiveDate,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanName,receiveCompanyName,

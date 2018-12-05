@@ -20,10 +20,19 @@ public class MenuManageServiceImpl implements MenuManageService {
     public List<Organization> listMenuPage(){ return menuManageMapper.listMenuPage(); }
 
     @Override
+    public List<Organization> listFirstMenu(){ return menuManageMapper.listFirstMenu();}
+
+    @Override
+    public List<Organization> loadFirstMenuIconList(){ return menuManageMapper.loadFirstMenuIconList();}
+
+    @Override
     public int count(){return menuManageMapper.count();}
 
     @Override
     public int countById(int id){ return menuManageMapper.countById(id); }
+
+    @Override
+    public  int getFunctionCountById(int id){ return menuManageMapper.getFunctionCountById(id);}
 
     @Override
     public Organization getMenuById(int id){ return menuManageMapper.getMenuById(id);}
@@ -38,6 +47,9 @@ public class MenuManageServiceImpl implements MenuManageService {
     public List<Organization> getChildrenMenuByName(Organization organization){ return menuManageMapper.getChildrenMenuByName(organization);}
 
     @Override
+    public List<Organization> getPageFunctionByUrl(String url){ return menuManageMapper.getPageFunctionByUrl(url); }
+
+    @Override
     public Organization getMenuByUrlAndPName(Organization organization){return menuManageMapper.getMenuByUrlAndPName(organization);}
 
     @Override
@@ -50,6 +62,9 @@ public class MenuManageServiceImpl implements MenuManageService {
     public void add(Organization organization){ menuManageMapper.add(organization);}
 
     @Override
+    public void addFunctionTree(Organization organization){ menuManageMapper.addFunctionTree(organization);}
+
+    @Override
     public void updateName(Organization organization){ menuManageMapper.updateName(organization); }
 
     @Override
@@ -60,5 +75,11 @@ public class MenuManageServiceImpl implements MenuManageService {
 
     @Override
     public void delete(Organization organization){ menuManageMapper.delete(organization);}
+
+    @Override
+    public void deleteFunction(){ menuManageMapper.deleteFunction();}
+
+    @Override
+    public void deleteFunctionByPId(int id){ menuManageMapper.deleteFunctionByPId(id);}
 
 }

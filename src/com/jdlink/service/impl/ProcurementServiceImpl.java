@@ -202,6 +202,11 @@ public class ProcurementServiceImpl implements ProcurementService
     }
 
     @Override
+    public List<ProcurementPlanItem> searchAdjust(ProcurementPlanItem procurementPlanItem) {
+        return procurementMapper.searchAdjust(procurementPlanItem);
+    }
+
+    @Override
     public List<Material> searchMaterial(Material material){ return procurementMapper.searchMaterial(material);}
 
     @Override
