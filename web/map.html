@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>产废服务平台</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
@@ -11,6 +12,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script src="js/business/map.js"></script>
     <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
     <script type="text/javascript" src="js/jquery/jquery-ui.min.js" charset="UTF-8"></script>
     <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
@@ -22,7 +24,7 @@
     </style>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=OcqSk1RGOIhd1nHCQdfFUAAGLrTcNH0j"></script>
 </head>
-<body >
+<body>
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1">
         <div class="main-title">
@@ -115,13 +117,15 @@
                         <ul class="dateList"></ul>
                     </div>
                 </div>
-                <div style="width:25%;height:380px;border:#ccc solid 1px;margin-top: 370px;margin-left: 71.2%;">
-                    <p style="font-size: 18px;"><img class="img-circle" style="width: 24px;" src="image/user-female-icon.png"><a href="#">某某家电公司</a></p><br>
-                    <p style="font-size: 18px;"><img class="img-circle" style="width: 24px;" src="image/user-female-icon.png"><a href="#">某某家电公司</a></p><br>
-                    <p style="font-size: 18px;"><img class="img-circle" style="width: 24px;" src="image/user-male-alt-icon.png"><a href="#">某某房地产公司</a></p><br>
-                    <p style="font-size: 18px;"><img class="img-circle" style="width: 24px;" src="image/user-male-alt-icon.png"><a href="#">某某房地产公司</a></p><br>
-                    <a href="#" class="asd" onclick="aa();" title="123"><span class="glyphicon glyphicon-search" id="glyphicon"></span></a>
-                    <input type="button" class="ee" onclick="dis();" value="123">
+                <div style="width:25%;height:380px;border:#ccc solid 1px;margin-top: 370px;margin-left: 71.2%; overflow-y:scroll; ">
+                    <div id="cloneContent">
+                        <p style="font-size: 15px;">
+                            <a href="#">
+                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                <span name="client"> client_data</span>
+                            </a>
+                        </p><br>
+                    </div>
                 </div>
             </div>
         </div>
@@ -220,10 +224,14 @@
     }
     //载入全景信息
     window.onload = function () {
-        loadNavigationList();  // 设置动态菜单
         var panorama = new BMap.Panorama("panorama");
         panorama.setPosition(new BMap.Point(119.972394,31.979135));  //设置全景中心
         panorama.setPov({heading: -40, pitch: 6});                 // 设置全景上下左右边距
+
+        // update by whx：设置动态菜单
+        loadNavigationList();
+        // update 2018年12月5日 by ljc ： 增加客户显示
+        loadClientData();
     };
     //地图事件设置函数：
     function setMapEvent(){
@@ -287,8 +295,8 @@
                 $(".dateList").append("<li></li>");
             }
 
-            //日期插入到dateList
             for(var i = 1; i <= allDay; i++) {
+            //日期插入到dateList
                 $(".dateList").append("<li>" + i + "</li>")
             }
             //标记颜色=====================

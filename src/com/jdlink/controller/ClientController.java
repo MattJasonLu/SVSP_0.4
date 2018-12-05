@@ -320,6 +320,31 @@ public class ClientController {
         }
     }
 
+    // update 2018年12月5日 by ljc：上面的控制器返回时中文乱码，因其他地方使用，故重新建一个用于中文的获取
+    @RequestMapping("getClientList")
+    @ResponseBody
+    public void getClientList(HttpServletResponse response) {
+        PrintWriter out = null;
+        try {
+            List<Client> clientList = clientService.list();
+            JSONArray array = JSONArray.fromArray(clientList.toArray(new Client[clientList.size()]));
+
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("application/json; charset=utf-8");
+
+            out = response.getWriter();
+            out.append(array.toString());
+            out.print("");
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (out != null) {
+                out.close();
+            }
+        }
+    }
+
     @RequestMapping("searchClient")
     @ResponseBody
     public String searchClient(@RequestBody Client client) {
