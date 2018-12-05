@@ -14,8 +14,8 @@
     </select>
     <!--添加物料表-->
     <insert id="addMaterial" parameterType="Material">
-        insert into t_pl_material (suppliesName, specifications, inventory, note, purchaseQuantity, demandQuantity, receiptNumber,unit,state,createDate,checkState,unitId,checkStateId)
-        values (#{suppliesName},#{specifications},#{inventory},#{note},#{purchaseQuantity},#{demandQuantity},#{receiptNumber},#{unit},'ToInbound',NOW(),'Enabled',#{unitDataItem.dataDictionaryItemId},70);
+        insert into t_pl_material (suppliesName, specifications, inventory, note, purchaseQuantity, demandQuantity, receiptNumber,unit,state,createDate,checkState,unitId,checkStateId,stateId)
+        values (#{suppliesName},#{specifications},#{inventory},#{note},#{purchaseQuantity},#{demandQuantity},#{receiptNumber},#{unit},'ToInbound',NOW(),'Enabled',#{unitDataItem.dataDictionaryItemId},70,77);
     </insert>
     <!--加载采购列表-->
     <resultMap id="ProcurementRM" type="Procurement" autoMapping="true">
@@ -32,8 +32,15 @@
 
     
     <resultMap id="MaterialRM" type="Material">
+        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"></association>
+        <association property="ingredientStateItem" column="stateId" select="getIngredientStateItem"></association>
         <collection property="unitDataItem" column="unitId" select="getUnitDataItem"></collection>
     </resultMap>
+    <!--获取领用状态-->
+    <select id="getIngredientStateItem" resultType="IngredientStateItem">
+ select * from datadictionaryitem where dataDictionaryItemId=#{stateId}
+
+    </select>
 
     <!--获取数据字典明细（单位）-->
     <select id="getUnitDataItem" resultType="UnitDataItem">
@@ -51,7 +58,7 @@
         </if>
     </select>
     <!--获取采购明细-->
-    <select id="getProcurementItemList" resultType="Material">
+    <select id="getProcurementItemList" resultMap="MaterialRM">
         select a.* from t_pl_material as a join t_pl_procurement as b on a.receiptNumber=b.receiptNumber
         where b.checkStateId = 73
         <if test="start != null and count != null and count != 0">
@@ -184,6 +191,7 @@
                 or unit like "%"#{keywords}"%"
                 or demandQuantity like "%"#{keywords}"%"
                 or inventory like "%"#{keywords}"%"
+                or stateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like  "%"#{keywords}"%")
             </if>
             <if test="suppliesName != null and suppliesName != ''">
                 and suppliesName like "%"#{suppliesName}"%"
@@ -197,13 +205,15 @@
             <if test="note != null and note != ''">
                 and note like "%"#{note}"%"
             </if>
-            <if test="state != null and state != ''">
-                and state =#{state};
+            <if test="ingredientStateItem != null">
+                <if test="ingredientStateItem.dictionaryItemName!=''">
+                    and stateId in( select dataDictionaryItemId from datadictionaryitem where dictionaryItemName = #{ingredientStateItem.dictionaryItemName} and dataDictionaryId=11)
+                </if>
             </if>
         </where>
     </select>
 
-    <select id="searchMaterial" resultType="Material">
+    <select id="searchMaterial" resultMap="MaterialRM">
         select * from t_pl_material
         <where>
             <if test="keywords != null and keywords != ''">
@@ -214,6 +224,7 @@
                 or unit like "%"#{keywords}"%"
                 or demandQuantity like "%"#{keywords}"%"
                 or inventory like "%"#{keywords}"%"
+                or stateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like  "%"#{keywords}"%")
             </if>
             <if test="suppliesName != null and suppliesName != ''">
                 and suppliesName like "%"#{suppliesName}"%"
@@ -227,8 +238,10 @@
             <if test="note != null and note != ''">
                 and note like "%"#{note}"%"
             </if>
-            <if test="state != null and state != ''">
-                and state =#{state}
+            <if test="ingredientStateItem != null">
+                <if test="ingredientStateItem.dictionaryItemName!=''">
+                    and stateId in( select dataDictionaryItemId from datadictionaryitem where dictionaryItemName = #{ingredientStateItem.dictionaryItemName} and dataDictionaryId=11)
+                </if>
             </if>
         </where>
         <if test="page != null and page.start != null and page.count != null and page.count != 0">

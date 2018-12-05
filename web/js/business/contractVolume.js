@@ -320,6 +320,7 @@ function loadContractVolumeList() {
             if (result != undefined && result.status == 'success') {
                 // $("#ajaxloader,#ajaxloader_zz").fadeOut("normal");
                 // $("#ajaxloader,#ajaxloader_zz").remove();
+                console.log(result)
                 $('.loader').hide();
                 setPageClone(result.data);
                 setPageCloneAfter(pageNumber);        // 重新设置页码
@@ -407,6 +408,10 @@ function setContractVolume(result) {
                 //截止日期
                 case (8):
                     $(this).html(getDateStr(obj.contract.endTime));
+                    break;
+                    //主键
+                case (9):
+                    $(this).html(obj.quotationItemId);
                     break;
             }
             clonedTr.removeAttr("id");
@@ -744,5 +749,38 @@ function CalculateAggregate() {
 
     $('#total').children('td').eq(5).html(totalVolume.toFixed(2));
     $('#total').children('td').eq(6).html(totalMoney.toFixed(2));
+
+}
+
+
+//合约量导出
+function exportExcel() {
+    console.log("export");
+    var name = '合约量统计';
+    var idArry = [];//存放主键
+
+    var items = $("input[name='select']:checked");//判断复选框是否选中
+    if (items.length <= 0) { //如果不勾选
+        var sqlWords = "select b.companyName,a.wastesName,a.wastesCode,a.contractAmount,a.unitPriceTax,c.beginTime,c.endTime from t_quotationitem a join client b on a.clientId=b.clientId join t_contract c on c.contractId=a.contractId "
+        window.open('exportContractVolume?name=' + name + '&sqlWords=' + sqlWords);
+    }
+
+    if (items.length > 0) {
+        $.each(items, function (index, item) {
+            if ($(this).parent().parent().parent().children('td').eq(9).html().length > 0) {
+                idArry.push($(this).parent().parent().parent().children('td').eq(9).html());        // 将选中项的编号存到集合中
+            }
+        });
+        var sql = ' in (';
+        if (idArry.length > 0) {
+            for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+                if (i < idArry.length - 1) sql += idArry[i] + ",";
+                else if (i == idArry.length - 1) sql += idArry[i] + ");"
+            }
+            var sqlWords = "select b.companyName,a.wastesName,a.wastesCode,a.contractAmount,a.unitPriceTax,c.beginTime,c.endTime from t_quotationitem a join client b on a.clientId=b.clientId join t_contract c on c.contractId=a.contractId and a.quotationItemId"+sql
+        }
+        console.log(sqlWords)
+        window.open('exportContractVolume?name=' + name + '&sqlWords=' + sqlWords);
+    }
 
 }
