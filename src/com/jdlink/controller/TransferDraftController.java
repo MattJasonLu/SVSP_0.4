@@ -1,6 +1,9 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Dictionary.FormTypeItem;
+import com.jdlink.domain.Dictionary.HandleCategoryItem;
+import com.jdlink.domain.Dictionary.PackageTypeItem;
 import com.jdlink.domain.Inventory.InboundPlanOrder;
 import com.jdlink.domain.Inventory.RecordState;
 import com.jdlink.domain.Produce.HandleCategory;
@@ -399,21 +402,39 @@ public class TransferDraftController {
             switch (str.get(14)) {                 // 危废类别
                 case "污泥":
                     wastes.setHandleCategory(HandleCategory.Sludge);
+                    HandleCategoryItem handleCategoryItem1 = new HandleCategoryItem();
+                    handleCategoryItem1.setDataDictionaryItemId(28);
+                    wastes.setHandleCategoryItem(handleCategoryItem1);
                     break;
                 case "废液":
                     wastes.setHandleCategory(HandleCategory.WasteLiquid);
+                    HandleCategoryItem handleCategoryItem2 = new HandleCategoryItem();
+                    handleCategoryItem2.setDataDictionaryItemId(29);
+                    wastes.setHandleCategoryItem(handleCategoryItem2);
                     break;
                 case "散装料":
                     wastes.setHandleCategory(HandleCategory.Bulk);
+                    HandleCategoryItem handleCategoryItem3 = new HandleCategoryItem();
+                    handleCategoryItem3.setDataDictionaryItemId(30);
+                    wastes.setHandleCategoryItem(handleCategoryItem3);
                     break;
                 case "破碎料":
                     wastes.setHandleCategory(HandleCategory.Crushing);
+                    HandleCategoryItem handleCategoryItem4 = new HandleCategoryItem();
+                    handleCategoryItem4.setDataDictionaryItemId(31);
+                    wastes.setHandleCategoryItem(handleCategoryItem4);
                     break;
                 case "精馏残渣":
                     wastes.setHandleCategory(HandleCategory.Distillation);
+                    HandleCategoryItem handleCategoryItem5 = new HandleCategoryItem();
+                    handleCategoryItem5.setDataDictionaryItemId(32);
+                    wastes.setHandleCategoryItem(handleCategoryItem5);
                     break;
                 case "悬挂连":
                     wastes.setHandleCategory(HandleCategory.Suspension);
+                    HandleCategoryItem handleCategoryItem6 = new HandleCategoryItem();
+                    handleCategoryItem6.setDataDictionaryItemId(33);
+                    wastes.setHandleCategoryItem(handleCategoryItem6);
                     break;
             }
             wastes.setWastesId(str.get(15));      // 八位码
@@ -424,32 +445,59 @@ public class TransferDraftController {
             switch (str.get(20)) {
                 case "气体":
                     wastes.setFormType(FormType.Gas);
+                    FormTypeItem formTypeItem1 = new FormTypeItem();
+                    formTypeItem1.setDataDictionaryItemId(1);
+                    wastes.setFormTypeItem(formTypeItem1);
                     break;
                 case "液体":
                     wastes.setFormType(FormType.Liquid);
+                    FormTypeItem formTypeItem2 = new FormTypeItem();
+                    formTypeItem2.setDataDictionaryItemId(2);
+                    wastes.setFormTypeItem(formTypeItem2);
                     break;
                 case "固体":
                     wastes.setFormType(FormType.Solid);
+                    FormTypeItem formTypeItem3 = new FormTypeItem();
+                    formTypeItem3.setDataDictionaryItemId(3);
+                    wastes.setFormTypeItem(formTypeItem3);
                     break;
                 case "半固态":
                     wastes.setFormType(FormType.HalfSolid);
+                    FormTypeItem formTypeItem4 = new FormTypeItem();
+                    formTypeItem4.setDataDictionaryItemId(4);
+                    wastes.setFormTypeItem(formTypeItem4);
                     break;
             }
             switch (str.get(21)) {
                 case "吨袋":
                     wastes.setPackageType(PackageType.Bag);
+                    PackageTypeItem packageTypeItem1 = new PackageTypeItem();
+                    packageTypeItem1.setDataDictionaryItemId(121);
+                    wastes.setPackageTypeItem(packageTypeItem1);
                     break;
                 case "标准箱":
                     wastes.setPackageType(PackageType.Box);
+                    PackageTypeItem packageTypeItem2 = new PackageTypeItem();
+                    packageTypeItem2.setDataDictionaryItemId(122);
+                    wastes.setPackageTypeItem(packageTypeItem2);
                     break;
                 case "吨箱":
                     wastes.setPackageType(PackageType.Ton);
+                    PackageTypeItem packageTypeItem3 = new PackageTypeItem();
+                    packageTypeItem3.setDataDictionaryItemId(123);
+                    wastes.setPackageTypeItem(packageTypeItem3);
                     break;
                 case "小袋":
                     wastes.setPackageType(PackageType.Pouch);
+                    PackageTypeItem packageTypeItem4 = new PackageTypeItem();
+                    packageTypeItem4.setDataDictionaryItemId(124);
+                    wastes.setPackageTypeItem(packageTypeItem4);
                     break;
                 case "铁桶":
                     wastes.setPackageType(PackageType.Iron);
+                    PackageTypeItem packageTypeItem5 = new PackageTypeItem();
+                    packageTypeItem5.setDataDictionaryItemId(124);
+                    wastes.setPackageTypeItem(packageTypeItem5);
                     break;
             }
             transferDraft.setWastes(wastes);
