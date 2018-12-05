@@ -305,6 +305,7 @@ function loadPageList() {
         contentType: 'application/json;charset=utf-8',
         success: function (result) {
             if (result != undefined && result.status == "success") {
+                console.log(result)
                 setPageClone(result.data);
                 setPageCloneAfter(pageNumber);        // 重新设置页码
             } else {
@@ -453,14 +454,15 @@ function exportExcel() {
             if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
             else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
         }
-        sqlWords = "select a.id,a.department,a.state,a.creationDate,b.serialNumberReceive,b.name,b.specification,\n" +
+        sqlWords = "select a.id,a.department,c.dictionaryItemName,a.creationDate,b.serialNumberReceive,b.name,b.specification,\n" +
             "b.receiveAmount,b.unit,b.remarks,b.wareHouseName,a.vicePresident,a.warehouseSupervisor,\n" +
             "a.keeper,a.pickingSupervisor,a.pickingMan from t_pr_ingredients_receive as a join t_pr_ingredients as b \n" +
-            "on receiveId = id where id" + sql;
+            "on receiveId = id  join datadictionaryitem c on c.dataDictionaryItemId=a.checkStateId where id" + sql;
     } else {          // 若无勾选项则导出全部
-        sqlWords = "select a.id,a.department,a.state,a.creationDate,b.serialNumberReceive,b.name,b.specification,\n" +
+        sqlWords = "select a.id,a.department,c.dictionaryItemName,a.creationDate,b.serialNumberReceive,b.name,b.specification,\n" +
             "b.receiveAmount,b.unit,b.remarks,b.wareHouseName,a.vicePresident,a.warehouseSupervisor,\n" +
-            "a.pickingSupervisor,a.pickingMan from t_pr_ingredients_receive as a join t_pr_ingredients as b on receiveId = id;";
+            "a.keeper,a.pickingSupervisor,a.pickingMan from t_pr_ingredients_receive as a join t_pr_ingredients as b \n" +
+            "on receiveId = id  join datadictionaryitem c on c.dataDictionaryItemId=a.checkStateId ";
     }
     console.log("sql:" + sqlWords);
     window.open('exportExcelIngredientsReceive?name=' + name + '&sqlWords=' + sqlWords);
@@ -570,55 +572,55 @@ function searchData() {
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
     var state = null;
-    if ($("#search-state").val() == 0) state = "NewBuild";//新建
-    if ($("#search-state").val() == 1) state = "Invalid";//已作废
-    if ($("#search-state").val() == 2) state = "OutBounded";//已出库
+    if ($("#search-state").val() == 0) state = "新建";//新建
+    if ($("#search-state").val() == 1) state = "已作废";//已作废
+    if ($("#search-state").val() == 2) state = "已出库";//已出库
     var keywords = $.trim($("#searchContent").val());
-    switch (keywords) {
-        case("新建"):
-            keywords = "NewBuild";
-            break;
-        case("待审批"):
-            keywords = "ToExamine";
-            break;
-        case("审批中"):
-            keywords = "Examining";
-            break;
-        case("审批通过"):
-            keywords = "Approval";
-            break;
-        case("已驳回"):
-            keywords = "Backed";
-            break;
-        case("驳回"):
-            keywords = "Backed";
-            break;
-        case("已作废"):
-            keywords = "Invalid";
-            break;
-        case("作废"):
-            keywords = "Invalid";
-            break;
-        case("已确认"):
-            keywords = "Confirm";
-            break;
-        case("确认"):
-            keywords = "Confirm";
-            break;
-        case ("已出库"):
-            keywords = "OutBounded";
-            break;
-        case ("出库"):
-            keywords = "OutBounded";
-            break;
-    }
+    // switch (keywords) {
+    //     case("新建"):
+    //         keywords = "NewBuild";
+    //         break;
+    //     case("待审批"):
+    //         keywords = "ToExamine";
+    //         break;
+    //     case("审批中"):
+    //         keywords = "Examining";
+    //         break;
+    //     case("审批通过"):
+    //         keywords = "Approval";
+    //         break;
+    //     case("已驳回"):
+    //         keywords = "Backed";
+    //         break;
+    //     case("驳回"):
+    //         keywords = "Backed";
+    //         break;
+    //     case("已作废"):
+    //         keywords = "Invalid";
+    //         break;
+    //     case("作废"):
+    //         keywords = "Invalid";
+    //         break;
+    //     case("已确认"):
+    //         keywords = "Confirm";
+    //         break;
+    //     case("确认"):
+    //         keywords = "Confirm";
+    //         break;
+    //     case ("已出库"):
+    //         keywords = "OutBounded";
+    //         break;
+    //     case ("出库"):
+    //         keywords = "OutBounded";
+    //         break;
+    // }
     if ($("#senior").is(':visible')) {
         data1 = {
             startDate: $("#search-startDate").val(),
             endDate: $("#search-endDate").val(),
             id: $.trim($("#search-Id").val()),
             department: $.trim($("#search-department").val()),
-            state: state,
+            checkStateItem:{dictionaryItemName:state} ,
             page: page
         };
     } else {
@@ -777,8 +779,8 @@ function setViewClone(result) {
                     break;
                 case (7):
                     // 物品状态
-                    if (obj.ingredientState != null)
-                        $(this).html(obj.ingredientState.name);
+                    if (obj.ingredientStateItem != null)
+                        $(this).html(obj.ingredientStateItem.dictionaryItemName);
                     break;
             }
         });
