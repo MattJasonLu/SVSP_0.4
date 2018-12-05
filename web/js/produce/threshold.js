@@ -624,11 +624,11 @@ function exportExcelList() {
             if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
             else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
         }
-        sqlWords = "select id,thresholdId,handleCategory,formType,calorificmax,calorificmin,ashmax,ashmin,watermax,watermin,\n" +
-            "Smax,Smin,CLmax,CLmin,Pmax,Pmin,Fmax,Fmin,PHmax,PHmin,Safety,beginTime,endTime from t_pr_threshold where id" + sql;
+        sqlWords = "select a.id,a.thresholdId,b.dictionaryItemName,c.dictionaryItemName,a.calorificmax,a.calorificmin,a.ashmax,a.ashmin,a.watermax,a.watermin,\n" +
+            "a.Smax,a.Smin,a.CLmax,a.CLmin,a.Pmax,a.Pmin,a.Fmax,a.Fmin,a.PHmax,a.PHmin,a.Safety,a.beginTime,a.endTime from t_pr_threshold a join   datadictionaryitem b on b.dataDictionaryItemId=a.handleCategoryId join datadictionaryitem c on c.dataDictionaryItemId=a.formTypeId  where id" + sql;
     } else {          // 若无勾选项则导出全部
-        sqlWords = "select id,thresholdId,handleCategory,formType,calorificmax,calorificmin,ashmax,ashmin,watermax,watermin,\n" +
-            "Smax,Smin,CLmax,CLmin,Pmax,Pmin,Fmax,Fmin,PHmax,PHmin,Safety,beginTime,endTime from t_pr_threshold";
+        sqlWords = "select a.id,a.thresholdId,b.dictionaryItemName,c.dictionaryItemName,a.calorificmax,a.calorificmin,a.ashmax,a.ashmin,a.watermax,a.watermin,\n" +
+            "a.Smax,a.Smin,a.CLmax,a.CLmin,a.Pmax,a.Pmin,a.Fmax,a.Fmin,a.PHmax,a.PHmin,a.Safety,a.beginTime,a.endTime from t_pr_threshold a join   datadictionaryitem b on b.dataDictionaryItemId=a.handleCategoryId join datadictionaryitem c on c.dataDictionaryItemId=a.formTypeId"  ;
     }
     console.log("sql:" + sqlWords);
     window.open('exportExcelThresholdTable?name=' + name + '&sqlWords=' + sqlWords);
