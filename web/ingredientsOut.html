@@ -137,14 +137,10 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" href="#" onclick="addIngredientsOut()"><span
-                            class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                    <a class="btn btn-primary btn-xs" href="ingredientsOutDetail.html"><span
-                            class="glyphicon glyphicon-search" aria-hidden="true"></span> 明细页面</a>
-                    <a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose();"><span
-                            class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                    <a class="btn btn-primary btn-xs" href="#" onclick="exportExcel();"><span
-                            class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                    <a class="btn btn-primary btn-xs" id="function_-349" href="#" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; addIngredientsOut();}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                    <a class="btn btn-primary btn-xs" id="function_-350" onclick="checkAuthority($(this))" href="ingredientsOutDetail.html"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 明细页面</a>
+                    <a class="btn btn-primary btn-xs" id="function_-351" href="#" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose();}"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                    <a class="btn btn-primary btn-xs" id="function_-352" href="#" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel();}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
                 <div class="input-group col-md-4 pull-right">
@@ -247,12 +243,9 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center">
-                            <a title="查看" href="#" onclick="toView(this)"><span
-                                    class="glyphicon glyphicon-search" aria-hidden="true"></span> </a>
-                            <a title="修改" href="#" onclick="ingredientsOutModify(this)"><span
-                                    class="glyphicon glyphicon-pencil" aria-hidden="true"></span> </a>
-                            <a title="作废" href="#" onclick="invalid(this)"><span class="glyphicon glyphicon-remove-sign"
-                                                                                        aria-hidden="true"></span> </a>
+                            <a title="查看" href="#" id="function_-353" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; toView(e);}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> </a>
+                            <a title="修改" href="#" id="function_-354" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; ingredientsOutModify(e);}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> </a>
+                            <a title="作废" href="#" id="function_-355" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; invalid(e);}"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> </a>
                         </td>
                     </tr>
                     </tbody>

@@ -144,15 +144,11 @@ $('.form_datetime2').datetimepicker({
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" href="#" onclick="showDateModal();"><span
-                                class="glyphicon glyphicon-plus"
-                                aria-hidden="true"></span> 生成日报</a>
+                        <a class="btn btn-primary btn-xs" id="function_-357" href="#" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; showDateModal();}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 生成日报</a>
+                        <a class="btn btn-primary btn-xs" id="function_-358" href="#" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel();}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                         <!--<a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose();"><span-->
-                                <!--class="glyphicon glyphicon-arrow-down"-->
-                                <!--aria-hidden="true"></span> 导入</a>-->
-                        <a class="btn btn-primary btn-xs" href="#" onclick="exportExcel()"><span
-                                class="glyphicon glyphicon-arrow-up"
-                                aria-hidden="true"></span> 导出</a>
+                        <!--class="glyphicon glyphicon-arrow-down"-->
+                        <!--aria-hidden="true"></span> 导入</a>-->
                     </div>
                     <!--查询框-->
                     <div class="input-group col-md-4 pull-right">
@@ -230,10 +226,10 @@ $('.form_datetime2').datetimepicker({
                         <td class="text-center" name="checkState">新建</td>
                         <td class="text-center" name="author">Admin</td>
                         <td class="text-center">
-                            <a href="#" onclick="viewData($(this));" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                            <a href="#" onclick="calculate($(this));" title="计算"><span class="glyphicon glyphicon-th" aria-hidden="true"></span></a>
-                            <a href="#" onclick="setLocked($(this));" title="锁定"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></a>
-                            <a href="#" onclick="setInvalid($(this));" title="作废"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
+                            <a href="#" id="function_-359" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; viewData($(e));}" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                            <a href="#" id="function_-360" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; calculate($(e));}" title="计算"><span class="glyphicon glyphicon-th" aria-hidden="true"></span></a>
+                            <a href="#" id="function_-361" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; setLocked($(e));}" title="锁定"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></a>
+                            <a href="#" id="function_-362" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; setInvalid($(e));}" title="作废"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
                         </td>
                     </tr>
                 </tbody>

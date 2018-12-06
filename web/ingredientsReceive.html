@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>辅料/备件出库</title>
+    <title>辅料/备件领用</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -137,14 +137,10 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" href="#" onclick="addIngredientsReceive();"><span
-                            class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                    <a class="btn btn-primary btn-xs" href="ingredientsReceiveDetail.html"><span
-                            class="glyphicon glyphicon-search" aria-hidden="true"></span> 明细页面</a>
-                    <a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose();"><span class="glyphicon glyphicon-arrow-down"
-                                                                     aria-hidden="true"></span> 导入</a>
-                    <a class="btn btn-primary btn-xs" href="#" onclick="exportExcel();"><span class="glyphicon glyphicon-arrow-up"
-                                                                     aria-hidden="true"></span> 导出</a>
+                    <a class="btn btn-primary btn-xs" id="function_-342" href="#" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; addIngredientsReceive();}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                    <a class="btn btn-primary btn-xs" id="function_-343" onclick="checkAuthority($(this))" href="ingredientsReceiveDetail.html"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 明细页面</a>
+                    <a class="btn btn-primary btn-xs" id="function_-344" href="#" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose();}"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                    <a class="btn btn-primary btn-xs" id="function_-345" href="#" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel();}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
                 <div class="input-group col-md-4 pull-right">
@@ -248,14 +244,9 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center">
-                            <a title="查看" href="#"
-                               onclick="toView(this)"><span class="glyphicon glyphicon-search"
-                                                                          aria-hidden="true"></span> </a>
-                            <a title="修改" href="#"
-                               onclick="ingredientsReceiveModify(this)"><span class="glyphicon glyphicon-pencil"
-                                                                          aria-hidden="true"></span> </a>
-                            <a title="作废" href="#" onclick="invalid(this)"><span
-                                    class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> </a>
+                            <a title="查看" href="#" id="function_-346" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; toView(e);}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> </a>
+                            <a title="修改" href="#" id="function_-347" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; ingredientsReceiveModify(e);}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> </a>
+                            <a title="作废" href="#" id="function_-348" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; invalid(e);}"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> </a>
                         </td>
                     </tr>
                     </tbody>

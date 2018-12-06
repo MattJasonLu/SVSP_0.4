@@ -103,7 +103,7 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left">
-                    <a class="btn btn-primary btn-xs" href="userInfo.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                    <a class="btn btn-primary btn-xs" id="function_-376" onclick="checkAuthority($(this))" href="userInfo.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                 </div>
             </div>
             <div class="table">
@@ -134,8 +134,8 @@
                         <td class="text-center">小李</td>
                         <td class="text-center">管理员</td>
                         <td class="text-center">
-                            <a href="#" onclick="alert('功能开发中');" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                            <a href="#" onclick="showRoleModal(this);" title="分配角色"><span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span></a>
+                            <a href="#" id="function_-377" onclick="alert('功能开发中');" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                            <a href="#" id="function_-378" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; showRoleModal(e);}" title="分配角色"><span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span></a>
                         </td>
                     </tr>
                     </tbody>
