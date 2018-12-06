@@ -110,8 +110,8 @@
                 <div class="pull-left col-md-6">
                     <!--<a class="btn btn-primary btn-xs" href="newSecondaryOut.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>-->
                     <!--<a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>-->
-                    <a class="btn btn-primary btn-xs" onclick="exportExcel();"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
-                    <a class="btn btn-primary btn-xs" onclick="DeclareGeneration()"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 生成次生库存申报</a>
+                    <a class="btn btn-primary btn-xs" id="function_-310" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel(e);}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                    <a class="btn btn-primary btn-xs" id="function_-311" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; DeclareGeneration(e);}"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 生成次生库存申报</a>
                 </div>
                 <!--<div class="input-group col-md-3">-->
                     <!--<input type="text" name="" id="input" value="" placeholder="请输入查询关键字" onkeyup="search1()"/>-->
@@ -242,7 +242,7 @@
                     <td class="text-center hidden"></td><!--单位编号-->
 
                     <td class="text-center"><!--操作-->
-                        <a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                        <a href="#" id="function_-312" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; view(e);}" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                         <!--<a href="#" onclick="cancel();" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>-->
                         <!--<a href="#" onclick="submit();" title="提交"><span class="glyphicon glyphicon-export" aria-hidden="true"></span></a>-->
                         <!--<a href="#" onclick="signIn();" title="签收"><span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>-->

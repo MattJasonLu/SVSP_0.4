@@ -142,7 +142,7 @@
             <h4 class="sub-header"><span class="months"></span>月份考核</h4>
             <!--操作按钮-->
             <div class="pull-left col-md-6">
-                <a class="btn btn-primary btn-xs" href="#" onclick="exportExcel()"><span
+                <a class="btn btn-primary btn-xs" id="function_-368" href="#" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel();}"><span
                         class="glyphicon glyphicon-arrow-up"
                         aria-hidden="true"></span> 导出</a>
             </div>
@@ -223,7 +223,7 @@
                 <td class="text-center"></td>
                 <td class="text-center"></td>
                 <td class="text-center">
-                    <a onclick="toView(this);" title="查看"><span class="glyphicon glyphicon glyphicon-search"
+                    <a id="function_-369" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; toView(e);}" title="查看"><span class="glyphicon glyphicon glyphicon-search"
                                                                 aria-hidden="true"></span></a>
                 </td>
             </tr>
