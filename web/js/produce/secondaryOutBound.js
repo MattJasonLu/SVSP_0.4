@@ -1113,12 +1113,12 @@ function comfirm() {
 //导出
 function exportExcel() {
     console.log("export");
-    var name = 't_pl_outboundorder';
+    var name = '次生出库单';
     var idArry = [];//存放主键
     var items = $("input[name='select']:checked");//判断复选框是否选中
     if (items.length <= 0) { //如果不勾选
-        var sqlWords = "select outboundOrderId,outboundDate ,(select companyName from client where client.clientId=t_pl_outboundorder.clientId), (select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=secondaryCategoryId ), wasteCategory,(select  wareHouseName from t_pl_warehouse where wareHouseId =t_pl_outboundorder.wareHouseId),outboundNumber,transferDraftId ,(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=processWayId ), (select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=equipmentId ) from t_pl_outboundorder  ";
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+        var sqlWords = "select outboundOrderId,outboundDate ,(select companyName from client where client.clientId=t_pl_outboundorder.clientId), (select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=secondaryCategoryId ), wasteCategory,(select  wareHouseName from t_pl_warehouse where wareHouseId =t_pl_outboundorder.wareHouseId),outboundNumber,transferDraftId ,(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=processWayId ), (select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=equipmentId ) from t_pl_outboundorder  where t_pl_outboundorder.boundType='SecondaryOutbound' ";
+        window.open('exportExcelSecOutBound?name=' + name + '&sqlWords=' + sqlWords);
     }
 
     if (items.length > 0) {
@@ -1138,7 +1138,7 @@ function exportExcel() {
         }
         window.open('exportExcelSecOutBound?name=' + name + '&sqlWords=' + sqlWords);
     }
-
+console.log(sqlWords)
 
 }
 

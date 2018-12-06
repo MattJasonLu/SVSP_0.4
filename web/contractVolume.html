@@ -142,8 +142,7 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6 boo">
-                    <a class="btn btn-primary btn-xs" id="function_178" href="stockForm.html" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 导出</a>
-                    <!--<a class="btn btn-primary btn-xs" id="function_179" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; contractSubmit(e)}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>-->
+                    <a class="btn btn-primary btn-xs" id="function_-269" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>                 <!--<a class="btn btn-primary btn-xs" id="function_179" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; contractSubmit(e)}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>-->
                     <!--<a class="btn btn-primary btn-xs" id="function_180" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcel(e)}"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>-->
                     <!--<a class="btn btn-primary btn-xs" id="function_181" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel(contractIndex)}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>-->
                 </div>
@@ -217,7 +216,7 @@
                 <tr>
                     <th class="text-center">
                         <label>
-                            <input class="checkbox" onclick="allSelect1()" type="checkbox" value="option1"   id="allSel1"/>
+                            <input class="checkbox" onclick="allSelect()" type="checkbox" value="option1"   id="allSel"/>
                         </label>
                     </th>
                     <th class="text-center">序号</th>
@@ -235,9 +234,9 @@
                 <tr id="cloneTr">
                     <td class="text-center">
                         <label>
-                            <input class="checkbox" type="checkbox" id="blankCheckbox1"  name="blankCheckbox1"  value="option1" aria-label="...">
+                            <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
                         </label>
-                    </td><!--checkbox-->
+                    </td>
                     <td class="text-center"></td><!--编号-->
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -246,6 +245,7 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center hidden"></td>
                 </tr>
                 </tbody>
 

@@ -384,8 +384,8 @@ function setList(result) {
                     break;
                 case (3):
                     //出库单状态
-                    if (obj.state != null)
-                        $(this).html(obj.state.name);
+                    if (obj.checkStateItem != null)
+                        $(this).html(obj.checkStateItem.dictionaryItemName);
                     break;
                 case (4):
                     // 总数量
@@ -475,17 +475,17 @@ function exportExcel() {
             if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
             else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
         }
-        sqlWords = "select id,department as '部门',creationDate as '单据创建日期',state as '单据状态',serialNumberOut as '序号',\n" +
+        sqlWords = "select id,department as '部门',creationDate as '单据创建日期',c.dictionaryItemName,serialNumberOut as '序号',\n" +
             "name as '物品名称',specification as '规格',unitPrice as '单价',receiveAmount as '出库数',unit as '计量单位',\n" +
             "b.totalPrice as '物品总额',wareHouseName as '仓库',post as '过账',remarks as '附注',fileId as '文件编号',\n" +
             "bookkeeper as '记账人',approver as '审批人',keeper as '保管人',handlers as '经手人' \n" +
-            "from t_pr_ingredients_out as a join t_pr_ingredients as b on outId = id where id" + sql;
+            "from t_pr_ingredients_out as a join t_pr_ingredients as b on outId = id  join datadictionaryitem c on c.dataDictionaryItemId=a.checkStateId  where id" + sql;
     } else {          // 若无勾选项则导出全部
-        sqlWords = "select id,department as '部门',creationDate as '单据创建日期',state as '单据状态',serialNumberOut as '序号',\n" +
-            "name as '物品名称',specification as '规格',unitPrice as '单价',amount as '入库数',unit as '计量单位',\n" +
+        sqlWords = "select id,department as '部门',creationDate as '单据创建日期',c.dictionaryItemName,serialNumberOut as '序号',\n" +
+            "name as '物品名称',specification as '规格',unitPrice as '单价',receiveAmount as '出库数',unit as '计量单位',\n" +
             "b.totalPrice as '物品总额',wareHouseName as '仓库',post as '过账',remarks as '附注',fileId as '文件编号',\n" +
-            "bookkeeper as '记账人',approver as '审批人',keeper as '保管人',handlers as '经手人' " +
-            "from t_pr_ingredients_out as a join t_pr_ingredients as b on outId = id;";
+            "bookkeeper as '记账人',approver as '审批人',keeper as '保管人',handlers as '经手人' \n" +
+            "from t_pr_ingredients_out as a join t_pr_ingredients as b on outId = id  join datadictionaryitem c on c.dataDictionaryItemId=a.checkStateId   " ;
     }
     console.log("sql:" + sqlWords);
     window.open('exportExcelIngredientsOut?name=' + name + '&sqlWords=' + sqlWords);
@@ -594,56 +594,57 @@ function searchData() {
     page.pageNumber = pageNumber;
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
-    var state = null;
-    if ($("#search-state").val() === 0) state = "NewBuild";//新建
-    if ($("#search-state").val() === 1) state = "Invalid";//已作废
-    if ($("#search-state").val() === 2) state = "OutBounded";//已出库
+
     var keywords = $.trim($("#searchContent").val());
-    switch (keywords) {
-        case("新建"):
-            keywords = "NewBuild";
-            break;
-        case("待审批"):
-            keywords = "ToExamine";
-            break;
-        case("审批中"):
-            keywords = "Examining";
-            break;
-        case("审批通过"):
-            keywords = "Approval";
-            break;
-        case("已驳回"):
-            keywords = "Backed";
-            break;
-        case("驳回"):
-            keywords = "Backed";
-            break;
-        case("已作废"):
-            keywords = "Invalid";
-            break;
-        case("作废"):
-            keywords = "Invalid";
-            break;
-        case("已确认"):
-            keywords = "Confirm";
-            break;
-        case("确认"):
-            keywords = "Confirm";
-            break;
-        case ("已出库"):
-            keywords = "OutBounded";
-            break;
-        case ("出库"):
-            keywords = "OutBounded";
-            break;
-    }
+    // switch (keywords) {
+    //     case("新建"):
+    //         keywords = "NewBuild";
+    //         break;
+    //     case("待审批"):
+    //         keywords = "ToExamine";
+    //         break;
+    //     case("审批中"):
+    //         keywords = "Examining";
+    //         break;
+    //     case("审批通过"):
+    //         keywords = "Approval";
+    //         break;
+    //     case("已驳回"):
+    //         keywords = "Backed";
+    //         break;
+    //     case("驳回"):
+    //         keywords = "Backed";
+    //         break;
+    //     case("已作废"):
+    //         keywords = "Invalid";
+    //         break;
+    //     case("作废"):
+    //         keywords = "Invalid";
+    //         break;
+    //     case("已确认"):
+    //         keywords = "Confirm";
+    //         break;
+    //     case("确认"):
+    //         keywords = "Confirm";
+    //         break;
+    //     case ("已出库"):
+    //         keywords = "OutBounded";
+    //         break;
+    //     case ("出库"):
+    //         keywords = "OutBounded";
+    //         break;
+    // }
     if ($("#senior").is(':visible')) {
+        var state = null;
+        if ($("#search-state").val() == 0) state = "新建";//新建
+        if ($("#search-state").val() == 1) state = "已作废";//已作废
+        if ($("#search-state").val() == 2) state = "已出库";//已出库
         data1 = {
             startDate: $("#search-startDate").val(),
             endDate: $("#search-endDate").val(),
             id: $.trim($("#search-Id").val()),
             department: $.trim($("#search-department").val()),
-            state: state,
+            checkStateItem:{dictionaryItemName:state} ,
             page: page
         };
     } else {
@@ -849,13 +850,13 @@ function setViewClone(result) {
                     break;
                 case (17):
                     // 物品状态
-                    if (obj.ingredientState != null)
-                        $(this).html(obj.ingredientState.name);
+                    if (obj.ingredientStateItem != null)
+                        $(this).html(obj.ingredientStateItem.dictionaryItemName);
                     break;
                 case (18):
                     // 处置设备
-                    if (obj.equipment != null)
-                        $(this).html(obj.equipment.name);
+                    if (obj.equipmentDataItem != null)
+                        $(this).html(obj.equipmentDataItem.dictionaryItemName);
                     break;
             }
         });
@@ -1034,8 +1035,8 @@ function loadIngredientsReceiveList() {
                         clonedTr.find("span[name='receiveAmount']").text(obj.receiveAmount);
                         clonedTr.find("input[name='unitPrice']").val(obj.unitPrice.toFixed(2));
                         clonedTr.find("input[name='post']").val(obj.post);
-                        if (obj.equipment != null)
-                            clonedTr.find("select[name='equipment']").val(obj.equipment.index);
+                        if (obj.equipmentDataItem != null)
+                            clonedTr.find("select[name='equipment']").val(obj.equipmentDataItem.dataDictionaryItemId);
                         var receiveAmount = obj.receiveAmount.toFixed(2);
                         var unitPrice = obj.unitPrice.toFixed(2);
                         var totalPrice = parseFloat(receiveAmount) * parseFloat(unitPrice);
@@ -1131,7 +1132,7 @@ function setfileId() {
 function setSelectedList() {
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getEquipmentNameList",                  // url
+        url: "getEquipmentByDataDictionary",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
@@ -1140,10 +1141,10 @@ function setSelectedList() {
                 // 高级检索下拉框数据填充
                 var state = $("select[name='equipment']");
                 state.children().remove();
-                $.each(data.equipmentList, function (index, item) {
+                $.each(data.data, function (index, item) {
                     var option = $('<option />');
-                    option.val(item.index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     state.append(option);
                 });
                 state.get(0).selectedIndex = -1;
@@ -1204,7 +1205,10 @@ function setReceiveList(result) {
                         break;
                     case (3):
                         // 领料单状态
-                        $(this).html(obj.state.name);
+                        if(obj.checkStateItem!=null){
+                            $(this).html(obj.checkStateItem.dictionaryItemName);
+                        }
+
                         break;
                     case (4):
                         // 总数量
@@ -1291,55 +1295,17 @@ function enterSearch1() {
  */
 function search1() {
     var state = null;
-    if ($("#search1-state").val() == 0) state = "NewBuild";//新建
-    if ($("#search1-state").val() == 1) state = "Invalid";//已作废
-    if ($("#search-state").val() == 2) state = "OutBounded";//已出库
+    if ($("#search1-state").val() == 0) state = "新建";//新建
+    if ($("#search1-state").val() == 1) state = "已作废";//已作废
+    if ($("#search-state").val() == 2) state = "已出库";//已出库
     var keywords = $.trim($("#searchContent1").val());
-    switch (keywords) {
-        case("新建"):
-            keywords = "NewBuild";
-            break;
-        case("待审批"):
-            keywords = "ToExamine";
-            break;
-        case("审批中"):
-            keywords = "Examining";
-            break;
-        case("审批通过"):
-            keywords = "Approval";
-            break;
-        case("已驳回"):
-            keywords = "Backed";
-            break;
-        case("驳回"):
-            keywords = "Backed";
-            break;
-        case("已作废"):
-            keywords = "Invalid";
-            break;
-        case("作废"):
-            keywords = "Invalid";
-            break;
-        case("已确认"):
-            keywords = "Confirm";
-            break;
-        case("确认"):
-            keywords = "Confirm";
-            break;
-        case ("已出库"):
-            keywords = "OutBounded";
-            break;
-        case ("出库"):
-            keywords = "OutBounded";
-            break;
-    }
     if ($("#senior1").is(':visible')) {
         data1 = {
             startDate: $("#search1-startDate").val(),
             endDate: $("#search1-endDate").val(),
             id: $.trim($("#search1-Id").val()),
             department: $.trim($("#search1-department").val()),
-            state: state
+            checkStateItem:{dictionaryItemName:state}
         };
     } else {
         data1 = {
@@ -1571,6 +1537,7 @@ function confirmInsert() {
                     dataType: "json",
                     success: function (result) {
                         if (result != undefined && result.status == "success") {
+                            console.log(result)
                             //遍历存储物品数组
                             ingredientsOut.department = result.data.department;
                             $.each(result.data.ingredientsList, function (index, item) {
@@ -1587,8 +1554,8 @@ function confirmInsert() {
                                 ingredients.wareHouseName = item.wareHouseName;
                                 ingredients.aid = item.id;                      //辅料备件领料单号
                                 ingredients.serialNumberA = "add";
-                                if (item.ingredientState.name === "部分领用") ingredients.notReceiveAmount = 1;  // 未领用数为1，表示还有余量
-                                else if (item.ingredientState.name === "已领用") ingredients.notReceiveAmount = 0;   // 未领用数为0，表示没有余量
+                                if (item.ingredientStateItem.dictionaryItemName === "部分领用") ingredients.notReceiveAmount = 1;  // 未领用数为1，表示还有余量
+                                else if (item.ingredientStateItem.dictionaryItemName === "已领用") ingredients.notReceiveAmount = 0;   // 未领用数为0，表示没有余量
                                 ingredients.notReceiveAmount = 1;
                                 ingredientsList.push(ingredients);
                             });
@@ -1694,15 +1661,18 @@ function save() {
             ingredientsOut.ingredientsList[i].unitPrice = $("#out-unitPrice" + $i).val();
             ingredientsOut.ingredientsList[i].post = $("#post" + $i).val();
             ingredientsOut.ingredientsList[i].totalPrice = parseFloat(ingredientsOut.ingredientsList[i].unitPrice) * parseFloat(ingredientsOut.ingredientsList[i].receiveAmount);
-            var equitment = parseInt($("#equipment" + $i).find("option:selected").val());
-            switch(equitment){
-                case 1: ingredientsOut.ingredientsList[i].equipment = 'MedicalCookingSystem'; break;
-                case 2: ingredientsOut.ingredientsList[i].equipment = 'A2'; break;
-                case 3: ingredientsOut.ingredientsList[i].equipment = 'B2'; break;
-                case 4: ingredientsOut.ingredientsList[i].equipment = 'SecondaryTwoCombustionChamber'; break;
-                case 5: ingredientsOut.ingredientsList[i].equipment = 'ThirdPhasePretreatmentSystem'; break;
-                case 6: ingredientsOut.ingredientsList[i].equipment = 'Prepare2'; break;
-            }
+            var equipmentDataItem={};
+            equipmentDataItem.dataDictionaryItemId= parseInt($("#equipment" + $i).find("option:selected").val());
+            ingredientsOut.ingredientsList[i].equipmentDataItem=equipmentDataItem;
+            // var equitment = parseInt($("#equipment" + $i).find("option:selected").val());
+            // switch(equitment){
+            //     case 1: ingredientsOut.ingredientsList[i].equipment = 'MedicalCookingSystem'; break;
+            //     case 2: ingredientsOut.ingredientsList[i].equipment = 'A2'; break;
+            //     case 3: ingredientsOut.ingredientsList[i].equipment = 'B2'; break;
+            //     case 4: ingredientsOut.ingredientsList[i].equipment = 'SecondaryTwoCombustionChamber'; break;
+            //     case 5: ingredientsOut.ingredientsList[i].equipment = 'ThirdPhasePretreatmentSystem'; break;
+            //     case 6: ingredientsOut.ingredientsList[i].equipment = 'Prepare2'; break;
+            // }
            // ingredientsOut.ingredientsList[i].equipment = equitment;
             if ($("#out-unitPrice" + $i).val() == null || $("#out-unitPrice" + $i).val() === "") unitPriceState = true;
             totalPrice += ingredientsOut.ingredientsList[i].totalPrice;

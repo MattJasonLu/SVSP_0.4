@@ -857,13 +857,13 @@ function importExcelChoose() {
 //导出数据
 function exportExcel() {
     console.log("export");
-    var name = 't_pl_medicalwastes';
+    var name = '医危废出入库';
     var idArry = [];//存放主键
     var items = $("input[name='select']:checked");//判断复选框是否选中
     if (items.length <= 0) { //如果不勾选
-        var sqlWords = "select medicalWastesId 序号,department 部门,adjustName 修改人,adjustDate 修改日期,thisMonthWastes 本日进厂危废, directDisposal 本日直接转外处置量,cookingWastes 本日蒸煮医废,afterCookingNumber 蒸煮后重量,afterCookingInbound 蒸煮后入库量,thisMonthSendCooking 本日蒸煮后外送量,errorNumber 误差量,wetNumber 水分含量,equipment 处置设备     from t_pl_medicalwastes;";
+        var sqlWords = "select a.medicalWastesId,a.dateTime, a.department,a.departmentName,a.adjustName,a.adjustDate,a.thisMonthWastes,a.directDisposal,a.cookingWastes,a.afterCookingNumber, a.afterCookingInbound, a.thisMonthSendCooking,a.errorNumber, a.wetNumber,b.dictionaryItemName from t_pl_medicalwastes a join datadictionaryitem b on b.dataDictionaryItemId=a.equipmentId" ;
 
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+        window.open('exportExcelMedicalWastes?name=' + name + '&sqlWords=' + sqlWords);
 
     }
 
@@ -879,11 +879,13 @@ function exportExcel() {
                 if (i < idArry.length - 1) sql += idArry[i] + ",";
                 else if (i == idArry.length - 1) sql += idArry[i] + ");"
             }
-            var sqlWords = "select medicalWastesId 序号,department 部门,adjustName 修改人,adjustDate 修改日期,thisMonthWastes 本日进厂危废, directDisposal 本日直接转外处置量,cookingWastes 本日蒸煮医废,afterCookingNumber 蒸煮后重量,afterCookingInbound 蒸煮后入库量,thisMonthSendCooking 本日蒸煮后外送量,errorNumber 误差量,wetNumber 水分含量,equipment 处置设备 from t_pl_medicalwastes where medicalWastesId" + sql;
+            var sqlWords = "select a.medicalWastesId,a.dateTime, a.department,a.departmentName,a.adjustName,a.adjustDate,a.thisMonthWastes,a.directDisposal,a.cookingWastes,a.afterCookingNumber, a.afterCookingInbound, a.thisMonthSendCooking,a.errorNumber, a.wetNumber,b.dictionaryItemName from t_pl_medicalwastes a join datadictionaryitem b on b.dataDictionaryItemId=a.equipmentId and medicalWastesId " + sql;
 
 
         }
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+
+        console.log(sqlWords)
+        window.open('exportExcelMedicalWastes?name=' + name + '&sqlWords=' + sqlWords);
     }
 }
 

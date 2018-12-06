@@ -482,12 +482,12 @@ function exportExcel() {
             if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
             else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
         }
-        sqlWords = "select id as '编号', name as '污水名称',receiveDate as '污水接收日期',COD,BOD5,oxygen as '氧',nitrogen as '氮',lye as '碱液',PH,remarks as '备注' from t_pr_sewage where id" + sql;
+        sqlWords = "select  a.id,a.address,a.sendingPerson,a.laboratorySignatory,c.dictionaryItemName,b.ph,b.cod,b.bod5,b.n2,b.nitrogen,b.phosphorus,b.lye from  t_pr_sewageregistration a join  t_pr_sewageregistrationitem b on b.sampleinformationId=a.id join datadictionaryitem c on c.dataDictionaryItemId=a.checkStateId and    a.id" + sql;
     }else {          // 若无勾选项则导出全部
-        sqlWords = "select id as '编号', name as '污水名称',receiveDate as '污水接收日期',COD,BOD5,oxygen as '氧',nitrogen as '氮',lye as '碱液',PH,remarks as '备注' from t_pr_sewage;";
+        sqlWords = "select  a.id,a.address,a.sendingPerson,a.laboratorySignatory,c.dictionaryItemName,b.ph,b.cod,b.bod5,b.n2,b.nitrogen,b.phosphorus,b.lye from  t_pr_sewageregistration a join  t_pr_sewageregistrationitem b on b.sampleinformationId=a.id join datadictionaryitem c on c.dataDictionaryItemId=a.checkStateId";
     }
     console.log("sql:"+sqlWords);
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    window.open('exportSewageregistration?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**

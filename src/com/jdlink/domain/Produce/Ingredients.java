@@ -1,6 +1,10 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Dictionary.CheckStateItem;
+import com.jdlink.domain.Dictionary.EquipmentDataItem;
+import com.jdlink.domain.Dictionary.IngredientStateItem;
+import com.jdlink.domain.Dictionary.UnitDataItem;
 import com.jdlink.domain.Page;
 
 import java.util.Arrays;
@@ -130,6 +134,65 @@ public class Ingredients {
      * 旧领料数
      */
     private float oldReceiveAmount;
+
+    /**
+     * 单位数据字典
+     * @return
+     */
+    private UnitDataItem unitDataItem;
+
+
+    /**
+     *状态数据字典
+     * @return
+     */
+    private CheckStateItem checkStateItem;
+
+    /**
+     * 处置设备数据字典
+     * @return
+     */
+    private EquipmentDataItem equipmentDataItem;
+
+
+    /**
+     * 辅料/备件状态数据字典
+     */
+    private IngredientStateItem ingredientStateItem;
+
+
+    public IngredientStateItem getIngredientStateItem() {
+        return ingredientStateItem;
+    }
+
+    public void setIngredientStateItem(IngredientStateItem ingredientStateItem) {
+        this.ingredientStateItem = ingredientStateItem;
+    }
+
+    public EquipmentDataItem getEquipmentDataItem() {
+        return equipmentDataItem;
+    }
+
+    public void setEquipmentDataItem(EquipmentDataItem equipmentDataItem) {
+        this.equipmentDataItem = equipmentDataItem;
+    }
+
+
+    public CheckStateItem getCheckStateItem() {
+        return checkStateItem;
+    }
+
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
+    }
+
+    public UnitDataItem getUnitDataItem() {
+        return unitDataItem;
+    }
+
+    public void setUnitDataItem(UnitDataItem unitDataItem) {
+        this.unitDataItem = unitDataItem;
+    }
 
     public float getOldReceiveAmount() {
         return oldReceiveAmount;

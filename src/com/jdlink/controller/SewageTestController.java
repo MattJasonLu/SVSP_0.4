@@ -1198,6 +1198,85 @@ public class SewageTestController {
         return res.toString();
     }
 
+
+    //污水送样导出
+    @RequestMapping("exportSewageregistration")
+    @ResponseBody
+    public String exportSewageregistration(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "预约单号/采样点/送样人/签收人/状态/PH/COD/BOD5/氨氮/总氮/总磷/碱度";
+            name = "污水送样";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
+    }
+
+    //软水送样导出
+    @RequestMapping("exportSoftregistration")
+    @ResponseBody
+    public String exportSoftregistration(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "预约单号/采样点/送样人/签收人/状态/浊度/硬度/PH/酚酞碱度/全碱度/电导率";
+            name = "软水送样";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
+    }
+
+
+    //次生送样导出
+    @RequestMapping("exportSecondarySample")
+    @ResponseBody
+    public String exportSecondarySample(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "预约单号/危废名称/送样人/签收人/采样点/状态/水分/热灼减率";
+            name = "次生送样";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
+    }
 }
 
 

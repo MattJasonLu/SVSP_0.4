@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1037,5 +1038,30 @@ public String importCompatibilityExcel(MultipartFile excelFile){
         return compatibilityId;
     }
 
+    //配伍周计划导出
+    @RequestMapping("exportExcelWeekPlan")
+    @ResponseBody
+    public String exportExcelWeekPlan(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "配伍计划单号/进料方式/物质形态/比例/每日配置量/周需求总量/热值/灰分/水分/CL/S/P/F/PH";
+            name = "配伍周计划";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
+    }
 
 }

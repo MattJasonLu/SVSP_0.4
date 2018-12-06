@@ -1358,3 +1358,42 @@ function confirmRetire(){
         });
     }
 }
+
+
+/**
+ *
+ * 导出
+ * @returns {string}
+ */
+function exportExcel() {
+    console.log("export");
+    var name = 't_pl_procurement';
+    var idArry = [];//存放主键
+    var items = $("input[name='select']:checked");//判断复选框是否选中
+    if (items.length <= 0) { //如果不勾选
+        var sqlWords = "select  outboundOrderId,outboundDate,(select companyName from client where client.clientId=t_pl_outboundorder.clientId), wastesName,wasteCategory,(select  wareHouseName from t_pl_warehouse where wareHouseId =t_pl_outboundorder.wareHouseId), outboundNumber,transferDraftId, (select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=handleCategoryId),(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=processWayId ) ,(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=equipmentId )   from t_pl_outboundorder  where boundType='WasteOutbound' ";
+
+        window.open('exportExcelWastesOutBound?name=' + name + '&sqlWords=' + sqlWords);
+
+    }
+
+    if (items.length > 0) {
+        $.each(items, function (index, item) {
+            if ($(this).parent().parent().parent().children('td').eq(1).html().length > 0) {
+                idArry.push($(this).parent().parent().parent().children('td').eq(1).html());        // 将选中项的编号存到集合中
+            }
+        });
+        var sql = ' in (';
+        if (idArry.length > 0) {
+            for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+                if (i < idArry.length - 1) sql += idArry[i] + ",";
+                else if (i == idArry.length - 1) sql += idArry[i] + ");"
+            }
+            var sqlWords = "select  outboundOrderId,outboundDate,(select companyName from client where client.clientId=t_pl_outboundorder.clientId), wastesName,wasteCategory,(select  wareHouseName from t_pl_warehouse where wareHouseId =t_pl_outboundorder.wareHouseId), outboundNumber,transferDraftId, (select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=handleCategoryId),(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=processWayId ) ,(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=equipmentId )   from t_pl_outboundorder  where outboundOrderId"+sql;
+
+
+        }
+        console.log(sqlWords)
+        window.open('exportExcelWastesOutBound?name=' + name + '&sqlWords=' + sqlWords);
+    }
+}

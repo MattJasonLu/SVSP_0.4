@@ -451,12 +451,12 @@ function exportExcel() {
             if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
             else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
         }
-        sqlWords = "select id as '编号', name as '软水名称',receiveDate as '软水接收日期',relativeAlkalinity as '相对碱度',dissolvedSolidForm as '溶解固形物',PH,alkalinity as '碱度',hardness as '硬度',electricalConductivity as '电导率',remarks as '备注' from t_pr_softwater where id" + sql;
+        sqlWords = "select a.id,a.address,a.sendingPerson,a.laboratorySignatory,c.dictionaryItemName,b.turbidity,b.hardness,b.ph,b.phenolphthalein,b.basicity,b.electricalConductivity   from t_pr_softgeregistration a join t_pr_softgeregistrationitem b on b.sampleinformationId=a.id join datadictionaryitem c on c.dataDictionaryItemId=a.checkStateId  and a.id" + sql;
     }else {          // 若无勾选项则导出全部
-        sqlWords = "select id as '编号', name as '软水名称',receiveDate as '软水接收日期',relativeAlkalinity as '相对碱度',dissolvedSolidForm as '溶解固形物',PH,alkalinity as '碱度',hardness as '硬度',electricalConductivity as '电导率',remarks as '备注' from t_pr_softwater;";
+        sqlWords = "select a.id,a.address,a.sendingPerson,a.laboratorySignatory,c.dictionaryItemName,b.turbidity,b.hardness,b.ph,b.phenolphthalein,b.basicity,b.electricalConductivity   from t_pr_softgeregistration a join t_pr_softgeregistrationitem b on b.sampleinformationId=a.id join datadictionaryitem c on c.dataDictionaryItemId=a.checkStateId  " ;
     }
     console.log("sql:"+sqlWords);
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    window.open('exportSoftregistration?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**

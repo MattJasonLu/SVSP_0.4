@@ -561,35 +561,35 @@ function searchIngredientIn() {
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
     var state = null;
-    if ($("#search-state").val() == 0) state = "NewBuild";//新建
-    if ($("#search-state").val() == 1) state = "Invalid";//已作废
-    if ($("#search-state").val() == 2) state = "OutBounded";//已出库
+    if ($("#search-state").val() == 0) state = "新建";//新建
+    if ($("#search-state").val() == 1) state = "已作废";//已作废
+    if ($("#search-state").val() == 2) state = "已出库";//已出库
     var keywords = $.trim($("#searchContent").val());
     //模糊查询状态字段转换
-    switch (keywords) {
-        case "新建":
-            keywords = "NewBuild";
-            break;
-        case "已作废":
-            keywords = "Invalid";
-            break;
-        case "作废":
-            keywords = "Invalid";
-            break;
-        case "已出库":
-            keywords = "OutBounded";
-            break;
-        case "出库":
-            keywords = "OutBounded";
-            break;
-    }
+    // switch (keywords) {
+    //     case "新建":
+    //         keywords = "NewBuild";
+    //         break;
+    //     case "已作废":
+    //         keywords = "Invalid";
+    //         break;
+    //     case "作废":
+    //         keywords = "Invalid";
+    //         break;
+    //     case "已出库":
+    //         keywords = "OutBounded";
+    //         break;
+    //     case "出库":
+    //         keywords = "OutBounded";
+    //         break;
+    // }
     if ($("#senior").is(':visible')) {
         data1 = {
             startDate: $("#search-startDate").val(),
             endDate: $("#search-endDate").val(),
             id: $.trim($("#search-Id").val()),
             companyName: $.trim($("#search-companyName").val()),
-            state: state,
+            checkStateItem:{dictionaryItemName:state} ,
             page: page
         };
     } else {
@@ -797,13 +797,13 @@ function setViewIngredientsClone(result) {
                     break;
                 case (17):
                     // 物品状态
-                    if (obj.ingredientState != null)
-                        $(this).html(obj.ingredientState.name);
+                    if (obj.ingredientStateItem != null)
+                        $(this).html(obj.ingredientStateItem.dictionaryItemName);
                     break;
                 case(18):
                     // 处置设备
-                    if (obj.equipment != null)
-                        $(this).html(obj.equipment.name);
+                    if (obj.equipmentDataItem != null)
+                        $(this).html(obj.equipmentDataItem.dictionaryItemName);
                     break;
             }
         });
@@ -1330,16 +1330,16 @@ function loadProcurementItemList() {
                             clonedTr.children("td:eq(0)").prepend(delBtn);   // 添加减行按钮
                         clonedTr.find("span[name='name']").text(obj.name);
                         clonedTr.find("span[name='specification']").text(obj.specification);
-                        if (obj.unit != null)
-                            clonedTr.find("td[name='unit']").text(obj.unit.name);
+                        // if (obj.unit != null)
+                            clonedTr.find("span[name='unit']").text(obj.unit);
                         clonedTr.find("input[name='amount']").val(obj.amount.toFixed(2));
                         clonedTr.find("input[name='unitPrice']").val(obj.unitPrice.toFixed(2));
                         clonedTr.find("input[name='post']").val(obj.post);
                         clonedTr.find("select[name='wareHouseName']").val(obj.wareHouseName);
                         clonedTr.find("span[name='remarks']").text(obj.remarks);
                         clonedTr.find("span[name='procurementId']").text(obj.procurementId);
-                        if (obj.equipment != null)
-                            clonedTr.find("select[name='equipment']").val(obj.equipment.index);
+                        if (obj.equipmentDataItem != null)
+                            clonedTr.find("select[name='equipment']").val(obj.equipmentDataItem.dataDictionaryItemId);
                         var amount = obj.amount.toFixed(3);
                         var unitPrice = obj.unitPrice.toFixed(2);
                         var totalPrice = parseFloat(amount) * parseFloat(unitPrice);
@@ -1433,7 +1433,7 @@ function delLine(e) {
 function setSelectedList() {
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getEquipmentNameList",                  // url
+        url: "getEquipmentByDataDictionary",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
@@ -1442,10 +1442,10 @@ function setSelectedList() {
                 // 高级检索下拉框数据填充
                 var state = $("select[name='equipment']");
                 state.children().remove();
-                $.each(data.equipmentList, function (index, item) {
+                $.each(data.data, function (index, item) {
                     var option = $('<option />');
-                    option.val(item.index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     state.append(option);
                 });
                 state.get(0).selectedIndex = -1;
@@ -1569,8 +1569,8 @@ function setProcurementItemList(result) {
                         break;
                     // 计量单位
                     case (4):
-                        if (obj.unit != null)
-                            $(this).html(obj.unit.name);
+                        if (obj.unitDataItem != null)
+                            $(this).html(obj.unitDataItem.dictionaryItemName);
                         break;
                     // 库存量
                     case (5):
@@ -1586,8 +1586,8 @@ function setProcurementItemList(result) {
                         break;
                     // 状态
                     case (8):
-                        if (obj.state != null)
-                            $(this).html(obj.state.name);
+                        if (obj.ingredientStateItem != null)
+                            $(this).html(obj.ingredientStateItem.dictionaryItemName);
                         break;
                     case (9):
                         $(this).html(obj.id);
@@ -1664,6 +1664,7 @@ function confirmInsert1() {
                     dataType: "json",
                     success: function (result) {
                         if (result != undefined && result.status == "success") {
+                            // console.log(result)
                             //遍历存储物品数组
                             var data = result.data;
                             i++;
@@ -1672,8 +1673,10 @@ function confirmInsert1() {
                             ingredients.serialNumber = i;                    // 序号
                             ingredients.name = data.suppliesName;            // 物品名称
                             ingredients.specification = data.specifications; // 规格
-                            if (data.unit != null)
-                                ingredients.unit = data.unit.name;                     // 单位
+                            if (data.unitDataItem != null)
+                                var unitDataItem={};
+                            unitDataItem.dictionaryItemName=data.unitDataItem.dictionaryItemName;
+                            ingredients.unitDataItem=unitDataItem;            // 单位
                             ingredients.amount = data.demandQuantity;         // 入库数量
                             ingredients.remarks = data.note;                  // 备注
                             ingredients.id = ingredientsIn.id;
@@ -1699,6 +1702,7 @@ function confirmInsert1() {
         num++;
         ingredientsList[index].serialNumber = num;                    // 更新序号
         var obj = eval(item);
+        console.log(obj)
         var clonedTr = tr.clone();
         //更新id
         clonedTr.children().find("input,span,select").each(function () {
@@ -1710,8 +1714,8 @@ function confirmInsert1() {
         clonedTr.find("span[name='serialNumber']").text(obj.serialNumber);
         clonedTr.find("span[name='name']").text(obj.name);
         clonedTr.find("span[name='specification']").text(obj.specification);
-        if (obj.unit != null)
-            clonedTr.find("td[name='unit']").text(obj.unit.name);
+        if (obj.unitDataItem != null)
+            clonedTr.find("span[name='unit']").text(obj.unitDataItem.dictionaryItemName);
         clonedTr.find("input[name='amount']").val(obj.amount);
         clonedTr.find("span[name='remarks']").text(obj.remarks);
         // 把克隆好的tr追加到原来的tr前面
@@ -1782,26 +1786,30 @@ function save() {
                 ingredientsIn.ingredientsList[i].wareHouseName = $("#wareHouseName" + $i).find("option:selected").text();
                 ingredientsIn.ingredientsList[i].totalPrice = ingredientsIn.ingredientsList[i].unitPrice * ingredientsIn.ingredientsList[i].amount;
                 var equitment = parseInt($("#equipment" + $i).find("option:selected").val());
-                switch (equitment) {
-                    case 1:
-                        ingredientsIn.ingredientsList[i].equipment = 'MedicalCookingSystem';
-                        break;
-                    case 2:
-                        ingredientsIn.ingredientsList[i].equipment = 'A2';
-                        break;
-                    case 3:
-                        ingredientsIn.ingredientsList[i].equipment = 'B2';
-                        break;
-                    case 4:
-                        ingredientsIn.ingredientsList[i].equipment = 'SecondaryTwoCombustionChamber';
-                        break;
-                    case 5:
-                        ingredientsIn.ingredientsList[i].equipment = 'ThirdPhasePretreatmentSystem';
-                        break;
-                    case 6:
-                        ingredientsIn.ingredientsList[i].equipment = 'Prepare2';
-                        break;
-                }
+                var equipmentDataItem={};
+                equipmentDataItem.dataDictionaryItemId=equitment;
+                ingredientsIn.ingredientsList[i].equipmentDataItem=equipmentDataItem;
+
+                // switch (equitment) {
+                //     case 1:
+                //         ingredientsIn.ingredientsList[i].equipment = 'MedicalCookingSystem';
+                //         break;
+                //     case 2:
+                //         ingredientsIn.ingredientsList[i].equipment = 'A2';
+                //         break;
+                //     case 3:
+                //         ingredientsIn.ingredientsList[i].equipment = 'B2';
+                //         break;
+                //     case 4:
+                //         ingredientsIn.ingredientsList[i].equipment = 'SecondaryTwoCombustionChamber';
+                //         break;
+                //     case 5:
+                //         ingredientsIn.ingredientsList[i].equipment = 'ThirdPhasePretreatmentSystem';
+                //         break;
+                //     case 6:
+                //         ingredientsIn.ingredientsList[i].equipment = 'Prepare2';
+                //         break;
+                // }
                 if (ingredientsIn.ingredientsList[i].wareHouseName == null || ingredientsIn.ingredientsList[i].wareHouseName == "") wareHouseState = true;
                 if (ingredientsIn.ingredientsList[i].unitPrice == null || ingredientsIn.ingredientsList[i].unitPrice == "") unitPriceState = true;
                 totalPrice += ingredientsIn.ingredientsList[i].totalPrice;
@@ -1978,28 +1986,10 @@ function search1() {
     page.count = countValue1();   // 获取每页显示数
     page.start = (pageNumber - 1) * page.count;
     var keywords = $.trim($("#searchContent1").val());
-    switch (keywords) {   // 枚举类型的关键字转化
-        case "待入库":
-            keywords = "ToInbound";
-            break;
-        case "入库":
-            keywords = "ToInbound";
-            break;
-        case "待领料":
-            keywords = "ToPick";
-            break;
-        case "领料":
-            keywords = "ToPick";
-            break;
-    }
-    var state = null;
-    switch ($("#search1-state").find("option:selected").text()) { // 枚举类型状态转化
-        case '待入库':
-            state = "ToInbound";
-            break;
-        case '待领料':
-            state = "ToPick";
-            break;
+
+    var state = ($("#search1-state").find("option:selected").text());
+    if(state.length<0){
+        state=null
     }
     if ($("#senior1").is(':visible')) {
         data1 = {           // 获取数据并设置搜索条件
@@ -2007,7 +1997,7 @@ function search1() {
             specifications: $.trim($("#search1-specifications").val()),
             receiptNumber: $.trim($("#search1-receiptNumber").val()),
             note: $.trim($("#search1-note").val()),
-            state: state,
+            ingredientStateItem: {dictionaryItemName:state},
             page: page
         };
     } else {
@@ -2039,7 +2029,6 @@ function search1() {
         });
     }
 }
-
 //新增页面重置
 function reset1() {
     $('#searchContent1').val("");

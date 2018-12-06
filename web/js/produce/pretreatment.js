@@ -483,14 +483,14 @@ function exportExcel() {
         }
         sqlWords = "select a.id,b.serialNumber,b.produceCompanyName,b.requirements,b.wastesName,b.proportion,b.weight,\n" +
             "b.calorific,b.ashPercentage,b.wetPercentage,b.volatileNumber,b.chlorinePercentage,b.sulfurPercentage,b.ph, \n" +
-            "b.phosphorusPercentage,b.fluorinePercentage,b.remarks,b.processWay,b.handleCategory,a.state from t_pr_pretreatment as a \n" +
-            "join t_pr_pretreatmentitem as b where pretreatmentId = id and id" + sql;
+            "b.phosphorusPercentage,b.fluorinePercentage,b.remarks,c.dictionaryItemName,d.dictionaryItemName,e.dictionaryItemName from t_pr_pretreatment as a \n" +
+            "join t_pr_pretreatmentitem as b on b.pretreatmentId = a.id  join datadictionaryitem c on c.dataDictionaryItemId=b.processWayId join datadictionaryitem d on d.dataDictionaryItemId=b.handleCategoryId  join datadictionaryitem e on e.dataDictionaryItemId=a.checkStateId and a.id" + sql;
 
     } else {
         sqlWords = "select a.id,b.serialNumber,b.produceCompanyName,b.requirements,b.wastesName,b.proportion,b.weight,\n" +
-            "b.calorific,b.ashPercentage,b.wetPercentage,b.volatileNumber,b.chlorinePercentage,b.sulfurPercentage,b.ph,\n" +
-            "b.phosphorusPercentage,b.fluorinePercentage,b.remarks,b.processWay,b.handleCategory,a.state \n" +
-            "from t_pr_pretreatment as a join t_pr_pretreatmentitem as b where pretreatmentId = id";
+            "b.calorific,b.ashPercentage,b.wetPercentage,b.volatileNumber,b.chlorinePercentage,b.sulfurPercentage,b.ph, \n" +
+            "b.phosphorusPercentage,b.fluorinePercentage,b.remarks,c.dictionaryItemName,d.dictionaryItemName,e.dictionaryItemName from t_pr_pretreatment as a \n" +
+            "join t_pr_pretreatmentitem as b on b.pretreatmentId = a.id  join datadictionaryitem c on c.dataDictionaryItemId=b.processWayId join datadictionaryitem d on d.dataDictionaryItemId=b.handleCategoryId  join datadictionaryitem e on e.dataDictionaryItemId=a.checkStateId ";
     }
     window.open('exportExcelPretreatment?name=' + name + '&sqlWords=' + sqlWords);
 }

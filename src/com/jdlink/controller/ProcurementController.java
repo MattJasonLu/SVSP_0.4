@@ -1151,7 +1151,7 @@ public class ProcurementController {
         try {
             DBUtil db = new DBUtil();
             String tableHead = "月度采购计划单号/创建人/创建日期/修改人/修改日期/审批人/物资名称/规格型号/申购部门/需求数量/单位/单价/统计金额/备注";
-            name = "次生出库单";   //重写文件名
+            name = "采购计划单";   //重写文件名
             db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
             res.put("status", "success");
             res.put("message", "导出成功");
@@ -1168,5 +1168,55 @@ public class ProcurementController {
         return res.toString();
     }
 
+    //月度采购申请表导出
+    @RequestMapping("exportExcelMouthProcurementPlan")
+    @ResponseBody
+    public String exportExcelMouthProcurementPlan(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
 
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "申请单编号/申请月份/需求时间/申请部门/申购部门负责人/申购部门分管领导/采购部门负责人/采购部门分管领导/总经理/创建日期/物资名称/规格型号/单位/库存量/需求数量/备注";
+            name = "月度采购申请单";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
+    }
+
+    //应急采购导出
+    @RequestMapping("exportExcelEmcProcurementPlan")
+    @ResponseBody
+    public String exportExcelEmcProcurementPlan(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "申请单编号/物资类别/需求时间/申请部门/申购部门负责人/生产部门主管/采购部门主管/总经理/申请日期/物资名称/规格型号/单位/库存量/需求数量/采购数量/备注";
+            name = "应急采购申请单";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
+    }
 }

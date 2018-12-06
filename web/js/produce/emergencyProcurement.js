@@ -909,9 +909,9 @@ function exportExcel() {
     var idArry = [];//存放主键
     var items = $("input[name='select']:checked");//判断复选框是否选中
     if (items.length <= 0) { //如果不勾选
-        var sqlWords = "select t_pl_procurement.receiptNumber 编号, t_pl_procurement.applyMouth 申请月份,  t_pl_procurement.demandTime 需求时间,t_pl_procurement.applyDepartment 申请部门,t_pl_procurement.proposer 申请部门负责人,t_pl_procurement.divisionHead 申请部门分管领导,t_pl_procurement.purchasingDirector 采购部门分管领导,t_pl_procurement.generalManager 总经理,t_pl_procurement.procurementCategory 物资类别,t_pl_procurement.purchasingHead 采购部门领导,t_pl_procurement.applyDate 申请日期,t_pl_material.suppliesName 物品名称,t_pl_material.specifications 规格,t_pl_material.inventory 库存量,t_pl_material.note 备注,t_pl_material.purchaseQuantity 采购数量, t_pl_material.demandQuantity 需求数量 from t_pl_procurement left join t_pl_material on t_pl_procurement.receiptNumber=t_pl_material.receiptNumber and t_pl_procurement.procurementCategory='0';";
+        var sqlWords = "select  a.receiptNumber,a.suppliesCategory,a.demandTime,a.applyDepartment,a.proposer,a.divisionHead,a.purchasingHead,a.generalManager,a.createDate,b.suppliesName,b.specifications,c.dictionaryItemName,b.inventory,b.demandQuantity,b.purchaseQuantity,b.note from  t_pl_procurement a join  t_pl_material b on b.receiptNumber=a.receiptNumber join datadictionaryitem c on c.dataDictionaryItemId=b.unitId  and a.procurementCategory=0  ";
 
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+        window.open('exportExcelEmcProcurementPlan?name=' + name + '&sqlWords=' + sqlWords);
 
     }
 
@@ -927,11 +927,11 @@ function exportExcel() {
                 if (i < idArry.length - 1) sql += idArry[i] + ",";
                 else if (i == idArry.length - 1) sql += idArry[i] + ");"
             }
-            var sqlWords = "select t_pl_procurement.receiptNumber 编号, t_pl_procurement.applyMouth 申请月份,  t_pl_procurement.demandTime 需求时间,t_pl_procurement.applyDepartment 申请部门,t_pl_procurement.proposer 申请部门负责人,t_pl_procurement.divisionHead 申请部门分管领导,t_pl_procurement.purchasingDirector 采购部门分管领导,t_pl_procurement.generalManager 总经理,t_pl_procurement.procurementCategory 物资类别,t_pl_procurement.purchasingHead 采购部门领导,t_pl_procurement.applyDate 申请日期,t_pl_material.suppliesName 物品名称,t_pl_material.specifications 规格,t_pl_material.inventory 库存量,t_pl_material.note 备注,t_pl_material.purchaseQuantity 采购数量, t_pl_material.demandQuantity 需求数量 from t_pl_procurement left join t_pl_material on t_pl_procurement.receiptNumber=t_pl_material.receiptNumber and t_pl_procurement.procurementCategory='0' where t_pl_procurement.receiptNumber"+sql;
+            var sqlWords = "select  a.receiptNumber,a.suppliesCategory,a.demandTime,a.applyDepartment,a.proposer,a.divisionHead,a.purchasingHead,a.generalManager,a.createDate,b.suppliesName,b.specifications,c.dictionaryItemName,b.inventory,b.demandQuantity,b.purchaseQuantity,b.note from  t_pl_procurement a join  t_pl_material b on b.receiptNumber=a.receiptNumber join datadictionaryitem c on c.dataDictionaryItemId=b.unitId   where a.receiptNumber"+sql;
 
 
         }
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+        window.open('procurementCategory?name=' + name + '&sqlWords=' + sqlWords);
     }
 }
 

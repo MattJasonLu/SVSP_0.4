@@ -879,12 +879,12 @@ function exportExcel() {
             if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
             else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
         }
-        sqlWords = "select * from t_rp_equipment as a join t_rp_equipmentchild as b where a.documentNumber = b.documentNumber and a.documentNumber" + sql;
+        sqlWords = "select a.documentNumber,a.creator,a.dayTime,a.createDept,a.editor,a.editTime,a.note,c.dictionaryItemName,b.runningTime,b.stopTime,b.stopResult from  t_rp_equipment a join t_rp_equipmentchild b  on a.documentNumber=b.documentNumber join datadictionaryitem c on c.dataDictionaryItemId=b.equipmentId and    a.documentNumber" + sql;
     }else {          // 若无勾选项则导出全部
-        sqlWords = "select * from t_rp_equipment as a join t_rp_equipmentchild as b where a.documentNumber = b.documentNumber;";
+        sqlWords = "select a.documentNumber,a.creator,a.dayTime,a.createDept,a.editor,a.editTime,a.note,c.dictionaryItemName,b.runningTime,b.stopTime,b.stopResult from  t_rp_equipment a join t_rp_equipmentchild b  on a.documentNumber=b.documentNumber join datadictionaryitem c on c.dataDictionaryItemId=b.equipmentId ";
     }
     console.log("sql:"+sqlWords);
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    window.open('exportExcelEquipment?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**
