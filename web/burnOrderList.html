@@ -25,7 +25,7 @@
             </li>
         </ul>
     </div>
-    <div class="container navbar-left" style="width: 800px;">
+    <div class="container navbar-left" style="width: 70%;">
         <div class="navbar-header">
             <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
         </div>
@@ -118,12 +118,12 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" href="burnOrderItem.html"><span
+                    <a class="btn btn-primary btn-xs" href="burnOrderItem.html" id="function_-292" onclick="checkAuthority($(this))"><span
                             class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                    <a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose();"><span
+                    <a class="btn btn-primary btn-xs" href="#" id="function_-293" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose(e);}"><span
                             class="glyphicon glyphicon-arrow-down"
                             aria-hidden="true"></span> 导入</a>
-                    <a class="btn btn-primary btn-xs" href="#" onclick="exportExcel()"><span
+                    <a class="btn btn-primary btn-xs" href="#" id="function_-294" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel(e);}"><span
                             class="glyphicon glyphicon-arrow-up"
                             aria-hidden="true"></span> 导出</a>
                 </div>
@@ -222,11 +222,11 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center">
-                            <a href="#" title="查看" onclick="toView1(this);"><span class="glyphicon glyphicon-search"
+                            <a href="#" title="查看" id="function_-295" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; toView1(e);}"><span class="glyphicon glyphicon-search"
                                                                                   aria-hidden="true"></span></a>
-                            <a href="#" title="修改" onclick="burnOrderListModify(this);"><span
+                            <a href="#" title="修改" id="function_-296" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; burnOrderListModify(e);}"><span
                                     class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                            <a href="#" title="作废" onclick="invalid(this);"><span
+                            <a href="#" title="作废" id="function_-297" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; invalid(e);}"><span
                                     class="glyphicon glyphicon-remove-sign"
                                     aria-hidden="true"></span></a>
                         </td>

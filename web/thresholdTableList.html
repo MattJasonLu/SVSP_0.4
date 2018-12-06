@@ -136,10 +136,8 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" href="thresholdTableAdd.html" onclick="addNewData();"><span
-                            class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                    <a class="btn btn-primary btn-xs" onclick="exportExcelList();"><span
-                            class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                    <a class="btn btn-primary btn-xs" id="function_-380" href="thresholdTableAdd.html" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; addNewData();}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                    <a class="btn btn-primary btn-xs" id="function_-381" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcelList();}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
                 <div class="input-group col-md-4 pull-right">
@@ -214,14 +212,10 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center">
-                            <a href="#" title="查看" onclick="toView(this)"><span
-                                class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                            <a href="#" title="编辑"  onclick="edit(this);"><span
-                                    class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                            <a href="#" title="启用" onclick="enable(this)"><span
-                                    class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span></a>
-                            <a href="#" title="关闭" onclick="disabled(this)"><span
-                                    class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                            <a href="#" id="function_-382" title="查看" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; toView(e);}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                            <a href="#" id="function_-383" title="编辑" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; edit(e);}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                            <a href="#" id="function_-384" title="启用" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; enable(e);}"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span></a>
+                            <a href="#" id="function_-385" title="关闭" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; disabled(e);}"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
                         </td>
                     </tr>
                     </tbody>
