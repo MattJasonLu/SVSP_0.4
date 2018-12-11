@@ -2890,7 +2890,7 @@ function contractWastesSave() {
                             if ($(this).children('td').eq(10).children('input').prop('type') != 'text') {
                                 var pictureFile = $(this).children('td').eq(10).find("input[name='picture']").get(0).files[0];
                                 formFile.append("pictureFile", pictureFile);
-
+                     console.log(formFile)
                             }
                             $.ajax({
                                 type: "POST",                            // 方法类型
