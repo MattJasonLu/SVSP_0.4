@@ -203,6 +203,22 @@ public class Client {
     //经营单位类别数据字典
     private OperationTypeItem operationTypeItem;
 
+    /**
+     * 开票类型
+     */
+    private TicketRateItem ticketRateItem;
+    /**
+     * 客户类型
+     */
+    private ClientTypeItem clientTypeItem;
+    /**
+     * 审批状态
+     */
+    private CheckStateItem checkStateItem;
+    /**
+     * 客户状态
+     */
+    private ClientStateItem clientStateItem;
 
     public ApplicationStatusItem getApplicationStatusItem() {
         return applicationStatusItem;
@@ -602,6 +618,38 @@ public class Client {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public TicketRateItem getTicketRateItem() {
+        return ticketRateItem;
+    }
+
+    public void setTicketRateItem(TicketRateItem ticketRateItem) {
+        this.ticketRateItem = ticketRateItem;
+    }
+
+    public ClientTypeItem getClientTypeItem() {
+        return clientTypeItem;
+    }
+
+    public void setClientTypeItem(ClientTypeItem clientTypeItem) {
+        this.clientTypeItem = clientTypeItem;
+    }
+
+    public CheckStateItem getCheckStateItem() {
+        return checkStateItem;
+    }
+
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
+    }
+
+    public ClientStateItem getClientStateItem() {
+        return clientStateItem;
+    }
+
+    public void setClientStateItem(ClientStateItem clientStateItem) {
+        this.clientStateItem = clientStateItem;
     }
 
     @Override

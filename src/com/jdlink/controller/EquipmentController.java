@@ -5,6 +5,7 @@ import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.service.EquipmentService;
 import com.jdlink.service.dictionary.DictionaryService;
+import com.jdlink.util.DBUtil;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONArray;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
@@ -378,6 +380,34 @@ public class EquipmentController {
             res.put("status", "fail");
             res.put("message", "更新失败");
         }
+        return res.toString();
+    }
+
+    /**
+     * 处置设备导出
+     */
+    @RequestMapping("exportExcelEquipment")
+    @ResponseBody
+    public String exportExcelEquipment(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "单据号/创建人/创建日期/创建部门/修改人/修改时间/备注/故障设备/运行时间(h)/停运时间(h)/停运原因";
+            name = "设备管理";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
         return res.toString();
     }
 }

@@ -1045,3 +1045,41 @@ function resetAdjust() {
     $('#search-specifications').val("")
     $('#search-proposer').val("")
 }
+
+
+//导出
+function exportExcel() {
+    var name = 't_pr_procumentplan';
+
+    var idArry = [];//存放主键
+    var items = $("input[name='select']:checked");//判断复选框是否选中
+
+    if (items.length <= 0) { //如果不勾选
+        var sqlWords = "select a.procurementPlanId,a.createName,a.createDate,a.adjustName,a.adjustDate,a.approvalName,b.suppliesName,b.specifications,b.proposer,b.demandQuantity,c.dictionaryItemName,b.price,b.priceTotal,b.remarks  from  t_pr_procumentplan a  join t_pr_procumentplanitem b on  a.procurementPlanId=b.procurementPlanId join datadictionaryitem c on c.dataDictionaryItemId=b.unitId   " ;
+        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    }
+
+    if (items.length > 0) {
+        $.each(items, function (index, item) {
+            if ($(this).parent().parent().next().next().html().length > 0) {
+                idArry.push($(this).parent().parent().next().next().html());        // 将选中项的编号存到集合中
+            }
+        });
+        console.log(idArry)
+        var sql = ' in (';
+        if (idArry.length > 0) {
+            for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+                if (i < idArry.length - 1) sql += idArry[i] + ",";
+                else if (i == idArry.length - 1) sql += idArry[i] + ");"
+            }
+            var sqlWords = "select a.procurementPlanId,a.createName,a.createDate,a.adjustName,a.adjustDate,a.approvalName,b.suppliesName,b.specifications,b.proposer,b.demandQuantity,c.dictionaryItemName,b.price,b.priceTotal,b.remarks  from  t_pr_procumentplan a  join t_pr_procumentplanitem b on  a.procurementPlanId=b.procurementPlanId join datadictionaryitem c on c.dataDictionaryItemId=b.unitId  and a.procurementPlanId " + sql;
+
+        }
+        console.log(sqlWords)
+        window.open('exportExcelProcurementPlan?name=' + name + '&sqlWords=' + sqlWords);
+    }
+
+
+
+
+}

@@ -1664,7 +1664,7 @@ function exportExcel() {
     var items = $("input[name='select']:checked");//判断复选框是否选中
 
     if (items.length <= 0) { //如果不勾选
-        var sqlWords = "select batchingOrderId 配料单号,batchingDate 配料日期,createDate 创建日期,remarks 备注,wareHouseId 仓库编号,produceCompany 产废单位编号,acceptCompany 接收单位编号,batchingNumber 配料数量,handelCategory 进料方式, packageType 包装方式,unitPrice 单价, inboundOrderId 入库单号,creator 创建人,wastesCode 危废编码,wasteCategory 危废类别,processWay 处置方式, formType 物质形态  from t_pl_batchingorder;";
+        var sqlWords = "select batchingOrderId ,(select  wareHouseName from t_pl_warehouse where wareHouseId =t_pl_batchingorder.wareHouseId) ,(select companyName from client where client.clientId=t_pl_batchingorder.produceCompany) ,wastesName   ,batchingNumber ,batchingDate ,createDate  ,transferDraftId , (select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=handleCategoryId ) ,(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=processWayId )  from t_pl_batchingorder ";
         window.open('exportExcelBatchingOrder?name=' + name + '&sqlWords=' + sqlWords);
     }
     if (items.length > 0) {
@@ -1679,7 +1679,7 @@ function exportExcel() {
                 if (i < idArry.length - 1) sql += idArry[i] + ",";
                 else if (i == idArry.length - 1) sql += idArry[i] + ")"
             }
-            var sqlWords = "select batchingOrderId ,("+"select  wareHouseName from t_pl_warehouse where wareHouseId in (select t_pl_batchingorder.wareHouseId from t_pl_batchingorder where batchingOrderId"+sql+")) ,produceCompany ,wastesName   ,batchingNumber ,batchingDate ,createDate  ,transferDraftId , handelCategory ,processWay  from t_pl_batchingorder  where  batchingOrderId" + sql;
+            var sqlWords = "select batchingOrderId ,(select  wareHouseName from t_pl_warehouse where wareHouseId =t_pl_batchingorder.wareHouseId) ,(select companyName from client where client.clientId=t_pl_batchingorder.produceCompany) ,wastesName   ,batchingNumber ,batchingDate ,createDate  ,transferDraftId , (select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=handleCategoryId ) ,(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=processWayId )  from t_pl_batchingorder  where  batchingOrderId" + sql;
 
         }
         console.log(sqlWords)

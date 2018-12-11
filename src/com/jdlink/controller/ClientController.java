@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Dictionary.*;
 import com.jdlink.domain.Inventory.InboundOrder;
 import com.jdlink.domain.Inventory.InboundOrderItem;
 import com.jdlink.domain.Inventory.OutboundOrder;
@@ -59,9 +60,20 @@ public class ClientController {
         JSONObject res = new JSONObject();
         // 启用账户
         client.setClientState(ClientState.Enabled);
+        ClientStateItem clientStateItem = new ClientStateItem();
+        clientStateItem.setDataDictionaryItemId(89);
+        client.setClientStateItem(clientStateItem);
         client.setClientType(ClientType.EnquiryClient);
+        ClientTypeItem clientTypeItem = new ClientTypeItem();
+        clientTypeItem.setDataDictionaryItemId(91);
+        client.setClientTypeItem(clientTypeItem);
+        CheckStateItem checkStateItem = new CheckStateItem();
+        checkStateItem.setDataDictionaryItemId(64);
+        client.setCheckStateItem(checkStateItem);
         User user = userService.getCurrentUserInfo(session);
-        client.setCreator(user.getName());
+        if (user != null) {
+            client.setCreator(user.getName());
+        }
         client.setCreateTime(new Date());
         try {
             clientService.add(client);
@@ -87,6 +99,9 @@ public class ClientController {
         if (resultClient == null) {
             // 审核状态为待提交
             client.setCheckState(CheckState.ToSubmit);
+            CheckStateItem checkStateItem = new CheckStateItem();
+            checkStateItem.setDataDictionaryItemId(64);
+            client.setCheckStateItem(checkStateItem);
             return addClient(client, session);
         } else {
             JSONObject res = new JSONObject();
@@ -113,6 +128,9 @@ public class ClientController {
     public String submitClient(@RequestBody Client client, HttpSession session) {
         // 审核状态为审批中
         client.setCheckState(CheckState.Examining);
+        CheckStateItem checkStateItem = new CheckStateItem();
+        checkStateItem.setDataDictionaryItemId(63);
+        client.setCheckStateItem(checkStateItem);
         Client resultClient = clientService.getByClientId(client.getClientId());
         if (resultClient == null) {
             return addClient(client, session);
@@ -136,36 +154,38 @@ public class ClientController {
     public String saveFiles(String clientId, MultipartFile materialAttachment, MultipartFile processAttachment) {
         JSONObject res = new JSONObject();
         try {
-            Client client = new Client();
-            client.setClientId(clientId);
-            // 若文件夹不存在则创建文件夹
-            if (materialAttachment != null) {
-                String materialPath = "Files/EIA/Material";
-                File materialDir = new File(materialPath);
-                if (!materialDir.exists()) {
-                    materialDir.mkdirs();
+            if (materialAttachment != null || processAttachment != null) {
+                Client client = new Client();
+                client.setClientId(clientId);
+                // 若文件夹不存在则创建文件夹
+                if (materialAttachment != null) {
+                    String materialPath = "Files/EIA/Material";
+                    File materialDir = new File(materialPath);
+                    if (!materialDir.exists()) {
+                        materialDir.mkdirs();
+                    }
+                    String materialName = clientId + "-" + materialAttachment.getOriginalFilename();
+                    String materialFilePath = materialPath + "/" + materialName;
+                    File materialFile = new File(materialFilePath);
+                    materialAttachment.transferTo(materialFile);
+                    client.setMaterialAttachmentUrl(materialFilePath);
                 }
-                String materialName = clientId + "-" +  materialAttachment.getOriginalFilename();
-                String materialFilePath = materialPath + "/" + materialName;
-                File materialFile = new File(materialFilePath);
-                materialAttachment.transferTo(materialFile);
-                client.setMaterialAttachmentUrl(materialFilePath);
-            }
-            if (processAttachment != null) {
-                String processPath = "Files/EIA/Process";
-                File processDir = new File(processPath);
-                if (!processDir.exists()) {
-                    processDir.mkdirs();
+                if (processAttachment != null) {
+                    String processPath = "Files/EIA/Process";
+                    File processDir = new File(processPath);
+                    if (!processDir.exists()) {
+                        processDir.mkdirs();
+                    }
+                    // 获取文件名字
+                    String processName = clientId + "-" + processAttachment.getOriginalFilename();
+                    String processFilePath = processPath + "/" + processName;
+                    File processFile = new File(processFilePath);
+                    processAttachment.transferTo(processFile);
+                    // 更新客户保存文件的路径
+                    client.setProcessAttachmentUrl(processFilePath);
                 }
-                // 获取文件名字
-                String processName = clientId + "-" + processAttachment.getOriginalFilename();
-                String processFilePath = processPath + "/" + processName;
-                File processFile = new File(processFilePath);
-                processAttachment.transferTo(processFile);
-                // 更新客户保存文件的路径
-                client.setProcessAttachmentUrl(processFilePath);
+                clientService.setFilePath(client);
             }
-            clientService.setFilePath(client);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -297,6 +317,31 @@ public class ClientController {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    // update 2018年12月5日 by ljc：上面的控制器返回时中文乱码，因其他地方使用，故重新建一个用于中文的获取
+    @RequestMapping("getClientList")
+    @ResponseBody
+    public void getClientList(HttpServletResponse response) {
+        PrintWriter out = null;
+        try {
+            List<Client> clientList = clientService.list();
+            JSONArray array = JSONArray.fromArray(clientList.toArray(new Client[clientList.size()]));
+
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("application/json; charset=utf-8");
+
+            out = response.getWriter();
+            out.append(array.toString());
+            out.print("");
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (out != null) {
+                out.close();
+            }
         }
     }
 
@@ -614,9 +659,21 @@ public class ClientController {
                 // 设置编号
                 client.setClientId(clientService.getCurrentId());
                 client.setClientType(ClientType.EnquiryClient);
+                ClientTypeItem clientTypeItem = new ClientTypeItem();
+                clientTypeItem.setDataDictionaryItemId(91);
+                client.setClientTypeItem(clientTypeItem);
                 client.setCheckState(CheckState.Finished);
+                CheckStateItem checkStateItem = new CheckStateItem();
+                checkStateItem.setDataDictionaryItemId(65);
+                client.setCheckStateItem(checkStateItem);
                 client.setClientState(ClientState.Enabled);
+                ClientStateItem clientStateItem = new ClientStateItem();
+                clientStateItem.setDataDictionaryItemId(89);
+                client.setClientStateItem(clientStateItem);
                 client.setApplicationStatus(ApplicationStatus.Declared);
+                ApplicationStatusItem applicationStatusItem = new ApplicationStatusItem();
+                applicationStatusItem.setDataDictionaryItemId(47);
+                client.setApplicationStatusItem(applicationStatusItem);
                 client.setCompanyName(data[i][0].toString());
                 // 三证合一
                 client.setOrganizationCode(data[i][1].toString());
@@ -629,21 +686,39 @@ public class ClientController {
                 switch (data[i][4].toString()) {
                     case "国有企业":
                         client.setEnterpriseType(EnterpriseType.StateOwnedEnterprises);
+                        EnterpriseTypeItem enterpriseTypeItem1 = new EnterpriseTypeItem();
+                        enterpriseTypeItem1.setDataDictionaryItemId(108);
+                        client.setEnterpriseTypeItem(enterpriseTypeItem1);
                         break;
                     case "集体企业":
                         client.setEnterpriseType(EnterpriseType.CollectiveEnterprise);
+                        EnterpriseTypeItem enterpriseTypeItem2 = new EnterpriseTypeItem();
+                        enterpriseTypeItem2.setDataDictionaryItemId(109);
+                        client.setEnterpriseTypeItem(enterpriseTypeItem2);
                         break;
                     case "国有企业改组的股份合作企业":
                         client.setEnterpriseType(EnterpriseType.JointStockByStateOwnedEnterprises);
+                        EnterpriseTypeItem enterpriseTypeItem3 = new EnterpriseTypeItem();
+                        enterpriseTypeItem3.setDataDictionaryItemId(170);
+                        client.setEnterpriseTypeItem(enterpriseTypeItem3);
                         break;
                     case "集体企业改组的股份合作企业":
                         client.setEnterpriseType(EnterpriseType.JointStockByCollectiveEnterprise);
+                        EnterpriseTypeItem enterpriseTypeItem4 = new EnterpriseTypeItem();
+                        enterpriseTypeItem4.setDataDictionaryItemId(171);
+                        client.setEnterpriseTypeItem(enterpriseTypeItem4);
                         break;
                     case "有限责任公司":
                         client.setEnterpriseType(EnterpriseType.LimitedLiabilityCompany);
+                        EnterpriseTypeItem enterpriseTypeItem5 = new EnterpriseTypeItem();
+                        enterpriseTypeItem5.setDataDictionaryItemId(110);
+                        client.setEnterpriseTypeItem(enterpriseTypeItem5);
                         break;
                     case "私营企业":
                         client.setEnterpriseType(EnterpriseType.ThePrivateEnterprise);
+                        EnterpriseTypeItem enterpriseTypeItem6 = new EnterpriseTypeItem();
+                        enterpriseTypeItem6.setDataDictionaryItemId(111);
+                        client.setEnterpriseTypeItem(enterpriseTypeItem6);
                     default:
                         break;
                 }
@@ -651,12 +726,21 @@ public class ClientController {
                 switch (data[i][5].toString()) {
                     case "生产":
                         client.setOperationMode(OperationMode.Production);
+                        OperationModelItem operationModelItem1 = new OperationModelItem();
+                        operationModelItem1.setDataDictionaryItemId(114);
+                        client.setOperationModelItem(operationModelItem1);
                         break;
                     case "综合":
                         client.setOperationMode(OperationMode.Comprehensive);
+                        OperationModelItem operationModelItem2 = new OperationModelItem();
+                        operationModelItem2.setDataDictionaryItemId(112);
+                        client.setOperationModelItem(operationModelItem2);
                         break;
                     case "收集":
                         client.setOperationMode(OperationMode.Collect);
+                        OperationModelItem operationModelItem3 = new OperationModelItem();
+                        operationModelItem3.setDataDictionaryItemId(113);
+                        client.setOperationModelItem(operationModelItem3);
                         break;
                     default:
                         break;
@@ -665,15 +749,27 @@ public class ClientController {
                 switch (data[i][6].toString()) {
                     case "利用处置危险废物及医疗废物":
                         client.setOperationType(OperationType.WasteAndClinical);
+                        OperationTypeItem operationTypeItem1 = new OperationTypeItem();
+                        operationTypeItem1.setDataDictionaryItemId(117);
+                        client.setOperationTypeItem(operationTypeItem1);
                         break;
                     case "只从事收集活动":
                         client.setOperationType(OperationType.CollectOnly);
+                        OperationTypeItem operationTypeItem2 = new OperationTypeItem();
+                        operationTypeItem2.setDataDictionaryItemId(118);
+                        client.setOperationTypeItem(operationTypeItem2);
                         break;
                     case "只利用处置危险废物":
                         client.setOperationType(OperationType.WasteOnly);
+                        OperationTypeItem operationTypeItem3 = new OperationTypeItem();
+                        operationTypeItem3.setDataDictionaryItemId(119);
+                        client.setOperationTypeItem(operationTypeItem3);
                         break;
                     case "只处置医疗废物":
                         client.setOperationType(OperationType.ClinicalOnly);
+                        OperationTypeItem operationTypeItem4 = new OperationTypeItem();
+                        operationTypeItem4.setDataDictionaryItemId(120);
+                        client.setOperationTypeItem(operationTypeItem4);
                         break;
                     default:
                         break;
@@ -682,12 +778,21 @@ public class ClientController {
                 switch (data[i][7].toString()) {
                     case "制定并确定了应急协调人":
                         client.setContingencyPlan(ContingencyPlan.Identify);
+                        ContingencyPlanItem contingencyPlanItem1 = new ContingencyPlanItem();
+                        contingencyPlanItem1.setDataDictionaryItemId(167);
+                        client.setContingencyPlanItem(contingencyPlanItem1);
                         break;
                     case "已制定":
                         client.setContingencyPlan(ContingencyPlan.Developed);
+                        ContingencyPlanItem contingencyPlanItem2 = new ContingencyPlanItem();
+                        contingencyPlanItem2.setDataDictionaryItemId(168);
+                        client.setContingencyPlanItem(contingencyPlanItem2);
                         break;
                     case "未制定":
                         client.setContingencyPlan(ContingencyPlan.Undeveloped);
+                        ContingencyPlanItem contingencyPlanItem3 = new ContingencyPlanItem();
+                        contingencyPlanItem3.setDataDictionaryItemId(169);
+                        client.setContingencyPlanItem(contingencyPlanItem3);
                         break;
                     default:
                         break;
@@ -696,9 +801,15 @@ public class ClientController {
                 switch (data[i][8].toString()) {
                     case "已建立":
                         client.setOperationRecord(OperationRecord.Established);
+                        OperationTypeItem operationTypeItem1 = new OperationTypeItem();
+                        operationTypeItem1.setDataDictionaryItemId(115);
+                        client.setOperationTypeItem(operationTypeItem1);
                         break;
                     case "未建立":
                         client.setOperationRecord(OperationRecord.Unestablished);
+                        OperationTypeItem operationTypeItem2 = new OperationTypeItem();
+                        operationTypeItem2.setDataDictionaryItemId(116);
+                        client.setOperationTypeItem(operationTypeItem2);
                         break;
                     default:
                         break;
@@ -718,9 +829,15 @@ public class ClientController {
                 switch (data[i][20].toString()) {
                     case "增值税专用发票16%":
                         client.setTicketType(TicketRate1.Rate1);
+                        TicketRateItem ticketRateItem1 = new TicketRateItem();
+                        ticketRateItem1.setDataDictionaryItemId(132);
+                        client.setTicketRateItem(ticketRateItem1);
                         break;
                     case "增值税专用发票3%":
                         client.setTicketType(TicketRate1.Rate2);
+                        TicketRateItem ticketRateItem2 = new TicketRateItem();
+                        ticketRateItem2.setDataDictionaryItemId(133);
+                        client.setTicketRateItem(ticketRateItem2);
                         break;
                     default:
                         break;

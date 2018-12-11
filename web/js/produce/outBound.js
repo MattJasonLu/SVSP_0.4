@@ -831,41 +831,7 @@ function comfirm() {
      });
 }
 
-//导出
-function exportExcel() {
-    var name = 't_pl_outboundorder';
 
-    var idArry = [];//存放主键
-    var items = $("input[name='select']:checked");//判断复选框是否选中
-
-    if (items.length <= 0) { //如果不勾选
-        var sqlWords = "select t_pl_outboundorder.outboundOrderId 出库单号,t_pl_outboundorder.outboundDate 出库日期 ,t_pl_outboundorder.creator  创建人,t_pl_outboundorder.auditor 审核人, t_pl_outboundorder.outboundNumber   出库数量,t_pl_outboundorder.handelCategory 进料方式, t_pl_outboundorder.processWay 处置方式,t_pl_outboundorder.wasteCategory 危废类别,t_pl_outboundorder.wastesCode 危废编码,t_pl_outboundorder.guardian 保管员,  t_pl_outboundorder.unitPriceTax 单价,  t_pl_outboundorder.packageType 包装形式,t_pl_outboundorder.formType   物质形态  from t_pl_outboundorder join t_pr_laboratorytest where t_pl_outboundorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber;";
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
-    }
-
-    if (items.length > 0) {
-        $.each(items, function (index, item) {
-            if ($(this).parent().parent().next().next().next().next().next().html().length > 0) {
-                idArry.push($(this).parent().parent().next().next().next().next().next().html());        // 将选中项的编号存到集合中
-            }
-        });
-        console.log(idArry)
-        var sql = ' in (';
-        if (idArry.length > 0) {
-            for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
-                if (i < idArry.length - 1) sql += idArry[i] + ",";
-                else if (i == idArry.length - 1) sql += idArry[i] + ");"
-            }
-            var sqlWords = "select t_pl_outboundorder.outboundOrderId 出库单号,t_pl_outboundorder.outboundDate 出库日期 ,t_pl_outboundorder.creator  创建人,t_pl_outboundorder.auditor 审核人, t_pl_outboundorder.outboundNumber   出库数量,t_pl_outboundorder.handelCategory 进料方式, t_pl_outboundorder.processWay 处置方式,t_pl_outboundorder.wasteCategory 危废类别,t_pl_outboundorder.wastesCode 危废编码,t_pl_outboundorder.guardian 保管员,  t_pl_outboundorder.unitPriceTax 单价,  t_pl_outboundorder.packageType 包装形式,t_pl_outboundorder.formType   物质形态 from t_pl_outboundorder join t_pr_laboratorytest where t_pl_outboundorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber and outboundOrderId" + sql;
-
-        }
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
-    }
-
-
-
-
-}
 
 /**
  * 单击查看
@@ -1390,5 +1356,44 @@ function confirmRetire(){
                 alert("服务器异常！")
             }
         });
+    }
+}
+
+
+/**
+ *
+ * 导出
+ * @returns {string}
+ */
+function exportExcel() {
+    console.log("export");
+    var name = 't_pl_procurement';
+    var idArry = [];//存放主键
+    var items = $("input[name='select']:checked");//判断复选框是否选中
+    if (items.length <= 0) { //如果不勾选
+        var sqlWords = "select  outboundOrderId,outboundDate,(select companyName from client where client.clientId=t_pl_outboundorder.clientId), wastesName,wasteCategory,(select  wareHouseName from t_pl_warehouse where wareHouseId =t_pl_outboundorder.wareHouseId), outboundNumber,transferDraftId, (select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=handleCategoryId),(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=processWayId ) ,(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=equipmentId )   from t_pl_outboundorder  where boundType='WasteOutbound' ";
+
+        window.open('exportExcelWastesOutBound?name=' + name + '&sqlWords=' + sqlWords);
+
+    }
+
+    if (items.length > 0) {
+        $.each(items, function (index, item) {
+            if ($(this).parent().parent().parent().children('td').eq(1).html().length > 0) {
+                idArry.push($(this).parent().parent().parent().children('td').eq(1).html());        // 将选中项的编号存到集合中
+            }
+        });
+        var sql = ' in (';
+        if (idArry.length > 0) {
+            for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+                if (i < idArry.length - 1) sql += idArry[i] + ",";
+                else if (i == idArry.length - 1) sql += idArry[i] + ");"
+            }
+            var sqlWords = "select  outboundOrderId,outboundDate,(select companyName from client where client.clientId=t_pl_outboundorder.clientId), wastesName,wasteCategory,(select  wareHouseName from t_pl_warehouse where wareHouseId =t_pl_outboundorder.wareHouseId), outboundNumber,transferDraftId, (select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=handleCategoryId),(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=processWayId ) ,(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=equipmentId )   from t_pl_outboundorder  where outboundOrderId"+sql;
+
+
+        }
+        console.log(sqlWords)
+        window.open('exportExcelWastesOutBound?name=' + name + '&sqlWords=' + sqlWords);
     }
 }

@@ -752,17 +752,21 @@ function setWasteInventoryList1(result) {
 //导出
 function exportExcel() {
     console.log("export");
-    var name = 't_pl_wasteinventory';
+    var name = '次生库存单';
     var idArry = [];//存放主键
     var items = $("input[name='select']:checked");//判断复选框是否选中
+  console.log(items)
+
     if (items.length <= 0) { //如果不勾选
-        var sqlWords = "select t_pl_wasteinventory.inboundOrderId 入库单号,t_pl_wasteinventory.wastesCategory 危废类别,t_pl_wasteinventory.totalPrice 总价,t_pl_wasteinventory.departmentId 部门,t_pl_wasteinventory.createtor 创建人,t_pl_wasteinventory.creatorDate 创建日期,t_pl_wasteinventory.actualCount 实际数量, t_pl_wasteinventory.wastesCode 危废编码,t_pl_wasteinventory.processWay 处置方式,t_pl_wasteinventory.handleCategory 进料方式,t_pl_wasteinventory.formType 物质形态, t_pl_wasteinventory.packageType 包装方式, t_pl_wasteinventory.wastesName 危废名称  from t_pl_wasteinventory left join t_pr_laboratorytest on t_pl_wasteinventory.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber;";
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+        console.log('长度:'+items.length)
+        var sqlWords = "select   inboundOrderId,(select  wareHouseName from t_pl_warehouse where wareHouseId =t_pl_wasteinventory.wareHouseId),creatorDate, inboundDate,actualCount,(select companyName from client where client.clientId=t_pl_wasteinventory.clientId),wastesCode,(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=secondaryCategoryId )  from  t_pl_wasteinventory  where boundType='SecondaryInbound' ";
+        window.open('exportExcelSecInventory?name=' + name + '&sqlWords=' + sqlWords);
     }
+    console.log(sqlWords)
     if (items.length > 0) {
         $.each(items, function (index, item) {
-            if ($(this).parent().parent().parent().children('td').eq(12).html().length > 0) {
-                idArry.push($(this).parent().parent().parent().children('td').eq(12).html());        // 将选中项的编号存到集合中
+            if ($(this).parent().parent().parent().children('td').eq(9).html().length > 0) {
+                idArry.push($(this).parent().parent().parent().children('td').eq(9).html());        // 将选中项的编号存到集合中
             }
         });
         var sql = ' in (';
@@ -771,11 +775,11 @@ function exportExcel() {
                 if (i < idArry.length - 1) sql += idArry[i] + ",";
                 else if (i == idArry.length - 1) sql += idArry[i] + ");"
             }
-            var sqlWords = "select t_pl_wasteinventory.inboundOrderId 入库单号,t_pl_wasteinventory.wastesCategory 危废类别,t_pl_wasteinventory.totalPrice 总价,t_pl_wasteinventory.departmentId 部门,t_pl_wasteinventory.createtor 创建人,t_pl_wasteinventory.creatorDate 创建日期,t_pl_wasteinventory.actualCount 实际数量, t_pl_wasteinventory.wastesCode 危废编码,t_pl_wasteinventory.processWay 处置方式,t_pl_wasteinventory.handleCategory 进料方式,t_pl_wasteinventory.formType 物质形态, t_pl_wasteinventory.packageType 包装方式, t_pl_wasteinventory.wastesName 危废名称  from t_pl_wasteinventory left join t_pr_laboratorytest on t_pl_wasteinventory.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber where inboundOrderItemId"+sql;
+            var sqlWords = "select   inboundOrderId,(select  wareHouseName from t_pl_warehouse where wareHouseId =t_pl_wasteinventory.wareHouseId),creatorDate, inboundDate,actualCount,(select companyName from client where client.clientId=t_pl_wasteinventory.clientId),wastesCode,(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=secondaryCategoryId )  from  t_pl_wasteinventory where inboundOrderItemId"+sql;
 
 
         }
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+        window.open('exportExcelSecInventory?name=' + name + '&sqlWords=' + sqlWords);
     }
 
 }

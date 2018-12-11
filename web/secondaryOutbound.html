@@ -108,9 +108,9 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" href="newSecondaryOut.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                    <a class="btn btn-primary btn-xs" id="function_-304" href="newSecondaryOut.html" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                     <!--<a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>-->
-                    <a class="btn btn-primary btn-xs" onclick="exportExcel(); "><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                    <a class="btn btn-primary btn-xs" id="function_-310" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel(e);}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     <!--<a class="btn btn-primary btn-xs" onclick="view2()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 属性调整</a>-->
                     <!--<a href="#" onclick="rollback(this);" title="退库"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a>-->
 
@@ -209,13 +209,13 @@
                     <!--<td class="text-center"></td>-->
                     <td class="text-center hidden"></td>
                     <td class="text-center">
-                        <a href="#" onclick="view1(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                        <a href="#" onclick="adjust(this);" title="修改"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                        <a href="#" onclick="cancel(this);" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                        <a href="#" id="function_-312" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; view1(e);}" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                        <a href="#" id="function_-307" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; adjust(e);}" title="修改"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                        <a href="#" id="function_-308" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; cancel(e);}" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
                         <!--<a href="#" onclick="submit();" title="提交"><span class="glyphicon glyphicon-export" aria-hidden="true"></span></a>-->
                         <!--<a href="#" onclick="signIn();" title="签收"><span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>-->
                         <!--<a href="#" onclick="view2();" title="属性调整"><span class="" aria-hidden="true"></span></a>-->
-                        <a href="#" onclick="rollback(this);" title="退库"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a>
+                        <a href="#" id="function_-309" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; rollback(e);}" title="退库"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a>
 
                     </td>
                 </tr>

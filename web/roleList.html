@@ -102,7 +102,7 @@
         <div>
             <!--操作按钮-->
             <div class="pull-left">
-                <a class="btn btn-primary btn-xs" href="#" onclick="addRole();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                <a class="btn btn-primary btn-xs" href="#" id="function_-373" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; addRole();}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
             </div>
         </div>
         <div class="table">
@@ -129,7 +129,7 @@
                     <td class="text-center" name="id">0001</td>
                     <td class="text-center" name="roleName">管理员</td>
                     <td class="text-center">
-                        <a href="#" onclick="adjustRole($(this));" title="修改名称"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                        <a href="#" id="function_-374" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; adjustRole($(e));}" title="修改名称"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
                     </td>
                 </tr>
                 </tbody>

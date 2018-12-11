@@ -585,21 +585,21 @@ function exportExcel() {
 
     if (items.length > 0) {
         $.each(items, function (index, item) {
-            if ($(this).parent().parent().next().next().next().next().next().next().next().html().length > 0) {
-                idArry.push($(this).parent().parent().next().next().next().next().next().next().next().html());        // 将选中项的编号存到集合中
+            if ($(this).parent().parent().next().html().length > 0) {
+                idArry.push($(this).parent().parent().next().html());        // 将选中项的编号存到集合中
             }
         });
         console.log(idArry)
         var sql = ' in (';
         if (idArry.length > 0) {
             for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
-                if (i < idArry.length - 1) sql += idArry[i] + ",";
-                else if (i == idArry.length - 1) sql += idArry[i] + ");"
+                if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
+                else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
             }
-            var sqlWords = "select id 序号 ,wastesCode 危废编码,handleCategory 进料方式,processWay 处置方式,packageType 包装类型,remarks 备注,wastesCategory 危废类别 from  t_pl_secondaryinto where id"+sql;
-
+            var sqlWords = "select a.id,b.wastesName,a.sendingPerson,a.laboratorySignatory,a.address, c.dictionaryItemName ,b.water,b.scorchingRate from t_pr_secondarysample a join t_pr_secondarysampleitem b on b.sampleinformationId=a.id join  datadictionaryitem c on c.dataDictionaryItemId=a.checkStateId  and  a.id "+sql;
+  console.log(sqlWords)
         }
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+        window.open('exportSecondarySample?name=' + name + '&sqlWords=' + sqlWords);
     }
 
 

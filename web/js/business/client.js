@@ -192,7 +192,7 @@ function switchPage(pageNumber) {
             success: function (result) {
                 if (result != undefined) {
                     // console.log(result);
-                    setClientList(result.data);
+                    setClientList(result);
                 } else {
                     console.log("fail: " + result);
                     // setClientList(result);
@@ -277,7 +277,7 @@ function inputSwitchPage() {
                 success: function (result) {
                     if (result != undefined) {
                         // console.log(result);
-                        setClientList(result.data);
+                        setClientList(result);
                     } else {
                         console.log("fail: " + result);
                         // setClientList(result);
@@ -341,6 +341,8 @@ function setClientList(result) {
     // 获取id为cloneTr的tr元素
     var tr = $("#cloneTr");
     tr.siblings().remove();
+    console.log("Test");
+    console.log(result);
     $.each(result.data, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
@@ -361,20 +363,20 @@ function setClientList(result) {
                     break;
                 // 申报状态
                 case (3):
-                    if (obj.applicationStatus != null)
-                        $(this).html(obj.applicationStatus.name);
+                    if (obj.applicationStatusItem != null)
+                        $(this).html(obj.applicationStatusItem.dictionaryItemName);
                     break;
                 // 审核状态
                 case (4):
-                    if (obj.checkState != null) {
-                        $(this).html(obj.checkState.name);
+                    if (obj.checkStateItem != null) {
+                        $(this).html(obj.checkStateItem.dictionaryItemName);
                         // $("#commit").attr(addClass("disabled"));
                     }
                     break;
                 // 账号状态
                 case (5):
-                    if (obj.clientState != null)
-                        $(this).html(obj.clientState.name);
+                    if (obj.clientStateItem != null)
+                        $(this).html(obj.clientStateItem.dictionaryItemName);
                     break;
                 // 联系人
                 case (6):
@@ -382,50 +384,12 @@ function setClientList(result) {
                     break;
                 // 联系方式
                 case (7):
-                    $(this).html(obj.phone);
+                    $(this).html(obj.phone=="" ? obj.mobile: obj.phone);
                     break;
                 case (8):
-                    if (obj.clientType != null)
-                        $(this).html(obj.clientType.name);
+                    if (obj.clientTypeItem != null)
+                        $(this).html(obj.clientTypeItem.dictionaryItemName);
                     break;
-                // 操作
-//                    case (9):
-//                        if(obj.clientState.name == "已启用"){
-//                            if(obj.checkState.name == "已完成"){
-//                                $(this).children().eq(1).attr("class","disabled");
-//                                $(this).children().eq(1).removeAttr("onclick");
-//                                $(this).children().eq(2).attr("class","disabled");
-//                                $(this).children().eq(2).removeAttr("onclick");
-//                                $(this).children().eq(3).attr("class","disabled");
-//                                $(this).children().eq(3).removeAttr("onclick");
-//                                $(this).children().eq(4).attr("class","disabled");
-//                                $(this).children().eq(4).removeAttr("onclick");
-//                                $(this).children().eq(6).attr("class","disabled");
-//                                $(this).children().eq(6).removeAttr("onclick");
-//                            }else if(obj.checkState.name == "审批中"){
-//                                $(this).children().eq(1).attr("class","disabled");
-//                                $(this).children().eq(1).removeAttr("onclick");
-//                                $(this).children().eq(2).attr("class","disabled");
-//                                $(this).children().eq(2).removeAttr("onclick");
-//                                $(this).children().eq(4).attr("class","disabled");
-//                                $(this).children().eq(4).removeAttr("onclick");
-//                            }else{
-//                                $(this).children().eq(1).attr("class","disabled");
-//                                $(this).children().eq(1).removeAttr("onclick");
-//                                $(this).children().eq(4).attr("class","disabled");
-//                                $(this).children().eq(4).removeAttr("onclick");
-//                                $(this).children().eq(6).attr("class","disabled");
-//                                $(this).children().eq(6).removeAttr("onclick");
-//                            }
-//                        }else{
-//                            $(this).children().eq(0).attr("class","disabled");
-//                            $(this).children().eq(0).removeAttr("onclick");
-//                            $(this).children().eq(4).attr("class","disabled");
-//                            $(this).children().eq(4).removeAttr("onclick");
-//                            $(this).children().eq(6).attr("class","disabled");
-//                            $(this).children().eq(6).removeAttr("onclick");
-//                        }
-//                        break;
             }
         });
         // 把克隆好的tr追加到原来的tr前面
@@ -440,61 +404,116 @@ function setClientList(result) {
  * 设置高级检索的下拉框数据
  */
 function setSeniorSelectedList() {
+
+    // 设置审批状态
     $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getClientSeniorSelectedList",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        type: "POST",
+        url: "getCheckStateDataByDictionary",
         dataType: "json",
+        async: false,
         success: function (result) {
-            if (result != undefined) {
+            if (result != undefined && result.status == "success") {
                 var data = eval(result);
+                console.log(result);
                 // 高级检索下拉框数据填充
                 var checkState = $("#search-checkState");
                 checkState.children().remove();
-                $.each(data.checkStateList, function (index, item) {
-                    if (item.index >= 1 && item.index <= 3) {
-                        var option = $('<option />');
-                        option.val(index);
-                        option.text(item.name);
-                        checkState.append(option);
-                    }
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    checkState.append(option);
                 });
                 checkState.get(0).selectedIndex = -1;
+            } else {
+                console.log(result.message);
+            }
+        }, error: function (result) {
+            console.log(result);
+        }
+    });
+    // 设置客户状态
+    $.ajax({
+        type: "POST",
+        url: "getClientStateByDataDictionary",
+        dataType: "json",
+        async: false,
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                var data = eval(result);
+                console.log(result);
+                // 高级检索下拉框数据填充
                 var clientState = $("#search-clientState");
                 clientState.children().remove();
-                $.each(data.clientStateList, function (index, item) {
+                $.each(data.data, function (index, item) {
                     var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     clientState.append(option);
                 });
                 clientState.get(0).selectedIndex = -1;
+            } else {
+                console.log(result.message);
+            }
+        }, error: function (result) {
+            console.log(result);
+        }
+    });
+    // 设置申请状态
+    $.ajax({
+        type: "POST",
+        url: "getApplicationStatusByDataDictionary",
+        dataType: "json",
+        async: false,
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                var data = eval(result);
+                console.log(result);
+                // 高级检索下拉框数据填充
                 var applicationStatus = $("#search-applicationStatus");
                 applicationStatus.children().remove();
-                $.each(data.applicationStatusList, function (index, item) {
+                $.each(data.data, function (index, item) {
                     var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     applicationStatus.append(option);
                 });
                 applicationStatus.get(0).selectedIndex = -1;
+            } else {
+                console.log(result.message);
+            }
+        }, error: function (result) {
+            console.log(result);
+        }
+    });
+    // 设置客户状态
+    $.ajax({
+        type: "POST",
+        url: "getClientTypeDataByDictionary",
+        dataType: "json",
+        async: false,
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                var data = eval(result);
+                console.log(result);
+                // 高级检索下拉框数据填充
                 var clientType = $("#search-clientType");
                 clientType.children().remove();
-                $.each(data.clientTypeList, function (index, item) {
+                $.each(data.data, function (index, item) {
                     var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     clientType.append(option);
                 });
                 clientType.get(0).selectedIndex = -1;
             } else {
-                console.log("fail: " + result);
+                console.log(result.message);
             }
-        },
-        error: function (result) {
-            console.log("error: " + result);
+        }, error: function (result) {
+            console.log(result);
         }
     });
+
 }
 
 
@@ -514,10 +533,19 @@ function searchClient() {
             companyName: $("#search-companyName").val(),
             contactName: $("#search-contactName").val(),
             phone: $("#search-phone").val(),
-            checkState: $("#search-checkState").val(),
-            clientState: $("#search-clientState").val(),
-            applicationStatus: $("#search-applicationStatus").val(),
-            clientType: $("#search-clientType").val(),
+            // checkState: $("#search-checkState").val(),
+            checkStateItem: {
+                dataDictionaryItemId: $("#search-checkState").val()
+            },
+            clientStateItem: {
+                dataDictionaryItemId: $("#search-clientState").val()
+            },
+            applicationStatusItem: {
+                dataDictionaryItemId: $("#search-applicationStatus").val()
+            },
+            clientTypeItem: {
+                dataDictionaryItemId: $("#search-clientType").val()
+            },
             page: page
         };
         console.log(data);

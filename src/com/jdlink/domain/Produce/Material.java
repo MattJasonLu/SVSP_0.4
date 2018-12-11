@@ -3,6 +3,7 @@ package com.jdlink.domain.Produce;
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Dictionary.CheckStateItem;
 import com.jdlink.domain.Dictionary.DataDictionaryItem;
+import com.jdlink.domain.Dictionary.IngredientStateItem;
 import com.jdlink.domain.Dictionary.UnitDataItem;
 import com.jdlink.domain.Inventory.WareHouse;
 import com.jdlink.domain.Page;
@@ -81,6 +82,11 @@ public class Material {
     private CheckState state;
 
 
+    /**
+     * 入库状态数据字典
+     */
+    private IngredientStateItem ingredientStateItem;
+
 
     //状态数据字典
     private CheckStateItem checkStateItem;
@@ -99,6 +105,15 @@ public class Material {
 
    //单位数据字典
     private UnitDataItem unitDataItem;
+
+
+    public IngredientStateItem getIngredientStateItem() {
+        return ingredientStateItem;
+    }
+
+    public void setIngredientStateItem(IngredientStateItem ingredientStateItem) {
+        this.ingredientStateItem = ingredientStateItem;
+    }
 
     public CheckStateItem getCheckStateItem() {
         return checkStateItem;

@@ -8,6 +8,7 @@
         <result property="id" column="id"/>
         <result property="formType" column="formType" javaType="com.jdlink.domain.FormType"/>
         <result property="packageType" column="packageType" javaType="com.jdlink.domain.PackageType"/>
+
     </resultMap>
     <resultMap id="TransferDraftRM" type="TransferDraft" autoMapping="true">
         <association property="produceCompany" javaType="com.jdlink.domain.Client">
@@ -41,8 +42,29 @@
             <result column="wastesCode" property="wastesId"/>
             <result column="packageType" property="packageType"/>
             <result column="signCount" property="signCount"/>
+            <association property="formTypeItem" column="formTypeId" select="getFormTypeItem"/>
+            <association property="handleCategoryItem" column="handleCategoryId" select="getHandleCategoryItem"/>
+            <association property="packageTypeItem" column="packageTypeId" select="getPackageTypeItem"/>
         </association>
+        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"/>
     </resultMap>
+    <!--获取物质形态-->
+    <select id="getFormTypeItem" resultType="FormTypeItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{formTypeId};
+    </select>
+    <!--获取进料方式-->
+    <select id="getHandleCategoryItem" resultType="HandleCategoryItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{handleCategoryId};
+    </select>
+    <!--获取包装方式-->
+    <select id="getPackageTypeItem" resultType="PackageTypeItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{packageTypeId};
+    </select>
+    <!--获取审批状态-->
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{checkStateId};
+    </select>
+
     <insert id="add" parameterType="TransferDraft" >
         insert into t_pr_transferdraft (id, checkState, produceCompanyId, produceCompanyName, produceCompanyPhone,
         produceCompanyLocation, produceCompanyPostcode, transportCompanyId, transportCompanyName, transportCompanyPhone,
@@ -54,7 +76,7 @@
         firstOrigin, firstStation, firstDestination, firstCarrierSign, secondCarrier, secondCarryTime, secondModel,
         secondBrand, secondTransportNumber, secondOrigin, secondStation, secondDestination, secondCarrierSign,
         acceptCompanyLicense, recipient, acceptDate, disposeIsUse, disposeIsStore, disposeIsBurn, disposeIsLandFill,
-        disposeIsOther, headSign, signDate, nowTime) values (#{id}, 'NewBuild', #{produceCompany.clientId},
+        disposeIsOther, headSign, signDate, nowTime, formTypeId, handleCategoryId, packageTypeId) values (#{id}, 'NewBuild', #{produceCompany.clientId},
         #{produceCompany.companyName}, #{produceCompany.phone}, #{produceCompany.location}, #{produceCompany.postCode},
         #{transportCompany.supplierId}, #{transportCompany.companyName}, #{transportCompany.phone},
         #{transportCompany.location}, #{transportCompany.postCode}, #{acceptCompany.clientId}, #{acceptCompany.companyName},
@@ -67,7 +89,8 @@
         #{firstDestination}, #{firstCarrierSign}, #{secondCarrier}, #{secondCarryTime}, #{secondModel}, #{secondBrand},
         #{secondTransportNumber}, #{secondOrigin}, #{secondStation}, #{secondDestination}, #{secondCarrierSign},
         #{acceptCompanyLicense}, #{recipient}, #{acceptDate}, #{disposeIsUse}, #{disposeIsStore}, #{disposeIsBurn},
-        #{disposeIsLandFill}, #{disposeIsOther}, #{headSign}, #{signDate}, NOW());
+        #{disposeIsLandFill}, #{disposeIsOther}, #{headSign}, #{signDate}, NOW(), #{wastes.formTypeItem.dataDictionaryItemId},
+        #{wastes.handleCategoryItem.dataDictionaryItemId}, #{wastes.packageTypeItem.dataDictionaryItemId});
     </insert>
 
     <select id="getById" parameterType="String" resultMap="TransferDraftRM">
@@ -109,27 +132,30 @@
         secondOrigin=#{secondOrigin}, secondStation=#{secondStation}, secondDestination=#{secondDestination},
         secondCarrierSign=#{secondCarrierSign}, acceptCompanyLicense=#{acceptCompanyLicense}, recipient=#{recipient},
         acceptDate=#{acceptDate}, disposeIsUse=#{disposeIsUse}, disposeIsStore=#{disposeIsStore}, disposeIsBurn=#{disposeIsBurn},
-        disposeIsLandFill=#{disposeIsLandFill}, disposeIsOther=#{disposeIsOther}, headSign=#{headSign}, signDate=#{signDate}
+        disposeIsLandFill=#{disposeIsLandFill}, disposeIsOther=#{disposeIsOther}, headSign=#{headSign}, signDate=#{signDate},
+        formTypeId=#{wastes.formTypeItem.dataDictionaryItemId}, handleCategoryId=#{wastes.handleCategoryItem.dataDictionaryItemId},
+        packageTypeId=#{wastes.packageTypeItem.dataDictionaryItemId}
         where id=#{id};
     </update>
 
     <!--验收-->
     <update id="setStateSignIn" parameterType="String">
-        UPDATE t_pr_transferdraft SET checkState='Collected' WHERE id=#{id};
+        UPDATE t_pr_transferdraft SET checkState='Collected', checkStateId=87 WHERE id=#{id};
     </update>
 
     <update id="setStateInvalid" parameterType="String">
-        UPDATE t_pr_transferdraft SET checkState='Invalid' WHERE id=#{id};
+        UPDATE t_pr_transferdraft SET checkState='Invalid', checkStateId=69 WHERE id=#{id};
     </update>
 
     <update id="setStateToExamine" parameterType="String">
-        UPDATE t_pr_transferdraft SET checkState='ToExamine' WHERE id=#{id};
+        UPDATE t_pr_transferdraft SET checkState='ToExamine', checkStateId=67 WHERE id=#{id};
     </update>
 
-    <select id="list" resultType="TransferDraft">
+    <!--列出转移联单-->
+    <select id="list" resultMap="TransferDraftRM">
         SELECT * FROM t_pr_transferdraft
-        where checkState != 'Invalid'
-        ORDER BY nowTime DESC
+        where checkStateId != 69
+        ORDER BY createTime DESC
         <if test="start != null and count != null">
             limit #{start}, #{count};
         </if>
@@ -165,8 +191,8 @@
             <if test="transferTime != null and transferTime != ''">
                 and transferTime LIKE binary "%"#{transferTime}"%"
             </if>
-            <if test="checkState != null and checkState != ''">
-                and checkState = #{checkState}
+            <if test="checkStateItem != null and checkStateItem.dataDictionaryItemId != 0">
+                and checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
         </where>
         order by nowTime desc
@@ -191,8 +217,8 @@
             <if test="transferTime != null and transferTime != ''">
                 and transferTime LIKE binary "%"#{transferTime}"%"
             </if>
-            <if test="checkState != null and checkState != ''">
-                and checkState = #{checkState}
+            <if test="checkStateItem != null and checkStateItem.dataDictionaryItemId != 0">
+                and checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
         </where>
     </select>

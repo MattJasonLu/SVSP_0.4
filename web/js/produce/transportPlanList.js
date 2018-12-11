@@ -115,6 +115,7 @@ function setPageClone(result) {
  * @param pageNumber 跳转页数
  * */
 function switchPage(pageNumber) {
+
     if(pageNumber > totalPage()){
         pageNumber = totalPage();
     }
@@ -158,6 +159,7 @@ function switchPage(pageNumber) {
     addPageClass(pageNumber);           // 设置页码标蓝
     //addClass("active");
     page.start = (pageNumber - 1) * page.count;
+    console.log(page);
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
@@ -351,8 +353,8 @@ function setDataList(result) {
                     $(this).html(obj.author);
                     break;
                 case (4):
-                    if (obj.checkState != null)
-                        $(this).html(obj.checkState.name);
+                    if (obj.checkStateItem != null)
+                        $(this).html(obj.checkStateItem.dictionaryItemName);
                     break;
             }
         });
@@ -377,7 +379,9 @@ function searchData() {
     if ($("#senior").is(':visible')) {
         data = {
             id: $("#search-id").val(),
-            checkState: $("#search-checkState").val(),
+            checkStateItem: {
+                dataDictionaryItemId: $("#search-checkState").val()
+            },
             departmentDirector: $("#beginTime").val(),
             productionDirector: $("#endTime").val(),
             author: $("#search-author").val(),
@@ -417,34 +421,40 @@ function searchData() {
  * 设置高级查询的审核状态数据
  */
 function getCheckState() {
+    // 设置审批状态
     $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getCheckState",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        type: "POST",
+        url: "getCheckStateDataByDictionary",
         dataType: "json",
+        async: false,
         success: function (result) {
-            if (result !== undefined) {
+            if (result != undefined && result.status == "success") {
                 var data = eval(result);
+                console.log(result);
                 // 高级检索下拉框数据填充
                 var checkState = $("#search-checkState");
                 checkState.children().remove();
-                $.each(data.checkStateList, function (index, item) {
-                    if ((item.index >= 11 && item.index <= 14) || item.index == 7) {
+                $.each(data.data, function (index, item) {
+                    if (item.dataDictionaryItemId == 73 ||
+                        item.dataDictionaryItemId == 74 ||
+                        item.dataDictionaryItemId == 76 ||
+                        item.dataDictionaryItemId == 69 ||
+                        item.dataDictionaryItemId == 75) {
                         var option = $('<option />');
-                        option.val(index);
-                        option.text(item.name);
+                        option.val(item.dataDictionaryItemId);
+                        option.text(item.dictionaryItemName);
                         checkState.append(option);
                     }
                 });
                 checkState.get(0).selectedIndex = -1;
             } else {
-                console.log("fail: " + result);
+                console.log(result.message);
             }
-        },
-        error: function (result) {
-            console.log("error: " + result);
+        }, error: function (result) {
+            console.log(result);
         }
     });
+
 }
 
 /**
