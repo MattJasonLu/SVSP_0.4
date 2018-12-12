@@ -15,7 +15,7 @@
     <script src="js/util.js"></script>
     <script src="js/business/wastesContract.js"></script>
 </head>
-<body onload="loadWastesContractList(),keyLogin()">
+<body onload="loadWastesContractList();keyLogin()">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -247,10 +247,10 @@
                     <td class="text-center"></td>
                     <td class="text-center hidden"></td><!--存放主键-->
                     <td class="text-center">
-                        <a href="#" id="function_182" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; view(e);}" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                        <a href="#" id="function_183" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; adjust(e);}" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                        <!--<a href="#" id="function_184" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; cancel(e);}" class="glyphicon3" title="作废"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true" id="glyphicon3"></span></a>-->
-                        <!--<a href="#" id="function_185" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; approval(e);}" title="审批"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></a>-->
+                        <a href="#" id="function_182" onclick="view(this);" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                        <a href="#" id="function_183" onclick="adjust(this);" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                        <!--<a href="#" id="function_184" onclick="cancel(this);" class="glyphicon3" title="作废"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true" id="glyphicon3"></span></a>-->
+                        <!--<a href="#" id="function_185" onclick="approval(this);" title="审批"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></a>-->
                     </td>
                 </tr>
                 </tbody>
