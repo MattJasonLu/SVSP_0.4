@@ -18,6 +18,16 @@
 
     <mvc:default-servlet-handler/>
 
+    <!--配置拦截器, 多个拦截器,顺序执行 -->
+    <mvc:interceptors>
+        <!--登录拦截器-->
+        <mvc:interceptor>
+            <mvc:mapping path="/**.html"/>
+            <bean class="com.jdlink.controller.CommonInterceptor"/>
+        </mvc:interceptor>
+
+    </mvc:interceptors>
+
     <!-- 时间转换 -->
     <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
         <property name="converters">

@@ -329,14 +329,16 @@ function loadInventoryList() {
 function setInventoryList(result) {
     var tr = $("#cloneTr1");
     tr.siblings().remove();
+    var totalAmount = 0;
     $.each(result, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
         if (item.amount > 0) {
             var clonedTr = tr.clone();
             clonedTr.show();
             // 循环遍历cloneTr的每一个td元素，并赋值
+            var obj = eval(item);
+            totalAmount += obj.amount;
             clonedTr.children("td").each(function (inner_index) {
-                var obj = eval(item);
                 // 根据索引为部分td赋值
                 switch (inner_index) {
                     // 物品编号
@@ -370,6 +372,24 @@ function setInventoryList(result) {
             clonedTr.removeAttr('id');
         }
     });
+    var clonedTr = tr.clone();
+    clonedTr.show();
+    clonedTr.children("td").each(function (inner_index) {
+        // 根据索引为部分td赋值
+        switch (inner_index) {
+            // 合计
+            case (3):
+                $(this).html("合计");
+                break;
+            // 库存量
+            case (4):
+                $(this).html(totalAmount);
+                break;
+        }
+    });
+    // 把克隆好的tr追加到原来的tr前面
+    clonedTr.insertBefore(tr);
+    clonedTr.removeAttr('id');
     // 隐藏无数据的tr
     tr.hide();
 }
