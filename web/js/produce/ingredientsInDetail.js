@@ -359,14 +359,18 @@ function setIngredientsInList(result) {
     var tr = $("#clone");
     tr.siblings().remove();
     var serialNumber = 0;    // 序号
+    var totalAmount = 0;  // 总数量
+    var allTotalPrice = 0;   // 总金额
     $.each(result, function (index, item) {
         serialNumber++;
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
         clonedTr.show();
         // 循环遍历cloneTr的每一个td元素，并赋值
+        var obj = eval(item);
+        totalAmount += parseFloat(obj.amount.toFixed(2)); // 计算总数量
+        allTotalPrice += parseFloat(obj.totalPrice.toFixed(2));  // 计算总金额
         clonedTr.children("td").each(function (inner_index) {
-            var obj = eval(item);
             // 根据索引为部分td赋值
             switch (inner_index) {
                 case (1):
@@ -424,6 +428,35 @@ function setIngredientsInList(result) {
         clonedTr.removeAttr("id");
         clonedTr.insertBefore(tr);
     });
+    var clonedTr = tr.clone();
+    clonedTr.show();
+    clonedTr.children("td").each(function (inner_index) {
+        // 根据索引为部分td赋值
+        switch (inner_index) {
+            case (6):
+                // 合计
+                $(this).html("合计");
+                break;
+            case (7):
+                // 总数量
+                $(this).html(totalAmount.toFixed(2));
+                break;
+            case (8):
+                // 平均单价
+                $(this).html((allTotalPrice/totalAmount).toFixed(2));
+                break;
+            case (9):
+                // 总金额
+                $(this).html(allTotalPrice.toFixed(2));
+                break;
+            case (13):
+                // 操作
+                $(this).html("");
+                break;
+        }
+    });
+    clonedTr.removeAttr("id");
+    clonedTr.insertBefore(tr);
     // 隐藏无数据的tr
     tr.hide();
 }

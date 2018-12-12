@@ -365,14 +365,16 @@ function setList(result) {
     var tr = $("#clone");
     tr.siblings().remove();
     var serialNumber = 0;    // 序号
+    var totalAmount = 0;   // 总数量
     $.each(result, function (index, item) {
         serialNumber++;
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
         clonedTr.show();
+        var obj = eval(item);
+        totalAmount += parseFloat(obj.receiveAmount.toFixed(2));
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
-            var obj = eval(item);
             // 根据索引为部分td赋值
             switch (inner_index) {
                 case (1):
@@ -439,6 +441,28 @@ function setList(result) {
         clonedTr.removeAttr("id");
         clonedTr.insertBefore(tr);
     });
+    var clonedTr = tr.clone();
+    clonedTr.show();
+    clonedTr.children("td").each(function (inner_index) {
+        // 根据索引为部分td赋值
+        switch (inner_index) {
+            case (6):
+                // 合计
+                $(this).html("合计");
+                break;
+            case (7):
+                // 数量
+                $(this).html(totalAmount.toFixed(2));
+                break;
+            case (15):
+                // 操作
+                $(this).html("");
+                break;
+        }
+    });
+    // 把克隆好的tr追加到原来的tr前面
+    clonedTr.removeAttr("id");
+    clonedTr.insertBefore(tr);
     // 隐藏无数据的tr
     tr.hide();
 }
