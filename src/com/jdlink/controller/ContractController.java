@@ -1477,6 +1477,28 @@ public class ContractController {
 
         return res.toString();
     }
+
+    /**
+     * 合同模板审批
+     */
+    @RequestMapping("approvalModel")
+    @ResponseBody
+    public String  approvalModel(String contractId){
+        JSONObject res=new JSONObject();
+
+        try {
+      contractService.approvalModel(contractId);
+            res.put("status", "success");
+            res.put("message", "审批成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "审批失败");
+        }
+
+        return res.toString();
+    }
 }
 
 
