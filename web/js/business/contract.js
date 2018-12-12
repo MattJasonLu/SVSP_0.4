@@ -615,7 +615,7 @@ function loadPages(totalRecord, count) {
 function setSeniorSelectedList() {
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getSeniorSelectedList",                  // url
+        url: "getCheckStateDataByDictionary",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
@@ -625,10 +625,10 @@ function setSeniorSelectedList() {
                 // 高级检索下拉框数据填充
                 var checkState = $("#search-checkState");
                 checkState.children().remove();
-                $.each(data.checkStateList, function (index, item) {
+                $.each(data.data, function (index, item) {
                     var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     checkState.append(option);
                 });
                 checkState.get(0).selectedIndex = -1;
@@ -677,7 +677,7 @@ function searchContract() {
         small = '小额合同';
     }
     if (smallContract == false) {
-        small = '大额合同';
+        small = '额合同';
     }
     console.log(small)
 
@@ -733,7 +733,7 @@ function searchContract() {
                 && $(this).children('td').text().indexOf(text) != -1 &&
                 $(this).children('td').eq(4).text().indexOf(checkState) != -1
                 && $(this).children('td').eq(6).text().indexOf(contactName) != -1 && (new Date(start).getTime() >= new Date(startDate).getTime())
-                && (new Date(end).getTime() <= new Date(endDate).getTime() && $(this).children('td').eq(10).text() == small)&& $(this).children('td').eq(11).text().indexOf(nameBykey)!=-1
+                && (new Date(end).getTime() <= new Date(endDate).getTime() && $(this).children('td').eq(10).text().indexOf(small)!=-1)&& $(this).children('td').eq(11).text().indexOf(nameBykey)!=-1
             )) {
                 $(this).hide();
             }
@@ -741,7 +741,7 @@ function searchContract() {
                 && $(this).children('td').text().indexOf(text) != -1 &&
                 $(this).children('td').eq(4).text().indexOf(checkState) != -1 && (new Date(start).getTime() >= new Date(startDate).getTime())
                 && $(this).children('td').eq(6).text().indexOf(contactName) != -1
-                && (new Date(end).getTime() <= new Date(endDate).getTime()) && $(this).children('td').eq(10).text() == small)&& $(this).children('td').eq(11).text().indexOf(nameBykey)!=-1
+                && (new Date(end).getTime() <= new Date(endDate).getTime()) && $(this).children('td').eq(10).text().indexOf(small)!=-1)&& $(this).children('td').eq(11).text().indexOf(nameBykey)!=-1
             ) {
                 array1.push($(this));
             }
@@ -6151,12 +6151,17 @@ function contractLogAdjustSave() {
 //修改合同 最新版
 function adjust(item) {
 
+ if($(item).parent().parent().children('td').eq(4).html()=='已签订'){
+ alert('已签订的合同无法修改！')
+ }
+ else {
+
 
     var contractId = $(item).parent().parent().children('td').eq(1).html();
 
     localStorage.contractId = contractId;
     window.location.href = "wastesContractInfoChange.html";
-
+ }
 }
 
 //合同修改页面初始化
@@ -7093,6 +7098,38 @@ function TrimZero(R) {
 
 function ToUpper(s) {
     return TrimZero(ToFullUpper(s));
+}
+
+
+//签订合同
+function signed(item) {
+    var contractId=$(item).parent().parent().children('td').eq(1).html();
+
+    if(confirm('确认签订合同?')){
+             $.ajax({
+                 type: "POST",
+                 url: "signContract",
+                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                 dataType: "json",
+                 data: {'contractId': contractId},
+                 success:function (result) {
+                     if (result != undefined && result.status == "success"){
+                         alert(result.message)
+                         window.location.reload()
+                     }
+                     else {
+
+                         alert(result.message);
+
+                     }
+                 },
+                 error:function (result) {
+                     alert("服务器异常!")
+                 }
+             })
+    }
+
+
 }
 
 

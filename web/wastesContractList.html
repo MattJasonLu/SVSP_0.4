@@ -159,7 +159,7 @@
         <div class="panel panel-default" id="senior" style="display: none;">
             <div class="panel-body">
                 <div class="row">
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-6">
                         <!--<div class="form-group">-->
                         <!--<label for="search-stockId" class="col-sm-5 control-label">库存编号</label>-->
                         <!--<div class="col-xs-7">-->
@@ -170,7 +170,12 @@
                         <div class="form-group">
                             <label for="search-checkState" class="col-sm-5 control-label">审核状态</label>
                             <div class="col-xs-7">
-                                <select class="form-control" id="search-checkState" name="search-checkState" onchange="searchStock()"></select>
+                                <select class="form-control" id="search-checkState" name="search-checkState" onchange="searchDisposalContract()">
+                                    <option ></option>
+                                    <option value="173">代签定</option>
+                                    <option value="172">已签收</option>
+                                    <option value="69">已作废</option>
+                                </select>
                             </div>
                         </div>
                         <!--<div class="form-group">-->
@@ -181,24 +186,17 @@
                         <!--</div>-->
                         <!--</div>-->
                     </div>
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="search-proContactName" class="col-sm-5 control-label">联系人</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-proContactName"
-                                       name="search-proContactName" placeholder="" onkeyup="enterSearch()">
+                            <label class="col-sm-3 control-label" style="margin-left: -95px">创建日期 </label>
+                            <div class="input-group">
+                                <input type="date" class="input-sm form-control" id="search-beginTime" title="" onkeydown=""onkeyup="enterSearch()"/>
+                                <span class="input-group-addon">-</span>
+                                <input type="date" class="input-sm form-control" id="search-endTime" title="" onkeydown=""onkeyup="enterSearch()"/>
                             </div>
                         </div>
-                        <!--<div class="form-group">-->
-                        <!--<label for="search-plateNumber" class="col-sm-5 control-label">运输车车牌号</label>-->
-                        <!--<div class="col-xs-7">-->
-                        <!--<input type="text" class="form-control" id="search-plateNumber"-->
-                        <!--name="search-plateNumber" placeholder="">-->
-                        <!--</div>-->
-                        <!--</div>-->
-
                     </div>
-                    <div class="form-horizontal col-md-3">
+                   <!-- <div class="form-horizontal col-md-3">
                         <div class="form-group">
                             <label for="search-proTelephone"
                                    class="col-sm-5 control-label">联系电话</label>
@@ -218,7 +216,7 @@
                             </div>
                         </div>
 
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>
@@ -233,6 +231,7 @@
                     </th>
                     <th class="text-center">序号</th>
                     <th class="text-center">创建日期</th>
+                    <th class="text-center">状态</th>
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>
@@ -245,11 +244,13 @@
                     </td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center"></td>
                     <td class="text-center hidden"></td><!--存放主键-->
                     <td class="text-center">
                         <a href="#" id="function_182" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; view(e);}" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
                         <a href="#" id="function_183" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; adjust(e);}" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                        <!--<a href="#" id="function_184" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; cancel(e);}" class="glyphicon3" title="作废"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true" id="glyphicon3"></span></a>-->
+                        <a href="#"  onclick="signed(this)" title="签订合同"><span class="glyphicon glyphicon-saved" aria-hidden="true"></span></a>
+                        <a href="#" id="function_184" onclick=" cancel(this)" class="glyphicon3" title="作废"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true" id="glyphicon3"></span></a>
                         <!--<a href="#" id="function_185" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; approval(e);}" title="审批"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></a>-->
                     </td>
                 </tr>

@@ -292,4 +292,9 @@ contractMapper.updateFreight2(id);
         contractMapper.approvalModel(contractId);
     }
 
+    @Override
+    public void signContract(String contractId) {
+        contractMapper.signContract(contractId);
+    }
+
 }

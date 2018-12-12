@@ -551,6 +551,12 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
   <update id="approvalModel" parameterType="String">
       update t_contract set checkStateId=70 where contractId=#{contractId}
   </update>
+
+
+    <!--签订合同-->
+    <update id="signContract" parameterType="String">
+        update t_contract set  checkStateId=172 where contractId=#{contractId}
+    </update>
 </mapper>
 
 
