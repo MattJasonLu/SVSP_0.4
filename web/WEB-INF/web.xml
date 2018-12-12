@@ -15,10 +15,7 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:applicationContext.xml</param-value>
     </context-param>
-    <context-param>
-        <param-name/>
-        <param-value/>
-    </context-param>
+
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
@@ -38,6 +35,7 @@
         <servlet-name>mvc-dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+    <!--配置编码过滤器-->
     <filter>
         <filter-name>CharacterEncodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -52,16 +50,17 @@
     </filter-mapping>
 
     <!-- 检查用户是否登录过的web.xml配置 -->
-    <filter>
-        <filter-name>AuthFilter</filter-name>
-        <filter-class>com.jdlink.controller.AuthFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>AuthFilter</filter-name>
-        <url-pattern>/SVSP/*</url-pattern>
-    </filter-mapping>
+    <!--<filter>-->
+        <!--<filter-name>AuthFilter</filter-name>-->
+        <!--<filter-class>com.jdlink.controller.AuthFilter</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>AuthFilter</filter-name>-->
+        <!--<url-pattern>/SVSP/*</url-pattern>-->
+    <!--</filter-mapping>-->
 
-    <session-config><!--设置登陆保护时间为30分钟-->
+    <!--设置登陆保护时间为30分钟-->
+    <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
 
