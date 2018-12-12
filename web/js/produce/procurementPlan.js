@@ -397,9 +397,14 @@ function setProcurementPlan(result) {
                 case (7):
                     $(this).html(data.approvalName);
                     break;
+               //物资类别
+                    if(data.materialCategoryItem!=null){
+                        $(this).html(data.materialCategoryItem.dictionaryItemName);
+                    }
 
+                    break;
                 // 状态
-                case (8):
+                case (9):
                     if(data.checkStateItem!=null){
                         $(this).html(data.checkStateItem.dictionaryItemName);
                     }
