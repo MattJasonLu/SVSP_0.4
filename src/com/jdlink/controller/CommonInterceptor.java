@@ -32,7 +32,7 @@ public class CommonInterceptor extends HandlerInterceptorAdapter{
         }
         //不符合条件的给出提示信息，并转发到登录页面
         //request.setAttribute("msg", "您还没有登录，请先登录！");
-        request.getRequestDispatcher(request.getContextPath() + "/admin.html").forward(request, response);
+        request.getRequestDispatcher("/admin.html").forward(request, response);
         return false;
     }
 
