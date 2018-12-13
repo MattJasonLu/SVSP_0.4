@@ -311,6 +311,34 @@ function loadPage() {
              
          }
      })
+    //设置物资类别下拉框
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getMaterialCategoryByDataDictionary",        // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                console.log(result);
+                // 高级检索下拉框数据填充
+                var materialCategoryItem = $("#search-materialCategoryItem");
+                materialCategoryItem.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    materialCategoryItem.append(option);
+                });
+                materialCategoryItem.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
     isSearch = false;
 }
 
@@ -397,6 +425,7 @@ function setProcurementPlan(result) {
                 case (7):
                     $(this).html(data.approvalName);
                     break;
+                case (8):
                //物资类别
                     if(data.materialCategoryItem!=null){
                         $(this).html(data.materialCategoryItem.dictionaryItemName);
@@ -501,7 +530,7 @@ function setViewModal(result) {
 //修改
 function procurementPlanModify(item) {
 
-    var checkState=$(item).parent().parent().children('td').eq(8).html();
+    var checkState=$(item).parent().parent().children('td').eq(9).html();
     if(checkState=='待提交'){
         var procurementPlanId=$(item).parent().parent().children('td').eq(2).html();
         $('#procurementPlanIdAdjust').val(procurementPlanId)
@@ -930,7 +959,7 @@ function searchData() {
             createDateEnd:$('#search-createDateEnd').val(),
             adjustDateStart:$('#search-adjustDateStart').val(),
             adjustDateEnd:$('#search-adjustDateEnd').val(),
-
+            materialCategoryItem:{dataDictionaryItemId:$('#search-materialCategoryItem').val()}
 
         };
     }
