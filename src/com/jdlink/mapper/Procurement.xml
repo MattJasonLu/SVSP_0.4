@@ -5,8 +5,8 @@
 <mapper namespace="com.jdlink.mapper.ProcurementMapper" >
    <!--添加采购-->
     <insert id="add" parameterType="Procurement">
-        insert into t_pl_procurement(receiptNumber, applyMouth, demandTime, applyDepartment, proposer, divisionHead, purchasingDirector, generalManager, id1, procurementCategory,nowTIme,purchasingHead,applyDate,suppliesCategory,state,createDate,checkStateId)
-      values (#{receiptNumber},#{applyMouth},#{demandTime},#{applyDepartment},#{proposer},#{divisionHead},#{purchasingDirector},#{generalManager},#{id1},#{procurementCategory},NOW(),#{purchasingHead},#{applyDate},#{suppliesCategory},'ToSubmit',NOW(),64);
+        insert into t_pl_procurement(receiptNumber, applyMouth, demandTime, applyDepartment, proposer, divisionHead, purchasingDirector, generalManager, id1, procurementCategory,nowTIme,purchasingHead,applyDate,suppliesCategory,state,createDate,checkStateId,MaterialCategoryId)
+      values (#{receiptNumber},#{applyMouth},#{demandTime},#{applyDepartment},#{proposer},#{divisionHead},#{purchasingDirector},#{generalManager},#{id1},#{procurementCategory},NOW(),#{purchasingHead},#{applyDate},#{suppliesCategory},'ToSubmit',NOW(),64,#{materialCategoryItem.dataDictionaryItemId});
     </insert>
     <!--寻找最新的采购主键-->
     <select id="getNewestId" resultType="String">
@@ -14,8 +14,8 @@
     </select>
     <!--添加物料表-->
     <insert id="addMaterial" parameterType="Material">
-        insert into t_pl_material (suppliesName, specifications, inventory, note, purchaseQuantity, demandQuantity, receiptNumber,unit,state,createDate,checkState,unitId,checkStateId,stateId)
-        values (#{suppliesName},#{specifications},#{inventory},#{note},#{purchaseQuantity},#{demandQuantity},#{receiptNumber},#{unit},'ToInbound',NOW(),'Enabled',#{unitDataItem.dataDictionaryItemId},70,77);
+        insert into t_pl_material (suppliesName, specifications, inventory, note, purchaseQuantity, demandQuantity, receiptNumber,unit,state,createDate,checkState,unitId,checkStateId,stateId,MaterialCategoryId)
+        values (#{suppliesName},#{specifications},#{inventory},#{note},#{purchaseQuantity},#{demandQuantity},#{receiptNumber},#{unit},'ToInbound',NOW(),'Enabled',#{unitDataItem.dataDictionaryItemId},70,77,#{materialCategoryItem.dataDictionaryItemId});
     </insert>
     <!--加载采购列表-->
     <resultMap id="ProcurementRM" type="Procurement" autoMapping="true">
@@ -23,8 +23,13 @@
         <result property="unit" column="unit" javaType="Unit"></result>
         <collection property="materialList" column="receiptNumber" select="getMaterial" ofType="Material"></collection>
           <collection property="checkStateItem" column="checkStateId" select="getCheckState"></collection>
+        <collection property="materialCategoryItem" column="MaterialCategoryId" select="getMaterialCategoryItem"></collection>
     </resultMap>
 
+    <!--获取物资类别数据字典-->
+    <select id="getMaterialCategoryItem" resultType="MaterialCategoryItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{MaterialCategoryId}
+    </select>
     <!--获取状态数据字典-->
     <select id="getCheckState" resultType="CheckStateItem">
         select * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
@@ -32,7 +37,8 @@
 
     
     <resultMap id="MaterialRM" type="Material">
-        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"></association>
+        <association property="materialCategoryItem" column="MaterialCategoryId" select="getMaterialCategoryItem"></association>
+        <association property="ingredientStateItem" column="stateId" select="getIngredientStateItem"></association>
         <association property="ingredientStateItem" column="stateId" select="getIngredientStateItem"></association>
         <collection property="unitDataItem" column="unitId" select="getUnitDataItem"></collection>
     </resultMap>
@@ -273,7 +279,7 @@
     </select>
 
     <!--采购计划单新增页面高级查询-->
-    <select id="searchNewProcurementPlan" parameterType="Material" resultType="Material">
+    <select id="searchNewProcurementPlan" parameterType="Material" resultMap="MaterialRM">
         select * from t_pl_material
         <where>
             <if test="createDateStart!=null and createDateStart!=''">
@@ -281,6 +287,11 @@
             </if>
             <if test="createDateEnd!=null and createDateEnd!=''">
                 and createDate &lt;= DATE_FORMAT(#{createDateEnd}, '%Y-%m-%d')
+            </if>
+            <if test="materialCategoryItem!=null">
+              <if test="materialCategoryItem.dataDictionaryItemId!=0">
+                  and materialCategoryId =#{materialCategoryItem.dataDictionaryItemId}
+              </if>
             </if>
             and t_pl_material.receiptNumber in(select t_pl_procurement.receiptNumber from t_pl_procurement where t_pl_procurement.checkStateId=73 and t_pl_procurement.procurementCategory=1) and (t_pl_material.checkStateId=70);
         </where>
@@ -309,16 +320,16 @@
 
     <!--添加采购单明细-->
     <insert id="addProcurementPlanItem" parameterType="procurementPlanItem">
-        insert into t_pr_procumentplanitem(procurementPlanId, category, suppliesName, specifications, proposer, demandQuantity, unit, price, priceTotal, remarks,unitId) values
-     (#{procurementPlanId},#{category},#{suppliesName},#{specifications},#{proposer},#{demandQuantity},#{unit},#{price},#{priceTotal},#{remarks},#{unitDataItem.dataDictionaryItemId});
+        insert into t_pr_procumentplanitem(procurementPlanId, category, suppliesName, specifications, proposer, demandQuantity, unit, price, priceTotal, remarks,unitId,MaterialCategoryId) values
+     (#{procurementPlanId},#{category},#{suppliesName},#{specifications},#{proposer},#{demandQuantity},#{unit},#{price},#{priceTotal},#{remarks},#{unitDataItem.dataDictionaryItemId},#{materialCategoryItem.dataDictionaryItemId});
 
 </insert>
 
     <resultMap id="ProcurementPlanRM" type="ProcurementPlan">
         <result  property="procurementPlanId" column="procurementPlanId"></result>
+        <association property="materialCategoryItem" column="materialCategoryId" select="getMaterialCategoryItem"></association>
         <collection property="procurementPlanItemList" column="procurementPlanId" select="getProcurementPlanItemList"></collection>
     <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
-
     </resultMap>
     <!--状态数据字典-->
     <select id="getCheckStateItem" resultType="CheckStateItem">
@@ -393,6 +404,7 @@
                 or adjustDate like binary"%"#{keywords}"%"
                 or approvalName like "%"#{keywords}"%"
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
+                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
             </if>
             <if test="procurementPlanId!=null and procurementPlanId!=''">
                 and procurementPlanId like "%"#{procurementPlanId}"%"
@@ -410,7 +422,11 @@
                 <if test="checkStateItem.dataDictionaryItemId!=0">
                     and checkStateId = #{checkStateItem.dataDictionaryItemId}
                 </if>
-
+            </if>
+            <if test="materialCategoryItem!=null">
+                <if test="materialCategoryItem.dataDictionaryItemId!=0">
+                    and materialCategoryId = #{materialCategoryItem.dataDictionaryItemId}
+                </if>
             </if>
             <if test="createDateStart!=null and createDateStart!=''">
                 and createDate <![CDATA[ >= ]]> DATE_FORMAT(#{createDateStart}, '%Y-%m-%d %H:%i:%S')
@@ -443,6 +459,7 @@
                 or adjustDate like binary"%"#{keywords}"%"
                 or approvalName like "%"#{keywords}"%"
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
+                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
             </if>
             <if test="procurementPlanId!=null and procurementPlanId!=''">
                 and procurementPlanId like "%"#{procurementPlanId}"%"
@@ -460,7 +477,11 @@
                 <if test="checkStateItem.dataDictionaryItemId!=0">
                     and checkStateId = #{checkStateItem.dataDictionaryItemId}
                 </if>
-
+            </if>
+            <if test="materialCategoryItem!=null">
+                <if test="materialCategoryItem.dataDictionaryItemId!=0">
+                    and materialCategoryId = #{materialCategoryItem.dataDictionaryItemId}
+                </if>
             </if>
             <if test="createDateStart!=null and createDateStart!=''">
                 and createDate <![CDATA[ >= ]]> DATE_FORMAT(#{createDateStart}, '%Y-%m-%d %H:%i:%S')
@@ -500,4 +521,10 @@
        </where>
 
     </select>
+
+<!--将物资类别更新到采购主表中去-->
+    <update id="updateMaterialCategoryItemForProcurementPlan">
+        update t_pr_procumentplan set MaterialCategoryId=#{1} where procurementPlanId=#{0}
+    </update>
+
 </mapper>

@@ -1,5 +1,7 @@
 package com.jdlink.domain;
 
+import com.jdlink.domain.Dictionary.CheckStateItem;
+
 import java.util.Date;
 
 public class DisposalContract {
@@ -26,6 +28,46 @@ public class DisposalContract {
     private Page page;
 
     private Date nowTime;
+
+    private CheckStateItem checkStateItem;
+
+    private Date beginTime;
+
+    private Date endTime;
+
+    private String keywords;
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
+    public Date getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public CheckStateItem getCheckStateItem() {
+        return checkStateItem;
+    }
+
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
+    }
 
     public Date getNowTime() {
         return nowTime;

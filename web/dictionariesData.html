@@ -138,6 +138,7 @@
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
                     <a class="btn btn-primary btn-xs" id="function_-396" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; addNewData();}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                    <a class="btn btn-primary btn-xs" id="function_-109" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose();}"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                     <a class="btn btn-primary btn-xs" id="function_-397" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcelList();}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
@@ -440,5 +441,32 @@
 </div>
 
 <div id="embed"></div>
+<!--导入-->
+<input type="file" name="excelPath" id="idExcel" style="display:none">
+<!--导入模态框-->
+<div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="TitleMyModalLabel">导入表格数据</h4>
+            </div>
+            <div class="modal-body">
+                <form id="modelAssign" method="post">
+                    <div class="form-group">
+                        <font size="+2">提示：</font>
+                        <font size="+1" class="text-center">请按照模板格式导入数据！</font>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-default"  id="download">下载模板</button>
+                <button type="button" class="btn btn-primary" onclick="importExcel()">导入数据</button>
+            </div>
+        </div>
+    </div>
+</div>
+<form id="vform" class="hidden"  method="post" action="downloadFile?filePath=Files/Templates/数据字典模板.xlsx" name=""></form>
 </body>
 </html>

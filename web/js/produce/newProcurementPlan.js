@@ -55,6 +55,35 @@ function getProcurement() {
 
         }
     });
+
+    //设置物资类别下拉框
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getMaterialCategoryByDataDictionary",        // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                console.log(result);
+                // 高级检索下拉框数据填充
+                var materialCategoryItem = $("#search-materialCategoryItem");
+                materialCategoryItem.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    materialCategoryItem.append(option);
+                });
+                materialCategoryItem.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
 }
 
 
@@ -120,14 +149,22 @@ function setMonthProcurementList(result) {
                 case (8):
                     $(this).html(getDateStr(obj.createDate));
                     break;
-                //存放采购主键
+                //物资类别
                 case (9):
+                    if(obj.materialCategoryItem!=null){
+                        $(this).html((obj.materialCategoryItem.dictionaryItemName));
+                    }
+                    break;
+                //存放采购主键
+                case (10):
                     $(this).html((obj.receiptNumber));
                     break;
                     //存放物资主键
-                case (10):
+                case (11):
                     $(this).html((obj.id));
                     break;
+
+
             }
         });
         // 把克隆好的tr追加到原来的tr前面
@@ -157,7 +194,8 @@ function searchData() {
     var createDateEnd = $('#search-endDate').val();
     var data = {
         createDateStart: createDateStart,
-        createDateEnd: createDateEnd
+        createDateEnd: createDateEnd,
+        materialCategoryItem:{'dataDictionaryItemId':$('#search-materialCategoryItem').val()},
     }
     console.log(data)
     $.ajax({
@@ -215,13 +253,14 @@ function add() {
                             var dataItem = {
 
                                 wareHouseName: $('#procurementPlanId').val(),
-                                receiptNumber: $(this).parent().parent().parent().children('td').eq(9).html(),
+                                receiptNumber: $(this).parent().parent().parent().children('td').eq(10).html(),
                                 suppliesName: $(this).parent().parent().parent().children('td').eq(2).html(),
                                 specifications: $(this).parent().parent().parent().children('td').eq(3).html(),
                                 unitDataItem:{dictionaryItemName:($(this).parent().parent().parent().children('td').eq(4).html())} ,
                                 demandQuantity: $(this).parent().parent().parent().children('td').eq(6).html(),
                                 note: $(this).parent().parent().parent().children('td').eq(7).html(),
-                                id:$(this).parent().parent().parent().children('td').eq(10).html(),
+                                id:$(this).parent().parent().parent().children('td').eq(11).html(),
+                                materialCategoryItem:{dictionaryItemName:$(this).parent().parent().parent().children('td').eq(9).html()}
                             }
                             $.ajax({
                                 type: "POST",                       // 方法类型

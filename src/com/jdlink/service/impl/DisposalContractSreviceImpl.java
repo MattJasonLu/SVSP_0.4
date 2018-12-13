@@ -33,4 +33,24 @@ public class DisposalContractSreviceImpl implements DisposalContractSrevice {
     public void updateWastesContract(DisposalContract disposalContract) {
         disposalContractMapper.updateWastesContract(disposalContract);
     }
+
+    @Override
+    public void signDisposalContract(int id) {
+        disposalContractMapper.signDisposalContract(id);
+    }
+
+    @Override
+    public void cancelDisposalContract(int id) {
+        disposalContractMapper.cancelDisposalContract(id);
+    }
+
+    @Override
+    public List<DisposalContract> searchDisposalContract(DisposalContract disposalContract) {
+        return disposalContractMapper.searchDisposalContract(disposalContract);
+    }
+
+    @Override
+    public int searchDisposalContractCount(DisposalContract disposalContract) {
+        return disposalContractMapper.searchDisposalContractCount(disposalContract);
+    }
 }

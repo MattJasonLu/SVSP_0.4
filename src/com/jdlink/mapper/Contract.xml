@@ -67,10 +67,10 @@
     <insert id="add" parameterType="Contract">
         insert into t_contract (contractId,contractType, companyName, clientId, contractVersion,
         checkState, beginTime, endTime, agreedQuantity,contactName,telephone,reviewer,reviewDepartment,
-        reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification,modelName,year,period,contractContent,contractName,modelVersion,nowTime,company1,content,suppierId,totalPrice,checkStateId)
+        reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification,modelName,year,period,contractContent,contractName,modelVersion,nowTime,company1,content,suppierId,totalPrice,checkStateId,freightBearer)
         values (#{contractId},#{contractType}, #{companyName}, #{client.clientId}, #{contractVersion},
         #{checkState}, #{beginTime}, #{endTime}, #{agreedQuantity}, #{contactName}, #{telephone}, #{reviewer},
-        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion},NOW(),#{company1},#{content},#{supplier.supplierId},#{totalPrice},64)
+        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion},NOW(),#{company1},#{content},#{supplier.supplierId},#{totalPrice},64,#{freightBearer})
     </insert>
     <insert id="addEm" parameterType="Contract">
         insert into t_contract(contractId,contractType,
@@ -409,7 +409,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         update t_contract set nowTime=NOW(),bankAccount=#{bankAccount},bankName=#{bankName},
         beginTime=#{beginTime},clientId=#{client.clientId},contactName=#{contactName},
         contractName=#{contractName},contractType=#{contractType},contractVersion=#{contractVersion},
-        endTime=#{endTime},isFreight=#{freight},telephone=#{telephone},ticketRate1=#{ticketRate1},totalPrice=#{totalPrice}
+        endTime=#{endTime},isFreight=#{freight},telephone=#{telephone},ticketRate1=#{ticketRate1},totalPrice=#{totalPrice},freightBearer=#{freightBearer}
         where  contractId=#{contractId}
     </update>
     <!--删除字表的明细-->
@@ -546,6 +546,17 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
             limit #{page.start}, #{page.count}
         </if>
     </select>
+
+    <!--审批合同模板-->
+  <update id="approvalModel" parameterType="String">
+      update t_contract set checkStateId=70 where contractId=#{contractId}
+  </update>
+
+
+    <!--签订合同-->
+    <update id="signContract" parameterType="String">
+        update t_contract set  checkStateId=172 where contractId=#{contractId}
+    </update>
 </mapper>
 
 

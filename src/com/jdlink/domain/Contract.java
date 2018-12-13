@@ -247,6 +247,17 @@ public class Contract implements Serializable {
     //审核状态数据字典
     private CheckStateItem checkStateItem;
 
+    //物流合同的运费承担主体
+    private boolean freightBearer;//true 为客户承担 false为经营单位承担
+
+    public boolean isFreightBearer() {
+        return freightBearer;
+    }
+
+    public void setFreightBearer(boolean freightBearer) {
+        this.freightBearer = freightBearer;
+    }
+
     public CheckStateItem getCheckStateItem() {
         return checkStateItem;
     }

@@ -89,4 +89,8 @@ public interface ContractService {
     void updatePictureUrl(String wastesCode,String wastesName,int contractId,String url);
 
     List<QuotationItem> searchContractVolume(QuotationItem quotationItem);
+
+    void approvalModel(String contractId);
+
+    void signContract(String contractId);
 }

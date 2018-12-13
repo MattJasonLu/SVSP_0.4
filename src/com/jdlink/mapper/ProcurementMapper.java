@@ -48,5 +48,6 @@ public interface ProcurementMapper {
     List<ProcurementPlan>searchProcurementPlan(ProcurementPlan procurementPlan);
     int searchProcurementPlanCount(ProcurementPlan procurementPlan);
     void updateMaterialState(int id);
+    void updateMaterialCategoryItemForProcurementPlan(String procurementPlanId,int MaterialCategoryId);
 
 }

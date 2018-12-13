@@ -1,10 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
-import com.jdlink.domain.Dictionary.CheckStateItem;
-import com.jdlink.domain.Dictionary.DataDictionaryItem;
-import com.jdlink.domain.Dictionary.IngredientStateItem;
-import com.jdlink.domain.Dictionary.UnitDataItem;
+import com.jdlink.domain.Dictionary.*;
 import com.jdlink.domain.Inventory.WareHouse;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Unit;
@@ -106,6 +103,17 @@ public class Material {
    //单位数据字典
     private UnitDataItem unitDataItem;
 
+    //物资类别数据字典
+    private MaterialCategoryItem materialCategoryItem;
+
+
+    public MaterialCategoryItem getMaterialCategoryItem() {
+        return materialCategoryItem;
+    }
+
+    public void setMaterialCategoryItem(MaterialCategoryItem materialCategoryItem) {
+        this.materialCategoryItem = materialCategoryItem;
+    }
 
     public IngredientStateItem getIngredientStateItem() {
         return ingredientStateItem;

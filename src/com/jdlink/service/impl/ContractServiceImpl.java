@@ -287,4 +287,14 @@ contractMapper.updateFreight2(id);
         return contractMapper.searchContractVolume(quotationItem);
     }
 
+    @Override
+    public void approvalModel(String contractId) {
+        contractMapper.approvalModel(contractId);
+    }
+
+    @Override
+    public void signContract(String contractId) {
+        contractMapper.signContract(contractId);
+    }
+
 }
