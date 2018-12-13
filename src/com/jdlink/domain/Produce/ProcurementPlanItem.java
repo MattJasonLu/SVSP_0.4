@@ -1,5 +1,6 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.Dictionary.MaterialCategoryItem;
 import com.jdlink.domain.Dictionary.UnitDataItem;
 import com.jdlink.domain.Unit;
 
@@ -47,6 +48,18 @@ public class ProcurementPlanItem {
 
     //单位数据字典
     private UnitDataItem unitDataItem;
+
+    //物资类别数据字典
+    private MaterialCategoryItem materialCategoryItem;
+
+    public MaterialCategoryItem getMaterialCategoryItem() {
+
+        return materialCategoryItem;
+    }
+
+    public void setMaterialCategoryItem(MaterialCategoryItem materialCategoryItem) {
+        this.materialCategoryItem = materialCategoryItem;
+    }
 
     public UnitDataItem getUnitDataItem() {
         return unitDataItem;

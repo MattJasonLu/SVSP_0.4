@@ -3,7 +3,7 @@
 
 var isSearch = false;
 var currentPage = 1;                          //当前页数
-var data;
+var data1;
 
 
 /**
@@ -46,7 +46,28 @@ function totalPage() {
             }
         });
     } else {
-        totalRecord = array1.length;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchDisposalContractCount",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                // console.log(result);
+                if (result > 0) {
+                    totalRecord = result;
+                    console.log("总记录数为:" + result);
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
     }
     var count = countValue();                         // 可选
     return loadPages(totalRecord, count);
@@ -179,15 +200,28 @@ function switchPage(pageNumber) {
         });
     }
     if (isSearch) {//查询用的
-        for (var i = 0; i < array1.length; i++) {
-            $(array1[i]).hide();
-        }
-        var i = parseInt((pageNumber - 1) * countValue());
-        var j = parseInt((pageNumber - 1) * countValue()) + parseInt(countValue() - 1);
-        for (var i = i; i <= j; i++) {
-            $('#tbody1').append(array1[i]);
-            $(array1[i]).show();
-        }
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchDisposalContractCount",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                // console.log(result);
+                if (result > 0) {
+                    totalRecord = result;
+                    console.log("总记录数为:" + result);
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
     }
 }
 
@@ -251,15 +285,28 @@ function inputSwitchPage() {
             });
         }
         if (isSearch) {//查询用的
-            for (var i = 0; i < array1.length; i++) {
-                $(array1[i]).hide();
-            }
-            var i = parseInt((pageNumber - 1) * countValue());
-            var j = parseInt((pageNumber - 1) * countValue()) + parseInt(countValue() - 1);
-            for (var i = i; i <= j; i++) {
-                $('#tbody1').append(array1[i]);
-                $(array1[i]).show();
-            }
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "searchDisposalContractCount",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data1),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    // console.log(result);
+                    if (result > 0) {
+                        totalRecord = result;
+                        console.log("总记录数为:" + result);
+                    } else {
+                        console.log("fail: " + result);
+                        totalRecord = 0;
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                    totalRecord = 0;
+                }
+            });
         }
     }
 }
@@ -323,8 +370,12 @@ function setWastesContractList(result) {
                 case (2):
                     $(this).html(getDateStr(obj.nowTime));
                     break;
-
                 case (3):
+                    if(obj.checkStateItem){
+                        $(this).html((obj.checkStateItem.dictionaryItemName));
+                    }
+                    break;
+                case (4):
                     $(this).html(obj.id);
                     break;
             }
@@ -397,9 +448,15 @@ function receptionId() {
 
 function adjust(item) {
 
-    var id=$(item).parent().prev().html();
-    localStorage.id=id;
-    location.href='adjustWastesContract.html'
+     if($(item).parent().prev().prev().html()=='已签订'){
+          alert('已签订的合同无法修改!')
+     }
+     else {
+         var id=$(item).parent().prev().html();
+         localStorage.id=id;
+         location.href='adjustWastesContract.html'
+     }
+
 
 }
 //修改页面
@@ -523,3 +580,144 @@ function save() {
 
 }
 
+//签订合同
+function signed(item) {
+
+    var id=$(item).parent().prev().html();
+
+    if(confirm('确认签订合同?')){
+        $.ajax({
+            type: "POST",
+            url: "signDisposalContract",
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'id': id},
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    alert(result.message)
+                    window.location.reload()
+                }
+                else {
+
+                    alert(result.message);
+
+                }
+            },
+            error:function (result) {
+                alert("服务器异常!")
+            }
+        })
+    }
+}
+
+//作废合同
+function cancel(item) {
+    var id=$(item).parent().prev().html();
+
+    if(confirm('确认作废合同?')){
+        $.ajax({
+            type: "POST",
+            url: "cancelDisposalContract",
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'id': id},
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    alert(result.message)
+                    window.location.reload()
+                }
+                else {
+
+                    alert(result.message);
+
+                }
+            },
+            error:function (result) {
+                alert("服务器异常!")
+            }
+        })
+    }
+}
+
+
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if (last - event.timeStamp == 0) {
+                searchDisposalContract();
+            } else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchDisposalContract();      //
+            }
+        }, 600);
+    });
+});
+//查询
+function searchDisposalContract() {
+    isSearch = true;
+    var page = {};
+    var pageNumber = 1;                       // 显示首页
+    page.pageNumber = pageNumber;
+    page.count = countValue();
+    page.start = (pageNumber - 1) * page.count;
+    if ($("#senior").is(':visible')) {
+        var checkState = $('#search-checkState').val()
+
+        if (checkState.length <= 0) {
+            checkState = null;
+        }
+        data1 = {
+            beginTime:$('#search-beginTime').val(),
+            endTime:$('#search-endTime').val(),
+            page: page,
+            checkStateItem:{dataDictionaryItemId:checkState}
+
+        };
+    }
+    else {
+        var keywords = $.trim($("#searchContent").val());
+        data1 = {
+            page: page,
+            keywords: keywords
+        }
+    }
+
+
+    if (data1 == null) alert("请点击'查询设置'输入查询内容!");
+    else {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "searchDisposalContract",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result)
+                    setPageClone(result)
+                } else {
+                    alert(result.message);
+
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器错误！");
+            }
+        });
+    }
+    console.log(data1)
+
+
+}
+
+/**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchDisposalContract();      //
+    }
+}

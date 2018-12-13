@@ -115,4 +115,84 @@ public class DisposalContractController {
 
 
     }
+
+    //签订意向书
+    @RequestMapping("signDisposalContract")
+    @ResponseBody
+    public String signDisposalContract(int id){
+        JSONObject res=new JSONObject();
+try {
+    disposalContractSrevice.signDisposalContract(id);
+    res.put("status", "success");
+    res.put("message", "合同签订成功");
+
 }
+catch (Exception e){
+    e.printStackTrace();
+    res.put("status", "fail");
+    res.put("message", "合同签订失败");
+}
+
+        return res.toString();
+    }
+
+    //作废意向书
+    @RequestMapping("cancelDisposalContract")
+    @ResponseBody
+    public String cancelDisposalContract(int id){
+        JSONObject res=new JSONObject();
+
+        try {
+           disposalContractSrevice.cancelDisposalContract(id);
+            res.put("status", "success");
+            res.put("message", "作废成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+
+        }
+
+        return res.toString();
+
+    }
+
+    //危废处置意向书查询
+    @RequestMapping("searchDisposalContract")
+    @ResponseBody
+    public String searchDisposalContract(@RequestBody DisposalContract disposalContract){
+        JSONObject res=new JSONObject();
+
+        try {
+            List<DisposalContract> disposalContractList=disposalContractSrevice.searchDisposalContract(disposalContract);
+            res.put("status", "success");
+            res.put("message", "获取成功");
+            res.put("data", disposalContractList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取失败");
+
+        }
+        return res.toString();
+
+    }
+
+
+    //查询总数==>高级
+    @RequestMapping("searchDisposalContractCount")
+    @ResponseBody
+    public  int searchCompatibilityTotal(@RequestBody DisposalContract disposalContract){
+
+        try {
+            return disposalContractSrevice.searchDisposalContractCount(disposalContract);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+}
+
+

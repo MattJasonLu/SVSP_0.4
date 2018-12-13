@@ -323,13 +323,14 @@ function saveMonth() {
         suppliesCategory:$('#suppliesCategory').val(),
         applyMouth:$('#applyMonth option:selected').text()+"月份",
         demandTime:($('#demandTime').val()).toString(),
-        applyDepartment:$('#applyDepartment :optional').text(),
+        applyDepartment:$('#applyDepartment option:selected').text(),
         proposer:$('#proposer').val(),
         divisionHead:$('#divisionHead').val(),
         purchasingDirector:$('#purchasingDirector').val(),
         purchasingHead:$('#purchasingHead').val(),
         generalManager:$('#generalManager').val(),
-        procurementCategory:1//代表是月季采购
+        procurementCategory:1,//代表是月季采购
+        materialCategoryItem:{dataDictionaryItemId:$('#materialCategoryItem').val()},
     }
     console.log(data)
     //执行添加到后台的ajax
@@ -366,6 +367,7 @@ function saveMonth() {
         inventory:inventory,
         demandQuantity:demandQuantity,
         note:note,
+       materialCategoryItem:{dataDictionaryItemId:$('#materialCategoryItem').val()},
     }
     console.log(materialdata);
         $('.selectpicker').selectpicker('refresh');
@@ -514,6 +516,12 @@ function setMonthProcurementList(result) {
                         case (11):
                             if(obj.createDate!=null){
                                 $(this).html(getDateStr(obj.createDate));
+                            }
+                            break;
+                            //物资类别
+                        case (12):
+                            if(obj.materialCategoryItem!=null){
+                                $(this).html((obj.materialCategoryItem.dictionaryItemName));
                             }
                             break;
                     }
@@ -903,7 +911,8 @@ function searchProcurement() {
             purchasingDirector: $.trim($("#search-purchasingDirector").val()),
             purchasingHead:$.trim($("#search-purchasingHead").val()),
             generalManager:$.trim($("#search-generalManager").val()),
-            checkState:$("#search-checkState option:selected").text()
+            checkState:$("#search-checkState option:selected").text(),
+            materialCategoryItemName:$.trim($("#search-materialCategoryItemName").val()),
         };
 
 
@@ -918,7 +927,7 @@ function searchProcurement() {
             if(!($(this).children('td').eq(2).text().indexOf(data.applyMouth)!=-1&&$(this).children('td').eq(4).text().indexOf(data.applyDepartment)!=-1
                 &&$(this).children('td').eq(5).text().indexOf(data.proposer)!=-1&&$(this).children('td').eq(6).text().indexOf(data.divisionHead)!=-1&&$(this).children('td').text().indexOf(text)!=-1
                 &&$(this).children('td').eq(7).text().indexOf(data.purchasingDirector)!=-1 &&$(this).children('td').eq(8).text().indexOf(data.purchasingHead)!=-1
-                &&$(this).children('td').eq(9).text().indexOf(data.generalManager)!=-1&&$(this).children('td').eq(10).text().indexOf(data.checkState)!=-1
+                &&$(this).children('td').eq(9).text().indexOf(data.generalManager)!=-1&&$(this).children('td').eq(10).text().indexOf(data.checkState)!=-1&&$(this).children('td').eq(12).text().indexOf(data.materialCategoryItemName)!=-1
                 &&(getDateByStr($(this).children('td').eq(11).text())<=endDate&&getDateByStr($(this).children('td').eq(11).text())>=startDate)
 
             )){
@@ -927,7 +936,7 @@ function searchProcurement() {
             if(($(this).children('td').eq(2).text().indexOf(data.applyMouth)!=-1&&$(this).children('td').eq(4).text().indexOf(data.applyDepartment)!=-1
                 &&$(this).children('td').eq(5).text().indexOf(data.proposer)!=-1&&$(this).children('td').eq(6).text().indexOf(data.divisionHead)!=-1&&$(this).children('td').text().indexOf(text)!=-1
                 &&$(this).children('td').eq(7).text().indexOf(data.purchasingDirector)!=-1 &&$(this).children('td').eq(8).text().indexOf(data.purchasingHead)!=-1
-                &&$(this).children('td').eq(9).text().indexOf(data.generalManager)!=-1&&$(this).children('td').eq(10).text().indexOf(data.checkState)!=-1
+                &&$(this).children('td').eq(9).text().indexOf(data.generalManager)!=-1&&$(this).children('td').eq(10).text().indexOf(data.checkState)!=-1&&$(this).children('td').eq(12).text().indexOf(data.materialCategoryItemName)!=-1
                 &&(getDateByStr($(this).children('td').eq(11).text())<=endDate&&getDateByStr($(this).children('td').eq(11).text())>=startDate)
             )){
                 array1.push($(this));
@@ -1038,6 +1047,7 @@ function getIngredientsList() {
         url:"getUnitByDataDictionary",
         //data:JSON.stringify(data),
         dataType: "json",
+        async: false,
         contentType: "application/json;charset=utf-8",
         success: function (result){
             if (result != undefined){
@@ -1064,25 +1074,57 @@ function getIngredientsList() {
     $('#applyDate').val(dateToString(new Date()));
 
 
-    //单位
+    // //单位
+    // $.ajax({
+    //     type:'POST',
+    //     url:"getUnitList",
+    //     async: false,
+    //     dataType: "json",
+    //     contentType: "application/json;charset=utf-8",
+    //     success: function (result){
+    //         if (result != undefined){
+    //             // console.log(result);
+    //             var unit=$('#unit');
+    //             unit.children().remove();
+    //             $.each(result.unitList,function (index,item) {
+    //                 var option=$('<option/>');
+    //                 option.val(index+1);
+    //                 option.text(item.name);
+    //                 unit.append(option);
+    //             });
+    //             unit.get(0).selectedIndex=0;
+    //         }
+    //         else {
+    //             alert(result.message);
+    //         }
+    //     },
+    //     error:function (result) {
+    //         console.log(result);
+    //     }
+    //
+    // });
+    var data=getCurrentUserData();
+
+    //物资类别
     $.ajax({
         type:'POST',
-        url:"getUnitList",
+        url:"getMaterialCategoryByDataDictionary",
         //data:JSON.stringify(data),
         dataType: "json",
+        async: false,
         contentType: "application/json;charset=utf-8",
         success: function (result){
             if (result != undefined){
-                // console.log(result);
-                var unit=$('#unit');
-                unit.children().remove();
-                $.each(result.unitList,function (index,item) {
+                console.log(result);
+                var materialCategoryItem=$('#materialCategoryItem');
+                materialCategoryItem.children().remove();
+                $.each(result.data,function (index,item) {
                     var option=$('<option/>');
-                    option.val(index+1);
-                    option.text(item.name);
-                    unit.append(option);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    materialCategoryItem.append(option);
                 });
-                unit.get(0).selectedIndex=0;
+                materialCategoryItem.get(0).selectedIndex=0;
             }
             else {
                 alert(result.message);
@@ -1093,7 +1135,6 @@ function getIngredientsList() {
         }
 
     });
-    var data=getCurrentUserData();
 }
 
 

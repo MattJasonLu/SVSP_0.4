@@ -815,12 +815,39 @@ public class DictionaryController {
      }
 
 
+    /**
+     * 获取物资类别
+     *
+     */
+    @RequestMapping("getMaterialCategoryByDataDictionary")
+    @ResponseBody
+    public String getMaterialCategoryByDataDictionary() {
+        JSONObject res = new JSONObject();
+        try {
+            List<DataDictionaryItem> formTypeList = dictionaryService.getSelectListByDataDictionary(28);
+            JSONArray data = JSONArray.fromArray(formTypeList.toArray());
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "获取物资类别成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取物资类别失败");
+
+        }
+        return res.toString();
+    }
+
+
         /**
           * 根据明细名称获取编号
           */
         public int getdatadictionaryitemIdByName(String name,int id){
             return dictionaryService.getdatadictionaryitemIdByName(name,id);
         }
+
+
+
 
 
 }

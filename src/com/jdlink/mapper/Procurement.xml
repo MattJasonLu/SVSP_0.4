@@ -5,8 +5,8 @@
 <mapper namespace="com.jdlink.mapper.ProcurementMapper" >
    <!--添加采购-->
     <insert id="add" parameterType="Procurement">
-        insert into t_pl_procurement(receiptNumber, applyMouth, demandTime, applyDepartment, proposer, divisionHead, purchasingDirector, generalManager, id1, procurementCategory,nowTIme,purchasingHead,applyDate,suppliesCategory,state,createDate,checkStateId)
-      values (#{receiptNumber},#{applyMouth},#{demandTime},#{applyDepartment},#{proposer},#{divisionHead},#{purchasingDirector},#{generalManager},#{id1},#{procurementCategory},NOW(),#{purchasingHead},#{applyDate},#{suppliesCategory},'ToSubmit',NOW(),64);
+        insert into t_pl_procurement(receiptNumber, applyMouth, demandTime, applyDepartment, proposer, divisionHead, purchasingDirector, generalManager, id1, procurementCategory,nowTIme,purchasingHead,applyDate,suppliesCategory,state,createDate,checkStateId,MaterialCategoryId)
+      values (#{receiptNumber},#{applyMouth},#{demandTime},#{applyDepartment},#{proposer},#{divisionHead},#{purchasingDirector},#{generalManager},#{id1},#{procurementCategory},NOW(),#{purchasingHead},#{applyDate},#{suppliesCategory},'ToSubmit',NOW(),64,#{materialCategoryItem.dataDictionaryItemId});
     </insert>
     <!--寻找最新的采购主键-->
     <select id="getNewestId" resultType="String">
@@ -14,8 +14,8 @@
     </select>
     <!--添加物料表-->
     <insert id="addMaterial" parameterType="Material">
-        insert into t_pl_material (suppliesName, specifications, inventory, note, purchaseQuantity, demandQuantity, receiptNumber,unit,state,createDate,checkState,unitId,checkStateId,stateId)
-        values (#{suppliesName},#{specifications},#{inventory},#{note},#{purchaseQuantity},#{demandQuantity},#{receiptNumber},#{unit},'ToInbound',NOW(),'Enabled',#{unitDataItem.dataDictionaryItemId},70,77);
+        insert into t_pl_material (suppliesName, specifications, inventory, note, purchaseQuantity, demandQuantity, receiptNumber,unit,state,createDate,checkState,unitId,checkStateId,stateId,MaterialCategoryId)
+        values (#{suppliesName},#{specifications},#{inventory},#{note},#{purchaseQuantity},#{demandQuantity},#{receiptNumber},#{unit},'ToInbound',NOW(),'Enabled',#{unitDataItem.dataDictionaryItemId},70,77,#{materialCategoryItem.dataDictionaryItemId});
     </insert>
     <!--加载采购列表-->
     <resultMap id="ProcurementRM" type="Procurement" autoMapping="true">
@@ -23,8 +23,13 @@
         <result property="unit" column="unit" javaType="Unit"></result>
         <collection property="materialList" column="receiptNumber" select="getMaterial" ofType="Material"></collection>
           <collection property="checkStateItem" column="checkStateId" select="getCheckState"></collection>
+        <collection property="materialCategoryItem" column="MaterialCategoryId" select="getMaterialCategoryItem"></collection>
     </resultMap>
 
+    <!--获取物资类别数据字典-->
+    <select id="getMaterialCategoryItem" resultType="MaterialCategoryItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{MaterialCategoryId}
+    </select>
     <!--获取状态数据字典-->
     <select id="getCheckState" resultType="CheckStateItem">
         select * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
@@ -32,7 +37,8 @@
 
     
     <resultMap id="MaterialRM" type="Material">
-        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"></association>
+        <association property="materialCategoryItem" column="MaterialCategoryId" select="getMaterialCategoryItem"></association>
+        <association property="ingredientStateItem" column="stateId" select="getIngredientStateItem"></association>
         <association property="ingredientStateItem" column="stateId" select="getIngredientStateItem"></association>
         <collection property="unitDataItem" column="unitId" select="getUnitDataItem"></collection>
     </resultMap>
@@ -309,16 +315,16 @@
 
     <!--添加采购单明细-->
     <insert id="addProcurementPlanItem" parameterType="procurementPlanItem">
-        insert into t_pr_procumentplanitem(procurementPlanId, category, suppliesName, specifications, proposer, demandQuantity, unit, price, priceTotal, remarks,unitId) values
-     (#{procurementPlanId},#{category},#{suppliesName},#{specifications},#{proposer},#{demandQuantity},#{unit},#{price},#{priceTotal},#{remarks},#{unitDataItem.dataDictionaryItemId});
+        insert into t_pr_procumentplanitem(procurementPlanId, category, suppliesName, specifications, proposer, demandQuantity, unit, price, priceTotal, remarks,unitId,MaterialCategoryId) values
+     (#{procurementPlanId},#{category},#{suppliesName},#{specifications},#{proposer},#{demandQuantity},#{unit},#{price},#{priceTotal},#{remarks},#{unitDataItem.dataDictionaryItemId},#{materialCategoryItem.dataDictionaryItemId});
 
 </insert>
 
     <resultMap id="ProcurementPlanRM" type="ProcurementPlan">
         <result  property="procurementPlanId" column="procurementPlanId"></result>
+        <association property="materialCategoryItem" column="materialCategoryId" select="getMaterialCategoryItem"></association>
         <collection property="procurementPlanItemList" column="procurementPlanId" select="getProcurementPlanItemList"></collection>
     <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
-
     </resultMap>
     <!--状态数据字典-->
     <select id="getCheckStateItem" resultType="CheckStateItem">
@@ -500,4 +506,10 @@
        </where>
 
     </select>
+
+<!--将物资类别更新到采购主表中去-->
+    <update id="updateMaterialCategoryItemForProcurementPlan">
+        update t_pr_procumentplan set MaterialCategoryId=#{1} where procurementPlanId=#{0}
+    </update>
+
 </mapper>

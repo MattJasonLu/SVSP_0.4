@@ -16,6 +16,7 @@ import java.util.List;
 @Service
 public class ProcurementServiceImpl implements ProcurementService
 
+
 {
     @Autowired
     ProcurementMapper procurementMapper;
@@ -204,6 +205,11 @@ public class ProcurementServiceImpl implements ProcurementService
     @Override
     public List<ProcurementPlanItem> searchAdjust(ProcurementPlanItem procurementPlanItem) {
         return procurementMapper.searchAdjust(procurementPlanItem);
+    }
+
+    @Override
+    public void updateMaterialCategoryItemForProcurementPlan(String procurementPlanId, int MaterialCategoryId) {
+        procurementMapper.updateMaterialCategoryItemForProcurementPlan(procurementPlanId, MaterialCategoryId);
     }
 
     @Override

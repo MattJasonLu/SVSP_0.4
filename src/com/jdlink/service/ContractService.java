@@ -91,4 +91,6 @@ public interface ContractService {
     List<QuotationItem> searchContractVolume(QuotationItem quotationItem);
 
     void approvalModel(String contractId);
+
+    void signContract(String contractId);
 }

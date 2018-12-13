@@ -1,5 +1,6 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.Dictionary.MaterialCategoryItem;
 import com.jdlink.domain.Dictionary.UnitDataItem;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Material;
@@ -392,7 +393,9 @@ public class ProcurementController {
             for (int i = 0; i < data.size(); i++) {//一页的遍历
                 //创建采购对象
                 Procurement procurement = new Procurement();
-
+                MaterialCategoryItem materialCategoryItem=new MaterialCategoryItem();
+                materialCategoryItem.setDataDictionaryItemId(174);
+                procurement.setMaterialCategoryItem(materialCategoryItem);
                 //找出最新的编号
                 //1首先寻找最新的采购编号
                 List<String> receiptNumberList = procurementService.getNewestId();
@@ -473,6 +476,10 @@ public class ProcurementController {
                         System.out.println(data.get(i)[j][1] + "第二列");
                         //创建物资对象
                         Material material = new Material();
+
+                        MaterialCategoryItem materialCategoryItem1=new MaterialCategoryItem();
+                        materialCategoryItem.setDataDictionaryItemId(174);
+                        material.setMaterialCategoryItem(materialCategoryItem);
                         material.setReceiptNumber(receiptNumber);//设置申请单编号
                         if (String.valueOf(data.get(i)[j][1]) != "null") {
                             material.setSuppliesName(String.valueOf(data.get(i)[j][1]));
@@ -577,10 +584,14 @@ public class ProcurementController {
                     procurement.setApplyDate(null);
                 }
                 if (String.valueOf(data.get(i)[3][2]) != "null") {
-                    procurement.setSuppliesCategory(String.valueOf(data.get(i)[3][2]));
+                  int dataDictionaryItemId=dictionaryService.getdatadictionaryitemIdByName(String.valueOf(data.get(i)[3][2]),28);
+                    MaterialCategoryItem materialCategoryItem=new MaterialCategoryItem();
+                    materialCategoryItem.setDataDictionaryItemId(dataDictionaryItemId);
+                    procurement.setMaterialCategoryItem(materialCategoryItem);
+//                    procurement.setSuppliesCategory(String.valueOf(data.get(i)[3][2]));
                 }
                 if (String.valueOf(data.get(i)[3][2]) == "null") {
-                    procurement.setSuppliesCategory("");//物资类别
+                    procurement.setMaterialCategoryItem(null);
                 }
                 if (String.valueOf(data.get(i)[3][10]) != "null") {
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -628,6 +639,18 @@ public class ProcurementController {
                     if (String.valueOf(data.get(i)[j][1]) != "null") { //当物品名称不为空
                         //创建物资对象
                         Material material = new Material();
+
+                        if (String.valueOf(data.get(i)[3][2]) != "null") {
+                            int dataDictionaryItemId=dictionaryService.getdatadictionaryitemIdByName(String.valueOf(data.get(i)[3][2]),28);
+                            MaterialCategoryItem materialCategoryItem1=new MaterialCategoryItem();
+                            materialCategoryItem1.setDataDictionaryItemId(dataDictionaryItemId);
+                            material.setMaterialCategoryItem(materialCategoryItem1);
+//                    procurement.setSuppliesCategory(String.valueOf(data.get(i)[3][2]));
+                        }
+                        if (String.valueOf(data.get(i)[3][2]) == "null") {
+                            material.setMaterialCategoryItem(null);
+                        }
+
                         material.setReceiptNumber(receiptNumber);//设置申请单编号
                         if (String.valueOf(data.get(i)[j][1]) != "null") {
                             material.setSuppliesName(String.valueOf(data.get(i)[j][1]));
@@ -890,7 +913,16 @@ public class ProcurementController {
             int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(material.getUnitDataItem().getDictionaryItemName(),25);
             unitDataItem.setDataDictionaryItemId(dataDictionaryItemId);
             procurementPlanItem.setUnitDataItem(unitDataItem);
-//            procurementPlanItem.setUnit(material.getUnit());//单位
+            //物资类别适配
+            MaterialCategoryItem materialCategoryItem=new MaterialCategoryItem();
+            int dataDictionaryItemId1=dictionaryService.getdatadictionaryitemIdByName(material.getMaterialCategoryItem().getDictionaryItemName(),28);
+            materialCategoryItem.setDataDictionaryItemId(dataDictionaryItemId1);
+            procurementPlanItem.setMaterialCategoryItem(materialCategoryItem);
+
+            //将物资类别更新到采购主表中去
+            procurementService.updateMaterialCategoryItemForProcurementPlan(material.getWareHouseName(),dataDictionaryItemId1);
+
+            //            procurementPlanItem.setUnit(material.getUnit());//单位
             procurementPlanItem.setDemandQuantity((int)material.getDemandQuantity());//需求数量
             procurementPlanItem.setRemarks(material.getNote());//备注
             procurementService.addProcurementPlanItem(procurementPlanItem);
