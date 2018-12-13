@@ -74,4 +74,14 @@ public class DictionaryServiceImpl implements DictionaryService
     public int getdatadictionaryitemIdByName(String name,int id) {
         return dictionaryMapper.getdatadictionaryitemIdByName(name,id);
     }
+
+    @Override
+    public void importDictionaryExcel(DataDictionary dataDictionary) {
+        dictionaryMapper.importDictionaryExcel(dataDictionary);
+    }
+
+    @Override
+    public List<String> getDictionaryTypeListFromDataDictionary() {
+        return dictionaryMapper.getDictionaryTypeListFromDataDictionary();
+    }
 }
