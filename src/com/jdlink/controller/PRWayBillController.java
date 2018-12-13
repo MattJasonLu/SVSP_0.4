@@ -389,6 +389,28 @@ public class PRWayBillController {
         }
         return res.toString();
     }
+
+
+    @RequestMapping("getContractByWayBillId")
+    @ResponseBody
+    public String getContractByWayBillId(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            //根据id查询出相应的对象信息
+            WayBill wayBill = wayBillService.getById(id);
+            Contract contract = contractService.getByContractId(wayBill.getContractId());
+            //新建一个对象并给它赋值为contract
+            JSONObject data = JSONObject.fromBean(contract);
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "获取数据成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取数据失败");
+        }
+        return res.toString();
+    }
 /////////////////////////////////////////////////////////////////////////
     //WayBill.html
 

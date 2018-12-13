@@ -1386,7 +1386,6 @@ function viewContract(item) {
                     $('#modal3_freight').removeAttr("checked");
                 }
                 $('#modal3_contractAppendices').click(function () {
-
                     if (data.contractAppendicesUrl != null && data.contractAppendicesUrl != "") {
                         window.open('downloadFile?filePath=' + data.contractAppendicesUrl);
                     } else {
