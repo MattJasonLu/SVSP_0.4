@@ -476,21 +476,20 @@ function importExcelChoose() {
  * 下载模板
  * */
 function downloadModal() {
-    // var filePath = 'Files/Templates/接运单模板.xlsx';
-    // window.open('downloadFile?filePath=' + filePath);
-
-}
-
-$("#downloadModal").click(function () {
-    // 打开页面，此处最好使用提示页面
-    console.log("click");
-    var newWin = window.open('loadingPage.html');
     var filePath = 'Files/Templates/接运单模板.xlsx';
-    ajax().done(function () {
-        // 重定向到目标页面
-        newWin.location.href = 'downloadFile?filePath=' + filePath;
-    });
-});
+    window.open('downloadFile?filePath=' + filePath);
+}
+//
+// $("#downloadModal").click(function () {
+//     // 打开页面，此处最好使用提示页面
+//     console.log("click");
+//     var newWin = window.open('loadingPage.html');
+//     var filePath = 'Files/Templates/接运单模板.xlsx';
+//     ajax().done(function () {
+//         // 重定向到目标页面
+//         newWin.location.href = 'downloadFile?filePath=' + filePath;
+//     });
+// });
 
 
 /**
@@ -568,13 +567,25 @@ function searchWayBill() {
     page.start = (pageNumber - 1) * page.count;
     var state = null;
     if ($("#senior").is(':visible')) {
-        switch($("#search-wayBillState").val()){
-            case "0":state = "NewBuild"; break;//新建
-            case "1":state = "ToExamine"; break;//待审批
-            case "2":state = "Examining"; break;//审批中
-            case "3":state = "Approval"; break;//审批通过
-            case "4":state = "Backed"; break;//驳回
-            case "5":state = "Invalid"; break; // 作废
+        switch ($("#search-wayBillState").val()) {
+            case "0":
+                state = "NewBuild";
+                break;//新建
+            case "1":
+                state = "ToExamine";
+                break;//待审批
+            case "2":
+                state = "Examining";
+                break;//审批中
+            case "3":
+                state = "Approval";
+                break;//审批通过
+            case "4":
+                state = "Backed";
+                break;//驳回
+            case "5":
+                state = "Invalid";
+                break; // 作废
         }
         data = {
             id: $.trim($("#search-id").val()),
@@ -1520,7 +1531,7 @@ function autoSetSalesman() {
                     $("input[id='modal" + $i + "-wastesPrice']").val(wastesList[i].unitPriceTax.toFixed(2));
                     $("input[id='modal" + $i + "-receiveDate']").get(0).value = getCurrentDate();
                 }
-            }else{
+            } else {
                 alert("未检测到合同数据，请检查该公司合同是否存在、审核或过期！");
             }
         },
@@ -1541,4 +1552,40 @@ function setColor(item) {
     // $(item).css("background-color","#ff6d5e");
     $(item).addClass("active");
 
+}
+
+/**
+ * 下载接运单合同附件
+ * @param item
+ */
+function downLoadContract(item) {
+    var id = getWayBillId(item);
+    $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getContractByWayBillId",             // url
+            data: {
+                id: id
+            },
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                //alert("数据获取成功！");
+                if (result != null && result.status == "success" && result.data != null) {
+                    var data = result.data;
+                    console.log("合同数据");
+                    console.log(data);
+                    if (data.contractAppendicesUrl != null && data.contractAppendicesUrl != "") {
+                        window.open('downloadFile?filePath=' + data.contractAppendicesUrl);
+                    } else {
+                        alert("未上传文件！");
+                    }
+                }else{
+                    alert("未检测到合同数据！");
+                }
+            },
+            error:function (result) {
+                    alert("下载失败!");
+                    console.log(result);
+                }
+        });
 }
