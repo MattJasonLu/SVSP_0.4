@@ -788,3 +788,66 @@ function enterSearch() {
         searchData();      //
     }
 }
+
+
+//导入数据
+function importExcelChoose() {
+    $("#importExcelModal").modal('show');
+}
+
+//导入数据
+function importExcel() {
+    document.getElementById("idExcel").click();
+    document.getElementById("idExcel").addEventListener("change", function () {
+        var eFile = document.getElementById("idExcel").files[0];
+        var formFile = new FormData();
+        formFile.append("excelFile", eFile);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "importDictionaryExcel",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: formFile,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                if (result != undefined) {
+                    console.log(result);
+                    if (result.status == "success") {
+                        alert(result.message);
+                        window.location.reload();         //刷新
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    });
+}
+
+//下载模板
+$(function () {
+    $('#download').click(function () {
+        console.log("form提交")
+        var filePath = 'Files/Templates/数据字典模板.xlsx';
+        var r = confirm("是否下载模板?");
+
+        if (r == true) {
+            $('#vform').submit();
+
+
+            //e.preventDefault();
+            // var newTab = window.open('about:blank')
+            // console.log("打开了空白页面")
+            // newTab.location.href='downloadFile?filePath='+filePath;
+            // console.log("打开了下载页面")
+            //window.open('downloadFile?filePath=' + newTab);
+
+        }
+
+
+    })
+})

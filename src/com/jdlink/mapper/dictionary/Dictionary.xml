@@ -27,6 +27,14 @@
         select dataDictionaryId from datadictionary order by  dateTime  desc  limit 0,1;
     </select>
 
+    <!--字典数据导入-->
+    <insert id="importDictionaryExcel" parameterType="DataDictionary">
+        insert into datadictionary (dictionaryType, dictionaryName, dateTime) values (#{dictionaryType},#{dictionaryName},NOW())
+        <foreach collection="dataDictionaryItemList" item="dataDictionaryItem" index="index" >
+            insert into datadictionaryitem(dataDictionaryId,dictionaryItemType,dictionaryItemName) values
+            (#{dataDictionaryItem.dataDictionaryId},#{dataDictionaryItem.dictionaryItemType},#{dataDictionaryItem.dictionaryItemName})
+        </foreach>
+    </insert>
 
     <resultMap id="DataDictionaryRM" type="DataDictionary" autoMapping="true">
         <result property="dataDictionaryId" column="dataDictionaryId"></result>
@@ -112,5 +120,10 @@
         select dataDictionaryItemId from  datadictionaryitem where dictionaryItemName=#{0} and dataDictionaryId=#{1}
     </select>
 
+
+    <!--查询主表的dictionaryType-->
+    <select id="getDictionaryTypeListFromDataDictionary" resultType="String">
+        select dictionaryType  from  datadictionary;
+    </select>
 
 </mapper>

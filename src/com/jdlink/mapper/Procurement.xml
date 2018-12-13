@@ -279,7 +279,7 @@
     </select>
 
     <!--采购计划单新增页面高级查询-->
-    <select id="searchNewProcurementPlan" parameterType="Material" resultType="Material">
+    <select id="searchNewProcurementPlan" parameterType="Material" resultMap="MaterialRM">
         select * from t_pl_material
         <where>
             <if test="createDateStart!=null and createDateStart!=''">
@@ -287,6 +287,11 @@
             </if>
             <if test="createDateEnd!=null and createDateEnd!=''">
                 and createDate &lt;= DATE_FORMAT(#{createDateEnd}, '%Y-%m-%d')
+            </if>
+            <if test="materialCategoryItem!=null">
+              <if test="materialCategoryItem.dataDictionaryItemId!=0">
+                  and materialCategoryId =#{materialCategoryItem.dataDictionaryItemId}
+              </if>
             </if>
             and t_pl_material.receiptNumber in(select t_pl_procurement.receiptNumber from t_pl_procurement where t_pl_procurement.checkStateId=73 and t_pl_procurement.procurementCategory=1) and (t_pl_material.checkStateId=70);
         </where>
@@ -399,6 +404,7 @@
                 or adjustDate like binary"%"#{keywords}"%"
                 or approvalName like "%"#{keywords}"%"
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
+                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
             </if>
             <if test="procurementPlanId!=null and procurementPlanId!=''">
                 and procurementPlanId like "%"#{procurementPlanId}"%"
@@ -416,7 +422,11 @@
                 <if test="checkStateItem.dataDictionaryItemId!=0">
                     and checkStateId = #{checkStateItem.dataDictionaryItemId}
                 </if>
-
+            </if>
+            <if test="materialCategoryItem!=null">
+                <if test="materialCategoryItem.dataDictionaryItemId!=0">
+                    and materialCategoryId = #{materialCategoryItem.dataDictionaryItemId}
+                </if>
             </if>
             <if test="createDateStart!=null and createDateStart!=''">
                 and createDate <![CDATA[ >= ]]> DATE_FORMAT(#{createDateStart}, '%Y-%m-%d %H:%i:%S')
@@ -449,6 +459,7 @@
                 or adjustDate like binary"%"#{keywords}"%"
                 or approvalName like "%"#{keywords}"%"
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
+                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
             </if>
             <if test="procurementPlanId!=null and procurementPlanId!=''">
                 and procurementPlanId like "%"#{procurementPlanId}"%"
@@ -466,7 +477,11 @@
                 <if test="checkStateItem.dataDictionaryItemId!=0">
                     and checkStateId = #{checkStateItem.dataDictionaryItemId}
                 </if>
-
+            </if>
+            <if test="materialCategoryItem!=null">
+                <if test="materialCategoryItem.dataDictionaryItemId!=0">
+                    and materialCategoryId = #{materialCategoryItem.dataDictionaryItemId}
+                </if>
             </if>
             <if test="createDateStart!=null and createDateStart!=''">
                 and createDate <![CDATA[ >= ]]> DATE_FORMAT(#{createDateStart}, '%Y-%m-%d %H:%i:%S')

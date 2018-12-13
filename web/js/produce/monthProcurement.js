@@ -445,6 +445,34 @@ function getMontnProcurement() {
 
         }
     });
+    //设置物资类别下拉框
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getMaterialCategoryByDataDictionary",        // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                console.log(result);
+                // 高级检索下拉框数据填充
+                var materialCategoryItem = $("#search-materialCategoryItemName");
+                materialCategoryItem.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    materialCategoryItem.append(option);
+                });
+                materialCategoryItem.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
     isSearch = false;
 }
 //设置月度采购申请表数据
@@ -912,7 +940,7 @@ function searchProcurement() {
             purchasingHead:$.trim($("#search-purchasingHead").val()),
             generalManager:$.trim($("#search-generalManager").val()),
             checkState:$("#search-checkState option:selected").text(),
-            materialCategoryItemName:$.trim($("#search-materialCategoryItemName").val()),
+            materialCategoryItemName:$.trim($("#search-materialCategoryItemName option:selected").text()),
         };
 
 
