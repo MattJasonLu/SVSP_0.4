@@ -53,8 +53,11 @@
     <select id="getClient" resultMap="ClientRM">
         select * from  client where clientId=#{clientId};
     </select>
+    <resultMap id="SupplierRM" type="Supplier">
+        <association property="ticketRateItem" column="ticketRateId" select="getTicketRateItem"></association>
+    </resultMap>
     <!--查询供应商-->
-    <select id="getSupplier" resultType="Supplier">
+    <select id="getSupplier" resultMap="SupplierRM">
       select * from  t_supplier where supplierId=#{suppierId};
     </select>
     <select id="getPackageTypeItem" resultType="PackageTypeItem">
