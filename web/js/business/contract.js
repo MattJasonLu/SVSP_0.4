@@ -6352,14 +6352,14 @@ function adjustNewContract() {
                     $('#freightCheckbox').show();
 
                     //赋值radio
-                    if(contract.freightBearer==true){
-                        $('#freightCheckbox').children('label').eq(0).find('input').attr("checked","checked");
-                        $('#freightCheckbox').children('label').eq(1).find('input').removeAttr("checked");
-                    }
-
-                    if(contract.freightBearer==false){
+                    if(contract.freightBearer==true){ //客户选中
                         $('#freightCheckbox').children('label').eq(1).find('input').attr("checked","checked");
                         $('#freightCheckbox').children('label').eq(0).find('input').removeAttr("checked");
+                    }
+
+                    if(contract.freightBearer==false){//经营单位承担选中
+                        $('#freightCheckbox').children('label').eq(0).find('input').attr("checked","checked");
+                        $('#freightCheckbox').children('label').eq(1).find('input').removeAttr("checked");
                     }
                     if (result != undefined) {
 
