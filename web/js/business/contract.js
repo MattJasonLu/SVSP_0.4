@@ -1351,11 +1351,15 @@ function viewContract(item) {
                 }
 
                 //开票税率1
-                if (data.ticketRate1 == null) {
-                    $('#modal3_ticketRate1').text(" ");
+                if (data.client!= null) {
+                    if (data.client.ticketRateItem!= null)   {
+                        $('#modal3_ticketRate1').text(data.client.ticketRateItem.dictionaryItemName);
+                    }
+
                 }
                 else {
-                    $('#modal3_ticketRate1').text(data.ticketRate1.name);
+
+                    $('#modal3_ticketRate1').text(" ");
                 }
                 //开票税率2
                 // if(data.ticketRate2==null){
@@ -2524,7 +2528,7 @@ function contractWastesSave() {
                 freight: $('#isFreight').prop('checked'),
                 telephone: $('#telephone').val(),
                 contactName: $('#contactName').val(),
-                ticketRate1: $('#taxRate1').val(),
+                // ticketRate1: $('#taxRate1').val(),
                 contractType: $('#contractType').val(),
                 totalPrice: parseFloat(totalPrice).toFixed(2),
                 freightBearer: $("input[name='freightBearer']:checked").val(),
@@ -2719,7 +2723,7 @@ function contractWastesSave() {
                 freight: $('#isFreight').prop('checked'),
                 telephone: $('#telephone').val(),
                 contactName: $('#contactName').val(),
-                ticketRate1: $('#taxRate1').val(),
+                // ticketRate1: $('#taxRate1').val(),
                 contractType: $('#contractType').val(),
                 totalPrice:parseFloat(totalPrice).toFixed(2),
                freightBearer: $("input[name='freightBearer']:checked").val(),
@@ -3875,7 +3879,6 @@ function findSuppier() {
                                 $('#taxRate1').get(0).selectedIndex = -1;
                             }
 
-                            taxRate1.get(0).selectedIndex = i;
                             $('#contactName').prop("value", suppier.contactName);
                             //赋值联系方式
                             $("#telephone").prop("value", suppier.phone);//赋值联系电话
@@ -4762,7 +4765,7 @@ function contractAdjustSave() {
             freight: $('#isFreight').prop('checked'),
             telephone: $('#telephone').val(),
             contactName: $('#contactName').val(),
-            ticketRate1: $('#taxRate1').val(),
+            // ticketRate1: $('#taxRate1').val(),
             contractType: contractType1,
             totalPrice:parseFloat(totalPrice).toFixed(2),
             freightBearer: $("input[name='freightBearer']:checked").val(),
@@ -5005,7 +5008,7 @@ function contractAdjustSave() {
             freight: $('#isFreight').prop('checked'),
             telephone: $('#telephone').val(),
             contactName: $('#contactName').val(),
-            ticketRate1: $('#taxRate1').val(),
+            // ticketRate1: $('#taxRate1').val(),
             contractType: contractType1,
             totalPrice:parseFloat(totalPrice),
             freightBearer: $("input[name='freightBearer']:checked").val(),
@@ -6220,7 +6223,7 @@ function adjustNewContract() {
         type: "POST",                            // 方法类型
         url: "getByContractId",                  // url
         dataType: "json",
-        data: {'contractId': contractId},//key是查询危废类别的模板
+        data: {'contractId': contractId},
         async: false,
         success: function (result) {
             if (result != undefined && result.status == "success") {
@@ -6410,7 +6413,7 @@ function adjustNewContract() {
 
                 }
 
-
+                    //非物流合同
                 else {
                     $('#client').show();
                     $('#supplier').hide();
@@ -6436,35 +6439,7 @@ function adjustNewContract() {
                         });
                         clientName.get(0).selectedIndex = index2;
                         $('.selectpicker').selectpicker('refresh');
-                        // //赋值模板列表
-                        // $.ajax({
-                        //     type: "POST",                            // 方法类型
-                        //     url: "getModelByContractId",                  // url
-                        //     dataType: "json",
-                        //     data: {'key': (contract.contractType.name).substring(0, 2)},//如果是公司合同就会有合同模板名称作为合同名称
-                        //     success: function (result) {
-                        //         if (result != undefined && result.status == "success") {
-                        //             console.log(result)
-                        //             var contractType1 = $('#contractType1');
-                        //             contractType1.children().remove();
-                        //             index3 = "";
-                        //             $.each(result.modelNameList, function (index, item) {
-                        //                 var option = $('<option />');
-                        //                 option.val(item.modelName);
-                        //                 option.text(item.modelName);
-                        //                 if (item.modelName == contract.contractName) {
-                        //                     index3 = index;
-                        //                 }
-                        //                 contractType1.append(option);
-                        //             });
-                        //             contractType1.get(0).selectedIndex = index3;
-                        //         }
-                        //
-                        //     },
-                        //     error: function (result) {
-                        //
-                        //     }
-                        // })
+
 
 
 
