@@ -43,7 +43,14 @@
         select * from datadictionaryitem where dataDictionaryItemId=#{dataDictionaryItemId}
     </select>
     <!--查询客户-->
-    <select id="getClient" resultType="Client">
+    <resultMap id="ClientRM" type="Client">
+        <association property="ticketRateItem" column="ticketRateId" select="getTicketRateItem"/>
+    </resultMap>
+    <!--开票类型数据字典-->
+    <select id="getTicketRateItem" resultType="TicketRateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{ticketRateId}
+    </select>
+    <select id="getClient" resultMap="ClientRM">
         select * from  client where clientId=#{clientId};
     </select>
     <!--查询供应商-->

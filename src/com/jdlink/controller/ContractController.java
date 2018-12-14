@@ -939,7 +939,7 @@ public class ContractController {
     public String getClientListById(String clientId) {
         JSONObject res = new JSONObject();
         try {
-            Client client = contractService.getByClientId(clientId);//获得用户
+            Client client = clientService.getByClientId(clientId);//获得用户
             res.put("client", client);
             res.put("status", "success");
             res.put("message", "查询客户成功");
@@ -1058,7 +1058,7 @@ public class ContractController {
     public String getSupplierListById(String supplierId) {
         JSONObject res = new JSONObject();
         try {
-            Supplier supplier = contractService.getSupplierListById(supplierId);
+            Supplier supplier = supplierService.getBySupplierId(supplierId);
             res.put("status", "success");
             res.put("message", "供应商查询成功");
             res.put("supplier", supplier);
