@@ -221,6 +221,22 @@ public class Supplier {
      * 道路运输许可证
      */
     private String licenseFile2Url;
+    /**
+     * 其他文件1
+     */
+    private MultipartFile otherFile3;
+    /**
+     * 其他文件1地址
+     */
+    private String otherFile3Url;
+    /**
+     * 其他文件2
+     */
+    private MultipartFile otherFile4;
+    /**
+     * 其他文件2地址
+     */
+    private String otherFile4Url;
 
     private String keyword;
 
@@ -648,6 +664,38 @@ public class Supplier {
 
     public void setTicketRateItem(TicketRateItem ticketRateItem) {
         this.ticketRateItem = ticketRateItem;
+    }
+
+    public MultipartFile getOtherFile3() {
+        return otherFile3;
+    }
+
+    public void setOtherFile3(MultipartFile otherFile3) {
+        this.otherFile3 = otherFile3;
+    }
+
+    public String getOtherFile3Url() {
+        return otherFile3Url;
+    }
+
+    public void setOtherFile3Url(String otherFile3Url) {
+        this.otherFile3Url = otherFile3Url;
+    }
+
+    public MultipartFile getOtherFile4() {
+        return otherFile4;
+    }
+
+    public void setOtherFile4(MultipartFile otherFile4) {
+        this.otherFile4 = otherFile4;
+    }
+
+    public String getOtherFile4Url() {
+        return otherFile4Url;
+    }
+
+    public void setOtherFile4Url(String otherFile4Url) {
+        this.otherFile4Url = otherFile4Url;
     }
 
     @Override

@@ -1109,6 +1109,12 @@
                             <div class="form-horizontal col-md-6">
                                 <p class="text-left"><b>道路运输许可证&nbsp;&nbsp;</b><button class="btn btn-default" id="modal3_licenseFile2Url">下载查看</button></p>
                             </div>
+                            <div class="form-horizontal col-md-6">
+                                <p class="text-left"><b>其他附件1&nbsp;&nbsp;</b><button class="btn btn-default" id="modal3_otherFile3Url">下载查看</button></p>
+                            </div>
+                            <div class="form-horizontal col-md-6">
+                                <p class="text-left"><b>其他附件2&nbsp;&nbsp;</b><button class="btn btn-default" id="modal3_otherFile4Url">下载查看</button></p>
+                            </div>
                         </div>
                         <div class="row text-center">
                             <a class="btn btn-primary hidden-print" onclick="" id="print">打印</a>
@@ -1389,6 +1395,22 @@
                 $("#modal3_licenseFile2Url").click(function () {
                     if (data.licenseFile2Url != null && data.licenseFile2Url != "") {
                         window.open('downloadFile?filePath=' + data.licenseFile2Url);
+                    } else {
+                        alert("未上传文件");
+                    }
+                });
+                // 其他附件1
+                $("#modal3_otherFile3Url").click(function () {
+                    if (data.otherFile3Url != null && data.otherFile3Url != "") {
+                        window.open('downloadFile?filePath=' + data.otherFile3Url);
+                    } else {
+                        alert("未上传文件");
+                    }
+                });
+                // 其他附件2
+                $("#modal3_otherFile4Url").click(function () {
+                    if (data.otherFile4Url != null && data.otherFile4Url != "") {
+                        window.open('downloadFile?filePath=' + data.otherFile4Url);
                     } else {
                         alert("未上传文件");
                     }
