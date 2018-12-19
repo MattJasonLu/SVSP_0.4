@@ -15,6 +15,7 @@ import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -831,6 +832,10 @@ public class InboundController {
             }
             res.put("status", "success");
             res.put("message", "导入成功");
+        } catch (DuplicateKeyException e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "单号已存在");
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
