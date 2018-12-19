@@ -193,12 +193,13 @@ public class PRWayBillController {
                 wayBillItem.setSalesmanName(data[i][9].toString());
                 wayBillItem.setWastesName(data[i][10].toString());
                 wayBillItem.setWastesAmount(Float.parseFloat(data[i][11].toString()));
-                wayBillItem.setWastesPrice(Float.parseFloat(data[i][12].toString()));
-                wayBillItem.setWastesCode(data[i][13].toString());
-                float wastesTotal = Float.parseFloat(data[i][12].toString()) * Float.parseFloat(data[i][11].toString());
+                wayBillItem.setWastesUnit(data[i][12].toString());
+                wayBillItem.setWastesPrice(Float.parseFloat(data[i][13].toString()));
+                wayBillItem.setWastesCode(data[i][14].toString());
+                float wastesTotal = Float.parseFloat(data[i][13].toString()) * Float.parseFloat(data[i][11].toString());
                 wayBillItem.setWastesTotalPrice(wastesTotal);
-                wayBillItem.setInvoiceDate(DateUtil.getDateFromStr(data[i][14].toString()));
-                BigDecimal invoiceNumber = new BigDecimal(data[i][15].toString());
+                wayBillItem.setInvoiceDate(DateUtil.getDateFromStr(data[i][15].toString()));
+                BigDecimal invoiceNumber = new BigDecimal(data[i][16].toString());
                 wayBillItem.setInvoiceNumber(invoiceNumber.toString());
                 //map内不存在即添加公共数据，存在即添加List内数据
                 if (!map.keySet().contains(id.toString())) {
@@ -207,12 +208,15 @@ public class PRWayBillController {
                     String produceCompanyId = wayBillService.getClientIdByName(data[i][1].toString());
                     map.get(id.toString()).setProduceCompanyId(produceCompanyId);
                     map.get(id.toString()).setProduceCompanyName(data[i][1].toString());
-                    // 根据公司名获取当前有效期内的合同编号并绑定
-                    Contract contract = contractService.getWastesInfoByCompanyName(data[i][1].toString());   // 获取合同
-                    if (contract != null) { // 如果获取到则设置合同id
-                        map.get(id.toString()).setContractId(contract.getContractId());
-                    } else { // 没有获取到则设置合同ID为空
-                        map.get(id.toString()).setContractId("");
+                    if(data[i][17].toString() != null && !data[i][17].toString().equals("")){
+                        map.get(id.toString()).setContractId(data[i][17].toString());
+                    }else{  // 根据公司名获取当前有效期内的合同编号并绑定
+                        Contract contract = contractService.getWastesInfoByCompanyName(data[i][1].toString(),DateUtil.getDateFromStr(data[i][8].toString()));   // 获取合同
+                        if (contract != null) { // 如果获取到则设置合同id
+                            map.get(id.toString()).setContractId(contract.getContractId());
+                        } else { // 没有获取到则设置合同ID为空
+                            map.get(id.toString()).setContractId("");
+                        }
                     }
                     map.get(id.toString()).setFounder(data[i][2].toString());
                     map.get(id.toString()).setRemarks(data[i][3].toString());

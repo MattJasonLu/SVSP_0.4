@@ -20,7 +20,7 @@ public class CommonInterceptor extends HandlerInterceptorAdapter{
         //获取请求的RUi:去除http:localhost:8080这部分剩下的
         String uri = request.getRequestURI();
         //UTL:除了admin.html是可以公开访问的，其他的URL都进行拦截控制
-        if (uri.indexOf("/admin.html") >= 0) {
+        if (uri.equals("/admin.html") || uri.equals("/")) {
             return true;
         }
         //获取session
