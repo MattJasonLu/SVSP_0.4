@@ -1888,6 +1888,7 @@ function loadWastesContractSelectList() {
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getContractList",                  // url
+        async: false,
         dataType: "json",
         data: {"key": "危废"},
         success: function (result) {
@@ -1996,6 +1997,7 @@ function findModel() {
         $.ajax({
             type: "POST",                            // 方法类型
             url: "getContractList",                  // url
+            async: false,
             dataType: "json",
             data: {"key": contractType},
             success: function (result) {
@@ -2088,6 +2090,7 @@ function findModel() {
         $.ajax({
             type: "POST",                            // 方法类型
             url: "getContractList",                  // url
+            async: false,
             dataType: "json",
             data: {"key": contractType},
             success: function (result) {
@@ -2300,6 +2303,7 @@ function findWastesName(item) {
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getWastesNameByCode",                  // url
+        async: false,
         dataType: "json",
         data: {"code": code},
         //contentType: "application/json;charset=utf-8",
@@ -2385,7 +2389,7 @@ function importExcel() {
                             $.ajax({
                                 type: 'POST',
                                 url: "getWastesInfoList",
-                                //data:JSON.stringify(data),
+                                async: false,
                                 dataType: "json",
                                 contentType: "application/json;charset=utf-8",
                                 success: function (result) {
@@ -2601,6 +2605,7 @@ function contractWastesSave() {
                             $.ajax({
                                 type: 'POST',
                                 url: "addQuotationItem",
+                                async: false,
                                 data: JSON.stringify(quotationItemData),
                                 dataType: "json",
                                 contentType: "application/json;charset=utf-8",
@@ -2802,6 +2807,7 @@ function contractWastesSave() {
                             //1添加报价单明细
                             $.ajax({
                                 type: 'POST',
+                                async: false,
                                 url: "addQuotationItem",
                                 data: JSON.stringify(quotationItemData),
                                 dataType: "json",
@@ -2891,6 +2897,7 @@ function contractWastesSave() {
 function findClient() {
     $.ajax({
         type: "POST",                            // 方法类型
+        async: false,
         url: "getContractList",                  // url
         dataType: "json",
         data: {"key": "危废"},
@@ -3130,6 +3137,7 @@ function loadEmSelectList() {
     contractName1.hide();
     $.ajax({
         type: "POST",                            // 方法类型
+        async: false,
         url: "getContractList",                  // url
         dataType: "json",
         data: {"key": "应急"},
@@ -3163,6 +3171,7 @@ function loadEmSelectList() {
                 $.ajax({
                     type: "POST",                            // 方法类型
                     url: "getCityList",                  // url
+                    async: false,
                     dataType: "json",
                     data: {
                         'provinceId': 1
@@ -3279,7 +3288,7 @@ function loadEmSelectList() {
     $.ajax({
         type: 'POST',
         url: "getWastesInfoList",
-        //data:JSON.stringify(data),
+        async: false,
         dataType: "json",
         contentType: "application/json;charset=utf-8",
         success: function (result) {
@@ -3309,7 +3318,7 @@ function loadEmSelectList() {
     $.ajax({
         type: 'POST',
         url: "getTransportTypeList",
-        //data:JSON.stringify(data),
+        async: false,
         dataType: "json",
         contentType: "application/json;charset=utf-8",
         success: function (result) {
@@ -3337,7 +3346,7 @@ function loadEmSelectList() {
     $.ajax({
         type: 'POST',
         url: "getFormTypeAndPackageType",
-        //data:JSON.stringify(data),
+        async: false,
         dataType: "json",
         contentType: "application/json;charset=utf-8",
         success: function (result) {
@@ -3438,6 +3447,7 @@ function contractEmSave() {
                 $.ajax({
                     type: 'POST',
                     url: "addQuotationItem",
+                    async: false,
                     data: JSON.stringify(quotationItemData),
                     dataType: "json",
                     contentType: "application/json;charset=utf-8",
@@ -3531,6 +3541,7 @@ function contractEmSave() {
                 $.ajax({
                     type: 'POST',
                     url: "addQuotationItem",
+                    async: false,
                     data: JSON.stringify(quotationItemData),
                     dataType: "json",
                     contentType: "application/json;charset=utf-8",
@@ -3588,6 +3599,7 @@ function loadLogicContractSelectList() {
 //取得下拉菜单的选项
     $.ajax({
         type: "POST",                            // 方法类型
+        async: false,
         url: "getContractList",                  // url
         dataType: "json",
         data: {"key": "物流"},
@@ -3764,7 +3776,7 @@ function loadLogicContractSelectList() {
     $.ajax({
         type: 'POST',
         url: "getWastesInfoList",
-        //data:JSON.stringify(data),
+        async: false,
         dataType: "json",
         contentType: "application/json;charset=utf-8",
         success: function (result) {
@@ -3794,7 +3806,7 @@ function loadLogicContractSelectList() {
     $.ajax({
         type: 'POST',
         url: "getTransportTypeList",
-        //data:JSON.stringify(data),
+        async: false,
         dataType: "json",
         contentType: "application/json;charset=utf-8",
         success: function (result) {
@@ -3822,7 +3834,7 @@ function loadLogicContractSelectList() {
     $.ajax({
         type: 'POST',
         url: "getFormTypeAndPackageType",
-        //data:JSON.stringify(data),
+        async: false,
         dataType: "json",
         contentType: "application/json;charset=utf-8",
         success: function (result) {
@@ -3855,6 +3867,7 @@ function findSuppier() {
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getContractList",                  // url
+        async: false,
         dataType: "json",
         data: {"key": "物流"},
         success: function (result) {
@@ -3979,6 +3992,7 @@ function contractLogicSave() {
                 //1添加报价单明细
                 $.ajax({
                     type: 'POST',
+                    async: false,
                     url: "addQuotationItem",
                     data: JSON.stringify(quotationItemData),
                     dataType: "json",
@@ -4072,6 +4086,7 @@ function contractLogicSave() {
                 //1添加报价单明细
                 $.ajax({
                     type: 'POST',
+                    async: false,
                     url: "addQuotationItem",
                     data: JSON.stringify(quotationItemData),
                     dataType: "json",
@@ -4176,6 +4191,7 @@ function contractLogicSave() {
                 //1添加报价单明细
                 $.ajax({
                     type: 'POST',
+                    async: false,
                     url: "addQuotationItem",
                     data: JSON.stringify(quotationItemData),
                     dataType: "json",
@@ -4269,6 +4285,7 @@ function contractLogicSave() {
                 //1添加报价单明细
                 $.ajax({
                     type: 'POST',
+                    async: false,
                     url: "addQuotationItem",
                     data: JSON.stringify(quotationItemData),
                     dataType: "json",
@@ -4316,7 +4333,7 @@ function loadContractSelectList() {
     $.ajax({
         type: 'POST',
         url: "getWastesInfoList",
-        //data:JSON.stringify(data),
+        async: false,
         dataType: "json",
         contentType: "application/json;charset=utf-8",
         success: function (result) {
@@ -4347,7 +4364,7 @@ function loadContractSelectList() {
     $.ajax({
         type: 'POST',
         url: "getTransportTypeList",
-        //data:JSON.stringify(data),
+        async: false,
         dataType: "json",
         contentType: "application/json;charset=utf-8",
         success: function (result) {
@@ -4376,7 +4393,7 @@ function loadContractSelectList() {
     $.ajax({
         type: 'POST',
         url: "getFormTypeAndPackageType",
-        //data:JSON.stringify(data),
+        async: false,
         dataType: "json",
         contentType: "application/json;charset=utf-8",
         success: function (result) {
@@ -4419,6 +4436,7 @@ function loadContractSelectList() {
 
     $.ajax({
         type: "POST",                            // 方法类型
+        async: false,
         url: "getContractId1",                  // url
         dataType: "json",
         data: {'contractId': contractId, "key": '危废'},//key是查询危废类别的模板
@@ -4429,6 +4447,7 @@ function loadContractSelectList() {
             $.ajax({
                 type: "POST",                            // 方法类型
                 url: "getContractBymodelName1",                  // url
+                async: false,
                 dataType: "json",
                 data: {'modelName': contract.modelName},//如果是公司合同就会有合同模板名称作为合同名称
                 success: function (result) {
@@ -4774,6 +4793,7 @@ function contractAdjustSave() {
         $.ajax({
             type: 'POST',
             url: "updateContract",
+            async: false,
             data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json;charset=utf-8",
@@ -4830,6 +4850,7 @@ function contractAdjustSave() {
                             type: 'POST',
                             url: "updateQuotationItem",
                             data: JSON.stringify(quotationItemData),
+                            async: false,
                             dataType: "json",
                             contentType: "application/json;charset=utf-8",
                             success: function (result) {
@@ -4893,8 +4914,8 @@ function contractAdjustSave() {
                             $.ajax({
                                 type: "POST",                            // 方法类型
                                 url: "updatePictureUrl",                     // url
-                                // cache: false,
-                                // async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                                cache: false,
+                                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
                                 data: {
                                     "wastesCode": wastesCode,
                                     'wastesName': wastesName,
@@ -5018,6 +5039,7 @@ function contractAdjustSave() {
             type: 'POST',
             url: "updateContract",
             data: JSON.stringify(data),
+            async: false,
             dataType: "json",
             contentType: "application/json;charset=utf-8",
             success: function (result) {
@@ -5076,6 +5098,7 @@ function contractAdjustSave() {
                             type: 'POST',
                             url: "updateQuotationItem",
                             data: JSON.stringify(quotationItemData),
+                            async: false,
                             dataType: "json",
                             contentType: "application/json;charset=utf-8",
                             success: function (result) {
@@ -5137,8 +5160,8 @@ function contractAdjustSave() {
                             $.ajax({
                                 type: "POST",                            // 方法类型
                                 url: "updatePictureUrl",                     // url
-                                // cache: false,
-                                // async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                                cache: false,
+                                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
                                 data: {
                                     "wastesCode": wastesCode,
                                     'wastesName': wastesName,
@@ -5195,7 +5218,7 @@ function loadContractSelectList() {
     $.ajax({
         type: 'POST',
         url: "getWastesInfoList",
-        //data:JSON.stringify(data),
+        async: false,
         dataType: "json",
         contentType: "application/json;charset=utf-8",
         success: function (result) {
@@ -5226,7 +5249,7 @@ function loadContractSelectList() {
     $.ajax({
         type: 'POST',
         url: "getTransportTypeList",
-        //data:JSON.stringify(data),
+        async: false,
         dataType: "json",
         contentType: "application/json;charset=utf-8",
         success: function (result) {
@@ -5255,7 +5278,7 @@ function loadContractSelectList() {
     $.ajax({
         type: 'POST',
         url: "getFormTypeAndPackageType",
-        //data:JSON.stringify(data),
+        async: false,
         dataType: "json",
         contentType: "application/json;charset=utf-8",
         success: function (result) {
@@ -5322,6 +5345,7 @@ function contractAdjustEmSave() {
         $.ajax({
             type: 'POST',
             url: "updateContract",
+            async: false,
             data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json;charset=utf-8",
@@ -5345,6 +5369,7 @@ function contractAdjustEmSave() {
                         //1添加报价单明细
                         $.ajax({
                             type: 'POST',
+                            async: false,
                             url: "updateQuotationItem",
                             data: JSON.stringify(quotationItemData),
                             dataType: "json",
@@ -5397,6 +5422,7 @@ function contractAdjustEmSave() {
         console.log(data);
         $.ajax({
             type: 'POST',
+            async: false,
             url: "updateContract",
             data: JSON.stringify(data),
             dataType: "json",
@@ -5420,6 +5446,7 @@ function contractAdjustEmSave() {
                         //1添加报价单明细
                         $.ajax({
                             type: 'POST',
+                            async: false,
                             url: "updateQuotationItem",
                             data: JSON.stringify(quotationItemData),
                             dataType: "json",
@@ -5467,7 +5494,7 @@ function loadLogContractSelectList() {
     $.ajax({
         type: 'POST',
         url: "getWastesInfoList",
-        //data:JSON.stringify(data),
+        async: false,
         dataType: "json",
         contentType: "application/json;charset=utf-8",
         success: function (result) {
@@ -5498,7 +5525,7 @@ function loadLogContractSelectList() {
     $.ajax({
         type: 'POST',
         url: "getTransportTypeList",
-        //data:JSON.stringify(data),
+        async: false,
         dataType: "json",
         contentType: "application/json;charset=utf-8",
         success: function (result) {
@@ -5527,7 +5554,7 @@ function loadLogContractSelectList() {
     $.ajax({
         type: 'POST',
         url: "getFormTypeAndPackageType",
-        //data:JSON.stringify(data),
+        async: false,
         dataType: "json",
         contentType: "application/json;charset=utf-8",
         success: function (result) {
@@ -5569,6 +5596,7 @@ function loadLogContractSelectList() {
 
     $.ajax({
         type: "POST",                            // 方法类型
+        async: false,
         url: "getContractId1",                  // url
         dataType: "json",
         data: {'contractId': contractId, "key": '应急'},//key是查询危废类别的模板
@@ -5578,6 +5606,7 @@ function loadLogContractSelectList() {
             console.log(contract);
             $.ajax({
                 type: "POST",                            // 方法类型
+                async: false,
                 url: "getContractBymodelName1",                  // url
                 dataType: "json",
                 data: {'modelName': contract.modelName},//如果是公司合同就会有合同模板名称作为合同名称
@@ -5902,6 +5931,7 @@ function contractLogAdjustSave() {
         $.ajax({
             type: 'POST',
             url: "updateContract",
+            async: false,
             data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json;charset=utf-8",
@@ -5925,6 +5955,7 @@ function contractLogAdjustSave() {
                         //1添加报价单明细
                         $.ajax({
                             type: 'POST',
+                            async: false,
                             url: "updateQuotationItem",
                             data: JSON.stringify(quotationItemData),
                             dataType: "json",
@@ -5977,6 +6008,7 @@ function contractLogAdjustSave() {
         console.log(data);
         $.ajax({
             type: 'POST',
+            async: false,
             url: "updateContract",
             data: JSON.stringify(data),
             dataType: "json",
@@ -6000,6 +6032,7 @@ function contractLogAdjustSave() {
                         //1添加报价单明细
                         $.ajax({
                             type: 'POST',
+                            async: false,
                             url: "updateQuotationItem",
                             data: JSON.stringify(quotationItemData),
                             dataType: "json",
@@ -6363,7 +6396,7 @@ function adjustNewContract() {
                             $.ajax({
                                 type: 'POST',
                                 url: "getWastesInfoList",
-                                //data:JSON.stringify(data),
+                                async: false,
                                 dataType: "json",
                                 contentType: "application/json;charset=utf-8",
                                 success: function (result) {
@@ -6489,7 +6522,7 @@ function adjustNewContract() {
                             $.ajax({
                                 type: 'POST',
                                 url: "getWastesInfoList",
-                                //data:JSON.stringify(data),
+                                async: false,
                                 dataType: "json",
                                 contentType: "application/json;charset=utf-8",
                                 success: function (result) {
@@ -6731,12 +6764,19 @@ function approval(item) {
                 $("#modal3_telephone").text(data.telephone);
                 //预计处置费
                 $("#modal3_order").text(data.order1);
+
                 if (data.contractType.name == '物流合同') {
                     $('#name1').html("处置单位名称&nbsp;&nbsp;");
-                    //$("#modal3_suppierName").text(data.suppierName);
                     //供用商姓名
                     if (data.supplier != null) {
                         $('#modal3_suppierName').text(data.supplier.companyName);
+                    }
+                    //运费承担主体 判断
+                    if(data.freightBearer==true){
+                        $('#modal3_freightBearer').text("客户承担");
+                    }
+                    if(data.freightBearer==false){
+                        $('#modal3_freightBearer').text("经营单位承担");
                     }
 
                 }
@@ -6745,42 +6785,25 @@ function approval(item) {
                     if (data.client != null) {
                         $("#modal3_suppierName").text(data.client.companyName);//公司名称
                     }
-
-
+                    //运费承担主体 无
+                    $('#modal3_freightBearer').text("无");
                 }
 
                 //开票税率1
-                if (data.ticketRate1 == null) {
-                    $('#modal3_ticketRate1').text(" ");
+                if (data.client!= null) {
+                    if (data.client.ticketRateItem!= null)   {
+                        $('#modal3_ticketRate1').text(data.client.ticketRateItem.dictionaryItemName);
+                    }
+
                 }
                 else {
-                    $('#modal3_ticketRate1').text(data.ticketRate1.name);
+
+                    $('#modal3_ticketRate1').text(" ");
                 }
-                //开票税率2
-                // if(data.ticketRate2==null){
-                //     $('#modal3_ticketRate2').text(" ");
-                // }
-                // else {
-                //     $('#modal3_ticketRate2').text(data.ticketRate2.name);
-                // }
-                //资质开始日期
-                // if(data.beginQualification==null){
-                //     $('#modal3_beginQualification').text(" ");
-                // }
-                // else {
-                //     var begin1=gettime(data.beginQualification);
-                //     $('#modal3_beginQualification').text(begin1);
-                // }
-                //资质结束日期
-                // if(data.endQualification==null){
-                //     $('#modal3_endQualification').text(" ");
-                // }
-                // else {
-                //     var end1=gettime(data.endQualification);
-                //     $('#modal3_endQualification').text(end1);
-                // }
-                //物流公司资质
-                //  $('#modal3_logisticsQualification').text(data.logisticsQualification);
+
+                //赋值 ==》审批/驳回内容
+                $("#advice").val(data.opinion);
+                $("#backContent").val(data.backContent);
                 //开户行名称
                 $('#modal3_bankName').text(data.bankName);
                 //开户行账号
@@ -6824,6 +6847,8 @@ function approval(item) {
     $('#back').text('驳回');//设置驳回字样
     $('#print').hide();//打印隐藏
     $('#contractInfoForm').modal('show');//出现第一个模态框
+
+
 }
 
 

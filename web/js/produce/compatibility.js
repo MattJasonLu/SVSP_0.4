@@ -1403,7 +1403,7 @@ function adjustCom() {
                         $.ajax({
                             type: 'POST',
                             url: "getHandleCategoryByDataDictionary",
-                            //data:JSON.stringify(data),
+                            async: false,
                             dataType: "json",
                             contentType: "application/json;charset=utf-8",
                             success: function (result) {
@@ -1436,7 +1436,7 @@ function adjustCom() {
                         $.ajax({
                             type: 'POST',
                             url: "getFormTypeByDataDictionary",
-                            //data:JSON.stringify(data),
+                            async: false,
                             dataType: "json",
                             contentType: "application/json;charset=utf-8",
                             success: function (result) {
@@ -1812,6 +1812,7 @@ function addPw() {
     $.ajax({
         type: 'POST',
         url: "getNewCompatibilityId",
+        async: false,
         dataType: "json",
         contentType: "application/json;charset=utf-8",
         success: function (result) {
@@ -1831,7 +1832,7 @@ function addPw() {
     $.ajax({
         type: 'POST',
         url: "getHandleCategoryByDataDictionary",
-        //data:JSON.stringify(data),
+        async: false,
         dataType: "json",
         contentType: "application/json;charset=utf-8",
         success: function (result) {
@@ -1861,7 +1862,7 @@ function addPw() {
     $.ajax({
         type: 'POST',
         url: "getFormTypeByDataDictionary",
-        //data:JSON.stringify(data),
+        async: false,
         dataType: "json",
         contentType: "application/json;charset=utf-8",
         success: function (result) {
@@ -2143,6 +2144,7 @@ function addCompatibility() {
         type: 'POST',
         url: "addCompatibilityNew",
         data: JSON.stringify(data),
+        async: false,
         dataType: "json",
         contentType: "application/json;charset=utf-8",
         success: function (result) {
@@ -2175,6 +2177,7 @@ function addCompatibility() {
                     };
                     $.ajax({
                         type: 'POST',
+                        async: false,
                         url: "addCompatibilityItemNew",
                         data: JSON.stringify(dataItem),
                         dataType: "json",

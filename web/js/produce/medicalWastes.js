@@ -378,7 +378,7 @@ function getNewestId() {
         type: "POST",                            // 方法类型
         url: "getNewestMedicalWastesId",                  // url
         dataType: "json",
-        //data:{'stockId':stockId},
+        async: false,
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result != undefined && result.status == "success") {
@@ -454,6 +454,7 @@ function saveMedicalWastes() {
         type: "POST",                            // 方法类型
         url: "addMedicalWastes",                  // url
         dataType: "json",
+        async: false,
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (result) {
@@ -499,6 +500,7 @@ function loadMedicalWastesList() {
         type: "POST",                            // 方法类型
         url: "loadMedicalWastesList",                  // url
         dataType: "json",
+        async: false,
         data: JSON.stringify(page),
         contentType: "application/json; charset=utf-8",
         success: function (result) {
@@ -827,6 +829,7 @@ function cancelMedicalWastes(item) {
             url: "cancelMedicalWastes",                  // url
             dataType: "json",
             data: {'id': id},
+            async: false,
             //contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined && result.status == "success") {

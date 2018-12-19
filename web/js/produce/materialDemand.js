@@ -1005,7 +1005,7 @@ function modify() {
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getForm",         // url
-        // 同步：意思是当有返回值以后才会进行后面的js程序
+        async: false,  // 同步：意思是当有返回值以后才会进行后面的js程序
         data: {"data": data},
         dataType: "json",
         //contentType: 'application/json;charset=utf-8',
@@ -1346,7 +1346,7 @@ function adjustMater() {
                         $.ajax({
                             type: 'POST',
                             url: "getHandleCategoryByDataDictionary",
-                            //data:JSON.stringify(data),
+                            async: false,
                             dataType: "json",
                             contentType: "application/json;charset=utf-8",
                             success: function (result) {
@@ -1378,7 +1378,7 @@ function adjustMater() {
                         $.ajax({
                             type: 'POST',
                             url: "getFormTypeByDataDictionary",
-                            //data:JSON.stringify(data),
+                            async: false,
                             dataType: "json",
                             contentType: "application/json;charset=utf-8",
                             success: function (result) {
@@ -1411,7 +1411,7 @@ function adjustMater() {
                         $.ajax({
                             type: 'POST',
                             url: "getPackageTypeByDataDictionary",
-                            //data:JSON.stringify(data),
+                            async: false,
                             dataType: "json",
                             contentType: "application/json;charset=utf-8",
                             success: function (result) {
@@ -1487,6 +1487,7 @@ function adjustConfirm() {
             type: 'POST',
             url: "updateMaterialRequireItem",
             data: JSON.stringify(materialRequireItem),
+            async: false,
             dataType: "json",
             contentType: "application/json;charset=utf-8",
             success: function (result) {
@@ -1524,6 +1525,7 @@ function adjustConfirm() {
         type: 'POST',
         url: "updateMaterialRequire",
         data: JSON.stringify(materialRequire),
+        async: false,
         dataType: "json",
         contentType: "application/json;charset=utf-8",
         success: function (result) {

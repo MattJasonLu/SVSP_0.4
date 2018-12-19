@@ -62,16 +62,16 @@
         select * from t_pr_materialrequire where id=#{id};
     </select>
     <update id="approval" >
-        update t_pr_materialrequire set checkStateId=76,opinion=#{1},nowTime=NOW() where materialRequireId=#{0};
+        update t_pr_materialrequire set checkStateId=76,opinion=#{1}  where materialRequireId=#{0};
     </update>
     <update id="submit" parameterType="String">
         update t_pr_materialrequire set checkStateId=67,nowTime=NOW() where materialRequireId=#{materialRequireId};
     </update>
     <update id="cancel" parameterType="String">
-        update t_pr_materialrequire set checkStateId=69,nowTime=NOW() where materialRequireId=#{materialRequireId};
+        update t_pr_materialrequire set checkStateId=69  where materialRequireId=#{materialRequireId};
     </update>
     <update id="back" parameterType="String">
-        update t_pr_materialrequire set checkStateId=66,remarks=#{1},nowTime=NOW() where materialRequireId=#{0};
+        update t_pr_materialrequire set checkStateId=66,remarks=#{1} where materialRequireId=#{0};
     </update>
     <update id="updatemarketPurchases" >
         update  t_pr_materialrequire set marketPurchasesTotal=#{1} where
@@ -131,7 +131,7 @@
     <update id="updateMaterialRequire" parameterType="MaterialRequire">
         update t_pr_materialrequire set weeklyDemandTotal=#{weeklyDemandTotal},
         currentInventoryTotal=#{currentInventoryTotal},safetyTotal=#{safetyTotal},
-        marketPurchasesTotal=#{marketPurchasesTotal},nowTime=NOW() where  materialRequireId=#{materialRequireId}
+        marketPurchasesTotal=#{marketPurchasesTotal} where  materialRequireId=#{materialRequireId}
     </update>
 
     <!--根据编号查看物料主表信息-->
