@@ -1,17 +1,27 @@
 package com.jdlink.domain.Inventory;
 
-/*仓库*/
+/**
+ * 仓库
+ */
 public class WareHouse {
-    /*仓库代码*/
-    private String wareHouseId;
-    /*仓库名称*/
+    /**
+     * 主键
+     */
+    private int wareHouseId;
+    /**
+     * 仓库名称
+     */
     private String wareHouseName;
+    /**
+     * 仓库编码
+     */
+    private String wareHouseCode;
 
-    public String getWareHouseId() {
+    public int getWareHouseId() {
         return wareHouseId;
     }
 
-    public void setWareHouseId(String wareHouseId) {
+    public void setWareHouseId(int wareHouseId) {
         this.wareHouseId = wareHouseId;
     }
 
@@ -23,11 +33,20 @@ public class WareHouse {
         this.wareHouseName = wareHouseName;
     }
 
+    public String getWareHouseCode() {
+        return wareHouseCode;
+    }
+
+    public void setWareHouseCode(String wareHouseCode) {
+        this.wareHouseCode = wareHouseCode;
+    }
+
     @Override
     public String toString() {
         return "WareHouse{" +
-                "wareHouseId='" + wareHouseId + '\'' +
+                "wareHouseId=" + wareHouseId +
                 ", wareHouseName='" + wareHouseName + '\'' +
+                ", wareHouseCode='" + wareHouseCode + '\'' +
                 '}';
     }
 }

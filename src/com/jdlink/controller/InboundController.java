@@ -741,7 +741,7 @@ public class InboundController {
                     WareHouse wareHouse = wareHouseService.getWareHouseByName(data[i][2].toString());
                     if (wareHouse == null) {
                         wareHouse = new WareHouse();
-                        wareHouse.setWareHouseId(wareHouseService.getCurrentId());
+//                        wareHouse.setWareHouseId(wareHouseService.getCurrentId());
                         wareHouse.setWareHouseName(data[i][2].toString());
                         wareHouseService.add(wareHouse);
                     }
@@ -878,7 +878,7 @@ public class InboundController {
                     WareHouse wareHouse = wareHouseService.getWareHouseByName(data[i][2].toString());
                     if (wareHouse == null) {
                         wareHouse = new WareHouse();
-                        wareHouse.setWareHouseId(wareHouseService.getCurrentId());
+//                        wareHouse.setWareHouseId(wareHouseService.getCurrentId());
                         wareHouse.setWareHouseName(data[i][2].toString());
                         wareHouseService.add(wareHouse);
                     }
