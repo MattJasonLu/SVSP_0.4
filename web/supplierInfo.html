@@ -313,7 +313,7 @@
                         if (data.operationTypeItem != null) $("#operationType").val(data.operationTypeItem.dataDictionaryItemId);
                         if (data.operationRecordItem != null) $("#operationRecord").val(data.operationRecordItem.dataDictionaryItemId);
                         if (data.ticketRateItem != null) $("#ticketRate").val(data.ticketRateItem.dataDictionaryItemId);
-
+                        // 更改附件的状态
                         $("#licenseFile1").addClass("form-control");
                         $("#licenseFile1").prop('type', 'text');
                         $("#licenseFile2").addClass("form-control");
@@ -324,6 +324,19 @@
                             $(this).prop('type', 'file');
                         });
                         $("#licenseFile2").click(function () {
+                            $(this).prop('type', 'file');
+                        });
+                        // 更改附件的状态
+                        $("#otherFile3").addClass("form-control");
+                        $("#otherFile3").prop('type', 'text');
+                        $("#otherFile4").addClass("form-control");
+                        $("#otherFile4").prop('type', 'text');
+                        $("#otherFile3").val(changeFileName(data.otherFile3Url));
+                        $("#otherFile4").val(changeFileName(data.otherFile4Url));
+                        $("#otherFile3").click(function () {
+                            $(this).prop('type', 'file');
+                        });
+                        $("#otherFile4").click(function () {
                             $(this).prop('type', 'file');
                         });
                     }
@@ -532,6 +545,16 @@
         if ($("#licenseFile2").prop('type') != 'text') {
             var licenseFile2 = document.getElementById("licenseFile2").files[0];
             formFile.append("licenseFile2", licenseFile2);
+        }
+        // 其他附件1
+        if ($("#otherFile3").prop('type') != 'text') {
+            var otherFile3 = document.getElementById("otherFile3").files[0];
+            formFile.append("otherFile3", otherFile3);
+        }
+        // 其他附件2
+        if ($("#otherFile4").prop('type') != 'text') {
+            var otherFile4 = document.getElementById("otherFile4").files[0];
+            formFile.append("otherFile4", otherFile4);
         }
         $.ajax({
             type: "POST",                            // 方法类型
@@ -949,9 +972,27 @@
                     </div>
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="licenseFile2" class="col-sm-4 control-label">道路运输许可证 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <label for="licenseFile2" class="col-sm-4 control-label">道路运输许可证 </label>
                             <div class="col-xs-5" >
                                 <input type="file" id="licenseFile2" name="licenseFile2" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="otherFile3" class="col-sm-4 control-label">其他附件1 </label>
+                            <div class="col-xs-5" >
+                                <input type="file" id="otherFile3" name="otherFile3" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="otherFile4" class="col-sm-4 control-label">其他附件2 </label>
+                            <div class="col-xs-5" >
+                                <input type="file" id="otherFile4" name="otherFile4" placeholder="">
                             </div>
                         </div>
                     </div>

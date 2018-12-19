@@ -446,10 +446,10 @@ public class SupplierController {
 
     @RequestMapping("saveSupplierFiles")
     @ResponseBody
-    public String saveSupplierFiles(String supplierId, MultipartFile licenseFile1, MultipartFile licenseFile2) {
+    public String saveSupplierFiles(String supplierId, MultipartFile licenseFile1, MultipartFile licenseFile2, MultipartFile otherFile3, MultipartFile otherFile4) {
         JSONObject res = new JSONObject();
         try {
-            if (licenseFile1 != null || licenseFile2 != null) {
+            if (licenseFile1 != null || licenseFile2 != null || otherFile3 != null || otherFile4 != null) {
                 Supplier supplier = new Supplier();
                 supplier.setSupplierId(supplierId);
                 // 若文件夹不存在则创建文件夹
@@ -473,6 +473,26 @@ public class SupplierController {
                     licenseFile2.transferTo(licenseFile2File);
                     // 更新客户保存文件的路径
                     supplier.setLicenseFile2Url(licenseFile2Path);
+                }
+                // 处理其他文件1
+                if (otherFile3 != null) {
+                    // 获取文件名字
+                    String otherFile3Name = supplierId + "-" + otherFile3.getOriginalFilename();
+                    String otherFile3Path = supplierPath + "/" + otherFile3Name;
+                    File otherFile3File = new File(otherFile3Path);
+                    otherFile3.transferTo(otherFile3File);
+                    // 更新客户保存文件的路径
+                    supplier.setOtherFile3Url(otherFile3Path);
+                }
+                // 处理其他文件2
+                if (otherFile4 != null) {
+                    // 获取文件名字
+                    String otherFile4Name = supplierId + "-" + otherFile4.getOriginalFilename();
+                    String otherFile4Path = supplierPath + "/" + otherFile4Name;
+                    File otherFile4File = new File(otherFile4Path);
+                    otherFile4.transferTo(otherFile4File);
+                    // 更新客户保存文件的路径
+                    supplier.setOtherFile4Url(otherFile4Path);
                 }
                 // 更新供应商文件路径
                 supplierService.setFilePath(supplier);
