@@ -824,7 +824,7 @@ function addData(state) {
         var tr = $(trs[i]);
         var item = {
             produceCompany: {
-                companyName: tr.find("td[name='produceCompanyName']").text()
+                companyName: tr.find("input[name='produceCompanyName']").val()
             },
             wastes: {
                 name: tr.find("select[name='wastesName']").val(),
