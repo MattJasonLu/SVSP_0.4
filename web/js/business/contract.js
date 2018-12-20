@@ -1689,6 +1689,17 @@ function adjustContract(item) {
 function loadWastesContractSelectList() {
     loadNavigationList();   // 设置动态菜单
 
+
+    //获取送审人员，送审日期，送审部门
+   var  user= getCurrentUserData();
+   console.log(JSON.stringify(user))
+
+    //赋值送审人员，送审日期，送审部门
+    $("#reviewer").val(user.username);
+
+    $("#reviewDate").val(dateToString(new Date()));
+
+    $("#reviewDepartment").val(user.department);
     //危废编码赋值
     code = "";
     $.ajax({
@@ -2533,6 +2544,9 @@ function contractWastesSave() {
                 contractType: $('#contractType').val(),
                 totalPrice: parseFloat(totalPrice).toFixed(2),
                 freightBearer: $("input[name='freightBearer']:checked").val(),
+                reviewer:$('#reviewer').val(),
+                reviewDepartment:$('#reviewDepartment').val(),
+                reviewDate:$('#reviewDate').val(),
             };
             console.log(data);
             $.ajax({
@@ -2729,6 +2743,9 @@ function contractWastesSave() {
                 contractType: $('#contractType').val(),
                 totalPrice:parseFloat(totalPrice).toFixed(2),
                freightBearer: $("input[name='freightBearer']:checked").val(),
+                reviewer:$('#reviewer').val(),
+                reviewDepartment:$('#reviewDepartment').val(),
+                reviewDate:$('#reviewDate').val(),
             };
 
 
@@ -6612,7 +6629,14 @@ function adjustNewContract() {
                 $('#telephone').prop("value", contract.telephone);
 
                 //附件地址
-                $('#contactFile').val(contract.contractAppendicesUrl)
+                $('#contactFile').val(contract.contractAppendicesUrl);
+
+                //送审人员/部门/日期
+                $('#reviewer').val(contract.reviewer);
+
+                $('#reviewDepartment').val((contract.reviewDepartment));
+
+                $('#reviewDate').val(getDateStr(contract.reviewDate));
 
             }
             else {
