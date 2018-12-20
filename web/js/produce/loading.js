@@ -28,7 +28,7 @@ function showWaiting() {
     bgObj.setAttribute('id', 'bgDiv');
     bgObj.style.position = "absolute";
     bgObj.style.top = "0px";
-    bgObj.style.background = "#888";
+    bgObj.style.background = "#ffffff";
     bgObj.style.filter = "progid:DXImageTransform.Microsoft.Alpha(style=3,opacity=25,finishOpacity=75";
     bgObj.style.opacity = "0.6";
     bgObj.style.left = "0px";
