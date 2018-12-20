@@ -3,6 +3,7 @@ package com.jdlink.service;
 import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.Assessment;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -69,6 +70,7 @@ public interface ContractService {
     List<Contract> getContractListByMonth(String month);
     List<Contract> searchMonthData(Assessment assessment);
     List<Contract> getAllContractBySalesmanId(Contract contract);
+    List<Contract> getContractByCompanyName(String companyName);
     int getAllContractCountBySalesmanId(String salesmanId);
     void addQuotationItem(QuotationItem quotationItem);
     void updateContract(Contract contract);
@@ -76,7 +78,7 @@ public interface ContractService {
     List<Contract> getContractByClientId(String id);
     List<Contract> getContractByMonth(String month);
     int getNewestContractId1();
-    Contract getWastesInfoByCompanyName(String companyName);
+    Contract getWastesInfoByCompanyName(String companyName,Date creationDate);
 
     List<QuotationItem> ContractList(Page page);
 

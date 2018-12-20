@@ -232,7 +232,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
             </if>
         </where>
         order by  checkStateId=69,nowTime desc
-        <if test="start != null and count != null">
+        <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
     </select>
@@ -440,13 +440,16 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <select id="getWastesInfoByCompanyName" resultMap="ContractRM">
         select * from t_contract
         where clientId in (select clientId from client where companyName =#{companyName})
-        and checkState='Keeping' and <![CDATA[ DATE_FORMAT(endTime, '%Y-%m-%d') >= DATE_FORMAT(NOW(), '%Y-%m-%d')
-        and DATE_FORMAT(beginTime, '%Y-%m-%d') <=  DATE_FORMAT(NOW(), '%Y-%m-%d') ]]>;
+        and checkState='Keeping' and <![CDATA[ DATE_FORMAT(endTime, '%Y-%m-%d') >= DATE_FORMAT(#{creationDate}, '%Y-%m-%d')
+        and DATE_FORMAT(beginTime, '%Y-%m-%d') <=  DATE_FORMAT(#{creationDate}, '%Y-%m-%d') ]]>;
     </select>
 
+    <select id="getContractByCompanyName" parameterType="String" resultMap="ContractRM">
+        select * from t_contract
+        where clientId in (select clientId from client where companyName =#{companyName});
+    </select>
 
     <!--获取最新的合同数据(不分合同类别)==>合约量统计-->
-
     <resultMap id="QuotationItemRM" type="QuotationItem">
         <association property="contract" column="contractId" select="getContractById"></association>
         <association property="client" column="clientId" select="getClient"></association>
