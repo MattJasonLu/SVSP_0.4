@@ -124,7 +124,7 @@
                         <tbody>
                         <tr>
                             <td colspan="2">物资类别</td>
-                            <td colspan="2"><input class="focus" title="" id="suppliesCategory"></td>
+                            <td colspan="2"><select class="focus" title="" id="materialCategoryItem"></select></td>
                             <td colspan="2">需用时间</td>
                             <td colspan="2"><input class="focus" title="" type="date" id="demandTime"></td>
                         </tr>
@@ -145,7 +145,7 @@
                             <td class="text-center">备注</td>
                         </tr>
                         <tr id="cloneTr1" class="myclass" >
-                            <td class="text-center">1<input class="focus" title=""></td>
+                            <td class="text-center">1</td>
                             <td class="text-center" >
                                 <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="suppliesName" id="suppliesName"></select>
                             </td>
@@ -168,7 +168,15 @@
                         </tr>
                         <tr>
                             <td colspan="2">申请部门</td>
-                            <td colspan="2"><input class="focus" title="" id="applyDepartment"></td>
+                            <td class="text-center" ><select class="focus" title="" id="applyDepartment">
+                                <option>市场部</option>
+                                <option>安全环保部</option>
+                                <option>行政人事部</option>
+                                <option>生产技术部</option>
+                                <option>仓储部</option>
+                                <option>财务部</option>
+                                <option>化验室</option>
+                            </select>
                             <td colspan="2">申请部门负责人</td>
                             <td colspan="2"><input class="focus" title="proposer" id="proposer"></td>
                         </tr>

@@ -939,7 +939,7 @@ public class ContractController {
     public String getClientListById(String clientId) {
         JSONObject res = new JSONObject();
         try {
-            Client client = contractService.getByClientId(clientId);//获得用户
+            Client client = clientService.getByClientId(clientId);//获得用户
             res.put("client", client);
             res.put("status", "success");
             res.put("message", "查询客户成功");
@@ -1058,7 +1058,7 @@ public class ContractController {
     public String getSupplierListById(String supplierId) {
         JSONObject res = new JSONObject();
         try {
-            Supplier supplier = contractService.getSupplierListById(supplierId);
+            Supplier supplier = supplierService.getBySupplierId(supplierId);
             res.put("status", "success");
             res.put("message", "供应商查询成功");
             res.put("supplier", supplier);
@@ -1232,16 +1232,16 @@ public class ContractController {
     }
 
     /**
-     * 根据公司名获取合同内报价单里的危废明细
+     * 根据公司名和接运单日期获取合同内报价单里的危废明细
      * @param companyName
      * @return
      */
     @RequestMapping("getWastesInfoByCompanyName")
     @ResponseBody
-    public String getWastesInfoByCompanyName(String companyName) {
+    public String getWastesInfoByCompanyName(String companyName,Date creationDate) {
         JSONObject res = new JSONObject();
         try {
-            Contract contract = contractService.getWastesInfoByCompanyName(companyName);   // 获取合同
+            Contract contract = contractService.getWastesInfoByCompanyName(companyName,creationDate);   // 获取合同
             JSONObject data = JSONObject.fromBean(contract);
             res.put("status", "success");
             res.put("message", "明细数据获取成功");
@@ -1254,6 +1254,29 @@ public class ContractController {
         return res.toString();
     }
 
+
+/**
+ * 根据公司名获取合同
+ * @param companyName
+ * @return
+ */
+    @RequestMapping("getContractByCompanyName")
+    @ResponseBody
+    public String getContractByCompanyName(String companyName) {
+        JSONObject res = new JSONObject();
+        try {
+            List<Contract> contractList = contractService.getContractByCompanyName(companyName);   // 获取合同
+            JSONArray data = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
+            res.put("status", "success");
+            res.put("message", "获取成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取失败");
+        }
+        return res.toString();
+    }
 
     /*合约量统计加载页面**/
     @RequestMapping("loadContractVolumeList")
@@ -1475,6 +1498,50 @@ public class ContractController {
         }
 
 
+        return res.toString();
+    }
+
+    /**
+     * 合同模板审批
+     */
+    @RequestMapping("approvalModel")
+    @ResponseBody
+    public String  approvalModel(String contractId){
+        JSONObject res=new JSONObject();
+
+        try {
+      contractService.approvalModel(contractId);
+            res.put("status", "success");
+            res.put("message", "审批成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "审批失败");
+        }
+
+        return res.toString();
+    }
+
+    //签订合同
+    @RequestMapping("signContract")
+    @ResponseBody
+    public String signContract(String contractId){
+        JSONObject res=new JSONObject();
+
+        try {
+            contractService.signContract(contractId);
+            res.put("status", "success");
+            res.put("message", "合同签订成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+
+            res.put("status", "fail");
+
+            res.put("message", "合同签订失败");
+
+        }
         return res.toString();
     }
 }

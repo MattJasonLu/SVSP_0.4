@@ -2,6 +2,8 @@ package com.jdlink.service;
 
 import com.jdlink.domain.Inventory.WareHouse;
 
+import java.util.List;
+
 public interface WareHouseService {
     /**
      * 获取编号
@@ -27,6 +29,24 @@ public interface WareHouseService {
      * @return 仓库
      */
     WareHouse getWareHouseById(String id);
+
+    /**
+     * 列出所有仓库
+     * @return 仓库
+     */
+    List<WareHouse> list();
+
+    /**
+     * 更新仓库
+     * @param wareHouse 仓库对象
+     */
+    void update(WareHouse wareHouse);
+
+    /**
+     * 删除仓库
+     * @param id 编号
+     */
+    void delete(String id);
 
     /**
      * 获取仓库的数量

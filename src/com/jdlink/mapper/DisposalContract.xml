@@ -5,13 +5,21 @@
 <mapper namespace="com.jdlink.mapper.DisposalContractMapper" >
 <!--添加危险废物处置合同-->
     <insert id="addWastesContract" parameterType="DisposalContract">
-        insert into t_pr_disposalcontract (hw1, hw2, hw3, n1, n2, n3, totalPrice, address, nowTime)
-        values (#{hw1},#{hw2},#{hw3},#{n1},#{n2},#{n3},#{totalPrice},#{address},NOW());
+        insert into t_pr_disposalcontract (hw1, hw2, hw3, n1, n2, n3, totalPrice, address, nowTime,checkStateId)
+        values (#{hw1},#{hw2},#{hw3},#{n1},#{n2},#{n3},#{totalPrice},#{address},NOW(),173);
     </insert>
 
+    <resultMap id="DisposalContractRM" type="DisposalContract">
+        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"></association>
+    </resultMap>
+
+    <!--获取状态数据字典-->
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select  * from datadictionaryitem where dataDictionaryItemId=#{checkStateId};
+    </select>
     <!--查询意向书列表-->
-    <select id="loadWastesContractList" resultType="DisposalContract">
-        select * from t_pr_disposalcontract
+    <select id="loadWastesContractList" resultMap="DisposalContractRM">
+        select * from t_pr_disposalcontract where checkStateId!=69
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -29,5 +37,64 @@
         id=#{id}
     </update>
 
+
+    <!--签订意向书-->
+    <update id="signDisposalContract" parameterType="String">
+        update t_pr_disposalcontract set  checkStateId=172 where id=#{id}
+    </update>
+
+    <!--作废意向书-->
+    <update id="cancelDisposalContract" parameterType="String">
+        update t_pr_disposalcontract set checkStateId=69 where id=#{id};
+    </update>
+
+    <!--查询-->
+    <select id="searchDisposalContract" parameterType="DisposalContract" resultMap="DisposalContractRM">
+        select  * from t_pr_disposalcontract
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or checkStateId in ( select  dataDictionaryItemId from  datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
+                 or nowTime like  binary"%"#{keywords}"%"
+            </if>
+            <if test="checkStateItem!=null">
+                   <if test="checkStateItem.dataDictionaryItemId!=0">
+                       and checkStateId =#{checkStateItem.dataDictionaryItemId}
+                   </if>
+            </if>
+            <if test="beginTime!=null and beginTime!=''">
+                and DATE_FORMAT(nowTime, '%Y-%m-%d') <![CDATA[ >= ]]>DATE_FORMAT(#{beginTime}, '%Y-%m-%d')
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and DATE_FORMAT(nowTime, '%Y-%m-%d') <![CDATA[ <= ]]>DATE_FORMAT(#{endTime}, '%Y-%m-%d')
+            </if>
+        </where>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--查询总数-->
+    <select id="searchDisposalContractCount" parameterType="DisposalContract" resultType="int">
+        select count(*) from t_pr_disposalcontract
+
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or checkStateId in ( select  dataDictionaryItemId from  datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
+                or nowTime like  binary"%"#{keywords}"%"
+            </if>
+            <if test="checkStateItem!=null">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId =#{checkStateItem.dataDictionaryItemId}
+                </if>
+            </if>
+            <if test="beginTime!=null and beginTime!=''">
+                and DATE_FORMAT(nowTime, '%Y-%m-%d') <![CDATA[ >= ]]>DATE_FORMAT(#{beginTime}, '%Y-%m-%d')
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and DATE_FORMAT(nowTime, '%Y-%m-%d') <![CDATA[ <= ]]>DATE_FORMAT(#{endTime}, '%Y-%m-%d')
+            </if>
+        </where>
+    </select>
 
 </mapper>

@@ -2,6 +2,7 @@ package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Dictionary.CheckStateItem;
+import com.jdlink.domain.Dictionary.MaterialCategoryItem;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -93,6 +94,17 @@ public class Procurement {
 
     //状态字典
     private CheckStateItem checkStateItem;
+
+    //物资类别数据字典
+   private MaterialCategoryItem materialCategoryItem;
+
+    public MaterialCategoryItem getMaterialCategoryItem() {
+        return materialCategoryItem;
+    }
+
+    public void setMaterialCategoryItem(MaterialCategoryItem materialCategoryItem) {
+        this.materialCategoryItem = materialCategoryItem;
+    }
 
     public CheckStateItem getCheckStateItem() {
         return checkStateItem;

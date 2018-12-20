@@ -209,15 +209,15 @@
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
                     <a class="btn btn-primary btn-xs" href="#" id="function_-66"
-                       onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; addWayBillModal(e);}"><span
+                       onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; addWayBillModal();}"><span
                             class="glyphicon glyphicon-plus"
                             aria-hidden="true"></span> 新增</a>
                     <a class="btn btn-primary btn-xs" href="#" id="function_-67"
-                       onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose(e);}"><span
+                       onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose();}"><span
                             class="glyphicon glyphicon-arrow-down"
                             aria-hidden="true"></span> 导入</a>
                     <a class="btn btn-primary btn-xs" href="#" id="function_-68"
-                       onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel(e)}"><span
+                       onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel()}"><span
                             class="glyphicon glyphicon-arrow-up"
                             aria-hidden="true"></span> 导出</a>
                 </div>
@@ -363,6 +363,11 @@
                                onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; invalidWayBill(e);}"><span
                                     class="glyphicon glyphicon-remove-sign"
                                     aria-hidden="true"></span></a>
+                            <a href="#" id="function_-74" title="下载合同附件"
+                               onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; downLoadContract(e)}"><span
+                                    class=" glyphicon glyphicon-download-alt"
+                                    aria-hidden="true"></span></a>
+
                         </td>
                     </tr>
                     </tbody>
@@ -520,13 +525,14 @@
                                     <th class="text-center">废物名称</th>
                                     <th class="text-center">危废代码</th>
                                     <th class="text-center">数量</th>
+                                    <th class="text-center">计量单位</th>
                                     <th class="text-center">单价</th>
                                     <th class="text-center">总额</th>
                                     <th class="text-center">业务员</th>
                                     <th class="text-center">委托单位</th>
                                     <th class="text-center">接收单位</th>
                                     <th class="text-center">接收单位经手人</th>
-                                    <th class="text-center">接运单日期</th>
+                                    <!--<th class="text-center">接运单日期</th>-->
                                     <th class="text-center">开票日期</th>
                                     <th class="text-center">发票号码</th>
                                 </tr>
@@ -544,6 +550,7 @@
                                     <td class="text-center"></td>
                                     <td class="text-center"></td>
                                     <td class="text-center"></td>
+                                    <!--<td class="text-center"></td>-->
                                     <td class="text-center"></td>
                                     <td class="text-center"></td>
                                 </tr>

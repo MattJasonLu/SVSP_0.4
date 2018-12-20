@@ -43,11 +43,21 @@
         select * from datadictionaryitem where dataDictionaryItemId=#{dataDictionaryItemId}
     </select>
     <!--查询客户-->
-    <select id="getClient" resultType="Client">
+    <resultMap id="ClientRM" type="Client">
+        <association property="ticketRateItem" column="ticketRateId" select="getTicketRateItem"/>
+    </resultMap>
+    <!--开票类型数据字典-->
+    <select id="getTicketRateItem" resultType="TicketRateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{ticketRateId}
+    </select>
+    <select id="getClient" resultMap="ClientRM">
         select * from  client where clientId=#{clientId};
     </select>
+    <resultMap id="SupplierRM" type="Supplier">
+        <association property="ticketRateItem" column="ticketRateId" select="getTicketRateItem"></association>
+    </resultMap>
     <!--查询供应商-->
-    <select id="getSupplier" resultType="Supplier">
+    <select id="getSupplier" resultMap="SupplierRM">
       select * from  t_supplier where supplierId=#{suppierId};
     </select>
     <select id="getPackageTypeItem" resultType="PackageTypeItem">
@@ -67,10 +77,10 @@
     <insert id="add" parameterType="Contract">
         insert into t_contract (contractId,contractType, companyName, clientId, contractVersion,
         checkState, beginTime, endTime, agreedQuantity,contactName,telephone,reviewer,reviewDepartment,
-        reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification,modelName,year,period,contractContent,contractName,modelVersion,nowTime,company1,content,suppierId,totalPrice,checkStateId)
+        reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification,modelName,year,period,contractContent,contractName,modelVersion,nowTime,company1,content,suppierId,totalPrice,checkStateId,freightBearer)
         values (#{contractId},#{contractType}, #{companyName}, #{client.clientId}, #{contractVersion},
         #{checkState}, #{beginTime}, #{endTime}, #{agreedQuantity}, #{contactName}, #{telephone}, #{reviewer},
-        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion},NOW(),#{company1},#{content},#{supplier.supplierId},#{totalPrice},64)
+        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion},NOW(),#{company1},#{content},#{supplier.supplierId},#{totalPrice},64,#{freightBearer})
     </insert>
     <insert id="addEm" parameterType="Contract">
         insert into t_contract(contractId,contractType,
@@ -158,7 +168,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         select rate2 from ticketrate2;
     </select>
     <update id="cancel">
-        update t_contract set checkStateId=69,nowTime=#{1} where contractId=#{0}
+        update t_contract set checkStateId=69  where contractId=#{0}
     </update>
     <delete id="cancel1" parameterType="String">
         delete from  t_contract  where contractId=#{contractId}
@@ -170,10 +180,10 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         select distinct modelName from t_contract where modelName like CONCAT('%',#{key},'%') and period!="";
     </select>
     <update id="back" parameterType="Contract">
-        update t_contract set checkStateId=66,backContent=#{1},nowTime=#{2} where contractId=#{0}
+        update t_contract set checkStateId=66,backContent=#{1} where contractId=#{0}
     </update>
     <update id="opinion" parameterType="Contract">
-    update t_contract set opinion=#{1},checkStateId=68,nowTime=#{2} where contractId=#{0};
+    update t_contract set opinion=#{1},checkStateId=68 where contractId=#{0};
 </update>
     <select id="getHazardous" resultType="Hazardous">
         SELECT * FROM t_hazardous WHERE id in (
@@ -222,7 +232,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
             </if>
         </where>
         order by  checkStateId=69,nowTime desc
-        <if test="start != null and count != null">
+        <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
     </select>
@@ -406,10 +416,10 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
 
     <!--更行合同信息==》主表更新-->
     <update id="updateContract" parameterType="Contract">
-        update t_contract set nowTime=NOW(),bankAccount=#{bankAccount},bankName=#{bankName},
+        update t_contract set bankAccount=#{bankAccount},bankName=#{bankName},
         beginTime=#{beginTime},clientId=#{client.clientId},contactName=#{contactName},
         contractName=#{contractName},contractType=#{contractType},contractVersion=#{contractVersion},
-        endTime=#{endTime},isFreight=#{freight},telephone=#{telephone},ticketRate1=#{ticketRate1},totalPrice=#{totalPrice}
+        endTime=#{endTime},isFreight=#{freight},telephone=#{telephone},ticketRate1=#{ticketRate1},totalPrice=#{totalPrice},freightBearer=#{freightBearer}
         where  contractId=#{contractId}
     </update>
     <!--删除字表的明细-->
@@ -430,13 +440,16 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <select id="getWastesInfoByCompanyName" resultMap="ContractRM">
         select * from t_contract
         where clientId in (select clientId from client where companyName =#{companyName})
-        and checkState='Keeping' and <![CDATA[ DATE_FORMAT(endTime, '%Y-%m-%d') >= DATE_FORMAT(NOW(), '%Y-%m-%d')
-        and DATE_FORMAT(beginTime, '%Y-%m-%d') <=  DATE_FORMAT(NOW(), '%Y-%m-%d') ]]>;
+        and checkState='Keeping' and <![CDATA[ DATE_FORMAT(endTime, '%Y-%m-%d') >= DATE_FORMAT(#{creationDate}, '%Y-%m-%d')
+        and DATE_FORMAT(beginTime, '%Y-%m-%d') <=  DATE_FORMAT(#{creationDate}, '%Y-%m-%d') ]]>;
     </select>
 
+    <select id="getContractByCompanyName" parameterType="String" resultMap="ContractRM">
+        select * from t_contract
+        where clientId in (select clientId from client where companyName =#{companyName});
+    </select>
 
     <!--获取最新的合同数据(不分合同类别)==>合约量统计-->
-
     <resultMap id="QuotationItemRM" type="QuotationItem">
         <association property="contract" column="contractId" select="getContractById"></association>
         <association property="client" column="clientId" select="getClient"></association>
@@ -546,6 +559,17 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
             limit #{page.start}, #{page.count}
         </if>
     </select>
+
+    <!--审批合同模板-->
+  <update id="approvalModel" parameterType="String">
+      update t_contract set checkStateId=70 where contractId=#{contractId}
+  </update>
+
+
+    <!--签订合同-->
+    <update id="signContract" parameterType="String">
+        update t_contract set  checkStateId=172 where contractId=#{contractId}
+    </update>
 </mapper>
 
 

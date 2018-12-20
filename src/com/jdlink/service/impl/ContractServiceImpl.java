@@ -7,6 +7,7 @@ import com.jdlink.service.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -250,12 +251,15 @@ contractMapper.updateFreight2(id);
     public List<Contract> getContractByMonth(String month){ return contractMapper.getContractListByMonth(month); }
 
     @Override
+    public  List<Contract> getContractByCompanyName(String companyName){ return contractMapper.getContractByCompanyName(companyName); }
+
+    @Override
     public int getNewestContractId1() {
         return contractMapper.getNewestContractId1();
     }
 
     @Override
-    public Contract getWastesInfoByCompanyName(String companyName){ return contractMapper.getWastesInfoByCompanyName(companyName);}
+    public Contract getWastesInfoByCompanyName(String companyName,Date creationDate){ return contractMapper.getWastesInfoByCompanyName(companyName,creationDate);}
 
     @Override
     public List<QuotationItem> ContractList(Page page) {
@@ -285,6 +289,16 @@ contractMapper.updateFreight2(id);
     @Override
     public List<QuotationItem> searchContractVolume(QuotationItem quotationItem) {
         return contractMapper.searchContractVolume(quotationItem);
+    }
+
+    @Override
+    public void approvalModel(String contractId) {
+        contractMapper.approvalModel(contractId);
+    }
+
+    @Override
+    public void signContract(String contractId) {
+        contractMapper.signContract(contractId);
     }
 
 }

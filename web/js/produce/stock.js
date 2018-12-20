@@ -936,6 +936,7 @@ function save() {
         type: 'POST',
         url: "addStock",
         data: JSON.stringify(data),
+        async: false,
         contentType: "application/json;charset=utf-8",
         success: function (result) {
             if (result != null) {
@@ -951,6 +952,7 @@ function save() {
                     $.ajax({
                         type: 'POST',
                         url: "addStockItem",
+                        async: false,
                         data: JSON.stringify(stockItem),
                         contentType: "application/json;charset=utf-8",
                         success: function (result) {
@@ -1091,6 +1093,7 @@ function loadAdjustStock() {
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getStockById",                  // url
+        async: false,
         dataType: "json",
         data: {'stockId': stockId},
         success: function (result) {
@@ -1302,6 +1305,7 @@ function adjustStock1() {
                     $.ajax({
                         type: 'POST',
                         url: "addStockItem1",
+                        async: false,
                         data: JSON.stringify(stockItem),
                         contentType: "application/json;charset=utf-8",
                         success: function (result) {

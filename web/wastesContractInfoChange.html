@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -301,8 +300,13 @@ $.ajax({
                     <td class="text-center" colspan="2">
                         <input type="file" class="focus" id="contactFile" name="contactName" placeholder="">
                     </td>
-                    <td class="text-center" ></td>
-                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" id="freight"></td>
+                    <td class="text-center" colspan="2">
+                         <div id="freightCheckbox">
+                        <label>经营单位承担<input type="radio" name="freightBearer" checked value=false></label>
+                        <label>客户承担<input type="radio" name="freightBearer" value=true></label>
+                    </div>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -384,7 +388,7 @@ $.ajax({
                 <tr>
                     <td class="text-center" style="width: 200px">开票类型</td>
                     <td class="text-center">
-                        <select title="" class="form-control" id="taxRate1" name="ticketRate1" style="width: 200px"></select>
+                        <select title="" class="form-control" id="taxRate1" name="ticketRate1" style="width: 200px" disabled></select>
                     </td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>

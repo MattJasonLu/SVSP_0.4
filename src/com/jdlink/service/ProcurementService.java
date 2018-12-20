@@ -51,4 +51,6 @@ public interface ProcurementService {
     int searchProcurementPlanCount(ProcurementPlan procurementPlan);
     void updateMaterialState(int id);
     List<ProcurementPlanItem> searchAdjust(ProcurementPlanItem procurementPlanItem);
+    void updateMaterialCategoryItemForProcurementPlan(String procurementPlanId,int MaterialCategoryId);
+
 }

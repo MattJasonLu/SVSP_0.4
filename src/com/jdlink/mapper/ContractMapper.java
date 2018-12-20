@@ -4,6 +4,7 @@ import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.Assessment;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -106,10 +107,10 @@ public interface ContractMapper {
     List<Contract> getContractByClientId(String id);
 
     List<Contract> getContractByMonth(String month);
-
+    List<Contract> getContractByCompanyName(String companyName);
    int getNewestContractId1();
 
-   Contract getWastesInfoByCompanyName(String companyName);
+   Contract getWastesInfoByCompanyName(@Param("companyName") String companyName,@Param("creationDate") Date creationDate);
 
 
    List<QuotationItem> ContractList(Page page);
@@ -123,4 +124,8 @@ public interface ContractMapper {
     void updatePictureUrl(String wastesCode,String wastesName,int contractId,String url);
 
     List<QuotationItem> searchContractVolume(QuotationItem quotationItem);
+
+    void approvalModel(String contractId);
+
+    void signContract(String contractId);
 }

@@ -269,7 +269,7 @@ function loadPageContractTemplateList() {
         contentType: 'application/json;charset=utf-8',
         success: function (result) {
             if (result != undefined && result.status == "success") {
-                //console.log(result);
+                console.log(result);
                 setPageClone(result);
                 setPageCloneAfter(pageNumber);        // 重新设置页码
             } else {
@@ -408,12 +408,9 @@ function setContractModelList(result){
                         break;
                     // 合同状态
                     case (3):
-                        if(obj.checkState.name=="已作废"){
-                            $(this).html("已作废");
-                        }
-                        if(obj.checkState.name!="已作废"){
-                            $(this).html("使用中");
-                        }
+                    if(obj.checkStateItem!=null){
+                          $(this).html(obj.checkStateItem.dictionaryItemName)
+                    }
                         break;
                     // 合同版本号
                     case (4):
@@ -848,6 +845,7 @@ function getContractList() {
         url: "getContractBymodelName",                  // url
         dataType: "json",
         data:{"contractId":contractId},
+        async: false,
         success: function (result) {
             var data=eval(result);
             console.log(data);
@@ -937,9 +935,33 @@ function enterSearch() {
     }
 }
 
-/**
- * 修改
- */
-function contractTemplateModify() {
+function approval(item) {
 
+    var contractId=item.parentElement.previousElementSibling.innerHTML;
+
+    if(confirm("确认审批通过?")){
+        //点击确定后操作
+     $.ajax({
+         type: "POST",                            // 方法类型
+         url: "approvalModel",                  // url
+         dataType: "json",
+         data:{"contractId":contractId},
+         async: false,
+         success:function (result) {
+             if (result != undefined && result.status == "success"){
+                 alert(result.message)
+                 window.location.reload()
+             }
+             else {
+
+                 alert(result.message);
+
+             }
+         },
+         error:function (result) {
+             alert('服务器异常!')
+         }
+         
+     })
+    }
 }

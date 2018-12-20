@@ -129,6 +129,14 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-horizontal col-md-4">
+                        <div class="form-group" >
+                            <label class="col-sm-3 control-label" for="search-materialCategoryItem">物资类别</label>
+                            <div class="col-xs-7">
+                            <select type="date" class="input-sm form-control col-sm-3 " id="search-materialCategoryItem" title="" onchange="searchData()"></select>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-horizontal col-md-2">
                         <a class="btn btn-default" onclick="searchData()"><span class="glyphicon glyphicon-search" aria-hidden="true" ></span> 查询</a>
                         <a class="btn btn-default" onclick="reset()"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
@@ -164,6 +172,7 @@
                         <td class="text-center">需求数量</td>
                         <td class="text-center">备注</td>
                         <td class="text-center">创建时间</td>
+                        <td class="text-center">物资类别</td>
                     </tr>
                     </thead>
                 </table>
@@ -181,16 +190,17 @@
                                 <input class="checkbox" type="checkbox" value="option1" name="select">
                             </label>
                         </td>
-                        <td class="text-center inboundOrderId"></td><!--入库单号-->
-                        <td class="text-center produceCompany "></td><!--产废单位-->
-                        <td class="text-left model-wastesName"></td>
-                        <td class="text-left model-wastesName"></td>
-                        <td class="text-left model-wastesName"></td>
-                        <td class="text-center model-wastesCode"></td>
-                        <td class="text-center model-wastesCode"></td>
-                        <td class="text-right modal-weight"></td>
-                        <td class="text-right modal-weight hidden"></td>
-                        <td class="text-right modal-weight hidden"></td>
+                        <td class="text-center inboundOrderId"></td><!--序号-->
+                        <td class="text-center produceCompany "></td><!--物资名称-->
+                        <td class="text-left model-wastesName"></td><!--规格型号-->
+                        <td class="text-left model-wastesName"></td><!--单位	-->
+                        <td class="text-left model-wastesName"></td><!--库存量-->
+                        <td class="text-center model-wastesCode"></td><!--需求数量-->
+                        <td class="text-center model-wastesCode"></td><!--备注-->
+                        <td class="text-right modal-weight"></td><!--创建时间-->
+                        <td class="text-right modal-weight"></td><!--物资类别-->
+                        <td class="text-right modal-weight hidden"></td><!--采购主键-->
+                        <td class="text-right modal-weight hidden"></td><!--物资主键-->
                     </tr>
                     </tbody>
                 </table>

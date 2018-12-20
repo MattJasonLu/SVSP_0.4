@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.NumberFormat;
+import java.util.List;
 
 @Service
 public class WareHouseServiceImpl implements WareHouseService {
@@ -48,6 +49,21 @@ public class WareHouseServiceImpl implements WareHouseService {
     @Override
     public WareHouse getWareHouseById(String id) {
         return wareHouseMapper.getWareHouseById(id);
+    }
+
+    @Override
+    public List<WareHouse> list() {
+        return wareHouseMapper.list();
+    }
+
+    @Override
+    public void update(WareHouse wareHouse) {
+        wareHouseMapper.update(wareHouse);
+    }
+
+    @Override
+    public void delete(String id) {
+        wareHouseMapper.delete(id);
     }
 
     @Override
