@@ -440,7 +440,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <select id="getWastesInfoByCompanyName" resultMap="ContractRM">
         select * from t_contract
         where clientId in (select clientId from client where companyName =#{companyName})
-        and checkState='Keeping' and <![CDATA[ DATE_FORMAT(endTime, '%Y-%m-%d') >= DATE_FORMAT(#{creationDate}, '%Y-%m-%d')
+        and checkStateId=172 and <![CDATA[ DATE_FORMAT(endTime, '%Y-%m-%d') >= DATE_FORMAT(#{creationDate}, '%Y-%m-%d')
         and DATE_FORMAT(beginTime, '%Y-%m-%d') <=  DATE_FORMAT(#{creationDate}, '%Y-%m-%d') ]]>;
     </select>
 

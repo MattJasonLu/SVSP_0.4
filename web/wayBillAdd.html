@@ -309,63 +309,67 @@
         <div class="modal fade bs-example-modal-lg" id="viewModal" tabindex="-1" role="dialog"
              aria-labelledby="myModalLabel">
             <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content" style="width: 85%">
-                    <h3 class="text-center">勾选需要绑定的合同</h3>
-                    <div style="overflow-y:scroll;white-space:nowrap;height: 500px">
-                        <table class="table table-striped table-hover table-condensed">
-                            <thead>
-                            <tr>
-                                <th class="text-center"></th>
-                                <th class="text-center">合同编号</th>
-                                <th class="text-center" style="width: 300px;">产废单位名称</th><!--相当于公司名称-->
-                                <th class="text-center">合同名称</th>
-                                <th class="text-center">合同类型</th>
-                                <th class="text-center">
-                                    <div class="form-inline">
-                                        <label class="control-label">状态</label>
-                                        <select class="form-control" id="state" onchange="getstate(this)"
-                                                style="height: 80%; font-size: x-small; display: none">
-                                            <option value="0">未作废</option>
-                                            <option value="1">待审批</option>
-                                            <option value="2">审批中</option>
-                                            <option value="3">履约中</option>
-                                            <option value="4">已作废</option>
-                                            <option value="5">已驳回</option>
-                                        </select>
-                                    </div>
-                                </th>
-                                <th class="text-center">签订日期</th>
-                                <th class="text-center">截止日期</th>
-                                <th class="text-center">操作</th>
-                            </tr>
-                            </thead>
-                            <tbody id="tbody1">
-                            <tr id="cloneTr1" name="clone">
-                                <td class="text-center">
-                                    <label>
-                                        <input class="radio" type="radio" name="select"
-                                               value="option1" aria-label="...">
-                                    </label>
-                                </td>
-                                <td class="text-center"></td><!--合同编号-->
-                                <td class="text-center"></td><!--供应商名称-->
-                                <td class="text-center"></td><!--合同名称-->
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center">
-                                    <a href="#" onclick="viewContract(this);"
-                                       title="查看"><span class="glyphicon glyphicon glyphicon-search"
-                                                        aria-hidden="true"></span></a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="text-center">勾选需要绑定的合同</h3>
                     </div>
-                    <div class="row text-center">
-                        <a class="btn btn-primary"  id="save" onclick="setWastesInfo()">确定</a>
-                        <a class="btn btn-danger" data-dismiss="modal" id="">关闭</a>
+                    <div class="modal-body">
+                        <div style="overflow-y:scroll;white-space:nowrap;height: 500px">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th class="text-center"></th>
+                                    <th class="text-center">合同编号</th>
+                                    <th class="text-center" style="width: 300px;">产废单位名称</th><!--相当于公司名称-->
+                                    <th class="text-center">合同名称</th>
+                                    <th class="text-center">合同类型</th>
+                                    <th class="text-center">
+                                        <div class="form-inline">
+                                            <label class="control-label">状态</label>
+                                            <select class="form-control" id="state" onchange="getstate(this)"
+                                                    style="height: 80%; font-size: x-small; display: none">
+                                                <option value="0">未作废</option>
+                                                <option value="1">待审批</option>
+                                                <option value="2">审批中</option>
+                                                <option value="3">履约中</option>
+                                                <option value="4">已作废</option>
+                                                <option value="5">已驳回</option>
+                                            </select>
+                                        </div>
+                                    </th>
+                                    <th class="text-center">签订日期</th>
+                                    <th class="text-center">截止日期</th>
+                                    <th class="text-center">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tbody1">
+                                <tr id="cloneTr1" name="clone">
+                                    <td class="text-center">
+                                        <label>
+                                            <input class="radio" type="radio" name="select"
+                                                   value="option1" aria-label="...">
+                                        </label>
+                                    </td>
+                                    <td class="text-center"></td><!--合同编号-->
+                                    <td class="text-center"></td><!--供应商名称-->
+                                    <td class="text-center"></td><!--合同名称-->
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center">
+                                        <a href="#" onclick="viewContract(this);"
+                                           title="查看"><span class="glyphicon glyphicon glyphicon-search"
+                                                            aria-hidden="true"></span></a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-primary" id="save" data-dismiss="modal" onclick="setWastesInfo()">确定</a>
+                        <a class="btn btn-danger" data-dismiss="modal" >关闭</a>
                     </div>
                 </div>
             </div>

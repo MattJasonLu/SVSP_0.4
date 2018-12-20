@@ -2012,4 +2012,5 @@ function setWastesInfo(){
             console.log(result);
         }
     });
+    $("#viewModal").hide();   // 关闭模态框
 }
