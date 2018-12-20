@@ -904,7 +904,7 @@
                     $("#modal3_bankAccount").text(data.bankAccount);
                     $("#modal3_taxNumber").text(data.taxNumber);
                     if (data.ticketRateItem != null)
-                        $("#modal4_ticketType").text(data.ticketRateItem.dictionaryItemName);
+                        $("#modal3_ticketType").text(data.ticketRateItem.dictionaryItemName);
                     $("#modal3_materialAttachment").click(function () {
                         if (data.materialAttachmentUrl != null && data.materialAttachmentUrl != "") {
                             window.open('downloadFile?filePath=' + data.materialAttachmentUrl);

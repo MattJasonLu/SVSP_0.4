@@ -6,11 +6,14 @@ var itemIndex = 0;
  */
 function loadInboundPlanOrder() {
     loadNavigationList();   // 设置动态菜单
+    var data1 = {};
     $.ajax({
         type: "POST",                       // 方法类型
         url: "listInboundPlanOrder",   // url
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
+        data: JSON.stringify(data1),
+        contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result !== undefined && result.status === "success") {
                 console.log(result);

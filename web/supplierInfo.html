@@ -52,34 +52,35 @@
             // 在失去焦点时验证
             onfocusout: function (element) {
                 $(element).valid();
-                var phone=$("#phone");//获得电话的对象
-                var mobile=$("#mobile")//获得手机对象
-                if(element.id=='mobile'){// 手机输入
-                    //  console.log("手机");
-                    var mobile1=  mobile.valid();//获得手机校验的结果
-//                    console.log("手机校验结果"+mobile1);
-                    if(mobile1){
-                        $("#phone1").hide();
-                        $("#mobile1").show();
-                        phone.rules("remove");//删除规则
-                    }
-                    if(!mobile1){
-                        phone.rules("add",{required:true})
-                    }
-                }
-                if(element.id=='phone'){//电话输入
-                    //console.log("电话");
-                    var phone2= phone.valid();//获得电话的校验结果
-//                    console.log("电话校验结果"+phone2);
-                    if(phone2){
-                        $("#mobile1").hide();
-                        $("#phone1").show();
-                        mobile.rules("remove");
-                    }
-                    if(!phone2){
-                        mobile.rules("add",{required:true});
-                    }
-                }
+                // update 2018年12月20日 bt ljc 去除固定电话校验
+//                 var phone=$("#phone");//获得电话的对象
+//                 var mobile=$("#mobile")//获得手机对象
+//                 if(element.id=='mobile'){// 手机输入
+//                     //  console.log("手机");
+//                     var mobile1=  mobile.valid();//获得手机校验的结果
+// //                    console.log("手机校验结果"+mobile1);
+//                     if(mobile1){
+//                         $("#phone1").hide();
+//                         $("#mobile1").show();
+//                         phone.rules("remove");//删除规则
+//                     }
+//                     if(!mobile1){
+//                         phone.rules("add",{required:true})
+//                     }
+//                 }
+//                 if(element.id=='phone'){//电话输入
+//                     //console.log("电话");
+//                     var phone2= phone.valid();//获得电话的校验结果
+// //                    console.log("电话校验结果"+phone2);
+//                     if(phone2){
+//                         $("#mobile1").hide();
+//                         $("#phone1").show();
+//                         mobile.rules("remove");
+//                     }
+//                     if(!phone2){
+//                         mobile.rules("add",{required:true});
+//                     }
+//                 }
             },
             rules: {
                 materialAttachment: {
@@ -96,10 +97,11 @@
                     minlength : 11,
                     isMobile : true
                 },
-                phone: { //电话
-                    required:true,
-                    isFixMobile: true
-                },
+                // update 2018年12月20日 bt ljc 去除固定电话校验
+                // phone: { //电话
+                //     required:true,
+                //     isFixMobile: true
+                // },
                 email: {
                     email: true
                 }
@@ -119,10 +121,11 @@
                     maxlength:"确认手机不能大于11个字符",
                     isMobile:"请输入正确的手机号"
                 },
-                phone: {  //电话
-                    required : "请正确填写固定电话号码(区号-8位号码)",
-                    isFixMobile:"123"
-                }
+                // update 2018年12月20日 bt ljc 去除固定电话校验
+                // phone: {  //电话
+                //     required : "请正确填写固定电话号码(区号-8位号码)",
+                //     isFixMobile:"123"
+                // }
             },
             errorPlacement: function (error, element) {
                 error.appendTo(element.parent());
@@ -907,7 +910,7 @@
                     </div>
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="phone" class="col-sm-4 control-label">联系电话 <sup><span id="phone1" class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <label for="phone" class="col-sm-4 control-label">联系电话 </label>
                             <div class="col-xs-5">
                                 <input type="text" class="form-control" id="phone" name="phone" placeholder="">
                             </div>
