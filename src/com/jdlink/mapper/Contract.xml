@@ -168,7 +168,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         select rate2 from ticketrate2;
     </select>
     <update id="cancel">
-        update t_contract set checkStateId=69,nowTime=#{1} where contractId=#{0}
+        update t_contract set checkStateId=69  where contractId=#{0}
     </update>
     <delete id="cancel1" parameterType="String">
         delete from  t_contract  where contractId=#{contractId}
@@ -180,10 +180,10 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         select distinct modelName from t_contract where modelName like CONCAT('%',#{key},'%') and period!="";
     </select>
     <update id="back" parameterType="Contract">
-        update t_contract set checkStateId=66,backContent=#{1},nowTime=#{2} where contractId=#{0}
+        update t_contract set checkStateId=66,backContent=#{1} where contractId=#{0}
     </update>
     <update id="opinion" parameterType="Contract">
-    update t_contract set opinion=#{1},checkStateId=68,nowTime=#{2} where contractId=#{0};
+    update t_contract set opinion=#{1},checkStateId=68 where contractId=#{0};
 </update>
     <select id="getHazardous" resultType="Hazardous">
         SELECT * FROM t_hazardous WHERE id in (
@@ -416,7 +416,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
 
     <!--更行合同信息==》主表更新-->
     <update id="updateContract" parameterType="Contract">
-        update t_contract set nowTime=NOW(),bankAccount=#{bankAccount},bankName=#{bankName},
+        update t_contract set bankAccount=#{bankAccount},bankName=#{bankName},
         beginTime=#{beginTime},clientId=#{client.clientId},contactName=#{contactName},
         contractName=#{contractName},contractType=#{contractType},contractVersion=#{contractVersion},
         endTime=#{endTime},isFreight=#{freight},telephone=#{telephone},ticketRate1=#{ticketRate1},totalPrice=#{totalPrice},freightBearer=#{freightBearer}
