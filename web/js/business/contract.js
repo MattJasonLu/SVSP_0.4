@@ -1401,8 +1401,7 @@ function viewContract(item) {
                     } else {
                         alert("未上传文件");
                     }
-
-                })
+                });
 
                 //合同总金额
                 $('#modal3_totalPrice').text(data.totalPrice.toFixed(2));
