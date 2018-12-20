@@ -1,4 +1,4 @@
-package com.jdlink;
+package com.jdlink.domain;
 
 /**
  * 预警模块数据结构
@@ -19,6 +19,47 @@ public class Warning {
      */
     private Float  warningThreshold;
 
+    /**
+     * 预警单位
+     * @return
+     */
+    private String warningUnit;
+
+    /**
+     * 分页
+     * @return
+     */
+    private Page page;
+
+    /**
+     * 关键字
+     * @return
+     */
+    private String keywords;
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
+    public String getWarningUnit() {
+        return warningUnit;
+    }
+
+    public void setWarningUnit(String warningUnit) {
+        this.warningUnit = warningUnit;
+    }
 
     public int getId() {
         return id;
