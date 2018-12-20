@@ -4,6 +4,7 @@ package com.jdlink.controller;
 import com.jdlink.domain.Produce.Organization;
 import com.jdlink.domain.User;
 import com.jdlink.service.MenuManageService;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,7 +152,7 @@ public class MenuManageController {
             organization1.setLevel(organization.getLevel());
             organization1.setCreationDate(new Date());
             organization1.setFounder(organization.getFounder());
-            menuManageService.add(organization1);
+            menuManageService.add(organization1);    // 新增菜单模块和权限树模块
             res.put("status", "success");
             res.put("message", "新增成功!");
         } catch (Exception e) {
@@ -195,7 +196,6 @@ public class MenuManageController {
     public String updateMenuUrl(@RequestBody Organization organization) {
         JSONObject res = new JSONObject();
         try {
-            menuManageService.updateMenuUrl(organization);
             // 获取网页对应的功能列表
             List<Organization> organizationList = menuManageService.getPageFunctionByUrl(organization.getUrl());
             menuManageService.deleteFunctionByPId(organization.getpId()); // 删除之前的功能
@@ -204,12 +204,13 @@ public class MenuManageController {
                 organization1.setpId(pId);
                 menuManageService.addFunctionTree(organization1);  // 添加网页功能
             }
+            menuManageService.updateMenuUrl(organization);
             res.put("status", "success");
             res.put("message", "设置成功!");
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
-            res.put("message", "设置失败！");
+            res.put("message", "该页面已绑定！");
         }
         return res.toString();
     }
@@ -606,9 +607,9 @@ public class MenuManageController {
      * 递归设置权限表
      */
     public void setFunctionTree(Organization organization) {
-        if (menuManageService.getFunctionCountById(organization.getId()) == 0){
+        if (menuManageService.getFunctionCountById(organization.getId()) == 0) {
             menuManageService.addFunctionTree(organization); // 新增
-        }else{
+        } else {
             System.out.println(organization);
         }
         if (organization.getOrganizationList() != null && organization.getOrganizationList().size() > 0) { // 存在字节点继续设置
