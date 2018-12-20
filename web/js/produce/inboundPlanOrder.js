@@ -885,7 +885,7 @@ function showSampleInfo(e) {
                 $("#model-wastesName").text(obj.wastes.name);
                 $("#model-wastesCode").text(obj.wastes.wastesId);
                 $("#model-wastesCategory").text(obj.wastes.category);
-                $("#model-wastesFormType").text(obj.wastes.formType.name);
+                if (obj.wastes.formType != null) $("#model-wastesFormType").text(obj.wastes.formType.name);
                 $("#model-transferId").text(obj.transferDraftId);
 
             } else {
@@ -1008,6 +1008,7 @@ function reject() {
  * @returns {string} 联单编号
  */
 function getIdByMenu(e) {
+    console.log(e.parent().html());
     return e.parent().parent().find("td[name='inboundPlanOrderId']").text();
 }
 
