@@ -1,3 +1,3 @@
 function edit() {
-    $("#btn").removeAttribute('hidden')
+    $("#btn").removeClass('hidden')
 }
