@@ -40,6 +40,10 @@ public class WayBillItem{
      */
     private float wastesAmount;
     /**
+     * 计量单位
+     */
+    private String wastesUnit;
+    /**
      * 危废价格
      */
     private float wastesPrice;
@@ -186,6 +190,14 @@ public class WayBillItem{
 
     public void setWayBillId(String wayBillId) {
         this.wayBillId = wayBillId;
+    }
+
+    public String getWastesUnit() {
+        return wastesUnit;
+    }
+
+    public void setWastesUnit(String wastesUnit) {
+        this.wastesUnit = wastesUnit;
     }
 
     @Override

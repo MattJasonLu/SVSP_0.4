@@ -1232,16 +1232,16 @@ public class ContractController {
     }
 
     /**
-     * 根据公司名获取合同内报价单里的危废明细
+     * 根据公司名和接运单日期获取合同内报价单里的危废明细
      * @param companyName
      * @return
      */
     @RequestMapping("getWastesInfoByCompanyName")
     @ResponseBody
-    public String getWastesInfoByCompanyName(String companyName) {
+    public String getWastesInfoByCompanyName(String companyName,Date creationDate) {
         JSONObject res = new JSONObject();
         try {
-            Contract contract = contractService.getWastesInfoByCompanyName(companyName);   // 获取合同
+            Contract contract = contractService.getWastesInfoByCompanyName(companyName,creationDate);   // 获取合同
             JSONObject data = JSONObject.fromBean(contract);
             res.put("status", "success");
             res.put("message", "明细数据获取成功");
@@ -1254,6 +1254,29 @@ public class ContractController {
         return res.toString();
     }
 
+
+/**
+ * 根据公司名获取合同
+ * @param companyName
+ * @return
+ */
+    @RequestMapping("getContractByCompanyName")
+    @ResponseBody
+    public String getContractByCompanyName(String companyName) {
+        JSONObject res = new JSONObject();
+        try {
+            List<Contract> contractList = contractService.getContractByCompanyName(companyName);   // 获取合同
+            JSONArray data = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
+            res.put("status", "success");
+            res.put("message", "获取成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取失败");
+        }
+        return res.toString();
+    }
 
     /*合约量统计加载页面**/
     @RequestMapping("loadContractVolumeList")

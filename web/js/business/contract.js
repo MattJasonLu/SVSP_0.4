@@ -335,7 +335,6 @@ function inputSwitchPage() {
  * 分页 获取首页内容
  * */
 function loadPageContractManageList() {
-
      loadNavigationList();   // 设置动态菜单
     $('.loader').show();
     //让修改操作提交后页面刷新仍然停留在当前页面而不是刷新到首页
@@ -467,7 +466,7 @@ function ContractListByName(item) {
             data: JSON.stringify(page),
             success: function (result) {
                 if (result != undefined) {
-                    $('.loader').hide()
+                    $('.loader').hide();
                     console.log(result);
                     setPageClone(result);
                     setPageCloneAfter(contractIndex,1)
@@ -1153,8 +1152,7 @@ function setContractList(result) {
                        if(obj.contractType!=null){
                        $(this).html(obj.contractType.name)
                        }
-
-                        break;
+                       break;
 
                 }
             });
