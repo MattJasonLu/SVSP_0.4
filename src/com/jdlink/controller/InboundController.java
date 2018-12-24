@@ -936,7 +936,7 @@ public class InboundController {
                  */
                 UnitDataItem unitDataItem=new UnitDataItem();
                 if(data[i][5].toString().equals("桶")){
-                unitDataItem.setDataDictionaryItemId(150);
+                unitDataItem.setDataDictionaryItemId(147);
                 }
                 if(!data[i][5].toString().equals("桶")) {
                     unitDataItem.setDataDictionaryItemId(139);
