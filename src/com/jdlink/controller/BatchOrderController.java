@@ -505,14 +505,21 @@ public class BatchOrderController {
 
             //处置方式适配
             ProcessWayItem processWayItem =batchingOrder.getProcessWayItem();
-            int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(processWayItem.getDictionaryItemName(),8);
-            processWayItem.setDataDictionaryItemId(dataDictionaryItemId);
+            if(processWayItem.getDataDictionaryItemId()!=0){
+                int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(processWayItem.getDictionaryItemName(),8);
+                processWayItem.setDataDictionaryItemId(dataDictionaryItemId);
+            }
+
             batchingOrder.setProcessWayItem(processWayItem);
 
             //进料方式适配
+
             HandleCategoryItem handleCategoryItem=batchingOrder.getHandleCategoryItem();
-            int  dataDictionaryItemId1= dictionaryService.getdatadictionaryitemIdByName(handleCategoryItem.getDictionaryItemName(),6);
-            handleCategoryItem.setDataDictionaryItemId(dataDictionaryItemId1);
+            if(handleCategoryItem.getDataDictionaryItemId()!=0){
+                int  dataDictionaryItemId1= dictionaryService.getdatadictionaryitemIdByName(handleCategoryItem.getDictionaryItemName(),6);
+                handleCategoryItem.setDataDictionaryItemId(dataDictionaryItemId1);
+
+            }
             batchingOrder.setHandleCategoryItem(handleCategoryItem);
                batchOrderService.addBatchingOrderBat(batchingOrder);
             //配料完成后扣除库存数据
@@ -556,14 +563,20 @@ public class BatchOrderController {
             //处置方式适配
 
             ProcessWayItem processWayItem =materialRequisitionOrder.getProcessWayItem();
-            int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(processWayItem.getDictionaryItemName(),8);
-            processWayItem.setDataDictionaryItemId(dataDictionaryItemId);
+            if(processWayItem.getDataDictionaryItemId()!=0){
+                int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(processWayItem.getDictionaryItemName(),8);
+                processWayItem.setDataDictionaryItemId(dataDictionaryItemId);
+            }
+
             materialRequisitionOrder.setProcessWayItem(processWayItem);
 
             //进料方式适配
             HandleCategoryItem handleCategoryItem=materialRequisitionOrder.getHandleCategoryItem();
-            int  dataDictionaryItemId1= dictionaryService.getdatadictionaryitemIdByName(handleCategoryItem.getDictionaryItemName(),6);
-            handleCategoryItem.setDataDictionaryItemId(dataDictionaryItemId1);
+            if(handleCategoryItem.getDataDictionaryItemId()!=0){
+                int  dataDictionaryItemId1= dictionaryService.getdatadictionaryitemIdByName(handleCategoryItem.getDictionaryItemName(),6);
+                handleCategoryItem.setDataDictionaryItemId(dataDictionaryItemId1);
+            }
+
             materialRequisitionOrder.setHandleCategoryItem(handleCategoryItem);
             batchOrderService.addRequisition(materialRequisitionOrder);
             //紧接着更新配料单的状态==>现在不更新状态，更新数量（配料单号和领用数量）
@@ -664,15 +677,21 @@ public class BatchOrderController {
             //处置方式适配
 
             ProcessWayItem processWayItem =outboundOrder.getProcessWayItem();
-            int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(processWayItem.getDictionaryItemName(),8);
-            processWayItem.setDataDictionaryItemId(dataDictionaryItemId);
+            if(processWayItem.getDataDictionaryItemId()!=0){
+                int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(processWayItem.getDictionaryItemName(),8);
+                processWayItem.setDataDictionaryItemId(dataDictionaryItemId);
+            }
+
             outboundOrder.setProcessWayItem(processWayItem);
 
 
             //进料方式适配
             HandleCategoryItem handleCategoryItem=outboundOrder.getHandleCategoryItem();
-            int  dataDictionaryItemId1= dictionaryService.getdatadictionaryitemIdByName(handleCategoryItem.getDictionaryItemName(),6);
-            handleCategoryItem.setDataDictionaryItemId(dataDictionaryItemId1);
+            if(handleCategoryItem.getDataDictionaryItemId()!=0){
+                int  dataDictionaryItemId1= dictionaryService.getdatadictionaryitemIdByName(handleCategoryItem.getDictionaryItemName(),6);
+                handleCategoryItem.setDataDictionaryItemId(dataDictionaryItemId1);
+            }
+
             outboundOrder.setHandleCategoryItem(handleCategoryItem);
            batchOrderService.addOutBoundOrder(outboundOrder);
            //改变领料单的状态
@@ -763,8 +782,10 @@ public class BatchOrderController {
             //处置方式适配
 
             ProcessWayItem processWayItem =outboundOrder.getProcessWayItem();
-           int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(processWayItem.getDictionaryItemName(),8);
-            processWayItem.setDataDictionaryItemId(dataDictionaryItemId);
+            if(processWayItem.getDataDictionaryItemId()!=0){
+                int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(processWayItem.getDictionaryItemName(),8);
+                processWayItem.setDataDictionaryItemId(dataDictionaryItemId);
+            }
             outboundOrder.setProcessWayItem(processWayItem);
             batchOrderService.addSecondary(outboundOrder);
 

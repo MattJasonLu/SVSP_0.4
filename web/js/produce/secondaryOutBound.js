@@ -693,7 +693,10 @@ function setBatchingWList(result) {
                     break;
                 // 危废名称
                 case (4):
-                    $(this).html(convertSecondWastesNameEngToChn(obj.wastesName));
+                    if(obj.secondaryCategoryItem!=null){
+                        $(this).html((obj.secondaryCategoryItem.dictionaryItemName));
+                    }
+
                     break;
                 // 产废类别
                 case (5):
