@@ -64,6 +64,8 @@ public interface DictionaryService {
 
     int getdatadictionaryitemIdByName(String name,int id);
 
+    DataDictionaryItem getDatadictionaryItemByName(String name, int id);
+
     void importDictionaryExcel(DataDictionary dataDictionary);
 
     List<String> getDictionaryTypeListFromDataDictionary();
