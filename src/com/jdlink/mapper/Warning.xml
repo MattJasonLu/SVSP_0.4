@@ -4,4 +4,86 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jdlink.mapper.WarningMapper" >
 
+    <!--添加数据-->
+    <insert id="add" parameterType="Warning">
+        insert into t_warning (warningName, warningThreshold, warningUnit,createTime)
+        values (#{warningName},#{warningThreshold},#{warningUnit},NOW());
+    </insert>
+
+    <!--更新数据-->
+    <update id="updateWarning" parameterType="Warning">
+        update t_warning set  warningName=#{warningName},warningThreshold=#{warningThreshold},
+        warningUnit=#{warningUnit} where id=#{id};
+    </update>
+
+  <!--根据编号获取阈值-->
+    <select id="getThresholdById" resultType="float" parameterType="int">
+        select warningThreshold from t_warning where  id=#{id}
+    </select>
+
+    <!--初始化页面加载-->
+    <select id="loadWarningList" resultType="Warning">
+        select  * from t_warning  order  by createTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <!--删除-->
+    <delete id="deleteWarning" parameterType="int">
+        delete from t_warning where id=#{id};
+    </delete>
+
+    <!--总数-->
+    <select id="totalWarningRecord" resultType="int">
+        select count(*) from t_warning;
+    </select>
+
+
+    <!--查询-->
+    <select id="searchWaring" parameterType="Warning" resultType="Warning">
+        select * from t_warning
+        <where>
+            <if test="keywords!='' and keywords!=null">
+                or warningName like "%"#{keywords}"%"
+                or warningThreshold like "%"#{keywords}"%"
+                or warningUnit=#{keywords}
+            </if>
+            <if test="warningName!='' and warningName!=null">
+                and warningName = #{warningName}
+            </if>
+            <if test="warningThreshold!='' and warningThreshold!=null">
+                and warningThreshold = #{warningThreshold}
+            </if>
+            <if test="warningUnit!='' and warningUnit!=null">
+                and warningUnit = #{warningUnit}
+            </if>
+        </where>
+        order by createTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--查询-->
+    <select id="searchWaringCount" parameterType="Warning" resultType="int">
+        select count(*) from t_warning
+        <where>
+            <if test="keywords!='' and keywords!=null">
+                or warningName like "%"#{keywords}"%"
+                or warningThreshold like "%"#{keywords}"%"
+                or warningUnit=#{keywords}
+            </if>
+            <if test="warningName!='' and warningName!=null">
+                and warningName = #{warningName}
+            </if>
+            <if test="warningThreshold!='' and warningThreshold!=null">
+                and warningThreshold = #{warningThreshold}
+            </if>
+            <if test="warningUnit!='' and warningUnit!=null">
+                and warningUnit = #{warningUnit}
+            </if>
+        </where>
+
+    </select>
 </mapper>
