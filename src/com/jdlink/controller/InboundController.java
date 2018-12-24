@@ -924,12 +924,19 @@ public class InboundController {
                 // 设置危废信息
                 Wastes wastes = new Wastes();
                 wastes.setName(data[i][5].toString());      // 危废名称
+
+                SecondaryCategoryItem secondaryCategoryItem= new SecondaryCategoryItem();
+
+                int dataDictionaryItemId=dictionaryService.getdatadictionaryitemIdByName(data[i][5].toString(),26);
+                secondaryCategoryItem.setDataDictionaryItemId(dataDictionaryItemId);
+                inboundOrderItem.setSecondaryCategoryItem(secondaryCategoryItem);
+
                 /**
                  * 除了桶单位是只，其他为吨
                  */
                 UnitDataItem unitDataItem=new UnitDataItem();
                 if(data[i][5].toString().equals("桶")){
-                unitDataItem.setDataDictionaryItemId(150);
+                unitDataItem.setDataDictionaryItemId(147);
                 }
                 if(!data[i][5].toString().equals("桶")) {
                     unitDataItem.setDataDictionaryItemId(139);
@@ -955,8 +962,8 @@ public class InboundController {
                 //处置方式适配
                 ProcessWayItem processWayItem =new ProcessWayItem();
                 if(data[i][10].toString()!="null"){
-                    int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(data[i][10].toString(),8);
-                    processWayItem.setDataDictionaryItemId(dataDictionaryItemId);
+                    int  dataDictionaryItemId1= dictionaryService.getdatadictionaryitemIdByName(data[i][10].toString(),8);
+                    processWayItem.setDataDictionaryItemId(dataDictionaryItemId1);
                     inboundOrderItem.setProcessWayItem(processWayItem);
                 }
 
@@ -981,8 +988,8 @@ public class InboundController {
                 //进料方式适配
                 HandleCategoryItem handleCategoryItem =new HandleCategoryItem();
                 if(data[i][11].toString()!="null"){
-                    int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(data[i][11].toString(),6);
-                    handleCategoryItem.setDataDictionaryItemId(dataDictionaryItemId);
+                    int  dataDictionaryItemId2= dictionaryService.getdatadictionaryitemIdByName(data[i][11].toString(),6);
+                    handleCategoryItem.setDataDictionaryItemId(dataDictionaryItemId2);
                     inboundOrderItem.setHandleCategoryItem(handleCategoryItem);
                 }
 //                switch (data[i][11].toString()) {
@@ -1010,8 +1017,8 @@ public class InboundController {
                 // 设置物质形态
                 FormTypeItem formTypeItem =new FormTypeItem();
                 if(data[i][12].toString()!="null"){
-                    int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(data[i][12].toString(),1);
-                    formTypeItem.setDataDictionaryItemId(dataDictionaryItemId);
+                    int  dataDictionaryItemId3= dictionaryService.getdatadictionaryitemIdByName(data[i][12].toString(),1);
+                    formTypeItem.setDataDictionaryItemId(dataDictionaryItemId3);
                     inboundOrderItem.setFormTypeItem(formTypeItem);
                 }
 
@@ -1036,8 +1043,8 @@ public class InboundController {
 //                // 设置包装方式
                 PackageTypeItem packageTypeItem =new PackageTypeItem();
                 if(data[i][13].toString()!="null"){
-                    int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(data[i][13].toString(),21);
-                    formTypeItem.setDataDictionaryItemId(dataDictionaryItemId);
+                    int  dataDictionaryItemId4= dictionaryService.getdatadictionaryitemIdByName(data[i][13].toString(),21);
+                    formTypeItem.setDataDictionaryItemId(dataDictionaryItemId4);
                     inboundOrderItem.setPackageTypeItem(packageTypeItem);
                 }
 

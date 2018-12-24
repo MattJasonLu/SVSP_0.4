@@ -134,7 +134,15 @@ public class InboundOrderItem {
      * 次生名称数据字典
      * @return
      */
+    private SecondaryCategoryItem secondaryCategoryItem;
 
+    public SecondaryCategoryItem getSecondaryCategoryItem() {
+        return secondaryCategoryItem;
+    }
+
+    public void setSecondaryCategoryItem(SecondaryCategoryItem secondaryCategoryItem) {
+        this.secondaryCategoryItem = secondaryCategoryItem;
+    }
 
     public UnitDataItem getUnitDataItem() {
         return unitDataItem;
