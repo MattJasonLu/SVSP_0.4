@@ -124,6 +124,26 @@ public class InboundOrderItem {
      */
     private RecordStateItem recordStateItem;
 
+    /**
+     * 单位数据字典
+     * @return
+     */
+    private UnitDataItem unitDataItem;
+
+    /**
+     * 次生名称数据字典
+     * @return
+     */
+
+
+    public UnitDataItem getUnitDataItem() {
+        return unitDataItem;
+    }
+
+    public void setUnitDataItem(UnitDataItem unitDataItem) {
+        this.unitDataItem = unitDataItem;
+    }
+
     public HandleCategoryItem getHandleCategoryItem() {
         return handleCategoryItem;
     }
