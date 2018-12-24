@@ -120,6 +120,11 @@
         select dataDictionaryItemId from  datadictionaryitem where dictionaryItemName=#{0} and dataDictionaryId=#{1}
     </select>
 
+   <!--根据明细名称获取对象-->
+    <select id="getDatadictionaryItemByName"  resultType="DataDictionaryItem">
+        select * from  datadictionaryitem where dictionaryItemName=#{0} and dataDictionaryId=#{1}
+    </select>
+
 
     <!--查询主表的dictionaryType-->
     <select id="getDictionaryTypeListFromDataDictionary" resultType="String">

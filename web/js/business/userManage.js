@@ -371,6 +371,8 @@ function setFunctionChecked(result) {
     var data = eval(result);
     for (var i = 0; i < data.length; i++) {
         var name = data[i].functionName;
+        var id = data[i].id;
+        console.log("functionId="+id);
         var nodes = $('#tree').treeview('search', [name, {
             ignoreCase: true,     // case insensitive
             exactMatch: true,    // like or equals

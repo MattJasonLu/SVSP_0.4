@@ -379,11 +379,6 @@
 
 
     <insert id="addIn" parameterType="IngredientsIn">
-        <!--<if test="procurementItemIdList != null and procurementItemIdList.size() > 0">-->
-        <!--<foreach index="index" item="procurementItemId" collection="procurementItemIdList">-->
-        <!--update t_pl_materialsetstate = 'ToPick'where id = #{procurementItemId};-->
-        <!--</foreach>-->
-        <!--</if>-->
         insert into
         t_pr_ingredients_in
         (id,companyName,creationDate,fileId,totalPrice,bookkeeper,approver,keeper,acceptor,handlers,state,nowTime,creationTime,checkStateId)
@@ -396,11 +391,12 @@
 
                 insert into
                 t_pr_ingredients(inId,serialNumberIn,name,unitPrice,totalPrice,amount,wareHouseName,post,specification,
-                unit,ingredientState,remarks,equipmentId,procurementId,ingredientStateId)
+                unit,unitId,ingredientState,remarks,equipmentId,procurementId,ingredientStateId)
                 values
                 (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.name},#{ingredients.unitPrice},
                 #{ingredients.totalPrice},#{ingredients.amount},#{ingredients.wareHouseName},#{ingredients.post},
-                #{ingredients.specification},#{ingredients.unitDataItem.dictionaryItemName},'ToReceive',#{ingredients.remarks},#{ingredients.equipmentDataItem.dataDictionaryItemId},
+                #{ingredients.specification},#{ingredients.unit},#{ingredients.unitDataItem.dataDictionaryItemId},'ToReceive',
+                #{ingredients.remarks},#{ingredients.equipmentDataItem.dataDictionaryItemId},
                 #{ingredients.procurementId},38);
                 <choose>
                     <when test="ingredients.aid != 'exist'">

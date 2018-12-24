@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.DriverManager;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -157,7 +158,10 @@ public class ImportUtil {
 //                                System.out.println(cellStyle+"++>");
                                 String cat = cellStyle.getCellTypeEnum().toString();
                                 if (cat.equals("NUMERIC")) {
-                                    obj[j] = cellStyle.getNumericCellValue();
+                                    // 不变为数学表达式
+                                    DecimalFormat df=new DecimalFormat("0");
+                                    obj[j] = df.format(cellStyle.getNumericCellValue());
+//                                    obj[j] = cellStyle.getNumericCellValue();
                                     int style = cellStyle.getCellStyle().getDataFormat();
                                     if (HSSFDateUtil.isCellDateFormatted(cellStyle)) {
                                         Date date = cellStyle.getDateCellValue();
@@ -182,8 +186,15 @@ public class ImportUtil {
                                         }
 
                                     }
-                                }
-                                if (cat.equals("STRING")) {
+                                    // 如果是公式类型
+                                } else if (cat.equals("FORMULA")) {
+                                    try {
+                                        obj[j] = String.valueOf(cellStyle.getNumericCellValue());
+                                    } catch (IllegalStateException e) {
+                                        obj[j] = String.valueOf(cellStyle.getRichStringCellValue());
+                                    }
+    //                              obj[j] = cellStyle.getStringCellValue();
+                                } else if (cat.equals("STRING")) {
                                     obj[j] = cellStyle.getStringCellValue();
                                 }
                             }    else  {

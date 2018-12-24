@@ -587,7 +587,6 @@ public class DictionaryController {
     }
 
 
-
     /*
             获取经营方式字典数据
              */
@@ -632,7 +631,6 @@ public class DictionaryController {
         }
         return res.toString();
     }
-
 
 
     /*
@@ -795,32 +793,31 @@ public class DictionaryController {
         return res.toString();
     }
 
-     /*
-         获取事故防范和应急预案字典数据
-          */
-     @RequestMapping("getContingencyPlanByDataDictionary")
-     @ResponseBody
-     public String getContingencyPlanByDataDictionary() {
-         JSONObject res = new JSONObject();
-         try {
-             List<DataDictionaryItem> formTypeList = dictionaryService.getSelectListByDataDictionary(27);
-             JSONArray data = JSONArray.fromArray(formTypeList.toArray());
-             res.put("data", data);
-             res.put("status", "success");
-             res.put("message", "获取事故防范和应急预案成功");
-         } catch (Exception e) {
-             e.printStackTrace();
-             res.put("status", "fail");
-             res.put("message", "获取事故防范和应急预案失败");
+    /*
+        获取事故防范和应急预案字典数据
+         */
+    @RequestMapping("getContingencyPlanByDataDictionary")
+    @ResponseBody
+    public String getContingencyPlanByDataDictionary() {
+        JSONObject res = new JSONObject();
+        try {
+            List<DataDictionaryItem> formTypeList = dictionaryService.getSelectListByDataDictionary(27);
+            JSONArray data = JSONArray.fromArray(formTypeList.toArray());
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "获取事故防范和应急预案成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取事故防范和应急预案失败");
 
-         }
-         return res.toString();
-     }
+        }
+        return res.toString();
+    }
 
 
     /**
      * 获取物资类别
-     *
      */
     @RequestMapping("getMaterialCategoryByDataDictionary")
     @ResponseBody
@@ -842,67 +839,66 @@ public class DictionaryController {
     }
 
 
-        /**
-          * 根据明细名称获取编号
-          */
-        public int getdatadictionaryitemIdByName(String name,int id){
-            return dictionaryService.getdatadictionaryitemIdByName(name,id);
-        }
+    /**
+     * 根据明细名称获取编号
+     */
+    public int getdatadictionaryitemIdByName(String name, int id) {
+        return dictionaryService.getdatadictionaryitemIdByName(name, id);
+    }
 
 
-/**
- * 数据字典导入
- */
-@RequestMapping("importDictionaryExcel")
+    /**
+     * 数据字典导入
+     */
+    @RequestMapping("importDictionaryExcel")
     @ResponseBody
-    public String importDictionaryExcel(MultipartFile excelFile){
-    JSONObject res=new JSONObject();
-    List<String> dictionaryTypeList=dictionaryService.getDictionaryTypeListFromDataDictionary();
+    public String importDictionaryExcel(MultipartFile excelFile) {
+        JSONObject res = new JSONObject();
+        List<String> dictionaryTypeList = dictionaryService.getDictionaryTypeListFromDataDictionary();
 
-    try{
-        List<Object[][]> data= ImportUtil.getInstance().getExcelFileData(excelFile);
-        System.out.println(data);
-        for(int i=0;i<data.size();i++){ //遍历页
-            boolean flag;//判断该数据字典在数据库中是否存在
-                    if(data.get(i)[2][0].toString()!="null"){ //如果有数据 [i][j]==>行,列
-                        System.out.println(data.get(i)[2][0]);
-                      flag=dictionaryTypeList.contains(data.get(i)[2][0].toString().trim());
-                      if(!flag){
-                          //创建对象
-                          DataDictionary dataDictionary=new DataDictionary();
-                          dataDictionary.setDictionaryType(data.get(i)[2][0].toString().trim());
-                          dataDictionary.setDictionaryName(data.get(i)[2][1].toString().trim());
-                          //先添加主表
-                          dictionaryService.addDataDictionary(dataDictionary);
-                          for(int k=4;k<data.get(i).length;k++){
-                              DataDictionaryItem dataDictionaryItem=new DataDictionaryItem();
-                              int dataDictionaryId=dictionaryService.getNewestId();
-                              dataDictionaryItem.setDataDictionaryId(dataDictionaryId);
-                              dataDictionaryItem.setDictionaryItemType(data.get(i)[k][0].toString().trim());
-                              dataDictionaryItem.setDictionaryItemName(data.get(i)[k][1].toString().trim());
-                              dictionaryService.addDataDictionaryItem(dataDictionaryItem);
-                          }
-                          res.put("status", "success");
-                          res.put("message", "导入成功");
-                      }
-                       if(flag) {
-                          res.put("status", "success");
-                          res.put("message", "该数据已存在!");
-                      }
+        try {
+            List<Object[][]> data = ImportUtil.getInstance().getExcelFileData(excelFile);
+            System.out.println(data);
+            for (int i = 0; i < data.size(); i++) { //遍历页
+                boolean flag;//判断该数据字典在数据库中是否存在
+                if (data.get(i)[2][0].toString() != "null") { //如果有数据 [i][j]==>行,列
+                    System.out.println(data.get(i)[2][0]);
+                    flag = dictionaryTypeList.contains(data.get(i)[2][0].toString().trim());
+                    if (!flag) {
+                        //创建对象
+                        DataDictionary dataDictionary = new DataDictionary();
+                        dataDictionary.setDictionaryType(data.get(i)[2][0].toString().trim());
+                        dataDictionary.setDictionaryName(data.get(i)[2][1].toString().trim());
+                        //先添加主表
+                        dictionaryService.addDataDictionary(dataDictionary);
+                        for (int k = 4; k < data.get(i).length; k++) {
+                            DataDictionaryItem dataDictionaryItem = new DataDictionaryItem();
+                            int dataDictionaryId = dictionaryService.getNewestId();
+                            dataDictionaryItem.setDataDictionaryId(dataDictionaryId);
+                            dataDictionaryItem.setDictionaryItemType(data.get(i)[k][0].toString().trim());
+                            dataDictionaryItem.setDictionaryItemName(data.get(i)[k][1].toString().trim());
+                            dictionaryService.addDataDictionaryItem(dataDictionaryItem);
+                        }
+                        res.put("status", "success");
+                        res.put("message", "导入成功");
+                    }
+                    if (flag) {
+                        res.put("status", "success");
+                        res.put("message", "该数据已存在!");
+                    }
 
+                }
             }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导入失败");
         }
 
-
+        return res.toString();
     }
-    catch (Exception e){
-        e.printStackTrace();
-        res.put("status", "fail");
-        res.put("message", "导入失败");
-    }
-
-    return res.toString();
-}
 
 
 }
