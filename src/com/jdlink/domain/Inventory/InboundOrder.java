@@ -1,6 +1,8 @@
 package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Dictionary.CheckStateItem;
+import com.jdlink.domain.Dictionary.RecordStateItem;
 import com.jdlink.domain.Page;
 
 import java.util.ArrayList;
@@ -110,6 +112,34 @@ public class InboundOrder {
      * 检查库存是否存在
      */
     private String aid;
+
+    /**
+     * 状态数据字典
+     * @return
+     */
+    private CheckStateItem checkStateItem;
+
+    /**
+     * 记录状态数据字典
+     * @return
+     */
+    private RecordStateItem recordStateItem;
+
+    public CheckStateItem getCheckStateItem() {
+        return checkStateItem;
+    }
+
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
+    }
+
+    public RecordStateItem getRecordStateItem() {
+        return recordStateItem;
+    }
+
+    public void setRecordStateItem(RecordStateItem recordStateItem) {
+        this.recordStateItem = recordStateItem;
+    }
 
     public String getAid() {
         return aid;
