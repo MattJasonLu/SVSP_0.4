@@ -2,10 +2,14 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Dictionary.DataDictionaryItem;
+import com.jdlink.domain.Dictionary.EquipmentDataItem;
+import com.jdlink.domain.Dictionary.UnitDataItem;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.domain.Wastes;
 import com.jdlink.service.IngredientsService;
+import com.jdlink.service.dictionary.DictionaryService;
 import com.jdlink.util.DBUtil;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
@@ -29,7 +33,8 @@ public class PRIngredientsController {
 
     @Autowired
     IngredientsService ingredientsService;
-
+    @Autowired
+    DictionaryService dictionaryService;
     ///////////辅料/备件入库单////////////////
 
     /**
@@ -293,6 +298,15 @@ public class PRIngredientsController {
                 ingredients.setPost(data[i][12].toString());
                 ingredients.setSpecification(data[i][13].toString());
                 ingredients.setUnit(data[i][14].toString());
+                // 根据计量单位名称获取计量单位数据字典ID 并设置
+                UnitDataItem unitDataItem = new UnitDataItem();
+                if (data[i][14].toString() != null && !data[i][14].toString().equals("") && !data[i][14].toString().equals("null")){
+                    DataDictionaryItem item = dictionaryService.getDatadictionaryItemByName(data[i][14].toString(), 25);
+                    if(item != null){
+                        unitDataItem.setDataDictionaryItemId(item.getDataDictionaryItemId());
+                    }
+                }
+                ingredients.setUnitDataItem(unitDataItem);
                 ingredients.setRemarks(data[i][15].toString());
                 switch (data[i][16].toString()) {
                     case ("医疗蒸煮系统"):
@@ -323,6 +337,15 @@ public class PRIngredientsController {
                         ingredients.setEquipment(Equipment.Prepare2);
                         break;
                 }
+                EquipmentDataItem equipmentDataItem = new EquipmentDataItem();
+                // 设置处置设备字典ID：根据处置设备的名称获取字典ID并设置
+                if (data[i][16].toString() != null && !data[i][16].toString().equals("") && !data[i][16].toString().equals("null")){
+                    DataDictionaryItem item = dictionaryService.getDatadictionaryItemByName(data[i][16].toString(), 5);
+                    if(item != null){
+                        equipmentDataItem.setDataDictionaryItemId(item.getDataDictionaryItemId());
+                    }
+                }
+                ingredients.setEquipmentDataItem(equipmentDataItem);
                 float total = Float.parseFloat(data[i][9].toString()) * Float.parseFloat(data[i][10].toString());
                 ingredients.setTotalPrice(total);
                 ingredients.setId(id);
@@ -1561,7 +1584,7 @@ public class PRIngredientsController {
     public float getInventoryByNameAndWare(@RequestBody Ingredients ingredients) {
         try {
             return ingredientsService.getInventoryByNameAndWare(ingredients).getAmount();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
