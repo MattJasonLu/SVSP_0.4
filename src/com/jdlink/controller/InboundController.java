@@ -1,13 +1,14 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
-import com.jdlink.domain.Dictionary.SecondaryCategory;
+import com.jdlink.domain.Dictionary.*;
 import com.jdlink.domain.Inventory.*;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.IngredientsIn;
 import com.jdlink.domain.Produce.LaboratoryTest;
 import com.jdlink.domain.Produce.ProcessWay;
 import com.jdlink.service.*;
+import com.jdlink.service.dictionary.DictionaryService;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
@@ -49,6 +50,8 @@ public class InboundController {
     SecondaryCategoryService secondaryCategoryService;
     @Autowired
     UserService userService;
+    @Autowired
+    DictionaryService dictionaryService;
 
     /**
      * 列出所有入库计划单信息
@@ -887,9 +890,15 @@ public class InboundController {
                     // 设置入库类别
                     map.get(id).setBoundType(BoundType.SecondaryInbound);
                     // 设置状态
-                    map.get(id).setCheckState(CheckState.NewBuild);
+                    CheckStateItem checkStateItem=new CheckStateItem();
+                    checkStateItem.setDataDictionaryItemId(75);
+                    map.get(id).setCheckStateItem(checkStateItem);
+//                    map.get(id).setCheckState(CheckState.NewBuild);
                     // 设置单据状态
-                    map.get(id).setRecordState(RecordState.Usable);
+                    RecordStateItem recordStateItem=new RecordStateItem();
+                    recordStateItem.setDataDictionaryItemId(20);
+                    map.get(id).setRecordStateItem(recordStateItem);
+//                    map.get(id).setRecordState(RecordState.Usable);
                     // 设置创建日期
                     map.get(id).setCreateDate(new Date());
                     map.get(id).setModifyDate(new Date());
@@ -915,91 +924,156 @@ public class InboundController {
                 // 设置危废信息
                 Wastes wastes = new Wastes();
                 wastes.setName(data[i][5].toString());      // 危废名称
+                /**
+                 * 除了桶单位是只，其他为吨
+                 */
+                UnitDataItem unitDataItem=new UnitDataItem();
+                if(data[i][5].toString().equals("桶")){
+                unitDataItem.setDataDictionaryItemId(150);
+                }
+                if(!data[i][5].toString().equals("桶")) {
+                    unitDataItem.setDataDictionaryItemId(139);
+                }
+                inboundOrderItem.setUnitDataItem(unitDataItem);
                 wastes.setWastesId(data[i][6].toString());  // 危废代码
                 inboundOrderItem.setWastes(wastes);
+                if(data[i][7].toString()=="null")
+                {
+                    data[i][7]="0";
+                }
                 inboundOrderItem.setWastesAmount(Float.parseFloat(data[i][7].toString()));
+                if(data[i][8].toString()=="null") {
+                    data[i][8] = "0";
+                }
                 inboundOrderItem.setUnitPriceTax(Float.parseFloat(data[i][8].toString())); // 危废数量
+                if(data[i][9].toString()=="null")
+                {
+                    data[i][9]="0";
+                }
                 inboundOrderItem.setTotalPrice(Float.parseFloat(data[i][9].toString()));   // 危废单价
-                // 设置处置方式
-                switch (data[i][10].toString()) {
-                    case "焚烧":
-                        inboundOrderItem.setProcessWay(ProcessWay.Burning);
-                        break;
-                    case "填埋":
-                        inboundOrderItem.setProcessWay(ProcessWay.Landfill);
-                        break;
-                    case"清洗":
-                        inboundOrderItem.setProcessWay(ProcessWay.Clean);
-                        break;
-                    default:
-                        break;
+
+                //处置方式适配
+                ProcessWayItem processWayItem =new ProcessWayItem();
+                if(data[i][10].toString()!="null"){
+                    int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(data[i][10].toString(),8);
+                    processWayItem.setDataDictionaryItemId(dataDictionaryItemId);
+                    inboundOrderItem.setProcessWayItem(processWayItem);
                 }
+
+
+
+
+//                // 设置处置方式
+//                switch (data[i][10].toString()) {
+//                    case "焚烧":
+//                        inboundOrderItem.setProcessWay(ProcessWay.Burning);
+//                        break;
+//                    case "填埋":
+//                        inboundOrderItem.setProcessWay(ProcessWay.Landfill);
+//                        break;
+//                    case"清洗":
+//                        inboundOrderItem.setProcessWay(ProcessWay.Clean);
+//                        break;
+//                    default:
+//                        break;
+//                }
                 // 设置进料方式
-                switch (data[i][11].toString()) {
-                    case "污泥":
-                        inboundOrderItem.setHandleCategory(HandleCategory.Sludge);
-                        break;
-                    case "废液":
-                        inboundOrderItem.setHandleCategory(HandleCategory.WasteLiquid);
-                        break;
-                    case "散装料":
-                        inboundOrderItem.setHandleCategory(HandleCategory.Bulk);
-                        break;
-                    case "破碎料":
-                        inboundOrderItem.setHandleCategory(HandleCategory.Crushing);
-                        break;
-                    case "精馏残渣":
-                        inboundOrderItem.setHandleCategory(HandleCategory.Distillation);
-                        break;
-                    case "悬挂连":
-                        inboundOrderItem.setHandleCategory(HandleCategory.Suspension);
-                        break;
-                    default:
-                        break;
+                //进料方式适配
+                HandleCategoryItem handleCategoryItem =new HandleCategoryItem();
+                if(data[i][11].toString()!="null"){
+                    int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(data[i][11].toString(),6);
+                    handleCategoryItem.setDataDictionaryItemId(dataDictionaryItemId);
+                    inboundOrderItem.setHandleCategoryItem(handleCategoryItem);
                 }
+//                switch (data[i][11].toString()) {
+//                    case "污泥":
+//                        inboundOrderItem.setHandleCategory(HandleCategory.Sludge);
+//                        break;
+//                    case "废液":
+//                        inboundOrderItem.setHandleCategory(HandleCategory.WasteLiquid);
+//                        break;
+//                    case "散装料":
+//                        inboundOrderItem.setHandleCategory(HandleCategory.Bulk);
+//                        break;
+//                    case "破碎料":
+//                        inboundOrderItem.setHandleCategory(HandleCategory.Crushing);
+//                        break;
+//                    case "精馏残渣":
+//                        inboundOrderItem.setHandleCategory(HandleCategory.Distillation);
+//                        break;
+//                    case "悬挂连":
+//                        inboundOrderItem.setHandleCategory(HandleCategory.Suspension);
+//                        break;
+//                    default:
+//                        break;
+//                }
                 // 设置物质形态
-                switch (data[i][12].toString()) {
-                    case "气体":
-                        inboundOrderItem.setFormType(FormType.Gas);
-                        break;
-                    case "液体":
-                        inboundOrderItem.setFormType(FormType.Liquid);
-                        break;
-                    case "固体":
-                        inboundOrderItem.setFormType(FormType.Solid);
-                        break;
-                    case "半固态":
-                        inboundOrderItem.setFormType(FormType.HalfSolid);
-                        break;
-                    default:
-                        break;
+                FormTypeItem formTypeItem =new FormTypeItem();
+                if(data[i][12].toString()!="null"){
+                    int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(data[i][12].toString(),1);
+                    formTypeItem.setDataDictionaryItemId(dataDictionaryItemId);
+                    inboundOrderItem.setFormTypeItem(formTypeItem);
                 }
-                // 设置包装方式
-                switch (data[i][13].toString()) {
-                    case "吨袋":
-                        inboundOrderItem.setPackageType(PackageType.Bag);
-                        break;
-                    case "标准箱":
-                        inboundOrderItem.setPackageType(PackageType.Box);
-                        break;
-                    case "吨箱":
-                        inboundOrderItem.setPackageType(PackageType.Ton);
-                        break;
-                    case "小袋":
-                        inboundOrderItem.setPackageType(PackageType.Pouch);
-                        break;
-                    case "铁桶":
-                        inboundOrderItem.setPackageType(PackageType.Iron);
-                        break;
-                    default:
-                        break;
+
+
+
+//                switch (data[i][12].toString()) {
+//                    case "气体":
+//                        inboundOrderItem.setFormType(FormType.Gas);
+//                        break;
+//                    case "液体":
+//                        inboundOrderItem.setFormType(FormType.Liquid);
+//                        break;
+//                    case "固体":
+//                        inboundOrderItem.setFormType(FormType.Solid);
+//                        break;
+//                    case "半固态":
+//                        inboundOrderItem.setFormType(FormType.HalfSolid);
+//                        break;
+//                    default:
+//                        break;
+//                }
+//                // 设置包装方式
+                PackageTypeItem packageTypeItem =new PackageTypeItem();
+                if(data[i][13].toString()!="null"){
+                    int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(data[i][13].toString(),21);
+                    formTypeItem.setDataDictionaryItemId(dataDictionaryItemId);
+                    inboundOrderItem.setPackageTypeItem(packageTypeItem);
                 }
+
+
+
+//                switch (data[i][13].toString()) {
+//                    case "吨袋":
+//                        inboundOrderItem.setPackageType(PackageType.Bag);
+//                        break;
+//                    case "标准箱":
+//                        inboundOrderItem.setPackageType(PackageType.Box);
+//                        break;
+//                    case "吨箱":
+//                        inboundOrderItem.setPackageType(PackageType.Ton);
+//                        break;
+//                    case "小袋":
+//                        inboundOrderItem.setPackageType(PackageType.Pouch);
+//                        break;
+//                    case "铁桶":
+//                        inboundOrderItem.setPackageType(PackageType.Iron);
+//                        break;
+//                    default:
+//                        break;
+//                }
                 // 设置化验单
                 LaboratoryTest laboratoryTest = new LaboratoryTest();
                 laboratoryTest.setLaboratoryTestNumber(RandomUtil.getRandomEightNumber());
+                if(data[i][14].toString()=="null"){
+                    data[i][14]="0";
+                }
                 laboratoryTest.setHeatAverage(Float.parseFloat(data[i][14].toString()));
 //                laboratoryTest.setPhAverage(Float.parseFloat(data[i][14].toString()));
 //                laboratoryTest.setAshAverage(Float.parseFloat(data[i][15].toString()));
+                if(data[i][15].toString()=="null"){
+                    data[i][15]="0";
+                }
                 laboratoryTest.setWaterContentAverage(Float.parseFloat(data[i][15].toString()));
 //                laboratoryTest.setChlorineContentAverage(Float.parseFloat(data[i][17].toString()));
 //                laboratoryTest.setSulfurContentAverage(Float.parseFloat(data[i][18].toString()));
