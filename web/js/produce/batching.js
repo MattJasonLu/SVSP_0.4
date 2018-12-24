@@ -217,6 +217,7 @@ function inputSwitchPage() {
 }
 
 function  batchingList() {
+    $('.loader').show();
     loadNavigationList();    // 设置动态菜单
     var page={};
     $.ajax({
@@ -228,9 +229,11 @@ function  batchingList() {
         contentType: "application/json; charset=utf-8",
         success:function (result) {
          if(result != undefined && result.status == "success"){
+
              console.log(result);
              //设置库存列表
              setWasteInventoryList(result.data);
+             $('.loader').hide();
          }
          else {
              console.log(result.message);

@@ -432,6 +432,7 @@ function setOutBoundList(result) {
 
 //加载次生列表==>次生出库新增页面
 function loadSecondaryList() {
+    $('.loader').show();
     loadNavigationList();    // 设置动态菜单
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
@@ -450,6 +451,7 @@ function loadSecondaryList() {
                console.log(result);
                 //设置库存列表
                 setWasteInventoryList(result.data);
+                $('.loader').hide();
             }
             else {
                 console.log(result.message);
@@ -693,7 +695,10 @@ function setBatchingWList(result) {
                     break;
                 // 危废名称
                 case (4):
-                    $(this).html(convertSecondWastesNameEngToChn(obj.wastesName));
+                    if(obj.secondaryCategoryItem!=null){
+                        $(this).html((obj.secondaryCategoryItem.dictionaryItemName));
+                    }
+
                     break;
                 // 产废类别
                 case (5):

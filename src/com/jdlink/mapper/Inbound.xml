@@ -19,10 +19,23 @@
     <!--入库单映射集-->
     <resultMap id="InboundOrderRM" type="InboundOrder" autoMapping="true">
         <id column="inboundOrderId" property="inboundOrderId"/>
+        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"></association>
+        <association property="recordStateItem" column="recordStateId" select="getRecordStateItem"></association>
         <association column="warehouseId" property="wareHouse" select="getWarehouse"/>
         <collection property="inboundOrderItemList" column="inboundOrderId" select="getInboundOrderItemList"
                     ofType="com.jdlink.domain.Inventory.InboundOrderItem" javaType="ArrayList"/>
     </resultMap>
+
+    <!--获取状态数据字典-->
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
+    </select>
+
+    <!--获取记录状态数据字典-->
+    <select id="getRecordStateItem" resultType="RecordStateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
+    </select>
+
 
     <resultMap id="InboundOrderItemRM" type="InboundOrderItem" autoMapping="true">
         <id column="inboundOrderItemId" property="inboundOrderItemId"/>
@@ -33,8 +46,37 @@
             <result property="category" column="wastesCategory"/>
         </association>
         <association property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"/>
+        <association property="processWayItem" column="processWayId" select="getProcessWayItem"></association>
+        <association property="handleCategoryItem" column="handleCategoryId" select="getHandleCategoryItem"></association>
+        <association property="formTypeItem" column="formTypeId" select="getFormTypeItem"></association>
+        <association property="packageTypeItem" column="packageTypeId" select="getPackageTypeItem"></association>
+        <association property="unitDataItem" column="unitId" select="getUnitDataItem"></association>
     </resultMap>
 
+    <!--获取物质形态数据字典-->
+    <select id="getFormTypeItem" resultType="FormTypeItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{formTypeId}
+    </select>
+
+    <!--获取包装方式数据字典-->
+    <select id="getPackageTypeItem" resultType="PackageTypeItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{packageTypeId}
+    </select>
+
+    <!--获取单位数据数据字典-->
+    <select id="getUnitDataItem" resultType="UnitDataItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{unitId}
+    </select>
+
+    <!--获取进料方式数据字典-->
+    <select id="getHandleCategoryItem" resultType="HandleCategoryItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{handleCategoryId}
+    </select>
+
+    <!--获取处置方式数据字典-->
+    <select id="getProcessWayItem" resultType="ProcessWayItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{processWayId}
+    </select>
     <select id="getWarehouse" resultType="WareHouse">
         select * from t_pl_warehouse where warehouseId=#{wareHouseId};
     </select>
@@ -311,17 +353,17 @@
     <insert id="addSecondInboundOrder" parameterType="InboundOrder">
         INSERT INTO t_pl_inboundorder
         (inboundOrderId, inboundDate, warehouseId, boundType, keeperId, directorId, approverId, checkState, remarks, creatorId,
-        createDate, departmentId, companyId, modifierId,modifyDate, recordState, category)
+        createDate, departmentId, companyId, modifierId,modifyDate, recordState, category,checkStateId,recordStateId)
         VALUES
         (#{inboundOrderId}, #{inboundDate}, #{wareHouse.wareHouseId}, #{boundType},#{keeperId}, #{directorId}, #{approverId},
-        #{checkState}, #{remarks},#{creatorId}, #{createDate}, #{departmentId}, #{companyId}, #{modifierId}, #{modifyDate}, #{recordState}, 1);
+        #{checkState}, #{remarks},#{creatorId}, #{createDate}, #{departmentId}, #{companyId}, #{modifierId}, #{modifyDate}, #{recordState}, 1,75,20);
         <if test="inboundOrderItemList.size() > 0">
             <foreach collection="inboundOrderItemList" item="inboundOrderItem" index="index">
                 INSERT INTO t_pl_inboundorderitem
                 (inboundOrderItemId, transferDraftId, inboundOrderId,
                 produceCompanyId, processWay, handleCategory,remarks, warehouseArea, recordState, isQualified,
                 wastesName, wastesCode, wastesCategory, wastesAmount,unitPriceTax, totalPrice, laboratoryTestId,
-                category, formType, packageType, wastesUnit, laborityTestHeat, laborityTestWater)
+                category, formType, packageType, wastesUnit, laborityTestHeat, laborityTestWater,processWayId,handleCategoryId,formTypeId,packageTypeId,unitId,secondaryCategoryId)
                 VALUES
                 (#{inboundOrderItem.inboundOrderItemId}, #{inboundOrderItem.transferDraftId},#{inboundOrderId},
                 #{inboundOrderItem.produceCompany.clientId}, #{inboundOrderItem.processWay},
@@ -330,7 +372,7 @@
                 #{inboundOrderItem.wastes.name},#{inboundOrderItem.wastes.wastesId}, #{inboundOrderItem.wastes.category},
                 #{inboundOrderItem.wastesAmount}, #{inboundOrderItem.unitPriceTax},#{inboundOrderItem.totalPrice},
                 #{inboundOrderItem.laboratoryTest.laboratoryTestNumber}, 1, #{inboundOrderItem.formType}, #{inboundOrderItem.packageType},
-                #{inboundOrderItem.wastesUnit}, #{inboundOrderItem.laboratoryTest.heatAverage}, #{inboundOrderItem.laboratoryTest.waterContentAverage});
+                #{inboundOrderItem.wastesUnit}, #{inboundOrderItem.laboratoryTest.heatAverage}, #{inboundOrderItem.laboratoryTest.waterContentAverage},#{inboundOrderItem.processWayItem.dataDictionaryItemId},#{inboundOrderItem.handleCategoryItem.dataDictionaryItemId},#{inboundOrderItem.formTypeItem.dataDictionaryItemId},#{inboundOrderItem.packageTypeItem.dataDictionaryItemId},#{inboundOrderItem.unitDataItem.dataDictionaryItemId},#{inboundOrderItem.secondaryCategoryItem.dataDictionaryItemId});
 
                 INSERT INTO t_pr_laboratorytest
                 (laboratorytestnumber, clientId, wastesName, wastesCode, heatAverage, phAverage, ashAverage, waterContentAverage,
@@ -344,10 +386,10 @@
                 #{inboundOrderItem.laboratoryTest.fluorineContentAverage},NOW());
 
                 insert  into t_pl_wasteinventory
-                (inboundOrderId,actualCount,unitPriceTax,wastesName,wareHouseId,clientId,wastesCode,inboundDate,processWay,handleCategory,creatorDate,boundType,transferDraftId,inboundOrderItemId,laboratoryTestId)
+                (inboundOrderId,actualCount,unitPriceTax,wastesName,wareHouseId,clientId,wastesCode,inboundDate,processWay,handleCategory,creatorDate,boundType,transferDraftId,inboundOrderItemId,laboratoryTestId,processWayId,handleCategoryId,formTypeId,packageTypeId,unitId,secondaryCategoryId)
                 values
                 (#{inboundOrderId},#{inboundOrderItem.wastesAmount},#{inboundOrderItem.unitPriceTax},#{inboundOrderItem.wastes.name},#{wareHouse.wareHouseId}, #{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},#{inboundDate}
-                ,#{inboundOrderItem.processWay}, #{inboundOrderItem.handleCategory},#{createDate},#{boundType},#{inboundOrderItem.transferDraftId},#{inboundOrderItem.inboundOrderItemId},#{inboundOrderItem.laboratoryTest.laboratoryTestNumber});
+                ,#{inboundOrderItem.processWay}, #{inboundOrderItem.handleCategory},#{createDate},#{boundType},#{inboundOrderItem.transferDraftId},#{inboundOrderItem.inboundOrderItemId},#{inboundOrderItem.laboratoryTest.laboratoryTestNumber},#{inboundOrderItem.processWayItem.dataDictionaryItemId},#{inboundOrderItem.handleCategoryItem.dataDictionaryItemId},#{inboundOrderItem.formTypeItem.dataDictionaryItemId},#{inboundOrderItem.packageTypeItem.dataDictionaryItemId},#{inboundOrderItem.unitDataItem.dataDictionaryItemId},#{inboundOrderItem.secondaryCategoryItem.dataDictionaryItemId});
 
                 insert into t_pl_secondaryinto
                 (clientId,wastesCode,handleCategory,processWay,remarks,nowTime,transferDraftId,wastesCategory,laboratoryTestId)

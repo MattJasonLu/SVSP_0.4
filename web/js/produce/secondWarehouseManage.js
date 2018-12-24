@@ -742,12 +742,12 @@ function setDataList(result) {
         clonedTr.find("td[name='inboundDate']").text(getDateStr(data.inboundDate));
         if (data.wareHouse != null) clonedTr.find("td[name='wareHouseName']").text(data.wareHouse.wareHouseName);
         if (data.boundType != null) clonedTr.find("td[name='boundType']").text(data.boundType.name);
-        if (data.recordState != null) clonedTr.find("td[name='recordState']").text(data.recordState.name);
+        if (data.recordStateItem != null) clonedTr.find("td[name='recordState']").text(data.recordStateItem.dictionaryItemName);
         clonedTr.find("td[name='creatorId']").text(data.creatorId);
         clonedTr.find("td[name='keeperId']").text(data.keeperId);
         clonedTr.find("td[name='directorId']").text(data.directorId);
         clonedTr.find("td[name='approverId']").text(data.approverId);
-        if (data.checkState != null) clonedTr.find("td[name='checkState']").text(data.checkState.name);
+        if (data.checkStateItem != null) clonedTr.find("td[name='checkState']").text(data.checkStateItem.dictionaryItemName);
         clonedTr.find("td[name='remarks']").text(data.remarks);
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
@@ -986,13 +986,13 @@ function setItemDataList(result) {
             clonedTr.find("td[name='wastesCode']").text(data.wastes.wastesId);
         }
         clonedTr.find("td[name='wastesAmount']").text(parseFloat(data.wastesAmount).toFixed(3));
-        if (data.wastesUnit != null) clonedTr.find("td[name='wastesUnit']").text(data.wastesUnit.name);
+        if (data.unitDataItem != null) clonedTr.find("td[name='wastesUnit']").text(data.unitDataItem.dictionaryItemName);
         clonedTr.find("td[name='unitPriceTax']").text(parseFloat(data.unitPriceTax).toFixed(3));
         clonedTr.find("td[name='totalPrice']").text(parseFloat(data.totalPrice).toFixed(3));
-        if (data.processWay != null) clonedTr.find("td[name='processWay']").text(data.processWay.name);
-        if (data.handleCategory != null) clonedTr.find("td[name='handleCategory']").text(data.handleCategory.name);
-        if (data.formType != null) clonedTr.find("td[name='formType']").text(data.formType.name);
-        if (data.packageType != null) clonedTr.find("td[name='packageType']").text(data.packageType.name);
+        if (data.processWayItem != null) clonedTr.find("td[name='processWay']").text(data.processWayItem.dictionaryItemName);
+        if (data.handleCategoryItem != null) clonedTr.find("td[name='handleCategory']").text(data.handleCategoryItem.dictionaryItemName);
+        if (data.formTypeItem != null) clonedTr.find("td[name='formType']").text(data.formTypeItem.dictionaryItemName);
+        if (data.packageTypeItem != null) clonedTr.find("td[name='packageType']").text(data.packageTypeItem.dictionaryItemName);
         if (data.laboratoryTest != null) {
             clonedTr.find("td[name='heatAverage']").text(data.laboratoryTest.heatAverage);
             clonedTr.find("td[name='phAverage']").text(data.laboratoryTest.phAverage);
