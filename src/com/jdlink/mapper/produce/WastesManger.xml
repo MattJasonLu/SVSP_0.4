@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdlink.mapper.produce.WastesMangerMapper">
+
+    <resultMap id="WastesInfoRM" type="WastesInfo">
+        <collection property="wastescategory"  column="category" select="getWastescategory"></collection>
+        <collection property="characteristic"  column="wastesCharacter" select="getCharacteristic"></collection>
+    </resultMap>
+
+    <select id="getWastescategory" resultType="Category">
+        select * from t_wastescategory where  code=#{category};
+    </select>
+
+    <select id="getCharacteristic" resultType="Characteristic">
+        select * from t_wastescharacter where  code=#{wastesCharacter};
+    </select>
+
+    <select id="list" resultMap="WastesInfoRM">
+               select  * from  t_wasteslist
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <!--获取总数-->
+    <select id="totalWastesMangerRecord" resultType="int">
+        select count(*) from t_wasteslist;
+    </select>
+</mapper>

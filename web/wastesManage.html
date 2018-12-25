@@ -44,7 +44,7 @@
         background-color: #0088cc;
     }
 </style>
-<body onload="loadNavigationList()">
+<body onload="loadWastesManage()">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -121,9 +121,149 @@
                 <div class="pull-left col-md-6">
                     <a class="btn btn-primary btn-xs" onclick="plus()"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>新增</a>
                 </div>
+                <!--查询框-->
+                <div class="input-group col-md-4 pull-right">
+                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent" >
+                    <span class="input-group-btn">
+                            <a class="btn btn-default" onclick="searchPw();" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
+                        </span>
+                </div>
             </div>
+
         </div>
         <br>
+        <div class="panel panel-default" id="senior" style="display: none;">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-pwId" class="col-sm-4 control-label">配伍计划单号	</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-pwId" name="search-pwId" placeholder="" onkeyup="enterSearch()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-formType" class="col-sm-4 control-label">形态</label>
+                            <div class="col-xs-7">
+                                <select class="form-control" name="search-formType" id="search-formType" onchange="searchPw()">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-handleCategory" class="col-sm-4 control-label">进料方式</label>
+                            <div class="col-xs-7">
+                                <select class="form-control" name="search-handleCategory" id="search-handleCategory" onchange="searchPw()">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-weeklyDemandTotalAggregate" class="col-sm-4 control-label">周需求总量(明细)</label>
+                            <div class="col-xs-7">
+                                <input type="number" class="form-control" id="search-weeklyDemandTotalAggregate" name="search-pwId" placeholder="" onkeyup="enterSearch()">
+                            </div>
+                        </div>
+                        <!--<div class="form-group">-->
+                        <!--<label for="search-ash" class="col-sm-4 control-label">灰分</label>-->
+                        <!--<div class="col-xs-7">-->
+                        <!--<input type="text" class="form-control" id="search-ash" name="search-ash" placeholder="">-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                        <!--<label for="search-S" class="col-sm-4 control-label">S</label>-->
+                        <!--<div class="col-xs-7">-->
+                        <!--<input type="text" class="form-control" id="search-S" name="search-S" placeholder="">-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                        <!--<label for="search-dailyProportions" class="col-sm-4 control-label">每日配比量</label>-->
+                        <!--<div class="col-xs-7">-->
+                        <!--<input type="text" class="form-control" id="search-dailyProportions" name="search-dailyProportions" placeholder="">-->
+                        <!--</div>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" style="margin-left: -95px">热值范围 </label>
+                            <div class="input-group">
+                                <input type="number" class="input-sm form-control" id="search-calorificBeg" title="" onkeydown="" onkeyup="enterSearch()"/>
+                                <span class="input-group-addon">-</span>
+                                <input type="number" class="input-sm form-control" id="search-calorificEnd" title="" onkeydown="" onkeyup="enterSearch()"/>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" style="margin-left: -95px">F范围 </label>
+                            <div class="input-group">
+                                <input type="number" class="input-sm form-control" id="search-fBeg" title="" onkeydown=""onkeyup="enterSearch()"/>
+                                <span class="input-group-addon">-</span>
+                                <input type="number" class="input-sm form-control" id="search-fEnd" title="" onkeydown=""onkeyup="enterSearch()"/>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" style="margin-left: -95px">CL&nbsp;范&nbsp;围 </label>
+                            <div class="input-group">
+                                <input type="number" class="input-sm form-control" id="search-clBeg" title="" onkeydown=""/>
+                                <span class="input-group-addon">-</span>
+                                <input type="number" class="input-sm form-control" id="search-clEnd" title="" onkeydown=""/>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" style="margin-left: -95px">S范围 </label>
+                            <div class="input-group">
+                                <input type="number" class="input-sm form-control" id="search-sBeg" title="" onkeydown=""/>
+                                <span class="input-group-addon">-</span>
+                                <input type="number" class="input-sm form-control" id="search-sEnd" title="" onkeydown=""/>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-checkState" class="col-sm-4 control-label">状态</label>
+
+                            <div class="col-xs-7">
+                                <select class="form-control" name="search-formType" id="search-checkState" onchange="searchPw()">
+                                    <option></option>
+                                    <option value=64>待提交</option>
+                                    <option value=67>待审批</option>
+                                    <option value=76>审批通过</option>
+                                    <option value=66>已驳回</option>
+                                    <option value=70>生效中</option>
+                                    <option value=69>已作废</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -137,7 +277,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr id="clonedTr2">
+            <tr id="cloneTr1">
                 <td class="text-center"></td>
                 <td class="text-center"></td>
                 <td class="text-center"></td>
@@ -205,6 +345,45 @@
     </div>
 </div>
 <div id="embed"></div>
+
+<!--分页-->
+<nav aria-label="Page navigation" class="text-center">
+    <ol class="pagination" style="width: 800px;">
+        <li id="current" style="display: none"><a>当前页：</a>
+        <li id="firstPage">
+            <a href='#' onclick="switchPage(0)">首 页</a>
+        </li>
+        <li id="previous">
+            <a href="#" aria-label="Previous" onclick="switchPage(parseInt(currentPage)-1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-backward"
+                                                       aria-hidden="true"></span></span>
+            </a>
+        </li>
+        <li><a href="#">1</a></li>
+        <li id="next">
+            <a href="#" aria-label="Next" onclick="switchPage(parseInt(currentPage)+1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-forward"
+                                                       aria-hidden="true"></span></span>
+            </a>
+        </li>
+        <li id="endPage">
+            <a href='#' onclick="switchPage(-2)">尾 页</a>
+        </li>
+        <li><a id="totalPage"></a></li>
+        <li><a href="#" onclick="inputSwitchPage();">跳转</a></li>
+        <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
+                   id="pageNumber" title="" onkeydown="enterSwitchPage();"></li>
+        <li class="showLi">每页显示:</li>
+        <li class="selectLi">
+            <select id="count" onchange="getList1();" title="">
+                <option>5</option>
+                <option selected>15</option>
+                <option>50</option>
+            </select>
+        </li>
+    </ol>
+</nav>
+
 </body>
 <script>
     $('#embed').load('embed/loginLogModal.html');
