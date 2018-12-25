@@ -7,7 +7,36 @@ public class WastesInfo {//产废表1实体结构
     private String description;
     private String wastesCharacter;
 
+    /**
+     *危废类别
+     */
+    private Category wastescategory;
 
+    /**
+     *危废特性
+     */
+    private Characteristic characteristic;
+
+
+    public void setWastesCharacter(String wastesCharacter) {
+        this.wastesCharacter = wastesCharacter;
+    }
+
+    public Category getWastescategory() {
+        return wastescategory;
+    }
+
+    public void setWastescategory(Category wastescategory) {
+        this.wastescategory = wastescategory;
+    }
+
+    public Characteristic getCharacteristic() {
+        return characteristic;
+    }
+
+    public void setCharacteristic(Characteristic characteristic) {
+        this.characteristic = characteristic;
+    }
 
     public WastesInfo() {
     }
