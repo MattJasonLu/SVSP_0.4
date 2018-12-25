@@ -17,6 +17,33 @@ public class WastesInfo {//产废表1实体结构
      */
     private Characteristic characteristic;
 
+    /**
+     * 分页
+     * @param wastesCharacter
+     */
+    private Page page;
+
+    /**
+     * 关键字
+     * @param wastesCharacter
+     */
+  private String keywords;
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
 
     public void setWastesCharacter(String wastesCharacter) {
         this.wastesCharacter = wastesCharacter;
