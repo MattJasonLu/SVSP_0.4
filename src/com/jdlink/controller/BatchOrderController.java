@@ -3,6 +3,7 @@ package com.jdlink.controller;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Dictionary.HandleCategoryItem;
 import com.jdlink.domain.Dictionary.ProcessWayItem;
+import com.jdlink.domain.Dictionary.SecondaryCategoryItem;
 import com.jdlink.domain.Inventory.BatchingOrder;
 import com.jdlink.domain.Inventory.MaterialRequisitionOrder;
 import com.jdlink.domain.Inventory.OutboundOrder;
@@ -787,6 +788,11 @@ public class BatchOrderController {
                 processWayItem.setDataDictionaryItemId(dataDictionaryItemId);
             }
             outboundOrder.setProcessWayItem(processWayItem);
+
+            SecondaryCategoryItem secondaryCategoryItem=new SecondaryCategoryItem();
+            int dataDictionaryItemId=dictionaryService.getdatadictionaryitemIdByName(outboundOrder.getWastesName(),26);
+            secondaryCategoryItem.setDataDictionaryItemId(dataDictionaryItemId);
+            outboundOrder.setSecondaryCategoryItem(secondaryCategoryItem);
             batchOrderService.addSecondary(outboundOrder);
 
             //同步更新库存数量
