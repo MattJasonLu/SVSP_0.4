@@ -261,9 +261,9 @@
                         <!--<th class="text-center">危废数量</th>-->
                         <th class="text-center">单据状态</th>
                         <th class="text-center">制单人</th>
-                        <th class="text-center">保管员</th>
-                        <th class="text-center">主管</th>
-                        <th class="text-center">审批人</th>
+                        <th class="text-center hidden">保管员</th>
+                        <th class="text-center hidden">主管</th>
+                        <th class="text-center hidden">审批人</th>
                         <th class="text-center">审批状态</th>
                         <th class="text-center">备注</th>
                         <!--<th class="text-center">转移联单号</th>-->
@@ -287,10 +287,10 @@
                         <!--<td class="text-center">计划数量</td>-->
                         <!--<td class="text-center">危废数量</td>-->
                         <td class="text-center" name="recordState"></td>
-                        <td class="text-center" name="creatorId"></td>
-                        <td class="text-center" name="keeperId"></td>
-                        <td class="text-center" name="directorId"></td>
-                        <td class="text-center" name="approverId"></td>
+                        <td class="text-center " name="creatorId"></td>
+                        <td class="text-center hidden" name="keeperId"></td>
+                        <td class="text-center hidden" name="directorId"></td>
+                        <td class="text-center hidden" name="approverId"></td>
                         <td class="text-center" name="checkState"></td>
                         <td class="text-center" name="remarks"></td>
                         <!--<td class="text-center">转移联单号</td>-->
@@ -399,7 +399,7 @@
                                 <tbody id="itemEditData">
                                     <tr id="itemEditClonedTr" style="display: none;">
                                         <td class="text-center small" name="editIndex"></td>
-                                        <td class="text-center small text-oneLine"><span name="editProduceCompanyName" style="width: 200px;"></span></td>
+                                        <td class="text-center small"><input class="form-control" readonly value="北控安耐得环保科技发展常州有限公司" name="editProduceCompanyName" style="width: 300px;"></td>
                                         <td class="text-center small"><select class="form-control" name="editWastesName" style="width: 100px;"></select></td>
                                         <td class="text-center small">
                                             <select style="width: 100px" class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="editWastesCode" title="未选择"></select>
@@ -454,7 +454,7 @@
                                     <th class="text-center small">水分/%</th>
                                     <th class="text-center small">备注</th>
                                     <th class="text-center small">库区</th>
-                                    <th class="text-center small">操作</th>
+                                    <!--<th class="text-center small">操作</th>-->
                                 </tr>
                                 </tr>
                                 </thead>
@@ -476,9 +476,9 @@
                                     <td class="text-center small" name="waterContentAverage"></td>
                                     <td class="text-center small" name="remarks"></td>
                                     <td class="text-center small" name="warehouseArea"></td>
-                                    <td class="text-right">
-                                        <a href="#" onclick="changeAttribute($(this));" title="属性调整"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
-                                    </td>
+                                    <!--<td class="text-right">-->
+                                        <!--<a href="#" onclick="changeAttribute($(this));" title="属性调整"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>-->
+                                    <!--</td>-->
                                 </tr>
                                 </tbody>
                             </table>

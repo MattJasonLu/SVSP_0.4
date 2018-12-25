@@ -10,20 +10,20 @@ import java.util.List;
 public interface DictionaryMapper {
 
     /*
-    * 查询主表个数，便于赋值主键
-    * */
+     * 查询主表个数，便于赋值主键
+     * */
     int getIdCount();
 
     /*主表新增*/
-    void  addDataDictionary(DataDictionary dataDictionary);
+    void addDataDictionary(DataDictionary dataDictionary);
 
     /**
      * 子表新增
      */
-    void  addDataDictionaryItem(DataDictionaryItem dataDictionaryItem);
+    void addDataDictionaryItem(DataDictionaryItem dataDictionaryItem);
 
     /*
-    * 根据创建时间寻找最新的主表编号*/
+     * 根据创建时间寻找最新的主表编号*/
 
     int getNewestId();
 
@@ -45,25 +45,25 @@ public interface DictionaryMapper {
     /**
      * 更新后删除字表
      */
-    void  deleteDataDictionaryById(int id);
+    void deleteDataDictionaryById(int id);
 
     /**
      * 数据字典查询
-     *
      */
     List<DataDictionary> searchDictionary(DataDictionary dataDictionary);
 
     /**
      * 查看计数
-     *
      */
     int searchDictionaryCount(DataDictionary dataDictionary);
 
-    List<DataDictionaryItem>getSelectListByDataDictionary(int id);
+    List<DataDictionaryItem> getSelectListByDataDictionary(int id);
 
-  int getdatadictionaryitemIdByName(String name,int id);
+    int getdatadictionaryitemIdByName(String name, int id);
 
-  void importDictionaryExcel(DataDictionary dataDictionary);
+    DataDictionaryItem getDatadictionaryItemByName(String name, int id);
 
-  List<String> getDictionaryTypeListFromDataDictionary();
+    void importDictionaryExcel(DataDictionary dataDictionary);
+
+    List<String> getDictionaryTypeListFromDataDictionary();
 }

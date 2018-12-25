@@ -1,6 +1,7 @@
 package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Dictionary.*;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.LaboratoryTest;
 import com.jdlink.domain.Produce.ProcessWay;
@@ -92,6 +93,104 @@ public class InboundOrderItem {
      * 入库日期
      */
     private Date inboundDate;
+
+    /**
+     * 进料方式数据字典
+     * @return
+     */
+    private HandleCategoryItem handleCategoryItem;
+
+    /**
+     * 处置方式数据字典
+     * @return
+     */
+    private ProcessWayItem processWayItem;
+
+    /**
+     * 包装方式数据字典
+     * @return
+     */
+    private PackageTypeItem packageTypeItem;
+
+    /**
+     * 物质形态数据字典
+     * @return
+     */
+    private FormTypeItem formTypeItem;
+
+    /**
+     * 记录状态数据字典
+     * @return
+     */
+    private RecordStateItem recordStateItem;
+
+    /**
+     * 单位数据字典
+     * @return
+     */
+    private UnitDataItem unitDataItem;
+
+    /**
+     * 次生名称数据字典
+     * @return
+     */
+    private SecondaryCategoryItem secondaryCategoryItem;
+
+    public SecondaryCategoryItem getSecondaryCategoryItem() {
+        return secondaryCategoryItem;
+    }
+
+    public void setSecondaryCategoryItem(SecondaryCategoryItem secondaryCategoryItem) {
+        this.secondaryCategoryItem = secondaryCategoryItem;
+    }
+
+    public UnitDataItem getUnitDataItem() {
+        return unitDataItem;
+    }
+
+    public void setUnitDataItem(UnitDataItem unitDataItem) {
+        this.unitDataItem = unitDataItem;
+    }
+
+    public HandleCategoryItem getHandleCategoryItem() {
+        return handleCategoryItem;
+    }
+
+    public void setHandleCategoryItem(HandleCategoryItem handleCategoryItem) {
+        this.handleCategoryItem = handleCategoryItem;
+    }
+
+    public ProcessWayItem getProcessWayItem() {
+        return processWayItem;
+    }
+
+    public void setProcessWayItem(ProcessWayItem processWayItem) {
+        this.processWayItem = processWayItem;
+    }
+
+    public PackageTypeItem getPackageTypeItem() {
+        return packageTypeItem;
+    }
+
+    public void setPackageTypeItem(PackageTypeItem packageTypeItem) {
+        this.packageTypeItem = packageTypeItem;
+    }
+
+    public FormTypeItem getFormTypeItem() {
+        return formTypeItem;
+    }
+
+    public void setFormTypeItem(FormTypeItem formTypeItem) {
+        this.formTypeItem = formTypeItem;
+    }
+
+    public RecordStateItem getRecordStateItem() {
+        return recordStateItem;
+    }
+
+    public void setRecordStateItem(RecordStateItem recordStateItem) {
+        this.recordStateItem = recordStateItem;
+    }
 
     public boolean isQualified() {
         return isQualified;
