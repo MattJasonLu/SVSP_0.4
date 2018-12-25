@@ -169,4 +169,23 @@ public interface IngredientsMapper {
     List<Ingredients> listPageOutItem(Page page);
     List<Ingredients> searchOutItem(Ingredients ingredients);
 
+    ////////////辅料备件物品维护//
+    List<Ingredients> getIngredientsList(Page page);
+
+    int getCountIngredientsList();
+
+    Ingredients getIngredientByNameAndSpecification(Ingredients ingredients);
+
+    Ingredients getIngredientById(int id);
+
+    void addIngredient(Ingredients ingredients);
+
+    void updateIngredient(Ingredients ingredients);
+
+    void deleteIngredient(int id);
+
+    List<Ingredients> searchIngredient(Ingredients ingredients);
+
+    int searchCountIngredient(Ingredients ingredients);
+
 }
