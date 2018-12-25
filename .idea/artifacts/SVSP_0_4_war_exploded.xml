@@ -1,21 +1,20 @@
 <component name="ArtifactManager">
-  <artifact type="war" name="SVSP0.4">
-    <output-path>$PROJECT_DIR$/out/artifacts/SVSP0_4</output-path>
-    <root id="archive" name="SVSP0.4.war">
-      <element id="library" level="project" name="pdf" />
-      <element id="library" level="project" name="SSM" />
-      <element id="javaee-facet-resources" facet="SVSP_0.4/web/Web" />
+  <artifact type="exploded-war" name="SVSP_0.4:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/SVSP_0_4_war_exploded</output-path>
+    <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="SVSP_0.4" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="pdf" />
           <element id="library" level="project" name="jsonLib" />
+          <element id="library" level="project" name="pdf" />
           <element id="library" level="project" name="joda-time-2.10" />
           <element id="library" level="project" name="upload" />
+          <element id="library" level="project" name="SSM" />
         </element>
       </element>
+      <element id="javaee-facet-resources" facet="SVSP_0.4/web/Web" />
     </root>
   </artifact>
 </component>
