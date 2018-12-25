@@ -1590,5 +1590,255 @@ public class PRIngredientsController {
         }
     }
 
+    //////////////辅料备件物品维护
+    /**
+     * 获取辅料备件物品分页数据
+     *
+     * @param page
+     * @return
+     */
+    @RequestMapping("loadPageIngredientList")
+    @ResponseBody
+    public String loadPageIngredientList(@RequestBody Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            List<Ingredients> ingredientsList = ingredientsService.getIngredientsList(page); // 获取分页数据
+            JSONArray data = JSONArray.fromArray(ingredientsList.toArray(new Ingredients[ingredientsList.size()])); // 数据转化
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "分页数据获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "分页数据获取失败！");
+        }
+        // 返回结果
+        return res.toString();
+    }
+
+    /**
+     * 获取总记录数
+     *
+     * @return
+     */
+    @RequestMapping("totalIngredientRecord")
+    @ResponseBody
+    public int totalIngredientRecord() {
+        try {
+            return ingredientsService.getCountIngredientsList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 获取查询总数
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("searchIngredientTotal")
+    @ResponseBody
+    public int searchIngredientTotal(@RequestBody Ingredients ingredients) {
+        try {
+            return ingredientsService.searchCountIngredient(ingredients);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 查询功能
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("searchIngredient")
+    @ResponseBody
+    public String searchIngredient(@RequestBody Ingredients ingredients) {
+        JSONObject res = new JSONObject();
+        try {
+            List<Ingredients> ingredientsList = ingredientsService.searchIngredient(ingredients);
+            JSONArray data = JSONArray.fromArray(ingredientsList.toArray(new Ingredients[ingredientsList.size()]));
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 删除功能(根据ID删除辅料备件物品)
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("deleteIngredient")
+    @ResponseBody
+    public String deleteIngredient(int id) {
+        JSONObject res = new JSONObject();
+        try {
+            ingredientsService.deleteIngredient(id);
+            res.put("status", "success");
+            res.put("message", "删除成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "删除失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 修改功能(修改辅料备件物品)
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("updateIngredient")
+    @ResponseBody
+    public String updateIngredient(@RequestBody Ingredients ingredients) {
+        JSONObject res = new JSONObject();
+        try {
+            ingredientsService.updateIngredient(ingredients);
+            res.put("status", "success");
+            res.put("message", "修改成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "修改失败!");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 新增功能(新增辅料备件物品)
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("addIngredient")
+    @ResponseBody
+    public String addIngredient(@RequestBody Ingredients ingredients) {
+        JSONObject res = new JSONObject();
+        try {
+            Ingredients ingredients1 = ingredientsService.getIngredientByNameAndSpecification(ingredients);
+            if(ingredients1 != null){
+                res.put("status", "fail");
+                res.put("message", "该物品已存在");
+            } else {   // 如果物品不存在则新增
+                ingredientsService.addIngredient(ingredients);
+                res.put("status", "success");
+                res.put("message", "新增成功");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "新增失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 导入
+     *
+     * @param excelFile
+     * @return
+     */
+    @RequestMapping("importIngredientExcel")
+    @ResponseBody
+    public String importIngredientExcel(MultipartFile excelFile) {
+        JSONObject res = new JSONObject();
+        try {
+            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+            System.out.println("数据如下：");
+            for (int i = 0; i < data.length; i++) {
+                for (int j = 0; j < data[0].length; j++) {
+                    System.out.print(data[i][j].toString());
+                    System.out.print(",");
+                }
+                System.out.println();
+            }
+            for (int i = 1; i < data.length; i++) {
+                // 设置数据
+                Ingredients ingredients = new Ingredients();
+                ingredients.setName(data[i][0].toString());
+                ingredients.setCode(data[i][1].toString());
+                ingredients.setSpecification(data[i][2].toString());
+                // 根据名称和规格获取对象
+                Ingredients ingredients1 = ingredientsService.getIngredientByNameAndSpecification(ingredients);
+                if(ingredients1 == null){   // 不存在该物品则新增
+                   ingredientsService.addIngredient(ingredients);
+                }
+            }
+            res.put("status", "success");
+            res.put("message", "导入成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导入失败，请重试！");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 导出(带表头字段)
+     *
+     * @param name
+     * @param response
+     * @param sqlWords
+     * @return
+     */
+    @RequestMapping("exportExcelIngredient")
+    @ResponseBody
+    public String exportExcelIngredient(String name, HttpServletResponse response, String sqlWords) {
+        JSONObject res = new JSONObject();
+        try {
+            DBUtil db = new DBUtil();
+            // 设置表头
+            String tableHead = "编号/物品编码/物品名称/规格型号";
+            name = "辅料备件物品列表";   // 重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 根据Id获取对象数据
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping("getIngredientById")
+    @ResponseBody
+    public String getIngredientById(int id) {
+        JSONObject res = new JSONObject();
+        try {
+            //根据id查询出相应的对象信息
+            Ingredients ingredients = ingredientsService.getIngredientById(id);
+            //新建一个对象并给它赋值
+            JSONObject data = JSONObject.fromBean(ingredients);
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "获取数据成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取数据失败");
+        }
+        return res.toString();
+    }
 
 }
