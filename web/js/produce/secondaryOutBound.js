@@ -1176,7 +1176,7 @@ function view1(item) {
                 //
                 //    }
                 if(result.data.secondaryCategoryItem!=null){
-                    $('#name').text(convertStrToWastesName(result.data.secondaryCategoryItem.dictionaryItemName));
+                    $('#name').text((result.data.secondaryCategoryItem.dictionaryItemName));
                 }
                 else {
                     $('#name').text(convertStrToWastesName(result.data.wastesName));
@@ -1190,7 +1190,12 @@ function view1(item) {
                     $('#wastesId').text(result.data.wasteCategory);
 
                 // //重量
-                $('#wastesAmount').text(result.data.outboundNumber);
+                if(result.data.secondaryCategoryItem.dictionaryItemName=='桶'){
+                    $('#wastesAmount').text(result.data.outboundNumber+"(只)");
+                }
+              else {
+                    $('#wastesAmount').text(result.data.outboundNumber+"(吨)");
+                }
                 // //物质形态
                 // if(result.data[0].formType!=null){
                 //     $('#formType').text(result.data[0].formType.name);

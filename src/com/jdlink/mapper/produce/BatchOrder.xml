@@ -173,9 +173,9 @@
 
     <!--添加出库信息==》次生-->
     <insert id="addSecondary" parameterType="OutboundOrder">
-        insert into  t_pl_outboundorder (outboundOrderId,clientId,wareHouseId,transferDraftId,wastesName,wasteCategory,outboundDate,creator,auditor,outboundNumber,equipment,nowTime,checkState,boundType,processWay,handelCategory,inboundOrderItemId,departmentName,checkStateId,processWayId,equipmentId)
+        insert into  t_pl_outboundorder (outboundOrderId,clientId,wareHouseId,transferDraftId,wastesName,wasteCategory,outboundDate,creator,auditor,outboundNumber,equipment,nowTime,checkState,boundType,processWay,handelCategory,inboundOrderItemId,departmentName,checkStateId,processWayId,equipmentId,secondaryCategoryId)
         values
-        (#{outboundOrderId},#{client.clientId},#{wareHouse.wareHouseId},#{transferDraftId},#{wastesName},#{wasteCategory},#{outboundDate},#{creator},#{auditor},#{outboundNumber},#{equipment},NOW(),'OutBounded','SecondaryOutbound',#{processWay},#{handelCategory},#{inboundOrderItemId},#{departmentName},81,#{processWayItem.dataDictionaryItemId},#{equipmentDataItem.dataDictionaryItemId})
+        (#{outboundOrderId},#{client.clientId},#{wareHouse.wareHouseId},#{transferDraftId},#{wastesName},#{wasteCategory},#{outboundDate},#{creator},#{auditor},#{outboundNumber},#{equipment},NOW(),'OutBounded','SecondaryOutbound',#{processWay},#{handelCategory},#{inboundOrderItemId},#{departmentName},81,#{processWayItem.dataDictionaryItemId},#{equipmentDataItem.dataDictionaryItemId},#{secondaryCategoryItem.dataDictionaryItemId})
     </insert>
 
     <resultMap id="WastesOutBoundRM" type="OutboundOrder">
