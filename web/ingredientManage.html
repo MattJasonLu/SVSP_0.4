@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>仓库管理</title>
+    <title>辅料备件物品管理</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -13,7 +13,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/repositoryManage.js"></script>
+    <script src="js/produce/ingredientManage.js"></script>
     <!--<script src="js/produce/firstPage.js"></script>-->
 </head>
 <style>
@@ -62,8 +62,9 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
             <ul class="nav navbar-nav"><!--二级菜单-->
-                <li><a href="repositoryManage.html">预警管理</a></li>
-                <li class="active"><a href="warningManage.html">仓库管理</a></li>
+                <li class="active"><a href="repositoryManage.html">预警管理</a></li>
+                <li><a href="warningManage.html">仓库管理</a></li>
+
             </ul>
         </div><!--/.nav-collapse -->
 
@@ -108,57 +109,102 @@
         <div class="row">
             <div>
                 <ol class="breadcrumb">
-                    <li><a href="businessModel.html">基础数据</a></li>
-                    <li class="active">仓库管理</li>
+                    <li><a href="basicData.html">基础数据</a></li>
+                    <li class="active">辅料备件物品管理</li>
                 </ol>
             </div>
-            <h4 class="sub-header">仓库管理</h4>
+            <h4 class="sub-header">辅料备件物品管理</h4>
         </div>
         <div class="row">
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" onclick="show2()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                    <a class="btn btn-primary btn-xs" onclick="plus()"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>新增</a>
+                    <a class="btn btn-primary btn-xs" onclick="arrowDown()"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>导入</a>
+                    <a class="btn btn-primary btn-xs" onclick="arrowUp()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>导出</a>
                 </div>
             </div>
         </div>
         <br>
-        <div class="row">
-            <div class="form-horizontal col-md-12">
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th class="text-center">仓库编码</th>
-                        <th class="text-center">仓库名称</th>
-                        <th class="text-center">操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr id="clonedTr2">
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center">
-                            <a href="#" id="" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; viewSupplier(e);}" title="编辑"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                            <a href="#" id="42342" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; viewSupplier(e);}" title="删除"><span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th class="text-center">序号</th>
+                <th class="text-center">物品名称</th>
+                <th class="text-center">物品型号</th>
+                <th class="text-center">规格</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr id="clonedTr2">
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center">
+                    <a href="#" id="" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; edit(e);}" title="编辑"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                    <a href="#" id="42342" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; dlt(e);}" title="删除"><span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="row text-center hidden" id="btn">
+            <a class="btn btn-primary" id="save" onclick="save()"> 保存</a>
+            <a class="btn btn-warning" id="cancel" onclick="cancel()">取消</a>
+        </div>
+    </div>
+</div>
+<!--导入模态框-->
+<div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="TitleMyModalLabel">导入表格数据</h4>
+            </div>
+            <div class="modal-body">
+                <form id="modelAssign" method="post">
+                    <div class="form-group">
+                        <font size="+2">提示：</font>
+                        <font size="+1" class="text-center">请按照模板格式导入数据！</font>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-default" onclick="downloadModal()">下载模板</button>
+                <button type="button" class="btn btn-primary" onclick="importExcel()">导入数据</button>
             </div>
         </div>
     </div>
 </div>
+<!--新增模态框-->
 <div class="modal fade" id="modalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header"><b>仓库新增</b></div>
+            <div class="modal-header"><b>辅料备件物品管理</b></div>
             <div class="modal-body">
-                <p>仓库编码：<input title=""></p>
-                <p>仓库名称：<input title=""></p>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th class="text-center">序号</th>
+                        <th class="text-center">物品名称</th>
+                        <th class="text-center">物品编号</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
             <div class="modal-footer">
                 <div class="row text-center">
-                    <button type="button" class="btn btn-primary" id="confirm" onclick="newManage()">新增</button>
+                    <button type="button" class="btn btn-primary" id="confirm" onclick="save()">保存</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </div>
