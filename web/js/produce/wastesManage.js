@@ -161,6 +161,12 @@ function setWastesManger(result) {
 
                     break;
 
+                case (6):
+
+                        $(this).html(data.id);
+
+
+                    break;
             }
             clonedTr.removeAttr("id");
             clonedTr.insertBefore(tr);
@@ -423,5 +429,296 @@ function loadWastesManage() {
 
 //新增按钮
 function plus() {
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 6
+    });
+
+    //危废类别 赋值
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getWastesCategoryList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                console.log(data)
+                //危废类别
+                var wastescategory = $('#wastescategory');
+                wastescategory.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.code);
+                    option.text(item.name+"("+item.code+")");
+                    wastescategory.append(option);
+                });
+                wastescategory.get(0).selectedIndex = -1;
+                $('.selectpicker').selectpicker('refresh');
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+
+    //危废特性 赋值
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getWastesCharacteristicList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                console.log(data)
+                //危废类别
+                var characteristic = $('#characteristic');
+                characteristic.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.code);
+                    option.text(item.name+"("+item.code+")");
+                    characteristic.append(option);
+                });
+                characteristic.get(0).selectedIndex = -1;
+                $('.selectpicker').selectpicker('refresh');
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+
     $("#modalId").modal('show')
+}
+
+//保存
+function save() {
+
+    if(confirm("确定添加?")){
+        //点击确定后操作
+        $('.myclass').each(function () {
+            var data={
+                wastescategory:{code:$(this).children('td').eq(0).find("select").val()},
+                industry:$(this).children('td').eq(1).find("input").val(),
+                code:$(this).children('td').eq(2).find("input").val(),
+                description:$(this).children('td').eq(3).find("input").val(),
+                characteristic:{code:$(this).children('td').eq(4).find("select").val()},
+            };
+            console.log(data)
+          $.ajax({
+              type: "POST",
+              url: "addWastesManger",
+              async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+              data: JSON.stringify(data),
+              dataType: "json",
+              contentType: 'application/json;charset=utf-8',
+              success:function (result) {
+                  if (result != undefined && result.status == "success"){
+                      alert(result.message)
+                      window.location.reload()
+                  }
+                  else {
+                      alert(result.message)
+                  }
+              },
+              error:function (result) {
+                  alert("服务器异常!")
+              }
+          })
+        })
+
+
+
+
+
+    }
+
+
+}
+
+//删除
+function removeWastesManger(item) {
+    if(confirm("确定删除?")){
+        var id=$(item).parent().prev().html();
+
+        $.ajax({
+            type: "POST",
+            url: "removeWastesManger",
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {"id":id},
+            dataType: "json",
+            // contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    alert(result.message)
+                    window.location.reload()
+                }
+                else {
+                    alert(result.message)
+                }
+            },
+            error:function (result) {
+                alert("服务器异常!")
+            }
+        })
+
+
+    }
+
+
+
+}
+
+
+//编辑
+function edit(item) {
+
+
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 6
+    });
+
+    //危废类别 赋值
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getWastesCategoryList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                console.log(data)
+                //危废类别
+                var wastescategory = $('#wastescategory1');
+                wastescategory.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.code);
+                    option.text(item.name+"("+item.code+")");
+                    wastescategory.append(option);
+                });
+                // wastescategory.get(0).selectedIndex = -1;
+                $('.selectpicker').selectpicker('refresh');
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+
+    //危废特性 赋值
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getWastesCharacteristicList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                console.log(data)
+                //危废类别
+                var characteristic = $('#characteristic1');
+                characteristic.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.code);
+                    option.text(item.name+"("+item.code+")");
+                    characteristic.append(option);
+                });
+                // characteristic.get(0).selectedIndex = -1;
+                $('.selectpicker').selectpicker('refresh');
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+
+    $("#modalId2").modal('show')
+
+    var id=$(item).parent().prev().html();
+
+    $.ajax({
+        type: "POST",
+        url: "getWastesMangerById",
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {"id":id},
+        dataType: "json",
+        // contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                //下拉框赋值
+                if(result.data.wastescategory!=null){
+                    $("#wastescategory1").selectpicker('val',result.data.wastescategory.code)
+                }
+                if(result.data.characteristic!=null){
+                    $("#characteristic1").selectpicker('val',result.data.characteristic.code)
+                }
+
+                $("#industry").val(result.data.industry)
+
+                $("#code").val(result.data.code)
+
+                $("#description").val(result.data.description)
+
+                $("#id").html(result.data.id)
+
+            }
+            else {
+
+                alert(result.message);
+
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    })
+}
+
+//修改
+function adjust() {
+
+    var data={
+        wastescategory:{code:$("#wastescategory1").selectpicker('val')},
+        description:$('#description').val(),
+        characteristic:{code:$("#characteristic1").selectpicker('val')},
+        industry:$('#industry').val(),
+        id:$('#id').html(),
+    }
+    $.ajax({
+        type: "POST",
+        url: "updateWastesManger",
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                alert(result.message)
+                window.location.reload()
+            }
+            else {
+                alert(result.message)
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+
+    })
+    console.log(data)
+
 }

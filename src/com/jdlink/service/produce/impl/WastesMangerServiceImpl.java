@@ -1,5 +1,7 @@
 package com.jdlink.service.produce.impl;
 
+import com.jdlink.domain.Category;
+import com.jdlink.domain.Characteristic;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.WastesInfo;
 import com.jdlink.mapper.produce.WastesMangerMapper;
@@ -22,5 +24,35 @@ public class WastesMangerServiceImpl implements WastesMangerService {
     @Override
     public int totalWastesMangerRecord() {
         return wastesMangerMapper.totalWastesMangerRecord();
+    }
+
+    @Override
+    public List<Category> getWastesCategoryList() {
+        return wastesMangerMapper.getWastesCategoryList();
+    }
+
+    @Override
+    public List<Characteristic> getWastesCharacteristicList() {
+        return wastesMangerMapper.getWastesCharacteristicList();
+    }
+
+    @Override
+    public void addWastesManger(WastesInfo wastesInfo) {
+        wastesMangerMapper.addWastesManger(wastesInfo);
+    }
+
+    @Override
+    public void removeWastesManger(int id) {
+        wastesMangerMapper.removeWastesManger(id);
+    }
+
+    @Override
+    public WastesInfo getWastesMangerById(int id) {
+        return wastesMangerMapper.getWastesMangerById(id);
+    }
+
+    @Override
+    public void updateWastesManger(WastesInfo wastesInfo) {
+        wastesMangerMapper.updateWastesManger(wastesInfo);
     }
 }
