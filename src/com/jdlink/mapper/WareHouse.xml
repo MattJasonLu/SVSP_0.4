@@ -16,7 +16,7 @@
     </select>
     <!--增加仓库-->
     <insert id="add" parameterType="WareHouse">
-        insert into t_pl_warehouse (warehouseName, warehouseCode) values (#{wareHouseId}, #{wareHouseCode});
+        insert into t_pl_warehouse (warehouseName, warehouseCode) values (#{wareHouseName}, #{wareHouseCode});
     </insert>
     <!--通过仓库名称来获取仓库对象-->
     <select id="getWareHouseByName" resultMap="WareHouseRM">
