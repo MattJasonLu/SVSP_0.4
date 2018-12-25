@@ -21,4 +21,8 @@ public interface WastesMangerMapper {
     void addWastesManger(WastesInfo wastesInfo);
 
     void removeWastesManger(int id);
+
+    WastesInfo getWastesMangerById(int id);
+
+    void updateWastesManger(WastesInfo wastesInfo);
 }
