@@ -1398,8 +1398,10 @@ function viewContract(item) {
                 $('#modal3_contractAppendices').click(function () {
                     if (data.contractAppendicesUrl != null && data.contractAppendicesUrl != "") {
                         window.open('downloadFile?filePath=' + data.contractAppendicesUrl);
+                        window.location.reload()
                     } else {
                         alert("未上传文件");
+                        window.location.reload()
                     }
                 });
 
@@ -1504,8 +1506,10 @@ function setContractListModal(result) {
                     $(this).find('button').click(function () {
                         if (obj.picture != null && obj.picture != "") {
                             window.open('downloadFile?filePath=' + obj.picture);
+                            window.location.reload()
                         } else {
                             alert("未上传文件");
+                            window.location.reload()
                         }
                     })
                     break;

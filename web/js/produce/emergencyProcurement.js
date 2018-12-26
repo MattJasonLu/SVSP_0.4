@@ -561,8 +561,8 @@ function saveEmer() {
             }
         });
         $('.myclass').each(function () {
-            var suppliesName=$(this).children('td').eq(1).children('div').find('button').attr('title');
             var specifications=$(this).children('td').eq(2).children('input').val();
+            var suppliesName=$(this).children('td').eq(1).children('div').find('button').attr('title').replace(specifications,"");
             var unitId=$(this).children('td').eq(3).children('select').val();
             var inventory=$(this).children('td').eq(4).children('input').val();
             var demandQuantity=$(this).children('td').eq(5).children('input').val();
