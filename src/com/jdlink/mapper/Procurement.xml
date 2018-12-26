@@ -527,4 +527,9 @@
         update t_pr_procumentplan set MaterialCategoryId=#{1} where procurementPlanId=#{0}
     </update>
 
+
+    <!--根据辅料备件主键获取规格-->
+    <select id="getSpecificationById" resultType="String" parameterType="int">
+        select specification from t_pl_ingredientslist where id=#{id}
+    </select>
 </mapper>

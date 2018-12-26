@@ -55,4 +55,14 @@ public class WastesMangerServiceImpl implements WastesMangerService {
     public void updateWastesManger(WastesInfo wastesInfo) {
         wastesMangerMapper.updateWastesManger(wastesInfo);
     }
+
+    @Override
+    public List<WastesInfo> searchWastesManger(WastesInfo wastesInfo) {
+        return wastesMangerMapper.searchWastesManger(wastesInfo);
+    }
+
+    @Override
+    public int searchWastesMangerCount(WastesInfo wastesInfo) {
+        return wastesMangerMapper.searchWastesMangerCount(wastesInfo);
+    }
 }

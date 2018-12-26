@@ -1251,4 +1251,25 @@ public class ProcurementController {
 
         return res.toString();
     }
+
+    //根据辅料备件主键获取规格
+    @RequestMapping("getSpecificationById")
+    @ResponseBody
+    public String getSpecificationById(int id){
+        JSONObject res=new JSONObject();
+
+        try {
+          String specification=procurementService.getSpecificationById(id);
+            res.put("status", "success");
+            res.put("message", "获取规格成功");
+            res.put("data", specification);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取规格失败");
+        }
+
+        return res.toString();
+    }
 }
