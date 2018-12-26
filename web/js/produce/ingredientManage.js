@@ -375,40 +375,6 @@ function setIngredientList(result) {
     tr.hide();
 }
 
-
-/**
- * 打开新增模态框
- */
-function add() {
-    $("#modalId").modal('show');
-}
-
-/**
- * 保存新增数据
- */
-function save() {
-    var ingredient = {};
-    ingredient.name = $("#add_name0").val();
-    ingredient.code = $("#add_code0").val();
-    ingredient.specification = $("#add_specification0").val();
-    $.ajax({
-        type: "POST",
-        url: "addIngredient",
-        async: false,
-        data: JSON.stringify(ingredient),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            alert(result.message);
-            window.location.reload();
-        },
-        error: function (result) {
-            console.log(result.message);
-            alert("服务器错误！");
-        }
-    });
-}
-
 /**
  * 打开导入模态框
  * */
@@ -651,4 +617,103 @@ function searchIngredient() {
             }
         });
     }
+}
+
+
+/**
+ * 打开新增模态框
+ */
+function add() {
+    $("#modalId").modal('show');
+}
+
+/**
+ * 保存新增数据
+ */
+function save() {
+    var length = $("#plusBtn").prevAll().length;   // 获取总行数
+    var ingredientsIn = {};
+    ingredientsIn.ingredientsList = [];
+    for(var i = 0; i < length; i++) {
+        var $i = i;
+        var ingredient = {};
+        ingredient.name = $("#add_name" + $i).val();
+        ingredient.code = $("#add_code" + $i).val();
+        ingredient.specification = $("#add_specification" + $i).val();
+        ingredientsIn.ingredientsList.push(ingredient);
+    }
+    $.ajax({
+        type: "POST",
+        url: "addIngredient",
+        async: false,
+        data: JSON.stringify(ingredientsIn),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            alert(result.message);
+            window.location.reload();
+        },
+        error: function (result) {
+            console.log(result.message);
+            alert("服务器错误！");
+        }
+    });
+}
+
+
+var num = 1;
+
+/**
+ * 新增功能-新增行
+ */
+function addNewLine(item) {
+    num++;
+    // 获取id为plusBtn的tr元素
+    //var tr = $("#plusBtn").prev();
+    var tr = null;
+    if (item != null){
+        tr = $(item).parent().parent().prev();
+    } else tr = $("#plusBtn").prev();
+    // 克隆tr，每次遍历都可以产生新的tr
+    var clonedTr = tr.clone();
+    // 克隆后清空新克隆出的行数据
+    clonedTr.children().find("input").val("");
+    clonedTr.children().get(0).innerHTML = num;    // 设置序号
+    clonedTr.children().find("input").each(function () {
+        var id = $(this).prop('id');
+        var newId = id.replace(/[0-9]\d*/, num - 1);
+        $(this).prop('id', newId);
+    });
+    clonedTr.addClass("newLine");
+    clonedTr.insertAfter(tr);
+    clonedTr.removeAttr("id");
+    //清空数据为重新初始化selectpicker
+    if (clonedTr.children().get(0).innerHTML != 1) {     // 将非第一行的所有行加上减行号
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        clonedTr.children("td:eq(0)").prepend(delBtn);
+    }
+}
+
+/**
+ * 删除行
+ */
+function delLine(item) {
+    var tr = item.parentElement.parentElement;
+    var length = $(tr.parentNode).children().length - 2;         // 行数
+    var tBody = $(tr.parentNode);                                  // 删除前获取父节点
+    tr.parentNode.removeChild(tr);
+    console.log(tr);
+    console.log("length:" + length);
+    for (var i = 1; i < length; i++) {             // 更新序号
+        tBody.children().eq(i).children().eq(0).get(0).innerHTML = i + 1;     // 更新序号
+        // 重新加上减行按钮
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        tBody.children().eq(i).children("td:eq(0)").prepend(delBtn);
+        tBody.children().eq(i).children().find("input").each(function () {
+            var id = $(this).prop('id');
+            var newId = id.replace(/[0-9]\d*/, i);
+            $(this).prop('id', newId);
+        });
+    }
+    num--;
 }

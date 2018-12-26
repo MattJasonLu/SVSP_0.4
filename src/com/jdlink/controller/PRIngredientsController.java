@@ -1725,17 +1725,19 @@ public class PRIngredientsController {
      */
     @RequestMapping("addIngredient")
     @ResponseBody
-    public String addIngredient(@RequestBody Ingredients ingredients) {
+    public String addIngredient(@RequestBody IngredientsIn ingredientsIn) {
         JSONObject res = new JSONObject();
         try {
-            Ingredients ingredients1 = ingredientsService.getIngredientByNameAndSpecification(ingredients);
-            if(ingredients1 != null){
-                res.put("status", "fail");
-                res.put("message", "该物品已存在");
-            } else {   // 如果物品不存在则新增
-                ingredientsService.addIngredient(ingredients);
-                res.put("status", "success");
-                res.put("message", "新增成功");
+            for(Ingredients ingredients : ingredientsIn.getIngredientsList()){
+                Ingredients ingredients1 = ingredientsService.getIngredientByNameAndSpecification(ingredients);
+                if(ingredients1 != null){
+                    res.put("status", "fail");
+                    res.put("message", ingredients.getName() + "已存在!");
+                } else {   // 如果物品不存在则新增
+                    ingredientsService.addIngredient(ingredients);
+                    res.put("status", "success");
+                    res.put("message", ingredients.getName() + "新增成功!");
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
