@@ -357,4 +357,22 @@ public class IngredientsServiceImpl implements IngredientsService {
         return ingredientsMapper.searchOutItem(ingredients);
     }
 
+    ////////////辅料备件物品维护//
+    public List<Ingredients> getIngredientsList(Page page) { return ingredientsMapper.getIngredientsList(page);}
+
+    public int getCountIngredientsList() { return ingredientsMapper.getCountIngredientsList();}
+
+    public Ingredients getIngredientByNameAndSpecification(Ingredients ingredients) { return ingredientsMapper.getIngredientByNameAndSpecification(ingredients);}
+
+    public Ingredients getIngredientById(int id){  return ingredientsMapper.getIngredientById(id); }
+
+    public void addIngredient(Ingredients ingredients) { ingredientsMapper.addIngredient(ingredients);}
+
+    public void updateIngredient(Ingredients ingredients) { ingredientsMapper.updateIngredient(ingredients);}
+
+    public void deleteIngredient(int id) { ingredientsMapper.deleteIngredient(id);}
+
+    public List<Ingredients> searchIngredient(Ingredients ingredients) { return ingredientsMapper.searchIngredient(ingredients); }
+
+    public int searchCountIngredient(Ingredients ingredients) { return ingredientsMapper.searchCountIngredient(ingredients); }
 }
