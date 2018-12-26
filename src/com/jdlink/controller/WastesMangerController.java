@@ -1,6 +1,9 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.Category;
+import com.jdlink.domain.Characteristic;
 import com.jdlink.domain.Page;
+import com.jdlink.domain.Produce.WasteInto;
 import com.jdlink.domain.WastesInfo;
 import com.jdlink.service.produce.WastesMangerService;
 import net.sf.json.JSONArray;
@@ -49,5 +52,143 @@ public class WastesMangerController {
     public int totalWastesMangerRecord(){
         return wastesMangerService.totalWastesMangerRecord();
 
+    }
+
+    /**
+     * 获取所有的危废类别
+     */
+    @RequestMapping("getWastesCategoryList")
+    @ResponseBody
+    public String getWastesCategoryList(){
+        JSONObject res = new JSONObject();
+
+        try {
+            List<Category> categoryList=wastesMangerService.getWastesCategoryList();
+            res.put("status", "success");
+            res.put("message", "获取危废类别下拉框成功");
+            res.put("data", categoryList);
+        }
+        catch (Exception e){
+
+
+        }
+
+        return res.toString();
+
+    }
+
+    /**
+     * 获取所有的危废特性
+     */
+    @RequestMapping("getWastesCharacteristicList")
+    @ResponseBody
+    public String getWastesCharacteristicList(){
+        JSONObject res = new JSONObject();
+
+        try {
+            List<Characteristic> characteristicList=wastesMangerService.getWastesCharacteristicList();
+            res.put("status", "success");
+            res.put("message", "获取危废特性下拉框成功");
+            res.put("data", characteristicList);
+        }
+        catch (Exception e){
+
+
+        }
+
+        return res.toString();
+
+    }
+
+    /**
+     * 新增危废代码
+     */
+    @RequestMapping("addWastesManger")
+    @ResponseBody
+    public String addWastesManger(@RequestBody WastesInfo wastesInfo){
+        JSONObject res=new JSONObject();
+         try {
+           wastesMangerService.addWastesManger(wastesInfo);
+             res.put("status", "success");
+             res.put("message", "添加成功");
+         }
+         catch (Exception e){
+             e.printStackTrace();
+             res.put("status", "fail");
+             res.put("message", "添加失败");
+
+         }
+
+
+        return res.toString();
+    }
+
+    /**
+     * 删除危废代码
+     */
+    @RequestMapping("removeWastesManger")
+    @ResponseBody
+    public String removeWastesManger(int id){
+        JSONObject res=new JSONObject();
+        try {
+           wastesMangerService.removeWastesManger(id);
+            res.put("status", "success");
+            res.put("message", "删除成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "删除失败");
+
+        }
+
+        return res.toString();
+
+    }
+
+    /**
+     * 根据编号获取信息
+     */
+    @RequestMapping("getWastesMangerById")
+    @ResponseBody
+    public String getWastesMangerById(int id){
+        JSONObject res=new JSONObject();
+
+        try {
+            WastesInfo wastesInfo=wastesMangerService.getWastesMangerById(id);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", wastesInfo);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+
+        }
+
+        return res.toString();
+    }
+
+    /**
+     * 更新
+     */
+    @RequestMapping("updateWastesManger")
+    @ResponseBody
+    public String updateWastesManger(@RequestBody WastesInfo wastesInfo){
+        JSONObject res=new JSONObject();
+
+        try {
+           wastesMangerService.updateWastesManger(wastesInfo);
+            res.put("status", "success");
+            res.put("message", "修改成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "修改失败");
+        }
+
+        return res.toString();
     }
 }

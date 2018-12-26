@@ -18,6 +18,11 @@ public class WastesInfo {//产废表1实体结构
     private Characteristic characteristic;
 
     /**
+     * 主键
+     */
+    private int id;
+
+    /**
      * 分页
      * @param wastesCharacter
      */
@@ -28,6 +33,14 @@ public class WastesInfo {//产废表1实体结构
      * @param wastesCharacter
      */
   private String keywords;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Page getPage() {
         return page;
