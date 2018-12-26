@@ -213,6 +213,11 @@ public class ProcurementServiceImpl implements ProcurementService
     }
 
     @Override
+    public String getSpecificationById(int id) {
+        return procurementMapper.getSpecificationById(id);
+    }
+
+    @Override
     public List<Material> searchMaterial(Material material){ return procurementMapper.searchMaterial(material);}
 
     @Override

@@ -14,6 +14,8 @@
     <script src="js/produce/monthProcurement.js"></script>
     <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
     <script src="js/bootstrap/bootstrap-select.min.js"></script>
+    <link href="css/loading1.css" rel="stylesheet">
+    <link href="css/loading2.css" rel="stylesheet">
 </head>
 <body onload="getIngredientsList();">
     <!--导航条-->
@@ -177,16 +179,16 @@
                         <tr id="cloneTr1" class="myclass">
                             <td class="text-center">1</td>
                             <td class="text-center" colspan="2">
-                                <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="suppliesName" id="suppliesName"></select>
+                                <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="suppliesName" id="suppliesName" onchange="findSpecification(this)"></select>
                             </td>
-                            <td class="text-center" colspan="2"><input class="focus" title=""></td>
-                            <td class="text-center"><select class="focus" title="" id="unit"></select></td>
-                            <td class="text-center"><input class="focus"   type="number" title=""></td>
-                            <td class="text-center"><input class="focus"  type="number" title=""></td>
-                            <td class="text-center" colspan="2"><input class="focus" title=""></td>
+                            <td class="text-center" colspan="2"><input class="form-control" title=""></td>
+                            <td class="text-center"><select class="form-control" title="" id="unit"></select></td>
+                            <td class="text-center"><input class="form-control"   type="number" title=""></td>
+                            <td class="text-center"><input class="form-control"  type="number" title=""></td>
+                            <td class="text-center" colspan="2"><input class="form-control" title=""></td>
                         </tr>
                         <tr id="plusBtn">
-                            <td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                            <td><a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
                             <td colspan="2"></td>
                             <td colspan="2"></td>
                             <td></td>
@@ -204,6 +206,13 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="loader ">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
     </div>
     <div id="embed"></div>
 </body>
