@@ -39,6 +39,10 @@ public class Ingredients {
      */
     private String name;
     /**
+     * 物品编码
+     */
+    private String code;
+    /**
      * 规格
      */
     private String specification;
@@ -154,12 +158,18 @@ public class Ingredients {
      */
     private EquipmentDataItem equipmentDataItem;
 
-
     /**
      * 辅料/备件状态数据字典
      */
     private IngredientStateItem ingredientStateItem;
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public IngredientStateItem getIngredientStateItem() {
         return ingredientStateItem;

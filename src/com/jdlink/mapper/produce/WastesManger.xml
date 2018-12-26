@@ -28,4 +28,36 @@
     <select id="totalWastesMangerRecord" resultType="int">
         select count(*) from t_wasteslist;
     </select>
+
+    <!--获取危废类别下拉框-->
+    <select id="getWastesCategoryList" resultType="Category">
+        select  * from t_wastescategory;
+    </select>
+
+    <!--获取危废特性下拉框-->
+    <select id="getWastesCharacteristicList" resultType="Characteristic">
+        select  * from t_wastescharacter;
+    </select>
+
+    <!--新增危废代码-->
+    <insert id="addWastesManger" parameterType="WastesInfo">
+        insert  into t_wasteslist(category, industry, code, description, wastesCharacter) values
+        (#{wastescategory.code},#{industry},#{code},#{description},#{characteristic.code});
+    </insert>
+
+    <!--根据编号删除危废代码-->
+    <delete id="removeWastesManger" parameterType="int">
+        delete from t_wasteslist where  id=#{id}
+    </delete>
+
+    <!--根据编号获取-->
+    <select id="getWastesMangerById" parameterType="int" resultMap="WastesInfoRM">
+        select  * from t_wasteslist where  id=#{id}
+    </select>
+
+    <!--更新-->
+    <update id="updateWastesManger" parameterType="WastesInfo">
+        update t_wasteslist set category=#{wastescategory.code},wastesCharacter=#{characteristic.code},industry=#{industry},description=#{description}
+        where id=#{id}
+    </update>
 </mapper>

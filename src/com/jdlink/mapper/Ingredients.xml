@@ -21,6 +21,8 @@
        <association property="equipmentDataItem" column="equipmentId" select="getEquipmentDataItem"></association>
     </resultMap>
 
+
+
     <!--获得处置设备数据字典-->
     <select id="getEquipmentDataItem" resultType="EquipmentDataItem">
           select * from datadictionaryitem where dataDictionaryItemId=#{equipmentId}
@@ -313,7 +315,7 @@
                 set
                 name=#{ingredients.name},unitPrice=#{ingredients.unitPrice},totalPrice=#{ingredients.totalPrice},
                 amount=#{ingredients.amount},wareHouseName=#{ingredients.wareHouseName},post=#{ingredients.post},specification=#{ingredients.specification},
-                unit=#{ingredients.unit},remarks=#{ingredients.remarks},equipment=#{ingredients.equipment}
+                unit=#{ingredients.unit},remarks=#{ingredients.remarks},equipment=#{ingredients.equipment},equipmentId=#{ingredients.equipmentDataItem.dataDictionaryItemId}
                 where inId = #{ingredients.id} and serialNumberIn = #{ingredients.serialNumber};
             </foreach>
         </if>
@@ -330,18 +332,18 @@
 
     <insert id="addInventoryItem" parameterType="Ingredients">
         insert into t_pr_ingredients_inventory
-        (name,wareHouseName,amount,unit,ingredientState,specification)
+        (name,wareHouseName,amount,unit,ingredientState,ingredientStateId,specification)
         values
-        (#{name},#{wareHouseName},#{amount},#{unit},'ToReceive',#{specification});
+        (#{name},#{wareHouseName},#{amount},#{unit},'ToReceive',7,#{specification});
     </insert>
 
     <insert id="addIngredientsInItem" parameterType="Ingredients">
          insert into t_pr_ingredients
          (inId,serialNumberIn,name,unitPrice,totalPrice,amount,wareHouseName,post,specification,unit,
-         ingredientState,remarks,equipment,procurementId)
+         ingredientState,ingredientStateId,remarks,equipment,equipmentId,procurementId)
          values
          (#{id},#{serialNumber},#{name},#{unitPrice},#{totalPrice},#{amount},#{wareHouseName},
-         #{post},#{specification},#{unit},'ToReceive',#{remarks},#{equipment},#{procurementId});
+         #{post},#{specification},#{unit},'ToReceive',7,#{remarks},#{equipment},#{equipmentDataItem.dataDictionaryItemId},#{procurementId});
 
           update t_pl_material set state = 'ToPick' where id=#{procurementItemId};
     </insert>
@@ -775,7 +777,7 @@
                 set
                 name=#{ingredients.name},amount=0,wareHouseName=#{ingredients.wareHouseName},post=#{ingredients.post},
                 specification=#{ingredients.specification},unit=#{ingredients.unit},remarks=#{ingredients.remarks},receiveAmount=#{ingredients.receiveAmount},
-                ingredientState=IF(#{ingredients.notReceiveAmount}>0,'PartReceived','Received')
+                ingredientState=IF(#{ingredients.notReceiveAmount}>0,'PartReceived','Received'),ingredientStateId=IF(#{ingredients.notReceiveAmount}>0,40,39)
                 where receiveId = #{ingredients.id} and serialNumberReceive = #{ingredients.serialNumber};
             </foreach>
         </if>
@@ -796,7 +798,7 @@
         specification,unit,remarks,ingredientState)
         values
         (#{id},#{serialNumber},#{name},#{receiveAmount},#{wareHouseName},#{specification},
-        #{unit},#{remarks},IF(#{notReceiveAmount}>0,'PartReceived','Received'));
+        #{unit},#{remarks},IF(#{notReceiveAmount}>0,'PartReceived','Received')),ingredientStateId=IF(#{ingredients.notReceiveAmount}>0,40,39);
 
         update t_pr_ingredients_inventory
         set amount= amount - #{receiveAmount}
@@ -806,7 +808,7 @@
     <update id="updateIngredientsReceiveItem" parameterType="Ingredients">
         update t_pr_ingredients
         set
-        remarks=#{remarks},receiveAmount=#{receiveAmount},ingredientState='PartReceived',serialNumberReceive=#{serialNumber}
+        remarks=#{remarks},receiveAmount=#{receiveAmount},ingredientState='PartReceived',ingredientStateId=40,serialNumberReceive=#{serialNumber}
         where itemId=#{itemId};
     </update>
 
@@ -833,7 +835,7 @@
     <update id="updateReceiveState" parameterType="String">
         update t_pr_ingredients_receive
         set
-        state = 'OutBounded'
+        state = 'OutBounded',checkStateId=81
         where id = #{id};
     </update>
 
@@ -1166,7 +1168,7 @@
                 name=#{ingredients.name},unitPrice=#{ingredients.unitPrice},totalPrice=#{ingredients.totalPrice},
                 amount=#{ingredients.amount},wareHouseName=#{ingredients.wareHouseName},post=#{ingredients.post},specification=#{ingredients.specification},
                 unit=#{ingredients.unit},remarks=#{ingredients.remarks},ingredientState=IF(#{ingredients.notReceiveAmount}=1,'PartOutBound','OutBounded'),
-                equipment=#{ingredients.equipment}
+                ingredientStateId=IF(#{ingredients.notReceiveAmount}=1,43,42),equipment=#{ingredients.equipment},equipmentId=#{ingredients.equipmentDataItem.dataDictionaryItemId}
                 where outId = #{ingredients.id} and serialNumberOut = #{ingredients.serialNumber};
             </foreach>
         </if>
@@ -1251,5 +1253,97 @@
             </foreach>
         </if>
     </insert>
+
+    <!--辅料备件物品维护-->
+    <resultMap id="IngredientsRM" type="Ingredients" autoMapping="true">
+        <id column="itemId" property="id"/>
+        <result column="ingredientsName" property="name"/>
+    </resultMap>
+
+    <select id="getIngredientsList" resultMap="IngredientsRM">
+        select * from t_pl_ingredientslist
+        order by nowTime desc
+        <if test="start != null and count != null and count != 0">
+            limit #{start}, #{count};
+        </if>
+    </select>
+
+    <select id="getCountIngredientsList" resultType="int">
+        select count(*) from t_pl_ingredientslist;
+    </select>
+
+    <select id="getIngredientByNameAndSpecification" resultMap="IngredientsRM">
+        select * from t_pl_ingredientslist where ingredientsName=#{name} and specification=#{specification};
+    </select>
+
+    <select id="getIngredientById" resultMap="IngredientsRM">
+        select * from t_pl_ingredientslist where id=#{id};
+    </select>
+
+    <select id="searchIngredient" parameterType="Ingredients" resultMap="IngredientsRM">
+        select * from t_pl_ingredientslist
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or ingredientsName like "%"#{keywords}"%"
+                or code like "%"#{keywords}"%"
+                or specification like "%"#{keywords}"%"
+            </if>
+            <if test="id != '' and id != null">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="name != '' and name != null">
+                and ingredientsName like "%"#{name}"%"
+            </if>
+            <if test="code != '' and code != null">
+                and code like "%"#{code}"%"
+            </if>
+            <if test="specification != '' and specification != null">
+                and specification like "%"#{specification}"%"
+            </if>
+        </where>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count};
+        </if>
+    </select>
+
+    <select id="searchCountIngredient" parameterType="Ingredients" resultType="int">
+        select count(*) from t_pl_ingredientslist
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or ingredientsName like "%"#{keywords}"%"
+                or code like "%"#{keywords}"%"
+                or specification like "%"#{keywords}"%"
+            </if>
+            <if test="id != '' and id != null">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="name != '' and name != null">
+                and ingredientsName like "%"#{name}"%"
+            </if>
+            <if test="code != '' and code != null">
+                and code like "%"#{code}"%"
+            </if>
+            <if test="specification != '' and specification != null">
+                and specification like "%"#{specification}"%"
+            </if>
+        </where>
+    </select>
+
+    <insert id="addIngredient" parameterType="Ingredients">
+        insert into t_pl_ingredientslist
+        (ingredientsName, code,specification,nowTime) values (#{name},#{code},#{specification},NOW());
+    </insert>
+
+    <update id="updateIngredient" parameterType="Ingredients">
+        update t_pl_ingredientslist
+        set ingredientsName=#{name},code=#{code},specification=#{specification} where id=#{id};
+    </update>
+
+    <delete id="deleteIngredient" parameterType="int">
+        delete from t_pl_ingredientslist where id=#{id};
+    </delete>
 
 </mapper>

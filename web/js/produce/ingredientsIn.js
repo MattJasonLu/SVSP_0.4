@@ -1789,7 +1789,6 @@ function save() {
                 var equipmentDataItem={};
                 equipmentDataItem.dataDictionaryItemId=equitment;
                 ingredientsIn.ingredientsList[i].equipmentDataItem=equipmentDataItem;
-
                 // switch (equitment) {
                 //     case 1:
                 //         ingredientsIn.ingredientsList[i].equipment = 'MedicalCookingSystem';
