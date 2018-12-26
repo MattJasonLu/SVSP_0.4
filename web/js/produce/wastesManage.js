@@ -46,7 +46,7 @@ function totalPage() {
     else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchCompatibilityTotal",                  // url
+            url: "searchWastesMangerCount",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
@@ -140,7 +140,7 @@ function setWastesManger(result) {
 
                 // 行业来源
                 case (2):
-                    $(this).html(data.industry);
+                    $(this).html($.trim(data.industry));
                     break;
 
                 //危废代码
@@ -150,7 +150,7 @@ function setWastesManger(result) {
 
                 // 描述
                 case (4):
-                    $(this).html((data.description));
+                    $(this).html($.trim((data.description)));
                     break;
 
                 //特性
@@ -254,7 +254,7 @@ function switchPage(pageNumber) {
         data1['page'] = page;
         $.ajax({
             type: "POST",                            // 方法类型
-            url: "searchCompatibility",                 // url
+            url: "searchWastesManger",                 // url
             async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
@@ -262,7 +262,7 @@ function switchPage(pageNumber) {
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     console.log(result)
-                    setCompatibility(result)
+                    setWastesManger(result)
                 } else {
                     alert(result.message);
 
@@ -340,7 +340,7 @@ function inputSwitchPage() {
             data1['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "searchCompatibilityTotal",                  // url
+                url: "searchWastesMangerCount",                  // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data1),
                 dataType: "json",
@@ -423,6 +423,103 @@ function loadWastesManage() {
         }
     });
     // 设置高级检索的下拉框数据
+
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 6
+    });
+
+    //危废类别 赋值
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getWastesCategoryList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                console.log(data)
+                //危废类别
+                var wastescategory = $('#search-wastescategory');
+                wastescategory.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.code);
+                    option.text(item.name+"("+item.code+")");
+                    wastescategory.append(option);
+                });
+                wastescategory.get(0).selectedIndex = -1;
+                $('.selectpicker').selectpicker('refresh');
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+
+    //危废特性 赋值
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getWastesCharacteristicList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                console.log(data)
+                //危废类别
+                var characteristic = $('#search-characteristic');
+                characteristic.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.code);
+                    option.text(item.name+"("+item.code+")");
+                    characteristic.append(option);
+                });
+                characteristic.get(0).selectedIndex = -1;
+                $('.selectpicker').selectpicker('refresh');
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+
+    //危废代码 赋值
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getWastesInfoList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                console.log(data)
+                //危废类别
+                var code = $('#search-code');
+                code.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.code);
+                    option.text(item.code);
+                    code.append(option);
+                });
+                code.get(0).selectedIndex = -1;
+                $('.selectpicker').selectpicker('refresh');
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+
+
     isSearch = false;
 }
 
@@ -721,4 +818,82 @@ function adjust() {
     })
     console.log(data)
 
+}
+
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if (last - event.timeStamp == 0) {
+                searchWastesManger();
+            } else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchWastesManger();      //
+            }
+        }, 600);
+    });
+});
+
+//高级查询
+function searchWastesManger() {
+    isSearch = true;
+    var page = {};
+    var pageNumber = 1;                       // 显示首页
+    page.pageNumber = pageNumber;
+    page.count = countValue();
+    page.start = (pageNumber - 1) * page.count;
+    if ($("#senior").is(':visible')) {
+
+        data1 = {
+            page: page,
+            wastescategory:{code:$('#search-wastescategory').selectpicker('val')},
+            characteristic:{code:$('#search-characteristic').selectpicker('val')},
+            code:$('#search-code').selectpicker('val'),
+            industry:$.trim($('#search-industry').val()),
+        };
+    }
+    else {
+        var keywords = $.trim($("#searchContent").val());
+        data1 = {
+            page: page,
+            keywords: keywords
+        }
+    }
+
+
+    if (data1 == null) alert("请点击'查询设置'输入查询内容!");
+    else {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "searchWastesManger",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result)
+                    setPageClone(result)
+                    setPageCloneAfter(pageNumber);        // 重新设置页码
+                } else {
+                    alert(result.message);
+
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器错误！");
+            }
+        });
+    }
+    console.log(data1)
+}
+
+/**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchWastesManger();      //
+    }
 }

@@ -191,4 +191,42 @@ public class WastesMangerController {
 
         return res.toString();
     }
+
+    /**
+     * 查询
+     */
+    @RequestMapping("searchWastesManger")
+    @ResponseBody
+    public  String searchWastesManger(@RequestBody WastesInfo wastesInfo){
+        JSONObject res=new JSONObject();
+
+        try {
+            List<WastesInfo> wastesInfoList = wastesMangerService.searchWastesManger(wastesInfo);
+            JSONArray data = JSONArray.fromArray(wastesInfoList.toArray(new WastesInfo[wastesInfoList.size()]));
+            res.put("data", data.toString());
+            res.put("status", "success");
+            res.put("message", "危废信息获取成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "危废信息获取失败");
+            res.put("exception", e.getMessage());
+        }
+
+   return res.toString();
+    }
+
+
+    /**
+     * 查询计数
+     */
+    @RequestMapping("searchWastesMangerCount")
+    @ResponseBody
+    public int searchWastesMangerCount(@RequestBody WastesInfo wastesInfo){
+
+
+        return wastesMangerService.searchWastesMangerCount(wastesInfo);
+    }
+
 }
