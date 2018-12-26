@@ -77,13 +77,13 @@
                     accept: "application/*,image/*"
                 },
                 mobile: {   //手机
-                    required:true,
+                    required:false,
                     maxlength:11,
                     minlength : 11,
                     isMobile : true
                 },
                 phone: { //电话
-                  required:true,
+                  required:false,
                    isFixMobile: true
                 },
                 // email: {
@@ -793,9 +793,9 @@
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="companyName" class="col-sm-4 control-label">企业名称 <sup>*</sup></label>
+                            <label for="companyName" class="col-sm-4 control-label">企业名称 <sup></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="companyName" name="companyName" placeholder="" required>
+                                <input type="text" class="form-control" id="companyName" name="companyName" placeholder="" >
                             </div>
                         </div>
                         <div class="form-group">
@@ -805,39 +805,39 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="representative" class="col-sm-4 control-label">法人代表 <sup>*</sup></label>
+                            <label for="representative" class="col-sm-4 control-label">法人代表 <sup></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="representative" name="representative" placeholder="" required>
+                                <input type="text" class="form-control" id="representative" name="representative" placeholder="" >
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="industry" class="col-sm-4 control-label">所属行业 <sup>*</sup></label>
+                            <label for="industry" class="col-sm-4 control-label">所属行业 <sup></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="industry" name="industry" placeholder="" required>
+                                <input type="text" class="form-control" id="industry" name="industry" placeholder="" >
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="enterpriseType" class="col-sm-4 control-label">企业类型 <sup>*</sup></label>
+                            <label for="enterpriseType" class="col-sm-4 control-label">企业类型 <sup></sup></label>
                             <div class="col-xs-5">
-                                <select class="form-control" name="enterpriseType" id="enterpriseType" required></select>
+                                <select class="form-control" name="enterpriseType" id="enterpriseType" ></select>
                             </div>
                         </div>
                         <div class="form-group hidden">
-                            <label for="operationType" class="col-sm-4 control-label">经营单位类别 <sup>*</sup></label>
+                            <label for="operationType" class="col-sm-4 control-label">经营单位类别 <sup></sup></label>
                             <div class="col-xs-5">
-                                <select class="form-control" name="operationType" id="operationType" required></select>
+                                <select class="form-control" name="operationType" id="operationType" ></select>
                             </div>
                         </div>
                         <div class="form-group hidden">
-                            <label for="operationRecord" class="col-sm-4 control-label">危废经营记录情况 <sup>*</sup></label>
+                            <label for="operationRecord" class="col-sm-4 control-label">危废经营记录情况 <sup></sup></label>
                             <div class="col-xs-5">
-                                <select class="form-control" name="operationRecord" id="operationRecord" required></select>
+                                <select class="form-control" name="operationRecord" id="operationRecord" ></select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="street" class="col-sm-4 control-label">所属街道 <sup>*</sup></label>
+                            <label for="street" class="col-sm-4 control-label">所属街道 <sup></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="street" name="street" placeholder="" required>
+                                <input type="text" class="form-control" id="street" name="street" placeholder="" >
                             </div>
                         </div>
                         <div class="form-group">
@@ -849,33 +849,33 @@
                     </div>
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="licenseCode" class="col-sm-4 control-label">营业执照注册号<sup>*</sup></label>
+                            <label for="licenseCode" class="col-sm-4 control-label">营业执照注册号<sup></sup></label>
                             <div class="col-xs-5">
                                 <input type="text" class="form-control" id="licenseCode" name="licenseCode" placeholder="" onkeyup="automatic(this)">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="postCode" class="col-sm-4 control-label">工商注册地邮编 <sup>*</sup></label>
+                            <label for="postCode" class="col-sm-4 control-label">工商注册地邮编 <sup></sup></label>
                             <div class="col-xs-5">
                                 <input type="text" class="form-control" id="postCode" name="postCode" placeholder="" >
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="product" class="col-sm-4 control-label">主要产品 <sup>*</sup></label>
+                            <label for="product" class="col-sm-4 control-label">主要产品 <sup></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="product" name="product" placeholder="" required>
+                                <input type="text" class="form-control" id="product" name="product" placeholder="" >
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="operationMode" class="col-sm-4 control-label">经营方式 <sup>*</sup></label>
+                            <label for="operationMode" class="col-sm-4 control-label">经营方式 <sup></sup></label>
                             <div class="col-xs-5">
                                 <select class="form-control" name="operationMode" id="operationMode" ></select>
                             </div>
                         </div>
                         <div class="form-group hidden">
-                            <label for="contingencyPlan" class="col-sm-4 control-label">事故防范和应急预案 <sup>*</sup></label>
+                            <label for="contingencyPlan" class="col-sm-4 control-label">事故防范和应急预案 <sup></sup></label>
                             <div class="col-xs-5">
-                                <select class="form-control" name="contingencyPlan" id="contingencyPlan" required></select>
+                                <select class="form-control" name="contingencyPlan" id="contingencyPlan" ></select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -885,13 +885,13 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="location" class="col-sm-4 control-label">工商注册地址 <sup>*</sup></label>
+                            <label for="location" class="col-sm-4 control-label">工商注册地址 <sup></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="location" name="location" placeholder="" required>
+                                <input type="text" class="form-control" id="location" name="location" placeholder="" >
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="location" class="col-sm-4 control-label">处置去向是否为北控 <sup>*</sup></label>
+                            <label for="location" class="col-sm-4 control-label">处置去向是否为北控 <sup></sup></label>
                             <div class="col-xs-5">
                                 <input type="radio" name="isDisposal" value="true">是
                                 <input type="radio" name="isDisposal" value="false">否
@@ -946,13 +946,13 @@
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="contactName" class="col-sm-4 control-label">联系人 <sup>*</sup></label>
+                            <label for="contactName" class="col-sm-4 control-label">联系人 <sup></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="contactName" name="contactName" placeholder="" required>
+                                <input type="text" class="form-control" id="contactName" name="contactName" placeholder="" >
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="mobile" class="col-sm-4 control-label">手机号码 <sup><span id="mobile1" aria-hidden="true" style="color: #ff353d">*</span></sup></label>
+                            <label for="mobile" class="col-sm-4 control-label">手机号码 <sup><span id="mobile1" aria-hidden="true" style="color: #ff353d"></span></sup></label>
                             <div class="col-xs-5">
                                 <input type="text" class="form-control" id="mobile" name="mobile" placeholder="" >
                             </div>
@@ -960,7 +960,7 @@
                     </div>
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="phone"  class="col-sm-4 control-label">固定电话 <sup><span id="phone1" aria-hidden="true" style="color: #ff2a12">*</span></sup></label>
+                            <label for="phone"  class="col-sm-4 control-label">固定电话 <sup><span id="phone1" aria-hidden="true" style="color: #ff2a12"></span></sup></label>
                             <div class="col-xs-5">
                                 <input type="text" class="form-control" id="phone" name="phone" placeholder="" >
                             </div>
