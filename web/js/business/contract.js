@@ -3507,10 +3507,12 @@ function contractEmSave() {
                         //console.log(result);
                     }
                     else {
+                        console.log(result)
                         alert(result.message);
                     }
                 },
                 error: function (result) {
+                    console.log(result)
                     alert("服务器异常！");
                 }
             });
@@ -3959,10 +3961,12 @@ function contractLogicSave() {
                         //console.log(result);
                     }
                     else {
+                        console.log(result)
                         alert(result.message);
                     }
                 },
                 error: function (result) {
+                    console.log(result)
                     alert("服务器异常！");
                 }
             });
