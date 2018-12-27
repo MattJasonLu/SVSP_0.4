@@ -265,6 +265,7 @@ public class ContractController {
         } catch (Exception e) {
             e.printStackTrace();
             res1.put("status", "fail");
+            res1.put("error", e);
             res1.put("message", "创建合同失败，请完善信息!");
         }
         return res1.toString();
