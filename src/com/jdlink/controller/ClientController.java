@@ -676,175 +676,175 @@ public class ClientController {
                 client.setApplicationStatusItem(applicationStatusItem);
                 client.setCompanyName(data[i][0].toString());
                 // 三证合一
-                client.setOrganizationCode(data[i][1].toString());
-                client.setLicenseCode(data[i][1].toString());
-                client.setTaxNumber(data[i][1].toString());
-                client.setRepresentative(data[i][2].toString());
-                client.setPostCode(data[i][3].toString());
+//                client.setOrganizationCode(data[i][1].toString());
+//                client.setLicenseCode(data[i][1].toString());
+//                client.setTaxNumber(data[i][1].toString());
+//                client.setRepresentative(data[i][2].toString());
+//                client.setPostCode(data[i][3].toString());
 
                 // 设置企业类型
-                switch (data[i][4].toString()) {
-                    case "国有企业":
-                        client.setEnterpriseType(EnterpriseType.StateOwnedEnterprises);
-                        EnterpriseTypeItem enterpriseTypeItem1 = new EnterpriseTypeItem();
-                        enterpriseTypeItem1.setDataDictionaryItemId(108);
-                        client.setEnterpriseTypeItem(enterpriseTypeItem1);
-                        break;
-                    case "集体企业":
-                        client.setEnterpriseType(EnterpriseType.CollectiveEnterprise);
-                        EnterpriseTypeItem enterpriseTypeItem2 = new EnterpriseTypeItem();
-                        enterpriseTypeItem2.setDataDictionaryItemId(109);
-                        client.setEnterpriseTypeItem(enterpriseTypeItem2);
-                        break;
-                    case "国有企业改组的股份合作企业":
-                        client.setEnterpriseType(EnterpriseType.JointStockByStateOwnedEnterprises);
-                        EnterpriseTypeItem enterpriseTypeItem3 = new EnterpriseTypeItem();
-                        enterpriseTypeItem3.setDataDictionaryItemId(170);
-                        client.setEnterpriseTypeItem(enterpriseTypeItem3);
-                        break;
-                    case "集体企业改组的股份合作企业":
-                        client.setEnterpriseType(EnterpriseType.JointStockByCollectiveEnterprise);
-                        EnterpriseTypeItem enterpriseTypeItem4 = new EnterpriseTypeItem();
-                        enterpriseTypeItem4.setDataDictionaryItemId(171);
-                        client.setEnterpriseTypeItem(enterpriseTypeItem4);
-                        break;
-                    case "有限责任公司":
-                        client.setEnterpriseType(EnterpriseType.LimitedLiabilityCompany);
-                        EnterpriseTypeItem enterpriseTypeItem5 = new EnterpriseTypeItem();
-                        enterpriseTypeItem5.setDataDictionaryItemId(110);
-                        client.setEnterpriseTypeItem(enterpriseTypeItem5);
-                        break;
-                    case "私营企业":
-                        client.setEnterpriseType(EnterpriseType.ThePrivateEnterprise);
-                        EnterpriseTypeItem enterpriseTypeItem6 = new EnterpriseTypeItem();
-                        enterpriseTypeItem6.setDataDictionaryItemId(111);
-                        client.setEnterpriseTypeItem(enterpriseTypeItem6);
-                    default:
-                        break;
-                }
-                // 设置经营方式
-                switch (data[i][5].toString()) {
-                    case "生产":
-                        client.setOperationMode(OperationMode.Production);
-                        OperationModelItem operationModelItem1 = new OperationModelItem();
-                        operationModelItem1.setDataDictionaryItemId(114);
-                        client.setOperationModelItem(operationModelItem1);
-                        break;
-                    case "综合":
-                        client.setOperationMode(OperationMode.Comprehensive);
-                        OperationModelItem operationModelItem2 = new OperationModelItem();
-                        operationModelItem2.setDataDictionaryItemId(112);
-                        client.setOperationModelItem(operationModelItem2);
-                        break;
-                    case "收集":
-                        client.setOperationMode(OperationMode.Collect);
-                        OperationModelItem operationModelItem3 = new OperationModelItem();
-                        operationModelItem3.setDataDictionaryItemId(113);
-                        client.setOperationModelItem(operationModelItem3);
-                        break;
-                    default:
-                        break;
-                }
-                // 经营单位类别
-                switch (data[i][6].toString()) {
-                    case "利用处置危险废物及医疗废物":
-                        client.setOperationType(OperationType.WasteAndClinical);
-                        OperationTypeItem operationTypeItem1 = new OperationTypeItem();
-                        operationTypeItem1.setDataDictionaryItemId(117);
-                        client.setOperationTypeItem(operationTypeItem1);
-                        break;
-                    case "只从事收集活动":
-                        client.setOperationType(OperationType.CollectOnly);
-                        OperationTypeItem operationTypeItem2 = new OperationTypeItem();
-                        operationTypeItem2.setDataDictionaryItemId(118);
-                        client.setOperationTypeItem(operationTypeItem2);
-                        break;
-                    case "只利用处置危险废物":
-                        client.setOperationType(OperationType.WasteOnly);
-                        OperationTypeItem operationTypeItem3 = new OperationTypeItem();
-                        operationTypeItem3.setDataDictionaryItemId(119);
-                        client.setOperationTypeItem(operationTypeItem3);
-                        break;
-                    case "只处置医疗废物":
-                        client.setOperationType(OperationType.ClinicalOnly);
-                        OperationTypeItem operationTypeItem4 = new OperationTypeItem();
-                        operationTypeItem4.setDataDictionaryItemId(120);
-                        client.setOperationTypeItem(operationTypeItem4);
-                        break;
-                    default:
-                        break;
-                }
-                // 事故防范和应急预案
-                switch (data[i][7].toString()) {
-                    case "制定并确定了应急协调人":
-                        client.setContingencyPlan(ContingencyPlan.Identify);
-                        ContingencyPlanItem contingencyPlanItem1 = new ContingencyPlanItem();
-                        contingencyPlanItem1.setDataDictionaryItemId(167);
-                        client.setContingencyPlanItem(contingencyPlanItem1);
-                        break;
-                    case "已制定":
-                        client.setContingencyPlan(ContingencyPlan.Developed);
-                        ContingencyPlanItem contingencyPlanItem2 = new ContingencyPlanItem();
-                        contingencyPlanItem2.setDataDictionaryItemId(168);
-                        client.setContingencyPlanItem(contingencyPlanItem2);
-                        break;
-                    case "未制定":
-                        client.setContingencyPlan(ContingencyPlan.Undeveloped);
-                        ContingencyPlanItem contingencyPlanItem3 = new ContingencyPlanItem();
-                        contingencyPlanItem3.setDataDictionaryItemId(169);
-                        client.setContingencyPlanItem(contingencyPlanItem3);
-                        break;
-                    default:
-                        break;
-                }
-                // 建立危废经营记录情况
-                switch (data[i][8].toString()) {
-                    case "已建立":
-                        client.setOperationRecord(OperationRecord.Established);
-                        OperationTypeItem operationTypeItem1 = new OperationTypeItem();
-                        operationTypeItem1.setDataDictionaryItemId(115);
-                        client.setOperationTypeItem(operationTypeItem1);
-                        break;
-                    case "未建立":
-                        client.setOperationRecord(OperationRecord.Unestablished);
-                        OperationTypeItem operationTypeItem2 = new OperationTypeItem();
-                        operationTypeItem2.setDataDictionaryItemId(116);
-                        client.setOperationTypeItem(operationTypeItem2);
-                        break;
-                    default:
-                        break;
-                }
-                client.setLocation(data[i][9].toString());
-                client.setStreet(data[i][10].toString());
-                client.setProcessDesp(data[i][11].toString().equals("null") ? null : data[i][11].toString());
-                client.setContactName(data[i][12].toString());
-                client.setMobile(data[i][14].toString());
-                client.setPhone(data[i][13].toString().equals("null") ? client.getMobile() : data[i][13].toString());
-                client.setEmail(data[i][15].toString());
-                client.setIndustry(data[i][16].toString());
-                client.setProduct(data[i][17].toString());
-                client.setBankName(data[i][18].toString());
-                client.setBankAccount(data[i][19].toString());
+//                switch (data[i][4].toString()) {
+//                    case "国有企业":
+//                        client.setEnterpriseType(EnterpriseType.StateOwnedEnterprises);
+//                        EnterpriseTypeItem enterpriseTypeItem1 = new EnterpriseTypeItem();
+//                        enterpriseTypeItem1.setDataDictionaryItemId(108);
+//                        client.setEnterpriseTypeItem(enterpriseTypeItem1);
+//                        break;
+//                    case "集体企业":
+//                        client.setEnterpriseType(EnterpriseType.CollectiveEnterprise);
+//                        EnterpriseTypeItem enterpriseTypeItem2 = new EnterpriseTypeItem();
+//                        enterpriseTypeItem2.setDataDictionaryItemId(109);
+//                        client.setEnterpriseTypeItem(enterpriseTypeItem2);
+//                        break;
+//                    case "国有企业改组的股份合作企业":
+//                        client.setEnterpriseType(EnterpriseType.JointStockByStateOwnedEnterprises);
+//                        EnterpriseTypeItem enterpriseTypeItem3 = new EnterpriseTypeItem();
+//                        enterpriseTypeItem3.setDataDictionaryItemId(170);
+//                        client.setEnterpriseTypeItem(enterpriseTypeItem3);
+//                        break;
+//                    case "集体企业改组的股份合作企业":
+//                        client.setEnterpriseType(EnterpriseType.JointStockByCollectiveEnterprise);
+//                        EnterpriseTypeItem enterpriseTypeItem4 = new EnterpriseTypeItem();
+//                        enterpriseTypeItem4.setDataDictionaryItemId(171);
+//                        client.setEnterpriseTypeItem(enterpriseTypeItem4);
+//                        break;
+//                    case "有限责任公司":
+//                        client.setEnterpriseType(EnterpriseType.LimitedLiabilityCompany);
+//                        EnterpriseTypeItem enterpriseTypeItem5 = new EnterpriseTypeItem();
+//                        enterpriseTypeItem5.setDataDictionaryItemId(110);
+//                        client.setEnterpriseTypeItem(enterpriseTypeItem5);
+//                        break;
+//                    case "私营企业":
+//                        client.setEnterpriseType(EnterpriseType.ThePrivateEnterprise);
+//                        EnterpriseTypeItem enterpriseTypeItem6 = new EnterpriseTypeItem();
+//                        enterpriseTypeItem6.setDataDictionaryItemId(111);
+//                        client.setEnterpriseTypeItem(enterpriseTypeItem6);
+//                    default:
+//                        break;
+//                }
+//                // 设置经营方式
+//                switch (data[i][5].toString()) {
+//                    case "生产":
+//                        client.setOperationMode(OperationMode.Production);
+//                        OperationModelItem operationModelItem1 = new OperationModelItem();
+//                        operationModelItem1.setDataDictionaryItemId(114);
+//                        client.setOperationModelItem(operationModelItem1);
+//                        break;
+//                    case "综合":
+//                        client.setOperationMode(OperationMode.Comprehensive);
+//                        OperationModelItem operationModelItem2 = new OperationModelItem();
+//                        operationModelItem2.setDataDictionaryItemId(112);
+//                        client.setOperationModelItem(operationModelItem2);
+//                        break;
+//                    case "收集":
+//                        client.setOperationMode(OperationMode.Collect);
+//                        OperationModelItem operationModelItem3 = new OperationModelItem();
+//                        operationModelItem3.setDataDictionaryItemId(113);
+//                        client.setOperationModelItem(operationModelItem3);
+//                        break;
+//                    default:
+//                        break;
+//                }
+//                // 经营单位类别
+//                switch (data[i][6].toString()) {
+//                    case "利用处置危险废物及医疗废物":
+//                        client.setOperationType(OperationType.WasteAndClinical);
+//                        OperationTypeItem operationTypeItem1 = new OperationTypeItem();
+//                        operationTypeItem1.setDataDictionaryItemId(117);
+//                        client.setOperationTypeItem(operationTypeItem1);
+//                        break;
+//                    case "只从事收集活动":
+//                        client.setOperationType(OperationType.CollectOnly);
+//                        OperationTypeItem operationTypeItem2 = new OperationTypeItem();
+//                        operationTypeItem2.setDataDictionaryItemId(118);
+//                        client.setOperationTypeItem(operationTypeItem2);
+//                        break;
+//                    case "只利用处置危险废物":
+//                        client.setOperationType(OperationType.WasteOnly);
+//                        OperationTypeItem operationTypeItem3 = new OperationTypeItem();
+//                        operationTypeItem3.setDataDictionaryItemId(119);
+//                        client.setOperationTypeItem(operationTypeItem3);
+//                        break;
+//                    case "只处置医疗废物":
+//                        client.setOperationType(OperationType.ClinicalOnly);
+//                        OperationTypeItem operationTypeItem4 = new OperationTypeItem();
+//                        operationTypeItem4.setDataDictionaryItemId(120);
+//                        client.setOperationTypeItem(operationTypeItem4);
+//                        break;
+//                    default:
+//                        break;
+//                }
+//                // 事故防范和应急预案
+//                switch (data[i][7].toString()) {
+//                    case "制定并确定了应急协调人":
+//                        client.setContingencyPlan(ContingencyPlan.Identify);
+//                        ContingencyPlanItem contingencyPlanItem1 = new ContingencyPlanItem();
+//                        contingencyPlanItem1.setDataDictionaryItemId(167);
+//                        client.setContingencyPlanItem(contingencyPlanItem1);
+//                        break;
+//                    case "已制定":
+//                        client.setContingencyPlan(ContingencyPlan.Developed);
+//                        ContingencyPlanItem contingencyPlanItem2 = new ContingencyPlanItem();
+//                        contingencyPlanItem2.setDataDictionaryItemId(168);
+//                        client.setContingencyPlanItem(contingencyPlanItem2);
+//                        break;
+//                    case "未制定":
+//                        client.setContingencyPlan(ContingencyPlan.Undeveloped);
+//                        ContingencyPlanItem contingencyPlanItem3 = new ContingencyPlanItem();
+//                        contingencyPlanItem3.setDataDictionaryItemId(169);
+//                        client.setContingencyPlanItem(contingencyPlanItem3);
+//                        break;
+//                    default:
+//                        break;
+//                }
+//                // 建立危废经营记录情况
+//                switch (data[i][8].toString()) {
+//                    case "已建立":
+//                        client.setOperationRecord(OperationRecord.Established);
+//                        OperationTypeItem operationTypeItem1 = new OperationTypeItem();
+//                        operationTypeItem1.setDataDictionaryItemId(115);
+//                        client.setOperationTypeItem(operationTypeItem1);
+//                        break;
+//                    case "未建立":
+//                        client.setOperationRecord(OperationRecord.Unestablished);
+//                        OperationTypeItem operationTypeItem2 = new OperationTypeItem();
+//                        operationTypeItem2.setDataDictionaryItemId(116);
+//                        client.setOperationTypeItem(operationTypeItem2);
+//                        break;
+//                    default:
+//                        break;
+//                }
+//                client.setLocation(data[i][9].toString());
+//                client.setStreet(data[i][10].toString());
+//                client.setProcessDesp(data[i][11].toString().equals("null") ? null : data[i][11].toString());
+//                client.setContactName(data[i][12].toString());
+//                client.setMobile(data[i][14].toString());
+//                client.setPhone(data[i][13].toString().equals("null") ? client.getMobile() : data[i][13].toString());
+//                client.setEmail(data[i][15].toString());
+//                client.setIndustry(data[i][16].toString());
+//                client.setProduct(data[i][17].toString());
+//                client.setBankName(data[i][18].toString());
+//                client.setBankAccount(data[i][19].toString());
                 // 开票税率
-                switch (data[i][20].toString()) {
-                    case "增值税专用发票16%":
-                        client.setTicketType(TicketRate1.Rate1);
-                        TicketRateItem ticketRateItem1 = new TicketRateItem();
-                        ticketRateItem1.setDataDictionaryItemId(132);
-                        client.setTicketRateItem(ticketRateItem1);
-                        break;
-                    case "增值税专用发票3%":
-                        client.setTicketType(TicketRate1.Rate2);
-                        TicketRateItem ticketRateItem2 = new TicketRateItem();
-                        ticketRateItem2.setDataDictionaryItemId(133);
-                        client.setTicketRateItem(ticketRateItem2);
-                        break;
-                    default:
-                        break;
-                }
+//                switch (data[i][20].toString()) {
+//                    case "增值税专用发票16%":
+//                        client.setTicketType(TicketRate1.Rate1);
+//                        TicketRateItem ticketRateItem1 = new TicketRateItem();
+//                        ticketRateItem1.setDataDictionaryItemId(132);
+//                        client.setTicketRateItem(ticketRateItem1);
+//                        break;
+//                    case "增值税专用发票3%":
+//                        client.setTicketType(TicketRate1.Rate2);
+//                        TicketRateItem ticketRateItem2 = new TicketRateItem();
+//                        ticketRateItem2.setDataDictionaryItemId(133);
+//                        client.setTicketRateItem(ticketRateItem2);
+//                        break;
+//                    default:
+//                        break;
+//                }
                 // 是否为北控
-                client.setIsDisposal(data[i][21].toString().equals("是"));
-                clientService.add(client);
+//                client.setIsDisposal(data[i][21].toString().equals("是"));
+               clientService.add(client);
             }
             res.put("status", "success");
             res.put("message", "导入成功");
