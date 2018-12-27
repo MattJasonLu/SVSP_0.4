@@ -399,7 +399,7 @@ function setContractVolume(result) {
                     break;
                 //处置金额
                 case (6):
-                    $(this).html(obj.unitPriceTax.toFixed(2));
+                    $(this).html(obj.totalPrice.toFixed(2));
                     break;
                 //签订日期
                 case (7):

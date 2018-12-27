@@ -270,7 +270,7 @@ function allSelect() {
 function addNewLine(item) {
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
-        size: 4
+        size:6
     });
     // 获取id为cloneTr的tr元素
     var tr = $("#plusBtn").prev();
@@ -300,7 +300,7 @@ function addNewLine(item) {
       $('.selectpicker').selectpicker('refresh');
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
-        size: 4
+        size: 6
     });
 
     //根据辅料备件id获取规格
@@ -384,8 +384,8 @@ function saveMonth() {
         }
     });
     $('.myclass').each(function () {
-   var suppliesName=$(this).children('td').eq(1).children('div').find('button').attr('title');
    var specifications=$(this).children('td').eq(2).children('input').val();
+        var suppliesName=$(this).children('td').eq(1).children('div').find('button').attr('title').replace(specifications,"");
    var unitId=$(this).children('td').eq(3).children('select').val();
    var inventory=$(this).children('td').eq(4).children('input').val();
    var demandQuantity=$(this).children('td').eq(5).children('input').val();
@@ -1066,7 +1066,7 @@ function getIngredientsList() {
     $('.loader').show();
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
-        size: 4
+        size: 6
     });
     var page={};
     page.count=0;
@@ -1087,7 +1087,7 @@ function getIngredientsList() {
                    var option = $('<option />');
                    option.val(item.id);
                   if(item.specification!=null&&item.specification!=""){
-                      option.text(item.name+"("+item.specification+")");
+                      option.text(item.name+" "+item.specification);
                   }
                    else {
                        option.text(item.name);
