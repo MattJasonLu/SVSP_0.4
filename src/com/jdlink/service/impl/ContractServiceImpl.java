@@ -282,7 +282,7 @@ contractMapper.updateFreight2(id);
     }
 
     @Override
-    public void updatePictureUrl(String wastesCode, String wastesName, int contractId, String url) {
+    public void updatePictureUrl(String wastesCode, String wastesName, String contractId, String url) {
         contractMapper.updatePictureUrl(wastesCode, wastesName, contractId, url);
     }
 

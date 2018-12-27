@@ -466,7 +466,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     </select>
     <select id="ContractList" resultMap="QuotationItemRM">
         select * from t_quotationitem where t_quotationitem.contractId in(select contractId from t_contract where
-        contractType is NOT NULL and period is NULL and contractContent is NULL and modelVersion is null)
+        contractType is NOT NULL and period is NULL and contractContent is NULL and modelVersion is null and checkStateId!=69)
 
         <if test="start != null and count != null">
             limit #{start}, #{count}
