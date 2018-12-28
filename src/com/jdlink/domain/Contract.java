@@ -250,6 +250,19 @@ public class Contract implements Serializable {
     //物流合同的运费承担主体
     private boolean freightBearer;//true 为客户承担 false为经营单位承担
 
+
+    //小额合同(ture 小额 false，不是)
+    private Boolean small;
+
+
+    public Boolean getSmall() {
+        return small;
+    }
+
+    public void setSmall(Boolean small) {
+        this.small = small;
+    }
+
     public boolean isFreightBearer() {
         return freightBearer;
     }
