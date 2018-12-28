@@ -87,7 +87,7 @@
     <select id="getCheckStateItem" resultType="CheckStateItem">
         select * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
     </select>
-    <select id="getMaterialRequireItem" resultType="MaterialRequireItem" parameterType="String">
+    <select id="getMaterialRequireItem" resultMap="MaterialRequireItemRM" parameterType="String">
         select * from t_pr_materialrequireitem where materialRequireId=#{materialRequireId}
     </select>
     <!--获取物料信息-->
