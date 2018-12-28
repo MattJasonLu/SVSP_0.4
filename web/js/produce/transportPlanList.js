@@ -1140,21 +1140,21 @@ function addData() {
 
                     //进料方式
                     case (2):
-                        if (obj.handleCategory != null) {
-                            $(this).html(obj.handleCategory.name);
+                        if (obj.handleCategoryItem != null) {
+                            $(this).html(obj.handleCategoryItem.dictionaryItemName);
                         }
                         break;
 
                     //物质形态
                     case (3):
-                        if (obj.formType != null) {
-                            $(this).html(obj.formType.name);
+                        if (obj.formTypeItem != null) {
+                            $(this).html(obj.formTypeItem.dictionaryItemName);
                         }
                         break;
                     //包装方式
                     case (4):
-                        if(obj.packageType!=null){
-                            $(this).html(obj.packageType.name);
+                        if(obj.packageTypeItem!=null){
+                            $(this).html(obj.packageTypeItem.dictionaryItemName);
                         }
 
                         break;
