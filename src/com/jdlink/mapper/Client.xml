@@ -218,7 +218,7 @@
     </select>
 
     <select id="getByNameNotState" parameterType="String" resultMap="ClientRM">
-        SELECT * FROM client WHERE companyName=#{companyName} limit 0,1;
+        SELECT * FROM client WHERE companyName=#{companyName};
     </select>
 
     <update id="update" parameterType="Client">
