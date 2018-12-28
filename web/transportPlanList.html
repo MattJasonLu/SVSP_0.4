@@ -604,7 +604,7 @@
                             <th class="text-center" style="width:100px;">废物代码</th>
                             <th class="text-center">数量</th>
                             <th class="text-center">计量单位</th>
-                            <th class="text-center">物质形态</th>
+                            <!--<th class="text-center">物质形态</th>-->
                             <th class="text-center">包装形式</th>
                             <th class="text-center">热值</th>
                             <th class="text-center">PH</th>
@@ -621,13 +621,13 @@
                             <td class="text-center" id="transportPlanItemList[0].id">0</td>
                             <td class="text-center" id="transportPlanItemList[0].produceCompany.companyName">测试产废单位</td>
                             <td class="text-center" id="transportPlanItemList[0].handleCategory">污泥</td>
-                            <td class="text-center"><input class="form-control" type="date" id="transportPlanItemList[0].approachTime" style="width: 140px;"></td>
+                            <td class="text-center"><input class="" type="date" id="transportPlanItemList[0].approachTime" style="width: 140px;"></td>
                             <td class="text-left" id="transportPlanItemList[0].wastes.name">废液</td>
                             <td class="text-center" id="transportPlanItemList[0].wastes.wastesId">823-898-09</td>
-                            <td class="text-right"><input class="form-control" type="number" size="3" id="transportPlanItemList[0].wastes.wasteAmount" style="width: 50px;" value="1"></td>
-                            <td class="text-right"><input class="form-control" type="text" size="3" id="transportPlanItemList[0].wastes.unit" value="吨" style="width: 50px;"></td>
-                            <td class="text-right" id="transportPlanItemList[0].wastes.formType">液体</td>
-                            <td class="text-right" id="transportPlanItemList[0].wastes.packageType">标准箱</td>
+                            <td class="text-right"><input class="" type="number" size="3" id="transportPlanItemList[0].wastes.wasteAmount" style="width: 50px;" value="1"></td>
+                            <td class="text-right"><input class="" type="text" size="3" id="transportPlanItemList[0].wastes.unit" value="吨" style="width: 50px;"></td>
+                            <!--<td class="text-right" id="transportPlanItemList[0].wastes.formType">液体</td>-->
+                            <td class="text-right" id="transportPlanItemList[0].wastes.packageType"></td>
                             <td class="text-right" id="transportPlanItemList[0].wastes.calorific">20</td>
                             <td class="text-right" id="transportPlanItemList[0].wastes.ph">10</td>
                             <td class="text-right" id="transportPlanItemList[0].wastes.ashPercentage">20</td>
@@ -637,7 +637,7 @@
                             <td class="text-right" id="transportPlanItemList[0].wastes.phosphorusPercentage">10</td>
                             <td class="text-right" id="transportPlanItemList[0].wastes.fluorinePercentage">10</td>
                             <td class="text-right">
-                                <select id="transportPlanItemList[0].wastes.processWay" class="form-control" style="width: 70px;">
+                                <select id="transportPlanItemList[0].wastes.processWay" class="" style="width: 70px;">
                                     <option value="1">焚烧</option>
                                     <option value="2">填埋</option>
                                     <option value="3">清洗</option>
@@ -662,9 +662,146 @@
         <div class="modal-content" >
             <div style="margin: 5%;">
                 <div class="modal-header">
-                    <h2 class="text-center">危废合同明细及库存申报信息</h2>
+                    <h2 class="text-center">危废合同及库存申报中危废信息</h2>
                 </div>
                 <div class="modal-body">
+                    <!--搜索框-->
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="form-horizontal col-md-4">
+                                    <div class="form-group">
+                                        <label for="search-author"
+                                               class="col-sm-4 control-label">产废单位 </label>
+                                        <div class="col-xs-7">
+                                            <input type="text" class="form-control" id="search-produceCompanyName"
+                                                   name="search-author" placeholder="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-horizontal col-md-4">
+                                    <div class="form-group">
+                                        <label for="search-author"
+                                               class="col-sm-4 control-label">废物名称 </label>
+                                        <div class="col-xs-7">
+                                            <input type="text" class="form-control" id="search-wastesName"
+                                                   name="search-author" placeholder="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-horizontal col-md-4">
+                                    <div class="form-group">
+                                        <label for="search-author"
+                                               class="col-sm-4 control-label">废物代码 </label>
+                                        <div class="col-xs-7">
+                                            <input type="text" class="form-control" id="search-wastesCode"
+                                                   name="search-author" placeholder="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-horizontal col-md-4">
+                                    <div class="form-group">
+                                        <label for="search-author"
+                                               class="col-sm-4 control-label">包装形式 </label>
+                                        <div class="col-xs-7">
+                                            <select id="search-packageTypeItem" class="form-control">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-horizontal col-md-4">
+                                    <div class="form-group">
+                                        <label for="search-author"
+                                               class="col-sm-4 control-label">热值 </label>
+                                        <div class="col-xs-7">
+                                            <input type="text" class="form-control" id="search-heat"
+                                                   name="search-author" placeholder="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-horizontal col-md-4">
+                                    <div class="form-group">
+                                        <label for="search-author"
+                                               class="col-sm-4 control-label">PH </label>
+                                        <div class="col-xs-7">
+                                            <input type="text" class="form-control" id="search-ph"
+                                                   name="search-author" placeholder="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-horizontal col-md-4">
+                                    <div class="form-group">
+                                        <label for="search-author"
+                                               class="col-sm-4 control-label">灰分 </label>
+                                        <div class="col-xs-7">
+                                            <input type="text" class="form-control" id="search-ash"
+                                                   name="search-author" placeholder="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-horizontal col-md-4">
+                                    <div class="form-group">
+                                        <label for="search-author"
+                                               class="col-sm-4 control-label">水分 </label>
+                                        <div class="col-xs-7">
+                                            <input type="text" class="form-control" id="search-waterContent"
+                                                   name="search-author" placeholder="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-horizontal col-md-4">
+                                    <div class="form-group">
+                                        <label for="search-author"
+                                               class="col-sm-4 control-label">氯含量 </label>
+                                        <div class="col-xs-7">
+                                            <input type="text" class="form-control" id="search-chlorineContent"
+                                                   name="search-author" placeholder="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-horizontal col-md-4">
+                                    <div class="form-group">
+                                        <label for="search-author"
+                                               class="col-sm-4 control-label">硫含量 </label>
+                                        <div class="col-xs-7">
+                                            <input type="text" class="form-control" id="search-sulfurContent"
+                                                   name="search-author" placeholder="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-horizontal col-md-4">
+                                    <div class="form-group">
+                                        <label for="search-author"
+                                               class="col-sm-4 control-label">磷含量 </label>
+                                        <div class="col-xs-7">
+                                            <input type="text" class="form-control" id="search-phosphorusContent"
+                                                   name="search-author" placeholder="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-horizontal col-md-4">
+                                    <div class="form-group">
+                                        <label for="search-author"
+                                               class="col-sm-4 control-label">氟含量 </label>
+                                        <div class="col-xs-7">
+                                            <input type="text" class="form-control" id="search-fluorineContent"
+                                                   name="search-author" placeholder="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row text-center">
+                                <a class="btn btn-default" onclick="searchWastesData();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            </div>
+                        </div>
+                    </div>
                     <div style="height:500px; overflow-y:scroll;">
                         <table class="table table-bordered">
                         <thead>
@@ -678,7 +815,7 @@
                             <th class="text-center">产废单位</th>
                             <th class="text-center">废物名称</th>
                             <th class="text-center">废物代码</th>
-                            <th class="text-center">物质形态</th>
+                            <th class="text-center">合约量</th>
                             <th class="text-center">包装形式</th>
                             <th class="text-center">热值/KCal/Kg</th>
                             <th class="text-center">PH</th>
@@ -698,25 +835,25 @@
                                     <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="select">
                                 </label>
                             </td>
-                            <td class="text-center">测试产废单位</td>
-                            <td class="text-left">废液</td>
-                            <td class="text-center">QW10001</td>
-                            <td class="text-right">液体</td>
-                            <td class="text-right">标准箱</td>
-                            <td class="text-right">20</td>
-                            <td class="text-right">10</td>
-                            <td class="text-right">20</td>
-                            <td class="text-right">10</td>
-                            <td class="text-right">20</td>
-                            <td class="text-right">10</td>
-                            <td class="text-right">10</td>
-                            <td class="text-right">10</td>
-                            <td class="text-right hidden">01</td>
+                            <td class="text-center"></td>
+                            <td class="text-left"></td>
+                            <td class="text-center"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right hidden"></td>
                         </tr>
                         </tbody>
                     </table>
                     </div>
-                    <div class="row text-center">
+                    <div class="row text-center" style="margin-top: 30px;">
                         <a class="btn btn-primary" id="saveBtn2">保存</a>
                         <a class="btn btn-danger" data-dismiss="modal">关闭</a>
                     </div>
