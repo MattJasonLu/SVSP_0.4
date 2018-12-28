@@ -128,4 +128,6 @@ public interface ContractMapper {
     void approvalModel(String contractId);
 
     void signContract(String contractId);
-}
+
+   List<String> getAllContractId();
+ }
