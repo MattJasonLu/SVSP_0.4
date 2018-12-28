@@ -1056,7 +1056,7 @@ function addData() {
             transportPlanItem.wastesCode = $("td[id='transportPlanItemList[" + $i + "].wastes.wastesId']").text();
             transportPlanItem.wastesAmount = $("input[id='transportPlanItemList[" + $i + "].wastes.wasteAmount']").val();
             transportPlanItem.unit = $("input[id='transportPlanItemList[" + $i + "].wastes.unit']").val();
-            transportPlanItem.formType = getFormTypeFromStr($("td[id='transportPlanItemList[" + $i + "].wastes.formType']").text());
+            // transportPlanItem.formType = getFormTypeFromStr($("td[id='transportPlanItemList[" + $i + "].wastes.formType']").text());
             transportPlanItem.packageType = getPackageTypeFromStr($("td[id='transportPlanItemList[" + $i + "].wastes.packageType']").text());
             transportPlanItem.heat = $("td[id='transportPlanItemList[" + $i + "].wastes.calorific']").text();
             transportPlanItem.ph = $("td[id='transportPlanItemList[" + $i + "].wastes.ph']").text();
@@ -1340,78 +1340,121 @@ function setWastesData() {
         }
     });
 
-    /**
-     * 设置数据
-     * @param result
-     */
-    function setWastesDataList(result) {
-        // 获取id为cloneTr的tr元素
-        var tr = $("#wastesClonedTr");
-        tr.siblings().remove();
-        $.each(result, function (index, item) {
-            // 克隆tr，每次遍历都可以产生新的tr
-            var clonedTr = tr.clone();
-            clonedTr.show();
-            // 循环遍历cloneTr的每一个td元素，并赋值
-            clonedTr.children("td").each(function (inner_index) {
-                var obj = eval(item);
-                // 根据索引为部分td赋值
-                switch (inner_index) {
-                    case (1):
-                        if (obj.produceCompany != null)
-                            $(this).html(obj.produceCompany.companyName);
-                        break;
-                    case (2):
-                        $(this).html(obj.wastesName);
-                        break;
-                    case (3):
-                        $(this).html(obj.wastesCode);
-                        break;
-                    case (4):
-                        if (obj.formType != null)
-                            $(this).html(obj.formType.name);
-                        break;
-                    case (5):
-                        if (obj.packageType != null)
-                            $(this).html(obj.packageType.name);
-                        break;
-                    case (6):
-                        $(this).html(obj.heat);
-                        break;
-                    case (7):
-                        $(this).html(obj.ph);
-                        break;
-                    case (8):
-                        $(this).html(obj.ash);
-                        break;
-                    case (9):
-                        $(this).html(obj.waterContent);
-                        break;
-                    case (10):
-                        $(this).html(obj.chlorineContent);
-                        break;
-                    case (11):
-                        $(this).html(obj.sulfurContent);
-                        break;
-                    case (12):
-                        $(this).html(obj.phosphorusContent);
-                        break;
-                    case (13):
-                        $(this).html(obj.fluorineContent);
-                        break;
-                    case (14):
-                        $(this).html(obj.id);
-                        break;
-                }
-            });
-            // 把克隆好的tr追加到原来的tr前面
-            clonedTr.removeAttr("id");
-            clonedTr.insertBefore(tr);
+
+}
+/**
+ * 设置数据
+ * @param result
+ */
+function setWastesDataList(result) {
+    // 获取id为cloneTr的tr元素
+    var tr = $("#wastesClonedTr");
+    tr.siblings().remove();
+    $.each(result, function (index, item) {
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        clonedTr.show();
+        // 循环遍历cloneTr的每一个td元素，并赋值
+        clonedTr.children("td").each(function (inner_index) {
+            var obj = eval(item);
+            // 根据索引为部分td赋值
+            switch (inner_index) {
+                case (1):
+                    if (obj.produceCompany != null)
+                        $(this).html(obj.produceCompany.companyName);
+                    break;
+                case (2):
+                    $(this).html(obj.wastesName);
+                    break;
+                case (3):
+                    $(this).html(obj.wastesCode);
+                    break;
+                case (4):
+                    $(this).html(obj.wastesAmount.toFixed(2));
+                    break;
+                case (5):
+                    if (obj.packageTypeItem != null)
+                        $(this).html(obj.packageTypeItem.dictionaryItemName);
+                    break;
+                case (6):
+                    $(this).html(obj.heat);
+                    break;
+                case (7):
+                    $(this).html(obj.ph);
+                    break;
+                case (8):
+                    $(this).html(obj.ash);
+                    break;
+                case (9):
+                    $(this).html(obj.waterContent);
+                    break;
+                case (10):
+                    $(this).html(obj.chlorineContent);
+                    break;
+                case (11):
+                    $(this).html(obj.sulfurContent);
+                    break;
+                case (12):
+                    $(this).html(obj.phosphorusContent);
+                    break;
+                case (13):
+                    $(this).html(obj.fluorineContent);
+                    break;
+                case (14):
+                    $(this).html(obj.id);
+                    break;
+            }
         });
-        // 隐藏无数据的tr
-        tr.hide();
-        tr.first().remove();
-    }
+        // 把克隆好的tr追加到原来的tr前面
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+    });
+    // 隐藏无数据的tr
+    tr.hide();
+    // tr.first().remove();
+}
+
+/**
+ * 查询危废数据
+ */
+function searchWastesData() {
+    var data = {
+        produceCompany: {
+            companyName: $("#search-produceCompanyName").val()
+        },
+        wastesName: $("#search-wastesName").val(),
+        wastesCode: $("#search-wastesCode").val(),
+        // packageTypeItem: {
+        //     dataDictionaryItemId: $("#search-packageTypeItem").val()
+        // },
+        heat: $("#search-heat").val(),
+        ph: $("#search-ph").val(),
+        ash: $("#search-ash").val(),
+        waterContent: $("#search-waterContent").val(),
+        chlorineContent: $("#search-chlorineContent").val(),
+        sulfurContent: $("#search-sulfurContent").val(),
+        phosphorusContent: $("#search-phosphorusContent").val(),
+        fluorineContent: $("#search-fluorineContent").val()
+    };
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "searchTransportPlanWastesList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                setWastesDataList(result.data);
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
 }
 
 function saveData(handleType) {
@@ -1434,7 +1477,7 @@ function saveData(handleType) {
             wastes.companyName = params[1];
             wastes.name = params[2];
             wastes.wastesId = params[3];
-            wastes.formType = params[4];
+            wastes.wastesAmount = params[4];
             wastes.packageType = params[5];
             wastes.heat = params[6];
             wastes.ph = params[7];
@@ -1488,36 +1531,41 @@ function setWastesData2(wastesList) {
                 case (5):
                     $(this).html(obj.wastesId);
                     break;
-                case (8):
-                    $(this).html(obj.formType);
+                case (6):
+                    console.log(parseFloat(obj.wastesAmount).toFixed(2));
+                    $(this).find("input").val(parseFloat(obj.wastesAmount).toFixed(2));
                     break;
-                case (9):
+                // case (8):
+                //     $(this).html(obj.formType);
+                //     break;
+                case (8):
                     $(this).html(obj.packageType);
                     break;
-                case (10):
+                case (9):
                     $(this).html(obj.heat);
                     break;
-                case (11):
+                case (10):
                     $(this).html(obj.ph);
-                case (12):
+                    break;
+                case (11):
                     $(this).html(obj.ash);
                     break;
-                case (13):
+                case (12):
                     $(this).html(obj.water);
                     break;
-                case (14):
+                case (13):
                     $(this).html(obj.chlorine);
                     break;
-                case (15):
+                case (14):
                     $(this).html(obj.sulfur);
                     break;
-                case (16):
+                case (15):
                     $(this).html(obj.phosphorus);
                     break;
-                case (17):
+                case (16):
                     $(this).html(obj.fluorine);
                     break;
-                case (19):
+                case (18):
                     $(this).html(obj.id);
                     break;
             }
@@ -1627,7 +1675,7 @@ function viewData(e) {
                         $(this).html(obj.wastesCode);
                         break;
                     case (7):
-                        $(this).html(obj.wastesAmount);
+                        $(this).html(parseFloat(obj.wastesAmount).toFixed(2));
                         break;
                     case (8):
                         $(this).html(obj.unit);

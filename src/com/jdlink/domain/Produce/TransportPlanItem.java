@@ -1,6 +1,10 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Dictionary.FormTypeItem;
+import com.jdlink.domain.Dictionary.HandleCategoryItem;
+import com.jdlink.domain.Dictionary.PackageTypeItem;
+import com.jdlink.domain.Dictionary.ProcessWayItem;
 import com.jdlink.domain.FormType;
 import com.jdlink.domain.PackageType;
 import com.jdlink.domain.Wastes;
@@ -25,6 +29,10 @@ public class TransportPlanItem {
      * 处置类别
      */
     private HandleCategory handleCategory;
+    /**
+     * 处置类别
+     */
+    private HandleCategoryItem handleCategoryItem;
     /**
      * 入场时间
      */
@@ -58,9 +66,17 @@ public class TransportPlanItem {
      */
     private FormType formType;
     /**
+     * 物质形态数据字典
+     */
+    private FormTypeItem formTypeItem;
+    /**
      * 包装类型
      */
     private PackageType packageType;
+    /**
+     * 包装类型数据字典
+     */
+    private PackageTypeItem packageTypeItem;
     /**
      * 热值
      */
@@ -97,7 +113,10 @@ public class TransportPlanItem {
      * 处理方式
      */
     private ProcessWay processWay;
-
+    /**
+     * 处理方式数据字典
+     */
+    private ProcessWayItem processWayItem;
     public String getId() {
         return id;
     }
@@ -256,5 +275,37 @@ public class TransportPlanItem {
 
     public void setProcessWay(ProcessWay processWay) {
         this.processWay = processWay;
+    }
+
+    public HandleCategoryItem getHandleCategoryItem() {
+        return handleCategoryItem;
+    }
+
+    public void setHandleCategoryItem(HandleCategoryItem handleCategoryItem) {
+        this.handleCategoryItem = handleCategoryItem;
+    }
+
+    public FormTypeItem getFormTypeItem() {
+        return formTypeItem;
+    }
+
+    public void setFormTypeItem(FormTypeItem formTypeItem) {
+        this.formTypeItem = formTypeItem;
+    }
+
+    public PackageTypeItem getPackageTypeItem() {
+        return packageTypeItem;
+    }
+
+    public void setPackageTypeItem(PackageTypeItem packageTypeItem) {
+        this.packageTypeItem = packageTypeItem;
+    }
+
+    public ProcessWayItem getProcessWayItem() {
+        return processWayItem;
+    }
+
+    public void setProcessWayItem(ProcessWayItem processWayItem) {
+        this.processWayItem = processWayItem;
     }
 }
