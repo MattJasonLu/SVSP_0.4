@@ -1707,6 +1707,8 @@ function loadWastesContractSelectList() {
     //获取送审人员，送审日期，送审部门
    var  user= getCurrentUserData();
 
+     $("#Yes").hide()
+     $("#No").hide()
 
     //赋值送审人员，送审日期，送审部门
     $("#reviewer").val(user.username);
@@ -2259,6 +2261,39 @@ function findModel() {
 
 
 
+
+}
+
+
+//合同编号校验
+function  Verification(item) {
+    var contractId=$(item).val();
+    
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "Verification",                   // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {
+            'contractId': contractId
+        },
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                        if(result.flag==true){
+                           $("#Yes").hide();
+                            $("#No").show();
+                        }
+                if(result.flag==false){
+                    $("#Yes").show();
+                    $("#No").hide();
+                }
+            }
+        },
+        error:function (result) {
+            
+        }
+    })
 
 }
 

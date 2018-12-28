@@ -95,4 +95,6 @@ public interface ContractService {
     void approvalModel(String contractId);
 
     void signContract(String contractId);
+
+    List<String> getAllContractId();
 }

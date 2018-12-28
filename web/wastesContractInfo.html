@@ -221,7 +221,10 @@ $.ajax({
                 </tr>
                 <tr>
                     <td class="text-center">合同编号</td>
-                    <td class="text-center" colspan="2" ><input class="form-control" id="contractId" placeholder="请输入合同编号"></td>
+                    <td class="text-center" colspan="2" ><input class="form-control" id="contractId" placeholder="请输入合同编号" onkeyup="Verification(this)">
+                        <span style="color: #00B83F" id="Yes">通过</span>
+                        <span style="color: red" id="No">合同编号重复，请重新输入</span>
+                    </td>
 
                     <td class="text-center" id="name">产废单位</td>
 
