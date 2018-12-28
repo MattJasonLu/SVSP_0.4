@@ -217,6 +217,10 @@
         SELECT * FROM client WHERE companyName=#{companyName} and state = 'Enabled';
     </select>
 
+    <select id="getByNameNotState" parameterType="String" resultMap="ClientRM">
+        SELECT * FROM client WHERE companyName=#{companyName} limit 0,1;
+    </select>
+
     <update id="update" parameterType="Client">
         UPDATE client SET groupId=#{groupId},companyName=#{companyName},organizationCode=#{organizationCode},
          licenseCode=#{licenseCode}, representative=#{representative}, postCode=#{postCode},

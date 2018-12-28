@@ -844,7 +844,10 @@ public class ClientController {
 //                }
                 // 是否为北控
 //                client.setIsDisposal(data[i][21].toString().equals("是"));
-               clientService.add(client);
+                     if(clientService.getByNameNotState(data[i][0].toString())==null){
+                         clientService.add(client);
+                     }
+
             }
             res.put("status", "success");
             res.put("message", "导入成功");
