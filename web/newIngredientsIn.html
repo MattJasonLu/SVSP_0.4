@@ -297,7 +297,7 @@
                     <th class="text-center">单位:</th>
                     <th colspan="5" class="text-left"><input class="form-control" style="display: inline" type="text" title="" id="companyName">
                     </th>
-                    <th colspan="8" class="text-center"><input type="date" class="text-left focus" id="creationDate"></th>
+                    <th colspan="8" class="text-center">日期:<input type="date" class="text-left" id="creationDate"></th>
                     <th class="text-center">文件编号:</th>
                     <th colspan="5" class="text-right"><input title="" style="display: inline" type="text" class="form-control" id="fileId"></th>
                 </tr>
@@ -316,7 +316,7 @@
                     <td class="text-center" rowspan="2">附注</td>
                     <td class="text-center" rowspan="2">仓库<sup><span class="glyphicon glyphicon-asterisk text-danger"
                                                                      aria-hidden="true"></span></sup>
-                    <td class="text-center" rowspan="2">处置设备</td>
+                    <!--<td class="text-center" rowspan="2">处置设备</td>-->
                     <td class="text-center" rowspan="2" hidden>采购单编号</td>
                 </tr>
                 <tr>
@@ -349,10 +349,10 @@
                     <td class="text-center"><input title="" type="text" class="form-control text-center" name="post"
                                                    id="post0"></td>
                     <td class="text-center"><span name="remarks" id="remarks0"></span></td>
-                    <td class="text-center"><select class="focus text-center"
+                    <td class="text-center"><select class="text-center"
                                                     id="wareHouseName0" name="wareHouseName" required></select>
                     </td>
-                    <td class="text-center"><select id="equipment0" name="equipment" class="focus"></select></td>
+                    <!--<td class="text-center"><select id="equipment0" name="equipment" class="focus"></select></td>-->
                     <td class="text-center"  hidden><span id="procurementId0" name="procurementId"></span></td>
                 </tr>
                 <tr>
@@ -368,7 +368,7 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <!--<td class="text-center"></td>-->
                 </tr>
                 <tr>
                     <td class="text-left" colspan="4"><p style="display:inline;">记账人：<input style="display: inline;width: 60px" title="" class="form-control" type="text"
@@ -389,7 +389,7 @@
         </form>
         <div class="row text-center">
             <a class="btn btn-success" id="save" onclick="save();">入库</a>
-            <a class="btn btn-danger" href="ingredientsIn.html">返回</a>
+            <a class="btn btn-danger" href="ingredientsInDetial.html">返回</a>
         </div>
 
         <!--采购申请单查看模态框-->
