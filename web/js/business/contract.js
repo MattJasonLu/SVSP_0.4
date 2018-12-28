@@ -1398,8 +1398,10 @@ function viewContract(item) {
                 $('#modal3_contractAppendices').click(function () {
                     if (data.contractAppendicesUrl != null && data.contractAppendicesUrl != "") {
                         window.open('downloadFile?filePath=' + data.contractAppendicesUrl);
+                        window.location.reload()
                     } else {
                         alert("未上传文件");
+                        window.location.reload()
                     }
                 });
 
@@ -1504,8 +1506,10 @@ function setContractListModal(result) {
                     $(this).find('button').click(function () {
                         if (obj.picture != null && obj.picture != "") {
                             window.open('downloadFile?filePath=' + obj.picture);
+                            window.location.reload()
                         } else {
                             alert("未上传文件");
+                            window.location.reload()
                         }
                     })
                     break;
@@ -1692,7 +1696,7 @@ function loadWastesContractSelectList() {
 
     //获取送审人员，送审日期，送审部门
    var  user= getCurrentUserData();
-   console.log(JSON.stringify(user))
+
 
     //赋值送审人员，送审日期，送审部门
     $("#reviewer").val(user.username);
@@ -1903,8 +1907,8 @@ function loadWastesContractSelectList() {
             if (result != undefined) {
                 // console.log(result);
                 var data = eval(result);
-                //赋值合同编号
-                $('#contractId').html(data.contractId);
+                // //赋值合同编号
+                // $('#contractId').html(data.contractId);
 
                 var clientName = $('#companyName');//产废单位
                 clientName.children().remove();
@@ -2105,8 +2109,8 @@ function findModel() {
                 if (result != undefined) {
                     console.log(result);
                     var data = eval(result);
-                    //赋值合同编号
-                    $('#contractId').html(data.contractId);
+                    // //赋值合同编号
+                    // $('#contractId').html(data.contractId);
 
                     var clientName = $('#companyName');//产废单位
 
@@ -2240,35 +2244,7 @@ function findModel() {
 
 
 
-    // $.ajax({
-    //     type: "POST",                            // 方法类型
-    //     url: "getContractList",                  // url
-    //     dataType: "json",
-    //     data: {"key": contractType},
-    //     success: function (result) {
-    //         if (result != undefined) {
-    //             // console.log(result);
-    //             var data = eval(result);
-    //             // 各下拉框数据填充
-    //             var contractType1 = $("#contractType1");//模板名称下拉框
-    //             contractType1.children().remove();
-    //             $.each(data.modelNameList, function (index, item) {
-    //                 if (item != null && item.modelName != "") {
-    //                     var option = $('<option />');
-    //                     option.val(item.modelName);
-    //                     option.text(item.modelName);
-    //                     contractType1.append(option);
-    //                 }
-    //             });
-    //             contractType1.get(0).selectedIndex = -1;
-    //
-    //         } else {
-    //         }
-    //     },
-    //     error: function (result) {
-    //         console.log(result);
-    //     }
-    // });
+
 
 
 
@@ -2540,7 +2516,7 @@ function contractWastesSave() {
                 freight: $('#isFreight').prop('checked'),
                 telephone: $('#telephone').val(),
                 contactName: $('#contactName').val(),
-                // ticketRate1: $('#taxRate1').val(),
+                contractId:$('#contractId').val(),
                 contractType: $('#contractType').val(),
                 totalPrice: parseFloat(totalPrice).toFixed(2),
                 freightBearer: $("input[name='freightBearer']:checked").val(),
@@ -2596,7 +2572,7 @@ function contractWastesSave() {
                         //console.log(result);
                         $('.myclass').each(function () {
                             var quotationItemData = {
-                                contractId: $("#contractId").html(),
+                                contractId:$('#contractId').val(),
                                 client: {clientId: $('#companyName').selectpicker('val')},
                                 wastesCode: $(this).children('td').eq(1).children('div').find('button').attr('title'),
                                 wastesName: $(this).children('td').eq(2).children('input').val(),
@@ -2739,7 +2715,7 @@ function contractWastesSave() {
                 freight: $('#isFreight').prop('checked'),
                 telephone: $('#telephone').val(),
                 contactName: $('#contactName').val(),
-                // ticketRate1: $('#taxRate1').val(),
+                contractId:$('#contractId').val(),
                 contractType: $('#contractType').val(),
                 totalPrice:parseFloat(totalPrice).toFixed(2),
                freightBearer: $("input[name='freightBearer']:checked").val(),
@@ -2801,7 +2777,7 @@ function contractWastesSave() {
                         $('.myclass').each(function () {
                             //var formFile = new FormData();
                             var quotationItemData = {
-                                contractId: $("#contractId").html(),
+                                contractId:$('#contractId').val(),
                                 client: {clientId: $('#companyName').selectpicker('val')},
                                 wastesCode: $(this).children('td').eq(1).children('div').find('button').attr('title'),
                                 wastesName: $(this).children('td').eq(2).children('input').val(),
@@ -3531,10 +3507,12 @@ function contractEmSave() {
                         //console.log(result);
                     }
                     else {
+                        console.log(result)
                         alert(result.message);
                     }
                 },
                 error: function (result) {
+                    console.log(result)
                     alert("服务器异常！");
                 }
             });
@@ -3983,10 +3961,12 @@ function contractLogicSave() {
                         //console.log(result);
                     }
                     else {
+                        console.log(result)
                         alert(result.message);
                     }
                 },
                 error: function (result) {
+                    console.log(result)
                     alert("服务器异常！");
                 }
             });

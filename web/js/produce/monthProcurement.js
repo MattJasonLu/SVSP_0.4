@@ -267,10 +267,10 @@ function allSelect() {
     else $("input[name='select']").prop('checked',false);
 }
 //克隆行方法
-function addNewLine() {
+function addNewLine(item) {
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
-        size: 4
+        size:6
     });
     // 获取id为cloneTr的tr元素
     var tr = $("#plusBtn").prev();
@@ -298,6 +298,36 @@ function addNewLine() {
       $('.bootstrap-select').find("button:first").remove();
       $('.selectpicker').selectpicker();
       $('.selectpicker').selectpicker('refresh');
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 6
+    });
+
+    //根据辅料备件id获取规格
+    var id=$(item).parent().parent().prev().children('td').eq(1).find('select').selectpicker('val');
+    console.log(id)
+    $.ajax({
+        type:'POST',
+        url:"getSpecificationById",
+        data:{"id":id},
+        dataType: "json",
+        async: false,
+        // contentType: "application/json;charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+             $(item).parent().parent().prev().children('td').eq(2).find('input').val(result.data)
+            }
+            else {
+
+                alert(result.message);
+
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    })
 }
 //删除行方法
 function delLine(e) {
@@ -354,8 +384,8 @@ function saveMonth() {
         }
     });
     $('.myclass').each(function () {
-   var suppliesName=$(this).children('td').eq(1).children('div').find('button').attr('title');
    var specifications=$(this).children('td').eq(2).children('input').val();
+        var suppliesName=$(this).children('td').eq(1).children('div').find('button').attr('title').replace(specifications,"");
    var unitId=$(this).children('td').eq(3).children('select').val();
    var inventory=$(this).children('td').eq(4).children('input').val();
    var demandQuantity=$(this).children('td').eq(5).children('input').val();
@@ -1033,26 +1063,35 @@ function enterSearch() {
 //加载辅料列表
 function getIngredientsList() {
     loadNavigationList();   // 设置动态菜单
+    $('.loader').show();
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
-        size: 4
+        size: 6
     });
+    var page={};
+    page.count=0;
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getIngredientsList",          // url
+        url: "loadPageIngredientList",          // url
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        // data:{'receiptNumber':receiptNumber},
+        data:JSON.stringify(page),
         contentType: 'application/json;charset=utf-8',
         success:function (result) {
             if (result != undefined && result.status == "success"){
                 console.log(result);
+                $('.loader').hide();
                var suppliesName=$('#suppliesName');
                suppliesName.children().remove();
-               $.each(result.stringList,function (index,item) {
+               $.each(result.data,function (index,item) {
                    var option = $('<option />');
-                   option.val(item);
-                   option.text(item);
+                   option.val(item.id);
+                  if(item.specification!=null&&item.specification!=""){
+                      option.text(item.name+" "+item.specification);
+                  }
+                   else {
+                       option.text(item.name);
+                   }
                    suppliesName.append(option);
                    $('.selectpicker').selectpicker('refresh');
                });
@@ -1102,35 +1141,7 @@ function getIngredientsList() {
     $('#applyDate').val(dateToString(new Date()));
 
 
-    // //单位
-    // $.ajax({
-    //     type:'POST',
-    //     url:"getUnitList",
-    //     async: false,
-    //     dataType: "json",
-    //     contentType: "application/json;charset=utf-8",
-    //     success: function (result){
-    //         if (result != undefined){
-    //             // console.log(result);
-    //             var unit=$('#unit');
-    //             unit.children().remove();
-    //             $.each(result.unitList,function (index,item) {
-    //                 var option=$('<option/>');
-    //                 option.val(index+1);
-    //                 option.text(item.name);
-    //                 unit.append(option);
-    //             });
-    //             unit.get(0).selectedIndex=0;
-    //         }
-    //         else {
-    //             alert(result.message);
-    //         }
-    //     },
-    //     error:function (result) {
-    //         console.log(result);
-    //     }
-    //
-    // });
+
     var data=getCurrentUserData();
 
     //物资类别
@@ -1163,6 +1174,31 @@ function getIngredientsList() {
         }
 
     });
+
+    //根据辅料备件id获取规格
+ var id=($('.myclass').children('td').eq(1).find("select").selectpicker('val'));
+ $.ajax({
+     type:'POST',
+     url:"getSpecificationById",
+     data:{"id":id},
+     dataType: "json",
+     async: false,
+     // contentType: "application/json;charset=utf-8",
+     success:function (result) {
+         if (result != undefined && result.status == "success"){
+             console.log(result)
+             $('.myclass').children('td').eq(2).find("input").val(result.data)
+         }
+         else {
+
+             alert(result.message);
+
+         }
+     },
+     error:function (result) {
+         alert("服务器异常!")
+     }
+ })
 }
 
 
@@ -1375,5 +1411,34 @@ function setSubmit(item) {
         })
     }
 
+
+}
+
+//根据编号查询规格
+function findSpecification(item) {
+    var id=$(item).selectpicker('val');
+    console.log(id)
+    $.ajax({
+        type:'POST',
+        url:"getSpecificationById",
+        data:{"id":id},
+        dataType: "json",
+        async: false,
+        // contentType: "application/json;charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                $(item).parents('.myclass').children('td').eq(2).find('input').val(result.data)
+            }
+            else {
+
+                alert(result.message);
+
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    })
 
 }

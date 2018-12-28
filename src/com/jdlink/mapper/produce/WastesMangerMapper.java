@@ -25,4 +25,8 @@ public interface WastesMangerMapper {
     WastesInfo getWastesMangerById(int id);
 
     void updateWastesManger(WastesInfo wastesInfo);
+
+    List<WastesInfo> searchWastesManger(WastesInfo wastesInfo);
+
+    int searchWastesMangerCount(WastesInfo wastesInfo);
 }

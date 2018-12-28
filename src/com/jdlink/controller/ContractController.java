@@ -250,36 +250,7 @@ public class ContractController {
     @ResponseBody
     public String saveContract(@RequestBody Contract contract) {
         JSONObject res1 = new JSONObject();
-        //1.获取合同ID
-        List<String> list = contractService.getContractIdList();//合同id集合
-        if (list.size() <= 0) {
-            contract.setContractId("1");
-        }
-        if (list.size() > 0) {
-            List<Integer> list1 = new ArrayList<>();
-            for (String s : list
-                    ) {
-                int i = Integer.parseInt(s);
-                list1.add(i);
-            }
-            Collections.sort(list1);
-            for (Integer s1 : list1
-                    ) {
-                //System.out.println(s1);
-            }
-            String newId = String.valueOf((list1.get(list1.size() - 1) + 1));//当前编号
-            contract.setContractId(newId);
-        }
-        contract.setCheckState(CheckState.ToSubmit);//设置为待提交
-        //设置时间
-        //生成日期对象
-        Date current_date = new Date();
-        //设置日期格式化样式为：yyyy-MM-dd
-        SimpleDateFormat SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //格式化当前日期
-        String nowTime = SimpleDateFormat.format(current_date);
-        contract.setNowTime(nowTime);
-        System.out.println(nowTime + "fff");
+
         //System.out.println(contract.getModelName()+"BBB");
         if (contract.getModelName() != null) {
             contract.setModelVersion("V1.0");
@@ -294,6 +265,7 @@ public class ContractController {
         } catch (Exception e) {
             e.printStackTrace();
             res1.put("status", "fail");
+            res1.put("error", e);
             res1.put("message", "创建合同失败，请完善信息!");
         }
         return res1.toString();
@@ -1410,7 +1382,7 @@ public class ContractController {
     //更新图片路径
     @RequestMapping("updatePictureUrl")
     @ResponseBody
-    public String updatePictureUrl(String wastesCode,String wastesName,int contractId,String picture ){
+    public String updatePictureUrl(String wastesCode,String wastesName,String contractId,String picture ){
         JSONObject res=new JSONObject();
 
 

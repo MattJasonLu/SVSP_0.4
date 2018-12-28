@@ -480,7 +480,36 @@ function addNewLine() {
     $('.bootstrap-select').find("button:first").remove();
     $('.selectpicker').selectpicker();
     $('.selectpicker').selectpicker('refresh');
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 4
+    });
 
+    //根据辅料备件id获取规格
+    var id=$(item).parent().parent().prev().children('td').eq(1).find('select').selectpicker('val');
+    console.log(id)
+    $.ajax({
+        type:'POST',
+        url:"getSpecificationById",
+        data:{"id":id},
+        dataType: "json",
+        async: false,
+        // contentType: "application/json;charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                $(item).parent().parent().prev().children('td').eq(2).find('input').val(result.data)
+            }
+            else {
+
+                alert(result.message);
+
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    })
 }
 
 //删除行方法
@@ -532,8 +561,8 @@ function saveEmer() {
             }
         });
         $('.myclass').each(function () {
-            var suppliesName=$(this).children('td').eq(1).children('div').find('button').attr('title');
             var specifications=$(this).children('td').eq(2).children('input').val();
+            var suppliesName=$(this).children('td').eq(1).children('div').find('button').attr('title').replace(specifications,"");
             var unitId=$(this).children('td').eq(3).children('select').val();
             var inventory=$(this).children('td').eq(4).children('input').val();
             var demandQuantity=$(this).children('td').eq(5).children('input').val();
@@ -1205,5 +1234,34 @@ $('.myclass2').each(function () {
 })
     alert("修改成功")
     window.location.reload()
+
+}
+
+//根据编号查询规格
+function findSpecification(item) {
+    var id=$(item).selectpicker('val');
+    console.log(id)
+    $.ajax({
+        type:'POST',
+        url:"getSpecificationById",
+        data:{"id":id},
+        dataType: "json",
+        async: false,
+        // contentType: "application/json;charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                $(item).parents('.myclass').children('td').eq(2).find('input').val(result.data)
+            }
+            else {
+
+                alert(result.message);
+
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    })
 
 }
