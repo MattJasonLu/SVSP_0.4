@@ -345,23 +345,27 @@ function setInventoryList(result) {
                     case (1):
                         $(this).html(obj.itemId);
                         break;
-                    // 物品名称
+                    // 物品编码
                     case (2):
+                        $(this).html("");
+                        break;
+                    // 物品名称
+                    case (3):
                         $(this).html(obj.name);
                         break;
                     // 所在仓库
-                    case (3):
+                    case (4):
                         $(this).html(obj.wareHouseName);
                         break;
                     // 库存量
-                    case (4):
+                    case (5):
                         $(this).html(obj.amount);
                         break;
                     // 单位
-                    case (5):
+                    case (6):
                         $(this).html(obj.unit);
                         break;
-                    case(6):
+                    case (7):
                         //规格
                         $(this).html(obj.specification);
                         break;
