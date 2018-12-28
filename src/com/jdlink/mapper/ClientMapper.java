@@ -23,6 +23,8 @@ public interface ClientMapper {
 
     Client getByName(String companyName);
 
+    Client getByNameNotState(String companyName);
+
     List<Client> get(Map params);
 
     List<Client> listAll();
@@ -53,9 +55,9 @@ public interface ClientMapper {
 
     void setCheckStateExamining(String clientId);
 
-    void setCheckStateFinished(String clientId,String advice);
+    void setCheckStateFinished(String clientId, String advice);
 
-    void setCheckStateBacked(String clientId,String advice);
+    void setCheckStateBacked(String clientId, String advice);
 
     void setFilePath(Client client);
 
