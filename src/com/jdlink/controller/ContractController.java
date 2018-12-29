@@ -1351,9 +1351,7 @@ public class ContractController {
                 if (!materialDir.exists()) {
                     materialDir.mkdirs();
                 }
-//                String materialName = contractId + "-" +  contractAppendices.getOriginalFilename();//设置文件名称
-//                String materialFilePath = materialPath + "/" + materialName;//本地路径
-//                contract.setContractAppendicesUrl(materialFilePath);
+
 
                 String materialName = contractId + "-" +  contractAppendices.getOriginalFilename();//设置文件名称
                 String materialFilePath = materialPath + "/" + materialName;//本地路径

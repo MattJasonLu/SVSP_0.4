@@ -1,5 +1,6 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.Contract;
 import com.jdlink.domain.Dictionary.MaterialCategoryItem;
 import com.jdlink.domain.Dictionary.UnitDataItem;
 import com.jdlink.domain.Page;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -59,6 +61,7 @@ public class ProcurementController {
             }
             procurement.setReceiptNumber(receiptNumber);
             procurementService.add(procurement);
+            res.put("receiptNumber", receiptNumber);
             res.put("status", "success");
             res.put("message", "添加采购信息成功");
         } catch (Exception e) {
@@ -1299,5 +1302,48 @@ public class ProcurementController {
 
 
           return  res.toString();
+    }
+
+
+    //保存采购附件
+    @RequestMapping("saveProcurementFile")
+    @ResponseBody
+    public String saveProcurementFile(MultipartFile procurementFile,String receiptNumber){
+        JSONObject res = new JSONObject();
+
+        try {
+
+            Procurement procurement = new Procurement();
+            procurement.setReceiptNumber(receiptNumber);
+            if (procurementFile != null) {
+                String materialPath = "Files/Contract"; //设置服务器路径
+                File materialDir = new File(materialPath);
+                if (!materialDir.exists()) {
+                    materialDir.mkdirs();
+                }
+
+
+                String materialName = receiptNumber + "-" +  procurementFile.getOriginalFilename();//设置文件名称
+                String materialFilePath = materialPath + "/" + materialName;//本地路径
+                File materialFile = new File(materialFilePath);
+                procurementFile.transferTo(materialFile);
+                procurement.setProcurementFileURL(materialFilePath);
+            }
+            procurementService.setProcurementFilePath(procurement);
+
+            res.put("status", "success");
+            res.put("message", "文件上传成功");
+
+        }
+
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "文件上传失败");
+
+        }
+
+
+        return res.toString();
     }
 }

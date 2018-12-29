@@ -398,6 +398,43 @@ function saveMonth() {
         success:function (result) {
             if (result != undefined && result.status == "success"){
                 console.log(result);
+
+                //上传附件
+                var receiptNumber=result.receiptNumber;
+                var formFile = new FormData();
+                formFile.append("receiptNumber",receiptNumber)
+                if ($('#file').prop('type') != 'text') {
+                    var procurementFile = $('#file')[0].files[0];
+                    formFile.append("procurementFile", procurementFile);
+                    if(procurementFile!=undefined){
+                        //保存采购附件
+                        $.ajax({
+                            type: "POST",                            // 方法类型
+                            url: "saveProcurementFile",                     // url
+                            cache: false,
+                            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                            data: formFile,
+                            dataType: "json",
+                            processData: false,
+                            contentType: false,
+                            success: function (result) {
+                                if (result != undefined && result.status == "success") {
+
+                                }
+                                else {
+
+                                }
+                            },
+                            error: function (result) {
+                                console.log("error: " + result);
+                                alert("服务器异常!");
+                            }
+                        });
+                    }
+
+                }
+
+
             }
             else {
 
@@ -605,6 +642,10 @@ function setMonthProcurementList(result) {
                             if(obj.materialCategoryItem!=null){
                                 $(this).html((obj.materialCategoryItem.dictionaryItemName));
                             }
+                            break;
+                            //附件地址
+                        case (13):
+                            $(this).html((obj.procurementFileURL));
                             break;
                     }
                 });
@@ -1148,7 +1189,7 @@ function getIngredientsList() {
         size: 6
     });
     var page={};
-    page.count=0;
+    page.count=15;//解决加载慢
     $.ajax({
         type: "POST",                       // 方法类型
         url: "loadPageIngredientList",          // url
@@ -1565,4 +1606,16 @@ function removeMouthProcument(item) {
      }
 
 
+}
+
+//附件下载
+function downLoadFile(item) {
+         var contractAppendicesUrl=$(item).parent().prev().html();
+    if (contractAppendicesUrl != null && contractAppendicesUrl != "") {
+        window.open('downloadFile?filePath=' + contractAppendicesUrl);
+        window.location.reload()
+    } else {
+        alert("未上传文件");
+        // window.location.reload()
+    }
 }
