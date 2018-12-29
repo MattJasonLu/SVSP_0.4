@@ -89,7 +89,7 @@
 
     <!--更新软水/-->
     <update id="updateSoftGeregistration" parameterType="SewaGeregistration">
-        update t_pr_softgeregistration set laboratorySignatory=#{laboratorySignatory},
+        update t_pr_softgeregistration set laboratorySignatory=#{laboratorySignatory},softPointId=#{softPointItem.dataDictionaryItemId},
         sendingPerson=#{sendingPerson},nowTime=NOW(),address=#{address},advice=#{advice},id=#{newId}
         where  id=#{id};
     </update>

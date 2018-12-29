@@ -1338,7 +1338,7 @@ var id=$("#reservationId1").text();
 
 var laboratorySignatory=$('#laboratorySignatory').val();
 
-var
+
 
     var ph;
 
