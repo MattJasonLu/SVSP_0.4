@@ -3,6 +3,7 @@ package com.jdlink.domain.Produce;
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Dictionary.CheckStateItem;
 import com.jdlink.domain.Dictionary.MaterialCategoryItem;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -92,11 +93,39 @@ public class Procurement {
      */
     private  Date createDate;
 
+    /**
+     * 采购附件
+     */
+    private MultipartFile procurementFile;
+
+    /**
+     * 附件路径
+     */
+    private String procurementFileURL;
+
+
+
     //状态字典
     private CheckStateItem checkStateItem;
 
     //物资类别数据字典
    private MaterialCategoryItem materialCategoryItem;
+
+    public MultipartFile getProcurementFile() {
+        return procurementFile;
+    }
+
+    public void setProcurementFile(MultipartFile procurementFile) {
+        this.procurementFile = procurementFile;
+    }
+
+    public String getProcurementFileURL() {
+        return procurementFileURL;
+    }
+
+    public void setProcurementFileURL(String procurementFileURL) {
+        this.procurementFileURL = procurementFileURL;
+    }
 
     public MaterialCategoryItem getMaterialCategoryItem() {
         return materialCategoryItem;

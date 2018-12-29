@@ -53,4 +53,6 @@ public interface ProcurementMapper {
     String getSpecificationById(int id);
 
     void deleteMonthProcurementById(int id);
+
+    void setProcurementFilePath(Procurement procurement);
 }

@@ -970,4 +970,26 @@ public class DictionaryController {
         }
         return res.toString();
     }
+
+    /**
+     * 获取非物资类别
+     */
+    @RequestMapping("getNonMaterialItemByDataDictionary")
+    @ResponseBody
+    public String getNonMaterialItemByDataDictionary() {
+        JSONObject res = new JSONObject();
+        try {
+            List<DataDictionaryItem> formTypeList = dictionaryService.getSelectListByDataDictionary(40);
+            JSONArray data = JSONArray.fromArray(formTypeList.toArray());
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "获取非物资类别成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取非物资类别失败");
+
+        }
+        return res.toString();
+    }
 }
