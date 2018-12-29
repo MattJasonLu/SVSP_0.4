@@ -292,10 +292,10 @@
                     <th class="text-center">接收单位</th>
                     <th class="text-center">转移时间</th>
                     <th class="text-center">转移数量</th>
-                    <th class="text-center">磅单数量</th>
-                    <th class="text-center">已入库数量</th>
+                    <!--<th class="text-center">磅单数量</th>-->
+                    <!--<th class="text-center">已入库数量</th>-->
                     <th class="text-center">剩余数量</th>
-                    <th class="text-center">拟转数量</th>
+                    <!--<th class="text-center">拟转数量</th>-->
                     <th class="text-center">危废名称</th>
                     <th class="text-center">危废代码</th>
                     <th class="text-center">危废类别</th>
@@ -309,21 +309,21 @@
                             <input name="select" class="checkbox" type="checkbox" value="option1" aria-label="...">
                         </label>
                     </td>
-                    <td class="text-center" name="inboundPlanOrderId">1</td>
-                    <td class="text-center" name="transferDraftId">2018-08-07</td>
-                    <td class="text-left" name="planDate">废液</td>
-                    <td class="text-center" name="produceCompanyName">QW10001</td>
-                    <td class="text-center" name="acceptCompanyName">QW10001</td>
-                    <td class="text-right" name="transferDate">5</td>
-                    <td class="text-right" name="transferCount">液态</td>
-                    <td class="text-right" name="poundsCount">标准装</td>
-                    <td class="text-right" name="storageCount">20</td>
-                    <td class="text-right" name="leftCount">10</td>
-                    <td class="text-right" name="prepareTransferCount">20</td>
-                    <td class="text-right" name="wastesName">10</td>
-                    <td class="text-right" name="wastesCode">20</td>
-                    <td class="text-right" name="wastesCategory">10</td>
-                    <td class="text-right hidden" name="unitPriceTax">10</td>
+                    <td class="text-center" name="inboundPlanOrderId"></td>
+                    <td class="text-center" name="transferDraftId"></td>
+                    <td class="text-center" name="planDate"></td>
+                    <td class="text-center" name="produceCompanyName"></td>
+                    <td class="text-center" name="acceptCompanyName"></td>
+                    <td class="text-center" name="transferDate">5</td>
+                    <td class="text-center" name="transferCount"></td>
+                    <!--<td class="text-right" name="poundsCount">标准装</td>-->
+                    <!--<td class="text-right" name="storageCount">20</td>-->
+                    <td class="text-center" name="leftCount"></td>
+                    <!--<td class="text-right" name="prepareTransferCount">20</td>-->
+                    <td class="text-center" name="wastesName"></td>
+                    <td class="text-center" name="wastesCode"></td>
+                    <td class="text-center" name="wastesCategory"></td>
+                    <td class="text-center hidden" name="unitPriceTax"></td>
                 </tr>
                 </tbody>
             </table>
@@ -424,7 +424,7 @@
                     <td class="text-left" name="produceCompanyName">produceCompanyName</td>
                     <td class="text-left" name="wastesName">废液</td>
                     <td class="text-center" name="wastesCode">QW10001</td>
-                    <td class="text-right" name="wastesAmount">5</td>
+                    <td class="text-right"><input type="number" name="wastesAmount"></td>
                     <td class="text-right" name="unitPriceTax"></td>
                     <td class="text-right" name="totalPrice"></td>
                     <td class="text-right"><select name="processWay"></select></td>
