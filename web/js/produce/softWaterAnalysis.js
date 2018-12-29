@@ -1036,7 +1036,10 @@ function view(item) {
                 $('#sendingPerson1').text(result.data.sendingPerson)
 
                 //采样点
-                $('#address1').text(result.data.address)
+                if(result.data.softPointItem!=null){
+                    $('#address1').text(result.data.softPointItem.dictionaryItemName)
+                }
+
 
 
                 if(result.data.sewageregistrationItemList!=null){
