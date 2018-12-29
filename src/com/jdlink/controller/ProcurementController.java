@@ -788,7 +788,14 @@ public class ProcurementController {
         JSONObject res=new JSONObject();
 
         try {
-   procurementService.updateMaterial(material);
+            //如果编号存在更新
+            if(material.getId()!=0){
+                procurementService.updateMaterial(material);
+            }
+            //不存在，添加
+            if(material.getId()==0){
+                procurementService.addMaterial(material);
+            }
             res.put("status", "success");
             res.put("message", "更新成功");
         }
@@ -1271,5 +1278,26 @@ public class ProcurementController {
         }
 
         return res.toString();
+    }
+
+    //删除月度采购申请的明细
+    @RequestMapping("deleteMonthProcurementById")
+    @ResponseBody
+    public String deleteMonthProcurementById(int id){
+        JSONObject res=new JSONObject();
+
+        try {
+      procurementService.deleteMonthProcurementById(id);
+            res.put("status", "success");
+            res.put("message", "该条目已删除成功");
+        }
+        catch (Exception e){
+
+
+        }
+
+
+
+          return  res.toString();
     }
 }

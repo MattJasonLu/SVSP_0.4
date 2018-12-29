@@ -387,38 +387,42 @@ function setIngredientsInList(result) {
                     $(this).html(obj.state.name);
                     break;
                 case (4):
+                    // 物品编码
+                    $(this).html("");
+                    break;
+                case (5):
                     // 物品名称
                     $(this).html(obj.name);
                     break;
-                case (5):
+                case (6):
                     // 规格
                     $(this).html(obj.specification);
                     break;
-                case (6):
+                case (7):
                     // 计量单位
                     $(this).html(obj.unit);
                     break;
-                case (7):
+                case (8):
                     // 数量
                     $(this).html(obj.amount.toFixed(2));
                     break;
-                case (8):
+                case (9):
                     // 单价
                     $(this).html(obj.unitPrice.toFixed(2));
                     break;
-                case (9):
+                case (10):
                     // 金额
                     $(this).html(obj.totalPrice.toFixed(2));
                     break;
-                case (10):
+                case (11):
                     // 仓库
                     $(this).html(obj.wareHouseName);
                     break;
-                case (11):
+                case (12):
                     // 入库日期
                     $(this).html(getDateStr(obj.creationDate));
                     break;
-                case (12):
+                case (13):
                     // 编号
                     $(this).html(obj.itemId);
                     break;
@@ -433,23 +437,23 @@ function setIngredientsInList(result) {
     clonedTr.children("td").each(function (inner_index) {
         // 根据索引为部分td赋值
         switch (inner_index) {
-            case (6):
+            case (7):
                 // 合计
                 $(this).html("合计");
                 break;
-            case (7):
+            case (8):
                 // 总数量
                 $(this).html(totalAmount.toFixed(2));
                 break;
-            case (8):
+            case (9):
                 // 平均单价
                 $(this).html((allTotalPrice/totalAmount).toFixed(2));
                 break;
-            case (9):
+            case (10):
                 // 总金额
                 $(this).html(allTotalPrice.toFixed(2));
                 break;
-            case (13):
+            case (14):
                 // 操作
                 $(this).html("");
                 break;

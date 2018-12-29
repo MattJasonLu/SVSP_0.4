@@ -165,8 +165,7 @@ public class TransportPlanController {
                     transportPlanItem.setProduceCompany(contract.getClient());
                     transportPlanItem.setWastesName(quotationItem.getWastesName());
                     transportPlanItem.setWastesCode(quotationItem.getWastesCode());
-                    transportPlanItem.setFormType(quotationItem.getFormType());
-                    transportPlanItem.setPackageType(quotationItem.getPackageType());
+                    transportPlanItem.setPackageTypeItem(quotationItem.getPackageTypeItem());
                     transportPlanItem.setHeat(quotationItem.getHeat());
                     transportPlanItem.setPh(quotationItem.getPh());
                     transportPlanItem.setAsh(quotationItem.getAsh());
@@ -201,6 +200,111 @@ public class TransportPlanController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "获取失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 查找危废列表
+     * @return 危废列表
+     */
+    @RequestMapping("searchTransportPlanWastesList")
+    @ResponseBody
+    public String searchTransportPlanWastesList(@RequestBody TransportPlanItem transportPlanItemParam) {
+        JSONObject res = new JSONObject();
+        try {
+            // 待抽取方法
+            List<TransportPlanItem> transportPlanItemList = new ArrayList<>();
+            // 取出危废合同的所有信息
+            List<Contract> contractList = contractService.listPageManege(null);
+            // 所有危废合同
+            for (Contract contract : contractList) {
+                List<QuotationItem> quotationItemList = contract.getQuotationItemList();
+                for (QuotationItem quotationItem : quotationItemList) {
+                    // 创建运输计划条目明细
+                    TransportPlanItem transportPlanItem = new TransportPlanItem();
+                    transportPlanItem.setProduceCompany(contract.getClient());
+                    transportPlanItem.setWastesName(quotationItem.getWastesName());
+                    transportPlanItem.setWastesCode(quotationItem.getWastesCode());
+                    transportPlanItem.setPackageTypeItem(quotationItem.getPackageTypeItem());
+                    transportPlanItem.setHeat(quotationItem.getHeat());
+                    transportPlanItem.setPh(quotationItem.getPh());
+                    transportPlanItem.setAsh(quotationItem.getAsh());
+                    transportPlanItem.setWaterContent(quotationItem.getWaterContent());
+                    transportPlanItem.setChlorineContent(quotationItem.getChlorineContent());
+                    transportPlanItem.setSulfurContent(quotationItem.getSulfurContent());
+                    transportPlanItem.setPhosphorusContent(quotationItem.getPhosphorusContent());
+                    transportPlanItem.setFluorineContent(quotationItem.getFluorineContent());
+                    transportPlanItem.setWastesAmount(quotationItem.getContractAmount());
+                    transportPlanItemList.add(transportPlanItem);
+                }
+            }
+            // 获取所有库存申报的数据
+            List<Stock> stockList = stockService.list();
+            for (Stock stock : stockList) {
+                List<StockItem> stockItemList = stock.getStockItemList();
+                for (StockItem stockItem : stockItemList) {
+                    // 创建运输计划单条目
+                    TransportPlanItem transportPlanItem = new TransportPlanItem();
+                    transportPlanItem.setProduceCompany(stock.getClient());
+                    transportPlanItem.setWastesName(stockItem.getWastesName());
+                    transportPlanItem.setWastesCode(stockItem.getWastesCode());
+                    transportPlanItem.setWastesAmount(stockItem.getNumber());
+                    transportPlanItemList.add(transportPlanItem);
+                }
+            }
+            // 筛选列表
+            List<TransportPlanItem> searchTransportPlanItemList = new ArrayList<>();
+            for (TransportPlanItem transportPlanItem : transportPlanItemList) {
+                if (transportPlanItem.getProduceCompany() != null && !transportPlanItemParam.getProduceCompany().getCompanyName().equals("") && transportPlanItemParam.getProduceCompany() != null && transportPlanItem.getProduceCompany().getCompanyName().contains(transportPlanItemParam.getProduceCompany().getCompanyName())) {
+                    searchTransportPlanItemList.add(transportPlanItem);
+                    continue;
+                }
+                if (transportPlanItem.getWastesName() != null && transportPlanItemParam.getWastesName() != null && !transportPlanItemParam.getWastesName().equals("") && transportPlanItem.getWastesName().contains(transportPlanItemParam.getWastesName())) {
+                    searchTransportPlanItemList.add(transportPlanItem);
+                    continue;
+                }
+                if (transportPlanItem.getWastesCode() != null && transportPlanItemParam.getWastesCode() != null && !transportPlanItemParam.getWastesCode().equals("") && transportPlanItem.getWastesCode().contains(transportPlanItemParam.getWastesCode())) {
+                    searchTransportPlanItemList.add(transportPlanItem);
+                    continue;
+                }
+                if (transportPlanItemParam.getHeat() != 0 && transportPlanItem.getHeat() == transportPlanItemParam.getHeat()) {
+                    searchTransportPlanItemList.add(transportPlanItem);
+                    continue;
+                }
+                if (transportPlanItemParam.getPh() != 0 && transportPlanItem.getPh() == transportPlanItemParam.getPh()) {
+                    searchTransportPlanItemList.add(transportPlanItem);
+                    continue;
+                }
+                if (transportPlanItemParam.getAsh() != 0 && transportPlanItem.getAsh() == transportPlanItemParam.getAsh()) {
+                    searchTransportPlanItemList.add(transportPlanItem);
+                    continue;
+                }
+                if (transportPlanItemParam.getWaterContent() != 0 && transportPlanItem.getWaterContent() == transportPlanItemParam.getWaterContent()) {
+                    searchTransportPlanItemList.add(transportPlanItem);
+                    continue;
+                }
+                if (transportPlanItemParam.getChlorineContent() != 0 && transportPlanItem.getChlorineContent() == transportPlanItemParam.getChlorineContent()) {
+                    searchTransportPlanItemList.add(transportPlanItem);
+                    continue;
+                }
+                if (transportPlanItemParam.getSulfurContent() != 0 && transportPlanItem.getSulfurContent() == transportPlanItemParam.getSulfurContent()) {
+                    searchTransportPlanItemList.add(transportPlanItem);
+                    continue;
+                }
+                if (transportPlanItemParam.getFluorineContent() != 0 && transportPlanItem.getPhosphorusContent() == transportPlanItemParam.getFluorineContent()) {
+                    searchTransportPlanItemList.add(transportPlanItem);
+                    continue;
+                }
+            }
+            JSONArray data = JSONArray.fromArray(searchTransportPlanItemList.toArray(new TransportPlanItem[searchTransportPlanItemList.size()]));
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
         }
         return res.toString();
     }

@@ -509,18 +509,16 @@ function setInboundOrderDataList(result) {
         clonedTr.find("td[name='planDate']").text(getDateStr(data.planDate));
         if (data.produceCompany != null) clonedTr.find("td[name='produceCompanyName']").text(data.produceCompany.companyName);
         clonedTr.find("td[name='transferDate']").text(getDateStr(data.transferDate));
-        clonedTr.find("td[name='transferDate']").text(getDateStr(data.transferDate));
         clonedTr.find("td[name='transferDraftId']").text(data.transferDraftId);
         if (data.wastes != null) {
             clonedTr.find("td[name='wastesName']").text(data.wastes.name);
             clonedTr.find("td[name='wastesCode']").text(data.wastes.wastesId);
         }
-        clonedTr.find("td[name='prepareTransferCount']").text(data.prepareTransferCount);
+        // clonedTr.find("td[name='prepareTransferCount']").text(data.prepareTransferCount);
         clonedTr.find("td[name='transferCount']").text(data.transferCount);
-        clonedTr.find("td[name='storageCount']").text(data.storageCount);
-        clonedTr.find("td[name='storageCount']").text(data.storageCount);
+        // clonedTr.find("td[name='storageCount']").text(data.storageCount);
         clonedTr.find("td[name='leftCount']").text(data.leftCount);
-        clonedTr.find("td[name='poundsCount']").text(data.poundsCount);
+        // clonedTr.find("td[name='poundsCount']").text(data.poundsCount);
         if (data.checkState != null) clonedTr.find("td[name='checkState']").text(data.checkState.name);
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
@@ -605,10 +603,10 @@ function addInboundPlanOrder() {
             name: $("#addWastesName").val(),
             code: $("#addWastesCode").val()
         },
-        prepareTransferCount: $("#addPrepareTransferCount").val(),
+        // prepareTransferCount: $("#addPrepareTransferCount").val(),
         transferCount: $("#addTransferCount").val(),
-        storageCount: $("#addStorageCount").val(),
-        poundsCount: $("#addPoundsCount").val(),
+        // storageCount: $("#addStorageCount").val(),
+        // poundsCount: $("#addPoundsCount").val(),
         leftCount: $("#addLeftCount").val()
     };
     console.log(data);

@@ -67,6 +67,7 @@
     <select id="getProcurementItemList" resultMap="MaterialRM">
         select a.* from t_pl_material as a join t_pl_procurement as b on a.receiptNumber=b.receiptNumber
         where b.checkStateId = 73
+        order by nowTIme desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count};
         </if>
@@ -268,7 +269,7 @@
     <!--更新采购单明细-->
     <update id="updateMaterial" parameterType="Material">
         update t_pl_material set inventory=#{inventory},demandQuantity=#{demandQuantity},
-        note=#{note},purchaseQuantity=#{purchaseQuantity} where  id=#{id}
+        note=#{note},purchaseQuantity=#{purchaseQuantity},suppliesName=#{suppliesName},specifications=#{specifications},unitId=#{unitDataItem.dataDictionaryItemId} where  id=#{id}
     </update>
 
 
@@ -532,4 +533,9 @@
     <select id="getSpecificationById" resultType="String" parameterType="int">
         select specification from t_pl_ingredientslist where id=#{id}
     </select>
+
+ <!--根据编号删除月度采购明细-->
+<select id="deleteMonthProcurementById" parameterType="int">
+    delete  from t_pl_material where id=#{id}
+</select>
 </mapper>

@@ -791,15 +791,15 @@ function setEmProcurementListModal(result) {
                     break;
                 // 库存量
                 case (3):
-                    $(this).html(obj.inventory);
+                    $(this).html(obj.inventory.toFixed(2));
                     break;
                 // 需求数量
                 case (4):
-                    $(this).html(obj.demandQuantity);
+                    $(this).html(obj.demandQuantity.toFixed(2));
                     break;
                     //采购数量
                 case (5):
-                    $(this).html(obj.purchaseQuantity);
+                    $(this).html(obj.purchaseQuantity.toFixed(2));
                     break;
                 // 备注
                 case (6):

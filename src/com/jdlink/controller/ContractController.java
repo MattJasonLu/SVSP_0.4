@@ -7,6 +7,7 @@ import com.jdlink.util.DBUtil;
 import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
 import com.jdlink.util.UpdateVersion;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1514,6 +1515,29 @@ public class ContractController {
             res.put("message", "合同签订失败");
 
         }
+        return res.toString();
+    }
+
+    //合同编号校验
+    @RequestMapping("Verification")
+    @ResponseBody
+    public String Verification(String contractId){
+        JSONObject res=new JSONObject();
+
+        try {
+            List<String> stringList=contractService.getAllContractId();
+            Boolean flag=stringList.contains(contractId);
+            res.put("status", "success");
+            res.put("message", "更新成功");
+            res.put("flag", flag);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+
+        }
+
         return res.toString();
     }
 }

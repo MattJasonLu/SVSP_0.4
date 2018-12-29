@@ -266,6 +266,7 @@ function allSelect() {
     if (isChecked) $("input[name='select']").prop('checked',true);
     else $("input[name='select']").prop('checked',false);
 }
+
 //克隆行方法
 function addNewLine(item) {
     $('.selectpicker').selectpicker({
@@ -329,6 +330,29 @@ function addNewLine(item) {
         }
     })
 }
+
+//克隆行方法编辑
+function addNewLineAdjust(item) {
+    // 获取id为plusBtn的tr元素
+    //var tr = $("#plusBtn").prev();
+    var tr = $(item).parent().parent().prev();
+    // 克隆tr，每次遍历都可以产生新的tr
+    var clonedTr = tr.clone();
+    $(clonedTr).children('td').eq(0).find('p').hide()
+    clonedTr.attr('class', 'myclass2');
+    clonedTr.show();
+    clonedTr.children().find("input").val("");
+    var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>";
+
+
+    clonedTr.children('td').eq(0).find("a").remove();
+    clonedTr.children('td').eq(0).append(delBtn)
+
+
+    clonedTr.insertAfter(tr);
+    clonedTr.removeAttr("id");
+}
+
 //删除行方法
 function delLine(e) {
     var tr = e.parentElement.parentElement;
@@ -711,8 +735,40 @@ function view1(item) {
 //修改页面
 function monthProcurementModify(item) {
 
+    //单位
+    $.ajax({
+        type:'POST',
+        url:"getUnitByDataDictionary",
+        //data:JSON.stringify(data),
+        dataType: "json",
+        async: false,
+        contentType: "application/json;charset=utf-8",
+        success: function (result){
+            if (result != undefined){
+                console.log(result);
+                var unit=$('#unitItem');
+                unit.children().remove();
+                $.each(result.data,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    unit.append(option);
+                });
+                unit.get(0).selectedIndex=0;
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
+
+    });
+
     if($(item).parent().parent().children('td').eq(10).text()=='待提交'){
         var receiptNumber=$(item).parent().parent().children('td').eq(1).text();
+        $('#receiptNumber').text(receiptNumber)
         //console.log(receiptNumber);
         $.ajax({
             type: "POST",                       // 方法类型
@@ -802,11 +858,11 @@ function setMonthProcurementListModal(result) {
                         break;
                     // 库存量
                     case (3):
-                        $(this).html(obj.inventory);
+                        $(this).html(obj.inventory.toFixed(2));
                         break;
                     // 需求数量
                     case (4):
-                        $(this).html(obj.demandQuantity);
+                        $(this).html(obj.demandQuantity.toFixed(2));
                         break;
                     // 备注
                     case (5):
@@ -830,7 +886,7 @@ function setMonthProcurementListModal(result) {
 function setMonthProcurementListModalAdjust(result) {
     //$('.myclass1').hide();
     var tr = $("#cloneTr3");
-    tr.siblings().remove();
+    tr.siblings().not($('#plusBtn')).remove();
     tr.attr('class','myclass2');
     $.each(result, function (index, item) {
         //console.log(item);
@@ -846,16 +902,16 @@ function setMonthProcurementListModalAdjust(result) {
             switch (inner_index) {
                 // 物资名称
                 case (0):
-                    $(this).html(obj.suppliesName);
+                    $(this).find("input").val(obj.suppliesName);
                     break;
                 // 规格型号
                 case (1):
-                    $(this).html(obj.specifications);
+                    $(this).find("input").val(obj.specifications);
                     break;
                 // 单位
                 case (2):
                     if(obj.unitDataItem!=null){
-                        $(this).html(obj.unitDataItem.dictionaryItemName);
+                        $(this).find("select").val(obj.unitDataItem.dataDictionaryItemId);
                     }
                     break;
                 // 库存量
@@ -894,10 +950,14 @@ function confirmAdjust() {
 
     $('.myclass2').each(function () {
         var data={
+            suppliesName:$(this).children('td').eq(0).find("input").val(),
+            specifications:$(this).children('td').eq(1).find("input").val(),
+            unitDataItem:{dataDictionaryItemId:$(this).children('td').eq(2).find('select').val()},
             inventory:$(this).children('td').eq(3).find("input").val(),
             demandQuantity:$(this).children('td').eq(4).find("input").val(),
             note:$(this).children('td').eq(5).find("input").val(),
-            id:$(this).children('td').eq(6).html()
+            id:$(this).children('td').eq(6).html(),
+            receiptNumber:$("#receiptNumber").text(),
         }
         $.ajax({
             type: "POST",                       // 方法类型
@@ -916,7 +976,26 @@ function confirmAdjust() {
       console.log(data)
     })
     alert("修改成功")
-    window.location.reload()
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getProcurementListById",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{'receiptNumber':    $('#receiptNumber').text()},
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                setMonthProcurementListModalAdjust(result.data[0].materialList);
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!");
+        }
+    });
 }
 
 //高级查询
@@ -1440,5 +1519,50 @@ function findSpecification(item) {
             alert("服务器异常!")
         }
     })
+
+}
+
+//删除明细
+function removeMouthProcument(item) {
+     if(confirm("确认删除该条明细?")){
+         var id=$(item).parent().prev().html();
+         $.ajax({
+             type:'POST',
+             url:"deleteMonthProcurementById",
+             data:{"id":id},
+             dataType: "json",
+             async: false,
+             // contentType: "application/json;charset=utf-8",
+             success:function (result) {
+                 if (result != undefined && result.status == "success"){
+                     alert(result.message)
+                     $.ajax({
+                         type: "POST",                       // 方法类型
+                         url: "getProcurementListById",          // url
+                         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+                         dataType: "json",
+                         data:{'receiptNumber':    $('#receiptNumber').text()},
+                         //contentType: 'application/json;charset=utf-8',
+                         success:function (result) {
+                             if (result != undefined && result.status == "success"){
+                                 console.log(result);
+                                 setMonthProcurementListModalAdjust(result.data[0].materialList);
+                             }
+                             else {
+                                 alert(result.message);
+                             }
+                         },
+                         error:function (result) {
+                             alert("服务器异常!");
+                         }
+                     });
+                 }
+             }
+             ,error:function (result) {
+
+             }
+         })
+     }
+
 
 }

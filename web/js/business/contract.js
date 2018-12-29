@@ -732,7 +732,7 @@ function searchContract() {
                 && $(this).children('td').text().indexOf(text) != -1 &&
                 $(this).children('td').eq(4).text().indexOf(checkState) != -1
                 && $(this).children('td').eq(6).text().indexOf(contactName) != -1 && (new Date(start).getTime() >= new Date(startDate).getTime())
-                && (new Date(end).getTime() <= new Date(endDate).getTime() && $(this).children('td').eq(10).text().indexOf(small)!=-1)&& $(this).children('td').eq(11).text().indexOf(nameBykey)!=-1
+                && (new Date(end).getTime() <= new Date(endDate).getTime() && $(this).children('td').eq(11).text().indexOf(small)!=-1)&& $(this).children('td').eq(12).text().indexOf(nameBykey)!=-1
             )) {
                 $(this).hide();
             }
@@ -740,7 +740,7 @@ function searchContract() {
                 && $(this).children('td').text().indexOf(text) != -1 &&
                 $(this).children('td').eq(4).text().indexOf(checkState) != -1 && (new Date(start).getTime() >= new Date(startDate).getTime())
                 && $(this).children('td').eq(6).text().indexOf(contactName) != -1
-                && (new Date(end).getTime() <= new Date(endDate).getTime()) && $(this).children('td').eq(10).text().indexOf(small)!=-1)&& $(this).children('td').eq(11).text().indexOf(nameBykey)!=-1
+                && (new Date(end).getTime() <= new Date(endDate).getTime()) && $(this).children('td').eq(11).text().indexOf(small)!=-1)&& $(this).children('td').eq(12).text().indexOf(nameBykey)!=-1
             ) {
                 array1.push($(this));
             }
@@ -834,10 +834,10 @@ function searchFuzzy() {
     for (var j = 0; j < array.length; j++) {
         $.each(array[j], function () {
             //console.log(this);
-            if (($(this).children('td').text().indexOf(text) == -1)||$(this).children('td').eq(11).text().indexOf(nameBykey.toString())==-1) {
+            if (($(this).children('td').text().indexOf(text) == -1)||$(this).children('td').eq(12).text().indexOf(nameBykey.toString())==-1) {
                 $(this).hide();
             }
-            if ($(this).children('td').text().indexOf(text) != -1&&$(this).children('td').eq(11).text().indexOf(nameBykey.toString())!=-1) {
+            if ($(this).children('td').text().indexOf(text) != -1&&$(this).children('td').eq(12).text().indexOf(nameBykey.toString())!=-1) {
                 array1.push($(this));
             }
         });
@@ -1134,8 +1134,18 @@ function setContractList(result) {
                             $(this).html("");
                         }
                         break;
+                    case (10):{
+                        if(obj.small=="false"||obj.small==false){
+                            $(this).html("不是");
+                        }
+                        if(obj.small=="true"||obj.small==true){
+                            $(this).html("是");
+                        }
+
+                        break;
+                    }
                     //大小额合同
-                    case (10):
+                    case (11):
                         var total = 0;
                         $.each(obj.quotationItemList, function (index, item) {
                             total += parseFloat(item.unitPriceTax)
@@ -1148,7 +1158,7 @@ function setContractList(result) {
                         }
                         break;
                         //合同类型
-                    case (11):
+                    case (12):
                        if(obj.contractType!=null){
                        $(this).html(obj.contractType.name)
                        }
@@ -1697,6 +1707,8 @@ function loadWastesContractSelectList() {
     //获取送审人员，送审日期，送审部门
    var  user= getCurrentUserData();
 
+     $("#Yes").hide()
+     $("#No").hide()
 
     //赋值送审人员，送审日期，送审部门
     $("#reviewer").val(user.username);
@@ -1837,7 +1849,7 @@ function loadWastesContractSelectList() {
                     option.text(item.dictionaryItemName);
                     unit.append(option);
                 });
-                unit.get(0).selectedIndex = 0;
+                unit.get(0).selectedIndex = 1;
             }
             else {
                 alert(result.message);
@@ -2253,6 +2265,39 @@ function findModel() {
 }
 
 
+//合同编号校验
+function  Verification(item) {
+    var contractId=$(item).val();
+    
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "Verification",                   // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {
+            'contractId': contractId
+        },
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                        if(result.flag==true){
+                           $("#Yes").hide();
+                            $("#No").show();
+                        }
+                if(result.flag==false){
+                    $("#Yes").show();
+                    $("#No").hide();
+                }
+            }
+        },
+        error:function (result) {
+            
+        }
+    })
+
+}
+
+
 
 
 
@@ -2503,8 +2548,16 @@ function contractWastesSave() {
 
 
             })
-
+                      var smallContract=$("input[name='1']:checked").val();
+            var small;
+            if(smallContract=="false"){
+                small=false;
+            }
+            if(smallContract=="true"){
+                small=true;
+            }
             var data = {
+                small:small,
                 client: {clientId: $('#companyName').selectpicker('val')},
                 supplier: {supplierId: $('#suppier').selectpicker('val')},
                 contractVersion: $('input[name="contractVersion"]:checked').val(),
@@ -2703,7 +2756,17 @@ function contractWastesSave() {
 
 
             })
+            var smallContract=$("input[name='1']:checked").val();
+            console.log("smallContract:"+smallContract)
+            var small;
+            if(smallContract=="false"){
+                small=false;
+            }
+            if(smallContract=="true"){
+                small=true;
+            }
             var data = {
+                small:small,
                 client: {clientId: $('#companyName').selectpicker('val')},
                 supplier: {supplierId: $('#suppier').selectpicker('val')},
                 contractVersion: $('input[name="contractVersion"]:checked').val(),
@@ -3012,6 +3075,7 @@ function addNewLine() {
     clonedTr.insertAfter(tr);
     var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
     clonedTr.children("td:eq(0)").append(delBtn);
+    $(clonedTr).children('td').eq(4).find("select").val(139);
     $('.selectpicker').data('selectpicker', null);
     $('.bootstrap-select').find("button:first").remove();
     // $('.selectpicker').selectpicker();
@@ -6087,6 +6151,8 @@ function adjustNewContract() {
     var contractId = localStorage['contractId'];
     $('#contractId').html(contractId);
 
+
+
     //危废编码赋值
     $.ajax({
         type: 'POST',
@@ -6260,6 +6326,13 @@ function adjustNewContract() {
                 var data = eval(result);
 
                 var contract = data.contract;
+
+                 if(contract.small=="false"||contract.small==false){
+                     $('#small').text("否");
+                 }
+                if(contract.small=="true"||contract.small==true){
+                    $('#small').text("是");
+                }
 
                 $('#contractType').val(contract.contractType.name);
 

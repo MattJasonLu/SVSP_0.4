@@ -461,7 +461,7 @@ public class PRProductionDailyController {
 
             sewageTest.setId(id);
 
-            sewageTest.setAddress(sewageregistration.getAddress());
+            sewageTest.setAddress(sewageregistration.getSewagePointItem().getDictionaryItemName());
 
             if(sewageregistrationItem.getCod()==1){
                 sewageTest.setCOD(0);

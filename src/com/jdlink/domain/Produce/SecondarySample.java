@@ -3,6 +3,7 @@ package com.jdlink.domain.Produce;
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Dictionary.CheckStateItem;
+import com.jdlink.domain.Dictionary.SecondaryPointItem;
 import com.jdlink.domain.Page;
 
 import java.util.ArrayList;
@@ -52,6 +53,18 @@ public class SecondarySample {
 
     //状态数据字典
     private CheckStateItem checkStateItem;
+
+    //次生采样点数据结构
+    private SecondaryPointItem secondaryPointItem;
+
+
+    public SecondaryPointItem getSecondaryPointItem() {
+        return secondaryPointItem;
+    }
+
+    public void setSecondaryPointItem(SecondaryPointItem secondaryPointItem) {
+        this.secondaryPointItem = secondaryPointItem;
+    }
 
     public CheckStateItem getCheckStateItem() {
         return checkStateItem;

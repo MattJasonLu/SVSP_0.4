@@ -407,6 +407,7 @@
       <!--编辑模态框-->
     <div class="modal fade bs-example-modal-lg" id="appointModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg" role="document"  style="width: 85%">
+            <span class="hidden" id="receiptNumber"></span>
             <div class="modal-content" >
                 <div class="modal-header">
                     <h4 class="modal-title" >物资需求单明细修改</h4>
@@ -421,17 +422,33 @@
                             <td class="text-center">库存量</td>
                             <td class="text-center">需求数量</td>
                             <td class="text-center">备注</td>
+                            <td class="text-center">操作</td>
                         </tr>
                         </thead>
                         <tbody>
                         <tr id="cloneTr3" class="myclass2">
-                            <td class="text-center modal-companyName"></td>
-                            <td class="text-center modal-einlass"></td>
-                            <td class="text-center wastesName" ></td>
+                            <td class="text-center modal-companyName"><input></td>
+                            <td class="text-center modal-einlass"><input></td>
+                            <td class="text-center wastesName" ><select id="unitItem"></select></td>
                             <td class="text-center wastesName" ><input></td>
                             <td class="text-center wastesName" ><input></td>
                             <td class="text-center wastesName"><input></td>
                             <td class="text-center wastesName hidden" ></td>
+                            <td class="text-center">
+                                <a href="#" title="删除" id="function_-290" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; removeMouthProcument(e);}"><span
+                                        class="glyphicon glyphicon-remove-sign"
+                                        aria-hidden="true"></span></a>
+                            </td>
+                        </tr>
+                        <tr id="plusBtn">
+                            <td><a class="btn btn-default btn-xs" onclick="addNewLineAdjust(this);"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                            <td ></td>
+                            <td ></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td ></td>
+                            <!--<td></td>-->
                         </tr>
                         </tbody>
                     </table>

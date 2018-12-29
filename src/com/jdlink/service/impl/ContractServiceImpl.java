@@ -301,4 +301,9 @@ contractMapper.updateFreight2(id);
         contractMapper.signContract(contractId);
     }
 
+    @Override
+    public List<String> getAllContractId() {
+        return contractMapper.getAllContractId();
+    }
+
 }
