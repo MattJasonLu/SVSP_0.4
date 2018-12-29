@@ -834,10 +834,10 @@ function searchFuzzy() {
     for (var j = 0; j < array.length; j++) {
         $.each(array[j], function () {
             //console.log(this);
-            if (($(this).children('td').text().indexOf(text) == -1)||$(this).children('td').eq(11).text().indexOf(nameBykey.toString())==-1) {
+            if (($(this).children('td').text().indexOf(text) == -1)||$(this).children('td').eq(12).text().indexOf(nameBykey.toString())==-1) {
                 $(this).hide();
             }
-            if ($(this).children('td').text().indexOf(text) != -1&&$(this).children('td').eq(11).text().indexOf(nameBykey.toString())!=-1) {
+            if ($(this).children('td').text().indexOf(text) != -1&&$(this).children('td').eq(12).text().indexOf(nameBykey.toString())!=-1) {
                 array1.push($(this));
             }
         });
