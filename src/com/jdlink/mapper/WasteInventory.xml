@@ -277,11 +277,16 @@
         <collection property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"></collection>
         <collection property="processWayItem" column="processWayId" select="getProcessWayItem"></collection>
         <collection property="handleCategoryItem" column="handleCategoryId" select="getHandleCategoryItem"></collection>
+       <collection property="secondaryCategoryItem" column="secondaryCategoryId" select="getSecondaryCategoryItem"></collection>
     </resultMap>
     <select id="getByInboundOrderItemId" resultMap="InboundOrderItemIdRM" parameterType="String">
         select * from t_pl_wasteinventory where inboundOrderItemId=#{inboundOrderItemId};
     </select>
 
+    <!--次生名称数据字典-->
+    <select id="getSecondaryCategoryItem" resultType="SecondaryCategoryItem">
+        select  * from datadictionaryitem where dataDictionaryItemId=#{secondaryCategoryId}
+    </select>
     <!--进料放式查询数据字典-->
     <select id="getHandleCategoryItem" resultType="HandleCategoryItem">
     select * from datadictionaryitem where dataDictionaryItemId=#{handleCategoryId}
