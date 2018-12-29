@@ -42,11 +42,16 @@
     </select>
     <resultMap id="SecondarysampleRM" type="Secondarysample">
         <result property="id" column="id"></result>
+        <association property="secondaryPointItem" column="secondaryPointId" select="getSecondaryPointItem"></association>
         <collection property="client" column="clientId" select="getClient"></collection>
         <collection property="secondarySampleItemList" column="id" select="getSecondarysampleItem"></collection>
    <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
     </resultMap>
 
+    <!--获取次生采样点数据字典-->
+    <select id="getSecondaryPointItem" resultType="SecondaryPointItem">
+        select  * from datadictionaryitem where dataDictionaryItemId=#{secondaryPointId}
+    </select>
     <!--获取状态数据字典-->
     <select id="getCheckStateItem" resultType="CheckStateItem">
         select  * from datadictionaryitem where  dataDictionaryItemId=#{checkStateId}
@@ -63,8 +68,8 @@
     </select>
     <!--添加次生废物送样主表-->
     <insert id="addSecondarySample" parameterType="SecondarySample">
-        insert into t_pr_secondarysample(id,laboratorySignatory, sendingPerson, address, checkState, advice,nowTime,createTime,checkStateId) values
-        (#{id},#{laboratorySignatory},#{sendingPerson},#{address},'ToCollected',#{advice},NOW(),NOW(),86);
+        insert into t_pr_secondarysample(id,laboratorySignatory, sendingPerson, address, checkState, advice,nowTime,createTime,checkStateId,secondaryPointId) values
+        (#{id},#{laboratorySignatory},#{sendingPerson},#{address},'ToCollected',#{advice},NOW(),NOW(),86,#{secondaryPointItem.dataDictionaryItemId});
     </insert>
     <!--添加次生废物送样子表-->
     <insert id="addSecondarySampleItem" parameterType="SecondarySampleItem">
@@ -100,7 +105,7 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
-                or address like "%"#{keywords}"%"
+                or secondaryPointId in (select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
                 or sendingPerson like "%"#{keywords}"%"
                 or laboratorySignatory like "%"#{keywords}"%"
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
@@ -122,8 +127,11 @@
             <if test="secondarySampleItemList[0].wastesName !='' and secondarySampleItemList[0].wastesName !=null">
                 and id in(select sampleinformationId from t_pr_secondarysampleitem where t_pr_secondarysampleitem.wastesName like  #{secondarySampleItemList[0].wastesName})
             </if>
-            <if test="address !='' and address !=null">
-                and address LIKE "%"#{address}"%"
+            <if test="secondaryPointItem !=null">
+                <if test="secondaryPointItem.dataDictionaryItemId!=0">
+                    and secondaryPointId = #{secondaryPointItem.dataDictionaryItemId}
+                </if>
+
             </if>
 
             <if test="sendingPerson !='' and sendingPerson !=null">
@@ -154,7 +162,7 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
-                or address like "%"#{keywords}"%"
+                or secondaryPointId in (select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
                 or sendingPerson like "%"#{keywords}"%"
                 or laboratorySignatory like "%"#{keywords}"%"
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
@@ -162,17 +170,25 @@
             </if>
 
             <if test="secondarySampleItemList[0].water==1">
-                and  t_pr_secondarysample.id in(select DISTINCT sampleinformationId     from t_pr_secondarysampleitem where t_pr_secondarysampleitem.water=1)
+                and  t_pr_secondarysample.id in(select DISTINCT sampleinformationId  from t_pr_secondarysampleitem where t_pr_secondarysampleitem.water=1)
             </if>
 
             <if test="secondarySampleItemList[0].scorchingRate==1">
                 and  t_pr_secondarysample.id in(select DISTINCT sampleinformationId     from t_pr_secondarysampleitem where t_pr_secondarysampleitem.scorchingRate=1)
             </if>
+
+            <!--<if test="secondarySampleItemList[0].water==0 and secondarySampleItemList[0].scorchingRate==0 ">-->
+            <!---->
+            <!--</if>-->
+
             <if test="secondarySampleItemList[0].wastesName !='' and secondarySampleItemList[0].wastesName !=null">
                 and id in(select sampleinformationId from t_pr_secondarysampleitem where t_pr_secondarysampleitem.wastesName like  #{secondarySampleItemList[0].wastesName})
             </if>
-            <if test="address !='' and address !=null">
-                and address LIKE "%"#{address}"%"
+            <if test="secondaryPointItem !=null">
+                <if test="secondaryPointItem.dataDictionaryItemId!=0">
+                    and secondaryPointId = #{secondaryPointItem.dataDictionaryItemId}
+                </if>
+
             </if>
 
             <if test="sendingPerson !='' and sendingPerson !=null">
@@ -189,6 +205,8 @@
                 </if>
 
             </if>
+
+
         </where>
     </select>
 

@@ -546,7 +546,7 @@ public class PRProductionDailyController {
 
             SoftTest softTest=new SoftTest();
             softTest.setId(id);
-            softTest.setAddress(sewageregistration.getAddress());
+            softTest.setAddress(sewageregistration.getSoftPointItem().getDictionaryItemName());
             if(sewageregistrationItem.getPh()==1){
                 softTest.setPH(0);
             }

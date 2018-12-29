@@ -342,7 +342,10 @@ function setDataList(result) {
                     if (obj.checkStateItem != null) {
                         $(this).html((obj.checkStateItem.dictionaryItemName));
                     }
-
+                    break;
+                    //采样点
+                case (7):
+                        $(this).html(obj.address);
                     break;
             }
         });
