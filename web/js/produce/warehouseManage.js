@@ -656,17 +656,23 @@ function setInboundOrderDataList(result) {
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.find("td[name='inboundOrderId']").text(data.inboundOrderId);
         clonedTr.find("td[name='inboundDate']").text(getDateStr(data.inboundDate));
+        if (data.inboundOrderItemList[0] != null) {
+            clonedTr.find("td[name='transferDraftId']").text(data.inboundOrderItemList[0].transferDraftId);
+            clonedTr.find("td[name='wastesAmount']").text(data.inboundOrderItemList[0].wastesAmount.toFixed(2));
+            if (data.inboundOrderItemList[0].produceCompany != null) {
+                clonedTr.find("td[name='produceCompanyName']").text(data.inboundOrderItemList[0].produceCompany.companyName);
+            }
+            if (data.inboundOrderItemList[0].wastes != null) {
+                clonedTr.find("td[name='wastesName']").text(data.inboundOrderItemList[0].wastes.name);
+                clonedTr.find("td[name='wastesCode']").text(data.inboundOrderItemList[0].wastes.wastesId);
+                if (data.inboundOrderItemList[0].wastes.wastesUnit != null)
+                clonedTr.find("td[name='wastesUnit']").text(data.inboundOrderItemList[0].wastes.wastesUnit.name);
+            }
+        }
         if (data.wareHouse != null)
         clonedTr.find("td[name='wareHouseName']").text(data.wareHouse.wareHouseName);
         if (data.boundType != null)
         clonedTr.find("td[name='creatorId']").text(data.creatorId);
-        // clonedTr.find("td[name='keeperId']").text(data.keeperId);
-        // clonedTr.find("td[name='directorId']").text(data.directorId);
-        // clonedTr.find("td[name='approverId']").text(data.approverId);
-        if (data.boundType != null)
-        clonedTr.find("td[name='boundType']").text(data.boundType.name);
-        if (data.recordState != null)
-        clonedTr.find("td[name='recordState']").text(data.recordState.name);
         if (data.checkState != null)
         clonedTr.find("td[name='checkState']").text(data.checkState.name);
         clonedTr.find("td[name='remarks']").text(data.remarks);
