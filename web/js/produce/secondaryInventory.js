@@ -362,14 +362,27 @@ function setByInboundOrderItemId(result) {
                     $(this).html(obj.produceCompany.companyName);
                     break;
                 case (2):
-                        $(this).html(convertStrToWastesName(obj.wastesName));
+                    if(obj.secondaryCategoryItem!=null){
+                        $(this).html((obj.secondaryCategoryItem.dictionaryItemName));
+                    }
+
 
                     break;
                 case (3):
                     $(this).html(obj.wastesCode);
                     break;
                 case (4):
-                    $(this).html(obj.actualCount.toFixed(2));
+                    if(obj.secondaryCategoryItem!=null){
+                        if((obj.secondaryCategoryItem.dictionaryItemName)=="桶"){
+                            $(this).html(obj.actualCount.toFixed(0)+"只");
+                        }
+                        else {
+                            $(this).html(obj.actualCount.toFixed(3)+"吨");
+                        }
+
+                    }
+
+
                     break;
                 // case (5):
                 //     $(this).html(obj.handleCategory.name);
