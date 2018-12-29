@@ -26,6 +26,7 @@ public class DateUtil {
             if (dateStr.contains("/")) dateFormat = new SimpleDateFormat("yyyy/MM/dd");
             else if (dateStr.contains("-")) dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             else if (dateStr.contains("年")) dateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+            else if (dateStr.contains(".")) dateFormat = new SimpleDateFormat("yyyy.MM.dd");
             else throw new Exception("时间格式异常");
             date = dateFormat.parse(dateStr);
         } catch (Exception e) {

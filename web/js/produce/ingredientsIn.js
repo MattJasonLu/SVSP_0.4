@@ -1785,10 +1785,11 @@ function save() {
                 ingredientsIn.ingredientsList[i].post = $("#post" + $i).val();
                 ingredientsIn.ingredientsList[i].wareHouseName = $("#wareHouseName" + $i).find("option:selected").text();
                 ingredientsIn.ingredientsList[i].totalPrice = ingredientsIn.ingredientsList[i].unitPrice * ingredientsIn.ingredientsList[i].amount;
-                var equitment = parseInt($("#equipment" + $i).find("option:selected").val());
-                var equipmentDataItem={};
-                equipmentDataItem.dataDictionaryItemId=equitment;
-                ingredientsIn.ingredientsList[i].equipmentDataItem=equipmentDataItem;
+                // update 2018年12月28日 by ljc 去除处置设备
+                // var equitment = parseInt($("#equipment" + $i).find("option:selected").val());
+                // var equipmentDataItem={};
+                // equipmentDataItem.dataDictionaryItemId=equitment;
+                // ingredientsIn.ingredientsList[i].equipmentDataItem=equipmentDataItem;
                 // switch (equitment) {
                 //     case 1:
                 //         ingredientsIn.ingredientsList[i].equipment = 'MedicalCookingSystem';
