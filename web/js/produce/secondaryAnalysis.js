@@ -339,6 +339,35 @@ function secondaryAnalysis() {
         }
     });
 
+    isSearch = false;
+
+    //次生采样点下拉框
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSecondaryPointByDataDictionary",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                //处理类别
+                var address = $('#search-address');
+                address.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    address.append(option);
+                });
+                address.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
 
 }
 
@@ -423,8 +452,11 @@ function setSecIntoList(result) {
                     $(this).html(obj.laboratorySignatory);
                     break;
                 case (6):
-                    // 签收人
-                    $(this).html(obj.address);
+                    // 采样点
+                    if(obj.secondaryPointItem!=null){
+                        $(this).html(obj.secondaryPointItem.dictionaryItemName);
+                    }
+
                     break;
                 case (7):
                     // 状态
@@ -489,7 +521,7 @@ function searchSecInto() {
         }
         data1 = {
 
-            address: $.trim($("#search-address").val()),
+            secondaryPointItem:{dataDictionaryItemId:$.trim($("#search-address").val())} ,
             sendingPerson: $.trim($("#search-remarks").val()),
             laboratorySignatory: $.trim($("#search-laboratorySignatory").val()),
             //remarks: $.trim($("#search-remarks").val()),
@@ -656,7 +688,6 @@ function setSelectList() {
                 //刷新下拉数据
                 $('.selectpicker').selectpicker('refresh');
 
-                $('#addClone').siblings().not($('#plusBtn')).remove();
 
             } else {
                 console.log("fail: " + result);
@@ -666,6 +697,39 @@ function setSelectList() {
             console.log("error: " + result);
         }
     });
+
+    $('#addClone').siblings().not($('#plusBtn')).remove();
+
+    //次生采样点下拉框
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSecondaryPointByDataDictionary",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                //处理类别
+                var address = $('#address');
+                address.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    address.append(option);
+                });
+                address.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+
+
+
 }
 
 function setSelectList1() {
@@ -701,6 +765,8 @@ function setSelectList1() {
             console.log("error: " + result);
         }
     });
+
+
 }
 
 
@@ -788,7 +854,7 @@ function addAppoint() {
         id:$('#reservationId').val(),
         laboratorySignatory:$('#laboratorySignatory').val(),
         sendingPerson:$('#sendingPerson').val(),
-        address:$('#address').val(),
+        secondaryPointItem:{dataDictionaryItemId:$('#address').val()},
     };
     console.log(data)
     //添加主表
@@ -928,7 +994,10 @@ function view(item) {
                 $('#sendingPerson1').text(result.data.sendingPerson)
 
                 //采样点
-                $('#address1').text(result.data.address)
+                if(result.data.secondaryPointItem!=null){
+                    $('#address1').text(result.data.secondaryPointItem.dictionaryItemName)
+                }
+
 
 
                 if(result.data.secondarySampleItemList!=null){
@@ -1054,7 +1123,10 @@ function setSubmit(item)  {
                     $('#sendingPerson1').text(result.data.sendingPerson)
 
                     //采样点
-                    $('#address1').text(result.data.address)
+                    if(result.data.secondaryPointItem!=null){
+                        $('#address1').text(result.data.secondaryPointItem.dictionaryItemName)
+
+                    }
 
 
                     if(result.data.secondarySampleItemList!=null){
@@ -1313,6 +1385,34 @@ function secondaryAnalysisModify(item) {
     }
 
 
+    //次生采样点下拉框
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSecondaryPointByDataDictionary",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                //处理类别
+                var address = $('#address2');
+                address.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    address.append(option);
+                });
+                address.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+
     if(checkState!='已作废'&&checkState!='已拒收'&&checkState!='已收样'){
         $('.selectpicker').selectpicker({
             language: 'zh_CN',
@@ -1354,7 +1454,10 @@ function secondaryAnalysisModify(item) {
                     $('#sendingPerson2').val(result.data.sendingPerson)
 
                     //采样点
-                    $('#address2').val(result.data.address)
+                    if(result.data.secondaryPointItem!=null){
+                        $('#address2').val(result.data.secondaryPointItem.dataDictionaryItemId)
+                    }
+
 
 
                     if(result.data.secondarySampleItemList!=null){
@@ -1445,7 +1548,7 @@ function adjust() {
         newId:$('#reservationId2').val(),
         id:$('#reservationId3').val(),
         sendingPerson:$('#sendingPerson2').val(),
-        address:$('#address2').val(),
+        secondaryPointItem:{dataDictionaryItemId:$('#address2').val()},
         laboratorySignatory:$('#laboratorySignatory2').val(),
     };
 

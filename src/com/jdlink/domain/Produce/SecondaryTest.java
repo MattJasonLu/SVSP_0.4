@@ -38,8 +38,20 @@ public class SecondaryTest {
 
     private  Date dateTimeEnd;
 
+    //采样点
+    private String address;
+
     //状态数据字典
     private CheckStateItem checkStateItem;
+
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public CheckStateItem getCheckStateItem() {
 

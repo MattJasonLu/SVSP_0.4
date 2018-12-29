@@ -314,6 +314,33 @@ function loadPageSoftWaterList() {
         }
     });
     isSearch = false;
+    //软水采样点下拉框
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSoftPointByDataDictionary",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                //处理类别
+                var address = $('#search-address');
+                address.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    address.append(option);
+                });
+                address.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
 }
 
 /**
@@ -355,7 +382,10 @@ function setSoftWaterList(result) {
                         break;
                     case (2):
                         // 采样点
-                        $(this).html((obj.address));
+                        if(obj.softPointItem!=null){
+                            $(this).html((obj.softPointItem.dictionaryItemName));
+                        }
+
                         break;
                     case (3):
                         // 检测项目
@@ -588,7 +618,7 @@ function searchSoftWater() {
             state=null
         }
         data1 = {
-            address: $.trim($("#search-address").val()),
+            softPointItem:{dataDictionaryItemId:$.trim($("#search-address").val())} ,
             sendingPerson: $.trim($("#search-remarks").val()),
             laboratorySignatory: $.trim($("#search-laboratorySignatory").val()),
             checkStateItem:{dataDictionaryItemId:state},
@@ -710,8 +740,38 @@ function setSelectList() {
                 //刷新下拉数据
                 $('.selectpicker').selectpicker('refresh');
 
-                $('#addClone').siblings().not($('#plusBtn')).remove();
 
+
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+
+    $('#addClone').siblings().not($('#plusBtn')).remove();
+
+    //软水采样点下拉框
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSoftPointByDataDictionary",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                //处理类别
+                var address = $('#address');
+                address.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    address.append(option);
+                });
+                address.get(0).selectedIndex = -1;
             } else {
                 console.log("fail: " + result);
             }
@@ -853,7 +913,7 @@ function addAppoint() {
         id:$('#reservationId').val(),
         laboratorySignatory:$('#laboratorySignatory').val(),
         sendingPerson:$('#sendingPerson').val(),
-        address:$('#address').val(),
+        softPointItem:{dataDictionaryItemId:$('#address').val()},
     };
     console.log(data)
     //添加主表
@@ -976,7 +1036,10 @@ function view(item) {
                 $('#sendingPerson1').text(result.data.sendingPerson)
 
                 //采样点
-                $('#address1').text(result.data.address)
+                if(result.data.softPointItem!=null){
+                    $('#address1').text(result.data.softPointItem.dictionaryItemName)
+                }
+
 
 
                 if(result.data.sewageregistrationItemList!=null){
@@ -1108,7 +1171,10 @@ function setSubmit(item) {
                     $('#sendingPerson1').text(result.data.sendingPerson)
 
                     //采样点
-                    $('#address1').text(result.data.address)
+                    if(result.data.softPointItem!=null){
+                        $('#address1').text(result.data.softPointItem.dictionaryItemName)
+                    }
+
 
                     if(result.data.sewageregistrationItemList!=null){
 
@@ -1317,7 +1383,33 @@ function softWaterAnalysisModify(item) {
     if(checkState=='已作废'){
         alert('单据已作废,不可修改!')
     }
-
+//软水采样点下拉框
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSoftPointByDataDictionary",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                //处理类别
+                var address = $('#address2');
+                address.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    address.append(option);
+                });
+                address.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
     if(checkState!='已作废'&&checkState!='已拒收'&&checkState!='已收样'){
         $('#addClone1').siblings().not($('#plusBtn1')).remove();
         var id=$(item).parent().parent().children('td').eq(1).html();
@@ -1346,7 +1438,10 @@ function softWaterAnalysisModify(item) {
                     $('#sendingPerson2').val(result.data.sendingPerson)
 
                     //采样点
-                    $('#address2').val(result.data.address)
+                    if(result.data.softPointItem!=null){
+                        $('#address2').val(result.data.softPointItem.dataDictionaryItemId)
+                    }
+
 
 
                     if(result.data.sewageregistrationItemList!=null){
@@ -1453,7 +1548,6 @@ function softWaterAnalysisModify(item) {
 
 
 
-
 }
 
 //确认修改
@@ -1463,7 +1557,7 @@ function adjust() {
         newId:$('#reservationId2').val(),
         id:$('#reservationId3').val(),
         sendingPerson:$('#sendingPerson2').val(),
-        address:$('#address2').val(),
+        softPointItem:{dataDictionaryItemId:$('#address2').val()},
         laboratorySignatory:$('#laboratorySignatory2').val(),
     };
 
