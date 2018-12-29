@@ -84,7 +84,7 @@
     <!--更新污水-->
     <update id="updateSewaGeregistration" parameterType="SewaGeregistration">
         update t_pr_sewageregistration set sendingPerson=#{sendingPerson},address=#{address},
-        laboratorySignatory=#{laboratorySignatory},nowTime=NOW(),id=#{newId} where id=#{id}
+        laboratorySignatory=#{laboratorySignatory},nowTime=NOW(),sewagePointId=#{sewagePointItem.dataDictionaryItemId},id=#{newId} where id=#{id}
     </update>
 
     <!--更新软水/-->
