@@ -521,7 +521,10 @@
                                 <label for="model-id" class="col-sm-4 control-label">联单编号</label>
                                 <div class="col-sm-8">
                                     <input class="form-control" name="wastesList[0].transferId"
-                                           id="wastesList[0].transferId" style="width: 100%">
+                                           id="wastesList[0].transferId" style="width: 100%" onkeyup="test(this)">
+                                    <p id="pass1"  style="color: green;display: none">通过</p>
+                                    <p id="break1" style="color: red;display: none">联单编号已存在</p>
+                                    <p id="break2" style="color: red;display: none">请输入18位联单编号</p>
                                 </div>
                             </div>
                         </div>

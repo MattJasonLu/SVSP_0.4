@@ -53,6 +53,10 @@ public class SampleInformation {
      */
     private ApplyState applyState;
     /**
+     * 预约状态ID
+     */
+    private int applyStateId;
+    /**
      *查询关键字
      */
     private String keywords;
@@ -117,6 +121,14 @@ public class SampleInformation {
      * 新预约单号（送样登记修改用）/化验单单号
      */
     private String newId;
+
+    public int getApplyStateId() {
+        return applyStateId;
+    }
+
+    public void setApplyStateId(int applyStateId) {
+        this.applyStateId = applyStateId;
+    }
 
     public String getNewId() {
         return newId;

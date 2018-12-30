@@ -90,4 +90,8 @@ public interface IngredientsService {
 
     int searchCountIngredient(Ingredients ingredients);
 
+    int getCountByCode(String code);
+
+    int getCountByType(String type);
+
 }

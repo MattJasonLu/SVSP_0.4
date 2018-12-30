@@ -39,6 +39,7 @@ public class PRSampleInfoWareHouseController {
 
     /**
      * 增加样品登记预约单
+     *
      * @param sampleInformation 样品信息预约单
      * @return 成功与否
      */
@@ -95,9 +96,9 @@ public class PRSampleInfoWareHouseController {
         do {
             index += 1;
             String index1 = index + "";
-            if(index < 10) index1 = "000" + index;
-            else if(index < 100) index1 = "00" + index;
-            else if(index < 1000) index1 = "0" + index;
+            if (index < 10) index1 = "000" + index;
+            else if (index < 100) index1 = "00" + index;
+            else if (index < 1000) index1 = "0" + index;
             id = sampleId + index1;
         } while (sampleInfoWareHouseService.getByWastesId(id) != null);
         JSONObject res = new JSONObject();
@@ -107,11 +108,11 @@ public class PRSampleInfoWareHouseController {
 
     @RequestMapping("getWareHouseWastesByWastesId")
     @ResponseBody
-    public String getWastesByWastesId(String id){
+    public String getWastesByWastesId(String id) {
         JSONObject res = new JSONObject();
         try {
             Wastes wastes = sampleInfoWareHouseService.getByWastesId(id);
-            res.put("data",wastes);
+            res.put("data", wastes);
             res.put("status", "success");
             res.put("message", "查询成功");
         } catch (Exception e) {
@@ -125,14 +126,15 @@ public class PRSampleInfoWareHouseController {
 
     /**
      * 获取总记录数
+     *
      * @return
      */
     @RequestMapping("totalSampleInformationWareHouseRecord")
     @ResponseBody
-    public int totalSampleInformationRecord(){
+    public int totalSampleInformationRecord() {
         try {
             return sampleInfoWareHouseService.count();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
@@ -140,14 +142,15 @@ public class PRSampleInfoWareHouseController {
 
     /**
      * 获取明细总记录数
+     *
      * @return
      */
     @RequestMapping("totalSampleInformationWareHouseItemRecord")
     @ResponseBody
-    public int totalSampleInformationWareHouseItemRecord(){
+    public int totalSampleInformationWareHouseItemRecord() {
         try {
             return sampleInfoWareHouseService.countItem();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
@@ -155,12 +158,13 @@ public class PRSampleInfoWareHouseController {
 
     /**
      * 获取分页数据
+     *
      * @param page
      * @return
      */
     @RequestMapping("loadPageSampleInformationWareHouseList")
     @ResponseBody
-    public  String loadPageSampleInformationList(@RequestBody Page page){
+    public String loadPageSampleInformationList(@RequestBody Page page) {
         JSONObject res = new JSONObject();
         try {
             // 取出查询客户
@@ -181,12 +185,13 @@ public class PRSampleInfoWareHouseController {
 
     /**
      * 获取明细页面分页数据
+     *
      * @param page
      * @return
      */
     @RequestMapping("loadPageSampleInformationWareHouseItemList")
     @ResponseBody
-    public  String loadPageSampleInformationWareHouseItemList(@RequestBody Page page){
+    public String loadPageSampleInformationWareHouseItemList(@RequestBody Page page) {
         JSONObject res = new JSONObject();
         try {
             // 取出查询客户
@@ -207,7 +212,7 @@ public class PRSampleInfoWareHouseController {
 
     @RequestMapping("getSampleInformationWareHouse")
     @ResponseBody
-    public String getSampleInformation(String sampleId){
+    public String getSampleInformation(String sampleId) {
         JSONObject res = new JSONObject();
         try {
             //根据公司代码查询出相应的对象信息
@@ -217,25 +222,33 @@ public class PRSampleInfoWareHouseController {
             res.put("data", data);
             res.put("status", "success");
             res.put("message", "查看数据成功");
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            res.put("status","fail");
-            res.put("message","查看数据失败");
+            res.put("status", "fail");
+            res.put("message", "查看数据失败");
         }
         return res.toString();
     }
 
+    @RequestMapping("getSampleInformationWareHouseByTransferId")
+    @ResponseBody
+    public int getSampleInformationWareHouseByTransferId(String transferId) {
+        int count = sampleInfoWareHouseService.getCountByTransferId(transferId);
+        //新建一个对象并给它赋值为sampleInformation
+        return count;
+    }
+
     @RequestMapping("confirmSampleInformationWareHouseCheck")
     @ResponseBody
-    public String confirmSampleInformationCheck(String sampleId,String laboratorySigner){
+    public String confirmSampleInformationCheck(String sampleId, String laboratorySigner) {
         JSONObject res = new JSONObject();
-        try{
-            sampleInfoWareHouseService.confirmCheck(sampleId,laboratorySigner);
+        try {
+            sampleInfoWareHouseService.confirmCheck(sampleId, laboratorySigner);
             // 创建化验单
             SampleInformation sampleInformation = sampleInfoWareHouseService.getById(sampleId);
 
-            if(sampleInformation.getWastesList() != null && sampleInformation.getWastesList().size() > 0){
-                for(Wastes wastes :sampleInformation.getWastesList()){
+            if (sampleInformation.getWastesList() != null && sampleInformation.getWastesList().size() > 0) {
+                for (Wastes wastes : sampleInformation.getWastesList()) {
                     SampleInfoAnalysis sampleAnalysis = new SampleInfoAnalysis();
                     sampleAnalysis.setId(sampleInformation.getId());
                     sampleAnalysis.setSampleId(sampleInformation.getId());
@@ -251,107 +264,107 @@ public class PRSampleInfoWareHouseController {
                     sampleAnalysis.setSender(sampleInformation.getSendingPerson());
                     sampleAnalysis.setSigner(sampleInformation.getLaboratorySigner());
                     sampleAnalysis.setCheckState(CheckState.NewBuild);
-                    if(wastes.getIsPH()){
+                    if (wastes.getIsPH()) {
                         sampleAnalysis.setPH(0); // 如果检测项目存在设置初始值为0
-                    }else {
+                    } else {
                         sampleAnalysis.setPH(-9999);  // 如果不存在则设置为不可能值-9999
                     }
-                    if(wastes.getIsAsh()){
+                    if (wastes.getIsAsh()) {
                         sampleAnalysis.setAsh(0); // 如果检测项目存在设置初始值为0
-                    }else {
+                    } else {
                         sampleAnalysis.setAsh(-9999);  // 如果不存在则设置为不可能值-9999
                     }
-                    if(wastes.getIsWater()){
+                    if (wastes.getIsWater()) {
                         sampleAnalysis.setWater(0); // 如果检测项目存在设置初始值为0
-                    }else {
+                    } else {
                         sampleAnalysis.setWater(-9999);  // 如果不存在则设置为不可能值-9999
                     }
-                    if(wastes.getIsHeat()){
+                    if (wastes.getIsHeat()) {
                         sampleAnalysis.setHeat(0); // 如果检测项目存在设置初始值为0
-                    }else {
+                    } else {
                         sampleAnalysis.setHeat(-9999);  // 如果不存在则设置为不可能值-9999
                     }
-                    if(wastes.getIsSulfur()){
+                    if (wastes.getIsSulfur()) {
                         sampleAnalysis.setSulfur(0); // 如果检测项目存在设置初始值为0
-                    }else {
+                    } else {
                         sampleAnalysis.setSulfur(-9999);  // 如果不存在则设置为不可能值-9999
                     }
-                    if(wastes.getIsChlorine()){
+                    if (wastes.getIsChlorine()) {
                         sampleAnalysis.setChlorine(0); // 如果检测项目存在设置初始值为0
-                    }else {
+                    } else {
                         sampleAnalysis.setChlorine(-9999);  // 如果不存在则设置为不可能值-9999
                     }
-                    if(wastes.getIsFluorine()){
+                    if (wastes.getIsFluorine()) {
                         sampleAnalysis.setFluorine(0); // 如果检测项目存在设置初始值为0
-                    }else {
+                    } else {
                         sampleAnalysis.setFluorine(-9999);  // 如果不存在则设置为不可能值-9999
                     }
-                    if(wastes.getIsPhosphorus()){
+                    if (wastes.getIsPhosphorus()) {
                         sampleAnalysis.setPhosphorus(0); // 如果检测项目存在设置初始值为0
-                    }else {
+                    } else {
                         sampleAnalysis.setPhosphorus(-9999);  // 如果不存在则设置为不可能值-9999
                     }
-                    if(wastes.getIsFlashPoint()){
+                    if (wastes.getIsFlashPoint()) {
                         sampleAnalysis.setFlashPoint(0); // 如果检测项目存在设置初始值为0
-                    }else {
+                    } else {
                         sampleAnalysis.setFlashPoint(-9999);  // 如果不存在则设置为不可能值-9999
                     }
-                    if(wastes.getIsViscosity()){
+                    if (wastes.getIsViscosity()) {
                         sampleAnalysis.setViscosity("0"); // 如果检测项目存在设置初始值为0
-                    }else {
+                    } else {
                         sampleAnalysis.setViscosity("-9999");  // 如果不存在则设置为不可能值-9999
                     }
-                    if(wastes.getIsHotMelt()){
+                    if (wastes.getIsHotMelt()) {
                         sampleAnalysis.setHotMelt("0"); // 如果检测项目存在设置初始值为0
-                    }else {
+                    } else {
                         sampleAnalysis.setHotMelt("-9999");  // 如果不存在则设置为不可能值-9999
                     }
                     sampleInfoAnalysisService.add(sampleAnalysis);  // 添加新的化验结果单
                 }
             }
-            res.put("status","success");
-            res.put("message","确认登记成功！");
-        }catch (Exception e){
+            res.put("status", "success");
+            res.put("message", "确认登记成功！");
+        } catch (Exception e) {
             e.printStackTrace();
-            res.put("status","fail");
-            res.put("message","确认登记失败！");
+            res.put("status", "fail");
+            res.put("message", "确认登记失败！");
         }
         return res.toString();
     }
 
     @RequestMapping("updateSampleInformationWareHouse")
     @ResponseBody
-    public String updateSampleInformation(@RequestBody SampleInformation sampleInformation){
+    public String updateSampleInformation(@RequestBody SampleInformation sampleInformation) {
         JSONObject res = new JSONObject();
-        try{
-         //   sampleInfoWareHouseService.deleteById(sampleInformation.getId()); // 删除旧数据
+        try {
+            //   sampleInfoWareHouseService.deleteById(sampleInformation.getId()); // 删除旧数据
             sampleInfoWareHouseService.update(sampleInformation);       // 添加新数据
             System.out.println("更新的数据为：");
             System.out.println(sampleInformation.getWastesList().size());
             System.out.println(sampleInformation);
-            res.put("status","success");
-            res.put("message","登记单修改成功！");
-        }catch (Exception e){
+            res.put("status", "success");
+            res.put("message", "登记单修改成功！");
+        } catch (Exception e) {
             e.printStackTrace();
-            res.put("status","fail");
-            res.put("message","登记单修改失败！");
+            res.put("status", "fail");
+            res.put("message", "登记单修改失败！");
         }
         return res.toString();
     }
 
     @RequestMapping("cancelSampleInformationWareHouse")
     @ResponseBody
-    public String cancelSampleInformation(String sampleId){
+    public String cancelSampleInformation(String sampleId) {
         JSONObject res = new JSONObject();
-        try{
-            String newId = "I-"+sampleId;
-            sampleInfoWareHouseService.updateSampleInfo(sampleId,newId);
-            res.put("status","success");
-            res.put("message","作废数据成功！");
-        }catch (Exception e){
+        try {
+            String newId = "I-" + sampleId;
+            sampleInfoWareHouseService.updateSampleInfo(sampleId, newId);
+            res.put("status", "success");
+            res.put("message", "作废数据成功！");
+        } catch (Exception e) {
             e.printStackTrace();
-            res.put("status","fail");
-            res.put("message","作废数据失败！");
+            res.put("status", "fail");
+            res.put("message", "作废数据失败！");
         }
         return res.toString();
     }
@@ -361,7 +374,7 @@ public class PRSampleInfoWareHouseController {
     public int searchsampleInfoTotal(@RequestBody SampleInformation sampleInformation) {
         try {
             return sampleInfoWareHouseService.searchCount(sampleInformation);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
@@ -372,7 +385,7 @@ public class PRSampleInfoWareHouseController {
     public int searchSampleInfoWareHouseItemTotal(@RequestBody SampleInformationItem sampleInformationItem) {
         try {
             return sampleInfoWareHouseService.searchItemCount(sampleInformationItem);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
@@ -380,6 +393,7 @@ public class PRSampleInfoWareHouseController {
 
     /**
      * 查询功能
+     *
      * @param sampleInformationItem
      * @return
      */
@@ -403,6 +417,7 @@ public class PRSampleInfoWareHouseController {
 
     /**
      * 查询功能
+     *
      * @param sampleInformation
      * @return
      */
@@ -429,7 +444,7 @@ public class PRSampleInfoWareHouseController {
     public String getSampleInfoSeniorSelectedList() {
         JSONObject res = new JSONObject();
         // 获取枚举
-        ApplyState[] applyStates = new ApplyState[] { ApplyState.ToCollected,ApplyState.Received,ApplyState.Rejected,ApplyState.Invalid };
+        ApplyState[] applyStates = new ApplyState[]{ApplyState.ToCollected, ApplyState.Received, ApplyState.Rejected, ApplyState.Invalid};
         JSONArray applyStateList = JSONArray.fromArray(applyStates);
         res.put("applyStateList", applyStateList);
         return res.toString();
@@ -437,20 +452,20 @@ public class PRSampleInfoWareHouseController {
 
     /**
      * 拒收功能
+     *
      * @param id
      * @param advice
      * @return
      */
     @RequestMapping("rejectSampleInfoWareHouseById")
     @ResponseBody
-    public String rejectSampleInfoById(String id,String advice){
-        JSONObject res=new JSONObject();
+    public String rejectSampleInfoById(String id, String advice) {
+        JSONObject res = new JSONObject();
         try {
-            sampleInfoWareHouseService.rejectSampleInfoById(id,advice);
+            sampleInfoWareHouseService.rejectSampleInfoById(id, advice);
             res.put("status", "success");
             res.put("message", "拒收成功");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "拒收失败");
@@ -520,7 +535,7 @@ public class PRSampleInfoWareHouseController {
                     } while (sampleInfoWareHouseService.getByWastesId(id) != null);
                 } else {
                     int index1 = Integer.parseInt(id1.substring(id1.length() - 5)); // 截取ID后五位，然后叠加
-                    String index2 = id1.substring(0,id1.length() - 5); // 截取ID前几位
+                    String index2 = id1.substring(0, id1.length() - 5); // 截取ID前几位
                     index1++;
                     id1 = index2 + index1;  // 拼接ID
                 }
@@ -558,28 +573,40 @@ public class PRSampleInfoWareHouseController {
                         break;
                 }
                 // 设置检测项目
-                if (!data[i][7].toString().equals("null") && (data[i][7].toString().equals("R") || data[i][7].toString().equals("1") || data[i][7].toString().equals("1.0"))) wastes.setIsPH(true);
-                if (!data[i][8].toString().equals("null") && (data[i][8].toString().equals("R") || data[i][8].toString().equals("1") || data[i][8].toString().equals("1.0"))) wastes.setIsAsh(true);
-                if (!data[i][9].toString().equals("null") && (data[i][9].toString().equals("R") || data[i][9].toString().equals("1") || data[i][9].toString().equals("1.0"))) wastes.setIsWater(true);
-                if (!data[i][10].toString().equals("null") && (data[i][10].toString().equals("R") || data[i][10].toString().equals("1") || data[i][10].toString().equals("1.0"))) wastes.setIsHeat(true);
-                if (!data[i][11].toString().equals("null") && (data[i][11].toString().equals("R") || data[i][11].toString().equals("1") || data[i][11].toString().equals("1.0"))) wastes.setIsSulfur(true);
-                if (!data[i][12].toString().equals("null") && (data[i][12].toString().equals("R") || data[i][12].toString().equals("1") || data[i][12].toString().equals("1.0"))) wastes.setIsChlorine(true);
-                if (!data[i][13].toString().equals("null") && (data[i][13].toString().equals("R") || data[i][13].toString().equals("1") || data[i][13].toString().equals("1.0"))) wastes.setIsFluorine(true);
-                if (!data[i][14].toString().equals("null") && (data[i][14].toString().equals("R") || data[i][14].toString().equals("1") || data[i][14].toString().equals("1.0"))) wastes.setIsPhosphorus(true);
-                if (!data[i][15].toString().equals("null") && (data[i][15].toString().equals("R") || data[i][15].toString().equals("1") || data[i][15].toString().equals("1.0"))) wastes.setIsFlashPoint(true);
-                if (!data[i][16].toString().equals("null") && (data[i][16].toString().equals("R") || data[i][16].toString().equals("1") || data[i][16].toString().equals("1.0"))) wastes.setIsViscosity(true);
-                if (!data[i][17].toString().equals("null") && (data[i][17].toString().equals("R") || data[i][17].toString().equals("1") || data[i][17].toString().equals("1.0"))) wastes.setIsHotMelt(true);
+                if (!data[i][7].toString().equals("null") && (data[i][7].toString().equals("R") || data[i][7].toString().equals("1") || data[i][7].toString().equals("1.0")))
+                    wastes.setIsPH(true);
+                if (!data[i][8].toString().equals("null") && (data[i][8].toString().equals("R") || data[i][8].toString().equals("1") || data[i][8].toString().equals("1.0")))
+                    wastes.setIsAsh(true);
+                if (!data[i][9].toString().equals("null") && (data[i][9].toString().equals("R") || data[i][9].toString().equals("1") || data[i][9].toString().equals("1.0")))
+                    wastes.setIsWater(true);
+                if (!data[i][10].toString().equals("null") && (data[i][10].toString().equals("R") || data[i][10].toString().equals("1") || data[i][10].toString().equals("1.0")))
+                    wastes.setIsHeat(true);
+                if (!data[i][11].toString().equals("null") && (data[i][11].toString().equals("R") || data[i][11].toString().equals("1") || data[i][11].toString().equals("1.0")))
+                    wastes.setIsSulfur(true);
+                if (!data[i][12].toString().equals("null") && (data[i][12].toString().equals("R") || data[i][12].toString().equals("1") || data[i][12].toString().equals("1.0")))
+                    wastes.setIsChlorine(true);
+                if (!data[i][13].toString().equals("null") && (data[i][13].toString().equals("R") || data[i][13].toString().equals("1") || data[i][13].toString().equals("1.0")))
+                    wastes.setIsFluorine(true);
+                if (!data[i][14].toString().equals("null") && (data[i][14].toString().equals("R") || data[i][14].toString().equals("1") || data[i][14].toString().equals("1.0")))
+                    wastes.setIsPhosphorus(true);
+                if (!data[i][15].toString().equals("null") && (data[i][15].toString().equals("R") || data[i][15].toString().equals("1") || data[i][15].toString().equals("1.0")))
+                    wastes.setIsFlashPoint(true);
+                if (!data[i][16].toString().equals("null") && (data[i][16].toString().equals("R") || data[i][16].toString().equals("1") || data[i][16].toString().equals("1.0")))
+                    wastes.setIsViscosity(true);
+                if (!data[i][17].toString().equals("null") && (data[i][17].toString().equals("R") || data[i][17].toString().equals("1") || data[i][17].toString().equals("1.0")))
+                    wastes.setIsHotMelt(true);
                 wastes.setTransferId(data[i][19].toString());
                 wastesList.add(wastes);
                 map.get(id).setWastesList(wastesList);
             }
             for (String key : map.keySet()) {
-                SampleInformation sampleInformation1 = sampleInfoWareHouseService.getById(map.get(key).getId());
+                // 根据联单编号获取数据
+                int count = sampleInfoWareHouseService.getCountByTransferId(map.get(key).getWastesList().get(0).getTransferId());
                 SampleInformation sampleInformation = map.get(key);
-                if (sampleInformation1 == null) {
+                if (count == 0) {  // 不存在则新增
                     //插入新数据
                     sampleInfoWareHouseService.add(sampleInformation);
-                } else {
+                } else {  // 存在则更新
                     //根据id更新数据
                     sampleInfoWareHouseService.update(sampleInformation);
                 }

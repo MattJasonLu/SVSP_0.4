@@ -8,7 +8,11 @@ var data;
 function countValue() {
     var mySelect = document.getElementById("count");
     var index = mySelect.selectedIndex;
-    return mySelect.options[index].text;
+    var text = mySelect.options[index].text;
+    if(text == "全部"){
+        text = "0";
+    }
+    return text;
 }
 
 /**
@@ -71,6 +75,7 @@ function totalPage() {
  * @returns {number}
  */
 function loadPages(totalRecord, count) {
+    if(count == 0)count = totalRecord;
     if (totalRecord == 0) {
         console.log("总记录数为0，请检查！");
         return 0;

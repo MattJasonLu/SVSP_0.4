@@ -25,7 +25,11 @@ var data1;
 function countValue() {
     var mySelect = document.getElementById("count");
     var index = mySelect.selectedIndex;
-    return mySelect.options[index].text;
+    var text = mySelect.options[index].text;
+    if(text == "全部"){
+        text = "0";
+    }
+    return text;
 }
 
 /**
@@ -344,6 +348,7 @@ function loadPageIngredientsInList() {
  * @returns {number}
  */
 function loadPages(totalRecord, count) {
+    if(count == 0)count = totalRecord;
     if (totalRecord == 0) {
         console.log("总记录数为0，请检查！");
         return 0;
@@ -589,7 +594,7 @@ function searchIngredientIn() {
             endDate: $("#search-endDate").val(),
             id: $.trim($("#search-Id").val()),
             companyName: $.trim($("#search-companyName").val()),
-            checkStateItem:{dictionaryItemName:state} ,
+            checkStateItem: {dictionaryItemName: state},
             page: page
         };
     } else {
@@ -732,78 +737,72 @@ function setViewIngredientsClone(result) {
                     $(this).html(obj.serialNumber);
                     break;
                 case (1):
+                    // 物品编码
+                    $(this).html(obj.code);
+                    break;
+                case (2):
                     // 物品名称
                     $(this).html(obj.name);
                     break;
-                case (2):
+                case (3):
                     // 规格
                     $(this).html(obj.specification);
                     break;
-                case (3):
+                case (4):
                     // 单位（KG）
                     $(this).html(obj.unit);
                     break;
-                case (4):
+                case (5):
                     // 数量
                     $(this).html(obj.amount.toFixed(2));
                     break;
-                case (5):
+                case (6):
                     // 单价
                     $(this).html(obj.unitPrice.toFixed(2));
                     break;
-                case (6):
+                case (7):
                     // 金额 十万
                     $(this).html(Math.floor(obj.totalPrice / 100000));
                     break;
-                case (7):
+                case (8):
                     // 金额 万
                     $(this).html(Math.floor(obj.totalPrice % 100000 / 10000));
                     break;
-                case (8):
+                case (9):
                     // 金额 千
                     $(this).html(Math.floor((obj.totalPrice % 100000) % 10000 / 1000));
                     break;
-                case (9):
+                case (10):
                     // 金额 百
                     $(this).html(Math.floor((obj.totalPrice % 100000) % 10000 % 1000 / 100));
                     break;
-                case (10):
+                case (11):
                     // 金额 十
                     $(this).html(Math.floor((obj.totalPrice % 100000) % 10000 % 1000 % 100 / 10));
                     break;
-                case (11):
+                case (12):
                     // 金额 元
                     $(this).html(Math.floor((obj.totalPrice % 100000) % 10000 % 1000 % 100 % 10));
                     break;
-                case (12):
+                case (13):
                     // 金额 角
                     $(this).html(Math.floor(jiao1));
                     break;
-                case (13):
+                case (14):
                     // 金额 分
                     $(this).html(Math.floor(jiao1 % 1 * 10));
                     break;
-                case (14):
+                case (15):
                     // 过账
                     $(this).html(obj.post);
                     break;
-                case (15):
+                case (16):
                     // 附注
                     $(this).html(obj.remarks);
                     break;
-                case (16):
+                case (17):
                     // 仓库
                     $(this).html(obj.wareHouseName);
-                    break;
-                case (17):
-                    // 物品状态
-                    if (obj.ingredientStateItem != null)
-                        $(this).html(obj.ingredientStateItem.dictionaryItemName);
-                    break;
-                case(18):
-                    // 处置设备
-                    if (obj.equipmentDataItem != null)
-                        $(this).html(obj.equipmentDataItem.dictionaryItemName);
                     break;
             }
         });
@@ -1239,6 +1238,7 @@ function loadPages1(totalRecord, count) {
 
 function loadProcurementItemList() {
     loadNavigationList();   // 动态菜单部署
+    ingredientsIn.ingredientsList = [];
     $("#save").text("入库");   // 修改按钮名称
     $("#head").text("辅料/备件入库单新增");  // 标题修改
     $("#view-id").text(getCurrentIngredientsInId());
@@ -1282,7 +1282,7 @@ function loadProcurementItemList() {
     if (localStorage.id != null && localStorage.id != "null") { // 如果ID非空，加载需要修改的数据
         $("#save").text("修改");   // 修改按钮名称
         $("#head").text("辅料/备件入库单修改");
-        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'\"></span></a>&nbsp;";
+        var delBtn = "<a class='btn btn-default btn-xs' name='delbtn' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'\"></span></a>&nbsp;";
         $.ajax({   // 获取原数据
             type: "POST",
             url: "getIngredientsInById",
@@ -1326,41 +1326,43 @@ function loadProcurementItemList() {
                         });
                         clonedTr.show();
                         clonedTr.find("span[name='serialNumber']").text(obj.serialNumber);
-                        if (index > 0) // 两行及以上才能删除
-                            clonedTr.children("td:eq(0)").prepend(delBtn);   // 添加减行按钮
+                        clonedTr.children("td:eq(0)").prepend(delBtn);   // 添加减行按钮
+                        clonedTr.find("span[name='code']").text(obj.code);
                         clonedTr.find("span[name='name']").text(obj.name);
                         clonedTr.find("span[name='specification']").text(obj.specification);
                         // if (obj.unit != null)
-                            clonedTr.find("span[name='unit']").text(obj.unit);
+                        clonedTr.find("span[name='unit']").text(obj.unit);
                         clonedTr.find("input[name='amount']").val(obj.amount.toFixed(2));
                         clonedTr.find("input[name='unitPrice']").val(obj.unitPrice.toFixed(2));
                         clonedTr.find("input[name='post']").val(obj.post);
                         clonedTr.find("select[name='wareHouseName']").val(obj.wareHouseName);
                         clonedTr.find("span[name='remarks']").text(obj.remarks);
                         clonedTr.find("span[name='procurementId']").text(obj.procurementId);
-                        if (obj.equipmentDataItem != null)
-                            clonedTr.find("select[name='equipment']").val(obj.equipmentDataItem.dataDictionaryItemId);
-                        var amount = obj.amount.toFixed(3);
-                        var unitPrice = obj.unitPrice.toFixed(2);
+                        // if (obj.equipmentDataItem != null)
+                        //     clonedTr.find("select[name='equipment']").val(obj.equipmentDataItem.dataDictionaryItemId);
+                        var amount = obj.amount;
+                        var unitPrice = obj.unitPrice;
                         var totalPrice = parseFloat(amount) * parseFloat(unitPrice);
                         allTotalPrice += totalPrice;
-                        if (amount != null && unitPrice != null && amount != "" && unitPrice != "") {
-                            clonedTr.find("span[id^='hundredThousand']").text(Math.floor(totalPrice / 100000));
-                            clonedTr.find("span[id^='tenThousand']").text(Math.floor(totalPrice % 100000 / 10000));
-                            clonedTr.find("span[id^='thousand']").text(Math.floor((totalPrice % 100000) % 10000 / 1000));
-                            clonedTr.find("span[id^='hundred']").text(Math.floor((totalPrice % 100000) % 10000 % 1000 / 100));
-                            clonedTr.find("span[id^='ten']").text(Math.floor((totalPrice % 100000) % 10000 % 1000 % 100 / 10));
-                            clonedTr.find("span[id^='yuan']").text(Math.floor((totalPrice % 100000) % 10000 % 1000 % 100 % 10));
-                            var jiao1 = totalPrice % 100000 % 10000 % 1000 % 100 % 10 % 1 * 10;
-                            clonedTr.find("span[id^='jiao']").text(Math.floor(jiao1));
-                            clonedTr.find("span[id^='fen']").text(Math.floor(jiao1 % 1 * 10));
-                        }
+                        clonedTr.find("input[name='totalPrice']").val(totalPrice);
+                        // if (amount != null && unitPrice != null && amount != "" && unitPrice != "") {
+                        //     clonedTr.find("span[id^='hundredThousand']").text(Math.floor(totalPrice / 100000));
+                        //     clonedTr.find("span[id^='tenThousand']").text(Math.floor(totalPrice % 100000 / 10000));
+                        //     clonedTr.find("span[id^='thousand']").text(Math.floor((totalPrice % 100000) % 10000 / 1000));
+                        //     clonedTr.find("span[id^='hundred']").text(Math.floor((totalPrice % 100000) % 10000 % 1000 / 100));
+                        //     clonedTr.find("span[id^='ten']").text(Math.floor((totalPrice % 100000) % 10000 % 1000 % 100 / 10));
+                        //     clonedTr.find("span[id^='yuan']").text(Math.floor((totalPrice % 100000) % 10000 % 1000 % 100 % 10));
+                        //     var jiao1 = totalPrice % 100000 % 10000 % 1000 % 100 % 10 % 1 * 10;
+                        //     clonedTr.find("span[id^='jiao']").text(Math.floor(jiao1));
+                        //     clonedTr.find("span[id^='fen']").text(Math.floor(jiao1 % 1 * 10));
+                        // }
                         // 把克隆好的tr追加到原来的tr前面
                         clonedTr.removeAttr("id");
                         clonedTr.insertBefore(tr);
                         clonedTr.addClass("newLine1");
                         var ingredients = {};
                         ingredients.serialNumber = obj.serialNumber;                    // 序号
+                        ingredients.code = obj.code;                    // 编码
                         ingredients.name = obj.name;            // 物品名称
                         ingredients.specification = obj.specification; // 规格
                         ingredients.unit = obj.unit;                  // 单位
@@ -1376,18 +1378,19 @@ function loadProcurementItemList() {
                         ingredientsIn1.ingredientsList.push(ingredients);
                     });
                     tr.hide();
-                    if (allTotalPrice != null && allTotalPrice != undefined && allTotalPrice != NaN && allTotalPrice != "") {
-                        $("#total-hundredThousand").text(Math.floor(allTotalPrice / 100000));
-                        $("#total-tenThousand").text(Math.floor(allTotalPrice % 100000 / 10000));
-                        $("#total-thousand").text(Math.floor((allTotalPrice % 100000) % 10000 / 1000));
-                        $("#total-hundred").text(Math.floor((allTotalPrice % 100000) % 10000 % 1000 / 100));
-                        $("#total-ten").text(Math.floor((allTotalPrice % 100000) % 10000 % 1000 % 100 / 10));
-                        $("#total-yuan").text(Math.floor((allTotalPrice % 100000) % 10000 % 1000 % 100 % 10));
-                        var jiao = allTotalPrice % 100000 % 10000 % 1000 % 100 % 10 % 1 * 10;
-                        $("#total-jiao").text(Math.floor(jiao));
-                        $("#total-fen").text(Math.floor(jiao % 1 * 10));
-                    }
-                    console.log("1380:");
+                    $("#totalPrice").text(allTotalPrice);
+                    // if (allTotalPrice != null && allTotalPrice != undefined && allTotalPrice != NaN && allTotalPrice != "") {
+                    //     $("#total-hundredThousand").text(Math.floor(allTotalPrice / 100000));
+                    //     $("#total-tenThousand").text(Math.floor(allTotalPrice % 100000 / 10000));
+                    //     $("#total-thousand").text(Math.floor((allTotalPrice % 100000) % 10000 / 1000));
+                    //     $("#total-hundred").text(Math.floor((allTotalPrice % 100000) % 10000 % 1000 / 100));
+                    //     $("#total-ten").text(Math.floor((allTotalPrice % 100000) % 10000 % 1000 % 100 / 10));
+                    //     $("#total-yuan").text(Math.floor((allTotalPrice % 100000) % 10000 % 1000 % 100 % 10));
+                    //     var jiao = allTotalPrice % 100000 % 10000 % 1000 % 100 % 10 % 1 * 10;
+                    //     $("#total-jiao").text(Math.floor(jiao));
+                    //     $("#total-fen").text(Math.floor(jiao % 1 * 10));
+                    // }
+                    console.log("要修改的数据");
                     console.log(ingredientsIn1);
                 } else {
                     alert(result.message);
@@ -1417,46 +1420,49 @@ function delLine(e) {
     var tBody = $(tr.parentNode);                                  // 删除前获取父节点
     tr.parentNode.removeChild(tr);
     for (var i = 2; i < length; i++) {             // 更新ID
-        tBody.children().eq(i).find("input,select,span").each(function () {
+        tBody.children().eq(i - 1).find("input,select,span").each(function () {
             var id = $(this).prop('id');
             var newId = id.replace(/[0-9]\d*/, i - 1);
             $(this).prop('id', newId);
         });
-        tBody.children().eq(i).find("span[name='serialNumber']").text(i - 1);// 更新序号
+        tBody.children().eq(i - 1).find("span[name='serialNumber']").text(i - 1);// 更新序号
     }
     totalCalculate(); // 减行后重新计算金额
+    if($("span[name='serialNumber']").length == 2){  // 如果只有一行则不允许删除
+        $("a[name='delbtn']").remove();
+    }
 }
 
 /**
  * 为处置设备设置下拉框数据
  */
 function setSelectedList() {
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getEquipmentByDataDictionary",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            if (result != undefined) {
-                var data = eval(result);
-                // 高级检索下拉框数据填充
-                var state = $("select[name='equipment']");
-                state.children().remove();
-                $.each(data.data, function (index, item) {
-                    var option = $('<option />');
-                    option.val(item.dataDictionaryItemId);
-                    option.text(item.dictionaryItemName);
-                    state.append(option);
-                });
-                state.get(0).selectedIndex = -1;
-            } else {
-                console.log("fail: " + result);
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-        }
-    });
+    // $.ajax({
+    //     type: "POST",                       // 方法类型
+    //     url: "getEquipmentByDataDictionary",                  // url
+    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     dataType: "json",
+    //     success: function (result) {
+    //         if (result != undefined) {
+    //             var data = eval(result);
+    //             // 高级检索下拉框数据填充
+    //             var state = $("select[name='equipment']");
+    //             state.children().remove();
+    //             $.each(data.data, function (index, item) {
+    //                 var option = $('<option />');
+    //                 option.val(item.dataDictionaryItemId);
+    //                 option.text(item.dictionaryItemName);
+    //                 state.append(option);
+    //             });
+    //             state.get(0).selectedIndex = -1;
+    //         } else {
+    //             console.log("fail: " + result);
+    //         }
+    //     },
+    //     error: function (result) {
+    //         console.log("error: " + result);
+    //     }
+    // });
     // 设置物料状态下拉框数据
     $.ajax({
         type: "POST",                       // 方法类型
@@ -1636,9 +1642,9 @@ var ingredientsIn1 = {};  // 要修改的数据
  */
 function confirmInsert1() {
 // 定义预处理单，存储勾选出库单
-    $(".newLine").remove();
-    ingredientsIn = {};// 初始化
-    ingredientsIn.ingredientsList = [];
+    //$(".newLine").remove();
+    // ingredientsIn = {};// 初始化
+    //
     var ingredientsList = [];
     if (ingredientsIn1 != null && ingredientsIn1.ingredientsList != null && ingredientsIn1.ingredientsList.length > 0) {
         ingredientsIn.ingredientsList = ingredientsIn1.ingredientsList;  // 将更新数据赋给对象
@@ -1671,12 +1677,13 @@ function confirmInsert1() {
                             //将数据存到数组中，然后统一赋值
                             var ingredients = {};
                             ingredients.serialNumber = i;                    // 序号
+                            ingredients.code = data.code;                    // 编码
                             ingredients.name = data.suppliesName;            // 物品名称
                             ingredients.specification = data.specifications; // 规格
                             if (data.unitDataItem != null)
-                                var unitDataItem={};
-                            unitDataItem.dictionaryItemName=data.unitDataItem.dictionaryItemName;
-                            ingredients.unitDataItem=unitDataItem;            // 单位
+                                var unitDataItem = {};
+                            unitDataItem.dictionaryItemName = data.unitDataItem.dictionaryItemName;
+                            ingredients.unitDataItem = unitDataItem;            // 单位
                             ingredients.amount = data.demandQuantity;         // 入库数量
                             ingredients.remarks = data.note;                  // 备注
                             ingredients.id = ingredientsIn.id;
@@ -1702,7 +1709,6 @@ function confirmInsert1() {
         num++;
         ingredientsList[index].serialNumber = num;                    // 更新序号
         var obj = eval(item);
-        console.log(obj)
         var clonedTr = tr.clone();
         //更新id
         clonedTr.children().find("input,span,select").each(function () {
@@ -1712,12 +1718,14 @@ function confirmInsert1() {
         });
         clonedTr.show();
         clonedTr.find("span[name='serialNumber']").text(obj.serialNumber);
+        clonedTr.find("span[name='code']").text(obj.code);
         clonedTr.find("span[name='name']").text(obj.name);
         clonedTr.find("span[name='specification']").text(obj.specification);
         if (obj.unitDataItem != null)
             clonedTr.find("span[name='unit']").text(obj.unitDataItem.dictionaryItemName);
         clonedTr.find("input[name='amount']").val(obj.amount);
         clonedTr.find("span[name='remarks']").text(obj.remarks);
+        clonedTr.find("select[name='wareHouseName']").get(0).selectedIndex = -1;
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
         clonedTr.insertBefore(tr);
@@ -1732,36 +1740,53 @@ function confirmInsert1() {
  */
 function totalCalculate() {
     var ListCount = $("input[name^='unitPrice']").length;
-    var allTotalPrice = null;
+    var allTotalPrice = 0;
     for (var i = 1; i < ListCount; i++) {
         var $i = i;
         var amount = $("#amount" + $i).val();
         var unitPrice = $("#unitPrice" + $i).val();
-        if (amount != null && unitPrice != null && amount != "" && unitPrice != "") {
-            var totalPrice = parseFloat(amount) * parseFloat(unitPrice);
-            $("#hundredThousand" + $i).text(Math.floor(totalPrice / 100000));
-            $("#tenThousand" + $i).text(Math.floor(totalPrice % 100000 / 10000));
-            $("#thousand" + $i).text(Math.floor((totalPrice % 100000) % 10000 / 1000));
-            $("#hundred" + $i).text(Math.floor((totalPrice % 100000) % 10000 % 1000 / 100));
-            $("#ten" + $i).text(Math.floor((totalPrice % 100000) % 10000 % 1000 % 100 / 10));
-            $("#yuan" + $i).text(Math.floor((totalPrice % 100000) % 10000 % 1000 % 100 % 10));
-            var jiao1 = totalPrice % 100000 % 10000 % 1000 % 100 % 10 % 1 * 10;
-            $("#jiao" + $i).text(Math.floor(jiao1));
-            $("#fen" + $i).text(Math.floor(jiao1 % 1 * 10));
-            allTotalPrice += totalPrice;
-        }
+        var totalPrice = (parseFloat(amount) * parseFloat(unitPrice)).toFixed(2);
+        // $("#hundredThousand" + $i).text(Math.floor(totalPrice / 100000));
+        // $("#tenThousand" + $i).text(Math.floor(totalPrice % 100000 / 10000));
+        // $("#thousand" + $i).text(Math.floor((totalPrice % 100000) % 10000 / 1000));
+        // $("#hundred" + $i).text(Math.floor((totalPrice % 100000) % 10000 % 1000 / 100));
+        // $("#ten" + $i).text(Math.floor((totalPrice % 100000) % 10000 % 1000 % 100 / 10));
+        // $("#yuan" + $i).text(Math.floor((totalPrice % 100000) % 10000 % 1000 % 100 % 10));
+        // var jiao1 = totalPrice % 100000 % 10000 % 1000 % 100 % 10 % 1 * 10;
+        // $("#jiao" + $i).text(Math.floor(jiao1));
+        // $("#fen" + $i).text(Math.floor(jiao1 % 1 * 10));
+        $("#totalPrice" + $i).val(totalPrice);
+        allTotalPrice += parseFloat(totalPrice);
     }
-    if (allTotalPrice != null && allTotalPrice != undefined && allTotalPrice != NaN && allTotalPrice != "") {
-        $("#total-hundredThousand").text(Math.floor(allTotalPrice / 100000));
-        $("#total-tenThousand").text(Math.floor(allTotalPrice % 100000 / 10000));
-        $("#total-thousand").text(Math.floor((allTotalPrice % 100000) % 10000 / 1000));
-        $("#total-hundred").text(Math.floor((allTotalPrice % 100000) % 10000 % 1000 / 100));
-        $("#total-ten").text(Math.floor((allTotalPrice % 100000) % 10000 % 1000 % 100 / 10));
-        $("#total-yuan").text(Math.floor((allTotalPrice % 100000) % 10000 % 1000 % 100 % 10));
-        var jiao = allTotalPrice % 100000 % 10000 % 1000 % 100 % 10 % 1 * 10;
-        $("#total-jiao").text(Math.floor(jiao));
-        $("#total-fen").text(Math.floor(jiao % 1 * 10));
+    // $("#total-hundredThousand").text(Math.floor(allTotalPrice / 100000));
+    // $("#total-tenThousand").text(Math.floor(allTotalPrice % 100000 / 10000));
+    // $("#total-thousand").text(Math.floor((allTotalPrice % 100000) % 10000 / 1000));
+    // $("#total-hundred").text(Math.floor((allTotalPrice % 100000) % 10000 % 1000 / 100));
+    // $("#total-ten").text(Math.floor((allTotalPrice % 100000) % 10000 % 1000 % 100 / 10));
+    // $("#total-yuan").text(Math.floor((allTotalPrice % 100000) % 10000 % 1000 % 100 % 10));
+    // var jiao = allTotalPrice % 100000 % 10000 % 1000 % 100 % 10 % 1 * 10;
+    // $("#total-jiao").text(Math.floor(jiao));
+    // $("#total-fen").text(Math.floor(jiao % 1 * 10));
+    $("#totalPrice").text(allTotalPrice.toFixed(2));
+}
+
+/**
+ * 输入总额计算并设置单价
+ * @param item
+ */
+function setUnitPrice(item) {
+    var id = $(item).attr("id");   // 获取ID
+    var serialNumber = id.charAt(id.length - 1);   // 获取序号
+    var amount = parseFloat($("#amount" + serialNumber).val());
+    var totalPrice = parseFloat($(item).val());
+    $("#unitPrice" + serialNumber).val((totalPrice / amount).toFixed(3));
+    var ListCount = $("input[name^='unitPrice']").length;
+    var allTotalPrice = 0;
+    for (var i = 1; i < ListCount; i++) {
+        var $i = i;
+        allTotalPrice += parseFloat($("#totalPrice" + $i).val());
     }
+    $("#totalPrice").text(allTotalPrice.toFixed(2));
 }
 
 /**
@@ -1769,13 +1794,11 @@ function totalCalculate() {
  */
 function save() {
     //获取输入的数据
-    var totalPrice = 0;
     var wareHouseState = false;
     var unitPriceState = false;
-    if (ingredientsIn == null || ingredientsIn.ingredientsList == null) {
+    if (ingredientsIn == null || ingredientsIn.ingredientsList.length == 0) {
         ingredientsIn.ingredientsList = ingredientsIn1.ingredientsList; // 没有新增数据时将修改的数据赋给ingredientsIn
     }
-    console.log(ingredientsIn);
     if (ingredientsIn != null && ingredientsIn.ingredientsList != null)//如果有新添的数据则获取最新的输入数据
         for (var i = 0; i < ingredientsIn.ingredientsList.length; i++) {
             var $i = i + 1;
@@ -1784,35 +1807,14 @@ function save() {
                 ingredientsIn.ingredientsList[i].amount = $("#amount" + $i).val();
                 ingredientsIn.ingredientsList[i].post = $("#post" + $i).val();
                 ingredientsIn.ingredientsList[i].wareHouseName = $("#wareHouseName" + $i).find("option:selected").text();
-                ingredientsIn.ingredientsList[i].totalPrice = ingredientsIn.ingredientsList[i].unitPrice * ingredientsIn.ingredientsList[i].amount;
+                ingredientsIn.ingredientsList[i].totalPrice = $("#totalPrice" + $i).val();
                 // update 2018年12月28日 by ljc 去除处置设备
                 // var equitment = parseInt($("#equipment" + $i).find("option:selected").val());
                 // var equipmentDataItem={};
                 // equipmentDataItem.dataDictionaryItemId=equitment;
                 // ingredientsIn.ingredientsList[i].equipmentDataItem=equipmentDataItem;
-                // switch (equitment) {
-                //     case 1:
-                //         ingredientsIn.ingredientsList[i].equipment = 'MedicalCookingSystem';
-                //         break;
-                //     case 2:
-                //         ingredientsIn.ingredientsList[i].equipment = 'A2';
-                //         break;
-                //     case 3:
-                //         ingredientsIn.ingredientsList[i].equipment = 'B2';
-                //         break;
-                //     case 4:
-                //         ingredientsIn.ingredientsList[i].equipment = 'SecondaryTwoCombustionChamber';
-                //         break;
-                //     case 5:
-                //         ingredientsIn.ingredientsList[i].equipment = 'ThirdPhasePretreatmentSystem';
-                //         break;
-                //     case 6:
-                //         ingredientsIn.ingredientsList[i].equipment = 'Prepare2';
-                //         break;
-                // }
                 if (ingredientsIn.ingredientsList[i].wareHouseName == null || ingredientsIn.ingredientsList[i].wareHouseName == "") wareHouseState = true;
                 if (ingredientsIn.ingredientsList[i].unitPrice == null || ingredientsIn.ingredientsList[i].unitPrice == "") unitPriceState = true;
-                totalPrice += ingredientsIn.ingredientsList[i].totalPrice;
                 if (ingredientsIn.ingredientsList[i].serialNumberA == "add") {
                     // 判断物料存在与否
                     var ingredients = ingredientsIn.ingredientsList[i];
@@ -1841,34 +1843,6 @@ function save() {
         for (var i = 0; i < ingredientsListDel.length; i++)
             ingredientsIn.ingredientsList.push(ingredientsListDel[i]);// 将删除的数据重新置于对象末尾
     }
-    // if (ingredientsIn1 != null && ingredientsIn1.ingredientsList != null && ingredientsIn1.ingredientsList.length > 0) { // 如果为修改则添加数据
-    //     for (var j = 0; j < ingredientsIn1.ingredientsList.length; j++) {
-    //         var $i = j + 1;
-    //         if (ingredientsIn1.ingredientsList[j].serialNumberA != "del") {  // 没有被删除的数据需要更新数据
-    //             ingredientsIn1.ingredientsList[j].unitPrice = $("#unitPrice" + $i).val();
-    //             ingredientsIn1.ingredientsList[j].post = $("#post" + $i).val();
-    //             ingredientsIn1.ingredientsList[j].wareHouseName = $("#wareHouseName" + $i).val();
-    //             ingredientsIn1.ingredientsList[j].totalPrice = ingredientsIn1.ingredientsList[j].unitPrice * ingredientsIn1.ingredientsList[j].amount;
-    //             var equitment = parseInt($("#equipment" + $i).find("option:selected").val());
-    //             switch(equitment){
-    //                 case 1: ingredientsIn1.ingredientsList[j].equipment = 'MedicalCookingSystem'; break;
-    //                 case 2: ingredientsIn1.ingredientsList[j].equipment = 'A2'; break;
-    //                 case 3: ingredientsIn1.ingredientsList[j].equipment = 'B2'; break;
-    //                 case 4: ingredientsIn1.ingredientsList[j].equipment = 'SecondaryTwoCombustionChamber'; break;
-    //                 case 5: ingredientsIn1.ingredientsList[j].equipment = 'ThirdPhasePretreatmentSystem'; break;
-    //                 case 6: ingredientsIn1.ingredientsList[j].equipment = 'Prepare2'; break;
-    //             }
-    //           //  console.log("equipment:" + ingredientsIn1.ingredientsList[j].equipment);
-    //             if ($("#wareHouseName" + $i).val() == null || $("#wareHouseName" + $i).val() == "") wareHouseState = true;
-    //             if ($("#unitPrice" + $i).val() == null || $("#unitPrice" + $i).val() == "") unitPriceState = true;
-    //             totalPrice += ingredientsIn1.ingredientsList[j].totalPrice;
-    //         }
-    //         if (ingredientsIn == null || ingredientsIn.ingredientsList == null) {
-    //             ingredientsIn.ingredientsList = [];  // 若不存在则初始化
-    //         }
-    //         ingredientsIn.ingredientsList.push(ingredientsIn1.ingredientsList[j]); // 将修改的数据添加到数组中与勾选的数据整合
-    //     }
-    // }
     if (unitPriceState) {
         alert("单价不能为空，请完善数据！");
         return;
@@ -1877,7 +1851,7 @@ function save() {
         alert("仓库不能为空，请完善数据！");
         return;
     }
-    ingredientsIn.totalPrice = totalPrice;
+    ingredientsIn.totalPrice = $("#totalPrice").text();
     ingredientsIn.companyName = $("#companyName").val();
     ingredientsIn.fileId = $("#fileId").val();
     ingredientsIn.bookkeeper = $("#bookkeeper").val();
@@ -1988,8 +1962,8 @@ function search1() {
     var keywords = $.trim($("#searchContent1").val());
 
     var state = ($("#search1-state").find("option:selected").text());
-    if(state.length<0){
-        state=null
+    if (state.length < 0) {
+        state = null
     }
     if ($("#senior1").is(':visible')) {
         data1 = {           // 获取数据并设置搜索条件
@@ -1997,7 +1971,7 @@ function search1() {
             specifications: $.trim($("#search1-specifications").val()),
             receiptNumber: $.trim($("#search1-receiptNumber").val()),
             note: $.trim($("#search1-note").val()),
-            ingredientStateItem: {dictionaryItemName:state},
+            ingredientStateItem: {dictionaryItemName: state},
             page: page
         };
     } else {
@@ -2029,6 +2003,7 @@ function search1() {
         });
     }
 }
+
 //新增页面重置
 function reset1() {
     $('#searchContent1').val("");
@@ -2055,4 +2030,32 @@ function ingredientsInModify(item) {
 function addIngredientsIn() {
     localStorage.id = null;
     window.location.href = "newIngredientsIn.html";
+}
+
+/**
+ * 自动设置仓库
+ * @param item
+ */
+function setWareHouse(item) {
+    // 获取选中的仓库
+    var wareHosue = $(item).find("option:selected").text();
+    // 设置其余行的仓库
+    $("select[name='wareHouseName']").val(wareHosue);
+}
+
+/**
+ * 打印功能
+ */
+function print() {
+    //打印模态框
+
+    $("#footer").hide();
+    $("#viewModal").printThis({
+        // debug: false,             // 调试模式下打印文本的渲染状态
+        // importCSS: false,       // 为打印文本引入外部样式link标签 ["<link rel='stylesheet' href='/static/jquery/forieprint.css' media='print'>","",""]
+        // importStyle: false,      // 为打印把文本书写内部样式 ["<style>#ceshi{}</style>","",""]
+        // printDelay: 333,      // 布局完打印页面之后与真正执行打印功能中间的间隔
+        // copyTagClasses: true
+    });
+
 }

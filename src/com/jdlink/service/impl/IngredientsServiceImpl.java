@@ -375,4 +375,10 @@ public class IngredientsServiceImpl implements IngredientsService {
     public List<Ingredients> searchIngredient(Ingredients ingredients) { return ingredientsMapper.searchIngredient(ingredients); }
 
     public int searchCountIngredient(Ingredients ingredients) { return ingredientsMapper.searchCountIngredient(ingredients); }
+
+    public int getCountByCode(String code) { return ingredientsMapper.getCountByCode(code); }
+
+    public int getCountByType(String type) { return ingredientsMapper.getCountByType(type); }
+
+
 }

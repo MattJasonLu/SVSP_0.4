@@ -37,7 +37,11 @@ function reset() {
 function countValue() {
     var mySelect = document.getElementById("count");
     var index = mySelect.selectedIndex;
-    return mySelect.options[index].text;
+    var text = mySelect.options[index].text;
+    if(text == "全部"){
+        text = "0";
+    }
+    return text;
 }
 
 /**
@@ -349,6 +353,7 @@ function loadPageOutList() {
  * @returns {number}
  */
 function loadPages(totalRecord, count) {
+    if(count == 0)count = totalRecord;
     if (totalRecord == 0) {
         console.log("总记录数为0，请检查！");
         return 0;
@@ -738,15 +743,16 @@ function showViewModal(id) {
                 $("#view-department").text(data.department);
                 $("#view-creationDate").text(getDayDate(data.creationDate));
                 $("#view-fileId").text(data.fileId);
-                $("#view-hundredThousand").text(Math.floor(data.totalPrice / 100000));
-                $("#view-tenThousand").text(Math.floor(data.totalPrice % 100000 / 10000));
-                $("#view-thousand").text(Math.floor((data.totalPrice % 100000) % 10000 / 1000));
-                $("#view-hundred").text(Math.floor((data.totalPrice % 100000) % 10000 % 1000 / 100));
-                $("#view-ten").text(Math.floor((data.totalPrice % 100000) % 10000 % 1000 % 100 / 10));
-                $("#view-yuan").text(Math.floor((data.totalPrice % 100000) % 10000 % 1000 % 100 % 10));
-                var jiao = data.totalPrice % 100000 % 10000 % 1000 % 100 % 10 % 1 * 10;
-                $("#view-jiao").text(Math.floor(jiao));
-                $("#view-fen").text(Math.floor(jiao % 1 * 10));
+                // $("#view-hundredThousand").text(Math.floor(data.totalPrice / 100000));
+                // $("#view-tenThousand").text(Math.floor(data.totalPrice % 100000 / 10000));
+                // $("#view-thousand").text(Math.floor((data.totalPrice % 100000) % 10000 / 1000));
+                // $("#view-hundred").text(Math.floor((data.totalPrice % 100000) % 10000 % 1000 / 100));
+                // $("#view-ten").text(Math.floor((data.totalPrice % 100000) % 10000 % 1000 % 100 / 10));
+                // $("#view-yuan").text(Math.floor((data.totalPrice % 100000) % 10000 % 1000 % 100 % 10));
+                // var jiao = data.totalPrice % 100000 % 10000 % 1000 % 100 % 10 % 1 * 10;
+                // $("#view-jiao").text(Math.floor(jiao));
+                // $("#view-fen").text(Math.floor(jiao % 1 * 10));
+                $("#view-totalAmount").text(data.totalAmount);
                 $("#view-bookkeeper").text(data.bookkeeper);
                 $("#view-approver").text(data.approver);
                 $("#view-keeper").text(data.keeper);
@@ -785,77 +791,76 @@ function setViewClone(result) {
                     $(this).html(obj.serialNumber);
                     break;
                 case (1):
+                    // 物品编码
+                    $(this).html(obj.code);
+                    break;
+                case (2):
                     // 物品名称
                     $(this).html(obj.name);
                     break;
-                case (2):
+                case (3):
                     // 规格
                     $(this).html(obj.specification);
                     break;
-                case (3):
-                    // 单位（KG）
+                case (4):
+                    // 单位
                     $(this).html(obj.unit);
                     break;
-                case (4):
+                case (5):
                     // 数量
                     $(this).html(obj.receiveAmount.toFixed(2));
                     break;
-                case (5):
-                    // 单价
-                    $(this).html(obj.unitPrice.toFixed(2));
-                    break;
+                // case (5):
+                //     // 单价
+                //     $(this).html(obj.unitPrice.toFixed(2));
+                //     break;
+                // case (6):
+                //     // 金额 十万
+                //     $(this).html(Math.floor(obj.totalPrice / 100000));
+                //     break;
+                // case (7):
+                //     // 金额 万
+                //     $(this).html(Math.floor(obj.totalPrice % 100000 / 10000));
+                //     break;
+                // case (8):
+                //     // 金额 千
+                //     $(this).html(Math.floor((obj.totalPrice % 100000) % 10000 / 1000));
+                //     break;
+                // case (9):
+                //     // 金额 百
+                //     $(this).html(Math.floor((obj.totalPrice % 100000) % 10000 % 1000 / 100));
+                //     break;
+                // case (10):
+                //     // 金额 十
+                //     $(this).html(Math.floor((obj.totalPrice % 100000) % 10000 % 1000 % 100 / 10));
+                //     break;
+                // case (11):
+                //     // 金额 元
+                //     $(this).html(Math.floor((obj.totalPrice % 100000) % 10000 % 1000 % 100 % 10));
+                //     break;
+                // case (12):
+                //     // 金额 角
+                //     $(this).html(Math.floor(jiao1));
+                //     break;
+                // case (13):
+                //     // 金额 分
+                //     $(this).html(Math.floor(jiao1 % 1 * 10));
+                //     break;
                 case (6):
-                    // 金额 十万
-                    $(this).html(Math.floor(obj.totalPrice / 100000));
-                    break;
-                case (7):
-                    // 金额 万
-                    $(this).html(Math.floor(obj.totalPrice % 100000 / 10000));
-                    break;
-                case (8):
-                    // 金额 千
-                    $(this).html(Math.floor((obj.totalPrice % 100000) % 10000 / 1000));
-                    break;
-                case (9):
-                    // 金额 百
-                    $(this).html(Math.floor((obj.totalPrice % 100000) % 10000 % 1000 / 100));
-                    break;
-                case (10):
-                    // 金额 十
-                    $(this).html(Math.floor((obj.totalPrice % 100000) % 10000 % 1000 % 100 / 10));
-                    break;
-                case (11):
-                    // 金额 元
-                    $(this).html(Math.floor((obj.totalPrice % 100000) % 10000 % 1000 % 100 % 10));
-                    break;
-                case (12):
-                    // 金额 角
-                    $(this).html(Math.floor(jiao1));
-                    break;
-                case (13):
-                    // 金额 分
-                    $(this).html(Math.floor(jiao1 % 1 * 10));
-                    break;
-                case (14):
                     // 过账
                     $(this).html(obj.post);
                     break;
-                case (15):
+                case (7):
                     // 附注
                     $(this).html(obj.remarks);
                     break;
-                case (16):
+                case (8):
                     // 仓库
                     $(this).html(obj.wareHouseName);
                     break;
-                case (17):
-                    // 物品状态
-                    if (obj.ingredientStateItem != null)
-                        $(this).html(obj.ingredientStateItem.dictionaryItemName);
-                    break;
-                case (18):
+                case (9):
                     // 处置设备
-                    if (obj.equipmentDataItem != null)
+                    if(obj.equipmentDataItem != null)
                         $(this).html(obj.equipmentDataItem.dictionaryItemName);
                     break;
             }
@@ -1783,4 +1788,18 @@ function addIngredientsOut() {
     window.location.href = "newIngredientsOut.html";
 }
 
+/**
+ * 打印功能
+ */
+function print() {
+    //打印模态框
+    $("#footer").hide();
+    $("#viewModal").printThis({
+        // debug: false,             // 调试模式下打印文本的渲染状态
+        // importCSS: false,       // 为打印文本引入外部样式link标签 ["<link rel='stylesheet' href='/static/jquery/forieprint.css' media='print'>","",""]
+        // importStyle: false,      // 为打印把文本书写内部样式 ["<style>#ceshi{}</style>","",""]
+        // printDelay: 333,      // 布局完打印页面之后与真正执行打印功能中间的间隔
+        // copyTagClasses: true
+    });
 
+}
