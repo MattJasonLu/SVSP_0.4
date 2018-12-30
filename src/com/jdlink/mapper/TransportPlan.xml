@@ -92,7 +92,7 @@
 
     <!--按页列出所有运输计划单-->
     <select id="list" resultMap="TransportPlanRM">
-        SELECT * FROM t_pr_transportplan ORDER BY nowTime DESC
+        SELECT * FROM t_pr_transportplan where checkState != 'Invalid' ORDER BY nowTime DESC
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>

@@ -193,4 +193,9 @@ public class ClientServiceImpl implements ClientService {
         }
 
     }
+
+    @Override
+    public Client getByNameNotState(String companyName) {
+        return clientMapper.getByNameNotState(companyName);
+    }
 }

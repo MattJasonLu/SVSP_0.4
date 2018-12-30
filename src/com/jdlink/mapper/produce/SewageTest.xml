@@ -84,12 +84,12 @@
     <!--更新污水-->
     <update id="updateSewaGeregistration" parameterType="SewaGeregistration">
         update t_pr_sewageregistration set sendingPerson=#{sendingPerson},address=#{address},
-        laboratorySignatory=#{laboratorySignatory},nowTime=NOW(),id=#{newId} where id=#{id}
+        laboratorySignatory=#{laboratorySignatory},nowTime=NOW(),sewagePointId=#{sewagePointItem.dataDictionaryItemId},id=#{newId} where id=#{id}
     </update>
 
     <!--更新软水/-->
     <update id="updateSoftGeregistration" parameterType="SewaGeregistration">
-        update t_pr_softgeregistration set laboratorySignatory=#{laboratorySignatory},
+        update t_pr_softgeregistration set laboratorySignatory=#{laboratorySignatory},softPointId=#{softPointItem.dataDictionaryItemId},
         sendingPerson=#{sendingPerson},nowTime=NOW(),address=#{address},advice=#{advice},id=#{newId}
         where  id=#{id};
     </update>
@@ -117,8 +117,8 @@
 
     <!--添加次生化验单-->
     <insert id="addSecondaryTest" parameterType="SecondaryTest">
-        insert into t_pr_secondarytest (id, dateTime, wastesName, scorchingRate, water, remarks, nowTime,checkState,checkStateId) values
-        (#{id},NOW(),#{wastesName},#{scorchingRate},#{water},#{remarks},NOW(),'ToSubmit',64);
+        insert into t_pr_secondarytest (id, dateTime, wastesName, scorchingRate, water, remarks, nowTime,checkState,checkStateId,address) values
+        (#{id},NOW(),#{wastesName},#{scorchingRate},#{water},#{remarks},NOW(),'ToSubmit',64,#{address});
     </insert>
 <resultMap id="SecondaryTestRM" type="SecondaryTest">
     <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
@@ -137,7 +137,7 @@
     <!--更新次生送样信息主表-->
     <update id="updateSecondarySample" parameterType="SecondarySample">
         update t_pr_secondarysample set sendingPerson=#{sendingPerson},sendingPerson=#{sendingPerson},
-        address=#{address}, laboratorySignatory=#{laboratorySignatory},nowTime=NOW(),id=#{newId}
+        address=#{address}, laboratorySignatory=#{laboratorySignatory},nowTime=NOW(),id=#{newId},secondaryPointId=#{secondaryPointItem.dataDictionaryItemId}
         where  id=#{id}
     </update>
     <delete id="deleteSecondarySampleItem" parameterType="String">

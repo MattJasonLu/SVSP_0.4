@@ -103,6 +103,9 @@ function getPackageTypeFromStr(packageType) {
         case "吨桶":
             res = "Ibc";
             break;
+        case "塑料桶":
+            res = "Plastic";
+            break;
         default:
             res = "";
             break;

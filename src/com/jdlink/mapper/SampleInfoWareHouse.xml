@@ -37,9 +37,9 @@
     </insert>
 
     <select id="listPage" resultMap="SampleInformationRM">
-        select * from t_pr_sampleinfowarehouse
+        select * from t_pr_sampleinfowarehouse as a left join t_pr_sampleinfowarehouseitem as b on a.id = b.sampleId
         where applyState != 'Invalid'
-        ORDER BY creationTime DESC
+        ORDER BY CONVERT(transferId,SIGNED) DESC
         <if test="start != null and count != null">
             limit #{start}, #{count};
         </if>
@@ -48,7 +48,7 @@
     <select id="listItemPage" resultType="SampleInformationItem">
         select * from t_pr_sampleinfowarehouseitem as a join t_pr_sampleinfowarehouse as b on a.sampleId=b.id
         where b.applyState != 'Invalid'
-        ORDER BY b.creationTime DESC
+        ORDER BY CONVERT(a.transferId,SIGNED) DESC
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>

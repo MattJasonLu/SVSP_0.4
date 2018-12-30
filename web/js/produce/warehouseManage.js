@@ -114,31 +114,31 @@ function setDataList(result) {
                 case (7):
                     $(this).html(obj.transferCount);
                     break;
+                // case (8):
+                //     $(this).html(obj.poundsCount);
+                //     break;
+                // case (9):
+                //     $(this).html(obj.storageCount);
+                //     break;
                 case (8):
-                    $(this).html(obj.poundsCount);
-                    break;
-                case (9):
-                    $(this).html(obj.storageCount);
-                    break;
-                case (10):
                     $(this).html(obj.leftCount);
                     break;
-                case (11):
-                    $(this).html(obj.prepareTransferCount);
-                    break;
-                case (12):
+                // case (11):
+                //     $(this).html(obj.prepareTransferCount);
+                //     break;
+                case (9):
                     if (obj.wastes != null)
                         $(this).html(obj.wastes.name);
                     break;
-                case (13):
+                case (10):
                     if (obj.wastes != null)
                         $(this).html(obj.wastes.wastesId);
                     break;
-                case (14):
+                case (11):
                     if (obj.wastes != null)
                         $(this).html(obj.wastes.category);
                     break;
-                case (15):
+                case (12):
                     $(this).html(obj.unitPriceTax);
                     break;
             }
@@ -172,10 +172,10 @@ function addPlan2Order() {
                 plan.acceptCompanyName = $(this).find("td[name='acceptCompanyName']").text();
                 plan.transferDate = $(this).find("td[name='transferDate']").text();
                 plan.transferCount = $(this).find("td[name='transferCount']").text();
-                plan.poundsCount = $(this).find("td[name='poundsCount']").text();
-                plan.storageCount = $(this).find("td[name='storageCount']").text();
+                // plan.poundsCount = $(this).find("td[name='poundsCount']").text();
+                // plan.storageCount = $(this).find("td[name='storageCount']").text();
                 plan.leftCount = $(this).find("td[name='leftCount']").text();
-                plan.prepareTransferCount = $(this).find("td[name='prepareTransferCount']").text();
+                // plan.prepareTransferCount = $(this).find("td[name='prepareTransferCount']").text();
                 plan.wastesName = $(this).find("td[name='wastesName']").text();
                 plan.wastesCode = $(this).find("td[name='wastesCode']").text();
                 plan.wastesCategory = $(this).find("td[name='wastesCategory']").text();
@@ -199,7 +199,8 @@ function addPlan2Order() {
         clonedTr.find("td[name='wastesCode']").text(planList[i].wastesCode);
         clonedTr.find("td[name='wastesAmount']").text(planList[i].poundsCount);
         clonedTr.find("td[name='unitPriceTax']").text(planList[i].unitPriceTax);
-        clonedTr.find("td[name='totalPrice']").text(planList[i].poundsCount * planList[i].unitPriceTax);
+        var totalPrice = planList[i].poundsCount * planList[i].unitPriceTax;
+        clonedTr.find("td[name='totalPrice']").text(isNaN(totalPrice) ? 0 : totalPrice);
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
         clonedTr.insertBefore(tr);
@@ -290,7 +291,7 @@ function addInboundOrder(type) {
         wastes.name = $(this).find("td[name='wastesName']").text();
         wastes.wastesId = $(this).find("td[name='wastesCode']").text();
         inboundOrder.wastes = wastes;
-        inboundOrder.wastesAmount = $(this).find("td[name='wastesAmount']").text();
+        inboundOrder.wastesAmount = $(this).find("input[name='wastesAmount']").val();
         inboundOrder.unitPriceTax = $(this).find("td[name='unitPriceTax']").text();
         inboundOrder.totalPrice = $(this).find("td[name='totalPrice']").text();
         inboundOrder.processWay = $(this).find("select[name='processWay']").val();
@@ -656,17 +657,23 @@ function setInboundOrderDataList(result) {
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.find("td[name='inboundOrderId']").text(data.inboundOrderId);
         clonedTr.find("td[name='inboundDate']").text(getDateStr(data.inboundDate));
+        if (data.inboundOrderItemList[0] != null) {
+            clonedTr.find("td[name='transferDraftId']").text(data.inboundOrderItemList[0].transferDraftId);
+            clonedTr.find("td[name='wastesAmount']").text(data.inboundOrderItemList[0].wastesAmount.toFixed(2));
+            if (data.inboundOrderItemList[0].produceCompany != null) {
+                clonedTr.find("td[name='produceCompanyName']").text(data.inboundOrderItemList[0].produceCompany.companyName);
+            }
+            if (data.inboundOrderItemList[0].wastes != null) {
+                clonedTr.find("td[name='wastesName']").text(data.inboundOrderItemList[0].wastes.name);
+                clonedTr.find("td[name='wastesCode']").text(data.inboundOrderItemList[0].wastes.wastesId);
+                if (data.inboundOrderItemList[0].wastes.wastesUnit != null)
+                clonedTr.find("td[name='wastesUnit']").text(data.inboundOrderItemList[0].wastes.wastesUnit.name);
+            }
+        }
         if (data.wareHouse != null)
         clonedTr.find("td[name='wareHouseName']").text(data.wareHouse.wareHouseName);
         if (data.boundType != null)
         clonedTr.find("td[name='creatorId']").text(data.creatorId);
-        // clonedTr.find("td[name='keeperId']").text(data.keeperId);
-        // clonedTr.find("td[name='directorId']").text(data.directorId);
-        // clonedTr.find("td[name='approverId']").text(data.approverId);
-        if (data.boundType != null)
-        clonedTr.find("td[name='boundType']").text(data.boundType.name);
-        if (data.recordState != null)
-        clonedTr.find("td[name='recordState']").text(data.recordState.name);
         if (data.checkState != null)
         clonedTr.find("td[name='checkState']").text(data.checkState.name);
         clonedTr.find("td[name='remarks']").text(data.remarks);

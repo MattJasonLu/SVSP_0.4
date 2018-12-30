@@ -52,5 +52,8 @@ public interface ProcurementService {
     void updateMaterialState(int id);
     List<ProcurementPlanItem> searchAdjust(ProcurementPlanItem procurementPlanItem);
     void updateMaterialCategoryItemForProcurementPlan(String procurementPlanId,int MaterialCategoryId);
+    String getSpecificationById(int id);
 
+    void deleteMonthProcurementById(int id);
+    void setProcurementFilePath(Procurement procurement);
 }

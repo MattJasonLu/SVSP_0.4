@@ -425,7 +425,7 @@ function getNewestId() {
         }
 
     });
-    $('#date').val(dateToString(new Date()))
+    // $('#date').val(dateToString(new Date()))
 
 
 }
@@ -748,7 +748,8 @@ function enterSearch() {
 }
 
 //误差量计算
-//医废-误差量计算公式：误差量=本日进厂医废（接运单）-本日直接转外处置量-本日蒸煮医废（过磅量）
+//医废-误差量计算公式：误差量=本日进厂医废（接运单）-本日直接转外处置量-本日蒸煮医废（过磅量）==>废除公式==>调整正确
+//误差量=本日进厂医废（接运单）-本日蒸煮医废（过磅量）==>最新公式
 function geterrorNumberByWastes() {
     thisMonthWastes = $('#thisMonthWastes').val();
     if ($('#thisMonthWastes').val() == null || $('#thisMonthWastes').val() == '') {
@@ -762,7 +763,7 @@ function geterrorNumberByWastes() {
     if ($('#cookingWastes').val() == null || $('#cookingWastes').val() == '' || $('#cookingWastes').val().length <= 0) {
         cookingWastes = 0;
     }
-    $("#errorNumber").val(parseInt(thisMonthWastes) - parseInt(directDisposal) - parseInt(cookingWastes));
+    $("#errorNumber").val(parseInt(thisMonthWastes) - parseInt(cookingWastes))-parseInt((directDisposal));
 }
 
 function geterrorNumberByDisposal() {
@@ -802,7 +803,7 @@ function geterrorNumberByCook() {
         afterCookingNumber = 0;
     }
     $("#wetNumber").val(parseInt(cookingWastes) - parseInt(afterCookingNumber));
-    $("#errorNumber").val(parseInt(thisMonthWastes) - parseInt(directDisposal) - parseInt(cookingWastes));
+    $("#errorNumber").val(parseInt(thisMonthWastes) - parseInt(cookingWastes))-parseInt((directDisposal));
 }
 
 //水分含量计算

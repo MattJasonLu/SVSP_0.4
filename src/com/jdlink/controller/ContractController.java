@@ -7,6 +7,7 @@ import com.jdlink.util.DBUtil;
 import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
 import com.jdlink.util.UpdateVersion;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -250,36 +251,7 @@ public class ContractController {
     @ResponseBody
     public String saveContract(@RequestBody Contract contract) {
         JSONObject res1 = new JSONObject();
-        //1.获取合同ID
-        List<String> list = contractService.getContractIdList();//合同id集合
-        if (list.size() <= 0) {
-            contract.setContractId("1");
-        }
-        if (list.size() > 0) {
-            List<Integer> list1 = new ArrayList<>();
-            for (String s : list
-                    ) {
-                int i = Integer.parseInt(s);
-                list1.add(i);
-            }
-            Collections.sort(list1);
-            for (Integer s1 : list1
-                    ) {
-                //System.out.println(s1);
-            }
-            String newId = String.valueOf((list1.get(list1.size() - 1) + 1));//当前编号
-            contract.setContractId(newId);
-        }
-        contract.setCheckState(CheckState.ToSubmit);//设置为待提交
-        //设置时间
-        //生成日期对象
-        Date current_date = new Date();
-        //设置日期格式化样式为：yyyy-MM-dd
-        SimpleDateFormat SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //格式化当前日期
-        String nowTime = SimpleDateFormat.format(current_date);
-        contract.setNowTime(nowTime);
-        System.out.println(nowTime + "fff");
+
         //System.out.println(contract.getModelName()+"BBB");
         if (contract.getModelName() != null) {
             contract.setModelVersion("V1.0");
@@ -294,6 +266,7 @@ public class ContractController {
         } catch (Exception e) {
             e.printStackTrace();
             res1.put("status", "fail");
+            res1.put("error", e);
             res1.put("message", "创建合同失败，请完善信息!");
         }
         return res1.toString();
@@ -1378,9 +1351,7 @@ public class ContractController {
                 if (!materialDir.exists()) {
                     materialDir.mkdirs();
                 }
-//                String materialName = contractId + "-" +  contractAppendices.getOriginalFilename();//设置文件名称
-//                String materialFilePath = materialPath + "/" + materialName;//本地路径
-//                contract.setContractAppendicesUrl(materialFilePath);
+
 
                 String materialName = contractId + "-" +  contractAppendices.getOriginalFilename();//设置文件名称
                 String materialFilePath = materialPath + "/" + materialName;//本地路径
@@ -1410,7 +1381,7 @@ public class ContractController {
     //更新图片路径
     @RequestMapping("updatePictureUrl")
     @ResponseBody
-    public String updatePictureUrl(String wastesCode,String wastesName,int contractId,String picture ){
+    public String updatePictureUrl(String wastesCode,String wastesName,String contractId,String picture ){
         JSONObject res=new JSONObject();
 
 
@@ -1542,6 +1513,29 @@ public class ContractController {
             res.put("message", "合同签订失败");
 
         }
+        return res.toString();
+    }
+
+    //合同编号校验
+    @RequestMapping("Verification")
+    @ResponseBody
+    public String Verification(String contractId){
+        JSONObject res=new JSONObject();
+
+        try {
+            List<String> stringList=contractService.getAllContractId();
+            Boolean flag=stringList.contains(contractId);
+            res.put("status", "success");
+            res.put("message", "更新成功");
+            res.put("flag", flag);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+
+        }
+
         return res.toString();
     }
 }

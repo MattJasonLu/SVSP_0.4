@@ -221,7 +221,10 @@ $.ajax({
                 </tr>
                 <tr>
                     <td class="text-center">合同编号</td>
-                    <td class="text-center" colspan="2" id="contractId"></td>
+                    <td class="text-center" colspan="2" ><input class="form-control" id="contractId" placeholder="请输入合同编号" onkeyup="Verification(this)">
+                        <span style="color: #00B83F" id="Yes">通过</span>
+                        <span style="color: red" id="No">合同编号重复，请重新输入</span>
+                    </td>
 
                     <td class="text-center" id="name">产废单位</td>
 
@@ -316,7 +319,7 @@ $.ajax({
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <td colspan="13" class="text-center"><h3>费用明细</h3></td>
+                    <td colspan="13" class="text-center"><h3>费用明细</h3>(小额合同:是<input title="" type="radio" name="1"  value="true">否<input checked name="1" title="" type="radio" value="false" >)</td>
                     <!--<a class="btn btn-primary btn-xs" onclick="importQuExcelChoose();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>-->
                 </tr>
                 <tr>
@@ -340,18 +343,18 @@ $.ajax({
                     <td class="text-center" >
                         <select title="" class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="wastesCode" id="wastesCode"></select>
                     </td>
-                    <td class="text-center" ><input class="focus" title=""></td>
-                    <td class="text-center"><select class="focus" title="" id="packageType" style="width: 100px"></select></td>
-                    <td class="text-center"><select class="focus" title="" id="unit" style="width: 60px"></select></td>
-                    <td class="text-center"><input class="focus" title="" onkeyup="calculateTotalPrice(this)" ></td>
-                    <td class="text-center"><input class="focus" title="" onkeyup="calculateTotalPrice(this)"></td>
-                    <td class="text-center"><input class="focus" title=""></td>
+                    <td class="text-center" ><input class="form-control" title=""></td>
+                    <td class="text-center"><select class="form-control" title="" id="packageType" style="width: 100px"></select></td>
+                    <td class="text-center"><select class="form-control" title="" id="unit" style="width: 60px"></select></td>
+                    <td class="text-center"><input class="form-control" title="" onkeyup="calculateTotalPrice(this)" ></td>
+                    <td class="text-center"><input class="form-control" title="" onkeyup="calculateTotalPrice(this)"></td>
+                    <td class="text-center"><input class="form-control" title=""></td>
                     <td class="text-center">
-                        <select class="focus" title="" id="transportType" style="width: 100px" >
+                        <select class="form-control" title="" id="transportType" style="width: 100px" >
                             <option value="0">0</option>
                         </select>
                     </td>
-                    <td class="text-center"><input class="focus" title="" id="note"></td>
+                    <td class="text-center"><input class="form-control" title="" id="note"></td>
                   <td class="text-center">
                   <input type="file"  id="picture" name="picture" placeholder="">
                   </td>
@@ -378,10 +381,10 @@ $.ajax({
                 </tr>
                 <tr>
                     <td class="text-center">开户行名称</td>
-                    <td class="text-center"><input type="text" class="focus" id="bankName" name="bankName" placeholder=""></td>
+                    <td class="text-center"><input type="text" class="focus" id="bankName" name="bankName" placeholder="" readonly></td>
                     <td class="text-center">开户行账号</td>
                     <td class="text-center">
-                        <input type="text" class="focus" id="bankAccount" name="bankAccount" placeholder="">
+                        <input type="text" class="focus" id="bankAccount" name="bankAccount" placeholder="" readonly>
                     </td>
                 </tr>
                 <tr>

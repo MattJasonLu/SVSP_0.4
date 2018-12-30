@@ -900,5 +900,96 @@ public class DictionaryController {
         return res.toString();
     }
 
+    /**
+     * 获取污水采样点
+     *
+     *
+     */
+    @RequestMapping("getSewagePointByDataDictionary")
+    @ResponseBody
+    public String getSewagePointByDataDictionary() {
+        JSONObject res = new JSONObject();
+        try {
+            List<DataDictionaryItem> formTypeList = dictionaryService.getSelectListByDataDictionary(37);
+            JSONArray data = JSONArray.fromArray(formTypeList.toArray());
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "获取污水采样点成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取污水采样点失败");
 
+        }
+        return res.toString();
+    }
+
+
+
+
+    /**
+     * 获取软水采样点
+     */
+    @RequestMapping("getSoftPointByDataDictionary")
+    @ResponseBody
+    public String getSoftPointByDataDictionary() {
+        JSONObject res = new JSONObject();
+        try {
+            List<DataDictionaryItem> formTypeList = dictionaryService.getSelectListByDataDictionary(38);
+            JSONArray data = JSONArray.fromArray(formTypeList.toArray());
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "获取软水采样点成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取软水采样点失败");
+
+        }
+        return res.toString();
+    }
+
+    /**
+     * 获取次生采样点
+     */
+    @RequestMapping("getSecondaryPointByDataDictionary")
+    @ResponseBody
+    public String getSecondaryPointByDataDictionary() {
+        JSONObject res = new JSONObject();
+        try {
+            List<DataDictionaryItem> formTypeList = dictionaryService.getSelectListByDataDictionary(39);
+            JSONArray data = JSONArray.fromArray(formTypeList.toArray());
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "获取次生采样点成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取次生采样点失败");
+
+        }
+        return res.toString();
+    }
+
+    /**
+     * 获取非物资类别
+     */
+    @RequestMapping("getNonMaterialItemByDataDictionary")
+    @ResponseBody
+    public String getNonMaterialItemByDataDictionary() {
+        JSONObject res = new JSONObject();
+        try {
+            List<DataDictionaryItem> formTypeList = dictionaryService.getSelectListByDataDictionary(40);
+            JSONArray data = JSONArray.fromArray(formTypeList.toArray());
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "获取非物资类别成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取非物资类别失败");
+
+        }
+        return res.toString();
+    }
 }

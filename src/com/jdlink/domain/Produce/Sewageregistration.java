@@ -4,6 +4,8 @@ import com.jdlink.domain.ApplyState;
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Dictionary.CheckStateItem;
+import com.jdlink.domain.Dictionary.SewagePointItem;
+import com.jdlink.domain.Dictionary.SoftPointItem;
 import com.jdlink.domain.Page;
 
 import java.util.ArrayList;
@@ -51,6 +53,29 @@ public class Sewageregistration {
 
     //状态数据字典
     private CheckStateItem checkStateItem;
+
+    //污水采样点数据字典
+    private SewagePointItem sewagePointItem;
+
+    //软水采样点数字字典
+    private SoftPointItem softPointItem;
+
+
+    public SewagePointItem getSewagePointItem() {
+        return sewagePointItem;
+    }
+
+    public void setSewagePointItem(SewagePointItem sewagePointItem) {
+        this.sewagePointItem = sewagePointItem;
+    }
+
+    public SoftPointItem getSoftPointItem() {
+        return softPointItem;
+    }
+
+    public void setSoftPointItem(SoftPointItem softPointItem) {
+        this.softPointItem = softPointItem;
+    }
 
     public CheckStateItem getCheckStateItem() {
         return checkStateItem;

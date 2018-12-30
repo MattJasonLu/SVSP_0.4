@@ -60,4 +60,71 @@
         update t_wasteslist set category=#{wastescategory.code},wastesCharacter=#{characteristic.code},industry=#{industry},description=#{description}
         where id=#{id}
     </update>
+
+    <!--查询-->
+    <select id="searchWastesManger" parameterType="WastesInfo" resultMap="WastesInfoRM">
+        select * from t_wasteslist
+        <where>
+        <if test="keywords!=null and keywords!=''">
+         or  category like "%"#{keywords}"%"
+            or  industry like "%"#{keywords}"%"
+            or  code like "%"#{keywords}"%"
+            or  description like "%"#{keywords}"%"
+            or wastesCharacter in(select t_wastescharacter.code from t_wastescharacter where t_wastescharacter.name like "%"#{keywords}"%")
+        </if>
+            <if test="wastescategory!=null">
+                <if test="wastescategory.code!=null and wastescategory.code!=''">
+                    and category=#{wastescategory.code}
+                </if>
+            </if>
+
+            <if test="code!=null and code!=''">
+                and code=#{code}
+            </if>
+            <if test="characteristic!=null">
+                <if test="characteristic.code!=null and characteristic.code!=''">
+                    and wastesCharacter=#{characteristic.code}
+                </if>
+            </if>
+
+            <if test="industry!=null and industry!=''">
+                and industry=#{industry}
+            </if>
+    </where>
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+   <!--查询计数-->
+    <select id="searchWastesMangerCount" parameterType="WastesInfo" resultType="int">
+        select count(*) from t_wasteslist
+        <where>
+            <if test="keywords!=null and keywords!=''">
+                or  category like "%"#{keywords}"%"
+                or  industry like "%"#{keywords}"%"
+                or  code like "%"#{keywords}"%"
+                or  description like "%"#{keywords}"%"
+                or wastesCharacter in(select t_wastescharacter.code from t_wastescharacter where t_wastescharacter.name like "%"#{keywords}"%")
+            </if>
+            <if test="wastescategory!=null">
+                <if test="wastescategory.code!=null and wastescategory.code!=''">
+                    and category=#{wastescategory.code}
+                </if>
+            </if>
+
+            <if test="code!=null and code!=''">
+                and code=#{code}
+            </if>
+            <if test="characteristic!=null">
+                <if test="characteristic.code!=null and characteristic.code!=''">
+                    and wastesCharacter=#{characteristic.code}
+                </if>
+            </if>
+
+            <if test="industry!=null and industry!=''">
+                and industry=#{industry}
+            </if>
+        </where>
+    </select>
 </mapper>

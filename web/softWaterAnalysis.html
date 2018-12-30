@@ -236,8 +236,8 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label" for="search-address">采样点</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-address" name="search-sewageName"
-                                       placeholder="" onkeydown="enterSearch()">
+                                <select type="text" class="form-control" id="search-address" name="search-sewageName"
+                                        placeholder="" onchange="searchSoftWater()"></select>
                             </div>
                         </div>
                     </div>
@@ -455,7 +455,7 @@
                     <div class="form-group col-md-6">
                         <label for="sendingPerson" class="col-sm-4 control-label">采样点</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" id="address" name="signer" title="">
+                            <select class="form-control" id="address" name="signer" title=""></select>
                         </div>
                     </div>
                     <!--<div class="form-group col-md-6">-->
@@ -636,7 +636,7 @@
                     <div class="form-group col-md-6">
                         <label for="sendingPerson" class="col-sm-4 control-label">采样点</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" id="address2" name="signer" title="">
+                            <select type="text" class="form-control" id="address2" name="signer" title=""></select>
                         </div>
                     </div>
                     <div class="form-group col-md-6">

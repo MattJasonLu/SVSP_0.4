@@ -397,20 +397,24 @@ function setContractVolume(result) {
                 case (5):
                     $(this).html(obj.contractAmount.toFixed(2));
                     break;
-                //处置金额
+                    //单价
                 case (6):
                     $(this).html(obj.unitPriceTax.toFixed(2));
                     break;
-                //签订日期
+                //处置金额
                 case (7):
+                    $(this).html(obj.totalPrice.toFixed(2));
+                    break;
+                //签订日期
+                case (8):
                     $(this).html(getDateStr(obj.contract.beginTime));
                     break;
                 //截止日期
-                case (8):
+                case (9):
                     $(this).html(getDateStr(obj.contract.endTime));
                     break;
                     //主键
-                case (9):
+                case (10):
                     $(this).html(obj.quotationItemId);
                     break;
             }
@@ -598,14 +602,14 @@ function searchContract() {
     var arraydate=[];//签订日期
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
-            arraydate.push(($(this).children('td').eq(7).text()))
+            arraydate.push(($(this).children('td').eq(8).text()))
         });
     }
     // console.log(arraydate)
     var arraydate1=[];//截止日期
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
-            arraydate1.push(($(this).children('td').eq(8).text()))
+            arraydate1.push(($(this).children('td').eq(9).text()))
         });
     }
 
@@ -633,8 +637,8 @@ function searchContract() {
             if(endDate.toString()=='Invalid Date'){
                 endDate=dateMax;
             }
-            var  start=$(this).children('td').eq(7).text();
-            var  end=$(this).children('td').eq(8).text();
+            var  start=$(this).children('td').eq(8).text();
+            var  end=$(this).children('td').eq(9).text();
             var code=($(this).children('td').eq(4).text().toString()).substring($(this).children('td').eq(4).text().length-2,$(this).children('td').eq(4).text().length);
             // console.log(code)
             if(start.length==0){
@@ -741,14 +745,14 @@ function CalculateAggregate() {
         if($(this).attr('style')=='display: table-row;'){
             var Volume=parseFloat($(this).children('td').eq(5).html());
             totalVolume+=parseFloat(Volume);
-            var Money=parseFloat($(this).children('td').eq(6).html());
+            var Money=parseFloat($(this).children('td').eq(7).html());
             totalMoney+=parseFloat(Money);
         }
     })
     // console.log(totalVolume+" "+totalMoney)
 
     $('#total').children('td').eq(5).html(totalVolume.toFixed(2));
-    $('#total').children('td').eq(6).html(totalMoney.toFixed(2));
+    $('#total').children('td').eq(7).html(totalMoney.toFixed(2));
 
 }
 

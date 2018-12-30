@@ -313,6 +313,35 @@ function loadPageSewageList() {
         }
     });
     isSearch = false;
+
+    //采样点==>高级查询
+    //污水采样点下拉框
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSewagePointByDataDictionary",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                //处理类别
+                var address = $('#search-address');
+                address.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    address.append(option);
+                });
+                address.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
 }
 
 /**
@@ -357,7 +386,10 @@ function setSewageList(result) {
                             break;
                         case (2):
                             // 采样点
-                            $(this).html((obj.address));
+                            // if(obj.sewagePointItem!=null){
+                            //     $(this).html((obj.sewagePointItem.dictionaryItemName));
+                            // }
+                            $(this).html(obj.address);
                             break;
                         case (3):
                             // 检测项目
@@ -636,7 +668,7 @@ function searchSewage() {
          }
         data1 = {
             water:true,
-            address: $.trim($("#search-address").val()),
+            sewagePointItem:{dataDictionaryItemId:$.trim($("#search-address").val())} ,
             sendingPerson: $.trim($("#search-remarks").val()),
             laboratorySignatory: $.trim($("#search-laboratorySignatory").val()),
             // remarks: $.trim($("#search-remarks").val()),
@@ -736,7 +768,7 @@ function addAppoint() {
         laboratorySignatory:$('#laboratorySignatory').val(),
         sendingPerson:$('#sendingPerson').val(),
         water:true,
-         address:$('#address').val(),
+       sewagePointItem:{dataDictionaryItemId:$('#address').val()},
          id:$('#reservationId').val(),
     };
     console.log(data)
@@ -888,8 +920,38 @@ function setSelectList() {
                 //刷新下拉数据
                 $('.selectpicker').selectpicker('refresh');
 
-             $('#addClone').siblings().not($('#plusBtn')).remove();
 
+
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    $('#addClone').siblings().not($('#plusBtn')).remove();
+
+
+    //污水采样点下拉框
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSewagePointByDataDictionary",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                //处理类别
+                var address = $('#address');
+                address.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    address.append(option);
+                });
+                address.get(0).selectedIndex = -1;
             } else {
                 console.log("fail: " + result);
             }
@@ -1043,13 +1105,17 @@ function view(item) {
                     $('#companyName').val(result.data.client.companyName);
                 }
                  //化验室签收人
-                $('#laboratorySignatory').val(result.data.laboratorySignatory)
+                $('#laboratorySignatory').val(result.data.laboratorySignatory);
 
                 //送样人
-                $('#sendingPerson1').text(result.data.sendingPerson)
+                $('#sendingPerson1').text(result.data.sendingPerson);
 
                 //采样点
-                $('#address1').text(result.data.address)
+                if(result.data.sewagePointItem!=null){
+                    // $('#address1').text(result.data.sewagePointItem.dictionaryItemName);
+                    $('#address1').text(result.data.address);
+                }
+
 
 
                  if(result.data.sewageregistrationItemList!=null){
@@ -1172,7 +1238,10 @@ function setSubmit(item) {
                     $('#sendingPerson1').text(result.data.sendingPerson)
 
                     //采样点
-                    $('#address1').text(result.data.address)
+                    if(result.data.sewagePointItem!=null){
+                        $('#address1').text(result.data.sewagePointItem.dictionaryItemName)
+                    }
+
 
                     if(result.data.sewageregistrationItemList!=null){
 
@@ -1272,6 +1341,8 @@ function confirmSample() {
 var id=$("#reservationId1").text();
 
 var laboratorySignatory=$('#laboratorySignatory').val();
+
+
 
     var ph;
 
@@ -1402,7 +1473,33 @@ function adjust(item) {
         alert('单据已作废,不可修改!')
     }
 
-
+    //污水采样点下拉框
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSewagePointByDataDictionary",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                //处理类别
+                var address = $('#address2');
+                address.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    address.append(option);
+                });
+                address.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
 
 
     if(checkState!='已作废'&&checkState!='已拒收'&&checkState!='已收样'){
@@ -1432,7 +1529,10 @@ function adjust(item) {
                     $('#sendingPerson2').val(result.data.sendingPerson)
 
                     //采样点
-                    $('#address2').val(result.data.address)
+                    if(result.data.sewagePointItem!=null){
+                        $('#address2').val(result.data.sewagePointItem.dataDictionaryItemId)
+                    }
+
 
 
                     if(result.data.sewageregistrationItemList!=null){
@@ -1555,7 +1655,7 @@ function adjustConfir() {
         newId: $("#reservationId2").val(),
         id:$('#reservationId3').val(),
         sendingPerson:$('#sendingPerson2').val(),
-        address:$('#address2').val(),
+        sewagePointItem:{dataDictionaryItemId:$('#address2').val()},
         laboratorySignatory:$('#laboratorySignatory2').val(),
     };
     //更新主表后删除字表数据

@@ -50,4 +50,9 @@ public interface ProcurementMapper {
     void updateMaterialState(int id);
     void updateMaterialCategoryItemForProcurementPlan(String procurementPlanId,int MaterialCategoryId);
 
+    String getSpecificationById(int id);
+
+    void deleteMonthProcurementById(int id);
+
+    void setProcurementFilePath(Procurement procurement);
 }

@@ -126,7 +126,7 @@
                 <div class="input-group col-md-4 pull-right">
                     <input type="text" class="form-control" placeholder="搜索..." id="searchContent" >
                     <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="searchPw();" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="searchWastesManger();" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
                             <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
                         </span>
@@ -140,35 +140,33 @@
                 <div class="row">
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-pwId" class="col-sm-4 control-label">配伍计划单号	</label>
+                            <label for="search-wastescategory" class="col-sm-4 control-label">危废类别	</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-pwId" name="search-pwId" placeholder="" onkeyup="enterSearch()">
+                                <select title="" class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="wastesCode" id="search-wastescategory" onchange="searchWastesManger()"></select>                    </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-industry" class="col-sm-4 control-label">行业来源</label>
+                            <div class="col-xs-7">
+                                <input class="form-control" name="search-formType" id="search-industry" onkeyup="enterSearch()">
+                                </input>
                             </div>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-formType" class="col-sm-4 control-label">形态</label>
+                            <label for="search-code" class="col-sm-4 control-label">危废代码</label>
                             <div class="col-xs-7">
-                                <select class="form-control" name="search-formType" id="search-formType" onchange="searchPw()">
-                                </select>
-                            </div>
+
+                                <select title="" class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="wastesCode" id="search-code"  onchange="searchWastesManger()"></select>                                                </div>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-handleCategory" class="col-sm-4 control-label">进料方式</label>
+                            <label for="search-characteristic" class="col-sm-4 control-label">特性</label>
                             <div class="col-xs-7">
-                                <select class="form-control" name="search-handleCategory" id="search-handleCategory" onchange="searchPw()">
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <label for="search-weeklyDemandTotalAggregate" class="col-sm-4 control-label">周需求总量(明细)</label>
-                            <div class="col-xs-7">
-                                <input type="number" class="form-control" id="search-weeklyDemandTotalAggregate" name="search-pwId" placeholder="" onkeyup="enterSearch()">
+                                <select title="" class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="wastesCode" id="search-characteristic"  onchange="searchWastesManger()"></select>
                             </div>
                         </div>
                         <!--<div class="form-group">-->
@@ -190,78 +188,6 @@
                         <!--</div>-->
                         <!--</div>-->
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-horizontal col-md-6">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label" style="margin-left: -95px">热值范围 </label>
-                            <div class="input-group">
-                                <input type="number" class="input-sm form-control" id="search-calorificBeg" title="" onkeydown="" onkeyup="enterSearch()"/>
-                                <span class="input-group-addon">-</span>
-                                <input type="number" class="input-sm form-control" id="search-calorificEnd" title="" onkeydown="" onkeyup="enterSearch()"/>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="form-horizontal col-md-6">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label" style="margin-left: -95px">F范围 </label>
-                            <div class="input-group">
-                                <input type="number" class="input-sm form-control" id="search-fBeg" title="" onkeydown=""onkeyup="enterSearch()"/>
-                                <span class="input-group-addon">-</span>
-                                <input type="number" class="input-sm form-control" id="search-fEnd" title="" onkeydown=""onkeyup="enterSearch()"/>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="form-horizontal col-md-6">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label" style="margin-left: -95px">CL&nbsp;范&nbsp;围 </label>
-                            <div class="input-group">
-                                <input type="number" class="input-sm form-control" id="search-clBeg" title="" onkeydown=""/>
-                                <span class="input-group-addon">-</span>
-                                <input type="number" class="input-sm form-control" id="search-clEnd" title="" onkeydown=""/>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="form-horizontal col-md-6">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label" style="margin-left: -95px">S范围 </label>
-                            <div class="input-group">
-                                <input type="number" class="input-sm form-control" id="search-sBeg" title="" onkeydown=""/>
-                                <span class="input-group-addon">-</span>
-                                <input type="number" class="input-sm form-control" id="search-sEnd" title="" onkeydown=""/>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <label for="search-checkState" class="col-sm-4 control-label">状态</label>
-
-                            <div class="col-xs-7">
-                                <select class="form-control" name="search-formType" id="search-checkState" onchange="searchPw()">
-                                    <option></option>
-                                    <option value=64>待提交</option>
-                                    <option value=67>待审批</option>
-                                    <option value=76>审批通过</option>
-                                    <option value=66>已驳回</option>
-                                    <option value=70>生效中</option>
-                                    <option value=69>已作废</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>

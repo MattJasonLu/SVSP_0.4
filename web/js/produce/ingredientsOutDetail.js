@@ -391,47 +391,51 @@ function setList(result) {
                         $(this).html(obj.state.name);
                     break;
                 case (4):
+                    // 物品编码
+                    $(this).html("");
+                    break;
+                case (5):
                     // 物品名称
                     $(this).html(obj.name);
                     break;
-                case (5):
+                case (6):
                     // 规格
                     $(this).html(obj.specification);
                     break;
-                case (6):
+                case (7):
                     // 计量单位
                     $(this).html(obj.unit);
                     break;
-                case (7):
+                case (8):
                     // 数量
                     $(this).html(obj.receiveAmount.toFixed(2));
                     break;
-                case (8):
+                case (9):
                     // 单价
                     $(this).html(obj.unitPrice.toFixed(2));
                     break;
-                case (9):
+                case (10):
                     // 过账
                     $(this).html(obj.post);
                     break;
-                case (10):
+                case (11):
                     // 附注
                     $(this).html(obj.remarks);
                     break;
-                case (11):
+                case (12):
                     // 仓库
                     $(this).html(obj.wareHouseName);
                     break;
-                case (12):
+                case (13):
                     // 处置设备
                     if(obj.equipment != null)
                         $(this).html(obj.equipment.name);
                     break;
-                case (13):
+                case (14):
                     // 出库日期
                     $(this).html(getDateStr(obj.creationDate));
                     break;
-                case (14):
+                case (15):
                     // 编号
                     $(this).html(obj.itemId);
                     break;
@@ -446,15 +450,15 @@ function setList(result) {
     clonedTr.children("td").each(function (inner_index) {
         // 根据索引为部分td赋值
         switch (inner_index) {
-            case (6):
+            case (7):
                 // 合计
                 $(this).html("合计");
                 break;
-            case (7):
+            case (8):
                 // 数量
                 $(this).html(totalAmount.toFixed(2));
                 break;
-            case (15):
+            case (16):
                 // 操作
                 $(this).html("");
                 break;

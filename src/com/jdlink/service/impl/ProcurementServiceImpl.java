@@ -213,6 +213,21 @@ public class ProcurementServiceImpl implements ProcurementService
     }
 
     @Override
+    public String getSpecificationById(int id) {
+        return procurementMapper.getSpecificationById(id);
+    }
+
+    @Override
+    public void deleteMonthProcurementById(int id) {
+        procurementMapper.deleteMonthProcurementById(id);
+    }
+
+    @Override
+    public void setProcurementFilePath(Procurement procurement) {
+        procurementMapper.setProcurementFilePath(procurement);
+    }
+
+    @Override
     public List<Material> searchMaterial(Material material){ return procurementMapper.searchMaterial(material);}
 
     @Override

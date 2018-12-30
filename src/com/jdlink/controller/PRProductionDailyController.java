@@ -13,6 +13,7 @@ import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -461,7 +462,7 @@ public class PRProductionDailyController {
 
             sewageTest.setId(id);
 
-            sewageTest.setAddress(sewageregistration.getAddress());
+            sewageTest.setAddress(sewageregistration.getSewagePointItem().getDictionaryItemName());
 
             if(sewageregistrationItem.getCod()==1){
                 sewageTest.setCOD(0);
@@ -546,7 +547,7 @@ public class PRProductionDailyController {
 
             SoftTest softTest=new SoftTest();
             softTest.setId(id);
-            softTest.setAddress(sewageregistration.getAddress());
+            softTest.setAddress(sewageregistration.getSoftPointItem().getDictionaryItemName());
             if(sewageregistrationItem.getPh()==1){
                 softTest.setPH(0);
             }
@@ -655,21 +656,14 @@ public class PRProductionDailyController {
         JSONObject res = new JSONObject();
         try {
             Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
-            {
-                System.out.println("数据如下：");
-                for (int i = 1; i < data.length; i++) {
-                    for (int j = 0; j < data[1].length; j++) {
-                        System.out.print(data[i][j].toString());
-                        System.out.print(",");
-                    }
-                    System.out.println();
-                }
-            }
+
             Map<String, Sewageregistration> map = new HashMap<>();
             List<SewageregistrationItem> sewageregistrationItemArrayList = new ArrayList<>();
             String id1 = "";
             for (int i = 2; i < data.length; i++) {
                 String id = data[i][0].toString();
+                // update 2018年12月29日 by ljc 非空判断
+                if (id.equals("null")) continue;
                 SewageregistrationItem sewageregistrationItem = new SewageregistrationItem();
                 //map内不存在即添加公共数据，存在即添加List内数据
                 if (!map.keySet().contains(id)) {
@@ -725,14 +719,17 @@ public class PRProductionDailyController {
                     productionDailyService.addSewaGeregistration(sewageregistration);
                     for (SewageregistrationItem sewageregistrationItem : sewageregistration.getSewageregistrationItemList())
                         productionDailyService.addSewaGeregistrationItem(sewageregistrationItem);
+
                 } else {
-                    res.put("status", "fail");
-                    res.put("message", "预约单号重复，请检查后导入");
-                    return res.toString();
+                    throw new DuplicateKeyException("预约单号重复，请检查后导入");
                 }
             }
             res.put("status", "success");
             res.put("message", "导入成功");
+        } catch (DuplicateKeyException e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "预约单号重复，请检查后导入");
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");

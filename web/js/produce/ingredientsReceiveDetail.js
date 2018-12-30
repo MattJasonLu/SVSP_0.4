@@ -378,33 +378,37 @@ function setList(result) {
                     break;
                 case (4):
                     // 物品名称
-                    $(this).html(obj.name);
+                    $(this).html("");
                     break;
                 case (5):
+                    // 物品名称
+                    $(this).html(obj.name);
+                    break;
+                case (6):
                     // 规格
                     $(this).html(obj.specification);
                     break;
-                case (6):
+                case (7):
                     // 计量单位
                     $(this).html(obj.unit);
                     break;
-                case (7):
+                case (8):
                     // 数量(领料数)
                     $(this).html(obj.receiveAmount);
                     break;
-                case (8):
+                case (9):
                     // 附注
                     $(this).html(obj.remarks);
                     break;
-                case (9):
+                case (10):
                     // 仓库
                     $(this).html(obj.wareHouseName);
                     break;
-                case (10):
+                case (11):
                     // 创建日期
                     $(this).html(getDateStr(obj.creationDate));
                     break;
-                case (11):
+                case (12):
                     // 物品ID
                     $(this).html(obj.itemId);
                     break;
@@ -419,15 +423,15 @@ function setList(result) {
     clonedTr.children("td").each(function (inner_index) {
         // 根据索引为部分td赋值
         switch (inner_index) {
-            case (6):
+            case (7):
                 // 合计
                 $(this).html("合计");
                 break;
-            case (7):
+            case (8):
                 // 总数量
                 $(this).html(totalAmount.toFixed(2));
                 break;
-            case (12):
+            case (13):
                 // 操作
                 $(this).html("");
                 break;

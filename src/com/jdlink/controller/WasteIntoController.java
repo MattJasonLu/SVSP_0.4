@@ -245,6 +245,7 @@ public class WasteIntoController {
     SecondaryTest secondaryTest=new SecondaryTest();
     secondaryTest.setId(id);
     secondaryTest.setWastesName(wastesName);
+    secondaryTest.setAddress(secondarySample.getSecondaryPointItem().getDictionaryItemName());
      //如果存在就更新 否则就添加
      //根据编号获得次生送样明细
     if(secondarySampleItem.getWater()==1){
