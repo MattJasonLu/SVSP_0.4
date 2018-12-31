@@ -56,7 +56,7 @@ public class WayBillServiceImpl implements WayBillService {
     public int countItem(){ return wayBillMapper.countItem(); }
 
     @Override
-    public WayBillItem getItemById(String id){ return wayBillMapper.getItemById(id); }
+    public WayBillItem getItemById(int id){ return wayBillMapper.getItemById(id); }
 
     @Override
     public String getSalesmanIdByName(String name){ return wayBillMapper.getSalesmanIdByName(name); }
@@ -94,15 +94,12 @@ public class WayBillServiceImpl implements WayBillService {
     }
 
     @Override
-    public String getItemId() {
+    public int getItemId() {
         int count = countItem() + 1;
-        String id = Integer.toString(count);
-        while (getItemById(id) != null) {
-            int index = Integer.parseInt(id);
-            index += 1;
-            id = index + "";
+        while (getItemById(count) != null) {
+            count += 1;
         }
-        return id;
+        return count;
     }
 
     @Override

@@ -51,8 +51,8 @@ public interface IngredientsService {
     int searchReceiveItemCount(Ingredients ingredients);
     List<Ingredients> listPageReceiveItem(Page page);
     List<Ingredients> searchReceiveItem(Ingredients ingredients);
-
-
+    void addInventoryItem(Ingredients ingredients);
+    void deleteInventory();
     ///出库单///
     int countOutById(String id);
     IngredientsOut getOutById(String id);

@@ -185,7 +185,7 @@ public class PRWayBillController {
             for (int i = 1; i < data.length; i++) {
                 BigDecimal id = new BigDecimal(data[i][0].toString());  // 科学计数法转换，获取ID
                 WayBillItem wayBillItem = new WayBillItem();
-                wayBillItem.setItemId(wayBillService.getItemId());
+                //wayBillItem.setItemId(wayBillService.getItemId());
                 wayBillItem.setWayBillId(id.toString());
                 wayBillItem.setReceiveCompanyName(data[i][6].toString());
                 wayBillItem.setReceiveCompanyOperator(data[i][7].toString());
@@ -446,13 +446,10 @@ public class PRWayBillController {
     public String getCurrentItemId() {
         JSONObject res = new JSONObject();
         int count = wayBillService.countItem() + 1;
-        String id = Integer.toString(count);
-        while (wayBillService.getItemById(id) != null) {
-            int index = Integer.parseInt(id);
-            index += 1;
-            id = index + "";
+        while (wayBillService.getItemById(count) != null) {
+            count += 1;
         }
-        res.put("id", id);
+        res.put("id", count);
         return res.toString();
     }
 

@@ -219,8 +219,9 @@
                     <th class="text-center">业务员</th>
                     <th class="text-center">废物名称</th>
                     <th class="text-center">危废代码</th>
-                    <th class="text-center">数量</th>
                     <th class="text-center">单价</th>
+                    <th class="text-center">数量</th>
+                    <th class="text-center">计量单位</th>
                     <th class="text-center">合计</th>
                     <th class="text-center">开票日期</th>
                     <th class="text-center">发票号码</th>
@@ -230,16 +231,18 @@
                 <tr id="clone">
                     <td class="text-center"><span id="wastes0-id"></span></td>
                     <td class="text-center"><span id="wastes0-produceCompany"></span></td>
-                    <td class="text-center"><input id="modal0-receiveCompany" name="modal0-receiveCompany" class="focus"></td>
-                    <td class="text-center"><input title="" type="text" id="wastes0-receiveCompanyOpterator" class="focus"></td>
+                    <td class="text-center"><input id="modal0-receiveCompany" name="modal0-receiveCompany" class=""></td>
+                    <td class="text-center"><input title="" type="text" id="wastes0-receiveCompanyOpterator" class=""></td>
                     <td class="text-center"><input title="" class="focus" type="date" value="" name="wastes0-receiveDate" id="wastes0-receiveDate"></td>
                     <td class="text-center"><select class="selectpicker" data-live-search="true" data-live-search-placeholder="搜索..." id="wastes0-salesman" name="wastes0-salesman" title=""></select></td>
                     <td class="text-center"><input title="" type="text" id="wastes0-name" class="focus"></td>
                     <td class="text-center"><select class="selectpicker" data-live-search="true" data-live-search-placeholder="搜索..." id="wastes0-wasteCode" name="wastes0-wasteCode" title=""></select></td>
-                    <td class="text-center"><input title="" type="text" id="wastes0-wasteAmount" class="focus" onkeyup="calculateTotalPrice(this);id1 = 1"></td>
-                    <td class="text-center"><input title="" type="text" id="wastes0-unitPriceTax" class="focus" onkeyup="calculateTotalPrice(this);id1 = 2"></td>
-                    <td class="text-center"><span id="wastes0-totalPrice"></span></td>
-                    <td class="text-center"><input title="" class="focus" type="date" value="" name="wastes0-invoiceDate" id="wastes0-invoiceDate"></td>
+                    <td class="text-center"><input value="0" type="number" name="modal-wastesPrice" id="wastes0-unitPriceTax" class="" onkeyup="calculateTotalPrice(this);id1 = 2"></td>
+                    <td class="text-center"><input value="0" type="number" name="modal-wasteAmount" id="wastes0-wasteAmount" class="" onkeyup="calculateTotalPrice(this);id1 = 1"></td>
+                    <td class="text-center"><select title="" class="form-control" style="width: 80px"
+                                                    id="modal0-wasteUnit" name="modal-wasteUnit" onchange="autoSetAmountAndPrice(this)"></select></td>
+                    <td class="text-center"><input value="0" type="number" class="" id="wastes0-totalPrice" ></td>
+                    <td class="text-center"><input title="" class="form-control" type="date" value="" name="wastes0-invoiceDate" id="wastes0-invoiceDate"></td>
                     <td class="text-center"><input title="" type="text" id="wastes0-invoiceNumber" class="focus"></td>
                 </tr>
                 <!---->

@@ -56,6 +56,11 @@ public interface IngredientsMapper {
     void delIngredientInItem(Ingredients ingredients);
 
     /**
+     * 删除库存数据
+     */
+    void deleteInventory();
+
+    /**
      * 删除旧库存
      * @param ingredients
      */

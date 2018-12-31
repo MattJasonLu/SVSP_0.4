@@ -16,6 +16,7 @@ import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -1878,5 +1879,29 @@ public class PRIngredientsController {
         return code;
     }
 
-
+    /**
+     * 根据入库单自动新增库存自动
+     */
+    @RequestMapping("setInventory")
+    @ResponseBody
+    public void setInventory(){
+        ingredientsService.deleteInventory();    // 删除原库存。
+        Page page = new Page();
+        page.setStart(0);
+        page.setCount(0);
+        List<Ingredients> ingredientsList = ingredientsService.listPageInItem(page);
+        for(Ingredients ingredients : ingredientsList) {
+            Ingredients ingredients1 = new Ingredients();
+            ingredients1.setCode(ingredients.getCode());
+            ingredients1.setName(ingredients.getName());
+            ingredients1.setSpecification(ingredients.getSpecification());
+            ingredients1.setUnit(ingredients.getUnit());
+            ingredients1.setAmount(ingredients.getAmount());
+            ingredients1.setWareHouseName(ingredients.getWareHouseName());
+            ingredients1.setInAmount(ingredients.getAmount());
+            ingredients1.setInId(ingredients.getId());
+            ingredients1.setInPrice(ingredients.getUnitPrice());
+            ingredientsService.addInventoryItem(ingredients1);
+        }
+    }
 }

@@ -104,6 +104,11 @@ public class IngredientsServiceImpl implements IngredientsService {
         return ingredientsMapper.getAmountItems(ingredients);
     }
 
+    @Override
+    public void addInventoryItem(Ingredients ingredients) { ingredientsMapper.addInventoryItem(ingredients);}
+
+    @Override
+    public void deleteInventory() { ingredientsMapper.deleteInventory();}
     /**
      * 根据日期范围获取入库单
      *

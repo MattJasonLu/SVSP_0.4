@@ -1680,9 +1680,11 @@ function confirmInsert1() {
                             ingredients.code = data.code;                    // 编码
                             ingredients.name = data.suppliesName;            // 物品名称
                             ingredients.specification = data.specifications; // 规格
-                            if (data.unitDataItem != null)
+                            if (data.unitDataItem != null){
                                 var unitDataItem = {};
-                            unitDataItem.dictionaryItemName = data.unitDataItem.dictionaryItemName;
+                                unitDataItem.dictionaryItemName = data.unitDataItem.dictionaryItemName;
+                                ingredients.unit = data.unitDataItem.dictionaryItemName;
+                            }
                             ingredients.unitDataItem = unitDataItem;            // 单位
                             ingredients.amount = data.demandQuantity;         // 入库数量
                             ingredients.remarks = data.note;                  // 备注
