@@ -51,6 +51,7 @@
         <association property="formTypeItem" column="formTypeId" select="getFormTypeItem"></association>
         <association property="packageTypeItem" column="packageTypeId" select="getPackageTypeItem"></association>
         <association property="unitDataItem" column="unitId" select="getUnitDataItem"></association>
+        <association property="secondaryCategoryItem" column="secondaryCategoryId" select="getSecondaryCategoryItem"></association>
     </resultMap>
 
     <!--获取物质形态数据字典-->
@@ -66,6 +67,11 @@
     <!--获取单位数据数据字典-->
     <select id="getUnitDataItem" resultType="UnitDataItem">
         select * from datadictionaryitem where dataDictionaryItemId=#{unitId}
+    </select>
+
+    <!--获取次生名称数据字典-->
+    <select id="getSecondaryCategoryItem" resultType="SecondaryCategoryItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{secondaryCategoryId}
     </select>
 
     <!--获取进料方式数据字典-->
@@ -577,7 +583,7 @@
                 ]]>
             </if>
             <if test="true">
-                and boundType='SecondaryInbound'
+                and boundType='SecondaryInbound' and checkStateId != 69
             </if>
         </where>
         order by createDate desc
@@ -644,12 +650,12 @@
 
     <!--作废该入库单-->
     <update id="setInboundOrderStateInvalid" parameterType="String">
-        UPDATE t_pl_inboundorder SET checkState='Invalid' WHERE inboundOrderId=#{inboundOrderId};
+        UPDATE t_pl_inboundorder SET checkState='Invalid', checkStateId=69 WHERE inboundOrderId=#{inboundOrderId};
     </update>
 
     <!--提交该入库单-->
     <update id="setInboundOrderStateSubmit" parameterType="String">
-        UPDATE t_pl_inboundorder SET checkState='ToExamine' WHERE inboundOrderId=#{inboundOrderId};
+        UPDATE t_pl_inboundorder SET checkState='ToExamine', checkStateId=67 WHERE inboundOrderId=#{inboundOrderId};
     </update>
 
     <!--获取入库单明细列表-->

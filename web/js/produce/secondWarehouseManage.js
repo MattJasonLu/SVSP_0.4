@@ -748,14 +748,15 @@ function setDataList(result) {
         clonedTr.find("td[name='inboundDate']").text(getDateStr(data.inboundDate));
         if (data.wareHouse != null) clonedTr.find("td[name='wareHouseName']").text(data.wareHouse.wareHouseName);
         if (data.inboundOrderItemList.length > 0) {
+            if (data.inboundOrderItemList[0].secondaryCategoryItem != null)
+            clonedTr.find("td[name='wastesName']").text(data.inboundOrderItemList[0].secondaryCategoryItem.dictionaryItemName);
             if (data.inboundOrderItemList[0].wastes != null) {
-                clonedTr.find("td[name='wastesName']").text(data.inboundOrderItemList[0].wastes.name);
                 clonedTr.find("td[name='wastesCode']").text(data.inboundOrderItemList[0].wastes.wastesId);
             }
             // 增加本页合计
             pageTotal += data.inboundOrderItemList[0].wastesAmount;
             clonedTr.find("td[name='wastesAmount']").text(parseFloat(data.inboundOrderItemList[0].wastesAmount).toFixed(2));
-            if (data.unitDataItem != null) clonedTr.find("td[name='wastesUnit']").text(data.inboundOrderItemList[0].unitDataItem.dictionaryItemName);
+            if (data.inboundOrderItemList[0].unitDataItem != null) clonedTr.find("td[name='wastesUnit']").text(data.inboundOrderItemList[0].unitDataItem.dictionaryItemName);
             clonedTr.find("td[name='unitPriceTax']").text(parseFloat(data.inboundOrderItemList[0].unitPriceTax).toFixed(2));
             clonedTr.find("td[name='totalPrice']").text(parseFloat(data.inboundOrderItemList[0].totalPrice).toFixed(2));
             if (data.inboundOrderItemList[0].laboratoryTest != null) {
@@ -853,17 +854,30 @@ function addData(state) {
                 companyName: tr.find("input[name='produceCompanyName']").val()
             },
             wastes: {
-                name: tr.find("select[name='wastesName']").val(),
+                name: tr.find("select[name='wastesName']").text(),
                 wastesId: tr.find("select[name='wastesCode']").val()
             },
+            secondaryCategoryItem: {
+                dataDictionaryItemId: tr.find("select[name='wastesName']").val()
+            },
             wastesAmount: tr.find("input[name='wastesAmount']").val(),
-            wastesUnit: tr.find("select[name='wastesUnit']").val(),
+            unitDataItem: {
+                dataDictionaryItemId: tr.find("select[name='wastesUnit']").val()
+            },
             unitPriceTax: tr.find("input[name='unitPriceTax']").val(),
             totalPrice: tr.find("td[name='totalPrice']").text(),
-            processWay: tr.find("select[name='processWay']").val(),
-            handleCategory: tr.find("select[name='handleCategory']").val(),
-            formType: tr.find("select[name='formType']").val(),
-            packageType: tr.find("select[name='packageType']").val(),
+            processWayItem: {
+                dataDictionaryItemId: tr.find("select[name='processWay']").val()
+            },
+            handleCategoryItem: {
+                dataDictionaryItemId: tr.find("select[name='handleCategory']").val()
+            },
+            formTypeItem: {
+                dataDictionaryItemId: tr.find("select[name='formType']").val()
+            },
+            packageTypeItem: {
+                dataDictionaryItemId: tr.find("select[name='packageType']").val()
+            },
             laboratoryTest: {
                 heatAverage: tr.find("input[name='heat']").val(),
                 waterContentAverage: tr.find("input[name='waterContent']").val(),
@@ -1007,8 +1021,8 @@ function setItemDataList(result) {
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.find("td[name='index']").text(index + 1);
         if (data.produceCompany != null) clonedTr.find("td[name='produceCompanyName']").text(data.produceCompany.companyName);
+        clonedTr.find("td[name='wastesName']").text(data.secondaryCategoryItem.dictionaryItemName);
         if (data.wastes != null) {
-            clonedTr.find("td[name='wastesName']").text(convertStrToWastesName(data.wastes.name));
             clonedTr.find("td[name='wastesCode']").text(data.wastes.wastesId);
         }
         clonedTr.find("td[name='wastesAmount']").text(parseFloat(data.wastesAmount).toFixed(3));
@@ -1103,7 +1117,7 @@ function setSelectList() {
     // 设置次生类别
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getSecondaryCategory",                  // url
+        url: "getSecondaryCategoryByDataDictionary",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
@@ -1114,8 +1128,8 @@ function setSelectList() {
                 wastesName.children().remove();
                 $.each(data.data, function (index, item) {
                     var option = $('<option />');
-                    option.val(item.code);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     wastesName.append(option);
                 });
                 wastesName.get(0).selectedIndex = -1;
@@ -1158,29 +1172,21 @@ function setSelectList() {
     });
     $.ajax({
         type: "POST",                            // 方法类型
-        url: "getFormTypeAndPackageType",                  // url
+        url: "getFormTypeByDataDictionary",                  // url
         dataType: "json",
         success: function (result) {
             if (result != undefined) {
                 var data = eval(result);
                 var formType = $("select[name='formType']");
                 formType.children().remove();
-                $.each(data.formTypeList, function (index, item) {
+                $.each(data.data, function (index, item) {
                     var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     formType.append(option);
                 });
                 formType.get(0).selectedIndex = -1;
-                var packageType = $("select[name='packageType']");
-                packageType.children().remove();
-                $.each(data.packageTypeList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    packageType.append(option);
-                });
-                packageType.get(0).selectedIndex = -1;
+
             }
         },
         error: function (result) {
@@ -1188,18 +1194,44 @@ function setSelectList() {
         }
     });
     $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getPackageTypeByDataDictionary",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var packageType = $("select[name='packageType']");
+                packageType.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    packageType.append(option);
+                });
+                packageType.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    $.ajax({
         type: "POST",                            // 方法类型
-        url: "getProcessWay",                  // url
+        url: "getProcessWayByDataDictionary",                  // url
         dataType: "json",
         success: function (result) {
             if (result != undefined) {
                 var data = eval(result);
                 var processWay = $("select[name='processWay']");
                 processWay.children().remove();
-                $.each(data.processWayList, function (index, item) {
+                $.each(data.data, function (index, item) {
                     var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     processWay.append(option);
                 });
                 processWay.get(0).selectedIndex = -1;
@@ -1214,7 +1246,7 @@ function setSelectList() {
     // 设置计量单位
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getUnitList",                  // url
+        url: "getUnitByDataDictionary",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
@@ -1222,13 +1254,11 @@ function setSelectList() {
                 var data = eval(result);
                 var wastesUnit = $("select[name='wastesUnit']");
                 wastesUnit.children().remove();
-                $.each(data.unitList, function (index, item) {
-                    if (item.index == 1 || item.index == 2) {
-                        var option = $('<option />');
-                        option.val(item.index);
-                        option.text(item.name);
-                        wastesUnit.append(option);
-                    }
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    wastesUnit.append(option);
                 });
                 wastesUnit.get(0).selectedIndex = -1;
             }
