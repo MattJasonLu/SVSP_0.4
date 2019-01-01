@@ -14,7 +14,11 @@ var editId;
 function countValue() {
     var mySelect = document.getElementById("count");
     var index = mySelect.selectedIndex;
-    return mySelect.options[index].text;
+    var text = mySelect.options[index].text;
+    if(text == "全部"){
+        text = "0";
+    }
+    return text;
 }
 
 /**
@@ -732,8 +736,10 @@ function setDataList(result) {
     // 获取id为cloneTr的tr元素
     var tr = $("#cloneTr");
     tr.siblings().remove();
+    var pageTotal = 0;
     $.each(result, function (index, item) {
         var data = eval(item);
+
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
         clonedTr.show();
@@ -741,12 +747,25 @@ function setDataList(result) {
         clonedTr.find("td[name='inboundOrderId']").text(data.inboundOrderId);
         clonedTr.find("td[name='inboundDate']").text(getDateStr(data.inboundDate));
         if (data.wareHouse != null) clonedTr.find("td[name='wareHouseName']").text(data.wareHouse.wareHouseName);
-        if (data.boundType != null) clonedTr.find("td[name='boundType']").text(data.boundType.name);
-        if (data.recordStateItem != null) clonedTr.find("td[name='recordState']").text(data.recordStateItem.dictionaryItemName);
+        if (data.inboundOrderItemList.length > 0) {
+            if (data.inboundOrderItemList[0].wastes != null) {
+                clonedTr.find("td[name='wastesName']").text(data.inboundOrderItemList[0].wastes.name);
+                clonedTr.find("td[name='wastesCode']").text(data.inboundOrderItemList[0].wastes.wastesId);
+            }
+            // 增加本页合计
+            pageTotal += data.inboundOrderItemList[0].wastesAmount;
+            clonedTr.find("td[name='wastesAmount']").text(parseFloat(data.inboundOrderItemList[0].wastesAmount).toFixed(2));
+            if (data.unitDataItem != null) clonedTr.find("td[name='wastesUnit']").text(data.inboundOrderItemList[0].unitDataItem.dictionaryItemName);
+            clonedTr.find("td[name='unitPriceTax']").text(parseFloat(data.inboundOrderItemList[0].unitPriceTax).toFixed(2));
+            clonedTr.find("td[name='totalPrice']").text(parseFloat(data.inboundOrderItemList[0].totalPrice).toFixed(2));
+            if (data.inboundOrderItemList[0].laboratoryTest != null) {
+                var heatAverage = parseFloat(data.inboundOrderItemList[0].laboratoryTest.heatAverage).toFixed(2);
+                clonedTr.find("td[name='heatAverage']").text(isNaN(heatAverage) ? 0 : heatAverage);
+                var waterContentAverage = parseFloat(data.inboundOrderItemList[0].laboratoryTest.laboratoryTest).toFixed(2);
+                clonedTr.find("td[name='waterContentAverage']").text(isNaN(waterContentAverage) ? 0 : waterContentAverage);
+            }
+        }
         clonedTr.find("td[name='creatorId']").text(data.creatorId);
-        clonedTr.find("td[name='keeperId']").text(data.keeperId);
-        clonedTr.find("td[name='directorId']").text(data.directorId);
-        clonedTr.find("td[name='approverId']").text(data.approverId);
         if (data.checkStateItem != null) clonedTr.find("td[name='checkState']").text(data.checkStateItem.dictionaryItemName);
         clonedTr.find("td[name='remarks']").text(data.remarks);
         // 把克隆好的tr追加到原来的tr前面
@@ -755,6 +774,13 @@ function setDataList(result) {
     });
     // 隐藏无数据的tr
     tr.hide();
+    // 增加本页合计
+    var clonedTr = tr.clone();
+    clonedTr.show();
+    clonedTr.find("td[name='wastesCode']").text("合计");
+    clonedTr.find("td[name='wastesAmount']").text(pageTotal.toFixed(2));
+    clonedTr.removeAttr("id");
+    clonedTr.insertBefore(tr);
 }
 
 /**
