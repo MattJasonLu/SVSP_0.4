@@ -351,11 +351,11 @@ function setInventoryList(result) {
             clonedTr.find("td[name='amount']").text(obj.amount);
             clonedTr.find("td[name='wareHouseName']").text(obj.wareHouseName);
             clonedTr.find("td[name='inId']").text(obj.inId);
-            clonedTr.find("td[name='inAmount']").text(obj.inAmount);
-            clonedTr.find("td[name='inPrice']").text(obj.inPrice);
+            clonedTr.find("td[name='inAmount']").text(obj.inAmount.toFixed(3));
+            clonedTr.find("td[name='inPrice']").text(obj.inPrice.toFixed(2));
             clonedTr.find("td[name='outId']").text(obj.outId);
-            clonedTr.find("td[name='outAmount']").text(obj.outAmount);
-            clonedTr.find("td[name='outPrice']").text(obj.outPrice);
+            clonedTr.find("td[name='outAmount']").text(obj.outAmount.toFixed(3));
+            clonedTr.find("td[name='outPrice']").text(obj.outPrice.toFixed(2));
             // 把克隆好的tr追加到原来的tr前面
             clonedTr.insertBefore(tr);
             clonedTr.removeAttr('id');

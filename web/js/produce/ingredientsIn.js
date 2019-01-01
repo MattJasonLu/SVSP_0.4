@@ -1367,6 +1367,7 @@ function loadProcurementItemList() {
                         ingredients.specification = obj.specification; // 规格
                         ingredients.unit = obj.unit;                  // 单位
                         ingredients.amount = obj.amount;         // 入库数量
+                        ingredients.totalPrice = obj.totalPrice;
                         ingredients.remarks = obj.remarks;                  // 备注
                         ingredients.id = obj.id;
                         ingredients.procurementId = obj.procurementId;   // 采购申请单编号
@@ -1580,11 +1581,11 @@ function setProcurementItemList(result) {
                         break;
                     // 库存量
                     case (5):
-                        $(this).html(obj.inventory);
+                        $(this).html(obj.inventory.toFixed(2));
                         break;
                     // 需求数量
                     case (6):
-                        $(this).html(obj.demandQuantity);
+                        $(this).html(obj.demandQuantity.toFixed(2));
                         break;
                     // 备注
                     case (7):
@@ -1817,28 +1818,28 @@ function save() {
                 // ingredientsIn.ingredientsList[i].equipmentDataItem=equipmentDataItem;
                 if (ingredientsIn.ingredientsList[i].wareHouseName == null || ingredientsIn.ingredientsList[i].wareHouseName == "") wareHouseState = true;
                 if (ingredientsIn.ingredientsList[i].unitPrice == null || ingredientsIn.ingredientsList[i].unitPrice == "") unitPriceState = true;
-                if (ingredientsIn.ingredientsList[i].serialNumberA == "add") {
-                    // 判断物料存在与否
-                    var ingredients = ingredientsIn.ingredientsList[i];
-                    $.ajax({
-                        type: "POST",
-                        url: "getItemsAmountsExist",
-                        async: false,
-                        data: JSON.stringify(ingredients),
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8",
-                        success: function (result) {
-                            if (result.status == "success") {
-                                if (result.data != 0) ingredientsIn.ingredientsList[i].aid = "exist";
-                                else ingredientsIn.ingredientsList[i].aid = "notExist";
-                            } else alert(result.message);
-                        },
-                        error: function (result) {
-                            console.log(result.message);
-                            alert("服务器错误！");
-                        }
-                    });
-                }
+                // if (ingredientsIn.ingredientsList[i].serialNumberA == "add") {
+                //     // 判断物料存在与否
+                //     var ingredients = ingredientsIn.ingredientsList[i];
+                //     $.ajax({
+                //         type: "POST",
+                //         url: "getItemsAmountsExist",
+                //         async: false,
+                //         data: JSON.stringify(ingredients),
+                //         dataType: "json",
+                //         contentType: "application/json; charset=utf-8",
+                //         success: function (result) {
+                //             if (result.status == "success") {
+                //                 if (result.data != 0) ingredientsIn.ingredientsList[i].aid = "exist";
+                //                 else ingredientsIn.ingredientsList[i].aid = "notExist";
+                //             } else alert(result.message);
+                //         },
+                //         error: function (result) {
+                //             console.log(result.message);
+                //             alert("服务器错误！");
+                //         }
+                //     });
+                // }
             }
         }
     if (ingredientsListDel != null && ingredientsListDel.length > 0) {
@@ -1862,6 +1863,7 @@ function save() {
     ingredientsIn.acceptor = $("#acceptor").val();
     ingredientsIn.handlers = $("#handlers").val();
     ingredientsIn.creationDate = $("#creationDate").val();
+    ingredientsIn.id = localStorage.id;
     console.log("数据为:");
     console.log(ingredientsIn);
     if (confirm("确认保存？")) {

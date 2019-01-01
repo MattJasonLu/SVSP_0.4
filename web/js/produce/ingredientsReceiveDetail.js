@@ -357,6 +357,7 @@ function setList(result) {
     tr.siblings().remove();
     var serialNumber = 0;    // 序号
     var totalAmount = 0;   // 总数量
+    var totalPrice = 0;
     $.each(result, function (index, item) {
         serialNumber++;
         // 克隆tr，每次遍历都可以产生新的tr
@@ -364,6 +365,7 @@ function setList(result) {
         clonedTr.show();
         var obj = eval(item);
         totalAmount += obj.receiveAmount;   // 计算总数量
+        totalPrice += obj.totalPrice;
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
             // 根据索引为部分td赋值
@@ -399,21 +401,29 @@ function setList(result) {
                     break;
                 case (8):
                     // 数量(领料数)
-                    $(this).html(obj.receiveAmount);
+                    $(this).html(obj.receiveAmount.toFixed(2));
                     break;
                 case (9):
+                    // 单价
+                    $(this).html(obj.unitPrice.toFixed(2));
+                    break;
+                case (10):
+                    // 金额
+                    $(this).html(obj.totalPrice.toFixed(2));
+                    break;
+                case (11):
                     // 附注
                     $(this).html(obj.remarks);
                     break;
-                case (10):
+                case (12):
                     // 仓库
                     $(this).html(obj.wareHouseName);
                     break;
-                case (11):
+                case (13):
                     // 创建日期
                     $(this).html(getDateStr(obj.creationDate));
                     break;
-                case (12):
+                case (14):
                     // 物品ID
                     $(this).html(obj.itemId);
                     break;
@@ -436,7 +446,11 @@ function setList(result) {
                 // 总数量
                 $(this).html(totalAmount.toFixed(2));
                 break;
-            case (13):
+            case (10):
+                // 总金额
+                $(this).html(totalPrice.toFixed(2));
+                break;
+            case (15):
                 // 操作
                 $(this).html("");
                 break;
@@ -730,7 +744,7 @@ function showViewModal(id) {
                 console.log(result);
                 setViewClone(result.data);
                 $("#view-id").text(data.id);
-                $("#view-department").text(data.companyName);
+                $("#view-department").text(data.department);
                 $("#view-creationDate").text(getDayDate(data.creationDate));
                 $("#view-fileId").text(data.fileId);
                 $("#view-hundredThousand").text(Math.floor(data.totalPrice / 100000));
@@ -865,7 +879,7 @@ function setViewClone(result) {
  */
 function invalid(item) {
     var id = getIngredientsId(item);
-    if ($(item).parent().parent().children().eq(3).text() == '新建') {
+    if ($(item).parent().parent().children().eq(3).text() === '新建') {
         if (confirm("是否作废？")) {
             $.ajax({
                 type: "POST",
