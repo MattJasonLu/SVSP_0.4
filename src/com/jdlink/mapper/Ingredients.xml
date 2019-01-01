@@ -73,7 +73,8 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
-                or checkStateId in(select dataDictionaryItemId  from  datadictionaryitem where  dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=11)
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%" and dataDictionaryId=11)
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -97,7 +98,8 @@
             </if>
             <if test="checkStateItem != null">
                 <if test="checkStateItem.dictionaryItemName!=''">
-                    and checkStateId in(select dataDictionaryItemId  from  datadictionaryitem where  dictionaryItemName=#{checkStateItem.dictionaryItemName} )
+                    and checkStateId in(select dataDictionaryItemId from datadictionaryitem where
+                    dictionaryItemName=#{checkStateItem.dictionaryItemName} )
                 </if>
 
             </if>
@@ -226,7 +228,8 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
-                or checkStateId in(select dataDictionaryItemId  from  datadictionaryitem where  dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=11)
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%" and dataDictionaryId=11)
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -250,7 +253,8 @@
             </if>
             <if test="checkStateItem != null">
                 <if test="checkStateItem.dictionaryItemName!=''">
-                    and checkStateId in(select dataDictionaryItemId  from  datadictionaryitem where  dictionaryItemName=#{checkStateItem.dictionaryItemName} )
+                    and checkStateId in(select dataDictionaryItemId from datadictionaryitem where
+                    dictionaryItemName=#{checkStateItem.dictionaryItemName} )
                 </if>
 
             </if>
@@ -324,6 +328,7 @@
         where id=#{id};
     </update>
 
+    <!--暂不用-->
     <insert id="addInventoryItem" parameterType="Ingredients">
         insert into t_pr_ingredients_inventory
         (name,wareHouseName,amount,unit,ingredientState,ingredientStateId,specification,code,inId,inItemId,inAmount,inPrice,creationTime)
@@ -339,9 +344,17 @@
          (#{id},#{serialNumber},#{name},#{unitPrice},#{totalPrice},#{amount},#{wareHouseName},
          #{post},#{specification},#{unit},'ToReceive',7,#{remarks},#{equipment},#{equipmentDataItem.dataDictionaryItemId},#{procurementId});
 
+          insert into t_pr_ingredients_inventory
+          (name,wareHouseName,amount,unit,ingredientStateId,specification,code,inId,inItemId,inAmount,inPrice,creationTime)
+          values
+          (#{ingredients.name},#{ingredients.wareHouseName},#{ingredients.amount},#{ingredients.unit},38,
+          #{ingredients.specification},#{ingredients.code},#{#{ingredients.id}},
+          #{ingredients.inItemId},#{ingredients.amount},#{ingredients.unitPrice},NOW());
+
           update t_pl_material set stateId = 77 where id=#{procurementItemId};
     </insert>
 
+    <!--暂不用-->
     <update id="addInventoryAmount" parameterType="Ingredients">
         update t_pr_ingredients_inventory
         set
@@ -352,8 +365,13 @@
     <update id="updateIngredientInItem" parameterType="Ingredients">
          update t_pr_ingredients
          set
-         unitPrice=#{unitPrice},post=#{post},wareHouseName=#{wareHouseName},equipment=#{equipment}
+         unitPrice=#{unitPrice},post=#{post},wareHouseName=#{wareHouseName},totalPrice=#{totalPrice},amount=#{amount}
          where itemId=#{itemId};
+
+         update t_pr_ingredients_inventory
+         set
+         inPrice=#{unitPrice},wareHouseName=#{wareHouseName},amount=#{amount},inAmount=#{amount}
+         where inId=#{id} and name=#{name} and specification=#{specification} and wareHouseName=#{oldWareHouseName};
     </update>
 
     <delete id="delIngredientInItem" parameterType="Ingredients">
@@ -363,17 +381,17 @@
         where receiptNumber =#{procurementId} and suppliesName=#{name} and specifications=#{specification};
 
         delete from t_pr_ingredients_inventory
-        where inId=#{inId} and name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
+        where inId=#{id} and name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
     </delete>
 
-    <delete id="deleteInventory" >
+    <delete id="deleteInventory">
         delete from t_pr_ingredients_inventory;
     </delete>
 
     <update id="reduceOldInventory" parameterType="Ingredients">
         update t_pr_ingredients_inventory
         set amount= amount - #{amount}
-        where name=#{name} and wareHouseName=#{oldWareHouseName} and specification=#{specification};
+        where inId=#{id} and name=#{name} and wareHouseName=#{oldWareHouseName} and specification=#{specification};
     </update>
 
     <insert id="addIn" parameterType="IngredientsIn">
@@ -416,7 +434,7 @@
                     javaType="ArrayList"/>
 
     </resultMap>
-<!--获取状态数据字典-->
+    <!--获取状态数据字典-->
     <select id="getCheckStateItem" resultType="CheckStateItem">
         select * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
     </select>
@@ -425,7 +443,8 @@
         <id column="itemId" property="itemId"/>
         <result column="receiveId" property="id"/>
         <result column="serialNumberReceive" property="serialNumber"/>
-        <association property="ingredientStateItem" column="ingredientStateId" select="getIngredientStateItem"> </association>
+        <association property="ingredientStateItem" column="ingredientStateId"
+                     select="getIngredientStateItem"></association>
         <!--<association property=""-->
     </resultMap>
 
@@ -472,7 +491,8 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
-                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -497,7 +517,8 @@
             </if>
             <if test="checkStateItem != null">
                 <if test="checkStateItem.dictionaryItemName!=''">
-                    and checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName = #{checkStateItem.dictionaryItemName})
+                    and checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName =
+                    #{checkStateItem.dictionaryItemName})
                 </if>
 
             </if>
@@ -522,7 +543,8 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
-                or checkStateId in (select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
+                or checkStateId in (select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -547,7 +569,8 @@
             </if>
             <if test="checkStateItem != null">
                 <if test="checkStateItem.dictionaryItemName!=''">
-                    and checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName = #{checkStateItem.dictionaryItemName})
+                    and checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName =
+                    #{checkStateItem.dictionaryItemName})
                 </if>
 
             </if>
@@ -688,7 +711,7 @@
     </select>
 
     <select id="getInventoryByNameAndWare" resultType="Ingredients">
-        select * from t_pr_ingredients_inventory where name = #{name} and wareHouseName = #{wareHouseName} and specification=#{specification};
+        select * from t_pr_ingredients_inventory where receiveId=#{receiveId} and name = #{name} and wareHouseName = #{wareHouseName} and specification=#{specification};
     </select>
 
     <select id="searchInventoryCount" parameterType="Ingredients" resultType="int">
@@ -747,7 +770,7 @@
         <if test="ingredientsList != null and ingredientsList.size() > 0">
             <foreach collection="ingredientsList" item="ingredients" index="index"><!--将库存加回-->
                 update t_pr_ingredients_inventory
-                set amount= amount + #{ingredients.receiveAmount},receiveAmount = 0;
+                set amount= amount + #{ingredients.receiveAmount},receiveAmount = 0,ingredientStateId=38;
                 where receiveId=#{id} and name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName} and
                 specification=#{ingredients.specification};
             </foreach>
@@ -777,46 +800,48 @@
         update t_pr_ingredients_receive
         set
         department=#{department},fileId=#{fileId},totalAmount=#{totalAmount},vicePresident=#{vicePresident},warehouseSupervisor=#{warehouseSupervisor},
-        keeper=#{keeper},pickingSupervisor=#{pickingSupervisor},pickingMan=#{pickingMan},nowTime=NOW()
+        keeper=#{keeper},pickingSupervisor=#{pickingSupervisor},pickingMan=#{pickingMan},nowTime=NOW(),creationDate=#{creationDate}
         where id = #{id};
     </update>
 
     <insert id="addIngredientsReceiveItem" parameterType="Ingredients">
         insert into t_pr_ingredients
-        (receiveId,serialNumberReceive,code,name,receiveAmount,wareHouseName,
-        specification,unit,remarks,ingredientState)
+        (receiveId,serialNumberReceive,code,name,receiveAmount,amount,unitPrice,totalPrice,wareHouseName,
+        specification,unit,remarks,post,ingredientStateId)
         values
-        (#{id},#{serialNumber},#{code},#{name},#{receiveAmount},#{wareHouseName},#{specification},
-        #{unit},#{remarks},IF(#{notReceiveAmount}>0,'PartReceived','Received')),ingredientStateId=IF(#{ingredients.notReceiveAmount}>0,40,39);
+        (#{id},#{serialNumber},#{code},#{name},#{receiveAmount},#{amount},#{unitPrice},#{totalPrice},#{wareHouseName},#{specification},
+        #{unit},#{remarks},#{post},IF(#{ingredients.notReceiveAmount}>0,40,39));
 
-        update t_pr_ingredients_inventory
-        set amount = amount - #{receiveAmount}
-        where name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
+         update t_pr_ingredients_inventory
+         set amount=amount-#{receiveAmount},ingredientStateId=IF((amount-#{receiveAmount})>0,40,39),
+         receiveId = #{id},receiveAmount=receiveAmount+#{receiveAmount},receivePrice=#{unitPrice}
+         where itemId=#{itemId};
     </insert>
 
     <update id="updateIngredientsReceiveItem" parameterType="Ingredients">
         update t_pr_ingredients
         set
-        remarks=#{remarks},receiveAmount=#{receiveAmount},ingredientState='PartReceived',ingredientStateId=40,serialNumberReceive=#{serialNumber}
+        remarks=#{remarks},post=#{post},receiveAmount=#{receiveAmount},ingredientStateId=40,
+        serialNumberReceive=#{serialNumber},unitPrice=#{unitPrice},totalPrice=#{totalPrice},
         where itemId=#{itemId};
     </update>
 
     <update id="plusInventoryAmount" parameterType="Ingredients">
         update t_pr_ingredients_inventory
-        set amount= amount + #{notReceiveAmount}
-        where name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
+        set amount= amount + (#{oldReceiveAmount}-#{receiveAmount})
+        where receiveId=#{id} and name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
     </update>
 
     <update id="reduceInventoryAmount" parameterType="Ingredients">
         update t_pr_ingredients_inventory
-        set amount= amount - #{notReceiveAmount}
-        where name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
+        set amount= amount - (#{receiveAmount}-#{oldReceiveAmount})
+        where receiveId=#{id} and name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
     </update>
 
     <delete id="delIngredientReceiveItem" parameterType="Ingredients">
         update t_pr_ingredients_inventory
         set amount= amount + #{receiveAmount}
-        where name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
+        where receiveId=#{id} and name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
 
         delete from t_pr_ingredients where itemId=#{itemId}
     </delete>
@@ -830,25 +855,27 @@
 
     <insert id="addAllReceive" parameterType="IngredientsReceive">
         insert into t_pr_ingredients_receive
-        (id,department,creationDate,fileId,totalAmount,vicePresident,warehouseSupervisor,keeper,
+        (id,department,creationDate,fileId,totalAmount,totalPrice,vicePresident,warehouseSupervisor,keeper,
         pickingSupervisor,pickingMan,state,nowTime,creationTime,checkStateId)
         values
-        (#{id},#{department},#{creationDate},#{fileId},#{totalAmount},#{vicePresident},#{warehouseSupervisor},#{keeper},
-        #{pickingSupervisor},#{pickingMan},'NewBuild',NOW(),NOW(),75);
+        (#{id},#{department},#{creationDate},#{fileId},#{totalAmount},#{totalPrice},#{vicePresident},
+        #{warehouseSupervisor},#{keeper},#{pickingSupervisor},#{pickingMan},'NewBuild',NOW(),NOW(),75);
         <if test="ingredientsList.size() > 0">
             <foreach collection="ingredientsList" item="ingredients" index="index">
                 insert into t_pr_ingredients
-                (receiveId,serialNumberReceive,code,name,unitPrice,totalPrice,receiveAmount,wareHouseName,
+                (receiveId,serialNumberReceive,code,name,unitPrice,totalPrice,receiveAmount,amount,wareHouseName,
                 specification,unit,post,remarks,ingredientStateId)
                 values
                 (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.code},#{ingredients.name},
-                #{ingredients.unitPrice},#{ingredients.totalPrice},#{ingredients.receiveAmount},
+                #{ingredients.unitPrice},#{ingredients.totalPrice},#{ingredients.receiveAmount},#{ingredients.amount},
                 #{ingredients.wareHouseName},#{ingredients.specification},#{ingredients.unit},
                 #{ingredients.post},#{ingredients.remarks},IF(#{ingredients.notReceiveAmount}>0,40,39));
 
                 update t_pr_ingredients_inventory
-                set amount=amount-#{ingredients.receiveAmount},ingredientStateId=IF((amount-#{ingredients.receiveAmount})>0,40,39),
-                receiveId = #{ingredients.id},receiveAmount=receiveAmount+#{ingredients.receiveAmount},receivePrice=#{ingredients.unitPrice}
+                set
+                amount=amount-#{ingredients.receiveAmount},ingredientStateId=IF((amount-#{ingredients.receiveAmount})>0,40,39),
+                receiveId =
+                #{ingredients.id},receiveAmount=receiveAmount+#{ingredients.receiveAmount},receivePrice=#{ingredients.unitPrice}
                 where itemId=#{ingredients.itemId};
             </foreach>
         </if>
@@ -926,7 +953,8 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
-                or checkStateId in(select dataDictionaryItemId  from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -950,7 +978,8 @@
             </if>
             <if test="checkStateItem != null">
                 <if test="checkStateItem.dictionaryItemName!=''">
-                    and  checkStateId in(select dataDictionaryItemId  from datadictionaryitem where dictionaryItemName =#{checkStateItem.dictionaryItemName})
+                    and checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName
+                    =#{checkStateItem.dictionaryItemName})
                 </if>
 
             </if>
@@ -975,7 +1004,8 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
-                or checkStateId in(select dataDictionaryItemId  from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -999,7 +1029,8 @@
             </if>
             <if test="checkStateItem != null">
                 <if test="checkStateItem.dictionaryItemName!=''">
-                    and  checkStateId in(select dataDictionaryItemId  from datadictionaryitem where dictionaryItemName =#{checkStateItem.dictionaryItemName})
+                    and checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName
+                    =#{checkStateItem.dictionaryItemName})
                 </if>
 
             </if>
@@ -1138,8 +1169,8 @@
                 set checkStateId=75
                 where id=#{ingredients.aid};
 
-                <!--将领料单物品明细状态更新为部分领用-->
-                update t_pr_ingredients set ingredientStateId=40  where receiveId=#{ingredients.aid};
+                <!--将领料单物品明细状态更新为待出库-->
+                update t_pr_ingredients set ingredientStateId=41 where receiveId=#{ingredients.aid};
             </foreach>
         </if>
     </update>
@@ -1224,21 +1255,14 @@
                 IF(#{ingredients.notReceiveAmount}>0,43,42),#{ingredients.remarks},#{ingredients.equipment},
                 #{ingredients.aid},#{ingredients.equipmentDataItem.dataDictionaryItemId});
 
-                <if test="receiveIdList == null or receiveIdList.size() == 0">
-                    update t_pr_ingredients_inventory
-                    set
-                    amount =
-                    amount-#{ingredients.receiveAmount},ingredientStateId=IF((amount-#{ingredients.receiveAmount})>0,40,39)
-                    where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName};
-                </if>
-            </foreach>
-        </if>
-        <if test="receiveIdList != null and receiveIdList.size() > 0 ">
-            <foreach collection="receiveIdList" item="receiveId" index="index">
-                update t_pr_ingredients_receive
-                set
-                checkStateId = 81
-                where id = #{receiveId};
+                update t_pr_ingredients
+                set ingredientStateId = 42
+                where itemId=#{ingredients.receiveItemId};
+
+                update t_pr_ingredients_inventory
+                set outAmount=#{ingredients.receiveAmount},outId=#{ingredients.id},outPrice=#{ingredients.unitPrice}
+                where receiveId=#{ingredients.receiveId} and specification=#{ingredients.specification}
+                and name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName};
             </foreach>
         </if>
     </insert>

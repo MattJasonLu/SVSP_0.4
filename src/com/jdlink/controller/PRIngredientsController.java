@@ -138,7 +138,6 @@ public class PRIngredientsController {
     public String updateIngredientsIn(@RequestBody IngredientsIn ingredientsIn) {
         JSONObject res = new JSONObject();
         try {
-            //  ingredientsIn.setCreationDate(new Date()); // 设置入库日期为当前日期
             ingredientsService.updateDataIn(ingredientsIn);
             res.put("status", "success");
             res.put("message", "入库单修改成功");

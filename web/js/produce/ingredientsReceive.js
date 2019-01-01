@@ -1341,7 +1341,6 @@ function loadInventoryListData() {
                     $("#view-id").text(data.id);
                     $("#department").val(data.department);
                     $("#creationDate").val(getDateStr(data.creationDate));
-                    //console.log("日期："+getDateStr(data.creationDate));
                     $("#fileId").val(data.fileId);
                     $("#vicePresident").val(data.vicePresident);
                     $("#warehouseSupervisor").val(data.warehouseSupervisor);
@@ -1349,7 +1348,9 @@ function loadInventoryListData() {
                     $("#pickingSupervisor").val(data.pickingSupervisor);
                     $("#pickingMan").val(data.pickingMan);
                     // 设置物品明细数据
-                    var totalReceiveAmount = 0; // 总金额
+                    var totalReceiveAmount = 0; // 总领料数
+                    var totalAmount = 0;        // 总库存量
+                    var totalPrice = 0;         // 总金额
                     ingredientsReceive1 = {};
                     ingredientsReceive1.ingredientsList = [];
                     $.each(data.ingredientsList, function (index, item) {
@@ -1372,6 +1373,12 @@ function loadInventoryListData() {
                         ingredients.receiveAmount = obj.receiveAmount.toFixed(2); // 领料数
                         ingredients.oldReceiveAmount = obj.receiveAmount.toFixed(2);
                         ingredients.wareHouseName = obj.wareHouseName;
+                        ingredients.receiveId = localStorage.id;  // 领料单号
+                        ingredients.unitPrice = obj.unitPrice;  //
+                        ingredients.totalPrice = obj.totalPrice;  //
+                        ingredients.remarks = obj.remarks;  //
+                        ingredients.post = obj.post;  //
+                        ingredients.id = localStorage.id;  //
                         //获取库存量
                         $.ajax({
                             type: "POST",
@@ -1396,22 +1403,31 @@ function loadInventoryListData() {
                         ingredients.serialNumberA = "update";
                         ingredients.itemId = obj.itemId;
                         ingredientsReceive1.ingredientsList.push(ingredients);
-                        totalReceiveAmount += parseFloat(obj.receiveAmount.toFixed(2));  // 计算总领料数
+                        totalReceiveAmount += parseFloat(obj.receiveAmount);  // 计算总领料数
+                        totalAmount += parseFloat(ingredients.amount);
+                        totalPrice += parseFloat(obj.receiveAmount) * parseFloat(ingredients.unitPrice);
                         clonedTr.find("span[name='serialNumber']").text(num);
                         clonedTr.children("td:eq(0)").prepend(delBtn);   // 添加减行按钮
-                        clonedTr.find("td[name='name']").text(obj.name);
-                        clonedTr.find("td[name='specification']").text(obj.specification);
-                        clonedTr.find("td[name='unit']").text(obj.unit);
+                        clonedTr.find("span[name='name']").text(obj.name);
+                        clonedTr.find("span[name='specification']").text(obj.specification);
+                        clonedTr.find("span[name='unit']").text(obj.unit);
                         clonedTr.find("input[name='receiveAmount']").val(obj.receiveAmount.toFixed(2));
                         clonedTr.find("span[name='amount']").text(ingredients.amount.toFixed(2));
-                        clonedTr.find("td[name='wareHouseName']").text(obj.wareHouseName);
+                        clonedTr.find("input[name='unitPrice']").val(ingredients.unitPrice.toFixed(2));
+                        clonedTr.find("input[name='totalPrice']").val(ingredients.totalPrice.toFixed(2));
+                        clonedTr.find("input[name='remarks']").val(ingredients.remarks);
+                        clonedTr.find("input[name='post']").val(ingredients.post);
+                        clonedTr.find("input[name='totalPrice']").text(ingredients.totalPrice.toFixed(2));
+                        clonedTr.find("span[name='wareHouseName']").text(obj.wareHouseName);
                         // 把克隆好的tr追加到原来的tr前面
                         clonedTr.removeAttr("id");
                         clonedTr.insertBefore(tr);
                         clonedTr.addClass("newLine1");
                     });
                     tr.hide();
-                    $("#total-Amount").text(totalReceiveAmount.toFixed(2));
+                    $("#totalReceiveAmount").text(totalReceiveAmount.toFixed(2));
+                    $("#totalPrice").text(totalPrice.toFixed(2));
+                    $("#totalAmount").text(totalAmount.toFixed(2));
                 } else {
                     alert(result.message);
                 }
@@ -1469,7 +1485,9 @@ function delLine(e) {
         });
         tBody.children().eq(i).find("span[name='serialNumber']").text(i);// 更新序号
     }
-    if(length === 1)$("a[name='delete]").remove();   // 最后一行不允许删除
+    if(length === 3) {
+        $("a[name='delete']").remove();   // 最后一行不允许删除
+    }
 }
 
 /**
@@ -1700,6 +1718,7 @@ function save() {
     ingredientsReceive.id = $("#view-id").text();
     ingredientsReceive.creationDate = $("#creationDate").val();
     totalReceiveAmount = 0;  // 总领料数
+    var totalPrice = 0;
     if (ingredientsReceive != null && ingredientsReceive.ingredientsList != null)//如果有新添的数据则获取最新的输入数据
         for (var i = 0; i < ingredientsReceive.ingredientsList.length; i++) {
             var $i = i + 1;
@@ -1708,6 +1727,7 @@ function save() {
             ingredientsReceive.ingredientsList[i].unitPrice = $("#unitPrice" + $i).val();
             ingredientsReceive.ingredientsList[i].totalPrice = $("#totalPrice" + $i).val();
             ingredientsReceive.ingredientsList[i].post = $("#post" + $i).val();
+            totalPrice += parseFloat(ingredientsReceive.ingredientsList[i].totalPrice);
             if (ingredientsReceive.ingredientsList[i].receiveAmount == ingredientsReceive.ingredientsList[i].amount) {
                 ingredientsReceive.ingredientsList[i].notReceiveAmount = 0;
             } else {
@@ -1716,6 +1736,7 @@ function save() {
             totalReceiveAmount += parseInt(ingredientsReceive.ingredientsList[i].receiveAmount);
         }
     ingredientsReceive.totalAmount = totalReceiveAmount; // 设置总领料数
+    ingredientsReceive.totalPrice = totalPrice; // 设置总金额
     console.log("数据为：");
     console.log(ingredientsReceive);
     if (confirm("确认保存？")) {
