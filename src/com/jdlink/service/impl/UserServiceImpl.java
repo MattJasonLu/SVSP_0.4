@@ -50,6 +50,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void update(User user) {
+        userMapper.update(user);
+    }
+
+
+    @Override
     public void addLog(LoginLog loginLog) {
         userMapper.addLog(loginLog);
     }

@@ -25,6 +25,8 @@ public interface UserService {
 
     User getById(String id);
 
+    void update(User user);
+
     void addLog(LoginLog loginLog);
 
     /**

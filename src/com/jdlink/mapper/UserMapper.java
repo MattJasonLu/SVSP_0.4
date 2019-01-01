@@ -16,19 +16,19 @@ import java.util.Map;
  */
 public interface UserMapper {
 
-    public void add(User user);
+    void add(User user);
 
-    public void delete(int id);
+    void delete(int id);
 
-    public User get(int id);
+    User get(int id);
 
-    public List<User> get(Map params);
+    List<User> get(Map params);
 
-    public void update(User category);
+    void update(User user);
 
-    public List<User> list();
+    List<User> list();
 
-    public int count();
+    int count();
 
     List<User> getByUsername(String username);
 
