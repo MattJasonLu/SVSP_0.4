@@ -47,11 +47,11 @@ public class Ingredients {
      */
     private String specification;
     /**
-     * 单位
+     * 计量单位
      */
     private String unit;
     /**
-     * 数量（入库数量）
+     * 数量（入库数量）(库存表中用于表示库存量)
      */
     private float amount;
     /**
@@ -138,14 +138,11 @@ public class Ingredients {
      * 旧领料数
      */
     private float oldReceiveAmount;
-
     /**
      * 单位数据字典
      * @return
      */
     private UnitDataItem unitDataItem;
-
-
     /**
      *状态数据字典
      * @return
@@ -162,6 +159,138 @@ public class Ingredients {
      * 辅料/备件状态数据字典
      */
     private IngredientStateItem ingredientStateItem;
+    /**
+     * 入库单号
+     */
+    private String inId;
+    /**
+     * 入库单明细ID
+     */
+    private int inItemId;
+    /**
+     * 领料单号
+     */
+    private String receiveId;
+    /**
+     * 领料单明细ID
+     */
+    private int receiveItemId;
+    /**
+     * 入库数量
+     */
+    private float inAmount;
+    /**
+     * 入库单价
+     */
+    private float inPrice;
+    /**
+     * 领料单价
+     */
+    private float receivePrice;
+    /**
+     * 出库单编号
+     */
+    private String outId;
+    /**
+     * 出库单明细ID
+     */
+    private int outItemId;
+    /**
+     * 出库数量
+     */
+    private float outAmount;
+    /**
+     * 出库单价
+     */
+    private float outPrice;
+
+    public String getInId() {
+        return inId;
+    }
+
+    public void setInId(String inId) {
+        this.inId = inId;
+    }
+
+    public int getInItemId() {
+        return inItemId;
+    }
+
+    public void setInItemId(int inItemId) {
+        this.inItemId = inItemId;
+    }
+
+    public String getReceiveId() {
+        return receiveId;
+    }
+
+    public void setReceiveId(String receiveId) {
+        this.receiveId = receiveId;
+    }
+
+    public int getReceiveItemId() {
+        return receiveItemId;
+    }
+
+    public void setReceiveItemId(int receiveItemId) {
+        this.receiveItemId = receiveItemId;
+    }
+
+    public float getInAmount() {
+        return inAmount;
+    }
+
+    public void setInAmount(float inAmount) {
+        this.inAmount = inAmount;
+    }
+
+    public float getInPrice() {
+        return inPrice;
+    }
+
+    public void setInPrice(float inPrice) {
+        this.inPrice = inPrice;
+    }
+
+    public float getReceivePrice() {
+        return receivePrice;
+    }
+
+    public void setReceivePrice(float receivePrice) {
+        this.receivePrice = receivePrice;
+    }
+
+    public String getOutId() {
+        return outId;
+    }
+
+    public void setOutId(String outId) {
+        this.outId = outId;
+    }
+
+    public int getOutItemId() {
+        return outItemId;
+    }
+
+    public void setOutItemId(int outItemId) {
+        this.outItemId = outItemId;
+    }
+
+    public float getOutAmount() {
+        return outAmount;
+    }
+
+    public void setOutAmount(float outAmount) {
+        this.outAmount = outAmount;
+    }
+
+    public float getOutPrice() {
+        return outPrice;
+    }
+
+    public void setOutPrice(float outPrice) {
+        this.outPrice = outPrice;
+    }
 
     public String getCode() {
         return code;

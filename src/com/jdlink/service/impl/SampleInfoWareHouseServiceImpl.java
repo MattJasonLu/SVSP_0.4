@@ -53,6 +53,9 @@ public class SampleInfoWareHouseServiceImpl  implements SampleInfoWareHouseServi
     public int searchCount(SampleInformation sampleInformation){ return sampleInfoWareHouseMapper.searchCount(sampleInformation); }
 
     @Override
+    public int getCountByTransferId(String transferId){ return sampleInfoWareHouseMapper.getCountByTransferId(transferId); }
+
+    @Override
     public List<SampleInformation> search(SampleInformation sampleInformation){ return sampleInfoWareHouseMapper.search(sampleInformation); }
 
     @Override

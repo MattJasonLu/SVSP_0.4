@@ -78,6 +78,10 @@
         select * from t_pr_sampleinfowarehouse WHERE id = #{sampleId} ORDER BY nowTime DESC;
     </select>
 
+    <select id="getCountByTransferId" resultType="int">
+        select count(*) from t_pr_sampleinfowarehouseitem WHERE  transferId= #{transferId} ;
+    </select>
+
     <select id="listByKeyword" parameterType="String" resultType="SampleInformation">
         select * from t_pr_sampleinfowarehouse
         <where>

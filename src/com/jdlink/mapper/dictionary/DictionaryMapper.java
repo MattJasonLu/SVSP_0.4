@@ -59,6 +59,8 @@ public interface DictionaryMapper {
 
     List<DataDictionaryItem> getSelectListByDataDictionary(int id);
 
+    List<DataDictionaryItem> getTAndKGUnitList();
+
     int getdatadictionaryitemIdByName(String name, int id);
 
     DataDictionaryItem getDatadictionaryItemByName(String name, int id);

@@ -14,10 +14,16 @@
 
     <resultMap id="WayBillItemRM" type="WayBillItem" autoMapping="true">
         <id property="itemId" column="itemId"/>
+        <association property="unitDataItem" column="unitDataItemId" select="getUnitDataItem"/>
     </resultMap>
 
     <select id="getItems" parameterType="String" resultMap="WayBillItemRM">
         select * from t_pr_waybillitem where wayBillId = #{id};
+    </select>
+
+    <!--获取计量单位数据字典-->
+    <select id="getUnitDataItem" resultType="UnitDataItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{unitDataItemId}
     </select>
 
     <!--获取申报状态数据字典-->
@@ -45,7 +51,7 @@
           select * from t_pr_waybill where id = #{id};
      </select>
 
-    <select id="getItemById" parameterType="String" resultMap="WayBillItemRM">
+    <select id="getItemById" parameterType="int" resultMap="WayBillItemRM">
         select * from t_pr_waybillitem where itemId = #{id};
     </select>
 
@@ -230,7 +236,8 @@
             invoiceDate=#{wayBillItem.invoiceDate},salesmanName=#{wayBillItem.salesmanName},
             receiveCompanyName=#{wayBillItem.receiveCompanyName},wastesId=#{wayBillItem.wastesId},
             wastesCode=#{wayBillItem.wastesCode},wastesAmount=#{wayBillItem.wastesAmount},wastesUnit=#{wayBillItem.wastesUnit},
-            wastesName=#{wayBillItem.wastesName},wastesPrice=#{wayBillItem.wastesPrice},wastesTotalPrice=#{wayBillItem.wastesTotalPrice}
+            wastesName=#{wayBillItem.wastesName},wastesPrice=#{wayBillItem.wastesPrice},wastesTotalPrice=#{wayBillItem.wastesTotalPrice},
+            unitDataItemId=#{wayBillItem.unitDataItem.dataDictionaryItemId}
             where wayBillId=#{id};
         </foreach>
     </update>
@@ -244,10 +251,13 @@
     <insert id="addItem" parameterType="WayBill">
         <foreach collection="wayBillItemList" index="index" item="wayBillItem">
             insert into t_pr_waybillitem
-            (itemId,wayBillId,receiveDate,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanName,receiveCompanyName,wastesId,wastesCode,wastesPrice,wastesName,wastesAmount,wastesUnit,wastesTotalPrice)
+            (wayBillId,receiveDate,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanName,receiveCompanyName
+            ,wastesId,wastesCode,wastesPrice,wastesName,wastesAmount,unitDataItemId,wastesTotalPrice)
             values
-            (#{wayBillItem.itemId},#{wayBillItem.wayBillId},#{wayBillItem.receiveDate},#{wayBillItem.receiveCompanyOperator},#{wayBillItem.invoiceNumber},#{wayBillItem.invoiceDate},#{wayBillItem.salesmanName},#{wayBillItem.receiveCompanyName},#{wayBillItem.wastesId},
-            #{wayBillItem.wastesCode},#{wayBillItem.wastesPrice},#{wayBillItem.wastesName},#{wayBillItem.wastesAmount},#{wayBillItem.wastesUnit},#{wayBillItem.wastesTotalPrice});
+            (#{wayBillItem.wayBillId},#{wayBillItem.receiveDate},#{wayBillItem.receiveCompanyOperator},
+            #{wayBillItem.invoiceNumber},#{wayBillItem.invoiceDate},#{wayBillItem.salesmanName},#{wayBillItem.receiveCompanyName},#{wayBillItem.wastesId},
+            #{wayBillItem.wastesCode},#{wayBillItem.wastesPrice},#{wayBillItem.wastesName},#{wayBillItem.wastesAmount},
+            #{wayBillItem.unitDataItem.dataDictionaryItemId},#{wayBillItem.wastesTotalPrice});
         </foreach>
     </insert>
 
@@ -260,13 +270,13 @@
         #{produceCompanyOperator},'NewBuild',#{produceCompanyName},#{founder},NOW(),#{contractId},75);
         <foreach collection="wayBillItemList" index="index" item="wayBillItem">
             insert into t_pr_waybillitem
-            (itemId,wayBillId,receiveDate,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanName,receiveCompanyName,
-            wastesId,wastesCode,wastesPrice,wastesName,wastesAmount,wastesUnit,wastesTotalPrice)
+            (wayBillId,receiveDate,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanName,receiveCompanyName,
+            wastesId,wastesCode,wastesPrice,wastesName,wastesAmount,unitDataItemId,wastesTotalPrice)
             values
-            (#{wayBillItem.itemId},#{wayBillItem.wayBillId},#{wayBillItem.receiveDate},#{wayBillItem.receiveCompanyOperator},
+            (#{wayBillItem.wayBillId},#{wayBillItem.receiveDate},#{wayBillItem.receiveCompanyOperator},
             #{wayBillItem.invoiceNumber},#{wayBillItem.invoiceDate},#{wayBillItem.salesmanName},#{wayBillItem.receiveCompanyName},
             #{wayBillItem.wastesId},#{wayBillItem.wastesCode},#{wayBillItem.wastesPrice},#{wayBillItem.wastesName},
-            #{wayBillItem.wastesAmount},#{wayBillItem.wastesUnit},#{wayBillItem.wastesTotalPrice});
+            #{wayBillItem.wastesAmount},#{wayBillItem.unitDataItem.dataDictionaryItemId},#{wayBillItem.wastesTotalPrice});
         </foreach>
     </insert>
 

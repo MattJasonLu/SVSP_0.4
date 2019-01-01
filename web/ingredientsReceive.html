@@ -9,6 +9,7 @@
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
+    <script language="javascript" src="js/bootstrap/printThis.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
     <script src="js/produce/ingredientsReceive.js"></script>
@@ -138,7 +139,7 @@
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
                     <a class="btn btn-primary btn-xs" id="function_-342" href="#" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; addIngredientsReceive();}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                    <a class="btn btn-primary btn-xs" id="function_-343" onclick="checkAuthority($(this))" href="ingredientsReceiveDetail.html"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 明细页面</a>
+                    <a class="btn btn-primary btn-xs" href="ingredientsReceiveDetail.html"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 明细页面</a>
                     <a class="btn btn-primary btn-xs" id="function_-344" href="#" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose();}"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                     <a class="btn btn-primary btn-xs" id="function_-345" href="#" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel();}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                 </div>
@@ -290,6 +291,7 @@
                         <option>5</option>
                         <option selected>15</option>
                         <option>50</option>
+                        <option>全部</option>
                     </select>
                 </li>
             </ol>
@@ -323,62 +325,114 @@
              aria-labelledby="myModalLabel">
             <div class="modal-dialog modal-lg" role="document" style="width: 90%">
                 <div class="modal-content">
-                    <br>
-                    <!--<div class="text-center"><span id="creationDate"></span>&nbsp;&nbsp;&nbsp;&nbsp;预处理单</div>-->
-                    <h3 class="modal-title text-center" >北控安耐得环保科技发展常州有限公司</h3>
-                    <h4 class="modal-title text-center" >领料单</h4>
-                    <p class="text-center pull-right"><b>NO.</b><span id="view-id" class="text-left"></span></p>
-                    <br>
-                    <table class="table table-bordered" style="border:none">
-                        <thead style="border:none">
-                        <tr>
-                            <th colspan="3" class="text-left" style="border:none">部门:<span id="view-department" class="text-left"></span></th>
-                            <th colspan="3" class="text-center" style="border:none"><span id="view-creationDate" class="text-center"></span></th>
-                            <th colspan="2" class="text-right" style="border:none">文件编号:<span id="view-fileId" class="text-left"></span></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td class="text-center" >编号</td>
-                            <td class="text-center" >物品名称</td>
-                            <td class="text-center" >规格</td>
-                            <td class="text-center" >单位</td>
-                            <td class="text-center" >数量</td>
-                            <td class="text-center" >附注</td>
-                            <td class="text-center" >仓库</td>
-                            <td class="text-center" >状态</td>
-                        </tr>
-                        <tr id="viewClone">
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="text-center">合计</td>
-                            <td class="text-center"><span class="text-center" id="view-unit"></span></td>
-                            <td class="text-center"><span class="text-center" id="view-totalAmount"></span></td>
-                            <td class="text-center">--</td>
-                            <td class="text-center">--</td>
-                            <td class="text-center">--</td>
-                        </tr>
-                        <tr>
-                            <td class="text-left" colspan="2" style="border: none">主管副总经理：<span id="view-vicePresident" class="text-left"></span></td>
-                            <td class="text-left" colspan="2" style="border: none">仓库部门主管：<span id="view-warehouseSupervisor" class="text-left"></span></td>
-                            <td class="text-left" colspan="1" style="border: none">保管员：<span id="view-keeper" class="text-left"></span></td>
-                            <td class="text-left" colspan="2" style="border: none">领料部门主管：<span id="view-pickingSupervisor" class="text-left"></span></td>
-                            <td class="text-left" colspan="1" style="border: none">领料人：<span id="view-pickingMan" class="text-left"></span></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div class="modal-header">
+                        <br>
+                        <!--<div class="text-center"><span id="creationDate"></span>&nbsp;&nbsp;&nbsp;&nbsp;预处理单</div>-->
+                        <h3 class="modal-title text-center">北控安耐得环保科技发展常州有限公司</h3>
+                        <h4 class="modal-title text-center">领料单</h4>
+                        <p class="text-center pull-right"><b>NO.</b><span id="view-id" class="text-left"></span></p>
+                        <br>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-bordered" style="border:none">
+                            <thead style="border:none">
+                            <tr>
+                                <th colspan="7" class="text-left" style="border:none">单位:<span id="view-companyName"
+                                                                                               class="text-left"></span>
+                                </th>
+                                <th colspan="6" class="text-center" style="border:none"><span id="view-creationDate"
+                                                                                              class="text-center"></span>
+                                </th>
+                                <th colspan="6" class="text-right" style="border:none">文件编号:<span id="view-fileId"
+                                                                                                  class="text-left"></span>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="text-center" rowspan="2">编号</td>
+                                <td class="text-center" rowspan="2">物品编码</td>
+                                <td class="text-center" rowspan="2">物品名称</td>
+                                <td class="text-center" rowspan="2">规格</td>
+                                <td class="text-center" rowspan="2">单位</td>
+                                <td class="text-center" rowspan="2">数量</td>
+                                <td class="text-center" rowspan="2">单价</td>
+                                <td class="text-center" colspan="8">金额</td>
+                                <td class="text-center" rowspan="2">过账</td>
+                                <td class="text-center" rowspan="2">附注</td>
+                                <td class="text-center" rowspan="2">仓库</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">十</td>
+                                <td class="text-center">万</td>
+                                <td class="text-center">千</td>
+                                <td class="text-center">百</td>
+                                <td class="text-center">十</td>
+                                <td class="text-center">元</td>
+                                <td class="text-center">角</td>
+                                <td class="text-center">分</td>
+                            </tr>
+                            <tr id="viewClone">
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="7" class="text-center">合计</td>
+                                <td class="text-center" id="view-hundredThousand"></td>
+                                <td class="text-center" id="view-tenThousand"></td>
+                                <td class="text-center" id="view-thousand"></td>
+                                <td class="text-center" id="view-hundred"></td>
+                                <td class="text-center" id="view-ten"></td>
+                                <td class="text-center" id="view-yuan"></td>
+                                <td class="text-center" id="view-jiao"></td>
+                                <td class="text-center" id="view-fen"></td>
+                                <td class="text-center">--</td>
+                                <td class="text-center">--</td>
+                                <td class="text-center">--</td>
+                            </tr>
+                            <tr>
+                                <td class="text-left" colspan="4" style="border: none">主管副总经理：<span id="view-bookkeeper"
+                                                                                                class="text-left"></span>
+                                </td>
+                                <td class="text-left" colspan="3" style="border: none">仓库部门主管：<span id="view-approver"
+                                                                                                class="text-left"></span>
+                                </td>
+                                <td class="text-left" colspan="5" style="border: none">保管员：<span id="view-keeper"
+                                                                                                class="text-left"></span>
+                                </td>
+                                <td class="text-left" colspan="4" style="border: none">领料部门主管：<span id="view-acceptor"
+                                                                                                class="text-left"></span>
+                                </td>
+                                <td class="text-left" colspan="2" style="border: none">领料人：<span id="view-handlers"
+                                                                                                class="text-left"></span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer" id="footer">
+                        <button type="button" class="btn btn-primary" onclick="print();">打印</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 <!--导入-->

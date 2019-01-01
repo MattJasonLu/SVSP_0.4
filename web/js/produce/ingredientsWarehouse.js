@@ -8,7 +8,11 @@ var data;
 function countValue() {
     var mySelect = document.getElementById("count");
     var index = mySelect.selectedIndex;
-    return mySelect.options[index].text;
+    var text = mySelect.options[index].text;
+    if(text == "全部"){
+        text = "0";
+    }
+    return text;
 }
 
 /**
@@ -71,6 +75,7 @@ function totalPage() {
  * @returns {number}
  */
 function loadPages(totalRecord, count) {
+    if(count == 0)count = totalRecord;
     if (totalRecord == 0) {
         console.log("总记录数为0，请检查！");
         return 0;
@@ -338,39 +343,19 @@ function setInventoryList(result) {
             // 循环遍历cloneTr的每一个td元素，并赋值
             var obj = eval(item);
             totalAmount += obj.amount;
-            clonedTr.children("td").each(function (inner_index) {
-                // 根据索引为部分td赋值
-                switch (inner_index) {
-                    // 物品编号
-                    case (1):
-                        $(this).html(obj.itemId);
-                        break;
-                    // 物品编码
-                    case (2):
-                        $(this).html("");
-                        break;
-                    // 物品名称
-                    case (3):
-                        $(this).html(obj.name);
-                        break;
-                    // 所在仓库
-                    case (4):
-                        $(this).html(obj.wareHouseName);
-                        break;
-                    // 库存量
-                    case (5):
-                        $(this).html(obj.amount);
-                        break;
-                    // 单位
-                    case (6):
-                        $(this).html(obj.unit);
-                        break;
-                    case (7):
-                        //规格
-                        $(this).html(obj.specification);
-                        break;
-                }
-            });
+            clonedTr.find("td[name='itemId']").text(obj.itemId);
+            clonedTr.find("td[name='code']").text(obj.code);
+            clonedTr.find("td[name='name']").text(obj.name);
+            clonedTr.find("td[name='specification']").text(obj.specification);
+            clonedTr.find("td[name='unit']").text(obj.unit);
+            clonedTr.find("td[name='amount']").text(obj.amount);
+            clonedTr.find("td[name='wareHouseName']").text(obj.wareHouseName);
+            clonedTr.find("td[name='inId']").text(obj.inId);
+            clonedTr.find("td[name='inAmount']").text(obj.inAmount);
+            clonedTr.find("td[name='inPrice']").text(obj.inPrice);
+            clonedTr.find("td[name='outId']").text(obj.outId);
+            clonedTr.find("td[name='outAmount']").text(obj.outAmount);
+            clonedTr.find("td[name='outPrice']").text(obj.outPrice);
             // 把克隆好的tr追加到原来的tr前面
             clonedTr.insertBefore(tr);
             clonedTr.removeAttr('id');
@@ -386,7 +371,7 @@ function setInventoryList(result) {
                 $(this).html("合计");
                 break;
             // 库存量
-            case (4):
+            case (6):
                 $(this).html(totalAmount);
                 break;
         }

@@ -149,14 +149,12 @@ public class SewageTestController {
                     }
                     //判断化验单是否存在 存在就更新
                     //存在就更新
-                    if(sewageTestService.getSewageTestById(data.get(i)[j][1].toString())!=null){
+                    SewageTest sewageTest1 = sewageTestService.getSewageTestById(data.get(i)[j][1].toString());
+                    if(sewageTest1 !=null){
                          sewageTestService.updateSewageTestById(sewageTest);
-                    }
-                    //添加化验单对象
-                    if(sewageTestService.getSewageTestById(data.get(i)[j][1].toString())==null){
+                    }else{//添加化验单对象
                         sewageTestService.addSewageTest(sewageTest);
                     }
-
                 }
 
           }
@@ -289,11 +287,11 @@ public class SewageTestController {
                         if(data.get(i)[j][9]=="null"){
                             softTest.setRemarks("");
                         }
+                        SoftTest softTest1 = sewageTestService.getSoftTestById(data.get(i)[j][1].toString());
                         //根据化验单号查询对象 如果存在就更新 不存在就添加
-                        if(sewageTestService.getSoftTestById(data.get(i)[j][1].toString())==null){
+                        if(softTest1 == null){
                             sewageTestService.addSoftTest(softTest);
-                        }
-                        if(sewageTestService.getSoftTestById(data.get(i)[j][1].toString())!=null){
+                        }else{
                             sewageTestService.updateSoftTest(softTest);
                         }
                     }

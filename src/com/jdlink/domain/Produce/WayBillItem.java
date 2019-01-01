@@ -1,6 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Dictionary.UnitDataItem;
 import com.jdlink.domain.Salesman;
 import com.jdlink.domain.Wastes;
 
@@ -10,7 +11,7 @@ public class WayBillItem{
     /**
      * 接运单明细项目号
      */
-    private String itemId;
+    private int itemId;
     /**
      * 接运单号
      */
@@ -71,6 +72,19 @@ public class WayBillItem{
      * 接运单日期
      */
     private Date receiveDate;
+    /**
+     * 单位数据字典
+     * @return
+     */
+    private UnitDataItem unitDataItem;
+
+    public UnitDataItem getUnitDataItem() {
+        return unitDataItem;
+    }
+
+    public void setUnitDataItem(UnitDataItem unitDataItem) {
+        this.unitDataItem = unitDataItem;
+    }
 
     public Date getReceiveDate() {
         return receiveDate;
@@ -80,11 +94,11 @@ public class WayBillItem{
         this.receiveDate = receiveDate;
     }
 
-    public String getItemId() {
+    public int getItemId() {
         return itemId;
     }
 
-    public void setItemId(String itemId) {
+    public void setItemId(int itemId) {
         this.itemId = itemId;
     }
 

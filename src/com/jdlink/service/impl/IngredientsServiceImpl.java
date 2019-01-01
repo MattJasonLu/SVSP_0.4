@@ -104,6 +104,11 @@ public class IngredientsServiceImpl implements IngredientsService {
         return ingredientsMapper.getAmountItems(ingredients);
     }
 
+    @Override
+    public void addInventoryItem(Ingredients ingredients) { ingredientsMapper.addInventoryItem(ingredients);}
+
+    @Override
+    public void deleteInventory() { ingredientsMapper.deleteInventory();}
     /**
      * 根据日期范围获取入库单
      *
@@ -375,4 +380,10 @@ public class IngredientsServiceImpl implements IngredientsService {
     public List<Ingredients> searchIngredient(Ingredients ingredients) { return ingredientsMapper.searchIngredient(ingredients); }
 
     public int searchCountIngredient(Ingredients ingredients) { return ingredientsMapper.searchCountIngredient(ingredients); }
+
+    public int getCountByCode(String code) { return ingredientsMapper.getCountByCode(code); }
+
+    public int getCountByType(String type) { return ingredientsMapper.getCountByType(type); }
+
+
 }

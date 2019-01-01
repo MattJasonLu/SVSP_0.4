@@ -26,7 +26,11 @@ function getDayDate(date) {
 function countValue() {
     var mySelect = document.getElementById("count");
     var index = mySelect.selectedIndex;
-    return mySelect.options[index].text;
+    var text = mySelect.options[index].text;
+    if(text == "全部"){
+        text = "0";
+    }
+    return text;
 }
 
 /**
@@ -336,6 +340,7 @@ function loadPageList() {
  * @returns {number}
  */
 function loadPages(totalRecord, count) {
+    if(count == 0)count = totalRecord;
     if (totalRecord == 0) {
         console.log("总记录数为0，请检查！");
         return 0;
@@ -377,8 +382,8 @@ function setList(result) {
                     $(this).html(obj.state.name);
                     break;
                 case (4):
-                    // 物品名称
-                    $(this).html("");
+                    // 物品编码
+                    $(this).html(obj.code);
                     break;
                 case (5):
                     // 物品名称
@@ -725,10 +730,18 @@ function showViewModal(id) {
                 console.log(result);
                 setViewClone(result.data);
                 $("#view-id").text(data.id);
-                $("#view-department").text(data.department);
+                $("#view-department").text(data.companyName);
                 $("#view-creationDate").text(getDayDate(data.creationDate));
                 $("#view-fileId").text(data.fileId);
-                $("#view-totalAmount").text(data.totalAmount);
+                $("#view-hundredThousand").text(Math.floor(data.totalPrice / 100000));
+                $("#view-tenThousand").text(Math.floor(data.totalPrice % 100000 / 10000));
+                $("#view-thousand").text(Math.floor((data.totalPrice % 100000) % 10000 / 1000));
+                $("#view-hundred").text(Math.floor((data.totalPrice % 100000) % 10000 % 1000 / 100));
+                $("#view-ten").text(Math.floor((data.totalPrice % 100000) % 10000 % 1000 % 100 / 10));
+                $("#view-yuan").text(Math.floor((data.totalPrice % 100000) % 10000 % 1000 % 100 % 10));
+                var jiao = data.totalPrice % 100000 % 10000 % 1000 % 100 % 10 % 1 * 10;
+                $("#view-jiao").text(Math.floor(jiao));
+                $("#view-fen").text(Math.floor(jiao % 1 * 10));
                 $("#view-vicePresident").text(data.vicePresident);
                 $("#view-warehouseSupervisor").text(data.warehouseSupervisor);
                 $("#view-keeper").text(data.keeper);
@@ -755,12 +768,12 @@ function setViewClone(result) {
     var tr = $("#viewClone");
     $.each(result.ingredientsList, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
-        $("#view-unit").text(item.unit);
         var clonedTr = tr.clone();
         clonedTr.show();
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
             var obj = eval(item);
+            var jiao1 = obj.totalPrice % 100000 % 10000 % 1000 % 100 % 10 % 1 * 10;
             // 根据索引为部分td赋值
             switch (inner_index) {
                 case (0):
@@ -768,33 +781,72 @@ function setViewClone(result) {
                     $(this).html(obj.serialNumber);
                     break;
                 case (1):
+                    // 物品编码
+                    $(this).html(obj.code);
+                    break;
+                case (2):
                     // 物品名称
                     $(this).html(obj.name);
                     break;
-                case (2):
+                case (3):
                     // 规格
                     $(this).html(obj.specification);
                     break;
-                case (3):
+                case (4):
                     // 单位（KG）
                     $(this).html(obj.unit);
                     break;
-                case (4):
-                    // 数量
-                    $(this).html(obj.receiveAmount);
-                    break;
                 case (5):
+                    // 数量
+                    $(this).html(obj.receiveAmount.toFixed(2));
+                    break;
+                case (6):
+                    // 单价
+                    $(this).html(obj.unitPrice.toFixed(2));
+                    break;
+                case (7):
+                    // 金额 十万
+                    $(this).html(Math.floor(obj.totalPrice / 100000));
+                    break;
+                case (8):
+                    // 金额 万
+                    $(this).html(Math.floor(obj.totalPrice % 100000 / 10000));
+                    break;
+                case (9):
+                    // 金额 千
+                    $(this).html(Math.floor((obj.totalPrice % 100000) % 10000 / 1000));
+                    break;
+                case (10):
+                    // 金额 百
+                    $(this).html(Math.floor((obj.totalPrice % 100000) % 10000 % 1000 / 100));
+                    break;
+                case (11):
+                    // 金额 十
+                    $(this).html(Math.floor((obj.totalPrice % 100000) % 10000 % 1000 % 100 / 10));
+                    break;
+                case (12):
+                    // 金额 元
+                    $(this).html(Math.floor((obj.totalPrice % 100000) % 10000 % 1000 % 100 % 10));
+                    break;
+                case (13):
+                    // 金额 角
+                    $(this).html(Math.floor(jiao1));
+                    break;
+                case (14):
+                    // 金额 分
+                    $(this).html(Math.floor(jiao1 % 1 * 10));
+                    break;
+                case (15):
+                    // 过账
+                    $(this).html(obj.post);
+                    break;
+                case (16):
                     // 附注
                     $(this).html(obj.remarks);
                     break;
-                case (6):
+                case (17):
                     // 仓库
                     $(this).html(obj.wareHouseName);
-                    break;
-                case (7):
-                    // 物品状态
-                    if(obj.ingredientState != null)
-                    $(this).html(obj.ingredientState.name);
                     break;
             }
         });
@@ -806,6 +858,7 @@ function setViewClone(result) {
     // 隐藏无数据的tr
     tr.hide();
 }
+
 
 /**
  * 作废功能
@@ -861,4 +914,20 @@ function ingredientsReceiveModify(item) {
 function addIngredientsReceive() {
     localStorage.id = null;
     window.location.href = "newIngredientsReceive.html";
+}
+
+/**
+ * 打印功能
+ */
+function print() {
+    //打印模态框
+    $("#footer").hide();
+    $("#viewModal").printThis({
+        // debug: false,             // 调试模式下打印文本的渲染状态
+        // importCSS: false,       // 为打印文本引入外部样式link标签 ["<link rel='stylesheet' href='/static/jquery/forieprint.css' media='print'>","",""]
+        // importStyle: false,      // 为打印把文本书写内部样式 ["<style>#ceshi{}</style>","",""]
+        // printDelay: 333,      // 布局完打印页面之后与真正执行打印功能中间的间隔
+        // copyTagClasses: true
+    });
+
 }

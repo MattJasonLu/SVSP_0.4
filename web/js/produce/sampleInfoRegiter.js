@@ -1755,3 +1755,52 @@ function testing(item) {
         }
     })
 }
+
+/**
+ * 联单编号检测
+ * @param item
+ */
+function test(item) {
+    $('#pass1').hide();    // 通过
+    $('#break1').hide();  // 存在
+    $('#break2').hide();   // 不是18位
+    var id = $.trim($(item).val());
+    if($(item).val().length != 18) {
+        $('#break2').show();  // 存在
+        $('#pass1').hide();    // 通过
+        $('#break1').hide();  // 存在
+    }else{
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getSampleInformationWareHouseByTransferId",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data:{
+                'transferId' : id
+            },
+            success:function (result) {
+                if (result != undefined){
+                    console.log("count="+result);
+                    if(result > 0){  // 存在该联单号
+                        $('#break1').show();
+                        $('#pass1').hide();    // 通过
+                        $('#break2').hide();   // 不是18位
+                    }else{
+                        $('#pass1').show();
+                        $('#break1').hide();  // 存在
+                        $('#break2').hide();   // 不是18位
+                    }
+                    if($.trim(id).length<=0){
+                        $('#pass1').hide();
+                        $('#break1').hide();
+                        $('#break2').hide();
+                    }
+                }
+            },
+            error:function (result) {
+
+            }
+        });
+    }
+
+}

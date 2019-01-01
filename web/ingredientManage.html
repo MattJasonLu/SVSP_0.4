@@ -286,7 +286,11 @@
                     <tr>
                         <td class="text-center">1</td>
                         <td class="text-center"><input class="text-center form-control" id="add_name0"></td>
-                        <td class="text-center"><input class="text-center form-control" id="add_code0"></td>
+                        <td class="text-center"><input class="text-center form-control" id="add_code0" name="code" onkeyup="test(this)">
+                            <p id="pass1" name="test" style="color: green;display: none">通过</p>
+                            <p id="break1" name="test" style="color: red;display: none">编码已存在</p>
+                            <p id="break2" name="test" style="color: red;display: none">请输入8位编码</p>
+                        </td>
                         <td class="text-center"><input class="text-center form-control" id="add_specification0"></td>
                     </tr>
                     <tr id="plusBtn">

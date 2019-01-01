@@ -1,6 +1,7 @@
 var currentPage = 1;                          //当前页数
 var isSearch = false;
 var data1;
+
 /**
  * 返回count值
  * */
@@ -359,7 +360,7 @@ function setIngredientList(result) {
                     break;
                 case (2):
                     // 物品编码
-                   $(this).html(obj.code);
+                    $(this).html(obj.code);
                     break;
                 case (3):
                     // 规格型号
@@ -634,7 +635,7 @@ function save() {
     var length = $("#plusBtn").prevAll().length;   // 获取总行数
     var ingredientsIn = {};
     ingredientsIn.ingredientsList = [];
-    for(var i = 0; i < length; i++) {
+    for (var i = 0; i < length; i++) {
         var $i = i;
         var ingredient = {};
         ingredient.name = $("#add_name" + $i).val();
@@ -671,7 +672,7 @@ function addNewLine(item) {
     // 获取id为plusBtn的tr元素
     //var tr = $("#plusBtn").prev();
     var tr = null;
-    if (item != null){
+    if (item != null) {
         tr = $(item).parent().parent().prev();
     } else tr = $("#plusBtn").prev();
     // 克隆tr，每次遍历都可以产生新的tr
@@ -687,6 +688,7 @@ function addNewLine(item) {
     clonedTr.addClass("newLine");
     clonedTr.insertAfter(tr);
     clonedTr.removeAttr("id");
+    clonedTr.find("p[name='test']").hide();
     //清空数据为重新初始化selectpicker
     if (clonedTr.children().get(0).innerHTML != 1) {     // 将非第一行的所有行加上减行号
         var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
@@ -717,3 +719,88 @@ function delLine(item) {
     }
     num--;
 }
+
+/**
+ * 物品编码检测
+ * @param item
+ */
+function test(item) {
+    var code = $(item).val();
+    $('#pass1').hide();    // 通过
+    $('#break1').hide();  // 存在
+    if (code.length != 8) {
+        $(item).find("p[id='break2']").show();  // 存在
+        $(item).find("p[id='pass1']").hide();    // 通过
+        $(item).find("p[id='break1']").hide();    //
+    }
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getCountByIngredientCode",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {
+            'code': code
+        },
+        success: function (result) {
+            if (result != undefined) {
+                if (result > 0) {  // 存在
+                    $(item).nextAll().eq(1).show();
+                    $(item).nextAll().eq(0).hide();
+                    $(item).nextAll().eq(2).hide();
+                } else {
+                    $(item).nextAll().eq(0).show();
+                    $(item).nextAll().eq(1).hide();
+                    $(item).nextAll().eq(2).hide();
+                }
+                if ($.trim(code).length <= 0) {
+                    $(item).nextAll().eq(0).hide();
+                    $(item).nextAll().eq(1).hide();
+                    $(item).nextAll().eq(2).hide();
+                }
+            }
+        },
+        error: function (result) {
+
+        }
+    });
+    var code1 = "";
+    var is = true;
+    if (code.length > 1 && code.length < 8) { //根据输入的前两位编码，自动设置全部编码
+        var serialNumer = parseInt($(item).parent().prev().prev().text());
+        var type = code.substr(0, 2); // 获取输入的编码的前两位
+        for(var i = 0; i < serialNumer - 1; i++){
+            var $i = i;
+            if($("#add_code" + $i).val().substr(0,2) === type) {  // 种类相同且之前存在则不用再走后台
+                code1 = $("#add_code" + $i).val();
+                var index = parseInt(code1);
+                index += 1;
+                code1 = index + "";
+                $(item).val(code1);  // 设置编码
+                is = false;
+            }
+        }
+        if(is){
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "getCurrentCodeByType",              // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: {
+                    'type': type
+                },
+                success: function (result) {
+                    if (result != undefined && result != "") {
+                        console.log("code=" + result);
+                        code1 = result;
+                        $(item).val(code1);  // 设置编码
+                        $(item).nextAll().eq(2).hide();
+                    }
+                },
+                error: function (result) {
+                    console.log("获取编码失败");
+                }
+            });
+        }
+    }
+}
+
