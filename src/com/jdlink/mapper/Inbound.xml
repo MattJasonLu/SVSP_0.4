@@ -51,6 +51,7 @@
         <association property="formTypeItem" column="formTypeId" select="getFormTypeItem"></association>
         <association property="packageTypeItem" column="packageTypeId" select="getPackageTypeItem"></association>
         <association property="unitDataItem" column="unitId" select="getUnitDataItem"></association>
+        <association property="secondaryCategoryItem" column="secondaryCategoryId" select="getSecondaryCategoryItem"></association>
     </resultMap>
 
     <!--获取物质形态数据字典-->
@@ -66,6 +67,11 @@
     <!--获取单位数据数据字典-->
     <select id="getUnitDataItem" resultType="UnitDataItem">
         select * from datadictionaryitem where dataDictionaryItemId=#{unitId}
+    </select>
+
+    <!--获取次生名称数据字典-->
+    <select id="getSecondaryCategoryItem" resultType="SecondaryCategoryItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{secondaryCategoryId}
     </select>
 
     <!--获取进料方式数据字典-->
@@ -401,7 +407,7 @@
             </foreach>
         </if>
     </insert>
-
+    <!--更新次生入库单-->
     <update id="updateSecondInboundOrder" parameterType="InboundOrder">
         <if test="inboundOrderItemList != null and inboundOrderItemList.size() > 0">
             <foreach collection="inboundOrderItemList" item="inboundOrderItem">
@@ -410,7 +416,12 @@
                 wastesUnit=#{inboundOrderItem.wastesUnit}, unitPriceTax=#{inboundOrderItem.unitPriceTax}, totalPrice=#{inboundOrderItem.totalPrice},
                 processWay=#{inboundOrderItem.processWay}, formType=#{inboundOrderItem.formType}, packageType=#{inboundOrderItem.packageType},
                 laborityTestHeat=#{inboundOrderItem.laboratoryTest.heatAverage}, laborityTestWater=#{inboundOrderItem.laboratoryTest.waterContentAverage},
-                remarks=#{inboundOrderItem.remarks}, warehouseArea=#{inboundOrderItem.warehouseArea} where inboundOrderItemId=#{inboundOrderItem.inboundOrderItemId};
+                remarks=#{inboundOrderItem.remarks}, warehouseArea=#{inboundOrderItem.warehouseArea},
+                secondaryCategoryId=#{inboundOrderItem.secondaryCategoryItem.dataDictionaryItemId},
+                packageTypeId=#{inboundOrderItem.packageTypeItem.dataDictionaryItemId},
+                formTypeId=#{inboundOrderItem.formTypeItem.dataDictionaryItemId},
+                unitId=#{inboundOrderItem.unitDataItem.dataDictionaryItemId},
+                processWayId=#{inboundOrderItem.processWayItem.dataDictionaryItemId} where inboundOrderItemId=#{inboundOrderItem.inboundOrderItemId};
             </foreach>
         </if>
 
@@ -421,7 +432,7 @@
         SELECT * FROM t_pl_inboundorder
         WHERE boundType='WasteInbound'and checkState != 'Invalid'
         order by  nowTime desc
-        <if test="start != null and count != null">
+        <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
     </select>
@@ -527,7 +538,7 @@
             </if>
         </where>
         order by  nowTime desc
-        <if test="page != null and page.start != null and page.count != null">
+        <if test="page != null and page.start != null and page.count != null and page.count != 0">
             limit #{page.start}, #{page.count};
         </if>
     </select>
@@ -577,11 +588,11 @@
                 ]]>
             </if>
             <if test="true">
-                and boundType='SecondaryInbound'
+                and boundType='SecondaryInbound' and checkStateId != 69
             </if>
         </where>
         order by createDate desc
-        <if test="page != null and page.start != null and page.count != null">
+        <if test="page != null and page.start != null and page.count != null and page.count != 0">
             limit #{page.start}, #{page.count}
         </if>
 
@@ -644,12 +655,12 @@
 
     <!--作废该入库单-->
     <update id="setInboundOrderStateInvalid" parameterType="String">
-        UPDATE t_pl_inboundorder SET checkState='Invalid' WHERE inboundOrderId=#{inboundOrderId};
+        UPDATE t_pl_inboundorder SET checkState='Invalid', checkStateId=69 WHERE inboundOrderId=#{inboundOrderId};
     </update>
 
     <!--提交该入库单-->
     <update id="setInboundOrderStateSubmit" parameterType="String">
-        UPDATE t_pl_inboundorder SET checkState='ToExamine' WHERE inboundOrderId=#{inboundOrderId};
+        UPDATE t_pl_inboundorder SET checkState='ToExamine', checkStateId=67 WHERE inboundOrderId=#{inboundOrderId};
     </update>
 
     <!--获取入库单明细列表-->

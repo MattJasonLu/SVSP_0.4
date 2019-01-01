@@ -191,6 +191,52 @@ public class UserController {
     }
 
     /**
+     * 通过编号获取用户信息
+     * @param id 编号
+     * @return 用户信息
+     */
+    @RequestMapping("getUserById")
+    @ResponseBody
+    public String getUserById(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            User user = userService.getById(id);
+            JSONObject data = JSONObject.fromBean(user);
+            res.put("status", "success");
+            res.put("message", "获取用户信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取用户信息失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
+     * 更新用户
+     * @param user 用户参数
+     * @return 成功与否
+     */
+    @RequestMapping("updateUser")
+    @ResponseBody
+    public String updateUser(@RequestBody User user) {
+        JSONObject res = new JSONObject();
+        try {
+            userService.update(user);
+            res.put("status", "success");
+            res.put("message", "更新成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
      * 列出所有用户
      * @return 所有用户数据
      */

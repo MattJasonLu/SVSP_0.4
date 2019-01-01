@@ -538,4 +538,76 @@ function adjustRole(e) {
     });
 }
 
+var editId;
+/**
+ * 显示编辑模态框
+ */
+function showEditModal(e) {
+    // 获取用户编号
+    var userId = getUserId(e);
+    editId = userId;
+    // 清空数据
+    $("#editModal").find("input").val("");
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getUserById",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {
+            id: userId
+        },
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                var obj = eval(result.data);
+                $("#username").val(obj.username);
+                $("#name").val(obj.name);
+                $("#age").val(parseInt(obj.age));
+                if (obj.sex) {
+                    $("#sex").prop("checked", true);
+                    $("#sex2").prop("checked", false);
+                } else {
+                    $("#sex").prop("checked", false);
+                    $("#sex2").prop("checked", true);
+                }
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+
+    // 显示模态框
+    $("#editModal").modal("show");
+}
+
+/**
+ * 更新用户信息
+ */
+function updateUserInfo() {
+    var data = {
+        id: editId,
+        username: $("#username").val(),
+        password: $("#password").val(),
+        name: $("#name").val(),
+        sex: $("#sex").prop("checked"),
+        age: $("#age").val()
+    };
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "updateUser",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                alert(result.message);
+                window.location.reload();
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+}
 
