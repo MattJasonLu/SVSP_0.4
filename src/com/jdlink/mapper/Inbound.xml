@@ -421,7 +421,7 @@
         SELECT * FROM t_pl_inboundorder
         WHERE boundType='WasteInbound'and checkState != 'Invalid'
         order by  nowTime desc
-        <if test="start != null and count != null">
+        <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
     </select>
@@ -527,7 +527,7 @@
             </if>
         </where>
         order by  nowTime desc
-        <if test="page != null and page.start != null and page.count != null">
+        <if test="page != null and page.start != null and page.count != null and page.count != 0">
             limit #{page.start}, #{page.count};
         </if>
     </select>
@@ -581,7 +581,7 @@
             </if>
         </where>
         order by createDate desc
-        <if test="page != null and page.start != null and page.count != null">
+        <if test="page != null and page.start != null and page.count != null and page.count != 0">
             limit #{page.start}, #{page.count}
         </if>
 
