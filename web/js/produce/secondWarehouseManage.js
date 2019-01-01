@@ -58,9 +58,10 @@ function showModify(e) {
 function setEditSelectList() {
     // 设置下拉列表
     // 设置次生类别
+    // 设置次生类别
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getSecondaryCategory",                  // url
+        url: "getSecondaryCategoryByDataDictionary",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
@@ -71,8 +72,8 @@ function setEditSelectList() {
                 wastesName.children().remove();
                 $.each(data.data, function (index, item) {
                     var option = $('<option />');
-                    option.val(item.code);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     wastesName.append(option);
                 });
                 wastesName.get(0).selectedIndex = -1;
@@ -113,31 +114,25 @@ function setEditSelectList() {
             console.log("error: " + result);
         }
     });
+
+
     $.ajax({
         type: "POST",                            // 方法类型
-        url: "getFormTypeAndPackageType",                  // url
+        url: "getFormTypeByDataDictionary",                  // url
         dataType: "json",
         success: function (result) {
             if (result != undefined) {
                 var data = eval(result);
                 var formType = $("select[name='editFormType']:first");
                 formType.children().remove();
-                $.each(data.formTypeList, function (index, item) {
+                $.each(data.data, function (index, item) {
                     var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     formType.append(option);
                 });
                 formType.get(0).selectedIndex = -1;
-                var packageType = $("select[name='editPackageType']:first");
-                packageType.children().remove();
-                $.each(data.packageTypeList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    packageType.append(option);
-                });
-                packageType.get(0).selectedIndex = -1;
+
             }
         },
         error: function (result) {
@@ -145,18 +140,44 @@ function setEditSelectList() {
         }
     });
     $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getPackageTypeByDataDictionary",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var packageType = $("select[name='editPackageType']:first");
+                packageType.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    packageType.append(option);
+                });
+                packageType.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    $.ajax({
         type: "POST",                            // 方法类型
-        url: "getProcessWay",                  // url
+        url: "getProcessWayByDataDictionary",                  // url
         dataType: "json",
         success: function (result) {
             if (result != undefined) {
                 var data = eval(result);
                 var processWay = $("select[name='editProcessWay']:first");
                 processWay.children().remove();
-                $.each(data.processWayList, function (index, item) {
+                $.each(data.data, function (index, item) {
                     var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
                     processWay.append(option);
                 });
                 processWay.get(0).selectedIndex = -1;
@@ -170,7 +191,7 @@ function setEditSelectList() {
     // 设置计量单位
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getUnitList",                  // url
+        url: "getUnitByDataDictionary",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
@@ -178,13 +199,11 @@ function setEditSelectList() {
                 var data = eval(result);
                 var wastesUnit = $("select[name='editWastesUnit']:first");
                 wastesUnit.children().remove();
-                $.each(data.unitList, function (index, item) {
-                    if (item.index == 1 || item.index == 2) {
-                        var option = $('<option />');
-                        option.val(item.index);
-                        option.text(item.name);
-                        wastesUnit.append(option);
-                    }
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    wastesUnit.append(option);
                 });
                 wastesUnit.get(0).selectedIndex = -1;
             }
@@ -222,7 +241,7 @@ function setEditItemDataList(result) {
                     break;
                 case (2):
                     if (obj.wastes != null)
-                    $(this).find("select").val(convertSecondWastesNameEngToChn(obj.wastes.name));
+                    $(this).find("select").val(obj.secondaryCategoryItem.dataDictionaryItemId);
                     break;
                 case (3):
                     if (obj.wastes != null)
@@ -232,8 +251,8 @@ function setEditItemDataList(result) {
                     $(this).find("input").val(parseFloat(obj.wastesAmount).toFixed(3));
                     break;
                 case (5):
-                    if (obj.wastesUnit != null)
-                    $(this).find("select").val(obj.wastesUnit.index-1);
+                    if (obj.unitDataItem != null)
+                    $(this).find("select").val(obj.unitDataItem.dataDictionaryItemId);
                     break;
                 case (6):
                     $(this).find("input").val(parseFloat(obj.unitPriceTax).toFixed(3));
@@ -243,15 +262,15 @@ function setEditItemDataList(result) {
                     break;
                 case (8):
                     if (obj.processWay != null)
-                    $(this).find("select").val(obj.processWay.index-1);
+                    $(this).find("select").val(obj.processWay.dataDictionaryItemId);
                     break;
                 case (9):
                     if (obj.formType != null)
-                    $(this).find("select").val(obj.formType.index-1);
+                    $(this).find("select").val(obj.formTypeItem.dataDictionaryItemId);
                     break;
                 case (10):
                     if (obj.packageType != null)
-                    $(this).find("select").val(obj.packageType.index-1);
+                    $(this).find("select").val(obj.packageTypeItem.dataDictionaryItemId);
                     break;
                 case (11):
                     if (obj.laboratoryTest != null)
@@ -297,6 +316,9 @@ function setEditItemDataList(result) {
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
         clonedTr.insertBefore(tr);
+        $('.selectpicker').data('selectpicker', null);
+        $('.bootstrap-select').find("button:first").remove();
+        $('.selectpicker').selectpicker("refresh");
     });
     // 隐藏无数据的tr
     tr.hide();
@@ -314,17 +336,32 @@ function modifyData() {
     items.each(function() {
         var item = {};
         var wastes = {
-            name: $(this).find("select[name='editWastesName']").val(),
             wastesId: $(this).find("select[name='editWastesCode']").selectpicker('val')
         };
         item.wastes = wastes;
         item.wastesAmount = $(this).find("input[name='editWastesAmount']").val();
-        item.wastesUnit = $(this).find("select[name='editWastesUnit']").val();
+        var unitDataItem = {
+            dataDictionaryItemId: $(this).find("select[name='editWastesUnit']").val()
+        };
+        item.unitDataItem = unitDataItem;
         item.unitPriceTax = $(this).find("input[name='unitPriceTax']").val();
         item.totalPrice = $(this).find("input[name='editTotalPrice']").val();
-        item.processWay = $(this).find("select[name='editProcessWay']").val();
-        item.formType = $(this).find("select[name='editFormType']").val();
-        item.packageType = $(this).find("select[name='editPackageType']").val();
+        var secondaryCategoryItem = {
+            dataDictionaryItemId: $(this).find("select[name='editWastesName']").val()
+        };
+        item.secondaryCategoryItem = secondaryCategoryItem;
+        var processWayItem = {
+            dataDictionaryItemId: $(this).find("select[name='editProcessWay']").val()
+        };
+        item.processWayItem = processWayItem;
+        var formTypeItem = {
+            dataDictionaryItemId: $(this).find("select[name='editFormType']").val()
+        };
+        item.formTypeItem = formTypeItem;
+        var packageTypeItem = {
+            dataDictionaryItemId: $(this).find("select[name='editPackageType']").val()
+        };
+        item.packageTypeItem = packageTypeItem;
         var laboratoryTest = {
             heatAverage: $(this).find("input[name='editHeatAverage']").val(),
             waterContentAverage: $(this).find("input[name='editWaterContentAverage']").val()

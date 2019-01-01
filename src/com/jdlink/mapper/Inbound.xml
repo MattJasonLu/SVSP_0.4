@@ -407,7 +407,7 @@
             </foreach>
         </if>
     </insert>
-
+    <!--更新次生入库单-->
     <update id="updateSecondInboundOrder" parameterType="InboundOrder">
         <if test="inboundOrderItemList != null and inboundOrderItemList.size() > 0">
             <foreach collection="inboundOrderItemList" item="inboundOrderItem">
@@ -416,7 +416,12 @@
                 wastesUnit=#{inboundOrderItem.wastesUnit}, unitPriceTax=#{inboundOrderItem.unitPriceTax}, totalPrice=#{inboundOrderItem.totalPrice},
                 processWay=#{inboundOrderItem.processWay}, formType=#{inboundOrderItem.formType}, packageType=#{inboundOrderItem.packageType},
                 laborityTestHeat=#{inboundOrderItem.laboratoryTest.heatAverage}, laborityTestWater=#{inboundOrderItem.laboratoryTest.waterContentAverage},
-                remarks=#{inboundOrderItem.remarks}, warehouseArea=#{inboundOrderItem.warehouseArea} where inboundOrderItemId=#{inboundOrderItem.inboundOrderItemId};
+                remarks=#{inboundOrderItem.remarks}, warehouseArea=#{inboundOrderItem.warehouseArea},
+                secondaryCategoryId=#{inboundOrderItem.secondaryCategoryItem.dataDictionaryItemId},
+                packageTypeId=#{inboundOrderItem.packageTypeItem.dataDictionaryItemId},
+                formTypeId=#{inboundOrderItem.formTypeItem.dataDictionaryItemId},
+                unitId=#{inboundOrderItem.unitDataItem.dataDictionaryItemId},
+                processWayId=#{inboundOrderItem.processWayItem.dataDictionaryItemId} where inboundOrderItemId=#{inboundOrderItem.inboundOrderItemId};
             </foreach>
         </if>
 
