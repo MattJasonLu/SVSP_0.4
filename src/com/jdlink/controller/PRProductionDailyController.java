@@ -1,11 +1,14 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Dictionary.SewagePointItem;
+import com.jdlink.domain.Dictionary.SoftPointItem;
 import com.jdlink.domain.FormType;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.domain.Wastes;
 import com.jdlink.service.ProductionDailyService;
+import com.jdlink.service.dictionary.DictionaryService;
 import com.jdlink.service.produce.SewageTestService;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
@@ -31,6 +34,8 @@ public class PRProductionDailyController {
     ProductionDailyService productionDailyService;
     @Autowired
     SewageTestService sewageTestService;
+    @Autowired
+    DictionaryService dictionaryService;
 
     //////污水分析日报////
     @RequestMapping("loadPageSewageList")
@@ -670,6 +675,10 @@ public class PRProductionDailyController {
                     map.put(id, new Sewageregistration());
                     map.get(id).setId(id);
                     map.get(id).setSendingPerson(data[i][1].toString());
+                    SewagePointItem sewagePointItem=new SewagePointItem();
+                    int dataDictionaryItemId=dictionaryService.getdatadictionaryitemIdByName(data[i][2].toString(),37);
+                    sewagePointItem.setDataDictionaryItemId(dataDictionaryItemId);
+                    map.get(id).setSewagePointItem(sewagePointItem);
                     map.get(id).setAddress(data[i][2].toString());
                     map.get(id).setWater(true); // 表明为污水数据
                     map.get(id).setCreationDate(DateUtil.getDateFromStr(data[i][10].toString()));
@@ -771,6 +780,10 @@ public class PRProductionDailyController {
                     map.put(id, new Sewageregistration());
                     map.get(id).setId(id);
                     map.get(id).setSendingPerson(data[i][1].toString());
+                    SoftPointItem softPointItem=new SoftPointItem();
+                    int dataDictionaryItemId=dictionaryService.getdatadictionaryitemIdByName(data[i][2].toString(),38);
+                    softPointItem.setDataDictionaryItemId(dataDictionaryItemId);
+                    map.get(id).setSoftPointItem(softPointItem);
                     map.get(id).setAddress(data[i][2].toString());
                     map.get(id).setWater(false); // 表明为污水数据
                     map.get(id).setCreationDate(DateUtil.getDateFromStr(data[i][9].toString()));

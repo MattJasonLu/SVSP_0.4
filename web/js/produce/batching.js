@@ -1065,7 +1065,7 @@ function setBatchingOrderList(result) {
         tr.siblings().remove();
         $.each(result, function (index, item) {
             // 克隆tr，每次遍历都可以产生新的tr
-            if(item.batchingNumber>0){
+            if(item.batchingNumber.toFixed(3)>0){
                 var clonedTr = tr.clone();
                 clonedTr.attr('class','myclass');
                 clonedTr.show();

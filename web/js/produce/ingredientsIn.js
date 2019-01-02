@@ -1025,11 +1025,14 @@ function switchPage1(pageNumber) {
     addPageClass(pageNumber);           // 设置页码标蓝
     page.start = (pageNumber - 1) * page.count;
     if (!isSearch) {
+        var data = {
+            page: page
+        };
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "getProcurementItemList",         // url
+            url: "getProcurementPlanItemList",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(page),
+            data: JSON.stringify(data),
             dataType: "json",
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
@@ -1257,11 +1260,14 @@ function loadProcurementItemList() {
     page.count = countValue1();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
+    var data = {
+        page: page
+    };
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getProcurementItemList",          // url
+        url: "getProcurementPlanItemList",          // url
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(page),
+        data: JSON.stringify(data),
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function (result) {
@@ -1564,7 +1570,7 @@ function setProcurementItemList(result) {
                 switch (inner_index) {
                     // 申请单编号
                     case (1):
-                        $(this).html(obj.receiptNumber);
+                        $(this).html(obj.procurementPlanId);
                         break;
                     // 物资名称
                     case (2):
@@ -1581,7 +1587,7 @@ function setProcurementItemList(result) {
                         break;
                     // 库存量
                     case (5):
-                        $(this).html(obj.inventory.toFixed(2));
+                        // $(this).html(obj.inventory.toFixed(2));
                         break;
                     // 需求数量
                     case (6):
@@ -1589,7 +1595,7 @@ function setProcurementItemList(result) {
                         break;
                     // 备注
                     case (7):
-                        $(this).html(obj.note);
+                        $(this).html(obj.remarks);
                         break;
                     // 状态
                     case (8):
@@ -1663,7 +1669,7 @@ function confirmInsert1() {
                 //根据Id查找数据并进行赋值
                 $.ajax({
                     type: "POST",                       // 方法类型
-                    url: "getProcurementItemListById",          // url
+                    url: "getProcurementPlanItemById",          // url
                     async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
                     data: {
                         id: procurementItemId1
@@ -1863,7 +1869,7 @@ function save() {
     ingredientsIn.acceptor = $("#acceptor").val();
     ingredientsIn.handlers = $("#handlers").val();
     ingredientsIn.creationDate = $("#creationDate").val();
-    ingredientsIn.id = localStorage.id;
+    ingredientsIn.id = $("#view-id").text();
     console.log("数据为:");
     console.log(ingredientsIn);
     if (confirm("确认保存？")) {

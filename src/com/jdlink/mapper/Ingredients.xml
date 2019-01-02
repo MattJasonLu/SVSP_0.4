@@ -418,7 +418,7 @@
                 insert into t_pr_ingredients_inventory
                 (name,wareHouseName,amount,unit,ingredientStateId,specification,code,inId,inItemId,inAmount,inPrice,creationTime)
                 values
-                (#{ingredients.name},#{ingredients.wareHouseName},#{ingredients.amount},#{ingredients.unit},38,#{ingredients.specification},#{ingredients.code},#{#{ingredients.id}},
+                (#{ingredients.name},#{ingredients.wareHouseName},#{ingredients.amount},#{ingredients.unit},38,#{ingredients.specification},#{ingredients.code},#{ingredients.id},
                 #{ingredients.inItemId},#{ingredients.amount},#{ingredients.unitPrice},NOW());
             </foreach>
         </if>

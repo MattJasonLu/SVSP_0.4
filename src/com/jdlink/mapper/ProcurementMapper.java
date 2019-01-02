@@ -34,9 +34,17 @@ public interface ProcurementMapper {
     void addProcurementPlan(ProcurementPlan procurementPlan);
     String getApplyDepartmentByReceiptNumber(String id);
     void addProcurementPlanItem(ProcurementPlanItem procurementPlanItem);
-    List<ProcurementPlan>getProcurementPlanList(Page page);
+    List<ProcurementPlan> getProcurementPlanList(Page page);
     void updateProcurementState(String id);
-    List<ProcurementPlan>getProcurementPlanById(String id);
+    List<ProcurementPlan> getProcurementPlanById(String id);
+
+    /**
+     * 通过编号获取采购计划单条目对象
+     * @param id 编号
+     * @return 采购计划单对象
+     */
+    ProcurementPlanItem getProcurementPlanItemById(String id);
+    List<ProcurementPlanItem> getProcurementPlanItemListByPage(ProcurementPlanItem procurementPlanItem);
     List<ProcurementPlanItem> searchAdjust(ProcurementPlanItem procurementPlanItem);
     void adjustProcurementPlan(ProcurementPlan procurementPlan);
     void adjustProcurementPlanItem(ProcurementPlanItem procurementPlanItem);

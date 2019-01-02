@@ -14,10 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class ProcurementServiceImpl implements ProcurementService
-
-
-{
+public class ProcurementServiceImpl implements ProcurementService {
     @Autowired
     ProcurementMapper procurementMapper;
     @Override
@@ -200,6 +197,16 @@ public class ProcurementServiceImpl implements ProcurementService
     @Override
     public void updateMaterialState(int id) {
         procurementMapper.updateMaterialState(id);
+    }
+
+    @Override
+    public ProcurementPlanItem getProcurementPlanItemById(String id) {
+        return procurementMapper.getProcurementPlanItemById(id);
+    }
+
+    @Override
+    public List<ProcurementPlanItem> getProcurementPlanItemListByPage(ProcurementPlanItem procurementPlanItem) {
+        return procurementMapper.getProcurementPlanItemListByPage(procurementPlanItem);
     }
 
     @Override

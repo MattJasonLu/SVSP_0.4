@@ -386,10 +386,13 @@ function setSewageList(result) {
                             break;
                         case (2):
                             // 采样点
-                            // if(obj.sewagePointItem!=null){
-                            //     $(this).html((obj.sewagePointItem.dictionaryItemName));
-                            // }
-                            $(this).html(obj.address);
+                            if(obj.sewagePointItem!=null){
+                                $(this).html((obj.sewagePointItem.dictionaryItemName));
+                            }
+                            else {
+                                $(this).html(obj.address);
+                            }
+
                             break;
                         case (3):
                             // 检测项目
