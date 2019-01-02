@@ -20,11 +20,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -968,6 +970,48 @@ public class ProcurementController {
             res.put("message", "查询失败");
         }
       return res.toString();
+    }
+
+    /**
+     * 获取采购计划子条目
+     * @param procurementPlanItem 页码
+     * @return 查询结果
+     */
+    @RequestMapping("getProcurementPlanItemList")
+    @ResponseBody
+    public String getProcurementPlanItemList(@RequestBody ProcurementPlanItem procurementPlanItem) {
+        JSONObject res=new JSONObject();
+        try {
+            List<ProcurementPlanItem> procurementPlanItemList = procurementService.getProcurementPlanItemListByPage(procurementPlanItem);
+            JSONArray data = JSONArray.fromArray(procurementPlanItemList.toArray(new ProcurementPlanItem[procurementPlanItemList.size()]));
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("getProcurementPlanItemById")
+    @ResponseBody
+    public String getProcurementPlanItemById(String id) {
+        JSONObject res=new JSONObject();
+        try {
+            // 通过编号获取采购计划单条目
+            ProcurementPlanItem procurementPlanItem = procurementService.getProcurementPlanItemById(id);
+            JSONObject data = JSONObject.fromBean(procurementPlanItem);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
     }
 
     //根据计划单号查询
