@@ -424,7 +424,8 @@ function search1() {
         data = {
             amount: $.trim($("#search1-amount").val()),
             name: $.trim($("#search1-name").val()),
-            wareHouseName: $.trim($("#search1-wareHouseName").val())
+            wareHouseName: $.trim($("#search1-wareHouseName").val()),
+            code:$.trim($("#search1-code").val()),
         };
     } else {
         data = {

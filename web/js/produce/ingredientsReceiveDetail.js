@@ -653,7 +653,8 @@ function searchData() {
             startDate: $("#search-startDate").val(),
             endDate: $("#search-endDate").val(),
             state: state,
-            page: page
+            page: page,
+            code:$.trim($("#search-code").val()),
         };
     } else {
         data1 = {
