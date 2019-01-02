@@ -674,9 +674,9 @@ public class BatchOrderController {
         JSONObject res=new JSONObject();
 
         try{
-
+         String outboundOrderId=outboundOrder.getWareHouse().getWareHouseId()+outboundOrder.getOutboundOrderId();
             //处置方式适配
-
+            outboundOrder.setOutboundOrderId(outboundOrderId);
             ProcessWayItem processWayItem =outboundOrder.getProcessWayItem();
             if(processWayItem.getDataDictionaryItemId()!=0){
                 int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(processWayItem.getDictionaryItemName(),8);

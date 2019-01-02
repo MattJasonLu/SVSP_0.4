@@ -357,9 +357,7 @@ function setSewageTestList(result) {
                     break;
                 case (7):
                     // 碳酸盐碱度(Cao)
-                    if(parseFloat(obj.alkalinity)==0){
-                        $(this).html('--');
-                    }
+                    $(this).html(setNumber2Line(parseFloat(obj.alkalinity).toFixed(2)));
 
                     break;
                 case (8):
