@@ -345,6 +345,7 @@
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
+                                <td class="text-center"></td>
                                 <td class="text-center hidden"></td>
                                 <td class="text-center hidden"></td>
                                 <td class="text-center hidden"></td>
@@ -418,19 +419,57 @@
                 <h4 class="sub-header text-center">合同信息</h4>
                 <form method="post" id="contractInfoForm1" enctype="multipart/form-data" style="margin-left: -10px">
                     <div class="row form-inline" id="print1" >
-                        <div class="form-horizontal col-md-6 form-inline">
-                            <p class="text-left"><b>合同名称&nbsp;&nbsp;</b><span id="modal3_contractName"></span></p>
-                            <p class="text-left"><b>合同状态&nbsp;&nbsp;</b><span id="modal3_contractState"></span></p>
-                            <p class="text-left"><b>合同版本&nbsp;&nbsp;</b><span id="modal3_contractVersion"></span></p>
-                            <!--<p class="text-left"><b>产废单位名称&nbsp;&nbsp;&nbsp;</b><span id="modal3_companyName"></span></p>-->
-                            <p class="text-left"><b>开户行名称&nbsp;&nbsp;</b><span id="modal3_bankName"></span></p>
-                            <p class="text-left"><b>开票税率&nbsp;&nbsp;</b><span id="modal3_ticketRate1"></span></p>
-                            <!--  <p class="text-left"><b>开票税率2&nbsp;&nbsp;</b><span id="modal3_ticketRate2"></span></p>-->
-                            <p class="text-left"><b>联系人&nbsp;&nbsp;</b><span id="modal3_contactName"></span></p>
-                            <p class="text-left"><b>合同附件&nbsp;&nbsp;</b><span></span></p>
-                            <p class="text-left"><div class="col-xs-5">
-                            <button class="btn btn-default" id="modal3_contractAppendices">下载查看</button>
-                        </div>
+                        <table class="table-condensed"  style="width: 100%">
+                            <tr>
+                              <td> <p class="text-left"><b>合同名称&nbsp;&nbsp;</b><span id="modal3_contractName"></span></p>
+                              </td>
+                                <td><p class="text-left"><b>合同编号&nbsp;&nbsp;</b><span id="modal3_contractId"></span></td>
+                            </tr>
+                            <tr>
+                                <td>                            <p class="text-left"><b>合同状态&nbsp;&nbsp;</b><span id="modal3_contractState"></span></p>
+                                </td>
+                                <td><p class="text-left"><b id="name1">供应商名称&nbsp;&nbsp;</b><span
+                                        id="modal3_suppierName"></span></p></td>
+                            </tr>
+                            <tr> <td>                            <p class="text-left"><b>合同版本&nbsp;&nbsp;</b><span id="modal3_contractVersion"></span></p>
+                            </td>
+                                <td>                            <p class="text-left"><b>签订日期&nbsp;&nbsp;</b><span id="modal3_beginTime"></span></p>
+                                </td></tr>
+                            <tr> <td>                            <p class="text-left"><b>开户行名称&nbsp;&nbsp;</b><span id="modal3_bankName"></span></p>
+                            </td>
+                                <td>                            <p class="text-left"><b>截止日期&nbsp;&nbsp;</b><span id="modal3_endTime"></span></p>
+                                </td></tr>
+                            <tr> <td>                            <p class="text-left"><b>开票税率&nbsp;&nbsp;</b><span id="modal3_ticketRate1"></span></p>
+                            </td>
+                                <td>                            <p class="text-left"><b>开户行账号&nbsp;&nbsp;</b><span id="modal3_bankAccout"></span></p>
+                                </td></tr>
+                            <tr> <td>                            <p class="text-left"><b>联系人&nbsp;&nbsp;</b><span id="modal3_contactName"></span></p>
+                            </td>
+                                <td>                            <p class="text-left"><b>联系方式&nbsp;&nbsp;</b><span id="modal3_telephone"></span></p>
+                                </td></tr>
+                            <tr> <td>                            <p class="text-left"><b>合同附件&nbsp;&nbsp;</b><span></span></p>
+                            </td>
+                                <td>                            <p class="text-left"><b>合同总金额&nbsp;&nbsp;</b><span id="modal3_totalPrice"></span><span>元</span></p>
+                                </td></tr>
+                            <tr>
+                                <td>  <p class="text-left"><div class="col-xs-5">
+                                    <button class="btn btn-default" id="modal3_contractAppendices">下载查看</button>
+                                </div></td>
+                                <td><p class="text-left"><b>运费承担主体&nbsp;&nbsp;</b><span id="modal3_freightBearer"></span><span></span></td>
+                            </tr>
+                        <!--<div class="form-horizontal col-md-6 form-inline">-->
+                            <!--&lt;!&ndash;<p class="text-left"><b>合同名称&nbsp;&nbsp;</b><span id="modal3_contractName"></span></p>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<p class="text-left"><b>合同状态&nbsp;&nbsp;</b><span id="modal3_contractState"></span></p>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<p class="text-left"><b>合同版本&nbsp;&nbsp;</b><span id="modal3_contractVersion"></span></p>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<p class="text-left"><b>产废单位名称&nbsp;&nbsp;&nbsp;</b><span id="modal3_companyName"></span></p>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<p class="text-left"><b>开户行名称&nbsp;&nbsp;</b><span id="modal3_bankName"></span></p>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<p class="text-left"><b>开票税率&nbsp;&nbsp;</b><span id="modal3_ticketRate1"></span></p>&ndash;&gt;-->
+                            <!--&lt;!&ndash;  <p class="text-left"><b>开票税率2&nbsp;&nbsp;</b><span id="modal3_ticketRate2"></span></p>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<p class="text-left"><b>联系人&nbsp;&nbsp;</b><span id="modal3_contactName"></span></p>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<p class="text-left"><b>合同附件&nbsp;&nbsp;</b><span></span></p>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<p class="text-left"><div class="col-xs-5">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<button class="btn btn-default" id="modal3_contractAppendices">下载查看</button>&ndash;&gt;-->
+                        <!--</div>-->
                             <!--<p class="text-left"><b>物流公司资质&nbsp;&nbsp;</b><span id="modal3_logisticsQualification"></span></p>-->
                             <!--<p class="text-left"><b>是否包含运费&nbsp;&nbsp;</b> <input type="checkbox" id="modal3_freight"-->
                                                                                   <!--disabled="disabled"></p>-->
@@ -440,23 +479,25 @@
                                    </div>
                                 <input type="checkbox" class="col-xs-1" id="modal3_freight" name="freight" disabled="disabled" >
                             </div>-->
+                        </table>
+
                         </div>
-                        <div class="form-horizontal col-md-6 form-inline">
-                            <p class="text-left"><b>合同编号&nbsp;&nbsp;</b><span id="modal3_contractId"></span></p>
-                            <p class="text-left"><b id="name1">供应商名称&nbsp;&nbsp;</b><span
-                                    id="modal3_suppierName"></span></p>
-                            <p class="text-left"><b>签订日期&nbsp;&nbsp;</b><span id="modal3_beginTime"></span></p>
-                            <p class="text-left"><b>截止日期&nbsp;&nbsp;</b><span id="modal3_endTime"></span></p>
+
+                            <!--<p class="text-left"><b>合同编号&nbsp;&nbsp;</b><span id="modal3_contractId"></span></p>-->
+                            <!--<p class="text-left"><b id="name1">供应商名称&nbsp;&nbsp;</b><span-->
+                                    <!--id="modal3_suppierName"></span></p>-->
+                            <!--<p class="text-left"><b>签订日期&nbsp;&nbsp;</b><span id="modal3_beginTime"></span></p>-->
+                            <!--<p class="text-left"><b>截止日期&nbsp;&nbsp;</b><span id="modal3_endTime"></span></p>-->
                             <!--<p class="text-left"><b>资质开始日期&nbsp;&nbsp;</b><span id="modal3_beginQualification"></span></p>-->
                             <!--<p class="text-left"><b>资质结束日期&nbsp;&nbsp;</b><span id="modal3_endQualification"></span></p>-->
-                            <p class="text-left"><b>开户行账号&nbsp;&nbsp;</b><span id="modal3_bankAccout"></span></p>
+                            <!--<p class="text-left"><b>开户行账号&nbsp;&nbsp;</b><span id="modal3_bankAccout"></span></p>-->
                             <!--<p class="text-left"><b>所属区域&nbsp;&nbsp;</b><span id="modal3_area"></span></p>-->
-                            <p class="text-left"><b>联系方式&nbsp;&nbsp;</b><span id="modal3_telephone"></span></p>
-                            <p class="text-left"><b>合同总金额&nbsp;&nbsp;</b><span id="modal3_totalPrice"></span><span>元</span></p>
-                            <p class="text-left"><b>运费承担主体&nbsp;&nbsp;</b><span id="modal3_freightBearer"></span><span></span>
+                            <!--<p class="text-left"><b>联系方式&nbsp;&nbsp;</b><span id="modal3_telephone"></span></p>-->
+                            <!--<p class="text-left"><b>合同总金额&nbsp;&nbsp;</b><span id="modal3_totalPrice"></span><span>元</span></p>-->
+                            <!--<p class="text-left"><b>运费承担主体&nbsp;&nbsp;</b><span id="modal3_freightBearer"></span><span></span>-->
                             <!--</p>-->
-                        </div><!---->
-                        <table class="table" style="margin-left: -14px">
+
+                        <table class="table-condensed" style="margin-left: -14px">
                             <thead>
                             <tr>
                                 <th colspan="9" class="text-center"><h3>报价单明细</h3></th>
@@ -494,16 +535,17 @@
                             </tr>
                             </tbody>
                         </table>
-                    </div>
+
 
                     <br> <br>
                     <div class="row text-center">
                         <a class="btn btn-primary hidden-print" onclick="" id="btn">审批</a>
-                        <a class="btn btn-primary hidden-print" onclick="" id="print">打印</a>
+                        <a class="btn btn-primary hidden-print" onclick="print()" id="print">打印</a>
                         <a class="btn btn-danger hidden-print" id="back"></a>
                         <a class="btn btn-danger hidden-print" data-dismiss="modal" id="close">关闭</a>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>

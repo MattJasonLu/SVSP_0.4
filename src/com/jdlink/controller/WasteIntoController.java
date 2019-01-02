@@ -1,8 +1,11 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.Dictionary.SecondaryPointItem;
+import com.jdlink.domain.Dictionary.SewagePointItem;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.service.WasteIntoService;
+import com.jdlink.service.dictionary.DictionaryService;
 import com.jdlink.service.produce.SewageTestService;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
@@ -27,6 +30,8 @@ public class WasteIntoController {
     WasteIntoService wasteIntoService;
     @Autowired
     SewageTestService sewageTestService;
+    @Autowired
+    DictionaryService dictionaryService;
     /**
      * 获得危废入场分析日报列表
      */
@@ -336,6 +341,7 @@ public class WasteIntoController {
             List<SecondarySampleItem> secondarySampleItemArrayList = new ArrayList<>();
             String id1 = "";
             for (int i = 2; i < data.length; i++) {
+                if(data[i][0].toString()!="null"){
                 String id = data[i][0].toString();
                 SecondarySampleItem secondarySampleItem = new SecondarySampleItem();
                 //map内不存在即添加公共数据，存在即添加List内数据
@@ -343,6 +349,10 @@ public class WasteIntoController {
                     map.put(id, new SecondarySample());
                     map.get(id).setId(id);
                     map.get(id).setSendingPerson(data[i][1].toString());
+                    SecondaryPointItem secondaryPointItem = new SecondaryPointItem();
+                    int dataDictionaryItemId = dictionaryService.getdatadictionaryitemIdByName(data[i][2].toString(), 39);
+                    secondaryPointItem.setDataDictionaryItemId(dataDictionaryItemId);
+                    map.get(id).setSecondaryPointItem(secondaryPointItem);
                     map.get(id).setAddress(data[i][2].toString());
                     map.get(id).setCreationDate(DateUtil.getDateFromStr(data[i][7].toString()));
                     //新存储一个id对象时，将以下两个累计数据清零
@@ -374,6 +384,8 @@ public class WasteIntoController {
                 secondarySampleItem.setSampleinformationId(id);
                 secondarySampleItemArrayList.add(secondarySampleItem);
                 map.get(id).setSecondarySampleItemList(secondarySampleItemArrayList);
+
+            }
             }
             for (String key : map.keySet()) {
                 SecondarySample secondarySample1 = wasteIntoService.getSecondarysampleById(map.get(key).getId());

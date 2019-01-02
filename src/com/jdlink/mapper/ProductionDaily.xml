@@ -822,7 +822,7 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
 
     <!--根据编号获取污水登记信息-->
     <select id="getSewaGeregistrationById" resultMap="SewageregistrationRM" parameterType="String">
-           select * from t_pr_sewageregistration where id=#{id};
+           select * from t_pr_softgeregistration where id=#{id};
     </select>
 
     <!--根据编号获取软水登记信息-->

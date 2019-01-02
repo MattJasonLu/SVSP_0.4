@@ -732,7 +732,7 @@ function searchContract() {
                 && $(this).children('td').text().indexOf(text) != -1 &&
                 $(this).children('td').eq(4).text().indexOf(checkState) != -1
                 && $(this).children('td').eq(6).text().indexOf(contactName) != -1 && (new Date(start).getTime() >= new Date(startDate).getTime())
-                && (new Date(end).getTime() <= new Date(endDate).getTime() && $(this).children('td').eq(11).text().indexOf(small)!=-1)&& $(this).children('td').eq(12).text().indexOf(nameBykey)!=-1
+                && (new Date(end).getTime() <= new Date(endDate).getTime() && $(this).children('td').eq(12).text().indexOf(small)!=-1)&& $(this).children('td').eq(13).text().indexOf(nameBykey)!=-1
             )) {
                 $(this).hide();
             }
@@ -740,7 +740,7 @@ function searchContract() {
                 && $(this).children('td').text().indexOf(text) != -1 &&
                 $(this).children('td').eq(4).text().indexOf(checkState) != -1 && (new Date(start).getTime() >= new Date(startDate).getTime())
                 && $(this).children('td').eq(6).text().indexOf(contactName) != -1
-                && (new Date(end).getTime() <= new Date(endDate).getTime()) && $(this).children('td').eq(11).text().indexOf(small)!=-1)&& $(this).children('td').eq(12).text().indexOf(nameBykey)!=-1
+                && (new Date(end).getTime() <= new Date(endDate).getTime()) && $(this).children('td').eq(12).text().indexOf(small)!=-1)&& $(this).children('td').eq(13).text().indexOf(nameBykey)!=-1
             ) {
                 array1.push($(this));
             }
@@ -834,10 +834,10 @@ function searchFuzzy() {
     for (var j = 0; j < array.length; j++) {
         $.each(array[j], function () {
             //console.log(this);
-            if (($(this).children('td').text().indexOf(text) == -1)||$(this).children('td').eq(12).text().indexOf(nameBykey.toString())==-1) {
+            if (($(this).children('td').text().indexOf(text) == -1)||$(this).children('td').eq(13).text().indexOf(nameBykey.toString())==-1) {
                 $(this).hide();
             }
-            if ($(this).children('td').text().indexOf(text) != -1&&$(this).children('td').eq(12).text().indexOf(nameBykey.toString())!=-1) {
+            if ($(this).children('td').text().indexOf(text) != -1&&$(this).children('td').eq(13).text().indexOf(nameBykey.toString())!=-1) {
                 array1.push($(this));
             }
         });
@@ -1144,8 +1144,12 @@ function setContractList(result) {
 
                         break;
                     }
-                    //大小额合同
+                    //录入人
                     case (11):
+                        $(this).html("");
+                        break;
+                    //大小额合同
+                    case (12):
                         var total = 0;
                         $.each(obj.quotationItemList, function (index, item) {
                             total += parseFloat(item.unitPriceTax)
@@ -1158,7 +1162,7 @@ function setContractList(result) {
                         }
                         break;
                         //合同类型
-                    case (12):
+                    case (13):
                        if(obj.contractType!=null){
                        $(this).html(obj.contractType.name)
                        }
@@ -1879,7 +1883,7 @@ function loadWastesContractSelectList() {
                     option.text(item.dictionaryItemName);
                     taxRate.append(option);
                 });
-                taxRate.get(0).selectedIndex = -1;
+                taxRate.get(0).selectedIndex = 0;
             }
             else {
                 alert(result.message);
@@ -1950,7 +1954,7 @@ function loadWastesContractSelectList() {
                                 $('#taxRate1').val(company.ticketRateItem.dataDictionaryItemId);
                             }
                           else {
-                                $('#taxRate1').get(0).selectedIndex = -1;
+                                $('#taxRate1').get(0).selectedIndex = 0;
                             }
 
 
@@ -2060,6 +2064,8 @@ function findModel() {
                                 if(suppier.ticketRateItem!=null){
                                     $('#taxRate1').val(suppier.ticketRateItem.dataDictionaryItemId);
                                 }
+                                else
+                                    $('#taxRate1').get(0).selectedIndex = 0;
                                 $('#contactName').prop("value", suppier.contactName);
                                 //赋值联系方式
 
@@ -2152,6 +2158,8 @@ function findModel() {
                                 if(company.ticketRateItem!=null){
                                     $('#taxRate1').val(company.ticketRateItem.dataDictionaryItemId);
                                 }
+                                else
+                                    $('#taxRate1').get(0).selectedIndex = 0;
 
                                 $('#contactName').prop("value", company.contactName);
                                 //赋值联系方式
@@ -7101,6 +7109,19 @@ function signed(item) {
     }
 
 
+}
+
+//打印
+function print() {
+    //打印模态框
+    $("#footer").hide();
+    $("#contractInfoForm").printThis({
+        // debug: false,             // 调试模式下打印文本的渲染状态
+        // importCSS: false,       // 为打印文本引入外部样式link标签 ["<link rel='stylesheet' href='/static/jquery/forieprint.css' media='print'>","",""]
+        // importStyle: false,      // 为打印把文本书写内部样式 ["<style>#ceshi{}</style>","",""]
+        // printDelay: 333,      // 布局完打印页面之后与真正执行打印功能中间的间隔
+        // copyTagClasses: true
+    });
 }
 
 
