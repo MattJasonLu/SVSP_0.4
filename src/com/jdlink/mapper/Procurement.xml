@@ -538,4 +538,13 @@
 <select id="deleteMonthProcurementById" parameterType="int">
     delete  from t_pl_material where id=#{id}
 </select>
+
+    <!--插入采购附件-->
+    <update id="setProcurementFilePath" parameterType="Procurement">
+        <if test="procurementFileURL != null and procurementFileURL != ''">
+            UPDATE t_pl_procurement SET procurementFileURL=#{procurementFileURL} WHERE receiptNumber=#{receiptNumber};
+            INSERT INTO t_document (receiptNumber, filePath, documentType) VALUES (#{receiptNumber},
+            #{procurementFileURL},'Procurement');
+        </if>
+    </update>
 </mapper>

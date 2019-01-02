@@ -8,6 +8,7 @@
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
+    <link href="css/validation.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
@@ -34,7 +35,8 @@
                 <li><a href="procurementManagement.html">首页</a></li>
                 <li><a href="procurementPlan.html">采购计划</a></li>
                 <li>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">采购申请<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">采购申请<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="monthProcurement.html">月度采购</a></li>
                         <li role="separator" class="divider"></li>
@@ -42,7 +44,8 @@
                     </ul>
                 </li>
                 <li class="active">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">辅料/备件管理<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">辅料/备件管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="ingredientsIn.html">辅料/备件入库</a></li>
                         <li role="separator" class="divider"></li>
@@ -60,7 +63,8 @@
         <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
         <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
         <li class="dropdown">
-            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+               aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
             <ul class="dropdown-menu">
                 <li><a href="personalInformation.html">个人信息</a></li>
                 <li><a href="#">待办事项</a></li>
@@ -116,7 +120,9 @@
                 <li><a class="withripple" href="basicData.html"><span class="glyphicon glyphicon-signal"
                                                                       aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span
                         class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="infrastructure.html"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="infrastructure.html"><span class="glyphicon glyphicon-cog"
+                                                                           aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
 
             </ul>
         </div>
@@ -135,15 +141,16 @@
         </div>
         <div class="row">
             <div class="input-group col-md-4 pull-right">
-                <input type="text" class="form-control" placeholder="搜索..." id="searchContent1" onkeydown="enterSearch1()">
+                <input type="text" class="form-control" placeholder="搜索..." id="searchContent1"
+                       onkeydown="enterSearch1()">
                 <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="search1();"><span
+                            <a class="btn btn-default" onclick="searchData1();"><span
                                     class="glyphicon glyphicon-search"
                                     aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior1').toggle();"><span
                                     class="glyphicon glyphicon-search" aria-hidden="true"></span> 高级查询</a>
                             <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog"
-                                                                                 aria-hidden="true"></span> 重置</a>
+                                                                                aria-hidden="true"></span> 重置</a>
                         </span>
             </div>
         </div>
@@ -173,7 +180,7 @@
                         <div class="form-group">
                             <label for="search1-state" class="col-sm-4 control-label">状态</label>
                             <div class="col-xs-7">
-                                <select class="form-control" id="search1-state" name="search1-state" onchange="search1()">
+                                <select class="form-control" id="search1-state" name="search1-state" onchange="searchData1()">
                                     <option value="0"></option>
                                 </select>
                             </div>
@@ -181,155 +188,238 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="form-horizontal col-md-4">
+                        <div class="form-group">
+                            <label for="search1-name" class="col-sm-4 control-label">物品名称</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search1-name" name="search1-name"
+                                       placeholder="" onkeydown="enterSearch1()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-4">
+                        <div class="form-group">
+                            <label for="search1-specification" class="col-sm-4 control-label">规格</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search1-specification"
+                                       name="search1-specification" placeholder="" onkeydown="enterSearch1()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-4">
+                        <div class="form-group">
+                            <label for="search1-wareHouseName" class="col-sm-4 control-label">仓库</label>
+                            <div class="col-xs-7">
+                                <input class="form-control" id="search1-wareHouseName" name="search1-wareHouseName" onkeydown="enterSearch1()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label" style="margin-left: -15px">创建日期 </label>
+                            <label class="col-sm-3 control-label" style="margin-left: -20px">创建日期 </label>
                             <div class="input-group col-md-6">
-                                <input type="date" class="input-sm form-control" id="search1-startDate" title="" onkeydown="enterSearch()"/>
+                                <input type="date" class="input-sm form-control" id="search1-startDate" title="" onkeydown="enterSearch1()"/>
                                 <span class="input-group-addon">-</span>
-                                <input type="date" class="input-sm form-control" id="search1-endDate" title="" onkeydown="enterSearch()"/>
+                                <input type="date" class="input-sm form-control" id="search1-endDate" title="" onkeydown="enterSearch1()"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-2"></div>
+                    <div class="form-horizontal col-md-4">
+                        <div class="form-group">
+                            <label for="search1-kind" class="col-sm-4 control-label">类别</label>
+                            <div class="col-xs-7">
+                                <select title="" class="form-control" id="search1-kind" name="search1-kind">
+                                    <option value="1">20易耗品</option>
+                                    <option value="2">21劳保</option>
+                                    <option value="3">22机械用品</option>
+                                    <option value="4">25工具</option>
+                                    <option value="5">26化验室用品</option>
+                                    <option value="6">27原材料</option>
+                                    <option value="7">28消防材料</option>
+                                </select>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <h4 class="text-center">&nbsp;&nbsp;&nbsp;&nbsp;领料单列表</h4>
+        <h4 class="text-center">&nbsp;&nbsp;&nbsp;&nbsp;领料单明细列表</h4>
         <div style="height:500px; overflow-y:scroll; ">
-        <div class="row">
-            <div class="form-horizontal col-md-12">
-                <table class="table table-striped table-hover table-condensed">
-                    <thead>
-                    <tr>
-                        <th class="text-center" style="width: 40px">
-                            <input class="checkbox" type="checkbox" id="allSel1" onclick="allSelect();"
-                                   >
-                        </th>
-                        <th class="text-center">领料单号</th>
-                        <th class="text-center">部门</th>
-                        <th class="text-center">领料单状态</th>
-                        <th class="text-center">总数量</th>
-                        <th class="text-center">主管副总经理</th>
-                        <th class="text-center">仓库部门主管</th>
-                        <th class="text-center">保管员</th>
-                        <th class="text-center">领料部门主管</th>
-                        <th class="text-center">领料人</th>
-                        <th class="text-center">创建日期</th>
-                        <th class="text-center">操作</th>
-                    </tr>
-                    </thead>
-                    <tbody id="ingredientsReceiveData">
-                    <tr id="clone1" ondblclick="toViewReiceve1(this)">
-                        <td class="text-center" style="width: 40px">
-                            <input name="select" class="checkbox" type="checkbox" >
-                        </td>
-                        <td class="text-center" name="receiveId"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center">
-                            <a class="btn btn-primary btn-xs" title="查看" href="#"
-                               onclick="toViewReiceve(this)"><span class="glyphicon glyphicon-search"
-                                                            aria-hidden="true"></span> </a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div class="row">
+                <div class="form-horizontal col-md-12">
+                    <table class="table table-striped table-hover table-condensed">
+                        <thead>
+                        <tr>
+                            <th class="text-center">
+                                <label>
+                                    <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
+                                </label>
+                            </th>
+                            <th class="text-center">领料单号</th>
+                            <th class="text-center">部门</th>
+                            <th class="text-center">单据状态</th>
+                            <th class="text-center">物品编码</th>
+                            <th class="text-center">物品名称</th>
+                            <th class="text-center">规格</th>
+                            <th class="text-center">计量单位</th>
+                            <th class="text-center">数量</th>
+                            <th class="text-center">单价</th>
+                            <th class="text-center">金额</th>
+                            <th class="text-center">附注</th>
+                            <th class="text-center">仓库</th>
+                            <th class="text-center">创建日期</th>
+                            <th class="text-center" hidden>明细编号</th>
+                        </tr>
+                        </thead>
+                        <tbody id="ingredientsReceiveList">
+                        <tr id="clone">
+                            <td class="text-center">
+                                <label>
+                                    <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                                </label>
+                            </td>
+                            <td class="text-center" name="receiveId"></td>
+                            <td class="text-center" name="department"></td>
+                            <td class="text-center" name="state"></td>
+                            <td class="text-center" name="code"></td>
+                            <td class="text-center" name="name"></td>
+                            <td class="text-center" name="specification"></td>
+                            <td class="text-center" name="unit"></td>
+                            <td class="text-center" name="receiveAmount"></td>
+                            <td class="text-center" name="unitPrice"></td>
+                            <td class="text-center" name="everyTotalPrice"></td>
+                            <td class="text-center" name="post"></td>
+                            <td class="text-center" name="wareHouseName"></td>
+                            <td class="text-center" name="creationDate"></td>
+                            <td class="text-center" hidden name="itemId"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
+            <!--分页-->
+            <nav aria-label="Page navigation" class="text-center">
+                <ol class="pagination" style="width: 800px;">
+                    <li id="current" style="display: none"><a>当前页：</a>
+                    <li id="firstPage">
+                        <a href='#' onclick="switchPage1(0)">首 页</a>
+                    </li>
+                    <li id="previous">
+                        <a href="#" aria-label="Previous" onclick="switchPage1(parseInt(currentPage)-1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-backward"
+                                                       aria-hidden="true"></span></span>
+                        </a>
+                    </li>
+                    <li><a href="#">1</a></li>
+                    <li id="next">
+                        <a href="#" aria-label="Next" onclick="switchPage1(parseInt(currentPage)+1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-forward"
+                                                       aria-hidden="true"></span></span>
+                        </a>
+                    </li>
+                    <li id="endPage">
+                        <a href='#' onclick="switchPage1(-2)">尾 页</a>
+                    </li>
+                    <li><a id="totalPage"></a></li>
+                    <li><a href="#" onclick="inputSwitchPage1();">跳转</a></li>
+                    <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
+                               id="pageNumber" title="" onkeydown="enterSwitchPage1();"></li>
+                    <li class="showLi">每页显示:</li>
+                    <li class="selectLi">
+                        <select id="count1" onchange="loadIngredientsReceiveList();" title="">
+                            <option>5</option>
+                            <option selected>15</option>
+                            <option>50</option>
+                            <option>全部</option>
+                        </select>
+                    </li>
+                </ol>
+            </nav>
         </div>
         <div class="row text-center">
             <a class="btn btn-primary" onclick="confirmInsert();">确认</a>
         </div>
         <br>
         <h4 class="text-center">&nbsp;&nbsp;&nbsp;&nbsp;出库单</h4>
+        <form method="post" id="ingredientsOutForm" enctype="multipart/form-data">
         <p class="text-center pull-right"><b>NO.</b><span id="view-id" class="text-left"></span></p>
         <table class="table table-bordered">
             <thead>
             <tr>
                 <th class="text-center">部门:</th>
-                <th colspan="5" class="text-left"><input class="form-control" type="text" title="" id="departmentName"></th>
-                <th colspan="8" class="text-left"><input type="date" id="creationDate1" class="text-center focus"></th>
+                <th colspan="4" class="text-left"><input class="form-control" type="text" title="" id="departmentName">
+                </th>
+                <th class="text-center">日期:</th>
+                <th colspan="2" class="text-left"><input type="date" id="creationDate" class="text-center form-control"></th>
                 <th class="text-center">文件编号:</th>
-                <th colspan="3" class="text-left"><input title="" type="text" class="form-control" value="M-TD-107-R03" id="fileId"></th>
+                <th colspan="3" class="text-left"><input title="" type="text" class="form-control" value="M-TD-107-R03"
+                                                         id="fileId"></th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="tbody1">
             <tr>
-                <td class="text-center" rowspan="2">编号</td>
-                <td class="text-center" rowspan="2">物品名称</td>
-                <td class="text-center" rowspan="2">规格</td>
-                <td class="text-center" rowspan="2">单位</td>
-                <td class="text-center" rowspan="2">数量</td>
-                <td class="text-center" rowspan="2">单价</td>
-                <td class="text-center" colspan="8">金额</td>
-                <td class="text-center" rowspan="2">过账</td>
-                <td class="text-center" rowspan="2">附注</td>
-                <td class="text-center" rowspan="2">仓库</td>
-                <td class="text-center" rowspan="2">处置设备</td>
+                <td class="text-center" rowspan="1">编号</td>
+                <td class="text-center" rowspan="1">物品编码</td>
+                <td class="text-center" rowspan="1">物品名称</td>
+                <td class="text-center" rowspan="1">规格</td>
+                <td class="text-center" rowspan="1">单位</td>
+                <td class="text-center" rowspan="1">数量</td>
+                <td class="text-center" rowspan="1">单价</td>
+                <td class="text-center" colspan="1">金额</td>
+                <td class="text-center" rowspan="1">过账</td>
+                <td class="text-center" rowspan="1">附注</td>
+                <td class="text-center" rowspan="1">仓库</td>
+                <td class="text-center" rowspan="1">处置设备<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></td>
             </tr>
-            <tr>
-                <td class="text-center">十</td>
-                <td class="text-center">万</td>
-                <td class="text-center">千</td>
-                <td class="text-center">百</td>
-                <td class="text-center">十</td>
-                <td class="text-center">元</td>
-                <td class="text-center">角</td>
-                <td class="text-center">分</td>
-            </tr>
-            <tr id="clone3">
+            <tr id="clone3" class="clone">
                 <td class="text-center"><span name="serialNumber" id="serialNumber0"></span></td>
-                <td class="text-center" name="name"></td>
-                <td class="text-center" name="specification"></td>
-                <td class="text-center" name="unit"></td>
-                <td class="text-center" ><span id="out-receiveAmount0" name="receiveAmount"></span></td>
-                <td class="text-center"><input class="text-center form-control" type="number" name="unitPrice" id="out-unitPrice0" oninput="totalCalculate()"></td>
-                <td class="text-center" ><span id="out-hundredThousand0" name="hundredThousand"></span></td>
-                <td class="text-center" ><span id="out-tenThousand0" name="tenThousand"></span></td>
-                <td class="text-center" ><span id="out-thousand0" name="thousand"></span></td>
-                <td class="text-center" ><span id="out-hundred0" name="hundred"></span></td>
-                <td class="text-center" ><span id="out-ten0" name="ten"></span></td>
-                <td class="text-center" ><span id="out-yuan0" name="yuan"></span></td>
-                <td class="text-center" ><span id="out-jiao0" name="jiao"></span></td>
-                <td class="text-center" ><span id="out-fen0" name="fen"></span></td>
-                <td class="text-center"><input class="text-center form-control" type="text" id="post0" name="post"></td>
-                <td class="text-center" name="remarks"></td>
-                <td class="text-center" name="wareHouseName"></td>
-                <td class="text-center"><select class="focus" id="equipment0" name="equipment"></select></td>
+                <td class="text-center"><span name="code" id="code0"></span></td>
+                <td class="text-center"><span name="name" id="name0"></span></td>
+                <td class="text-center"><span name="specification" id="specification0"></span></td>
+                <td class="text-center"><span name="unit" id="unit0"></span></td>
+                <td class="text-center"><input id="amount0" oninput="totalCalculate()" value="0" name="amount" type="number" class="form-control text-center" style="width: 100%"></td>
+                <td class="text-center"><input type="number" value="0" class="form-control text-center change"
+                                               id="unitPrice0" name="unitPrice" style="width: 100%"
+                                               oninput="totalCalculate()"></td>
+                <td class="text-center"><input type="number" value="0" class="form-control text-center change"
+                                               id="totalPrice0" name="totalPrice" style="width: 100%"
+                                               oninput="setUnitPrice(this)"></td>
+                <td class="text-center"><input title="" type="text" class="form-control text-center" name="post"
+                                               id="post0"></td>
+                <td class="text-center"><span name="remarks" id="remarks0"></span></td>
+                <td class="text-center"><span class="focus text-center" id="wareHouseName0" name="wareHouseName"></span></td>
+                <td class="text-center"><select id="equipment0" name="equipment" class="focus" required></select></td>
             </tr>
             <tr>
-                <td colspan="6" class="text-center">合计</td>
-                <td class="text-center"><span class="text-center" id="total-hundredThousand"></span></td>
-                <td class="text-center"><span class="text-center" id="total-tenThousand"></span></td>
-                <td class="text-center"><span class="text-center" id="total-thousand"></span></td>
-                <td class="text-center"><span class="text-center" id="total-hundred"></span></td>
-                <td class="text-center"><span class="text-center" id="total-ten"></span></td>
-                <td class="text-center"><span class="text-center" id="total-yuan"></span></td>
-                <td class="text-center"><span class="text-center" id="total-jiao"></span></td>
-                <td class="text-center"><span class="text-center" id="total-fen"></span></td>
+                <td colspan="5" class="text-center">合计</td>
+                <td class="text-center" id="totalReceiveAmount"></td>
+                <td class="text-center">--</td>
+                <td class="text-center" id="totalPrice"></td>
                 <td class="text-center">--</td>
                 <td class="text-center">--</td>
                 <td class="text-center">--</td>
                 <td class="text-center">--</td>
             </tr>
             <tr>
-                <td class="text-left" colspan="4"><p style="display: inline">记账人：<input style="display: inline;width: 60px" title="" class="form-control" maxlength="4" type="text" id="bookkeeper"></p></td>
-                <td class="text-left" colspan="4"><p style="display: inline">审批人：<input style="display: inline;width: 60px" title="" class="form-control" maxlength="4" type="text" id="approver"></p></td>
-                <td class="text-left" colspan="6"><p style="display: inline">保管人：<input style="display: inline;width: 60px" title="" class="form-control" maxlength="4" type="text" id="keeper"></p></td>
-                <td class="text-left" colspan="4"><p style="display: inline">经手人：<input style="display: inline;width: 60px" title="" class="form-control" maxlength="4" type="text" id="handlers"></p></td>
+                <td class="text-left" colspan="5"><p style="display:inline;">记账人：<input style="display: inline;width: 60px" title="" class="form-control" type="text"
+                                                                                        maxlength="4" id="bookkeeper"></p></td>
+                <td class="text-left" colspan="2"><p style="display: inline">审批人：<input style="display: inline;width: 60px" title="" class="form-control" type="text"
+                                                                                        maxlength="4" id="approver"></p></td>
+                <td class="text-left" colspan="2" style="width: 150px;"><p style="display: inline">保管人：<input style="display:inline;;width: 60px" title=""
+                                                                                                              class="form-control"  type="text"
+                                                                                                              maxlength="4" id="keeper"></p></td>
+                <td class="text-left" colspan="3" style="width: 150px;"><p style="display: inline">经手人：<input style="display:inline;width: 60px" title="" class="form-control" type="text"
+                                                                            maxlength="4" id="handlers"></p></td>
             </tr>
             </tbody>
         </table>
+        </form>
         <div class="row text-center">
             <a class="btn btn-success" id="save" onclick="save();">出库</a>
-            <a class="btn btn-danger" href="ingredientsOut.html">返回</a>
+            <a class="btn btn-danger" onclick="history.back();">返回</a>
         </div>
         <!--查看模态框-->
         <div class="modal fade bs-example-modal-lg" id="viewModal1" tabindex="-1" role="dialog"

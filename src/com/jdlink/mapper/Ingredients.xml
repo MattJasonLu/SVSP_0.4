@@ -15,13 +15,11 @@
     <resultMap id="InIngredientsRM" type="Ingredients" autoMapping="true">
         <id column="itemId" property="itemId"/>
         <result column="inId" property="id"/>
+        <result column="unit" property="unit"/>
         <result column="procurementId" property="procurementId"/>
         <result column="serialNumberIn" property="serialNumber"/>
-        <association property="ingredientStateItem" column="ingredientStateId" select="getIngredientStateItem"></association>
-       <association property="equipmentDataItem" column="equipmentId" select="getEquipmentDataItem"></association>
+        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"></association>
     </resultMap>
-
-
 
     <!--获得处置设备数据字典-->
     <select id="getEquipmentDataItem" resultType="EquipmentDataItem">
@@ -51,7 +49,7 @@
         select * from t_pr_ingredients_in
         where checkStateId != 69
         order by creationTime desc
-        <if test="start != null and count != null">
+        <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
     </select>
@@ -59,8 +57,8 @@
     <select id="listPageInItem" resultMap="InIngredientsRM">
         select a.*,b.companyName,b.creationDate,b.state from t_pr_ingredients as a join t_pr_ingredients_in as b on
         a.inId=b.id
-        where b.state != 'Invalid'
-        order by creationTime desc
+        where b.checkStateId != 69
+        order by creationTime desc,serialNumberIn ASC
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -75,7 +73,8 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
-                or checkStateId in(select dataDictionaryItemId  from  datadictionaryitem where  dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=11)
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%" and dataDictionaryId=11)
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -99,7 +98,8 @@
             </if>
             <if test="checkStateItem != null">
                 <if test="checkStateItem.dictionaryItemName!=''">
-                    and checkStateId in(select dataDictionaryItemId  from  datadictionaryitem where  dictionaryItemName=#{checkStateItem.dictionaryItemName} )
+                    and checkStateId in(select dataDictionaryItemId from datadictionaryitem where
+                    dictionaryItemName=#{checkStateItem.dictionaryItemName} )
                 </if>
 
             </if>
@@ -114,7 +114,7 @@
             </if>
         </where>
         order by creationTime desc
-        <if test="page != null and page.start != null and page.count != null">
+        <if test="page != null and page.start != null and page.count != null and page.count != 0">
             limit #{page.start}, #{page.count};
         </if>
     </select>
@@ -129,6 +129,7 @@
                 or b.state like "%"#{keywords}"%"
                 or a.name like "%"#{keywords}"%"
                 or a.specification like "%"#{keywords}"%"
+                or a.code like "%"#{keywords}"%"
                 or a.unit like "%"#{keywords}"%"
                 or a.amount like "%"#{keywords}"%"
                 or a.unitPrice like "%"#{keywords}"%"
@@ -167,7 +168,7 @@
             </if>
         </where>
         order by creationTime desc
-        <if test="page != null and page.start != null and page.count != null">
+        <if test="page != null and page.start != null and page.count != null and page.count != 0">
             limit #{page.start}, #{page.count};
         </if>
     </select>
@@ -181,6 +182,7 @@
                 or b.state like "%"#{keywords}"%"
                 or a.name like "%"#{keywords}"%"
                 or a.specification like "%"#{keywords}"%"
+                or a.code like "%"#{keywords}"%"
                 or a.unit like "%"#{keywords}"%"
                 or a.amount like "%"#{keywords}"%"
                 or a.unitPrice like "%"#{keywords}"%"
@@ -219,9 +221,6 @@
             </if>
         </where>
         order by creationDate desc
-        <if test="page != null and page.start != null and page.count != null">
-            limit #{page.start}, #{page.count};
-        </if>
     </select>
 
     <select id="searchInCount" parameterType="IngredientsIn" resultType="int">
@@ -229,7 +228,8 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
-                or checkStateId in(select dataDictionaryItemId  from  datadictionaryitem where  dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=11)
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%" and dataDictionaryId=11)
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -253,7 +253,8 @@
             </if>
             <if test="checkStateItem != null">
                 <if test="checkStateItem.dictionaryItemName!=''">
-                    and checkStateId in(select dataDictionaryItemId  from  datadictionaryitem where  dictionaryItemName=#{checkStateItem.dictionaryItemName} )
+                    and checkStateId in(select dataDictionaryItemId from datadictionaryitem where
+                    dictionaryItemName=#{checkStateItem.dictionaryItemName} )
                 </if>
 
             </if>
@@ -287,17 +288,14 @@
     </select>
 
     <update id="invalidIn" parameterType="IngredientsIn">
-        update t_pr_ingredients_in set state = 'Invalid' where id = #{id};
+        update t_pr_ingredients_in set checkStateId = 69 where id = #{id};
         <if test="ingredientsList != null and ingredientsList.size() > 0">
             <foreach collection="ingredientsList" item="ingredients" index="index">
-                update t_pl_material set state = 'ToInbound'
+                update t_pl_material set stateId = 77
                 where receiptNumber =#{ingredients.procurementId} and suppliesName=#{ingredients.name} and
                 specifications=#{ingredients.specification};
 
-                update t_pr_ingredients_inventory
-                set amount= amount - #{ingredients.amount}
-                where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName} and
-                specification=#{ingredients.specification};
+                delete from t_pr_ingredients_inventory where inId=#{id};
             </foreach>
         </if>
     </update>
@@ -313,7 +311,7 @@
             <foreach collection="ingredientsList" item="ingredients" index="index">
                 update t_pr_ingredients
                 set
-                name=#{ingredients.name},unitPrice=#{ingredients.unitPrice},totalPrice=#{ingredients.totalPrice},
+                name=#{ingredients.name},code=#{ingredients.code},unitPrice=#{ingredients.unitPrice},totalPrice=#{ingredients.totalPrice},
                 amount=#{ingredients.amount},wareHouseName=#{ingredients.wareHouseName},post=#{ingredients.post},specification=#{ingredients.specification},
                 unit=#{ingredients.unit},remarks=#{ingredients.remarks},equipment=#{ingredients.equipment},equipmentId=#{ingredients.equipmentDataItem.dataDictionaryItemId}
                 where inId = #{ingredients.id} and serialNumberIn = #{ingredients.serialNumber};
@@ -330,11 +328,12 @@
         where id=#{id};
     </update>
 
+    <!--暂不用-->
     <insert id="addInventoryItem" parameterType="Ingredients">
         insert into t_pr_ingredients_inventory
-        (name,wareHouseName,amount,unit,ingredientState,ingredientStateId,specification)
+        (name,wareHouseName,amount,unit,ingredientState,ingredientStateId,specification,code,inId,inItemId,inAmount,inPrice,creationTime)
         values
-        (#{name},#{wareHouseName},#{amount},#{unit},'ToReceive',7,#{specification});
+        (#{name},#{wareHouseName},#{amount},#{unit},'ToReceive',7,#{specification},#{code},#{inId},#{inItemId},#{inAmount},#{inPrice},NOW());
     </insert>
 
     <insert id="addIngredientsInItem" parameterType="Ingredients">
@@ -345,9 +344,17 @@
          (#{id},#{serialNumber},#{name},#{unitPrice},#{totalPrice},#{amount},#{wareHouseName},
          #{post},#{specification},#{unit},'ToReceive',7,#{remarks},#{equipment},#{equipmentDataItem.dataDictionaryItemId},#{procurementId});
 
-          update t_pl_material set state = 'ToPick' where id=#{procurementItemId};
+          insert into t_pr_ingredients_inventory
+          (name,wareHouseName,amount,unit,ingredientStateId,specification,code,inId,inItemId,inAmount,inPrice,creationTime)
+          values
+          (#{ingredients.name},#{ingredients.wareHouseName},#{ingredients.amount},#{ingredients.unit},38,
+          #{ingredients.specification},#{ingredients.code},#{#{ingredients.id}},
+          #{ingredients.inItemId},#{ingredients.amount},#{ingredients.unitPrice},NOW());
+
+          update t_pl_material set stateId = 77 where id=#{procurementItemId};
     </insert>
 
+    <!--暂不用-->
     <update id="addInventoryAmount" parameterType="Ingredients">
         update t_pr_ingredients_inventory
         set
@@ -358,27 +365,34 @@
     <update id="updateIngredientInItem" parameterType="Ingredients">
          update t_pr_ingredients
          set
-         unitPrice=#{unitPrice},post=#{post},wareHouseName=#{wareHouseName},equipment=#{equipment}
+         unitPrice=#{unitPrice},post=#{post},wareHouseName=#{wareHouseName},totalPrice=#{totalPrice},amount=#{amount}
          where itemId=#{itemId};
+
+         update t_pr_ingredients_inventory
+         set
+         inPrice=#{unitPrice},wareHouseName=#{wareHouseName},amount=#{amount},inAmount=#{amount}
+         where inId=#{id} and name=#{name} and specification=#{specification} and wareHouseName=#{oldWareHouseName};
     </update>
 
     <delete id="delIngredientInItem" parameterType="Ingredients">
         delete from t_pr_ingredients where itemId=#{itemId};
 
-        update t_pl_material set state = 'ToInbound'
+        update t_pl_material set stateId = 77
         where receiptNumber =#{procurementId} and suppliesName=#{name} and specifications=#{specification};
 
-        update t_pr_ingredients_inventory
-        set amount= amount - #{amount}
-        where name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
+        delete from t_pr_ingredients_inventory
+        where inId=#{id} and name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
+    </delete>
+
+    <delete id="deleteInventory">
+        delete from t_pr_ingredients_inventory;
     </delete>
 
     <update id="reduceOldInventory" parameterType="Ingredients">
         update t_pr_ingredients_inventory
         set amount= amount - #{amount}
-        where name=#{name} and wareHouseName=#{oldWareHouseName} and specification=#{specification};
+        where inId=#{id} and name=#{name} and wareHouseName=#{oldWareHouseName} and specification=#{specification};
     </update>
-
 
     <insert id="addIn" parameterType="IngredientsIn">
         insert into
@@ -392,31 +406,20 @@
                 update t_pl_material set stateId =79 where id = #{ingredients.procurementItemId};
 
                 insert into
-                t_pr_ingredients(inId,serialNumberIn,name,unitPrice,totalPrice,amount,wareHouseName,post,specification,
+                t_pr_ingredients(inId,serialNumberIn,code,name,unitPrice,totalPrice,amount,wareHouseName,post,specification,
                 unit,unitId,ingredientState,remarks,equipmentId,procurementId,ingredientStateId)
                 values
-                (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.name},#{ingredients.unitPrice},
+                (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.code},#{ingredients.name},#{ingredients.unitPrice},
                 #{ingredients.totalPrice},#{ingredients.amount},#{ingredients.wareHouseName},#{ingredients.post},
                 #{ingredients.specification},#{ingredients.unit},#{ingredients.unitDataItem.dataDictionaryItemId},'ToReceive',
                 #{ingredients.remarks},#{ingredients.equipmentDataItem.dataDictionaryItemId},
                 #{ingredients.procurementId},38);
-                <choose>
-                    <when test="ingredients.aid != 'exist'">
-                        insert into
-                        t_pr_ingredients_inventory(name,wareHouseName,amount,unit,ingredientStateId,specification)
-                        values
-                        (#{ingredients.name},#{ingredients.wareHouseName},#{ingredients.amount},#{ingredients.unit},
-                        38,#{ingredients.specification});
-                    </when>
-                    <otherwise>
-                        update t_pr_ingredients_inventory
-                        set
-                        amount = amount + #{ingredients.amount}
-                        where
-                        name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName} and
-                        specification=#{ingredients.specification};
-                    </otherwise>
-                </choose>
+
+                insert into t_pr_ingredients_inventory
+                (name,wareHouseName,amount,unit,ingredientStateId,specification,code,inId,inItemId,inAmount,inPrice,creationTime)
+                values
+                (#{ingredients.name},#{ingredients.wareHouseName},#{ingredients.amount},#{ingredients.unit},38,#{ingredients.specification},#{ingredients.code},#{#{ingredients.id}},
+                #{ingredients.inItemId},#{ingredients.amount},#{ingredients.unitPrice},NOW());
             </foreach>
         </if>
     </insert>
@@ -431,15 +434,17 @@
                     javaType="ArrayList"/>
 
     </resultMap>
-<!--获取状态数据字典-->
+    <!--获取状态数据字典-->
     <select id="getCheckStateItem" resultType="CheckStateItem">
         select * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
     </select>
+
     <resultMap id="ReceiveIngredientsRM" type="Ingredients" autoMapping="true">
         <id column="itemId" property="itemId"/>
         <result column="receiveId" property="id"/>
         <result column="serialNumberReceive" property="serialNumber"/>
-        <association property="ingredientStateItem" column="ingredientStateId" select="getIngredientStateItem"> </association>
+        <association property="ingredientStateItem" column="ingredientStateId"
+                     select="getIngredientStateItem"></association>
         <!--<association property=""-->
     </resultMap>
 
@@ -461,7 +466,7 @@
 
     <select id="listPageReceive" resultMap="IngredientsReceiveRM">
         select * from t_pr_ingredients_receive
-        where checkStateId !=69
+        where checkStateId != 69
         order by creationTime desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
@@ -470,8 +475,8 @@
 
     <select id="listPageReceiveItem" resultMap="ReceiveIngredientsRM">
         select * from t_pr_ingredients as a join t_pr_ingredients_receive as b on a.receiveId=b.id
-        where b.state != 'Invalid'
-        order by b.creationTime desc
+        where b.checkStateId != 69
+        order by b.creationTime desc,serialNumberReceive ASC
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -486,7 +491,8 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
-                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -511,7 +517,8 @@
             </if>
             <if test="checkStateItem != null">
                 <if test="checkStateItem.dictionaryItemName!=''">
-                    and checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName = #{checkStateItem.dictionaryItemName})
+                    and checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName =
+                    #{checkStateItem.dictionaryItemName})
                 </if>
 
             </if>
@@ -536,7 +543,8 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
-                or checkStateId in (select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
+                or checkStateId in (select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -561,7 +569,8 @@
             </if>
             <if test="checkStateItem != null">
                 <if test="checkStateItem.dictionaryItemName!=''">
-                    and checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName = #{checkStateItem.dictionaryItemName})
+                    and checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName =
+                    #{checkStateItem.dictionaryItemName})
                 </if>
 
             </if>
@@ -586,6 +595,7 @@
                 or b.department like "%"#{keywords}"%"
                 or b.state like "%"#{keywords}"%"
                 or a.name like "%"#{keywords}"%"
+                or a.code like "%"#{keywords}"%"
                 or a.specification like "%"#{keywords}"%"
                 or a.wareHouseName like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
@@ -640,6 +650,7 @@
                 or b.department like "%"#{keywords}"%"
                 or b.state like "%"#{keywords}"%"
                 or a.name like "%"#{keywords}"%"
+                or a.code like "%"#{keywords}"%"
                 or a.specification like "%"#{keywords}"%"
                 or a.wareHouseName like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
@@ -689,6 +700,7 @@
 
     <select id="getInventoryList" resultType="Ingredients">
         select * from t_pr_ingredients_inventory
+        order by inId DESC,itemId asc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count};
         </if>
@@ -699,7 +711,7 @@
     </select>
 
     <select id="getInventoryByNameAndWare" resultType="Ingredients">
-        select * from t_pr_ingredients_inventory where name = #{name} and wareHouseName = #{wareHouseName} and specification=#{specification};
+        select * from t_pr_ingredients_inventory where receiveId=#{receiveId} and name = #{name} and wareHouseName = #{wareHouseName} and specification=#{specification};
     </select>
 
     <select id="searchInventoryCount" parameterType="Ingredients" resultType="int">
@@ -758,8 +770,8 @@
         <if test="ingredientsList != null and ingredientsList.size() > 0">
             <foreach collection="ingredientsList" item="ingredients" index="index"><!--将库存加回-->
                 update t_pr_ingredients_inventory
-                set amount= amount + #{ingredients.receiveAmount}
-                where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName} and
+                set amount= amount + #{ingredients.receiveAmount},receiveAmount = 0,ingredientStateId=38;
+                where receiveId=#{id} and name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName} and
                 specification=#{ingredients.specification};
             </foreach>
         </if>
@@ -788,46 +800,48 @@
         update t_pr_ingredients_receive
         set
         department=#{department},fileId=#{fileId},totalAmount=#{totalAmount},vicePresident=#{vicePresident},warehouseSupervisor=#{warehouseSupervisor},
-        keeper=#{keeper},pickingSupervisor=#{pickingSupervisor},pickingMan=#{pickingMan},nowTime=NOW()
+        keeper=#{keeper},pickingSupervisor=#{pickingSupervisor},pickingMan=#{pickingMan},nowTime=NOW(),creationDate=#{creationDate}
         where id = #{id};
     </update>
 
     <insert id="addIngredientsReceiveItem" parameterType="Ingredients">
         insert into t_pr_ingredients
-        (receiveId,serialNumberReceive,name,receiveAmount,wareHouseName,
-        specification,unit,remarks,ingredientState)
+        (receiveId,serialNumberReceive,code,name,receiveAmount,amount,unitPrice,totalPrice,wareHouseName,
+        specification,unit,remarks,post,ingredientStateId)
         values
-        (#{id},#{serialNumber},#{name},#{receiveAmount},#{wareHouseName},#{specification},
-        #{unit},#{remarks},IF(#{notReceiveAmount}>0,'PartReceived','Received')),ingredientStateId=IF(#{ingredients.notReceiveAmount}>0,40,39);
+        (#{id},#{serialNumber},#{code},#{name},#{receiveAmount},#{amount},#{unitPrice},#{totalPrice},#{wareHouseName},#{specification},
+        #{unit},#{remarks},#{post},IF(#{ingredients.notReceiveAmount}>0,40,39));
 
-        update t_pr_ingredients_inventory
-        set amount= amount - #{receiveAmount}
-        where name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
+         update t_pr_ingredients_inventory
+         set amount=amount-#{receiveAmount},ingredientStateId=IF((amount-#{receiveAmount})>0,40,39),
+         receiveId = #{id},receiveAmount=receiveAmount+#{receiveAmount},receivePrice=#{unitPrice}
+         where itemId=#{itemId};
     </insert>
 
     <update id="updateIngredientsReceiveItem" parameterType="Ingredients">
         update t_pr_ingredients
         set
-        remarks=#{remarks},receiveAmount=#{receiveAmount},ingredientState='PartReceived',ingredientStateId=40,serialNumberReceive=#{serialNumber}
+        remarks=#{remarks},post=#{post},receiveAmount=#{receiveAmount},ingredientStateId=40,
+        serialNumberReceive=#{serialNumber},unitPrice=#{unitPrice},totalPrice=#{totalPrice},
         where itemId=#{itemId};
     </update>
 
     <update id="plusInventoryAmount" parameterType="Ingredients">
         update t_pr_ingredients_inventory
-        set amount= amount + #{notReceiveAmount}
-        where name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
+        set amount= amount + (#{oldReceiveAmount}-#{receiveAmount})
+        where receiveId=#{id} and name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
     </update>
 
     <update id="reduceInventoryAmount" parameterType="Ingredients">
         update t_pr_ingredients_inventory
-        set amount= amount - #{notReceiveAmount}
-        where name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
+        set amount= amount - (#{receiveAmount}-#{oldReceiveAmount})
+        where receiveId=#{id} and name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
     </update>
 
     <delete id="delIngredientReceiveItem" parameterType="Ingredients">
         update t_pr_ingredients_inventory
         set amount= amount + #{receiveAmount}
-        where name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
+        where receiveId=#{id} and name=#{name} and wareHouseName=#{wareHouseName} and specification=#{specification};
 
         delete from t_pr_ingredients where itemId=#{itemId}
     </delete>
@@ -841,26 +855,28 @@
 
     <insert id="addAllReceive" parameterType="IngredientsReceive">
         insert into t_pr_ingredients_receive
-        (id, department,creationDate,fileId,totalAmount,vicePresident,warehouseSupervisor,keeper,
+        (id,department,creationDate,fileId,totalAmount,totalPrice,vicePresident,warehouseSupervisor,keeper,
         pickingSupervisor,pickingMan,state,nowTime,creationTime,checkStateId)
         values
-        (#{id},#{department},#{creationDate},#{fileId},#{totalAmount},#{vicePresident},#{warehouseSupervisor},#{keeper},
-        #{pickingSupervisor},#{pickingMan},'NewBuild',NOW(),NOW(),75);
+        (#{id},#{department},#{creationDate},#{fileId},#{totalAmount},#{totalPrice},#{vicePresident},
+        #{warehouseSupervisor},#{keeper},#{pickingSupervisor},#{pickingMan},'NewBuild',NOW(),NOW(),75);
         <if test="ingredientsList.size() > 0">
             <foreach collection="ingredientsList" item="ingredients" index="index">
                 insert into t_pr_ingredients
-                (receiveId,serialNumberReceive,name,receiveAmount,wareHouseName,
-                specification,unit,remarks,ingredientStateId)
+                (receiveId,serialNumberReceive,code,name,unitPrice,totalPrice,receiveAmount,amount,wareHouseName,
+                specification,unit,post,remarks,ingredientStateId)
                 values
-                (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.name},
-                #{ingredients.receiveAmount},#{ingredients.wareHouseName},#{ingredients.specification},
-                #{ingredients.unit},#{ingredients.remarks},IF(#{ingredients.notReceiveAmount}>0,40,39));
+                (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.code},#{ingredients.name},
+                #{ingredients.unitPrice},#{ingredients.totalPrice},#{ingredients.receiveAmount},#{ingredients.amount},
+                #{ingredients.wareHouseName},#{ingredients.specification},#{ingredients.unit},
+                #{ingredients.post},#{ingredients.remarks},IF(#{ingredients.notReceiveAmount}>0,40,39));
 
                 update t_pr_ingredients_inventory
                 set
-                amount =
-                amount-#{ingredients.receiveAmount},ingredientStateId=IF((amount-#{ingredients.receiveAmount})>0,40,39)
-                where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName};
+                amount=amount-#{ingredients.receiveAmount},ingredientStateId=IF((amount-#{ingredients.receiveAmount})>0,40,39),
+                receiveId =
+                #{ingredients.id},receiveAmount=receiveAmount+#{ingredients.receiveAmount},receivePrice=#{ingredients.unitPrice}
+                where itemId=#{ingredients.itemId};
             </foreach>
         </if>
     </insert>
@@ -868,11 +884,9 @@
     <!-- 出库单-->
     <resultMap id="IngredientsOutRM" type="IngredientsOut" autoMapping="true">
         <id column="id" property="id"/>
-        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"></association>
         <collection property="ingredientsList" select="getOutItems" column="id"
                     ofType="com.jdlink.domain.Produce.Ingredients"
                     javaType="ArrayList"/>
-
     </resultMap>
 
     <resultMap id="OutIngredientsRM" type="Ingredients" autoMapping="true">
@@ -881,7 +895,7 @@
         <result column="outId" property="id"/>
         <result column="serialNumberOut" property="serialNumber"/>
         <association property="equipmentDataItem" column="equipmentId" select="getEquipmentDataItem"></association>
-        <association property="ingredientStateItem" column="ingredientStateId" select="getIngredientStateItem"></association>
+        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"></association>
     </resultMap>
 
     <select id="getOutItems" parameterType="String" resultMap="OutIngredientsRM">
@@ -902,17 +916,17 @@
 
     <select id="listPageOut" resultMap="IngredientsOutRM">
         select * from t_pr_ingredients_out
-        where state != 'Invalid'
+        where checkStateId != 69
         order by creationTime desc
-        <if test="start != null and count != null">
+        <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
     </select>
 
     <select id="listPageOutItem" resultMap="OutIngredientsRM">
         select * from t_pr_ingredients as a join t_pr_ingredients_out as b on a.outId=b.id
-        where b.state != 'Invalid'
-        order by b.creationTime desc
+        where b.checkStateId != 69
+        order by b.creationTime desc,serialNumberOut ASC
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -939,7 +953,8 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
-                or checkStateId in(select dataDictionaryItemId  from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -963,7 +978,8 @@
             </if>
             <if test="checkStateItem != null">
                 <if test="checkStateItem.dictionaryItemName!=''">
-                    and  checkStateId in(select dataDictionaryItemId  from datadictionaryitem where dictionaryItemName =#{checkStateItem.dictionaryItemName})
+                    and checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName
+                    =#{checkStateItem.dictionaryItemName})
                 </if>
 
             </if>
@@ -978,7 +994,7 @@
             </if>
         </where>
         order by creationTime desc
-        <if test="page != null and page.start != null and page.count != null">
+        <if test="page != null and page.start != null and page.count != null and page.count != 0">
             limit #{page.start}, #{page.count};
         </if>
     </select>
@@ -988,7 +1004,8 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
-                or checkStateId in(select dataDictionaryItemId  from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -1012,7 +1029,8 @@
             </if>
             <if test="checkStateItem != null">
                 <if test="checkStateItem.dictionaryItemName!=''">
-                    and  checkStateId in(select dataDictionaryItemId  from datadictionaryitem where dictionaryItemName =#{checkStateItem.dictionaryItemName})
+                    and checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName
+                    =#{checkStateItem.dictionaryItemName})
                 </if>
 
             </if>
@@ -1035,6 +1053,7 @@
                 or b.id like "%"#{keywords}"%"
                 or b.department like "%"#{keywords}"%"
                 or state like "%"#{keywords}"%"
+                or code like "%"#{keywords}"%"
                 or a.name like "%"#{keywords}"%"
                 or a.specification like "%"#{keywords}"%"
                 or a.wareHouseName like "%"#{keywords}"%"
@@ -1080,7 +1099,7 @@
             </if>
         </where>
         order by creationTime desc
-        <if test="page != null and page.start != null and page.count != null">
+        <if test="page != null and page.start != null and page.count != null and page.count != 0">
             limit #{page.start}, #{page.count};
         </if>
     </select>
@@ -1092,6 +1111,7 @@
                 or b.id like "%"#{keywords}"%"
                 or b.department like "%"#{keywords}"%"
                 or state like "%"#{keywords}"%"
+                or code like "%"#{keywords}"%"
                 or a.name like "%"#{keywords}"%"
                 or a.specification like "%"#{keywords}"%"
                 or a.wareHouseName like "%"#{keywords}"%"
@@ -1149,8 +1169,8 @@
                 set checkStateId=75
                 where id=#{ingredients.aid};
 
-                <!--将领料单物品明细状态更新为部分领用-->
-                update t_pr_ingredients set ingredientStateId=40  where receiveId=#{ingredients.aid};
+                <!--将领料单物品明细状态更新为待出库-->
+                update t_pr_ingredients set ingredientStateId=41 where receiveId=#{ingredients.aid};
             </foreach>
         </if>
     </update>
@@ -1165,7 +1185,7 @@
             <foreach collection="ingredientsList" item="ingredients" index="index">
                 update t_pr_ingredients
                 set
-                name=#{ingredients.name},unitPrice=#{ingredients.unitPrice},totalPrice=#{ingredients.totalPrice},
+                code=#{code},name=#{ingredients.name},unitPrice=#{ingredients.unitPrice},totalPrice=#{ingredients.totalPrice},
                 amount=#{ingredients.amount},wareHouseName=#{ingredients.wareHouseName},post=#{ingredients.post},specification=#{ingredients.specification},
                 unit=#{ingredients.unit},remarks=#{ingredients.remarks},ingredientState=IF(#{ingredients.notReceiveAmount}=1,'PartOutBound','OutBounded'),
                 ingredientStateId=IF(#{ingredients.notReceiveAmount}=1,43,42),equipment=#{ingredients.equipment},equipmentId=#{ingredients.equipmentDataItem.dataDictionaryItemId}
@@ -1184,10 +1204,10 @@
 
     <insert id="addIngredientsOutItem" parameterType="Ingredients">
         insert into t_pr_ingredients
-        (outId,serialNumberOut,name,unitPrice,totalPrice,receiveAmount,wareHouseName,post,
+        (outId,serialNumberOut,code,name,unitPrice,totalPrice,receiveAmount,wareHouseName,post,
         specification,unit,ingredientStateId,remarks,equipment,aid)
         values
-        (#{id},#{serialNumber},#{name},#{unitPrice},#{totalPrice},#{receiveAmount},#{wareHouseName},#{post},
+        (#{id},#{serialNumber},#{code},#{name},#{unitPrice},#{totalPrice},#{receiveAmount},#{wareHouseName},#{post},
         #{specification},#{unit},IF(#{notReceiveAmount}>0,43,42),#{remarks},#{equipment},#{aid});
 
         update t_pr_ingredients_receive
@@ -1226,30 +1246,23 @@
         <if test="ingredientsList.size() > 0">
             <foreach collection="ingredientsList" item="ingredients" index="index">
                 insert into t_pr_ingredients
-                (outId,serialNumberOut,name,unitPrice,totalPrice,receiveAmount,wareHouseName,post,
+                (outId,serialNumberOut,code,name,unitPrice,totalPrice,receiveAmount,wareHouseName,post,
                 specification,unit,ingredientStateId,remarks,equipment,aid,equipmentId)
                 values
-                (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.name},#{ingredients.unitPrice},
+                (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.code},#{ingredients.name},#{ingredients.unitPrice},
                 #{ingredients.totalPrice},#{ingredients.receiveAmount},#{ingredients.wareHouseName},
                 #{ingredients.post},#{ingredients.specification},#{ingredients.unit},
                 IF(#{ingredients.notReceiveAmount}>0,43,42),#{ingredients.remarks},#{ingredients.equipment},
                 #{ingredients.aid},#{ingredients.equipmentDataItem.dataDictionaryItemId});
 
-                <if test="receiveIdList == null or receiveIdList.size() == 0">
-                    update t_pr_ingredients_inventory
-                    set
-                    amount =
-                    amount-#{ingredients.receiveAmount},ingredientStateId=IF((amount-#{ingredients.receiveAmount})>0,40,39)
-                    where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName};
-                </if>
-            </foreach>
-        </if>
-        <if test="receiveIdList != null and receiveIdList.size() > 0 ">
-            <foreach collection="receiveIdList" item="receiveId" index="index">
-                update t_pr_ingredients_receive
-                set
-                checkStateId = 81
-                where id = #{receiveId};
+                update t_pr_ingredients
+                set ingredientStateId = 42
+                where itemId=#{ingredients.receiveItemId};
+
+                update t_pr_ingredients_inventory
+                set outAmount=#{ingredients.receiveAmount},outId=#{ingredients.id},outPrice=#{ingredients.unitPrice}
+                where receiveId=#{ingredients.receiveId} and specification=#{ingredients.specification}
+                and name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName};
             </foreach>
         </if>
     </insert>
@@ -1303,7 +1316,7 @@
             </if>
         </where>
         order by nowTime desc
-        <if test="page != null and page.start != null and page.count != null">
+        <if test="page != null and page.start != null and page.count != null and page.count != 0">
             limit #{page.start}, #{page.count};
         </if>
     </select>
@@ -1332,6 +1345,16 @@
         </where>
     </select>
 
+    <select id="getCountByCode" parameterType="String" resultType="int">
+        select count(*) from t_pl_ingredientslist
+        where code=#{code};
+    </select>
+
+    <select id="getCountByType" parameterType="String" resultType="int">
+        select count(*) from t_pl_ingredientslist
+        where left(code,2)=#{type};
+    </select>
+
     <insert id="addIngredient" parameterType="Ingredients">
         insert into t_pl_ingredientslist
         (ingredientsName, code,specification,nowTime) values (#{name},#{code},#{specification},NOW());
@@ -1345,5 +1368,6 @@
     <delete id="deleteIngredient" parameterType="int">
         delete from t_pl_ingredientslist where id=#{id};
     </delete>
+
 
 </mapper>

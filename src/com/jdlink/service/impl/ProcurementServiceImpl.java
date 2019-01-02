@@ -223,6 +223,11 @@ public class ProcurementServiceImpl implements ProcurementService
     }
 
     @Override
+    public void setProcurementFilePath(Procurement procurement) {
+        procurementMapper.setProcurementFilePath(procurement);
+    }
+
+    @Override
     public List<Material> searchMaterial(Material material){ return procurementMapper.searchMaterial(material);}
 
     @Override

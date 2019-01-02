@@ -432,12 +432,12 @@ public class TransportPlanController {
                     if (client.getSalesman() != null) salesman = client.getSalesman();
                 }
                 List<WayBillItem> wayBillItemList = new ArrayList<>();
-                int itemId = Integer.parseInt(wayBillService.getItemId());
+                int itemId = (wayBillService.getItemId());
                 // 创建接运单中的接运单条目
                 for (TransportPlanItem transportPlanItem : itemList) {
                     WayBillItem wayBillItem = new WayBillItem();
                     // 设置接运单条目的编号
-                    wayBillItem.setItemId(String.valueOf(itemId));
+                   // wayBillItem.setItemId(String.valueOf(itemId));
                     // 设置接运单条目的危废
 //                    wayBillItem.setWastesId(transportPlanItem);
                     wayBillItem.setWayBillId(wayBill.getId());

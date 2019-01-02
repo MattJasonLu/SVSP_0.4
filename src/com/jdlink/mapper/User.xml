@@ -30,7 +30,7 @@
         select * from user where username = #{username} and password = #{password}
     </select>
 
-    <select id="getById" parameterType="int">
+    <select id="getById" resultMap="UserRM">
         SELECT * FROM user WHERE id=#{id} LIMIT 1;
     </select>
 
@@ -39,7 +39,7 @@
     </select>
 
     <update id="update" parameterType="User" >
-        update user set password=#{password}, nowTime=NOW() where id=#{id}
+        update user set username=#{username}, password=#{password}, name=#{name}, age=#{age}, sex=#{sex}, nowTime=NOW() where id=#{id}
     </update>
     <select id="list" resultMap="UserRM">
         select * from user order by nowTime desc;

@@ -770,6 +770,29 @@ public class DictionaryController {
         return res.toString();
     }
 
+    /**
+     * 获取计量单位字典数据（公斤/吨）
+     * @return
+     */
+    @RequestMapping("getTAndKGUnitByDataDictionary")
+    @ResponseBody
+    public String getTAndKGUnitByDataDictionary() {
+        JSONObject res = new JSONObject();
+        try {
+            List<DataDictionaryItem> formTypeList = dictionaryService.getTAndKGUnitList();
+            JSONArray data = JSONArray.fromArray(formTypeList.toArray());
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "获取计量单位成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取计量单位失败");
+
+        }
+        return res.toString();
+    }
+
 
     /*
          获取次生类别字典数据
@@ -966,6 +989,28 @@ public class DictionaryController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "获取次生采样点失败");
+
+        }
+        return res.toString();
+    }
+
+    /**
+     * 获取非物资类别
+     */
+    @RequestMapping("getNonMaterialItemByDataDictionary")
+    @ResponseBody
+    public String getNonMaterialItemByDataDictionary() {
+        JSONObject res = new JSONObject();
+        try {
+            List<DataDictionaryItem> formTypeList = dictionaryService.getSelectListByDataDictionary(40);
+            JSONArray data = JSONArray.fromArray(formTypeList.toArray());
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "获取非物资类别成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取非物资类别失败");
 
         }
         return res.toString();

@@ -16,6 +16,7 @@ import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -121,7 +122,6 @@ public class PRIngredientsController {
     public String addIngredientsIn(@RequestBody IngredientsIn ingredientsIn) {
         JSONObject res = new JSONObject();
         try {
-            ingredientsIn.setCreationDate(new Date()); // 设置入库日期为当前日期
             ingredientsService.addIn(ingredientsIn);
             res.put("status", "success");
             res.put("message", "新建入库单成功");
@@ -138,7 +138,6 @@ public class PRIngredientsController {
     public String updateIngredientsIn(@RequestBody IngredientsIn ingredientsIn) {
         JSONObject res = new JSONObject();
         try {
-            //  ingredientsIn.setCreationDate(new Date()); // 设置入库日期为当前日期
             ingredientsService.updateDataIn(ingredientsIn);
             res.put("status", "success");
             res.put("message", "入库单修改成功");
@@ -1843,4 +1842,65 @@ public class PRIngredientsController {
         return res.toString();
     }
 
+    /**
+     * 根据物品编码获取对象
+     * @param code
+     * @return
+     */
+    @RequestMapping("getCountByIngredientCode")
+    @ResponseBody
+    public int getCountByIngredientCode(String code) {
+        int count = ingredientsService.getCountByCode(code);  // 获取物品编码为code的物品数量
+        return count;
+    }
+
+    /**
+     * 根据前两位编码获取最新的物品编码
+     * @param type
+     * @return
+     */
+    @RequestMapping("getCurrentCodeByType")
+    @ResponseBody
+    public String getCurrentCodeByType(String type) {
+        int count = ingredientsService.getCountByType(type) + 1;  // 获取物品编码前两位为type的物品数量+1
+        String code = "";
+        String count1 = count + "";
+        int length = count1.length();  // 获取数量位数
+        for(int i = 0; i < (6 - length); i++) {
+            count1 = "0" + count1;
+        }
+        code = type + count1;
+        while (ingredientsService.getCountByCode(code) > 0){   // 如果存在就一直加1
+            int index = Integer.parseInt(code);
+            index += 1;
+            code = index + "";
+        }
+        return code;
+    }
+
+    /**
+     * 根据入库单自动新增库存自动
+     */
+    @RequestMapping("setInventory")
+    @ResponseBody
+    public void setInventory(){
+        ingredientsService.deleteInventory();    // 删除原库存。
+        Page page = new Page();
+        page.setStart(0);
+        page.setCount(0);
+        List<Ingredients> ingredientsList = ingredientsService.listPageInItem(page);
+        for(Ingredients ingredients : ingredientsList) {
+            Ingredients ingredients1 = new Ingredients();
+            ingredients1.setCode(ingredients.getCode());
+            ingredients1.setName(ingredients.getName());
+            ingredients1.setSpecification(ingredients.getSpecification());
+            ingredients1.setUnit(ingredients.getUnit());
+            ingredients1.setAmount(ingredients.getAmount());
+            ingredients1.setWareHouseName(ingredients.getWareHouseName());
+            ingredients1.setInAmount(ingredients.getAmount());
+            ingredients1.setInId(ingredients.getId());
+            ingredients1.setInPrice(ingredients.getUnitPrice());
+            ingredientsService.addInventoryItem(ingredients1);
+        }
+    }
 }

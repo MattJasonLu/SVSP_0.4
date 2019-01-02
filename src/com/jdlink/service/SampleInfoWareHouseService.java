@@ -20,6 +20,7 @@ public interface SampleInfoWareHouseService {
     List<SampleInformation> listByKeyword(String keyword);
     void updateSampleInfo(String sampleId,String newId);
     int searchCount(SampleInformation sampleInformation);
+    int getCountByTransferId(String transferId);
     List<SampleInformation> search(SampleInformation sampleInformation);
     SampleInformation getBySampleInformationId(String id);
     Wastes getByWastesId(String id);

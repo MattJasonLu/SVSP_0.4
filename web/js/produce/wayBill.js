@@ -9,7 +9,6 @@ function loadPageWayBillDetailList() {
         size: 4
     });
     $(".newItemLine").remove();         // 清除旧行
-
     //编辑显示按钮，查看隐藏按钮
     if (localStorage.add == 0) {
         $("#plusBtn").css("display", "none");
@@ -111,23 +110,29 @@ function setWayBillItemList(result) {
                     $(this).find("select").selectpicker('val', obj.wastesCode);
                     break;
                 case (8):
-                    //危废数量
-                    $(this).find("input").val(obj.wastesAmount.toFixed(3));
+                    //危废含税单价
+                    $(this).find("input").val(obj.wastesPrice.toFixed(2));
                     break;
                 case (9):
-                    //危废含税单价
-                    $(this).find("input").val(obj.wastesPrice.toFixed(3));
+                    //危废数量
+                    if (obj.unitDataItem != null && obj.unitDataItem.dictionaryItemName === "公斤") {
+                        $(this).find("input").val(obj.wastesAmount.toFixed(0));
+                    }else {
+                        $(this).find("input").val(obj.wastesAmount.toFixed(2));
+                    }
                     break;
                 case(10):
-                    //危废单个合计
-                    var total = obj.wastesPrice * obj.wastesAmount;
-                    $(this).find("span").text(total.toFixed(3));
-                    break;
+                    if (obj.unitDataItem != null)
+                        $(this).find("select").val(obj.unitDataItem.dataDictionaryItemId);
                 case(11):
+                    //危废单个合计
+                    $(this).find("input").val(obj.wastesTotalPrice.toFixed(2));
+                    break;
+                case(12):
                     //开票日期
                     $(this).find("input").val(getDateStr(obj.invoiceDate));
                     break;
-                case(12):
+                case(13):
                     //发票号码
                     $(this).find("input").val(obj.invoiceNumber);
                     break;
@@ -206,6 +211,24 @@ function delLine(e) {
 }
 
 /**
+ * 单位转化数量单价自动变化
+ */
+function autoSetAmountAndPrice(item) {
+    var unit = $(item).find("option:selected").text();
+    var amountInput = $(item).parent().prev().find("input[name='modal-wasteAmount']");
+    var priceInput = $(item).parent().prev().prev().find("input[name='modal-wastesPrice']");
+    var amount = amountInput.val();
+    var price = priceInput.val();
+    if (unit === "公斤") {
+        amountInput.val((amount * 1000).toFixed(0));
+        priceInput.val((price / 1000).toFixed(2));
+    } else if (unit === "吨") {
+        amountInput.val((amount / 1000).toFixed(3));
+        priceInput.val((price * 1000).toFixed(2));
+    }
+}
+
+/**
  * 计算总价
  */
 function calculateTotalPrice(e) {
@@ -217,7 +240,7 @@ function calculateTotalPrice(e) {
     if ($("#wastes" + $i + "-unitPriceTax").val() != '')
         price = $("#wastes" + $i + "-unitPriceTax").val();
     // 给总计赋值
-    $("#wastes" + $i + "-totalPrice").text(parseFloat(amount) * parseFloat(price));
+    $("#wastes" + $i + "-totalPrice").val((parseFloat(amount) * parseFloat(price)).toFixed(2));
 }
 
 function getSalesmanIdByName(name) {
@@ -353,9 +376,12 @@ function addWastes() {
         wayBillItem.wastesName = $("#wastes" + $i + "-name").val();
         wayBillItem.wastesAmount = $("#wastes" + $i + "-wasteAmount").val();
         wayBillItem.wastesCode = $("#wastes" + $i + "-wasteCode option:selected").text();
+        var unitDataItem = {};
+        unitDataItem.dataDictionaryItemId = $("#wastes" + $i + "-wasteUnit option:selected").val();
+        wayBillItem.unitDataItem = unitDataItem;
         wayBillItem.wastesPrice = $("#wastes" + $i + "-unitPriceTax").val();
-        wayBillItem.wastesTotalPrice = $("#wastes" + $i + "-totalPrice").text();
-        wayBillItem.itemId = ItemId1.toString();
+        wayBillItem.wastesTotalPrice = $("#wastes" + $i + "-totalPrice").val();
+       // wayBillItem.itemId = ItemId1.toString();
         wayBillItem.invoiceDate = $("#wastes" + $i + "-invoiceDate").val();
         wayBillItem.invoiceNumber = $("#wastes" + $i + "-invoiceNumber").val();
         wayBillItem.receiveCompanyOperator = $("#wastes" + $i + "-receiveCompanyOpterator").val();
@@ -396,38 +422,8 @@ function addWastes() {
  */
 $(document).ready(function () {
     var lineCount = $("span[id^='wastes'][id$='produceCompany']").length;
-    for (var i = 0; i < lineCount; i++) {
+    for (var i = 0; i < 1; i++) {
         var $i = i;
-        // 添加接收单位信息
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getAllClients",              // url
-            cache: false,
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                if (result != undefined) {
-                    var data = eval(result);
-                    // 各下拉框数据填充
-                    var clientList = $("#wastes" + $i + "-receiveCompany");
-                    // 清空遗留元素
-                    clientList.children().first().siblings().remove();
-                    $.each(data, function (index, item) {
-                        var option = $('<option />');
-                        option.val(item.companyName);
-                        option.text(item.companyName);
-                        clientList.append(option);
-                    });
-                    $('.selectpicker').selectpicker('refresh');
-                } else {
-//                    console.log(result);
-                }
-            },
-            error: function (result) {
-                console.log(result);
-            }
-        });
         // 添加业务员信息
         $.ajax({
             type: "POST",                       // 方法类型
@@ -487,5 +483,34 @@ $(document).ready(function () {
                 console.log("error: " + result);
             }
         });
+
     }
+    // 添加计量单位信息
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getTAndKGUnitByDataDictionary",              // url
+        cache: false,
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                var data = eval(result.data);
+                console.log(data);
+                // 计量单位下拉框数据填充
+                var unit = $("select[name='modal-wasteUnit']");
+                unit.children().first().siblings().remove();
+                $.each(data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    unit.append(option);
+                });
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
 });

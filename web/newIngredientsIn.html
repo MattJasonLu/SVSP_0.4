@@ -295,85 +295,91 @@
                 <thead>
                 <tr>
                     <th class="text-center">单位:</th>
-                    <th colspan="5" class="text-left"><input class="form-control" style="display: inline" type="text" title="" id="companyName">
+                    <th colspan="4" class="text-left"><input class="form-control" style="display: inline" type="text" title="" id="companyName">
                     </th>
-                    <th colspan="8" class="text-center">日期:<input type="date" class="text-left" id="creationDate"></th>
+                    <th class="text-center">日期:</th>
+                    <th colspan="2" class="text-center"><input type="date" class="text-left form-control" id="creationDate"></th>
                     <th class="text-center">文件编号:</th>
-                    <th colspan="4" class="text-right"><input title="" style="display: inline" type="text" class="form-control" id="fileId"></th>
+                    <th colspan="2" class="text-right"><input title="" style="display: inline" type="text" class="form-control" id="fileId"></th>
                 </tr>
                 </thead>
                 <tbody id="tbody1">
                 <tr>
-                    <td class="text-center" rowspan="2">编号</td>
-                    <td class="text-center" rowspan="2">物品名称</td>
-                    <td class="text-center" rowspan="2">规格</td>
-                    <td class="text-center" rowspan="2">单位</td>
-                    <td class="text-center" rowspan="2">数量</td>
-                    <td class="text-center" rowspan="2">单价<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup>
-                    <td class="text-center" colspan="8">金额</td>
-                    <td class="text-center" rowspan="2">过账</td>
-                    <td class="text-center" rowspan="2">附注</td>
-                    <td class="text-center" rowspan="2">仓库<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup>
+                    <td class="text-center" rowspan="1">编号</td>
+                    <td class="text-center" rowspan="1">物品编码</td>
+                    <td class="text-center" rowspan="1">物品名称</td>
+                    <td class="text-center" rowspan="1">规格</td>
+                    <td class="text-center" rowspan="1">单位</td>
+                    <td class="text-center" rowspan="1">数量</td>
+                    <td class="text-center" rowspan="1">单价<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></td>
+                    <td class="text-center" colspan="1">金额</td>
+                    <td class="text-center" rowspan="1">过账</td>
+                    <td class="text-center" rowspan="1">附注</td>
+                    <td class="text-center" rowspan="1">仓库<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></td>
                     <!--<td class="text-center" rowspan="2">处置设备</td>-->
-                    <td class="text-center" rowspan="2" hidden>采购单编号</td>
+                    <td class="text-center" rowspan="1" hidden>采购单编号</td>
                 </tr>
-                <tr>
-                    <td class="text-center">十</td>
-                    <td class="text-center">万</td>
-                    <td class="text-center">千</td>
-                    <td class="text-center">百</td>
-                    <td class="text-center">十</td>
-                    <td class="text-center">元</td>
-                    <td class="text-center">角</td>
-                    <td class="text-center">分</td>
-                </tr>
+                <!--<tr>-->
+                    <!--<td class="text-center">十</td>-->
+                    <!--<td class="text-center">万</td>-->
+                    <!--<td class="text-center">千</td>-->
+                    <!--<td class="text-center">百</td>-->
+                    <!--<td class="text-center">十</td>-->
+                    <!--<td class="text-center">元</td>-->
+                    <!--<td class="text-center">角</td>-->
+                    <!--<td class="text-center">分</td>-->
+                <!--</tr>-->
                 <tr id="clone3" class="clone">
                     <td class="text-center"><span name="serialNumber" id="serialNumber0"></span></td>
+                    <td class="text-center"><span name="code" id="code0"></span></td>
                     <td class="text-center"><span name="name" id="name0"></span></td>
                     <td class="text-center"><span name="specification" id="specification0"></span></td>
                     <td class="text-center"><span name="unit" id="unit0"></span></td>
-                    <td class="text-center"><input id="amount0" name="amount" type="number" class="form-control text-center" style="width: 100%"></td>
-                    <td class="text-center"><input type="number" class="form-control text-center change"
+                    <td class="text-center"><input id="amount0" oninput="totalCalculate()" value="0" name="amount" type="number" class="form-control text-center" style="width: 100%"></td>
+                    <td class="text-center"><input type="number" value="0" class="form-control text-center change"
                                                    id="unitPrice0" name="unitPrice" style="width: 100%"
                                                    oninput="totalCalculate()"></td>
-                    <td class="text-center"><span id="hundredThousand0"></span></td>
-                    <td class="text-center"><span id="tenThousand0"></span></td>
-                    <td class="text-center"><span id="thousand0"></span></td>
-                    <td class="text-center"><span id="hundred0"></span></td>
-                    <td class="text-center"><span id="ten0"></span></td>
-                    <td class="text-center"><span id="yuan0"></span></td>
-                    <td class="text-center"><span id="jiao0"></span></td>
-                    <td class="text-center"><span id="fen0"></span></td>
+                    <td class="text-center"><input type="number" value="0" class="form-control text-center change"
+                                                   id="totalPrice0" name="totalPrice" style="width: 100%"
+                                                   oninput="setUnitPrice(this)"></td>
+                    <!--<td class="text-center"><span id="hundredThousand0"></span></td>-->
+                    <!--<td class="text-center"><span id="tenThousand0"></span></td>-->
+                    <!--<td class="text-center"><span id="thousand0"></span></td>-->
+                    <!--<td class="text-center"><span id="hundred0"></span></td>-->
+                    <!--<td class="text-center"><span id="ten0"></span></td>-->
+                    <!--<td class="text-center"><span id="yuan0"></span></td>-->
+                    <!--<td class="text-center"><span id="jiao0"></span></td>-->
+                    <!--<td class="text-center"><span id="fen0"></span></td>-->
                     <td class="text-center"><input title="" type="text" class="form-control text-center" name="post"
                                                    id="post0"></td>
                     <td class="text-center"><span name="remarks" id="remarks0"></span></td>
                     <td class="text-center"><select class="focus text-center"
-                                                    id="wareHouseName0" name="wareHouseName" required></select>
+                                                    id="wareHouseName0" name="wareHouseName" required onchange="setWareHouse(this)"></select>
                     </td>
                     <!--<td class="text-center"><select id="equipment0" name="equipment" class="focus"></select></td>-->
                     <td class="text-center"  hidden><span id="procurementId0" name="procurementId"></span></td>
                 </tr>
                 <tr>
-                    <td colspan="6" class="text-center">合计</td>
-                    <td class="text-center" id="total-hundredThousand"></td>
-                    <td class="text-center" id="total-tenThousand"></td>
-                    <td class="text-center" id="total-thousand"></td>
-                    <td class="text-center" id="total-hundred"></td>
-                    <td class="text-center" id="total-ten"></td>
-                    <td class="text-center" id="total-yuan"></td>
-                    <td class="text-center" id="total-jiao"></td>
-                    <td class="text-center" id="total-fen"></td>
+                    <td colspan="7" class="text-center">合计</td>
+                    <!--<td class="text-center" id="total-hundredThousand"></td>-->
+                    <!--<td class="text-center" id="total-tenThousand"></td>-->
+                    <!--<td class="text-center" id="total-thousand"></td>-->
+                    <!--<td class="text-center" id="total-hundred"></td>-->
+                    <!--<td class="text-center" id="total-ten"></td>-->
+                    <!--<td class="text-center" id="total-yuan"></td>-->
+                    <!--<td class="text-center" id="total-jiao"></td>-->
+                    <!--<td class="text-center" id="total-fen"></td>-->
+                    <td class="text-center" id="totalPrice"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <!--<td class="text-center"></td>-->
                     <td class="text-center"></td>
                 </tr>
                 <tr>
                     <td class="text-left" colspan="4"><p style="display:inline;">记账人：<input style="display: inline;width: 60px" title="" class="form-control" type="text"
                                                                  maxlength="4" id="bookkeeper"></p></td>
-                    <td class="text-left" colspan="2"><p style="display: inline">审批人：<input style="display: inline;width: 60px" title="" class="form-control" type="text"
+                    <td class="text-left" colspan="3"><p style="display: inline">审批人：<input style="display: inline;width: 60px" title="" class="form-control" type="text"
                                                                  maxlength="4" id="approver"></p></td>
-                    <td class="text-left" colspan="8" style="width: 150px;"><p style="display: inline">保管人：<input style="display:inline;;width: 60px" title=""
+                    <td class="text-left" colspan="1" style="width: 150px;"><p style="display: inline">保管人：<input style="display:inline;;width: 60px" title=""
                                                                                        class="form-control"  type="text"
                                                                                        maxlength="4" id="keeper"></p></td>
                     <td class="text-left" colspan="2" style="width: 150px;"><p style="display: inline">验收人：<input style="display:inline;;width: 60px" title=""
@@ -387,7 +393,7 @@
         </form>
         <div class="row text-center">
             <a class="btn btn-success" id="save" onclick="save();">入库</a>
-            <a class="btn btn-danger" href="ingredientsInDetial.html">返回</a>
+            <a class="btn btn-danger" onclick="history.back();">返回</a>
         </div>
 
         <!--采购申请单查看模态框-->

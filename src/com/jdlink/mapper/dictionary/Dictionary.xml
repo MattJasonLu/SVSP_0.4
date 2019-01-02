@@ -114,6 +114,10 @@
         select  * from datadictionaryitem where dataDictionaryId=#{dataDictionaryId};
     </select>
 
+    <!--获取公斤/吨的计量单位字典数据-->
+    <select id="getTAndKGUnitList" resultType="DataDictionaryItem">
+         select  * from datadictionaryitem where dataDictionaryItemId in (138,139);
+    </select>
 
     <!--根据明细名称获取编号(加入主表的编号是因为会重复)-->
     <select id="getdatadictionaryitemIdByName"  resultType="int">

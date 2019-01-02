@@ -204,6 +204,7 @@
                                 <label for="search-kind" class="col-sm-4 control-label">类别</label>
                                 <div class="col-xs-7">
                                     <select title="" class="form-control" id="search-kind" name="search-kind">
+                                        <option value="0" selected></option>
                                         <option value="1">20易耗品</option>
                                         <option value="2">21劳保</option>
                                         <option value="3">22机械用品</option>
@@ -229,13 +230,19 @@
                                     <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
                                 </label>
                             </th>
-                            <th class="text-center">编号</th>
+                            <th class="text-center" hidden>编号</th>
                             <th class="text-center">物品编码</th>
                             <th class="text-center">物品名称</th>
-                            <th class="text-center">所在仓库</th>
-                            <th class="text-center">库存量</th>
-                            <th class="text-center">单位</th>
                             <th class="text-center">规格</th>
+                            <th class="text-center">计量单位</th>
+                            <th class="text-center">库存量</th>
+                            <th class="text-center">仓库</th>
+                            <th class="text-center">入库单</th>
+                            <th class="text-center">入库数</th>
+                            <th class="text-center">入库单价</th>
+                            <th class="text-center">出库单</th>
+                            <th class="text-center">出库数</th>
+                            <th class="text-center">出库单价</th>
                         </tr>
                         </thead>
                         <tbody id="ingredientsInventoryData">
@@ -245,13 +252,19 @@
                                     <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
                                 </label>
                             </td>
-                            <td class="text-center" name="itemId"></td>
+                            <td class="text-center" name="itemId" hidden></td>
                             <td class="text-center" name="code"></td>
                             <td class="text-center" name="name"></td>
-                            <td class="text-center" name="wareHouseName"></td>
-                            <td class="text-center" name="amount"></td>
-                            <td class="text-center" name="unit"></td>
                             <td class="text-center" name="specification"></td>
+                            <td class="text-center" name="unit"></td>
+                            <td class="text-center" name="amount"></td>
+                            <td class="text-center" name="wareHouseName"></td>
+                            <td class="text-center" name="inId"></td>
+                            <td class="text-center" name="inAmount"></td>
+                            <td class="text-center" name="inPrice"></td>
+                            <td class="text-center" name="outId"></td>
+                            <td class="text-center" name="outAmount"></td>
+                            <td class="text-center" name="outPrice"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -294,6 +307,7 @@
                             <option>5</option>
                             <option selected>15</option>
                             <option>50</option>
+                            <option>全部</option>
                         </select>
                     </li>
                 </ol>

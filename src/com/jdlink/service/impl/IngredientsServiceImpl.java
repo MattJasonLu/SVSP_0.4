@@ -77,22 +77,21 @@ public class IngredientsServiceImpl implements IngredientsService {
             for (Ingredients ingredients : ingredientsIn.getIngredientsList()) {
                 if (ingredients.getSerialNumberA().equals("add")) {
                     ingredientsMapper.addIngredientsInItem(ingredients);// 如果是新增的物品则新增入库单明细条目
-                    if (ingredients.getAid().equals("notExist")) {// 仓库内该物品不存在则在库存新增该物品
-                        ingredientsMapper.addInventoryItem(ingredients);
-                    } else if (ingredients.getAid().equals("exist")) {// 仓库内存在该物品则叠加库存量
-                        ingredientsMapper.addInventoryAmount(ingredients);
-                    }
+//                    if (ingredients.getAid().equals("notExist")) {// 仓库内该物品不存在则在库存新增该物品
+//                        ingredientsMapper.addInventoryItem(ingredients);
+//                    } else if (ingredients.getAid().equals("exist")) {// 仓库内存在该物品则叠加库存量
+//                        ingredientsMapper.addInventoryAmount(ingredients);
+//                    }
                 } else if (ingredients.getSerialNumberA().equals("update")) {
                     ingredientsMapper.updateIngredientInItem(ingredients);//更新入库单条目数据
-                    if(!ingredients.getOldWareHouseName().equals(ingredients.getWareHouseName())){ // 如果仓库发生变化需要更新库存
-
-                        ingredientsMapper.reduceOldInventory(ingredients); // 删除旧库存
-                        if(ingredientsMapper.getAmountItems(ingredients) > 0) { // 如果新仓库中存在该物品则增加库存量
-                            ingredientsMapper.addInventoryAmount(ingredients);
-                        }else{                                                  // 新仓库不存在该物品则增加条目
-                            ingredientsMapper.addInventoryItem(ingredients);
-                        }
-                    }
+//                    if(!ingredients.getOldWareHouseName().equals(ingredients.getWareHouseName())){ // 如果仓库发生变化需要更新库存
+//                        ingredientsMapper.reduceOldInventory(ingredients); // 删除旧库存
+//                        if(ingredientsMapper.getAmountItems(ingredients) > 0) { // 如果新仓库中存在该物品则增加库存量
+//                            ingredientsMapper.addInventoryAmount(ingredients);
+//                        }else{                                                  // 新仓库不存在该物品则增加条目
+//                            ingredientsMapper.addInventoryItem(ingredients);
+//                        }
+//                    }
                 } else if (ingredients.getSerialNumberA().equals("del")) {
                     ingredientsMapper.delIngredientInItem(ingredients);// 删除入库单条目并将数据回退
                 }
@@ -104,6 +103,11 @@ public class IngredientsServiceImpl implements IngredientsService {
         return ingredientsMapper.getAmountItems(ingredients);
     }
 
+    @Override
+    public void addInventoryItem(Ingredients ingredients) { ingredientsMapper.addInventoryItem(ingredients);}
+
+    @Override
+    public void deleteInventory() { ingredientsMapper.deleteInventory();}
     /**
      * 根据日期范围获取入库单
      *
@@ -375,4 +379,10 @@ public class IngredientsServiceImpl implements IngredientsService {
     public List<Ingredients> searchIngredient(Ingredients ingredients) { return ingredientsMapper.searchIngredient(ingredients); }
 
     public int searchCountIngredient(Ingredients ingredients) { return ingredientsMapper.searchCountIngredient(ingredients); }
+
+    public int getCountByCode(String code) { return ingredientsMapper.getCountByCode(code); }
+
+    public int getCountByType(String type) { return ingredientsMapper.getCountByType(type); }
+
+
 }

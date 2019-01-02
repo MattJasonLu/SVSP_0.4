@@ -37,6 +37,10 @@ public class IngredientsReceive {
      */
     private float totalAmount;
     /**
+     * 总金额
+     */
+    private float totalPrice;
+    /**
      * 主管副总经理
      */
     private String vicePresident;
@@ -78,13 +82,19 @@ public class IngredientsReceive {
      */
     private Date endDate;
 
-
     /**
      * 状态数据字典
      * @return
      */
     private CheckStateItem checkStateItem;
 
+    public float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(float totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 
     public CheckStateItem getCheckStateItem() {
         return checkStateItem;

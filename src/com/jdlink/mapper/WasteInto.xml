@@ -76,6 +76,7 @@
         insert into t_pr_secondarysampleitem (id,wastesCode, wastesName, sampleinformationId, water, scorchingRate,identifie) values
         (#{id},#{wastesCode},#{wastesName},#{sampleinformationId},#{water},#{scorchingRate},#{identifie});
     </insert>
+
     <!--寻找最新的危废送样登记编号-->
     <select id="getNewestId"  resultType="String">
         select id from t_pr_secondarysample order  by  nowTime desc;
