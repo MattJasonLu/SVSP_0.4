@@ -1,6 +1,7 @@
 package com.jdlink.domain;
 
 import com.jdlink.domain.Dictionary.CheckStateItem;
+import com.jdlink.domain.Dictionary.TicketRateItem;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
@@ -254,6 +255,16 @@ public class Contract implements Serializable {
     //小额合同(ture 小额 false，不是)
     private Boolean small;
 
+    //开票类型数据结构
+    private TicketRateItem ticketRateItem;
+
+    public TicketRateItem getTicketRateItem() {
+        return ticketRateItem;
+    }
+
+    public void setTicketRateItem(TicketRateItem ticketRateItem) {
+        this.ticketRateItem = ticketRateItem;
+    }
 
     public Boolean getSmall() {
         return small;

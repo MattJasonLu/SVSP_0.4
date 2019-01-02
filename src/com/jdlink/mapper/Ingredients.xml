@@ -148,6 +148,9 @@
             <if test="id != '' and id != null">
                 and inId like "%"#{id}"%"
             </if>
+            <if test="code != '' and code != null">
+                and code like "%"#{code}"%"
+            </if>
             <if test="state != null and state !=''">
                 and state like "%"#{state}"%"
             </if>
@@ -200,6 +203,9 @@
             </if>
             <if test="id != '' and id != null">
                 and inId like "%"#{id}"%"
+            </if>
+            <if test="code != '' and code != null">
+                and code like "%"#{code}"%"
             </if>
             <if test="state != null and state !=''">
                 and state like "%"#{state}"%"
@@ -614,6 +620,9 @@
             <if test="id != '' and id != null">
                 and b.id like "%"#{id}"%"
             </if>
+            <if test="code != '' and code != null">
+                and a.code like "%"#{code}"%"
+            </if>
             <if test="department != null and department != ''">
                 and b.department like "%"#{department}"%"
             </if>
@@ -668,6 +677,9 @@
             </if>
             <if test="id != '' and id != null">
                 and b.id like "%"#{id}"%"
+            </if>
+            <if test="code != '' and code != null">
+                and a.code like "%"#{code}"%"
             </if>
             <if test="department != null and department != ''">
                 and b.department like "%"#{department}"%"
@@ -725,9 +737,13 @@
                 or unit like "%"#{keywords}"%"
                 or ingredientState like "%"#{keywords}"%"
                 or specification like "%"#{keywords}"%"
+                or code like "%"#{keywords}"%"
             </if>
             <if test="wareHouseName != null and wareHouseName != ''">
                 wareHouseName like "%"#{wareHouseName}"%"
+            </if>
+            <if test="code != null and code != ''">
+                code like "%"#{code}"%"
             </if>
             <if test="name != null and name != ''">
                 name like "%"#{name}"%"
@@ -749,9 +765,13 @@
                 or unit like "%"#{keywords}"%"
                 or ingredientState like "%"#{keywords}"%"
                 or specification like "%"#{keywords}"%"
+                or code like "%"#{keywords}"%"
             </if>
             <if test="wareHouseName != null and wareHouseName != ''">
                 wareHouseName like "%"#{wareHouseName}"%"
+            </if>
+            <if test="code != null and code != ''">
+                code like "%"#{code}"%"
             </if>
             <if test="name != null and name != ''">
                 name like "%"#{name}"%"
@@ -1076,6 +1096,9 @@
             <if test="id != '' and id != null">
                 and b.id like "%"#{id}"%"
             </if>
+            <if test="code != '' and code != null">
+                and code like "%"#{code}"%"
+            </if>
             <if test="department != '' and department != null">
                 and b.department like "%"#{department}"%"
             </if>
@@ -1133,6 +1156,9 @@
             </if>
             <if test="id != '' and id != null">
                 and b.id like "%"#{id}"%"
+            </if>
+            <if test="code != '' and code != null">
+                and code like "%"#{code}"%"
             </if>
             <if test="department != '' and department != null">
                 and b.department like "%"#{department}"%"

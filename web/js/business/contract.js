@@ -1363,9 +1363,9 @@ function viewContract(item) {
                 }
 
                 //开票税率1
-                if (data.client!= null) {
-                    if (data.client.ticketRateItem!= null)   {
-                        $('#modal3_ticketRate1').text(data.client.ticketRateItem.dictionaryItemName);
+                if (data.ticketRateItem!= null) {
+                    if (data.ticketRateItem!= null)   {
+                        $('#modal3_ticketRate1').text(data.ticketRateItem.dictionaryItemName);
                     }
 
                 }
@@ -2584,6 +2584,7 @@ function contractWastesSave() {
                 reviewer:$('#reviewer').val(),
                 reviewDepartment:$('#reviewDepartment').val(),
                 reviewDate:$('#reviewDate').val(),
+                ticketRateItem:{dataDictionaryItemId:$('#taxRate1').val()}
             };
             console.log(data);
             $.ajax({
@@ -2793,6 +2794,7 @@ function contractWastesSave() {
                 reviewer:$('#reviewer').val(),
                 reviewDepartment:$('#reviewDepartment').val(),
                 reviewDate:$('#reviewDate').val(),
+                ticketRateItem:{dataDictionaryItemId:$('#taxRate1').val()}
             };
 
 
@@ -2980,7 +2982,7 @@ function findClient() {
                                 $('#taxRate1').val(company.ticketRateItem.dataDictionaryItemId);
                             }
                             else {
-                                $('#taxRate1').get(0).selectedIndex = -1;
+                                $('#taxRate1').get(0).selectedIndex = 0;
                             }
 
                             $('#contactName').prop("value", company.contactName);
@@ -3953,7 +3955,7 @@ function findSuppier() {
                                 $('#taxRate1').val(suppier.ticketRateItem.dataDictionaryItemId);
                             }
                             else {
-                                $('#taxRate1').get(0).selectedIndex = -1;
+                                $('#taxRate1').get(0).selectedIndex = 0;
                             }
 
                             $('#contactName').prop("value", suppier.contactName);
@@ -4850,7 +4852,7 @@ function contractAdjustSave() {
             freight: $('#isFreight').prop('checked'),
             telephone: $('#telephone').val(),
             contactName: $('#contactName').val(),
-            // ticketRate1: $('#taxRate1').val(),
+            ticketRateItem:{dataDictionaryItemId:$('#taxRate1').val()},
             contractType: contractType1,
             totalPrice:parseFloat(totalPrice).toFixed(2),
             freightBearer: $("input[name='freightBearer']:checked").val(),
@@ -5095,7 +5097,7 @@ function contractAdjustSave() {
             freight: $('#isFreight').prop('checked'),
             telephone: $('#telephone').val(),
             contactName: $('#contactName').val(),
-            // ticketRate1: $('#taxRate1').val(),
+            ticketRateItem:{dataDictionaryItemId:$('#taxRate1').val()},
             contractType: contractType1,
             totalPrice:parseFloat(totalPrice),
             freightBearer: $("input[name='freightBearer']:checked").val(),
@@ -6415,7 +6417,7 @@ function adjustNewContract() {
                             $('#taxRate1').val(contract.supplier.ticketRateItem.dataDictionaryItemId);
                         }
                         else {
-                            $('#taxRate1').get(0).selectedIndex = -1;
+                            $('#taxRate1').get(0).selectedIndex = 0;
                         }
 
 
@@ -6557,7 +6559,7 @@ function adjustNewContract() {
                             $('#taxRate1').val(contract.client.ticketRateItem.dataDictionaryItemId);
                         }
                         else {
-                            $('#taxRate1').get(0).selectedIndex = -1;
+                            $('#taxRate1').get(0).selectedIndex =0;
                         }
                         //费用明细赋值
                         $.each(contract.quotationItemList, function (index, item) {
