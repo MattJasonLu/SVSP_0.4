@@ -337,7 +337,11 @@ var data;
 function countValue() {
     var mySelect = document.getElementById("count");
     var index = mySelect.selectedIndex;
-    return mySelect.options[index].text;
+    var text = mySelect.options[index].text;
+    if(text == "全部"){
+        text = "0";
+    }
+    return text;
 }
 
 
@@ -649,8 +653,10 @@ function setInboundOrderDataList(result) {
     // 获取id为cloneTr的tr元素
     var tr = $("#cloneTr");
     tr.siblings().remove();
+    var pageTotal = 0;
     $.each(result, function (index, item) {
         var data = eval(item);
+        pageTotal += data.inboundOrderItemList[0].wastesAmount;
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
         clonedTr.show();
@@ -683,6 +689,13 @@ function setInboundOrderDataList(result) {
     });
     // 隐藏无数据的tr
     tr.hide();
+    // 增加本页合计
+    var clonedTr = tr.clone();
+    clonedTr.show();
+    clonedTr.find("td[name='wastesCode']").text("合计");
+    clonedTr.find("td[name='wastesAmount']").text(pageTotal.toFixed(2));
+    clonedTr.removeAttr("id");
+    clonedTr.insertBefore(tr);
 }
 
 /**

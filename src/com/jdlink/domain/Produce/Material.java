@@ -21,6 +21,10 @@ public class Material {
      * 物资名称(应急同)
      */
     private String suppliesName;
+    /**
+     * 物品编码
+     */
+    private String code;
      /**
      * 规格型号(应急同)
      */
@@ -106,6 +110,13 @@ public class Material {
     //物资类别数据字典
     private MaterialCategoryItem materialCategoryItem;
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public MaterialCategoryItem getMaterialCategoryItem() {
         return materialCategoryItem;

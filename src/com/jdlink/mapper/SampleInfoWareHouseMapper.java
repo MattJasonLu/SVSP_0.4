@@ -21,6 +21,7 @@ public interface SampleInfoWareHouseMapper {
     List<SampleInformation> listByKeyword(@Param(value="keyword") String keyword);
     void updateSampleInfo(@Param("sampleId") String sampleId,@Param("newId") String newId);
     int searchCount(SampleInformation sampleInformation);
+    int getCountByTransferId(String transferId);
     List<SampleInformation> search(SampleInformation sampleInformation);
     SampleInformation getBySampleInformationId(String id);
     Wastes getByWastesId(String id);

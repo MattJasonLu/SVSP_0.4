@@ -386,10 +386,10 @@ function setSewageList(result) {
                             break;
                         case (2):
                             // 采样点
-                            if(obj.sewagePointItem!=null){
-                                $(this).html((obj.sewagePointItem.dictionaryItemName));
-                            }
-
+                            // if(obj.sewagePointItem!=null){
+                            //     $(this).html((obj.sewagePointItem.dictionaryItemName));
+                            // }
+                            $(this).html(obj.address);
                             break;
                         case (3):
                             // 检测项目
@@ -1105,14 +1105,15 @@ function view(item) {
                     $('#companyName').val(result.data.client.companyName);
                 }
                  //化验室签收人
-                $('#laboratorySignatory').val(result.data.laboratorySignatory)
+                $('#laboratorySignatory').val(result.data.laboratorySignatory);
 
                 //送样人
-                $('#sendingPerson1').text(result.data.sendingPerson)
+                $('#sendingPerson1').text(result.data.sendingPerson);
 
                 //采样点
                 if(result.data.sewagePointItem!=null){
-                    $('#address1').text(result.data.sewagePointItem.dictionaryItemName)
+                    // $('#address1').text(result.data.sewagePointItem.dictionaryItemName);
+                    $('#address1').text(result.data.address);
                 }
 
 

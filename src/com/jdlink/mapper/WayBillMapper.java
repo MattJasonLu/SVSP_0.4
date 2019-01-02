@@ -22,7 +22,7 @@ public interface WayBillMapper {
     void invalid(String id);
     void addItem(WayBill wayBill);
     int countItem();
-    WayBillItem getItemById(String id);
+    WayBillItem getItemById(int id);
     String getSalesmanIdByName(String name);
     String getClientIdByName(String name);
     String getWastesIdByName(String name);

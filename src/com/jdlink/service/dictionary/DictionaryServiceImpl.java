@@ -71,6 +71,11 @@ public class DictionaryServiceImpl implements DictionaryService
     }
 
     @Override
+    public List<DataDictionaryItem> getTAndKGUnitList() {
+        return dictionaryMapper.getTAndKGUnitList();
+    }
+
+    @Override
     public int getdatadictionaryitemIdByName(String name,int id) {
         return dictionaryMapper.getdatadictionaryitemIdByName(name,id);
     }

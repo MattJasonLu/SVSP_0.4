@@ -134,7 +134,7 @@
                         <td class="text-center">小李</td>
                         <td class="text-center">管理员</td>
                         <td class="text-center">
-                            <a href="#" id="function_-377" onclick="alert('功能开发中');" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                            <a href="#" id="function_-377" onclick="showEditModal(this);" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
                             <a href="#" id="function_-378" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; showRoleModal(e);}" title="分配角色"><span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span></a>
                         </td>
                     </tr>
@@ -142,6 +142,66 @@
                 </table>
             </div>
 
+        </div>
+    </div>
+    <!-- 修改信息模态框 -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">信息修改</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group">
+                                <label for="username" class="col-sm-4 control-label">用户名 </label>
+                                <div class="col-xs-8">
+                                    <input type="text" class="form-control" id="username" name="username">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="col-sm-4 control-label">新密码 </label>
+                                <div class="col-xs-8">
+                                    <input type="password" class="form-control" id="password" name="password">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="cfmPassword" class="col-sm-4 control-label">确认密码 </label>
+                                <div class="col-xs-8">
+                                    <input type="password" class="form-control" id="cfmPassword" name="cfmPassword">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group">
+                                <label for="name" class="col-sm-4 control-label">姓名 </label>
+                                <div class="col-xs-8">
+                                    <input type="text" class="form-control" id="name" name="name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="sex" class="col-sm-4 control-label">性别 </label>
+                                <div class="col-xs-8">
+                                    <input type="radio" id="sex" name="sex" value="true">男
+                                    <input type="radio" id="sex2" name="sex" value="false">女
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="age" class="col-sm-4 control-label">年龄 </label>
+                                <div class="col-xs-8">
+                                    <input type="text" class="form-control" id="age" name="age">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="updateUserInfo();">保存</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
         </div>
     </div>
     <!-- 分配角色模态框 -->
