@@ -3,6 +3,7 @@ package com.jdlink.domain.Produce;
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Dictionary.CheckStateItem;
 import com.jdlink.domain.Dictionary.MaterialCategoryItem;
+import com.jdlink.domain.Dictionary.NonMaterialItem;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -94,6 +95,16 @@ public class Procurement {
     private  Date createDate;
 
     /**
+     * 开始日期
+     */
+    private Date beginTime;
+
+    /**
+     * 结束日期
+     */
+    private Date endTime;
+
+    /**
      * 采购附件
      */
     private MultipartFile procurementFile;
@@ -103,6 +114,16 @@ public class Procurement {
      */
     private String procurementFileURL;
 
+    /**
+     * 应急月度(0应急 ,1月度)
+     */
+    private boolean procurementCategory;
+
+    /**
+     * 物资非物资(0为物资,1为非物资)
+     * @return
+     */
+    private boolean nonMaterial;
 
 
     //状态字典
@@ -110,6 +131,33 @@ public class Procurement {
 
     //物资类别数据字典
    private MaterialCategoryItem materialCategoryItem;
+
+   //非物资类别数据字典
+    private NonMaterialItem nonMaterialItem;
+
+    public Date getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public NonMaterialItem getNonMaterialItem() {
+        return nonMaterialItem;
+    }
+
+    public void setNonMaterialItem(NonMaterialItem nonMaterialItem) {
+        this.nonMaterialItem = nonMaterialItem;
+    }
 
     public MultipartFile getProcurementFile() {
         return procurementFile;
@@ -231,7 +279,14 @@ public class Procurement {
         this.createDate = createDate;
     }
 
-    private boolean procurementCategory;
+
+    public boolean isNonMaterial() {
+        return nonMaterial;
+    }
+
+    public void setNonMaterial(boolean nonMaterial) {
+        this.nonMaterial = nonMaterial;
+    }
 
     public String getSuppliesCategory() {
         return suppliesCategory;

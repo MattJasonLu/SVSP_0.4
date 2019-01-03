@@ -63,4 +63,7 @@ public interface ProcurementService {
 
     void deleteMonthProcurementById(int id);
     void setProcurementFilePath(Procurement procurement);
+    List<Procurement> getEmergencyProcurementOffList(Page page);
+    int totalEmcOffRecord();
+    List<Date>getNewestOffEm();
 }

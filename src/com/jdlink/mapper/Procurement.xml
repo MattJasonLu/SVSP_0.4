@@ -5,8 +5,8 @@
 <mapper namespace="com.jdlink.mapper.ProcurementMapper" >
    <!--添加采购-->
     <insert id="add" parameterType="Procurement">
-        insert into t_pl_procurement(receiptNumber, applyMouth, demandTime, applyDepartment, proposer, divisionHead, purchasingDirector, generalManager, id1, procurementCategory,nowTIme,purchasingHead,applyDate,suppliesCategory,state,createDate,checkStateId,MaterialCategoryId)
-      values (#{receiptNumber},#{applyMouth},#{demandTime},#{applyDepartment},#{proposer},#{divisionHead},#{purchasingDirector},#{generalManager},#{id1},#{procurementCategory},NOW(),#{purchasingHead},#{applyDate},#{suppliesCategory},'ToSubmit',NOW(),64,#{materialCategoryItem.dataDictionaryItemId});
+        insert into t_pl_procurement(receiptNumber, applyMouth, demandTime, applyDepartment, proposer, divisionHead, purchasingDirector, generalManager, id1, procurementCategory,nowTIme,purchasingHead,applyDate,suppliesCategory,state,createDate,checkStateId,MaterialCategoryId,nonMaterial,nonMaterialId)
+      values (#{receiptNumber},#{applyMouth},#{demandTime},#{applyDepartment},#{proposer},#{divisionHead},#{purchasingDirector},#{generalManager},#{id1},#{procurementCategory},NOW(),#{purchasingHead},#{applyDate},#{suppliesCategory},'ToSubmit',NOW(),64,#{materialCategoryItem.dataDictionaryItemId},#{nonMaterial},#{nonMaterialItem.dataDictionaryItemId});
     </insert>
     <!--寻找最新的采购主键-->
     <select id="getNewestId" resultType="String">
@@ -21,11 +21,17 @@
     <resultMap id="ProcurementRM" type="Procurement" autoMapping="true">
         <result property="receiptNumber" column="receiptNumber" javaType="String"></result>
         <result property="unit" column="unit" javaType="Unit"></result>
+       <association property="nonMaterialItem" column="nonMaterialId" select="getNonMaterialItem"></association>
         <collection property="materialList" column="receiptNumber" select="getMaterial" ofType="Material"></collection>
           <collection property="checkStateItem" column="checkStateId" select="getCheckState"></collection>
         <collection property="materialCategoryItem" column="MaterialCategoryId" select="getMaterialCategoryItem"></collection>
     </resultMap>
 
+    <!--获取非物资类别数据字典-->
+    <select id="getNonMaterialItem" resultType="NonMaterialItem">
+        select  * from datadictionaryitem where dataDictionaryItemId
+        =#{nonMaterialId}
+    </select>
     <!--获取物资类别数据字典-->
     <select id="getMaterialCategoryItem" resultType="MaterialCategoryItem">
         select * from datadictionaryitem where dataDictionaryItemId=#{MaterialCategoryId}
@@ -58,7 +64,7 @@
     </select>
     <!--获取月季采购-->
     <select id="getProcurementList" resultMap="ProcurementRM">
-        select * from t_pl_procurement where procurementCategory='1'order by checkStateId=69,nowTime desc
+        select * from t_pl_procurement where procurementCategory=1 and nonMaterial=0 order by checkStateId=69,nowTime desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -76,13 +82,22 @@
     <select id="countProcurementItemList" resultType="int">
         select count(*) from t_pl_material where state = 'ToInbound';
     </select>
-    <!--获取应急采购-->
+    <!--获取应急采购（物资）-->
     <select id="getEmergencyProcurementList" resultMap="ProcurementRM">
-        select * from t_pl_procurement   where procurementCategory='0'order by checkStateId=69, nowTime desc
+        select * from t_pl_procurement   where procurementCategory=0 and  nonMaterial=0  order by checkStateId=69, nowTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
     </select>
+
+    <!--获取应急采购（非物资）-->
+    <select id="getEmergencyProcurementOffList" resultMap="ProcurementRM">
+        select * from t_pl_procurement   where procurementCategory=0 and  nonMaterial=1  order by checkStateId=69, nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
     <!--根据编号查询信息-->
     <select id="getProcurementListById" parameterType="String" resultMap="ProcurementRM">
         select * from t_pl_procurement where receiptNumber=#{receiptNumber} order by nowTime desc;
@@ -172,19 +187,30 @@
 
     <!--获取月度采购总数-->
     <select id="totalMouth" resultType="int">
-        select count(*) from  t_pl_procurement where procurementCategory='1';
+        select count(*) from  t_pl_procurement where procurementCategory=1 and nonMaterial=0;
     </select>
-    <!--获取应急采购总数-->
+    <!--获取应急采购总数 物资-->
     <select id="totalEmc" resultType="int">
-        select count(*) from  t_pl_procurement where procurementCategory='';
+        select count(*) from  t_pl_procurement where procurementCategory=0 and nonMaterial=0;
     </select>
-    <!--获得最早的月季采购创建时间-->
+
+    <!--获取应急采购总数 非物资-->
+    <select id="totalEmcOffRecord" resultType="int">
+        select count(*) from  t_pl_procurement where procurementCategory=0 and nonMaterial=1;
+    </select>
+
+    <!--获得最早的月季采购创建时间物资-->
     <select id="getNewestMouth" resultType="Date">
-        select createDate from t_pl_procurement where createDate is not null  and procurementCategory='1' order by createDate;
+        select createDate from t_pl_procurement where createDate is not null  and procurementCategory=1 and nonMaterial=0 order by createDate;
     </select>
-    <!--获得最早的应急采购申请时间-->
+    <!--获得最早的应急采购申请时间物资-->
     <select id="getNewestEm" resultType="Date">
-        select applyDate from t_pl_procurement where applyDate is not null  and procurementCategory='0' order by applyDate;
+        select applyDate from t_pl_procurement where applyDate is not null  and procurementCategory='0' and nonMaterial=0 order by applyDate;
+    </select>
+
+    <!--获得最早的应急采购申请时间非物资-->
+    <select id="getNewestOffEm" resultType="Date">
+        select applyDate from t_pl_procurement where applyDate is not null  and procurementCategory='0' and nonMaterial=1 order by applyDate;
     </select>
 
     <select id="searchMaterialTotal" resultType="int">
@@ -561,4 +587,9 @@
             #{procurementFileURL},'Procurement');
         </if>
     </update>
+
+    <!--应急非物资查询-->
+    <select id="searchEmerOff" resultMap="ProcurementRM">
+        select * from
+    </select>
 </mapper>

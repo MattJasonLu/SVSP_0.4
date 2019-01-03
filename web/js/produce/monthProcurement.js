@@ -385,6 +385,7 @@ function saveMonth() {
         generalManager:$('#generalManager').val(),
         procurementCategory:1,//代表是月季采购
         materialCategoryItem:{dataDictionaryItemId:$('#materialCategoryItem').val()},
+        nonMaterial:true,
     }
     console.log(data)
     //执行添加到后台的ajax

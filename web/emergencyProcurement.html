@@ -263,13 +263,15 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center hidden"></td>
                     <td class="text-center">
                         <a href="#" title="查看" id="function_-331" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; view(e);}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> </a>
                         <a href="#" title="修改" id="function_-332" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; emergencyProcurementModify(e);}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> </a>
                         <!--<a href="#" title= id="function_" "保存"><spacheck(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel();}n class="glyphicon glyphicon-save" aria-hidden="true"></span> </a>-->
                         <a href="#" title="提交" id="function_-333" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; submit(e);}"><span class="glyphicon glyphicon-export" aria-hidden="true"></span> </a>
                         <a href="#" title="作废" id="function_-334" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; cancel(e);}"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> </a>
-                        <!--<a href="#" title="审批"><span class="glyphicon glyphicon-apple" aria-hidden="true"></span> </a>-->
+                        <a href="#" title="下载附件" onclick="downLoadFile(this);"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> </a>
+
                     </td>
                 </tr>
                 </tbody>
@@ -359,6 +361,7 @@
 
     <!--修改模态框-->
     <div class="modal fade bs-example-modal-lg" id="appointModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <span class="hidden" id="receiptNumber"></span>
         <div class="modal-dialog modal-lg" role="document"  style="width: 85%">
             <div class="modal-content" >
                 <div class="modal-header">
@@ -375,18 +378,34 @@
                             <td class="text-center">需求数量</td>
                             <td class="text-center">采购数量</td>
                             <td class="text-center">备注</td>
+                            <td class="text-center">操作</td>
                         </tr>
                         </thead>
                         <tbody>
                         <tr id="cloneTr3">
-                            <td class="text-center modal-companyName" ></td>
-                            <td class="text-center modal-einlass" ></td>
-                            <td class="text-center wastesName" ></td>
+                            <td class="text-center modal-companyName" ><input></td>
+                            <td class="text-center modal-einlass" ><input></td>
+                            <td class="text-center wastesName" ><select id="unitItem" ></select></td>
                             <td class="text-center wastesName" ><input></td>
                             <td class="text-center wastesName" ><input></td>
                             <td class="text-center wastesName" ><input></td>
                             <td class="text-center wastesName"><input></td>
                             <td class="text-center wastesName hidden"></td>
+                            <td class="text-center">
+                                <a href="#" title="删除" id="function_-290" onclick=" removeEmerProcument(this)"><span
+                                        class="glyphicon glyphicon-remove-sign"
+                                        aria-hidden="true"></span></a>
+                            </td>
+                        </tr>
+                        <tr id="plusBtn">
+                            <td><a class="btn btn-default btn-xs" onclick="addNewLineAdjust(this);"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                            <td ></td>
+                            <td ></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td ></td>
+                            <td></td>
                         </tr>
                         </tbody>
                     </table>

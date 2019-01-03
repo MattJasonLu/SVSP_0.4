@@ -167,7 +167,7 @@
 
     <!--出库完毕后更新领料单的信息为已出库-->
     <update id="updateMaterialRequisitionOrderCheck" parameterType="String">
-        update t_pl_materialrequisitionorder set checkState="OutBounded",nowTime=NOW()
+        update t_pl_materialrequisitionorder set checkStateId=81,nowTime=NOW()
         where materialRequisitionId=#{materialRequisitionId};
     </update>
 
