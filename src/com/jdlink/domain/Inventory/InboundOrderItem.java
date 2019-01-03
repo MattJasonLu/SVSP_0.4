@@ -96,43 +96,36 @@ public class InboundOrderItem {
 
     /**
      * 进料方式数据字典
-     * @return
      */
     private HandleCategoryItem handleCategoryItem;
 
     /**
      * 处置方式数据字典
-     * @return
      */
     private ProcessWayItem processWayItem;
 
     /**
      * 包装方式数据字典
-     * @return
      */
     private PackageTypeItem packageTypeItem;
 
     /**
      * 物质形态数据字典
-     * @return
      */
     private FormTypeItem formTypeItem;
 
     /**
      * 记录状态数据字典
-     * @return
      */
     private RecordStateItem recordStateItem;
 
     /**
      * 单位数据字典
-     * @return
      */
     private UnitDataItem unitDataItem;
 
     /**
      * 次生名称数据字典
-     * @return
      */
     private SecondaryCategoryItem secondaryCategoryItem;
 
