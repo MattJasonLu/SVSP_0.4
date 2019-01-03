@@ -336,11 +336,25 @@
     <select id="getCheckStateItem" resultType="CheckStateItem">
         select  * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
     </select>
-<resultMap id="ProcurementPlanItemRM" type="ProcurementPlanItem">
-    <collection property="unitDataItem" column="unitId" select="getUnitDataItem">
-    </collection>
-</resultMap>
+    <resultMap id="ProcurementPlanItemRM" type="ProcurementPlanItem">
+        <collection property="unitDataItem" column="unitId" select="getUnitDataItem">
+        </collection>
+    </resultMap>
 
+    <!--采购计划分页查询-->
+    <select id="getProcurementPlanItemListByPage" resultMap="ProcurementPlanItemRM">
+        select a.* from t_pr_procumentplanitem as a left join t_pr_procumentplan as b
+            on a.procurementPlanId = b.procurementPlanId and b.checkStateId != 69
+            order by a.procurementPlanId desc
+        <if test="page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+    <!--通过编号获取采购计划单条目对象-->
+    <select id="getProcurementPlanItemById" resultMap="ProcurementPlanItemRM">
+        select * from t_pr_procumentplanitem where id=#{id};
+    </select>
+    <!--通过编号获取采购计划单条目对象集合-->
     <select id="getProcurementPlanItemList" resultMap="ProcurementPlanItemRM">
         select  *from t_pr_procumentplanitem where procurementPlanId=#{procurementPlanId}
     </select>

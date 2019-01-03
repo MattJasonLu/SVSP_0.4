@@ -2,6 +2,7 @@ package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.Dictionary.MaterialCategoryItem;
 import com.jdlink.domain.Dictionary.UnitDataItem;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Unit;
 
 /*
@@ -51,6 +52,14 @@ public class ProcurementPlanItem {
 
     //物资类别数据字典
     private MaterialCategoryItem materialCategoryItem;
+    /**
+     * 页码
+     */
+    private Page page;
+    /**
+     * 关键字
+     */
+    private String keywords;
 
     public MaterialCategoryItem getMaterialCategoryItem() {
 
@@ -151,6 +160,22 @@ public class ProcurementPlanItem {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
 
     @Override
