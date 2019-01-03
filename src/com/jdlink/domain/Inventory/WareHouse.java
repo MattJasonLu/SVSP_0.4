@@ -16,6 +16,10 @@ public class WareHouse {
      * 仓库编码
      */
     private String wareHouseCode;
+    /**
+     * 前缀缩写
+     */
+    private String prefix;
 
     public int getWareHouseId() {
         return wareHouseId;
@@ -39,6 +43,14 @@ public class WareHouse {
 
     public void setWareHouseCode(String wareHouseCode) {
         this.wareHouseCode = wareHouseCode;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
     }
 
     @Override
