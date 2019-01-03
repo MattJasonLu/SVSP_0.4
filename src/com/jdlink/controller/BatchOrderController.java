@@ -674,9 +674,13 @@ public class BatchOrderController {
         JSONObject res=new JSONObject();
 
         try{
-         String outboundOrderId=outboundOrder.getWareHouse().getWareHouseId()+outboundOrder.getOutboundOrderId();
-            //处置方式适配
+            String outboundOrderId=outboundOrder.getOutboundOrderId();
+            if(outboundOrder.getWareHouse().getWareHouseId()!=0){
+                outboundOrderId=outboundOrder.getWareHouse().getWareHouseId()+"H"+outboundOrderId;
+            }
             outboundOrder.setOutboundOrderId(outboundOrderId);
+            //处置方式适配
+
             ProcessWayItem processWayItem =outboundOrder.getProcessWayItem();
             if(processWayItem.getDataDictionaryItemId()!=0){
                 int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(processWayItem.getDictionaryItemName(),8);
@@ -777,7 +781,9 @@ public class BatchOrderController {
             }
 
             String outBoundOrderId = prefix + count;
-
+            if(outboundOrder.getWareHouse().getWareHouseId()!=0){
+                outBoundOrderId=outboundOrder.getWareHouse().getWareHouseId()+"H"+outBoundOrderId;
+            }
             outboundOrder.setOutboundOrderId(outBoundOrderId);
 
             //处置方式适配
