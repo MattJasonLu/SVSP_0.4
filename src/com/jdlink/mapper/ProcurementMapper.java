@@ -12,6 +12,8 @@ public interface ProcurementMapper {
     void addMaterial(Material material);
     List<Procurement> getProcurementList(Page page);
     List<Procurement> getEmergencyProcurementList(Page page);
+
+    List<Procurement> getEmergencyProcurementOffList(Page page);
     List<Procurement> getProcurementListById(String receiptNumber);
     List<Procurement> searchProcurement(Procurement procurement);
     List<String> getIngredientsList();
@@ -21,6 +23,8 @@ public interface ProcurementMapper {
     int totalEmc();
     List<Date>getNewestMouth();
     List<Date>getNewestEm();
+    List<Date>getNewestOffEm();
+
     List<Material> getProcurementItemList(Page page);
     List<Material> searchMaterial(Material material);
     Material getMaterialById(String id);
@@ -63,4 +67,6 @@ public interface ProcurementMapper {
     void deleteMonthProcurementById(int id);
 
     void setProcurementFilePath(Procurement procurement);
+
+    int totalEmcOffRecord();
 }

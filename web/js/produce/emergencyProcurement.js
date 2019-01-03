@@ -5,6 +5,7 @@ array=[];//存放所有的tr
 array1=[];//存放目标的tr
 array0=[];//存放所有的tr
 /**********************客户部分**********************/
+
 /**
  * 返回count值
  * */
@@ -538,7 +539,8 @@ function saveEmer() {
             purchasingDirector:$('#purchasingDirector').val(),
             generalManager:$('#generalManager').val(),
             procurementCategory:0,//代表是应急采购
-            materialCategoryItem:{dataDictionaryItemId:$('#materialCategoryItem').val()}
+            materialCategoryItem:{dataDictionaryItemId:$('#materialCategoryItem').val()},
+            nonMaterial:true,
         }
         //执行添加到后台的ajax
         $.ajax({
@@ -551,6 +553,40 @@ function saveEmer() {
             success:function (result) {
                 if (result != undefined && result.status == "success"){
                     console.log(result);
+                    //上传附件
+                    var receiptNumber=result.receiptNumber;
+                    var formFile = new FormData();
+                    formFile.append("receiptNumber",receiptNumber)
+                    if ($('#file').prop('type') != 'text') {
+                        var procurementFile = $('#file')[0].files[0];
+                        formFile.append("procurementFile", procurementFile);
+                        if(procurementFile!=undefined){
+                            //保存采购附件
+                            $.ajax({
+                                type: "POST",                            // 方法类型
+                                url: "saveProcurementFile",                     // url
+                                cache: false,
+                                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                                data: formFile,
+                                dataType: "json",
+                                processData: false,
+                                contentType: false,
+                                success: function (result) {
+                                    if (result != undefined && result.status == "success") {
+
+                                    }
+                                    else {
+
+                                    }
+                                },
+                                error: function (result) {
+                                    console.log("error: " + result);
+                                    alert("服务器异常!");
+                                }
+                            });
+                        }
+
+                    }
                 }
                 else {
 
@@ -560,6 +596,10 @@ function saveEmer() {
                 alert("服务器异常！")
             }
         });
+
+
+
+
         $('.myclass').each(function () {
             var specifications=$(this).children('td').eq(2).children('input').val();
             var suppliesName=$(this).children('td').eq(1).children('div').find('button').attr('title').replace(specifications,"");
@@ -690,6 +730,10 @@ function setEmProcurementList(result) {
                             // }
                         }
 
+                        break;
+                        //附件地址
+                    case (11):
+                        $(this).html(obj.procurementFileURL);
                         break;
                 }
             });
@@ -1113,7 +1157,37 @@ function submit(item) {
 //修改
 function emergencyProcurementModify(item) {
     var receiptNumber=$(item).parent().parent().children('td').eq(1).text();
+    $('#receiptNumber').text(receiptNumber)
+    //单位
+    $.ajax({
+        type:'POST',
+        url:"getUnitByDataDictionary",
+        //data:JSON.stringify(data),
+        dataType: "json",
+        async: false,
+        contentType: "application/json;charset=utf-8",
+        success: function (result){
+            if (result != undefined){
+                console.log(result);
+                var unit=$('#unitItem');
+                unit.children().remove();
+                $.each(result.data,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    unit.append(option);
+                });
+                unit.get(0).selectedIndex=0;
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
 
+    });
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getProcurementListById",          // url
@@ -1134,6 +1208,8 @@ function emergencyProcurementModify(item) {
             alert("服务器异常!");
         }
     });
+
+
     $('#appointModal3').modal('show');
 }
 
@@ -1142,7 +1218,7 @@ function emergencyProcurementModify(item) {
 function setEmProcurementListModal1(result) {
     //$('.myclass1').hide();
     var tr = $("#cloneTr3");
-    tr.siblings().remove();
+    tr.siblings().not($('#plusBtn')).remove();
     tr.attr('class','myclass2');
     $.each(result, function (index, item) {
         //console.log(item);
@@ -1158,16 +1234,16 @@ function setEmProcurementListModal1(result) {
             switch (inner_index) {
                 // 物资名称
                 case (0):
-                    $(this).html(obj.suppliesName);
+                    $(this).find('input').val(obj.suppliesName);
                     break;
                 // 规格型号
                 case (1):
-                    $(this).html(obj.specifications);
+                    $(this).find('input').val(obj.specifications);
                     break;
                 // 单位
                 case (2):
                     if(obj.unitDataItem!=null){
-                        $(this).html(obj.unitDataItem.dictionaryItemName);
+                        $(this).find('select').val(obj.unitDataItem.dataDictionaryItemId);
                     }
 
                     break;
@@ -1210,11 +1286,15 @@ function confirmAdjust() {
 
 $('.myclass2').each(function () {
     var data={
+        suppliesName:$(this).children('td').eq(0).find('input').val(),
+        specifications:$(this).children('td').eq(1).find('input').val(),
+        unitDataItem:{dataDictionaryItemId:$(this).children('td').eq(2).find('select').val()},
         inventory:$(this).children('td').eq(3).find('input').val(),
-        purchaseQuantity:$(this).children('td').eq(4).find('input').val(),
-        demandQuantity:$(this).children('td').eq(5).find('input').val(),
+        purchaseQuantity:$(this).children('td').eq(5).find('input').val(),
+        demandQuantity:$(this).children('td').eq(4).find('input').val(),
         id:$(this).children('td').eq(7).html(),
         note:$(this).children('td').eq(6).find('input').val(),
+        receiptNumber:$("#receiptNumber").text(),
     }
     $.ajax({
         type: "POST",                       // 方法类型
@@ -1233,7 +1313,28 @@ $('.myclass2').each(function () {
     console.log(data)
 })
     alert("修改成功")
-    window.location.reload()
+    // window.location.reload()
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getProcurementListById",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{'receiptNumber':    $('#receiptNumber').text()},
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                setEmProcurementListModal1(result.data[0].materialList);
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!");
+        }
+    });
 
 }
 
@@ -1263,5 +1364,85 @@ function findSpecification(item) {
             alert("服务器异常!")
         }
     })
+
+}
+
+//附件下载
+function downLoadFile(item) {
+    var contractAppendicesUrl=$(item).parent().prev().html();
+    if (contractAppendicesUrl != null && contractAppendicesUrl != "") {
+        window.open('downloadFile?filePath=' + contractAppendicesUrl);
+        window.location.reload()
+    } else {
+        alert("未上传文件");
+        // window.location.reload()
+    }
+}
+
+
+//克隆行方法编辑
+function addNewLineAdjust(item) {
+    // 获取id为plusBtn的tr元素
+    //var tr = $("#plusBtn").prev();
+    var tr = $(item).parent().parent().prev();
+    // 克隆tr，每次遍历都可以产生新的tr
+    var clonedTr = tr.clone();
+    $(clonedTr).children('td').eq(0).find('p').hide()
+    clonedTr.attr('class', 'myclass2');
+    clonedTr.show();
+    clonedTr.children().find("input").val("");
+    var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>";
+
+
+    clonedTr.children('td').eq(0).find("a").remove();
+    clonedTr.children('td').eq(0).append(delBtn)
+
+
+    clonedTr.insertAfter(tr);
+    clonedTr.removeAttr("id");
+}
+
+//删除明细
+function removeEmerProcument(item) {
+    if(confirm("确认删除该条明细?")){
+        var id=$(item).parent().prev().html();
+        $.ajax({
+            type:'POST',
+            url:"deleteMonthProcurementById",
+            data:{"id":id},
+            dataType: "json",
+            async: false,
+            // contentType: "application/json;charset=utf-8",
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    alert(result.message)
+                    $.ajax({
+                        type: "POST",                       // 方法类型
+                        url: "getProcurementListById",          // url
+                        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+                        dataType: "json",
+                        data:{'receiptNumber':    $('#receiptNumber').text()},
+                        //contentType: 'application/json;charset=utf-8',
+                        success:function (result) {
+                            if (result != undefined && result.status == "success"){
+                                console.log(result);
+                                setEmProcurementListModal1(result.data[0].materialList);
+                            }
+                            else {
+                                alert(result.message);
+                            }
+                        },
+                        error:function (result) {
+                            alert("服务器异常!");
+                        }
+                    });
+                }
+            }
+            ,error:function (result) {
+
+            }
+        })
+    }
+
 
 }
