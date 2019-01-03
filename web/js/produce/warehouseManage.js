@@ -323,6 +323,9 @@ function addInboundOrder(type) {
             dataDictionaryItemId: $(this).find("select[name='handleCategory']").val()
         };
         inboundOrder.remarks = $(this).find("input[name='remarks']").val();
+        inboundOrder.wareHouse = {
+            wareHouseId: $(this).find("select[name='warehouse']").val()
+        };
         wareHouse.wareHouseId = $(this).find("select[name='warehouse']").val();
         inboundOrder.warehouseArea = $(this).find("input[name='warehouseArea']").val();
         inboundOrderItemList.push(inboundOrder);
