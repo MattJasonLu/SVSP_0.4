@@ -8,8 +8,12 @@
         select medicalWastesId from t_pl_medicalwastes order by (CAST(medicalWastesId AS SIGNED) )desc ;
     </select>
     <insert id="addMedicalWastes" parameterType="MedicalWastes">
-        insert into  t_pl_medicalwastes(medicalWastesId, department, departmentName, adjustName, adjustDate, dateTime, thisMonthWastes, directDisposal, cookingWastes, afterCookingNumber, afterCookingInbound, thisMonthSendCooking, errorNumber, wetNumber, nowTime,equipment,checkState,checkStateId,equipmentId)
-        values(#{medicalWastesId},#{department},#{departmentName},#{adjustName},#{adjustDate},#{dateTime},#{thisMonthWastes},#{directDisposal},#{cookingWastes},#{afterCookingNumber},#{afterCookingInbound},#{thisMonthSendCooking},#{errorNumber},#{wetNumber},NOW(),#{equipment},'Enabled',70,#{equipmentDataItem.dataDictionaryItemId})
+        insert into  t_pl_medicalwastes(medicalWastesId, department, departmentName, adjustName, adjustDate, dateTime,
+        thisMonthWastes, directDisposal, cookingWastes, afterCookingNumber, afterCookingInbound, thisMonthSendCooking,
+        errorNumber, wetNumber, nowTime,equipment,checkState,checkStateId,equipmentId,incineration)
+        values(#{medicalWastesId},#{department},#{departmentName},#{adjustName},#{adjustDate},#{dateTime},#{thisMonthWastes},
+        #{directDisposal},#{cookingWastes},#{afterCookingNumber},#{afterCookingInbound},#{thisMonthSendCooking},#{errorNumber},
+        #{wetNumber},NOW(),#{equipment},'Enabled',70,#{equipmentDataItem.dataDictionaryItemId},#{incineration})
     </insert>
     <resultMap id="MedicalWastesRM" type="MedicalWastes">
         <collection property="equipmentDataItem" column="equipmentId" select="getEquipmentDataItem"></collection>
@@ -24,7 +28,8 @@
         select  * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
     </select>
     <select id="loadMedicalWastesList" resultMap="MedicalWastesRM">
-        select  * from t_pl_medicalwastes  order by checkStateId=71, nowTime desc
+        select * from t_pl_medicalwastes where checkStateId!=71
+        order by dateTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -44,7 +49,7 @@
             </if>
 
         </where>
-        order by nowTime desc
+        order by dateTime desc
     </select>
 <!--通过日期获取医废-->
     <select id="getMedicalWastesByRange" resultType="MedicalWastes">
@@ -78,7 +83,8 @@
         adjustName=#{adjustName},adjustDate=#{adjustDate},dateTime=#{dateTime},thisMonthWastes=#{thisMonthWastes},
         directDisposal=#{directDisposal},cookingWastes=#{cookingWastes},afterCookingNumber=#{afterCookingNumber},
         afterCookingInbound=#{afterCookingInbound},thisMonthSendCooking=#{thisMonthSendCooking},
-        errorNumber=#{errorNumber},wetNumber=#{wetNumber},nowTime=NOW(),equipment=#{equipment},equipmentId=#{equipmentDataItem.dataDictionaryItemId}
+        errorNumber=#{errorNumber},wetNumber=#{wetNumber},nowTime=NOW(),equipment=#{equipment},
+        equipmentId=#{equipmentDataItem.dataDictionaryItemId},incineration=#{incineration}
         where medicalWastesId=#{medicalWastesId};
     </update>
 </mapper>

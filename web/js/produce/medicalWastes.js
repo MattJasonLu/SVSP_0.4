@@ -426,8 +426,25 @@ function getNewestId() {
 
     });
     // $('#date').val(dateToString(new Date()))
-
-
+    // 设置用户信息
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getCurrentUserInfo",              // url
+        cache: false,
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                var data = eval(result.data);
+                $("#departmentName").val(data.name);  // 将创建人设置为当前登陆用户
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
 }
 
 //保存医废出入库信息
@@ -448,8 +465,9 @@ function saveMedicalWastes() {
         thisMonthSendCooking: $('#thisMonthSendCooking').val(),
         errorNumber: $('#errorNumber').val(),
         wetNumber: $('#wetNumber').val(),
-        equipmentDataItem:{dataDictionaryItemId:$('#equipment').selectpicker('val')} ,
-    }
+        incineration: $('#incineration').val(),
+        equipmentDataItem:{dataDictionaryItemId:$('#equipment').selectpicker('val')}
+    };
     $.ajax({
         type: "POST",                            // 方法类型
         url: "addMedicalWastes",                  // url
@@ -1014,22 +1032,23 @@ function medicalWasteManagerModify(item) {
         // contentType: "application/json; charset=utf-8",
         success:function (result) {
             if (result != undefined && result.status == "success"){
-                console.log(result)
-                var obj=eval(result.data)
+                console.log(result);
+                var obj=eval(result.data);
                 $('#medicalWastesId').val(obj.medicalWastesId);
                 $('#dateTime').val(getDateStr(obj.dateTime));
                 $('#department').val(obj.department);
                 $('#departmentName').val(obj.departmentName);
                 $('#adjustName').val(obj.adjustName);
                 $('#adjustDate').val(getDateStr(obj.adjustDate));
-                $('#thisMonthWastes').val(obj.thisMonthWastes);
-                $('#directDisposal').val(obj.directDisposal);
-                $('#cookingWastes').val(obj.cookingWastes);
-                $('#afterCookingNumber').val(obj.afterCookingNumber);
-                $('#afterCookingInbound').val(obj.afterCookingInbound);
-                $('#thisMonthSendCooking').val(obj.thisMonthSendCooking);
-                $('#errorNumber').val(obj.errorNumber);
-                $('#wetNumber').val(obj.wetNumber);
+                $('#thisMonthWastes').val(parseFloat(obj.thisMonthWastes).toFixed(3));
+                $('#directDisposal').val(parseFloat(obj.directDisposal).toFixed(3));
+                $('#cookingWastes').val(parseFloat(obj.cookingWastes).toFixed(3));
+                $('#afterCookingNumber').val(parseFloat(obj.afterCookingNumber).toFixed(3));
+                $('#afterCookingInbound').val(parseFloat(obj.afterCookingInbound).toFixed(3));
+                $('#thisMonthSendCooking').val(parseFloat(obj.thisMonthSendCooking).toFixed(3));
+                $('#errorNumber').val(parseFloat(obj.errorNumber).toFixed(3));
+                $('#wetNumber').val(parseFloat(obj.wetNumber).toFixed(3));
+                $('#incineration').val(parseFloat(obj.incineration).toFixed(3));
                 $.ajax({
                     type: "POST",                       // 方法类型
                     url: "getEquipmentByDataDictionary",                  // url
@@ -1086,8 +1105,8 @@ function adjustMedicalWaste() {
         thisMonthSendCooking:  $('#thisMonthSendCooking').val(),
         errorNumber:  $('#errorNumber').val(),
         wetNumber:  $('#wetNumber').val(),
-        equipmentDataItem: {dataDictionaryItemId:$('#equipment').selectpicker('val')},
-
+        incineration:  $('#incineration').val(),
+        equipmentDataItem: {dataDictionaryItemId:$('#equipment').selectpicker('val')}
     };
     //更新
     $.ajax({
