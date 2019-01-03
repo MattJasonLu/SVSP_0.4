@@ -1146,7 +1146,7 @@ function setContractList(result) {
                     }
                     //录入人
                     case (11):
-                        $(this).html("");
+                        $(this).html(obj.reviewer);
                         break;
                     //大小额合同
                     case (12):
@@ -1715,9 +1715,9 @@ function loadWastesContractSelectList() {
      $("#No").hide()
 
     //赋值送审人员，送审日期，送审部门
-    $("#reviewer").val(user.username);
+    $("#reviewer").val("yunchenxia");
 
-    $("#reviewDate").val(dateToString(new Date()));
+    $("#reviewDate").val("2018-12-28");
 
     $("#reviewDepartment").val(user.department);
     //危废编码赋值
@@ -2564,6 +2564,7 @@ function contractWastesSave() {
             if(smallContract=="true"){
                 small=true;
             }
+
             var data = {
                 small:small,
                 client: {clientId: $('#companyName').selectpicker('val')},
@@ -2633,14 +2634,17 @@ function contractWastesSave() {
 
                         //console.log(result);
                         $('.myclass').each(function () {
+                            if ($(this).children('td').eq(2).children('input').val().length > 0) { //如果有报价才添加
+
+
                             var quotationItemData = {
-                                contractId:$('#contractId').val(),
+                                contractId: $('#contractId').val(),
                                 client: {clientId: $('#companyName').selectpicker('val')},
                                 wastesCode: $(this).children('td').eq(1).children('div').find('button').attr('title'),
                                 wastesName: $(this).children('td').eq(2).children('input').val(),
-                                packageTypeItem:{dataDictionaryItemId:$(this).children('td').eq(3).find('select').val()} ,
-                                transportItem: {dataDictionaryItemId:$(this).children('td').eq(8).children('select').val()},
-                                unitDataItem:{dataDictionaryItemId:$(this).children('td').eq(4).children('select').val()},
+                                packageTypeItem: {dataDictionaryItemId: $(this).children('td').eq(3).find('select').val()},
+                                transportItem: {dataDictionaryItemId: $(this).children('td').eq(8).children('select').val()},
+                                unitDataItem: {dataDictionaryItemId: $(this).children('td').eq(4).children('select').val()},
                                 // packageType: $(this).children('td').eq(3).children('select').val(),
                                 // transport: $(this).children('td').eq(8).children('select').val(),
                                 // util: $(this).children('td').eq(4).children('select').val(),
@@ -2707,7 +2711,9 @@ function contractWastesSave() {
                                     alert("服务器异常!");
                                 }
                             });
+                        }
                         });
+
                     }
                     else {
                         alert(result.message);
@@ -2848,15 +2854,16 @@ function contractWastesSave() {
 
                         // console.log(result);
                         $('.myclass').each(function () {
+                            if ($(this).children('td').eq(2).children('input').val().length > 0) { //如果有报价才添加
                             //var formFile = new FormData();
                             var quotationItemData = {
-                                contractId:$('#contractId').val(),
+                                contractId: $('#contractId').val(),
                                 client: {clientId: $('#companyName').selectpicker('val')},
                                 wastesCode: $(this).children('td').eq(1).children('div').find('button').attr('title'),
                                 wastesName: $(this).children('td').eq(2).children('input').val(),
-                                packageTypeItem:{dataDictionaryItemId:$(this).children('td').eq(3).find('select').val()} ,
-                                transportItem: {dataDictionaryItemId:$(this).children('td').eq(8).children('select').val()},
-                                unitDataItem:{dataDictionaryItemId:$(this).children('td').eq(4).children('select').val()},
+                                packageTypeItem: {dataDictionaryItemId: $(this).children('td').eq(3).find('select').val()},
+                                transportItem: {dataDictionaryItemId: $(this).children('td').eq(8).children('select').val()},
+                                unitDataItem: {dataDictionaryItemId: $(this).children('td').eq(4).children('select').val()},
                                 // packageType: $(this).children('td').eq(3).children('select').val(),
                                 // transport: $(this).children('td').eq(8).children('select').val(),
                                 // util: $(this).children('td').eq(4).children('select').val(),
@@ -2900,7 +2907,7 @@ function contractWastesSave() {
                             if ($(this).children('td').eq(10).children('input').prop('type') != 'text') {
                                 var pictureFile = $(this).children('td').eq(10).find("input[name='picture']").get(0).files[0];
                                 formFile.append("pictureFile", pictureFile);
-                     console.log(formFile)
+                                console.log(formFile)
                             }
                             $.ajax({
                                 type: "POST",                            // 方法类型
@@ -2924,6 +2931,7 @@ function contractWastesSave() {
                                     alert("服务器异常!");
                                 }
                             });
+                        }
                         });
 
                         // $('.myclass').each(function () {
