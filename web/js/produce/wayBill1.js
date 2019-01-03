@@ -1071,6 +1071,7 @@ function showAddData() {
                 console.log(data);
                 // 各下拉框数据填充
                 $("#modal-founder").val(data.name);  // 将创建人设置为当前登陆用户
+                $("#modal-produceCompanyOperator").val(data.name);  // 将创建人设置为当前登陆用户
                 $("input[name='modal-receiveCompanyOperator']").val($("#modal-founder").val());
             } else {
                 console.log(result.message);
