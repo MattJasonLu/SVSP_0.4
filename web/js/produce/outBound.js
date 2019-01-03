@@ -634,11 +634,11 @@ function setOutBoundList(result) {
                         break;
                     // 计划数量
                     case (7):
-                        $(this).html(obj.outboundNumber.toFixed(2));
+                        $(this).html(obj.outboundNumber.toFixed(3));
                         break;
                     //出库数量
                     case (8):
-                        $(this).html(obj.outboundNumber.toFixed(2));
+                        $(this).html(obj.outboundNumber.toFixed(3));
                         break;
                     //审批状态
                     case (9):
@@ -867,7 +867,7 @@ function view1(item){
                     $('#wastesId').text(result.data.wasteCategory);
 
                 // //重量
-                $('#wastesAmount').text(parseFloat(result.data.outboundNumber).toFixed(2));
+                $('#wastesAmount').text(parseFloat(result.data.outboundNumber).toFixed(3));
                 // if(result.data[0].quotationItem!=null){
                 //     if(result.data[0].quotationItem.formType!=null){
                 //         //物质形态

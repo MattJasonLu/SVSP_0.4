@@ -402,7 +402,7 @@ function setWasteInventoryList(result) {
                         break;
                     //数量
                     case (8):
-                        $(this).html(obj.actualCount.toFixed(2));
+                        $(this).html(obj.actualCount.toFixed(3));
                         break;
                         //出库单明细
                     case (9):
@@ -706,7 +706,7 @@ function setByInboundOrderItemId(result) {
                         $(this).html(obj.wastesName);
                     break;
                 case (3):
-                    $(this).html(obj.actualCount.toFixed(2));
+                    $(this).html(obj.actualCount.toFixed(3));
                     break;
                 case (4):
                     $(this).html(obj.wastesCode);
@@ -722,12 +722,12 @@ function setByInboundOrderItemId(result) {
                     }
                     break;
             }
-        })
+        });
         clonedTr.removeAttr("id");
         clonedTr.insertBefore(tr);
 
-    })
-     tr.hide();
+    });
+    tr.hide();
 }
 
 /**

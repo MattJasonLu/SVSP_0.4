@@ -562,35 +562,35 @@ function setMedicalWastesList(result) {
                     break;
                 //本月进厂危废
                 case (7):
-                    $(this).html(obj.thisMonthWastes.toFixed(2));
+                    $(this).html(obj.thisMonthWastes.toFixed(3));
                     break;
                 //本日直接转外处置量
                 case (8):
-                    $(this).html(obj.directDisposal.toFixed(2));
+                    $(this).html(obj.directDisposal.toFixed(3));
                     break;
                 //本日蒸煮医废(过磅)
                 case (9):
-                    $(this).html(obj.cookingWastes.toFixed(2));
+                    $(this).html(obj.cookingWastes.toFixed(3));
                     break;
                 //蒸煮后重量
                 case (10):
-                    $(this).html(obj.afterCookingNumber.toFixed(2));
+                    $(this).html(obj.afterCookingNumber.toFixed(3));
                     break;
                 //蒸煮后入库量
                 case (11):
-                    $(this).html(obj.afterCookingInbound.toFixed(2));
+                    $(this).html(obj.afterCookingInbound.toFixed(3));
                     break;
                 //本月蒸煮后外送量
                 case (12):
-                    $(this).html(obj.thisMonthSendCooking.toFixed(2));
+                    $(this).html(obj.thisMonthSendCooking.toFixed(3));
                     break;
                 //误差量
                 case (13):
-                    $(this).html(obj.errorNumber.toFixed(2));
+                    $(this).html(obj.errorNumber.toFixed(3));
                     break;
                 //水分含量
                 case (14):
-                    $(this).html(obj.wetNumber.toFixed(2));
+                    $(this).html(obj.wetNumber.toFixed(3));
                     break;
                 //处置设备
                 case (15):
@@ -763,7 +763,7 @@ function geterrorNumberByWastes() {
     if ($('#cookingWastes').val() == null || $('#cookingWastes').val() == '' || $('#cookingWastes').val().length <= 0) {
         cookingWastes = 0;
     }
-    $("#errorNumber").val(parseInt(thisMonthWastes) - parseInt(cookingWastes))-parseInt((directDisposal));
+    $("#errorNumber").val((parseFloat(thisMonthWastes) - parseFloat(cookingWastes))-parseFloat((directDisposal)).toFixed(3));
 }
 
 function geterrorNumberByDisposal() {
@@ -779,7 +779,7 @@ function geterrorNumberByDisposal() {
     if ($('#cookingWastes').val() == null || $('#cookingWastes').val() == '' || $('#cookingWastes').val().length <= 0) {
         cookingWastes = 0;
     }
-    $("#errorNumber").val(parseInt(thisMonthWastes) - parseInt(directDisposal) - parseInt(cookingWastes));
+    $("#errorNumber").val((parseFloat(thisMonthWastes) - parseFloat(directDisposal) - parseFloat(cookingWastes)).toFixed(3));
 
 
 }
@@ -802,8 +802,8 @@ function geterrorNumberByCook() {
     if ($('#afterCookingNumber').val() == null || $('#afterCookingNumber').val() == '' || $('#afterCookingNumber').val().length <= 0) {
         afterCookingNumber = 0;
     }
-    $("#wetNumber").val(parseInt(cookingWastes) - parseInt(afterCookingNumber));
-    $("#errorNumber").val(parseInt(thisMonthWastes) - parseInt(cookingWastes))-parseInt((directDisposal));
+    $("#wetNumber").val((parseFloat(cookingWastes) - parseFloat(afterCookingNumber)).toFixed(3));
+    $("#errorNumber").val((parseFloat(thisMonthWastes) - parseFloat(cookingWastes))-parseFloat((directDisposal)).toFixed(3));
 }
 
 //水分含量计算
@@ -817,7 +817,7 @@ function getWaterByCooking() {
     if ($('#afterCookingNumber').val() == null || $('#afterCookingNumber').val() == '' || $('#afterCookingNumber').val().length <= 0) {
         afterCookingNumber = 0;
     }
-    $("#wetNumber").val(parseInt(cookingWastes) - parseInt(afterCookingNumber));
+    $("#wetNumber").val((parseFloat(cookingWastes) - parseFloat(afterCookingNumber)).toFixed(3));
 
 }
 
