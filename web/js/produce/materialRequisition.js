@@ -419,81 +419,96 @@ function setMaterialRequisitionList(result) {
 //领料单领用
 function receive() {
     var items = $("input[name='select']:checked");//判断复选框是否选中
+    var flag=false;
     if (items.length > 0) {
         if (confirm("确定出库?")) {
             //点击确定后操作
+
             items.each(function () {
-                //1获得领料单的编号
-                var materialRequisitionId = $(this).parent().parent().next().next().html();
-                //console.log(materialRequisitionId);
-                //2获得厂家
-                var companyName = $(this).parent().parent().next().next().next().html();
-                //3获得危废名称
-                var name = $(this).parent().parent().next().next().next().next().html();
-                //4获得危废代码
-                var wastesId = $(this).parent().parent().next().next().next().next().next().html();
-                //危废类别
-                var category = $(this).parent().parent().next().next().next().next().next().next().html();
-                //单位
-                var unit = $(this).parent().parent().next().next().next().next().next().next().next().html();
-                //配料数量
-                var batchingNumber = $(this).parent().parent().next().next().next().next().next().next().next().next().html();
-                //领用数量
-                var recipientsNumber = $(this).parent().parent().next().next().next().next().next().next().next().next().next().html();
-                //附注
-                var remarks = $(this).parent().parent().next().next().next().next().next().next().next().next().next().next().html();
-                //主管副总经理
-                var deputyGeneral = $(this).parent().parent().next().next().next().next().next().next().next().next().next().next().next().html();
-                //部门仓库主管
-                var warehouseManager = $(this).parent().parent().next().next().next().next().next().next().next().next().next().next().next().next().html();
-                //保管员
-                var guardian = $(this).parent().parent().next().next().next().next().next().next().next().next().next().next().next().next().next().html();
-                //领料部门主管
-                var materialManager = $(this).parent().parent().next().next().next().next().next().next().next().next().next().next().next().next().next().next().html();
-                //领料人
-                var picker = $(this).parent().parent().next().next().next().next().next().next().next().next().next().next().next().next().next().next().next().html();
-                data = {
-                    materialRequisitionId: materialRequisitionId,
-                    //   wastes:{client:{companyName:companyName},
-                    //         name:name,
-                    //         wastesId:wastesId,
-                    //         unit:unit,
-                    //         remarks:remarks,
-                    // },
-                    //   batchingOrder:{
-                    //       batchingNumber:batchingNumber,
-                    //       deputyGeneral:deputyGeneral,
-                    //       warehouseManager:warehouseManager,
-                    //       guardian:guardian,
-                    //       materialManager:materialManager,
-                    //       picker:picker
-                    //   },
-                    recipientsNumber: recipientsNumber,
-                },
-                    $.ajax({
-                        type: "POST",                       // 方法类型
-                        url: "getByMaterialRequisitionId",                  // url
-                        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                        data: {'materialRequisitionId': materialRequisitionId},
-                        dataType: "json",
-                        //contentType: "application/json; charset=utf-8",
-                        success: function (result) {
-                            if (result != undefined && result.status == "success") {
+                if($(this).parent().parent().parent().children('td').eq(13).html()=="待出库") {
+
+                    flag=true;
+                    //1获得领料单的编号
+                    var materialRequisitionId = $(this).parent().parent().next().next().html();
+                    //console.log(materialRequisitionId);
+                    //2获得厂家
+                    var companyName = $(this).parent().parent().next().next().next().html();
+                    //3获得危废名称
+                    var name = $(this).parent().parent().next().next().next().next().html();
+                    //4获得危废代码
+                    var wastesId = $(this).parent().parent().next().next().next().next().next().html();
+                    //危废类别
+                    var category = $(this).parent().parent().next().next().next().next().next().next().html();
+                    //单位
+                    var unit = $(this).parent().parent().next().next().next().next().next().next().next().html();
+                    //配料数量
+                    var batchingNumber = $(this).parent().parent().next().next().next().next().next().next().next().next().html();
+                    //领用数量
+                    var recipientsNumber = $(this).parent().parent().next().next().next().next().next().next().next().next().next().html();
+                    //附注
+                    var remarks = $(this).parent().parent().next().next().next().next().next().next().next().next().next().next().html();
+                    //主管副总经理
+                    var deputyGeneral = $(this).parent().parent().next().next().next().next().next().next().next().next().next().next().next().html();
+                    //部门仓库主管
+                    var warehouseManager = $(this).parent().parent().next().next().next().next().next().next().next().next().next().next().next().next().html();
+                    //保管员
+                    var guardian = $(this).parent().parent().next().next().next().next().next().next().next().next().next().next().next().next().next().html();
+                    //领料部门主管
+                    var materialManager = $(this).parent().parent().next().next().next().next().next().next().next().next().next().next().next().next().next().next().html();
+                    //领料人
+                    var picker = $(this).parent().parent().next().next().next().next().next().next().next().next().next().next().next().next().next().next().next().html();
+                    data = {
+                        materialRequisitionId: materialRequisitionId,
+                        //   wastes:{client:{companyName:companyName},
+                        //         name:name,
+                        //         wastesId:wastesId,
+                        //         unit:unit,
+                        //         remarks:remarks,
+                        // },
+                        //   batchingOrder:{
+                        //       batchingNumber:batchingNumber,
+                        //       deputyGeneral:deputyGeneral,
+                        //       warehouseManager:warehouseManager,
+                        //       guardian:guardian,
+                        //       materialManager:materialManager,
+                        //       picker:picker
+                        //   },
+                        recipientsNumber: recipientsNumber,
+                    },
+                        $.ajax({
+                            type: "POST",                       // 方法类型
+                            url: "getByMaterialRequisitionId",                  // url
+                            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                            data: {'materialRequisitionId': materialRequisitionId},
+                            dataType: "json",
+                            //contentType: "application/json; charset=utf-8",
+                            success: function (result) {
+                                if (result != undefined && result.status == "success") {
+                                }
+                                else {
+                                    alert(result.message);
+                                }
+                            },
+                            error: function (result) {
+                                alert("服务器异常！");
                             }
-                            else {
-                                alert(result.message);
-                            }
-                        },
-                        error: function (result) {
-                            alert("服务器异常！");
-                        }
-                    });
-                if (materialRequisitionId.length > 0) {
-                    array.push(materialRequisitionId);
+                        });
+                    if (materialRequisitionId.length > 0) {
+                        array.push(materialRequisitionId);
+                    }
                 }
+                else {
+                    flag=false;
+                }
+
             });
-            window.localStorage.array = array;
-            location.href = "newWarehouseOut.html";
+            if(flag){
+                window.localStorage.array = array;
+                location.href = "newWarehouseOut.html";
+            }
+           else {
+                alert("只可勾选待出库的数据！")
+            }
         }
     }
     else {

@@ -235,6 +235,21 @@ public class ProcurementServiceImpl implements ProcurementService {
     }
 
     @Override
+    public List<Procurement> getEmergencyProcurementOffList(Page page) {
+        return procurementMapper.getEmergencyProcurementOffList(page);
+    }
+
+    @Override
+    public int totalEmcOffRecord() {
+        return procurementMapper.totalEmcOffRecord();
+    }
+
+    @Override
+    public List<Date> getNewestOffEm() {
+        return procurementMapper.getNewestOffEm();
+    }
+
+    @Override
     public List<Material> searchMaterial(Material material){ return procurementMapper.searchMaterial(material);}
 
     @Override

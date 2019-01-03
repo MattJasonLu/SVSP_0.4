@@ -11,8 +11,7 @@
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
-    <script src="js/produce/emergencyProcurement.js"></script>
-    <script src="js/produce/monthProcurement.js"></script>
+    <script src="js/produce/emergencyProcurementOff.js"></script>
     <script src="js/util.js"></script>
     <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
     <script src="js/bootstrap/bootstrap-select.min.js"></script>
@@ -129,9 +128,11 @@
                         <tbody>
                         <tr>
                             <td colspan="2">非物资类别</td>
-                            <td colspan="2"><select class="focus" title="" id="materialCategoryItem"></select></td>
+                            <td colspan="2"><select class="focus" title="" id="nonMaterial"></select>
+                                <input class="form-control" title="" type="date" id="suppliesCategory">
+                            </td>
                             <td colspan="2">需用时间</td>
-                            <td colspan="2"><input class="focus" title="" type="date" id="demandTime"></td>
+                            <td colspan="2"><input class="form-control" title="" type="date" id="demandTime"></td>
                         </tr>
                         <tr style="height: 100px;">
                             <td colspan="8"></td>
@@ -204,8 +205,8 @@
                         </tbody>
                     </table>
                     <div class="row text-center">
-                        <a class="btn btn-success" onclick="saveEmer();">保存</a>
-                        <a class="btn btn-primary" onclick="saveEmer();">提交</a>
+                        <a class="btn btn-success" onclick="saveEmOFF();">保存</a>
+                        <a class="btn btn-primary" onclick="saveEmOFF();">提交</a>
                         <a class="btn btn-danger" href="emergencyProcurement.html">返回</a>
                     </div>
                 </div>
