@@ -430,11 +430,11 @@
                         <thead>
                         <tr>
                             <th style="width: 180px">登记单号</th>
-                            <th>登记日期</th>
-                            <th>登记部门</th>
-                            <th>登记人</th>
-                            <th>修改人</th>
-                            <th>修改时间</th>
+                            <!--<th>登记日期</th>-->
+                            <!--<th>登记部门</th>-->
+                            <!--<th>登记人</th>-->
+                            <!--<th>修改人</th>-->
+                            <!--<th>修改时间</th>-->
                             <th>本日进厂危废</th>
                             <th>本日直接转外处置量</th>
                             <th>本日蒸煮医废(过磅)</th>
@@ -442,18 +442,19 @@
                             <th>蒸煮后入库量</th>
                             <th>本日蒸煮后外送量</th>
                             <th>误差量</th>
-                            <th>水分含量	</th>
-                            <th style="width: 10%">处置设备	</th>
+                            <th>水分含量</th>
+                            <th>焚烧量</th>
+                            <th style="width: 10%">处置设备</th>
                         </tr>
                         </thead>
                         <tbody >
                         <tr id="addTable1" class="myclass3">
                             <td><input class="form-control" name="transferDraftId" id="medicalWastesId" readonly></td><!--登记单号-->
-                            <td><input class="form-control" name="produceCompany" type="date" id="dateTime"></td><!--登记日期-->
-                            <td><input class="form-control" name="wastesName" id="department"></td><!--登记部门-->
-                            <td><input class="form-control" name="wastesCode" id="departmentName"></td><!--登记人-->
-                            <td><input class="form-control" name="formType" id="adjustName"></td><!--修改人-->
-                            <td><input class="form-control" name="remark" id="adjustDate" type="date" ></td><!--修改时间-->
+                            <!--<td><input class="form-control" name="produceCompany" type="date" id="dateTime"></td>&lt;!&ndash;登记日期&ndash;&gt;-->
+                            <!--<td><input class="form-control" name="wastesName" id="department"></td>&lt;!&ndash;登记部门&ndash;&gt;-->
+                            <!--<td><input class="form-control" name="wastesCode" id="departmentName"></td>&lt;!&ndash;登记人&ndash;&gt;-->
+                            <!--<td><input class="form-control" name="formType" id="adjustName"></td>&lt;!&ndash;修改人&ndash;&gt;-->
+                            <!--<td><input class="form-control" name="remark" id="adjustDate" type="date" ></td>&lt;!&ndash;修改时间&ndash;&gt;-->
                             <td><input class="form-control" name="remark" id="thisMonthWastes" onkeyup="geterrorNumberByWastes()"></td><!--本日进厂危废-->
                             <td><input class="form-control" name="remark" id="directDisposal" onkeyup="geterrorNumberByDisposal()"></td><!--本日直接转外处置量	-->
                             <td><input class="form-control" name="remark" id="cookingWastes" onkeyup="geterrorNumberByCook()"></td><!--本日蒸煮医废(过磅)-->
@@ -462,6 +463,7 @@
                             <td><input class="form-control" name="remark" id="thisMonthSendCooking"></td><!--本日蒸煮后外送量-->
                             <td><input class="form-control" name="remark" id="errorNumber" readonly></td><!--误差量-->
                             <td><input class="form-control" name="remark" id="wetNumber" readonly></td><!--水分含量-->
+                            <td><input class="form-control" name="remark" id="incineration"></td><!--焚烧量-->
                             <td style="width: 10%"> <select data-live-search="true" data-live-search-placeholder="搜索..." class="selectpicker input-xlarge form-control" id="equipment" name="equipment" placeholder=""></select></td><!--处置设备-->
                         </tr>
                         </tbody>

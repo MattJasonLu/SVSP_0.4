@@ -1096,7 +1096,7 @@ function setBatchingOrderList(result) {
                             break;
                         // 配量数量(吨)
                         case (5):
-                            $(this).html(obj.batchingNumber.toFixed(2));
+                            $(this).html(obj.batchingNumber.toFixed(3));
                             break;
                         // 配量日期
                         case (6):
@@ -1816,7 +1816,7 @@ function view(item) {
                     $('#produceCompany').val(obj.produceCompany.companyName);
                 }
                 $('#wastesName').val(obj.wastesName);
-                $('#batchingNumber').val(obj.batchingNumber.toFixed(2));
+                $('#batchingNumber').val(obj.batchingNumber.toFixed(3));
                 $('#batchingDate').val(getDateStr(obj.batchingDate));
                 $('#createDate').val(getDateStr(obj.createDate));
                 $('#transferDraftId').val(obj.transferDraftId);

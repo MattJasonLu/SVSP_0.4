@@ -48,7 +48,7 @@
     <select id="listItemPage" resultType="SampleInformationItem">
         select * from t_pr_sampleinfowarehouseitem as a join t_pr_sampleinfowarehouse as b on a.sampleId=b.id
         where b.applyState != 'Invalid'
-        ORDER BY CONVERT(a.transferId,SIGNED) DESC
+        ORDER BY CONVERT(a.sampleId,SIGNED) DESC
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>

@@ -11,11 +11,17 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+
     <script src="js/produce/emergencyProcurementOff.js"></script>
     <link href="css/loading1.css" rel="stylesheet">
     <link href="css/loading2.css" rel="stylesheet">
 </head>
 <body onload="getEmergencyProcurementOffList()">
+
+    <!--<link href="css/dropdown-submenu.css" rel="stylesheet">-->
+</head>
+<body onload="getEmProcurement()">
+
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -98,7 +104,11 @@
                     <div class="input-group col-md-4 pull-right">
                         <input type="text" class="form-control" placeholder="搜索..." id="searchContent" >
                         <span class="input-group-btn">
+
                             <a class="btn btn-default" onclick="searchEmOff();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+
+                         
+
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
                             <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
                         </span>
@@ -111,9 +121,11 @@
                     <div class="row">
                         <div class="form-horizontal col-md-4">
                             <div class="form-group">
+
                                 <label for="search-suppliesCategory" class="col-sm-4 control-label">非&nbsp;&nbsp;&nbsp;物&nbsp;&nbsp;&nbsp;资&nbsp;&nbsp;&nbsp;&nbsp;类&nbsp;&nbsp;&nbsp;&nbsp;别</label>
                                 <div class="col-xs-7">
                                     <select type="text" class="form-control" id="search-suppliesCategory" name="search-suppliesCategory" placeholder="" onchange="searchEmOff()"></select>
+
                                 </div>
                             </div>
                         </div>
@@ -205,7 +217,11 @@
                         </label>
                     </td>
                     <th class="text-center">申请单编号</th>
+
                     <th class="text-center">非物资类别</th>
+
+                  
+
                     <th class="text-center">需用时间</th>
                     <th class="text-center">申请部门</th>
                     <th class="text-center">申请部门负责人</th>
@@ -234,6 +250,7 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+
                     <td class="text-center hidden"></td>
                     <td class="text-center">
                         <a href="#" title="查看" id="function_-331" onclick="view(this)"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> </a>
@@ -241,6 +258,7 @@
                         <!--<a href="#" title= id="function_" "保存"><spacheck(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel();}n class="glyphicon glyphicon-save" aria-hidden="true"></span> </a>-->
                         <a href="#" title="提交" id="function_-333" onclick=" submit(this)"><span class="glyphicon glyphicon-export" aria-hidden="true"></span> </a>
                         <a href="#" title="作废" id="function_-334" onclick=" cancel(this)"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> </a>
+
                         <!--<a href="#" title="审批"><span class="glyphicon glyphicon-apple" aria-hidden="true"></span> </a>-->
                         <a href="#" title="下载附件" onclick="downLoadFile(this);"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> </a>
                     </td>
@@ -273,7 +291,9 @@
                 <li ><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;" id="pageNumber" onkeydown="enterSwitchPage();"></li>
                 <li class="showLi">每页显示:</li>
                 <li class="selectLi">
+
                     <select id="count" onchange="getEmergencyProcurementOffList();">
+
                         <option>5</option>
                         <option selected>15</option>
                         <option>50</option>
@@ -332,11 +352,15 @@
 
     <!--修改模态框-->
     <div class="modal fade bs-example-modal-lg" id="appointModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+
         <span class="hidden" id="receiptNumber"></span>
         <div class="modal-dialog modal-lg" role="document"  style="width: 85%">
             <div class="modal-content" >
                 <div class="modal-header">
                     <h4 class="modal-title" >非物资需求单明细修改</h4>
+
+       
+
                 </div>
                 <div class="modal-body">
                     <table class="table table-bordered">
@@ -350,18 +374,23 @@
                             <td class="text-center">采购数量</td>
                             <td class="text-center">备注</td>
                             <td class="text-center">操作</td>
+
                         </tr>
                         </thead>
                         <tbody>
                         <tr id="cloneTr3">
+
                             <td class="text-center modal-companyName" ><input></td>
                             <td class="text-center modal-einlass" ><input></td>
                             <td class="text-center wastesName" ><select id="unitItem" ></select></td>
+
+
                             <td class="text-center wastesName" ><input></td>
                             <td class="text-center wastesName" ><input></td>
                             <td class="text-center wastesName" ><input></td>
                             <td class="text-center wastesName"><input></td>
                             <td class="text-center wastesName hidden"></td>
+
                             <td class="text-center">
                                 <a href="#" title="删除" id="function_-290" onclick=" removeEmerProcumentOff(this)"><span
                                         class="glyphicon glyphicon-remove-sign"
@@ -377,6 +406,7 @@
                             <td></td>
                             <td ></td>
                             <td></td>
+
                         </tr>
                         </tbody>
                     </table>
