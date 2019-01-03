@@ -1450,3 +1450,15 @@ function enterSearch() {
         searchEmOff();      //
     }
 }
+
+//附件下载
+function downLoadFile(item) {
+    var contractAppendicesUrl=$(item).parent().prev().html();
+    if (contractAppendicesUrl != null && contractAppendicesUrl != "") {
+        window.open('downloadFile?filePath=' + contractAppendicesUrl);
+        window.location.reload()
+    } else {
+        alert("未上传文件");
+        // window.location.reload()
+    }
+}
