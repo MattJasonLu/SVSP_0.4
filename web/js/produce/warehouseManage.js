@@ -213,28 +213,25 @@ function addPlan2Order() {
  * 设置下拉框数据
  */
 function setSelectItem() {
+    // 获取仓库数据
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getProcessWay",                  // url
+        url: "listWareHouse",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
             if (result !== undefined && result.status == "success") {
                 var data = eval(result);
                 // 高级检索下拉框数据填充
-                var processWayArray = $("select[name='processWay']");
-                for (var i = 0; i < processWayArray.length; i++) {
-                    var processWay = $(processWayArray[i]);
-                    // console.log(processWay);
-                    processWay.children().remove();
-                    $.each(data.processWayList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(index);
-                        option.text(item.name);
-                        processWay.append(option);
-                    });
-                    processWay.get(0).selectedIndex = -1;
-                }
+                var warehouse = $("select[name='warehouse']");
+                warehouse.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.wareHouseId);
+                    option.text(item.wareHouseName);
+                    warehouse.append(option);
+                });
+                warehouse.get(0).selectedIndex = -1;
             } else {
                 console.log(result);
             }
@@ -243,28 +240,52 @@ function setSelectItem() {
             console.log(result);
         }
     });
-
+    // 获取处理方式
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getHandleCategory",                  // url
+        url: "getProcessWayByDataDictionary",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
             if (result !== undefined && result.status == "success") {
                 var data = eval(result);
                 // 高级检索下拉框数据填充
-                var handleCategoryArray = $("select[name='handleCategory']");
-                for (var i = 0; i < handleCategoryArray.length; i++) {
-                    var handleCategory = $(handleCategoryArray[i]);
-                    handleCategory.children().remove();
-                    $.each(data.handleCategoryList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(index);
-                        option.text(item.name);
-                        handleCategory.append(option);
-                    });
-                    handleCategory.get(0).selectedIndex = -1;
-                }
+                var processWay = $("select[name='processWay']");
+                processWay.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    processWay.append(option);
+                });
+                processWay.get(0).selectedIndex = -1;
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+    // 获取进料方式
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getHandleCategoryByDataDictionary",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined && result.status == "success") {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var handleCategory = $("select[name='handleCategory']");
+                handleCategory.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    handleCategory.append(option);
+                });
+                handleCategory.get(0).selectedIndex = -1;
             } else {
                 console.log(result);
             }
@@ -280,6 +301,7 @@ function setSelectItem() {
  */
 function addInboundOrder(type) {
     var inboundOrderItemList = [];
+    var wareHouse = {};
     $("#inboundOrderData").children().not("#inboundClonedTr").each(function () {
         var inboundOrder = {};
         inboundOrder.inboundPlanOrderId = $(this).find("td[name='inboundPlanOrderId']").text();
@@ -294,15 +316,20 @@ function addInboundOrder(type) {
         inboundOrder.wastesAmount = $(this).find("input[name='wastesAmount']").val();
         inboundOrder.unitPriceTax = $(this).find("td[name='unitPriceTax']").text();
         inboundOrder.totalPrice = $(this).find("td[name='totalPrice']").text();
-        inboundOrder.processWay = $(this).find("select[name='processWay']").val();
-        inboundOrder.handleCategory = $(this).find("select[name='handleCategory']").val();
+        inboundOrder.processWayItem = {
+            dataDictionaryItemId: $(this).find("select[name='processWay']").val()
+        };
+        inboundOrder.handleCategoryItem = {
+            dataDictionaryItemId: $(this).find("select[name='handleCategory']").val()
+        };
         inboundOrder.remarks = $(this).find("input[name='remarks']").val();
+        wareHouse.wareHouseId = $(this).find("select[name='warehouse']").val();
         inboundOrder.warehouseArea = $(this).find("input[name='warehouseArea']").val();
         inboundOrderItemList.push(inboundOrder);
     });
     var data = {};
     data.inboundOrderItemList = inboundOrderItemList;
-
+    data.wareHouse = wareHouse;
     $.ajax({
         type: "POST",                       // 方法类型
         url: "addInboundOrder",                  // url

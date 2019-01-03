@@ -1189,7 +1189,7 @@ function getIngredientsList() {
         size: 6
     });
     var page={};
-    page.count=15;//解决加载慢
+    page.count=0;//解决加载慢
     $.ajax({
         type: "POST",                       // 方法类型
         url: "loadPageIngredientList",          // url
@@ -1199,7 +1199,7 @@ function getIngredientsList() {
         contentType: 'application/json;charset=utf-8',
         success:function (result) {
             if (result != undefined && result.status == "success"){
-                console.log(result);
+                // console.log(result);
                 $('.loader').hide();
                var suppliesName=$('#suppliesName');
                suppliesName.children().remove();
@@ -1213,11 +1213,12 @@ function getIngredientsList() {
                        option.text(item.name);
                    }
                    suppliesName.append(option);
-                   $('.selectpicker').selectpicker('refresh');
-               });
 
+               });
+                $('.selectpicker').selectpicker('refresh');
 
             }
+
             else {
                 alert(result.message);
             }

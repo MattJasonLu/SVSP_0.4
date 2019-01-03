@@ -884,8 +884,10 @@ function addData(state) {
     // 定义列表
     data['inboundOrderItemList'] = [];
     var trs = $("#inboundOrderData").find("tr[id!='plus']");
+    var wareHouse = {};
     for (var i = 0; i < trs.length; i++) {
         var tr = $(trs[i]);
+        wareHouse.wareHouseId = tr.find("select[name='warehouse']").val();
         var item = {
             produceCompany: {
                 companyName: tr.find("input[name='produceCompanyName']").val()
@@ -924,6 +926,7 @@ function addData(state) {
         };
         console.log(item.wastes);
         // console.log(item);
+        data.wareHouse = wareHouse;
         data.inboundOrderItemList.push(item);
     }
     // 上传用户数据
@@ -1278,7 +1281,34 @@ function setSelectList() {
 
         }
     });
-    $("select[name='wastesName']").get(0).selectedIndex = -1;
+
+    // 获取仓库数据
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "listWareHouse",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined && result.status == "success") {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var warehouse = $("select[name='warehouse']");
+                warehouse.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.wareHouseId);
+                    option.text(item.wareHouseName);
+                    warehouse.append(option);
+                });
+                warehouse.get(0).selectedIndex = -1;
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
 
     // 设置计量单位
     $.ajax({

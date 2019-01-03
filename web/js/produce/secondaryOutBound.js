@@ -1194,7 +1194,7 @@ function view1(item) {
                     $('#wastesAmount').text(result.data.outboundNumber+"(只)");
                 }
               else {
-                    $('#wastesAmount').text(result.data.outboundNumber+"(吨)");
+                    $('#wastesAmount').text((result.data.outboundNumber).toFixed(3)+"(吨)");
                 }
                 // //物质形态
                 // if(result.data[0].formType!=null){

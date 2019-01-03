@@ -36,7 +36,7 @@
     <select id="listPage" resultType="SampleInformation">
         select * from t_pr_sampleinformation
         where applyState != 'Invalid'
-        ORDER BY creationTime DESC
+        ORDER BY CONVERT(id,SIGNED) DESC
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -44,8 +44,8 @@
 
     <select id="listItemPage" resultType="SampleInformationItem">
         select a.*,b.companyName,b.sendingPerson,b.laboratorySigner,b.applyState from t_pr_sampleinformationItem as a join t_pr_sampleinformation as b on a.sampleId=b.id
-        where b.applyState in != 'Invalid'
-        ORDER BY b.creationTime DESC
+        where b.applyState != 'Invalid'
+        ORDER BY CONVERT(transferId,SIGNED) DESC
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
