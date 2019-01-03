@@ -124,7 +124,11 @@ public class InboundServiceImpl implements InboundService {
         do {
             count += 1;
             id = nf.format(count);
-        } while (existInboundOrderId(id));
+        } while (existInboundOrderId("1H"+id) || existInboundOrderId("2H"+id) ||
+                existInboundOrderId("3H"+id) || existInboundOrderId("4H"+id) ||
+                existInboundOrderId("ZN"+id) || existInboundOrderId("ZC"+id) ||
+                existInboundOrderId("CS"+id) || existInboundOrderId("FL"+id) ||
+                existInboundOrderId("WJ"+id));
         return id;
     }
 

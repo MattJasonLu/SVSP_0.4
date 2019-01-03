@@ -919,9 +919,12 @@ function addData(state) {
             },
             laboratoryTest: {
                 heatAverage: tr.find("input[name='heat']").val(),
-                waterContentAverage: tr.find("input[name='waterContent']").val(),
+                waterContentAverage: tr.find("input[name='waterContent']").val()
             },
             remarks: tr.find("input[name='remarks']").val(),
+            wareHouse: {
+                wareHouseId: tr.find("select[name='warehouse']").val()
+            },
             warehouseArea: tr.find("input[name='warehouseArea']").val()
         };
         console.log(item.wastes);
@@ -1126,7 +1129,10 @@ function addNewLine() {
         id1++;
         num = id1;
     }
+    // 设置编号
     clonedTr.find("td[name='index']").text(num);
+    // 设置公司名称
+    clonedTr.find("input[name='produceCompanyName']").val("北控安耐得环保科技发展常州有限公司");
     var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine($(this));id1--;'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
     clonedTr.children("td:eq(0)").prepend(delBtn);
     clonedTr.insertAfter(tr);
