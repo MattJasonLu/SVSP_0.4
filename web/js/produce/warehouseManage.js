@@ -323,6 +323,9 @@ function addInboundOrder(type) {
             dataDictionaryItemId: $(this).find("select[name='handleCategory']").val()
         };
         inboundOrder.remarks = $(this).find("input[name='remarks']").val();
+        inboundOrder.wareHouse = {
+            wareHouseId: $(this).find("select[name='warehouse']").val()
+        };
         wareHouse.wareHouseId = $(this).find("select[name='warehouse']").val();
         inboundOrder.warehouseArea = $(this).find("input[name='warehouseArea']").val();
         inboundOrderItemList.push(inboundOrder);
@@ -692,7 +695,7 @@ function setInboundOrderDataList(result) {
         clonedTr.find("td[name='inboundDate']").text(getDateStr(data.inboundDate));
         if (data.inboundOrderItemList[0] != null) {
             clonedTr.find("td[name='transferDraftId']").text(data.inboundOrderItemList[0].transferDraftId);
-            clonedTr.find("td[name='wastesAmount']").text(data.inboundOrderItemList[0].wastesAmount.toFixed(2));
+            clonedTr.find("td[name='wastesAmount']").text(data.inboundOrderItemList[0].wastesAmount.toFixed(3));
             if (data.inboundOrderItemList[0].produceCompany != null) {
                 clonedTr.find("td[name='produceCompanyName']").text(data.inboundOrderItemList[0].produceCompany.companyName);
             }
@@ -720,7 +723,7 @@ function setInboundOrderDataList(result) {
     var clonedTr = tr.clone();
     clonedTr.show();
     clonedTr.find("td[name='wastesCode']").text("合计");
-    clonedTr.find("td[name='wastesAmount']").text(pageTotal.toFixed(2));
+    clonedTr.find("td[name='wastesAmount']").text(pageTotal.toFixed(3));
     clonedTr.removeAttr("id");
     clonedTr.insertBefore(tr);
 }

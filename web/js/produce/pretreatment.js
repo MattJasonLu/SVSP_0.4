@@ -1377,8 +1377,8 @@ function confirmInsert() {
                             //             wastes.processWay = "Clean";
                             //             break;
                             //     }
-                             nameList.push(data.handleCategoryItem.dictionaryItemName);
-                            nameList.push(data.processWayItem.dictionaryItemName);
+                            if (data.handleCategoryItem != null) nameList.push(data.handleCategoryItem.dictionaryItemName);
+                            if (data.processWayItem != null) nameList.push(data.processWayItem.dictionaryItemName);
                             pretreatmentItem.wastes = wastes;
                             pretreatmentItemList.push(pretreatmentItem);
                         } else {

@@ -79,7 +79,9 @@ public class MedicalWastes {
      */
     private CheckState checkState;
 
-    //焚烧量
+    /**
+     * 焚烧量
+     */
     private float incineration;
 
     //处置设备数据字典

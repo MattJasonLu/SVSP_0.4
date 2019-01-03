@@ -128,6 +128,10 @@ public class InboundOrderItem {
      * 次生名称数据字典
      */
     private SecondaryCategoryItem secondaryCategoryItem;
+    /**
+     * 所在仓库
+     */
+    private WareHouse wareHouse;
 
     public SecondaryCategoryItem getSecondaryCategoryItem() {
         return secondaryCategoryItem;
@@ -351,6 +355,14 @@ public class InboundOrderItem {
 
     public void setPackageType(PackageType packageType) {
         this.packageType = packageType;
+    }
+
+    public WareHouse getWareHouse() {
+        return wareHouse;
+    }
+
+    public void setWareHouse(WareHouse wareHouse) {
+        this.wareHouse = wareHouse;
     }
 
     @Override
