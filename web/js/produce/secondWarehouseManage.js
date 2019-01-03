@@ -792,14 +792,14 @@ function setDataList(result) {
             }
             // 增加本页合计
             pageTotal += data.inboundOrderItemList[0].wastesAmount;
-            clonedTr.find("td[name='wastesAmount']").text(parseFloat(data.inboundOrderItemList[0].wastesAmount).toFixed(2));
+            clonedTr.find("td[name='wastesAmount']").text(parseFloat(data.inboundOrderItemList[0].wastesAmount).toFixed(3));
             if (data.inboundOrderItemList[0].unitDataItem != null) clonedTr.find("td[name='wastesUnit']").text(data.inboundOrderItemList[0].unitDataItem.dictionaryItemName);
             clonedTr.find("td[name='unitPriceTax']").text(parseFloat(data.inboundOrderItemList[0].unitPriceTax).toFixed(2));
             clonedTr.find("td[name='totalPrice']").text(parseFloat(data.inboundOrderItemList[0].totalPrice).toFixed(2));
             if (data.inboundOrderItemList[0].laboratoryTest != null) {
-                var heatAverage = parseFloat(data.inboundOrderItemList[0].laboratoryTest.heatAverage).toFixed(2);
+                var heatAverage = parseFloat(data.inboundOrderItemList[0].laboratoryTest.heatAverage).toFixed(3);
                 clonedTr.find("td[name='heatAverage']").text(isNaN(heatAverage) ? 0 : heatAverage);
-                var waterContentAverage = parseFloat(data.inboundOrderItemList[0].laboratoryTest.laboratoryTest).toFixed(2);
+                var waterContentAverage = parseFloat(data.inboundOrderItemList[0].laboratoryTest.laboratoryTest).toFixed(3);
                 clonedTr.find("td[name='waterContentAverage']").text(isNaN(waterContentAverage) ? 0 : waterContentAverage);
             }
         }
@@ -816,7 +816,7 @@ function setDataList(result) {
     var clonedTr = tr.clone();
     clonedTr.show();
     clonedTr.find("td[name='wastesCode']").text("合计");
-    clonedTr.find("td[name='wastesAmount']").text(pageTotal.toFixed(2));
+    clonedTr.find("td[name='wastesAmount']").text(pageTotal.toFixed(3));
     clonedTr.removeAttr("id");
     clonedTr.insertBefore(tr);
 }

@@ -370,11 +370,11 @@ function setMaterialRequisitionList(result) {
                         break;
                     //配料数量
                     case (6):
-                        $(this).html(obj.recipientsNumber.toFixed(2));
+                        $(this).html(obj.recipientsNumber.toFixed(3));
                         break;
                     //领用数量
                     case (7):
-                        $(this).html(obj.recipientsNumber.toFixed(2));
+                        $(this).html(obj.recipientsNumber.toFixed(3));
                         break;
                     //主管副总经理
                     case (8):
@@ -1047,9 +1047,9 @@ function view(item) {
                     $("#client").val(obj.client.companyName);
                 }
 
-                $("#wastesName").val(obj.wastesName)
+                $("#wastesName").val(obj.wastesName);
                 $("#wasteCategory").val(obj.wasteCategory);
-                $("#recipientsNumber").val(obj.recipientsNumber.toFixed(2));
+                $("#recipientsNumber").val(obj.recipientsNumber.toFixed(3));
                 $("#deputyGeneral").val(obj.deputyGeneral);
                 $("#warehouseManager").val(obj.warehouseManager);
                 $("#guardian").val(obj.guardian);
