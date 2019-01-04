@@ -1,4 +1,11 @@
 /**
+ * 模态框
+ */
+function showModal() {
+    $("#comparison").modal('show');
+}
+
+/**
  * 危废入场分析日报
  * */
 var currentPage = 1;                          //当前页数
