@@ -224,6 +224,8 @@
                             class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                     <a class="btn btn-primary btn-xs" id="function_-186" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel();}"><span
                             class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                    <a class="btn btn-primary btn-xs" id="" onclick="confirmAllCheck()"><span
+                            class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>确认收样</a>
                 </div>
                 <!--查询框-->
                 <div class="input-group col-md-4 pull-right">
@@ -386,7 +388,7 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" name="state"></td>
                     <td class="text-center">
                         <a href="#" id="function_-187" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; viewSample(e);}" title="查看"><span class="glyphicon glyphicon-search"
                                                                                  aria-hidden="true"></span></a>

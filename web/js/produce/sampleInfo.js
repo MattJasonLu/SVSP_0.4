@@ -647,6 +647,50 @@ function addLine() {
     clonedTr.insertBefore($("#end"));
 }
 
+
+/**
+ * 一键签收
+ */
+function confirmAllCheck(){
+    var laboratorySigner = $("#checkModel0-signer").val();      // 获取签收人
+    var idList = [];   // 承装需要确认收样的预约单号
+    $.each($("input[name='select']:checked"), function (index, item) {
+        if($(item).parent().parent().parent().find("td[name='state']").text() === "待收样") {   // 将待收样的物品
+            idList.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
+        }
+    });
+    if(idList.length > 0) {
+        var sampleInformation = {};
+        sampleInformation.laboratorySigner = laboratorySigner;
+        sampleInformation.sampleIdList = idList;
+        console.log(sampleInformation);
+        $.ajax({
+            type: "POST",                             // 方法类型
+            url: "confirmAllSampleInformationCheck",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(sampleInformation),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result.status == "success") {
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.dir(result);
+                alert("服务器异常!");
+            }
+        });
+    } else {
+        alert("请勾选需要收样的单号！");
+    }
+
+}
+
+
 /**
  * 确认收样
  */
