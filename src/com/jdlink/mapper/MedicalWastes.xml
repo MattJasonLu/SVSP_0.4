@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jdlink.mapper.MedicalWastesMapper" >
+
     <!--获取最新的医废出入库编号-->
     <select id="getNewId" resultType="String">
         select medicalWastesId from t_pl_medicalwastes order by (CAST(medicalWastesId AS SIGNED) )desc ;
@@ -10,12 +11,14 @@
     <insert id="addMedicalWastes" parameterType="MedicalWastes">
         insert into  t_pl_medicalwastes(medicalWastesId, department, departmentName, adjustName, adjustDate, dateTime,
         thisMonthWastes, directDisposal, cookingWastes, afterCookingNumber, afterCookingInbound, thisMonthSendCooking,
-        errorNumber, wetNumber, nowTime,equipment,checkState,checkStateId,equipmentId,incineration)
+        errorNumber, wetNumber, nowTime,equipment,checkState,checkStateId,equipmentId,incineration,unitDataId)
         values(#{medicalWastesId},#{department},#{departmentName},#{adjustName},#{adjustDate},#{dateTime},#{thisMonthWastes},
         #{directDisposal},#{cookingWastes},#{afterCookingNumber},#{afterCookingInbound},#{thisMonthSendCooking},#{errorNumber},
-        #{wetNumber},NOW(),#{equipment},'Enabled',70,#{equipmentDataItem.dataDictionaryItemId},#{incineration})
+        #{wetNumber},NOW(),#{equipment},'Enabled',70,#{equipmentDataItem.dataDictionaryItemId},#{incineration},
+        #{unitDataItem.dataDictionaryItemId})
     </insert>
     <resultMap id="MedicalWastesRM" type="MedicalWastes">
+        <association property="unitDataItem" column="unitDataId" select="getUnitDataItem"></association>
         <collection property="equipmentDataItem" column="equipmentId" select="getEquipmentDataItem"></collection>
         <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
     </resultMap>
@@ -26,6 +29,10 @@
     <!--获取状态数据字典-->
     <select id="getCheckStateItem" resultType="CheckStateItem">
         select  * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
+    </select>
+    <!--获取单位数据数据字典-->
+    <select id="getUnitDataItem" resultType="UnitDataItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{unitDataId}
     </select>
     <select id="loadMedicalWastesList" resultMap="MedicalWastesRM">
         select * from t_pl_medicalwastes where checkStateId!=71

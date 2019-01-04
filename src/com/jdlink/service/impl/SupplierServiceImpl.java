@@ -102,7 +102,42 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public List<Supplier> transportList() {
-        return supplierMapper.transportList();
+    public List<Supplier> transportList(Page page) {
+        return supplierMapper.transportList(page);
+    }
+
+    @Override
+    public List<Supplier> secondaryList(Page page) {
+        return supplierMapper.secondaryList(page);
+    }
+
+    @Override
+    public List<Supplier> procurementList(Page page) {
+        return supplierMapper.procurementList(page);
+    }
+
+    @Override
+    public List<Supplier> otherList(Page page) {
+        return supplierMapper.otherList(page);
+    }
+
+    @Override
+    public int totalSupplierSecondaryRecord() {
+        return supplierMapper.totalSupplierSecondaryRecord();
+    }
+
+    @Override
+    public int totalSupplierTransportsRecord() {
+        return supplierMapper.totalSupplierTransportsRecord();
+    }
+
+    @Override
+    public int totalSupplierProcurementRecord() {
+        return supplierMapper.totalSupplierProcurementRecord();
+    }
+
+    @Override
+    public int totalSupplierOtherRecord() {
+        return supplierMapper.totalSupplierOtherRecord();
     }
 }

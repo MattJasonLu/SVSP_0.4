@@ -889,6 +889,7 @@ function addData(state) {
         var tr = $(trs[i]);
         wareHouse.wareHouseId = tr.find("select[name='warehouse']").val();
         var item = {
+            inboundDate: tr.find("input[name='inboundDate']").val(),
             produceCompany: {
                 companyName: tr.find("input[name='produceCompanyName']").val()
             },
@@ -1265,28 +1266,29 @@ function setSelectList() {
             console.log("error: " + result);
         }
     });
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "getProcessWayByDataDictionary",                  // url
-        dataType: "json",
-        success: function (result) {
-            if (result != undefined) {
-                var data = eval(result);
-                var processWay = $("select[name='processWay']");
-                processWay.children().remove();
-                $.each(data.data, function (index, item) {
-                    var option = $('<option />');
-                    option.val(item.dataDictionaryItemId);
-                    option.text(item.dictionaryItemName);
-                    processWay.append(option);
-                });
-                processWay.get(0).selectedIndex = -1;
-            }
-        },
-        error: function (result) {
-
-        }
-    });
+    // update 2019年1月4日 by ljc ：去除处理方式
+    // $.ajax({
+    //     type: "POST",                            // 方法类型
+    //     url: "getProcessWayByDataDictionary",                  // url
+    //     dataType: "json",
+    //     success: function (result) {
+    //         if (result != undefined) {
+    //             var data = eval(result);
+    //             var processWay = $("select[name='processWay']");
+    //             processWay.children().remove();
+    //             $.each(data.data, function (index, item) {
+    //                 var option = $('<option />');
+    //                 option.val(item.dataDictionaryItemId);
+    //                 option.text(item.dictionaryItemName);
+    //                 processWay.append(option);
+    //             });
+    //             processWay.get(0).selectedIndex = -1;
+    //         }
+    //     },
+    //     error: function (result) {
+    //
+    //     }
+    // });
 
     // 获取仓库数据
     $.ajax({
