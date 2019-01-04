@@ -1138,15 +1138,117 @@ function addPounds(){
     }
 }
 
+
 /**
- * 自动计算净重
+ * 输入毛重
  */
-function calculateWeight(){
-    var tare = $("#add_tare").val();
-    var grossWeight = $("#add_grossWeight").val();
-    if (grossWeight != null && grossWeight != '' && tare != null && tare != ''){
-        $("#add_netWeight").val(parseFloat(grossWeight) - parseFloat(tare));
+function calculateGrossWeight(item) {
+
+    //毛重
+    var grossWeight= $('#add_grossWeight').val();
+
+    //皮重
+    var tare = ($("#add_tare").val());
+
+    //净重
+    var netWeight = ($("#add_netWeight").val());
+
+    if(!(tare.length==0&&netWeight.length==0)){
+        if(tare.length>0){ //有皮重
+            netWeight=parseFloat(grossWeight)-parseFloat(tare);
+            if(netWeight<0){
+                alert("毛重应大于皮重")
+            }
+            else {
+                $("#add_netWeight").val(netWeight.toFixed(3))
+            }
+
+        }
+        //有净重
+        if(netWeight>0){
+            tare=parseFloat(grossWeight)-parseFloat(netWeight);
+            if(tare<0){
+                alert("毛重应大于净重")
+            }
+            else {
+                $("#add_tare").val(tare.toFixed(3));
+            }
+
+        }
     }
+
+
+
+
+
+}
+
+/**
+* 输入皮重
+*/
+function calculateTareWeight() {
+    //毛重
+    var grossWeight= $('#add_grossWeight').val();
+
+    //皮重
+    var tare = ($("#add_tare").val());
+
+    //净重
+    var netWeight = ($("#add_netWeight").val());
+
+    if(!(grossWeight.length==0&&netWeight.length==0)){
+        if(grossWeight.length>0){
+            netWeight=parseFloat(grossWeight)-parseFloat(tare);
+            $("#add_netWeight").val(netWeight.toFixed(3))
+        }
+        if(netWeight.length>0&&grossWeight.length==0){
+            grossWeight=  parseFloat(netWeight)+parseFloat(tare);
+            $('#add_grossWeight').val(grossWeight.toFixed(3))
+        }
+
+
+    }
+
+}
+
+/**
+ * 净重输入计算
+ */
+function calculateNetWeightWeight(){
+    //公式===>毛重=皮重+净重
+
+    //毛重
+    var grossWeight= ($("#add_grossWeight").val());
+
+    //皮重
+    var tare = ($("#add_tare").val());
+
+    //净重
+    var netWeight = ($("#add_netWeight").val());
+
+    if(!(grossWeight.length==0&&tare.length==0)){
+
+        if(grossWeight.length>0){
+            tare=parseFloat(grossWeight)-parseFloat(netWeight);
+            $("#add_tare").val(tare.toFixed(3))
+        }
+        if(tare.length>0&&grossWeight.length==0){
+            grossWeight=parseFloat(tare)+parseFloat(netWeight);
+            $("#add_grossWeight").val(grossWeight.toFixed(3))
+        }
+
+    }
+
+
+
+
+
+
+
+
+    // if (grossWeight != null && grossWeight != '' && tare != null && tare != ''){
+    //     $("#add_netWeight").val(parseFloat(grossWeight) - parseFloat(tare));
+    // }
 }
 /**
  * 自动设置出厂车号

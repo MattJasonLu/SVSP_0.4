@@ -227,8 +227,57 @@
     </select>
     <!--获取运输类供应商-->
     <select id="transportList" resultMap="SupplierRM">
-        select * from t_supplier  where supplierTypeId=129 order by nowTime desc ;
+        select * from t_supplier  where supplierTypeId=129 order by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
     </select>
+
+    <!--获取次生处置供方-->
+    <select id="secondaryList" resultMap="SupplierRM">
+        select * from t_supplier  where supplierTypeId=128 order by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <!--获取采购供方-->
+    <select id="procurementList" resultMap="SupplierRM">
+        select * from t_supplier  where supplierTypeId=130 order by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <!--获取其他供方-->
+    <select id="otherList" resultMap="SupplierRM">
+        select * from t_supplier  where supplierTypeId=131 order by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+
+    <!--获取次生供方总数-->
+    <select id="totalSupplierSecondaryRecord" resultType="int">
+        select count(*) from t_supplier where supplierTypeId=128
+    </select>
+
+    <!--获取运输供方总数-->
+    <select id="totalSupplierTransportsRecord" resultType="int">
+        select count(*) from t_supplier where supplierTypeId=129
+    </select>
+
+    <!--获取采购供方总数-->
+    <select id="totalSupplierProcurementRecord" resultType="int">
+        select count(*) from t_supplier where supplierTypeId=130
+    </select>
+
+    <!--获取其他供方总数-->
+    <select id="totalSupplierOtherRecord" resultType="int">
+        select count(*) from t_supplier where supplierTypeId=131
+    </select>
+
     <select id="listPage" resultMap="SupplierRM">
        select * from t_supplier order by nowTime desc
        <if test="start != null and count != null">

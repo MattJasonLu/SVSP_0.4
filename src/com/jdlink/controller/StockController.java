@@ -118,7 +118,7 @@ public class StockController {
 //根据申报编号获取信息
     @RequestMapping("getStockById")
     @ResponseBody
-    public String getStockById(String stockId){
+    public String getStockById(String stockId,Page page){
         JSONObject res = new JSONObject();
         try {
             Stock stock=stockService.getById(stockId);
@@ -126,7 +126,7 @@ public class StockController {
             List<WastesInfo> wastesInfoList = wastesInfoService.list();
             JSONArray data = JSONArray.fromArray(wastesInfoList.toArray(new WastesInfo[wastesInfoList.size()]));
             List<Client> clientList = clientService.list();
-            List<Supplier> supplierList=supplierService.transportList();
+            List<Supplier> supplierList=supplierService.transportList(page);
             res.put("supplierList",supplierList);
             res.put("clientList",clientList);
              res.put("data", data);
@@ -381,10 +381,10 @@ public class StockController {
     //获取所有的供应商
     @RequestMapping("getSupplierListFromStock")
     @ResponseBody
-    public String getSupplierListFromStock(){
+    public String getSupplierListFromStock(Page page){
         JSONObject res=new JSONObject();
         try {
-       List<Supplier> supplierList=supplierService.transportList();
+       List<Supplier> supplierList=supplierService.transportList(page);
             res.put("data", supplierList);
             res.put("status", "success");
             res.put("message", "运输类供应商列表查询成功");
