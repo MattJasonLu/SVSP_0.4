@@ -3,6 +3,7 @@ package com.jdlink.service.produce;
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.ReceiveSampleAnalysis;
+import com.jdlink.domain.Produce.SampleInfoAnalysis;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -48,4 +49,7 @@ public interface ReceiveSampleAnalysisService {
      * @param receiveSampleAnalysis 市场部化验单
      */
     void update(ReceiveSampleAnalysis receiveSampleAnalysis);
+
+
+
 }

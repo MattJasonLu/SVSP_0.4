@@ -5,8 +5,10 @@ import com.jdlink.domain.Client;
 import com.jdlink.domain.FormType;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.HandleCategory;
+import com.jdlink.domain.Produce.ReceiveSampleAnalysis;
 import com.jdlink.domain.Produce.SampleInfoAnalysis;
 import com.jdlink.service.ClientService;
+import com.jdlink.service.produce.ReceiveSampleAnalysisService;
 import com.jdlink.service.produce.SampleInfoAnalysisService;
 import com.jdlink.util.DBUtil;
 import com.jdlink.util.DateUtil;
@@ -34,6 +36,8 @@ public class PRSampleInfoAnalysisController {
     SampleInfoAnalysisService sampleInfoAnalysisService;
     @Autowired
     ClientService clientService;
+    @Autowired
+    ReceiveSampleAnalysisService receiveSampleAnalysisService;
 
     /**
      * 获取仓储部化验单的
@@ -289,5 +293,41 @@ public class PRSampleInfoAnalysisController {
         }
         return res.toString();
     }
+
+    /**
+     * 仓储部与市场部的比较
+     */
+    @RequestMapping("comparison")
+    @ResponseBody
+    public String comparison(@RequestBody SampleInfoAnalysis sampleInfoAnalysis){
+        JSONObject res=new JSONObject();
+
+        try {
+
+            //1先找出仓储部的化验信息
+            SampleInfoAnalysis sampleInfoAnalysis1 = sampleInfoAnalysisService.getById(sampleInfoAnalysis.getId());
+
+            //2再找出符合条件市场部化验信息  ReceiveSampleAnalysis
+            List<ReceiveSampleAnalysis> receiveSampleAnalysisList=sampleInfoAnalysisService.getByMoreFactor(sampleInfoAnalysis.getProduceCompany().getClientId(),sampleInfoAnalysis.getWastesCode(),sampleInfoAnalysis.getWastesName());
+
+
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("sampleInfoAnalysis", sampleInfoAnalysis1);
+            res.put("receiveSampleAnalysisList", receiveSampleAnalysisList);
+
+
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+
+        }
+
+        return res.toString();
+    }
+
 
 }

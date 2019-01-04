@@ -2,6 +2,7 @@ package com.jdlink.service.produce.impl;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
+import com.jdlink.domain.Produce.ReceiveSampleAnalysis;
 import com.jdlink.domain.Produce.SampleInfoAnalysis;
 import com.jdlink.mapper.produce.SampleInfoAnalysisMapper;
 import com.jdlink.service.produce.SampleInfoAnalysisService;
@@ -47,4 +48,11 @@ public class SampleInfoAnalysisServiceImpl implements SampleInfoAnalysisService 
         String newId = RandomUtil.getRandomEightNumber();
         sampleInfoAnalysisMapper.setState(id, checkState, newId);
     }
+
+    @Override
+    public List<ReceiveSampleAnalysis> getByMoreFactor(String clientId, String wastesCode, String wastesName) {
+        return sampleInfoAnalysisMapper.getByMoreFactor(clientId, wastesCode, wastesName);
+    }
+
+
 }
