@@ -3,6 +3,8 @@
  */
 function showModal(item) {
 
+
+    $("#cloneTr2").siblings().remove();
     var id=$(item).parent().prev().prev().html();
 
     var clientId=$(item).parent().prev().html();
@@ -62,16 +64,16 @@ function setCompareList(result) {
     if(sampleInfoAnalysis.formType!=null){
         clonedTr.children('td').eq(4).html(sampleInfoAnalysis.formType.name);
     }
-    clonedTr.children('td').eq(5).html(sampleInfoAnalysis.PH);
-    clonedTr.children('td').eq(6).html(sampleInfoAnalysis.ash);
-    clonedTr.children('td').eq(7).html(sampleInfoAnalysis.chlorine);
-    clonedTr.children('td').eq(8).html(sampleInfoAnalysis.sulfur);
-    clonedTr.children('td').eq(9).html(sampleInfoAnalysis.chlorine);
-    clonedTr.children('td').eq(10).html(sampleInfoAnalysis.fluorine);
-    clonedTr.children('td').eq(11).html(sampleInfoAnalysis.phosphorus);
-    clonedTr.children('td').eq(12).html(sampleInfoAnalysis.flashPoint);
-    clonedTr.children('td').eq(13).html(sampleInfoAnalysis.viscosity);
-    clonedTr.children('td').eq(14).html(sampleInfoAnalysis.hotMelt);
+    clonedTr.children('td').eq(5).html(setNumber2Line(sampleInfoAnalysis.PH.toFixed(2)));
+    clonedTr.children('td').eq(6).html(setNumber2Line(sampleInfoAnalysis.ash.toFixed(2)));
+    clonedTr.children('td').eq(7).html(setNumber2Line(sampleInfoAnalysis.chlorine.toFixed(2)));
+    clonedTr.children('td').eq(8).html(setNumber2Line(sampleInfoAnalysis.sulfur.toFixed(2)));
+    clonedTr.children('td').eq(9).html(setNumber2Line(sampleInfoAnalysis.chlorine.toFixed(2)));
+    clonedTr.children('td').eq(10).html(setNumber2Line(sampleInfoAnalysis.fluorine.toFixed(2)));
+    clonedTr.children('td').eq(11).html(setNumber2Line(sampleInfoAnalysis.phosphorus.toFixed(2)));
+    clonedTr.children('td').eq(12).html(setNumber2Line(sampleInfoAnalysis.flashPoint.toFixed(2)));
+    clonedTr.children('td').eq(13).html(setNumber2Line(sampleInfoAnalysis.viscosity));
+    clonedTr.children('td').eq(14).html(setNumber2Line(sampleInfoAnalysis.hotMelt));
     clonedTr.removeAttr("id");
     clonedTr.insertBefore(tr);
     // tr.siblings().remove();
@@ -88,16 +90,16 @@ function setCompareList(result) {
         if(obj.formType!=null){
             clonedTr.children('td').eq(4).html(obj.formType.name);
         }
-        clonedTr.children('td').eq(5).html(obj.PH);
-        clonedTr.children('td').eq(6).html(obj.ash);
-        clonedTr.children('td').eq(7).html(obj.chlorine);
-        clonedTr.children('td').eq(8).html(obj.sulfur);
-        clonedTr.children('td').eq(9).html(obj.chlorine);
-        clonedTr.children('td').eq(10).html(obj.fluorine);
-        clonedTr.children('td').eq(11).html(obj.phosphorus);
-        clonedTr.children('td').eq(12).html(obj.flashPoint);
-        clonedTr.children('td').eq(13).html(obj.viscosity);
-        clonedTr.children('td').eq(14).html(obj.hotMelt);
+        clonedTr.children('td').eq(5).html(setNumber2Line(obj.PH.toFixed(2)));
+        clonedTr.children('td').eq(6).html(setNumber2Line(obj.ash.toFixed(2)));
+        clonedTr.children('td').eq(7).html(setNumber2Line(obj.chlorine.toFixed(2)));
+        clonedTr.children('td').eq(8).html(setNumber2Line(obj.sulfur.toFixed(2)));
+        clonedTr.children('td').eq(9).html(setNumber2Line(obj.chlorine.toFixed(2)));
+        clonedTr.children('td').eq(10).html(setNumber2Line(obj.fluorine.toFixed(2)));
+        clonedTr.children('td').eq(11).html(setNumber2Line(obj.phosphorus.toFixed(2)));
+        clonedTr.children('td').eq(12).html(setNumber2Line(obj.flashPoint.toFixed(2)));
+        clonedTr.children('td').eq(13).html(setNumber2Line(obj.viscosity));
+        clonedTr.children('td').eq(14).html(setNumber2Line(obj.hotMelt));
         clonedTr.removeAttr("id");
         clonedTr.insertBefore(tr);
     });
