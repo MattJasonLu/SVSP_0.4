@@ -414,6 +414,17 @@
         WHERE id = #{id};
     </update>
 
+    <update id="confirmAllCheck" parameterType="SampleInformation">
+        <if test="sampleIdList.size() > 0">
+            <foreach collection="sampleIdList" item="sampleId" index="index">
+                UPDATE t_pr_sampleinformation
+                SET
+                applyState = 'Received',applyStateId=61,laboratorySigner=#{laboratorySigner},nowTime = NOW(),samplingDate = NOW()
+                WHERE id = #{sampleId};
+            </foreach>
+        </if>
+    </update>
+
     <update id="update" parameterType="SampleInformation">
         UPDATE t_pr_sampleinformation
         SET

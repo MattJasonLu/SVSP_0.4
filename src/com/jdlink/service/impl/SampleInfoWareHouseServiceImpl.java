@@ -41,6 +41,9 @@ public class SampleInfoWareHouseServiceImpl  implements SampleInfoWareHouseServi
     public void confirmCheck(String sampleId,String laboratorySigner){ sampleInfoWareHouseMapper.confirmCheck(sampleId,laboratorySigner); }
 
     @Override
+    public void confirmAllCheck(SampleInformation sampleInformation) {sampleInfoWareHouseMapper.confirmAllCheck(sampleInformation);}
+
+    @Override
     public void update(SampleInformation sampleInformation){ sampleInfoWareHouseMapper.update(sampleInformation); }
 
     @Override

@@ -1,6 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.ApplyState;
+import com.jdlink.domain.Dictionary.ApplicationStatusItem;
 import com.jdlink.domain.FormType;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Wastes;
@@ -55,7 +56,7 @@ public class SampleInformation {
     /**
      * 预约状态ID
      */
-    private int applyStateId;
+    private ApplicationStatusItem applicationStatusItem;
     /**
      *查询关键字
      */
@@ -80,6 +81,10 @@ public class SampleInformation {
      * 拒收理由
      */
     private String advice;
+    /**
+     * 承装一键签收获取的预约单号
+     */
+    private List<String> sampleIdList;
 
     private boolean isPH; // PH值
 
@@ -122,12 +127,20 @@ public class SampleInformation {
      */
     private String newId;
 
-    public int getApplyStateId() {
-        return applyStateId;
+    public List<String> getSampleIdList() {
+        return sampleIdList;
     }
 
-    public void setApplyStateId(int applyStateId) {
-        this.applyStateId = applyStateId;
+    public void setSampleIdList(List<String> sampleIdList) {
+        this.sampleIdList = sampleIdList;
+    }
+
+    public ApplicationStatusItem getApplicationStatusItem() {
+        return applicationStatusItem;
+    }
+
+    public void setApplicationStatusItem(ApplicationStatusItem applicationStatusItem) {
+        this.applicationStatusItem = applicationStatusItem;
     }
 
     public String getNewId() {
