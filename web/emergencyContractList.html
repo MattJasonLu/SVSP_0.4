@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>应急处置合同</title>
+    <script src="js/ckeditor/ckeditor.js"></script>
+    <script src="js/ckeditor/config.js"></script>
+    <script type="text/javascript" src="js/html2canvas.js"></script>
+    <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <link href="css/dashboard.css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
+    <link href="css/bootstrap/navbar.css" rel="stylesheet">
+    <script src="js/bootstrap/navbar.js"></script>
+    <script language="javascript" src="js/bootstrap/printThis.js"></script>
+    <link href="css/a.css" rel="stylesheet">
+    <script language="javascript" src="js/canvas2image.js"></script>
+    <link href="css/dropdown-submenu.css" rel="stylesheet">
+    <script src="js/util.js"></script>
+    <script src="js/time.js"></script>
+    <script language="javascript" src="js/business/contract.js"></script>
+    <link href="css/loading1.css" rel="stylesheet">
+    <link href="css/loading2.css" rel="stylesheet">
+</head>
+<style>
+    p {
+        margin-left: 10px;
+        margin-top: 10px;
+    }
+</style>
+<script type="text/javascript">
+    CKEDITOR.editorConfig = function( config ) {
+        config.toolbarGroups = [
+            { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+            { name: 'links', groups: [ 'links' ] },
+            { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+            { name: 'insert', groups: [ 'insert' ] },
+            { name: 'forms', groups: [ 'forms' ] },
+            { name: 'tools', groups: [ 'tools' ] },
+            { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+            { name: 'others', groups: [ 'others' ] },
+            '/',
+            { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+            { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+            { name: 'styles', groups: [ 'styles' ] },
+            { name: 'colors', groups: [ 'colors' ] },
+            { name: 'about', groups: [ 'about' ] }
+        ];
+        config.removeButtons = 'Underline,Subscript,Superscript';
+        config.pasteFromWordRemoveFontStyles = false;
+        config.pasteFromWordRemoveStyles = false;
+    };
+
+</script>
+<body onload="loadPageContractManageList();">
+<!--导航条-->
+<nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
+    <div class="main-title">
+        <ul class="nav navbar-nav navbar-left navbar-side">
+            <li>
+                <a href="#" onclick="$('body').toggleClass('sidebar-collapse');" style="width: 50px">
+                    <span class="glyphicon glyphicon-menu-hamburger"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="container navbar-left" style="width: 900px;">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
+            <ul class="nav navbar-nav">
+                <li><a href="businessModel.html">首页</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">产废单位管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="clientBackup.html" id="function_48" onclick="checkAuthority($(this))">产废单位备案</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li class="dropdown-submenu">
+                            <a href="#">业务员分配管理</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="salesManage.html" id="function_80" onclick="checkAuthority($(this))">业务员管理</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="clientSalesManage.html" id="function_81" onclick="checkAuthority($(this))">产废单位分配管理</a></li>
+                            </ul>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="questionnaireManage.html" id="function_50" onclick="checkAuthority($(this))">危废数据调查表管理</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="sampleInfo.html" id="function_51" onclick="checkAuthority($(this))">产废单位样品登记</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="wayBill1.html" id="function_52" onclick="checkAuthority($(this))">接运单管理</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">供应商管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="supplierBackup.html" id="function_15" onclick="checkAuthority($(this))">供应商备案</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="contractManage.html" id="function_54" onclick="checkAuthority($(this))">合同列表</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="contractTemplate.html" id="function_55" onclick="checkAuthority($(this))">合同模板</a></li>
+                    </ul>
+                </li>
+                <!--<li class="dropdown">-->
+                    <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">价格管理<span class="caret"></span></a>-->
+                    <!--<ul class="dropdown-menu">-->
+                        <!--<li><a href="quotation.html" id="function_57" onclick="checkAuthority($(this))">报价管理</a></li>-->
+                        <!--<li role="separator" class="divider"></li>-->
+                        <!--<li><a href="cost.html" id="function_58" onclick="checkAuthority($(this));">成本管理</a></li>-->
+                    <!--</ul>-->
+                <!--</li>-->
+                <li><a href="archivesManage.html" id="function_18" onclick="checkAuthority($(this));">一企一档</a></li>
+                <li><a href="stockManage.html" id="function_19" onclick="checkAuthority($(this));">库存申报</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
+        <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+        <li class="dropdown">
+            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="personalInformation.html">个人信息</a></li>
+                <li><a href="#">待办事项</a></li>
+                <li><a href="#" onclick="showLog();">登录日志</a></li>
+                <li><a href="admin.html">注销</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="sidebar">
+            <ul class="sidenav animated fadeInUp">
+                <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
+                <li><a class="withripple" href="wastesPlatform.html"id="function_1" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
+                <li class="active"><a class="withripple" href="businessModel.html"id="function_2" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="compatibilityPlan.html"id="function_3" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="receiveManagement.html"id="function_4" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="storageManagement.html"id="function_5" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="preprocessingManagement.html"id="function_6" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="dispositionManagement.html"id="function_7" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="secondaryManagement.html"id="function_8" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="procurementManagement.html"id="function_9" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="reportManagement.html"id="function_10" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="basicData.html" id="function_11" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="infrastructure.html" id="function_12" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
+            </ul>
+        </div>
+    </div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <!--面包屑导航-->
+            <div>
+                <ol class="breadcrumb">
+                    <li><a href="">商务管理</a></li>
+                    <li><a href="#">合同管理</a></li>
+                    <li><a href="#">合同列表</a></li>
+                    <li class="active">应急处置合同</li>
+                </ol>
+            </div>
+            <h4 class="sub-header">应急处置合同列表</h4>
+            <div class="row">
+                <div>
+                    <!--操作按钮-->
+                    <div class="pull-left col-md-6 boo">
+                        <a class="btn btn-primary btn-xs" id="function_-88" href="wastesContractInfo.html" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" id="function_-89" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; contractSubmit(e)}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>
+                        <!--<a class="btn btn-primary btn-xs" id="function_141" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcel(e)}"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>-->
+                        <!--<a class="btn btn-primary btn-xs" id="function_142" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel(contractIndex)}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>-->
+                        <a class="btn btn-primary btn-xs" id="function_-90" href="emergencyContractInfo.html" onclick="checkAuthority($(this))"> 应急处置意向书</a>
+                        <a class="btn btn-primary btn-xs" id="function_-91" href="wastesContractList.html" onclick="checkAuthority($(this))"> 危废处置意向书</a>
+                        <a class="btn btn-primary btn-xs" id="function_-92" href="contractVolume.html" onclick="checkAuthority($(this))"> 合约量统计</a>
+                    </div>
+                    <!--查询框-->
+                    <div class="input-group col-md-4 pull-right">
+                        <input type="text" class="form-control" placeholder="搜索..." id="searchContent" >
+                        <span class="input-group-btn">
+                            <a class="btn btn-default"  onclick="searchContract();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span
+                                    class="glyphicon glyphicon-cog"
+                                    aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
+                        </span>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="panel panel-default" id="senior" style="display: none;">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-checkState" class="col-sm-4 control-label">审核状态</label>
+                                <div class="col-xs-7">
+                                    <select class="form-control" id="search-checkState" name="search-checkState" onchange="searchContract()"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-companyName" class="col-sm-4 control-label">产废单位名称</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="" onkeyup="enterSearch()">
+                                </div>
+                            </div>
+                            <!--<div class="form-group">-->
+                                <!--<label for="search-suppierName" class="col-sm-4 control-label">供应商名称</label>-->
+                                <!--<div class="col-xs-7">-->
+                                    <!--<input type="text" class="form-control" id="search-suppierName" name="search-suppierName" placeholder="">-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        </div>
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group" style="margin-right: 40px">
+                                <label class="col-sm-3 control-label">签订日期 </label>
+                                <div class="input-group">
+                                    <input type="date" class="input-sm form-control" id="beginTime" title="" onkeyup="enterSearch()"/>
+                                    <span class="input-group-addon">-</span>
+                                    <input type="date" class="input-sm form-control" id="endTime" title="" onkeyup="enterSearch()"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-contactName" class="col-sm-4 control-label">联&nbsp;&nbsp;系&nbsp;&nbsp;人</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-contactName" name="search-contactName" placeholder="" onkeyup="enterSearch()">
+                                </div>
+                            </div>
+                            <!--<div class="form-group">-->
+                                <!--<label for="search-contractId" class="col-sm-4 control-label">合同编号</label>-->
+                                <!--<div class="col-xs-7">-->
+                                    <!--<input type="text" class="form-control" id="search-contractId" name="search-contractId" placeholder="">-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-contactName" class="col-sm-4 control-label">小额合同</label>
+                                <input type="checkbox"
+                                       value="true" id="smallContract" onchange="searchContract()">
+                                </label>
+
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="navbar navbar-default" id="navbar2">
+            <ul id="myTab" class="nav nav-tabs">
+                <li class="active" id="1"><a href="#A" id="Wa" data-toggle="tab" class="C1"
+                                             onclick="ContractListByName(this)">危废合同</a></li>
+                <li id="2"><a href="#B" data-toggle="tab" id="Em" class="C1"
+                              onclick="ContractListByName(this)">应急处置合同</a></li>
+                <li id="3"><a href="#C" data-toggle="tab" id="Lo" class="C1" onclick="ContractListByName(this)">物流合同</a>
+                </li>
+                <!-- <li id="4"><a href="#D" data-toggle="tab" id="De" onclick="ContractListByName(this)">次生合同</a></li>-->
+                <!-- <li id="4"><a href="#D" data-toggle="tab" id="De" onclick="ContractListByName(this)">次生合同</a></li>-->
+                <!--<li id="5"><a href="#E" data-toggle="tab" id="Pu" onclick="ContractListByName(this)">采购合同</a></li>-->
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade in active" id="A">
+                    <p></p>
+                </div>
+                <div class="tab-pane fade" id="B">
+                    <p></p>
+                </div>
+                <div class="tab-pane fade" id="C">
+                    <p></p>
+                </div>
+                <div class="tab-pane fade" id="D">
+                    <p></p>
+                </div>
+                <div class="tab-pane fade" id="E">
+                    <p></p>
+                </div>
+            </div>
+
+                <div style="height:500px;background-color: transparent">
+                    <div class="table-responsive" style="height:500px;background-color: transparent">
+                        <table class="table table-striped table-hover table-condensed">
+                            <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <label>
+                                        <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
+                                    </label>
+                                </th>
+                                <th class="text-center">合同编号</th>
+                                <th class="text-center" id="toggleName" style="width: 300px;">供应商名称</th><!--相当于公司名称-->
+                                <th class="text-center">合同名称</th>
+                                <th class="text-center">
+                                    <div class="form-inline">
+                                        <label class="control-label">状态</label>
+                                        <select class="form-control" id="state"  onchange="getstate(this)" style="height: 80%; font-size: x-small; display: none" >
+                                            <option value="0">未作废</option>
+                                            <option value="1">待审批</option>
+                                            <option value="2">审批中</option>
+                                            <option value="3">履约中</option>
+                                            <option value="4">已作废</option>
+                                            <option value="5">已驳回</option>
+                                        </select>
+                                    </div>
+                                </th>
+                                <!--<th class="text-center" style="width: 200px">公司名称</th>-->
+                                <!--<th class="text-center">所属区域</th>-->
+                                <th class="text-center hidden">合约量</th>
+                                <th class="text-center">联系人</th>
+                                <th class="text-center">联系方式</th>
+                                <th class="text-center">签订日期</th>
+                                <th class="text-center">截止日期</th>
+                                <th class="text-center">小额合同</th>
+                                <th class="text-center">录入人</th>
+                                <th class="text-center">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody  id="tbody1">
+                            <tr id="cloneTr1" name="clone" >
+                                <td class="text-center">
+                                    <label>
+                                        <input class="checkbox" type="checkbox" id="blankCheckbox"  name="select"  value="option1" aria-label="...">
+                                    </label>
+                                </td>
+                                <td class="text-center"></td><!--合同编号-->
+                                <td class="text-center"></td><!--供应商名称-->
+                                <td class="text-center"></td><!--合同名称-->
+                                <td class="text-center"></td>
+                                <td class="text-center hidden"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center hidden"></td>
+                                <td class="text-center hidden"></td>
+                                <td class="text-center hidden"></td>
+                                <td class="text-center">
+                                    <a href="#" id="function_-93" onclick=" check(this); function check(e){if(!checkAuthority($(e))) return false; viewContract(e);}" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                                    <a href="#" id="function_-94" onclick=" check(this); function check(e){if(!checkAuthority($(e))) return false; adjust(e);}" title="变更"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                                    <a href="#" id="function_-95" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; cancel(e);}" class="glyphicon3" title="作废"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true" id="glyphicon3"></span></a>
+                                    <a href="#" id="function_-96" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; approval(e);}" title="审批"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></a>
+                                    <a href="#"  onclick="signed(this)" title="签订合同"><span class="glyphicon glyphicon-saved" aria-hidden="true"></span></a>
+                                </td>
+                            </tr>
+                               <!--
+                              }
+
+                               -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--分页-->
+            <nav aria-label="Page navigation" style="text-align: center">
+                <ol class="pagination" style="width: 900px;">
+                    <li id="current" style="display: none"><a>当前页：</a>
+                    <li id="firstPage">
+                        <a href='#' onclick="switchPage(0)">首 页</a>
+                    </li>
+                    <li id="previous">
+                        <a href="#" aria-label="Previous" onclick="switchPage(parseInt(currentPage)-1);">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li><a href="#">1</a></li>
+                    <li id="next">
+                        <a href="#" aria-label="Next" onclick="switchPage(parseInt(currentPage)+1);">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li id="endPage">
+                        <a href='#' onclick="switchPage(-2)">尾 页</a>
+                    </li>
+                    <li><a id="totalPage"></a></li>
+                    <li><a href="#" onclick="inputSwitchPage()">跳转</a></li>
+                    <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
+                               id="pageNumber" onkeydown="enterSwitchPage();"></li>
+                    <li class="showLi">每页显示:</li>
+                    <li class="selectLi">
+                        <select id="count" onchange="loadPageContractManageList();">
+                            <option>5</option>
+                            <option selected>15</option>
+                            <option>50</option>
+                        </select>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="loader ">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+</div>
+<!--查看页面-->
+<div class="modal fade bs-example-modal-lg" id="contractInfoForm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document" style="width: 70%">
+        <div class="modal-content" style="width: 85%">
+            <div class="client_style">
+                <h4 class="sub-header text-center">合同信息</h4>
+                <form method="post" id="contractInfoForm1" enctype="multipart/form-data" style="margin-left: -10px">
+                    <div class="row form-inline" id="print1" >
+                        <table class="table-condensed"  style="width: 100%">
+                            <tr>
+                              <td> <p class="text-left"><b>合同名称&nbsp;&nbsp;</b><span id="modal3_contractName"></span></p>
+                              </td>
+                                <td><p class="text-left"><b>合同编号&nbsp;&nbsp;</b><span id="modal3_contractId"></span></td>
+                            </tr>
+                            <tr>
+                                <td>                            <p class="text-left"><b>合同状态&nbsp;&nbsp;</b><span id="modal3_contractState"></span></p>
+                                </td>
+                                <td><p class="text-left"><b id="name1">供应商名称&nbsp;&nbsp;</b><span
+                                        id="modal3_suppierName"></span></p></td>
+                            </tr>
+                            <tr> <td>                            <p class="text-left"><b>合同版本&nbsp;&nbsp;</b><span id="modal3_contractVersion"></span></p>
+                            </td>
+                                <td>                            <p class="text-left"><b>签订日期&nbsp;&nbsp;</b><span id="modal3_beginTime"></span></p>
+                                </td></tr>
+                            <tr> <td>                            <p class="text-left"><b>开户行名称&nbsp;&nbsp;</b><span id="modal3_bankName"></span></p>
+                            </td>
+                                <td>                            <p class="text-left"><b>截止日期&nbsp;&nbsp;</b><span id="modal3_endTime"></span></p>
+                                </td></tr>
+                            <tr> <td>                            <p class="text-left"><b>开票税率&nbsp;&nbsp;</b><span id="modal3_ticketRate1"></span></p>
+                            </td>
+                                <td>                            <p class="text-left"><b>开户行账号&nbsp;&nbsp;</b><span id="modal3_bankAccout"></span></p>
+                                </td></tr>
+                            <tr> <td>                            <p class="text-left"><b>联系人&nbsp;&nbsp;</b><span id="modal3_contactName"></span></p>
+                            </td>
+                                <td>                            <p class="text-left"><b>联系方式&nbsp;&nbsp;</b><span id="modal3_telephone"></span></p>
+                                </td></tr>
+                            <tr> <td>                            <p class="text-left"><b>合同附件&nbsp;&nbsp;</b><span></span></p>
+                            </td>
+                                <td>                            <p class="text-left"><b>合同总金额&nbsp;&nbsp;</b><span id="modal3_totalPrice"></span><span>元</span></p>
+                                </td></tr>
+                            <tr>
+                                <td>  <p class="text-left"><div class="col-xs-5">
+                                    <button class="btn btn-default" id="modal3_contractAppendices">下载查看</button>
+                                </div></td>
+                                <td><p class="text-left"><b>运费承担主体&nbsp;&nbsp;</b><span id="modal3_freightBearer"></span><span></span></td>
+                            </tr>
+                        <!--<div class="form-horizontal col-md-6 form-inline">-->
+                            <!--&lt;!&ndash;<p class="text-left"><b>合同名称&nbsp;&nbsp;</b><span id="modal3_contractName"></span></p>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<p class="text-left"><b>合同状态&nbsp;&nbsp;</b><span id="modal3_contractState"></span></p>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<p class="text-left"><b>合同版本&nbsp;&nbsp;</b><span id="modal3_contractVersion"></span></p>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<p class="text-left"><b>产废单位名称&nbsp;&nbsp;&nbsp;</b><span id="modal3_companyName"></span></p>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<p class="text-left"><b>开户行名称&nbsp;&nbsp;</b><span id="modal3_bankName"></span></p>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<p class="text-left"><b>开票税率&nbsp;&nbsp;</b><span id="modal3_ticketRate1"></span></p>&ndash;&gt;-->
+                            <!--&lt;!&ndash;  <p class="text-left"><b>开票税率2&nbsp;&nbsp;</b><span id="modal3_ticketRate2"></span></p>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<p class="text-left"><b>联系人&nbsp;&nbsp;</b><span id="modal3_contactName"></span></p>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<p class="text-left"><b>合同附件&nbsp;&nbsp;</b><span></span></p>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<p class="text-left"><div class="col-xs-5">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<button class="btn btn-default" id="modal3_contractAppendices">下载查看</button>&ndash;&gt;-->
+                        <!--</div>-->
+                            <!--<p class="text-left"><b>物流公司资质&nbsp;&nbsp;</b><span id="modal3_logisticsQualification"></span></p>-->
+                            <!--<p class="text-left"><b>是否包含运费&nbsp;&nbsp;</b> <input type="checkbox" id="modal3_freight"-->
+                                                                                  <!--disabled="disabled"></p>-->
+                            <!--<div class="form-group">
+                                <label for="modal3_freight" class="col-sm-4 control-label">是否包含运费 </label>
+                                   <div class="col-xs-8">
+                                   </div>
+                                <input type="checkbox" class="col-xs-1" id="modal3_freight" name="freight" disabled="disabled" >
+                            </div>-->
+                        </table>
+
+                        </div>
+
+                            <!--<p class="text-left"><b>合同编号&nbsp;&nbsp;</b><span id="modal3_contractId"></span></p>-->
+                            <!--<p class="text-left"><b id="name1">供应商名称&nbsp;&nbsp;</b><span-->
+                                    <!--id="modal3_suppierName"></span></p>-->
+                            <!--<p class="text-left"><b>签订日期&nbsp;&nbsp;</b><span id="modal3_beginTime"></span></p>-->
+                            <!--<p class="text-left"><b>截止日期&nbsp;&nbsp;</b><span id="modal3_endTime"></span></p>-->
+                            <!--<p class="text-left"><b>资质开始日期&nbsp;&nbsp;</b><span id="modal3_beginQualification"></span></p>-->
+                            <!--<p class="text-left"><b>资质结束日期&nbsp;&nbsp;</b><span id="modal3_endQualification"></span></p>-->
+                            <!--<p class="text-left"><b>开户行账号&nbsp;&nbsp;</b><span id="modal3_bankAccout"></span></p>-->
+                            <!--<p class="text-left"><b>所属区域&nbsp;&nbsp;</b><span id="modal3_area"></span></p>-->
+                            <!--<p class="text-left"><b>联系方式&nbsp;&nbsp;</b><span id="modal3_telephone"></span></p>-->
+                            <!--<p class="text-left"><b>合同总金额&nbsp;&nbsp;</b><span id="modal3_totalPrice"></span><span>元</span></p>-->
+                            <!--<p class="text-left"><b>运费承担主体&nbsp;&nbsp;</b><span id="modal3_freightBearer"></span><span></span>-->
+                            <!--</p>-->
+
+                        <table class="table-condensed" style="margin-left: -14px">
+                            <thead>
+                            <tr>
+                                <th colspan="9" class="text-center"><h3>报价单明细</h3></th>
+                            </tr>
+                            <tr>
+                                <th class="text-center">序号</th>
+                                <th class="text-center" >八位码</th>
+                                <th class="text-center" style="width: 200px">危废名称</th>
+                                <th class="text-center">包装类型</th>
+                                <th class="text-center" >单位</th>
+                                <th class="text-center" >处置单价</th>
+                                <th class="text-center">合约量</th>
+                                <th class="text-center" >处置金额</th>
+                                <th class="text-center">运输方式</th>
+                                <th class="text-center">备注</th>
+                                <th class="text-center">危废图片</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr id="cloneTr">
+                                <td class="text-center"></td>
+                                <td class="text-center"> </td>
+                                <td class="text-center" ></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center">  <div class="col-xs-5">
+                                    <button class="btn btn-default" id="modal3_materialAttachment">下载查看</button>
+                                </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+
+                    <br> <br>
+                    <div class="row text-center">
+                        <a class="btn btn-primary hidden-print" onclick="" id="btn">审批</a>
+                        <a class="btn btn-primary hidden-print" onclick="print()" id="print">打印</a>
+                        <a class="btn btn-danger hidden-print" id="back"></a>
+                        <a class="btn btn-danger hidden-print" data-dismiss="modal" id="close">关闭</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--审批页面-->
+<div class="modal fade" id="contractInfoForm2" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="sub-header text-center">审批意见</h5>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-12">
+                    <textarea class="form-control" rows="5" id="advice" style="min-width: 70%"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="confirm" data-dismiss="modal" onclick="confirm1()">
+                    确认审批
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="file" name="excelPath" id="idExcel" style="display:none">
+<!--驳回页面-->
+<div class="modal fade" id="contractInfoForm3" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="sub-header text-center">驳回意见</h5>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-12">
+                    <textarea class="form-control" rows="5" id="backContent" style="min-width: 70%"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="back1" data-dismiss="modal" onclick="back1()">确认驳回
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--合同正文查看模态框-->
+<div class="modal fade bs-example-modal-lg" id="viewModal" tabindex="-1" role="dialog"
+     aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="client_style">
+                <h4 class="sub-header">合同正文</h4>
+                <div class="row">
+                    <div class="form-horizontal col-md-12">
+                        <textarea id="TextArea1" cols="110" rows="25"  name="contractContent" class="ckeditor" wrap="hard"></textarea>
+                    </div>
+                </div>
+                    <div class="row text-center">
+                        <a class="btn btn-primary hidden-print" onclick="">打印</a>
+                        <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
+                    </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
+<div id="pic" style="border: 0;">
+</div>
+</body>
+<!--分页格式-->
+<style type="text/css">
+    .pagination > li {
+        display: inline;
+    }
+
+    .inputText {
+        float: left;
+    }
+
+    .showLi {
+        float: left;
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .selectLi {
+        float: left;
+        height: 38px;
+        line-height: 38px;
+    }
+</style>
+<script>
+    CKEDITOR.replace('TextArea1',{toolbarCanCollapse: true, toolbarStartupExpanded: false});
+    function wastes() {
+        var id = $("ul#myTab li.active").attr("id");
+        if (id === "1") {
+            $(location).attr("href", "wastesContractInfo.html");    //危废合同
+        } else if (id === "2") {
+            $(location).attr("href", "urgentContractInfo.html"); //应急处置意向书
+        } else if (id === "3") {
+            $(location).attr("href", "logisticsContractInfo.html"); //物流合同
+        } else if (id === "4") {
+            $(location).attr("href", "secondaryContractInfo.html"); //次生合同
+        }
+    }
+
+    // $('.form_datetime1').datetimepicker({
+    //     format: 'yyyy-mm-dd',
+    //     language:  'zh-CN',
+    //     weekStart: 1,
+    //     todayBtn:  1,
+    //     autoclose: 1,
+    //     todayHighlight: 1,
+    //     startView: 2,
+    //     minView: 2,
+    //     forceParse: 0
+    // });
+    // $('.form_datetime2').datetimepicker({
+    //     format: 'yyyy-mm-dd',
+    //     language:  'zh-CN',
+    //     weekStart: 1,
+    //     todayBtn:  1,
+    //     autoclose: true,
+    //     todayHighlight: 1,
+    //     startView: 2,
+    //     minView: 2,
+    //     forceParse: 0
+    // });
+    // $('.form_datetime3').datetimepicker({
+    //     format: 'yyyy-mm-dd',
+    //     language:  'zh-CN',
+    //     weekStart: 1,
+    //     todayBtn:  1,
+    //     autoclose: 1,
+    //     todayHighlight: 1,
+    //     startView: 2,
+    //     minView: 2,
+    //     forceParse: 0
+    // });
+    // $('.form_datetime4').datetimepicker({
+    //     format: 'yyyy-mm-dd',
+    //     language:  'zh-CN',
+    //     weekStart: 1,
+    //     todayBtn:  1,
+    //     autoclose: true,
+    //     todayHighlight: 1,
+    //     startView: 2,
+    //     minView: 2,
+    //     forceParse: 0
+    // });
+
+
+    $('#btn').click(function () {
+        $('#contractInfoForm2').modal('show');
+    });
+
+    $('#back').click(function () {
+        //设置状态驳回
+        // $.ajax({
+        //     type:"POST",
+        //     url:"backContract",
+        //     async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        //     dataType: "json",
+        //     data:{"contractId":contractId},
+        //     success:function (result) {
+        //         var obj=eval(result);
+        //         if(obj.state=="success"){
+        //             alert("已驳回！");
+        //             if(name1.indexOf("物流")!=-1){
+        //                 var name2="Logistics";
+        //             }
+        //             if(name1.indexOf("危废")!=-1){
+        //                 var name2="Wastes";
+        //             }
+        //             if(name1.indexOf("次生")!=-1){
+        //                 var name2="Derive";
+        //             }
+        //             if(name1.indexOf("采购")!=-1){
+        //                 var name2="Purchase";
+        //             }
+        //             if(name1.indexOf('应急')!=-1){
+        //                 var name2="Emergency";
+        //             }
+        //             $(location).attr('href', 'contractManage.html');
+        //             localStorage.name=name2;
+        //             location.href="contractManage.html";
+        //         }
+        //         else {
+        //             alert("审批失败")
+        //         }
+        //     },
+        //     error:function (result) {
+        //         alert("服务器异常！")
+        //     }
+        // });
+        $('#contractInfoForm3').modal('show');
+    });
+
+
+    function changeStr(allstr,start,end,str,changeStr){ //allstr:原始字符串，start,开始位置,end：结束位  置,str：要改变的字，changeStr:改变后的字
+        if(allstr.substring(start-1,end) == str){
+            return allstr.substring(0,start-1)+changeStr+allstr.substring(end,allstr.length);
+        }else{
+            return allstr;
+        }
+    }
+</script>
+</html>

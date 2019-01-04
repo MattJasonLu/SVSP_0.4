@@ -220,6 +220,7 @@
                     <th class="text-center">闪点℃</th>
                     <th class="text-center">粘度mpa·s</th>
                     <th class="text-center">热融</th>
+                    <th class="text-center">操作</th>
                 </tr>
                 </thead>
                 <tbody id="tbody1">
@@ -246,6 +247,10 @@
                         <td class="text-center" name="flashPoint"></td>
                         <td class="text-center" name="viscosity"></td>
                         <td class="text-center" name="hotMelt"></td>
+                        <td class="text-center">
+                            <!-- id="function_-"   check(this); function check(e){if(!checkAuthority($(e))) return false; showModal(e);}-->
+                            <a href="#" onclick="showModal();" title="对比"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -289,5 +294,59 @@
         </ol>
     </nav>
     <div id="embed"></div>
+<!--对比模态框-->
+<div class="modal fade bs-example-modal-lg" id="comparison" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document" style="width: 70%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="sub-header">理化性质对比</h5>
+            </div>
+            <table class="table-bordered" style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th class="text-center">时间</th>
+                        <th class="text-center">产废单位</th>
+                        <th class="text-center">危废名称</th>
+                        <th class="text-center">危废代码</th>
+                        <th class="text-center">废物形态</th>
+                        <th class="text-center">PH</th>
+                        <th class="text-center">灰分</th>
+                        <th class="text-center">热值</th>
+                        <th class="text-center">硫含量</th>
+                        <th class="text-center">氯含量</th>
+                        <th class="text-center">氟含量</th>
+                        <th class="text-center">磷含量</th>
+                        <th class="text-center">闪点</th>
+                        <th class="text-center">粘度</th>
+                        <th class="text-center">热熔</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <!--<button type="button" class="btn btn-primary" id="confirm" data-dismiss="modal" onclick="confirm1()">确认审批</button>-->
+        </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
