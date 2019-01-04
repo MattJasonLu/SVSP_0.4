@@ -240,7 +240,7 @@
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "totalSupplierRecord",                  // url
+                url: "totalSupplierOtherRecord",                  // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 dataType: "json",
                 success: function (result) {
@@ -510,7 +510,7 @@
         page.start = (pageNumber - 1) * page.count;
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "loadPageSupplierList",          // url
+            url: "loadPageOtherSupplierList",          // url
             async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(page),
             dataType: "json",

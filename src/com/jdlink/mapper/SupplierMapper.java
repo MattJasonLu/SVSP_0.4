@@ -29,7 +29,11 @@ public interface SupplierMapper {
     void update(Supplier supplier);
 
     List<Supplier> list();
-    List<Supplier> transportList();
+    List<Supplier> transportList(Page page);
+
+    List<Supplier> secondaryList(Page page);
+    List<Supplier> procurementList(Page page);
+    List<Supplier> otherList(Page page);
 
     List<Supplier> listPage(Page page);
 
@@ -44,5 +48,13 @@ public interface SupplierMapper {
     int count();
 
     void setFilePath(Supplier supplier);
+
+    int totalSupplierSecondaryRecord();
+
+    int totalSupplierTransportsRecord();
+
+    int totalSupplierProcurementRecord();
+
+    int totalSupplierOtherRecord();
 
 }

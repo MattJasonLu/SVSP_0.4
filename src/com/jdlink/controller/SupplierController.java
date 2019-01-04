@@ -519,6 +519,77 @@ public class SupplierController {
         }
     }
 
+    /**
+     * 获取总记录数次生
+     *
+     * @return
+     */
+    @RequestMapping("totalSupplierSecondaryRecord")
+    @ResponseBody
+    public int totalSupplierSecondaryRecord() {
+        try {
+            return supplierService.totalSupplierSecondaryRecord();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 获取总记录数运输
+     *
+     * @return
+     */
+    @RequestMapping("totalSupplierTransportsRecord")
+    @ResponseBody
+    public int totalSupplierTransportsRecord() {
+        try {
+            return supplierService.totalSupplierTransportsRecord();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 获取总记录数采购
+     *
+     * @return
+     */
+    @RequestMapping("totalSupplierProcurementRecord")
+    @ResponseBody
+    public int totalSupplierProcurementRecord() {
+        try {
+            return supplierService.totalSupplierProcurementRecord();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 获取总记录数其他
+     *
+     * @return
+     */
+    @RequestMapping("totalSupplierOtherRecord")
+    @ResponseBody
+    public int totalSupplierOtherRecord() {
+        try {
+            return supplierService.totalSupplierOtherRecord();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+
+
+    /**
+     * 供应室总页面
+     * @param page
+     * @return
+     */
     @RequestMapping("loadPageSupplierList")
     @ResponseBody
     public String loadPageSupplierList(@RequestBody Page page) {
@@ -526,6 +597,106 @@ public class SupplierController {
         try {
             // 取出查询客户
             List<Supplier> QuestionnaireList = supplierService.listPage(page);
+            // 计算最后页位置
+            JSONArray array = JSONArray.fromArray(QuestionnaireList.toArray(new Supplier[QuestionnaireList.size()]));
+            res.put("data", array);
+            res.put("status", "success");
+            res.put("message", "分页数据获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "分页数据获取失败！");
+        }
+        // 返回结果
+        return res.toString();
+    }
+
+
+    /**
+     * 运输供应商加载
+     */
+    @RequestMapping("loadPageTransportSupplierList")
+    @ResponseBody
+    public String loadPageTransportSupplierList(@RequestBody Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            // 取出查询客户
+            List<Supplier> QuestionnaireList = supplierService.transportList(page);
+            // 计算最后页位置
+            JSONArray array = JSONArray.fromArray(QuestionnaireList.toArray(new Supplier[QuestionnaireList.size()]));
+            res.put("data", array);
+            res.put("status", "success");
+            res.put("message", "分页数据获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "分页数据获取失败！");
+        }
+        // 返回结果
+        return res.toString();
+    }
+
+
+
+    /**
+     * 次生供应商加载
+     */
+    @RequestMapping("loadPageSecondarySupplierList")
+    @ResponseBody
+    public String loadPageSecondarySupplierList(@RequestBody Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            // 取出查询客户
+            List<Supplier> QuestionnaireList = supplierService.secondaryList(page);
+            // 计算最后页位置
+            JSONArray array = JSONArray.fromArray(QuestionnaireList.toArray(new Supplier[QuestionnaireList.size()]));
+            res.put("data", array);
+            res.put("status", "success");
+            res.put("message", "分页数据获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "分页数据获取失败！");
+        }
+        // 返回结果
+        return res.toString();
+    }
+
+
+    /**
+     * 采购供应商加载
+     */
+    @RequestMapping("loadPageProcurementSupplierList")
+    @ResponseBody
+    public String loadPageProcurementSupplierList(@RequestBody Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            // 取出查询客户
+            List<Supplier> QuestionnaireList = supplierService.procurementList(page);
+            // 计算最后页位置
+            JSONArray array = JSONArray.fromArray(QuestionnaireList.toArray(new Supplier[QuestionnaireList.size()]));
+            res.put("data", array);
+            res.put("status", "success");
+            res.put("message", "分页数据获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "分页数据获取失败！");
+        }
+        // 返回结果
+        return res.toString();
+    }
+
+    /**
+     * 其他供应商加载
+     */
+    @RequestMapping("loadPageOtherSupplierList")
+    @ResponseBody
+    public String loadPageOtherSupplierList(@RequestBody Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            // 取出查询客户
+            List<Supplier> QuestionnaireList = supplierService.otherList(page);
             // 计算最后页位置
             JSONArray array = JSONArray.fromArray(QuestionnaireList.toArray(new Supplier[QuestionnaireList.size()]));
             res.put("data", array);
