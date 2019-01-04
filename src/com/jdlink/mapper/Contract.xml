@@ -27,6 +27,7 @@
         <result property="telephone" column="telephone" javaType="String"></result>
         <result property="clientId" column="clientId" javaType="String"></result>
         <association property="salesmanName" column="clientId" select="getSalesmanName"/>
+        <association property="ticketRateItem" column="ticketRateId" select="getTicketRateItem"></association>
         <collection property="hazardousList" select="getHazardous" column="contractId"
                     ofType="com.jdlink.domain.Hazardous" javaType="ArrayList"/>
         <collection property="quotationItemList" select="getQuotationItem" column="contractId"
@@ -77,10 +78,10 @@
     <insert id="add" parameterType="Contract">
         insert into t_contract (contractId,contractType, companyName, clientId, contractVersion,
         checkState, beginTime, endTime, agreedQuantity,contactName,telephone,reviewer,reviewDepartment,
-        reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification,modelName,year,period,contractContent,contractName,modelVersion,nowTime,company1,content,suppierId,totalPrice,checkStateId,freightBearer,small)
+        reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification,modelName,year,period,contractContent,contractName,modelVersion,nowTime,company1,content,suppierId,totalPrice,checkStateId,freightBearer,small,ticketRateId)
         values (#{contractId},#{contractType}, #{companyName}, #{client.clientId}, #{contractVersion},
         #{checkState}, #{beginTime}, #{endTime}, #{agreedQuantity}, #{contactName}, #{telephone}, #{reviewer},
-        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion},NOW(),#{company1},#{content},#{supplier.supplierId},#{totalPrice},64,#{freightBearer},#{small})
+        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion},NOW(),#{company1},#{content},#{supplier.supplierId},#{totalPrice},64,#{freightBearer},#{small},#{ticketRateItem.dataDictionaryItemId})
     </insert>
     <insert id="addEm" parameterType="Contract">
         insert into t_contract(contractId,contractType,
@@ -419,7 +420,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         update t_contract set bankAccount=#{bankAccount},bankName=#{bankName},
         beginTime=#{beginTime},clientId=#{client.clientId},contactName=#{contactName},
         contractName=#{contractName},contractType=#{contractType},contractVersion=#{contractVersion},
-        endTime=#{endTime},isFreight=#{freight},telephone=#{telephone},ticketRate1=#{ticketRate1},totalPrice=#{totalPrice},freightBearer=#{freightBearer}
+        endTime=#{endTime},isFreight=#{freight},telephone=#{telephone},ticketRate1=#{ticketRate1},totalPrice=#{totalPrice},freightBearer=#{freightBearer},ticketRateId=#{ticketRateItem.dataDictionaryItemId}
         where  contractId=#{contractId}
     </update>
     <!--删除字表的明细-->

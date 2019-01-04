@@ -4,13 +4,11 @@ import com.jdlink.domain.Client;
 import com.jdlink.domain.Dictionary.HandleCategoryItem;
 import com.jdlink.domain.Dictionary.ProcessWayItem;
 import com.jdlink.domain.Dictionary.SecondaryCategoryItem;
-import com.jdlink.domain.Inventory.BatchingOrder;
-import com.jdlink.domain.Inventory.MaterialRequisitionOrder;
-import com.jdlink.domain.Inventory.OutboundOrder;
-import com.jdlink.domain.Inventory.WasteInventory;
+import com.jdlink.domain.Inventory.*;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.service.ClientService;
+import com.jdlink.service.WareHouseService;
 import com.jdlink.service.dictionary.DictionaryService;
 import com.jdlink.service.produce.BatchOrderService;
 import com.jdlink.util.DBUtil;
@@ -44,6 +42,8 @@ public class BatchOrderController {
     ClientService clientService;
     @Autowired
     DictionaryService dictionaryService;
+    @Autowired
+    WareHouseService wareHouseService;
 
     //获取两位月数
     public  static  String getMouth(String mouth){
@@ -674,7 +674,18 @@ public class BatchOrderController {
         JSONObject res=new JSONObject();
 
         try{
+            //改变领料单的状态
+            batchOrderService.updateMaterialRequisitionOrderCheck(outboundOrder.getOutboundOrderId());
 
+            String outboundOrderId=outboundOrder.getOutboundOrderId();
+            if(outboundOrder.getWareHouse().getWareHouseId()!=0){
+                WareHouse wareHouse = wareHouseService.getWareHouseById(outboundOrder.getWareHouse().getWareHouseId()+"");
+                if(wareHouse!=null){
+                    outboundOrderId=wareHouse.getPrefix()+outboundOrderId;
+                }
+
+            }
+            outboundOrder.setOutboundOrderId(outboundOrderId);
             //处置方式适配
 
             ProcessWayItem processWayItem =outboundOrder.getProcessWayItem();
@@ -695,8 +706,6 @@ public class BatchOrderController {
 
             outboundOrder.setHandleCategoryItem(handleCategoryItem);
            batchOrderService.addOutBoundOrder(outboundOrder);
-           //改变领料单的状态
-            batchOrderService.updateMaterialRequisitionOrderCheck(outboundOrder.getOutboundOrderId());
 
             res.put("status", "success");
             res.put("message", "出库成功");
@@ -777,7 +786,9 @@ public class BatchOrderController {
             }
 
             String outBoundOrderId = prefix + count;
-
+            if(outboundOrder.getWareHouse().getWareHouseId()!=0){
+                outBoundOrderId=outboundOrder.getWareHouse().getWareHouseId()+"H"+outBoundOrderId;
+            }
             outboundOrder.setOutboundOrderId(outBoundOrderId);
 
             //处置方式适配

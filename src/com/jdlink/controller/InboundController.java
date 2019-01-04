@@ -244,11 +244,28 @@ public class InboundController {
         JSONObject res = new JSONObject();
         try {
             // 设置编号
-            inboundOrder.setInboundOrderId(inboundService.getInboundOrderId());
+            if (inboundOrder.getWareHouse() != null) {
+                // 查找仓库
+                WareHouse wareHouse = wareHouseService.getWareHouseById(inboundOrder.getWareHouse().getWareHouseId() + "");
+                if (wareHouse != null) {
+                    inboundOrder.setWareHouse(wareHouse);
+                    // 如果仓库存在则在编号前面加上仓库名称缩写
+                    inboundOrder.setInboundOrderId(wareHouse.getPrefix() + inboundService.getInboundOrderId());
+                }
+            } else {
+                // 如果没有仓库对象则直接赋值编号
+                inboundOrder.setInboundOrderId(inboundService.getInboundOrderId());
+            }
             // 设置记录状态
             inboundOrder.setRecordState(RecordState.Usable);
+            RecordStateItem recordStateItem = new RecordStateItem();
+            recordStateItem.setDataDictionaryItemId(20);
+            inboundOrder.setRecordStateItem(recordStateItem);
             // 设置审核状态
             inboundOrder.setCheckState(CheckState.NewBuild);
+            CheckStateItem checkStateItem = new CheckStateItem();
+            checkStateItem.setDataDictionaryItemId(75);
+            inboundOrder.setCheckStateItem(checkStateItem);
             // 设置入库类别
             inboundOrder.setBoundType(BoundType.WasteInbound);
             // 获取用户登录信息
@@ -626,11 +643,35 @@ public class InboundController {
             nf.setMaximumIntegerDigits(4);
             //设置最小整数位数
             nf.setMinimumIntegerDigits(4);
-            inboundOrder.setInboundOrderId(inboundService.getInboundOrderId());
+
+            // 设置入库单编号
+            // 设置编号
+            if (inboundOrder.getWareHouse() != null) {
+                // 查找仓库
+                WareHouse wareHouse = wareHouseService.getWareHouseById(inboundOrder.getWareHouse().getWareHouseId() + "");
+                if (wareHouse != null) {
+                    inboundOrder.setWareHouse(wareHouse);
+                    // 如果仓库存在则在编号前面加上仓库名称缩写
+                    inboundOrder.setInboundOrderId(wareHouse.getPrefix() + inboundService.getInboundOrderId());
+                }
+            } else {
+                // 如果没有仓库对象则直接赋值编号
+                inboundOrder.setInboundOrderId(inboundService.getInboundOrderId());
+            }
+            // 设置记录状态
+            inboundOrder.setRecordState(RecordState.Usable);
+            RecordStateItem recordStateItem = new RecordStateItem();
+            recordStateItem.setDataDictionaryItemId(20);
+            inboundOrder.setRecordStateItem(recordStateItem);
+            // 设置审核状态
+            inboundOrder.setCheckState(CheckState.NewBuild);
+            CheckStateItem checkStateItem = new CheckStateItem();
+            checkStateItem.setDataDictionaryItemId(75);
+            inboundOrder.setCheckStateItem(checkStateItem);
+
             // 获取入库单列表
             inboundOrder.setBoundType(BoundType.SecondaryInbound);
-            inboundOrder.setCheckState(CheckState.NewBuild);
-            inboundOrder.setRecordState(RecordState.Usable);
+
             String labId = laboratoryTestService.getCurrentId();
             for (InboundOrderItem inboundOrderItem : inboundOrder.getInboundOrderItemList()) {
                 inboundOrderItem.setInboundOrderItemId(RandomUtil.getRandomEightNumber());

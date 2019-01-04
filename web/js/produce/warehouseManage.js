@@ -180,6 +180,31 @@ function addPlan2Order() {
                 plan.wastesCode = $(this).find("td[name='wastesCode']").text();
                 plan.wastesCategory = $(this).find("td[name='wastesCategory']").text();
                 plan.unitPriceTax = $(this).find("td[name='unitPriceTax']").text();
+
+                // 通过转移联单获取磅单
+                $.ajax({
+                    type: "POST",
+                    url: "getPoundsByTransferId",
+                    async: false,
+                    dataType: "json",
+                    data: {
+                        transferDraftId: plan.transferDraftId
+                    },
+                    success: function (result) {
+                        if (result != undefined && result.status == "success") {
+                            console.log(result);
+                            var data = eval(result.data);
+                            if (data != null) plan.wastesAmount = data.netWeight;
+                            else console.log("未找到联单号对应的磅单");
+                        } else {
+                            console.log(result);
+                        }
+                    },
+                    error: function (result) {
+                        console.log(result);
+                    }
+                });
+
                 planList.push(plan);
             }
         }
@@ -197,7 +222,7 @@ function addPlan2Order() {
         clonedTr.find("td[name='produceCompanyName']").text(planList[i].produceCompanyName);
         clonedTr.find("td[name='wastesName']").text(planList[i].wastesName);
         clonedTr.find("td[name='wastesCode']").text(planList[i].wastesCode);
-        clonedTr.find("td[name='wastesAmount']").text(planList[i].poundsCount);
+        clonedTr.find("input[name='wastesAmount']").text(planList[i].wastesAmount);
         clonedTr.find("td[name='unitPriceTax']").text(planList[i].unitPriceTax);
         var totalPrice = planList[i].poundsCount * planList[i].unitPriceTax;
         clonedTr.find("td[name='totalPrice']").text(isNaN(totalPrice) ? 0 : totalPrice);
@@ -213,28 +238,25 @@ function addPlan2Order() {
  * 设置下拉框数据
  */
 function setSelectItem() {
+    // 获取仓库数据
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getProcessWay",                  // url
+        url: "listWareHouse",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
             if (result !== undefined && result.status == "success") {
                 var data = eval(result);
                 // 高级检索下拉框数据填充
-                var processWayArray = $("select[name='processWay']");
-                for (var i = 0; i < processWayArray.length; i++) {
-                    var processWay = $(processWayArray[i]);
-                    // console.log(processWay);
-                    processWay.children().remove();
-                    $.each(data.processWayList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(index);
-                        option.text(item.name);
-                        processWay.append(option);
-                    });
-                    processWay.get(0).selectedIndex = -1;
-                }
+                var warehouse = $("select[name='warehouse']");
+                warehouse.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.wareHouseId);
+                    option.text(item.wareHouseName);
+                    warehouse.append(option);
+                });
+                warehouse.get(0).selectedIndex = -1;
             } else {
                 console.log(result);
             }
@@ -243,28 +265,52 @@ function setSelectItem() {
             console.log(result);
         }
     });
-
+    // 获取处理方式
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getHandleCategory",                  // url
+        url: "getProcessWayByDataDictionary",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
             if (result !== undefined && result.status == "success") {
                 var data = eval(result);
                 // 高级检索下拉框数据填充
-                var handleCategoryArray = $("select[name='handleCategory']");
-                for (var i = 0; i < handleCategoryArray.length; i++) {
-                    var handleCategory = $(handleCategoryArray[i]);
-                    handleCategory.children().remove();
-                    $.each(data.handleCategoryList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(index);
-                        option.text(item.name);
-                        handleCategory.append(option);
-                    });
-                    handleCategory.get(0).selectedIndex = -1;
-                }
+                var processWay = $("select[name='processWay']");
+                processWay.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    processWay.append(option);
+                });
+                processWay.get(0).selectedIndex = -1;
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+    // 获取进料方式
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getHandleCategoryByDataDictionary",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined && result.status == "success") {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var handleCategory = $("select[name='handleCategory']");
+                handleCategory.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    handleCategory.append(option);
+                });
+                handleCategory.get(0).selectedIndex = -1;
             } else {
                 console.log(result);
             }
@@ -280,6 +326,7 @@ function setSelectItem() {
  */
 function addInboundOrder(type) {
     var inboundOrderItemList = [];
+    var wareHouse = {};
     $("#inboundOrderData").children().not("#inboundClonedTr").each(function () {
         var inboundOrder = {};
         inboundOrder.inboundPlanOrderId = $(this).find("td[name='inboundPlanOrderId']").text();
@@ -294,15 +341,23 @@ function addInboundOrder(type) {
         inboundOrder.wastesAmount = $(this).find("input[name='wastesAmount']").val();
         inboundOrder.unitPriceTax = $(this).find("td[name='unitPriceTax']").text();
         inboundOrder.totalPrice = $(this).find("td[name='totalPrice']").text();
-        inboundOrder.processWay = $(this).find("select[name='processWay']").val();
-        inboundOrder.handleCategory = $(this).find("select[name='handleCategory']").val();
+        inboundOrder.processWayItem = {
+            dataDictionaryItemId: $(this).find("select[name='processWay']").val()
+        };
+        inboundOrder.handleCategoryItem = {
+            dataDictionaryItemId: $(this).find("select[name='handleCategory']").val()
+        };
         inboundOrder.remarks = $(this).find("input[name='remarks']").val();
+        inboundOrder.wareHouse = {
+            wareHouseId: $(this).find("select[name='warehouse']").val()
+        };
+        wareHouse.wareHouseId = $(this).find("select[name='warehouse']").val();
         inboundOrder.warehouseArea = $(this).find("input[name='warehouseArea']").val();
         inboundOrderItemList.push(inboundOrder);
     });
     var data = {};
     data.inboundOrderItemList = inboundOrderItemList;
-
+    data.wareHouse = wareHouse;
     $.ajax({
         type: "POST",                       // 方法类型
         url: "addInboundOrder",                  // url
@@ -665,7 +720,7 @@ function setInboundOrderDataList(result) {
         clonedTr.find("td[name='inboundDate']").text(getDateStr(data.inboundDate));
         if (data.inboundOrderItemList[0] != null) {
             clonedTr.find("td[name='transferDraftId']").text(data.inboundOrderItemList[0].transferDraftId);
-            clonedTr.find("td[name='wastesAmount']").text(data.inboundOrderItemList[0].wastesAmount.toFixed(2));
+            clonedTr.find("td[name='wastesAmount']").text(data.inboundOrderItemList[0].wastesAmount.toFixed(3));
             if (data.inboundOrderItemList[0].produceCompany != null) {
                 clonedTr.find("td[name='produceCompanyName']").text(data.inboundOrderItemList[0].produceCompany.companyName);
             }
@@ -693,7 +748,7 @@ function setInboundOrderDataList(result) {
     var clonedTr = tr.clone();
     clonedTr.show();
     clonedTr.find("td[name='wastesCode']").text("合计");
-    clonedTr.find("td[name='wastesAmount']").text(pageTotal.toFixed(2));
+    clonedTr.find("td[name='wastesAmount']").text(pageTotal.toFixed(3));
     clonedTr.removeAttr("id");
     clonedTr.insertBefore(tr);
 }

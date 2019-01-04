@@ -393,7 +393,7 @@ function setIngredientsInList(result) {
                     break;
                 case (4):
                     // 物品编码
-                    $(this).html("");
+                    $(this).html(obj.code);
                     break;
                 case (5):
                     // 物品名称
@@ -587,7 +587,8 @@ function searchIngredientIn() {
             state: state,
             name: $.trim($("#search-name").val()),
             specification : $.trim($("#search-specification").val()),
-            page: page
+            page: page,
+            code:$("#search-code").val(),
         };
     } else {
         data1 = {

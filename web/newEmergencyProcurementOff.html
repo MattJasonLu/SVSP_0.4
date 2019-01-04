@@ -2,17 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>急需物资采购申请单新增</title>
+    <title>应急非物资采购申请单新增</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
-    <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <link href="css/dropdown-submenu.css" rel="stylesheet">
+    <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
-    <script src="js/produce/emergencyProcurement.js"></script>
-    <script src="js/produce/monthProcurement.js"></script>
+
+    <script src="js/produce/emergencyProcurementOff.js"></script>
+
     <script src="js/util.js"></script>
     <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
     <script src="js/bootstrap/bootstrap-select.min.js"></script>
@@ -31,13 +32,34 @@
                 </li>
             </ul>
         </div>
-        <div class="container navbar-left" style="width: 70%;">
+        <div class="container navbar-left" style="width: 800px;">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
             </div>
             <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
                 <ul class="nav navbar-nav">
-
+                    <li><a href="procurementManagement.html">首页</a></li>
+                    <li><a href="procurementPlan.html">采购计划</a></li>
+                    <li class="active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">采购申请<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="monthProcurement.html">月度采购</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="emergencyProcurement.html">应急采购</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">辅料/备件管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="ingredientsIn.html">辅料/备件入库</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="ingredientsReceive.html">辅料/备件领用</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="ingredientsOut.html">辅料/备件出库</a></li>   <!--辅料领料单-->
+                            <li role="separator" class="divider"></li>
+                            <li><a href="ingredientsWarehouse.html">辅料/备件出库</a></li>   <!--辅料领料单-->
+                        </ul>
+                    </li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -90,11 +112,11 @@
                         <li><a href="procurementManagement.html">采购管理</a></li>
                         <li>采购申请</li>
                         <li>应急采购</li>
-                        <li class="active">应急物资采购申请单新增</li>
+                        <li class="active">应急非物资采购申请单新增</li>
                     </ol>
                     <p class="text-center pull-right"><b>编号</b><span class="id"></span></p>
                 </div>
-                <h4 class="sub-header">应急物资采购申请单新增</h4>
+                <h4 class="sub-header">应急非物资采购申请单新增</h4>
             </div>
             <div class="row">
                 <div class="form-horizontal col-md-12">
@@ -102,15 +124,20 @@
                     <table class="table table-bordered">
                         <thead>
                         <tr style="height: 100px;">
-                            <th class="text-center" colspan="8"><h2>应急物资采购申请单新增</h2></th>
+                            <th class="text-center" colspan="8"><h2>应急非物资采购申请单新增</h2></th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td colspan="2">物资类别</td>
-                            <td colspan="2"><select class="focus" title="" id="materialCategoryItem"></select></td>
+                            <td colspan="2">非物资类别</td>
+
+                            <td colspan="2"><select class="focus" title="" id="nonMaterial"></select>
+                                <!--<input class="form-control" title="" type="date" id="suppliesCategory">-->
+                            </td>
                             <td colspan="2">需用时间</td>
-                            <td colspan="2"><input class="focus" title="" type="date" id="demandTime"></td>
+                            <td colspan="2"><input class="form-control" title="" type="date" id="demandTime"></td>
+
+
                         </tr>
                         <tr style="height: 100px;">
                             <td colspan="8"></td>
@@ -183,8 +210,11 @@
                         </tbody>
                     </table>
                     <div class="row text-center">
-                        <a class="btn btn-success" onclick="saveEmer();">保存</a>
-                        <a class="btn btn-primary" onclick="saveEmer();">提交</a>
+
+                        <a class="btn btn-success" onclick="saveEmOFF();">保存</a>
+                        <a class="btn btn-primary" onclick="saveEmOFF();">提交</a>
+
+
                         <a class="btn btn-danger" href="emergencyProcurement.html">返回</a>
                     </div>
                 </div>

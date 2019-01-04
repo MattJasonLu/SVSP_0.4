@@ -45,6 +45,7 @@
             <result property="wastesId" column="wastesCode"/>
             <result property="category" column="wastesCategory"/>
         </association>
+        <association property="wareHouse" column="wareHouseId" select="getWarehouse"/>
         <association property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"/>
         <association property="processWayItem" column="processWayId" select="getProcessWayItem"></association>
         <association property="handleCategoryItem" column="handleCategoryId" select="getHandleCategoryItem"></association>
@@ -298,25 +299,31 @@
         INSERT INTO t_pl_inboundorder
         (inboundOrderId, inboundDate, warehouseId, boundType, keeperId, directorId,
         approverId, checkState, remarks, creatorId, createDate, departmentId, companyId, modifierId,
-        modifyDate, recordState, category, nowTime)
+        modifyDate, recordState, category, nowTime, checkStateId, recordStateId)
         VALUES
         (#{inboundOrderId}, #{inboundDate}, #{wareHouse.wareHouseId}, #{boundType},
         #{keeperId}, #{directorId}, #{approverId}, #{checkState}, #{remarks},
         #{creatorId}, #{createDate}, #{departmentId}, #{companyId}, #{modifierId}, #{modifyDate},
-        #{recordState}, 0, NOW());
+        #{recordState}, 0, NOW(), #{checkStateItem.dataDictionaryItemId},
+        #{recordStateItem.dataDictionaryItemId});
         <if test="inboundOrderItemList.size() > 0">
             <foreach collection="inboundOrderItemList" item="inboundOrderItem" index="index">
                 INSERT INTO t_pl_inboundorderitem (inboundOrderItemId, transferDraftId, inboundOrderId,
                 produceCompanyId, processWay, handleCategory,remarks, warehouseArea, recordState,
                 isQualified, wastesName, wastesCode, wastesCategory, wastesAmount,unitPriceTax,
-                totalPrice, laboratoryTestId, category, formType, packageType)
+                totalPrice, laboratoryTestId, category, formType, packageType, processWayId,
+                handleCategoryId, recordStateId, formTypeId, packageTypeId, wareHouseId)
                 VALUES
                 (#{inboundOrderItem.inboundOrderItemId}, #{inboundOrderItem.transferDraftId},#{inboundOrderItem.inboundOrderId},
                 #{inboundOrderItem.produceCompany.clientId}, #{inboundOrderItem.processWay},#{inboundOrderItem.handleCategory}, #{inboundOrderItem.remarks},
                 #{inboundOrderItem.warehouseArea}, #{inboundOrderItem.recordState}, #{inboundOrderItem.isQualified},#{inboundOrderItem.wastes.name},
                 #{inboundOrderItem.wastes.wastesId}, #{inboundOrderItem.wastes.category},
                 #{inboundOrderItem.wastesAmount}, #{inboundOrderItem.unitPriceTax}, #{inboundOrderItem.totalPrice},
-                #{inboundOrderItem.laboratoryTest.laboratoryTestNumber}, 0, #{inboundOrderItem.formType}, #{inboundOrderItem.packageType});
+                #{inboundOrderItem.laboratoryTest.laboratoryTestNumber}, 0, #{inboundOrderItem.formType}, #{inboundOrderItem.packageType},
+                #{inboundOrderItem.processWayItem.dataDictionaryItemId},
+                #{inboundOrderItem.handleCategoryItem.dataDictionaryItemId}, #{inboundOrderItem.recordStateItem.dataDictionaryItemId},
+                #{inboundOrderItem.formTypeItem.dataDictionaryItemId}, #{inboundOrderItem.packageTypeItem.dataDictionaryItemId},
+                #{inboundOrderItem.wareHouse.wareHouseId});
 
                 insert into t_pl_wasteinto
                 (clientId,wastesCode,handleCategory,processWay,remarks,nowTime,transferDraftId,wastesCategory,laboratoryTestId)
@@ -325,10 +332,15 @@
                 #{inboundOrderItem.remarks},NOW(),#{inboundOrderItem.transferDraftId},#{inboundOrderItem.wastes.category},#{inboundOrderItem.laboratoryTest.laboratoryTestNumber});
 
                 insert  into t_pl_wasteinventory
-                (inboundOrderId,actualCount,unitPriceTax,wastesName,wareHouseId,clientId,wastesCode,inboundDate,processWay,handleCategory,creatorDate,boundType,transferDraftId,inboundOrderItemId,laboratoryTestId)
+                (inboundOrderId,actualCount,unitPriceTax,wastesName,wareHouseId,clientId,wastesCode,inboundDate,processWay,
+                handleCategory,creatorDate,boundType,transferDraftId,inboundOrderItemId,laboratoryTestId, processWayId,
+                handleCategoryId)
                 values
-                (#{inboundOrderItem.inboundOrderId},#{inboundOrderItem.wastesAmount},#{inboundOrderItem.unitPriceTax},#{inboundOrderItem.wastes.name},#{wareHouse.wareHouseId}, #{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},#{inboundDate}
-                ,#{inboundOrderItem.processWay}, #{inboundOrderItem.handleCategory},#{createDate},#{boundType},#{inboundOrderItem.transferDraftId},#{inboundOrderItem.inboundOrderItemId},#{inboundOrderItem.laboratoryTest.laboratoryTestNumber});
+                (#{inboundOrderItem.inboundOrderId},#{inboundOrderItem.wastesAmount},#{inboundOrderItem.unitPriceTax},#{inboundOrderItem.wastes.name},
+                #{inboundOrderItem.wareHouse.wareHouseId}, #{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},#{inboundDate},
+                #{inboundOrderItem.processWay}, #{inboundOrderItem.handleCategory},#{createDate},#{boundType},#{inboundOrderItem.transferDraftId},
+                #{inboundOrderItem.inboundOrderItemId},#{inboundOrderItem.laboratoryTest.laboratoryTestNumber},
+                #{inboundOrderItem.processWayItem.dataDictionaryItemId}, #{inboundOrderItem.handleCategoryItem.dataDictionaryItemId});
             </foreach>
         </if>
     </insert>
@@ -369,7 +381,8 @@
                 (inboundOrderItemId, transferDraftId, inboundOrderId,
                 produceCompanyId, processWay, handleCategory,remarks, warehouseArea, recordState, isQualified,
                 wastesName, wastesCode, wastesCategory, wastesAmount,unitPriceTax, totalPrice, laboratoryTestId,
-                category, formType, packageType, wastesUnit, laborityTestHeat, laborityTestWater,processWayId,handleCategoryId,formTypeId,packageTypeId,unitId,secondaryCategoryId)
+                category, formType, packageType, wastesUnit, laborityTestHeat, laborityTestWater,processWayId,
+                handleCategoryId,formTypeId,packageTypeId,unitId,secondaryCategoryId,wareHouseId)
                 VALUES
                 (#{inboundOrderItem.inboundOrderItemId}, #{inboundOrderItem.transferDraftId},#{inboundOrderId},
                 #{inboundOrderItem.produceCompany.clientId}, #{inboundOrderItem.processWay},
@@ -378,7 +391,11 @@
                 #{inboundOrderItem.wastes.name},#{inboundOrderItem.wastes.wastesId}, #{inboundOrderItem.wastes.category},
                 #{inboundOrderItem.wastesAmount}, #{inboundOrderItem.unitPriceTax},#{inboundOrderItem.totalPrice},
                 #{inboundOrderItem.laboratoryTest.laboratoryTestNumber}, 1, #{inboundOrderItem.formType}, #{inboundOrderItem.packageType},
-                #{inboundOrderItem.wastesUnit}, #{inboundOrderItem.laboratoryTest.heatAverage}, #{inboundOrderItem.laboratoryTest.waterContentAverage},#{inboundOrderItem.processWayItem.dataDictionaryItemId},#{inboundOrderItem.handleCategoryItem.dataDictionaryItemId},#{inboundOrderItem.formTypeItem.dataDictionaryItemId},#{inboundOrderItem.packageTypeItem.dataDictionaryItemId},#{inboundOrderItem.unitDataItem.dataDictionaryItemId},#{inboundOrderItem.secondaryCategoryItem.dataDictionaryItemId});
+                #{inboundOrderItem.wastesUnit}, #{inboundOrderItem.laboratoryTest.heatAverage},
+                #{inboundOrderItem.laboratoryTest.waterContentAverage},#{inboundOrderItem.processWayItem.dataDictionaryItemId},
+                #{inboundOrderItem.handleCategoryItem.dataDictionaryItemId},#{inboundOrderItem.formTypeItem.dataDictionaryItemId},
+                #{inboundOrderItem.packageTypeItem.dataDictionaryItemId},#{inboundOrderItem.unitDataItem.dataDictionaryItemId},
+                #{inboundOrderItem.secondaryCategoryItem.dataDictionaryItemId},#{inboundOrderItem.wareHouse.wareHouseId});
 
                 INSERT INTO t_pr_laboratorytest
                 (laboratorytestnumber, clientId, wastesName, wastesCode, heatAverage, phAverage, ashAverage, waterContentAverage,
@@ -394,7 +411,7 @@
                 insert  into t_pl_wasteinventory
                 (inboundOrderId,actualCount,unitPriceTax,wastesName,wareHouseId,clientId,wastesCode,inboundDate,processWay,handleCategory,creatorDate,boundType,transferDraftId,inboundOrderItemId,laboratoryTestId,processWayId,handleCategoryId,formTypeId,packageTypeId,unitId,secondaryCategoryId)
                 values
-                (#{inboundOrderId},#{inboundOrderItem.wastesAmount},#{inboundOrderItem.unitPriceTax},#{inboundOrderItem.wastes.name},#{wareHouse.wareHouseId}, #{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},#{inboundDate}
+                (#{inboundOrderId},#{inboundOrderItem.wastesAmount},#{inboundOrderItem.unitPriceTax},#{inboundOrderItem.wastes.name},#{inboundOrderItem.wareHouse.wareHouseId}, #{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},#{inboundDate}
                 ,#{inboundOrderItem.processWay}, #{inboundOrderItem.handleCategory},#{createDate},#{boundType},#{inboundOrderItem.transferDraftId},#{inboundOrderItem.inboundOrderItemId},#{inboundOrderItem.laboratoryTest.laboratoryTestNumber},#{inboundOrderItem.processWayItem.dataDictionaryItemId},#{inboundOrderItem.handleCategoryItem.dataDictionaryItemId},#{inboundOrderItem.formTypeItem.dataDictionaryItemId},#{inboundOrderItem.packageTypeItem.dataDictionaryItemId},#{inboundOrderItem.unitDataItem.dataDictionaryItemId},#{inboundOrderItem.secondaryCategoryItem.dataDictionaryItemId});
 
                 insert into t_pl_secondaryinto

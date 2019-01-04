@@ -34,7 +34,7 @@
 
     <!--获取配料单信息-->
     <select id="BatchList" resultMap="BatchingOrderRM">
-        select * from t_pl_batchingorder  order by checkStateId=69,batchingOrderId desc
+        select * from t_pl_batchingorder where  batchingNumber>0  order by checkStateId=69,batchingOrderId desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -167,7 +167,7 @@
 
     <!--出库完毕后更新领料单的信息为已出库-->
     <update id="updateMaterialRequisitionOrderCheck" parameterType="String">
-        update t_pl_materialrequisitionorder set checkState="OutBounded",nowTime=NOW()
+        update t_pl_materialrequisitionorder set checkStateId=81,nowTime=NOW()
         where materialRequisitionId=#{materialRequisitionId};
     </update>
 

@@ -792,14 +792,14 @@ function setDataList(result) {
             }
             // 增加本页合计
             pageTotal += data.inboundOrderItemList[0].wastesAmount;
-            clonedTr.find("td[name='wastesAmount']").text(parseFloat(data.inboundOrderItemList[0].wastesAmount).toFixed(2));
+            clonedTr.find("td[name='wastesAmount']").text(parseFloat(data.inboundOrderItemList[0].wastesAmount).toFixed(3));
             if (data.inboundOrderItemList[0].unitDataItem != null) clonedTr.find("td[name='wastesUnit']").text(data.inboundOrderItemList[0].unitDataItem.dictionaryItemName);
             clonedTr.find("td[name='unitPriceTax']").text(parseFloat(data.inboundOrderItemList[0].unitPriceTax).toFixed(2));
             clonedTr.find("td[name='totalPrice']").text(parseFloat(data.inboundOrderItemList[0].totalPrice).toFixed(2));
             if (data.inboundOrderItemList[0].laboratoryTest != null) {
-                var heatAverage = parseFloat(data.inboundOrderItemList[0].laboratoryTest.heatAverage).toFixed(2);
+                var heatAverage = parseFloat(data.inboundOrderItemList[0].laboratoryTest.heatAverage).toFixed(3);
                 clonedTr.find("td[name='heatAverage']").text(isNaN(heatAverage) ? 0 : heatAverage);
-                var waterContentAverage = parseFloat(data.inboundOrderItemList[0].laboratoryTest.laboratoryTest).toFixed(2);
+                var waterContentAverage = parseFloat(data.inboundOrderItemList[0].laboratoryTest.laboratoryTest).toFixed(3);
                 clonedTr.find("td[name='waterContentAverage']").text(isNaN(waterContentAverage) ? 0 : waterContentAverage);
             }
         }
@@ -816,7 +816,7 @@ function setDataList(result) {
     var clonedTr = tr.clone();
     clonedTr.show();
     clonedTr.find("td[name='wastesCode']").text("合计");
-    clonedTr.find("td[name='wastesAmount']").text(pageTotal.toFixed(2));
+    clonedTr.find("td[name='wastesAmount']").text(pageTotal.toFixed(3));
     clonedTr.removeAttr("id");
     clonedTr.insertBefore(tr);
 }
@@ -884,8 +884,10 @@ function addData(state) {
     // 定义列表
     data['inboundOrderItemList'] = [];
     var trs = $("#inboundOrderData").find("tr[id!='plus']");
+    var wareHouse = {};
     for (var i = 0; i < trs.length; i++) {
         var tr = $(trs[i]);
+        wareHouse.wareHouseId = tr.find("select[name='warehouse']").val();
         var item = {
             produceCompany: {
                 companyName: tr.find("input[name='produceCompanyName']").val()
@@ -917,13 +919,17 @@ function addData(state) {
             },
             laboratoryTest: {
                 heatAverage: tr.find("input[name='heat']").val(),
-                waterContentAverage: tr.find("input[name='waterContent']").val(),
+                waterContentAverage: tr.find("input[name='waterContent']").val()
             },
             remarks: tr.find("input[name='remarks']").val(),
+            wareHouse: {
+                wareHouseId: tr.find("select[name='warehouse']").val()
+            },
             warehouseArea: tr.find("input[name='warehouseArea']").val()
         };
         console.log(item.wastes);
         // console.log(item);
+        data.wareHouse = wareHouse;
         data.inboundOrderItemList.push(item);
     }
     // 上传用户数据
@@ -1123,7 +1129,10 @@ function addNewLine() {
         id1++;
         num = id1;
     }
+    // 设置编号
     clonedTr.find("td[name='index']").text(num);
+    // 设置公司名称
+    clonedTr.find("input[name='produceCompanyName']").val("北控安耐得环保科技发展常州有限公司");
     var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine($(this));id1--;'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
     clonedTr.children("td:eq(0)").prepend(delBtn);
     clonedTr.insertAfter(tr);
@@ -1278,7 +1287,34 @@ function setSelectList() {
 
         }
     });
-    $("select[name='wastesName']").get(0).selectedIndex = -1;
+
+    // 获取仓库数据
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "listWareHouse",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined && result.status == "success") {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var warehouse = $("select[name='warehouse']");
+                warehouse.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.wareHouseId);
+                    option.text(item.wareHouseName);
+                    warehouse.append(option);
+                });
+                warehouse.get(0).selectedIndex = -1;
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
 
     // 设置计量单位
     $.ajax({

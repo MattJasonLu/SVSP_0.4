@@ -14,10 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class ProcurementServiceImpl implements ProcurementService
-
-
-{
+public class ProcurementServiceImpl implements ProcurementService {
     @Autowired
     ProcurementMapper procurementMapper;
     @Override
@@ -203,6 +200,16 @@ public class ProcurementServiceImpl implements ProcurementService
     }
 
     @Override
+    public ProcurementPlanItem getProcurementPlanItemById(String id) {
+        return procurementMapper.getProcurementPlanItemById(id);
+    }
+
+    @Override
+    public List<ProcurementPlanItem> getProcurementPlanItemListByPage(ProcurementPlanItem procurementPlanItem) {
+        return procurementMapper.getProcurementPlanItemListByPage(procurementPlanItem);
+    }
+
+    @Override
     public List<ProcurementPlanItem> searchAdjust(ProcurementPlanItem procurementPlanItem) {
         return procurementMapper.searchAdjust(procurementPlanItem);
     }
@@ -225,6 +232,21 @@ public class ProcurementServiceImpl implements ProcurementService
     @Override
     public void setProcurementFilePath(Procurement procurement) {
         procurementMapper.setProcurementFilePath(procurement);
+    }
+
+    @Override
+    public List<Procurement> getEmergencyProcurementOffList(Page page) {
+        return procurementMapper.getEmergencyProcurementOffList(page);
+    }
+
+    @Override
+    public int totalEmcOffRecord() {
+        return procurementMapper.totalEmcOffRecord();
+    }
+
+    @Override
+    public List<Date> getNewestOffEm() {
+        return procurementMapper.getNewestOffEm();
     }
 
     @Override

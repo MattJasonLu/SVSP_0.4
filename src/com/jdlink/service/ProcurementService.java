@@ -50,10 +50,20 @@ public interface ProcurementService {
     List<ProcurementPlan>searchProcurementPlan(ProcurementPlan procurementPlan);
     int searchProcurementPlanCount(ProcurementPlan procurementPlan);
     void updateMaterialState(int id);
+    /**
+     * 通过编号获取采购计划单条目对象
+     * @param id 编号
+     * @return 采购计划单对象
+     */
+    ProcurementPlanItem getProcurementPlanItemById(String id);
+    List<ProcurementPlanItem> getProcurementPlanItemListByPage(ProcurementPlanItem procurementPlanItem);
     List<ProcurementPlanItem> searchAdjust(ProcurementPlanItem procurementPlanItem);
     void updateMaterialCategoryItemForProcurementPlan(String procurementPlanId,int MaterialCategoryId);
     String getSpecificationById(int id);
 
     void deleteMonthProcurementById(int id);
     void setProcurementFilePath(Procurement procurement);
+    List<Procurement> getEmergencyProcurementOffList(Page page);
+    int totalEmcOffRecord();
+    List<Date>getNewestOffEm();
 }

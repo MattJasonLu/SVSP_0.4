@@ -399,7 +399,7 @@ function setList(result) {
                     break;
                 case (4):
                     // 物品编码
-                    $(this).html("");
+                    $(this).html(obj.code);
                     break;
                 case (5):
                     // 物品名称
@@ -637,7 +637,8 @@ function searchData() {
             startDate: $("#search-startDate").val(),
             endDate: $("#search-endDate").val(),
             state: state,
-            page: page
+            page: page,
+            code:$("#search-code").val(),
         };
     } else {
         data1 = {

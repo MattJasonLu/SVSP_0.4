@@ -515,9 +515,9 @@ function setInboundOrderDataList(result) {
             clonedTr.find("td[name='wastesCode']").text(data.wastes.wastesId);
         }
         // clonedTr.find("td[name='prepareTransferCount']").text(data.prepareTransferCount);
-        clonedTr.find("td[name='transferCount']").text(data.transferCount);
+        clonedTr.find("td[name='transferCount']").text(parseFloat(data.transferCount).toFixed(3));
         // clonedTr.find("td[name='storageCount']").text(data.storageCount);
-        clonedTr.find("td[name='leftCount']").text(data.leftCount);
+        clonedTr.find("td[name='leftCount']").text(parseFloat(data.leftCount).toFixed(3));
         // clonedTr.find("td[name='poundsCount']").text(data.poundsCount);
         if (data.checkState != null) clonedTr.find("td[name='checkState']").text(data.checkState.name);
         // 把克隆好的tr追加到原来的tr前面

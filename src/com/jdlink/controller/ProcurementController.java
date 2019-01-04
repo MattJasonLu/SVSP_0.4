@@ -20,11 +20,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -215,8 +217,31 @@ public class ProcurementController {
     }
 
 
-/**
- * 根据编号获取信息
+    /**
+     * 加载应急采购列表（废物）
+     */
+    @RequestMapping("getEmergencyProcurementOffList")
+    @ResponseBody
+    public String getEmergencyProcurementOffList(@RequestBody Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            List<Procurement> procurements = procurementService.getEmergencyProcurementOffList(page);
+            JSONArray array = JSONArray.fromObject(procurements);
+            res.put("data", array);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+
+    }
+
+    /**
+     * 根据编号获取信息
  */
     @RequestMapping("getProcurementItemListById")
     @ResponseBody
@@ -370,13 +395,27 @@ public class ProcurementController {
     }
 
     /**
-     * 获取应急采购总数
+     * 获取应急采购总数物资
      */
     @RequestMapping("totalEmcRecord")
     @ResponseBody
     public int totalEmcRecord() {
         try {
             return procurementService.totalEmc();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 获取应急采购总数非物资
+     */
+    @RequestMapping("totalEmcOffRecord")
+    @ResponseBody
+    public int totalEmcOffRecord() {
+        try {
+            return procurementService.totalEmcOffRecord();
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
@@ -764,6 +803,27 @@ public class ProcurementController {
         return res.toString();
     }
 
+
+    /**
+     * 获得最早的申请日期 应急非物资
+     */
+    @RequestMapping("getNewestOffEm")
+    @ResponseBody
+    public String getNewestOffEm() {
+        JSONObject res = new JSONObject();
+        try {
+            List<Date> dateList = procurementService.getNewestOffEm();
+            res.put("status", "success");
+            res.put("message", "查询最早创建时间成功");
+            res.put("dateList", dateList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询最早创建时间失败");
+        }
+        return res.toString();
+    }
+
     //提交采购单
     @RequestMapping("submitProcurementListById")
     @ResponseBody
@@ -968,6 +1028,48 @@ public class ProcurementController {
             res.put("message", "查询失败");
         }
       return res.toString();
+    }
+
+    /**
+     * 获取采购计划子条目
+     * @param procurementPlanItem 页码
+     * @return 查询结果
+     */
+    @RequestMapping("getProcurementPlanItemList")
+    @ResponseBody
+    public String getProcurementPlanItemList(@RequestBody ProcurementPlanItem procurementPlanItem) {
+        JSONObject res=new JSONObject();
+        try {
+            List<ProcurementPlanItem> procurementPlanItemList = procurementService.getProcurementPlanItemListByPage(procurementPlanItem);
+            JSONArray data = JSONArray.fromArray(procurementPlanItemList.toArray(new ProcurementPlanItem[procurementPlanItemList.size()]));
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("getProcurementPlanItemById")
+    @ResponseBody
+    public String getProcurementPlanItemById(String id) {
+        JSONObject res=new JSONObject();
+        try {
+            // 通过编号获取采购计划单条目
+            ProcurementPlanItem procurementPlanItem = procurementService.getProcurementPlanItemById(id);
+            JSONObject data = JSONObject.fromBean(procurementPlanItem);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
     }
 
     //根据计划单号查询
@@ -1316,7 +1418,7 @@ public class ProcurementController {
             Procurement procurement = new Procurement();
             procurement.setReceiptNumber(receiptNumber);
             if (procurementFile != null) {
-                String materialPath = "Files/Contract"; //设置服务器路径
+                String materialPath = "Files/Procurement"; //设置服务器路径
                 File materialDir = new File(materialPath);
                 if (!materialDir.exists()) {
                     materialDir.mkdirs();
@@ -1345,5 +1447,23 @@ public class ProcurementController {
 
 
         return res.toString();
+    }
+
+
+    //应急非物资查询
+    @RequestMapping("searchEmerOff")
+    @ResponseBody
+    public String searchEmerOff(@RequestBody Procurement procurement){
+        JSONObject res=new JSONObject();
+         try {
+
+         }
+         catch (Exception e){
+
+
+
+         }
+
+         return res.toString();
     }
 }
