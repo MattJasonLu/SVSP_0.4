@@ -522,6 +522,27 @@ public class PRPoundsController {
         return res.toString();
     }
 
+    /**
+     * 通过转移联单号获取磅单
+     * @param transferId 转移联单号
+     * @return 磅单
+     */
+    @RequestMapping("getPoundsByTransferId")
+    @ResponseBody
+    public String getPoundsByTransferId(String transferId) {
+        JSONObject res = new JSONObject();
+        try {
+            Pounds pounds = poundsService.getByTransferId(transferId);
+            JSONObject data = JSONObject.fromBean(pounds);
+            res.put("status", "success");
+            res.put("message", "获取成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            res.put("status", "fail");
+            res.put("message", "获取失败");
+        }
+        return res.toString();
+    }
 
 }
 

@@ -25,7 +25,7 @@
      </select>
 
     <select id="getByTransferId" parameterType="String" resultMap="PoundsRM">
-        select * from t_pr_pounds where transferId = #{transferId};
+        select * from t_pr_pounds where transferId = #{transferId} limit 1;
     </select>
 
     <select id="listPage" resultMap="PoundsRM">
