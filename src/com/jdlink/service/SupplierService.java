@@ -44,7 +44,23 @@ public interface SupplierService {
 
     void setFilePath(Supplier supplier);
 
-    List<Supplier> transportList();
+    List<Supplier> transportList(Page page);
+
+
+    List<Supplier> secondaryList(Page page);
+
+    List<Supplier> procurementList(Page page);
+
+
+    List<Supplier> otherList(Page page);
+
+    int totalSupplierSecondaryRecord();
+
+    int totalSupplierTransportsRecord();
+
+    int totalSupplierProcurementRecord();
+
+    int totalSupplierOtherRecord();
 
 
 }

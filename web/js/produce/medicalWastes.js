@@ -426,6 +426,33 @@ function getNewestId() {
 
     });
     // $('#date').val(dateToString(new Date()))
+
+    // 设置计量单位
+    // 设置计量单位
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getUnitByDataDictionary",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                var wastesUnit = $("select[name='unit']");
+                wastesUnit.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    wastesUnit.append(option);
+                });
+                wastesUnit.get(0).selectedIndex = -1;
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+
     // 设置用户信息
     $.ajax({
         type: "POST",                       // 方法类型
@@ -466,7 +493,8 @@ function saveMedicalWastes() {
         errorNumber: $('#errorNumber').val(),
         wetNumber: $('#wetNumber').val(),
         incineration: $('#incineration').val(),
-        equipmentDataItem:{dataDictionaryItemId:$('#equipment').selectpicker('val')}
+        unitDataItem: { dataDictionaryItemId: $('#unit').val() },
+        equipmentDataItem: { dataDictionaryItemId:$('#equipment').selectpicker('val') }
     };
     $.ajax({
         type: "POST",                            // 方法类型
@@ -610,13 +638,18 @@ function setMedicalWastesList(result) {
                 case (14):
                     $(this).html(obj.wetNumber.toFixed(3));
                     break;
-                //处置设备
                 case (15):
+                    if (obj.unitDataItem != null) {
+                        $(this).html(obj.unitDataItem.dictionaryItemName);
+                    }
+                    break;
+                //处置设备
+                case (16):
                     if (obj.equipmentDataItem != null) {
                         $(this).html(obj.equipmentDataItem.dictionaryItemName);
                     }
                     break;
-                case (16):
+                case (17):
                     if (obj.checkStateItem != null) {
                         $(this).html(obj.checkStateItem.dictionaryItemName);
                     }

@@ -180,6 +180,31 @@ function addPlan2Order() {
                 plan.wastesCode = $(this).find("td[name='wastesCode']").text();
                 plan.wastesCategory = $(this).find("td[name='wastesCategory']").text();
                 plan.unitPriceTax = $(this).find("td[name='unitPriceTax']").text();
+
+                // 通过转移联单获取磅单
+                $.ajax({
+                    type: "POST",
+                    url: "getPoundsByTransferId",
+                    async: false,
+                    dataType: "json",
+                    data: {
+                        transferDraftId: plan.transferDraftId
+                    },
+                    success: function (result) {
+                        if (result != undefined && result.status == "success") {
+                            console.log(result);
+                            var data = eval(result.data);
+                            if (data != null) plan.wastesAmount = data.netWeight;
+                            else console.log("未找到联单号对应的磅单");
+                        } else {
+                            console.log(result);
+                        }
+                    },
+                    error: function (result) {
+                        console.log(result);
+                    }
+                });
+
                 planList.push(plan);
             }
         }
@@ -197,7 +222,7 @@ function addPlan2Order() {
         clonedTr.find("td[name='produceCompanyName']").text(planList[i].produceCompanyName);
         clonedTr.find("td[name='wastesName']").text(planList[i].wastesName);
         clonedTr.find("td[name='wastesCode']").text(planList[i].wastesCode);
-        clonedTr.find("td[name='wastesAmount']").text(planList[i].poundsCount);
+        clonedTr.find("input[name='wastesAmount']").text(planList[i].wastesAmount);
         clonedTr.find("td[name='unitPriceTax']").text(planList[i].unitPriceTax);
         var totalPrice = planList[i].poundsCount * planList[i].unitPriceTax;
         clonedTr.find("td[name='totalPrice']").text(isNaN(totalPrice) ? 0 : totalPrice);

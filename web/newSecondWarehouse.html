@@ -200,6 +200,7 @@
                     <thead>
                     <tr>
                         <th class="text-center small">序号</th>
+                        <th class="text-center small">入库时间</th>
                         <th class="text-center small" style="width: 100%;">产废单位</th>
                         <th class="text-center small">危废名称</th>
                         <th class="text-center small">危废代码</th>
@@ -208,19 +209,21 @@
                         <th class="text-center small">单价</th>
                         <th class="text-center small">金额</th>
                         <th class="text-center small">仓库</th>
-                        <th class="text-center small">处理方式</th>
+                        <!--<th class="text-center small">处理方式</th>-->
                         <!--<th class="text-center small">进料方式</th>-->
                         <th class="text-center small">物质形态</th>
+                        <th class="text-center small">库区</th>
                         <th class="text-center small">包装方式</th>
                         <th class="text-center small" style="width: 70px">热酌减率</th>
                         <th class="text-center small" style="width: 70px">水分/%</th>
                         <th class="text-center small">备注</th>
-                        <th class="text-center small">库区</th>
+
                     </tr>
                     </thead>
                     <tbody id="inboundOrderData">
                     <tr id="inboundClonedTr">
                         <td class="text-center small" name="index">1</td>
+                        <td class="text-center small"><input class="form-control" type="date" name="inboundDate" style="width: 200px;"></td>
                         <td class="text-center small"><input class="form-control" readonly value="北控安耐得环保科技发展常州有限公司" name="produceCompanyName" style="width: 300px;"></td>
                         <td class="text-center small"><select name="wastesName" class="form-control" style="width: 100px;"></select></td>
                         <td class="text-center small">
@@ -233,14 +236,14 @@
                         <td class="text-center small"><input style="width: 65px" class="form-control" name="unitPriceTax" onkeyup="calculateTotalPrice(this);"></td>
                         <td class="text-center small" name="totalPrice" style="width: 65px"></td>
                         <td class="text-center small"><select name="warehouse" class="form-control" style="width: 100px;"></select></td>
-                        <td class="text-center small"><select name="processWay" class="form-control" style="width: 100px;"></select></td>
+                        <!--<td class="text-center small"><select name="processWay" class="form-control" style="width: 100px;"></select></td>-->
                         <!--<td class="text-center small"><select name="handleCategory" class="form-control"></select></td>-->
                         <td class="text-center small"><select name="formType" class="form-control" style="width: 100px;"></select></td>
+                        <td class="text-center small"><input class="form-control" name="warehouseArea" style="width: 65px" ></td>
                         <td class="text-center small"><select name="packageType" class="form-control" style="width: 100px;"></select></td>
                         <td class="text-center small"><input class="form-control" name="heat" style="width: 65px"></td>
                         <td class="text-center small"><input class="form-control" name="waterContent" style="width: 65px"></td>
                         <td class="text-center small"><input class="form-control" name="remarks" style="width: 65px" ></td>
-                        <td class="text-center small"><input class="form-control" name="warehouseArea" style="width: 65px" ></td>
                     </tr>
                     <tr id="plus">
                         <td class="text-center"><a class="btn btn-default btn-xs" onclick="addNewLine();" id="plusBtn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>

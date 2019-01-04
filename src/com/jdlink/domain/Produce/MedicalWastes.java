@@ -3,6 +3,7 @@ package com.jdlink.domain.Produce;
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Dictionary.CheckStateItem;
 import com.jdlink.domain.Dictionary.EquipmentDataItem;
+import com.jdlink.domain.Dictionary.UnitDataItem;
 
 import java.util.Date;
 
@@ -84,11 +85,19 @@ public class MedicalWastes {
      */
     private float incineration;
 
-    //处置设备数据字典
+    /**
+     * 处置设备数据字典
+     */
     private EquipmentDataItem equipmentDataItem;
 
-    //状态数据字典
+    /**
+     * 状态数据字典
+     */
     private CheckStateItem checkStateItem;
+    /**
+     * 计量单位
+     */
+    private UnitDataItem unitDataItem;
 
     public CheckStateItem getCheckStateItem() {
         return checkStateItem;
@@ -249,6 +258,14 @@ public class MedicalWastes {
 
     public String getDepartment() {
         return department;
+    }
+
+    public UnitDataItem getUnitDataItem() {
+        return unitDataItem;
+    }
+
+    public void setUnitDataItem(UnitDataItem unitDataItem) {
+        this.unitDataItem = unitDataItem;
     }
 
     @Override

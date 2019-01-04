@@ -471,24 +471,24 @@ public class SewageTestController {
                  //1化验单号
                  secondaryTest.setId(data[i][0].toString());
 
-                 //2日期
-                 if(data[i][1].toString().indexOf("/")!=-1){
-                     String  datestr=data[i][1].toString().replace("/","-");
-                     SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-                     secondaryTest.setDateTime(simpleDateFormat.parse(datestr));
-                 }
+//                 //2日期
+//                 if(data[i][1].toString().indexOf("/")!=-1){
+//                     String  datestr=data[i][1].toString().replace("/","-");
+//                     SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+//                     secondaryTest.setDateTime(simpleDateFormat.parse(datestr));
+//                 }
 
-                 //3废物名称
-                 secondaryTest.setWastesName(data[i][2].toString());
+                 //1废物名称
+                 secondaryTest.setWastesName(data[i][1].toString());
 
-                 //4热灼减率
-                 secondaryTest.setScorchingRate(Float.parseFloat(data[i][3].toString()));
+                 //2热灼减率
+                 secondaryTest.setScorchingRate(Float.parseFloat(data[i][2].toString()));
 
-                 //5水分
-                 secondaryTest.setWater(Float.parseFloat(data[i][4].toString()));
+                 //3水分
+                 secondaryTest.setWater(Float.parseFloat(data[i][3].toString()));
 
-                 //6备注
-                 secondaryTest.setRemarks(data[i][5].toString());
+                 //4备注
+                 secondaryTest.setRemarks(data[i][4].toString());
 
                  //更加化验单号查询化验单信息
                  if(sewageTestService.getSecondaryTestById(data[i][0].toString())!=null){
