@@ -1,8 +1,109 @@
 /**
  * 模态框
  */
-function showModal() {
+function showModal(item) {
+
+    var id=$(item).parent().prev().prev().html();
+
+    var clientId=$(item).parent().prev().html();
+
+
+    var wastesName=$(item).parent().parent().children('td').eq(3).html();
+
+
+    var wastesCode=$(item).parent().parent().children('td').eq(4).html();
+
+    var data={
+        id:id,
+        produceCompany:{clientId:clientId},
+        wastesName:wastesName,
+        wastesCode:wastesCode,
+    };
+
+    console.log(id);
+    
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "comparison",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+            // console.log(result)
+            setCompareList(result);
+            }
+        },
+        error:function (result) {
+            
+        }
+    })
+
     $("#comparison").modal('show');
+}
+
+function setCompareList(result) {
+    console.log(result)
+    // 获取id为cloneTr的tr元素
+    var tr = $("#cloneTr2");
+
+    var sampleInfoAnalysis=result.sampleInfoAnalysis;
+
+
+    var clonedTr = tr.clone();
+
+    clonedTr.show();
+ if(sampleInfoAnalysis.produceCompany !=null){
+     clonedTr.children('td').eq(1).html(sampleInfoAnalysis.produceCompany.companyName)
+ }
+    clonedTr.children('td').eq(2).html(sampleInfoAnalysis.wastesName);
+    clonedTr.children('td').eq(3).html(sampleInfoAnalysis.wastesCode);
+    if(sampleInfoAnalysis.formType!=null){
+        clonedTr.children('td').eq(4).html(sampleInfoAnalysis.formType.name);
+    }
+    clonedTr.children('td').eq(5).html(sampleInfoAnalysis.PH);
+    clonedTr.children('td').eq(6).html(sampleInfoAnalysis.ash);
+    clonedTr.children('td').eq(7).html(sampleInfoAnalysis.chlorine);
+    clonedTr.children('td').eq(8).html(sampleInfoAnalysis.sulfur);
+    clonedTr.children('td').eq(9).html(sampleInfoAnalysis.chlorine);
+    clonedTr.children('td').eq(10).html(sampleInfoAnalysis.fluorine);
+    clonedTr.children('td').eq(11).html(sampleInfoAnalysis.phosphorus);
+    clonedTr.children('td').eq(12).html(sampleInfoAnalysis.flashPoint);
+    clonedTr.children('td').eq(13).html(sampleInfoAnalysis.viscosity);
+    clonedTr.children('td').eq(14).html(sampleInfoAnalysis.hotMelt);
+    clonedTr.removeAttr("id");
+    clonedTr.insertBefore(tr);
+    // tr.siblings().remove();
+    $.each(result.receiveSampleAnalysisList, function (index, item) {
+        var obj = eval(item);
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        clonedTr.show();
+        if(obj.produceCompany !=null){
+            clonedTr.children('td').eq(1).html(obj.produceCompany.companyName)
+        }
+        clonedTr.children('td').eq(2).html(obj.wastesName);
+        clonedTr.children('td').eq(3).html(obj.wastesCode);
+        if(obj.formType!=null){
+            clonedTr.children('td').eq(4).html(obj.formType.name);
+        }
+        clonedTr.children('td').eq(5).html(obj.PH);
+        clonedTr.children('td').eq(6).html(obj.ash);
+        clonedTr.children('td').eq(7).html(obj.chlorine);
+        clonedTr.children('td').eq(8).html(obj.sulfur);
+        clonedTr.children('td').eq(9).html(obj.chlorine);
+        clonedTr.children('td').eq(10).html(obj.fluorine);
+        clonedTr.children('td').eq(11).html(obj.phosphorus);
+        clonedTr.children('td').eq(12).html(obj.flashPoint);
+        clonedTr.children('td').eq(13).html(obj.viscosity);
+        clonedTr.children('td').eq(14).html(obj.hotMelt);
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+    });
+    // 隐藏无数据的tr
+    tr.hide();
+
 }
 
 /**
@@ -126,6 +227,7 @@ function setDataList(result) {
         clonedTr.find("td[name='id']").text(obj.id);
         clonedTr.find("td[name='transferDraftId']").text(obj.transferDraftId);
         if (obj.produceCompany != null) clonedTr.find("td[name='produceCompanyName']").text(obj.produceCompany.companyName);
+        clonedTr.find("td[name='clientId']").html(obj.produceCompany.clientId);
         clonedTr.find("td[name='wastesName']").text(obj.wastesName);
         clonedTr.find("td[name='wastesCode']").text(obj.wastesCode);
         if(obj.formType != null)
@@ -143,6 +245,8 @@ function setDataList(result) {
         clonedTr.find("td[name='hotMelt']").text(setNumber2Line(obj.hotMelt));
         clonedTr.find("td[name='signer']").text(obj.signer);
         clonedTr.find("td[name='remark']").text(obj.remark);
+        clonedTr.find("td[name='id']").text(obj.id);
+
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
         clonedTr.insertBefore(tr);
