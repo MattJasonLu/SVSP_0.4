@@ -652,7 +652,23 @@ function addLine() {
  * 一键签收
  */
 function confirmAllCheck(){
-    var laboratorySigner = $("#checkModel0-signer").val();      // 获取签收人
+    var laboratorySigner = "";
+    $.ajax({
+        type: "POST",                             // 方法类型
+        url: "getCurrentUserInfo",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result.status === "success" && result.data != null) {
+                laboratorySigner = result.data.name;      // 获取签收人
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
     var idList = [];   // 承装需要确认收样的预约单号
     $.each($("input[name='select']:checked"), function (index, item) {
         if($(item).parent().parent().parent().find("td[name='state']").text() === "待收样") {   // 将待收样的物品
@@ -687,7 +703,6 @@ function confirmAllCheck(){
     } else {
         alert("请勾选需要收样的单号！");
     }
-
 }
 
 /**

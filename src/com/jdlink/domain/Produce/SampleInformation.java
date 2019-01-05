@@ -54,7 +54,7 @@ public class SampleInformation {
      */
     private ApplyState applyState;
     /**
-     * 预约状态ID
+     * 预约状态数据字典
      */
     private ApplicationStatusItem applicationStatusItem;
     /**

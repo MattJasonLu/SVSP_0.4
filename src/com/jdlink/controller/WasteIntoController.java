@@ -235,6 +235,63 @@ public class WasteIntoController {
         return res.toString();
     }
 
+    /**
+     * 一键签收
+     * @return
+     */
+    @RequestMapping("confirmAllSecondAnalysisCheck")
+    @ResponseBody
+    public String confirmAllSecondAnalysisCheck(@RequestBody SecondarySample secondarySample1){
+        JSONObject res=new JSONObject();
+        try {
+            // 改变送样单状态
+            wasteIntoService.confirmAllSecondAnalysisCheck(secondarySample1);
+            // 创建化验单
+            if(secondarySample1.getSampleIdList().size() > 0) {
+                for(String id : secondarySample1.getSampleIdList()) {
+                    SecondarySample secondarySample= wasteIntoService.getSecondarysampleById(id);
+                    SecondarySampleItem secondarySampleItem=secondarySample.getSecondarySampleItemList().get(0);
+                    SecondaryTest secondaryTest=new SecondaryTest();
+                    secondaryTest.setId(id);
+                    secondaryTest.setWastesName(secondarySample.getSecondarySampleItemList().get(0).getWastesName());
+                    secondaryTest.setAddress(secondarySample.getSecondaryPointItem().getDictionaryItemName());
+                    //如果存在就更新 否则就添加
+                    //根据编号获得次生送样明细
+                    if(secondarySampleItem.getWater()==1){
+                        secondaryTest.setWater(0);
+                    }else{
+                        secondaryTest.setWater(-9999);
+                    }
+                    if(secondarySampleItem.getScorchingRate()==1){
+                        secondaryTest.setScorchingRate(0);
+                    } else{
+                        secondaryTest.setScorchingRate(-9999);
+                    }
+                    //根据编号获取次生化验信息
+                    if(sewageTestService.getSecondaryTestById(id)==null){
+                        //新增
+                        sewageTestService.addSecondaryTest(secondaryTest);
+                    }else {
+                        //更新
+                        wasteIntoService.updateSecondarySample(secondaryTest);
+                    }
+                }
+                res.put("status", "success");
+                res.put("message", "已收样！");
+            } else {
+                res.put("status", "fail");
+                res.put("message", "请勾选需要收样的单据!");
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "收样失败");
+        }
+        return res.toString();
+
+    }
+
     //确认收样==>预约登记
     @RequestMapping("confirmSecondarySampleById")
     @ResponseBody

@@ -7,7 +7,13 @@
     <resultMap id="SampleInfoAnalysisRM" type="SampleInfoAnalysis" autoMapping="true">
         <id property="id" column="id"/>
         <association property="produceCompany" column="produceCompanyId" select="getProduceCompany"/>
+        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"/>
     </resultMap>
+
+    <!--获取预约状态数据字典-->
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{applyStateId}
+    </select>
 
     <select id="getProduceCompany" resultType="Client">
         select * from client where clientId=#{produceCompanyId};
@@ -37,9 +43,10 @@
             </if>
             <if test="true">
                 and checkState != 'Invalid'
+                and checkStateId != 69
             </if>
         </where>
-        order by createTime desc
+        order by id desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
@@ -84,6 +91,7 @@
             </if>
             <if test="true">
                 and checkState != 'Invalid'
+                and checkStateId != 69
             </if>
         </where>
     </select>
@@ -93,15 +101,15 @@
         insert into t_pr_sampleinfoanalysis (id, sampleId, transferDraftId, produceCompanyId,
         wastesName, wastesCode, wastesCategory, handleCategory, formType, PH, ash, water, heat, sulfur,
         fluorine, chlorine, phosphorus, flashPoint, viscosity, hotMelt, sender, signer, signDate,
-        remark, checkState) values (#{id}, #{sampleId}, #{transferDraftId}, #{produceCompany.clientId},
+        remark, checkState,checkStateId) values (#{id}, #{sampleId}, #{transferDraftId}, #{produceCompany.clientId},
         #{wastesName}, #{wastesCode}, #{wastesCategory}, #{handleCategory}, #{formType}, #{PH}, #{ash},
         #{water}, #{heat}, #{sulfur}, #{fluorine}, #{chlorine}, #{phosphorus}, #{flashPoint}, #{viscosity},
-        #{hotMelt}, #{sender}, #{signer}, #{signDate}, #{remark}, #{checkState});
+        #{hotMelt}, #{sender}, #{signer}, #{signDate}, #{remark}, #{checkState},64);
     </insert>
 
     <!--设置状态-->
     <update id="setState">
-        update t_pr_sampleinfoanalysis set checkState=#{checkState}, id=concat(#{id}, #{newId}) where id=#{id};
+        update t_pr_sampleinfoanalysis set checkState=#{checkState},checkStateId=69, id=concat(#{id}, #{newId}) where id=#{id};
     </update>
     <resultMap id="ReceiveSampleAnalysisRM" type="ReceiveSampleAnalysis" autoMapping="true">
         <id property="id" column="id"/>

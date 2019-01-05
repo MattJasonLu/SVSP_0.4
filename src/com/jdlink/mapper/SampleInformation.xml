@@ -6,13 +6,16 @@
 <mapper namespace="com.jdlink.mapper.SampleInformationMapper">
     <resultMap id="SampleInformationRM" type="SampleInformation" autoMapping="true">
         <id property="id" column="id"/>
-        <result property="companyCode" column="companyCode"/>
-        <result property="applyState" column="applyState"/>
-        <result property="laboratorySigner" column="laboratorySigner"/>
         <association property="newId" column="id" select="getAnalysisId"/>
+        <association property="applicationStatusItem" column="applyStateId" select="getApplicationStatusItem"/>
         <collection property="wastesList" select="getWastes" column="id" ofType="com.jdlink.domain.Wastes"
                     javaType="ArrayList"/>
     </resultMap>
+
+    <!--获取预约状态数据字典-->
+    <select id="getApplicationStatusItem" resultType="ApplicationStatusItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{applyStateId}
+    </select>
 
     <insert id="add" parameterType="SampleInformation">
         INSERT INTO t_pr_sampleinformation (id,companyCode,companyName,wastesCode,wastesName,wastesFormType,applyState,sendingPerson,laboratorySigner,isPH,isAsh,
@@ -33,9 +36,9 @@
         </if>
     </insert>
 
-    <select id="listPage" resultType="SampleInformation">
+    <select id="listPage" resultMap="SampleInformationRM">
         select * from t_pr_sampleinformation
-        where applyState != 'Invalid'
+        where applyStateId != 55
         ORDER BY CONVERT(id,SIGNED) DESC
         <if test="start != null and count != null">
             limit #{start}, #{count}
@@ -44,7 +47,7 @@
 
     <select id="listItemPage" resultType="SampleInformationItem">
         select a.*,b.companyName,b.sendingPerson,b.laboratorySigner,b.applyState from t_pr_sampleinformationItem as a join t_pr_sampleinformation as b on a.sampleId=b.id
-        where b.applyState != 'Invalid'
+        where b.applyStateId != 55
         ORDER BY CONVERT(transferId,SIGNED) DESC
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
@@ -458,7 +461,7 @@
     </update>
 
     <update id="updateSampleInfo" parameterType="String">
-        update t_pr_sampleinformation set applyState = 'Invalid',
+        update t_pr_sampleinformation set applyState = 'Invalid',applyStateId=55,
         id=#{newId}
         where id = #{sampleId};
 
