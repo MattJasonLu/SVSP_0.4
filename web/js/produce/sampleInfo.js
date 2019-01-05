@@ -1164,7 +1164,34 @@ function updateAppointBySampleId() {
             if (result != undefined) {
                 var data = eval(result);
                 if (data.status == "success") {
-                    alert(data.message);
+                    //     //添加图片地址
+                    var formFile = new FormData();
+                    formFile.append("sampleId", sampleInformation.id);
+                    if ($("#picture1").prop('type') !== 'text') {
+                        var pictureFile = $("#picture1").get(0).files[0];
+                        formFile.append("pictureFile", pictureFile);
+                    }
+                    $.ajax({
+                        type: "POST",                            // 方法类型
+                        url: "saveSampleInfoPictureFiles",                     // url
+                        cache: false,
+                        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                        data: formFile,
+                        dataType: "json",
+                        processData: false,
+                        contentType: false,
+                        success: function (result) {
+                            if (result != undefined && result.status == "success") {
+                                alert(result.message);
+                            }else{
+                                alert("图片保存失败！");
+                            }
+                        },
+                        error: function (result) {
+                            console.log("error: " + result);
+                            alert("服务器异常!");
+                        }
+                    });
                     window.location.reload();
                 } else {
                     alert(data.message);
@@ -1482,7 +1509,34 @@ function addAppoint() {
             if (result != undefined) {
                 var data = eval(result);
                 if (data.status == "success") {
-                    alert(data.message);
+                    //     //添加图片地址
+                    var formFile = new FormData();
+                    formFile.append("sampleId", sampleInformation.id);
+                    if ($("#picture").prop('type') !== 'text') {
+                        var pictureFile = $("#picture").get(0).files[0];
+                        formFile.append("pictureFile", pictureFile);
+                    }
+                    $.ajax({
+                        type: "POST",                            // 方法类型
+                        url: "saveSampleInfoPictureFiles",                     // url
+                        cache: false,
+                        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                        data: formFile,
+                        dataType: "json",
+                        processData: false,
+                        contentType: false,
+                        success: function (result) {
+                            if (result != undefined && result.status == "success") {
+                                alert(result.message);
+                            }else{
+                                alert("图片保存失败！");
+                            }
+                        },
+                        error: function (result) {
+                            console.log("error: " + result);
+                            alert("服务器异常!");
+                        }
+                    });
                     window.location.reload();
                 } else {
                     alert(data.message);
@@ -1758,5 +1812,42 @@ function testing(item) {
 
         }
     })
+}
+
+/**
+ * 下载样品图片
+ * @param item
+ */
+function downLoadImage(item) {
+    sampleId = getSampleIdByMenu(item);
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getSampleInformation",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            'sampleId': sampleId
+        },
+        dataType: "json",
+        success: function (result) {
+            console.log(result);
+            if (result != undefined) {
+                var data = eval(result.data);
+                if (result.status == "success") {
+                    console.log(data.wastesList);
+                    if (data.wastesList != null && data.wastesList.length > 0 && data.wastesList[0].imageUrl !== "") {
+                        window.open('downloadFile?filePath=' + data.wastesList[0].imageUrl);
+                    } else {
+                        alert("未上传文件！");
+                    }
+                } else {
+                    alert(result.message);
+                }
+            }
+        },
+        error: function (result) {
+            console.dir(result);
+            alert("下载失败!");
+        }
+    });
 }
 

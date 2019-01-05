@@ -18,9 +18,9 @@
     </select>
 
     <insert id="add" parameterType="SampleInformation">
-        INSERT INTO t_pr_sampleinformation (id,companyCode,companyName,wastesCode,wastesName,wastesFormType,applyState,sendingPerson,laboratorySigner,isPH,isAsh,
+        INSERT INTO t_pr_sampleinformation (id,companyCode,companyName,wastesCode,wastesName,wastesFormType,applyState,applyStateId,sendingPerson,laboratorySigner,isPH,isAsh,
         isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity,isHotMelt,nowTime,creationDate,creationTime)
-        VALUES (#{id},#{companyCode},#{companyName},#{wastesList[0].code},#{wastesList[0].name},#{wastesList[0].formType},'ToCollected',#{sendingPerson},#{laboratorySigner},#{wastesList[0].isPH},
+        VALUES (#{id},#{companyCode},#{companyName},#{wastesList[0].code},#{wastesList[0].name},#{wastesList[0].formType},'ToCollected',62,#{sendingPerson},#{laboratorySigner},#{wastesList[0].isPH},
         #{wastesList[0].isAsh}, #{wastesList[0].isWater}, #{wastesList[0].isHeat},
         #{wastesList[0].isSulfur}, #{wastesList[0].isChlorine}, #{wastesList[0].isFluorine},
         #{wastesList[0].isPhosphorus}, #{wastesList[0].isFlashPoint}, #{wastesList[0].isViscosity},#{wastesList[0].isHotMelt}, NOW(),NOW(),NOW());
@@ -413,7 +413,7 @@
     <update id="confirmCheck" parameterType="SampleInformation">
         UPDATE t_pr_sampleinformation
         SET
-        applyState = 'Received',laboratorySigner=#{laboratorySigner},nowTime = NOW(),samplingDate = NOW()
+        applyState = 'Received',applyStateId=61,laboratorySigner=#{laboratorySigner},nowTime = NOW(),samplingDate = NOW()
         WHERE id = #{id};
     </update>
 
@@ -471,6 +471,11 @@
 
     <update id="rejectSampleInfoById" >
         update t_pr_sampleinformation set applyState = 'Rejected',advice=#{advice} where id = #{sampleId}
+    </update>
+
+    <!--设置样品图片链接-->
+    <update id="setFilePath" parameterType="Wastes">
+        update t_pr_sampleinformationitem set imageUrl=#{imageUrl} where sampleId=#{id};
     </update>
 
     <delete id="deleteById" parameterType="String">

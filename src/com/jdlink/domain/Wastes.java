@@ -258,6 +258,18 @@ public class Wastes {
      * 处置方式数据字典
      */
     private ProcessWayItem processWayItem;
+    /**
+     * 危废图片保存路径
+     */
+    private String imageUrl;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     public HandleCategoryItem getHandleCategoryItem() {
         return handleCategoryItem;
