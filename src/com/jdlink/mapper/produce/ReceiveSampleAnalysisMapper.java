@@ -49,4 +49,7 @@ public interface ReceiveSampleAnalysisMapper {
       * @param receiveSampleAnalysis
       */
      void update(ReceiveSampleAnalysis receiveSampleAnalysis);
+
+
+
 }

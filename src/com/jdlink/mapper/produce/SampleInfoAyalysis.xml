@@ -103,5 +103,13 @@
     <update id="setState">
         update t_pr_sampleinfoanalysis set checkState=#{checkState}, id=concat(#{id}, #{newId}) where id=#{id};
     </update>
+    <resultMap id="ReceiveSampleAnalysisRM" type="ReceiveSampleAnalysis" autoMapping="true">
+        <id property="id" column="id"/>
+        <association property="produceCompany" column="produceCompanyId" select="getProduceCompany"/>
+    </resultMap>
 
+    <!--根据条件获取相应信息-->
+    <select id="getByMoreFactor" resultMap="ReceiveSampleAnalysisRM" >
+        select * from t_pr_receivesampleanalysis where produceCompanyId=#{0} or wastesCode=#{1} or wastesName=#{2} order by createTime desc;
+    </select>
 </mapper>

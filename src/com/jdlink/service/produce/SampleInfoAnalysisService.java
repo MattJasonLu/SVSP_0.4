@@ -2,6 +2,7 @@ package com.jdlink.service.produce;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
+import com.jdlink.domain.Produce.ReceiveSampleAnalysis;
 import com.jdlink.domain.Produce.SampleInfoAnalysis;
 
 import java.util.List;
@@ -48,4 +49,7 @@ public interface SampleInfoAnalysisService {
      */
     void setState(String id, CheckState checkState);
 
+
+
+    List<ReceiveSampleAnalysis>  getByMoreFactor(String clientId,String wastesCode,String wastesName);
 }

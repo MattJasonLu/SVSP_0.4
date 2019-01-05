@@ -2,6 +2,7 @@ package com.jdlink.mapper.produce;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
+import com.jdlink.domain.Produce.ReceiveSampleAnalysis;
 import com.jdlink.domain.Produce.SampleInfoAnalysis;
 import org.apache.ibatis.annotations.Param;
 
@@ -47,4 +48,7 @@ public interface SampleInfoAnalysisMapper {
       * @param checkState 状态
       */
      void setState(@Param("id") String id, @Param("checkState") CheckState checkState, @Param("newId") String newId);
+
+
+     List<ReceiveSampleAnalysis>  getByMoreFactor(String clientId,String wastesCode,String wastesName);
 }

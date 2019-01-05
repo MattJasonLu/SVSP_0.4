@@ -247,9 +247,11 @@
                         <td class="text-center" name="flashPoint"></td>
                         <td class="text-center" name="viscosity"></td>
                         <td class="text-center" name="hotMelt"></td>
+                        <td class="text-center hidden" name="id"></td>
+                        <td class="text-center hidden" name="clientId"></td>
                         <td class="text-center">
                             <!-- id="function_-"   check(this); function check(e){if(!checkAuthority($(e))) return false; showModal(e);}-->
-                            <a href="#" onclick="showModal();" title="对比"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                            <a href="#" onclick="showModal(this);" title="对比"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
                         </td>
                     </tr>
                 </tbody>
@@ -322,7 +324,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
+                    <tr id="cloneTr2">
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>

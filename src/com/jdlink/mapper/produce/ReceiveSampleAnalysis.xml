@@ -106,4 +106,5 @@
         update t_pr_receivesampleanalysis set checkState=#{checkState}, id=concat(#{id}, #{newId}) where id=#{id};
     </update>
 
+
 </mapper>
