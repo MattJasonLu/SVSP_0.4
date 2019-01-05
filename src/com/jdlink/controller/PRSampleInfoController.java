@@ -183,6 +183,7 @@ public class PRSampleInfoController {
 
     /**
      * 获取分页数据
+     *
      * @param page
      * @return
      */
@@ -209,6 +210,7 @@ public class PRSampleInfoController {
 
     /**
      * 明细页面获取分页数据
+     *
      * @param page
      * @return
      */
@@ -253,6 +255,13 @@ public class PRSampleInfoController {
         return res.toString();
     }
 
+    /**
+     * 确认收样功能
+     *
+     * @param sampleId
+     * @param laboratorySigner
+     * @return
+     */
     @RequestMapping("confirmSampleInformationCheck")
     @ResponseBody
     public String confirmSampleInformationCheck(String sampleId, String laboratorySigner) {
@@ -262,8 +271,8 @@ public class PRSampleInfoController {
             sampleInformation.setLaboratorySigner(laboratorySigner); // 设置签收人
             sampleInformationService.confirmCheck(sampleInformation);
             // 创建化验单
-            if(sampleInformation.getWastesList() != null && sampleInformation.getWastesList().size() > 0){
-                for(Wastes wastes :sampleInformation.getWastesList()){
+            if (sampleInformation.getWastesList() != null && sampleInformation.getWastesList().size() > 0) {
+                for (Wastes wastes : sampleInformation.getWastesList()) {
                     ReceiveSampleAnalysis receiveSampleAnalysis = new ReceiveSampleAnalysis();
                     receiveSampleAnalysis.setId(sampleInformation.getId()); // 化验单号与预约单号保持一致
                     receiveSampleAnalysis.setSampleId(sampleInformation.getId());
@@ -277,59 +286,59 @@ public class PRSampleInfoController {
                     receiveSampleAnalysis.setFormType(wastes.getFormType());
                     receiveSampleAnalysis.setCheckState(CheckState.NewBuild);
                     receiveSampleAnalysis.setSender(sampleInformation.getSendingPerson());
-                    if(wastes.getIsPH()){
+                    if (wastes.getIsPH()) {
                         receiveSampleAnalysis.setPH(0); // 如果检测项目存在设置初始值为0
-                    }else {
+                    } else {
                         receiveSampleAnalysis.setPH(-9999);  // 如果不存在则设置为不可能值-9999
                     }
-                    if(wastes.getIsAsh()){
+                    if (wastes.getIsAsh()) {
                         receiveSampleAnalysis.setAsh(0); // 如果检测项目存在设置初始值为0
-                    }else {
+                    } else {
                         receiveSampleAnalysis.setAsh(-9999);  // 如果不存在则设置为不可能值-9999
                     }
-                    if(wastes.getIsWater()){
+                    if (wastes.getIsWater()) {
                         receiveSampleAnalysis.setWater(0); // 如果检测项目存在设置初始值为0
-                    }else {
+                    } else {
                         receiveSampleAnalysis.setWater(-9999);  // 如果不存在则设置为不可能值-9999
                     }
-                    if(wastes.getIsHeat()){
+                    if (wastes.getIsHeat()) {
                         receiveSampleAnalysis.setHeat(0); // 如果检测项目存在设置初始值为0
-                    }else {
+                    } else {
                         receiveSampleAnalysis.setHeat(-9999);  // 如果不存在则设置为不可能值-9999
                     }
-                    if(wastes.getIsSulfur()){
+                    if (wastes.getIsSulfur()) {
                         receiveSampleAnalysis.setSulfur(0); // 如果检测项目存在设置初始值为0
-                    }else {
+                    } else {
                         receiveSampleAnalysis.setSulfur(-9999);  // 如果不存在则设置为不可能值-9999
                     }
-                    if(wastes.getIsChlorine()){
+                    if (wastes.getIsChlorine()) {
                         receiveSampleAnalysis.setChlorine(0); // 如果检测项目存在设置初始值为0
-                    }else {
+                    } else {
                         receiveSampleAnalysis.setChlorine(-9999);  // 如果不存在则设置为不可能值-9999
                     }
-                    if(wastes.getIsFluorine()){
+                    if (wastes.getIsFluorine()) {
                         receiveSampleAnalysis.setFluorine(0); // 如果检测项目存在设置初始值为0
-                    }else {
+                    } else {
                         receiveSampleAnalysis.setFluorine(-9999);  // 如果不存在则设置为不可能值-9999
                     }
-                    if(wastes.getIsPhosphorus()){
+                    if (wastes.getIsPhosphorus()) {
                         receiveSampleAnalysis.setPhosphorus(0); // 如果检测项目存在设置初始值为0
-                    }else {
+                    } else {
                         receiveSampleAnalysis.setPhosphorus(-9999);  // 如果不存在则设置为不可能值-9999
                     }
-                    if(wastes.getIsFlashPoint()){
+                    if (wastes.getIsFlashPoint()) {
                         receiveSampleAnalysis.setFlashPoint(0); // 如果检测项目存在设置初始值为0
-                    }else {
+                    } else {
                         receiveSampleAnalysis.setFlashPoint(-9999);  // 如果不存在则设置为不可能值-9999
                     }
-                    if(wastes.getIsViscosity()){
+                    if (wastes.getIsViscosity()) {
                         receiveSampleAnalysis.setViscosity("0"); // 如果检测项目存在设置初始值为0
-                    }else {
+                    } else {
                         receiveSampleAnalysis.setViscosity("-9999");  // 如果不存在则设置为不可能值-9999
                     }
-                    if(wastes.getIsHotMelt()){
+                    if (wastes.getIsHotMelt()) {
                         receiveSampleAnalysis.setHotMelt("0"); // 如果检测项目存在设置初始值为0
-                    }else {
+                    } else {
                         receiveSampleAnalysis.setHotMelt("-9999");  // 如果不存在则设置为不可能值-9999
                     }
                     receiveSampleAnalysisService.add(receiveSampleAnalysis);  // 添加新的化验结果单
@@ -337,6 +346,111 @@ public class PRSampleInfoController {
             }
             res.put("status", "success");
             res.put("message", "确认登记成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "确认登记失败！");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 一键确认收样功能
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("confirmAllSampleInformationCheck")
+    @ResponseBody
+    public String confirmAllSampleInformationCheck(@RequestBody SampleInformation sampleInformation1) {
+        JSONObject res = new JSONObject();
+        try {
+            // 修改送样登记单状态为已签收
+            sampleInformationService.confirmAllCheck(sampleInformation1);
+            // 创建化验单
+            if (sampleInformation1.getSampleIdList().size() > 0) {
+                for (String sampleId : sampleInformation1.getSampleIdList()) {
+                    SampleInformation sampleInformation = sampleInformationService.getById(sampleId); // 获取对象
+                    if (sampleInformation.getWastesList() != null && sampleInformation.getWastesList().size() > 0) {
+                        for (Wastes wastes : sampleInformation.getWastesList()) {
+                            ReceiveSampleAnalysis receiveSampleAnalysis = new ReceiveSampleAnalysis();
+                            receiveSampleAnalysis.setId(sampleInformation.getId()); // 化验单号与预约单号保持一致
+                            receiveSampleAnalysis.setSampleId(sampleInformation.getId());
+                            receiveSampleAnalysis.setFinishDate(new Date());
+                            receiveSampleAnalysis.setWastesName(wastes.getName());
+                            receiveSampleAnalysis.setWastesCode(wastes.getCode());
+                            Client produceCompany = new Client();
+                            produceCompany.setClientId(sampleInformation.getCompanyCode());
+                            produceCompany.setCompanyName(sampleInformation.getCompanyName());
+                            receiveSampleAnalysis.setProduceCompany(produceCompany);
+                            receiveSampleAnalysis.setFormType(wastes.getFormType());
+                            receiveSampleAnalysis.setCheckState(CheckState.NewBuild);
+                            receiveSampleAnalysis.setSender(sampleInformation.getSendingPerson());
+                            if (wastes.getIsPH()) {
+                                receiveSampleAnalysis.setPH(0); // 如果检测项目存在设置初始值为0
+                            } else {
+                                receiveSampleAnalysis.setPH(-9999);  // 如果不存在则设置为不可能值-9999
+                            }
+                            if (wastes.getIsAsh()) {
+                                receiveSampleAnalysis.setAsh(0); // 如果检测项目存在设置初始值为0
+                            } else {
+                                receiveSampleAnalysis.setAsh(-9999);  // 如果不存在则设置为不可能值-9999
+                            }
+                            if (wastes.getIsWater()) {
+                                receiveSampleAnalysis.setWater(0); // 如果检测项目存在设置初始值为0
+                            } else {
+                                receiveSampleAnalysis.setWater(-9999);  // 如果不存在则设置为不可能值-9999
+                            }
+                            if (wastes.getIsHeat()) {
+                                receiveSampleAnalysis.setHeat(0); // 如果检测项目存在设置初始值为0
+                            } else {
+                                receiveSampleAnalysis.setHeat(-9999);  // 如果不存在则设置为不可能值-9999
+                            }
+                            if (wastes.getIsSulfur()) {
+                                receiveSampleAnalysis.setSulfur(0); // 如果检测项目存在设置初始值为0
+                            } else {
+                                receiveSampleAnalysis.setSulfur(-9999);  // 如果不存在则设置为不可能值-9999
+                            }
+                            if (wastes.getIsChlorine()) {
+                                receiveSampleAnalysis.setChlorine(0); // 如果检测项目存在设置初始值为0
+                            } else {
+                                receiveSampleAnalysis.setChlorine(-9999);  // 如果不存在则设置为不可能值-9999
+                            }
+                            if (wastes.getIsFluorine()) {
+                                receiveSampleAnalysis.setFluorine(0); // 如果检测项目存在设置初始值为0
+                            } else {
+                                receiveSampleAnalysis.setFluorine(-9999);  // 如果不存在则设置为不可能值-9999
+                            }
+                            if (wastes.getIsPhosphorus()) {
+                                receiveSampleAnalysis.setPhosphorus(0); // 如果检测项目存在设置初始值为0
+                            } else {
+                                receiveSampleAnalysis.setPhosphorus(-9999);  // 如果不存在则设置为不可能值-9999
+                            }
+                            if (wastes.getIsFlashPoint()) {
+                                receiveSampleAnalysis.setFlashPoint(0); // 如果检测项目存在设置初始值为0
+                            } else {
+                                receiveSampleAnalysis.setFlashPoint(-9999);  // 如果不存在则设置为不可能值-9999
+                            }
+                            if (wastes.getIsViscosity()) {
+                                receiveSampleAnalysis.setViscosity("0"); // 如果检测项目存在设置初始值为0
+                            } else {
+                                receiveSampleAnalysis.setViscosity("-9999");  // 如果不存在则设置为不可能值-9999
+                            }
+                            if (wastes.getIsHotMelt()) {
+                                receiveSampleAnalysis.setHotMelt("0"); // 如果检测项目存在设置初始值为0
+                            } else {
+                                receiveSampleAnalysis.setHotMelt("-9999");  // 如果不存在则设置为不可能值-9999
+                            }
+                            receiveSampleAnalysisService.add(receiveSampleAnalysis);  // 添加新的化验结果单
+                        }
+                    }
+                }
+                res.put("status", "success");
+                res.put("message", "确认登记成功！");
+            } else {
+                res.put("status", "success");
+                res.put("message", "请勾选需要收样的单号！");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
@@ -388,6 +502,7 @@ public class PRSampleInfoController {
 
     /**
      * 作废
+     *
      * @param sampleId
      * @return
      */
@@ -398,7 +513,7 @@ public class PRSampleInfoController {
         try {
             String newId = "I-" + sampleId; // 作废的数据将ID前添加I用于区别
 
-            sampleInformationService.updateSampleInfo(sampleId,newId);
+            sampleInformationService.updateSampleInfo(sampleId, newId);
             res.put("status", "success");
             res.put("message", "作废数据成功！");
         } catch (Exception e) {
@@ -547,7 +662,7 @@ public class PRSampleInfoController {
     public String getSampleFormType() {
         JSONObject res = new JSONObject();
         //JSONArray formTypeList = JSONArray.fromArray(FormType.values());
-        FormType[] states = new FormType[]{FormType.Liquid,FormType.Solid, FormType.HalfSolid,FormType.Solid1AndHalfSolid,FormType.HalfSolidAndLiquid,FormType.Solid1AndLiquid};
+        FormType[] states = new FormType[]{FormType.Liquid, FormType.Solid, FormType.HalfSolid, FormType.Solid1AndHalfSolid, FormType.HalfSolidAndLiquid, FormType.Solid1AndLiquid};
         JSONArray formTypeList = JSONArray.fromArray(states);
         res.put("formTypeList", formTypeList);
         return res.toString();
@@ -616,7 +731,7 @@ public class PRSampleInfoController {
                     } while (sampleInformationService.getByWastesId(id) != null);
                 } else {
                     int index1 = Integer.parseInt(id1.substring(id1.length() - 5)); // 截取ID后五位，然后叠加
-                    String index2 = id1.substring(0,id1.length() - 5); // 截取ID前几位
+                    String index2 = id1.substring(0, id1.length() - 5); // 截取ID前几位
                     index1++;
                     id1 = index2 + index1;  // 拼接ID
                 }
@@ -654,17 +769,28 @@ public class PRSampleInfoController {
                         break;
                 }
                 // 设置检测项目
-                if (!data[i][7].toString().equals("null") && (data[i][7].toString().equals("R") || data[i][7].toString().equals("1") || data[i][7].toString().equals("1.0"))) wastes.setIsPH(true);
-                if (!data[i][8].toString().equals("null") && (data[i][8].toString().equals("R") || data[i][8].toString().equals("1") || data[i][8].toString().equals("1.0"))) wastes.setIsAsh(true);
-                if (!data[i][9].toString().equals("null") && (data[i][9].toString().equals("R") || data[i][9].toString().equals("1") || data[i][9].toString().equals("1.0"))) wastes.setIsWater(true);
-                if (!data[i][10].toString().equals("null") && (data[i][10].toString().equals("R") || data[i][10].toString().equals("1") || data[i][10].toString().equals("1.0"))) wastes.setIsHeat(true);
-                if (!data[i][11].toString().equals("null") && (data[i][11].toString().equals("R") || data[i][11].toString().equals("1") || data[i][11].toString().equals("1.0"))) wastes.setIsSulfur(true);
-                if (!data[i][12].toString().equals("null") && (data[i][12].toString().equals("R") || data[i][12].toString().equals("1") || data[i][12].toString().equals("1.0"))) wastes.setIsChlorine(true);
-                if (!data[i][13].toString().equals("null") && (data[i][13].toString().equals("R") || data[i][13].toString().equals("1") || data[i][13].toString().equals("1.0"))) wastes.setIsFluorine(true);
-                if (!data[i][14].toString().equals("null") && (data[i][14].toString().equals("R") || data[i][14].toString().equals("1") || data[i][14].toString().equals("1.0"))) wastes.setIsPhosphorus(true);
-                if (!data[i][15].toString().equals("null") && (data[i][15].toString().equals("R") || data[i][15].toString().equals("1") || data[i][15].toString().equals("1.0"))) wastes.setIsFlashPoint(true);
-                if (!data[i][16].toString().equals("null") && (data[i][16].toString().equals("R") || data[i][16].toString().equals("1") || data[i][16].toString().equals("1.0"))) wastes.setIsViscosity(true);
-                if (!data[i][17].toString().equals("null") && (data[i][17].toString().equals("R") || data[i][17].toString().equals("1") || data[i][17].toString().equals("1.0"))) wastes.setIsHotMelt(true);
+                if (!data[i][7].toString().equals("null") && (data[i][7].toString().equals("R") || data[i][7].toString().equals("1") || data[i][7].toString().equals("1.0")))
+                    wastes.setIsPH(true);
+                if (!data[i][8].toString().equals("null") && (data[i][8].toString().equals("R") || data[i][8].toString().equals("1") || data[i][8].toString().equals("1.0")))
+                    wastes.setIsAsh(true);
+                if (!data[i][9].toString().equals("null") && (data[i][9].toString().equals("R") || data[i][9].toString().equals("1") || data[i][9].toString().equals("1.0")))
+                    wastes.setIsWater(true);
+                if (!data[i][10].toString().equals("null") && (data[i][10].toString().equals("R") || data[i][10].toString().equals("1") || data[i][10].toString().equals("1.0")))
+                    wastes.setIsHeat(true);
+                if (!data[i][11].toString().equals("null") && (data[i][11].toString().equals("R") || data[i][11].toString().equals("1") || data[i][11].toString().equals("1.0")))
+                    wastes.setIsSulfur(true);
+                if (!data[i][12].toString().equals("null") && (data[i][12].toString().equals("R") || data[i][12].toString().equals("1") || data[i][12].toString().equals("1.0")))
+                    wastes.setIsChlorine(true);
+                if (!data[i][13].toString().equals("null") && (data[i][13].toString().equals("R") || data[i][13].toString().equals("1") || data[i][13].toString().equals("1.0")))
+                    wastes.setIsFluorine(true);
+                if (!data[i][14].toString().equals("null") && (data[i][14].toString().equals("R") || data[i][14].toString().equals("1") || data[i][14].toString().equals("1.0")))
+                    wastes.setIsPhosphorus(true);
+                if (!data[i][15].toString().equals("null") && (data[i][15].toString().equals("R") || data[i][15].toString().equals("1") || data[i][15].toString().equals("1.0")))
+                    wastes.setIsFlashPoint(true);
+                if (!data[i][16].toString().equals("null") && (data[i][16].toString().equals("R") || data[i][16].toString().equals("1") || data[i][16].toString().equals("1.0")))
+                    wastes.setIsViscosity(true);
+                if (!data[i][17].toString().equals("null") && (data[i][17].toString().equals("R") || data[i][17].toString().equals("1") || data[i][17].toString().equals("1.0")))
+                    wastes.setIsHotMelt(true);
                 wastesList.add(wastes);
                 map.get(id).setWastesList(wastesList);
             }

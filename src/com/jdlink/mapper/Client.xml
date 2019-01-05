@@ -285,7 +285,7 @@
     </update>
 
     <select id="listAll" resultMap="ClientRM">
-        SELECT * FROM client WHERE clientStateId=89;
+        SELECT * FROM client;
     </select>
 
     <select id="list" resultMap="ClientRM">

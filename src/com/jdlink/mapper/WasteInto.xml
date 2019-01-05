@@ -95,6 +95,19 @@
     <update id="confirmSecondarySampleById" >
         update t_pr_secondarysample set  checkStateId=87,nowTime=NOW(),laboratorySignatory=#{1} where id=#{0};
     </update>
+
+    <!--一键签收功能 次生-->
+    <update id="confirmAllSecondAnalysisCheck" parameterType="SecondarySample">
+        <if test="sampleIdList.size() > 0">
+            <foreach collection="sampleIdList" item="sampleId" index="index">
+                UPDATE t_pr_secondarysample
+                SET
+                checkStateId=87,laboratorySignatory=#{laboratorySignatory},nowTime = NOW()
+                WHERE id = #{sampleId};
+            </foreach>
+        </if>
+    </update>
+
     <!--拒收-->
     <update id="rejectSecondarySampleById" >
         update t_pr_secondarysample set checkStateId=88,advice=#{1} ,nowTime=NOW() where id=#{0}

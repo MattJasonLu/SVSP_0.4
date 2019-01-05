@@ -1148,4 +1148,25 @@ public class InboundController {
         return res.toString();
     }
 
+    /**
+     * 更新入库单条目
+     * @param inboundOrderItem
+     * @return
+     */
+    @RequestMapping("updateInboundOrderItem")
+    @ResponseBody
+    public String updateInboundOrderItem(@RequestBody InboundOrderItem inboundOrderItem) {
+        JSONObject res = new JSONObject();
+        try {
+            // TODO: 2019年1月5日 更新入库单条目
+            res.put("status", "success");
+            res.put("message", "更新成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+        return res.toString();
+    }
+
 }
