@@ -3,6 +3,7 @@ package com.jdlink.service.produce.impl;
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.ReceiveSampleAnalysis;
+import com.jdlink.domain.Produce.SampleInfoAnalysis;
 import com.jdlink.mapper.produce.ReceiveSampleAnalysisMapper;
 import com.jdlink.service.produce.ReceiveSampleAnalysisService;
 import com.jdlink.util.RandomUtil;
@@ -47,4 +48,6 @@ public class ReceiveSampleAnalysisServiceImpl implements ReceiveSampleAnalysisSe
     public void update(ReceiveSampleAnalysis receiveSampleAnalysis) {
         receiveSampleAnalysisMapper.update(receiveSampleAnalysis);
     }
+
+
 }

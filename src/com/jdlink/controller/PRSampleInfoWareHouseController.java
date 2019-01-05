@@ -238,6 +238,13 @@ public class PRSampleInfoWareHouseController {
         return count;
     }
 
+    /**
+     * 确认签收功能
+     *
+     * @param sampleId
+     * @param laboratorySigner
+     * @return
+     */
     @RequestMapping("confirmSampleInformationWareHouseCheck")
     @ResponseBody
     public String confirmSampleInformationCheck(String sampleId, String laboratorySigner) {
@@ -328,6 +335,112 @@ public class PRSampleInfoWareHouseController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "确认登记失败！");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 一键确认收样功能
+     *
+     * @return
+     */
+    @RequestMapping("confirmAllSampleInformationWareHouseCheck")
+    @ResponseBody
+    public String confirmAllSampleInformationWareHouseCheck(@RequestBody SampleInformation sampleInformation1) {
+        JSONObject res = new JSONObject();
+        try {
+            // 修改送样登记单状态为已签收
+            sampleInfoWareHouseService.confirmAllCheck(sampleInformation1);
+            // 创建化验单
+            if (sampleInformation1.getSampleIdList().size() > 0) {
+                for (String sampleId : sampleInformation1.getSampleIdList()) {
+                    SampleInformation sampleInformation = sampleInfoWareHouseService.getById(sampleId);
+                    if (sampleInformation.getWastesList() != null && sampleInformation.getWastesList().size() > 0) {
+                        for (Wastes wastes : sampleInformation.getWastesList()) {
+                            SampleInfoAnalysis sampleAnalysis = new SampleInfoAnalysis();
+                            sampleAnalysis.setId(sampleInformation.getId());
+                            sampleAnalysis.setSampleId(sampleInformation.getId());
+                            sampleAnalysis.setSignDate(new Date());   // 签收日期
+                            sampleAnalysis.setWastesName(wastes.getName());
+                            sampleAnalysis.setWastesCode(wastes.getCode());
+                            sampleAnalysis.setTransferDraftId(wastes.getTransferId());
+                            Client produceCompany = new Client();
+                            produceCompany.setClientId(sampleInformation.getCompanyCode());
+                            produceCompany.setCompanyName(sampleInformation.getCompanyName());
+                            sampleAnalysis.setProduceCompany(produceCompany);
+                            sampleAnalysis.setFormType(wastes.getFormType());
+                            sampleAnalysis.setSender(sampleInformation.getSendingPerson());
+                            sampleAnalysis.setSigner(sampleInformation.getLaboratorySigner());
+                            sampleAnalysis.setCheckState(CheckState.NewBuild);
+                            if (wastes.getIsPH()) {
+                                sampleAnalysis.setPH(0); // 如果检测项目存在设置初始值为0
+                            } else {
+                                sampleAnalysis.setPH(-9999);  // 如果不存在则设置为不可能值-9999
+                            }
+                            if (wastes.getIsAsh()) {
+                                sampleAnalysis.setAsh(0); // 如果检测项目存在设置初始值为0
+                            } else {
+                                sampleAnalysis.setAsh(-9999);  // 如果不存在则设置为不可能值-9999
+                            }
+                            if (wastes.getIsWater()) {
+                                sampleAnalysis.setWater(0); // 如果检测项目存在设置初始值为0
+                            } else {
+                                sampleAnalysis.setWater(-9999);  // 如果不存在则设置为不可能值-9999
+                            }
+                            if (wastes.getIsHeat()) {
+                                sampleAnalysis.setHeat(0); // 如果检测项目存在设置初始值为0
+                            } else {
+                                sampleAnalysis.setHeat(-9999);  // 如果不存在则设置为不可能值-9999
+                            }
+                            if (wastes.getIsSulfur()) {
+                                sampleAnalysis.setSulfur(0); // 如果检测项目存在设置初始值为0
+                            } else {
+                                sampleAnalysis.setSulfur(-9999);  // 如果不存在则设置为不可能值-9999
+                            }
+                            if (wastes.getIsChlorine()) {
+                                sampleAnalysis.setChlorine(0); // 如果检测项目存在设置初始值为0
+                            } else {
+                                sampleAnalysis.setChlorine(-9999);  // 如果不存在则设置为不可能值-9999
+                            }
+                            if (wastes.getIsFluorine()) {
+                                sampleAnalysis.setFluorine(0); // 如果检测项目存在设置初始值为0
+                            } else {
+                                sampleAnalysis.setFluorine(-9999);  // 如果不存在则设置为不可能值-9999
+                            }
+                            if (wastes.getIsPhosphorus()) {
+                                sampleAnalysis.setPhosphorus(0); // 如果检测项目存在设置初始值为0
+                            } else {
+                                sampleAnalysis.setPhosphorus(-9999);  // 如果不存在则设置为不可能值-9999
+                            }
+                            if (wastes.getIsFlashPoint()) {
+                                sampleAnalysis.setFlashPoint(0); // 如果检测项目存在设置初始值为0
+                            } else {
+                                sampleAnalysis.setFlashPoint(-9999);  // 如果不存在则设置为不可能值-9999
+                            }
+                            if (wastes.getIsViscosity()) {
+                                sampleAnalysis.setViscosity("0"); // 如果检测项目存在设置初始值为0
+                            } else {
+                                sampleAnalysis.setViscosity("-9999");  // 如果不存在则设置为不可能值-9999
+                            }
+                            if (wastes.getIsHotMelt()) {
+                                sampleAnalysis.setHotMelt("0"); // 如果检测项目存在设置初始值为0
+                            } else {
+                                sampleAnalysis.setHotMelt("-9999");  // 如果不存在则设置为不可能值-9999
+                            }
+                            sampleInfoAnalysisService.add(sampleAnalysis);  // 添加新的化验结果单
+                        }
+                    }
+                }
+                res.put("status", "success");
+                res.put("message", "确认收样成功！");
+            }else {
+                res.put("status", "success");
+                res.put("message", "请勾选数据！");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "确认收样失败！");
         }
         return res.toString();
     }

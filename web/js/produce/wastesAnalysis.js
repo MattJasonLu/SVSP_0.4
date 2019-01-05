@@ -1,8 +1,111 @@
 /**
  * 模态框
  */
-function showModal() {
+function showModal(item) {
+
+
+    $("#cloneTr2").siblings().remove();
+    var id=$(item).parent().prev().prev().html();
+
+    var clientId=$(item).parent().prev().html();
+
+
+    var wastesName=$(item).parent().parent().children('td').eq(3).html();
+
+
+    var wastesCode=$(item).parent().parent().children('td').eq(4).html();
+
+    var data={
+        id:id,
+        produceCompany:{clientId:clientId},
+        wastesName:wastesName,
+        wastesCode:wastesCode,
+    };
+
+    console.log(id);
+    
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "comparison",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+            // console.log(result)
+            setCompareList(result);
+            }
+        },
+        error:function (result) {
+            
+        }
+    })
+
     $("#comparison").modal('show');
+}
+
+function setCompareList(result) {
+    console.log(result)
+    // 获取id为cloneTr的tr元素
+    var tr = $("#cloneTr2");
+
+    var sampleInfoAnalysis=result.sampleInfoAnalysis;
+
+
+    var clonedTr = tr.clone();
+
+    clonedTr.show();
+ if(sampleInfoAnalysis.produceCompany !=null){
+     clonedTr.children('td').eq(1).html(sampleInfoAnalysis.produceCompany.companyName)
+ }
+    clonedTr.children('td').eq(2).html(sampleInfoAnalysis.wastesName);
+    clonedTr.children('td').eq(3).html(sampleInfoAnalysis.wastesCode);
+    if(sampleInfoAnalysis.formType!=null){
+        clonedTr.children('td').eq(4).html(sampleInfoAnalysis.formType.name);
+    }
+    clonedTr.children('td').eq(5).html(setNumber2Line(sampleInfoAnalysis.PH.toFixed(2)));
+    clonedTr.children('td').eq(6).html(setNumber2Line(sampleInfoAnalysis.ash.toFixed(2)));
+    clonedTr.children('td').eq(7).html(setNumber2Line(sampleInfoAnalysis.chlorine.toFixed(2)));
+    clonedTr.children('td').eq(8).html(setNumber2Line(sampleInfoAnalysis.sulfur.toFixed(2)));
+    clonedTr.children('td').eq(9).html(setNumber2Line(sampleInfoAnalysis.chlorine.toFixed(2)));
+    clonedTr.children('td').eq(10).html(setNumber2Line(sampleInfoAnalysis.fluorine.toFixed(2)));
+    clonedTr.children('td').eq(11).html(setNumber2Line(sampleInfoAnalysis.phosphorus.toFixed(2)));
+    clonedTr.children('td').eq(12).html(setNumber2Line(sampleInfoAnalysis.flashPoint.toFixed(2)));
+    clonedTr.children('td').eq(13).html(setNumber2Line(sampleInfoAnalysis.viscosity));
+    clonedTr.children('td').eq(14).html(setNumber2Line(sampleInfoAnalysis.hotMelt));
+    clonedTr.removeAttr("id");
+    clonedTr.insertBefore(tr);
+    // tr.siblings().remove();
+    $.each(result.receiveSampleAnalysisList, function (index, item) {
+        var obj = eval(item);
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        clonedTr.show();
+        if(obj.produceCompany !=null){
+            clonedTr.children('td').eq(1).html(obj.produceCompany.companyName)
+        }
+        clonedTr.children('td').eq(2).html(obj.wastesName);
+        clonedTr.children('td').eq(3).html(obj.wastesCode);
+        if(obj.formType!=null){
+            clonedTr.children('td').eq(4).html(obj.formType.name);
+        }
+        clonedTr.children('td').eq(5).html(setNumber2Line(obj.PH.toFixed(2)));
+        clonedTr.children('td').eq(6).html(setNumber2Line(obj.ash.toFixed(2)));
+        clonedTr.children('td').eq(7).html(setNumber2Line(obj.chlorine.toFixed(2)));
+        clonedTr.children('td').eq(8).html(setNumber2Line(obj.sulfur.toFixed(2)));
+        clonedTr.children('td').eq(9).html(setNumber2Line(obj.chlorine.toFixed(2)));
+        clonedTr.children('td').eq(10).html(setNumber2Line(obj.fluorine.toFixed(2)));
+        clonedTr.children('td').eq(11).html(setNumber2Line(obj.phosphorus.toFixed(2)));
+        clonedTr.children('td').eq(12).html(setNumber2Line(obj.flashPoint.toFixed(2)));
+        clonedTr.children('td').eq(13).html(setNumber2Line(obj.viscosity));
+        clonedTr.children('td').eq(14).html(setNumber2Line(obj.hotMelt));
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+    });
+    // 隐藏无数据的tr
+    tr.hide();
+
 }
 
 /**
@@ -126,6 +229,7 @@ function setDataList(result) {
         clonedTr.find("td[name='id']").text(obj.id);
         clonedTr.find("td[name='transferDraftId']").text(obj.transferDraftId);
         if (obj.produceCompany != null) clonedTr.find("td[name='produceCompanyName']").text(obj.produceCompany.companyName);
+        clonedTr.find("td[name='clientId']").html(obj.produceCompany.clientId);
         clonedTr.find("td[name='wastesName']").text(obj.wastesName);
         clonedTr.find("td[name='wastesCode']").text(obj.wastesCode);
         if(obj.formType != null)
@@ -143,6 +247,8 @@ function setDataList(result) {
         clonedTr.find("td[name='hotMelt']").text(setNumber2Line(obj.hotMelt));
         clonedTr.find("td[name='signer']").text(obj.signer);
         clonedTr.find("td[name='remark']").text(obj.remark);
+        clonedTr.find("td[name='id']").text(obj.id);
+
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
         clonedTr.insertBefore(tr);

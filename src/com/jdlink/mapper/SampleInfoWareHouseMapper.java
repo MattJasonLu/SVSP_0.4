@@ -17,6 +17,7 @@ public interface SampleInfoWareHouseMapper {
     List<SampleInformation> listPage(Page page);
     SampleInformation getById(String sampleId);
     void confirmCheck(@Param("sampleId") String sampleId, @Param("laboratorySigner") String laboratorySigner);
+    void confirmAllCheck(SampleInformation sampleInformation);
     void update(SampleInformation sampleInformation);
     List<SampleInformation> listByKeyword(@Param(value="keyword") String keyword);
     void updateSampleInfo(@Param("sampleId") String sampleId,@Param("newId") String newId);
