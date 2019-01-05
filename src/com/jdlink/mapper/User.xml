@@ -89,6 +89,11 @@
         UPDATE t_ur_role SET roleName=#{roleName} WHERE id=#{id};
     </update>
 
+    <!--删除角色-->
+    <delete id="deleteRoleById" parameterType="int" >
+        delete from t_ur_role where id=#{id};
+    </delete>
+
     <!--列出所有功能-->
     <select id="listFunction" resultMap="FunctionRM">
         SELECT * FROM t_ur_function WHERE parentFunctionId=0;

@@ -18,6 +18,8 @@ public interface UserMapper {
 
     void add(User user);
 
+    void deleteRoleById(int id);
+
     void delete(int id);
 
     User get(int id);
