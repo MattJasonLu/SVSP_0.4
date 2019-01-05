@@ -383,473 +383,162 @@
                         <table class="table table-bordered">
                             <tbody>
                             <tr>
-                                <td class="text-center" colspan="2">创建人</td>
-                                <td class="text-center" colspan="2"><input class="focus" id="modal-founder" title="" maxlength="15"></td>
-                                <td class="text-center" colspan="2">计划运转率</td>
-                                <td class="text-center" colspan="2"><input class="focus" type="number" id="modal-transportRate" title="" maxlength="15"></td>
+                                <td class="text-center" >创建人</td>
+                                <td class="text-center" ><input class="focus" id="modal-founder" title="" maxlength="15"></td>
+                                <td class="text-center" >计划运转率(%)</td>
+                                <td class="text-center" ><input class="focus" type="number" id="modal-transportRate" title="" maxlength="15"></td>
                             </tr>
                             <tr>
-                                <td class="text-center" colspan="2">计划数量</td>
-                                <td class="text-center" colspan="2"><input class="focus" type="number" id="modal-planQuantity" title="" maxlength="15"></td>
-                                <td class="text-center" colspan="2"></td>
-                                <td class="text-center" colspan="2"></td>
+                                <td class="text-center" >计划数量(吨)</td>
+                                <td class="text-center" ><input class="focus" type="number" id="modal-planQuantity" title="" maxlength="15"></td>
+                                <td class="text-center" ></td>
+                                <td class="text-center" ></td>
                             </tr>
                             <tr>
-                                <td class="text-center" colspan="8">计划辅料消耗：</td>
+                                <td class="text-center" colspan="4">计划辅料消耗：</td>
                             </tr>
                             <tr>
-                                <td class="text-center" style="width: 12.5%">消石灰</td>
+                                <td class="text-center" style="width: 12.5%">消石灰(公斤)</td>
                                 <td class="text-center" style="width: 12.5%"><input class="focus" type="number" id="modal-calcareousLime" title="" maxlength="20"></td>
-                                <td class="text-center" style="width: 12.5%">单位</td>
-                                <td class="text-center focus" style="width: 12.5%">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="5">kw*h</option>
-                                    </select>
-                                </td>
-                                <td class="text-center" style="width: 12.5%">污水用阻垢剂</td>
+                                <td class="text-center" style="width: 12.5%">污水用阻垢剂(公斤)</td>
                                 <td class="text-center" style="width: 12.5%"><input class="focus" type="number" id="modal-waterScaleInhibitor" title="" maxlength="20"></td>
-                                <td class="text-center" style="width: 12.5%">单位</td>
-                                <td class="text-center" style="width: 12.5%">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="5">kw*h</option>
-                                    </select>
-                                </td>
                             </tr>
                             <tr>
-                                <td class="text-center">普通活性炭粉</td>
+                                <td class="text-center">普通活性炭粉(公斤)</td>
                                 <td class="text-center"><input class="focus" type="number"
                                                                id="modal-commonActivatedCarbon" title=""
                                                                maxlength="20">
                                 </td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="6">kw*h</option>
-                                    </select>
-                                </td>
-                                <td class="text-center">消毒液(NaCLO)</td>
+                                <td class="text-center">消毒液(NaCLO)(公斤)</td>
                                 <td class="text-center"><input class="focus" type="number" id="modal-naclo" title=""
                                                                maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="6">kw*h</option>
-                                    </select>
-                                </td>
                             </tr>
                             <tr>
-                                <td class="text-center">高活性碳粉</td>
+                                <td class="text-center">高活性碳粉(公斤)</td>
                                 <td class="text-center"><input class="focus" type="number"
                                                                id="modal-activatedCarbon"
                                                                title="" maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="6">kw*h</option>
-                                    </select>
-                                </td>
-                                <td class="text-center">标准箱</td>
+                                <td class="text-center">标准箱(只)</td>
                                 <td class="text-center"><input class="focus" type="number" id="modal-standardBox"
                                                                title="" maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="5">kw*h</option>
-                                    </select>
-                                </td>
                             </tr>
                             <tr>
-                                <td class="text-center">活性炭颗粒</td>
+                                <td class="text-center">活性炭颗粒(公斤)</td>
                                 <td class="text-center"><input class="focus" type="number"
                                                                id="modal-activatedCarbonParticles" title=""
                                                                maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="6">kw*h</option>
-                                    </select>
-                                </td>
-                                <td class="text-center">木托盘</td>
+                                <td class="text-center">木托盘(只)</td>
                                 <td class="text-center"><input class="focus" type="number" id="modal-woodenPallets"
                                                                title="" maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="6">kw*h</option>
-                                    </select>
-                                </td>
                             </tr>
                             <tr>
-                                <td class="text-center">碱液</td>
+                                <td class="text-center">碱液(公斤)</td>
                                 <td class="text-center"><input class="focus" type="number" id="modal-lye" title=""
                                                                maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="5">kw*h</option>
-                                    </select>
-                                </td>
-                                <td class="text-center">1m标准托盘</td>
+                                <td class="text-center">1m标准托盘(只)</td>
                                 <td class="text-center"><input class="focus" type="number"
                                                                id="modal-standardTray_1m"
                                                                title="" maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="5">kw*h</option>
-                                    </select>
-                                </td>
                             </tr>
                             <tr>
-                                <td class="text-center">片碱</td>
+                                <td class="text-center">片碱(公斤)</td>
                                 <td class="text-center"><input class="focus" type="number" id="modal-causticSoda"
                                                                title="" maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="5">kw*h</option>
-                                    </select>
-                                </td>
-                                <td class="text-center">1.2m标准托盘</td>
+                                <td class="text-center">1.2m标准托盘(只)</td>
                                 <td class="text-center"><input class="focus" type="number"
                                                                id="modal-standardTray_1_2m"
                                                                title="" maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="6">kw*h</option>
-                                    </select>
-                                </td>
                             </tr>
                             <tr>
-                                <td class="text-center">尿素</td>
+                                <td class="text-center">尿素(公斤)</td>
                                 <td class="text-center"><input class="focus" type="number" id="modal-urea" title=""
                                                                maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="5">kw*h</option>
-                                    </select>
-                                </td>
-                                <td class="text-center">炉渣用吨袋</td>
+
+                                <td class="text-center">炉渣用吨袋(只)</td>
                                 <td class="text-center"><input class="focus" type="number" id="modal-slagBag"
                                                                title=""
                                                                maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="6">kw*h</option>
-                                    </select>
-                                </td>
                             </tr>
                             <tr>
-                                <td class="text-center">盐酸</td>
+                                <td class="text-center">盐酸(公斤)</td>
                                 <td class="text-center"><input class="focus" type="number"
                                                                id="modal-hydrochloricAcid"
                                                                title="" maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="5">kw*h</option>
-                                    </select>
-                                </td>
-                                <td class="text-center">飞灰用吨袋</td>
+                                <td class="text-center">飞灰用吨袋(只)</td>
                                 <td class="text-center"><input class="focus" type="number" id="modal-flyAshBag"
                                                                title=""
                                                                maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="5">kw*h</option>
-                                    </select>
-                                </td>
                             </tr>
                             <tr>
-                                <td class="text-center">小苏打(NaHCO3)</td>
+                                <td class="text-center">小苏打(NaHCO3)(公斤)</td>
                                 <td class="text-center"><input class="focus" type="number" id="modal-nahco3"
                                                                title=""
                                                                maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="5">kw*h</option>
-                                    </select>
-                                </td>
-                                <td class="text-center">吨箱</td>
+                                <td class="text-center">吨箱(只)</td>
                                 <td class="text-center"><input class="focus" type="number" id="modal-TonBox"
                                                                title=""
                                                                maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="5">kw*h</option>
-                                    </select>
-                                </td>
                             </tr>
                             <tr>
-                                <td class="text-center">面粉</td>
+                                <td class="text-center">面粉(公斤)</td>
                                 <td class="text-center"><input class="focus" type="number" id="modal-flour" title=""
                                                                maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="5">kw*h</option>
-                                    </select>
-                                </td>
-                                <td class="text-center">蒸汽</td>
+                                <td class="text-center">蒸汽(立方)</td>
                                 <td class="text-center"><input class="focus" type="number" id="modal-steam" title=""
                                                                maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="5">kw*h</option>
-                                    </select>
-                                </td>
                             </tr>
                             <tr>
-                                <td class="text-center">消泡剂</td>
+                                <td class="text-center">消泡剂(公斤)</td>
                                 <td class="text-center"><input class="focus" type="number" id="modal-defoamer"
                                                                title=""
                                                                maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="6">kw*h</option>
-                                    </select>
-                                </td>
-                                <td class="text-center">柴油</td>
+                                <td class="text-center">柴油(公斤)</td>
                                 <td class="text-center"><input class="focus" type="number" id="modal-dieselOil"
                                                                title=""
                                                                maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="5">kw*h</option>
-                                    </select>
-                                </td>
                             </tr>
                             <tr>
-                                <td class="text-center">絮凝剂(聚丙烯酰胺)</td>
+                                <td class="text-center">絮凝剂(聚丙烯酰胺)(公斤)</td>
                                 <td class="text-center"><input class="focus" type="number" id="modal-flocculant"
                                                                title="" maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="5">kw*h</option>
-                                    </select>
-                                </td>
-                                <td class="text-center">天然气</td>
+                                <td class="text-center">天然气(立方)</td>
                                 <td class="text-center"><input class="focus" type="number" id="modal-naturalGas"
                                                                title="" maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="5">kw*h</option>
-                                    </select>
-                                </td>
                             </tr>
                             <tr>
-                                <td class="text-center">软水用还原剂</td>
+                                <td class="text-center">软水用还原剂(公斤)</td>
                                 <td class="text-center"><input class="focus" type="number"
                                                                id="modal-softWaterReducingAgent" title=""
                                                                maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="5">kw*h</option>
-                                    </select>
-                                </td>
-                                <td class="text-center">电量</td>
+                                <td class="text-center">电量(kw*h)</td>
                                 <td class="text-center"><input class="focus" type="number"
                                                                id="modal-electricQuantity"
                                                                title="" maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="5">kw*h</option>
-                                    </select>
-                                </td>
                             </tr>
                             <tr>
-                                <td class="text-center">软水用阻垢剂</td>
+                                <td class="text-center">软水用阻垢剂(公斤)</td>
                                 <td class="text-center"><input class="focus" type="number"
                                                                id="modal-softWaterScaleInhibitor" title=""
                                                                maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="5">kw*h</option>
-                                    </select>
-                                </td>
-                                <td class="text-center">工业水量</td>
+                                <td class="text-center">工业水量(立方)</td>
                                 <td class="text-center"><input class="focus" type="number"
                                                                id="modal-industrialWater"
                                                                title="" maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="6">kw*h</option>
-                                    </select>
-                                </td>
                             </tr>
                             <tr>
-                                <td class="text-center">氨水(PH调节剂)</td>
+                                <td class="text-center">氨水(PH调节剂)(公斤)</td>
                                 <td class="text-center"><input class="focus" type="number" id="modal-pH" title=""
                                                                maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="6">kw*h</option>
-                                    </select>
-                                </td>
-                                <td class="text-center">自来水量</td>
+                                <td class="text-center">自来水量(立方)</td>
                                 <td class="text-center"><input class="focus" type="number"
                                                                id="modal-tapWaterQuantity"
                                                                title="" maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="5">kw*h</option>
-                                    </select>
-                                </td>
                             </tr>
                             <tr>
-                                <td class="text-center">污水用还原剂</td>
+                                <td class="text-center">污水用还原剂(公斤)</td>
                                 <td class="text-center"><input class="focus" type="number"
                                                                id="modal-waterReducingAgent"
                                                                title="" maxlength="20"></td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">
-                                    <select title="">
-                                        <option value="1">吨</option>
-                                        <option value="2">公斤</option>
-                                        <option value="3">只</option>
-                                        <option value="4">立方</option>
-                                        <option value="6">kw*h</option>
-                                    </select>
-                                </td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                             </tr>
