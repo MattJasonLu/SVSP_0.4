@@ -1,12 +1,9 @@
 package com.jdlink.controller;
 
-import com.jdlink.domain.Client;
+import com.jdlink.domain.*;
 import com.jdlink.domain.Dictionary.SewagePointItem;
 import com.jdlink.domain.Dictionary.SoftPointItem;
-import com.jdlink.domain.FormType;
-import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
-import com.jdlink.domain.Wastes;
 import com.jdlink.service.ProductionDailyService;
 import com.jdlink.service.dictionary.DictionaryService;
 import com.jdlink.service.produce.SewageTestService;
@@ -265,7 +262,7 @@ public class PRProductionDailyController {
         JSONObject res = new JSONObject();
         try {
             List<Sewageregistration> softWaterList = productionDailyService.searchSoftWater(sewageregistration);
-           // JSONArray data = JSONArray.fromArray(softWaterList.toArray(new SoftWater[softWaterList.size()]));
+            // JSONArray data = JSONArray.fromArray(softWaterList.toArray(new SoftWater[softWaterList.size()]));
             res.put("status", "success");
             res.put("message", "查询成功");
             res.put("data", softWaterList);
@@ -449,154 +446,267 @@ public class PRProductionDailyController {
 
     }
 
+    /**
+     * 一键签收污水
+     *
+     * @return
+     */
+    @RequestMapping("confirmAllSewageAnalysisCheck")
+    @ResponseBody
+    public String confirmAllSewageAnalysisCheck(@RequestBody Sewageregistration sewageregistration1) {
+        JSONObject res = new JSONObject();
+        try {
+            // 改变单据状态
+            productionDailyService.confirmAllSewageAnalysisCheck(sewageregistration1);
+            if(sewageregistration1.getSampleIdList().size() > 0){
+                for (String id : sewageregistration1.getSampleIdList()) {
+                    //获取样品单号
+                    Sewageregistration sewageregistration = productionDailyService.getSewaGeregistrationById(id);
+                    SewageregistrationItem sewageregistrationItem = sewageregistration.getSewageregistrationItemList().get(0);
+                    SewageTest sewageTest = new SewageTest();
+                    sewageTest.setId(id);
+                    sewageTest.setAddress(sewageregistration.getSewagePointItem().getDictionaryItemName());
+                    if (sewageregistrationItem.getCod() == 1) {
+                        sewageTest.setCOD(0);
+                    } else {
+                        sewageTest.setCOD(-9999);
+                    }
+                    if (sewageregistrationItem.getPh() == 1) {
+                        sewageTest.setPh(0);
+                    } else {
+                        sewageTest.setPh(-9999);
+                    }
+                    if (sewageregistrationItem.getBod5() == 1) {
+                        sewageTest.setBOD5(0);
+                    } else {
+                        sewageTest.setBOD5(-9999);
+                    }
+                    if (sewageregistrationItem.getBod5() == 1) {
+                        sewageTest.setBOD5(0);
+                    } else {
+                        sewageTest.setBOD5(-9999);
+                    }
+                    if (sewageregistrationItem.getN2() == 1) {
+                        sewageTest.setN2(0);
+                    } else {
+                        sewageTest.setN2(-9999);
+                    }
+                    if (sewageregistrationItem.getNitrogen() == 1) {
+                        sewageTest.setNitrogen(0);
+                    } else {
+                        sewageTest.setNitrogen(-9999);
+                    }
+                    if (sewageregistrationItem.getPhosphorus() == 1) {
+                        sewageTest.setPhosphorus(0);
+                    } else {
+                        sewageTest.setPhosphorus(-9999);
+                    }
+                    if (sewageTestService.getSewageTestById(id) == null) {
+                        sewageTestService.addSewageTest(sewageTest);
+                    } else {
+                        productionDailyService.updateSampleTest(sewageTest);
+                    }
+                }
+                res.put("status", "success");
+                res.put("message", "收样成功");
+            }else {
+                res.put("status", "success");
+                res.put("message", "请勾选需要签收的单据");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "收样失败");
+        }
+        return res.toString();
+    }
 
     //确认送样==》污水
     @RequestMapping("confirmSewaGeregistrationById")
     @ResponseBody
-    public String confirmSewaGeregistrationById(String id,String laboratorySignatory) {
+    public String confirmSewaGeregistrationById(String id, String laboratorySignatory) {
         JSONObject res = new JSONObject();
         try {
-            productionDailyService.confirmSewaGeregistrationById(id,laboratorySignatory);
+            productionDailyService.confirmSewaGeregistrationById(id, laboratorySignatory);
             //获取样品单号
-            Sewageregistration sewageregistration=productionDailyService.getSewaGeregistrationById(id);
-
-
-            SewageregistrationItem sewageregistrationItem=sewageregistration.getSewageregistrationItemList().get(0);
-
-            SewageTest sewageTest=new SewageTest();
-
+            Sewageregistration sewageregistration = productionDailyService.getSewaGeregistrationById(id);
+            SewageregistrationItem sewageregistrationItem = sewageregistration.getSewageregistrationItemList().get(0);
+            SewageTest sewageTest = new SewageTest();
             sewageTest.setId(id);
-
             sewageTest.setAddress(sewageregistration.getSewagePointItem().getDictionaryItemName());
-
-            if(sewageregistrationItem.getCod()==1){
+            if (sewageregistrationItem.getCod() == 1) {
                 sewageTest.setCOD(0);
-            }
-            else {
+            } else {
                 sewageTest.setCOD(-9999);
             }
-            if(sewageregistrationItem.getPh()==1){
+            if (sewageregistrationItem.getPh() == 1) {
                 sewageTest.setPh(0);
-            }
-            else {
+            } else {
                 sewageTest.setPh(-9999);
             }
-            if(sewageregistrationItem.getBod5()==1){
+            if (sewageregistrationItem.getBod5() == 1) {
                 sewageTest.setBOD5(0);
-            }
-            else {
+            } else {
                 sewageTest.setBOD5(-9999);
             }
-            if(sewageregistrationItem.getBod5()==1){
+            if (sewageregistrationItem.getBod5() == 1) {
                 sewageTest.setBOD5(0);
-            }
-            else {
+            } else {
                 sewageTest.setBOD5(-9999);
             }
-            if(sewageregistrationItem.getN2()==1){
+            if (sewageregistrationItem.getN2() == 1) {
                 sewageTest.setN2(0);
-            }
-            else {
+            } else {
                 sewageTest.setN2(-9999);
             }
-            if(sewageregistrationItem.getNitrogen()==1){
+            if (sewageregistrationItem.getNitrogen() == 1) {
                 sewageTest.setNitrogen(0);
-            }
-            else {
+            } else {
                 sewageTest.setNitrogen(-9999);
             }
-            if(sewageregistrationItem.getPhosphorus()==1){
+            if (sewageregistrationItem.getPhosphorus() == 1) {
                 sewageTest.setPhosphorus(0);
-            }
-            else {
+            } else {
                 sewageTest.setPhosphorus(-9999);
             }
-
-
-
-                if(sewageTestService.getSewageTestById(id)==null){
-                    sewageTestService.addSewageTest(sewageTest);
-                }
-                else {
-                    productionDailyService.updateSampleTest(sewageTest);
-                }
-
-
-
+            if (sewageTestService.getSewageTestById(id) == null) {
+                sewageTestService.addSewageTest(sewageTest);
+            } else {
+                productionDailyService.updateSampleTest(sewageTest);
+            }
             res.put("status", "success");
             res.put("message", "收样成功");
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "收样失败");
-
         }
-
         return res.toString();
+    }
 
-
+    /**
+     * 一键签收功能 软水
+     * @param sewageregistration1
+     * @return
+     */
+    @RequestMapping("confirmAllSoftWaterAnalysisCheck")
+    @ResponseBody
+    public String confirmAllSoftWaterCheck(@RequestBody Sewageregistration sewageregistration1) {
+        JSONObject res = new JSONObject();
+        try {
+            // 改变单据状态
+            productionDailyService.confirmAllSoftWaterCheck(sewageregistration1);
+            if(sewageregistration1.getSampleIdList().size() > 0) {
+                for (String id : sewageregistration1.getSampleIdList()) {
+                    //获取样品单号
+                    Sewageregistration sewageregistration = productionDailyService.getSoftGeregistrationById(id);
+                    SewageregistrationItem sewageregistrationItem = sewageregistration.getSewageregistrationItemList().get(0);
+                    System.out.println("软水样品情况:" + sewageregistrationItem);
+                    SoftTest softTest = new SoftTest();
+                    softTest.setId(id);
+                    softTest.setAddress(sewageregistration.getSoftPointItem().getDictionaryItemName());
+                    if (sewageregistrationItem.getPh() == 1) {
+                        softTest.setPH(0);
+                    } else {
+                        softTest.setPH(-9999);
+                    }
+                    if (sewageregistrationItem.getElectricalConductivity() == 1) {
+                        softTest.setElectricalConductivity(0);
+                    } else {
+                        softTest.setElectricalConductivity(-9999);
+                    }
+                    if (sewageregistrationItem.getHardness() == 1) {
+                        softTest.setHardness("0");
+                    } else {
+                        softTest.setHardness("-9999");
+                    }
+                    if (sewageregistrationItem.getTurbidity() == 1) {
+                        softTest.setTurbidity(0);
+                    } else {
+                        softTest.setTurbidity(-9999);
+                    }
+                    if (sewageregistrationItem.getBasicity() == 1) {
+                        softTest.setBasicity(0);
+                    } else {
+                        softTest.setBasicity(-9999);
+                    }
+                    if (sewageregistrationItem.getPhenolphthalein() == 1) {
+                        softTest.setPhenolphthalein(0);
+                    } else {
+                        softTest.setPhenolphthalein(-9999);
+                    }
+                    if (sewageTestService.getSoftTestById(id) == null) {
+                        sewageTestService.addSoftTest(softTest);
+                    } else {
+                        productionDailyService.updateSampleSoftTest(softTest);
+                    }
+                }
+                res.put("status", "success");
+                res.put("message", "收样成功");
+            } else {
+                res.put("status", "success");
+                res.put("message", "请勾选需要签收的单据！");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "收样失败");
+        }
+        return res.toString();
     }
 
     //确认送样==》软水
     @RequestMapping("confirmSoftGeregistrationById")
     @ResponseBody
-    public String confirmSoftGeregistrationById(String id,String laboratorySignatory) {
+    public String confirmSoftGeregistrationById(String id, String laboratorySignatory) {
         JSONObject res = new JSONObject();
         try {
-            productionDailyService.confirmSoftGeregistrationById(id,laboratorySignatory);
+            productionDailyService.confirmSoftGeregistrationById(id, laboratorySignatory);
             //获取样品单号
-            Sewageregistration sewageregistration=productionDailyService.getSoftGeregistrationById(id);
+            Sewageregistration sewageregistration = productionDailyService.getSoftGeregistrationById(id);
 
-              SewageregistrationItem sewageregistrationItem=sewageregistration.getSewageregistrationItemList().get(0);
-            System.out.println("软水样品情况:"+sewageregistrationItem);
+            SewageregistrationItem sewageregistrationItem = sewageregistration.getSewageregistrationItemList().get(0);
+            System.out.println("软水样品情况:" + sewageregistrationItem);
 
-            SoftTest softTest=new SoftTest();
+            SoftTest softTest = new SoftTest();
             softTest.setId(id);
             softTest.setAddress(sewageregistration.getSoftPointItem().getDictionaryItemName());
-            if(sewageregistrationItem.getPh()==1){
+            if (sewageregistrationItem.getPh() == 1) {
                 softTest.setPH(0);
-            }
-            else {
+            } else {
                 softTest.setPH(-9999);
             }
-            if(sewageregistrationItem.getElectricalConductivity()==1){
+            if (sewageregistrationItem.getElectricalConductivity() == 1) {
                 softTest.setElectricalConductivity(0);
-            }
-            else {
+            } else {
                 softTest.setElectricalConductivity(-9999);
             }
-            if(sewageregistrationItem.getHardness()==1){
+            if (sewageregistrationItem.getHardness() == 1) {
                 softTest.setHardness("0");
-            }
-            else {
+            } else {
                 softTest.setHardness("-9999");
             }
-            if(sewageregistrationItem.getTurbidity()==1){
+            if (sewageregistrationItem.getTurbidity() == 1) {
                 softTest.setTurbidity(0);
-            }
-            else {
+            } else {
                 softTest.setTurbidity(-9999);
             }
-            if(sewageregistrationItem.getBasicity()==1){
+            if (sewageregistrationItem.getBasicity() == 1) {
                 softTest.setBasicity(0);
-            }
-            else {
+            } else {
                 softTest.setBasicity(-9999);
             }
-            if(sewageregistrationItem.getPhenolphthalein()==1){
+            if (sewageregistrationItem.getPhenolphthalein() == 1) {
                 softTest.setPhenolphthalein(0);
-            }
-            else {
+            } else {
                 softTest.setPhenolphthalein(-9999);
             }
 
-                if(sewageTestService.getSoftTestById(id)==null){
-                    sewageTestService.addSoftTest(softTest);
-                }
-                else {
-                    productionDailyService.updateSampleSoftTest(softTest);
-                }
-
+            if (sewageTestService.getSoftTestById(id) == null) {
+                sewageTestService.addSoftTest(softTest);
+            } else {
+                productionDailyService.updateSampleSoftTest(softTest);
+            }
 
 
             res.put("status", "success");
@@ -675,8 +785,8 @@ public class PRProductionDailyController {
                     map.put(id, new Sewageregistration());
                     map.get(id).setId(id);
                     map.get(id).setSendingPerson(data[i][1].toString());
-                    SewagePointItem sewagePointItem=new SewagePointItem();
-                    int dataDictionaryItemId=dictionaryService.getdatadictionaryitemIdByName(data[i][2].toString(),37);
+                    SewagePointItem sewagePointItem = new SewagePointItem();
+                    int dataDictionaryItemId = dictionaryService.getdatadictionaryitemIdByName(data[i][2].toString(), 37);
                     sewagePointItem.setDataDictionaryItemId(dataDictionaryItemId);
                     map.get(id).setSewagePointItem(sewagePointItem);
                     map.get(id).setAddress(data[i][2].toString());
@@ -780,8 +890,8 @@ public class PRProductionDailyController {
                     map.put(id, new Sewageregistration());
                     map.get(id).setId(id);
                     map.get(id).setSendingPerson(data[i][1].toString());
-                    SoftPointItem softPointItem=new SoftPointItem();
-                    int dataDictionaryItemId=dictionaryService.getdatadictionaryitemIdByName(data[i][2].toString(),38);
+                    SoftPointItem softPointItem = new SoftPointItem();
+                    int dataDictionaryItemId = dictionaryService.getdatadictionaryitemIdByName(data[i][2].toString(), 38);
                     softPointItem.setDataDictionaryItemId(dataDictionaryItemId);
                     map.get(id).setSoftPointItem(softPointItem);
                     map.get(id).setAddress(data[i][2].toString());

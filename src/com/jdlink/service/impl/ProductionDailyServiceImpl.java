@@ -34,6 +34,11 @@ public class ProductionDailyServiceImpl implements ProductionDailyService
     @Override
     public void addSewage(Sewage sewage){ productionDailyMapper.addSewage(sewage); }
 
+    @Override
+    public void confirmAllSoftWaterCheck(Sewageregistration sewageregistration) { productionDailyMapper.confirmAllSoftWaterCheck(sewageregistration); }
+
+    @Override
+    public void confirmAllSewageAnalysisCheck(Sewageregistration sewageregistration){ productionDailyMapper.confirmAllSewageAnalysisCheck(sewageregistration);}
 
     @Override
     public int countSoftWater(){ return productionDailyMapper.countSoftWater();}

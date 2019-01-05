@@ -16,12 +16,14 @@ public interface ProductionDailyMapper {
     List<Sewageregistration> searchSewage(Sewageregistration sewageregistration);
     List<Sewage> listPageSewage(Page page);
     void addSewage(Sewage sewage);
+    void confirmAllSewageAnalysisCheck(Sewageregistration sewageregistration);
 
     int countSoftWater();
     int searchCountSoftWater(Sewageregistration sewageregistration);
     List<Sewageregistration> searchSoftWater(Sewageregistration sewageregistration);
     List<SoftWater> listPageSoftWater(Page page);
     void addSoftWater(SoftWater softWater);
+    void confirmAllSoftWaterCheck(Sewageregistration sewageregistration);
     /**
      * 获取生产日报的编号
      * @return 编号
@@ -72,8 +74,6 @@ public interface ProductionDailyMapper {
 
     /**
      * 设置生产日报的状态
-     * @param id 编号
-     * @param checkState 校验状态
      */
    // void setProductionDailyState(@Param("id") int id, @Param("checkStateItem") CheckStateItem checkStateItem);
     void setProductionDailyState(ProductionDaily productionDailyState);

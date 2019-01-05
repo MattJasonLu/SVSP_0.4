@@ -319,6 +319,8 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
 
     </select>
 
+
+
     <select id="searchCountSoftWater" resultType="int">
         select count(*) from t_pr_softgeregistration
         <where>
@@ -824,7 +826,7 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
 
     <!--根据编号获取污水登记信息-->
     <select id="getSewaGeregistrationById" resultMap="SewageregistrationRM" parameterType="String">
-           select * from t_pr_softgeregistration where id=#{id};
+           select * from t_pr_sewageregistration where id=#{id};
     </select>
 
     <!--根据编号获取软水登记信息-->
@@ -841,6 +843,31 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
     <update id="confirmSoftGeregistrationById">
     update t_pr_softgeregistration set checkStateId=87,laboratorySignatory=#{1},  nowTime=NOW() where id=#{0};
   </update>
+
+    <!--一键签收功能 污水-->
+    <update id="confirmAllSewageAnalysisCheck" parameterType="Sewageregistration">
+        <if test="sampleIdList.size() > 0">
+            <foreach collection="sampleIdList" item="sampleId" index="index">
+                UPDATE t_pr_sewageregistration
+                SET
+                checkStateId=87,laboratorySignatory=#{laboratorySignatory},nowTime = NOW()
+                WHERE id = #{sampleId};
+            </foreach>
+        </if>
+    </update>
+
+    <!--一键签收功能 软水-->
+    <update id="confirmAllSoftWaterCheck" parameterType="Sewageregistration">
+        <if test="sampleIdList.size() > 0">
+            <foreach collection="sampleIdList" item="sampleId" index="index">
+                UPDATE t_pr_softgeregistration
+                SET
+                checkStateId=87,laboratorySignatory=#{laboratorySignatory},nowTime = NOW()
+                WHERE id = #{sampleId};
+            </foreach>
+        </if>
+    </update>
+
     <!--拒收==》污水-->
     <update id="rejectSewaGeregistrationById" >
         update t_pr_sewageregistration set  checkStateId=88,advice=#{1},nowTime=NOW() where id=#{0};

@@ -59,7 +59,18 @@ public class Sewageregistration {
 
     //软水采样点数字字典
     private SoftPointItem softPointItem;
+    /**
+     * 一键签收预约单编号数组
+     */
+    private List<String> sampleIdList;
 
+    public List<String> getSampleIdList() {
+        return sampleIdList;
+    }
+
+    public void setSampleIdList(List<String> sampleIdList) {
+        this.sampleIdList = sampleIdList;
+    }
 
     public SewagePointItem getSewagePointItem() {
         return sewagePointItem;

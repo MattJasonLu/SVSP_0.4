@@ -33,6 +33,11 @@ public class SecondarySample {
 
     private Date createTime;
 
+    /**
+     * 一键签收预约单编号数组
+     */
+    private List<String> sampleIdList;
+
     public Date getCreateTime() {
         return createTime;
     }
@@ -57,6 +62,13 @@ public class SecondarySample {
     //次生采样点数据结构
     private SecondaryPointItem secondaryPointItem;
 
+    public List<String> getSampleIdList() {
+        return sampleIdList;
+    }
+
+    public void setSampleIdList(List<String> sampleIdList) {
+        this.sampleIdList = sampleIdList;
+    }
 
     public SecondaryPointItem getSecondaryPointItem() {
         return secondaryPointItem;

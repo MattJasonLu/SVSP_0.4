@@ -253,7 +253,6 @@ public class PRSampleInfoWareHouseController {
             sampleInfoWareHouseService.confirmCheck(sampleId, laboratorySigner);
             // 创建化验单
             SampleInformation sampleInformation = sampleInfoWareHouseService.getById(sampleId);
-
             if (sampleInformation.getWastesList() != null && sampleInformation.getWastesList().size() > 0) {
                 for (Wastes wastes : sampleInformation.getWastesList()) {
                     SampleInfoAnalysis sampleAnalysis = new SampleInfoAnalysis();

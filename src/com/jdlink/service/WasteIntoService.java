@@ -18,6 +18,7 @@ public interface WasteIntoService {
     List<String> getNewestId();
     List<SecondarySample> getSecondarysample(Page page);
     void confirmSecondarySampleById(String id,String laboratorySignatory);
+    void confirmAllSecondAnalysisCheck(SecondarySample secondarySample);
     void rejectSecondarySampleById(String id,String advice);
     int wastesCountById(String id);
     SecondarySampleItem getByWastesId(String id);

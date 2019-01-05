@@ -16,12 +16,14 @@ public interface ProductionDailyService {
     List<Sewageregistration> searchSewage(Sewageregistration sewageregistration);
     List<Sewage> listPageSewage(Page page);
     void addSewage(Sewage sewage);
+    void confirmAllSewageAnalysisCheck(Sewageregistration sewageregistration);
 
     int countSoftWater();
     int searchCountSoftWater(Sewageregistration sewageregistration);
     List<Sewageregistration> searchSoftWater(Sewageregistration sewageregistration);
     List<SoftWater> listPageSoftWater(Page page);
     void addSoftWater(SoftWater softWater);
+    void confirmAllSoftWaterCheck(Sewageregistration sewageregistration);
 
     /**
      * 获取生产日报的编号
@@ -73,8 +75,6 @@ public interface ProductionDailyService {
 
     /**
      * 设置生产日报的状态
-     * @param id 编号
-     * @param checkState 校验状态
      */
     //void setProductionDailyState(int id, CheckStateItem checkStateItem);
     void setProductionDailyState(ProductionDaily productionDailyState);

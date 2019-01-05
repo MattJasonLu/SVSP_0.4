@@ -39,112 +39,94 @@ public class SewageTestController {
                 if(data.get(i)[j][0]!="null"){ //有数据
                    //创建污水化验对象
                     SewageTest sewageTest=new SewageTest();
-
                     //0化验单号
                     if(data.get(i)[j][0]!="null"){
                         sewageTest.setId(data.get(i)[j][0].toString());
-                    }
-                    if(data.get(i)[j][0]=="null"){
+                    }else {
                         sewageTest.setId(null);//
                     }
                     //1采样点
                     if(data.get(i)[j][1]!="null"){
                         sewageTest.setAddress(data.get(i)[j][1].toString());
-                    }
-                    if(data.get(i)[j][1]=="null"){
+                    }else {
                         sewageTest.setAddress("");//
                     }
                     //2ph
                     if(data.get(i)[j][2]!="null"){
                         sewageTest.setPh(Float.parseFloat(data.get(i)[j][2].toString()));
-                    }
-                    if(data.get(i)[j][2]=="null"){
+                    }else {
                         sewageTest.setPh(0);
                     }
                     //3COD
                     if(data.get(i)[j][3]!="null"){
                         sewageTest.setCOD(Float.parseFloat(data.get(i)[j][3].toString()));
-                    }
-                    if(data.get(i)[j][3]=="null"){
+                    }else {
                         sewageTest.setCOD(0);
                     }
                     //4BOD
                     if(data.get(i)[j][4]!="null"){
                         sewageTest.setBOD5(Float.parseFloat(data.get(i)[j][4].toString()));
-                    }
-                    if(data.get(i)[j][4]=="null"){
+                    }else {
                         sewageTest.setBOD5(0);
                     }
                     //5氨氮
                     if(data.get(i)[j][5]!="null"){
                         sewageTest.setN2(Float.parseFloat(data.get(i)[j][5].toString()));
-                    }
-                    if(data.get(i)[j][5]=="null"){
+                    }else{
                         sewageTest.setN2(0);
                     }
                     //6碳酸盐碱度Cao
                     if(data.get(i)[j][6]!="null"){
                         sewageTest.setAlkalinity(Float.parseFloat(data.get(i)[j][6].toString()));
-                    }
-                    if(data.get(i)[j][6]=="null"){
+                    }else {
                         sewageTest.setAlkalinity(0);
                     }
                     //7碳酸盐碱度CaCo3
                     if(data.get(i)[j][7]!="null"){
                         sewageTest.setAlkalinityCaCo3(Float.parseFloat(data.get(i)[j][7].toString()));
-                    }
-                    if(data.get(i)[j][7]=="null"){
+                    }else {
                         sewageTest.setAlkalinityCaCo3(0);
                     }
                     //8碳酸盐碱度HCO3-
                     if(data.get(i)[j][8]!="null"){
                         sewageTest.setAlkalinityHCO3(Float.parseFloat(data.get(i)[j][8].toString()));
-                    }
-                    if(data.get(i)[j][8]=="null"){
+                    }else {
                         sewageTest.setAlkalinityHCO3(0);
                     }
                     //9重碳酸盐碱度Cao
                     if(data.get(i)[j][9]!="null"){
                         sewageTest.setBicarbonate(Float.parseFloat(data.get(i)[j][9].toString()));
-                    }
-                    if(data.get(i)[j][9]=="null"){
+                    }else {
                         sewageTest.setBicarbonate(0);
                     }
                     //10重碳酸盐碱度CaCo3
                     if(data.get(i)[j][10]!="null"){
                         sewageTest.setBicarbonateCaCo3(Float.parseFloat(data.get(i)[j][10].toString()));
-                    }
-                    if(data.get(i)[j][10]=="null"){
+                    }else {
                         sewageTest.setBicarbonateCaCo3(0);
                     }
                     //11重碳酸盐碱度HCO3-
                     if(data.get(i)[j][11]!="null"){
                         sewageTest.setBicarbonateHCO3(Float.parseFloat(data.get(i)[j][11].toString()));
-                    }
-                    if(data.get(i)[j][11]=="null"){
+                    }else {
                         sewageTest.setBicarbonateHCO3(0);
                     }
-
-
                     //12总氮
                     if(data.get(i)[j][12]!="null"){
                         sewageTest.setNitrogen(Float.parseFloat(data.get(i)[j][12].toString()));
-                    }
-                    if(data.get(i)[j][12]=="null"){
+                    }else {
                         sewageTest.setNitrogen(0);
                     }
                     //13总磷
                     if(data.get(i)[j][13]!="null"){
                         sewageTest.setPhosphorus(Float.parseFloat(data.get(i)[j][13].toString()));
-                    }
-                    if(data.get(i)[j][13]=="null"){
+                    }else {
                         sewageTest.setPhosphorus(0);
                     }
                     //14备注
                     if(data.get(i)[j][14]!="null"){
                         sewageTest.setRemarks((data.get(i)[j][14].toString()));
-                    }
-                    if(data.get(i)[j][14]=="null"){
+                    }else {
                         sewageTest.setRemarks("");
                     }
                     //判断化验单是否存在 存在就更新
@@ -156,9 +138,7 @@ public class SewageTestController {
                         sewageTestService.addSewageTest(sewageTest);
                     }
                 }
-
           }
-
       }
             res.put("status", "success");
             res.put("message", "污水化验单添加成功");

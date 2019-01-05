@@ -14,7 +14,7 @@
                     javaType="ArrayList"/>
     </resultMap>
 
-    <!--获取申报状态数据字典-->
+    <!--获取预约状态数据字典-->
     <select id="getApplicationStatusItem" resultType="ApplicationStatusItem">
         select * from datadictionaryitem where dataDictionaryItemId=#{applyStateId}
     </select>
