@@ -92,4 +92,7 @@ public class SampleInformationServiceImpl implements SampleInformationService {
     @Override
     public List<SampleInformationItem> searchItem(SampleInformationItem sampleInformationItem){ return sampleInformationMapper.searchItem(sampleInformationItem); }
 
+    @Override
+    public void setFilePath(Wastes wastes) { sampleInformationMapper.setFilePath(wastes); }
+
 }

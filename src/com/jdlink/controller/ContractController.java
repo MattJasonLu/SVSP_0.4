@@ -1324,7 +1324,6 @@ public class ContractController {
                 quotationItem.setPicture(materialFilePath);
             }
           contractService.setFilePath(quotationItem);
-
         }
         catch (Exception e){
 
@@ -1351,15 +1350,12 @@ public class ContractController {
                 if (!materialDir.exists()) {
                     materialDir.mkdirs();
                 }
-
-
                 String materialName = contractId + "-" +  contractAppendices.getOriginalFilename();//设置文件名称
                 String materialFilePath = materialPath + "/" + materialName;//本地路径
                 File materialFile = new File(materialFilePath);
                 contractAppendices.transferTo(materialFile);
                 contract.setContractAppendicesUrl(materialFilePath);
             }
-
             contractService.setContractFilePath(contract);
             res.put("status", "success");
             res.put("message", "文件上传成功");

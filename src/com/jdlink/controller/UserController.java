@@ -372,6 +372,27 @@ public class UserController {
     }
 
     /**
+     * 删除角色
+     * @param
+     * @return 结果
+     */
+    @RequestMapping("deleteRole")
+    @ResponseBody
+    public String deleteRole(int id) {
+        JSONObject res = new JSONObject();
+        try {
+            userService.deleteRoleById(id);
+            res.put("status", "success");
+            res.put("message", "删除角色成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "删除角色失败");
+        }
+        return res.toString();
+    }
+
+    /**
      * 列出所有功能
      * @return 功能列表
      */

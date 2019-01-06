@@ -21,6 +21,9 @@ public interface UserService {
     List<User> get(Map params);
 
     void add(User user);
+
+    void deleteRoleById(int id);
+
     List<User> getByUsername(String username);
 
     User getById(String id);

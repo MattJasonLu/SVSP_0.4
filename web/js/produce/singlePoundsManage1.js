@@ -924,7 +924,7 @@ function loadPoundsAdd(){
     setSelectedListAdd();  // 填充下拉框数据
     $("#add_receiveCompany").val("北控安耐得环保科技发展常州有限公司");  // 收货单位默认为北控
     if(getCurrentUserData() != null)
-    $("#add_founder").val(getCurrentUserData().username);   // 创建人赋值
+    $("#add_founder").val(getCurrentUserData().name);   // 创建人赋值
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
         // style: 'btn-info',
