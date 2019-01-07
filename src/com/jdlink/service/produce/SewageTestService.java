@@ -2,6 +2,7 @@ package com.jdlink.service.produce;
 
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -48,4 +49,16 @@ public interface SewageTestService {
     void cancelSewageTestAfter(String id);
     void cancelSoftTestAfter(String id);
     void cancelSecondaryTestAfter(String id);
+
+    List<SoftTest> searchSoftTest (SoftTest softTest);
+
+    int searchSoftTestCount( SoftTest softTest);
+
+    List<SewageTest> searchSewageTest(SewageTest sewageTest);
+
+    int searchSewageTestCount(SewageTest sewageTest);
+
+    List<SecondaryTest>  searchSecondaryTest(SecondaryTest secondaryTest);
+
+    int searchSecondaryTestCount(SecondaryTest secondaryTest);
 }
