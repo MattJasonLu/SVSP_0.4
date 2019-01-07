@@ -279,14 +279,16 @@
     </select>
 
     <select id="listPage" resultMap="SupplierRM">
-       select * from t_supplier order by nowTime desc
+       select * from t_supplier
+        where supplierStateId != 90
+        order by nowTime desc
        <if test="start != null and count != null">
            limit #{start}, #{count}
        </if>
     </select>
 
     <select id="count" resultType="int">
-        SELECT COUNT(*) FROM t_supplier;
+        SELECT COUNT(*) FROM t_supplier where supplierStateId != 90;
     </select>
     <!--设置文件路径-->
     <update id="setFilePath" parameterType="Supplier">

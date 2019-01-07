@@ -312,7 +312,7 @@
         and client.salesmanId IS NULL order by nowTime desc;
     </select>
     <select id="total" resultType="int">
-        SELECT COUNT(*) FROM client;
+        SELECT COUNT(*) FROM client where clientStateId=89;
     </select>
 
 

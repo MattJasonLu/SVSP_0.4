@@ -567,6 +567,7 @@ function searchClient() {
             if (result != undefined && result.status == "success") {
                 console.log(result);
                 setPageClone(result);
+                setPageCloneAfter(pageNumber);        // 重新设置页码
             } else {
                 alert(result.message);
             }
