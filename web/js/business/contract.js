@@ -66,66 +66,7 @@ function totalPage(contractIndex) {
 }
 
 
-/**
- * 省略显示页码
- */
-function setPageCloneAfter(contractIndex, currentPageNumber) {
-    // console.log("合同索引值" + contractIndex);
-    var total = totalPage(contractIndex);//合同页面特殊 需加入标记
-    console.log("总页数:" + total)
-    var pageNumber = 5;         // 页码数
-    if (total > pageNumber) { // 大于5页时省略显示
-        $(".beforeClone").remove();          // 删除之前克隆页码
-        $("#next").prev().hide();            // 将页码克隆模板隐藏
-        if (currentPageNumber <= (parseInt(pageNumber / 2) + 1)) {   // 如果pageNumber = 5,当前页小于3显示前五页
-            for (var i = 0; i < pageNumber; i++) {
-                var li = $("#next").prev();
-                var clonedLi = li.clone();
-                clonedLi.show();
-                clonedLi.find('a:first-child').text(i + 1);          // 页数赋值
-                clonedLi.find('a:first-child').click(function () {    // 设置点击事件
-                    var num = $(this).text();
-                    switchPage(num);        // 跳转页面
-                });
-                clonedLi.addClass("beforeClone");
-                clonedLi.removeAttr("id");
-                clonedLi.insertAfter(li);
-            }
-        } else if (currentPageNumber <= total - parseInt(pageNumber / 2)) {  // 如果pageNumber = 5,大于3时显示其前后两页
-            for (var i = currentPage - parseInt(pageNumber / 2); i <= parseInt(currentPage) + parseInt(pageNumber / 2); i++) {
-                var li = $("#next").prev();
-                var clonedLi = li.clone();
-                clonedLi.show();
-                clonedLi.find('a:first-child').text(i);          // 页数赋值
-                clonedLi.find('a:first-child').click(function () {    // 设置点击事件
-                    var num = $(this).text();
-                    switchPage(num);        // 跳转页面
-                });
-                clonedLi.addClass("beforeClone");
-                clonedLi.removeAttr("id");
-                clonedLi.insertAfter(li);
-            }
-        } else if (currentPageNumber > total - parseInt(pageNumber / 2)) {    // 如果pageNumber = 5,显示最后五页
-            for (var i = total - pageNumber + 1; i <= total; i++) {
-                var li = $("#next").prev();
-                var clonedLi = li.clone();
-                clonedLi.show();
-                clonedLi.find('a:first-child').text(i);          // 页数赋值
-                clonedLi.find('a:first-child').click(function () {    // 设置点击事件
-                    var num = $(this).text();
-                    switchPage(num);        // 跳转页面
-                });
-                clonedLi.addClass("beforeClone");
-                clonedLi.removeAttr("id");
-                clonedLi.insertAfter(li);
-            }
-        }
-    }
-    if (currentPageNumber == 1) {
-        $("#previous").next().next().eq(0).addClass("oldPageClass");
-        $("#previous").next().next().eq(0).addClass("active");       // 将首页页码标蓝
-    }
-}
+
 
 
 /**
@@ -807,20 +748,7 @@ function searchContract() {
 
 
 
-$(document).ready(function () {//页面载入是就会进行加载里面的内容
-    var last;
-    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
-        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
-        setTimeout(function () {
-            if (last - event.timeStamp == 0) {
-                searchFuzzy();
-            }
-            else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
-                searchFuzzy();      //
-            }
-        }, 600);
-    });
-});
+
 
 function searchFuzzy() {
     console.log(nameBykey)
@@ -1181,14 +1109,7 @@ function setContractList(result) {
 }
 
 
-/**
- * 回车查询
- */
-function enterSearch() {
-    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
-        searchContract();      //
-    }
-}
+
 
 //获取时间
 function gettime(obj) {
@@ -1210,25 +1131,8 @@ function gettime(obj) {
 
 function contractSubmit() {
     //在此提交
-    var items = $("input[name='blankCheckbox']:checked");//判断复选框是否选中
+    var items = $("input[name='select']:checked");//判断复选框是否选中
     if (items.length > 0) {
-        var name1 = items[0].parentElement.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
-        // console.log(name1);
-        if (name1.indexOf("物流") != -1) {
-            var name2 = "Logistics";
-        }
-        if (name1.indexOf("危废") != -1) {
-            var name2 = "Wastes";
-        }
-        if (name1.indexOf("次生") != -1) {
-            var name2 = "Derive";
-        }
-        if (name1.indexOf("采购") != -1) {
-            var name2 = "Purchase";
-        }
-        if (name1.indexOf("应急") != -1) {
-            var name2 = "Emergency";
-        }
 
         function getContractById(id) {
             $.ajax({
@@ -1258,10 +1162,7 @@ function contractSubmit() {
 
         });
         alert("提交成功!");
-        // window.location.reload();
-        $(location).attr('href', 'contractManage.html');
-        localStorage.name1 = name2;
-        location.href = "contractManage.html";
+      window.location.reload()
     }
     else {
         alert("请勾选要提交的合同！")
@@ -5054,9 +4955,7 @@ function contractAdjustSave() {
                         // });
                     });
                     alert("修改成功!");
-                    $(location).attr('href', 'contractManage.html');
-
-                    localStorage.name1 = contractType1;
+                    history.back(-1)
                 }
                 else {
                     alert(result.message);
@@ -5264,9 +5163,7 @@ function contractAdjustSave() {
                     });
                     console.log(result)
                     alert("修改成功!");
-                    $(location).attr('href', 'contractManage.html');
-                    location.href = "contractManage.html";
-                    localStorage.name1 = contractType1;
+                    history.back(-1)
                 }
                 else {
                     alert(result.message);
@@ -6724,22 +6621,22 @@ function adjustNewContract() {
 
 function backContractManage(){
 
-    localStorage.removeItem('name1')
-   console.log( $('#contractType').val())
-    var contractType1;
-    if ($('#contractType').val() == '应急处置合同') {
-        contractType1 = 'Emergency';
-    }
-    if ($('#contractType').val() == '危废合同') {
-        contractType1 = 'Wastes';
-    }
-    if ($('#contractType').val() == '物流合同') {
-        contractType1 = 'Logistics';
-    }
-    localStorage.name1=contractType1;
-    $(location).attr('href', 'contractManage.html');
+   //  localStorage.removeItem('name1')
+   // console.log( $('#contractType').val())
+   //  var contractType1;
+   //  if ($('#contractType').val() == '应急处置合同') {
+   //      contractType1 = 'Emergency';
+   //  }
+   //  if ($('#contractType').val() == '危废合同') {
+   //      contractType1 = 'Wastes';
+   //  }
+   //  if ($('#contractType').val() == '物流合同') {
+   //      contractType1 = 'Logistics';
+   //  }
+   //  localStorage.name1=contractType1;
+   //  $(location).attr('href', 'contractManage.html');
 
-
+    history.back(-1);//返回上一页
 }
 
 //作废
@@ -6759,26 +6656,7 @@ function cancel(item) {
                 var obj = eval(result);
                 if (obj.state == "success") {
                     alert("作废成功！");
-                    if (name1.indexOf("物流") != -1) {
-                        var name2 = "Logistics";
-                    }
-                    if (name1.indexOf("危废") != -1) {
-                        var name2 = "Wastes";
-                    }
-                    if (name1.indexOf("次生") != -1) {
-                        var name2 = "Derive";
-                    }
-                    if (name1.indexOf("采购") != -1) {
-                        var name2 = "Purchase";
-                    }
-                    if (name1.indexOf("应急") != -1) {
-                        var name2 = "Emergency";
-                    }
-                    $(location).attr('href', 'contractManage.html');
-                    localStorage.name1 = name2;
-                    location.href = "contractManage.html";
-
-
+                    window.location.reload()
                 }
                 else {
                     alert("作废失败")
@@ -6958,24 +6836,7 @@ function confirm1() {
             var obj = eval(result);
             if (obj.state == "success") {
                 alert("审批成功!")
-                if (name1.indexOf("物流") != -1) {
-                    var name2 = "Logistics";
-                }
-                if (name1.indexOf("危废") != -1) {
-                    var name2 = "Wastes";
-                }
-                if (name1.indexOf("次生") != -1) {
-                    var name2 = "Derive";
-                }
-                if (name1.indexOf("采购") != -1) {
-                    var name2 = "Purchase";
-                }
-                if (name1.indexOf('应急') != -1) {
-                    var name2 = "Emergency";
-                }
-                $(location).attr('href', 'contractManage.html');
-                localStorage.name1 = name2;
-                location.href = "contractManage.html";
+               window.location.reload()
             }
             else {
                 alert("审批失败")
@@ -7000,24 +6861,7 @@ function back1() {
             var obj = eval(result);
             if (obj.state == "success") {
                 alert("已驳回！");
-                if (name1.indexOf("物流") != -1) {
-                    var name2 = "Logistics";
-                }
-                if (name1.indexOf("危废") != -1) {
-                    var name2 = "Wastes";
-                }
-                if (name1.indexOf("次生") != -1) {
-                    var name2 = "Derive";
-                }
-                if (name1.indexOf("采购") != -1) {
-                    var name2 = "Purchase";
-                }
-                if (name1.indexOf('应急') != -1) {
-                    var name2 = "Emergency";
-                }
-                $(location).attr('href', 'contractManage.html');
-                localStorage.name1 = name2;
-                location.href = "contractManage.html";
+                window.location.reload()
             }
             else {
                 alert("审批失败")

@@ -1534,7 +1534,135 @@ public class ContractController {
 
         return res.toString();
     }
+
+    //==============================》
+    //加载危废合同
+    @RequestMapping("loadPageWastesContractList")
+    @ResponseBody
+    public String loadPageWastesContractList(@RequestBody Page page){
+        JSONObject res=new JSONObject();
+
+        try {
+            List<Contract> contractList=contractService.loadPageWastesContractList(page);
+            res.put("status", "success");
+            res.put("message", "危废合同查询成功");
+            res.put("data", contractList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "危废合同查询失败");
+
+        }
+        return  res.toString();
+    }
+
+    /*危废合同总数
+    * */
+    @RequestMapping("loadPageWastesContractListCount")
+    @ResponseBody
+    public int loadPageWastesContractListCount(){
+
+        return contractService.loadPageWastesContractListCount();
+    }
+
+    /*危废合同查询*/
+    @RequestMapping("searchWasteContract")
+    @ResponseBody
+    public String searchWasteContract(@RequestBody Contract contract){
+        JSONObject res=new JSONObject();
+             try {
+           List<Contract> contractList=contractService.searchWasteContract(contract);
+                 res.put("status", "success");
+                 res.put("message", "查询成功");
+                 res.put("data", contractList);
+             }
+             catch (Exception e){
+
+                 e.printStackTrace();
+                 res.put("status", "fail");
+                 res.put("message", "更新失败");
+             }
+
+        return res.toString();
+    }
+
+    /*危废合同查询计数*/
+    @RequestMapping("searchWasteContractCount")
+    @ResponseBody
+    public int searchWasteContractCount(@RequestBody Contract contract){
+
+        return  contractService.searchWasteContractCount(contract);
+
+
+    }
+
+    //《==============================
+
+    //加载应急合同数据
+    @RequestMapping("loadPageEmergencyContractList")
+    @ResponseBody
+    public String loadPageEmergencyContractList(@RequestBody Page page){
+        JSONObject res=new JSONObject();
+
+        try {
+            List<Contract> contractList=contractService.loadPageEmergencyContractList(page);
+            res.put("status", "success");
+            res.put("message", "应急合同查询成功");
+            res.put("data", contractList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "应急合同查询失败");
+
+        }
+        return  res.toString();
+    }
+
+
+    /*危应急合同总数
+     * */
+    @RequestMapping("loadPageEmergencyContractListCount")
+    @ResponseBody
+    public int loadPageEmergencyContractListCount(){
+
+        return contractService.loadPageEmergencyContractListCount();
+    }
+
+
+    /*应急合同查询*/
+    @RequestMapping("searchEmergencyContract")
+    @ResponseBody
+    public String searchEmergencyContract(@RequestBody Contract contract){
+        JSONObject res=new JSONObject();
+        try {
+            List<Contract> contractList=contractService.searchEmergencyContract(contract);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", contractList);
+        }
+        catch (Exception e){
+
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+
+        return res.toString();
+    }
+
+    /*危废合同查询计数*/
+    @RequestMapping("searchEmergencyContractCount")
+    @ResponseBody
+    public int searchEmergencyContractCount(@RequestBody Contract contract){
+
+        return  contractService.searchEmergencyContractCount(contract);
+
+
+    }
 }
+
 
 
 

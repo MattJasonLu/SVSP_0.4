@@ -14,7 +14,9 @@ import java.util.List;
  * Created by matt on 2018/5/18.
  */
 @Service
-public class ContractServiceImpl implements ContractService  {
+public class ContractServiceImpl implements ContractService
+
+{
     @Autowired
     ContractMapper contractMapper;
 
@@ -304,6 +306,46 @@ contractMapper.updateFreight2(id);
     @Override
     public List<String> getAllContractId() {
         return contractMapper.getAllContractId();
+    }
+
+    @Override
+    public List<Contract> loadPageWastesContractList(Page page) {
+        return contractMapper.loadPageWastesContractList(page);
+    }
+
+    @Override
+    public int loadPageWastesContractListCount() {
+        return contractMapper.loadPageWastesContractListCount();
+    }
+
+    @Override
+    public List<Contract> searchWasteContract(Contract contract) {
+        return contractMapper.searchWasteContract(contract);
+    }
+
+    @Override
+    public int searchWasteContractCount(Contract contract) {
+        return contractMapper.searchWasteContractCount(contract);
+    }
+
+    @Override
+    public List<Contract> loadPageEmergencyContractList(Page page) {
+        return contractMapper.loadPageEmergencyContractList(page);
+    }
+
+    @Override
+    public int loadPageEmergencyContractListCount() {
+        return contractMapper.loadPageEmergencyContractListCount();
+    }
+
+    @Override
+    public List<Contract> searchEmergencyContract(Contract contract) {
+        return contractMapper.searchEmergencyContract(contract);
+    }
+
+    @Override
+    public int searchEmergencyContractCount(Contract contract) {
+        return contractMapper.searchEmergencyContractCount(contract);
     }
 
 }
