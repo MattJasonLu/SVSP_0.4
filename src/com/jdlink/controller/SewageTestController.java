@@ -1261,6 +1261,92 @@ public class SewageTestController {
 
         return res.toString();
     }
+
+
+    /*软水化验查询*/
+    @RequestMapping("searchSoftTest")
+    @ResponseBody
+    public String searchSoftTest(@RequestBody SoftTest softTest){
+        JSONObject res=new JSONObject();
+
+        try {
+           List<SoftTest> softTestList=sewageTestService.searchSoftTest(softTest);
+            res.put("status", "success");
+            res.put("message", "软水化验查询成功");
+            res.put("data", softTestList);
+         }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "软水化验查询失败");
+        }
+            return res.toString();
+    }
+
+    /*软水化验查询总数*/
+    @RequestMapping("searchSoftTestCount")
+    @ResponseBody
+    public int searchSoftTestCount(@RequestBody SoftTest softTest){
+        return sewageTestService.searchSoftTestCount(softTest);
+    }
+
+
+  /*污水化验查询*/
+    @RequestMapping("searchSewageTest")
+    @ResponseBody
+    public String searchSewageTest(@RequestBody SewageTest sewageTest){
+        JSONObject res=new JSONObject();
+
+        try{
+            List<SewageTest> sewageTestList=sewageTestService.searchSewageTest(sewageTest);
+            res.put("status", "success");
+            res.put("message", "污水化验查询成功");
+            res.put("data", sewageTestList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "污水化验查询失败");
+        }
+
+        return res.toString();
+    }
+
+    /*污水化验查询总数*/
+    @RequestMapping("searchSewageTestCount")
+    @ResponseBody
+    public int searchSewageTestCount(@RequestBody SewageTest sewageTest){
+        return sewageTestService.searchSewageTestCount(sewageTest);
+    }
+
+    /*次生化验查询*/
+    @RequestMapping("searchSecondaryTest")
+    @ResponseBody
+    public String searchSecondaryTest(@RequestBody SecondaryTest secondaryTest){
+        JSONObject res=new JSONObject();
+
+        try{
+      List<SecondaryTest> secondaryTestList=sewageTestService.searchSecondaryTest(secondaryTest);
+            res.put("status", "success");
+            res.put("message", "次生化验查询成功");
+            res.put("data", secondaryTestList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "次生化验查询失败");
+        }
+
+       return res.toString();
+    }
+
+
+    /*次生化验查询总数*/
+    @RequestMapping("searchSecondaryTestCount")
+    @ResponseBody
+    public int searchSecondaryTestCount(@RequestBody SecondaryTest secondaryTest){
+        return sewageTestService.searchSecondaryTestCount(secondaryTest);
+    }
 }
 
 

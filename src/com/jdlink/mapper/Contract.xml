@@ -623,6 +623,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 or  endTime   like   binary"%"#{keyword}"%"
                 or small  like  binary#{keyword}
                 or reviewer  like   binary"%"#{keyword}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
                 and contractType='Wastes' and period is  null and checkStateId != 69 order  by  nowTime desc
             </if>
 
@@ -670,7 +671,8 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 or  endTime   like   binary"%"#{keyword}"%"
                 or small  like  binary#{keyword}
                 or reviewer  like   binary"%"#{keyword}"%"
-                and contractType='Emergency' and period is  null and checkStateId != 69 order  by  nowTime desc
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
+                and contractType='Emergency' and period is  null  order  by  nowTime desc
             </if>
 
             <if test="checkStateItem!=null">
@@ -696,7 +698,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 <![CDATA[ and DATE_FORMAT(endTime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
             </if>
             <if test="keyword==''">
-                and contractType='Emergency' and period is  null and checkStateId != 69 order  by  nowTime desc
+                and contractType='Emergency' and period is  null  order  by  nowTime desc
             </if>
         </where>
         <if test="page != null and page.start != null and page.count != null">
@@ -717,8 +719,8 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 or  endTime   like   binary"%"#{keyword}"%"
                 or small  like  binary#{keyword}
                 or reviewer  like   binary"%"#{keyword}"%"
-                and contractType='Wastes' and period is  null and checkStateId != 69 order  by  nowTime desc
-
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
+                and contractType='Wastes' and period is  null  order  by  nowTime desc
             </if>
 
             <if test="checkStateItem!=null">
@@ -744,7 +746,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 <![CDATA[ and DATE_FORMAT(endTime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
             </if>
             <if test="keyword==''">
-                and contractType='Wastes' and period is  null and checkStateId != 69 order  by  nowTime desc
+                and contractType='Wastes' and period is  null  order  by  nowTime desc
             </if>
         </where>
     </select>
@@ -762,8 +764,8 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 or  endTime   like   binary"%"#{keyword}"%"
                 or small  like  binary#{keyword}
                 or reviewer  like   binary"%"#{keyword}"%"
-                and contractType='Emergency' and period is  null and checkStateId != 69 order  by  nowTime desc
-
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
+                and contractType='Emergency' and period is  null  order  by  nowTime desc
             </if>
 
             <if test="checkStateItem!=null">
@@ -789,7 +791,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 <![CDATA[ and DATE_FORMAT(endTime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
             </if>
             <if test="keyword==''">
-                and contractType='Emergency' and period is  null and checkStateId != 69 order  by  nowTime desc
+                and contractType='Emergency' and period is  null  order  by  nowTime desc
             </if>
         </where>
     </select>

@@ -219,6 +219,7 @@ function countValue() {
  * */
 function totalPage() {
     var totalRecord = 0;
+    var totalRecord = 0;
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
