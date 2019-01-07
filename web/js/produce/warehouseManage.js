@@ -1145,7 +1145,7 @@ function showEditData(e) {
                 clonedTr.find("select[name='handleCategory']").val(data.handleCategoryItem.dataDictionaryItemId);
             clonedTr.find("input[name='remarks']").val(data.remarks);
             clonedTr.find("input[name='warehouseArea']").val(data.warehouseArea);
-            clonedTr.find("input[name='inboundOrderItemId']").val(data.inboundOrderItemId);
+            clonedTr.find("td[name='inboundOrderItemId']").text(data.inboundOrderItemId);
         });
         // 隐藏无数据的tr
         tr.hide();
@@ -1157,8 +1157,9 @@ function showEditData(e) {
  * 编辑数据
  */
 function editData() {
-    // 获取
+    // 遍历条目
     $("#editBody").children().not("#editClonedTr").each(function () {
+        // 获取条目的数据
         var data = {};
         data.transferDraftId = $(this).find("input[name='transferDraftId']").val();
         data.produceCompany = {
@@ -1169,8 +1170,12 @@ function editData() {
             wastesId: $(this).find("select[name='wastesCode']").selectpicker('val')
         };
         data.wastesAmount = $(this).find("input[name='wastesAmount']").val();
-        data.processWay = $(this).find("select[name='processWay']").val();
-        data.handleCategory = $(this).find("select[name='handleCategory']").val();
+        data.processWayItem = {
+            dataDictionaryItemId: $(this).find("select[name='processWay']").val()
+        };
+        data.handleCategoryItem = {
+            dataDictionaryItemId: $(this).find("select[name='handleCategory']").val()
+        };
         data.remarks = $(this).find("input[name='remarks']").val();
         data.warehouseArea = $(this).find("input[name='warehouseArea']").val();
         data.inboundOrderItemId = $(this).find("td[name='inboundOrderItemId']").text();
@@ -1178,12 +1183,15 @@ function editData() {
 
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "getAllClients",                  // url
+            url: "updateInboundOrderItem",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined && result.status == "success") {
-
+                    alert(result.message);
+                    window.location.reload();
                 } else {
                     console.log(result);
                 }
