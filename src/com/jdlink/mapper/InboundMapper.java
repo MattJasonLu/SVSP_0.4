@@ -128,6 +128,12 @@ public interface InboundMapper {
     InboundOrder getInboundOrderById(String inboundOrderId);
 
     /**
+     * 更新入库单条目
+     * @param inboundOrderItem 入库单条目
+     */
+    void updateInboundOrderItem(InboundOrderItem inboundOrderItem);
+
+    /**
      * 更新入库单明细中的进料方式
      * @param inboundOrderItem 入库单明细
      */
