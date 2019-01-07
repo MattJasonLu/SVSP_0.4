@@ -86,7 +86,7 @@
 
     <!--修改信息-->
     <update id="updateMedicalWaste" parameterType="MedicalWastes">
-        update t_pl_medicalwastes set  departmentName=#{departmentName},departmentName=#{departmentName},
+        update t_pl_medicalwastes set  departmentName=#{departmentName},
         adjustName=#{adjustName},adjustDate=#{adjustDate},dateTime=#{dateTime},thisMonthWastes=#{thisMonthWastes},
         directDisposal=#{directDisposal},cookingWastes=#{cookingWastes},afterCookingNumber=#{afterCookingNumber},
         afterCookingInbound=#{afterCookingInbound},thisMonthSendCooking=#{thisMonthSendCooking},

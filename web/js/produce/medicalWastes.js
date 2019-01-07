@@ -1141,6 +1141,7 @@ function adjustMedicalWaste() {
         incineration:  $('#incineration').val(),
         equipmentDataItem: {dataDictionaryItemId:$('#equipment').selectpicker('val')}
     };
+    console.log(data)
     //更新
     $.ajax({
         type: "POST",                       // 方法类型
