@@ -690,6 +690,17 @@
         SELECT COUNT(*) FROM t_pl_inboundorder WHERE inboundOrderId=#{inboundOrderId};
     </select>
 
+    <!--更新入库计划单条目-->
+    <update id="updateInboundOrderItem">
+        UPDATE t_pl_inboundorderitem SET transferDraftId=#{transferDraftId},
+        produceCompanyId=#{produceCompany.clientId}, wastesName=#{wastes.name},
+        wastesCode=#{wastes.wastesId}, wastesAmount=#{wastesAmount},
+        processWayId=#{processWayItem.dataDictionaryItemId},
+        handleCategoryId=#{handleCategoryItem.dataDictionaryItemId},
+        remarks=#{remarks}, warehouseArea=#{warehouseArea}
+        WHERE inboundOrderItemId=#{inboundOrderItemId};
+    </update>
+
     <update id="updateItemHandleCategory" parameterType="InboundOrderItem">
         UPDATE t_pl_inboundorderitem SET handleCategory=#{handleCategory} WHERE inboundOrderItemId=#{inboundOrderItemId};
     </update>

@@ -1150,15 +1150,15 @@ public class InboundController {
 
     /**
      * 更新入库单条目
-     * @param inboundOrderItem
-     * @return
+     * @param inboundOrderItem 入库单条目
+     * @return 成功与否
      */
     @RequestMapping("updateInboundOrderItem")
     @ResponseBody
     public String updateInboundOrderItem(@RequestBody InboundOrderItem inboundOrderItem) {
         JSONObject res = new JSONObject();
         try {
-            // TODO: 2019年1月5日 更新入库单条目
+            inboundService.updateInboundOrderItem(inboundOrderItem);
             res.put("status", "success");
             res.put("message", "更新成功");
         } catch (Exception e) {
