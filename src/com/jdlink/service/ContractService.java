@@ -97,4 +97,16 @@ public interface ContractService {
     void signContract(String contractId);
 
     List<String> getAllContractId();
+
+
+    /**
+     * 加载危废合同
+     */
+    List<Contract> loadPageWastesContractList(Page page);
+
+    int loadPageWastesContractListCount();
+
+    List<Contract> searchWasteContract(Contract contract);
+
+    int searchWasteContractCount(Contract contract);
 }
