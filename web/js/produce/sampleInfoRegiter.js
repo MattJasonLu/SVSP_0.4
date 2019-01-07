@@ -100,6 +100,7 @@ function setPageClone(result) {
  * @param pageNumber 跳转页数
  * */
 function switchPage(pageNumber) {
+    isDelete = true;
     console.log("当前页：" + pageNumber);
     if (pageNumber > totalPage()) {
         pageNumber = totalPage();
@@ -154,6 +155,8 @@ function switchPage(pageNumber) {
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined) {
+                    console.log("分页数据:");
+                    console.log(result);
                     setSampleList(result.data);
                 } else {
                     console.log("fail: " + result);
@@ -197,6 +200,7 @@ function enterSwitchPage() {
  * 输入页数跳转页面
  * */
 function inputSwitchPage() {
+    isDelete = true;
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
     if (pageNumber > totalPage()) {
         pageNumber = totalPage();
@@ -370,6 +374,7 @@ function loadPages(totalRecord, count) {
 function setSampleList(result) {
     // 获取id为cloneTr的tr元素
     var tr = $("#cloneTr");
+    console.log("isDelete:"+isDelete);
     if(isDelete) {  // 加急数据不删除
         tr.siblings().remove();
     }
