@@ -14,6 +14,7 @@ public interface SampleInfoWareHouseService {
     int wastesCountById(String id);
     int countById(String id);
     List<SampleInformation> listPage(Page page);
+    List<SampleInformation> listEmergency();
     SampleInformation getById(String sampleId);
     void confirmCheck(String sampleId,String laboratorySigner);
     void confirmAllCheck(SampleInformation sampleInformation);

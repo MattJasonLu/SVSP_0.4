@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -839,6 +840,39 @@ public class PRSampleInfoController {
             ex.printStackTrace();
             res.put("status", "fail");
             res.put("message", "导出失败，请重试！");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 上传危废样品图片文件
+     */
+    @RequestMapping("saveSampleInfoPictureFiles")
+    @ResponseBody
+    public String savePictureFiles(String sampleId,MultipartFile pictureFile){
+        JSONObject res = new JSONObject();
+        try {
+            Wastes wastes = new Wastes();
+            if (pictureFile != null) {
+                wastes.setId(sampleId);   // 设置预约单号
+                String materialPath = "Files/SampleInfo"; //设置服务器路径
+                File materialDir = new File(materialPath);
+                if (!materialDir.exists()) {
+                    materialDir.mkdirs();
+                }
+                String materialName = sampleId + "-" +  pictureFile.getOriginalFilename();//设置文件名称
+                String materialFilePath = materialPath + "/" + materialName;//本地路径
+                File materialFile = new File(materialFilePath);
+                pictureFile.transferTo(materialFile);
+                wastes.setImageUrl(materialFilePath);
+            }
+            sampleInformationService.setFilePath(wastes);
+            res.put("status","success");
+            res.put("message","保存成功！");
+        }catch (Exception e){
+            e.printStackTrace();
+            res.put("status","fail");
+            res.put("message","保存失败！");
         }
         return res.toString();
     }

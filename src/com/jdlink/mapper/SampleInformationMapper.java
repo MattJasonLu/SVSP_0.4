@@ -34,4 +34,5 @@ public interface SampleInformationMapper {
     List<SampleInformationItem> listItemPage(Page page);
     int searchItemCount(SampleInformationItem sampleInformationItem);
     List<SampleInformationItem> searchItem(SampleInformationItem sampleInformationItem);
+    void setFilePath(Wastes wastes);
 }

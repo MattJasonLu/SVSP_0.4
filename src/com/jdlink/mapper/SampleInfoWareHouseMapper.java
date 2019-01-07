@@ -15,6 +15,7 @@ public interface SampleInfoWareHouseMapper {
     int wastesCountById(String id);
     int countById(String id);
     List<SampleInformation> listPage(Page page);
+    List<SampleInformation> listEmergency();
     SampleInformation getById(String sampleId);
     void confirmCheck(@Param("sampleId") String sampleId, @Param("laboratorySigner") String laboratorySigner);
     void confirmAllCheck(SampleInformation sampleInformation);

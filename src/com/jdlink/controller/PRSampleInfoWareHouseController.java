@@ -167,7 +167,7 @@ public class PRSampleInfoWareHouseController {
     public String loadPageSampleInformationList(@RequestBody Page page) {
         JSONObject res = new JSONObject();
         try {
-            // 取出查询客户
+            // 取出查询数据
             List<SampleInformation> samplesInformationList = sampleInfoWareHouseService.listPage(page);
             // 计算最后页位置
             JSONArray array = JSONArray.fromArray(samplesInformationList.toArray(new SampleInformation[samplesInformationList.size()]));
@@ -178,6 +178,32 @@ public class PRSampleInfoWareHouseController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "分页数据获取失败！");
+        }
+        // 返回结果
+        return res.toString();
+    }
+
+
+    /**
+     * 获取加急预约单数据
+     *
+     * @return
+     */
+    @RequestMapping("loadEmergencySampleInformationWareHouseList")
+    @ResponseBody
+    public String loadEmergencySampleInformationWareHouseList() {
+        JSONObject res = new JSONObject();
+        try {
+            // 取出查询数据
+            List<SampleInformation> sampleInformationList = sampleInfoWareHouseService.listEmergency();
+            JSONArray array = JSONArray.fromArray(sampleInformationList.toArray(new SampleInformation[sampleInformationList.size()]));
+            res.put("data", array);
+            res.put("status", "success");
+            res.put("message", "加急数据获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "加急数据获取失败！");
         }
         // 返回结果
         return res.toString();

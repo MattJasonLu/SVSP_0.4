@@ -503,6 +503,36 @@ function addRole() {
 }
 
 /**
+ * 删除功能
+ * @param e
+ */
+function deleteRole(e) {
+    var roleId = $(e).parent().parent().find("td[name='id']").text();
+    if(confirm("确认删除？")) {
+        $.ajax({
+            type: "POST",
+            url: "deleteRole",
+            async: false,
+            dataType: "json",
+            data: {
+                id: roleId
+            },
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    }
+}
+
+/**
  * 修改角色名称
  * @param e
  */

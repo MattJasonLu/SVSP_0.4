@@ -100,6 +100,7 @@ function setPageClone(result) {
  * @param pageNumber 跳转页数
  * */
 function switchPage(pageNumber) {
+    isDelete = true;
     console.log("当前页：" + pageNumber);
     if (pageNumber > totalPage()) {
         pageNumber = totalPage();
@@ -154,6 +155,8 @@ function switchPage(pageNumber) {
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined) {
+                    console.log("分页数据:");
+                    console.log(result);
                     setSampleList(result.data);
                 } else {
                     console.log("fail: " + result);
@@ -197,6 +200,7 @@ function enterSwitchPage() {
  * 输入页数跳转页面
  * */
 function inputSwitchPage() {
+    isDelete = true;
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
     if (pageNumber > totalPage()) {
         pageNumber = totalPage();
@@ -281,6 +285,8 @@ function inputSwitchPage() {
     }
 }
 
+var isDelete = true;  // 是否清空首页显示旧数据
+var emergencyIdList = [];   // 用于存放加急单号
 /**
  * 分页 获取首页内容
  * */
@@ -296,10 +302,31 @@ function loadPageSampleInformationList() {
         $("#next").addClass("disabled");
         $("#endPage").addClass("disabled");
     }
+    emergencyIdList = [];   // 清空加急单号数组
     var page = {};
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
+    // 获取加急预约单数据
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "loadEmergencySampleInformationWareHouseList",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                isDelete = true;
+                setSampleList(result.data);
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+            console.log("失败");
+        }
+    });
     $.ajax({
         type: "POST",                       // 方法类型
         url: "loadPageSampleInformationWareHouseList",          // url
@@ -310,6 +337,7 @@ function loadPageSampleInformationList() {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 console.log(result);
+                isDelete = false;
                 setPageClone(result.data);
                 setPageCloneAfter(pageNumber);        // 重新设置页码
             } else {
@@ -346,14 +374,25 @@ function loadPages(totalRecord, count) {
 function setSampleList(result) {
     // 获取id为cloneTr的tr元素
     var tr = $("#cloneTr");
-    tr.siblings().remove();
+    console.log("isDelete:"+isDelete);
+    if(isDelete) {  // 加急数据不删除
+        tr.siblings().remove();
+    }
     $.each(result, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
         clonedTr.show();
+        var obj = eval(item);
+        if($.inArray(obj.id,emergencyIdList) !== -1){  // 如果能在该数组中找到编号则跳过该编号
+            return true;
+        }
+        if(obj.emergency){  // 如果加急预约单背景色改变
+            clonedTr.get(0).style.backgroundColor='#6699cc';
+            // 或者 cloneTr.css("background-color","red");
+            emergencyIdList.push(obj.id);  // 将加急单号储存到数组中
+        }
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
-            var obj = eval(item);
             // 根据索引为部分td赋值
             switch (inner_index) {
                 //预约单号
@@ -1034,6 +1073,7 @@ function adjustSample(menu) {
                         $("#model3-companyName").selectpicker('val', data.companyCode);
                         $("#model3-sendingPerson").val(data.sendingPerson);
                         $("#model3-id").val(data.id);
+                        $("#model-emergency").prop("checked",data.emergency);
                         num = 1; // 重新计数
                         for (var i = 0; i < data.wastesList.length; i++) {
                             if (i > 0) addNewLine(null);
@@ -1090,6 +1130,7 @@ function updateAppointBySampleId() {
     sampleInformation.companyName = $("#model3-companyName").find("option:selected").text();
     sampleInformation.companyCode = $("#model3-companyName").find("option:selected").val();
     sampleInformation.sendingPerson = $("#model3-sendingPerson").val();
+    sampleInformation.emergency = $("#model-emergency").prop('checked');  // 单据是否加急
     sampleInformation['wastesList'] = [];
     var lineCount = $("select[name^='wastes'][name$='wastesCode']").length - 1;
     var wastesId = null;
@@ -1522,6 +1563,7 @@ function addAppoint() {
         wastes.isHotMelt = $("input[name='wastesList[" + $i + "].isHotMelt']").prop('checked');
         sampleInformation.wastesList.push(wastes);
     }
+    sampleInformation.emergency = $("#emergency").prop('checked');  // 单据是否加急
     console.log("添加的数据为：");
     console.log(sampleInformation);
     $.ajax({

@@ -85,6 +85,10 @@ public class SampleInformation {
      * 承装一键签收获取的预约单号
      */
     private List<String> sampleIdList;
+    /**
+     * 预约单是否加急
+     */
+    private boolean emergency;
 
     private boolean isPH; // PH值
 
@@ -126,6 +130,14 @@ public class SampleInformation {
      * 新预约单号（送样登记修改用）/化验单单号
      */
     private String newId;
+
+    public boolean isEmergency() {
+        return emergency;
+    }
+
+    public void setEmergency(boolean emergency) {
+        this.emergency = emergency;
+    }
 
     public List<String> getSampleIdList() {
         return sampleIdList;

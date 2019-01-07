@@ -233,13 +233,16 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" href="#" id="function_-192" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; appointModal();}"><span
+                    <a class="btn btn-primary btn-xs" href="#" id="function_-192"
+                       onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; appointModal();}"><span
                             class="glyphicon glyphicon-plus" aria-hidden="true"></span> 预约登记</a>
                     <!--<a class="btn btn-primary btn-xs" href="receiveSampleInfoDetial.html"><span-->
                     <!--class="glyphicon glyphicon-search" aria-hidden="true"></span> 明细页面</a>-->
-                    <a class="btn btn-primary btn-xs" href="#" id="function_-193" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose();}"><span
+                    <a class="btn btn-primary btn-xs" href="#" id="function_-193"
+                       onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose();}"><span
                             class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                    <a class="btn btn-primary btn-xs" id="function_-194" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel();}"><span
+                    <a class="btn btn-primary btn-xs" id="function_-194"
+                       onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel();}"><span
                             class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     <a class="btn btn-primary btn-xs" id="" onclick="confirmAllCheck()"><span
                             class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>确认收样</a>
@@ -410,18 +413,32 @@
                     <td class="text-center"></td>
                     <td class="text-center" name="state"></td>
                     <td class="text-center">
-                        <a href="#" id="function_-195" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; viewSample(e);}" title="查看"><span class="glyphicon glyphicon-search"
-                                                                                 aria-hidden="true"></span></a>
-                        <a href="#" id="function_-196" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; adjustSample(e);}" title="修改信息"><span
+                        <a href="#" id="function_-195"
+                           onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; viewSample(e);}"
+                           title="查看"><span class="glyphicon glyphicon-search"
+                                            aria-hidden="true"></span></a>
+                        <a href="#" id="function_-196"
+                           onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; adjustSample(e);}"
+                           title="修改信息"><span
                                 class="glyphicon glyphicon-pencil"
                                 aria-hidden="true"></span></a>
-                        <a href="#" id="function_-197" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; deleteSample(e);}" title="作废"><span
+                        <a href="#" id="function_-197"
+                           onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; deleteSample(e);}"
+                           title="作废"><span
                                 class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
-                        <a href="#" id="function_-198" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; checkModal(e);}" title="确认收样"><span
+                        <a href="#" id="function_-198"
+                           onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; checkModal(e);}"
+                           title="确认收样"><span
                                 class="glyphicon glyphicon-log-out"
                                 aria-hidden="true"></span></a>
-                        <a href="#" id="function_-199" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; rejection(e);}" title="拒收"><span
+                        <a href="#" id="function_-199"
+                           onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; rejection(e);}"
+                           title="拒收"><span
                                 class="glyphicon glyphicon-ban-circle"
+                                aria-hidden="true"></span></a>
+                        <a href="#" id="function_" title="下载样品图片"
+                           onclick="downLoadImage(this)"><span
+                                class=" glyphicon glyphicon-download-alt"
                                 aria-hidden="true"></span></a>
                     </td>
                 </tr>
@@ -556,99 +573,104 @@
                                 </div>
                             </div>
                         </div>
+
+                        <table class="table table-bordered" style="width: 95%;table-layout: fixed">
+                            <thead style="border:none">
+                            <tr>
+                                <th class="text-center">序号</th>
+                                <th class="text-center">危废代码</th>
+                                <th class="text-center">危废名称</th>
+                                <th class="text-center">危废类别</th>
+                                <th class="text-center">危废形态</th>
+                                <th class="text-center" style="width: 30%">检测项目</th>
+                                <th class="text-center">样品图片</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr id="addClone">
+                                <td class="text-center">1</td>
+                                <td class="text-center"><select  class="selectpicker form-control"
+                                                                data-live-search="true"
+                                                                data-live-search-placeholder="搜索..."
+                                                                id="wastesList0-wastesCode"
+                                                                name="wastesList[0].wastesCode"
+                                                                onchange="autoSetCategory(this)">
+                                </select></td>
+                                <td class="text-center"><input  class="focus"
+                                                               name="wastesList[0].wastesName"
+                                                               id="wastesList[0].wastesName"></td>
+                                <td class="text-center"><input  class="focus"
+                                                               name="modal-wastesHandleCategory"
+                                                               id="wastesList[0].wastesHandleCategory">
+                                </td>
+                                <td class="text-center"><select  class="focus"
+                                                                name="modal-wastesFormType"
+                                                                id="wastesList[0].wastesFormType">
+                                </select></td>
+                                <td class="text-center">
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isPH"
+                                               value="true">PH
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isAsh"
+                                               value="true">灰分
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isWater"
+                                               id="wastesList[0].isWater" value="true">水分
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isHeat"
+                                               value="true">热值
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isS"
+                                               value="true">硫
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isCl"
+                                               value="true">氯
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isF"
+                                               value="true">氟
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isP"
+                                               value="true">磷
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isFlashPoint"
+                                               value="true">闪点
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isViscosity"
+                                               value="true">黏度
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="wastesList[0].isHotMelt"
+                                               value="true">热融
+                                    </label>
+                                </td>
+                                <td class="text-center">
+                                    <input type="file" id="picture" name="picture" placeholder="">
+                                </td>
+                            </tr>
+                            <!--<tr id="plusBtn">-->
+                            <!--<td>-->
+                            <!--<a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span-->
+                            <!--class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>-->
+                            <!--</td>-->
+                            <!--<td></td>-->
+                            <!--<td></td>-->
+                            <!--<td></td>-->
+                            <!--<td></td>-->
+                            <!--<td></td>-->
+                            <!--</tr>-->
+                            </tbody>
+                        </table>
                     </div>
-                    <table class="table table-bordered" style="width: 95%;table-layout: fixed">
-                        <thead style="border:none">
-                        <tr>
-                            <th class="text-center">序号</th>
-                            <th class="text-center">危废代码</th>
-                            <th class="text-center">危废名称</th>
-                            <th class="text-center">危废类别</th>
-                            <th class="text-center">危废形态</th>
-                            <th class="text-center" style="width: 30%">检测项目</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr id="addClone">
-                            <td class="text-center">1</td>
-                            <td class="text-center"><select style="width: 100%" class="selectpicker form-control"
-                                                            data-live-search="true"
-                                                            data-live-search-placeholder="搜索..."
-                                                            id="wastesList0-wastesCode"
-                                                            name="wastesList[0].wastesCode"
-                                                            onchange="autoSetCategory(this)">
-                            </select></td>
-                            <td class="text-center"><input style="width: 100%" class="focus"
-                                                           name="wastesList[0].wastesName"
-                                                           id="wastesList[0].wastesName"></td>
-                            <td class="text-center"><input style="width: 100%" class="focus"
-                                                           name="modal-wastesHandleCategory"
-                                                           id="wastesList[0].wastesHandleCategory">
-                            </td>
-                            <td class="text-center"><select style="width: 100%" class="focus"
-                                                            name="modal-wastesFormType"
-                                                            id="wastesList[0].wastesFormType">
-                            </select></td>
-                            <td class="text-center">
-                                <label>
-                                    <input type="checkbox" name="wastesList[0].isPH"
-                                           value="true">PH
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="wastesList[0].isAsh"
-                                           value="true">灰分
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="wastesList[0].isWater"
-                                           id="wastesList[0].isWater" value="true">水分
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="wastesList[0].isHeat"
-                                           value="true">热值
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="wastesList[0].isS"
-                                           value="true">硫
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="wastesList[0].isCl"
-                                           value="true">氯
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="wastesList[0].isF"
-                                           value="true">氟
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="wastesList[0].isP"
-                                           value="true">磷
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="wastesList[0].isFlashPoint"
-                                           value="true">闪点
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="wastesList[0].isViscosity"
-                                           value="true">黏度
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="wastesList[0].isHotMelt"
-                                           value="true">热融
-                                </label>
-                            </td>
-                        </tr>
-                        <!--<tr id="plusBtn">-->
-                        <!--<td>-->
-                        <!--<a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span-->
-                        <!--class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>-->
-                        <!--</td>-->
-                        <!--<td></td>-->
-                        <!--<td></td>-->
-                        <!--<td></td>-->
-                        <!--<td></td>-->
-                        <!--<td></td>-->
-                        <!--</tr>-->
-                        </tbody>
-                    </table>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" onclick="addAppoint();">预约</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -696,7 +718,7 @@
                             </div>
                         </div>
                     </div>
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" style="width: 95%;table-layout: fixed">
                         <thead style="border:none">
                         <tr>
                             <th class="text-center">序号</th>
@@ -704,7 +726,8 @@
                             <th class="text-center">危废名称</th>
                             <th class="text-center">危废类别</th>
                             <th class="text-center">危废形态</th>
-                            <th class="text-center">检测项目</th>
+                            <th class="text-center" style="width: 30%">检测项目</th>
+                            <th class="text-center">上传样品图片</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -770,6 +793,9 @@
                                     <input type="checkbox" name="wastes[0].isHotMelt"
                                            value="true">热融
                                 </label>
+                            </td>
+                            <td class="text-center">
+                                <input type="file" id="picture1" name="picture" placeholder="">
                             </td>
                         </tr>
                         <!--<tr id="addBtn3">-->

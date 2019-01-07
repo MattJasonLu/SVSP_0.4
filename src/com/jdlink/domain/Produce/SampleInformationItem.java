@@ -57,6 +57,10 @@ public class SampleInformationItem {
      * 分页
      */
     private Page page;
+    /**
+     * 预约单是否加急
+     */
+    private boolean emergency;
 
     private boolean isPH; // PH值
 
@@ -110,6 +114,14 @@ public class SampleInformationItem {
 
     public void setIsHeat(boolean heat) {
         isHeat = heat;
+    }
+
+    public boolean isEmergency() {
+        return emergency;
+    }
+
+    public void setEmergency(boolean emergency) {
+        this.emergency = emergency;
     }
 
     public boolean getIsSulfur() {
