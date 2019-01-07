@@ -181,4 +181,11 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
 
     </update>
 
+    <select id="getQuotationitemByUndeclared" resultType="Quotationitem" parameterType="String">
+select * from t_quotationitem where applicationStatusId=48 and clientId=#{clientId} and contractId is not null
+    </select>
+
+    <update id="updateQuotationItemState" parameterType="String">
+        update t_quotationitem set applicationStatusId=49 where quotationItemId=#{quotationItemId}
+    </update>
  </mapper>
