@@ -1053,6 +1053,37 @@ public class ProcurementController {
         return res.toString();
     }
 
+    /**
+     * 查询获取采购计划子条目
+     * @param procurementPlanItem 页码
+     * @return 查询结果
+     */
+    @RequestMapping("searchProcurementPlanItem")
+    @ResponseBody
+    public String searchProcurementPlanItem(@RequestBody ProcurementPlanItem procurementPlanItem) {
+        JSONObject res=new JSONObject();
+        try {
+            List<ProcurementPlanItem> procurementPlanItemList = procurementService.searchProcurementPlanItem(procurementPlanItem);
+            JSONArray data = JSONArray.fromArray(procurementPlanItemList.toArray(new ProcurementPlanItem[procurementPlanItemList.size()]));
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+    }
+
+    //采购计划明细查询计数
+    @RequestMapping("searchProcurementPlanItemTotal")
+    @ResponseBody
+    public int searchProcurementPlanItemTotal(@RequestBody ProcurementPlanItem procurementPlanItem){
+        return procurementService.searchProcurementPlanItemTotal(procurementPlanItem);
+    }
+
+
     @RequestMapping("getProcurementPlanItemById")
     @ResponseBody
     public String getProcurementPlanItemById(String id) {
@@ -1360,6 +1391,29 @@ public class ProcurementController {
 
         }
 
+
+        return res.toString();
+    }
+
+
+    /**
+     * 根据物品主键获取物品数据
+     */
+    @RequestMapping("getIngredientAsProcurementPlanItemById")
+    @ResponseBody
+    public String getIngredientById(int id){
+        JSONObject res=new JSONObject();
+        try {
+            ProcurementPlanItem procurementPlanItem = procurementService.getIngredientById(id);
+            res.put("status", "success");
+            res.put("message", "获取数据成功");
+            res.put("data", procurementPlanItem);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取数据失败");
+        }
 
         return res.toString();
     }

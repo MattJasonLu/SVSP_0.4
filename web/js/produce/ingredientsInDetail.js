@@ -1773,6 +1773,10 @@ function addIngredientsIn() {
     window.location.href = "newIngredientsIn.html";
 }
 
+function addRedIngredientsIn() {
+    window.location.href = "newRedIngredientsIn.html";
+}
+
 /**
  * 打印功能
  */
