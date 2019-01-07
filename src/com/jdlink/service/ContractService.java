@@ -109,4 +109,13 @@ public interface ContractService {
     List<Contract> searchWasteContract(Contract contract);
 
     int searchWasteContractCount(Contract contract);
+
+    List<Contract> loadPageEmergencyContractList(Page page);
+
+
+    int loadPageEmergencyContractListCount();
+
+    List<Contract> searchEmergencyContract(Contract contract);
+
+    int searchEmergencyContractCount(Contract contract);
 }

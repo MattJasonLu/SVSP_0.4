@@ -328,4 +328,24 @@ contractMapper.updateFreight2(id);
         return contractMapper.searchWasteContractCount(contract);
     }
 
+    @Override
+    public List<Contract> loadPageEmergencyContractList(Page page) {
+        return contractMapper.loadPageEmergencyContractList(page);
+    }
+
+    @Override
+    public int loadPageEmergencyContractListCount() {
+        return contractMapper.loadPageEmergencyContractListCount();
+    }
+
+    @Override
+    public List<Contract> searchEmergencyContract(Contract contract) {
+        return contractMapper.searchEmergencyContract(contract);
+    }
+
+    @Override
+    public int searchEmergencyContractCount(Contract contract) {
+        return contractMapper.searchEmergencyContractCount(contract);
+    }
+
 }
