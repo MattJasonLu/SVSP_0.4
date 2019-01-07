@@ -774,7 +774,7 @@ function addAppoint() {
        sewagePointItem:{dataDictionaryItemId:$('#address').val()},
          id:$('#reservationId').val(),
     };
-    console.log(data)
+    console.log(data);
    //添加主表
     $.ajax({
         type: "POST",                       // 方法类型
