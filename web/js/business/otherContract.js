@@ -1,4 +1,6 @@
-/*物流合同脚本*/
+/*其他合同脚本*/
+/*次生合同脚本*/
+
 /***
  * 危废合同页面脚本文件
  * */
@@ -24,10 +26,9 @@ function totalPage() {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "loadPageLogisticsContractListCount",                  // url
+            url: "loadPageOtherContractListCount",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
-            contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 // console.log(result);
                 if (result > 0) {
@@ -45,7 +46,7 @@ function totalPage() {
     } else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchLogisticsContractCount",                  // url
+            url: "searchOtherContract",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data),
             dataType: "json",
@@ -92,7 +93,7 @@ function loadPages(totalRecord, count) {
  */
 function setPageClone(result) {
     $(".beforeClone").remove();
-    setLogisticsContractList(result);
+    setOtherContractList(result);
     var total = totalPage();
     $("#next").prev().hide();
     var st = "共" + total + "页";
@@ -168,7 +169,7 @@ function switchPage(pageNumber) {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "loadPageLogisticsContractList",         // url
+            url: "loadPageOtherContractList",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(page),
             dataType: "json",
@@ -176,7 +177,7 @@ function switchPage(pageNumber) {
             success: function (result) {
                 if (result != undefined) {
                     // console.log(result);
-                    setLogisticsContractList(result);
+                    setOtherContractList(result);
                 } else {
                     console.log("fail: " + result);
                     // setClientList(result);
@@ -191,7 +192,7 @@ function switchPage(pageNumber) {
         data['page'] = page;
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchLogisticsContract",         // url
+            url: "searchOtherContract",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data),
             dataType: "json",
@@ -199,7 +200,7 @@ function switchPage(pageNumber) {
             success: function (result) {
                 if (result != undefined) {
                     // console.log(result);
-                    setLogisticsContractList(result);
+                    setOtherContractList(result);
                 } else {
                     console.log("fail: " + result);
                     // setClientList(result);
@@ -255,7 +256,7 @@ function inputSwitchPage() {
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "loadPageLogisticsContractList",         // url
+                url: "loadPageOtherContractList",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(page),
                 dataType: "json",
@@ -263,7 +264,7 @@ function inputSwitchPage() {
                 success: function (result) {
                     if (result != undefined) {
                         console.log(result);
-                        setLogisticsContractList(result);
+                        setOtherContractList(result);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -276,7 +277,7 @@ function inputSwitchPage() {
             data['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "searchLogisticsContractCount",         // url
+                url: "searchOtherContract",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data),
                 dataType: "json",
@@ -284,7 +285,7 @@ function inputSwitchPage() {
                 success: function (result) {
                     if (result != undefined) {
                         // console.log(result);
-                        setLogisticsContractList(result);
+                        setOtherContractList(result);
                     } else {
                         console.log("fail: " + result);
                         // setClientList(result);
@@ -302,7 +303,7 @@ function inputSwitchPage() {
 /**
  * 分页 获取首页内容
  * */
-function loadPageLogisticsContractList() {
+function loadPageOtherContractList() {
     loadNavigationList();   // 设置动态菜单
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
@@ -316,7 +317,7 @@ function loadPageLogisticsContractList() {
     page.start = (pageNumber - 1) * page.count;
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "loadPageLogisticsContractList",          // url
+        url: "loadPageOtherContractList",          // url
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
         data: JSON.stringify(page),
         dataType: "json",
@@ -341,7 +342,7 @@ function loadPageLogisticsContractList() {
 /**设置合同数据
  * @param result
  */
-function setLogisticsContractList(result) {
+function setOtherContractList(result) {
     //console.log(eval(result));//可以取到
     // 获取id为cloneTr的tr元素
     var tr = $("#cloneTr1");//克隆一行
@@ -551,13 +552,13 @@ function setSeniorSelectedList() {
  */
 function enterSearch() {
     if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
-        searchLogisticsContract();      //
+        searchOtherContract();      //
     }
 }
 /**
- *
+ * 查找客户
  */
-function searchLogisticsContract() {
+function searchOtherContract() {
     var page = {};
     var pageNumber = 1;                       // 显示首页
     page.pageNumber = pageNumber;
@@ -598,7 +599,7 @@ function searchLogisticsContract() {
     }
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "searchLogisticsContract",                  // url
+        url: "searchOtherContract",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         data: JSON.stringify(data),
         dataType: "json",
@@ -628,9 +629,9 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
             if(last-event.timeStamp == 0){
-                searchLogisticsContract();
+                searchOtherContract();
             }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
-                searchLogisticsContract();      //
+                searchOtherContract();      //
             }
         },400);
     });
@@ -638,7 +639,7 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 
 //新增按钮跳转
 function addContract() {
-    localStorage.contractType="Logistics"
+    localStorage.contractType="Other"
     window.location.href="wastesContractInfo.html"
 
 }

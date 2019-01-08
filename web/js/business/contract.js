@@ -12,12 +12,12 @@ array = [];//存放所有的tr
 array1 = [];//存放目标的tr
 array0=[]
 
-//重置
-function reset() {
-    $("#senior").find("input").val("");
-    $("#searchContent").val("");
-    $("#senior").find("select").get(0).selectedIndex = -1;
-}
+// //重置
+// function reset() {
+//     $("#senior").find("input").val("");
+//     $("#searchContent").val("");
+//     $("#senior").find("select").get(0).selectedIndex = -1;
+// }
 
 /**
  * 返回count值
@@ -2634,13 +2634,11 @@ function contractWastesSave() {
 
             alert("添加成功！");
             if (addType == 'continue') {
-                $(location).attr('href', 'wastesContractInfo.html');
+               window.location.reload()
             }
             if (addType == 'break') {
                 // $("#commentForm").attr('action','contractManage.html');
-                window.location.href = "contractManage.html";
-              //  localStorage.clear();
-                localStorage.name1 = contractType1;
+                history.go(-1);
             }
         }
     }
@@ -2857,13 +2855,11 @@ function contractWastesSave() {
 
             alert("添加成功！")
             if (addType == 'continue') {
-                $(location).attr('href', 'wastesContractInfo.html');
+                window.location.reload()
             }
             if (addType == 'break') {
-                $("#commentForm").attr('action', 'contractManage.html');
-                window.location.href = "contractManage.html";
-              //  localStorage.clear();
-                localStorage.name1 = contractType1;
+                // $("#commentForm").attr('action','contractManage.html');
+                history.go(-1);
             }
         }
     }
@@ -6078,6 +6074,7 @@ function adjust(item) {
 
 //合同修改页面初始化
 function adjustNewContract() {
+    $('.loader').show();
     loadNavigationList();   // 设置动态菜单
     //赋值合同编号
     var contractId = localStorage['contractId'];
@@ -6637,7 +6634,7 @@ function adjustNewContract() {
         }
     });
 
-
+    $('.loader').hide();
 }
 
 function backContractManage(){
