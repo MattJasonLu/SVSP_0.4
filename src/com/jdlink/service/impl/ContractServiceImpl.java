@@ -348,4 +348,84 @@ contractMapper.updateFreight2(id);
         return contractMapper.searchEmergencyContractCount(contract);
     }
 
+    @Override
+    public int loadPageLogisticsContractListCount() {
+        return contractMapper.loadPageLogisticsContractListCount();
+    }
+
+    @Override
+    public List<Contract> loadPageLogisticsContractList(Page page) {
+        return contractMapper.loadPageLogisticsContractList(page);
+    }
+
+    @Override
+    public List<Contract> searchLogisticsContract(Contract contract) {
+        return contractMapper.searchLogisticsContract(contract);
+    }
+
+    @Override
+    public int searchLogisticsContractCount(Contract contract) {
+        return contractMapper.searchLogisticsContractCount(contract);
+    }
+
+    @Override
+    public int loadPageDeriveContractListCount() {
+        return contractMapper.loadPageDeriveContractListCount();
+    }
+
+    @Override
+    public List<Contract> loadPageDeriveContractList(Page page) {
+        return contractMapper.loadPageDeriveContractList(page);
+    }
+
+    @Override
+    public List<Contract> searchDeriveContract(Contract contract) {
+        return contractMapper.searchDeriveContract(contract);
+    }
+
+    @Override
+    public int searchDeriveContractCount(Contract contract) {
+        return contractMapper.searchDeriveContractCount(contract);
+    }
+
+    @Override
+    public int loadPagePurchaseContractListCount() {
+        return contractMapper.loadPagePurchaseContractListCount();
+    }
+
+    @Override
+    public List<Contract> loadPagePurchaseContractList(Page page) {
+        return contractMapper.loadPagePurchaseContractList(page);
+    }
+
+    @Override
+    public List<Contract> searchPurchaseContract(Contract contract) {
+        return contractMapper.searchPurchaseContract(contract);
+    }
+
+    @Override
+    public int searchPurchaseContractCount(Contract contract) {
+        return contractMapper.searchPurchaseContractCount(contract);
+    }
+
+    @Override
+    public int loadPageOtherContractListCount() {
+        return contractMapper.loadPageOtherContractListCount();
+    }
+
+    @Override
+    public List<Contract> loadPageOtherContractList(Page page) {
+        return contractMapper.loadPageOtherContractList(page);
+    }
+
+    @Override
+    public List<Contract> searchOtherContract(Contract contract) {
+        return contractMapper.searchOtherContract(contract);
+    }
+
+    @Override
+    public int searchOtherContractCount(Contract contract) {
+        return contractMapper.searchOtherContractCount(contract);
+    }
+
 }

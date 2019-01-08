@@ -790,7 +790,7 @@
         <if test="ingredientsList != null and ingredientsList.size() > 0">
             <foreach collection="ingredientsList" item="ingredients" index="index"><!--将库存加回-->
                 update t_pr_ingredients_inventory
-                set amount= amount + #{ingredients.receiveAmount},receiveAmount = 0,ingredientStateId=38;
+                set amount= amount + #{ingredients.receiveAmount},receiveAmount = 0,ingredientStateId=38
                 where receiveId=#{id} and name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName} and
                 specification=#{ingredients.specification};
             </foreach>
