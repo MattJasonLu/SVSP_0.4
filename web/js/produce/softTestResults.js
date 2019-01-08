@@ -41,7 +41,26 @@ function totalPage() {
             }
         });
     } else {
-        totalRecord = array1.length;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchSoftTestCount",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+           data:JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result > 0) {
+                    totalRecord = result;
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
     }
     var count = countValue();                         // 可选
     var total = loadPages(totalRecord, count);
@@ -164,16 +183,29 @@ function switchPage(pageNumber) {
                 console.log("error: " + result);
             }
         });
-    } if (isSearch) {//查询用的
-        for (var i = 0; i < array1.length; i++) {
-            $(array1[i]).hide();
-        }
-        var i = parseInt((pageNumber - 1) * countValue());
-        var j = parseInt((pageNumber - 1) * countValue()) + parseInt(countValue() - 1);
-        for (var i = i; i <= j; i++) {
-            $('#tbody1').append(array1[i]);
-            $(array1[i]).show();
-        }
+    } else {
+        data['page'] = page;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchSoftTest",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    // console.log(result);
+                    setSoftTestList(result);
+                } else {
+                    console.log("fail: " + result);
+                    // setClientList(result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                // setClientList(result);
+            }
+        });
     }
 }
 
@@ -237,16 +269,30 @@ function inputSwitchPage() {
                     console.log("error: " + result);
                 }
             });
-        } if (isSearch) {//查询用的
-            for (var i = 0; i < array1.length; i++) {
-                $(array1[i]).hide();
-            }
-            var i = parseInt((pageNumber - 1) * countValue());
-            var j = parseInt((pageNumber - 1) * countValue()) + parseInt(countValue() - 1);
-            for (var i = i; i <= j; i++) {
-                $('#tbody1').append(array1[i]);
-                $(array1[i]).show();
-            }
+        }
+        else {
+            data['page'] = page;
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "searchSoftTest",         // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    if (result != undefined) {
+                        // console.log(result);
+                        setSoftTestList(result);
+                    } else {
+                        console.log("fail: " + result);
+                        // setClientList(result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                    // setClientList(result);
+                }
+            });
         }
     }
 }
@@ -271,13 +317,13 @@ function loadPageList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
-    if(array0.length==0){
-        for (var i = 1; i <= totalPage(); i++) {
-            switchPage(parseInt(i));
-
-            array0.push($('.myclass'));
-        }
-    }
+    // if(array0.length==0){
+    //     for (var i = 1; i <= totalPage(); i++) {
+    //         switchPage(parseInt(i));
+    //
+    //         array0.push($('.myclass'));
+    //     }
+    // }
     $.ajax({
         type: "POST",                       // 方法类型
         url: "loadSoftTestResultsList",          // url
@@ -337,16 +383,17 @@ function setSoftTestList(result) {
                 //浊度FTU
                 case (3):
                     $(this).html(setNumber2Line(parseFloat(obj.turbidity).toFixed(2)));
-                    break;
                 case (4):
+
+                    // ph
+                    $(this).html(setNumber2Line(parseFloat(obj.PH).toFixed(2)));
+                    break;
+                    break;
+                case (5):
                     // 硬度
                     $(this).html(setNumber2Line((obj.hardness)));
                     break;
-                case (5):
 
-                    // ph
-                        $(this).html(setNumber2Line(parseFloat(obj.PH).toFixed(2)));
-                    break;
                 case (6):
                     // 电导率
                         $(this).html(setNumber2Line(parseFloat(obj.electricalConductivity).toFixed(2)));
@@ -527,109 +574,57 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 
 //查询
 function searchData() {
-    $('#tbody1').find('.myclass').hide();
-    array.length=0;//清空数组
-    array1.length=0;//清空数组
-    array=[].concat(array0);
-
+    var page = {};
+    var pageNumber = 1;                       // 显示首页
+    page.pageNumber = pageNumber;
+    page.count = countValue();
+    page.start = (pageNumber - 1) * page.count;
+    // 精确查询
+    if ($("#senior").is(':visible')) {
+        data = {
+            id:$.trim($('#search-id').val()),
+            // turbidity:$('#search-turbidity').val(),
+            // PH:$('#search-PH').val(),
+            // basicity:$('#search-basicity').val(),
+            // address:$('#search-address').val(),
+            // hardness:$('#search-hardness').val(),
+            // electricalConductivity:$('#search-electricalConductivity').val(),
+            // phenolphthalein:$('#search-phenolphthalein').val(),
+            remarks:$.trim($('#search-remarks').val()),
+            checkStateItem:{dataDictionaryItemId:$("#search-checkState").val()},
+            page: page,
+            keyword:'',
+        };
+        console.log(data);
+        // 模糊查询
+    } else {
+        var keyword=$.trim($("#searchContent").val());
+        data = {
+            keyword: keyword,
+            page: page
+        };
+    }
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "searchSoftTest",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                setPageClone(result);
+                setPageCloneAfter(pageNumber);        // 重新设置页码
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
     isSearch = true;
-
-    var text = $.trim($('#searchContent').val());
-
-    var  id= $.trim($('#search-id').val());
-
-    var address= $.trim($('#search-address').val());
-
-    var remarks= $.trim($('#search-remarks').val());
-
-    var turbidity= $.trim($('#search-turbidity').val());
-
-    var hardness= $.trim($('#search-hardness').val());
-
-    var PH= $.trim($('#search-PH').val());
-
-    var electricalConductivity= $.trim($('#search-electricalConductivity').val());
-
-    var basicity= $.trim($('#search-basicity').val());
-
-    var phenolphthalein= $.trim($('#search-phenolphthalein').val());
-
-    var checkState=$('#search-checkState option:selected').text();
-
-    for (var j = 0; j < array.length; j++) {
-        $.each(array[j], function () {
-            //console.log(this);
-            if (!($(this).children('td').eq(1).text().indexOf(id) != -1 && $(this).children('td').eq(2).text().indexOf(address) != -1
-                && $(this).children('td').eq(3).text().indexOf(turbidity) != -1 && $(this).children('td').eq(4).text().indexOf(hardness) != -1 && $(this).children('td').text().indexOf(text) != -1
-                && $(this).children('td').eq(5).text().indexOf(PH) != -1  && $(this).children('td').eq(6).text().indexOf(electricalConductivity) != -1
-                && $(this).children('td').eq(7).text().indexOf(basicity) != -1&& $(this).children('td').eq(8).text().indexOf(phenolphthalein) != -1
-                && $(this).children('td').eq(9).text().indexOf(remarks) != -1&&$(this).children('td').eq(10).text().indexOf(checkState) != -1
-
-            )) {
-                $(this).hide();
-            }
-            if (
-                ($(this).children('td').eq(1).text().indexOf(id) != -1 && $(this).children('td').eq(2).text().indexOf(address) != -1
-                    && $(this).children('td').eq(3).text().indexOf(turbidity) != -1 && $(this).children('td').eq(4).text().indexOf(hardness) != -1 && $(this).children('td').text().indexOf(text) != -1
-                    && $(this).children('td').eq(5).text().indexOf(PH) != -1  && $(this).children('td').eq(6).text().indexOf(electricalConductivity) != -1
-                    && $(this).children('td').eq(7).text().indexOf(basicity) != -1&& $(this).children('td').eq(8).text().indexOf(phenolphthalein) != -1
-                    && $(this).children('td').eq(9).text().indexOf(remarks) != -1&&$(this).children('td').eq(10).text().indexOf(checkState) != -1
-
-                )
-
-            ) {
-                array1.push($(this));
-            }
-        });
-    }
-
-    var total;
-
-    if (array1.length % countValue() == 0) {
-        total = array1.length / countValue()
-    }
-
-    if (array1.length % countValue() > 0) {
-        total = Math.ceil(array1.length / countValue());
-    }
-
-    if (array1.length / countValue() < 1) {
-        total = 1;
-    }
-
-    $("#totalPage").text("共" + total + "页");
-
-    var myArray = new Array();
-
-    $('.beforeClone').remove();
-
-    for (i = 0; i < total; i++) {
-        var li = $("#next").prev();
-        myArray[i] = i + 1;
-        var clonedLi = li.clone();
-        clonedLi.show();
-        clonedLi.find('a:first-child').text(myArray[i]);
-        clonedLi.find('a:first-child').click(function () {
-            var num = $(this).text();
-            switchPage(num);
-            AddAndRemoveClass(this);
-        });
-        clonedLi.addClass("beforeClone");
-        clonedLi.removeAttr("id");
-        clonedLi.insertAfter(li);
-    }
-    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
-    $("#previous").next().next().eq(0).addClass("oldPageClass");
-    setPageCloneAfter(1);
-    for (var i = 0; i < array1.length; i++) {
-        array1[i].hide();
-    }
-
-    for (var i = 0; i < countValue(); i++) {
-        $(array1[i]).show();
-        $('#tbody1').append((array1[i]));
-    }
-
 
 
 }

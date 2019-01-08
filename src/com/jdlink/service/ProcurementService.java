@@ -49,6 +49,8 @@ public interface ProcurementService {
     int totalProcurementPlanRecord();
     List<ProcurementPlan>searchProcurementPlan(ProcurementPlan procurementPlan);
     int searchProcurementPlanCount(ProcurementPlan procurementPlan);
+    List<ProcurementPlanItem> searchProcurementPlanItem(ProcurementPlanItem procurementPlanItem);
+    int searchProcurementPlanItemTotal(ProcurementPlanItem procurementPlanItem);
     void updateMaterialState(int id);
     /**
      * 通过编号获取采购计划单条目对象
@@ -60,7 +62,7 @@ public interface ProcurementService {
     List<ProcurementPlanItem> searchAdjust(ProcurementPlanItem procurementPlanItem);
     void updateMaterialCategoryItemForProcurementPlan(String procurementPlanId,int MaterialCategoryId);
     String getSpecificationById(int id);
-
+    ProcurementPlanItem getIngredientById(int id);
     void deleteMonthProcurementById(int id);
     void setProcurementFilePath(Procurement procurement);
     List<Procurement> getEmergencyProcurementOffList(Page page);

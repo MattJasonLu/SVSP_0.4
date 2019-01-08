@@ -17,6 +17,7 @@ public interface SampleInformationMapper {
     List<SampleInformation> listPage(Page page);
     SampleInformation getById(String sampleId);
     void confirmCheck(SampleInformation sampleInformation);
+    void confirmAllCheck(SampleInformation sampleInformation);
     void update(SampleInformation sampleInformation);
     List<SampleInformation> listByKeyword(@Param(value="keyword") String keyword);
     void updateSampleInfo(@Param("sampleId") String sampleId,@Param("newId") String newId);
@@ -33,4 +34,5 @@ public interface SampleInformationMapper {
     List<SampleInformationItem> listItemPage(Page page);
     int searchItemCount(SampleInformationItem sampleInformationItem);
     List<SampleInformationItem> searchItem(SampleInformationItem sampleInformationItem);
+    void setFilePath(Wastes wastes);
 }

@@ -35,10 +35,16 @@ public class SampleInfoWareHouseServiceImpl  implements SampleInfoWareHouseServi
     public List<SampleInformation> listPage(Page page){ return sampleInfoWareHouseMapper.listPage(page); }
 
     @Override
+    public List<SampleInformation> listEmergency() {return sampleInfoWareHouseMapper.listEmergency();}
+
+    @Override
     public SampleInformation getById(String sampleId){ return sampleInfoWareHouseMapper.getById(sampleId); }
 
     @Override
     public void confirmCheck(String sampleId,String laboratorySigner){ sampleInfoWareHouseMapper.confirmCheck(sampleId,laboratorySigner); }
+
+    @Override
+    public void confirmAllCheck(SampleInformation sampleInformation) {sampleInfoWareHouseMapper.confirmAllCheck(sampleInformation);}
 
     @Override
     public void update(SampleInformation sampleInformation){ sampleInfoWareHouseMapper.update(sampleInformation); }

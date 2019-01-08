@@ -39,112 +39,94 @@ public class SewageTestController {
                 if(data.get(i)[j][0]!="null"){ //有数据
                    //创建污水化验对象
                     SewageTest sewageTest=new SewageTest();
-
                     //0化验单号
                     if(data.get(i)[j][0]!="null"){
                         sewageTest.setId(data.get(i)[j][0].toString());
-                    }
-                    if(data.get(i)[j][0]=="null"){
+                    }else {
                         sewageTest.setId(null);//
                     }
                     //1采样点
                     if(data.get(i)[j][1]!="null"){
                         sewageTest.setAddress(data.get(i)[j][1].toString());
-                    }
-                    if(data.get(i)[j][1]=="null"){
+                    }else {
                         sewageTest.setAddress("");//
                     }
                     //2ph
                     if(data.get(i)[j][2]!="null"){
                         sewageTest.setPh(Float.parseFloat(data.get(i)[j][2].toString()));
-                    }
-                    if(data.get(i)[j][2]=="null"){
+                    }else {
                         sewageTest.setPh(0);
                     }
                     //3COD
                     if(data.get(i)[j][3]!="null"){
                         sewageTest.setCOD(Float.parseFloat(data.get(i)[j][3].toString()));
-                    }
-                    if(data.get(i)[j][3]=="null"){
+                    }else {
                         sewageTest.setCOD(0);
                     }
                     //4BOD
                     if(data.get(i)[j][4]!="null"){
                         sewageTest.setBOD5(Float.parseFloat(data.get(i)[j][4].toString()));
-                    }
-                    if(data.get(i)[j][4]=="null"){
+                    }else {
                         sewageTest.setBOD5(0);
                     }
                     //5氨氮
                     if(data.get(i)[j][5]!="null"){
                         sewageTest.setN2(Float.parseFloat(data.get(i)[j][5].toString()));
-                    }
-                    if(data.get(i)[j][5]=="null"){
+                    }else{
                         sewageTest.setN2(0);
                     }
                     //6碳酸盐碱度Cao
                     if(data.get(i)[j][6]!="null"){
                         sewageTest.setAlkalinity(Float.parseFloat(data.get(i)[j][6].toString()));
-                    }
-                    if(data.get(i)[j][6]=="null"){
+                    }else {
                         sewageTest.setAlkalinity(0);
                     }
                     //7碳酸盐碱度CaCo3
                     if(data.get(i)[j][7]!="null"){
                         sewageTest.setAlkalinityCaCo3(Float.parseFloat(data.get(i)[j][7].toString()));
-                    }
-                    if(data.get(i)[j][7]=="null"){
+                    }else {
                         sewageTest.setAlkalinityCaCo3(0);
                     }
                     //8碳酸盐碱度HCO3-
                     if(data.get(i)[j][8]!="null"){
                         sewageTest.setAlkalinityHCO3(Float.parseFloat(data.get(i)[j][8].toString()));
-                    }
-                    if(data.get(i)[j][8]=="null"){
+                    }else {
                         sewageTest.setAlkalinityHCO3(0);
                     }
                     //9重碳酸盐碱度Cao
                     if(data.get(i)[j][9]!="null"){
                         sewageTest.setBicarbonate(Float.parseFloat(data.get(i)[j][9].toString()));
-                    }
-                    if(data.get(i)[j][9]=="null"){
+                    }else {
                         sewageTest.setBicarbonate(0);
                     }
                     //10重碳酸盐碱度CaCo3
                     if(data.get(i)[j][10]!="null"){
                         sewageTest.setBicarbonateCaCo3(Float.parseFloat(data.get(i)[j][10].toString()));
-                    }
-                    if(data.get(i)[j][10]=="null"){
+                    }else {
                         sewageTest.setBicarbonateCaCo3(0);
                     }
                     //11重碳酸盐碱度HCO3-
                     if(data.get(i)[j][11]!="null"){
                         sewageTest.setBicarbonateHCO3(Float.parseFloat(data.get(i)[j][11].toString()));
-                    }
-                    if(data.get(i)[j][11]=="null"){
+                    }else {
                         sewageTest.setBicarbonateHCO3(0);
                     }
-
-
                     //12总氮
                     if(data.get(i)[j][12]!="null"){
                         sewageTest.setNitrogen(Float.parseFloat(data.get(i)[j][12].toString()));
-                    }
-                    if(data.get(i)[j][12]=="null"){
+                    }else {
                         sewageTest.setNitrogen(0);
                     }
                     //13总磷
                     if(data.get(i)[j][13]!="null"){
                         sewageTest.setPhosphorus(Float.parseFloat(data.get(i)[j][13].toString()));
-                    }
-                    if(data.get(i)[j][13]=="null"){
+                    }else {
                         sewageTest.setPhosphorus(0);
                     }
                     //14备注
                     if(data.get(i)[j][14]!="null"){
                         sewageTest.setRemarks((data.get(i)[j][14].toString()));
-                    }
-                    if(data.get(i)[j][14]=="null"){
+                    }else {
                         sewageTest.setRemarks("");
                     }
                     //判断化验单是否存在 存在就更新
@@ -156,9 +138,7 @@ public class SewageTestController {
                         sewageTestService.addSewageTest(sewageTest);
                     }
                 }
-
           }
-
       }
             res.put("status", "success");
             res.put("message", "污水化验单添加成功");
@@ -455,8 +435,6 @@ public class SewageTestController {
 
     }
 
-
-
     //次生化验导入
     @RequestMapping("importSecondaryTestResultsExcel")
     @ResponseBody
@@ -481,28 +459,36 @@ public class SewageTestController {
                  //1废物名称
                  secondaryTest.setWastesName(data[i][1].toString());
 
+
                  //2热灼减率
-                 secondaryTest.setScorchingRate(Float.parseFloat(data[i][2].toString()));
+                 if(data[i][2].toString() != null && !data[i][2].toString().equals("null")) {
+                     secondaryTest.setScorchingRate(Float.parseFloat(data[i][2].toString()));
+                 }else {
+                     secondaryTest.setScorchingRate(-9999);
+                 }
 
                  //3水分
-                 secondaryTest.setWater(Float.parseFloat(data[i][3].toString()));
+                 if(data[i][3].toString() != null && !data[i][3].toString().equals("null")) {
+                     secondaryTest.setWater(Float.parseFloat(data[i][3].toString()));
+                 }else {
+                     secondaryTest.setWater(-9999);
+                 }
 
                  //4备注
-                 secondaryTest.setRemarks(data[i][4].toString());
+                 if(data[i][4].toString() != null && !data[i][4].toString().equals("null")) {
+                     secondaryTest.setRemarks(data[i][4].toString());
+                 }else {
+                     secondaryTest.setRemarks("");
+                 }
 
                  //更加化验单号查询化验单信息
                  if(sewageTestService.getSecondaryTestById(data[i][0].toString())!=null){
                      //更新
                      sewageTestService.updateSecondaryTestById(secondaryTest);
-                 }
-                 if(sewageTestService.getSecondaryTestById(data[i][0].toString())==null){
-                     //添加
+                 } else{ //添加
                      sewageTestService.addSecondaryTest(secondaryTest);
                  }
-
-
              }
-
          }
             res.put("status", "success");
             res.put("message", "导入成功");
@@ -1274,6 +1260,92 @@ public class SewageTestController {
 
 
         return res.toString();
+    }
+
+
+    /*软水化验查询*/
+    @RequestMapping("searchSoftTest")
+    @ResponseBody
+    public String searchSoftTest(@RequestBody SoftTest softTest){
+        JSONObject res=new JSONObject();
+
+        try {
+           List<SoftTest> softTestList=sewageTestService.searchSoftTest(softTest);
+            res.put("status", "success");
+            res.put("message", "软水化验查询成功");
+            res.put("data", softTestList);
+         }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "软水化验查询失败");
+        }
+            return res.toString();
+    }
+
+    /*软水化验查询总数*/
+    @RequestMapping("searchSoftTestCount")
+    @ResponseBody
+    public int searchSoftTestCount(@RequestBody SoftTest softTest){
+        return sewageTestService.searchSoftTestCount(softTest);
+    }
+
+
+  /*污水化验查询*/
+    @RequestMapping("searchSewageTest")
+    @ResponseBody
+    public String searchSewageTest(@RequestBody SewageTest sewageTest){
+        JSONObject res=new JSONObject();
+
+        try{
+            List<SewageTest> sewageTestList=sewageTestService.searchSewageTest(sewageTest);
+            res.put("status", "success");
+            res.put("message", "污水化验查询成功");
+            res.put("data", sewageTestList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "污水化验查询失败");
+        }
+
+        return res.toString();
+    }
+
+    /*污水化验查询总数*/
+    @RequestMapping("searchSewageTestCount")
+    @ResponseBody
+    public int searchSewageTestCount(@RequestBody SewageTest sewageTest){
+        return sewageTestService.searchSewageTestCount(sewageTest);
+    }
+
+    /*次生化验查询*/
+    @RequestMapping("searchSecondaryTest")
+    @ResponseBody
+    public String searchSecondaryTest(@RequestBody SecondaryTest secondaryTest){
+        JSONObject res=new JSONObject();
+
+        try{
+      List<SecondaryTest> secondaryTestList=sewageTestService.searchSecondaryTest(secondaryTest);
+            res.put("status", "success");
+            res.put("message", "次生化验查询成功");
+            res.put("data", secondaryTestList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "次生化验查询失败");
+        }
+
+       return res.toString();
+    }
+
+
+    /*次生化验查询总数*/
+    @RequestMapping("searchSecondaryTestCount")
+    @ResponseBody
+    public int searchSecondaryTestCount(@RequestBody SecondaryTest secondaryTest){
+        return sewageTestService.searchSecondaryTestCount(secondaryTest);
     }
 }
 

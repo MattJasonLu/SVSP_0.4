@@ -1,5 +1,6 @@
 package com.jdlink.domain;
 
+import com.jdlink.domain.Dictionary.ApplicationStatusItem;
 import com.jdlink.domain.Dictionary.PackageTypeItem;
 import com.jdlink.domain.Dictionary.TransportItem;
 import com.jdlink.domain.Dictionary.UnitDataItem;
@@ -167,6 +168,17 @@ public class QuotationItem {
 
     //单位数据字典
     private UnitDataItem unitDataItem;
+
+    //申报状态数据字典 用于库存申报
+    private ApplicationStatusItem applicationStatusItem;
+
+    public ApplicationStatusItem getApplicationStatusItem() {
+        return applicationStatusItem;
+    }
+
+    public void setApplicationStatusItem(ApplicationStatusItem applicationStatusItem) {
+        this.applicationStatusItem = applicationStatusItem;
+    }
 
     public UnitDataItem getUnitDataItem() {
         return unitDataItem;

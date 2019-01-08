@@ -969,6 +969,242 @@ function viewData(e) {
 }
 
 /**
+ * 查看数据
+ * @param e
+ */
+function showEditData(e) {
+    var id = getIdByMenu(e);
+    // 设置产废单位
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getAllClients",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var produceCompany = $("select[name='produceCompany']");
+                produceCompany.children().remove();
+                $.each(data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.clientId);
+                    option.text(item.companyName);
+                    produceCompany.append(option);
+                });
+                produceCompany.selectpicker("refresh");
+                produceCompany.selectpicker('val', '');
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    // 设置危废代码
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getWastesInfoList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var wastesCode = $("select[name='wastesCode']");
+                wastesCode.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.code);
+                    option.text(item.code);
+                    wastesCode.append(option);
+                });
+                wastesCode.selectpicker("refresh");
+                wastesCode.selectpicker('val', '');
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    // 设置处理方式
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getProcessWayByDataDictionary",                  // url
+        async: false,
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                var processWay = $("select[name='processWay']");
+                processWay.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    processWay.append(option);
+                });
+                processWay.get(0).selectedIndex = -1;
+            }
+        },
+        error: function (result) {
+
+        }
+    });
+    // 设置进料方式
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getHandleCategoryByDataDictionary",                  // url
+        async: false,
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                var processWay = $("select[name='handleCategory']");
+                processWay.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    processWay.append(option);
+                });
+                processWay.get(0).selectedIndex = -1;
+            }
+        },
+        error: function (result) {
+
+        }
+    });
+    // 设置数据
+    $.ajax({
+        type: "POST",
+        url: "getInboundOrderById",
+        async: false,
+        dataType: "json",
+        data: {"inboundOrderId": id},
+        success: function (result) {
+            if (result !== undefined && result.status === "success") {
+                console.log(result);
+                setItemDataList(result.data);
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
+    $("#editModal").modal("show");
+    // 中文重写select 查询为空提示信息
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 4
+    });
+
+    /**
+     * 设置数据
+     * @param result
+     */
+    function setItemDataList(result) {
+        // 获取id为cloneTr的tr元素
+        var tr = $("#editClonedTr");
+        tr.siblings().remove();
+        $.each(result.inboundOrderItemList, function (index, item) {
+            var data = eval(item);
+            // 克隆tr，每次遍历都可以产生新的tr
+            var clonedTr = tr.clone();
+            clonedTr.show();
+            // 把克隆好的tr追加到原来的tr前面
+            clonedTr.removeAttr("id");
+            clonedTr.insertBefore(tr);
+            $('.selectpicker').data('selectpicker', null);
+            $('.bootstrap-select').find("button:first").remove();
+            $('.selectpicker').selectpicker("refresh");
+
+            // 循环遍历cloneTr的每一个td元素，并赋值
+            clonedTr.find("td[name='index']").text(index + 1);
+            // clonedTr.find("td[name='inboundPlanOrderId']").text(data.inboundPlanOrderId);
+            clonedTr.find("input[name='transferDraftId']").val(data.transferDraftId);
+            if (data.produceCompany != null) {
+                clonedTr.find("select[name='produceCompany']").selectpicker('val', data.produceCompany.clientId);
+            }
+            if (data.wastes != null) {
+                clonedTr.find("input[name='wastesName']").val(data.wastes.name);
+                clonedTr.find("select[name='wastesCode']").selectpicker('val', data.wastes.wastesId);
+            }
+            clonedTr.find("input[name='wastesAmount']").val(parseFloat(data.wastesAmount).toFixed(3));
+            clonedTr.find("input[name='unitPriceTax']").val(data.unitPriceTax);
+            clonedTr.find("input[name='totalPrice']").val(data.totalPrice);
+            if (data.processWayItem != null)
+                clonedTr.find("select[name='processWay']").val(data.processWayItem.dataDictionaryItemId);
+            if (data.handleCategoryItem != null)
+                clonedTr.find("select[name='handleCategory']").val(data.handleCategoryItem.dataDictionaryItemId);
+            clonedTr.find("input[name='remarks']").val(data.remarks);
+            clonedTr.find("input[name='warehouseArea']").val(data.warehouseArea);
+            clonedTr.find("td[name='inboundOrderItemId']").text(data.inboundOrderItemId);
+        });
+        // 隐藏无数据的tr
+        tr.hide();
+    }
+
+}
+
+/**
+ * 编辑数据
+ */
+function editData() {
+    // 遍历条目
+    $("#editBody").children().not("#editClonedTr").each(function () {
+        // 获取条目的数据
+        var data = {};
+        data.transferDraftId = $(this).find("input[name='transferDraftId']").val();
+        data.produceCompany = {
+            clientId: $(this).find("select[name='produceCompany']").selectpicker('val')
+        };
+        data.wastes = {
+            name: $(this).find("input[name='wastesName']").val(),
+            wastesId: $(this).find("select[name='wastesCode']").selectpicker('val')
+        };
+        data.wastesAmount = $(this).find("input[name='wastesAmount']").val();
+        data.processWayItem = {
+            dataDictionaryItemId: $(this).find("select[name='processWay']").val()
+        };
+        data.handleCategoryItem = {
+            dataDictionaryItemId: $(this).find("select[name='handleCategory']").val()
+        };
+        data.remarks = $(this).find("input[name='remarks']").val();
+        data.warehouseArea = $(this).find("input[name='warehouseArea']").val();
+        data.inboundOrderItemId = $(this).find("td[name='inboundOrderItemId']").text();
+        console.log(data);
+
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "updateInboundOrderItem",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    console.log(result);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+
+    });
+}
+
+/**
  * 属性调整
  * @param e
  */

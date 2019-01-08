@@ -774,7 +774,7 @@ function addAppoint() {
        sewagePointItem:{dataDictionaryItemId:$('#address').val()},
          id:$('#reservationId').val(),
     };
-    console.log(data)
+    console.log(data);
    //添加主表
     $.ajax({
         type: "POST",                       // 方法类型
@@ -1209,13 +1209,72 @@ function view(item) {
 
 }
 
+
+/**
+ * 一键签收
+ */
+function confirmAllCheck(){
+    var laboratorySigner = "";
+    $.ajax({
+        type: "POST",                             // 方法类型
+        url: "getCurrentUserInfo",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result.status === "success" && result.data != null) {
+                laboratorySigner = result.data.name;      // 获取签收人
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+    var idList = [];   // 承装需要确认收样的预约单号
+    $.each($("input[name='select']:checked"), function (index, item) {
+        if($(item).parent().parent().parent().find("td[name='state']").text() === "待收样") {   // 将待收样的物品
+            idList.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
+        }
+    });
+    if(idList.length > 0) {
+        var sampleInformation = {};
+        sampleInformation.laboratorySignatory = laboratorySigner;
+        sampleInformation.sampleIdList = idList;
+        console.log(sampleInformation);
+        $.ajax({
+            type: "POST",                             // 方法类型
+            url: "confirmAllSewageAnalysisCheck",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(sampleInformation),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result.status == "success") {
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.dir(result);
+                alert("服务器异常!");
+            }
+        });
+    } else {
+        alert("请勾选需要收样的单号！");
+    }
+}
+
+
 //确认收样
 function setSubmit(item) {
     var state=$(item).parent().parent().children('td').eq(6).html();
     if($(item).parent().parent().children('td').eq(6).html()=='待收样'){
         var id=$(item).parent().parent().children('td').eq(1).html();
-        console.log(id)
-        $("#reservationId1").text(id)
+        console.log(id);
+        $("#reservationId1").text(id);
         $("#appointModa2").modal('show');
         $('#confirm').show();
         //根据编号查找

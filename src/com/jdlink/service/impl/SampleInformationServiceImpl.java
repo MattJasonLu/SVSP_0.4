@@ -42,6 +42,9 @@ public class SampleInformationServiceImpl implements SampleInformationService {
     public void confirmCheck(SampleInformation sampleInformation){ sampleInformationMapper.confirmCheck(sampleInformation); }
 
     @Override
+    public void confirmAllCheck(SampleInformation sampleInformation) { sampleInformationMapper.confirmAllCheck(sampleInformation); }
+
+    @Override
     public void update(SampleInformation sampleInformation){ sampleInformationMapper.update(sampleInformation); }
 
     @Override
@@ -88,5 +91,8 @@ public class SampleInformationServiceImpl implements SampleInformationService {
 
     @Override
     public List<SampleInformationItem> searchItem(SampleInformationItem sampleInformationItem){ return sampleInformationMapper.searchItem(sampleInformationItem); }
+
+    @Override
+    public void setFilePath(Wastes wastes) { sampleInformationMapper.setFilePath(wastes); }
 
 }

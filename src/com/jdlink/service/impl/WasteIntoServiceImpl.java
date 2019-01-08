@@ -76,6 +76,9 @@ public class WasteIntoServiceImpl implements WasteIntoService {
     }
 
     @Override
+    public void confirmAllSecondAnalysisCheck(SecondarySample secondarySample) { wasteIntoMapper.confirmAllSecondAnalysisCheck(secondarySample);}
+
+    @Override
     public void rejectSecondarySampleById(String id, String advice) {
         wasteIntoMapper.rejectSecondarySampleById(id,advice);
     }

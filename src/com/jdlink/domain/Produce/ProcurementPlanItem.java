@@ -34,10 +34,6 @@ public class ProcurementPlanItem {
     //单位
     private Unit unit;
 
-    public Unit getUnit() {
-        return unit;
-    }
-
     //单价
     private float price;
 
@@ -60,6 +56,22 @@ public class ProcurementPlanItem {
      * 关键字
      */
     private String keywords;
+    /**
+     * 物品编码
+     */
+    private String code;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
 
     public MaterialCategoryItem getMaterialCategoryItem() {
 

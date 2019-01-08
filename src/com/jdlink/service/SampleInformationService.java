@@ -16,6 +16,7 @@ public interface SampleInformationService {
     List<SampleInformation> listPage(Page page);
     SampleInformation getById(String sampleId);
     void confirmCheck(SampleInformation sampleInformation);
+    void confirmAllCheck(SampleInformation sampleInformation);
     void update(SampleInformation sampleInformation);
     List<SampleInformation> listByKeyword(String keyword);
     void updateSampleInfo(String sampleId,String newId);
@@ -32,4 +33,5 @@ public interface SampleInformationService {
     List<SampleInformationItem> listItemPage(Page page);
     int searchItemCount(SampleInformationItem sampleInformationItem);
     List<SampleInformationItem> searchItem(SampleInformationItem sampleInformationItem);
+    void setFilePath(Wastes wastes);
 }

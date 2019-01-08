@@ -6,18 +6,21 @@
 <mapper namespace="com.jdlink.mapper.SampleInformationMapper">
     <resultMap id="SampleInformationRM" type="SampleInformation" autoMapping="true">
         <id property="id" column="id"/>
-        <result property="companyCode" column="companyCode"/>
-        <result property="applyState" column="applyState"/>
-        <result property="laboratorySigner" column="laboratorySigner"/>
         <association property="newId" column="id" select="getAnalysisId"/>
+        <association property="applicationStatusItem" column="applyStateId" select="getApplicationStatusItem"/>
         <collection property="wastesList" select="getWastes" column="id" ofType="com.jdlink.domain.Wastes"
                     javaType="ArrayList"/>
     </resultMap>
 
+    <!--获取预约状态数据字典-->
+    <select id="getApplicationStatusItem" resultType="ApplicationStatusItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{applyStateId}
+    </select>
+
     <insert id="add" parameterType="SampleInformation">
-        INSERT INTO t_pr_sampleinformation (id,companyCode,companyName,wastesCode,wastesName,wastesFormType,applyState,sendingPerson,laboratorySigner,isPH,isAsh,
+        INSERT INTO t_pr_sampleinformation (id,companyCode,companyName,wastesCode,wastesName,wastesFormType,applyState,applyStateId,sendingPerson,laboratorySigner,isPH,isAsh,
         isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity,isHotMelt,nowTime,creationDate,creationTime)
-        VALUES (#{id},#{companyCode},#{companyName},#{wastesList[0].code},#{wastesList[0].name},#{wastesList[0].formType},'ToCollected',#{sendingPerson},#{laboratorySigner},#{wastesList[0].isPH},
+        VALUES (#{id},#{companyCode},#{companyName},#{wastesList[0].code},#{wastesList[0].name},#{wastesList[0].formType},'ToCollected',62,#{sendingPerson},#{laboratorySigner},#{wastesList[0].isPH},
         #{wastesList[0].isAsh}, #{wastesList[0].isWater}, #{wastesList[0].isHeat},
         #{wastesList[0].isSulfur}, #{wastesList[0].isChlorine}, #{wastesList[0].isFluorine},
         #{wastesList[0].isPhosphorus}, #{wastesList[0].isFlashPoint}, #{wastesList[0].isViscosity},#{wastesList[0].isHotMelt}, NOW(),NOW(),NOW());
@@ -33,9 +36,9 @@
         </if>
     </insert>
 
-    <select id="listPage" resultType="SampleInformation">
+    <select id="listPage" resultMap="SampleInformationRM">
         select * from t_pr_sampleinformation
-        where applyState != 'Invalid'
+        where applyStateId != 55
         ORDER BY CONVERT(id,SIGNED) DESC
         <if test="start != null and count != null">
             limit #{start}, #{count}
@@ -44,7 +47,7 @@
 
     <select id="listItemPage" resultType="SampleInformationItem">
         select a.*,b.companyName,b.sendingPerson,b.laboratorySigner,b.applyState from t_pr_sampleinformationItem as a join t_pr_sampleinformation as b on a.sampleId=b.id
-        where b.applyState != 'Invalid'
+        where b.applyStateId != 55
         ORDER BY CONVERT(transferId,SIGNED) DESC
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
@@ -410,8 +413,19 @@
     <update id="confirmCheck" parameterType="SampleInformation">
         UPDATE t_pr_sampleinformation
         SET
-        applyState = 'Received',laboratorySigner=#{laboratorySigner},nowTime = NOW(),samplingDate = NOW()
+        applyState = 'Received',applyStateId=61,laboratorySigner=#{laboratorySigner},nowTime = NOW(),samplingDate = NOW()
         WHERE id = #{id};
+    </update>
+
+    <update id="confirmAllCheck" parameterType="SampleInformation">
+        <if test="sampleIdList.size() > 0">
+            <foreach collection="sampleIdList" item="sampleId" index="index">
+                UPDATE t_pr_sampleinformation
+                SET
+                applyState = 'Received',applyStateId=61,laboratorySigner=#{laboratorySigner},nowTime = NOW(),samplingDate = NOW()
+                WHERE id = #{sampleId};
+            </foreach>
+        </if>
     </update>
 
     <update id="update" parameterType="SampleInformation">
@@ -447,7 +461,7 @@
     </update>
 
     <update id="updateSampleInfo" parameterType="String">
-        update t_pr_sampleinformation set applyState = 'Invalid',
+        update t_pr_sampleinformation set applyState = 'Invalid',applyStateId=55,
         id=#{newId}
         where id = #{sampleId};
 
@@ -457,6 +471,11 @@
 
     <update id="rejectSampleInfoById" >
         update t_pr_sampleinformation set applyState = 'Rejected',advice=#{advice} where id = #{sampleId}
+    </update>
+
+    <!--设置样品图片链接-->
+    <update id="setFilePath" parameterType="Wastes">
+        update t_pr_sampleinformationitem set imageUrl=#{imageUrl} where sampleId=#{id};
     </update>
 
     <delete id="deleteById" parameterType="String">

@@ -225,6 +225,15 @@ public class ProcurementServiceImpl implements ProcurementService {
     }
 
     @Override
+    public ProcurementPlanItem getIngredientById(int id) {return procurementMapper.getIngredientById(id);}
+
+    @Override
+    public List<ProcurementPlanItem> searchProcurementPlanItem(ProcurementPlanItem procurementPlanItem){ return procurementMapper.searchProcurementPlanItem(procurementPlanItem); }
+
+    @Override
+    public int searchProcurementPlanItemTotal(ProcurementPlanItem procurementPlanItem){ return procurementMapper.searchProcurementPlanItemTotal(procurementPlanItem); }
+
+    @Override
     public void deleteMonthProcurementById(int id) {
         procurementMapper.deleteMonthProcurementById(id);
     }

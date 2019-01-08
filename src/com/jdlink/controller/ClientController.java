@@ -311,7 +311,7 @@ public class ClientController {
     @ResponseBody
     public String getAllClients() {
         try {
-            List<Client> clientList = clientService.list();
+            List<Client> clientList = clientService.listAll();
             JSONArray array = JSONArray.fromArray(clientList.toArray(new Client[clientList.size()]));
             return array.toString();
         } catch (Exception e) {

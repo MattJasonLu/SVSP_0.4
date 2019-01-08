@@ -9,16 +9,22 @@
         <result property="companyCode" column="companyCode"/>
         <result property="applyState" column="applyState"/>
         <result property="laboratorySigner" column="laboratorySigner"/>
+        <association property="applicationStatusItem" column="applyStateId" select="getApplicationStatusItem"/>
         <collection property="wastesList" select="getWastes" column="id" ofType="com.jdlink.domain.Wastes"
                     javaType="ArrayList"/>
     </resultMap>
 
+    <!--获取预约状态数据字典-->
+    <select id="getApplicationStatusItem" resultType="ApplicationStatusItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{applyStateId}
+    </select>
+
     <insert id="add" parameterType="SampleInformation">
         INSERT INTO t_pr_sampleinfowarehouse
-        (id,companyCode,companyName,wastesCode,wastesName,wastesFormType,applyState,sendingPerson,laboratorySigner,isPH,isAsh,
+        (id,companyCode,companyName,emergency,wastesCode,wastesName,wastesFormType,applyState,applyStateId,sendingPerson,laboratorySigner,isPH,isAsh,
         isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity,isHotMelt,nowTime,creationDate,creationTime)
         VALUES
-        (#{id},#{companyCode},#{companyName},#{wastesList[0].code},#{wastesList[0].name},#{wastesList[0].formType},'ToCollected',
+        (#{id},#{companyCode},#{companyName},#{emergency},#{wastesList[0].code},#{wastesList[0].name},#{wastesList[0].formType},'ToCollected',62,
         #{sendingPerson},#{laboratorySigner},#{wastesList[0].isPH},#{wastesList[0].isAsh},#{wastesList[0].isWater},
         #{wastesList[0].isHeat},#{wastesList[0].isSulfur},#{wastesList[0].isChlorine}, #{wastesList[0].isFluorine},
         #{wastesList[0].isPhosphorus},#{wastesList[0].isFlashPoint},#{wastesList[0].isViscosity},#{wastesList[0].isHotMelt},
@@ -38,16 +44,22 @@
 
     <select id="listPage" resultMap="SampleInformationRM">
         select * from t_pr_sampleinfowarehouse as a left join t_pr_sampleinfowarehouseitem as b on a.id = b.sampleId
-        where applyState != 'Invalid'
-        ORDER BY CONVERT(transferId,SIGNED) DESC
+        where applyStateId != 55
+        ORDER BY CONVERT(a.id,SIGNED) DESC
         <if test="start != null and count != null">
             limit #{start}, #{count};
         </if>
     </select>
 
+    <select id="listEmergency" resultMap="SampleInformationRM">
+         select * from t_pr_sampleinfowarehouse as a left join t_pr_sampleinfowarehouseitem as b on a.id = b.sampleId
+        where applyStateId != 55 and a.emergency = 1
+        ORDER BY CONVERT(a.id,SIGNED) DESC;
+    </select>
+
     <select id="listItemPage" resultType="SampleInformationItem">
         select * from t_pr_sampleinfowarehouseitem as a join t_pr_sampleinfowarehouse as b on a.sampleId=b.id
-        where b.applyState != 'Invalid'
+        where b.applyStateId != 55
         ORDER BY CONVERT(a.sampleId,SIGNED) DESC
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
@@ -406,8 +418,19 @@
     <update id="confirmCheck">
         UPDATE t_pr_sampleinfowarehouse
         SET
-        applyState = 'Received',laboratorySigner=#{laboratorySigner},nowTime = NOW(),samplingDate = NOW()
+        applyState = 'Received',laboratorySigner=#{laboratorySigner},nowTime = NOW(),samplingDate = NOW(),emergency=0
         WHERE id = #{sampleId};
+    </update>
+
+    <update id="confirmAllCheck" parameterType="SampleInformation">
+        <if test="sampleIdList.size() > 0">
+            <foreach collection="sampleIdList" item="sampleId" index="index">
+                UPDATE t_pr_sampleinfowarehouse
+                SET
+                applyState = 'Received',applyStateId=61,laboratorySigner=#{laboratorySigner},nowTime = NOW(),samplingDate = NOW(),emergency=0
+                WHERE id = #{sampleId};
+            </foreach>
+        </if>
     </update>
 
     <update id="update" parameterType="SampleInformation">
@@ -418,7 +441,7 @@
         isWater = #{wastesList[0].isWater},isHeat = #{wastesList[0].isHeat},isSulfur =#{wastesList[0].isSulfur},
         isChlorine = #{wastesList[0].isChlorine},isFluorine = #{wastesList[0].isFluorine},isPhosphorus
         =#{wastesList[0].isPhosphorus},isFlashPoint =#{wastesList[0].isFlashPoint},isViscosity =#{wastesList[0].isViscosity},
-        isHotMelt=#{wastesList[0].isHotMelt},wastesFormType=#{wastesList[0].formType},nowTime = NOW()
+        isHotMelt=#{wastesList[0].isHotMelt},wastesFormType=#{wastesList[0].formType},nowTime = NOW(),emergency=#{emergency}
         WHERE t_pr_sampleinfowarehouse.id =#{id};
         <foreach collection="wastesList" item="wastes" index="index">
             <if test="wastes.unit == 'no'">
@@ -444,7 +467,7 @@
     </update>
 
     <update id="updateSampleInfo" parameterType="String">
-        update t_pr_sampleinfowarehouse set applyState = 'Invalid',
+        update t_pr_sampleinfowarehouse set applyState = 'Invalid',applyStateId=55,
         id=#{newId}
         where id = #{sampleId};
 
@@ -453,7 +476,7 @@
     </update>
 
     <update id="rejectSampleInfoById">
-        update t_pr_sampleinfowarehouse set applyState = 'Rejected',advice=#{advice} where id = #{sampleId}
+        update t_pr_sampleinfowarehouse set applyState = 'Rejected',applyStateId=60,advice=#{advice} where id = #{sampleId}
     </update>
 
     <delete id="deleteById" parameterType="String">

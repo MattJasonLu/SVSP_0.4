@@ -58,11 +58,15 @@ public interface ProcurementMapper {
     void cancelProcurementPlanById(String id);
     int totalProcurementPlanRecord();
     List<ProcurementPlan>searchProcurementPlan(ProcurementPlan procurementPlan);
+    List<ProcurementPlanItem> searchProcurementPlanItem(ProcurementPlanItem procurementPlanItem);
+    int searchProcurementPlanItemTotal(ProcurementPlanItem procurementPlanItem);
     int searchProcurementPlanCount(ProcurementPlan procurementPlan);
     void updateMaterialState(int id);
     void updateMaterialCategoryItemForProcurementPlan(String procurementPlanId,int MaterialCategoryId);
 
     String getSpecificationById(int id);
+
+    ProcurementPlanItem getIngredientById(int id);
 
     void deleteMonthProcurementById(int id);
 

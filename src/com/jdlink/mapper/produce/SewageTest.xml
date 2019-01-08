@@ -6,7 +6,7 @@
 
     <!--添加污水化验单-->
 
-<insert id="addSewageTest" parameterType="SewageTest">
+    <insert id="addSewageTest" parameterType="SewageTest">
     insert into t_pr_sewagetest(id, address, ph, COD, BOD5, N2, alkalinity, bicarbonate, nitrogen, phosphorus, remarks, sampleId,nowTime,alkalinityCaCo3,alkalinityHCO3,bicarbonateCaCo3,bicarbonateHCO3,checkState,dateTime,checkStateId)
     values
     (#{id},#{address},#{ph},#{COD},#{BOD5},#{N2},#{alkalinity},#{bicarbonate},#{nitrogen},#{phosphorus},#{remarks},#{sampleId},NOW(),#{alkalinityCaCo3},#{alkalinityHCO3},#{bicarbonateCaCo3},#{bicarbonateHCO3},'ToSubmit',NOW(),64);
@@ -23,9 +23,9 @@
         bicarbonateHCO3=#{bicarbonateHCO3},bicarbonateCaCo3=#{bicarbonateCaCo3},dateTime=NOW()
         where id=#{id};
     </update>
-<resultMap id="SewageTestRM" type="SewageTest">
-    <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
-</resultMap>
+    <resultMap id="SewageTestRM" type="SewageTest">
+        <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
+    </resultMap>
 
     <!--获取状态数据字典-->
     <select id="getCheckStateItem" resultType="CheckStateItem">
@@ -33,17 +33,17 @@
     </select>
     <!--加载初始化页面-->
     <select id="loadSewageTestResultsList" resultMap="SewageTestRM">
-        select  * from t_pr_sewagetest order by checkStateId=69,dateTime desc
+        select * from t_pr_sewagetest
+        order by checkStateId=69,id desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
     </select>
 
-  <!--计算总数-->
+    <!--计算总数-->
     <select id="totalSewageTestRecord" resultType="int">
     select count(*) from t_pr_sewagetest;
     </select>
-
 
     <!--添加软水化验单-->
     <select id="addSoftTest" parameterType="SoftTest">
@@ -56,30 +56,28 @@
         select * from t_pr_softest where id=#{id};
     </select>
 
-
     <!--更新软水化验单-->
     <update id="updateSoftTest" parameterType="SoftTest">
         update t_pr_softest set address=#{address},remarks=#{remarks},sampleId=#{sampleId},
         turbidity=#{turbidity},hardness=#{hardness},PH=#{PH},electricalConductivity=#{electricalConductivity},
-        basicity=#{basicity},phenolphthalein=#{phenolphthalein},nowTime=NOW() where id=#{id}
-
+        basicity=#{basicity},phenolphthalein=#{phenolphthalein},nowTime=NOW() where id=#{id};
     </update>
 
     <!--软水化验的总数-->
     <select id="totalSoftTestRecord" resultType="int">
         select count(*) from t_pr_softest;
     </select>
-<resultMap id="SoftTestRM" type="SoftTest">
-    <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
-</resultMap>
+    <resultMap id="SoftTestRM" type="SoftTest">
+        <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
+    </resultMap>
+
     <!--软水化验单初始化-->
     <select id="loadSoftTestResultsList" resultMap="SoftTestRM">
-        select * from t_pr_softest   order  by checkStateId=69 ,dateTime  desc
+        select * from t_pr_softest order by checkStateId=69 ,id desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
     </select>
-
 
     <!--更新污水-->
     <update id="updateSewaGeregistration" parameterType="SewaGeregistration">
@@ -120,26 +118,29 @@
         insert into t_pr_secondarytest (id, dateTime, wastesName, scorchingRate, water, remarks, nowTime,checkState,checkStateId,address) values
         (#{id},NOW(),#{wastesName},#{scorchingRate},#{water},#{remarks},NOW(),'ToSubmit',64,#{address});
     </insert>
-<resultMap id="SecondaryTestRM" type="SecondaryTest">
-    <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
-</resultMap>
+
+    <resultMap id="SecondaryTestRM" type="SecondaryTest">
+        <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
+    </resultMap>
+
     <select id="loadPageSecondaryTestResultsList" resultMap="SecondaryTestRM">
-        select * from t_pr_secondarytest    order  by checkStateId=69, dateTime desc
+        select * from t_pr_secondarytest order by checkStateId=69, id desc
         <if test="start != null and count != null and count != 0">
-            limit #{start}, #{count}
+            limit #{start}, #{count};
         </if>
     </select>
-<select id="totalSecondaryTestRecord" resultType="int">
-    select count(*) from t_pr_secondarytest;
-</select>
 
+    <select id="totalSecondaryTestRecord" resultType="int">
+    select count(*) from t_pr_secondarytest;
+    </select>
 
     <!--更新次生送样信息主表-->
     <update id="updateSecondarySample" parameterType="SecondarySample">
         update t_pr_secondarysample set sendingPerson=#{sendingPerson},sendingPerson=#{sendingPerson},
         address=#{address}, laboratorySignatory=#{laboratorySignatory},nowTime=NOW(),id=#{newId},secondaryPointId=#{secondaryPointItem.dataDictionaryItemId}
-        where  id=#{id}
+        where id=#{id}
     </update>
+
     <delete id="deleteSecondarySampleItem" parameterType="String">
         delete from t_pr_secondarysampleitem where sampleinformationId=#{sampleinformationId};
     </delete>
@@ -158,6 +159,7 @@
     <update id="cancelSewageTest" parameterType="String">
         update t_pr_sewagetest set  checkStateId=69 where id=#{id};
     </update>
+
     <!--污水收样状态为待收样-->
     <update id="cancelSewageTestAfter" parameterType="String">
         update t_pr_sewageregistration set checkStateId =86  where id=#{id} ;
@@ -246,6 +248,186 @@
     <update id="cancelSecondaryGeregistration" parameterType="String">
            update t_pr_secondarysample set  checkStateId=69 where id=#{id}
     </update>
+
+    <!--软水化验查询-->
+    <select id="searchSoftTest" resultMap="SoftTestRM" parameterType="SoftTest" >
+    select  * from t_pr_softest
+    <where>
+        <if test="keyword!='' and keyword!=null">
+            or id = #{keyword}
+            or address = #{keyword}
+            or remarks = #{keyword}
+            or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName = #{keyword} and  datadictionaryitem.dataDictionaryId=11)
+        </if>
+            <if test="id!=null and id!=''">
+               and id =#{id}
+            </if>
+        <if test="remarks!=null and remarks!=''">
+            and remarks =#{remarks}
+        </if>
+        <if test="address!=null and address!=''">
+            and address =#{address}
+        </if>
+        <if test="checkStateItem!=null">
+          <if test="checkStateItem.dataDictionaryItemId!=0">
+              and checkStateId=#{checkStateItem.dataDictionaryItemId}
+          </if>
+        </if>
+    </where>
+          order by checkStateId=69 ,id desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--软水化验查询计数-->
+    <select id="searchSoftTestCount" resultType="int">
+        select count(*) from t_pr_softest
+        <where>
+            <if test="keyword!='' and keyword!=null">
+                or id = #{keyword}
+                or address = #{keyword}
+                or remarks = #{keyword}
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName = #{keyword} and  datadictionaryitem.dataDictionaryId=11)
+            </if>
+            <if test="id!=null and id!=''">
+                and id =#{id}
+            </if>
+            <if test="remarks!=null and remarks!=''">
+                and remarks =#{remarks}
+            </if>
+            <if test="address!=null and address!=''">
+                and address =#{address}
+            </if>
+            <if test="checkStateItem!=null">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId=#{checkStateItem.dataDictionaryItemId}
+                </if>
+            </if>
+        </where>
+        order by checkStateId=69 ,id desc
+    </select>
+
+    <!--污水化验查询-->
+    <select id="searchSewageTest" parameterType="SewageTest" resultMap="SewageTestRM">
+
+        select  * from t_pr_sewagetest
+        <where>
+            <if test="keyword!='' and keyword!=null">
+                or id = #{keyword}
+                or address = #{keyword}
+                or remarks = #{keyword}
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName = #{keyword} and  datadictionaryitem.dataDictionaryId=11)
+            </if>
+            <if test="id!=null and id!=''">
+                and id =#{id}
+            </if>
+            <if test="remarks!=null and remarks!=''">
+                and remarks =#{remarks}
+            </if>
+            <if test="address!=null and address!=''">
+                and address =#{address}
+            </if>
+            <if test="checkStateItem!=null">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId=#{checkStateItem.dataDictionaryItemId}
+                </if>
+            </if>
+        </where>
+        order by checkStateId=69 ,id desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--污水化验查询计数-->
+    <select id="searchSewageTestCount" resultType="int">
+        select count(*) from t_pr_sewagetest
+        <where>
+            <if test="keyword!='' and keyword!=null">
+                or id = #{keyword}
+                or address = #{keyword}
+                or remarks = #{keyword}
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName = #{keyword} and  datadictionaryitem.dataDictionaryId=11)
+            </if>
+            <if test="id!=null and id!=''">
+                and id =#{id}
+            </if>
+            <if test="remarks!=null and remarks!=''">
+                and remarks =#{remarks}
+            </if>
+            <if test="address!=null and address!=''">
+                and address =#{address}
+            </if>
+            <if test="checkStateItem!=null">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId=#{checkStateItem.dataDictionaryItemId}
+                </if>
+            </if>
+        </where>
+        order by checkStateId=69 ,id desc
+    </select>
+
+    <!--次生化验查询-->
+    <select id="searchSecondaryTest" parameterType="SecondaryTest" resultMap="SecondaryTestRM">
+        select * from t_pr_secondarytest
+        <where>
+            <if test="keyword!='' and keyword!=null">
+                or wastesName= #{keyword}
+                or id = #{keyword}
+                or address = #{keyword}
+                or remarks = #{keyword}
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName = #{keyword} and  datadictionaryitem.dataDictionaryId=11)
+            </if>
+            <if test="id!=null and id!=''">
+                and id =#{id}
+            </if>
+            <if test="remarks!=null and remarks!=''">
+                and remarks =#{remarks}
+            </if>
+            <if test="address!=null and address!=''">
+                and address =#{address}
+            </if>
+            <if test="checkStateItem!=null">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId=#{checkStateItem.dataDictionaryItemId}
+                </if>
+            </if>
+        </where>
+        order by checkStateId=69 ,id desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+
+    <!--次生化验查询计数-->
+    <select id="searchSecondaryTestCount" resultType="int" parameterType="SecondaryTest">
+        select count(*)  from t_pr_secondarytest
+        <where>
+            <if test="keyword!='' and keyword!=null">
+                or wastesName= #{keyword}
+                or id = #{keyword}
+                or address = #{keyword}
+                or remarks = #{keyword}
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName = #{keyword} and  datadictionaryitem.dataDictionaryId=11)
+            </if>
+            <if test="id!=null and id!=''">
+                and id =#{id}
+            </if>
+            <if test="remarks!=null and remarks!=''">
+                and remarks =#{remarks}
+            </if>
+            <if test="address!=null and address!=''">
+                and address =#{address}
+            </if>
+            <if test="checkStateItem!=null">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId=#{checkStateItem.dataDictionaryItemId}
+                </if>
+            </if>
+        </where>
+    </select>
 </mapper>
 
 

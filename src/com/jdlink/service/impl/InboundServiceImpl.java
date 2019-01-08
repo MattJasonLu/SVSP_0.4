@@ -168,6 +168,11 @@ public class InboundServiceImpl implements InboundService {
     }
 
     @Override
+    public void updateInboundOrderItem(InboundOrderItem inboundOrderItem) {
+        inboundMapper.updateInboundOrderItem(inboundOrderItem);
+    }
+
+    @Override
     public void updateItemHandleCategory(InboundOrderItem inboundOrderItem) {
         inboundMapper.updateItemHandleCategory(inboundOrderItem);
     }

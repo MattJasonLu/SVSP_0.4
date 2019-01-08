@@ -919,7 +919,7 @@ function totalPage1() {
     } else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchMaterialTotal",                  // url
+            url: "searchProcurementPlanItemTotal",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
@@ -1050,7 +1050,7 @@ function switchPage1(pageNumber) {
         data1['page'] = page;
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchMaterial",         // url
+            url: "searchProcurementPlanItem",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
@@ -1141,7 +1141,7 @@ function inputSwitchPage1() {
             data1['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "searchMaterial",         // url
+                url: "searchProcurementPlanItem",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data1),
                 dataType: "json",
@@ -1471,32 +1471,32 @@ function setSelectedList() {
     //     }
     // });
     // 设置物料状态下拉框数据
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getProcurementCheckStateList",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            if (result != undefined) {
-                var data = eval(result);
-                // 高级检索下拉框数据填充
-                var state = $("#search1-state");
-                state.children().remove();
-                $.each(data.stateList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    state.append(option);
-                });
-                state.get(0).selectedIndex = -1;
-            } else {
-                console.log("fail: " + result);
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-        }
-    });
+    // $.ajax({
+    //     type: "POST",                       // 方法类型
+    //     url: "getProcurementCheckStateList",                  // url
+    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     dataType: "json",
+    //     success: function (result) {
+    //         if (result != undefined) {
+    //             var data = eval(result);
+    //             // 高级检索下拉框数据填充
+    //             var state = $("#search1-state");
+    //             state.children().remove();
+    //             $.each(data.stateList, function (index, item) {
+    //                 var option = $('<option />');
+    //                 option.val(index);
+    //                 option.text(item.name);
+    //                 state.append(option);
+    //             });
+    //             state.get(0).selectedIndex = -1;
+    //         } else {
+    //             console.log("fail: " + result);
+    //         }
+    //     },
+    //     error: function (result) {
+    //         console.log("error: " + result);
+    //     }
+    // });
     //设置仓库下拉框
     $.ajax({
         type: "POST",                       // 方法类型
@@ -1970,18 +1970,11 @@ function search1() {
     page.count = countValue1();   // 获取每页显示数
     page.start = (pageNumber - 1) * page.count;
     var keywords = $.trim($("#searchContent1").val());
-
-    var state = ($("#search1-state").find("option:selected").text());
-    if (state.length < 0) {
-        state = null
-    }
     if ($("#senior1").is(':visible')) {
         data1 = {           // 获取数据并设置搜索条件
             suppliesName: $.trim($("#search1-suppliesName").val()),
             specifications: $.trim($("#search1-specifications").val()),
-            receiptNumber: $.trim($("#search1-receiptNumber").val()),
-            note: $.trim($("#search1-note").val()),
-            ingredientStateItem: {dictionaryItemName: state},
+            procurementPlanId: $.trim($("#search1-procurementPlanId").val()),
             page: page
         };
     } else {
@@ -1996,7 +1989,7 @@ function search1() {
         console.log(data1);
         $.ajax({
             type: "POST",
-            url: "searchMaterial",
+            url: "searchProcurementPlanItem",
             async: false,
             data: JSON.stringify(data1),
             dataType: "json",

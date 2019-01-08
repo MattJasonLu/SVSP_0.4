@@ -7,7 +7,13 @@
     <resultMap id="ReceiveSampleAnalysisRM" type="ReceiveSampleAnalysis" autoMapping="true">
         <id property="id" column="id"/>
         <association property="produceCompany" column="produceCompanyId" select="getProduceCompany"/>
+        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"/>
     </resultMap>
+
+    <!--获取预约状态数据字典-->
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{applyStateId}
+    </select>
 
     <select id="getProduceCompany" resultType="Client">
         select * from client where clientId=#{produceCompanyId};
@@ -37,11 +43,12 @@
             </if>
             <if test="true">
                 and checkState != 'Invalid'
+                and checkStateId != 69
             </if>
         </where>
-        order by createTime desc
+        order by id desc
         <if test="page != null and page.start != null and page.count != null">
-            limit #{page.start}, #{page.count}
+            limit #{page.start}, #{page.count};
         </if>
     </select>
 
@@ -74,6 +81,7 @@
             </if>
             <if test="true">
                 and checkState != 'Invalid'
+                and checkStateId != 69
             </if>
         </where>
     </select>
@@ -83,11 +91,11 @@
         insert into t_pr_receivesampleanalysis (id, transferDraftId, sampleId, finishDate,
         produceCompanyId, wastesName, wastesCode, handleCategory, formType, heat, PH, ash,
         water, fluorine, chlorine, sulfur, phosphorus, flashPoint, viscosity, hotMelt,
-        remark, checkState, wastesCategory, sender) values (#{id}, #{transferDraftId}, #{sampleId},
+        remark, checkState, wastesCategory, sender,checkStateId) values (#{id}, #{transferDraftId}, #{sampleId},
         #{finishDate}, #{produceCompany.clientId}, #{wastesName}, #{wastesCode}, #{handleCategory},
         #{formType}, #{heat}, #{PH}, #{ash}, #{water}, #{fluorine}, #{chlorine}, #{sulfur},
         #{phosphorus}, #{flashPoint}, #{viscosity}, #{hotMelt}, #{remark}, #{checkState},
-        #{wastesCategory}, #{sender});
+        #{wastesCategory}, #{sender},64);
     </insert>
 
     <!--更新市场部化验单-->
@@ -101,9 +109,10 @@
         sender=#{sender} where id=#{id};
     </update>
 
-    <!--设置状态-->
+    <!--设置状态 作废 -->
     <update id="setState">
-        update t_pr_receivesampleanalysis set checkState=#{checkState}, id=concat(#{id}, #{newId}) where id=#{id};
+        update t_pr_receivesampleanalysis set checkState=#{checkState},checkStateId=69,id=concat(#{id}, #{newId}) where id=#{id};
     </update>
+
 
 </mapper>
