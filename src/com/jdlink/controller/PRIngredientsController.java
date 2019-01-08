@@ -637,6 +637,9 @@ public class PRIngredientsController {
     public String addIngredientsReceive(@RequestBody IngredientsReceive ingredientsReceive) {
         JSONObject res = new JSONObject();
         try {
+            if(ingredientsReceive.getCreationDate() == null) {
+                ingredientsReceive.setCreationDate(new Date());
+            }
             ingredientsService.addAllReceive(ingredientsReceive);
             res.put("status", "success");
             res.put("message", "新建成功");
