@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>辅料/备件入库</title>
+    <title>辅料/备件红字入库单</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <script src="js/jquery/jquery.validate.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
@@ -11,11 +11,15 @@
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <link href="css/validation.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
+    <link href="css/loading1.css" rel="stylesheet">
+    <link href="css/loading2.css" rel="stylesheet">
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/ingredientsIn.js"></script>
+    <script src="js/produce/newRedIngredientsIn.js"></script>
 </head>
-<body onload="loadProcurementItemList();">
+<body onload="loadRedIngredientsList();">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -135,140 +139,10 @@
             </ol>
             <p class="text-center pull-right"><b>编号</b><span class="id"></span></p>
 
-            <h4 class="sub-header" id="head">辅料/备件入库单新增</h4>
-        </div>
-        <div class="row">
-            <!--查询框-->
-            <div class="input-group col-md-4 pull-right">
-                <input type="text" class="form-control" placeholder="搜索..." id="searchContent1"
-                       onkeydown="enterSearch1()">
-                <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="search1();"><span
-                                    class="glyphicon glyphicon-search"
-                                    aria-hidden="true"></span> 查询</a>
-                            <a class="btn btn-default" onclick="$('#senior1').toggle();"><span
-                                    class="glyphicon glyphicon-search" aria-hidden="true"></span> 高级查询</a>
-                            <a class="btn btn-default" onclick="reset1();"><span class="glyphicon glyphicon-cog"
-                                                                                aria-hidden="true"></span> 重置</a>
-                        </span>
-            </div>
-        </div>
-        <!--查询框-->
-        <div class="panel panel-default" id="senior1" style="display: none;">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="form-horizontal col-md-4">
-                        <div class="form-group">
-                            <label for="search1-procurementPlanId" class="col-sm-4 control-label">计划单编号</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search1-procurementPlanId"
-                                       name="search1-procurementPlanId"
-                                       placeholder="" onkeydown="enterSearch1()">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-horizontal col-md-4">
-                        <div class="form-group">
-                            <label for="search1-suppliesName" class="col-sm-4 control-label">物资名称</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search1-suppliesName"
-                                       name="search1-suppliesName"
-                                       placeholder="" onkeydown="enterSearch1()">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-horizontal col-md-4">
-                        <div class="form-group">
-                            <label for="search1-specifications" class="col-sm-4 control-label">规格型号</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search1-specifications"
-                                       name="search1-specifications" placeholder="" onkeydown="enterSearch1()">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <h4 class="text-center">&nbsp;&nbsp;&nbsp;&nbsp;采购计划单列表</h4>
-        <div style="height:500px; overflow-y:scroll; ">
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th class="text-center" style="width: 40px">
-                        <input class="checkbox" type="checkbox" id="allSel" onclick="allSelect();"
-                               >
-                    </th>
-                    <th class="text-center">计划单编号</th>
-                    <th class="text-center">物资名称</th>
-                    <th class="text-center">规格型号</th>
-                    <th class="text-center">计量单位</th>
-                    <th class="text-center">库存量</th>
-                    <th class="text-center">需求数量</th>
-                    <th class="text-center">备注</th>
-                    <th class="text-center">状态</th>
-                    <th class="text-center" hidden>物资编号</th>
-                </tr>
-                </thead>
-                <tbody id="ingredientsInData">
-                <tr id="cloneTr1">
-                    <td class="text-center" style="width: 40px">
-                        <input name="select" class="checkbox" type="checkbox" >
-                    </td>
-                    <td class="text-center" name="receiptNumber"></td>
-                    <td class="text-center" name="suppliesName"></td>
-                    <td class="text-center" name="specifications"></td>
-                    <td class="text-center" name="unit"></td>
-                    <td class="text-center" name="inventory"></td>
-                    <td class="text-center" name="demandQuantity"></td>
-                    <td class="text-center" name="note"></td>
-                    <td class="text-center" name="state"></td>
-                    <td class="text-center" hidden name="id"></td>
-                </tr>
-                </tbody>
-            </table>
-            <!--分页-->
-            <nav aria-label="Page navigation" class="text-center">
-                <ol class="pagination" style="width: 800px;">
-                    <li id="current" style="display: none"><a>当前页：</a>
-                    <li id="firstPage">
-                        <a href='#' onclick="switchPage1(0)">首 页</a>
-                    </li>
-                    <li id="previous">
-                        <a href="#" aria-label="Previous" onclick="switchPage1(parseInt(currentPage)-1);">
-                        <span aria-hidden="true"><span class="glyphicon glyphicon-backward"
-                                                       aria-hidden="true"></span></span>
-                        </a>
-                    </li>
-                    <li><a href="#">1</a></li>
-                    <li id="next">
-                        <a href="#" aria-label="Next" onclick="switchPage1(parseInt(currentPage)+1);">
-                        <span aria-hidden="true"><span class="glyphicon glyphicon-forward"
-                                                       aria-hidden="true"></span></span>
-                        </a>
-                    </li>
-                    <li id="endPage">
-                        <a href='#' onclick="switchPage1(-2)">尾 页</a>
-                    </li>
-                    <li><a id="totalPage"></a></li>
-                    <li><a href="#" onclick="inputSwitchPage1();">跳转</a></li>
-                    <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
-                               id="pageNumber" title="" onkeydown="enterSwitchPage1();"></li>
-                    <li class="showLi">每页显示:</li>
-                    <li class="selectLi">
-                        <select id="count1" onchange="loadProcurementItemList();" title="">
-                            <option>5</option>
-                            <option selected>15</option>
-                            <option>50</option>
-                        </select>
-                    </li>
-                </ol>
-            </nav>
-        </div>
-        <div class="row text-center">
-            <a class="btn btn-primary" onclick="confirmInsert1();">确认</a>
+            <h4 class="sub-header" id="head">辅料/备件红字入库单新增</h4>
         </div>
         <br>
-        <h4 class="text-center">&nbsp;&nbsp;&nbsp;&nbsp;入库单</h4>
+        <h4 class="text-center">红字入库单</h4>
         <p class="text-center pull-right"><b>NO.</b><span id="view-id" class="text-left"></span></p>
         <form method="post" id="ingredientsInForm" enctype="multipart/form-data">
             <table class="table table-bordered">
@@ -286,8 +160,8 @@
                 <tbody id="tbody1">
                 <tr>
                     <td class="text-center" rowspan="1">编号</td>
-                    <td class="text-center" rowspan="1">物品编码</td>
                     <td class="text-center" rowspan="1">物品名称</td>
+                    <td class="text-center" rowspan="1">物品编码</td>
                     <td class="text-center" rowspan="1">规格</td>
                     <td class="text-center" rowspan="1">单位</td>
                     <td class="text-center" rowspan="1">数量</td>
@@ -299,22 +173,14 @@
                     <!--<td class="text-center" rowspan="2">处置设备</td>-->
                     <td class="text-center" rowspan="1" hidden>采购单编号</td>
                 </tr>
-                <!--<tr>-->
-                    <!--<td class="text-center">十</td>-->
-                    <!--<td class="text-center">万</td>-->
-                    <!--<td class="text-center">千</td>-->
-                    <!--<td class="text-center">百</td>-->
-                    <!--<td class="text-center">十</td>-->
-                    <!--<td class="text-center">元</td>-->
-                    <!--<td class="text-center">角</td>-->
-                    <!--<td class="text-center">分</td>-->
-                <!--</tr>-->
                 <tr id="clone3" class="clone">
-                    <td class="text-center"><span name="serialNumber" id="serialNumber0"></span></td>
+                    <td class="text-center"><span name="serialNumber" id="serialNumber0">1</span></td>
+                    <td class="text-center">
+                        <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="name" id="name0" onchange="setIngredient(this)"></select>
+                    </td>
                     <td class="text-center"><span name="code" id="code0"></span></td>
-                    <td class="text-center"><span name="name" id="name0"></span></td>
                     <td class="text-center"><span name="specification" id="specification0"></span></td>
-                    <td class="text-center"><span name="unit" id="unit0"></span></td>
+                    <td class="text-center"><select class="form-control" name="unit" id="unit0"></select></td>
                     <td class="text-center"><input id="amount0" oninput="totalCalculate()" value="0" name="amount" type="number" class="form-control text-center" style="width: 100%"></td>
                     <td class="text-center"><input type="number" value="0" class="form-control text-center change"
                                                    id="unitPrice0" name="unitPrice" style="width: 100%"
@@ -322,33 +188,21 @@
                     <td class="text-center"><input type="number" value="0" class="form-control text-center change"
                                                    id="totalPrice0" name="totalPrice" style="width: 100%"
                                                    oninput="setUnitPrice(this)"></td>
-                    <!--<td class="text-center"><span id="hundredThousand0"></span></td>-->
-                    <!--<td class="text-center"><span id="tenThousand0"></span></td>-->
-                    <!--<td class="text-center"><span id="thousand0"></span></td>-->
-                    <!--<td class="text-center"><span id="hundred0"></span></td>-->
-                    <!--<td class="text-center"><span id="ten0"></span></td>-->
-                    <!--<td class="text-center"><span id="yuan0"></span></td>-->
-                    <!--<td class="text-center"><span id="jiao0"></span></td>-->
-                    <!--<td class="text-center"><span id="fen0"></span></td>-->
                     <td class="text-center"><input title="" type="text" class="form-control text-center" name="post"
                                                    id="post0"></td>
-                    <td class="text-center"><span name="remarks" id="remarks0"></span></td>
+                    <td class="text-center"><input name="remarks" id="remarks0"></td>
                     <td class="text-center"><select class="focus text-center"
                                                     id="wareHouseName0" name="wareHouseName" required onchange="setWareHouse(this)"></select>
                     </td>
                     <!--<td class="text-center"><select id="equipment0" name="equipment" class="focus"></select></td>-->
                     <td class="text-center"  hidden><span id="procurementId0" name="procurementId"></span></td>
                 </tr>
+                <tr id="plusBtn">
+                    <td><a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                    <td colspan="10"></td>
+                </tr>
                 <tr>
                     <td colspan="7" class="text-center">合计</td>
-                    <!--<td class="text-center" id="total-hundredThousand"></td>-->
-                    <!--<td class="text-center" id="total-tenThousand"></td>-->
-                    <!--<td class="text-center" id="total-thousand"></td>-->
-                    <!--<td class="text-center" id="total-hundred"></td>-->
-                    <!--<td class="text-center" id="total-ten"></td>-->
-                    <!--<td class="text-center" id="total-yuan"></td>-->
-                    <!--<td class="text-center" id="total-jiao"></td>-->
-                    <!--<td class="text-center" id="total-fen"></td>-->
                     <td class="text-center" id="totalPrice"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -356,17 +210,17 @@
                 </tr>
                 <tr>
                     <td class="text-left" colspan="4"><p style="display:inline;">记账人：<input style="display: inline;width: 60px" title="" class="form-control" type="text"
-                                                                 maxlength="4" id="bookkeeper"></p></td>
+                                                                                            maxlength="4" id="bookkeeper"></p></td>
                     <td class="text-left" colspan="3"><p style="display: inline">审批人：<input style="display: inline;width: 60px" title="" class="form-control" type="text"
-                                                                 maxlength="4" id="approver"></p></td>
+                                                                                            maxlength="4" id="approver"></p></td>
                     <td class="text-left" colspan="1" style="width: 150px;"><p style="display: inline">保管人：<input style="display:inline;;width: 60px" title=""
-                                                                                       class="form-control"  type="text"
-                                                                                       maxlength="4" id="keeper"></p></td>
+                                                                                                                  class="form-control"  type="text"
+                                                                                                                  maxlength="4" id="keeper"></p></td>
                     <td class="text-left" colspan="2" style="width: 150px;"><p style="display: inline">验收人：<input style="display:inline;;width: 60px" title=""
-                                                                                       class="form-control" type="text"
-                                                                                       maxlength="4" id="acceptor"></p></td>
+                                                                                                                  class="form-control" type="text"
+                                                                                                                  maxlength="4" id="acceptor"></p></td>
                     <td class="text-left"><p style="display: inline">经手人：<input style="display:inline;width: 60px" title="" class="form-control" type="text"
-                                                                 maxlength="4" id="handlers"></p></td>
+                                                                                maxlength="4" id="handlers"></p></td>
                 </tr>
                 </tbody>
             </table>
@@ -375,71 +229,19 @@
             <a class="btn btn-success" id="save" onclick="save();">入库</a>
             <a class="btn btn-danger" onclick="history.back();">返回</a>
         </div>
-
-        <!--采购申请单查看模态框-->
-        <div class="modal fade bs-example-modal-lg" id="appointModal2" tabindex="-1" role="dialog"
-             aria-labelledby="myModalLabel">
-            <div class="modal-dialog modal-lg" role="document" id="print1" style="width: 85%">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="TitleMyModalLabel">物资需求单明细</h4>
-                    </div>
-                    <div class="modal-body">
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <td class="text-center">物资名称</td>
-                                <td class="text-center">规格型号</td>
-                                <td class="text-center">单位</td>
-                                <td class="text-center">库存量</td>
-                                <td class="text-center">需求数量</td>
-                                <td class="text-center">备注</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr id="cloneTr2" class="myclass1">
-                                <td class="text-center modal-companyName" id="suppliesName"></td>
-                                <td class="text-center modal-einlass" id="specifications"></td>
-                                <td class="text-center wastesName" id="unit"></td>
-                                <td class="text-center wastesName" id="inventory"></td>
-                                <td class="text-center wastesName" id="demandQuantity"></td>
-                                <td class="text-center wastesName" id="note"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="row text-center">
-                        <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
+</div>
+<div class="loader ">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
 </div>
 <div id="embed"></div>
 </body>
 <script>
     $('#embed').load('embed/loginLogModal.html');
-    var validator;
-    // 校验表单信息
-    $().ready(function () {
-        validator = $("#ingredientsInForm").validate({
-            // 在失去焦点时验证
-            onfocusout: function (element) {
-                $(element).valid();
-            },
-            rules: {
-                wareHouseName1: {
-                    required: true
-                }
-            },
-            message: {
-                wareHouseName1: {
-                    required: "数据不能为空"
-                }
-            }
-        });
-    });
 </script>
 <style>
 

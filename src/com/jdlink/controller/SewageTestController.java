@@ -435,8 +435,6 @@ public class SewageTestController {
 
     }
 
-
-
     //次生化验导入
     @RequestMapping("importSecondaryTestResultsExcel")
     @ResponseBody
@@ -461,28 +459,36 @@ public class SewageTestController {
                  //1废物名称
                  secondaryTest.setWastesName(data[i][1].toString());
 
+
                  //2热灼减率
-                 secondaryTest.setScorchingRate(Float.parseFloat(data[i][2].toString()));
+                 if(data[i][2].toString() != null && !data[i][2].toString().equals("null")) {
+                     secondaryTest.setScorchingRate(Float.parseFloat(data[i][2].toString()));
+                 }else {
+                     secondaryTest.setScorchingRate(-9999);
+                 }
 
                  //3水分
-                 secondaryTest.setWater(Float.parseFloat(data[i][3].toString()));
+                 if(data[i][3].toString() != null && !data[i][3].toString().equals("null")) {
+                     secondaryTest.setWater(Float.parseFloat(data[i][3].toString()));
+                 }else {
+                     secondaryTest.setWater(-9999);
+                 }
 
                  //4备注
-                 secondaryTest.setRemarks(data[i][4].toString());
+                 if(data[i][4].toString() != null && !data[i][4].toString().equals("null")) {
+                     secondaryTest.setRemarks(data[i][4].toString());
+                 }else {
+                     secondaryTest.setRemarks("");
+                 }
 
                  //更加化验单号查询化验单信息
                  if(sewageTestService.getSecondaryTestById(data[i][0].toString())!=null){
                      //更新
                      sewageTestService.updateSecondaryTestById(secondaryTest);
-                 }
-                 if(sewageTestService.getSecondaryTestById(data[i][0].toString())==null){
-                     //添加
+                 } else{ //添加
                      sewageTestService.addSecondaryTest(secondaryTest);
                  }
-
-
              }
-
          }
             res.put("status", "success");
             res.put("message", "导入成功");
