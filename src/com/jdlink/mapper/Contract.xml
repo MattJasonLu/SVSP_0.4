@@ -420,7 +420,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         update t_contract set bankAccount=#{bankAccount},bankName=#{bankName},
         beginTime=#{beginTime},clientId=#{client.clientId},contactName=#{contactName},
         contractName=#{contractName},contractType=#{contractType},contractVersion=#{contractVersion},
-        endTime=#{endTime},isFreight=#{freight},telephone=#{telephone},ticketRate1=#{ticketRate1},totalPrice=#{totalPrice},freightBearer=#{freightBearer},ticketRateId=#{ticketRateItem.dataDictionaryItemId}
+        endTime=#{endTime},isFreight=#{freight},telephone=#{telephone},ticketRate1=#{ticketRate1},totalPrice=#{totalPrice},freightBearer=#{freightBearer},ticketRateId=#{ticketRateItem.dataDictionaryItemId},contractId=#{newId},small=#{small}
         where  contractId=#{contractId}
     </update>
     <!--删除字表的明细-->

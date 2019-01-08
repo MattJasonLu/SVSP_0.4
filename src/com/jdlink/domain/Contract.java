@@ -18,6 +18,9 @@ public class Contract implements Serializable {
      * 合同编号
      */
     private String contractId;
+
+    /*新的合同编号用于修改*/
+    private String newId;
     /**
      * 公司名称
      */
@@ -798,6 +801,15 @@ public class Contract implements Serializable {
 
     public void setContractType(ContractType contractType) {
         this.contractType = contractType;
+    }
+
+
+    public String getNewId() {
+        return newId;
+    }
+
+    public void setNewId(String newId) {
+        this.newId = newId;
     }
 
     @Override

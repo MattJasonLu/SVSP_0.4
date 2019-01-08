@@ -1051,10 +1051,10 @@ public class ContractController {
     public String updateContract(@RequestBody Contract contract) {
         JSONObject res = new JSONObject();
         try {
-            //更新主表
-            contractService.updateContract(contract);
             //同时删除字表的明细
             contractService.deleteQuotationItem(contract.getContractId());
+            //更新主表
+            contractService.updateContract(contract);
             res.put("status", "success");
             res.put("message", "更新合同主表成功");
             res.put("message", "删除合同子表成功");

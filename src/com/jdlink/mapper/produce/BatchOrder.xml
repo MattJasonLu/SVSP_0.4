@@ -86,7 +86,12 @@
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
-</select>
+    </select>
+
+    <!--次生新增页面-->
+    <select id="getSecInventoryListAdd" resultMap="WasteInventoryListBatRM">
+      select secondaryCategoryId,wareHouseId,sum(actualCount) from t_pl_wasteinventory where boundType="SecondaryInbound"  group by secondaryCategoryId,wareHouseId
+    </select>
 
     <!--根据入库单号明细编号查询库存信息-->
     <select id="getWasteInventoryByInboundOrderId" resultMap="WasteInventoryListBatRM" parameterType="String">
