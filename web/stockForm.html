@@ -193,6 +193,7 @@
             <div class="row">
                 <div class="form-horizontal col-md-11 center-block">
                     <table class="table table-bordered">
+                        <thead>
                         <tr>
                             <th>序号</th>
                             <th>危险废物的名称</th>
@@ -201,26 +202,26 @@
                             <th>成分</th>
                             <th>备注</th>
                         </tr>
-                        <tr id="cloneTr1" class="myclass">
+                        </thead>
+                        <tbody>
+                        <tr id="cloneTr1">
                             <td class="text-center">1</td><!--序号-->
-                            <td class="text-center"><input type="text" class="focus" name="wastesList[0].name" style="width:100%; height:100%;"></td><!--废物名称-->
-                            <td class="text-center">
-                                <div class="btn-group">
-                                    <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="wastesList[0].code" id="code"></select>
-                                </div>
-                            </td><!--危废编码-->
-                            <td class="text-center"><input type="number" class="focus" name="wastesList[0].wasteAmount" style="width:100%; height:100%;"></td><!--危废数量-->
-                            <td class="text-center"><input type="text" class="focus" name="wastesList[0].component" style="width:100%; height:100%;"></td><!--危废成分-->
-                            <td class="text-center"><input type="text" class="focus" name="wastesList[0].remarks" style="width:100%; height:100%;"></td><!--备注-->
+                            <td class="text-center"></td><!--废物名称-->
+                            <td class="text-center"></td><!--危废编码-->
+                            <td class="text-center"></td><!--数量-->
+                            <td class="text-center"></td><!--成分-->
+                            <td class="text-center hidden"></td><!--编号-->
+                            <td class="text-center"><!--备注-->
                         </tr>
-                        <tr id="plusBtn">
-                            <td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                        </tbody>
+                        <!--<tr id="plusBtn">-->
+                            <!--<td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>-->
+                            <!--<td></td>-->
+                            <!--<td></td>-->
+                            <!--<td></td>-->
+                            <!--<td></td>-->
+                            <!--<td></td>-->
+                        <!--</tr>-->
                     </table>
                 </div>
             </div>

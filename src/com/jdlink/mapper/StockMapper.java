@@ -4,6 +4,7 @@ import com.jdlink.domain.Client;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Stock;
 import com.jdlink.domain.Produce.StockItem;
+import com.jdlink.domain.QuotationItem;
 import com.jdlink.domain.Wastes;
 
 import java.util.List;
@@ -46,4 +47,8 @@ public interface StockMapper {
     void addStockItem(StockItem stockItem);
     void updateStockItem(StockItem stockItem);
    void deleteStockItem(String stockId);
+
+  List<QuotationItem>  getQuotationitemByUndeclared(String clientId);
+
+  void updateQuotationItemState(String quotationItemId);
 }
