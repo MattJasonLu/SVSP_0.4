@@ -504,7 +504,7 @@ public class PRProductionDailyController {
                     if (sewageTestService.getSewageTestById(id) == null) {
                         sewageTestService.addSewageTest(sewageTest);
                     } else {
-                        productionDailyService.updateSampleTest(sewageTest);
+//                        productionDailyService.updateSampleTest(sewageTest);
                     }
                 }
                 res.put("status", "success");
@@ -533,7 +533,9 @@ public class PRProductionDailyController {
             SewageregistrationItem sewageregistrationItem = sewageregistration.getSewageregistrationItemList().get(0);
             SewageTest sewageTest = new SewageTest();
             sewageTest.setId(id);
-            sewageTest.setAddress(sewageregistration.getSewagePointItem().getDictionaryItemName());
+            if(sewageregistration.getSewagePointItem()!=null){
+                sewageTest.setAddress(sewageregistration.getSewagePointItem().getDictionaryItemName());
+            }
             if (sewageregistrationItem.getCod() == 1) {
                 sewageTest.setCOD(0);
             } else {
@@ -571,8 +573,9 @@ public class PRProductionDailyController {
             }
             if (sewageTestService.getSewageTestById(id) == null) {
                 sewageTestService.addSewageTest(sewageTest);
-            } else {
-                productionDailyService.updateSampleTest(sewageTest);
+            }
+            else {
+//                productionDailyService.updateSampleTest(sewageTest);
             }
             res.put("status", "success");
             res.put("message", "收样成功");
@@ -638,7 +641,7 @@ public class PRProductionDailyController {
                     if (sewageTestService.getSoftTestById(id) == null) {
                         sewageTestService.addSoftTest(softTest);
                     } else {
-                        productionDailyService.updateSampleSoftTest(softTest);
+//                        productionDailyService.updateSampleSoftTest(softTest);
                     }
                 }
                 res.put("status", "success");
@@ -705,7 +708,7 @@ public class PRProductionDailyController {
             if (sewageTestService.getSoftTestById(id) == null) {
                 sewageTestService.addSoftTest(softTest);
             } else {
-                productionDailyService.updateSampleSoftTest(softTest);
+//                productionDailyService.updateSampleSoftTest(softTest);
             }
 
 

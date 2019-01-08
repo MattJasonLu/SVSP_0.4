@@ -444,7 +444,7 @@ function getNewestId() {
                     option.text(item.dictionaryItemName);
                     wastesUnit.append(option);
                 });
-                wastesUnit.get(0).selectedIndex = -1;
+                wastesUnit.get(0).selectedIndex = 0;
             }
         },
         error: function (result) {
