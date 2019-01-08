@@ -1606,8 +1606,13 @@ function adjustContract(item) {
 
 //危废合同页面新增
 function loadWastesContractSelectList() {
+    $('.loader').show();
     loadNavigationList();   // 设置动态菜单
 
+    var contactType=localStorage.contractType;
+    console.log("合同类型:"+contactType)
+    //默认选中合同类型
+    $("#contractType").val(contactType)
 
     //获取送审人员，送审日期，送审部门
    var  user= getCurrentUserData();
@@ -1814,6 +1819,8 @@ function loadWastesContractSelectList() {
     contractName1.hide();//默认公司合同 隐藏掉客户合同
 
    $("#contractType1").val('危废');
+
+
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getContractList",                  // url
@@ -1901,7 +1908,7 @@ function loadWastesContractSelectList() {
 
 
 
-
+    findModel();
 }
 
 //根据合同类型选择模板
@@ -2161,7 +2168,7 @@ function findModel() {
 
 
 
-
+    $('.loader').hide();
 
 
 
@@ -4728,17 +4735,18 @@ function loadContractSelectList() {
  * 危废合同修改
  */
 function contractAdjustSave() {
+    var contractType1;
+    if ($('#contractType').val() == '应急处置合同') {
+        contractType1 = 'Emergency';
+    }
+    if ($('#contractType').val() == '危废合同') {
+        contractType1 = 'Wastes';
+    }
+    if ($('#contractType').val() == '物流合同') {
+        contractType1 = 'Logistics';
+    }
     if ($('input[name="contractVersion"]:checked').val() == 'customerContract') {
-        var contractType1;
-        if ($('#contractType').val() == '应急处置合同') {
-            contractType1 = 'Emergency';
-        }
-        if ($('#contractType').val() == '危废合同') {
-            contractType1 = 'Wastes';
-        }
-        if ($('#contractType').val() == '物流合同') {
-            contractType1 = 'Logistics';
-        }
+
 
         var totalPrice = 0;
         $('.myclass').each(function () {
@@ -4748,8 +4756,18 @@ function contractAdjustSave() {
 
         })
 
+        var smallContract=$("input[name='1']:checked").val();
+        var small;
+        if(smallContract=="false"){
+            small=false;
+        }
+        if(smallContract=="true"){
+            small=true;
+        }
         var data = {
-            contractId: $('#contractId').html(),
+            small:small,
+            contractId: $('#contractId1').html(),
+            newId: $('#contractId').val(),
             client: {clientId: $('#companyName').selectpicker('val')},
             contractVersion: $('input[name="contractVersion"]:checked').val(),
             beginTime: $('#beginTime').val(),
@@ -4779,7 +4797,7 @@ function contractAdjustSave() {
                     var file = $('#contactFile').get(0).files[0];
                     if (file != undefined) {
                         var formFile = new FormData();
-                        formFile.append("contractId", $('#contractId').html());
+                        formFile.append("contractId", $('#contractId').val());
                         formFile.append("contractAppendices", file);
                         //保存合同附件
                         $.ajax({
@@ -4808,7 +4826,7 @@ function contractAdjustSave() {
                     console.log(result);
                     $('.myclass').each(function () {
                         var quotationItemData = {
-                            contractId: $('#contractId').html(),
+                            contractId: $('#contractId').val(),
                             client: {clientId: $('#companyName').selectpicker('val')},
                             wastesCode: $(this).children('td').eq(1).children('div').find('button').attr('title'),
                             wastesName: $(this).children('td').eq(2).children('input').val(),
@@ -4852,7 +4870,7 @@ function contractAdjustSave() {
                             var wastesName = $(this).children('td').eq(2).children('input').val();
                             formFile.append('wastesCode', wastesCode);
                             formFile.append('wastesName', wastesName);
-                            formFile.append("contractId", $('#contractId').html());
+                            formFile.append("contractId", $('#contractId').val());
                             console.log($(this).children('td').eq(10).children('input').prop('type'))
                             if ($(this).children('td').eq(10).children('input').prop('type') != 'text') {
                                 var pictureFile = $(this).children('td').eq(10).find("input[name='picture']").get(0).files[0];
@@ -4885,7 +4903,7 @@ function contractAdjustSave() {
                         if (file == undefined) {
                             var wastesCode = $(this).children('td').eq(1).children('div').find('button').attr('title');
                             var wastesName = $(this).children('td').eq(2).children('input').val();
-                            var contractId = $('#contractId').html();
+                            var contractId = $('#contractId').val();
                             var picture = $(this).children('td').eq(12).html();
                             $.ajax({
                                 type: "POST",                            // 方法类型
@@ -4970,16 +4988,7 @@ function contractAdjustSave() {
 
 
     if ($('input[name="contractVersion"]:checked').val() == 'companyContract') {
-        var contractType1;
-        if ($('#contractType').val() == '应急处置合同') {
-            contractType1 = 'Emergency';
-        }
-        if ($('#contractType').val() == '危废合同') {
-            contractType1 = 'Wastes';
-        }
-        if ($('#contractType').val() == '物流合同') {
-            contractType1 = 'Logistics';
-        }
+
         var totalPrice = 0;
         $('.myclass').each(function () {
             var price = parseFloat($(this).children('td').eq(7).children('input').val());
@@ -4990,9 +4999,18 @@ function contractAdjustSave() {
 
 
         })
-
+        var smallContract=$("input[name='1']:checked").val();
+        var small;
+        if(smallContract=="false"){
+            small=false;
+        }
+        if(smallContract=="true"){
+            small=true;
+        }
         var data = {
-            contractId: $('#contractId').html(),
+            small:small,
+            contractId: $('#contractId1').html(),
+            newId: $('#contractId').val(),
             client: {clientId: $('#companyName').selectpicker('val')},
             contractVersion: $('input[name="contractVersion"]:checked').val(),
             beginTime: $('#beginTime').val(),
@@ -5023,7 +5041,7 @@ function contractAdjustSave() {
                     var file = $('#contactFile').get(0).files[0];
                     if (file != undefined) {
                         var formFile = new FormData();
-                        formFile.append("contractId", $('#contractId').html());
+                        formFile.append("contractId", $('#contractId').val());
                         formFile.append("contractAppendices", file);
                         //保存合同附件
                         $.ajax({
@@ -5054,7 +5072,7 @@ function contractAdjustSave() {
 
                     $('.myclass').each(function () {
                         var quotationItemData = {
-                            contractId: $('#contractId').html(),
+                            contractId: $('#contractId').val(),
                             client: {clientId: $('#companyName').selectpicker('val')},
                             wastesCode: $(this).children('td').eq(1).children('div').find('button').attr('title'),
                             wastesName: $(this).children('td').eq(2).children('input').val(),
@@ -5096,7 +5114,7 @@ function contractAdjustSave() {
                             var wastesName = $(this).children('td').eq(2).children('input').val();
                             formFile.append('wastesCode', wastesCode);
                             formFile.append('wastesName', wastesName);
-                            formFile.append("contractId", $('#contractId').html());
+                            formFile.append("contractId", $('#contractId').val());
                             console.log($(this).children('td').eq(10).children('input').prop('type'))
                             if ($(this).children('td').eq(10).children('input').prop('type') != 'text') {
                                 var pictureFile = $(this).children('td').eq(10).find("input[name='picture']").get(0).files[0];
@@ -5129,7 +5147,7 @@ function contractAdjustSave() {
                         if (file == undefined) {
                             var wastesCode = $(this).children('td').eq(1).children('div').find('button').attr('title');
                             var wastesName = $(this).children('td').eq(2).children('input').val();
-                            var contractId = $('#contractId').html();
+                            var contractId = $('#contractId').val();
                             var picture = $(this).children('td').eq(12).html();
                             $.ajax({
                                 type: "POST",                            // 方法类型
@@ -6063,8 +6081,10 @@ function adjustNewContract() {
     loadNavigationList();   // 设置动态菜单
     //赋值合同编号
     var contractId = localStorage['contractId'];
-    $('#contractId').html(contractId);
-
+    $('#contractId1').html(contractId);
+    $('#contractId').val(contractId);
+    $("#Yes").hide()
+    $("#No").hide()
 
 
     //危废编码赋值
@@ -6240,12 +6260,13 @@ function adjustNewContract() {
                 var data = eval(result);
 
                 var contract = data.contract;
-
+               var  radios =$("input [name='1']");
+               console.log(radios)
                  if(contract.small=="false"||contract.small==false){
-                     $('#small').text("否");
+                     $(":radio[name='1'][value='false']").prop("checked", "checked");
                  }
                 if(contract.small=="true"||contract.small==true){
-                    $('#small').text("是");
+                    $(":radio[name='1'][value='true']").prop("checked", "checked");
                 }
 
                 $('#contractType').val(contract.contractType.name);

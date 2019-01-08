@@ -1051,10 +1051,10 @@ public class ContractController {
     public String updateContract(@RequestBody Contract contract) {
         JSONObject res = new JSONObject();
         try {
-            //更新主表
-            contractService.updateContract(contract);
             //同时删除字表的明细
             contractService.deleteQuotationItem(contract.getContractId());
+            //更新主表
+            contractService.updateContract(contract);
             res.put("status", "success");
             res.put("message", "更新合同主表成功");
             res.put("message", "删除合同子表成功");
@@ -1536,6 +1536,7 @@ public class ContractController {
     }
 
     //==============================》
+    /*危废合同模块*/
     //加载危废合同
     @RequestMapping("loadPageWastesContractList")
     @ResponseBody
@@ -1599,6 +1600,9 @@ public class ContractController {
 
     //《==============================
 
+
+    //==============================》
+    /*应急合同模块*/
     //加载应急合同数据
     @RequestMapping("loadPageEmergencyContractList")
     @ResponseBody
@@ -1621,7 +1625,7 @@ public class ContractController {
     }
 
 
-    /*危应急合同总数
+    /*应急合同总数
      * */
     @RequestMapping("loadPageEmergencyContractListCount")
     @ResponseBody
@@ -1652,7 +1656,7 @@ public class ContractController {
         return res.toString();
     }
 
-    /*危废合同查询计数*/
+    /*应急合同查询计数*/
     @RequestMapping("searchEmergencyContractCount")
     @ResponseBody
     public int searchEmergencyContractCount(@RequestBody Contract contract){
@@ -1661,6 +1665,282 @@ public class ContractController {
 
 
     }
+
+    //《==============================
+
+    //==============================》
+    /*物流合同模块*/
+
+    /*物流合同总数*/
+    @RequestMapping("loadPageLogisticsContractListCount")
+    @ResponseBody
+    public int loadPageLogisticsContractListCount(){
+        return contractService.loadPageLogisticsContractListCount();
+    }
+
+    /*加载物流合同*/
+    @RequestMapping("loadPageLogisticsContractList")
+    @ResponseBody
+    public String loadPageLogisticsContractList(@RequestBody Page page){
+
+        JSONObject res=new JSONObject();
+
+        try {
+            List<Contract> contractList=contractService.loadPageLogisticsContractList(page);
+            res.put("status", "success");
+            res.put("message", "物流合同查询成功");
+            res.put("data", contractList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "物流合同查询失败");
+
+        }
+        return  res.toString();
+    }
+
+
+    /*物流合同查询*/
+    @RequestMapping("searchLogisticsContract")
+    @ResponseBody
+    public String searchLogisticsContract(@RequestBody Contract contract){
+        JSONObject res=new JSONObject();
+        try {
+            List<Contract> contractList=contractService.searchLogisticsContract(contract);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", contractList);
+        }
+        catch (Exception e){
+
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+
+        return res.toString();
+    }
+
+    /*物流应急合同查询计数*/
+    @RequestMapping("searchLogisticsContractCount")
+    @ResponseBody
+    public int searchLogisticsContractCount(@RequestBody Contract contract){
+
+        return  contractService.searchLogisticsContractCount(contract);
+
+
+    }
+
+    //《==============================
+
+    //==============================》
+    /*次生合同模块*/
+
+    /*次生合同总数*/
+    @RequestMapping("loadPageDeriveContractListCount")
+    @ResponseBody
+    public int loadPageDeriveContractListCount(){
+        return contractService.loadPageDeriveContractListCount();
+    }
+
+
+    /*加载次生合同*/
+    @RequestMapping("loadPageDeriveContractList")
+    @ResponseBody
+    public String loadPageDeriveContractList(@RequestBody Page page){
+
+        JSONObject res=new JSONObject();
+
+        try {
+            List<Contract> contractList=contractService.loadPageDeriveContractList(page);
+            res.put("status", "success");
+            res.put("message", "次生合同查询成功");
+            res.put("data", contractList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "次生合同查询失败");
+
+        }
+        return  res.toString();
+    }
+
+    /*次生合同查询*/
+    @RequestMapping("searchDeriveContract")
+    @ResponseBody
+    public String searchDeriveContract(@RequestBody Contract contract){
+        JSONObject res=new JSONObject();
+        try {
+            List<Contract> contractList=contractService.searchDeriveContract(contract);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", contractList);
+        }
+        catch (Exception e){
+
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+
+        return res.toString();
+    }
+
+    /*次生合同查询计数*/
+    @RequestMapping("searchDeriveContractCount")
+    @ResponseBody
+    public int searchDeriveContractCount(@RequestBody Contract contract){
+
+        return  contractService.searchDeriveContractCount(contract);
+
+
+    }
+
+
+    //《==============================
+
+
+    //==============================》
+     /*采购模块*/
+
+
+    /*采购合同总数*/
+    @RequestMapping("loadPagePurchaseContractListCount")
+    @ResponseBody
+    public int loadPagePurchaseContractListCount(){
+        return contractService.loadPagePurchaseContractListCount();
+    }
+
+    /*加载采购合同*/
+    @RequestMapping("loadPagePurchaseContractList")
+    @ResponseBody
+    public String loadPagePurchaseContractList(@RequestBody Page page){
+
+        JSONObject res=new JSONObject();
+
+        try {
+            List<Contract> contractList=contractService.loadPagePurchaseContractList(page);
+            res.put("status", "success");
+            res.put("message", "采购合同查询成功");
+            res.put("data", contractList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "次生合同查询失败");
+
+        }
+        return  res.toString();
+    }
+
+    /*采购合同查询*/
+    @RequestMapping("searchPurchaseContract")
+    @ResponseBody
+    public String searchPurchaseContract(@RequestBody Contract contract){
+        JSONObject res=new JSONObject();
+        try {
+            List<Contract> contractList=contractService.searchPurchaseContract(contract);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", contractList);
+        }
+        catch (Exception e){
+
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+
+        return res.toString();
+    }
+
+
+    /*采购合同查询计数*/
+    @RequestMapping("searchPurchaseContractCount")
+    @ResponseBody
+    public int searchPurchaseContractCount(@RequestBody Contract contract){
+
+        return  contractService.searchPurchaseContractCount(contract);
+
+
+    }
+
+    //《==============================
+
+
+    //==============================》
+    /*其他合同模块*/
+
+    /*其他合同总数*/
+    @RequestMapping("loadPageOtherContractListCount")
+    @ResponseBody
+    public int loadPageOtherContractListCount(){
+        return contractService.loadPageOtherContractListCount();
+    }
+
+
+
+
+    /*加载其他合同*/
+    @RequestMapping("loadPageOtherContractList")
+    @ResponseBody
+    public String loadPageOtherContractList(@RequestBody Page page){
+
+        JSONObject res=new JSONObject();
+
+        try {
+            List<Contract> contractList=contractService.loadPageOtherContractList(page);
+            res.put("status", "success");
+            res.put("message", "采购合同查询成功");
+            res.put("data", contractList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "次生合同查询失败");
+
+        }
+        return  res.toString();
+    }
+
+
+    /*其他合同查询*/
+    @RequestMapping("searchOtherContract")
+    @ResponseBody
+    public String searchOtherContract(@RequestBody Contract contract){
+        JSONObject res=new JSONObject();
+        try {
+            List<Contract> contractList=contractService.searchOtherContract(contract);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", contractList);
+        }
+        catch (Exception e){
+
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+
+        return res.toString();
+    }
+
+
+    /*其他合同查询计数*/
+    @RequestMapping("searchOtherContractCount")
+    @ResponseBody
+    public int searchOtherContractCount(@RequestBody Contract contract){
+
+        return  contractService.searchOtherContractCount(contract);
+
+
+    }
+
+
+    //《==============================
+
 }
 
 

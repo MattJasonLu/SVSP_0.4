@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>危废合同</title>
+    <title>次生合同</title>
     <script src="js/ckeditor/ckeditor.js"></script>
     <script src="js/ckeditor/config.js"></script>
     <script type="text/javascript" src="js/html2canvas.js"></script>
@@ -171,12 +171,12 @@
                 <li class="active">危废合同</li>
             </ol>
         </div>
-        <h4 class="sub-header">危废合同列表</h4>
+        <h4 class="sub-header">次生合同列表</h4>
         <div class="row">
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6 boo">
-                    <a class="btn btn-primary btn-xs" id="function_-88"  onclick="addContract()" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                    <a class="btn btn-primary btn-xs" id="function_-88" href="wastesContractInfo.html" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                     <a class="btn btn-primary btn-xs" id="function_-89" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; contractSubmit(e)}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>
                     <!--<a class="btn btn-primary btn-xs" id="function_141" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcel(e)}"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>-->
                     <!--<a class="btn btn-primary btn-xs" id="function_142" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel(contractIndex)}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>-->
