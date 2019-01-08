@@ -1321,7 +1321,7 @@ function viewContract(item) {
                 });
 
                 //合同总金额
-                $('#modal3_totalPrice').text(data.totalPrice.toFixed(2));
+                $('#modal3_totalPrice').text(data.totalPrice.toFixed(3));
 
 
                 //赋值报价单明细
@@ -1401,13 +1401,13 @@ function setContractListModal(result) {
                     break;
                 // 备注
                 case (5):
-                    $(this).html(obj.unitPriceTax.toFixed(2));
+                    $(this).html(obj.unitPriceTax.toFixed(3));
                     break;
                 case (6):
-                    $(this).html(obj.contractAmount.toFixed(2));
+                    $(this).html(obj.contractAmount.toFixed(3));
                     break;
                 case (7):
-                    $(this).html(obj.totalPrice.toFixed(2));
+                    $(this).html(obj.totalPrice.toFixed(3));
                     break;
                 case (8):
                     if (obj.transportItem != null) {

@@ -425,9 +425,8 @@ function getNewestId() {
         }
 
     });
-    // $('#date').val(dateToString(new Date()))
+    $('#date').val(dateToString(new Date()))
 
-    // 设置计量单位
     // 设置计量单位
     $.ajax({
         type: "POST",                       // 方法类型
