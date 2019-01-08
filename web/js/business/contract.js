@@ -1606,8 +1606,13 @@ function adjustContract(item) {
 
 //危废合同页面新增
 function loadWastesContractSelectList() {
+    $('.loader').show();
     loadNavigationList();   // 设置动态菜单
 
+    var contactType=localStorage.contractType;
+    console.log("合同类型:"+contactType)
+    //默认选中合同类型
+    $("#contractType").val(contactType)
 
     //获取送审人员，送审日期，送审部门
    var  user= getCurrentUserData();
@@ -1814,6 +1819,8 @@ function loadWastesContractSelectList() {
     contractName1.hide();//默认公司合同 隐藏掉客户合同
 
    $("#contractType1").val('危废');
+
+
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getContractList",                  // url
@@ -1901,7 +1908,7 @@ function loadWastesContractSelectList() {
 
 
 
-
+    findModel();
 }
 
 //根据合同类型选择模板
@@ -2161,7 +2168,7 @@ function findModel() {
 
 
 
-
+    $('.loader').hide();
 
 
 

@@ -118,4 +118,36 @@ public interface ContractService {
     List<Contract> searchEmergencyContract(Contract contract);
 
     int searchEmergencyContractCount(Contract contract);
+
+    int loadPageLogisticsContractListCount();
+
+    List<Contract> loadPageLogisticsContractList(Page page);
+
+    List<Contract> searchLogisticsContract(Contract contract);
+
+    int searchLogisticsContractCount(Contract contract);
+
+    int loadPageDeriveContractListCount();
+
+    List<Contract> loadPageDeriveContractList(Page page);
+
+    List<Contract> searchDeriveContract(Contract contract);
+
+    int searchDeriveContractCount(Contract contract);
+
+    int loadPagePurchaseContractListCount();
+
+    List<Contract> loadPagePurchaseContractList(Page page);
+
+    List<Contract> searchPurchaseContract(Contract contract);
+
+    int searchPurchaseContractCount(Contract contract);
+
+    int loadPageOtherContractListCount();
+
+    List<Contract> loadPageOtherContractList(Page page);
+
+    List<Contract> searchOtherContract(Contract contract);
+
+    int searchOtherContractCount(Contract contract);
 }
