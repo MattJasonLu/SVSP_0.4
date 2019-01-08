@@ -44,7 +44,7 @@ public class MedicalWastes {
      */
     private float directDisposal;
     /**
-     * 本日蒸煮医废
+     * 本日蒸煮医废(过磅)
      */
     private float cookingWastes;
     /**
