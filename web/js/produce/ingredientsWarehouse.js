@@ -422,14 +422,18 @@ function search1() {
     page.start = (pageNumber - 1) * page.count;
     if ($("#senior1").is(':visible')) {
         data = {
-            amount: $.trim($("#search1-amount").val()),
+            code: $.trim($("#search1-code").val()),
             name: $.trim($("#search1-name").val()),
             wareHouseName: $.trim($("#search1-wareHouseName").val()),
-            code:$.trim($("#search1-code").val()),
+            specification: $.trim($("#search1-specification").val()),
+            inId: $.trim($("#search1-inId").val()),
+            outId: $.trim($("#search1-outId").val()),
+            page:page
         };
     } else {
         data = {
-            keywords: $.trim($("#searchContent1").val())
+            keywords: $.trim($("#searchContent1").val()),
+            page:page
         };
     }
     if (data == null) alert("请输入查询内容!");

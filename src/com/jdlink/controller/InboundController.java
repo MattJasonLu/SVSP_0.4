@@ -906,28 +906,25 @@ public class InboundController {
                 for(int j=0;j<data[0].length;j++) {
                     System.out.print(data[i][j].toString()+" ");
                 }
-                System.out.println();
             }
 
             Map<String, InboundOrder> map = new HashMap<>();
             for (int i = 1; i < data.length; i++) {
                 String id = data[i][0].toString();   // 获取入库ID
+                // 通过仓库名称获取仓库
+                WareHouse wareHouse = wareHouseService.getWareHouseByName(data[i][2].toString());
+                //仓库信息
+                if (wareHouse != null) {
+                    id=wareHouse.getPrefix()+id;
+                }
+
+
                 if (!map.keySet().contains(id)) {
                     map.put(id, new InboundOrder());// 创建入库单对象
                     // 设置入库单编号
                     map.get(id).setInboundOrderId(id);
                     // 设置入库日期
                     map.get(id).setInboundDate(DateUtil.getDateFromStr(data[i][1].toString()));
-                    // 通过仓库名称获取仓库
-                    WareHouse wareHouse = wareHouseService.getWareHouseByName(data[i][2].toString());
-                    if (wareHouse == null) {
-                        wareHouse = new WareHouse();
-//                        wareHouse.setWareHouseId(wareHouseService.getCurrentId());
-                        wareHouse.setWareHouseName(data[i][2].toString());
-                        wareHouseService.add(wareHouse);
-                    }
-                    // 设置仓库
-                    map.get(id).setWareHouse(wareHouse);
                     // 设置入库类别
                     map.get(id).setBoundType(BoundType.SecondaryInbound);
                     // 设置状态
@@ -952,6 +949,12 @@ public class InboundController {
                 inboundOrderItem.setInboundOrderItemId(RandomUtil.getRandomEightNumber());
                 // 入库单号
                 inboundOrderItem.setInboundOrderId(map.get(id).getInboundOrderId());
+                WareHouse wareHouse1 = wareHouseService.getWareHouseByName(data[i][2].toString());
+                //仓库信息
+                if (wareHouse1 != null) {
+                    inboundOrderItem.setWareHouse(wareHouse1);
+                }
+
                 // 设置客户信息
                 Client client = clientService.getByName(data[i][4].toString());
                 if (client != null) inboundOrderItem.setProduceCompany(client);
@@ -974,15 +977,21 @@ public class InboundController {
 
                 /**
                  * 除了桶单位是只，其他为吨
+                 * 桶的包装方式为铁桶，其他的为吨袋
+                 *
                  */
                 UnitDataItem unitDataItem=new UnitDataItem();
+                PackageTypeItem packageTypeItem=new PackageTypeItem();
                 if(data[i][5].toString().equals("桶")){
                 unitDataItem.setDataDictionaryItemId(147);
+                    packageTypeItem.setDataDictionaryItemId(125);
                 }
                 if(!data[i][5].toString().equals("桶")) {
                     unitDataItem.setDataDictionaryItemId(139);
+                    packageTypeItem.setDataDictionaryItemId(121);
                 }
                 inboundOrderItem.setUnitDataItem(unitDataItem);
+                inboundOrderItem.setPackageTypeItem(packageTypeItem);
                 wastes.setWastesId(data[i][6].toString());  // 危废代码
                 inboundOrderItem.setWastes(wastes);
                 if(data[i][7].toString()=="null")
@@ -1057,13 +1066,8 @@ public class InboundController {
 //                }
                 // 设置物质形态
                 FormTypeItem formTypeItem =new FormTypeItem();
-                if(data[i][12].toString()!="null"){
-                    int  dataDictionaryItemId3= dictionaryService.getdatadictionaryitemIdByName(data[i][12].toString(),1);
-                    formTypeItem.setDataDictionaryItemId(dataDictionaryItemId3);
-                    inboundOrderItem.setFormTypeItem(formTypeItem);
-                }
-
-
+                formTypeItem.setDataDictionaryItemId(3);
+                inboundOrderItem.setFormTypeItem(formTypeItem);
 
 //                switch (data[i][12].toString()) {
 //                    case "气体":
@@ -1081,13 +1085,8 @@ public class InboundController {
 //                    default:
 //                        break;
 //                }
-//                // 设置包装方式
-                PackageTypeItem packageTypeItem =new PackageTypeItem();
-                if(data[i][13].toString()!="null"){
-                    int  dataDictionaryItemId4= dictionaryService.getdatadictionaryitemIdByName(data[i][13].toString(),21);
-                    formTypeItem.setDataDictionaryItemId(dataDictionaryItemId4);
-                    inboundOrderItem.setPackageTypeItem(packageTypeItem);
-                }
+//
+
 
 
 

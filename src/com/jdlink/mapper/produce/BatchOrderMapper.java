@@ -53,5 +53,5 @@ public interface BatchOrderMapper {
    void retireOutBoundOrder(OutboundOrder outboundOrder);
     List<OutboundOrder> loadOutBoundList(Page page);
 
-    List<OutboundOrder> getSecInventoryListAdd();
+    List<WasteInventory> getSecInventoryListAdd();
 }

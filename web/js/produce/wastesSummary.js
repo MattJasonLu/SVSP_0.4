@@ -331,7 +331,7 @@ function loadWasteInventoryList() {
     isSearch = false;
 }
 
-//设置危废查询列表
+// 设置危废查询列表
 function setWasteInventoryList(result) {
     var tr=$('#cloneTr');
     tr.siblings().remove();
@@ -347,15 +347,16 @@ function setWasteInventoryList(result) {
         if (obj.outboundDate != null) clonedTr.find("td[name='outboundDate']").text(getDateStr(obj.outboundDate));
         clonedTr.find("td[name='wastesName']").text(obj.wastesName);
         clonedTr.find("td[name='wastesCode']").text(obj.wastesCode);
+        if (obj.produceCompany != null) clonedTr.find("td[name='produceCompanyName']").text(obj.produceCompany.companyName);
         if (obj.unitDataItem != null) clonedTr.find("td[name='unitDataItem']").text(obj.unitDataItem.dictionaryItemName);
-        clonedTr.find("td[name='beginningCount']").text(obj.beginningCount);
-        clonedTr.find("td[name='beginningPrice']").text(obj.beginningPrice);
-        clonedTr.find("td[name='inboundCount']").text(obj.inboundCount);
-        clonedTr.find("td[name='inboundPrice']").text(obj.inboundPrice);
-        clonedTr.find("td[name='outboundCount']").text(obj.outboundCount);
-        clonedTr.find("td[name='outboundPrice']").text(obj.outboundPrice);
-        clonedTr.find("td[name='storageCount']").text(obj.storageCount);
-        clonedTr.find("td[name='storagePrice']").text(obj.storagePrice);
+        clonedTr.find("td[name='beginningCount']").text(parseFloat(obj.beginningCount).toFixed(3));
+        clonedTr.find("td[name='beginningPrice']").text(parseFloat(obj.beginningPrice).toFixed(2));
+        clonedTr.find("td[name='inboundCount']").text(parseFloat(obj.inboundCount).toFixed(3));
+        clonedTr.find("td[name='inboundPrice']").text(parseFloat(obj.inboundPrice).toFixed(2));
+        clonedTr.find("td[name='outboundCount']").text(parseFloat(obj.outboundCount).toFixed(3));
+        clonedTr.find("td[name='outboundPrice']").text(parseFloat(obj.outboundPrice).toFixed(2));
+        clonedTr.find("td[name='storageCount']").text(parseFloat(obj.storageCount).toFixed(3));
+        clonedTr.find("td[name='storagePrice']").text(parseFloat(obj.storagePrice).toFixed(2));
         clonedTr.find("td[name='id']").text(obj.id);
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");

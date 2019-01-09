@@ -1,9 +1,7 @@
 package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.*;
-import com.jdlink.domain.Dictionary.HandleCategoryItem;
-import com.jdlink.domain.Dictionary.ProcessWayItem;
-import com.jdlink.domain.Dictionary.SecondaryCategoryItem;
+import com.jdlink.domain.Dictionary.*;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.LaboratoryTest;
 import com.jdlink.domain.Produce.ProcessWay;
@@ -151,6 +149,27 @@ public class WasteInventory {
     //次生危废名称数据字典
     private SecondaryCategoryItem secondaryCategoryItem;
 
+    //物质形态数据字典
+    private FormTypeItem formTypeItem;
+
+    //包装方式物质形态
+    private PackageTypeItem packageTypeItem;
+
+    public FormTypeItem getFormTypeItem() {
+        return formTypeItem;
+    }
+
+    public void setFormTypeItem(FormTypeItem formTypeItem) {
+        this.formTypeItem = formTypeItem;
+    }
+
+    public PackageTypeItem getPackageTypeItem() {
+        return packageTypeItem;
+    }
+
+    public void setPackageTypeItem(PackageTypeItem packageTypeItem) {
+        this.packageTypeItem = packageTypeItem;
+    }
 
     public SecondaryCategoryItem getSecondaryCategoryItem() {
         return secondaryCategoryItem;

@@ -1,5 +1,6 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.Client;
 import com.jdlink.domain.Dictionary.UnitDataItem;
 import com.jdlink.domain.Page;
 
@@ -29,6 +30,10 @@ public class WastesSummary {
      * 出库日期
      */
     private Date outboundDate;
+    /**
+     * 产废单位
+     */
+    private Client produceCompany;
     /**
      * 危废名称
      */
@@ -224,5 +229,13 @@ public class WastesSummary {
 
     public void setKeywords(String keywords) {
         this.keywords = keywords;
+    }
+
+    public Client getProduceCompany() {
+        return produceCompany;
+    }
+
+    public void setProduceCompany(Client produceCompany) {
+        this.produceCompany = produceCompany;
     }
 }

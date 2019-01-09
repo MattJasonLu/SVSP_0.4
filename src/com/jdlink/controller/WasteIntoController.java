@@ -273,7 +273,7 @@ public class WasteIntoController {
                         sewageTestService.addSecondaryTest(secondaryTest);
                     }else {
                         //更新
-                        wasteIntoService.updateSecondarySample(secondaryTest);
+//                        wasteIntoService.updateSecondarySample(secondaryTest);
                     }
                 }
                 res.put("status", "success");
@@ -334,7 +334,7 @@ public class WasteIntoController {
          }
          else {
              //更新
-             wasteIntoService.updateSecondarySample(secondaryTest);
+//             wasteIntoService.updateSecondarySample(secondaryTest);
          }
 
 

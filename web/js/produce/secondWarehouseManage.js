@@ -783,8 +783,9 @@ function setDataList(result) {
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.find("td[name='inboundOrderId']").text(data.inboundOrderId);
         clonedTr.find("td[name='inboundDate']").text(getDateStr(data.inboundDate));
-        if (data.wareHouse != null) clonedTr.find("td[name='wareHouseName']").text(data.wareHouse.wareHouseName);
+
         if (data.inboundOrderItemList.length > 0) {
+            if (data.inboundOrderItemList[0].wareHouse != null) clonedTr.find("td[name='wareHouseName']").text(data.inboundOrderItemList[0].wareHouse.wareHouseName);
             if (data.inboundOrderItemList[0].secondaryCategoryItem != null)
             clonedTr.find("td[name='wastesName']").text(data.inboundOrderItemList[0].secondaryCategoryItem.dictionaryItemName);
             if (data.inboundOrderItemList[0].wastes != null) {
@@ -1335,7 +1336,7 @@ function setSelectList() {
                     option.text(item.dictionaryItemName);
                     wastesUnit.append(option);
                 });
-                wastesUnit.get(0).selectedIndex = -1;
+                wastesUnit.get(0).selectedIndex = 1;//默认为吨==>YH
             }
         },
         error: function (result) {

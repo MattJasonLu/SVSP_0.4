@@ -231,7 +231,7 @@ public class BatchOrderServiceImpl implements BatchOrderService
     public List<OutboundOrder> loadOutBoundList(Page page){ return batchOrderMapper.loadOutBoundList(page);}
 
     @Override
-    public List<OutboundOrder> getSecInventoryListAdd() {
+    public List<WasteInventory> getSecInventoryListAdd() {
         return batchOrderMapper.getSecInventoryListAdd();
     }
 
