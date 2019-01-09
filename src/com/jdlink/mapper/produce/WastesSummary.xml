@@ -14,10 +14,15 @@
         <result property="beginningCount" column="beginningCount"/>
         <result property="inboundCount" column="wastesAmount"/>
         <result property="outboundCount" column="outboundNumber"/>
-        <result property="storageCount" column="storageCount"/>
+        <result property="storageCount" column="actualCount"/>
         <association property="produceCompany" column="produceCompanyId" select="getClient"/>
         <association property="unitDataItem" column="unitId" select="getUnitDataItem"/>
+        <association property="wareHouse" column="wareHouseId" select="getWareHouse"/>
     </resultMap>
+    <!--查找库存信息==>仓库信息-->
+    <select id="getWareHouse" resultType="WareHouse">
+        select * from t_pl_warehouse where warehouseId=#{wareHouseId}
+    </select>
     <!--通过编号获取客户-->
     <select id="getClient" parameterType="String" resultType="Client">
         SELECT * FROM client WHERE clientId = #{produceCompanyId}
@@ -34,11 +39,13 @@
         t_pl_inboundorderitem.unitId, t_pl_inboundorderitem.wastesAmount, t_pl_inboundorderitem.beginningCount,
         t_pl_inboundorderitem.storageCount, t_pl_inboundorder.checkStateId,
         t_pl_outboundorder.outboundDate, t_pl_outboundorder.outboundOrderId, t_pl_outboundorder.outboundNumber, t_pl_outboundorder.clientId,
-        t_pl_outboundorder.wasteCategory
+        t_pl_outboundorder.wasteCategory,
+        t_pl_wasteinventory.actualCount, t_pl_wasteinventory.wareHouseId
         from (t_pl_inboundorderitem left join t_pl_inboundorder on t_pl_inboundorder.inboundOrderId=t_pl_inboundorderitem.inboundOrderId
         and (checkStateId is null or checkStateId != 69) and boundType='WasteInbound')
         left join t_pl_outboundorder on t_pl_outboundorder.inboundOrderItemId=t_pl_inboundorderitem.inboundOrderItemId and
         (t_pl_outboundorder.checkStateId is null or t_pl_outboundorder.checkStateId != 69)
+        left join t_pl_wasteinventory on t_pl_wasteinventory.inboundOrderItemId=t_pl_inboundorderitem.inboundOrderItemId
         order by inboundDate desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count};
