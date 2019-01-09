@@ -652,9 +652,13 @@ public class PRSampleInfoWareHouseController {
                     if (produceCompanyId != null && produceCompanyId != "") {
                         map.get(id).setCompanyCode(produceCompanyId);
                     } else {
-                        res.put("status", "fail");
-                        res.put("message", companyName + "不存在，请备案后再导入！");
-                        return res.toString();
+                        // 如果客户不存在则自动创建
+                        client = new Client();
+                        client.setCompanyName(companyName);
+                        clientService.add(client);
+//                        res.put("status", "fail");
+//                        res.put("message", companyName + "不存在，请备案后再导入！");
+//                        return res.toString();
                     }
                     map.get(id).setCompanyName(companyName);
                     map.get(id).setSendingPerson(data[i][2].toString());
