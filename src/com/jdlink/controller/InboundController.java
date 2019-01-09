@@ -977,15 +977,21 @@ public class InboundController {
 
                 /**
                  * 除了桶单位是只，其他为吨
+                 * 桶的包装方式为铁桶，其他的为吨袋
+                 *
                  */
                 UnitDataItem unitDataItem=new UnitDataItem();
+                PackageTypeItem packageTypeItem=new PackageTypeItem();
                 if(data[i][5].toString().equals("桶")){
                 unitDataItem.setDataDictionaryItemId(147);
+                    packageTypeItem.setDataDictionaryItemId(125);
                 }
                 if(!data[i][5].toString().equals("桶")) {
                     unitDataItem.setDataDictionaryItemId(139);
+                    packageTypeItem.setDataDictionaryItemId(121);
                 }
                 inboundOrderItem.setUnitDataItem(unitDataItem);
+                inboundOrderItem.setPackageTypeItem(packageTypeItem);
                 wastes.setWastesId(data[i][6].toString());  // 危废代码
                 inboundOrderItem.setWastes(wastes);
                 if(data[i][7].toString()=="null")
@@ -1060,13 +1066,8 @@ public class InboundController {
 //                }
                 // 设置物质形态
                 FormTypeItem formTypeItem =new FormTypeItem();
-                if(data[i][12].toString()!="null"){
-                    int  dataDictionaryItemId3= dictionaryService.getdatadictionaryitemIdByName(data[i][12].toString(),1);
-                    formTypeItem.setDataDictionaryItemId(dataDictionaryItemId3);
-                    inboundOrderItem.setFormTypeItem(formTypeItem);
-                }
-
-
+                formTypeItem.setDataDictionaryItemId(3);
+                inboundOrderItem.setFormTypeItem(formTypeItem);
 
 //                switch (data[i][12].toString()) {
 //                    case "气体":
@@ -1084,13 +1085,8 @@ public class InboundController {
 //                    default:
 //                        break;
 //                }
-//                // 设置包装方式
-                PackageTypeItem packageTypeItem =new PackageTypeItem();
-                if(data[i][13].toString()!="null"){
-                    int  dataDictionaryItemId4= dictionaryService.getdatadictionaryitemIdByName(data[i][13].toString(),21);
-                    formTypeItem.setDataDictionaryItemId(dataDictionaryItemId4);
-                    inboundOrderItem.setPackageTypeItem(packageTypeItem);
-                }
+//
+
 
 
 
