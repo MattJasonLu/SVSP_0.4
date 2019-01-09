@@ -174,7 +174,7 @@ function switchPage(pageNumber) {
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined && result.status == "success") {
-                    setDataList(result.data);
+                    setDataList(result);
                 } else {
                     console.log(result);
                 }
@@ -606,11 +606,19 @@ function delLine(item) {
 function save() {
 
     $('.myclass3').each(function () {
+        var scorchingRate=$.trim($(this).children('td').eq(2).find('input').val());
+        if(scorchingRate.length==0){
+            scorchingRate=-9999;
+        }
+        var water=$.trim($(this).children('td').eq(3).find('input').val());
+        if(water.length==0){
+            water=-9999;
+        }
         var data = {
             id: $(this).children('td').eq(0).find('input').val(),
             wastesName: $(this).children('td').eq(1).find('input').val(),
-            scorchingRate: $(this).children('td').eq(2).find('input').val(),
-            water: $(this).children('td').eq(3).find('input').val(),
+            scorchingRate:scorchingRate ,
+            water:water,
             remarks: $(this).children('td').eq(4).find('input').val(),
         };
         console.log(data)
@@ -744,8 +752,13 @@ function setAdjust(item) {
                 $('#id').val(obj.id);
                 $('#dateTime').val(getDateStr(obj.dateTime));
                 $('#wastesName').val(obj.wastesName);
-                $('#scorchingRate').val(obj.scorchingRate.toFixed(2));
-                $('#water').val(obj.water.toFixed(2));
+                if(obj.scorchingRate!=-9999){
+                    $('#scorchingRate').val(obj.scorchingRate.toFixed(2));
+                }
+                if(obj.water!=-9999){
+                    $('#water').val(obj.water.toFixed(2));
+                }
+
                 $('#remarks').val(obj.remarks);
             }
 
@@ -763,12 +776,20 @@ function setAdjust(item) {
 //
 //次生化验单修改
 function adjustSecondaryTest() {
+    var scorchingRate=$('#scorchingRate').val();
+    if(scorchingRate.length==0){
+        scorchingRate=-9999;
+    }
+    var water=$('#water').val();
+    if(water.length==0){
+        water=-9999;
+    }
     var data = {
         id: $('#id').val(),
         dateTime: $('#dateTime').val(),
         wastesName: $('#wastesName').val(),
-        scorchingRate: $('#scorchingRate').val(),
-        water: $('#water').val(),
+        scorchingRate: scorchingRate,
+        water: water,
         remarks: $('#remarks').val()
     }
 

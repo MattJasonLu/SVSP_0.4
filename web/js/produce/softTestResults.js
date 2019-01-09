@@ -377,33 +377,29 @@ function setSoftTestList(result) {
                     break;
                 case (2):
                     // 采样点
-
                     $(this).html((obj.address));
                     break;
                 //浊度FTU
                 case (3):
                     $(this).html(setNumber2Line(parseFloat(obj.turbidity).toFixed(2)));
+                    break;
                 case (4):
-
                     // ph
                     $(this).html(setNumber2Line(parseFloat(obj.PH).toFixed(2)));
-                    break;
                     break;
                 case (5):
                     // 硬度
                     $(this).html(setNumber2Line((obj.hardness)));
                     break;
-
                 case (6):
                     // 电导率
                         $(this).html(setNumber2Line(parseFloat(obj.electricalConductivity).toFixed(2)));
                     break;
                 case (7):
                     // 全碱度
-                        $(this).html(setNumber2Line(parseFloat(obj.electricalConductivity).toFixed(2)));
+                        $(this).html(setNumber2Line(parseFloat(obj.basicity).toFixed(2)));
                     break;
                 case (8):
-
                     // 酚酞碱度
                         $(this).html(setNumber2Line(parseFloat(obj.phenolphthalein).toFixed(2)));
                     break;
@@ -417,7 +413,6 @@ function setSoftTestList(result) {
                         $(this).html((obj.checkStateItem.dictionaryItemName))
                     }
                     break;
-
             }
         });
         // 把克隆好的tr追加到原来的tr前面
@@ -689,15 +684,43 @@ function delLine(item) {
 function save() {
 
     $('.myclass3').each(function () {
+        var turbidity=$.trim($(this).children('td').eq(2).find('input').val());
+        if(turbidity.length==0){
+            turbidity=-9999;
+        }
+        var hardness=$.trim($(this).children('td').eq(3).find('input').val());
+        if(hardness.length==0){
+            hardness=-9999;
+        }
+
+        var ph=$.trim($(this).children('td').eq(4).find('input').val());
+        if(ph.length==0){
+            ph=-9999;
+        }
+        var electricalConductivity=$.trim($(this).children('td').eq(5).find('input').val());
+        if(electricalConductivity.length==0){
+            electricalConductivity=-9999;
+        }
+
+        var basicity=$.trim($(this).children('td').eq(6).find('input').val());
+        if(basicity.length==0){
+            basicity=-9999;
+        }
+        var phenolphthalein=$.trim($(this).children('td').eq(7).find('input').val());
+        if(phenolphthalein.length==0){
+            phenolphthalein=-9999;
+        }
+
+
         var data={
             id:$(this).children('td').eq(0).find('input').val(),
             address:$(this).children('td').eq(1).find('input').val(),
-            turbidity:$(this).children('td').eq(2).find('input').val(),
-            hardness:$(this).children('td').eq(3).find('input').val(),
-            ph:$(this).children('td').eq(4).find('input').val(),
-            electricalConductivity:$(this).children('td').eq(5).find('input').val(),
-            basicity:$(this).children('td').eq(6).find('input').val(),
-            phenolphthalein:$(this).children('td').eq(7).find('input').val(),
+            turbidity:turbidity,
+            hardness:hardness,
+            ph:ph,
+            electricalConductivity:electricalConductivity,
+            basicity:basicity,
+            phenolphthalein:phenolphthalein,
             remarks:$(this).children('td').eq(8).find('input').val(),
         };
         console.log(data)
@@ -835,12 +858,26 @@ function setAdjust(item) {
                 console.log(obj)
                 $('#id').val(obj.id);
                 $('#address').val(obj.address);
-                $('#turbidity').val(obj.turbidity.toFixed(2));
-                $('#hardness').val(obj.hardness);
-                $('#PH').val(obj.PH.toFixed(2));
-                $('#electricalConductivity').val(obj.electricalConductivity.toFixed(2));
-                $('#basicity').val(obj.basicity.toFixed(2));
-                $('#phenolphthalein').val(obj.phenolphthalein.toFixed(2));
+                if(obj.turbidity!=-9999){
+                    $('#turbidity').val(obj.turbidity.toFixed(2));
+                }
+
+                if(obj.hardness!=-9999){
+                    $('#hardness').val(obj.hardness);
+                }
+                if(obj.PH!=-9999){
+                    $('#PH').val(obj.PH.toFixed(2));
+                }
+                if(obj.electricalConductivity!=-9999){
+                    $('#electricalConductivity').val(obj.electricalConductivity.toFixed(2));
+                }
+                if(obj.basicity!=-9999){
+                    $('#basicity').val(obj.basicity.toFixed(2));
+                }
+                if(obj.phenolphthalein!=-9999){
+                    $('#phenolphthalein').val(obj.phenolphthalein.toFixed(2));
+                }
+
                 $('#remarks').val(obj.remarks);
 
             }
@@ -858,15 +895,39 @@ function setAdjust(item) {
 //软水化验单修改
 function adjustSoftTest() {
 
+    var turbidity=$.trim($('#turbidity').val());
+    if(turbidity.length==0){
+        turbidity=-9999;
+    }
+    var hardness=$.trim($('#hardness').val());
+    if(hardness.length==0){
+        hardness=-9999;
+    }
+    var ph=$.trim($('#PH').val());
+    if(ph.length==0){
+        ph=-9999;
+    }
+    var electricalConductivity=$.trim($('#electricalConductivity').val());
+    if(electricalConductivity.length==0){
+        electricalConductivity=-9999;
+    }
+    var basicity=$.trim($('#basicity').val());
+    if(basicity.length==0){
+        basicity=-9999;
+    }
+    var phenolphthalein=$.trim($('#phenolphthalein').val());
+    if(phenolphthalein.length==0){
+        phenolphthalein=-9999;
+    }
     var data={
         id: $('#id').val(),
         address:  $('#address').val(),
-        turbidity: $('#turbidity').val(),
-        hardness:$('#hardness').val(),
-         ph:$('#PH').val(),
-        electricalConductivity:$('#electricalConductivity').val(),
-        basicity:$('#basicity').val(),
-        phenolphthalein:$('#phenolphthalein').val(),
+        turbidity: turbidity,
+        hardness:hardness,
+         ph:ph,
+        electricalConductivity:electricalConductivity,
+        basicity:basicity,
+        phenolphthalein:phenolphthalein,
         remarks:$('#remarks').val()
     };
 

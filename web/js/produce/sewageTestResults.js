@@ -729,21 +729,74 @@ function delLine(item) {
 //保存方法
 function save() {
     $('.myclass2').each(function () {
+
+        var ph=$.trim($(this).children('td').eq(2).find('input').val());
+            if(ph.length==0){
+                ph=-9999;
+        }
+        var cod=$.trim($(this).children('td').eq(3).find('input').val());
+        if(cod.length==0){
+            cod=-9999;
+        }
+        var bod5=$.trim($(this).children('td').eq(4).find('input').val());
+        if(bod5.length==0){
+            bod5=-9999;
+        }
+        var n2=$.trim($(this).children('td').eq(5).find('input').val());
+        if(n2.length==0){
+            n2=-9999;
+        }
+        var alkalinity=$.trim($(this).children('td').eq(6).find('input').val());
+        if(alkalinity.length==0){
+            alkalinity=-9999;
+        }
+        var alkalinityCaCo3=$.trim($(this).children('td').eq(7).find('input').val());
+        if(alkalinityCaCo3.length==0){
+            alkalinityCaCo3=-9999;
+        }
+        var alkalinityHCO3=$.trim($(this).children('td').eq(8).find('input').val());
+        if(alkalinityHCO3.length==0){
+            alkalinityHCO3=-9999;
+        }
+
+        var bicarbonate=$.trim($(this).children('td').eq(9).find('input').val());
+        if(bicarbonate.length==0){
+            bicarbonate=-9999;
+        }
+        var bicarbonateCaCo3=$.trim($(this).children('td').eq(10).find('input').val());
+        if(bicarbonateCaCo3.length==0){
+            bicarbonateCaCo3=-9999;
+        }
+        var bicarbonateHCO3=$.trim($(this).children('td').eq(11).find('input').val());
+        if(bicarbonateHCO3.length==0){
+            bicarbonateHCO3=-9999;
+        }
+        var nitrogen=$.trim($(this).children('td').eq(12).find('input').val());
+        if(nitrogen.length==0){
+            nitrogen=-9999;
+        }
+        var phosphorus=$.trim($(this).children('td').eq(13).find('input').val());
+        if(phosphorus.length==0){
+            phosphorus=-9999;
+        }
+
+
+
         var data = {
             id: $(this).children('td').eq(0).find('input').val(),
             address: $(this).children('td').eq(1).find('input').val(),
-            ph: $(this).children('td').eq(2).find('input').val(),
-            cod: $(this).children('td').eq(3).find('input').val(),
-            bod5: $(this).children('td').eq(4).find('input').val(),
-            n2: $(this).children('td').eq(5).find('input').val(),
-            alkalinity: $(this).children('td').eq(6).find('input').val(),
-            alkalinityCaCo3: $(this).children('td').eq(7).find('input').val(),
-            alkalinityHCO3: $(this).children('td').eq(8).find('input').val(),
-            bicarbonate: $(this).children('td').eq(9).find('input').val(),
-            bicarbonateCaCo3: $(this).children('td').eq(10).find('input').val(),
-            bicarbonateHCO3: $(this).children('td').eq(11).find('input').val(),
-            nitrogen: $(this).children('td').eq(12).find('input').val(),
-            phosphorus: $(this).children('td').eq(13).find('input').val(),
+            ph: ph,
+            cod: cod,
+            bod5: bod5,
+            n2: n2,
+            alkalinity: alkalinity,
+            alkalinityCaCo3: alkalinityCaCo3,
+            alkalinityHCO3: alkalinityHCO3,
+            bicarbonate: bicarbonate,
+            bicarbonateCaCo3: bicarbonateCaCo3,
+            bicarbonateHCO3: bicarbonateHCO3,
+            nitrogen: nitrogen,
+            phosphorus: phosphorus,
             remarks: $(this).children('td').eq(14).find('input').val(),
         };
         $.ajax({
@@ -866,18 +919,43 @@ function setAdjust(item) {
                 console.log(obj)
                 $('#id').val(obj.id);
                 $('#address').val(obj.address);
-                $('#ph').val(obj.ph.toFixed(2));
-                $('#COD').val(obj.COD.toFixed(2));
-                $('#BOD5').val(obj.BOD5.toFixed(2));
-                $('#N2').val(obj.n2.toFixed(2));
-                $('#alkalinity').val(obj.alkalinity.toFixed(2));
-                $('#alkalinityCaCo3').val(obj.alkalinityCaCo3.toFixed(2));
-                $('#alkalinityHCO3').val(obj.alkalinityHCO3.toFixed(2));
-                $('#bicarbonate').val(obj.bicarbonate.toFixed(2));
-                $('#bicarbonateCaCo3').val(obj.bicarbonateCaCo3.toFixed(2));
-                $('#bicarbonateHCO3').val(obj.bicarbonateHCO3.toFixed(2));
-                $('#nitrogen').val(obj.nitrogen.toFixed(2));
-                $('#phosphorus').val(obj.phosphorus.toFixed(2));
+                if(obj.ph!=-9999){
+                    $('#ph').val(obj.ph.toFixed(2));
+                }
+                if(obj.COD!=-9999){
+                    $('#COD').val(obj.COD.toFixed(2));
+                }
+                if(obj.BOD5!=-9999){
+                    $('#BOD5').val(obj.BOD5.toFixed(2));
+                }
+                if(obj.n2!=-9999){
+                    $('#N2').val(obj.n2.toFixed(2));
+                }
+                if(obj.alkalinity!=-9999){
+                    $('#alkalinity').val(obj.alkalinity.toFixed(2));
+                }
+                if(obj.alkalinityCaCo3!=-9999){
+                    $('#alkalinityCaCo3').val(obj.alkalinityCaCo3.toFixed(2));
+                }
+                if(obj.alkalinityHCO3!=-9999){
+                    $('#alkalinityHCO3').val(obj.alkalinityHCO3.toFixed(2));
+                }
+                if(obj.bicarbonate!=-9999){
+                    $('#bicarbonate').val(obj.bicarbonate.toFixed(2));
+                }
+                if(obj.bicarbonateCaCo3!=-9999){
+                    $('#bicarbonateCaCo3').val(obj.bicarbonateCaCo3.toFixed(2));
+                }
+                if(obj.bicarbonateHCO3!=-9999){
+                    $('#bicarbonateHCO3').val(obj.bicarbonateHCO3.toFixed(2));
+                }
+                if(obj.nitrogen!=-9999){
+                    $('#nitrogen').val(obj.nitrogen.toFixed(2));
+                }
+                if(obj.phosphorus!=-9999){
+                    $('#phosphorus').val(obj.phosphorus.toFixed(2));
+                }
+
                 $('#remarks').val(obj.remarks);
 
 
@@ -895,21 +973,69 @@ function setAdjust(item) {
 
 //污水化验单修改
 function adjustSewageTest() {
+    var ph=$.trim($('#ph').val());
+    if(ph.length==0){
+        ph=-9999;
+    }
+    var cod=$.trim($('#COD').val());
+    if(cod.length==0){
+        cod=-9999;
+    }
+    var bod5=$.trim($('#BOD5').val());
+    if(bod5.length==0){
+        bod5=-9999;
+    }
+    var n2=$.trim($('#N2').val());
+    if(n2.length==0){
+        n2=-9999;
+    }
+    var alkalinity=$.trim($('#alkalinity').val());
+    if(alkalinity.length==0){
+        alkalinity=-9999;
+    }
+    var alkalinityCaCo3=$.trim($('#alkalinityCaCo3').val());
+    if(alkalinityCaCo3.length==0){
+        alkalinityCaCo3=-9999;
+    }
+    var alkalinityHCO3=$.trim($('#alkalinityHCO3').val());
+    if(alkalinityHCO3.length==0){
+        alkalinityHCO3=-9999;
+    }
+    var bicarbonate=$.trim($('#bicarbonate').val());
+    if(bicarbonate.length==0){
+        bicarbonate=-9999;
+    }
+    var bicarbonateCaCo3=$.trim($('#bicarbonateCaCo3').val());
+    if(bicarbonateCaCo3.length==0){
+        bicarbonateCaCo3=-9999;
+    }
+    var bicarbonateHCO3=$.trim($('#bicarbonateHCO3').val());
+    if(bicarbonateHCO3.length==0){
+        bicarbonateHCO3=-9999;
+    }
+    var nitrogen=$.trim($('#nitrogen').val());
+    if(nitrogen.length==0){
+        nitrogen=-9999;
+    }
+    var phosphorus=$.trim($('#phosphorus').val());
+    if(phosphorus.length==0){
+        phosphorus=-9999;
+    }
     var data = {
         id: $('#id').val(),
         address: $('#address').val(),
-        ph: $('#ph').val(),
-        cod: $('#COD').val(),
-        bod5: $('#BOD5').val(),
-        n2: $('#N2').val(),
-        alkalinity: $('#alkalinity').val(),
-        alkalinityCaCo3: $('#alkalinityCaCo3').val(),
-        alkalinityHCO3: $('#alkalinityHCO3').val(),
-        bicarbonate: $('#bicarbonate').val(),
-        bicarbonateCaCo3: $('#bicarbonateCaCo3').val(),
-        bicarbonateHCO3: $('#bicarbonateHCO3').val(),
-        nitrogen: $('#nitrogen').val(),
-        phosphorus: $('#phosphorus').val(),
+        ph: ph,
+        cod: cod,
+        bod5: bod5,
+        n2: n2,
+        alkalinity: alkalinity,
+        alkalinityCaCo3:alkalinityCaCo3,
+        alkalinityHCO3: alkalinityHCO3,
+        bicarbonate: bicarbonate,
+        bicarbonateCaCo3:bicarbonateCaCo3,
+        bicarbonateHCO3:bicarbonateHCO3,
+        nitrogen:nitrogen,
+        phosphorus: phosphorus,
         remarks: $('#remarks').val()
     }
 
