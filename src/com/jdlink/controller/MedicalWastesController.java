@@ -259,9 +259,11 @@ public class MedicalWastesController {
 
                  //日期
                 if(data[i][0]!="null"){
-          String datestr=data[i][0].toString().replace("年","-").replace("月","-").replace("日","");
-          SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-                  medicalWastes.setDateTime(simpleDateFormat.parse(datestr));
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                    Date start = (Date)sdf.parseObject(data[i][0].toString());
+//          String datestr=data[i][0].toString().replace("年","-").replace("月","-").replace("日","");
+//          SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+                  medicalWastes.setDateTime(start);
                 }
                 if(data[i][0]=="null"){
                     medicalWastes.setDateTime(null);
