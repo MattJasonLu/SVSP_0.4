@@ -1810,10 +1810,13 @@ function search1() {
     page.start = (pageNumber - 1) * page.count;
     if ($("#senior1").is(':visible')) {
         data1 = {
-            amount: $.trim($("#search1-amount").val()),
+            code: $.trim($("#search1-code").val()),
             name: $.trim($("#search1-name").val()),
             wareHouseName: $.trim($("#search1-wareHouseName").val()),
-            page: page
+            specification: $.trim($("#search1-specification").val()),
+            inId: $.trim($("#search1-inId").val()),
+            unit: $.trim($("#search1-unit").val()),
+            page:page
         };
     } else {
         data1 = {

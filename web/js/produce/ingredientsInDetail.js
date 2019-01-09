@@ -388,8 +388,8 @@ function setIngredientsInList(result) {
                     break;
                 case (3):
                     // 入库单状态
-                    if(obj.state != null)
-                    $(this).html(obj.state.name);
+                    if(obj.CheckStateItem != null)
+                    $(this).html(obj.CheckStateItem.dictionaryItemName);
                     break;
                 case (4):
                     // 物品编码

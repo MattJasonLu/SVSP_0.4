@@ -759,25 +759,34 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or itemId = #{keywords}
+                or code like #{keywords}"%"
                 or name like "%"#{keywords}"%"
-                or wareHouseName like "%"#{keywords}"%"
-                or amount like "%"#{keywords}"%"
-                or unit like "%"#{keywords}"%"
-                or ingredientState like "%"#{keywords}"%"
                 or specification like "%"#{keywords}"%"
-                or code like "%"#{keywords}"%"
+                or unit like "%"#{keywords}"%"
+                or wareHouseName like "%"#{keywords}"%"
+                or inId like "%"#{keywords}"%"
+                or outId like "%"#{keywords}"%"
             </if>
             <if test="wareHouseName != null and wareHouseName != ''">
                 wareHouseName like "%"#{wareHouseName}"%"
             </if>
             <if test="code != null and code != ''">
-                code like "%"#{code}"%"
+                code like #{code}"%"
             </if>
             <if test="name != null and name != ''">
                 name like "%"#{name}"%"
             </if>
-            <if test="amount != null and amount != ''">
-                amount = #{amount}
+            <if test="specification != null and specification != ''">
+                specification = #{specification}
+            </if>
+            <if test="unit != null and unit != ''">
+                unit = #{unit}
+            </if>
+            <if test="inId != null and inId != ''">
+                inId like "%"#{inId}"%"
+            </if>
+            <if test="outId != null and outId != ''">
+                outId like "%"#{outId}"%"
             </if>
         </where>
         <if test="page != null and page.start != null and page.count != null and page.count != 0">
