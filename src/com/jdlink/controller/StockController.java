@@ -71,6 +71,8 @@ public class StockController {
             }
 
            stockService.addStockItem(stockItem);
+            //更新报价单状态
+            stockService.updateQuotationItemState(stockItem.getId());
             res.put("status", "success");
             res.put("message", "字表添加成功");
         }
@@ -365,9 +367,13 @@ public class StockController {
         JSONObject res=new JSONObject();
         try{
             Client client = clientService.getByClientId(clientId);//获得用户
-            res.put("status", "success");
+            //获取所有改单位下合同内的报价单信息(未申报的)
+            List<QuotationItem>quotationItemList=stockService.getQuotationitemByUndeclared(clientId);
+
+             res.put("status", "success");
             res.put("message", "客户查询成功");
             res.put("data", client);
+            res.put("quotationItemData", quotationItemList);
         }
         catch (Exception e){
             e.printStackTrace();

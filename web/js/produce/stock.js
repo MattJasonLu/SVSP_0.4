@@ -863,6 +863,8 @@ function init1() {
             alert("服务器异常！");
         }
     });
+
+    $('#proWasteCompany').trigger('change');
 }
 
 //判断是否是自运单位
@@ -943,11 +945,13 @@ function save() {
                 console.log(result)
                 $('.myclass').each(function () {
                     var stockItem={
-                        wastesName:$(this).children('td').eq(1).children('input').val(),
-                        wastesCode:$(this).children('td').eq(2).children('div').find('button').attr('title'),
-                        number:$(this).children('td').eq(3).children('input').val(),
-                        content:$(this).children('td').eq(4).children('input').val(),
-                        remarks:$(this).children('td').eq(5).children('input').val(),
+                        wastesName:$(this).children('td').eq(1).html(),
+                        wastesCode:$(this).children('td').eq(2).html(),
+                        number:$(this).children('td').eq(3).html(),
+                        content:$(this).children('td').eq(4).html(),
+                        remarks:$(this).children('td').eq(5).html(),
+                        id:$(this).children('td').eq(6).html(),//用作更新申报状态
+
                     };
                     $.ajax({
                         type: 'POST',
@@ -1774,6 +1778,7 @@ function getClentInfo(item) {
         //contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result != undefined && result.status == "success") {
+                console.log(result);
                 //1赋值产废单位联系人 产废联系人电话
                 $('#proContactName').val(result.data.contactName);
                 if (result.data.phone != '') {
@@ -1782,7 +1787,63 @@ function getClentInfo(item) {
                 else {
                     $('#proTelephone').val(result.data.mobile);
                 }
-                console.log(result);
+                //赋值库存明细
+                if(result.quotationItemData!=null){
+                    // 获取id为cloneTr的tr元素
+                    var tr = $("#cloneTr1");
+                    tr.siblings().remove();
+                    $.each(result.quotationItemData, function (index, item) {
+                        // 克隆tr，每次遍历都可以产生新的tr
+                        var clonedTr = tr.clone();
+                        clonedTr.attr('class', 'myclass');
+                        clonedTr.show();
+                        var _index = index;
+                        // 循环遍历cloneTr的每一个td元素，并赋值
+                        clonedTr.children("td").each(function (inner_index) {
+                            var obj = eval(item);
+                            // 根据索引为部分td赋值
+                            switch (inner_index) {
+                                // 库存编号
+                                case (0):
+                                    $(this).html(index+1);
+                                    break;
+                                // 产废单位联系人
+                                case (1):
+                                        $(this).html(obj.wastesName);
+                                    break;
+                                // 危废编码(类别)
+                                case (2):
+
+                                            $(this).html(obj.wastesCode);
+
+                                    break;
+                                // 数量(公斤)
+                                case (3):
+                                    $(this).html(obj.contractAmount.toFixed(2));
+                                    break;
+                                // 成分
+                                case (4):
+
+                                    break;
+                                // 公司联系电话
+                                case (5):
+                                        $(this).html(obj.remarks);
+                                    break;
+                                    //编号
+                                case (6):
+                                    $(this).html(obj.quotationItemId);
+                                    break;
+
+                            }
+                        });
+                        // 把克隆好的tr追加到原来的tr前面
+                        clonedTr.removeAttr("id");
+                        clonedTr.insertBefore(tr);
+                    });
+                    // 隐藏无数据的tr
+                    tr.hide();
+                }
+
             }
             else {
 

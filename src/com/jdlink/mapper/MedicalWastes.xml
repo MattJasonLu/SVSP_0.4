@@ -86,8 +86,8 @@
 
     <!--修改信息-->
     <update id="updateMedicalWaste" parameterType="MedicalWastes">
-        update t_pl_medicalwastes set  departmentName=#{departmentName},departmentName=#{departmentName},
-        adjustName=#{adjustName},adjustDate=#{adjustDate},dateTime=#{dateTime},thisMonthWastes=#{thisMonthWastes},
+        update t_pl_medicalwastes set  departmentName=#{departmentName},
+        adjustName=#{adjustName},adjustDate=NOW(),thisMonthWastes=#{thisMonthWastes},
         directDisposal=#{directDisposal},cookingWastes=#{cookingWastes},afterCookingNumber=#{afterCookingNumber},
         afterCookingInbound=#{afterCookingInbound},thisMonthSendCooking=#{thisMonthSendCooking},
         errorNumber=#{errorNumber},wetNumber=#{wetNumber},nowTime=NOW(),equipment=#{equipment},

@@ -52,4 +52,6 @@ public interface BatchOrderMapper {
    void updateInventoryNumberAfterInvalid(String inboundOrderItemId,float inventoryNumber);
    void retireOutBoundOrder(OutboundOrder outboundOrder);
     List<OutboundOrder> loadOutBoundList(Page page);
+
+    List<WasteInventory> getSecInventoryListAdd();
 }

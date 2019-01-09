@@ -53,6 +53,17 @@ public class SewageTest {
     //状态数据字典
     private CheckStateItem checkStateItem;
 
+    //关键字
+    private String keyword;
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
     public CheckStateItem getCheckStateItem() {
         return checkStateItem;
     }

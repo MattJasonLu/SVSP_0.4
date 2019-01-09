@@ -51,7 +51,19 @@
     <association property="handleCategoryItem" column="handleCategoryId"  select="getHandleCategoryItem"></association>
         <association property="processWayItem" column="processWayId"  select="getProcessWayItem"></association>
    <association property="secondaryCategoryItem" column="secondaryCategoryId" select="getSecondaryCategoryItem"></association>
+        <association property="formTypeItem" column="formTypeId"  select="getFormTypeItem"></association>
+        <association property="packageTypeItem" column="packageTypeId"  select="getPackageTypeItem"></association>
+
     </resultMap>
+
+    <!--获取物质形态数据字典-->
+    <select id="getFormTypeItem" resultType="FormTypeItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{formTypeId}
+    </select>
+    <!--获取包装方式数据字典-->
+    <select id="getPackageTypeItem" resultType="PackageTypeItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{packageTypeId}
+    </select>
 
     <!--获取次生危废名称数据字典-->
     <select id="getSecondaryCategoryItem" resultType="SecondaryCategoryItem">
@@ -86,7 +98,12 @@
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
-</select>
+    </select>
+
+    <!--次生新增页面-->
+    <select id="getSecInventoryListAdd" resultMap="WasteInventoryListBatRM">
+     select  wastesCode,secondaryCategoryId,wareHouseId,sum(actualCount) as actualCount,formTypeId,packageTypeId,processWayId ,unitId from t_pl_wasteinventory where boundType="SecondaryInbound"  group by wastesCode,secondaryCategoryId,wareHouseId,formTypeId,packageTypeId,processWayId ,unitId
+    </select>
 
     <!--根据入库单号明细编号查询库存信息-->
     <select id="getWasteInventoryByInboundOrderId" resultMap="WasteInventoryListBatRM" parameterType="String">

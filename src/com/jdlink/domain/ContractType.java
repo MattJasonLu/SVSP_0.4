@@ -8,7 +8,8 @@ public enum ContractType {
     Emergency("应急处置合同", 2),
     Derive("次生合同", 3),
     Purchase("采购合同", 4),
-    Logistics("物流合同",5)
+    Logistics("物流合同",5),
+    Other("其他合同",6)
     ;
     private String name;
     private int index;

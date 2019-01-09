@@ -420,7 +420,8 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         update t_contract set bankAccount=#{bankAccount},bankName=#{bankName},
         beginTime=#{beginTime},clientId=#{client.clientId},contactName=#{contactName},
         contractName=#{contractName},contractType=#{contractType},contractVersion=#{contractVersion},
-        endTime=#{endTime},isFreight=#{freight},telephone=#{telephone},ticketRate1=#{ticketRate1},totalPrice=#{totalPrice},freightBearer=#{freightBearer},ticketRateId=#{ticketRateItem.dataDictionaryItemId}
+        endTime=#{endTime},isFreight=#{freight},telephone=#{telephone},ticketRate1=#{ticketRate1},totalPrice=#{totalPrice},freightBearer=#{freightBearer},ticketRateId=#{ticketRateItem.dataDictionaryItemId},contractId=#{newId},small=#{small}
+
         where  contractId=#{contractId}
     </update>
     <!--删除字表的明细-->
@@ -593,22 +594,27 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         </if>
     </select>
 
+    <!--加载物流合同-->
+    <select id="loadPageLogisticsContractList" resultMap="ContractRM">
+        select  * from  t_contract where contractType='Logistics' and period is  null and checkStateId != 69 order  by  nowTime desc
+        <if test="start != null and count != null and count != 0">
+            limit #{start}, #{count}
+        </if>
+    </select>
     <!--危废合同总数-->
     <select id="loadPageWastesContractListCount" resultType="int">
         select count(*)  from  t_contract where contractType='Wastes' and period is  null and checkStateId != 69;
-        <if test="start != null and count != null">
-            limit #{start}, #{count}
-        </if>
     </select>
 
     <!--应急合同总数-->
     <select id="loadPageEmergencyContractListCount" resultType="int">
         select count(*)  from  t_contract where contractType='Emergency' and period is  null and checkStateId != 69;
-        <if test="start != null and count != null">
-            limit #{start}, #{count}
-        </if>
     </select>
 
+    <!--物流合同总数-->
+    <select id="loadPageLogisticsContractListCount" resultType="int">
+                select count(*)  from  t_contract where contractType='Logistics' and period is  null and checkStateId != 69;
+    </select>
 
     <!--危废合同查询-->
     <select id="searchWasteContract" resultMap="ContractRM" parameterType="Contract">
@@ -623,6 +629,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 or  endTime   like   binary"%"#{keyword}"%"
                 or small  like  binary#{keyword}
                 or reviewer  like   binary"%"#{keyword}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
                 and contractType='Wastes' and period is  null and checkStateId != 69 order  by  nowTime desc
             </if>
 
@@ -670,7 +677,8 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 or  endTime   like   binary"%"#{keyword}"%"
                 or small  like  binary#{keyword}
                 or reviewer  like   binary"%"#{keyword}"%"
-                and contractType='Emergency' and period is  null and checkStateId != 69 order  by  nowTime desc
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
+                and contractType='Emergency' and period is  null  order  by  nowTime desc
             </if>
 
             <if test="checkStateItem!=null">
@@ -696,7 +704,55 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 <![CDATA[ and DATE_FORMAT(endTime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
             </if>
             <if test="keyword==''">
-                and contractType='Emergency' and period is  null and checkStateId != 69 order  by  nowTime desc
+                and contractType='Emergency' and period is  null  order  by  nowTime desc
+            </if>
+        </where>
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--物流合同查询-->
+    <select id="searchLogisticsContract" resultMap="ContractRM" parameterType="Contract">
+        select  * from t_contract
+        <where>
+            <if test="keyword!='' and keyword!=null">
+                or  contractId like binary"%"#{keyword}"%"
+                or  clientId in(select clientId from client where companyName like  binary"%"#{keyword}"%")
+                or contractName like binary"%"#{keyword}"%"
+                or contactName in (select contactName from client where contactName like  binary"%"#{keyword}"%")
+                or beginTime   like binary"%"#{keyword}"%"
+                or  endTime   like   binary"%"#{keyword}"%"
+                or small  like  binary#{keyword}
+                or reviewer  like   binary"%"#{keyword}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
+                and contractType='Logistics' and period is  null  order  by  nowTime desc
+            </if>
+
+            <if test="checkStateItem!=null">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId=#{checkStateItem.dataDictionaryItemId}
+                </if>
+            </if>
+            <if test="client!=null">
+                <if test="client.companyName!=null and client.companyName!=''">
+                    and clientId in(select clientId from  client where companyName=#{client.companyName})
+                </if>
+                <if test="client.contactName!=null and client.contactName!=''">
+                    and clientId in(select clientId from  client where contactName=#{client.contactName})
+                </if>
+            </if>
+            <if test="small!=null" >
+                and small=#{small}
+            </if>
+            <if test="beginTime!=null">
+                <![CDATA[ and DATE_FORMAT(beginTime, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endTime!=null">
+                <![CDATA[ and DATE_FORMAT(endTime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="keyword==''">
+                and contractType='Logistics' and period is  null  order  by  nowTime desc
             </if>
         </where>
         <if test="page != null and page.start != null and page.count != null">
@@ -717,8 +773,8 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 or  endTime   like   binary"%"#{keyword}"%"
                 or small  like  binary#{keyword}
                 or reviewer  like   binary"%"#{keyword}"%"
-                and contractType='Wastes' and period is  null and checkStateId != 69 order  by  nowTime desc
-
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
+                and contractType='Wastes' and period is  null  order  by  nowTime desc
             </if>
 
             <if test="checkStateItem!=null">
@@ -744,7 +800,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 <![CDATA[ and DATE_FORMAT(endTime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
             </if>
             <if test="keyword==''">
-                and contractType='Wastes' and period is  null and checkStateId != 69 order  by  nowTime desc
+                and contractType='Wastes' and period is  null  order  by  nowTime desc
             </if>
         </where>
     </select>
@@ -762,8 +818,8 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 or  endTime   like   binary"%"#{keyword}"%"
                 or small  like  binary#{keyword}
                 or reviewer  like   binary"%"#{keyword}"%"
-                and contractType='Emergency' and period is  null and checkStateId != 69 order  by  nowTime desc
-
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
+                and contractType='Emergency' and period is  null  order  by  nowTime desc
             </if>
 
             <if test="checkStateItem!=null">
@@ -789,7 +845,372 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 <![CDATA[ and DATE_FORMAT(endTime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
             </if>
             <if test="keyword==''">
-                and contractType='Emergency' and period is  null and checkStateId != 69 order  by  nowTime desc
+                and contractType='Emergency' and period is  null  order  by  nowTime desc
+            </if>
+        </where>
+    </select>
+
+    <!--物流合同查询总数-->
+    <select id="searchLogisticsContractCount" resultType="int">
+        select  count(*) from t_contract
+        <where>
+            <if test="keyword!='' and keyword!=null">
+                or  contractId like binary"%"#{keyword}"%"
+                or  clientId in(select clientId from client where companyName like  binary"%"#{keyword}"%")
+                or contractName like binary"%"#{keyword}"%"
+                or contactName in (select contactName from client where contactName like  binary"%"#{keyword}"%")
+                or beginTime   like binary"%"#{keyword}"%"
+                or  endTime   like   binary"%"#{keyword}"%"
+                or small  like  binary#{keyword}
+                or reviewer  like   binary"%"#{keyword}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
+                and contractType='Logistics' and period is  null  order  by  nowTime desc
+            </if>
+
+            <if test="checkStateItem!=null">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId=#{checkStateItem.dataDictionaryItemId}
+                </if>
+            </if>
+            <if test="client!=null">
+                <if test="client.companyName!=null and client.companyName!=''">
+                    and clientId in(select clientId from  client where companyName=#{client.companyName})
+                </if>
+                <if test="client.contactName!=null and client.contactName!=''">
+                    and clientId in(select clientId from  client where contactName=#{client.contactName})
+                </if>
+            </if>
+            <if test="small!=null" >
+                and small=#{small}
+            </if>
+            <if test="beginTime!=null">
+                <![CDATA[ and DATE_FORMAT(beginTime, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endTime!=null">
+                <![CDATA[ and DATE_FORMAT(endTime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="keyword==''">
+                and contractType='Logistics' and period is  null  order  by  nowTime desc
+            </if>
+        </where>
+    </select>
+
+    <!--次生合同总数-->
+    <select id="loadPageDeriveContractListCount" resultType="int">
+                        select count(*)  from  t_contract where contractType='Derive' and period is  null and checkStateId != 69;
+    </select>
+
+    <!--加载次生合同-->
+    <select id="loadPageDeriveContractList" resultMap="ContractRM">
+        select  * from  t_contract where contractType='Derive' and period is  null and checkStateId != 69 order  by  nowTime desc
+        <if test="start != null and count != null and count != 0">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+
+    <!--次生合同查询-->
+    <select id="searchDeriveContract" resultMap="ContractRM" parameterType="Contract">
+        select  * from t_contract
+        <where>
+            <if test="keyword!='' and keyword!=null">
+                or  contractId like binary"%"#{keyword}"%"
+                or  clientId in(select clientId from client where companyName like  binary"%"#{keyword}"%")
+                or contractName like binary"%"#{keyword}"%"
+                or contactName in (select contactName from client where contactName like  binary"%"#{keyword}"%")
+                or beginTime   like binary"%"#{keyword}"%"
+                or  endTime   like   binary"%"#{keyword}"%"
+                or small  like  binary#{keyword}
+                or reviewer  like   binary"%"#{keyword}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
+                and contractType='Derive' and period is  null  order  by  nowTime desc
+            </if>
+
+            <if test="checkStateItem!=null">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId=#{checkStateItem.dataDictionaryItemId}
+                </if>
+            </if>
+            <if test="client!=null">
+                <if test="client.companyName!=null and client.companyName!=''">
+                    and clientId in(select clientId from  client where companyName=#{client.companyName})
+                </if>
+                <if test="client.contactName!=null and client.contactName!=''">
+                    and clientId in(select clientId from  client where contactName=#{client.contactName})
+                </if>
+            </if>
+            <if test="small!=null" >
+                and small=#{small}
+            </if>
+            <if test="beginTime!=null">
+                <![CDATA[ and DATE_FORMAT(beginTime, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endTime!=null">
+                <![CDATA[ and DATE_FORMAT(endTime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="keyword==''">
+                and contractType='Derive' and period is  null  order  by  nowTime desc
+            </if>
+        </where>
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--次生合同查询计数-->
+    <select id="searchDeriveContractCount" resultType="int">
+        select  count(*) from t_contract
+        <where>
+            <if test="keyword!='' and keyword!=null">
+                or  contractId like binary"%"#{keyword}"%"
+                or  clientId in(select clientId from client where companyName like  binary"%"#{keyword}"%")
+                or contractName like binary"%"#{keyword}"%"
+                or contactName in (select contactName from client where contactName like  binary"%"#{keyword}"%")
+                or beginTime   like binary"%"#{keyword}"%"
+                or  endTime   like   binary"%"#{keyword}"%"
+                or small  like  binary#{keyword}
+                or reviewer  like   binary"%"#{keyword}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
+                and contractType='Derive' and period is  null  order  by  nowTime desc
+            </if>
+
+            <if test="checkStateItem!=null">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId=#{checkStateItem.dataDictionaryItemId}
+                </if>
+            </if>
+            <if test="client!=null">
+                <if test="client.companyName!=null and client.companyName!=''">
+                    and clientId in(select clientId from  client where companyName=#{client.companyName})
+                </if>
+                <if test="client.contactName!=null and client.contactName!=''">
+                    and clientId in(select clientId from  client where contactName=#{client.contactName})
+                </if>
+            </if>
+            <if test="small!=null" >
+                and small=#{small}
+            </if>
+            <if test="beginTime!=null">
+                <![CDATA[ and DATE_FORMAT(beginTime, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endTime!=null">
+                <![CDATA[ and DATE_FORMAT(endTime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="keyword==''">
+                and contractType='Derive' and period is  null  order  by  nowTime desc
+            </if>
+        </where>
+    </select>
+
+    <!--采购合同总数-->
+    <select id="loadPagePurchaseContractListCount" resultType="int">
+                        select count(*)  from  t_contract where contractType='Purchase' and period is  null and checkStateId != 69;
+    </select>
+
+    <!--加载采购合同-->
+    <select id="loadPagePurchaseContractList" resultMap="ContractRM">
+        select  * from  t_contract where contractType='Purchase' and period is  null and checkStateId != 69 order  by  nowTime desc
+        <if test="start != null and count != null and count != 0">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <!--采购合同查询-->
+    <select id="searchPurchaseContract" resultMap="ContractRM" parameterType="Contract">
+        select  * from t_contract
+        <where>
+            <if test="keyword!='' and keyword!=null">
+                or  contractId like binary"%"#{keyword}"%"
+                or  clientId in(select clientId from client where companyName like  binary"%"#{keyword}"%")
+                or contractName like binary"%"#{keyword}"%"
+                or contactName in (select contactName from client where contactName like  binary"%"#{keyword}"%")
+                or beginTime   like binary"%"#{keyword}"%"
+                or  endTime   like   binary"%"#{keyword}"%"
+                or small  like  binary#{keyword}
+                or reviewer  like   binary"%"#{keyword}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
+                and contractType='Purchase' and period is  null  order  by  nowTime desc
+            </if>
+
+            <if test="checkStateItem!=null">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId=#{checkStateItem.dataDictionaryItemId}
+                </if>
+            </if>
+            <if test="client!=null">
+                <if test="client.companyName!=null and client.companyName!=''">
+                    and clientId in(select clientId from  client where companyName=#{client.companyName})
+                </if>
+                <if test="client.contactName!=null and client.contactName!=''">
+                    and clientId in(select clientId from  client where contactName=#{client.contactName})
+                </if>
+            </if>
+            <if test="small!=null" >
+                and small=#{small}
+            </if>
+            <if test="beginTime!=null">
+                <![CDATA[ and DATE_FORMAT(beginTime, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endTime!=null">
+                <![CDATA[ and DATE_FORMAT(endTime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="keyword==''">
+                and contractType='Purchase' and period is  null  order  by  nowTime desc
+            </if>
+        </where>
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--采购合同查询计数-->
+    <select id="searchPurchaseContractCount" resultType="int">
+        select  count(*) from t_contract
+        <where>
+            <if test="keyword!='' and keyword!=null">
+                or  contractId like binary"%"#{keyword}"%"
+                or  clientId in(select clientId from client where companyName like  binary"%"#{keyword}"%")
+                or contractName like binary"%"#{keyword}"%"
+                or contactName in (select contactName from client where contactName like  binary"%"#{keyword}"%")
+                or beginTime   like binary"%"#{keyword}"%"
+                or  endTime   like   binary"%"#{keyword}"%"
+                or small  like  binary#{keyword}
+                or reviewer  like   binary"%"#{keyword}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
+                and contractType='Purchase' and period is  null  order  by  nowTime desc
+            </if>
+
+            <if test="checkStateItem!=null">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId=#{checkStateItem.dataDictionaryItemId}
+                </if>
+            </if>
+            <if test="client!=null">
+                <if test="client.companyName!=null and client.companyName!=''">
+                    and clientId in(select clientId from  client where companyName=#{client.companyName})
+                </if>
+                <if test="client.contactName!=null and client.contactName!=''">
+                    and clientId in(select clientId from  client where contactName=#{client.contactName})
+                </if>
+            </if>
+            <if test="small!=null" >
+                and small=#{small}
+            </if>
+            <if test="beginTime!=null">
+                <![CDATA[ and DATE_FORMAT(beginTime, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endTime!=null">
+                <![CDATA[ and DATE_FORMAT(endTime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="keyword==''">
+                and contractType='Purchase' and period is  null  order  by  nowTime desc
+            </if>
+        </where>
+    </select>
+
+
+    <!--其他合同总数-->
+    <select id="loadPageOtherContractListCount" resultType="int">
+                        select count(*)  from  t_contract where contractType='Other' and period is  null and checkStateId != 69;
+    </select>
+
+    <!--加载其他合同-->
+    <select id="loadPageOtherContractList" resultMap="ContractRM">
+        select  * from  t_contract where contractType='Other' and period is  null and checkStateId != 69 order  by  nowTime desc
+        <if test="start != null and count != null and count != 0">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <!--其他合同查询-->
+    <select id="searchOtherContract" resultMap="ContractRM" parameterType="Contract">
+        select  * from t_contract
+        <where>
+            <if test="keyword!='' and keyword!=null">
+                or  contractId like binary"%"#{keyword}"%"
+                or  clientId in(select clientId from client where companyName like  binary"%"#{keyword}"%")
+                or contractName like binary"%"#{keyword}"%"
+                or contactName in (select contactName from client where contactName like  binary"%"#{keyword}"%")
+                or beginTime   like binary"%"#{keyword}"%"
+                or  endTime   like   binary"%"#{keyword}"%"
+                or small  like  binary#{keyword}
+                or reviewer  like   binary"%"#{keyword}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
+                and contractType='Other' and period is  null  order  by  nowTime desc
+            </if>
+
+            <if test="checkStateItem!=null">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId=#{checkStateItem.dataDictionaryItemId}
+                </if>
+            </if>
+            <if test="client!=null">
+                <if test="client.companyName!=null and client.companyName!=''">
+                    and clientId in(select clientId from  client where companyName=#{client.companyName})
+                </if>
+                <if test="client.contactName!=null and client.contactName!=''">
+                    and clientId in(select clientId from  client where contactName=#{client.contactName})
+                </if>
+            </if>
+            <if test="small!=null" >
+                and small=#{small}
+            </if>
+            <if test="beginTime!=null">
+                <![CDATA[ and DATE_FORMAT(beginTime, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endTime!=null">
+                <![CDATA[ and DATE_FORMAT(endTime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="keyword==''">
+                and contractType='Other' and period is  null  order  by  nowTime desc
+            </if>
+        </where>
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--采购合同查询计数-->
+    <select id="searchOtherContractCount" resultType="int">
+        select  count(*) from t_contract
+        <where>
+            <if test="keyword!='' and keyword!=null">
+                or  contractId like binary"%"#{keyword}"%"
+                or  clientId in(select clientId from client where companyName like  binary"%"#{keyword}"%")
+                or contractName like binary"%"#{keyword}"%"
+                or contactName in (select contactName from client where contactName like  binary"%"#{keyword}"%")
+                or beginTime   like binary"%"#{keyword}"%"
+                or  endTime   like   binary"%"#{keyword}"%"
+                or small  like  binary#{keyword}
+                or reviewer  like   binary"%"#{keyword}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
+                and contractType='Other' and period is  null  order  by  nowTime desc
+            </if>
+
+            <if test="checkStateItem!=null">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId=#{checkStateItem.dataDictionaryItemId}
+                </if>
+            </if>
+            <if test="client!=null">
+                <if test="client.companyName!=null and client.companyName!=''">
+                    and clientId in(select clientId from  client where companyName=#{client.companyName})
+                </if>
+                <if test="client.contactName!=null and client.contactName!=''">
+                    and clientId in(select clientId from  client where contactName=#{client.contactName})
+                </if>
+            </if>
+            <if test="small!=null" >
+                and small=#{small}
+            </if>
+            <if test="beginTime!=null">
+                <![CDATA[ and DATE_FORMAT(beginTime, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endTime!=null">
+                <![CDATA[ and DATE_FORMAT(endTime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="keyword==''">
+                and contractType='Other' and period is  null  order  by  nowTime desc
             </if>
         </where>
     </select>

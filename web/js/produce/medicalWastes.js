@@ -425,9 +425,8 @@ function getNewestId() {
         }
 
     });
-    // $('#date').val(dateToString(new Date()))
+    $('#date').val(dateToString(new Date()))
 
-    // 设置计量单位
     // 设置计量单位
     $.ajax({
         type: "POST",                       // 方法类型
@@ -445,7 +444,7 @@ function getNewestId() {
                     option.text(item.dictionaryItemName);
                     wastesUnit.append(option);
                 });
-                wastesUnit.get(0).selectedIndex = -1;
+                wastesUnit.get(0).selectedIndex = 0;
             }
         },
         error: function (result) {
@@ -1141,6 +1140,7 @@ function adjustMedicalWaste() {
         incineration:  $('#incineration').val(),
         equipmentDataItem: {dataDictionaryItemId:$('#equipment').selectpicker('val')}
     };
+    console.log(data)
     //更新
     $.ajax({
         type: "POST",                       // 方法类型

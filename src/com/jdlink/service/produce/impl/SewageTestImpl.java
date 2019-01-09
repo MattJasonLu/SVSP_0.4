@@ -227,5 +227,35 @@ public class SewageTestImpl implements SewageTestService{
         sewageTestMapper.cancelSecondaryTestAfter(id);
     }
 
+    @Override
+    public List<SoftTest> searchSoftTest(SoftTest softTest) {
+        return sewageTestMapper.searchSoftTest(softTest);
+    }
+
+    @Override
+    public int searchSoftTestCount(SoftTest softTest) {
+        return sewageTestMapper.searchSoftTestCount(softTest);
+    }
+
+    @Override
+    public List<SewageTest> searchSewageTest(SewageTest sewageTest) {
+        return sewageTestMapper.searchSewageTest(sewageTest);
+    }
+
+    @Override
+    public int searchSewageTestCount(SewageTest sewageTest) {
+        return sewageTestMapper.searchSewageTestCount(sewageTest);
+    }
+
+    @Override
+    public List<SecondaryTest> searchSecondaryTest(SecondaryTest secondaryTest) {
+        return sewageTestMapper.searchSecondaryTest(secondaryTest);
+    }
+
+    @Override
+    public int searchSecondaryTestCount(SecondaryTest secondaryTest) {
+        return sewageTestMapper.searchSecondaryTestCount(secondaryTest);
+    }
+
 
 }

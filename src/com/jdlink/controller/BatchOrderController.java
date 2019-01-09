@@ -766,6 +766,32 @@ public class BatchOrderController {
         return res.toString();
     }
 
+    //次生库存新增
+    @RequestMapping("getSecInventoryListAdd")
+    @ResponseBody
+    public String getSecInventoryListAdd(@RequestBody Page page) {
+        JSONObject res=new JSONObject();
+        try {
+            List<WasteInventory> wasteInventoryList= batchOrderService.getSecInventoryListAdd();
+            JSONArray arrray=JSONArray.fromObject(wasteInventoryList);
+            // Quotation quotation=quotationService.getQuotationByWastesCodeAndClientId(wastesCode, clientId);
+            //更新剩余库存量
+            res.put("status", "success");
+            res.put("message", "分页数据获取成功!");
+            res.put("data", arrray);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "分页数据获取失败！");
+        }
+
+
+        return res.toString();
+    }
+
+
+
     //添加次生出库单
     @RequestMapping("addSecondary")
     @ResponseBody

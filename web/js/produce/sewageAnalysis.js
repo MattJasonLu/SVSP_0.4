@@ -543,42 +543,42 @@ function downloadModal() {
     }
 }
 
-/**
- * 导入excel
- */
-function importExcel() {
-    document.getElementById("idExcel").click();
-    document.getElementById("idExcel").addEventListener("change", function () {
-        var eFile = document.getElementById("idExcel").files[0];
-        var formFile = new FormData();
-        formFile.append("excelFile", eFile);
-        formFile.append("excelFile", eFile);
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "importSewageTestExcel",              // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data: formFile,
-            processData: false,
-            contentType: false,
-            success: function (result) {
-                if (result != undefined) {
-                    console.log(result);
-                    if (result.status == "success") {
-                        alert(result.message);
-                        window.location.reload();         //刷新
-                    } else {
-                        alert(result.message);
-                        window.location.reload();
-                    }
-                }
-            },
-            error: function (result) {
-                console.log(result);
-            }
-        });
-    });
-}
+// /**
+//  * 导入excel
+//  */
+// function importExcel() {
+//     document.getElementById("idExcel").click();
+//     document.getElementById("idExcel").addEventListener("change", function () {
+//         var eFile = document.getElementById("idExcel").files[0];
+//         var formFile = new FormData();
+//         formFile.append("excelFile", eFile);
+//         formFile.append("excelFile", eFile);
+//         $.ajax({
+//             type: "POST",                       // 方法类型
+//             url: "importSewageTestExcel",              // url
+//             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+//             dataType: "json",
+//             data: formFile,
+//             processData: false,
+//             contentType: false,
+//             success: function (result) {
+//                 if (result != undefined) {
+//                     console.log(result);
+//                     if (result.status == "success") {
+//                         alert(result.message);
+//                         window.location.reload();         //刷新
+//                     } else {
+//                         alert(result.message);
+//                         window.location.reload();
+//                     }
+//                 }
+//             },
+//             error: function (result) {
+//                 console.log(result);
+//             }
+//         });
+//     });
+// }
 
 /**
  * 回车查询
@@ -771,7 +771,7 @@ function addAppoint() {
         laboratorySignatory:$('#laboratorySignatory').val(),
         sendingPerson:$('#sendingPerson').val(),
         water:true,
-       sewagePointItem:{dataDictionaryItemId:$('#address').val()},
+          sewagePointItem:{dataDictionaryItemId:$('#address').val()},
          id:$('#reservationId').val(),
     };
     console.log(data);

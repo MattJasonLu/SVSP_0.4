@@ -633,3 +633,10 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
         },400);
     });
 });
+
+//新增按钮跳转
+function addContract() {
+    localStorage.contractType="Wastes"
+    window.location.href="wastesContractInfo.html"
+
+}

@@ -118,7 +118,7 @@
                     <a class="btn btn-primary btn-xs" href="newMedicalWastes.html"id="function_-280" onclick="checkAuthority(this)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                     <a class="btn btn-primary btn-xs" id="function_-281" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose();}"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                     <a class="btn btn-primary btn-xs" id="function_-282" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel();}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
-                    <!--<a class="btn btn-primary btn-xs" onclick="view1()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 属性调整</a>-->
+                    <a class="btn btn-primary btn-xs" href="medicalWastesSummary.html"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 医危废汇总表</a>
                 </div>
                 <!--查询框-->
                 <div class="input-group col-md-4 pull-right">
@@ -472,7 +472,7 @@
                     </table>
                 </div>
                 <div class="modal-footer center-block">
-                    <button type="button" class="btn btn-primary" onclick="adjustMedicalWaste();">修改</button>
+                    <button type="button" class="btn btn-primary" onclick="adjustMedicalWaste();">保存</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </form>

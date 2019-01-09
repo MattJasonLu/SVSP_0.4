@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">合同名称
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>合同新增</title>
@@ -22,6 +22,8 @@
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
     <script src="js/business/contract.js"></script>
+    <link href="css/loading1.css" rel="stylesheet">
+    <link href="css/loading2.css" rel="stylesheet">
 </head>
 <style>
     sub  {
@@ -264,10 +266,10 @@ $.ajax({
                     <td class="text-center" style="width: 150px;">合同名称<sub>*</sub></td>
                     <td class="text-left" colspan="2">
                         <div class="col-xs-12" id="contractName1" >
-                            <input title="" type="text" class="focus" id="contractName" name="contractName" onchange="warning(this)">
+                            <input title="" type="text" class="form-control" id="contractName" name="contractName" onchange="warning(this)">
                         </div>
                         <div class="col-xs-12 form-inline" id="contractType2">
-                            <input title="" type="text" class="focus" id="contractType1" name="modelName" onchange="warning(this)">
+                            <input title="" type="text" class="form-control" id="contractType1" name="modelName" onchange="warning(this)">
                             <!--<select title="" class="form-control" id="contractType1" name="modelName"  onchange="warning(this)"></select>-->
                             <!--<input type="button" class="form-control" value="查看" onclick="check1(this)" >-->
                         </div>
@@ -275,10 +277,13 @@ $.ajax({
                     <!--合同类型-->
                     <td class="text-center">合同类型</td>
                     <td class="text-center" colspan="2">
-                        <select title="" class="form-control" id="contractType" onchange="findModel()">
-                        <option value="Wastes">危废合同</option>
-                        <option value="Logistics">物流合同</option>
-                        <option value="Emergency">应急合同</option>
+                        <select title="" class="form-control" id="contractType" onchange="findModel()" disabled>
+                          <option value="Wastes">危废合同</option>
+                          <option value="Logistics">物流合同</option>
+                          <option value="Emergency">应急合同</option>
+                            <option value="Derive">次生合同</option>
+                            <option value="Purchase">采购合同</option>
+                            <option value="Other">其他合同</option>
                     </select>
                     </td>
                 </tr>
@@ -319,7 +324,7 @@ $.ajax({
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <td colspan="13" class="text-center"><h3>费用明细</h3>(小额合同:是<input title="" type="radio" name="1"  value="true">否<input checked name="1" title="" type="radio" value="false" >)</td>
+                    <td colspan="13" class="text-center"><h3>费用明细</h3>(小额合同:是<input title="" type="radio" name="1"  value="true" >否<input checked name="1" title="" type="radio" value="false" >)</td>
                     <!--<a class="btn btn-primary btn-xs" onclick="importQuExcelChoose();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>-->
                 </tr>
                 <tr>
@@ -417,7 +422,7 @@ $.ajax({
                 <!--<input type="submit"  value="保存"   class="btn btn-primary" onclick="contractWastesSave()"/>-->
                 <a class="btn btn-success" onclick="contractWastesSave()">保存</a>
                 <a class="btn btn-primary" onclick="contractWastesSave()">提交</a>
-                <a class="btn btn-danger" href="contractManage.html" id="back">返回</a>
+                <a class="btn btn-danger" onclick="javascript :history.go(-1);">返回</a>
             </div>
         </form>
         <form method="post" id="contractInfoForm" enctype="multipart/form-data" >
@@ -467,6 +472,13 @@ $.ajax({
         </div>
         </h4>
     </div>
+</div>
+<div class="loader">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
 </div>
 <div class="modal fade bs-example-modal-lg" id="modelInfoForm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document" style="height:150%">

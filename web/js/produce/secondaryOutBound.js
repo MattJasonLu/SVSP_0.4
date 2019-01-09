@@ -441,7 +441,7 @@ function loadSecondaryList() {
     var page = {};
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getSecondaryInventoryList",                  // url
+        url: "getSecInventoryListAdd",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         data: JSON.stringify(page),
@@ -535,7 +535,7 @@ function setWasteInventoryList(result) {
     console.log(result);
     //tr.siblings().remove();
     $.each(result, function (index, item) {
-        if(parseFloat(item.actualCount).toFixed(2)>0&&item.boundType.name=='次生入库'){
+        if(parseFloat(item.actualCount).toFixed(3)>0){
             // 克隆tr，每次遍历都可以产生新的tr
             var clonedTr = tr.clone();
             clonedTr.show();
@@ -544,59 +544,47 @@ function setWasteInventoryList(result) {
                 var obj = eval(item);
                 // 根据索引为部分td赋值
                 switch (inner_index) {
-                    // 入库编号
+                    // 危废名称
                     case (1):
-                        $(this).html(obj.inboundOrderId);
+                        if(obj.secondaryCategoryItem!=null){
+                            $(this).html(obj.secondaryCategoryItem.dictionaryItemName);
+                        }
+
                         break;
-                        //入库日期
+                        //危废代码
                     case (2):
-                        $(this).html(getDateStr(obj.inboundDate));
+                        $(this).html((obj.wastesCode));
                         break;
-                    // 仓库号
+                    // 仓库
                     case (3):
                         if(obj.wareHouse!=null){
                             $(this).html(obj.wareHouse.wareHouseName);
                         }
                         break;
-                    //产废单位
+                    //处置方式
                     case (4):
-                        if(obj.produceCompany!=null){
-                            $(this).html(obj.produceCompany.companyName);
+                        if(obj.processWayItem!=null){
+                            $(this).html(obj.processWayItem.dictionaryItemName);
                         }
                         break;
-                    // 危废名称
+                       //物质形态
                     case (5):
-                        if(obj.secondaryCategoryItem!=null){
-                            $(this).html((obj.secondaryCategoryItem.dictionaryItemName));
+                        if(obj.formTypeItem!=null){
+                            $(this).html(obj.formTypeItem.dictionaryItemName);
                         }
-                        else {
-                            $(this).html((obj.wastesName));
-                        }
-
                         break;
-                    // 危废代码
+                        //包装方式
                     case (6):
-                        $(this).html(obj.wastesCode);
-                        break;
-                    // 进料方式
-                    case (7):
-                        if(obj.processWay){
-                            $(this).html(obj.processWay.name);
+                        if(obj.packageTypeItem!=null){
+                            $(this).html(obj.packageTypeItem.dictionaryItemName);
                         }
                         break;
-                    //数量
-                    case (8):
-                        $(this).html(parseFloat(obj.actualCount).toFixed(2));
-                        break;
-                    //剩余数量
-                    case (9):
-                        $(this).html(parseFloat(obj.leftNumeber).toFixed(2));
-                        break;
-                        //入库单明细
-                    case (10):
-                        $(this).html(obj.inboundOrderItemId);
+                        //合计数量
+                    case (7):
+                        $(this).html(obj.actualCount.toFixed(3));
                         break;
                 }
+
             });
             // 把克隆好的tr追加到原来的tr前面
             clonedTr.removeAttr("id");
@@ -621,39 +609,27 @@ function setWasteInventoryList(result) {
 
 //次生出库确认按钮==>次生出库新增页面
 function batching() {
-
-    $('#cloneTr2').siblings().remove();
+    var tr=$("#cloneTr2");
+    tr.siblings().remove();
 
     var items = $("input[name='select']:checked");//判断复选框是否选中
-    items.each(function () {
-        //获得库存Id
-        if($(this).parent().parent().parent().attr('style')!='display: none;'){
-            var inboundOrderItemId=  $(this).parent().parent().parent().children('td').last().text();
-            //根据inboundOrderItemId获得库存的信息，进行转移放到配料中
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "getWasteInventoryByInboundOrderId",                  // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                dataType: "json",
-                data:{'inboundOrderItemId':inboundOrderItemId},
-                success:function (result) {
-                    if(result != undefined && result.status == "success"){
-                        console.log(result);
-                        //设置配料列表
-                        setBatchingWList(result.data);
-                    }
-                    else {
-                        console.log(result.message);
-                    }
-                },
-                error:function (result) {
-                    alert("服务器异常！")
-                }
 
-            });
-        }
+    items.each(function () {
+       if($(this).parent().parent().parent().attr('style')=='display: table-row;'){
+           var cloneTr=tr.clone();
+           cloneTr.children("td").eq(0).html($(this).parent().parent().parent().children("td").eq(1).html())
+           cloneTr.children("td").eq(1).html($(this).parent().parent().parent().children("td").eq(2).html())
+           cloneTr.children("td").eq(2).html($(this).parent().parent().parent().children("td").eq(3).html())
+           cloneTr.children("td").eq(3).html($(this).parent().parent().parent().children("td").eq(4).html())
+           cloneTr.children("td").eq(4).html($(this).parent().parent().parent().children("td").eq(5).html())
+           cloneTr.children("td").eq(5).html($(this).parent().parent().parent().children("td").eq(6).html())
+           cloneTr.children("td").eq(7).html($(this).parent().parent().parent().children("td").eq(7).html())
+           cloneTr.children("td").eq(8).html($(this).parent().parent().parent().children("td").eq(7).html())
+           cloneTr.insertBefore(tr)
+       }
 
     });
+    tr.hide()
 }
 
 //设置配料列表数据==>次生出库新增页面
@@ -1839,27 +1815,24 @@ function CalRemainQuantities(item) {
     }
 
     if(　!isNaN(count)){
-        var inboundOrderItemId=$(item).parent().parent().children('td').eq(9).html();
-       console.log(inboundOrderItemId)
-        $('.myclass').each(function () {
-            if($(this).children('td').eq(10).html()==inboundOrderItemId){
-                var total= parseFloat($(this).children('td').eq(8).html());
+
+                var total= parseFloat($(item).parent().next().next().html());
                 console.log(total)
                 //剩余数量
                 var residual=total-parseFloat(count);
                 if(parseFloat(residual)>=0){
                     $(item).parent().next().html(residual.toFixed(2))
-                    $(this).children('td').eq(9).html(residual.toFixed(2))//同步到上面的剩余数量
+                    // $(this).children('td').eq(9).html(residual.toFixed(2))//同步到上面的剩余数量
 
                 }
                 else {
-                    alert("配料数量超出最大数额！重新配料")
+                    alert("出库数量超出最大数额！重新填写出库数量")
+                    $(item).val(0)
+                    $(item).parent().next().html(total)
                 }
 
 
-            }
 
-        })
     }
 
 
