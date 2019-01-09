@@ -1887,11 +1887,14 @@ public class PRIngredientsController {
     @RequestMapping("setInventory")
     @ResponseBody
     public void setInventory(){
-        ingredientsService.deleteInventory();    // 删除原库存。
+      //  ingredientsService.deleteInventory();    // 删除原库存。
         Page page = new Page();
         page.setStart(0);
         page.setCount(0);
-        List<Ingredients> ingredientsList = ingredientsService.listPageInItem(page);
+      //  List<Ingredients> ingredientsList = ingredientsService.listPageInItem(page);
+        Ingredients ingredients2 = new Ingredients();
+        ingredients2.setId("20171200041");
+        List<Ingredients> ingredientsList = ingredientsService.searchInItem(ingredients2);
         for(Ingredients ingredients : ingredientsList) {
             Ingredients ingredients1 = new Ingredients();
             ingredients1.setCode(ingredients.getCode());
