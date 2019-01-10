@@ -411,4 +411,93 @@ SELECT date_format(outboundDate,'%Y-%m')  FROM t_pl_outboundorder WHERE checkSta
     <select id="getDateBbySettledWastes" resultType="String">
 SELECT date_format(outboundDate,'%Y-%m')  FROM t_pl_outboundorder WHERE checkStateId=253 and boundType="WasteOutbound";
     </select>
+
+    <!--危废库存查询-->
+    <select id="searchWastesInventory" parameterType="WasteInventory" resultMap="WasteInventoryListBatRM">
+        select * from t_pl_wasteinventory
+        <where>
+            <if test="keyword!='' and keyword!=null">
+                or inboundOrderId like binary"%"#{keyword}"%"
+                or inboundDate like binary"%"#{keyword}"%"
+                or clientId in (select clientId from client where companyName like binary"%"#{keyword}"%")
+                or warehouseId in (select warehouseId from t_pl_warehouse where warehouseName like binary"%"#{keyword}"%")
+                or handleCategoryId in (select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like binary"%"#{keyword}"%")
+                or wastesName like binary"%"#{keyword}"%"
+                or wastesCode like binary"%"#{keyword}"%"
+                or actualCount =#{keyword}
+                and boundType="WasteInbound"
+            </if>
+            <if test="beginTime!=null">
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endTime!=null">
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="handleCategoryItem!=null">
+                <if test="handleCategoryItem.dataDictionaryItemId!=0">
+                    and handleCategoryId=#{handleCategoryItem.dataDictionaryItemId}
+                </if>
+            </if>
+            <if test="produceCompany!=null">
+                <if test="produceCompany.companyName!='' and produceCompany.companyName!=null">
+                    and clientId in(select clientId from client where companyName like #{produceCompany.companyName} )
+                </if>
+            </if>
+            <if test="wareHouse!=null">
+                <if test="wareHouse.wareHouseName!='' and wareHouse.wareHouseName!=null">
+                    and wareHouseId  in (select warehouseId from t_pl_warehouse where warehouseName like #{wareHouse.wareHouseName})
+                </if>
+            </if>
+            <if test="keyword==''">
+                and boundType="WasteInbound"
+            </if>
+        </where>
+        order by inboundDate desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+
+    <!--危废库存查询计数-->
+    <select id="searchWastesInventoryCount"  resultType="int" parameterType="WasteInventory">
+        select  count(*) from t_pl_wasteinventory
+        <where>
+            <if test="keyword!='' and keyword!=null">
+                or inboundOrderId like binary"%"#{keyword}"%"
+                or inboundDate like binary"%"#{keyword}"%"
+                or clientId in (select clientId from client where companyName like binary"%"#{keyword}"%")
+                or warehouseId in (select warehouseId from t_pl_warehouse where warehouseName like binary"%"#{keyword}"%")
+                or handleCategoryId in (select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like binary"%"#{keyword}"%")
+                or wastesName like binary"%"#{keyword}"%"
+                or wastesCode like binary"%"#{keyword}"%"
+                or actualCount =#{keyword}
+                and boundType="WasteInbound"
+            </if>
+            <if test="beginTime!=null">
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endTime!=null">
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="handleCategoryItem!=null">
+                <if test="handleCategoryItem.dataDictionaryItemId!=0">
+                    and handleCategoryId=#{handleCategoryItem.dataDictionaryItemId}
+                </if>
+            </if>
+            <if test="produceCompany!=null">
+                <if test="produceCompany.companyName!='' and produceCompany.companyName!=null">
+                    and clientId in(select clientId from client where companyName like #{produceCompany.companyName} )
+                </if>
+            </if>
+            <if test="wareHouse!=null">
+                <if test="wareHouse.wareHouseName!='' and wareHouse.wareHouseName!=null">
+                    and wareHouseId  in (select warehouseId from t_pl_warehouse where warehouseName like #{wareHouse.wareHouseName})
+                </if>
+            </if>
+            <if test="keyword==''">
+                and boundType="WasteInbound"
+            </if>
+        </where>
+    </select>
 </mapper>

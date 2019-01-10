@@ -68,4 +68,6 @@ public interface BatchOrderService {
 
     List<String> getDateBbySettled();
     List<String> getDateBbySettledWastes();
+    List<WasteInventory> searchWastesInventory(WasteInventory wasteInventory);
+    int searchWastesInventoryCount(WasteInventory wasteInventory);
 }

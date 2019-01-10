@@ -1478,4 +1478,32 @@ public class BatchOrderController {
 
       return res.toString();
     }
+
+    /*危废库存查询*/
+    @RequestMapping("searchWastesInventory")
+    @ResponseBody
+    public String searchWastesInventory(@RequestBody WasteInventory wasteInventory){
+        JSONObject res=new JSONObject();
+
+        try {
+         List<WasteInventory> wasteInventoryList=batchOrderService.searchWastesInventory(wasteInventory);
+            res.put("data", wasteInventoryList);
+            res.put("status", "success");
+            res.put("message", "分页数据获取成功!");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "分页数据获取失败");
+        }
+
+        return res.toString();
+    }
+
+    /*危废库存查询计数*/
+    @RequestMapping("searchWastesInventoryCount")
+    @ResponseBody
+    public int searchWastesInventoryCount(@RequestBody WasteInventory wasteInventory){
+         return batchOrderService.searchWastesInventoryCount(wasteInventory);
+    }
 }
