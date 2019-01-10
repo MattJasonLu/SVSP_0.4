@@ -558,6 +558,7 @@ function enterSearch() {
  *
  */
 function searchLogisticsContract() {
+    isSearch = true;
     var page = {};
     var pageNumber = 1;                       // 显示首页
     page.pageNumber = pageNumber;
@@ -616,7 +617,7 @@ function searchLogisticsContract() {
             console.log(result);
         }
     });
-    isSearch = true;
+
 }
 
 /**

@@ -273,6 +273,8 @@
     </select>
     <!--通过编号查询入库信息-->
     <resultMap id="InboundOrderItemIdRM" type="WasteInventory">
+        <association property="formTypeItem" column="formTypeId"  select="getFormTypeItem"></association>
+        <association property="packageTypeItem" column="packageTypeId"  select="getPackageTypeItem"></association>
         <collection property="produceCompany" column="=clientId=clientId" select="getClient"></collection>
         <collection property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"></collection>
         <collection property="processWayItem" column="processWayId" select="getProcessWayItem"></collection>
@@ -282,7 +284,14 @@
     <select id="getByInboundOrderItemId" resultMap="InboundOrderItemIdRM" parameterType="String">
         select * from t_pl_wasteinventory where inboundOrderItemId=#{inboundOrderItemId};
     </select>
-
+    <!--获取物质形态数据字典-->
+    <select id="getFormTypeItem" resultType="FormTypeItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{formTypeId}
+    </select>
+    <!--获取包装方式数据字典-->
+    <select id="getPackageTypeItem" resultType="PackageTypeItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{packageTypeId}
+    </select>
     <!--次生名称数据字典-->
     <select id="getSecondaryCategoryItem" resultType="SecondaryCategoryItem">
         select  * from datadictionaryitem where dataDictionaryItemId=#{secondaryCategoryId}

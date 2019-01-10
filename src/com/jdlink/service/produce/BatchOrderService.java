@@ -53,4 +53,14 @@ public interface BatchOrderService {
     void retireOutBoundOrder(OutboundOrder outboundOrder);
     List<OutboundOrder> loadOutBoundList(Page page);
     List<WasteInventory> getSecInventoryListAdd();
+    List<WasteInventory>getSecInventoryByDate(int secondaryCategoryId,int wareHouseId);
+    void   lessThanOutBoundNumber(String wasteInventoryId);
+
+    void moreThanOutBoundNumber(String wasteInventoryId,float count);
+
+    float getCountByWareHouseAndName(int wareHouseId,int secondaryCategoryId);
+
+    WasteInventory  getSecInventoryByDateDesc(int secondaryCategoryId,int wareHouseId);
+
+    void AddWasteInventory(float actualCount,String wasteInventoryId);
 }

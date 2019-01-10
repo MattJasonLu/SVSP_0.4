@@ -356,7 +356,6 @@ function setOutBoundList(result) {
             clonedTr.show();
             // 循环遍历cloneTr的每一个td元素，并赋值
             clonedTr.children("td").each(function (inner_index) {
-                //1生成领料单号
                 var obj = eval(item);
                 // 根据索引为部分td赋值
                 switch (inner_index) {
@@ -369,53 +368,66 @@ function setOutBoundList(result) {
                         $(this).html(getDateStr(obj.outboundDate));
                         break;
 
-                    // 出库类别
+                    // 仓库
                     case (3):
+                        if(obj.wareHouse!=null){
+                            $(this).html(obj.wareHouse.wareHouseName);
+                        }
+
+                        break;
+                        //危废名称
+                    case (4):
+                        if(obj.secondaryCategoryItem!=null){
+                            $(this).html(obj.secondaryCategoryItem.dictionaryItemName);
+                        }
+                        break;
+                        //危废代码
+                    case (5):
+                        $(this).html(obj.wasteCategory);
+                        break;
+                        //出库类别
+                    case (6):
                         if(obj.boundType!=null){
                             $(this).html(obj.boundType.name);
                         }
 
+                        break
+                    //出库数量
+                    case (7):
+                        if(obj.secondaryCategoryItem!=null){
+                           if((obj.secondaryCategoryItem.dictionaryItemName)=='桶'){
+                               $(this).html(obj.outboundNumber+'只');
+                            }
+                            else {
+                               $(this).html(obj.outboundNumber.toFixed(2)+'吨');
+                           }
+                        }
+
                         break;
-                    // 主管
-                    // case (7):
-                    //     $(this).html("");
-                    //     break;
-                    //制单人
-                    // case (8):
-                    //     $(this).html(obj.creator);
-                    //     break;
-                    //保管员
-                    // case (9):
-                    //     $(this).html("");
-                    //     break;
-                    //审批人
-                    // case (10):
-                    //     $(this).html(obj.auditor);
-                    //     break;
-                    //计划数量
-                    case (4):
-                        $(this).html(obj.outboundNumber.toFixed(2));
+                    //物质形态
+                    case (8):
+                        if(obj.formTypeItem!=null){
+                            $(this).html(obj.formTypeItem.dictionaryItemName);
+                        }
                         break;
-                    case (5):
-                        $(this).html(obj.outboundNumber.toFixed(2));
-                        break;
-                        //处置方式
-                    case (6):
+                    //处置方式
+                    case (9):
                         if(obj.processWayItem!=null){
                             $(this).html(obj.processWayItem.dictionaryItemName);
                         }
-
-                        break
-                    case (7):
+                        break;
+                        //包装方式
+                    case (10):
+                        if(obj.packageTypeItem!=null){
+                            $(this).html(obj.packageTypeItem.dictionaryItemName);
+                        }
+                        break;
+                        //状态
+                    case (11):
                         if(obj.checkStateItem!=null){
                             $(this).html(obj.checkStateItem.dictionaryItemName);
                         }
-
-                        break
-                    case (8):
-                        $(this).html(obj.inboundOrderItemId);
-                        break
-
+                        break;
                 }
             });
             // 把克隆好的tr追加到原来的tr前面
@@ -617,6 +629,7 @@ function batching() {
     items.each(function () {
        if($(this).parent().parent().parent().attr('style')=='display: table-row;'){
            var cloneTr=tr.clone();
+           cloneTr.attr('class','myclass2')
            cloneTr.children("td").eq(0).html($(this).parent().parent().parent().children("td").eq(1).html())
            cloneTr.children("td").eq(1).html($(this).parent().parent().parent().children("td").eq(2).html())
            cloneTr.children("td").eq(2).html($(this).parent().parent().parent().children("td").eq(3).html())
@@ -625,6 +638,7 @@ function batching() {
            cloneTr.children("td").eq(5).html($(this).parent().parent().parent().children("td").eq(6).html())
            cloneTr.children("td").eq(7).html($(this).parent().parent().parent().children("td").eq(7).html())
            cloneTr.children("td").eq(8).html($(this).parent().parent().parent().children("td").eq(7).html())
+           tr.removeAttr('id');
            cloneTr.insertBefore(tr)
        }
 
@@ -760,21 +774,22 @@ function time(inboundOrderId,number) {
 function save() {
     if($('#date').val().length>0){
         if(confirm("确定生成出库单?")){
+            console.log("循环中")
             //点击确定后操作
             $(".myclass2").each(function () {
+
                 var data={
-                    inboundOrderItemId:$(this).children('td').eq(9).html(),
                     outboundDate:$('#date').val(),
                     creator:$('#creator').val(),
                     departmentName:$('#departmentName').val(),
                     equipmentDataItem:{dataDictionaryItemId:$('#equipment').selectpicker('val')},
-                    outboundOrderId:$(this).children('td').eq(0).html(),
-                    client:{clientId:$(this).children('td').eq(10).html()},
-                    wastesName:$(this).children('td').eq(4).html(),
-                    wasteCategory:$(this).children('td').eq(5).html(),
-                    processWayItem:{dictionaryItemName:($(this).children('td').eq(6).html())},
-                    outboundNumber:$(this).children('td').eq(7).children('input').val(),
-                    wareHouse:{wareHouseId:$(this).children('td').eq(11).html()}
+                    wastesName:$(this).children('td').eq(0).html(),
+                    wasteCategory:$(this).children('td').eq(1).html(),
+                    processWayItem:{dictionaryItemName:($(this).children('td').eq(3).html())},
+                    outboundNumber:$(this).children('td').eq(6).children('input').val(),
+                    wareHouse:{wareHouseName:$(this).children('td').eq(2).html()},
+                    formTypeItem:{dictionaryItemName:($(this).children('td').eq(4).html())},
+                    packageTypeItem:{dictionaryItemName:($(this).children('td').eq(5).html())},
                 };
                 console.log(data);
                 $.ajax({
@@ -1139,9 +1154,9 @@ function view1(item) {
             if (result != undefined && result.status == "success"){
                 console.log(result);
                 //赋值
-                //产废单位
-                if(result.data.client!=null){
-                    $("#companyName").text(result.data.client.companyName);
+                //仓库
+                if(result.data.wareHouse!=null){
+                    $("#wareHouse").text(result.data.wareHouse.wareHouseName);
                 }
                 // //出库时间
                 $('#outBoundDate').text(getDateStr(result.data.outboundDate));
@@ -1172,15 +1187,15 @@ function view1(item) {
               else {
                     $('#wastesAmount').text((result.data.outboundNumber).toFixed(3)+"(吨)");
                 }
-                // //物质形态
-                // if(result.data[0].formType!=null){
-                //     $('#formType').text(result.data[0].formType.name);
-                // }
-                //
-                // // //包装形式
-                // if(result.data[0].packageType!=null){
-                //     $('#packageType').text(result.data[0].packageType.name);
-                // }
+                //物质形态
+                if(result.data.formTypeItem!=null){
+                    $('#formType').text(result.data.formTypeItem.dictionaryItemName);
+                }
+
+                 //包装形式
+                if(result.data.packageTypeItem!=null){
+                    $('#packageType').text(result.data.packageTypeItem.dictionaryItemName);
+                }
                 // if(result.data[0].laboratoryTest!=null) {
                 //     //热值/KCal/Kg最大
                 //     $('#kCalMax').text(result.data[0].laboratoryTest.heatMaximum);
@@ -1261,11 +1276,8 @@ function adjust(item) {
         success:function (result) {
             if (result != undefined && result.status == "success"){
                 console.log(result);
-                //赋值
-                //产废单位
-                if(result.data.client!=null){
-                    $("#companyName1").text(result.data.client.companyName);
-                }
+
+
                 // //出库时间
                 $('#outBoundDate1').val(getDateStr(result.data.outboundDate));
 
@@ -1275,26 +1287,33 @@ function adjust(item) {
 
 
 
-                // //废物代码
+                // //仓库
+                if(result.data.wareHouse!=null){
+                    $('#wareHouse1').text(result.data.wareHouse.wareHouseName);
+                }
+
 
                 $('#wastesId1').text(result.data.wasteCategory);
 
                 // //重量
                 $('#wastesAmount1').val(result.data.outboundNumber.toFixed(2));
 
+                //出库数
                 $('#wastesAmount2').html(result.data.outboundNumber.toFixed(2));
 
-                $('#secInBoundId').html(result.data.inboundOrderId);
+
                 //处理方式
                 if(result.data.processWayItem!=null){
                     $('#processingMethod1').text(result.data.processWayItem.dictionaryItemName);
                 }
-
-                if(result.data.handelCategory!=null){
-                    //进料方式
-                    $('#handelCategory1').text(result.data.handelCategory.name);
+                //物质形态
+                if(result.data.formTypeItem!=null){
+                    $('#formType1').text(result.data.formTypeItem.dictionaryItemName);
                 }
-
+                //包装方式
+                if(result.data.packageTypeItem!=null){
+                    $('#packageType1').text(result.data.formTypeItem.packageTypeItem);
+                }
                 //处置设备
                 if(result.data.equipmentDataItem!=null){
                     $('#equipment1').text(result.data.equipmentDataItem.dictionaryItemName);
@@ -1307,8 +1326,7 @@ function adjust(item) {
 
                 $("#Inventory2").html(result.data.inventoryNumber.toFixed(2));
 
-                //入库单明细
-                $('#inboundOrderItemId').text((result.data.inboundOrderItemId));
+
 
                 $('#appointModal3').modal('show');
             }
@@ -1328,9 +1346,9 @@ function adjust(item) {
 //次生出库修改
 function adjustSecOutBound() {
 
-  var outboundOrderId=$('#secOutBoundId').html();
+    var outboundOrderId=$('#secOutBoundId').html();
 
-    var inboundOrderItemId=$('#inboundOrderItemId').html();
+
 
     var outBoundNumber=$('#wastesAmount1').val();
 
@@ -1340,7 +1358,6 @@ function adjustSecOutBound() {
 
     var data={
         outboundOrderId:outboundOrderId,
-        inboundOrderItemId:inboundOrderItemId,
         outboundNumber:outBoundNumber,
         inventoryNumber:inventoryNumber,
         outboundDate:outboundDate
@@ -1418,7 +1435,6 @@ function cancel(item) {
                 console.log(result);
                 var obj=eval(result.data);
 
-                $('#inboundOrderId2').html(obj.inboundOrderId);
 
                 $('#outboundOrderId2').html(obj.outboundOrderId);
 
@@ -1428,7 +1444,6 @@ function cancel(item) {
 
                 $('#inventoryNumber3').html((parseFloat(obj.outboundNumber)+parseFloat(obj.inventoryNumber)).toFixed(2));
 
-                $('#inboundOrderItemId2').html(obj.inboundOrderItemId);
             }
             else {
                 alert(result.message);
@@ -1451,8 +1466,7 @@ function confirmCancel(){
 
         var data={
             outboundOrderId:$('#outboundOrderId2').html(),
-            inventoryNumber:$('#inventoryNumber3').html(),
-            inboundOrderItemId:$('#inboundOrderItemId2').html(),
+            inventoryNumber:$('#cancelNumber').html(),
 
         }
 
@@ -1772,7 +1786,7 @@ function confirmRetired() {
 
     var data={
         outboundOrderId:$('#outboundOrderId3').html(),
-        inventoryNumber:$('#inventoryNumber5').html(),
+        inventoryNumber:$('#cancelNumber3').html(),
         inboundOrderItemId:$('#inboundOrderItemId3').html(),
 
     }

@@ -235,4 +235,34 @@ public class BatchOrderServiceImpl implements BatchOrderService
         return batchOrderMapper.getSecInventoryListAdd();
     }
 
+    @Override
+    public List<WasteInventory> getSecInventoryByDate(int secondaryCategoryId, int wareHouseId) {
+        return batchOrderMapper.getSecInventoryByDate(secondaryCategoryId, wareHouseId);
+    }
+
+    @Override
+    public void lessThanOutBoundNumber(String wasteInventoryId) {
+        batchOrderMapper.lessThanOutBoundNumber(wasteInventoryId);
+    }
+
+    @Override
+    public void moreThanOutBoundNumber(String wasteInventoryId, float count) {
+        batchOrderMapper.moreThanOutBoundNumber(wasteInventoryId, count);
+    }
+
+    @Override
+    public float getCountByWareHouseAndName(int wareHouseId, int secondaryCategoryId) {
+        return batchOrderMapper.getCountByWareHouseAndName(wareHouseId,secondaryCategoryId);
+    }
+
+    @Override
+    public WasteInventory getSecInventoryByDateDesc(int secondaryCategoryId, int wareHouseId) {
+        return batchOrderMapper.getSecInventoryByDateDesc(secondaryCategoryId, wareHouseId);
+    }
+
+    @Override
+    public void AddWasteInventory(float actualCount, String wasteInventoryId) {
+        batchOrderMapper.AddWasteInventory(actualCount, wasteInventoryId);
+    }
+
 }
