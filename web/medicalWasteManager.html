@@ -122,7 +122,7 @@
                 </div>
                 <!--查询框-->
                 <div class="input-group col-md-4 pull-right">
-                    <input type="text" class="form-control"  placeholder="搜索..." id="searchContent">
+                    <input type="text" class="form-control"  placeholder="请输入登记日期/登记编号" id="searchContent">
                     <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchMedicalWastes();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
@@ -146,12 +146,12 @@
                         </div>
                     </div>
                     <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <label for="search-departmentName" class="col-sm-4 control-label">登记人</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-departmentName" name="search-departmentName" placeholder="" onkeyup="enterSearch()">
-                            </div>
-                        </div>
+                        <!--<div class="form-group">-->
+                            <!--<label for="search-departmentName" class="col-sm-4 control-label">登记人</label>-->
+                            <!--<div class="col-xs-7">-->
+                                <!--<input type="text" class="form-control" id="search-departmentName" name="search-departmentName" placeholder="" onkeyup="enterSearch()">-->
+                            <!--</div>-->
+                        <!--</div>-->
                         <!--<div class="form-group">-->
                             <!--<label for="search-wastesName" class="col-sm-4 control-label">危废名称</label>-->
                             <!--<div class="col-xs-7">-->
@@ -166,9 +166,8 @@
                             <label for="search-checkState" class="col-sm-4 control-label">状态</label>
                             <div class="col-xs-7">
                                 <select type="text" class="form-control" id="search-checkState" name="search-departmentName" placeholder="" onchange="searchMedicalWastes()">
-                                    <option></option>
-                                    <option>生效中</option>
-                                    <option>已失效</option>
+                                    <option value="70">生效中</option>
+                                    <option value="71">已失效</option>
                                 </select>
                             </div>
                         </div>
@@ -228,6 +227,7 @@
                     <th class="text-center">蒸煮后重量</th>
                     <th class="text-center">蒸煮后入库量</th>
                     <th class="text-center">本日蒸煮后外送量</th>
+                    <th class="text-center">焚烧量</th>
                     <th class="text-center">误差量</th>
                     <th class="text-center">水分含量</th>
                     <th class="text-center">计量单位</th>
@@ -243,6 +243,7 @@
                             <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
                         </label>
                     </td>
+                    <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>

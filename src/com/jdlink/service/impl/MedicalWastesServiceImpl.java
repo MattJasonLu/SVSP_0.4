@@ -73,4 +73,19 @@ public class MedicalWastesServiceImpl implements MedicalWastesService {
     public void updateMedicalWaste(MedicalWastes medicalWastes) {
         medicalWastesMapper.updateMedicalWaste(medicalWastes);
     }
+
+    @Override
+    public MedicalWastes getMedicalWasteFromPrevious(String date) {
+        return medicalWastesMapper.getMedicalWasteFromPrevious(date);
+    }
+
+    @Override
+    public MedicalWastes getCurrentWastesAmount() {
+        return medicalWastesMapper.getCurrentWastesAmount();
+    }
+
+    @Override
+    public int searchMedicalWastesCount(MedicalWastes medicalWastes) {
+        return medicalWastesMapper.searchMedicalWastesCount(medicalWastes);
+    }
 }

@@ -4,6 +4,7 @@ import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Dictionary.CheckStateItem;
 import com.jdlink.domain.Dictionary.EquipmentDataItem;
 import com.jdlink.domain.Dictionary.UnitDataItem;
+import com.jdlink.domain.Page;
 
 import java.util.Date;
 
@@ -98,6 +99,74 @@ public class MedicalWastes {
      * 计量单位
      */
     private UnitDataItem unitDataItem;
+
+    /**
+     * 期初量
+     */
+    private float earlyNumber;
+
+    /**
+     * 关键字
+     */
+    private String keyword;
+
+    /**
+     * 起始日期
+     * @return
+     */
+    private Date beginTime;
+
+    /**
+     * 结束日期
+     * @return
+     */
+    private Date endTime;
+
+    /**
+     * 分页
+     * @return
+     */
+    private Page page;
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
+    public Date getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public float getEarlyNumber() {
+        return earlyNumber;
+    }
+
+    public void setEarlyNumber(float earlyNumber) {
+        this.earlyNumber = earlyNumber;
+    }
 
     public CheckStateItem getCheckStateItem() {
         return checkStateItem;
