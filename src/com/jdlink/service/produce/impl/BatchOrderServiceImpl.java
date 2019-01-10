@@ -280,5 +280,15 @@ public class BatchOrderServiceImpl implements BatchOrderService
         return batchOrderMapper.getDateBbySettledWastes();
     }
 
+    @Override
+    public List<WasteInventory> searchWastesInventory(WasteInventory wasteInventory) {
+        return batchOrderMapper.searchWastesInventory(wasteInventory);
+    }
+
+    @Override
+    public int searchWastesInventoryCount(WasteInventory wasteInventory) {
+        return batchOrderMapper.searchWastesInventoryCount(wasteInventory);
+    }
+
 
 }
