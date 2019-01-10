@@ -53,7 +53,6 @@
    <association property="secondaryCategoryItem" column="secondaryCategoryId" select="getSecondaryCategoryItem"></association>
         <association property="formTypeItem" column="formTypeId"  select="getFormTypeItem"></association>
         <association property="packageTypeItem" column="packageTypeId"  select="getPackageTypeItem"></association>
-
     </resultMap>
 
     <!--获取物质形态数据字典-->
@@ -100,7 +99,7 @@
         </if>
     </select>
 
-    <!--次生新增页面-->
+    <!--次生新增页面,根据危废名称，仓库汇总-->
     <select id="getSecInventoryListAdd" resultMap="WasteInventoryListBatRM">
      select  wastesCode,secondaryCategoryId,wareHouseId,sum(actualCount) as actualCount,formTypeId,packageTypeId,processWayId ,unitId from t_pl_wasteinventory where boundType="SecondaryInbound"  group by wastesCode,secondaryCategoryId,wareHouseId,formTypeId,packageTypeId,processWayId ,unitId
     </select>
@@ -190,13 +189,15 @@
 
     <!--添加出库信息==》次生-->
     <insert id="addSecondary" parameterType="OutboundOrder">
-        insert into  t_pl_outboundorder (outboundOrderId,clientId,wareHouseId,transferDraftId,wastesName,wasteCategory,outboundDate,creator,auditor,outboundNumber,equipment,nowTime,checkState,boundType,processWay,handelCategory,inboundOrderItemId,departmentName,checkStateId,processWayId,equipmentId,secondaryCategoryId)
+        insert into  t_pl_outboundorder (outboundOrderId,clientId,wareHouseId,transferDraftId,wastesName,wasteCategory,outboundDate,creator,auditor,outboundNumber,equipment,nowTime,checkState,boundType,processWay,handelCategory,inboundOrderItemId,departmentName,checkStateId,processWayId,equipmentId,secondaryCategoryId,formTypeId,packageTypeId)
         values
-        (#{outboundOrderId},#{client.clientId},#{wareHouse.wareHouseId},#{transferDraftId},#{wastesName},#{wasteCategory},#{outboundDate},#{creator},#{auditor},#{outboundNumber},#{equipment},NOW(),'OutBounded','SecondaryOutbound',#{processWay},#{handelCategory},#{inboundOrderItemId},#{departmentName},81,#{processWayItem.dataDictionaryItemId},#{equipmentDataItem.dataDictionaryItemId},#{secondaryCategoryItem.dataDictionaryItemId})
+        (#{outboundOrderId},#{client.clientId},#{wareHouse.wareHouseId},#{transferDraftId},#{wastesName},#{wasteCategory},#{outboundDate},#{creator},#{auditor},#{outboundNumber},#{equipment},NOW(),'OutBounded','SecondaryOutbound',#{processWay},#{handelCategory},#{inboundOrderItemId},#{departmentName},81,#{processWayItem.dataDictionaryItemId},#{equipmentDataItem.dataDictionaryItemId},#{secondaryCategoryItem.dataDictionaryItemId},#{formTypeItem.dataDictionaryItemId},#{packageTypeItem.dataDictionaryItemId})
     </insert>
 
     <resultMap id="WastesOutBoundRM" type="OutboundOrder">
         <result  property="inboundOrderItemId" column="inboundOrderItemId"></result>
+        <association property="formTypeItem" column="formTypeId"  select="getFormTypeItem"></association>
+        <association property="packageTypeItem" column="packageTypeId"  select="getPackageTypeItem"></association>
         <association property="inboundOrderId" column="inboundOrderItemId" select="getInboundOrderId"></association>
         <association property="client" column="clientId" select="getClientMar"></association>
         <association property="wareHouse" column="wareHouseId" select="getwareHouse"></association>
@@ -207,6 +208,7 @@
         <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
         <collection property="secondaryCategoryItem" column="secondaryCategoryId" select="getSecondaryCategoryItem"></collection>
     </resultMap>
+
     <!--获取状态数据字典-->
     <select id="getCheckStateItem" resultType="CheckStateItem">
         select  * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
@@ -289,6 +291,10 @@
         select actualCount from t_pl_wasteinventory where inboundOrderItemId=#{inboundOrderItemId};
     </select>
 
+    <!--根据仓库和危废名称获取总数-->
+    <select id="getCountByWareHouseAndName" resultType="float">
+        select sum(actualCount) from t_pl_wasteinventory where wareHouseId=#{0} and secondaryCategoryId=#{1};
+    </select>
 
     <!--修改配料单数量-->
     <update id="updateBatchingOrder" parameterType="BatchingOrder">
@@ -368,5 +374,27 @@
         update t_pl_outboundorder set  checkStateId=85 where outboundOrderId=#{outboundOrderId};
     </update>
 
+<!--根据入库单日期升序获取次生入库信息-->
+    <select id="getSecInventoryByDate" resultMap="WasteInventoryListBatRM">
+select wasteInventoryId,inboundDate,actualCount,secondaryCategoryId,wareHouseId from t_pl_wasteinventory where secondaryCategoryId=#{0} and wareHouseId=#{1} and  actualCount>0 order by inboundDate
+    </select>
 
+    <!--获取最新的次生入库信息-->
+    <select id="getSecInventoryByDateDesc" resultMap="WasteInventoryListBatRM">
+    select wasteInventoryId,inboundDate,actualCount,secondaryCategoryId,wareHouseId from t_pl_wasteinventory where secondaryCategoryId=#{0} and wareHouseId=#{1} and  actualCount>0 order by inboundDate desc limit 0,1;
+   </select>
+    <!--次生扣减库存 库存量小于出库量 库存量为0-->
+   <update id="lessThanOutBoundNumber" parameterType="String">
+   update t_pl_wasteinventory set actualCount=0 where wasteInventoryId=#{wasteInventoryId}
+   </update>
+    <!--次生扣减库存 库存量大于出库量 做减法即可-->
+    <update id="moreThanOutBoundNumber">
+  update  t_pl_wasteinventory set actualCount=actualCount-#{1} where wasteInventoryId=#{0}
+    </update>
+
+    <!--更新库存数量==》小于0的时候-->
+    <update id="AddWasteInventory" >
+        update t_pl_wasteinventory set actualCount=actualCount-#{0} where wasteInventoryId=#{1};
+
+    </update>
 </mapper>

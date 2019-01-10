@@ -1,9 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.Client;
-import com.jdlink.domain.Dictionary.HandleCategoryItem;
-import com.jdlink.domain.Dictionary.ProcessWayItem;
-import com.jdlink.domain.Dictionary.SecondaryCategoryItem;
+import com.jdlink.domain.Dictionary.*;
 import com.jdlink.domain.Inventory.*;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.HandleCategory;
@@ -799,6 +797,8 @@ public class BatchOrderController {
         JSONObject res=new JSONObject();
 
         try{
+
+
             Date date = new Date();   //获取当前时间
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
 
@@ -806,34 +806,48 @@ public class BatchOrderController {
 
             String count=String.valueOf ((batchOrderService.getSecCountByTime(prefix))+1);
 
-            while (count.length()!=6){
+            while (count.length()!=4){
 
                 count='0'+count;
             }
-
             String outBoundOrderId = prefix + count;
-            if(outboundOrder.getWareHouse().getWareHouseId()!=0){
-                outBoundOrderId=outboundOrder.getWareHouse().getWareHouseId()+"H"+outBoundOrderId;
+            WareHouse wareHouse=wareHouseService.getWareHouseByName(outboundOrder.getWareHouse().getWareHouseName());
+            if(wareHouse!=null){
+                outboundOrder.setWareHouse(wareHouse);
+                outBoundOrderId=wareHouse.getPrefix()+outBoundOrderId;
             }
+
+
             outboundOrder.setOutboundOrderId(outBoundOrderId);
 
-            //处置方式适配
+              //处置方式适配
+                ProcessWayItem processWayItem =outboundOrder.getProcessWayItem();
+                int  dataDictionaryItemId1= dictionaryService.getdatadictionaryitemIdByName(processWayItem.getDictionaryItemName(),8);
+                processWayItem.setDataDictionaryItemId(dataDictionaryItemId1);
+                outboundOrder.setProcessWayItem(processWayItem);
 
-            ProcessWayItem processWayItem =outboundOrder.getProcessWayItem();
-            if(processWayItem.getDataDictionaryItemId()!=0){
-                int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(processWayItem.getDictionaryItemName(),8);
-                processWayItem.setDataDictionaryItemId(dataDictionaryItemId);
-            }
-            outboundOrder.setProcessWayItem(processWayItem);
-
+                  //次生名称适配
             SecondaryCategoryItem secondaryCategoryItem=new SecondaryCategoryItem();
             int dataDictionaryItemId=dictionaryService.getdatadictionaryitemIdByName(outboundOrder.getWastesName(),26);
             secondaryCategoryItem.setDataDictionaryItemId(dataDictionaryItemId);
             outboundOrder.setSecondaryCategoryItem(secondaryCategoryItem);
-            batchOrderService.addSecondary(outboundOrder);
 
-            //同步更新库存数量
-            batchOrderService.deducNumber(outboundOrder.getInboundOrderItemId(),outboundOrder.getOutboundNumber());
+            //物质形态
+            FormTypeItem formTypeItem=outboundOrder.getFormTypeItem();
+            int  dataDictionaryItemId2= dictionaryService.getdatadictionaryitemIdByName(formTypeItem.getDictionaryItemName(),1);
+            formTypeItem.setDataDictionaryItemId(dataDictionaryItemId2);
+            outboundOrder.setFormTypeItem(formTypeItem);
+            //包装方式
+            PackageTypeItem packageTypeItem=outboundOrder.getPackageTypeItem();
+            int  dataDictionaryItemId3= dictionaryService.getdatadictionaryitemIdByName(packageTypeItem.getDictionaryItemName(),21);
+            packageTypeItem.setDataDictionaryItemId(dataDictionaryItemId3);
+            outboundOrder.setPackageTypeItem(packageTypeItem);
+
+            //先扣减库存(按照入库日期优先)
+             List<WasteInventory> wasteInventoryList=batchOrderService.getSecInventoryByDate(outboundOrder.getSecondaryCategoryItem().getDataDictionaryItemId(),outboundOrder.getWareHouse().getWareHouseId());
+             outboundByDateFromSec(wasteInventoryList,outboundOrder.getOutboundNumber());
+             batchOrderService.addSecondary(outboundOrder);
+
 
             res.put("status", "success");
             res.put("message", "次生出库成功");
@@ -921,9 +935,13 @@ public class BatchOrderController {
         try {
             OutboundOrder outboundOrder=batchOrderService.getSecOutBoundById(outboundOrderId);
 
-            //查询库存数量
-            float inventoryNumber=batchOrderService.getCountByInboundOrderItemId(outboundOrder.getInboundOrderItemId());
-            outboundOrder.setInventoryNumber(inventoryNumber);
+            //查询库存数量（根据仓库和危废名称）
+      if(outboundOrder.getWareHouse()!=null&&outboundOrder.getSecondaryCategoryItem()!=null){
+         float inventoryNumber=batchOrderService.getCountByWareHouseAndName(outboundOrder.getWareHouse().getWareHouseId(),outboundOrder.getSecondaryCategoryItem().getDataDictionaryItemId());
+         outboundOrder.setInventoryNumber(inventoryNumber);
+     }
+     else
+         outboundOrder.setInventoryNumber(0);
             res.put("status", "success");
             res.put("message", "查询成功");
             res.put("data",outboundOrder);
@@ -1065,10 +1083,27 @@ public class BatchOrderController {
         JSONObject res=new JSONObject();
 
         try {
+            OutboundOrder outboundOrder1=batchOrderService.getSecOutBoundById(outboundOrder.getOutboundOrderId());
+                 //1获取此物品在该仓库的总数
+           float count=batchOrderService.getCountByWareHouseAndName(outboundOrder1.getWareHouse().getWareHouseId(),outboundOrder1.getSecondaryCategoryItem().getDataDictionaryItemId());
+
+                 //2将获取的总数减去数库存量
+            float difference=count-outboundOrder.getInventoryNumber();
+            //3判断
+            //3.1若大于0 即扣减库存
+            if(difference>0){
+                List<WasteInventory> wasteInventoryList=batchOrderService.getSecInventoryByDate(outboundOrder1.getSecondaryCategoryItem().getDataDictionaryItemId(),outboundOrder1.getWareHouse().getWareHouseId());
+                outboundByDateFromSec(wasteInventoryList,difference);
+            }
+            //3.2若小于0即添加库存
+            if(difference<=0){
+                WasteInventory wasteInventory=batchOrderService.getSecInventoryByDateDesc(outboundOrder1.getSecondaryCategoryItem().getDataDictionaryItemId(),outboundOrder1.getWareHouse().getWareHouseId());
+                AddWasteInventory(wasteInventory,difference);
+            }
+//            getCountByWareHouseAndName
       batchOrderService.updateSecOutBound(outboundOrder);
 
-      //更新库存数量
-            batchOrderService.updateWasteInventoryActualCount(outboundOrder.getInboundOrderItemId(),outboundOrder.getInventoryNumber());
+
             res.put("status", "success");
             res.put("message", "次生出库单修改成功");
         }
@@ -1167,7 +1202,10 @@ public class BatchOrderController {
             //1状态作废
             batchOrderService.retireOutBoundOrder(outboundOrder);
             //2将数量还给库存
-            batchOrderService.updateInventoryNumberAfterInvalid(outboundOrder.getInboundOrderItemId(),outboundOrder.getInventoryNumber());
+          OutboundOrder outboundOrder1=batchOrderService.getSecOutBoundById(outboundOrder.getOutboundOrderId());
+          WasteInventory wasteInventory=batchOrderService.getSecInventoryByDateDesc(outboundOrder1.getSecondaryCategoryItem().getDataDictionaryItemId(),outboundOrder1.getWareHouse().getWareHouseId());
+          AddWasteInventory(wasteInventory,-(outboundOrder.getInventoryNumber()));
+
             res.put("status", "success");
             res.put("message", "退库成功");
         }
@@ -1187,10 +1225,12 @@ public class BatchOrderController {
         JSONObject res=new JSONObject();
 
         try {
-    batchOrderService.cancelOutBoundOrder(outboundOrder);
+          batchOrderService.cancelOutBoundOrder(outboundOrder);
+           OutboundOrder outboundOrder1=batchOrderService.getSecOutBoundById(outboundOrder.getOutboundOrderId());
 
+         WasteInventory wasteInventory=batchOrderService.getSecInventoryByDateDesc(outboundOrder1.getSecondaryCategoryItem().getDataDictionaryItemId(),outboundOrder1.getWareHouse().getWareHouseId());
+            AddWasteInventory(wasteInventory,-(outboundOrder.getInventoryNumber()));
         //同步更新库存数量
-            batchOrderService.updateInventoryNumberAfterInvalid(outboundOrder.getInboundOrderItemId(),outboundOrder.getInventoryNumber());
             res.put("status", "success");
             res.put("message", "出库单作废成功");
         }
@@ -1360,5 +1400,39 @@ public class BatchOrderController {
 
 
         return res.toString();
+    }
+
+
+    /*次生出库时按照优先入库扣减库存*/
+    public void outboundByDateFromSec(List<WasteInventory> list,float count){
+        for (int i=0;i<list.size();i++){
+            if(count>0){
+
+            if(list.get(i).getActualCount()<=count&&count>0){
+                //做更新(库存为0) 条件是库存编号
+                batchOrderService.lessThanOutBoundNumber(list.get(i).getWasteInventoryId());
+                count=count-list.get(i).getActualCount();
+             continue;
+            }
+                if(list.get(i).getActualCount()>count){
+                    batchOrderService.moreThanOutBoundNumber(list.get(i).getWasteInventoryId(),count);
+                    //做更新(做减法即可) 条件是库存编号
+                    count=0;
+                    continue;
+                }
+            }
+
+            if(count<=0){
+                System.out.println("OVER!");
+            }
+        }
+
+    }
+
+    /*小于0时添加库存*/
+    public void AddWasteInventory(WasteInventory wasteInventory,float count){
+        //更新库存添加
+        batchOrderService.AddWasteInventory(count,wasteInventory.getWasteInventoryId());
+
     }
 }

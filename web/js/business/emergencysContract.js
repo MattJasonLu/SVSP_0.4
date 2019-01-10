@@ -556,6 +556,7 @@ function enterSearch() {
  * 查找客户
  */
 function searchEmergencyContract() {
+    isSearch = true;
     var page = {};
     var pageNumber = 1;                       // 显示首页
     page.pageNumber = pageNumber;
@@ -614,7 +615,7 @@ function searchEmergencyContract() {
             console.log(result);
         }
     });
-    isSearch = true;
+
 }
 
 /**
