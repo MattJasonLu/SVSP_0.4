@@ -672,41 +672,53 @@ public class BatchOrderController {
         JSONObject res=new JSONObject();
 
         try{
-            //改变领料单的状态
-            batchOrderService.updateMaterialRequisitionOrderCheck(outboundOrder.getOutboundOrderId());
 
-            String outboundOrderId=outboundOrder.getOutboundOrderId();
-            if(outboundOrder.getWareHouse().getWareHouseId()!=0){
-                WareHouse wareHouse = wareHouseService.getWareHouseById(outboundOrder.getWareHouse().getWareHouseId()+"");
-                if(wareHouse!=null){
-                    outboundOrderId=wareHouse.getPrefix()+outboundOrderId;
+            List<String> stringList=batchOrderService.getDateBbySettledWastes();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+            String yearAndMouth=sdf.format(outboundOrder.getOutboundDate());
+
+            if(stringList.contains(yearAndMouth)){
+                res.put("message", "无法出库,出库日期为:"+yearAndMouth+"月份已结账");
+                res.put("status", "back");
+            }
+            else {
+                //改变领料单的状态
+                batchOrderService.updateMaterialRequisitionOrderCheck(outboundOrder.getOutboundOrderId());
+
+                String outboundOrderId=outboundOrder.getOutboundOrderId();
+                if(outboundOrder.getWareHouse().getWareHouseId()!=0){
+                    WareHouse wareHouse = wareHouseService.getWareHouseById(outboundOrder.getWareHouse().getWareHouseId()+"");
+                    if(wareHouse!=null){
+                        outboundOrderId=wareHouse.getPrefix()+outboundOrderId;
+                    }
+
+                }
+                outboundOrder.setOutboundOrderId(outboundOrderId);
+                //处置方式适配
+
+                ProcessWayItem processWayItem =outboundOrder.getProcessWayItem();
+                if(processWayItem.getDataDictionaryItemId()!=0){
+                    int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(processWayItem.getDictionaryItemName(),8);
+                    processWayItem.setDataDictionaryItemId(dataDictionaryItemId);
                 }
 
-            }
-            outboundOrder.setOutboundOrderId(outboundOrderId);
-            //处置方式适配
-
-            ProcessWayItem processWayItem =outboundOrder.getProcessWayItem();
-            if(processWayItem.getDataDictionaryItemId()!=0){
-                int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(processWayItem.getDictionaryItemName(),8);
-                processWayItem.setDataDictionaryItemId(dataDictionaryItemId);
-            }
-
-            outboundOrder.setProcessWayItem(processWayItem);
+                outboundOrder.setProcessWayItem(processWayItem);
 
 
-            //进料方式适配
-            HandleCategoryItem handleCategoryItem=outboundOrder.getHandleCategoryItem();
-            if(handleCategoryItem.getDataDictionaryItemId()!=0){
-                int  dataDictionaryItemId1= dictionaryService.getdatadictionaryitemIdByName(handleCategoryItem.getDictionaryItemName(),6);
-                handleCategoryItem.setDataDictionaryItemId(dataDictionaryItemId1);
+                //进料方式适配
+                HandleCategoryItem handleCategoryItem=outboundOrder.getHandleCategoryItem();
+                if(handleCategoryItem.getDataDictionaryItemId()!=0){
+                    int  dataDictionaryItemId1= dictionaryService.getdatadictionaryitemIdByName(handleCategoryItem.getDictionaryItemName(),6);
+                    handleCategoryItem.setDataDictionaryItemId(dataDictionaryItemId1);
+                }
+
+                outboundOrder.setHandleCategoryItem(handleCategoryItem);
+                batchOrderService.addOutBoundOrder(outboundOrder);
+
+                res.put("status", "success");
+                res.put("message", "出库成功");
             }
 
-            outboundOrder.setHandleCategoryItem(handleCategoryItem);
-           batchOrderService.addOutBoundOrder(outboundOrder);
-
-            res.put("status", "success");
-            res.put("message", "出库成功");
         }
         catch (Exception e){
             e.printStackTrace();
@@ -798,8 +810,17 @@ public class BatchOrderController {
 
         try{
 
+            List<String> stringList=batchOrderService.getDateBbySettled();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+            String yearAndMouth=sdf.format(outboundOrder.getOutboundDate());
 
-            Date date = new Date();   //获取当前时间
+            if(stringList.contains(yearAndMouth)){
+
+                res.put("message", "无法出库,出库日期为:"+yearAndMouth+"月份已结账");
+                res.put("status", "back");
+            }
+            else {
+                            Date date = new Date();   //获取当前时间
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
 
             String prefix = simpleDateFormat.format(date);
@@ -847,10 +868,12 @@ public class BatchOrderController {
              List<WasteInventory> wasteInventoryList=batchOrderService.getSecInventoryByDate(outboundOrder.getSecondaryCategoryItem().getDataDictionaryItemId(),outboundOrder.getWareHouse().getWareHouseId());
              outboundByDateFromSec(wasteInventoryList,outboundOrder.getOutboundNumber());
              batchOrderService.addSecondary(outboundOrder);
+                res.put("message", "次生出库成功");
+                res.put("status", "success");
+            }
 
 
-            res.put("status", "success");
-            res.put("message", "次生出库成功");
+
 
         }
         catch (Exception e){
@@ -1434,5 +1457,25 @@ public class BatchOrderController {
         //更新库存添加
         batchOrderService.AddWasteInventory(count,wasteInventory.getWasteInventoryId());
 
+    }
+
+    /*根据出库单号锁定出库单*/
+    @RequestMapping("confirmSettled")
+    @ResponseBody
+    public String confirmSettled(String outboundOrderId){
+        JSONObject res=new JSONObject();
+
+        try {
+         batchOrderService.confirmSettled(outboundOrderId);
+            res.put("status", "success");
+            res.put("message", "出库单锁定成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "出库单锁定失败");
+        }
+
+      return res.toString();
     }
 }

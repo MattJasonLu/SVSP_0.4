@@ -5,6 +5,7 @@ import com.jdlink.domain.Inventory.MaterialRequisitionOrder;
 import com.jdlink.domain.Inventory.OutboundOrder;
 import com.jdlink.domain.Inventory.WasteInventory;
 import com.jdlink.domain.Page;
+import com.jdlink.domain.Sample;
 
 import java.util.List;
 
@@ -66,4 +67,8 @@ public interface BatchOrderMapper {
     WasteInventory  getSecInventoryByDateDesc(int secondaryCategoryId,int wareHouseId);
 
     void AddWasteInventory(float actualCount,String wasteInventoryId);
+
+    void confirmSettled(String outboundOrderId);
+    List<String> getDateBbySettled();
+    List<String> getDateBbySettledWastes();
 }

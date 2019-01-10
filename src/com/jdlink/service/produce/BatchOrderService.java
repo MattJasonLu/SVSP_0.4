@@ -63,4 +63,9 @@ public interface BatchOrderService {
     WasteInventory  getSecInventoryByDateDesc(int secondaryCategoryId,int wareHouseId);
 
     void AddWasteInventory(float actualCount,String wasteInventoryId);
+
+    void confirmSettled(String outboundOrderId);
+
+    List<String> getDateBbySettled();
+    List<String> getDateBbySettledWastes();
 }
