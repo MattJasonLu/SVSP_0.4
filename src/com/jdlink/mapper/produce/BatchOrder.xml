@@ -269,7 +269,7 @@
 
     <!--加载领料单列表-->
     <select id="getMaterialRequisitionOrderList" resultMap="MaterialRequisitionOrderRM">
-        select * from t_pl_materialrequisitionorder where checkStateId!=69 order by  materialRequisitionId desc
+        select * from t_pl_materialrequisitionorder where checkStateId not in (69,81)order by  materialRequisitionId desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -397,4 +397,18 @@ select wasteInventoryId,inboundDate,actualCount,secondaryCategoryId,wareHouseId 
         update t_pl_wasteinventory set actualCount=actualCount-#{0} where wasteInventoryId=#{1};
 
     </update>
+
+    <!--根据出库单号锁定出库单-->
+    <update id="confirmSettled" parameterType="String">
+        update t_pl_outboundorder set checkStateId=253 where outboundOrderId=#{outboundOrderId}
+    </update>
+
+    <!--获取已结账的出库单的日期次生-->
+    <select id="getDateBbySettled" resultType="String">
+SELECT date_format(outboundDate,'%Y-%m')  FROM t_pl_outboundorder WHERE checkStateId=253 and boundType="SecondaryOutbound";
+    </select>
+    <!--获取已结账的出库单的日期危废-->
+    <select id="getDateBbySettledWastes" resultType="String">
+SELECT date_format(outboundDate,'%Y-%m')  FROM t_pl_outboundorder WHERE checkStateId=253 and boundType="WasteOutbound";
+    </select>
 </mapper>

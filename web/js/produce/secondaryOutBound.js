@@ -262,7 +262,9 @@ function setPageClone(result) {
 }
 
 //加载次生出库信息==>次生出库页面
-function onLoadSecondary() {
+function onLoadSecondary()
+
+{
     $('.loader').show();
     loadNavigationList();    // 设置动态菜单
     $("#current").find("a").text("当前页：1");
@@ -774,8 +776,8 @@ function time(inboundOrderId,number) {
 function save() {
     if($('#date').val().length>0){
         if(confirm("确定生成出库单?")){
-            console.log("循环中")
             //点击确定后操作
+            var index=0;
             $(".myclass2").each(function () {
 
                 var data={
@@ -791,7 +793,7 @@ function save() {
                     formTypeItem:{dictionaryItemName:($(this).children('td').eq(4).html())},
                     packageTypeItem:{dictionaryItemName:($(this).children('td').eq(5).html())},
                 };
-                console.log(data);
+                // console.log(data);
                 $.ajax({
                     type: "POST",                       // 方法类型
                     url: "addSecondary",                  // url
@@ -801,12 +803,28 @@ function save() {
                     contentType: "application/json; charset=utf-8",
                     success:function (result) {
                         if (result != undefined && result.status == "success"){
-                            console.log(result);
-                        }
-                        else {
-                            alert(result.message);
+                            index++;
+                            console.log(index)
+                            if(index==$(".myclass2").length){
+                                alert("添加成功！");
+                                window.location.href="secondaryOutbound.html";
+                            }
 
                         }
+                        if (result != undefined && result.status == "back"){
+                            index++;
+
+                            if(index==$(".myclass2").length){
+                                alert(result.message);
+
+                            }
+
+                        }
+
+                        // else {
+                        //     alert(result.message);
+                        //
+                        // }
                     },
 
                     error:function (result) {
@@ -816,8 +834,7 @@ function save() {
                 });
             });
         }
-        alert("添加成功！");
-      window.location.href="secondaryOutbound.html";
+
 
     }
     else {
@@ -1261,84 +1278,90 @@ function view1(item) {
 
 //修改次生出库
 function adjust(item) {
-    var outboundOrderId=$(item).parent().parent().children('td').eq(1).html();
 
-    // $('#appointModal3').modal('show');
+    if($(item).parent().parent().children('td').eq(11).html()!="已结账"){
+        var outboundOrderId=$(item).parent().parent().children('td').eq(1).html();
 
-    //根据出库单号查询结果
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getSecOutBoundById",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data:{'outboundOrderId':outboundOrderId},
-        dataType: "json",
-        //contentType: "application/json; charset=utf-8",
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                console.log(result);
+        // $('#appointModal3').modal('show');
 
-
-                // //出库时间
-                $('#outBoundDate1').val(getDateStr(result.data.outboundDate));
+        //根据出库单号查询结果
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getSecOutBoundById",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data:{'outboundOrderId':outboundOrderId},
+            dataType: "json",
+            //contentType: "application/json; charset=utf-8",
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(result);
 
 
-                // //废物名称
-                $('#name1').text(convertStrToWastesName(result.data.wastesName));
+                    // //出库时间
+                    $('#outBoundDate1').val(getDateStr(result.data.outboundDate));
+
+
+                    // //废物名称
+                    $('#name1').text(convertStrToWastesName(result.data.wastesName));
 
 
 
-                // //仓库
-                if(result.data.wareHouse!=null){
-                    $('#wareHouse1').text(result.data.wareHouse.wareHouseName);
+                    // //仓库
+                    if(result.data.wareHouse!=null){
+                        $('#wareHouse1').text(result.data.wareHouse.wareHouseName);
+                    }
+
+
+                    $('#wastesId1').text(result.data.wasteCategory);
+
+                    // //重量
+                    $('#wastesAmount1').val(result.data.outboundNumber.toFixed(2));
+
+                    //出库数
+                    $('#wastesAmount2').html(result.data.outboundNumber.toFixed(2));
+
+
+                    //处理方式
+                    if(result.data.processWayItem!=null){
+                        $('#processingMethod1').text(result.data.processWayItem.dictionaryItemName);
+                    }
+                    //物质形态
+                    if(result.data.formTypeItem!=null){
+                        $('#formType1').text(result.data.formTypeItem.dictionaryItemName);
+                    }
+                    //包装方式
+                    if(result.data.packageTypeItem!=null){
+                        $('#packageType1').text(result.data.formTypeItem.packageTypeItem);
+                    }
+                    //处置设备
+                    if(result.data.equipmentDataItem!=null){
+                        $('#equipment1').text(result.data.equipmentDataItem.dictionaryItemName);
+                    }
+                    //出库单号
+                    $("#secOutBoundId").html(result.data.outboundOrderId);
+
+                    //库存数量
+                    $("#Inventory").html(result.data.inventoryNumber.toFixed(2));
+
+                    $("#Inventory2").html(result.data.inventoryNumber.toFixed(2));
+
+
+
+                    $('#appointModal3').modal('show');
                 }
-
-
-                $('#wastesId1').text(result.data.wasteCategory);
-
-                // //重量
-                $('#wastesAmount1').val(result.data.outboundNumber.toFixed(2));
-
-                //出库数
-                $('#wastesAmount2').html(result.data.outboundNumber.toFixed(2));
-
-
-                //处理方式
-                if(result.data.processWayItem!=null){
-                    $('#processingMethod1').text(result.data.processWayItem.dictionaryItemName);
+                else {
+                    alert(result.message);
                 }
-                //物质形态
-                if(result.data.formTypeItem!=null){
-                    $('#formType1').text(result.data.formTypeItem.dictionaryItemName);
-                }
-                //包装方式
-                if(result.data.packageTypeItem!=null){
-                    $('#packageType1').text(result.data.formTypeItem.packageTypeItem);
-                }
-                //处置设备
-                if(result.data.equipmentDataItem!=null){
-                    $('#equipment1').text(result.data.equipmentDataItem.dictionaryItemName);
-                }
-                //出库单号
-                $("#secOutBoundId").html(result.data.outboundOrderId);
-
-                //库存数量
-                $("#Inventory").html(result.data.inventoryNumber.toFixed(2));
-
-                $("#Inventory2").html(result.data.inventoryNumber.toFixed(2));
-
-
-
-                $('#appointModal3').modal('show');
+            },
+            error:function (result) {
+                alert("服务器异常！")
             }
-            else {
-                alert(result.message);
-            }
-        },
-        error:function (result) {
-            alert("服务器异常！")
-        }
 
-    }) ;
+        }) ;
+    }
+    else {
+        alert("已结账的数据无法修改!")
+    }
 
 }
 
@@ -2028,3 +2051,43 @@ function searchSecOutboundAdd() {
 
 }
 
+
+//次生出库结账
+function Settled() {
+
+
+
+    var items = $("input[name='select']:checked");//判断复选框是否选中
+
+        if(items.length<=0){
+            alert("请勾选数据")
+        }
+        else {
+            if(confirm("确定结账次出库单?")) {
+                //点击确定后操作
+
+            $(items).each(function () {
+                if($(this).parent().parent().next().html().length>0){
+                    var outboundOrderId=$(this).parent().parent().next().html();
+                    confirmSettled(outboundOrderId)
+                }
+
+
+            })
+        }
+            alert("出库单锁定成功!")
+            window.location.reload()
+        }
+
+}
+
+function confirmSettled(outboundOrderId) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "confirmSettled",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {outboundOrderId:outboundOrderId},
+        dataType: "json",
+        // contentType: "application/json; charset=utf-8",
+    })
+}

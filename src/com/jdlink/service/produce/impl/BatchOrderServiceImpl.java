@@ -265,4 +265,20 @@ public class BatchOrderServiceImpl implements BatchOrderService
         batchOrderMapper.AddWasteInventory(actualCount, wasteInventoryId);
     }
 
+    @Override
+    public void confirmSettled(String outboundOrderId) {
+        batchOrderMapper.confirmSettled(outboundOrderId);
+    }
+
+    @Override
+    public List<String> getDateBbySettled() {
+        return batchOrderMapper.getDateBbySettled();
+    }
+
+    @Override
+    public List<String> getDateBbySettledWastes() {
+        return batchOrderMapper.getDateBbySettledWastes();
+    }
+
+
 }
