@@ -867,7 +867,7 @@ function setInvalid(e) {    //已作废
  * @param e
  */
 function setSignIn(e) {
-    var r = confirm("确认收样该入库单吗？");
+    var r = confirm("确认收样该入库计划单吗？");
     if (r) {
         var id = getIdByMenu(e);
         $.ajax({
@@ -941,6 +941,7 @@ function viewData(e) {
     }
 }
 var inboundPlanOrder = {};
+var planId;
 /**
  * 显示预约送样的模态框
  * @param e
@@ -948,6 +949,7 @@ var inboundPlanOrder = {};
 function showSampleInfo(e) {
     // 获取编号
     var id = getIdByMenu(e);
+    planId = id;
     $.ajax({
         type: "POST",
         url: "getInboundPlanOrder",
@@ -1177,7 +1179,31 @@ function addAppoint() {
             if (result != undefined) {
                 var data = eval(result);
                 if (data.status == "success") {
-                    alert(data.message);
+                    var r = confirm(data.message + ", 确认收样该入库计划单吗？");
+                    if (r) {
+                        $.ajax({
+                            type: "POST",
+                            url: "setInboundPlanOrderSignIn",
+                            async: false,
+                            dataType: "json",
+                            data: {
+                                inboundPlanOrderId: planId
+                            },
+                            success: function (result) {
+                                if (result != undefined && result.status == "success") {
+                                    console.log(result);
+                                    alert(result.message);
+                                    window.location.reload();
+                                } else {
+                                    alert(result.message);
+                                }
+                            },
+                            error: function (result) {
+                                console.log(result);
+                                alert("服务器异常");
+                            }
+                        });
+                    }
                     window.location.reload();
                 } else {
                     alert(data.message);

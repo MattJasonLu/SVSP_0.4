@@ -84,7 +84,7 @@
 
     <!--查询次生废物送样-->
     <select id="getSecondarysample" resultMap="SecondarysampleRM">
-        select * from t_pr_secondarysample  where checkStateId!=69
+        select * from t_pr_secondarysample where checkStateId!=69
         order by CONVERT(id,SIGNED) desc
         <if test="start != null and count != null">
             limit #{start}, #{count}

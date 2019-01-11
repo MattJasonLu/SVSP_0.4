@@ -652,6 +652,7 @@ function appointModal() {
     // 显示框体
     // setSelectList();
     $('#appointModal').modal('show');
+    $("#reservationId").trigger('keyup')
     setSelectList()
 }
 
@@ -885,7 +886,7 @@ function addAppoint() {
                     var   dataItem={
                         sampleinformationId:$('#reservationId').val(),
                         wastesCode:$(this).children('td').eq(1).find("button").attr('title'),
-                        wastesName:$(this).children('td').eq(2).find("input").val(),
+                        wastesName:$(this).children('td').eq(2).find("select option:selected").text(),
                         water:water,
                         scorchingRate:scorchingRate,
                         identifie:$(this).children('td').eq(3).find("input").val(),
@@ -1543,8 +1544,8 @@ function secondaryAnalysisModify(item) {
                             }
 
                             // clonedTr.children('td').eq(1).find('select').selectpicker('val',obj.wastesCode)
-
-                            clonedTr.children('td').eq(2).find('input').val(obj.wastesName)
+                            //  console.log(clonedTr.children('td').eq(2).find('select').children('option'))
+                            clonedTr.children('td').eq(2).find('select').val(obj.wastesName)
 
 
                             if(obj.water==1){
@@ -1638,7 +1639,7 @@ function adjust() {
                     var   dataItem={
                         sampleinformationId:$('#reservationId2').val(),
                         wastesCode:$(this).children('td').eq(1).find("button").attr('title'),
-                        wastesName:$(this).children('td').eq(2).find("input").val(),
+                        wastesName:$(this).children('td').eq(2).find("select option:selected").text(),
                         water:water,
                         scorchingRate:scorchingRate,
                         identifie:$(this).children('td').eq(3).find("input").val(),
