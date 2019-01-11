@@ -174,12 +174,11 @@
                             <label for="search-checkState" class="col-sm-5 control-label">审核状态</label>
                             <div class="col-xs-7">
                                 <select class="form-control" id="search-checkState" name="search-checkState" onchange="searchStock()">
-                                    <option></option>
-                                    <option>待提交</option>
-                                    <option>履约中</option>
-                                    <option>履约中</option>
-                                    <option>已驳回</option>
-                                    <option>已作废</option>
+                                    <option value="64">待提交</option>
+                                    <option value="67">待审批</option>
+                                    <option value="68">履约中</option>
+                                    <option value="66">已驳回</option>
+                                    <option value="69">已作废</option>
                                 </select>
                             </div>
                         </div>
@@ -193,7 +192,7 @@
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-proContactName" class="col-sm-5 control-label">联系人</label>
+                            <label for="search-proContactName" class="col-sm-5 control-label">产废单位联系人</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-proContactName"
                                        name="search-proContactName" placeholder="" onkeyup="enterSearch()">
@@ -211,7 +210,7 @@
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
                             <label for="search-proTelephone"
-                                   class="col-sm-5 control-label">联系电话</label>
+                                   class="col-sm-5 control-label">运输公司联系电话</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-proTelephone"
                                        name="search-proTelephone" placeholder="" onkeyup="enterSearch()">
@@ -246,7 +245,7 @@
                     <th class="text-center">产废单位联系电话</th>
                     <th class="text-center">申报状态</th>
                     <th class="text-center">运输公司</th>
-                    <th class="text-center">公司联系电话</th>
+                    <th class="text-center">运输公司联系电话</th>
                     <th class="text-center">运输车车牌号</th>
                     <th class="text-center">录入人</th>
                     <th class="text-center">操作</th>

@@ -92,6 +92,10 @@ public class Stock {
     }
 
     private Page page;
+
+    /**
+     * 关键字
+     */
     private String keyword;
 
     public List<StockItem> getStockItemList() {
