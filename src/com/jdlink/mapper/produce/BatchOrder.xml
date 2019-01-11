@@ -53,7 +53,6 @@
    <association property="secondaryCategoryItem" column="secondaryCategoryId" select="getSecondaryCategoryItem"></association>
         <association property="formTypeItem" column="formTypeId"  select="getFormTypeItem"></association>
         <association property="packageTypeItem" column="packageTypeId"  select="getPackageTypeItem"></association>
-
     </resultMap>
 
     <!--获取物质形态数据字典-->
@@ -100,7 +99,7 @@
         </if>
     </select>
 
-    <!--次生新增页面-->
+    <!--次生新增页面,根据危废名称，仓库汇总-->
     <select id="getSecInventoryListAdd" resultMap="WasteInventoryListBatRM">
      select  wastesCode,secondaryCategoryId,wareHouseId,sum(actualCount) as actualCount,formTypeId,packageTypeId,processWayId ,unitId from t_pl_wasteinventory where boundType="SecondaryInbound"  group by wastesCode,secondaryCategoryId,wareHouseId,formTypeId,packageTypeId,processWayId ,unitId
     </select>
@@ -190,13 +189,15 @@
 
     <!--添加出库信息==》次生-->
     <insert id="addSecondary" parameterType="OutboundOrder">
-        insert into  t_pl_outboundorder (outboundOrderId,clientId,wareHouseId,transferDraftId,wastesName,wasteCategory,outboundDate,creator,auditor,outboundNumber,equipment,nowTime,checkState,boundType,processWay,handelCategory,inboundOrderItemId,departmentName,checkStateId,processWayId,equipmentId,secondaryCategoryId)
+        insert into  t_pl_outboundorder (outboundOrderId,clientId,wareHouseId,transferDraftId,wastesName,wasteCategory,outboundDate,creator,auditor,outboundNumber,equipment,nowTime,checkState,boundType,processWay,handelCategory,inboundOrderItemId,departmentName,checkStateId,processWayId,equipmentId,secondaryCategoryId,formTypeId,packageTypeId)
         values
-        (#{outboundOrderId},#{client.clientId},#{wareHouse.wareHouseId},#{transferDraftId},#{wastesName},#{wasteCategory},#{outboundDate},#{creator},#{auditor},#{outboundNumber},#{equipment},NOW(),'OutBounded','SecondaryOutbound',#{processWay},#{handelCategory},#{inboundOrderItemId},#{departmentName},81,#{processWayItem.dataDictionaryItemId},#{equipmentDataItem.dataDictionaryItemId},#{secondaryCategoryItem.dataDictionaryItemId})
+        (#{outboundOrderId},#{client.clientId},#{wareHouse.wareHouseId},#{transferDraftId},#{wastesName},#{wasteCategory},#{outboundDate},#{creator},#{auditor},#{outboundNumber},#{equipment},NOW(),'OutBounded','SecondaryOutbound',#{processWay},#{handelCategory},#{inboundOrderItemId},#{departmentName},81,#{processWayItem.dataDictionaryItemId},#{equipmentDataItem.dataDictionaryItemId},#{secondaryCategoryItem.dataDictionaryItemId},#{formTypeItem.dataDictionaryItemId},#{packageTypeItem.dataDictionaryItemId})
     </insert>
 
     <resultMap id="WastesOutBoundRM" type="OutboundOrder">
         <result  property="inboundOrderItemId" column="inboundOrderItemId"></result>
+        <association property="formTypeItem" column="formTypeId"  select="getFormTypeItem"></association>
+        <association property="packageTypeItem" column="packageTypeId"  select="getPackageTypeItem"></association>
         <association property="inboundOrderId" column="inboundOrderItemId" select="getInboundOrderId"></association>
         <association property="client" column="clientId" select="getClientMar"></association>
         <association property="wareHouse" column="wareHouseId" select="getwareHouse"></association>
@@ -207,6 +208,7 @@
         <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
         <collection property="secondaryCategoryItem" column="secondaryCategoryId" select="getSecondaryCategoryItem"></collection>
     </resultMap>
+
     <!--获取状态数据字典-->
     <select id="getCheckStateItem" resultType="CheckStateItem">
         select  * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
@@ -267,7 +269,7 @@
 
     <!--加载领料单列表-->
     <select id="getMaterialRequisitionOrderList" resultMap="MaterialRequisitionOrderRM">
-        select * from t_pl_materialrequisitionorder where checkStateId!=69 order by  materialRequisitionId desc
+        select * from t_pl_materialrequisitionorder where checkStateId not in (69,81)order by  materialRequisitionId desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -289,6 +291,10 @@
         select actualCount from t_pl_wasteinventory where inboundOrderItemId=#{inboundOrderItemId};
     </select>
 
+    <!--根据仓库和危废名称获取总数-->
+    <select id="getCountByWareHouseAndName" resultType="float">
+        select sum(actualCount) from t_pl_wasteinventory where wareHouseId=#{0} and secondaryCategoryId=#{1};
+    </select>
 
     <!--修改配料单数量-->
     <update id="updateBatchingOrder" parameterType="BatchingOrder">
@@ -368,5 +374,130 @@
         update t_pl_outboundorder set  checkStateId=85 where outboundOrderId=#{outboundOrderId};
     </update>
 
+<!--根据入库单日期升序获取次生入库信息-->
+    <select id="getSecInventoryByDate" resultMap="WasteInventoryListBatRM">
+select wasteInventoryId,inboundDate,actualCount,secondaryCategoryId,wareHouseId from t_pl_wasteinventory where secondaryCategoryId=#{0} and wareHouseId=#{1} and  actualCount>0 order by inboundDate
+    </select>
 
+    <!--获取最新的次生入库信息-->
+    <select id="getSecInventoryByDateDesc" resultMap="WasteInventoryListBatRM">
+    select wasteInventoryId,inboundDate,actualCount,secondaryCategoryId,wareHouseId from t_pl_wasteinventory where secondaryCategoryId=#{0} and wareHouseId=#{1} and  actualCount>0 order by inboundDate desc limit 0,1;
+   </select>
+    <!--次生扣减库存 库存量小于出库量 库存量为0-->
+   <update id="lessThanOutBoundNumber" parameterType="String">
+   update t_pl_wasteinventory set actualCount=0 where wasteInventoryId=#{wasteInventoryId}
+   </update>
+    <!--次生扣减库存 库存量大于出库量 做减法即可-->
+    <update id="moreThanOutBoundNumber">
+  update  t_pl_wasteinventory set actualCount=actualCount-#{1} where wasteInventoryId=#{0}
+    </update>
+
+    <!--更新库存数量==》小于0的时候-->
+    <update id="AddWasteInventory" >
+        update t_pl_wasteinventory set actualCount=actualCount-#{0} where wasteInventoryId=#{1};
+
+    </update>
+
+    <!--根据出库单号锁定出库单-->
+    <update id="confirmSettled" parameterType="String">
+        update t_pl_outboundorder set checkStateId=253 where outboundOrderId=#{outboundOrderId}
+    </update>
+
+    <!--获取已结账的出库单的日期次生-->
+    <select id="getDateBbySettled" resultType="String">
+SELECT date_format(outboundDate,'%Y-%m')  FROM t_pl_outboundorder WHERE checkStateId=253 and boundType="SecondaryOutbound";
+    </select>
+    <!--获取已结账的出库单的日期危废-->
+    <select id="getDateBbySettledWastes" resultType="String">
+SELECT date_format(outboundDate,'%Y-%m')  FROM t_pl_outboundorder WHERE checkStateId=253 and boundType="WasteOutbound";
+    </select>
+
+    <!--危废库存查询-->
+    <select id="searchWastesInventory" parameterType="WasteInventory" resultMap="WasteInventoryListBatRM">
+        select * from t_pl_wasteinventory
+        <where>
+            <if test="keyword!='' and keyword!=null">
+                or inboundOrderId like binary"%"#{keyword}"%"
+                or inboundDate like binary"%"#{keyword}"%"
+                or clientId in (select clientId from client where companyName like binary"%"#{keyword}"%")
+                or warehouseId in (select warehouseId from t_pl_warehouse where warehouseName like binary"%"#{keyword}"%")
+                or handleCategoryId in (select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like binary"%"#{keyword}"%")
+                or wastesName like binary"%"#{keyword}"%"
+                or wastesCode like binary"%"#{keyword}"%"
+                or actualCount =#{keyword}
+                and boundType="WasteInbound"
+            </if>
+            <if test="beginTime!=null">
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endTime!=null">
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="handleCategoryItem!=null">
+                <if test="handleCategoryItem.dataDictionaryItemId!=0">
+                    and handleCategoryId=#{handleCategoryItem.dataDictionaryItemId}
+                </if>
+            </if>
+            <if test="produceCompany!=null">
+                <if test="produceCompany.companyName!='' and produceCompany.companyName!=null">
+                    and clientId in(select clientId from client where companyName like #{produceCompany.companyName} )
+                </if>
+            </if>
+            <if test="wareHouse!=null">
+                <if test="wareHouse.wareHouseName!='' and wareHouse.wareHouseName!=null">
+                    and wareHouseId  in (select warehouseId from t_pl_warehouse where warehouseName like #{wareHouse.wareHouseName})
+                </if>
+            </if>
+            <if test="keyword==''">
+                and boundType="WasteInbound"
+            </if>
+        </where>
+        order by inboundDate desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+
+    <!--危废库存查询计数-->
+    <select id="searchWastesInventoryCount"  resultType="int" parameterType="WasteInventory">
+        select  count(*) from t_pl_wasteinventory
+        <where>
+            <if test="keyword!='' and keyword!=null">
+                or inboundOrderId like binary"%"#{keyword}"%"
+                or inboundDate like binary"%"#{keyword}"%"
+                or clientId in (select clientId from client where companyName like binary"%"#{keyword}"%")
+                or warehouseId in (select warehouseId from t_pl_warehouse where warehouseName like binary"%"#{keyword}"%")
+                or handleCategoryId in (select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like binary"%"#{keyword}"%")
+                or wastesName like binary"%"#{keyword}"%"
+                or wastesCode like binary"%"#{keyword}"%"
+                or actualCount =#{keyword}
+                and boundType="WasteInbound"
+            </if>
+            <if test="beginTime!=null">
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endTime!=null">
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="handleCategoryItem!=null">
+                <if test="handleCategoryItem.dataDictionaryItemId!=0">
+                    and handleCategoryId=#{handleCategoryItem.dataDictionaryItemId}
+                </if>
+            </if>
+            <if test="produceCompany!=null">
+                <if test="produceCompany.companyName!='' and produceCompany.companyName!=null">
+                    and clientId in(select clientId from client where companyName like #{produceCompany.companyName} )
+                </if>
+            </if>
+            <if test="wareHouse!=null">
+                <if test="wareHouse.wareHouseName!='' and wareHouse.wareHouseName!=null">
+                    and wareHouseId  in (select warehouseId from t_pl_warehouse where warehouseName like #{wareHouse.wareHouseName})
+                </if>
+            </if>
+            <if test="keyword==''">
+                and boundType="WasteInbound"
+            </if>
+        </where>
+    </select>
 </mapper>

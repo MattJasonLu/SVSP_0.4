@@ -18,4 +18,10 @@ public interface MedicalWastesMapper {
 
     MedicalWastes  getMedicalWasteById(String medicalWastesId);
     void updateMedicalWaste(MedicalWastes medicalWastes);
+
+    MedicalWastes getMedicalWasteFromPrevious(String date);
+
+    MedicalWastes getCurrentWastesAmount();
+
+    int searchMedicalWastesCount(MedicalWastes medicalWastes);
 }

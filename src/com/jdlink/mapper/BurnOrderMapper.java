@@ -21,4 +21,5 @@ public interface BurnOrderMapper {
     void update(BurnOrder burnOrder);
     int countItem();
     PretreatmentItem getItemsById(int id);
+
 }

@@ -117,12 +117,12 @@
                 <div class="pull-left col-md-6">
                     <!--<a class="btn btn-primary btn-xs" href="newMedicalWastes.html"id="function_-280" onclick="checkAuthority(this)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>-->
                     <!--<a class="btn btn-primary btn-xs" id="function_-281" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose();}"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>-->
-                    <!--<a class="btn btn-primary btn-xs" id="function_-282" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel();}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>-->
+                    <a class="btn btn-primary btn-xs" id="function_-282" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel();}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     <!--<a class="btn btn-primary btn-xs" onclick="view1()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 属性调整</a>-->
                 </div>
                 <!--查询框-->
                 <div class="input-group col-md-4 pull-right">
-                    <input type="text" class="form-control"  placeholder="搜索..." id="searchContent">
+                    <input type="text" class="form-control"  placeholder="请输入登记日期" id="searchContent">
                     <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchMedicalWastes();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
@@ -226,7 +226,8 @@
                 <th class="text-center">本日蒸煮后外送量</th>
                 <th class="text-center">误差量</th>
                 <th class="text-center">水分含量</th>
-                <th class="text-center">库存量</th>
+                <th class="text-center">期初量</th>
+                <!--<th class="text-center">库存量</th>-->
             </tr>
             </thead>
             <tbody id="tbody1">
@@ -247,16 +248,16 @@
                 <td class="text-center"></td>
                 <td class="text-center"></td>
                 <td class="text-center"></td>
+                <!--<td class="text-center"></td>-->
             </tr>
             </tbody>
             <tbody id="tbody2">
             <tr style="font-weight: bolder">
                 <td  class="text-center">合计</td>
+                <td  class="text-center">总库存:<span id="wastesAmount"></span>公斤</td>
                 <td  class="text-center"></td>
                 <td  class="text-center"></td>
                 <td  class="text-center"></td>
-                <td  class="text-center"></td>
-                <td class="text-center"></td>
                 <td class="text-center"></td>
                 <td class="text-center"></td>
                 <td class="text-center"></td>

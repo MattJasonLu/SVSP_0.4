@@ -151,6 +151,27 @@ public class OutboundOrder {
      */
     private String inboundOrderId;
 
+    //物质形态数据字典
+    private FormTypeItem formTypeItem;
+
+    //包装方式数据字典
+    private PackageTypeItem packageTypeItem;
+
+    public FormTypeItem getFormTypeItem() {
+        return formTypeItem;
+    }
+
+    public void setFormTypeItem(FormTypeItem formTypeItem) {
+        this.formTypeItem = formTypeItem;
+    }
+
+    public PackageTypeItem getPackageTypeItem() {
+        return packageTypeItem;
+    }
+
+    public void setPackageTypeItem(PackageTypeItem packageTypeItem) {
+        this.packageTypeItem = packageTypeItem;
+    }
 
     public HandleCategoryItem getHandleCategoryItem() {
         return handleCategoryItem;

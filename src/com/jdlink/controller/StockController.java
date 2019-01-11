@@ -245,7 +245,7 @@ public class StockController {
             JSONArray data = JSONArray.fromArray(stockList.toArray(new Stock[stockList.size()]));
             res.put("status", "success");
             res.put("message", "查询成功");
-            res.put("data", data);
+            res.put("stocktList", data);
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");

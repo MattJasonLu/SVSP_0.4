@@ -62,5 +62,11 @@ public interface SupplierService {
 
     int totalSupplierOtherRecord();
 
+    /**
+     * 获取当前编号
+     * @return 编号
+     */
+    String getCurrentId();
+
 
 }

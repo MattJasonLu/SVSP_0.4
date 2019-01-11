@@ -159,7 +159,7 @@ public class ImportUtil {
                                 String cat = cellStyle.getCellTypeEnum().toString();
                                 if (cat.equals("NUMERIC")) {
                                     // 不变为数学表达式
-                                    DecimalFormat df=new DecimalFormat("0");
+                                    DecimalFormat df = new DecimalFormat("#.#########");
                                     obj[j] = df.format(cellStyle.getNumericCellValue());
 //                                    obj[j] = cellStyle.getNumericCellValue();
                                     int style = cellStyle.getCellStyle().getDataFormat();

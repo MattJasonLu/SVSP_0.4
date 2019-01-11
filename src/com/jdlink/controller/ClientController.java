@@ -58,23 +58,11 @@ public class ClientController {
     @ResponseBody
     public String addClient(@RequestBody Client client, HttpSession session) {
         JSONObject res = new JSONObject();
-        // 启用账户
-        client.setClientState(ClientState.Enabled);
-        ClientStateItem clientStateItem = new ClientStateItem();
-        clientStateItem.setDataDictionaryItemId(89);
-        client.setClientStateItem(clientStateItem);
-        client.setClientType(ClientType.EnquiryClient);
-        ClientTypeItem clientTypeItem = new ClientTypeItem();
-        clientTypeItem.setDataDictionaryItemId(91);
-        client.setClientTypeItem(clientTypeItem);
-        CheckStateItem checkStateItem = new CheckStateItem();
-        checkStateItem.setDataDictionaryItemId(64);
-        client.setCheckStateItem(checkStateItem);
+
         User user = userService.getCurrentUserInfo(session);
         if (user != null) {
             client.setCreator(user.getName());
         }
-        client.setCreateTime(new Date());
         try {
             clientService.add(client);
             res.put("status", "success");

@@ -804,8 +804,8 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
     </select>
     <!--获取污水送样登记-->
     <select id="sewageList" resultMap="SewageregistrationRM">
-        select * from t_pr_sewageregistration where water='1'
-        order by checkStateId=69,CONVERT(id,SIGNED) desc
+        select * from t_pr_sewageregistration where water='1' and checkStateId!=69
+        order by CONVERT(id,SIGNED) desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -813,7 +813,7 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
 
     <!--获取软水送样登记-->
     <select id="softList" resultMap="SoftgeregistrationRM">
-        select * from t_pr_softgeregistration where checkStateId!=69
+        select * from t_pr_softgeregistration where  checkStateId!=69
         order by CONVERT(id,SIGNED) desc
         <if test="start != null and count != null">
             limit #{start}, #{count}

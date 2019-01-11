@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>办公仓库出库管理</title>
+    <title>采购计划费用汇总表</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -131,12 +131,11 @@
         <div class="row">
             <div>
                 <ol class="breadcrumb">
-                    <li><a href="procurementManagement.html">采购管理</a></li>
-                    <li><a href="">办公仓库</a></li>
-                    <li class="active">办公仓库出库管理</li>
+                    <li><a href="procurementManagement.html">报表管理</a></li>
+                    <li class="active">采购计划费用汇总表</li>
                 </ol>
             </div>
-            <h4 class="sub-header">办公仓库出库管理</h4>
+            <h4 class="sub-header">采购计划费用汇总表</h4>
         </div>
         <div class="row">
             <div>
@@ -144,8 +143,6 @@
                 <div class="pull-left col-md-6">
                     <a class="btn btn-primary btn-xs" id="function_-335" href="#" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; addIngredientsIn();}"><span
                             class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                    <a class="btn btn-primary btn-xs" id="function_" href="#" onclick="addRedIngredientsIn();" hidden><span
-                            class="glyphicon glyphicon-plus" aria-hidden="true"></span> 红字入库单</a>
                     <a class="btn btn-primary btn-xs" href="ingredientsIn.html"><span
                             class="glyphicon glyphicon-chevron-left" href="ingredientsIn.html" id="function_-336" onclick="checkAuthority($(this))" aria-hidden="true"></span> 归类入库单</a>
                     <a class="btn btn-primary btn-xs" href="#" id="function_-338" href="#" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportInExcel();}"><span
@@ -175,27 +172,27 @@
                 <div class="row">
                     <div class="form-horizontal col-md-4">
                         <div class="form-group">
-                            <label for="search-Id" class="col-sm-4 control-label">入库单号</label>
+                            <label for="search-type" class="col-sm-4 control-label">类别</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-Id" name="search-Id" placeholder=""
+                                <input type="text" class="form-control" id="search-type" name="search-type" placeholder=""
                                        onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-4">
                         <div class="form-group">
-                            <label for="search-companyName" class="col-sm-4 control-label">单位名</label>
+                            <label for="search-stuffName" class="col-sm-4 control-label">物资名称</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-companyName"
-                                       name="search-companyName" placeholder="" onkeydown="enterSearch()">
+                                <input type="text" class="form-control" id="search-stuffName"
+                                       name="search-stuffName" placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-4">
                         <div class="form-group">
-                            <label for="search-state" class="col-sm-4 control-label">状态</label>
+                            <label for="search-specifications" class="col-sm-4 control-label">规格型号</label>
                             <div class="col-xs-7">
-                                <select class="form-control" id="search-state" name="search-state"
+                                <select class="form-control" id="search-specifications" name="search-specifications"
                                         onchange="searchIngredientIn()">
                                     <option value="0"></option>
                                 </select>
@@ -206,25 +203,25 @@
                 <div class="row">
                     <div class="form-horizontal col-md-4">
                         <div class="form-group">
-                            <label for="search-name" class="col-sm-4 control-label">物料名称</label>
+                            <label for="search-department" class="col-sm-4 control-label">申购部门</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-name" name="search-name"
+                                <input type="text" class="form-control" id="search-department" name="search-department"
                                        placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-4">
                         <div class="form-group">
-                            <label for="search-specification" class="col-sm-4 control-label">规格</label>
+                            <label for="search-Number" class="col-sm-4 control-label">需求数量</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-specification"
-                                       name="search-specification" placeholder="" onkeydown="enterSearch()">
+                                <input type="text" class="form-control" id="search-Number"
+                                       name="search-Number" placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-4">
                         <div class="form-group">
-                            <label for="search-code" class="col-sm-4 control-label">物品编码</label>
+                            <label for="search-unit" class="col-sm-4 control-label">单位</label>
                             <div class="col-xs-7">
                                 <!--<select title="" class="form-control" id="search-kind" name="search-kind">-->
                                     <!--<option value="1">20易耗品</option>-->
@@ -235,22 +232,8 @@
                                     <!--<option value="6">27原材料</option>-->
                                     <!--<option value="7">28消防材料</option>-->
                                 <!--</select>-->
-                                <input id="search-code"  type="text" class="form-control" onkeyup="enterSearch()">
+                                <input id="search-unit"  type="text" class="form-control" onkeyup="enterSearch()">
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-horizontal col-md-6">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label" style="margin-left: -15px">入库日期 </label>
-                                <div class="input-group col-md-6">
-                                    <input type="date" class="input-sm form-control" id="search-startDate" title=""
-                                           onkeydown="enterSearch()"/>
-                                    <span class="input-group-addon">-</span>
-                                    <input type="date" class="input-sm form-control" id="search-endDate" title=""
-                                           onkeydown="enterSearch()"/>
-                                </div>
                         </div>
                     </div>
                 </div>
@@ -267,19 +250,16 @@
                                        id="allSel" onclick="allSelect()">
                             </label>
                         </th>
-                        <th class="text-center">入库单号</th>
-                        <th class="text-center">单位名</th>
-                        <th class="text-center">入库单状态</th>
-                        <th class="text-center">物品编码</th>
-                        <th class="text-center">物品名称</th>
-                        <th class="text-center">规格</th>
-                        <th class="text-center">计量单位</th>
-                        <th class="text-center">数量</th>
-                        <th class="text-center">单价</th>
-                        <th class="text-center">金额</th>
-                        <th class="text-center">仓库</th>
-                        <th class="text-center">入库日期</th>
-                        <th class="text-center" hidden>编号</th>
+                        <th class="text-center">序号</th>
+                        <th class="text-center">类别</th>
+                        <th class="text-center">物资名称</th>
+                        <th class="text-center">规格型号</th>
+                        <th class="text-center">申购部门</th>
+                        <th class="text-center">需求数量</th>
+                        <th class="text-center">单位</th>
+                        <th class="text-center">单价(元)</th>
+                        <th class="text-center">预计金额(元)</th>
+                        <th class="text-center">备注</th>
                         <th class="text-center">操作</th>
                     </tr>
                     </thead>
@@ -301,9 +281,6 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center" hidden></td>
                         <td class="text-center">
                             <a title="查看" href="#" id="function_-339" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; toViewIngredientsIn(e);}"><span
                                     class="glyphicon glyphicon-search" aria-hidden="true"></span> </a>
