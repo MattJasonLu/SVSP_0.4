@@ -236,17 +236,17 @@
 
     <!--作废污水送样-->
     <update id="cancelSewaGeregistration" parameterType="String">
-        update t_pr_sewageregistration set  checkStateId=69 where id=#{id}
+        update t_pr_sewageregistration set  checkStateId=69,id=CONCAT("I-",#{id}) where id=#{id}
     </update>
 
     <!--作废软水送样-->
     <update id="cancelSoftGeregistration" parameterType="String">
-         update t_pr_softgeregistration set  checkStateId=69 where id=#{id}
+         update t_pr_softgeregistration set  checkStateId=69,id=CONCAT("I-",#{id}) where id=#{id}
     </update>
 
     <!--作废次生送样-->
     <update id="cancelSecondaryGeregistration" parameterType="String">
-           update t_pr_secondarysample set  checkStateId=69 where id=#{id}
+           update t_pr_secondarysample set  checkStateId=69,id=CONCAT("I-",#{id}) where id=#{id}
     </update>
 
     <!--软水化验查询-->
