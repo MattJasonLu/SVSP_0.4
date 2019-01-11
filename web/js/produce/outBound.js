@@ -480,7 +480,8 @@ function saveOutBound(){
     if(confirm("确定生成出库单?")){
         //点击确定后操作
         //获得输入的数据
-            $('.myclass2').each(function (index) {
+        var index=0;
+            $('.myclass2').each(function () {
                 //1出库日期
                 var outboundDate=$("#outBoundDate").val();
                 //3制单人
@@ -527,11 +528,44 @@ function saveOutBound(){
                     processWayItem:{dictionaryItemName:processWay}
                 }
                 console.log(data);
-               addOutBoundOrder(data);
+
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "addOutBoundOrder",                  // url
+                    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    dataType: "json",
+                    data:JSON.stringify(data),
+                    contentType: "application/json; charset=utf-8",
+                    success:function (result) {
+                        if (result != undefined && result.status == "success"){
+                            index++;
+                            if(index== $('.myclass2').length){
+                                alert("出库成功！");
+                                window.location.href="warehouseManageOut.html";
+                            }
+                            console.log(result);
+                        }
+                        if (result != undefined && result.status == "back"){
+                            index++;
+                            if(index== $('.myclass2').length) {
+                                alert(result.message);
+                                window.location.reload()
+                            }
+                        }
+                        // else {
+                        //     alert(result.message);
+                        // }
+                    },
+                    error:function (result) {
+                        alert("服务器异常！")
+                    }
+                });
+
+
+
             });
         }
-       alert("出库成功！");
-       window.location.href="warehouseManageOut.html";
+
 
     }
 
@@ -563,25 +597,7 @@ function warning(item) {
 
 //添加出库单
 function addOutBoundOrder(data) {
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "addOutBoundOrder",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        data:JSON.stringify(data),
-        contentType: "application/json; charset=utf-8",
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                console.log(result);
-            }
-            else {
-                alert(result.message);
-            }
-        },
-        error:function (result) {
-  alert("服务器异常！")
-        }
-    });
+
 }
 
 //设置出库数据列表
@@ -766,42 +782,47 @@ function viewOutBound(item) {
 //属性调整
 function adjustAttr(item) {
 
-    var outboundOrderId=$(item).parent().parent().children('td').eq(1).html();
+    if($(item).parent().parent().children('td').eq(9).html()!="已结账"){
+        var outboundOrderId=$(item).parent().parent().children('td').eq(1).html();
 
-    $('#outboundOrderId3').val(outboundOrderId);
-    //加载进料方式的下拉框
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getHandelCategoryList",                  // url
-        data:{'outboundOrderId':outboundOrderId},
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        //contentType: "application/json; charset=utf-8",
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-              console.log(result)
-                var type=$('#modal-type');
-                type.children().remove();
-                $.each(result.data,function (index,item) {
-                    var option=$('<option/>');
-                    option.val(item.dataDictionaryItemId);
-                    option.text(item.dictionaryItemName);
-                    type.append(option);
-                })
-                type.val(result.handelCategoryId)
-            }
-            else {
-                alert(result.message);
+        $('#outboundOrderId3').val(outboundOrderId);
+        //加载进料方式的下拉框
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getHandelCategoryList",                  // url
+            data:{'outboundOrderId':outboundOrderId},
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            //contentType: "application/json; charset=utf-8",
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(result)
+                    var type=$('#modal-type');
+                    type.children().remove();
+                    $.each(result.data,function (index,item) {
+                        var option=$('<option/>');
+                        option.val(item.dataDictionaryItemId);
+                        option.text(item.dictionaryItemName);
+                        type.append(option);
+                    })
+                    type.val(result.handelCategoryId)
+                }
+                else {
+                    alert(result.message);
 
-            }
-        },
-        error:function (result) {
-           alert("服务器异常！")
-        },
+                }
+            },
+            error:function (result) {
+                alert("服务器异常！")
+            },
 
-    });
-    $('#examineModal').modal('show');
+        });
+        $('#examineModal').modal('show');
+    }
 
+else {
+        alert("已结账数据无法修改!")
+    }
 }
 
 //确认修改属性
@@ -1396,4 +1417,44 @@ function exportExcel() {
         console.log(sqlWords)
         window.open('exportExcelWastesOutBound?name=' + name + '&sqlWords=' + sqlWords);
     }
+}
+
+/*危废出库结账*/
+function Settled() {
+
+
+
+    var items = $("input[name='select']:checked");//判断复选框是否选中
+
+    if(items.length<=0){
+        alert("请勾选数据")
+    }
+    else {
+        if(confirm("确定结账次出库单?")) {
+            //点击确定后操作
+
+            $(items).each(function () {
+                if($(this).parent().parent().next().html().length>0){
+                    var outboundOrderId=$(this).parent().parent().next().html();
+                    confirmSettled(outboundOrderId)
+                }
+
+
+            })
+        }
+        alert("出库单锁定成功!")
+        window.location.reload()
+    }
+
+}
+
+function confirmSettled(outboundOrderId) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "confirmSettled",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {outboundOrderId:outboundOrderId},
+        dataType: "json",
+        // contentType: "application/json; charset=utf-8",
+    })
 }

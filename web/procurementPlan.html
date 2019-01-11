@@ -14,6 +14,7 @@
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
     <script src="js/produce/procurementPlan.js"></script>
+    <script language="javascript" src="js/bootstrap/printThis.js"></script>
 </head>
 <body onload="loadPage()">
     <!--导航条-->
@@ -307,9 +308,10 @@
     <!--查看模态框-->
     <div class="modal fade bs-example-modal-lg" id="appointModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg" role="document" id="print1" style="width: 85%">
-            <div class="modal-content" >
+            <div class="modal-content" id="printThis" >
                 <div class="modal-header">
                     <h4 class="modal-title" id="TitleMyModalLabel">计划单明细</h4>
+                    审核状态:<span id="checkState"></span>(审批通过方可打印)
                 </div>
                 <div class="modal-body">
                     <table class="table table-bordered">
@@ -341,7 +343,7 @@
                     </table>
                 </div>
                 <div class="row text-center">
-                    <a class="btn btn-primary hidden-print" onclick="" id="print">打印</a>
+                    <a class="btn btn-primary hidden-print" onclick="print()" >打印</a>
                     <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
                 </div>
             </div>

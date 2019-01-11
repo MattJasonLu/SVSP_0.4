@@ -2,6 +2,7 @@ package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Dictionary.UnitDataItem;
+import com.jdlink.domain.Inventory.WareHouse;
 import com.jdlink.domain.Page;
 
 import java.util.Date;
@@ -34,6 +35,10 @@ public class WastesSummary {
      * 产废单位
      */
     private Client produceCompany;
+    /**
+     * 仓库对象
+     */
+    private WareHouse wareHouse;
     /**
      * 危废名称
      */
@@ -125,6 +130,22 @@ public class WastesSummary {
 
     public void setOutboundDate(Date outboundDate) {
         this.outboundDate = outboundDate;
+    }
+
+    public Client getProduceCompany() {
+        return produceCompany;
+    }
+
+    public void setProduceCompany(Client produceCompany) {
+        this.produceCompany = produceCompany;
+    }
+
+    public WareHouse getWareHouse() {
+        return wareHouse;
+    }
+
+    public void setWareHouse(WareHouse wareHouse) {
+        this.wareHouse = wareHouse;
     }
 
     public String getWastesName() {
@@ -229,13 +250,5 @@ public class WastesSummary {
 
     public void setKeywords(String keywords) {
         this.keywords = keywords;
-    }
-
-    public Client getProduceCompany() {
-        return produceCompany;
-    }
-
-    public void setProduceCompany(Client produceCompany) {
-        this.produceCompany = produceCompany;
     }
 }

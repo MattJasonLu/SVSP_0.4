@@ -93,6 +93,9 @@ public class WasteInventory {
      */
     private Date creatorDate;
 
+    /*关键字*/
+    private  String keyword;
+
     private ProcessWay processWay;
 
     public ProcessWay getProcessWay() {
@@ -154,6 +157,29 @@ public class WasteInventory {
 
     //包装方式物质形态
     private PackageTypeItem packageTypeItem;
+
+    /*日期开始*/
+
+    private Date beginTime;
+
+    /*日期结束*/
+    private Date endTime;
+
+    public Date getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 
     public FormTypeItem getFormTypeItem() {
         return formTypeItem;
@@ -224,6 +250,13 @@ public class WasteInventory {
      */
     private RecordState recordState;
 
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
 
     public RecordState getRecordState() {
         return recordState;

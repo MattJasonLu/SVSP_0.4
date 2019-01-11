@@ -47,8 +47,28 @@ function totalPage() {
             }
         });
     }
-    if (isSearch) {
-        totalRecord = array1.length;
+    else {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchMedicalWastesCount",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                // console.log(result);
+                if (result > 0) {
+                    totalRecord = result;
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
     }
     var count = countValue();                         // 可选
     return loadPages(totalRecord, count);
@@ -91,6 +111,7 @@ function setPageClone(result) {
     var total = totalPage();
     $("#next").prev().hide();
     var st = "共" + total + "页";
+    console.log(st)
     $("#totalPage").text(st);
     var myArray = new Array();
     for (var i = 0; i < total; i++) {
@@ -181,15 +202,28 @@ function switchPage(pageNumber) {
         });
     }
     if (isSearch) {//查询用的
-        for (var i = 0; i < array1.length; i++) {
-            $(array1[i]).hide();
-        }
-        var i = parseInt((pageNumber - 1) * countValue());
-        var j = parseInt((pageNumber - 1) * countValue()) + parseInt(countValue() - 1);
-        for (var i = i; i <= j; i++) {
-            $('#tbody1').append(array1[i]);
-            $(array1[i]).show();
-        }
+        data['page'] = page;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchMedicalWastes",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    // console.log(result);
+                    setMedicalWastesList(result);
+                } else {
+                    console.log("fail: " + result);
+                    // setClientList(result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                // setClientList(result);
+            }
+        });
     }
 
 }
@@ -255,117 +289,50 @@ function inputSwitchPage() {
             });
         }
         if (isSearch) {//查询用的
-            for (var i = 0; i < array1.length; i++) {
-                $(array1[i]).hide();
-            }
-            var i = parseInt((pageNumber - 1) * countValue());
-            var j = parseInt((pageNumber - 1) * countValue()) + parseInt(countValue() - 1);
-            for (var i = i; i <= j; i++) {
-                $('#tbody1').append(array1[i]);
-                $(array1[i]).show();
-            }
+            data['page'] = page;
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "searchMedicalWastes",         // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    if (result != undefined) {
+                        // console.log(result);
+                        setMedicalWastesList(result);
+                    } else {
+                        console.log("fail: " + result);
+                        // setClientList(result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                    // setClientList(result);
+                }
+            });
         }
     }
 }
 
 
-//粗查询
 $(document).ready(function () {//页面载入是就会进行加载里面的内容
     var last;
     $('#searchContent').keyup(function (event) {
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
             if (last - event.timeStamp == 0) {
-                searchMedicalWastes1();
+                searchMedicalWastes();
             }
             else if (event.keyCode == '13') {
-                searchMedicalWastes1();
+                searchMedicalWastes();
             }
         }, 600);
 
     });
 });
 
-//粗查询
-function searchMedicalWastes1() {
-    $('#tbody1').find('.myclass').hide();
-    array.length=0;//清空数组
-    array1.length=0;//清空数组
-    array=[].concat(array0);
 
-    isSearch = true;
-
-    var text = $.trim($('#searchContent').val());
-    console.log(text);
-    for (var j = 0; j < array.length; j++) {
-        $.each(array[j], function () {
-            //console.log(this);
-            if (($(this).children('td').text().indexOf(text) == -1)) {
-                $(this).hide();
-            }
-            if ($(this).children('td').text().indexOf(text) != -1) {
-                array1.push($(this));
-            }
-        });
-    }
-
-    console.log(array1);
-    console.log("长度" + array1.length);
-
-    var total;
-
-    if (array1.length % countValue() == 0) {
-        total = array1.length / countValue()
-    }
-
-    if (array1.length % countValue() > 0) {
-        total = Math.ceil(array1.length / countValue());
-    }
-
-    if (array1.length / countValue() < 1) {
-        total = 1;
-    }
-
-    $("#totalPage").text("共" + total + "页");
-
-    var myArray = new Array();
-
-    $('.beforeClone').remove();
-
-    for (i = 0; i < total; i++) {
-        var li = $("#next").prev();
-        myArray[i] = i + 1;
-        var clonedLi = li.clone();
-        clonedLi.show();
-        clonedLi.find('a:first-child').text(myArray[i]);
-        clonedLi.find('a:first-child').click(function () {
-            var num = $(this).text();
-            switchPage(num);
-            AddAndRemoveClass(this)
-        });
-        clonedLi.addClass("beforeClone");
-        clonedLi.removeAttr("id");
-        clonedLi.insertAfter(li);
-    }
-    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
-    $("#previous").next().next().eq(0).addClass("oldPageClass");
-    setPageCloneAfter(1);
-    for (var i = 0; i < array1.length; i++) {
-        (array1[i]).hide();
-    }
-
-    //首页展示
-    for (var i = 0; i < countValue(); i++) {
-        $(array1[i]).show();
-        $('#tbody1').append((array1[i]));
-    }
-
-
-    if (text.length <= 0) {
-        loadMedicalWastesList();
-    }
-
-}
 
 /**
  *医废出入库脚本文件
@@ -534,13 +501,13 @@ function loadMedicalWastesList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
-    if(array0.length==0){
-        for (var i = 1; i <= totalPage(); i++) {
-            switchPage(parseInt(i));
-
-            array0.push($('.myclass'));
-        }
-    }
+    // if(array0.length==0){
+    //     for (var i = 1; i <= totalPage(); i++) {
+    //         switchPage(parseInt(i));
+    //
+    //         array0.push($('.myclass'));
+    //     }
+    // }
     $.ajax({
         type: "POST",                            // 方法类型
         url: "loadMedicalWastesList",                  // url
@@ -629,26 +596,30 @@ function setMedicalWastesList(result) {
                 case (12):
                     $(this).html(obj.thisMonthSendCooking.toFixed(3));
                     break;
-                //误差量
+                    //焚烧量
                 case (13):
+                    $(this).html(obj.incineration.toFixed(3));
+                    break;
+                //误差量
+                case (14):
                     $(this).html(obj.errorNumber.toFixed(3));
                     break;
                 //水分含量
-                case (14):
+                case (15):
                     $(this).html(obj.wetNumber.toFixed(3));
                     break;
-                case (15):
+                case (16):
                     if (obj.unitDataItem != null) {
                         $(this).html(obj.unitDataItem.dictionaryItemName);
                     }
                     break;
                 //处置设备
-                case (16):
+                case (17):
                     if (obj.equipmentDataItem != null) {
                         $(this).html(obj.equipmentDataItem.dictionaryItemName);
                     }
                     break;
-                case (17):
+                case (18):
                     if (obj.checkStateItem != null) {
                         $(this).html(obj.checkStateItem.dictionaryItemName);
                     }
@@ -666,124 +637,52 @@ function setMedicalWastesList(result) {
 
 }
 
-//高级查询
+//查询
 function searchMedicalWastes() {
-    $('#tbody1').find('.myclass').hide();
-    array.length=0;//清空数组
-    array1.length=0;//清空数组
-    array=[].concat(array0);
-
     isSearch = true;
-
-    var text = $.trim($('#searchContent').val());
-
-    var person = $.trim($('#search-departmentName').val());
-
-    var beginTime = $.trim($('#search-storageDate').val());
-
-    var endTime = $.trim($('#search-endDate').val());
-
-    var startDate = getDateByStr(beginTime);
-
-    var endDate = getDateByStr(endTime);
-
-    var checkState= $('#search-checkState option:selected').text();
-
-
-    var arraydate = [];
-    for (var j = 0; j < array.length; j++) {
-        $.each(array[j], function () {
-            arraydate.push(($(this).children('td').eq(2).text()))
-        });
+    var page = {};
+    var pageNumber = 1;                       // 显示首页
+    page.pageNumber = pageNumber;
+    page.count = countValue();
+    page.start = (pageNumber - 1) * page.count;
+    // 精确查询
+    if ($("#senior").is(':visible')) {
+        data = {
+            beginTime:$("#search-storageDate").val(),
+            endTime:$("#search-endDate").val(),
+            page: page,
+            checkStateItem:{dataDictionaryItemId:$("#search-checkState").val()}
+        };
+        console.log(data);
+        // 模糊查询
+    } else {
+        var keyword=$.trim($("#searchContent").val());
+        data = {
+            keyword: keyword,
+            page: page
+        };
     }
-
-    var dateMin = (arraydate[0]);
-    var dateMax = (arraydate[0]);
-
-    for (var i = 0; i < arraydate.length; i++) {
-        if (new Date(arraydate[i]).getTime() < new Date(dateMin) || dateMin.length == 0) {
-            dateMin = (arraydate[i]);
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "searchMedicalWastes",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                setPageClone(result);
+                setPageCloneAfter(pageNumber);        // 重新设置页码
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
         }
-        if (new Date(arraydate[i]).getTime() > new Date(dateMax) || dateMax.length == 0) {
-            dateMax = (arraydate[i]);
-        }
+    });
 
-    }
-    console.log(dateMin + dateMax)
-
-    for (var j = 0; j < array.length; j++) {
-        $.each(array[j], function () {
-            //console.log(this);
-            if (startDate.toString() == 'Invalid Date') {
-                startDate = dateMin;
-            }
-            if (endDate.toString() == 'Invalid Date') {
-                endDate = dateMax;
-            }
-            console.log(startDate + endDate)
-            // console.log($(this).children('td').eq(2).text())
-            if (!($(this).children('td').eq(4).text().indexOf(person) != -1&&$(this).children('td').eq(16).text().indexOf(checkState) != -1
-                && $(this).children('td').text().indexOf(text) != -1
-                && (new Date($(this).children('td').eq(2).text()).getTime() >= new Date(startDate).getTime() && new Date($(this).children('td').eq(2).text()).getTime() <= new Date(endDate).getTime())
-
-            )) {
-                $(this).hide();
-            }
-            if (($(this).children('td').eq(4).text().indexOf(person) != -1&&$(this).children('td').eq(16).text().indexOf(checkState) != -1
-                && $(this).children('td').text().indexOf(text) != -1
-                && (new Date($(this).children('td').eq(2).text()).getTime() >= new Date(startDate).getTime() && new Date($(this).children('td').eq(2).text()).getTime() <= new Date(endDate).getTime())
-            )) {
-                array1.push($(this));
-            }
-        });
-    }
-    console.log(array1);
-    var total;
-
-    if (array1.length % countValue() == 0) {
-        total = array1.length / countValue()
-    }
-
-    if (array1.length % countValue() > 0) {
-        total = Math.ceil(array1.length / countValue());
-    }
-
-    if (array1.length / countValue() < 1) {
-        total = 1;
-    }
-
-    $("#totalPage").text("共" + total + "页");
-
-    var myArray = new Array();
-
-    $('.beforeClone').remove();
-
-    for (i = 0; i < total; i++) {
-        var li = $("#next").prev();
-        myArray[i] = i + 1;
-        var clonedLi = li.clone();
-        clonedLi.show();
-        clonedLi.find('a:first-child').text(myArray[i]);
-        clonedLi.find('a:first-child').click(function () {
-            var num = $(this).text();
-            switchPage(num);
-            AddAndRemoveClass(this)
-        });
-        clonedLi.addClass("beforeClone");
-        clonedLi.removeAttr("id");
-        clonedLi.insertAfter(li);
-    }
-    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
-    $("#previous").next().next().eq(0).addClass("oldPageClass");
-    setPageCloneAfter(1);
-    for (var i = 0; i < array1.length; i++) {
-        array1[i].hide();
-    }
-
-    for (var i = 0; i < countValue(); i++) {
-        $(array1[i]).show();
-        $('#tbody1').append((array1[i]));
-    }
 
 
 }
@@ -1097,7 +996,10 @@ function medicalWasteManagerModify(item) {
                                 option.val(item.dataDictionaryItemId);
                                 option.text(item.dictionaryItemName);
                                 equipment.append(option);
-                                equipment.selectpicker('val',obj.equipmentDataItem.dataDictionaryItemId);
+                                if(obj.equipmentDataItem!=null){
+                                    equipment.selectpicker('val',obj.equipmentDataItem.dataDictionaryItemId);
+                                }
+
                                 $('.selectpicker').selectpicker('refresh');
                             });
                         }

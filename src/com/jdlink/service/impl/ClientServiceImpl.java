@@ -1,6 +1,11 @@
 package com.jdlink.service.impl;
 
 import com.jdlink.domain.Client;
+import com.jdlink.domain.ClientState;
+import com.jdlink.domain.ClientType;
+import com.jdlink.domain.Dictionary.CheckStateItem;
+import com.jdlink.domain.Dictionary.ClientStateItem;
+import com.jdlink.domain.Dictionary.ClientTypeItem;
 import com.jdlink.domain.Page;
 import com.jdlink.mapper.ClientMapper;
 import com.jdlink.service.ClientService;
@@ -8,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.NumberFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +28,26 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void add(Client client) {
+        // 如果名称不存在则跳过
+        if (client.getCompanyName() == null || client.getCompanyName().equals("") || client.getCompanyName().equals("null"))
+            return;
+        // 如果客户没有编号则激动生成
+        if (client.getClientId() == null || client.getClientId().equals("")) {
+            client.setClientId(getCurrentId());
+        }
+        // 启用账户
+        client.setClientState(ClientState.Enabled);
+        ClientStateItem clientStateItem = new ClientStateItem();
+        clientStateItem.setDataDictionaryItemId(89);
+        client.setClientStateItem(clientStateItem);
+        client.setClientType(ClientType.EnquiryClient);
+        ClientTypeItem clientTypeItem = new ClientTypeItem();
+        clientTypeItem.setDataDictionaryItemId(91);
+        client.setClientTypeItem(clientTypeItem);
+        CheckStateItem checkStateItem = new CheckStateItem();
+        checkStateItem.setDataDictionaryItemId(64);
+        client.setCheckStateItem(checkStateItem);
+        client.setCreateTime(new Date());
         clientMapper.add(client);
     }
 
@@ -181,15 +207,19 @@ public class ClientServiceImpl implements ClientService {
 
     /**
      * 根据公司名获取最高的那一个公司
-     * @return
+     * @return 客户对象
      */
     @Override
-    public Client getClientByCompanyName(String companyName){
-       List<Client> clientList = clientMapper.getClientByLikeCompanyName(companyName);
-        if(clientList.size() > 1){ // 如果存在多个类似名称的公司则进行精确匹配
+    public Client getClientByCompanyName(String companyName) {
+//        if (companyName.contains("(")) companyName.replace("(", "（");
+//        if (companyName.contains(")")) companyName.replace(")", "）");
+        List<Client> clientList = clientMapper.getClientByLikeCompanyName(companyName);
+        if (clientList.size() > 1) { // 如果存在多个类似名称的公司则进行精确匹配
             return clientMapper.getClientByEqualCompanyName(companyName);
-        }else {
+        } else if (clientList.size() == 1) {
             return clientList.get(0);
+        } else {
+            return clientMapper.getByNameNotState(companyName);
         }
 
     }

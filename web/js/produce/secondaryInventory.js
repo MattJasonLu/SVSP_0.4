@@ -355,22 +355,25 @@ function setByInboundOrderItemId(result) {
         clonedTr.children('td').each(function (inner_index) {
             var obj = eval(item);
             switch (inner_index) {
+                //入库日期
                 case (0):
                     $(this).html(getDateStr(obj.inboundDate));
                     break;
+                    //产废单位
                 case (1):
                     $(this).html(obj.produceCompany.companyName);
                     break;
+                    //废物名称
                 case (2):
                     if(obj.secondaryCategoryItem!=null){
                         $(this).html((obj.secondaryCategoryItem.dictionaryItemName));
                     }
-
-
                     break;
+                    //废物代码
                 case (3):
                     $(this).html(obj.wastesCode);
                     break;
+                    //废物数量
                 case (4):
                     if(obj.secondaryCategoryItem!=null){
                         if((obj.secondaryCategoryItem.dictionaryItemName)=="桶"){
@@ -382,11 +385,27 @@ function setByInboundOrderItemId(result) {
 
                     }
 
+                    break;
+                   //物质形态
+                case (5):
+                    if(obj.formTypeItem!=null){
+                            $(this).html(obj.formTypeItem.dictionaryItemName);
+                        }
+                    break;
+                //处理方式
+                case (6):
+                    if(obj.processWayItem!=null){
+                        $(this).html(obj.processWayItem.dictionaryItemName);
+                    }
+                    break;
+                //包装方式
+                case (7):
+                    if(obj.packageTypeItem!=null){
+                        $(this).html(obj.packageTypeItem.dictionaryItemName);
+                    }
 
                     break;
-                // case (5):
-                //     $(this).html(obj.handleCategory.name);
-                //     break;
+
             }
         })
         clonedTr.removeAttr("id");
@@ -630,7 +649,7 @@ function enterSearch() {
 //查看出库信息==>次生库存
 function view(item) {
     var inboundOrderItemId=$(item).parent().prev().prev().html();
-    console.log(inboundOrderItemId);
+    // console.log(inboundOrderItemId);
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getByInboundOrderItemId",                  // url 计算数据库的总条数

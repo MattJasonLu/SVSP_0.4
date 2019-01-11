@@ -19,4 +19,9 @@ public interface MedicalWastesService {
     void cancelMedicalWastes(String medicalWastesId);
     MedicalWastes  getMedicalWasteById(String medicalWastesId);
     void updateMedicalWaste(MedicalWastes medicalWastes);
+    MedicalWastes getMedicalWasteFromPrevious(String date);
+
+    MedicalWastes getCurrentWastesAmount();
+
+    int searchMedicalWastesCount(MedicalWastes medicalWastes);
 }

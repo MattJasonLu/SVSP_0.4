@@ -245,7 +245,7 @@ public class PRSampleInfoAnalysisController {
      */
     @RequestMapping("addSampleInfoAnalysis")
     @ResponseBody
-    public String addSampleInfoAnalysis(@RequestBody SampleInfoAnalysis sampleInfoAnalysis,MultipartFile pictureFile) {
+    public String addSampleInfoAnalysis(@RequestBody SampleInfoAnalysis sampleInfoAnalysis) {
         JSONObject res = new JSONObject();
         try {
             // 增加

@@ -11,11 +11,11 @@
     <insert id="addMedicalWastes" parameterType="MedicalWastes">
         insert into  t_pl_medicalwastes(medicalWastesId, department, departmentName, adjustName, adjustDate, dateTime,
         thisMonthWastes, directDisposal, cookingWastes, afterCookingNumber, afterCookingInbound, thisMonthSendCooking,
-        errorNumber, wetNumber, nowTime,equipment,checkState,checkStateId,equipmentId,incineration,unitDataId)
+        errorNumber, wetNumber, nowTime,equipment,checkState,checkStateId,equipmentId,incineration,unitDataId,earlyNumber,wastesAmount)
         values(#{medicalWastesId},#{department},#{departmentName},#{adjustName},#{adjustDate},#{dateTime},#{thisMonthWastes},
         #{directDisposal},#{cookingWastes},#{afterCookingNumber},#{afterCookingInbound},#{thisMonthSendCooking},#{errorNumber},
         #{wetNumber},NOW(),#{equipment},'Enabled',70,#{equipmentDataItem.dataDictionaryItemId},#{incineration},
-        #{unitDataItem.dataDictionaryItemId})
+        #{unitDataItem.dataDictionaryItemId},#{earlyNumber},#{wastesAmount})
     </insert>
     <resultMap id="MedicalWastesRM" type="MedicalWastes">
         <association property="unitDataItem" column="unitDataId" select="getUnitDataItem"></association>
@@ -42,23 +42,54 @@
         </if>
     </select>
     <!--高级查询-->
-    <select id="searchMedicalWastes" parameterType="MedicalWastes" resultType="MedicalWastes">
+    <select id="searchMedicalWastes" parameterType="MedicalWastes" resultMap="MedicalWastesRM">
         select  * from t_pl_medicalwastes
         <where>
-            <if test="dateTime!=null and dateTime!=''">
-                and dateTime like  binary "%"#{dateTime}"%"
+            <if test="keyword!='' and keyword!=null">
+              or medicalWastesId like binary"%"#{keyword}"%"
+                or dateTime like binary"%"#{keyword}"%"
+             </if>
+            <if test="beginTime!=null">
+                <![CDATA[ and DATE_FORMAT(dateTime, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d') ]]>
             </if>
-            <if test="departmentName!=null and departmentName!=''">
-                and departmentName like  binary "%" #{departmentName}"%"
+            <if test="endTime!=null">
+                <![CDATA[ and DATE_FORMAT(dateTime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
             </if>
-            <if test="dateTime=='' and  departmentName==''">
-                select * from t_pl_medicalwastes
+            <if test="checkStateItem!=null">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId=#{checkStateItem.dataDictionaryItemId}
+                </if>
             </if>
-
         </where>
         order by dateTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
     </select>
-<!--通过日期获取医废-->
+
+    <!--高级查询计数-->
+    <select id="searchMedicalWastesCount"  resultType="int">
+        select count(*) from t_pl_medicalwastes
+        <where>
+            <if test="keyword!='' and keyword!=null">
+                or medicalWastesId like binary"%"#{keyword}"%"
+                or dateTime like binary"%"#{keyword}"%"
+            </if>
+            <if test="beginTime!=null">
+                <![CDATA[ and DATE_FORMAT(dateTime, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endTime!=null">
+                <![CDATA[ and DATE_FORMAT(dateTime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="checkStateItem!=null">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId=#{checkStateItem.dataDictionaryItemId}
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <!--通过日期获取医废-->
     <select id="getMedicalWastesByRange" resultType="MedicalWastes">
         SELECT * FROM t_pl_medicalwastes
             <![CDATA[WHERE DATE_FORMAT(dateTime, '%Y-%m-%d') >=  DATE_FORMAT(#{0}, '%Y-%m-%d')
@@ -94,4 +125,14 @@
         equipmentId=#{equipmentDataItem.dataDictionaryItemId},incineration=#{incineration}
         where medicalWastesId=#{medicalWastesId};
     </update>
+    
+    <!--获取前一天的医危废对象-->
+    <select id="getMedicalWasteFromPrevious" parameterType="String" resultType="MedicalWastes">
+        select * from t_pl_medicalwastes where dateTime=DATE_SUB(#{date},INTERVAL 1 DAY)
+    </select>
+
+    <!--获取现有库存-->
+    <select id="getCurrentWastesAmount" resultType="MedicalWastes">
+        select  * from t_pl_medicalwastes order  by dateTime desc limit 0,1;
+    </select>
 </mapper>

@@ -235,4 +235,60 @@ public class BatchOrderServiceImpl implements BatchOrderService
         return batchOrderMapper.getSecInventoryListAdd();
     }
 
+    @Override
+    public List<WasteInventory> getSecInventoryByDate(int secondaryCategoryId, int wareHouseId) {
+        return batchOrderMapper.getSecInventoryByDate(secondaryCategoryId, wareHouseId);
+    }
+
+    @Override
+    public void lessThanOutBoundNumber(String wasteInventoryId) {
+        batchOrderMapper.lessThanOutBoundNumber(wasteInventoryId);
+    }
+
+    @Override
+    public void moreThanOutBoundNumber(String wasteInventoryId, float count) {
+        batchOrderMapper.moreThanOutBoundNumber(wasteInventoryId, count);
+    }
+
+    @Override
+    public float getCountByWareHouseAndName(int wareHouseId, int secondaryCategoryId) {
+        return batchOrderMapper.getCountByWareHouseAndName(wareHouseId,secondaryCategoryId);
+    }
+
+    @Override
+    public WasteInventory getSecInventoryByDateDesc(int secondaryCategoryId, int wareHouseId) {
+        return batchOrderMapper.getSecInventoryByDateDesc(secondaryCategoryId, wareHouseId);
+    }
+
+    @Override
+    public void AddWasteInventory(float actualCount, String wasteInventoryId) {
+        batchOrderMapper.AddWasteInventory(actualCount, wasteInventoryId);
+    }
+
+    @Override
+    public void confirmSettled(String outboundOrderId) {
+        batchOrderMapper.confirmSettled(outboundOrderId);
+    }
+
+    @Override
+    public List<String> getDateBbySettled() {
+        return batchOrderMapper.getDateBbySettled();
+    }
+
+    @Override
+    public List<String> getDateBbySettledWastes() {
+        return batchOrderMapper.getDateBbySettledWastes();
+    }
+
+    @Override
+    public List<WasteInventory> searchWastesInventory(WasteInventory wasteInventory) {
+        return batchOrderMapper.searchWastesInventory(wasteInventory);
+    }
+
+    @Override
+    public int searchWastesInventoryCount(WasteInventory wasteInventory) {
+        return batchOrderMapper.searchWastesInventoryCount(wasteInventory);
+    }
+
+
 }
