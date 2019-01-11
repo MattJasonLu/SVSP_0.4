@@ -18,6 +18,7 @@ public class DateUtil {
      * @return 时间对象
      */
     public static Date getDateFromStr(String dateStr) {
+        if (dateStr == null || dateStr.equals("null")) return null;
         dateStr = dateStr.trim();
         dateStr = dateStr.replace("\"", "");
         SimpleDateFormat dateFormat;

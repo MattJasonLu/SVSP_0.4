@@ -301,7 +301,7 @@
             clonedLi.find('a:first-child').text(myArray[i]);
             clonedLi.find('a:first-child').click(function () {
                 var num = $(this).text();
-                switchSupplierPage(num);
+                switchPage(num);
                 addAndRemoveClass(this);
             });
             clonedLi.addClass("beforeClone");
@@ -316,7 +316,7 @@
      * 点击页数跳转页面
      * @param pageNumber 跳转页数
      * */
-    function switchSupplierPage(pageNumber) {
+    function switchPage(pageNumber) {
         console.log("当前页：" + pageNumber);
         if(pageNumber > totalPage()){
             pageNumber = totalPage();
@@ -1023,21 +1023,21 @@
                 <ol class="pagination" style="width: 800px;">
                     <li id="current" class="hidden"><a href="#"></a> </li>
                     <li id="firstPage">
-                        <a href='#' onclick="switchSupplierPage(0)">首 页</a>
+                        <a href='#' onclick="switchPage(0)">首 页</a>
                     </li>
                     <li id="previous">
-                        <a href="#" aria-label="Previous" onclick="switchSupplierPage(parseInt(currentPage)-1);">
+                        <a href="#" aria-label="Previous" onclick="switchPage(parseInt(currentPage)-1);">
                             <span aria-hidden="true"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></span>
                         </a>
                     </li>
                     <li><a href="#">1</a></li>
                     <li id="next">
-                        <a href="#" aria-label="Next" onclick="switchSupplierPage(parseInt(currentPage)+1);">
+                        <a href="#" aria-label="Next" onclick="switchPage(parseInt(currentPage)+1);">
                             <span aria-hidden="true"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></span>
                         </a>
                     </li>
                     <li id="endPage">
-                        <a href='#' onclick="switchSupplierPage(-2)">尾 页</a>
+                        <a href='#' onclick="switchPage(-2)">尾 页</a>
                     </li>
                     <li ><a href="#" onclick="inputSwitchSupplierPage()">跳转</a></li>
                     <li ><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;" id="pageNumber"></li>

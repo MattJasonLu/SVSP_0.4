@@ -726,8 +726,10 @@ public class SupplierController {
             for (int i = 1; i < data.length; i++) {
                 // 创建供应商
                 Supplier supplier = new Supplier();
-                supplier.setSupplierId(data[i][0].toString());
+                if (data[i][0].toString().equals("null")) supplier.setSupplierId(supplierService.getCurrentId());
+                else supplier.setSupplierId(data[i][0].toString());
                 supplier.setGroupId(data[i][1].toString());
+                if (data[i][2].toString().equals("null")) break;
                 supplier.setCompanyName(data[i][2].toString());
                 supplier.setOrganizationCode(data[i][3].toString());
                 supplier.setLicenseCode(data[i][4].toString());
@@ -986,7 +988,7 @@ public class SupplierController {
                     default:
                         break;
                 }
-
+                if (!supplier.getSupplierId().equals("null"))
                 supplierService.add(supplier);
             }
             res.put("status", "success");
