@@ -140,7 +140,7 @@
 
     <!--验收-->
     <update id="setStateSignIn" parameterType="String">
-        UPDATE t_pr_transferdraft SET checkState='Collected', checkStateId=87 WHERE id=#{id};
+        UPDATE t_pr_transferdraft SET checkState='Collected', checkStateId=263 WHERE id=#{id};
     </update>
 
     <update id="setStateInvalid" parameterType="String">
