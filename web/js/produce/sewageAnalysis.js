@@ -756,6 +756,7 @@ function appointModal() {
     $('#break').hide();
     // 显示框体
     setSelectList();
+    $("#reservationId").trigger('keyup')
     $('#appointModal').modal('show');
 
 }

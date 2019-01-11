@@ -652,6 +652,7 @@ function appointModal() {
     // 显示框体
     // setSelectList();
     $('#appointModal').modal('show');
+    $("#reservationId").trigger('keyup')
     setSelectList()
 }
 
