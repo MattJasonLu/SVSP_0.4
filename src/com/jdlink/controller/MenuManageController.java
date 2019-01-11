@@ -198,12 +198,12 @@ public class MenuManageController {
         try {
             // 获取网页对应的功能列表
             List<Organization> organizationList = menuManageService.getPageFunctionByUrl(organization.getUrl());
-            menuManageService.deleteFunctionByPId(organization.getpId()); // 删除之前的功能
-            for (Organization organization1 : organizationList) {
-                int pId = organization.getId();
-                organization1.setpId(pId);
-                menuManageService.addFunctionTree(organization1);  // 添加网页功能
-            }
+//            menuManageService.deleteFunctionByPId(organization.getpId()); // 删除之前的功能
+//            for (Organization organization1 : organizationList) {
+//                int pId = organization.getId();
+//                organization1.setpId(pId);
+//                menuManageService.addFunctionTree(organization1);  // 添加网页功能
+//            }
             menuManageService.updateMenuUrl(organization);
             res.put("status", "success");
             res.put("message", "设置成功!");
