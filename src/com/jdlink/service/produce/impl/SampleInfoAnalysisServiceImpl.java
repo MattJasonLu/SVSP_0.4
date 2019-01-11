@@ -40,16 +40,6 @@ public class SampleInfoAnalysisServiceImpl implements SampleInfoAnalysisService 
 
     @Override
     public void add(SampleInfoAnalysis sampleInfoAnalysis) {
-        // 为零则设置为-9999
-        if (sampleInfoAnalysis.getPH() == 0) sampleInfoAnalysis.setPH(-9999);
-        if (sampleInfoAnalysis.getAsh() == 0) sampleInfoAnalysis.setAsh(-9999);
-        if (sampleInfoAnalysis.getWater() == 0) sampleInfoAnalysis.setWater(-9999);
-        if (sampleInfoAnalysis.getHeat() == 0) sampleInfoAnalysis.setHeat(-9999);
-        if (sampleInfoAnalysis.getSulfur() == 0) sampleInfoAnalysis.setSulfur(-9999);
-        if (sampleInfoAnalysis.getChlorine() == 0) sampleInfoAnalysis.setChlorine(-9999);
-        if (sampleInfoAnalysis.getFluorine() == 0) sampleInfoAnalysis.setFluorine(-9999);
-        if (sampleInfoAnalysis.getPhosphorus() == 0) sampleInfoAnalysis.setPhosphorus(-9999);
-        if (sampleInfoAnalysis.getFlashPoint() == 0) sampleInfoAnalysis.setFlashPoint(-9999);
         sampleInfoAnalysisMapper.add(sampleInfoAnalysis);
     }
 
