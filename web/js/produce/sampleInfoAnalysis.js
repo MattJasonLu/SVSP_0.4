@@ -1234,17 +1234,17 @@ function viewData(e) {
                 $("#viewWastesCategory").text(data.wastesCategory);
                 if (data.formType != null)
                     $("#viewFormType").text(data.formType.name);
-                $("#viewPH").text(parseFloat(data.PH).toFixed(0));
-                $("#viewAsh").text(parseFloat(data.ash).toFixed(2));
-                $("#viewWater").text(parseFloat(data.water).toFixed(2));
-                $("#viewHeat").text(parseFloat(data.heat).toFixed(0));
-                $("#viewFluorine").text(parseFloat(data.fluorine).toFixed(2));
-                $("#viewChlorine").text(parseFloat(data.chlorine).toFixed(2));
-                $("#viewSulfur").text(parseFloat(data.sulfur).toFixed(2));
-                $("#viewPhosphorus").text(parseFloat(data.phosphorus).toFixed(2));
-                $("#viewFlashPoint").text(parseFloat(data.flashPoint).toFixed(0));
-                $("#viewViscosity").text(data.viscosity);
-                $("#viewHotMelt").text(data.hotMelt);
+                $("#viewPH").text(setNumber2Line(parseFloat(data.PH).toFixed(0)));
+                $("#viewAsh").text(setNumber2Line(parseFloat(data.ash).toFixed(2)));
+                $("#viewWater").text(setNumber2Line(parseFloat(data.water).toFixed(2)));
+                $("#viewHeat").text(setNumber2Line(parseFloat(data.heat).toFixed(0)));
+                $("#viewFluorine").text(setNumber2Line(parseFloat(data.fluorine).toFixed(2)));
+                $("#viewChlorine").text(setNumber2Line(parseFloat(data.chlorine).toFixed(2)));
+                $("#viewSulfur").text(setNumber2Line(parseFloat(data.sulfur).toFixed(2)));
+                $("#viewPhosphorus").text(setNumber2Line(parseFloat(data.phosphorus).toFixed(2)));
+                $("#viewFlashPoint").text(setNumber2Line(parseFloat(data.flashPoint).toFixed(0)));
+                $("#viewViscosity").text(setNumber2Line(data.viscosity));
+                $("#viewHotMelt").text(setNumber2Line(data.hotMelt));
                 $("#viewRemark").text(data.remark);
             } else {
                 alert(result.message);
