@@ -417,8 +417,8 @@ function setContractList(result) {
                     break;
                 // 合同状态
                 case (1):
-                    if (obj.checkState != null)
-                        $(this).html(obj.checkState.name);
+                    if (obj.checkStateItem != null)
+                        $(this).html(obj.checkStateItem.dictionaryItemName);
                     break;
                 // 合同编号
                 case (2):

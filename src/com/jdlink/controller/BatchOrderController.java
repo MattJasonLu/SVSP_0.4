@@ -800,27 +800,20 @@ public class BatchOrderController {
         return res.toString();
     }
 
-
-
     //添加次生出库单
     @RequestMapping("addSecondary")
     @ResponseBody
     public String addSecondary(@RequestBody OutboundOrder outboundOrder){
         JSONObject res=new JSONObject();
-
         try{
-
             List<String> stringList=batchOrderService.getDateBbySettled();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
             String yearAndMouth=sdf.format(outboundOrder.getOutboundDate());
-
             if(stringList.contains(yearAndMouth)){
-
                 res.put("message", "无法出库,出库日期为:"+yearAndMouth+"月份已结账");
                 res.put("status", "back");
-            }
-            else {
-                            Date date = new Date();   //获取当前时间
+            }else {
+            Date date = new Date();   //获取当前时间
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
 
             String prefix = simpleDateFormat.format(date);
@@ -1464,7 +1457,6 @@ public class BatchOrderController {
     @ResponseBody
     public String confirmSettled(String outboundOrderId){
         JSONObject res=new JSONObject();
-
         try {
          batchOrderService.confirmSettled(outboundOrderId);
             res.put("status", "success");

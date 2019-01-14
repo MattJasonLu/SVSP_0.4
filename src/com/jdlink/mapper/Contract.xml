@@ -371,8 +371,8 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     </select>
 
     <select id="getContractByClientId" parameterType="String" resultMap="ContractRM">
-        select * from t_contract where clientId =#{clientId} and checkState != 'Invalid';
-    </select>
+        select * from t_contract where clientId =#{clientId} and checkStateId != 69;
+</select>
 
     <select id="searchModel" parameterType="Contract" resultType="Contract">
         select * from t_contract
