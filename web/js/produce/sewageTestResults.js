@@ -922,14 +922,26 @@ function setAdjust(item) {
                 if(obj.ph!=-9999){
                     $('#ph').val(obj.ph.toFixed(2));
                 }
+                else {
+                    $('#ph').attr('readonly','readonly')
+                }
                 if(obj.COD!=-9999){
                     $('#COD').val(obj.COD.toFixed(2));
+                }
+                else {
+                    $('#COD').attr('readonly','readonly')
                 }
                 if(obj.BOD5!=-9999){
                     $('#BOD5').val(obj.BOD5.toFixed(2));
                 }
+                else {
+                    $('#BOD5').attr('readonly','readonly')
+                }
                 if(obj.n2!=-9999){
                     $('#N2').val(obj.n2.toFixed(2));
+                }
+                else {
+                    $('#N2').attr('readonly','readonly')
                 }
                 if(obj.alkalinity!=-9999){
                     $('#alkalinity').val(obj.alkalinity.toFixed(2));
@@ -952,10 +964,15 @@ function setAdjust(item) {
                 if(obj.nitrogen!=-9999){
                     $('#nitrogen').val(obj.nitrogen.toFixed(2));
                 }
+                else {
+                    $('#nitrogen').attr('readonly','readonly')
+                }
                 if(obj.phosphorus!=-9999){
                     $('#phosphorus').val(obj.phosphorus.toFixed(2));
                 }
-
+                else {
+                    $('#phosphorus').attr('readonly','readonly')
+                }
                 $('#remarks').val(obj.remarks);
 
 

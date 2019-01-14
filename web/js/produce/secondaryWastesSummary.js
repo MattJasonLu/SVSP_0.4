@@ -345,7 +345,7 @@ function setWasteInventoryList(result) {
         clonedTr.find("td[name='outboundOrderId']").text(obj.outboundOrderId);
         if (obj.inboundDate != null) clonedTr.find("td[name='inboundDate']").text(getDateStr(obj.inboundDate));
         if (obj.outboundDate != null) clonedTr.find("td[name='outboundDate']").text(getDateStr(obj.outboundDate));
-        clonedTr.find("td[name='wastesName']").text(obj.wastesName);
+        if (obj.secondaryCategoryItem != null) clonedTr.find("td[name='wastesName']").text(obj.secondaryCategoryItem.dictionaryItemName);
         clonedTr.find("td[name='wastesCode']").text(obj.wastesCode);
         if (obj.produceCompany != null) clonedTr.find("td[name='produceCompanyName']").text(obj.produceCompany.companyName);
         if (obj.unitDataItem != null) clonedTr.find("td[name='unitDataItem']").text(obj.unitDataItem.dictionaryItemName);

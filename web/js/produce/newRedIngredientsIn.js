@@ -232,7 +232,7 @@ function setUnitPrice(item) {
 function addNewLine(item) {
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
-        size:6
+        size:4 //显示条目
     });
     // 获取id为cloneTr的tr元素
     var tr = $("#plusBtn").prev();
@@ -243,9 +243,9 @@ function addNewLine(item) {
     clonedTr.children().find("select").val("");
     clonedTr.children().find("a[name='delbtn']").remove();
     //clonedTr.children().find("select[name='name']").selectpicker('val',"");
-    clonedTr.children().find("input[name='amount']").val('0.000');  // 数量初始为0
-    clonedTr.children().find("input[name='unitPrice']").val('0.00');  // 单价初始为0
-    clonedTr.children().find("input[name='totalPrice']").val('0.00');  // 金额初始为0
+    clonedTr.children().find("input[name='number']").val('0.000');  // 数量初始为0
+    // clonedTr.children().find("input[name='warehouseArea']").val('0.00');  // 单价初始为0
+    // clonedTr.children().find("input[name='totalPrice']").val('0.00');  // 金额初始为0
     // 获取编号
     var id = $("#plusBtn").prev().children().find("span[name='serialNumber']").text();   // 获取最后一行序号
     var id1=(id.replace(/[^0-9]/ig,""));

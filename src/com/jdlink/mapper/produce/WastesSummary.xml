@@ -58,7 +58,7 @@
 
     <!--获取入库单的数量-->
     <select id="count" resultType="int">
-        select count(*) from t_pl_inboundorder where checkStateId is null or checkStateId != 69;
+        select count(*) from t_pl_inboundorder where (checkStateId is null or checkStateId != 69) and boundType='WasteInbound';
     </select>
 
 

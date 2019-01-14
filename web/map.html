@@ -16,6 +16,7 @@
     <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
     <script type="text/javascript" src="js/jquery/jquery-ui.min.js" charset="UTF-8"></script>
     <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <script src="js/produce/stock.js"></script>
     <!--引用百度地图API-->
     <style type="text/css">
         html,body{margin:0;padding:0;}
@@ -144,6 +145,81 @@
             </div>
         </div>
     </div>
+    <!--详细模态框-->
+    <div class="modal fade bs-example-modal-lg" id="stockInfoForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document" id="print1">
+            <div class="modal-content" >
+                <h4 class="sub-header text-center">库存申报信息</h4>
+                <div style="margin: 5%;">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-horizontal col-md-4 form-inline">
+                                <p class="text-left"><b>产废单位联系人&nbsp;&nbsp;</b><span id="proContactName"></span></p>
+                            </div>
+                            <div class="form-horizontal col-md-4">
+                                <p class="text-left"><b>产废公司&nbsp;&nbsp;</b><span id="proWasteCompany"></span></p>
+                            </div>
+                            <div class="form-horizontal col-md-4">
+                                <p class="text-left"><b>产废单位联系电话&nbsp;&nbsp;</b><span id="proTelephone"></span></p>
+                            </div>
+                        </div>
+                        <h4><b>库存具体明细 </b></h4>
+                        <form id="model-appoint4" method="post">
+                            <table class="table table-bordered text-nowrap">
+                                <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>危险废物的名称</th>
+                                    <th>危废编码</th>
+                                    <th>数量(公斤)</th>
+                                    <th>成分</th>
+                                    <th>备注</th>
+                                </tr>
+                                </thead>
+                                <tbody id="body2">
+                                <tr id="cloneTr1" class="myclass1" >
+                                    <td class="text-center">1</td><!--序号-->
+                                    <td class="text-center"><input type="text" class="focus" name="wastesList[0].name" style="width:100%; height:100%;"></td><!--废物名称-->
+                                    <td class="text-center">
+                                        <input class="focus" type="text"  name="wastesList[0].code" id="code">
+                                    </td><!--危废编码-->
+                                    <td class="text-center"><input type="text" class="focus" name="wastesList[0].wasteAmount" style="width:100%; height:100%;"></td><!--危废数量-->
+                                    <td class="text-center"><input type="text" class="focus" name="wastesList[0].component" style="width:100%; height:100%;"></td><!--危废成分-->
+                                    <td class="text-center"><input type="text" class="focus" name="wastesList[0].remarks" style="width:100%; height:100%;"></td><!--备注-->
+                                </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                    <div class="row">
+                        <div class="form-horizontal col-md-4">
+                            <p class="text-left"><b>运输公司&nbsp;&nbsp;</b><span id="transport"></span></p>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                        </div>
+                        <div class="form-horizontal col-md-5">
+                            <p class="text-left"><b>车牌号&nbsp;&nbsp;</b><span id="plateNumber"></span></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-horizontal col-md-6">
+                            <p class="text-left"><b>是否自运单位&nbsp;&nbsp;</b> <input type="checkbox" id="selfEmployed" disabled="disabled"></p>
+                        </div>
+                        <div class="form-horizontal col-md-1"></div>
+                        <div class="form-horizontal col-md-5">
+                            <p class="text-left"><b>运输公司联系电话&nbsp;&nbsp;</b><span id="transportTelephone"></span></p>
+                        </div>
+                    </div>
+                    <div class="row text-center">
+                        <!--<a class="btn btn-primary hidden-print" onclick="showApproval()" id="btn">审批</a>-->
+                        <!--<a class="btn btn-primary hidden-print" onclick="" id="print">打印</a>-->
+                        <!--<a class="btn btn-danger hidden-print" id="back" onclick="showBack()">驳回</a>-->
+                        <!--<a class="btn btn-danger hidden-print" data-dismiss="modal" id="close" onclick="re1();">关闭</a>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script type="text/javascript">
     function aa() {
@@ -166,6 +242,7 @@
     //创建地图函数：
     function createMap(){
         var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
+        //标注点一
         var point = new BMap.Point(119.972394,31.979135);//定义一个中心点坐标
         map.centerAndZoom(point,11);//设定地图的中心点和坐标并将地图显示在地图容器中
         var marker = new BMap.Marker(point);//新建标注点
@@ -176,17 +253,37 @@
         // });
         // var marker = new BMap.Marker(point,{icon:myIcon});                           //设置图标图片
         map.addOverlay(marker);//向地图中添加标记点
-        marker.enableDragging();//允许标注拖拽功能
-        marker.addEventListener("dragend",function (e) {
-            alert("当前位置: " + e.point.lng + "," + e.point.lat) //alert出当前拖拽位置的经纬度
-        });
+        // marker.enableDragging();//允许标注拖拽功能
+        // marker.addEventListener("dragend",function (e) {
+        //     alert("当前位置: " + e.point.lng + "," + e.point.lat) //alert出当前拖拽位置的经纬度
+        // });
         var opts = {
             width : 250,       //信息框宽度
             height : 100,      //信息框高度
             title : "企业信息"   //信息框标题
         };
         var infoWindow = new BMap.InfoWindow("北控安耐得环保科技发展常州有限公司(春江镇滨江经济开发区滨江三路1号)",opts); //创建信息窗口对象
-        map.openInfoWindow(infoWindow, map.getCenter());                                                     //打开信息窗口
+        marker.addEventListener("click", function(){
+            map.openInfoWindow(infoWindow,point); //开启信息窗口
+        });
+        //标注点二
+        var point1 = new BMap.Point(119.987417,31.843014);//定义一个中心点坐标
+        var marker1 = new BMap.Marker(point1);//新建标注点
+        map.addOverlay(marker1);//向地图中添加标记点
+        map.centerAndZoom(point1,11);//设定地图的中心点和坐标并将地图显示在地图容器中
+        var opts1 = {
+            width : 250,       //信息框宽度
+            height : 100,      //信息框高度
+            title : "企业信息"   //信息框标题
+        };
+        var infoWindow1 = new BMap.InfoWindow("<p id='info'>常州上通汽车销售服务有限公司(<a onclick='viewStock()'>详情</a>)</p>"+"<p>联系人：鲍丹</p>"+"<p>联系电话：0519-69665550</p>",opts1); //创建信息窗口对象
+        marker1.addEventListener("click", function(){
+            map.openInfoWindow(infoWindow1,point1); //开启信息窗口
+        });
+        // marker1.enableDragging();//允许标注拖拽功能
+        // marker1.addEventListener("dragend",function (e) {
+        //     alert("当前位置: " + e.point.lng + "," + e.point.lat) //alert出当前拖拽位置的经纬度
+        // });
         //进入全景图标位置
         var stCtrl = new BMap.PanoramaControl();
         stCtrl.setOffset(new BMap.Size(20,20)); //设置全景地图的级别及中心点
@@ -334,6 +431,7 @@
             run(iNow);
         })
     });
+
 </script>
 <style>
     * {margin: 0;padding: 0}

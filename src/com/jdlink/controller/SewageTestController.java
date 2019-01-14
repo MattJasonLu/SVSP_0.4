@@ -1093,6 +1093,7 @@ public class SewageTestController {
 
         try {
             sewageTestService.cancelSewaGeregistration(id);
+            //字表更新一样的id
             res.put("status", "success");
             res.put("message", "作废成功");
         }
