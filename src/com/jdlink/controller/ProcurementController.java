@@ -4,10 +4,7 @@ import com.jdlink.domain.Contract;
 import com.jdlink.domain.Dictionary.MaterialCategoryItem;
 import com.jdlink.domain.Dictionary.UnitDataItem;
 import com.jdlink.domain.Page;
-import com.jdlink.domain.Produce.Material;
-import com.jdlink.domain.Produce.Procurement;
-import com.jdlink.domain.Produce.ProcurementPlan;
-import com.jdlink.domain.Produce.ProcurementPlanItem;
+import com.jdlink.domain.Produce.*;
 import com.jdlink.domain.Unit;
 import com.jdlink.service.ProcurementService;
 import com.jdlink.service.dictionary.DictionaryService;
@@ -1425,15 +1422,15 @@ public class ProcurementController {
         JSONObject res=new JSONObject();
 
         try {
-          String specification=procurementService.getSpecificationById(id);
+            Ingredients ingredients=procurementService.getSpecificationById(id);
             res.put("status", "success");
-            res.put("message", "获取规格成功");
-            res.put("data", specification);
+            res.put("message", "获取物资信息成功");
+            res.put("data", ingredients);
         }
         catch (Exception e){
             e.printStackTrace();
             res.put("status", "fail");
-            res.put("message", "获取规格失败");
+            res.put("message", "获取物资信息失败");
         }
 
         return res.toString();

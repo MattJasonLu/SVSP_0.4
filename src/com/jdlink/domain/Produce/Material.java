@@ -110,6 +110,17 @@ public class Material {
     //物资类别数据字典
     private MaterialCategoryItem materialCategoryItem;
 
+    //辅料备件数据结构(取数据)
+    private Ingredients ingredients;
+
+    public Ingredients getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(Ingredients ingredients) {
+        this.ingredients = ingredients;
+    }
+
     public String getCode() {
         return code;
     }

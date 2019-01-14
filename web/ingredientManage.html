@@ -181,6 +181,13 @@
                                        onkeydown="enterSearch()">
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="search-materialCategoryItem" class="col-sm-4 control-label">物资类别</label>
+                            <div class="col-xs-7">
+                                <select type="text" class="form-control" id="search-materialCategoryItem" name="search-id" placeholder=""
+                                        onchange="searchIngredient()"></select>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
@@ -219,11 +226,15 @@
                 <th class="text-center">物品名称</th>
                 <th class="text-center">物品编码</th>
                 <th class="text-center">规格型号</th>
+                <th class="text-center">单位</th>
+                <th class="text-center">物资类别</th>
                 <th class="text-center">操作</th>
             </tr>
             </thead>
             <tbody>
             <tr id="clone">
+                <td class="text-center"></td>
+                <td class="text-center"></td>
                 <td class="text-center"></td>
                 <td class="text-center"></td>
                 <td class="text-center"></td>

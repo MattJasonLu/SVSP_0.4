@@ -263,7 +263,7 @@
                     <th class="text-center">总经理</th>
                     <th class="text-center">状态</th>
                     <th class="text-center">创建日期</th>
-                    <th class="text-center">物资类别</th>
+                    <!--<th class="text-center">物资类别</th>-->
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>
@@ -285,7 +285,7 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>     <!--时间，精确到秒 下同-->
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <!--<td class="text-center"></td>-->
                     <td class="text-center hidden"></td>
                     <td class="text-center">
                         <a href="#" title="查看" id="function_-324" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; view1(e);}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> </a>
@@ -357,6 +357,8 @@
                             <td class="text-center">库存量</td>
                             <td class="text-center">需求数量</td>
                             <td class="text-center">备注</td>
+                            <td class="text-center">物资类别</td>
+
                         </tr>
                       </thead>
                         <tbody>
@@ -367,6 +369,7 @@
                             <td class="text-center wastesName" id="inventory"></td>
                             <td class="text-center wastesName" id="demandQuantity"></td>
                             <td class="text-center wastesName" id="note"></td>
+                            <td class="text-center wastesName" id="materialCategoryItem"></td>
                         </tr>
                         </tbody>
                     </table>

@@ -614,9 +614,13 @@
         update t_pr_procumentplan set MaterialCategoryId=#{1} where procurementPlanId=#{0}
     </update>
 
+    <resultMap id="IngredientsRM" type="Ingredients">
+        <association property="materialCategoryItem" column="materialCategoryId" select="getMaterialCategoryItem"></association>
+        <association property="unitDataItem" column="unitId" select="getUnitDataItem"></association>
+    </resultMap>
     <!--根据辅料备件主键获取规格-->
-    <select id="getSpecificationById" resultType="String" parameterType="int">
-        select specification from t_pl_ingredientslist where id=#{id}
+    <select id="getSpecificationById" resultMap="IngredientsRM" parameterType="int">
+        select * from t_pl_ingredientslist where id=#{id}
     </select>
 
     <select id="getIngredientById" resultType="ProcurementPlanItem" parameterType="int">

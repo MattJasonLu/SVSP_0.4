@@ -316,6 +316,40 @@ function loadPageIngredientList() {
         }
     });
     isSearch = false;
+    setSeniorSelectedList();
+}
+
+/*高级查询下拉框设置*/
+
+function setSeniorSelectedList() {
+    //运输方式
+    $.ajax({
+        type: 'POST',
+        url: "getMaterialCategoryByDataDictionary",
+        async: false,
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                // console.log(result);
+                var materialCategoryItem = $('#search-materialCategoryItem');
+                materialCategoryItem.children().remove();
+                $.each(result.data, function (index, item) {
+                    var option = $('<option/>');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    materialCategoryItem.append(option);
+                });
+                materialCategoryItem.get(0).selectedIndex = -1;
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
 }
 
 /**
@@ -365,6 +399,18 @@ function setIngredientList(result) {
                 case (3):
                     // 规格型号
                     $(this).html(obj.specification);
+                    break;
+                    //单位
+                case (4):
+                    if(obj.unitDataItem!=null){
+                        $(this).html(obj.unitDataItem.dictionaryItemName);
+                    }
+                    break;
+                    //物资类别
+                case (5):
+                    if(obj.materialCategoryItem!=null){
+                        $(this).html(obj.materialCategoryItem.dictionaryItemName);
+                    }
                     break;
             }
         });
@@ -586,7 +632,8 @@ function searchIngredient() {
             name: $("#search-name").val(),
             code: $.trim($("#search-code").val()),
             specification: $.trim($("#search-specification").val()),
-            page: page
+            page: page,
+            materialCategoryItem:{dataDictionaryItemId:$('#search-materialCategoryItem').val()}
         };
     } else {
         data1 = {
