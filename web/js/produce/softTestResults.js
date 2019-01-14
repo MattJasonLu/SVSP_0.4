@@ -861,23 +861,40 @@ function setAdjust(item) {
                 if(obj.turbidity!=-9999){
                     $('#turbidity').val(obj.turbidity.toFixed(2));
                 }
+                else {
+                    $('#turbidity').attr('readonly','readonly')
+                }
 
                 if(obj.hardness!=-9999){
                     $('#hardness').val(obj.hardness);
                 }
+                else {
+                    $('#hardness').attr('readonly','readonly')
+                }
                 if(obj.PH!=-9999){
                     $('#PH').val(obj.PH.toFixed(2));
+                }
+                else {
+                    $('#PH').attr('readonly','readonly')
                 }
                 if(obj.electricalConductivity!=-9999){
                     $('#electricalConductivity').val(obj.electricalConductivity.toFixed(2));
                 }
+                else {
+                    $('#electricalConductivity').attr('readonly','readonly')
+                }
                 if(obj.basicity!=-9999){
                     $('#basicity').val(obj.basicity.toFixed(2));
+                }
+                else {
+                    $('#basicity').attr('readonly','readonly')
                 }
                 if(obj.phenolphthalein!=-9999){
                     $('#phenolphthalein').val(obj.phenolphthalein.toFixed(2));
                 }
-
+                else {
+                    $('#phenolphthalein').attr('readonly','readonly')
+                }
                 $('#remarks').val(obj.remarks);
 
             }

@@ -1553,7 +1553,7 @@ function viewStock(item) {
                                    break;
                                // 数量(公斤)
                                case (3):
-                                   $(this).html(obj.number);
+                                   $(this).html(obj.number.toFixed(3));
                                    break;
                                // 成分
                                case (4):
@@ -1829,7 +1829,7 @@ function getClentInfo(item) {
                                 case (0):
                                     $(this).html(index+1);
                                     break;
-                                // 产废单位联系人
+                                // 危险废物的名称
                                 case (1):
                                         $(this).html(obj.wastesName);
                                     break;
@@ -2042,7 +2042,7 @@ function perfect(item) {
                                     break;
                                 // 数量(公斤)
                                 case (3):
-                                    $(this).html(obj.number);
+                                    $(this).html(obj.number.toFixed(3));
                                     break;
                                 // 成分
                                 case (4):

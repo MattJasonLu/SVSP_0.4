@@ -236,18 +236,21 @@
 
     <!--作废污水送样-->
     <update id="cancelSewaGeregistration" parameterType="String">
-        update t_pr_sewageregistration set  checkStateId=69,id=CONCAT("I-",#{id}) where id=#{id}
+        update t_pr_sewageregistration set  checkStateId=69,id=CONCAT("I-",#{id}) where id=#{id};
+        update t_pr_sewageregistrationitem set sampleinformationId=CONCAT("I-",#{id}) where sampleinformationId=#{id};
     </update>
 
     <!--作废软水送样-->
     <update id="cancelSoftGeregistration" parameterType="String">
-         update t_pr_softgeregistration set  checkStateId=69,id=CONCAT("I-",#{id}) where id=#{id}
-    </update>
+         update t_pr_softgeregistration set  checkStateId=69,id=CONCAT("I-",#{id}) where id=#{id};
+                 update t_pr_softgeregistrationitem set sampleinformationId=CONCAT("I-",#{id}) where sampleinformationId=#{id};
+</update>
 
     <!--作废次生送样-->
     <update id="cancelSecondaryGeregistration" parameterType="String">
-           update t_pr_secondarysample set  checkStateId=69,id=CONCAT("I-",#{id}) where id=#{id}
-    </update>
+           update t_pr_secondarysample set  checkStateId=69,id=CONCAT("I-",#{id}) where id=#{id};
+                     update t_pr_secondarysampleitem set sampleinformationId=CONCAT("I-",#{id}) where sampleinformationId=#{id};
+</update>
 
     <!--软水化验查询-->
     <select id="searchSoftTest" resultMap="SoftTestRM" parameterType="SoftTest" >

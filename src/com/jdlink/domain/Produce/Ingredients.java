@@ -1,10 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
-import com.jdlink.domain.Dictionary.CheckStateItem;
-import com.jdlink.domain.Dictionary.EquipmentDataItem;
-import com.jdlink.domain.Dictionary.IngredientStateItem;
-import com.jdlink.domain.Dictionary.UnitDataItem;
+import com.jdlink.domain.Dictionary.*;
 import com.jdlink.domain.Page;
 
 import java.util.Arrays;
@@ -203,6 +200,17 @@ public class Ingredients {
      * 出库单价
      */
     private float outPrice;
+
+    /*物资类别数据字典*/
+    private MaterialCategoryItem materialCategoryItem;
+
+    public MaterialCategoryItem getMaterialCategoryItem() {
+        return materialCategoryItem;
+    }
+
+    public void setMaterialCategoryItem(MaterialCategoryItem materialCategoryItem) {
+        this.materialCategoryItem = materialCategoryItem;
+    }
 
     public String getInId() {
         return inId;
