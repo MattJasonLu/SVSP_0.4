@@ -296,6 +296,23 @@
                             <td class="text-center" name="creationDate"></td>
                             <td class="text-center" hidden name="itemId"></td>
                         </tr>
+                        <tr>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center">合计</th>
+                            <th class="text-center" id="totalNewReceiveAmount"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center" id="totalNewReceivePrice"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center" hidden></th>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -380,10 +397,10 @@
                 <td class="text-center"><span name="name" id="name0"></span></td>
                 <td class="text-center"><span name="specification" id="specification0"></span></td>
                 <td class="text-center"><span name="unit" id="unit0"></span></td>
-                <td class="text-center"><input id="amount0" oninput="totalCalculate()" value="0" name="amount" type="number" class="form-control text-center" style="width: 100%"></td>
+                <td class="text-center"><input id="amount0" oninput="totalCalculate(this)" value="0" name="amount" type="number" class="form-control text-center" style="width: 100%"></td>
                 <td class="text-center"><input type="number" value="0" class="form-control text-center change"
                                                id="unitPrice0" name="unitPrice" style="width: 100%"
-                                               oninput="totalCalculate()"></td>
+                                               oninput="totalCalculate(this)"></td>
                 <td class="text-center"><input type="number" value="0" class="form-control text-center change"
                                                id="totalPrice0" name="totalPrice" style="width: 100%"
                                                oninput="setUnitPrice(this)"></td>

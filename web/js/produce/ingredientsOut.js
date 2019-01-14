@@ -1639,15 +1639,19 @@ var serialNumber = 0;
 function setReceiveList(result) {
     // 获取id为cloneTr的tr元素
     var tr = $("#clone");
-    tr.siblings().remove();
+    $(".newLine").remove();
+    var totalNewReceiveAmount = 0;
+    var totalNewReceivePrice = 0;
     $.each(result, function (index, item) {
         serialNumber++;
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
         clonedTr.show();
         var obj = eval(item);
-        if(obj.ingredientStateItem != null && obj.ingredientStateItem.dictionaryItemName === "已出库"){
+        if(obj.checkStateItem != null && obj.checkStateItem.dictionaryItemName === "已出库"){
         }else {
+            totalNewReceiveAmount += parseFloat(obj.receiveAmount.toFixed(3));
+            totalNewReceivePrice += parseFloat(obj.totalPrice.toFixed(2));
             // 循环遍历cloneTr的每一个td元素，并赋值
             clonedTr.children("td").each(function (inner_index) {
                 // 根据索引为部分td赋值
@@ -1662,8 +1666,8 @@ function setReceiveList(result) {
                         break;
                     case (3):
                         // 领料单状态
-                        if(obj.state != null)
-                            $(this).html(obj.state.name);
+                        if(obj.checkStateItem != null)
+                            $(this).html(obj.checkStateItem.dictionaryItemName);
                         break;
                     case (4):
                         // 物品编码
@@ -1683,7 +1687,7 @@ function setReceiveList(result) {
                         break;
                     case (8):
                         // 数量(领料数)
-                        $(this).html(obj.receiveAmount.toFixed(2));
+                        $(this).html(obj.receiveAmount.toFixed(3));
                         break;
                     case (9):
                         // 单价
@@ -1713,10 +1717,13 @@ function setReceiveList(result) {
             });
             // 把克隆好的tr追加到原来的tr前面
             clonedTr.removeAttr("id");
+            clonedTr.addClass("newLine");
             clonedTr.insertBefore(tr);
         }
     });
     tr.hide();
+    $("#totalNewReceiveAmount").text(totalNewReceiveAmount.toFixed(3));
+    $("#totalNewReceivePrice").text(totalNewReceivePrice.toFixed(2));
 }
 
 /**
@@ -1971,18 +1978,23 @@ function print() {
 /**
  * 单价输入框输入完成后自动计算总金额并显示
  */
-function totalCalculate() {
-    var ListCount = $("input[name^='unitPrice']").length;
-    var allTotalPrice = 0;
-    for (var i = 1; i < ListCount; i++) {
-        var $i = i;
-        var amount = $("#amount" + $i).val();
-        var unitPrice = $("#unitPrice" + $i).val();
-        var totalPrice = (parseFloat(amount) * parseFloat(unitPrice)).toFixed(2);
-        $("#totalPrice" + $i).val(totalPrice);
-        allTotalPrice += parseFloat(totalPrice);
+function totalCalculate(item) {
+    if (parseFloat($(item).val()) < 0) {
+        alert("输入数不能小于0！");
+        $(item).val(0);
+    } else {
+        var ListCount = $("input[name^='unitPrice']").length;
+        var allTotalPrice = 0;
+        for (var i = 1; i < ListCount; i++) {
+            var $i = i;
+            var amount = $("#amount" + $i).val();
+            var unitPrice = $("#unitPrice" + $i).val();
+            var totalPrice = (parseFloat(amount) * parseFloat(unitPrice)).toFixed(2);
+            $("#totalPrice" + $i).val(totalPrice);
+            allTotalPrice += parseFloat(totalPrice);
+        }
+        $("#totalPrice").text(allTotalPrice.toFixed(2));
     }
-    $("#totalPrice").text(allTotalPrice.toFixed(2));
 }
 
 /**
@@ -1990,17 +2002,22 @@ function totalCalculate() {
  * @param item
  */
 function setUnitPrice(item) {
-    var id = $(item).attr("id");   // 获取ID
-    var serialNumber = id.charAt(id.length - 1);   // 获取序号
-    var amount = parseFloat($("#amount" + serialNumber).val());
-    var totalPrice = parseFloat($(item).val());
-    $("#unitPrice" + serialNumber).val((totalPrice / amount).toFixed(3));
-    var ListCount = $("input[name^='unitPrice']").length;
-    var allTotalPrice = 0;
-    for (var i = 1; i < ListCount; i++) {
-        var $i = i;
-        allTotalPrice += parseFloat($("#totalPrice" + $i).val());
+    if (parseFloat($(item).val()) < 0) {
+        alert("输入数不能小于0！");
+        $(item).val(0);
+    } else {
+        var id = $(item).attr("id");   // 获取ID
+        var serialNumber = id.charAt(id.length - 1);   // 获取序号
+        var amount = parseFloat($("#amount" + serialNumber).val());
+        var totalPrice = parseFloat($(item).val());
+        $("#unitPrice" + serialNumber).val((totalPrice / amount).toFixed(3));
+        var ListCount = $("input[name^='unitPrice']").length;
+        var allTotalPrice = 0;
+        for (var i = 1; i < ListCount; i++) {
+            var $i = i;
+            allTotalPrice += parseFloat($("#totalPrice" + $i).val());
+        }
+        $("#totalPrice").text(allTotalPrice.toFixed(2));
     }
-    $("#totalPrice").text(allTotalPrice.toFixed(2));
 }
 

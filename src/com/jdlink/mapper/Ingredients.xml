@@ -7,6 +7,7 @@
     <!-- 入库单-->
     <resultMap id="IngredientsInRM" type="IngredientsIn" autoMapping="true">
         <id column="id" property="id"/>
+        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"/>
         <collection property="ingredientsList" select="getInItems" column="id"
                     ofType="com.jdlink.domain.Produce.Ingredients"
                     javaType="ArrayList"/>
@@ -168,6 +169,9 @@
             <if test="specification !=null and specification !='' ">
                 and specification like "%"#{specification}"%"
             </if>
+            <if test="amount !=null and amount !='' ">
+                and amount = #{amount}
+            </if>
         </where>
         order by creationTime desc
         <if test="page != null and page.start != null and page.count != null and page.count != 0">
@@ -224,8 +228,10 @@
             <if test="specification !=null and specification !='' ">
                 and specification like "%"#{specification}"%"
             </if>
+            <if test="amount !=null and amount !='' ">
+                and amount = #{amount}
+            </if>
         </where>
-        order by creationDate desc
     </select>
 
     <select id="searchInCount" parameterType="IngredientsIn" resultType="int">
@@ -728,25 +734,40 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or itemId = #{keywords}
+                or code like #{keywords}"%"
                 or name like "%"#{keywords}"%"
-                or wareHouseName like "%"#{keywords}"%"
-                or amount like "%"#{keywords}"%"
-                or unit like "%"#{keywords}"%"
-                or ingredientState like "%"#{keywords}"%"
                 or specification like "%"#{keywords}"%"
-                or code like "%"#{keywords}"%"
+                or unit like "%"#{keywords}"%"
+                or wareHouseName like "%"#{keywords}"%"
+                or inId like "%"#{keywords}"%"
+                or outId like "%"#{keywords}"%"
             </if>
             <if test="wareHouseName != null and wareHouseName != ''">
-                wareHouseName like "%"#{wareHouseName}"%"
+                and wareHouseName like "%"#{wareHouseName}"%"
             </if>
             <if test="code != null and code != ''">
-                code like "%"#{code}"%"
+                and code like #{code}"%"
             </if>
             <if test="name != null and name != ''">
-                name like "%"#{name}"%"
+                and name like "%"#{name}"%"
+            </if>
+            <if test="specification != null and specification != ''">
+                and specification = #{specification}
+            </if>
+            <if test="unit != null and unit != ''">
+                and unit = #{unit}
+            </if>
+            <if test="inId != null and inId != ''">
+                and inId like "%"#{inId}"%"
+            </if>
+            <if test="outId != null and outId != ''">
+                and outId like "%"#{outId}"%"
             </if>
             <if test="amount != null and amount != ''">
-                amount = #{amount}
+                and amount =#{amount}
+            </if>
+            <if test="inAmount != null and inAmount != ''">
+                and inAmount =#{inAmount}
             </if>
         </where>
     </select>
@@ -765,25 +786,31 @@
                 or outId like "%"#{keywords}"%"
             </if>
             <if test="wareHouseName != null and wareHouseName != ''">
-                wareHouseName like "%"#{wareHouseName}"%"
+                and wareHouseName like "%"#{wareHouseName}"%"
             </if>
             <if test="code != null and code != ''">
-                code like #{code}"%"
+                and code like #{code}"%"
             </if>
             <if test="name != null and name != ''">
-                name like "%"#{name}"%"
+                and name like "%"#{name}"%"
             </if>
             <if test="specification != null and specification != ''">
-                specification = #{specification}
+                and specification = #{specification}
             </if>
             <if test="unit != null and unit != ''">
-                unit = #{unit}
+                and unit = #{unit}
             </if>
             <if test="inId != null and inId != ''">
-                inId like "%"#{inId}"%"
+                and inId like "%"#{inId}"%"
             </if>
             <if test="outId != null and outId != ''">
-                outId like "%"#{outId}"%"
+                and outId like "%"#{outId}"%"
+            </if>
+            <if test="amount != null and amount != ''">
+                and amount =#{amount}
+            </if>
+            <if test="inAmount != null and inAmount != ''">
+                and inAmount =#{inAmount}
             </if>
         </where>
         <if test="page != null and page.start != null and page.count != null and page.count != 0">
