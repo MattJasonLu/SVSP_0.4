@@ -1,6 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Dictionary.SecondaryCategoryItem;
 import com.jdlink.domain.Dictionary.UnitDataItem;
 import com.jdlink.domain.Inventory.WareHouse;
 import com.jdlink.domain.Page;
@@ -39,6 +40,10 @@ public class WastesSummary {
      * 仓库对象
      */
     private WareHouse wareHouse;
+    /**
+     * 次生危废名称
+     */
+    private SecondaryCategoryItem secondaryCategoryItem;
     /**
      * 危废名称
      */
@@ -150,6 +155,14 @@ public class WastesSummary {
 
     public void setWareHouse(WareHouse wareHouse) {
         this.wareHouse = wareHouse;
+    }
+
+    public SecondaryCategoryItem getSecondaryCategoryItem() {
+        return secondaryCategoryItem;
+    }
+
+    public void setSecondaryCategoryItem(SecondaryCategoryItem secondaryCategoryItem) {
+        this.secondaryCategoryItem = secondaryCategoryItem;
     }
 
     public String getWastesName() {
