@@ -402,4 +402,27 @@ public class StockController {
         }
         return  res.toString();
     }
+
+    /*完善库才申报*/
+    @RequestMapping("perfectStockItem")
+    @ResponseBody
+    public String perfectStockItem(@RequestBody StockItem stockItem){
+        JSONObject res=new JSONObject();
+
+        try {
+                stockService.perfectStockItem(stockItem);
+               res.put("status", "success");
+              res.put("message", "库存申报完善成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "库存申报完善失败");
+
+        }
+
+            return res.toString();
+
+    }
 }

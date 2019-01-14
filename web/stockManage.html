@@ -268,6 +268,7 @@
                     <td class="text-center"></td>
                     <td class="text-center">
                         <a href="#" id="function_-104" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; viewStock(e);}" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                        <a href="#" title="完善" onclick="perfect(this)"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></a>
                         <a href="#" id="function_-105" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; adjustStock(e);}" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
                         <a href="#" id="function_-106" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; cancel(e);}" class="glyphicon3" title="作废"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true" id="glyphicon3"></span></a>
                         <a href="#" id="function_-107" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; approval(e);}" title="审批"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></a>
@@ -322,6 +323,7 @@
 <!--查看页面模态框-->
 <div class="modal fade bs-example-modal-lg" id="stockInfoForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document" id="print1">
+        <input class="hidden" id="stockId">
         <div class="modal-content" >
             <h4 class="sub-header text-center">库存申报信息</h4>
             <div style="margin: 5%;">
@@ -348,6 +350,8 @@
                                 <th>数量(公斤)</th>
                                 <th>成分</th>
                                 <th>备注</th>
+                                <th>进料方式</th>
+                                <th>处置意见</th>
                             </tr>
                             </thead>
                             <tbody id="body2">
@@ -360,6 +364,9 @@
                                 <td class="text-center"><input type="text" class="focus" name="wastesList[0].wasteAmount" style="width:100%; height:100%;"></td><!--危废数量-->
                                 <td class="text-center"><input type="text" class="focus" name="wastesList[0].component" style="width:100%; height:100%;"></td><!--危废成分-->
                                 <td class="text-center"><input type="text" class="focus" name="wastesList[0].remarks" style="width:100%; height:100%;"></td><!--备注-->
+                                <td class="text-center"></td><!--进料方式-->
+                                <td class="text-center"></td><!--处置意见-->
+                                <td class="text-center hidden"></td><!--明细编号-->
                             </tr>
                             </tbody>
                         </table>
@@ -386,6 +393,7 @@
                 </div>
                 <div class="row text-center">
                     <a class="btn btn-primary hidden-print" onclick="showApproval()" id="btn">审批</a>
+                    <a class="btn btn-primary hidden-print" onclick="showPerfect()" id="perfect">完善</a>
                     <a class="btn btn-primary hidden-print" onclick="" id="print">打印</a>
                     <a class="btn btn-danger hidden-print" id="back" onclick="showBack()">驳回</a>
                     <a class="btn btn-danger hidden-print" data-dismiss="modal" id="close" onclick="re1();">关闭</a>
@@ -394,7 +402,7 @@
         </div>
     </div>
 </div>
-!--审批页面-->
+<!--审批页面-->
 <div class="modal fade" id="contractInfoForm3" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

@@ -1,5 +1,7 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.Dictionary.HandleCategoryItem;
+
 /**
  * 库存申报明细
  */
@@ -25,6 +27,28 @@ public class StockItem {
 
     //备注
     private String remarks;
+
+    //进料方式数据字典
+    private HandleCategoryItem handleCategoryItem;
+
+    //处置意见
+    private String disposalAdvice;
+
+    public HandleCategoryItem getHandleCategoryItem() {
+        return handleCategoryItem;
+    }
+
+    public void setHandleCategoryItem(HandleCategoryItem handleCategoryItem) {
+        this.handleCategoryItem = handleCategoryItem;
+    }
+
+    public String getDisposalAdvice() {
+        return disposalAdvice;
+    }
+
+    public void setDisposalAdvice(String disposalAdvice) {
+        this.disposalAdvice = disposalAdvice;
+    }
 
     public String getStockId() {
         return stockId;
