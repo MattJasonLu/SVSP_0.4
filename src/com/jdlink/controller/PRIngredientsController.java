@@ -1771,14 +1771,18 @@ public class PRIngredientsController {
             }
             for (int i = 1; i < data.length; i++) {
                 // 设置数据
+                if(data[i][1].toString()!="null"){// 类别不为空时添加
+
+
                 Ingredients ingredients = new Ingredients();
-                ingredients.setName(data[i][0].toString());
-                ingredients.setCode(data[i][1].toString());
-                ingredients.setSpecification(data[i][2].toString());
+                ingredients.setName(data[i][2].toString());//名称
+                ingredients.setCode(data[i][0].toString());//编码
+                ingredients.setSpecification(data[i][3].toString());//规格
                 // 根据名称和规格获取对象
                 Ingredients ingredients1 = ingredientsService.getIngredientByNameAndSpecification(ingredients);
                 if(ingredients1 == null){   // 不存在该物品则新增
                    ingredientsService.addIngredient(ingredients);
+                }
                 }
             }
             res.put("status", "success");

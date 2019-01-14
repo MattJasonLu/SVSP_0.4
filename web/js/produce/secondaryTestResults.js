@@ -755,10 +755,15 @@ function setAdjust(item) {
                 if(obj.scorchingRate!=-9999){
                     $('#scorchingRate').val(obj.scorchingRate.toFixed(2));
                 }
+                else {
+                    $('#scorchingRate').attr('readonly','readonly')
+                }
                 if(obj.water!=-9999){
                     $('#water').val(obj.water.toFixed(2));
                 }
-
+                else {
+                    $('#water').attr('readonly','readonly')
+                }
                 $('#remarks').val(obj.remarks);
             }
 

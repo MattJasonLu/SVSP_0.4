@@ -501,6 +501,12 @@ public class PRProductionDailyController {
                     } else {
                         sewageTest.setPhosphorus(-9999);
                     }
+                    sewageTest.setAlkalinity(-9999);
+                    sewageTest.setAlkalinityCaCo3(-9999);
+                    sewageTest.setAlkalinityHCO3(-9999);
+                    sewageTest.setBicarbonate(-9999);
+                    sewageTest.setBicarbonateCaCo3(-9999);
+                    sewageTest.setBicarbonateHCO3(-9999);
                     if (sewageTestService.getSewageTestById(id) == null) {
                         sewageTestService.addSewageTest(sewageTest);
                     } else {
@@ -571,6 +577,12 @@ public class PRProductionDailyController {
             } else {
                 sewageTest.setPhosphorus(-9999);
             }
+            sewageTest.setAlkalinity(-9999);
+            sewageTest.setAlkalinityCaCo3(-9999);
+            sewageTest.setAlkalinityHCO3(-9999);
+            sewageTest.setBicarbonate(-9999);
+            sewageTest.setBicarbonateCaCo3(-9999);
+            sewageTest.setBicarbonateHCO3(-9999);
             if (sewageTestService.getSewageTestById(id) == null) {
                 sewageTestService.addSewageTest(sewageTest);
             }
