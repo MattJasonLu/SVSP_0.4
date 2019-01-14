@@ -1,6 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Dictionary.SecondaryCategoryItem;
 import com.jdlink.domain.Dictionary.UnitDataItem;
 import com.jdlink.domain.Inventory.WareHouse;
 import com.jdlink.domain.Page;
@@ -40,6 +41,10 @@ public class WastesSummary {
      */
     private WareHouse wareHouse;
     /**
+     * 次生危废名称
+     */
+    private SecondaryCategoryItem secondaryCategoryItem;
+    /**
      * 危废名称
      */
     private String wastesName;
@@ -51,6 +56,10 @@ public class WastesSummary {
      * 计量单位
      */
     private UnitDataItem unitDataItem;
+    /**
+     * 危废单价
+     */
+    private Float unitPriceTax;
     /**
      * 期初数量
      */
@@ -148,6 +157,14 @@ public class WastesSummary {
         this.wareHouse = wareHouse;
     }
 
+    public SecondaryCategoryItem getSecondaryCategoryItem() {
+        return secondaryCategoryItem;
+    }
+
+    public void setSecondaryCategoryItem(SecondaryCategoryItem secondaryCategoryItem) {
+        this.secondaryCategoryItem = secondaryCategoryItem;
+    }
+
     public String getWastesName() {
         return wastesName;
     }
@@ -170,6 +187,14 @@ public class WastesSummary {
 
     public void setUnitDataItem(UnitDataItem unitDataItem) {
         this.unitDataItem = unitDataItem;
+    }
+
+    public Float getUnitPriceTax() {
+        return unitPriceTax;
+    }
+
+    public void setUnitPriceTax(Float unitPriceTax) {
+        this.unitPriceTax = unitPriceTax;
     }
 
     public Float getBeginningCount() {

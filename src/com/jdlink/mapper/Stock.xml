@@ -18,10 +18,18 @@
         <collection property="stockItemList" column="stockId" select="getStockItem"></collection>
        <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
     </resultMap>
+
+    <resultMap id="StockItemRM" type="StockItem">
+        <association property="handleCategoryItem" column="handleCategoryId" select="getHandleCategoryItem"></association>
+    </resultMap>
+    <!--获取进料方式数据字典-->
+    <select id="getHandleCategoryItem" resultType="HandleCategoryItem">
+        select  * from datadictionaryitem where dataDictionaryItemId=#{handleCategoryId}
+    </select>
     <select id="getCheckStateItem" resultType="CheckStateItem">
         select  * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
     </select>
-    <select id="getStockItem" resultType="StockItem" parameterType="String">
+    <select id="getStockItem" resultMap="StockItemRM" parameterType="String">
         select  * from t_pr_stockitem where stockId=#{stockId}
     </select>
     <select id="getSupplier" resultType="Supplier">
@@ -189,5 +197,11 @@ select * from t_quotationitem where applicationStatusId=48 and clientId=#{client
 
     <update id="updateQuotationItemState" parameterType="String">
         update t_quotationitem set applicationStatusId=49 where quotationItemId=#{quotationItemId}
+    </update>
+
+    <!--完善库存申报-->
+    <update id="perfectStockItem" parameterType="StockItem">
+        update t_pr_stockitem set handleCategoryId=#{handleCategoryItem.dataDictionaryItemId}
+        , disposalAdvice=#{disposalAdvice} where id=#{id}
     </update>
  </mapper>

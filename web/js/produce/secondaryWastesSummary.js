@@ -31,7 +31,7 @@ function totalPage() {
         var data1 = {};
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "getWastesSummaryCount",                  // url 计算数据库的总条数
+            url: "getSecondaryWastesSummaryCount",                  // url 计算数据库的总条数
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
@@ -148,7 +148,7 @@ function switchPage(pageNumber) {
         data1.page = page;
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "getWastesSummaryList",                  // url
+            url: "getSecondaryWastesSummaryList",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
@@ -223,7 +223,7 @@ function inputSwitchPage() {
             data1.page = page;
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "getWastesSummaryList",         // url
+                url: "getSecondaryWastesSummaryList",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data1),
                 dataType: "json",
@@ -305,7 +305,7 @@ function loadWasteInventoryList() {
     data1.page = page;
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getWastesSummaryList", // url
+        url: "getSecondaryWastesSummaryList", // url
         data: JSON.stringify(data1),
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
@@ -345,7 +345,7 @@ function setWasteInventoryList(result) {
         clonedTr.find("td[name='outboundOrderId']").text(obj.outboundOrderId);
         if (obj.inboundDate != null) clonedTr.find("td[name='inboundDate']").text(getDateStr(obj.inboundDate));
         if (obj.outboundDate != null) clonedTr.find("td[name='outboundDate']").text(getDateStr(obj.outboundDate));
-        clonedTr.find("td[name='wastesName']").text(obj.wastesName);
+        if (obj.secondaryCategoryItem != null) clonedTr.find("td[name='wastesName']").text(obj.secondaryCategoryItem.dictionaryItemName);
         clonedTr.find("td[name='wastesCode']").text(obj.wastesCode);
         if (obj.produceCompany != null) clonedTr.find("td[name='produceCompanyName']").text(obj.produceCompany.companyName);
         if (obj.unitDataItem != null) clonedTr.find("td[name='unitDataItem']").text(obj.unitDataItem.dictionaryItemName);

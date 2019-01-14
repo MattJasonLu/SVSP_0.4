@@ -109,6 +109,8 @@ public class BatchingOrder {
     private CheckStateItem checkStateItem;
 
 
+  /*关键字*/
+    private String keyword;
 
 
 /********以下数据结构暂时不用************/
@@ -156,6 +158,14 @@ public class BatchingOrder {
      */
     private String inboundOrderId;
 
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
 
     public CheckStateItem getCheckStateItem() {
         return checkStateItem;
