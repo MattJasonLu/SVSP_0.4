@@ -366,6 +366,10 @@
         <collection property="unitDataItem" column="unitId" select="getUnitDataItem">
         </collection>
     </resultMap>
+    <!--获取辅料备件物品-->
+    <resultMap id="ProcurementPlanItemRM1" type="ProcurementPlanItem">
+        <result  property="specifications" column="specification"></result>
+    </resultMap>
 
     <!--采购计划分页查询-->
     <select id="getProcurementPlanItemListByPage" resultMap="ProcurementPlanItemRM">
@@ -619,7 +623,7 @@
         select specification from t_pl_ingredientslist where id=#{id}
     </select>
 
-    <select id="getIngredientById" resultType="ProcurementPlanItem" parameterType="int">
+    <select id="getIngredientById" resultMap="ProcurementPlanItemRM1" parameterType="int">
         select * from t_pl_ingredientslist where id=#{id}
     </select>
 

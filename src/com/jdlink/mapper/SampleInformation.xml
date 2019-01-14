@@ -46,7 +46,7 @@
     </select>
 
     <select id="listItemPage" resultType="SampleInformationItem">
-        select a.*,b.companyName,b.sendingPerson,b.laboratorySigner,b.applyState from t_pr_sampleinformationItem as a join t_pr_sampleinformation as b on a.sampleId=b.id
+        select a.*,b.companyName,b.sendingPerson,b.laboratorySigner,b.applyState,b.applyStateId from t_pr_sampleinformationItem as a join t_pr_sampleinformation as b on a.sampleId=b.id
         where b.applyStateId != 55
         ORDER BY CONVERT(transferId,SIGNED) DESC
         <if test="start != null and count != null and count != 0">
@@ -179,7 +179,7 @@
         </where>
     </select>
 
-    <select id="search" parameterType="SampleInformation" resultType="SampleInformation">
+    <select id="search" parameterType="SampleInformation" resultMap="SampleInformationRM">
         SELECT * FROM t_pr_sampleinformation
         <where>
             <if test="keywords != null and keywords != ''">

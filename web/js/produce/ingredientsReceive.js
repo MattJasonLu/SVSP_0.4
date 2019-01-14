@@ -1753,7 +1753,7 @@ function save() {
                     if (result.status == "success") {
                         console.log(result.message);
                         if (confirm("领料单添加成功，是否返回主页面？"))
-                            window.location.href = "ingredientsReceive.html";
+                            window.location.href = "ingredientsReceiveDetail.html";
                         else window.location.reload();
                     } else alert(result.message);
                 },
