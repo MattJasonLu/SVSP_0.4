@@ -1286,6 +1286,7 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
  */
 function searchSampleInfo() {
     isSearch = true;
+    isDelete = true;
     var page = {};
     var pageNumber = 1;                       // 显示首页
     page.pageNumber = pageNumber;

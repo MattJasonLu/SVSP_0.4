@@ -348,7 +348,11 @@ function setInventoryList(result) {
             clonedTr.find("td[name='name']").text(obj.name);
             clonedTr.find("td[name='specification']").text(obj.specification);
             clonedTr.find("td[name='unit']").text(obj.unit);
-            clonedTr.find("td[name='amount']").text(obj.amount);
+            if(obj.unit === "公斤" || obj.unit === "千克"){
+                clonedTr.find("td[name='amount']").text(obj.amount.toFixed(3));
+            }else {
+                clonedTr.find("td[name='amount']").text(obj.amount.toFixed(0));
+            }
             clonedTr.find("td[name='wareHouseName']").text(obj.wareHouseName);
             clonedTr.find("td[name='inId']").text(obj.inId);
             clonedTr.find("td[name='inAmount']").text(obj.inAmount.toFixed(3));
@@ -372,7 +376,7 @@ function setInventoryList(result) {
                 break;
             // 库存量
             case (6):
-                $(this).html(totalAmount);
+                $(this).html(totalAmount.toFixed(3));
                 break;
         }
     });

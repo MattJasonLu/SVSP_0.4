@@ -221,7 +221,7 @@ function inputSwitchPage() {
     }
     $("#current").find("a").text("当前页：" + pageNumber);
     if (pageNumber == null || pageNumber == "") {
-        window.alert("跳转页数不能为空！")
+        window.alert("跳转页数不能为空！");
     } else {
         if (pageNumber == 1) {
             $("#previous").addClass("disabled");
@@ -388,8 +388,8 @@ function setIngredientsInList(result) {
                     break;
                 case (3):
                     // 入库单状态
-                    if(obj.CheckStateItem != null)
-                    $(this).html(obj.CheckStateItem.dictionaryItemName);
+                    if(obj.checkStateItem != null)
+                    $(this).html(obj.checkStateItem.dictionaryItemName);
                     break;
                 case (4):
                     // 物品编码
@@ -1460,8 +1460,8 @@ function confirmInsert1() {
                             ingredients.serialNumber = i;                    // 序号
                             ingredients.name = data.suppliesName;            // 物品名称
                             ingredients.specification = data.specifications; // 规格
-                            if(data.unit != null)
-                                ingredients.unit = data.unit.name;                     // 单位
+                            if(data.unitDataItem != null)
+                                ingredients.unit = data.unitDataItem.dictionaryItemName;             // 单位
                             ingredients.amount = data.demandQuantity;         // 入库数量
                             ingredients.remarks = data.note;                  // 备注
                             ingredients.id = ingredientsIn.id;

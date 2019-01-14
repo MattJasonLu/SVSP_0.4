@@ -380,8 +380,8 @@ function setList(result) {
                     break;
                 case (3):
                     // 领料单状态
-                    if(obj.state != null)
-                    $(this).html(obj.state.name);
+                    if(obj.checkStateItem != null)
+                        $(this).html(obj.checkStateItem.dictionaryItemName);
                     break;
                 case (4):
                     // 物品编码

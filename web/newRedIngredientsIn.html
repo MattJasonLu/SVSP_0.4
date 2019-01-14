@@ -137,7 +137,6 @@
                 <li><a href="businessModel.html">辅料/备件领用</a></li>
                 <li class="active">辅料/备件入库</li>
             </ol>
-            <p class="text-center pull-right"><b>编号</b><span class="id"></span></p>
 
             <h4 class="sub-header" id="head">辅料/备件红字入库单新增</h4>
         </div>
@@ -181,16 +180,16 @@
                     <td class="text-center"><span name="code" id="code0"></span></td>
                     <td class="text-center"><span name="specification" id="specification0"></span></td>
                     <td class="text-center"><select class="form-control" name="unit" id="unit0"></select></td>
-                    <td class="text-center"><input id="amount0" oninput="totalCalculate()" value="0" name="amount" type="number" class="form-control text-center" style="width: 100%"></td>
+                    <td class="text-center"><input id="amount0" onkeyup="totalCalculate()" value="0" name="amount" type="number" class="form-control text-center" style="width: 100%"></td>
                     <td class="text-center"><input type="number" value="0" class="form-control text-center change"
                                                    id="unitPrice0" name="unitPrice" style="width: 100%"
-                                                   oninput="totalCalculate()"></td>
+                                                   onkeyup="totalCalculate()"></td>
                     <td class="text-center"><input type="number" value="0" class="form-control text-center change"
                                                    id="totalPrice0" name="totalPrice" style="width: 100%"
                                                    oninput="setUnitPrice(this)"></td>
                     <td class="text-center"><input title="" type="text" class="form-control text-center" name="post"
                                                    id="post0"></td>
-                    <td class="text-center"><input name="remarks" id="remarks0"></td>
+                    <td class="text-center"><input name="remarks" id="remarks0" class="form-control text-center"></td>
                     <td class="text-center"><select class="focus text-center"
                                                     id="wareHouseName0" name="wareHouseName" required onchange="setWareHouse(this)"></select>
                     </td>

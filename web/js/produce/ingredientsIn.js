@@ -1886,7 +1886,7 @@ function save() {
                     if (result.status == "success") {
                         console.log(result.message);
                         if (confirm("入库单添加成功，是否返回主页面？"))
-                            window.location.href = "ingredientsIn.html";
+                            window.location.href = "ingredientsInDetial.html";
                         else window.location.reload();
                     } else alert(result.message);
                 },
