@@ -52,6 +52,10 @@ public class WastesSummary {
      */
     private UnitDataItem unitDataItem;
     /**
+     * 危废单价
+     */
+    private Float unitPriceTax;
+    /**
      * 期初数量
      */
     private Float beginningCount;
@@ -170,6 +174,14 @@ public class WastesSummary {
 
     public void setUnitDataItem(UnitDataItem unitDataItem) {
         this.unitDataItem = unitDataItem;
+    }
+
+    public Float getUnitPriceTax() {
+        return unitPriceTax;
+    }
+
+    public void setUnitPriceTax(Float unitPriceTax) {
+        this.unitPriceTax = unitPriceTax;
     }
 
     public Float getBeginningCount() {

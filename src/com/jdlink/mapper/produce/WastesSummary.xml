@@ -11,6 +11,7 @@
         <result property="outboundDate" column="outboundDate"/>
         <result property="wastesName" column="wastesName"/>
         <result property="wastesCode" column="wastesCode"/>
+        <result property="unitPriceTax" column="unitPriceTax"/>
         <result property="beginningCount" column="beginningCount"/>
         <result property="inboundCount" column="wastesAmount"/>
         <result property="outboundCount" column="outboundNumber"/>
@@ -40,12 +41,15 @@
         t_pl_inboundorderitem.storageCount, t_pl_inboundorder.checkStateId,
         t_pl_outboundorder.outboundDate, t_pl_outboundorder.outboundOrderId, t_pl_outboundorder.outboundNumber, t_pl_outboundorder.clientId,
         t_pl_outboundorder.wasteCategory,
-        t_pl_wasteinventory.actualCount, t_pl_wasteinventory.wareHouseId
+        t_pl_wasteinventory.actualCount, t_pl_wasteinventory.wareHouseId,
+        t_quotationitem.unitPriceTax
         from (t_pl_inboundorderitem left join t_pl_inboundorder on t_pl_inboundorder.inboundOrderId=t_pl_inboundorderitem.inboundOrderId
         and (checkStateId is null or checkStateId != 69) and boundType='WasteInbound')
         left join t_pl_outboundorder on t_pl_outboundorder.inboundOrderItemId=t_pl_inboundorderitem.inboundOrderItemId and
         (t_pl_outboundorder.checkStateId is null or t_pl_outboundorder.checkStateId != 69)
         left join t_pl_wasteinventory on t_pl_wasteinventory.inboundOrderItemId=t_pl_inboundorderitem.inboundOrderItemId
+        left join t_quotationitem on t_pl_inboundorderitem.wastesName=t_quotationitem.wastesName
+        and t_pl_inboundorderitem.wastesCode=t_quotationitem.wastesCode
         order by inboundDate desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count};
