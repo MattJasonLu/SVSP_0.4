@@ -127,5 +127,10 @@ public class StockServiceImpl implements StockService
         stockMapper.updateQuotationItemState(quotationItemId);
     }
 
+    @Override
+    public void perfectStockItem(StockItem stockItem) {
+        stockMapper.perfectStockItem(stockItem);
+    }
+
 
 }

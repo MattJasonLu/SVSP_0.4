@@ -33,4 +33,6 @@ public interface StockService {
     List<QuotationItem>  getQuotationitemByUndeclared(String clientId);
 
     void updateQuotationItemState(String quotationItemId);
+
+    void perfectStockItem(StockItem stockItem);
 }

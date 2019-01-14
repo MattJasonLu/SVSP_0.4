@@ -51,4 +51,6 @@ public interface StockMapper {
   List<QuotationItem>  getQuotationitemByUndeclared(String clientId);
 
   void updateQuotationItemState(String quotationItemId);
+
+  void perfectStockItem(StockItem stockItem);
 }

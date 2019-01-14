@@ -31,7 +31,7 @@ function totalPage() {
         var data1 = {};
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "getWastesSummaryCount",                  // url 计算数据库的总条数
+            url: "getSecondaryWastesSummaryCount",                  // url 计算数据库的总条数
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
@@ -148,7 +148,7 @@ function switchPage(pageNumber) {
         data1.page = page;
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "getWastesSummaryList",                  // url
+            url: "getSecondaryWastesSummaryList",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
@@ -223,7 +223,7 @@ function inputSwitchPage() {
             data1.page = page;
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "getWastesSummaryList",         // url
+                url: "getSecondaryWastesSummaryList",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data1),
                 dataType: "json",
@@ -305,7 +305,7 @@ function loadWasteInventoryList() {
     data1.page = page;
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getWastesSummaryList", // url
+        url: "getSecondaryWastesSummaryList", // url
         data: JSON.stringify(data1),
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
