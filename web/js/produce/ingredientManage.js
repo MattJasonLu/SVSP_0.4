@@ -673,6 +673,68 @@ function searchIngredient() {
  */
 function add() {
     $("#modalId").modal('show');
+    /*下拉框设置*/
+//单位
+    $.ajax({
+        type:'POST',
+        url:"getUnitByDataDictionary",
+        //data:JSON.stringify(data),
+        dataType: "json",
+        async: false,
+        contentType: "application/json;charset=utf-8",
+        success: function (result){
+            if (result != undefined){
+                console.log(result);
+                var unit=$('#add_unitDataItem0');
+                unit.children().remove();
+                $.each(result.data,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    unit.append(option);
+                });
+                unit.get(0).selectedIndex=0;
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
+
+    });
+    //物资类别
+    $.ajax({
+        type:'POST',
+        url:"getMaterialCategoryByDataDictionary",
+        //data:JSON.stringify(data),
+        dataType: "json",
+        async: false,
+        contentType: "application/json;charset=utf-8",
+        success: function (result){
+            if (result != undefined){
+                console.log(result);
+                var materialCategoryItem=$('#add_materialCategoryItem0');
+                materialCategoryItem.children().remove();
+                $.each(result.data,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    materialCategoryItem.append(option);
+                });
+                materialCategoryItem.get(0).selectedIndex=0;
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
+
+    });
+
 }
 
 /**
@@ -688,6 +750,12 @@ function save() {
         ingredient.name = $("#add_name" + $i).val();
         ingredient.code = $("#add_code" + $i).val();
         ingredient.specification = $("#add_specification" + $i).val();
+        var unitDataItem={};
+        unitDataItem.dataDictionaryItemId=$("#add_unitDataItem" + $i).val();
+        ingredient.unitDataItem=unitDataItem;
+        var materialCategoryItem={};
+        materialCategoryItem.dataDictionaryItemId=$("#add_materialCategoryItem" + $i).val();
+        ingredient.materialCategoryItem=materialCategoryItem;
         ingredientsIn.ingredientsList.push(ingredient);
     }
     $.ajax({
