@@ -1392,7 +1392,7 @@
 
     <insert id="addIngredient" parameterType="Ingredients">
         insert into t_pl_ingredientslist
-        (ingredientsName, code,specification,nowTime) values (#{name},#{code},#{specification},NOW());
+        (ingredientsName, code,specification,nowTime,materialCategoryId,unitId) values (#{name},#{code},#{specification},NOW(),#{materialCategoryItem.dataDictionaryItemId},#{unitDataItem.dataDictionaryItemId});
     </insert>
 
     <update id="updateIngredient" parameterType="Ingredients">
