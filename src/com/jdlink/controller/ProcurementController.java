@@ -516,6 +516,10 @@ public class ProcurementController {
                         //创建物资对象
                         Material material = new Material();
 
+                        if (String.valueOf(data.get(i)[3][2]) != "null") {
+                            material.setApplyMouth(String.valueOf(data.get(i)[3][2]));//申请月份
+                        }
+
                         MaterialCategoryItem materialCategoryItem1=new MaterialCategoryItem();
                         materialCategoryItem.setDataDictionaryItemId(174);
                         material.setMaterialCategoryItem(materialCategoryItem);

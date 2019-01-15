@@ -109,7 +109,7 @@
             </ol>
             <!--<p class="text-right"><b>配料单号&nbsp;&nbsp;</b><span id="materialRequisitionId"></span></p>-->
         </div>
-        <h4 class="sub-header">采购计划单新增</h4>
+        <h4 class="sub-header">采购计划单新增(请根据年月和物资类别添加计划单)</h4>
         <div class="row">
             <div>
                 <!--操作按钮-->
@@ -121,11 +121,25 @@
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group" >
-                            <label class="col-sm-3 control-label">创建时间</label>
+                            <label class="col-sm-3 control-label">申请年月</label>
                             <div class="input-group">
-                                <input type="date" class="input-sm form-control" id="search-inDate" title="" onkeyup="enterSearch()"/>
-                                <span class="input-group-addon">-</span>
-                                <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeyup="enterSearch()"/>
+                                <input class="" style="width:70px" id="year" onkeyup="enterSearch()">
+                                年
+                                <select title="" class="months" id="applyMonth" onchange="searchData()">
+                                    <option value="1"></option>
+                                    <option value="1">01</option>
+                                    <option value="1">02</option>
+                                    <option value="1">03</option>
+                                    <option value="1">04</option>
+                                    <option value="1">05</option>
+                                    <option value="1">06</option>
+                                    <option value="1">07</option>
+                                    <option value="1">08</option>
+                                    <option value="1">09</option>
+                                    <option value="1">10</option>
+                                    <option value="1">11</option>
+                                    <option value="1">12</option>
+                                </select>月
                             </div>
                         </div>
                     </div>
@@ -171,7 +185,7 @@
                         <td class="text-center">库存量</td>
                         <td class="text-center">需求数量</td>
                         <td class="text-center">备注</td>
-                        <td class="text-center">创建时间</td>
+                        <td class="text-center">申请时间</td>
                         <td class="text-center">物资类别</td>
                     </tr>
                     </thead>

@@ -14,8 +14,8 @@
     </select>
     <!--添加物料表-->
     <insert id="addMaterial" parameterType="Material">
-        insert into t_pl_material (suppliesName, specifications, inventory, note, purchaseQuantity, demandQuantity, receiptNumber,unit,state,createDate,checkState,unitId,checkStateId,stateId,MaterialCategoryId)
-        values (#{suppliesName},#{specifications},#{inventory},#{note},#{purchaseQuantity},#{demandQuantity},#{receiptNumber},#{unit},'ToInbound',NOW(),'Enabled',#{unitDataItem.dataDictionaryItemId},70,77,#{materialCategoryItem.dataDictionaryItemId});
+        insert into t_pl_material (suppliesName, specifications, inventory, note, purchaseQuantity, demandQuantity, receiptNumber,unit,state,createDate,checkState,unitId,checkStateId,stateId,MaterialCategoryId,applyMouth)
+        values (#{suppliesName},#{specifications},#{inventory},#{note},#{purchaseQuantity},#{demandQuantity},#{receiptNumber},#{unit},'ToInbound',NOW(),'Enabled',#{unitDataItem.dataDictionaryItemId},70,77,#{materialCategoryItem.dataDictionaryItemId},#{applyMouth});
     </insert>
     <!--加载采购列表-->
     <resultMap id="ProcurementRM" type="Procurement" autoMapping="true">
@@ -309,12 +309,9 @@
     <select id="searchNewProcurementPlan" parameterType="Material" resultMap="MaterialRM">
         select * from t_pl_material
         <where>
-            <if test="createDateStart!=null and createDateStart!=''">
-                and createDate &gt;= DATE_FORMAT(#{createDateStart}, '%Y-%m-%d')
-            </if>
-            <if test="createDateEnd!=null and createDateEnd!=''">
-                and createDate &lt;= DATE_FORMAT(#{createDateEnd}, '%Y-%m-%d')
-            </if>
+           <if test="applyMouth!='' and applyMouth!=null">
+               and applyMouth like "%"#{applyMouth}"%"
+           </if>
             <if test="materialCategoryItem!=null">
               <if test="materialCategoryItem.dataDictionaryItemId!=0">
                   and materialCategoryId =#{materialCategoryItem.dataDictionaryItemId}
@@ -331,8 +328,8 @@
 
     <!--添加采购计划单主表-->
     <insert id="addProcurementPlan" parameterType="ProcurementPlan">
-        insert into t_pr_procumentplan (procurementPlanId, createName, createDate, adjustName, adjustDate, approvalName, checkState, nowTime,checkStateId) values
-      (#{procurementPlanId},#{createName},NOW(),#{adjustName},#{adjustDate},#{approvalName},'ToSubmit',NOW(),64);
+        insert into t_pr_procumentplan (procurementPlanId, createName, createDate, adjustName, adjustDate, approvalName, checkState, nowTime,checkStateId,applyMouth) values
+      (#{procurementPlanId},#{createName},NOW(),#{adjustName},#{adjustDate},#{approvalName},'ToSubmit',NOW(),64,#{applyMouth});
     </insert>
 
 <!--根据主键查出申购部门-->
@@ -347,14 +344,13 @@
 
     <!--添加采购单明细-->
     <insert id="addProcurementPlanItem" parameterType="procurementPlanItem">
-        insert into t_pr_procumentplanitem(procurementPlanId, category, suppliesName, specifications, proposer, demandQuantity, unit, price, priceTotal, remarks,unitId,MaterialCategoryId) values
-     (#{procurementPlanId},#{category},#{suppliesName},#{specifications},#{proposer},#{demandQuantity},#{unit},#{price},#{priceTotal},#{remarks},#{unitDataItem.dataDictionaryItemId},#{materialCategoryItem.dataDictionaryItemId});
+        insert into t_pr_procumentplanitem(procurementPlanId, category, suppliesName, specifications, proposer, demandQuantity, unit, price, priceTotal, remarks,unitId,MaterialCategoryId,applyMouth) values
+     (#{procurementPlanId},#{category},#{suppliesName},#{specifications},#{proposer},#{demandQuantity},#{unit},#{price},#{priceTotal},#{remarks},#{unitDataItem.dataDictionaryItemId},#{materialCategoryItem.dataDictionaryItemId},#{applyMouth});
 
 </insert>
 
     <resultMap id="ProcurementPlanRM" type="ProcurementPlan">
         <result  property="procurementPlanId" column="procurementPlanId"></result>
-        <association property="materialCategoryItem" column="materialCategoryId" select="getMaterialCategoryItem"></association>
         <collection property="procurementPlanItemList" column="procurementPlanId" select="getProcurementPlanItemList"></collection>
     <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
     </resultMap>
@@ -363,6 +359,7 @@
         select  * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
     </select>
     <resultMap id="ProcurementPlanItemRM" type="ProcurementPlanItem">
+        <association property="materialCategoryItem" column="materialCategoryId" select="getMaterialCategoryItem"></association>
         <collection property="unitDataItem" column="unitId" select="getUnitDataItem">
         </collection>
     </resultMap>
@@ -450,6 +447,10 @@
                 or approvalName like "%"#{keywords}"%"
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
                 or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
+                 or applyMouth like binary"%"#{keywords}"%"
+            </if>
+            <if test="applyMouth!='' and applyMouth!=null">
+                and applyMouth like "%"#{applyMouth}"%"
             </if>
             <if test="procurementPlanId!=null and procurementPlanId!=''">
                 and procurementPlanId like "%"#{procurementPlanId}"%"
@@ -505,6 +506,10 @@
                 or approvalName like "%"#{keywords}"%"
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
                 or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
+                or applyMouth like binary"%"#{keywords}"%"
+            </if>
+            <if test="applyMouth!='' and applyMouth!=null">
+                and applyMouth like "%"#{applyMouth}"%"
             </if>
             <if test="procurementPlanId!=null and procurementPlanId!=''">
                 and procurementPlanId like "%"#{procurementPlanId}"%"
