@@ -29,6 +29,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static com.jdlink.domain.Inventory.BoundType.SecondaryOutbound;
 import static com.jdlink.domain.Produce.HandleCategory.*;
 import static com.jdlink.util.ScienceToNumber.getNumber;
 
@@ -1498,4 +1499,45 @@ public class BatchOrderController {
     public int searchWastesInventoryCount(@RequestBody WasteInventory wasteInventory){
          return batchOrderService.searchWastesInventoryCount(wasteInventory);
     }
+
+    /*次生出库查询*/
+    @RequestMapping("searchSecOutbound")
+    @ResponseBody
+    public String searchSecOutbound(@RequestBody OutboundOrder outboundOrder){
+        JSONObject res=new JSONObject();
+
+        try {
+           List<OutboundOrder> outboundOrderList=batchOrderService.searchSecOutbound(outboundOrder);
+//            List<OutboundOrder> outboundOrderList=new ArrayList<>();
+//            for(int i=0;i<outboundOrderList1.size();i++){
+//                if(outboundOrderList1.get(i).getBoundType()==SecondaryOutbound){
+//                    outboundOrderList.add(outboundOrderList1.get(i));
+//                }
+//            }
+            res.put("status", "success");
+            res.put("message", "高级查询成功");
+            res.put("data", outboundOrderList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "高级查询失败");
+
+        }
+
+
+            return res.toString();
+    }
+
+    /*次生出库查询计数
+     * */
+    @RequestMapping("searchSecOutboundCount")
+    @ResponseBody
+    public int searchSecOutboundCount(@RequestBody OutboundOrder outboundOrder){
+
+        return batchOrderService.searchSecOutboundCount(outboundOrder);
+    }
 }
+
+
+

@@ -501,4 +501,92 @@ SELECT date_format(outboundDate,'%Y-%m')  FROM t_pl_outboundorder WHERE checkSta
             </if>
         </where>
     </select>
+
+    <!--次生出库查询-->
+    <select id="searchSecOutbound" resultMap="WastesOutBoundRM" parameterType="OutboundOrder">
+        select * from t_pl_outboundorder
+        <where>
+            <if test="keywords!=''and keywords!=null">
+                or outboundOrderId like "%"#{keywords}"%"
+                or wareHouseId in (select warehouseId from t_pl_warehouse where warehouseName =#{keywords})
+                or wasteCategory like "%"#{keywords}"%"
+                or wastesName like "%"#{keywords}"%"
+                or processWayId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=8)
+                or outboundNumber like "%"#{keywords}"%"
+                or packageTypeId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=21)
+                or transferDraftId like "%"#{keywords}"%"
+                or outboundDate like binary "%"#{keywords}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=11)
+            </if>
+            <if test="wastesName!='' and wastesName!=null">
+                and wastesName like "%"#{wastesName}"%"
+            </if>
+            <if test="wasteCategory!='' and wasteCategory!=null">
+                and wasteCategory like "%"#{wasteCategory}"%"
+            </if>
+            <if test="processWayItem!=null">
+                <if test="processWayItem.dataDictionaryItemId!=0">
+                    and processWayId=#{processWayItem.dataDictionaryItemId}
+                </if>
+            </if>
+                  <if test="wareHouse!=null">
+                      <if test="wareHouse.wareHouseId!=0">
+                          and wareHouseId=#{wareHouse.wareHouseId}
+                      </if>
+                  </if>
+            <if test="startDate!=null">
+                <![CDATA[ and DATE_FORMAT(outboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate!=null">
+                <![CDATA[ and DATE_FORMAT(outboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
+            </if>
+            and boundType="SecondaryOutbound"
+        </where>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--次生出库查询计数-->
+    <select id="searchSecOutboundCount" resultType="int" parameterType="OutboundOrder">
+        select count(*) from t_pl_outboundorder
+        <where>
+            <if test="keywords!=''and keywords!=null">
+                or outboundOrderId like "%"#{keywords}"%"
+                or wareHouseId in (select warehouseId from t_pl_warehouse where warehouseName =#{keywords})
+                or wasteCategory like "%"#{keywords}"%"
+                or wastesName like "%"#{keywords}"%"
+                or processWayId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=8)
+                or outboundNumber like "%"#{keywords}"%"
+                or packageTypeId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=21)
+                or transferDraftId like "%"#{keywords}"%"
+                or outboundDate like binary "%"#{keywords}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=11)
+            </if>
+            <if test="wastesName!='' and wastesName!=null">
+                and wastesName like "%"#{wastesName}"%"
+            </if>
+            <if test="wasteCategory!='' and wasteCategory!=null">
+                and wasteCategory like "%"#{wasteCategory}"%"
+            </if>
+            <if test="processWayItem!=null">
+                <if test="processWayItem.dataDictionaryItemId!=0">
+                    and processWayId=#{processWayItem.dataDictionaryItemId}
+                </if>
+            </if>
+            <if test="wareHouse!=null">
+                <if test="wareHouse.wareHouseId!=0">
+                    and wareHouseId=#{wareHouse.wareHouseId}
+                </if>
+            </if>
+            <if test="startDate!=null">
+                <![CDATA[ and DATE_FORMAT(outboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate!=null">
+                <![CDATA[ and DATE_FORMAT(outboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
+            </if>
+            and boundType="SecondaryOutbound"
+        </where>
+    </select>
 </mapper>
