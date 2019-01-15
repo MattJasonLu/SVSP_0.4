@@ -1639,15 +1639,19 @@ var serialNumber = 0;
 function setReceiveList(result) {
     // 获取id为cloneTr的tr元素
     var tr = $("#clone");
-    tr.siblings().remove();
+    $(".newLine").remove();
+    var totalNewReceiveAmount = 0;
+    var totalNewReceivePrice = 0;
     $.each(result, function (index, item) {
         serialNumber++;
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
         clonedTr.show();
         var obj = eval(item);
-        if(obj.ingredientStateItem != null && obj.ingredientStateItem.dictionaryItemName === "已出库"){
+        if(obj.checkStateItem != null && obj.checkStateItem.dictionaryItemName === "已出库"){
         }else {
+            totalNewReceiveAmount += parseFloat(obj.receiveAmount.toFixed(3));
+            totalNewReceivePrice += parseFloat(obj.totalPrice.toFixed(2));
             // 循环遍历cloneTr的每一个td元素，并赋值
             clonedTr.children("td").each(function (inner_index) {
                 // 根据索引为部分td赋值
@@ -1662,8 +1666,8 @@ function setReceiveList(result) {
                         break;
                     case (3):
                         // 领料单状态
-                        if(obj.state != null)
-                            $(this).html(obj.state.name);
+                        if(obj.checkStateItem != null)
+                            $(this).html(obj.checkStateItem.dictionaryItemName);
                         break;
                     case (4):
                         // 物品编码
@@ -1683,7 +1687,7 @@ function setReceiveList(result) {
                         break;
                     case (8):
                         // 数量(领料数)
-                        $(this).html(obj.receiveAmount.toFixed(2));
+                        $(this).html(obj.receiveAmount.toFixed(3));
                         break;
                     case (9):
                         // 单价
@@ -1713,10 +1717,13 @@ function setReceiveList(result) {
             });
             // 把克隆好的tr追加到原来的tr前面
             clonedTr.removeAttr("id");
+            clonedTr.addClass("newLine");
             clonedTr.insertBefore(tr);
         }
     });
     tr.hide();
+    $("#totalNewReceiveAmount").text(totalNewReceiveAmount.toFixed(3));
+    $("#totalNewReceivePrice").text(totalNewReceivePrice.toFixed(2));
 }
 
 /**
@@ -1825,107 +1832,111 @@ function confirmInsert() {
  * 保存
  */
 function save() {
-    //获取输入的数据
-    var totalPrice = 0;
-    var totalAmount = 0;
-    if(ingredientsOut == null || ingredientsOut.ingredientsList == null){
-        ingredientsOut.ingredientsList = ingredientsOut1.ingredientsList; // 没有新增数据时将修改的数据赋给ingredientsOut
-    }
-    if (ingredientsOut != null && ingredientsOut.ingredientsList != null)//如果有新添的数据则获取最新的输入数据
-        for (var i = 0; i < ingredientsOut.ingredientsList.length; i++) {
-            var $i = i + 1;
-            ingredientsOut.ingredientsList[i].id = $("#view-id").text();
-            ingredientsOut.ingredientsList[i].unitPrice = $("#unitPrice" + $i).val();
-            ingredientsOut.ingredientsList[i].receiveAmount = $("#amount" + $i).val();
-            ingredientsOut.ingredientsList[i].totalPrice = $("#totalPrice" + $i).val();
-            ingredientsOut.ingredientsList[i].post = $("#post" + $i).val();
-            ingredientsOut.ingredientsList[i].totalPrice = parseFloat(ingredientsOut.ingredientsList[i].unitPrice) * parseFloat(ingredientsOut.ingredientsList[i].receiveAmount);
-            var equipmentDataItem={};
-            equipmentDataItem.dataDictionaryItemId= parseInt($("#equipment" + $i).find("option:selected").val());
-            ingredientsOut.ingredientsList[i].equipmentDataItem = equipmentDataItem;
-            totalPrice += parseFloat(ingredientsOut.ingredientsList[i].totalPrice);
-            totalAmount += parseFloat(ingredientsOut.ingredientsList[i].receiveAmount);
+    if(isSettled()) {
+        //获取输入的数据
+        var totalPrice = 0;
+        var totalAmount = 0;
+        if(ingredientsOut == null || ingredientsOut.ingredientsList == null){
+            ingredientsOut.ingredientsList = ingredientsOut1.ingredientsList; // 没有新增数据时将修改的数据赋给ingredientsOut
         }
-    ingredientsOut.id = $("#view-id").text();
-    ingredientsOut.totalPrice = totalPrice;
-    ingredientsOut.totalAmount = totalAmount;
-    ingredientsOut.department = $("#departmentName").val();
-    ingredientsOut.fileId = $("#fileId").val();
-    ingredientsOut.bookkeeper = $("#bookkeeper").val();
-    ingredientsOut.approver = $("#approver").val();
-    ingredientsOut.keeper = $("#keeper").val();
-    ingredientsOut.handlers = $("#handlers").val();
-    ingredientsOut.creationDate = $("#creationDate").val();
-    console.log("保存的数据为:");
-    console.log(ingredientsOut);
-    if (confirm("确认保存？")) {
-        if ($("#save").text() == "出库") {
-            //将入库单数据插入到数据库
-            $.ajax({
-                type: "POST",
-                url: "addIngredientsOut",
-                async: false,
-                data: JSON.stringify(ingredientsOut),
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (result) {
-                    if (result.status == "success") {
-                        console.log(result.message);
-                        if (confirm("出库单添加成功，是否返回上一页？"))
-                        // window.location.href = "ingredientsOut.html";
-                            history.back();
-                        else window.location.reload();
-                    } else alert(result.message);
-                },
-                error: function (result) {
-                    console.log(result.message);
-                    alert("出库单添加失败！");
-                }
-            });
-        } else if ($("#save").text() == "修改") {
-            //将入库单数据插入到数据库
-            $.ajax({
-                type: "POST",
-                url: "updateIngredientsOut",
-                async: false,
-                data: JSON.stringify(ingredientsOut),
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (result) {
-                    if (result.status == "success") {
-                        console.log(result.message);
-                        if (confirm("出库单修改成功，是否返回上一页？"))
-                        // window.location.href = "ingredientsOut.html";
-                            history.back();
-                        else window.location.reload();
-                    } else alert(result.message);
-                },
-                error: function (result) {
-                    console.log(result.message);
-                    alert("出库单修改失败！");
-                }
-            });
-        }
-    }
-    //更新领料单状态为已出库
-    for (var k = 0; k < ingredientsReceiveIdArray.length; k++) {
-        $.ajax({
-            type: "POST",
-            url: "updateIngredientsReceiveState",
-            async: false,
-            data: {
-                id: ingredientsReceiveIdArray[k]
-            },
-            dataType: "json",
-            success: function (result) {
-                if (result.status == "success")
-                    console.log(result.message);
-            },
-            error: function (result) {
-                console.log(result.message);
-                alert("领料单状态更新失败！");
+        if (ingredientsOut != null && ingredientsOut.ingredientsList != null)//如果有新添的数据则获取最新的输入数据
+            for (var i = 0; i < ingredientsOut.ingredientsList.length; i++) {
+                var $i = i + 1;
+                ingredientsOut.ingredientsList[i].id = $("#view-id").text();
+                ingredientsOut.ingredientsList[i].unitPrice = $("#unitPrice" + $i).val();
+                ingredientsOut.ingredientsList[i].receiveAmount = $("#amount" + $i).val();
+                ingredientsOut.ingredientsList[i].totalPrice = $("#totalPrice" + $i).val();
+                ingredientsOut.ingredientsList[i].post = $("#post" + $i).val();
+                ingredientsOut.ingredientsList[i].totalPrice = parseFloat(ingredientsOut.ingredientsList[i].unitPrice) * parseFloat(ingredientsOut.ingredientsList[i].receiveAmount);
+                var equipmentDataItem={};
+                equipmentDataItem.dataDictionaryItemId= parseInt($("#equipment" + $i).find("option:selected").val());
+                ingredientsOut.ingredientsList[i].equipmentDataItem = equipmentDataItem;
+                totalPrice += parseFloat(ingredientsOut.ingredientsList[i].totalPrice);
+                totalAmount += parseFloat(ingredientsOut.ingredientsList[i].receiveAmount);
             }
-        });
+        ingredientsOut.id = $("#view-id").text();
+        ingredientsOut.totalPrice = totalPrice;
+        ingredientsOut.totalAmount = totalAmount;
+        ingredientsOut.department = $("#departmentName").val();
+        ingredientsOut.fileId = $("#fileId").val();
+        ingredientsOut.bookkeeper = $("#bookkeeper").val();
+        ingredientsOut.approver = $("#approver").val();
+        ingredientsOut.keeper = $("#keeper").val();
+        ingredientsOut.handlers = $("#handlers").val();
+        ingredientsOut.creationDate = $("#creationDate").val();
+        console.log("保存的数据为:");
+        console.log(ingredientsOut);
+        if (confirm("确认保存？")) {
+            if ($("#save").text() == "出库") {
+                //将入库单数据插入到数据库
+                $.ajax({
+                    type: "POST",
+                    url: "addIngredientsOut",
+                    async: false,
+                    data: JSON.stringify(ingredientsOut),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        if (result.status == "success") {
+                            console.log(result.message);
+                            if (confirm("出库单添加成功，是否返回上一页？"))
+                            // window.location.href = "ingredientsOut.html";
+                                history.back();
+                            else window.location.reload();
+                        } else alert(result.message);
+                    },
+                    error: function (result) {
+                        console.log(result.message);
+                        alert("出库单添加失败！");
+                    }
+                });
+            } else if ($("#save").text() == "修改") {
+                //将入库单数据插入到数据库
+                $.ajax({
+                    type: "POST",
+                    url: "updateIngredientsOut",
+                    async: false,
+                    data: JSON.stringify(ingredientsOut),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        if (result.status == "success") {
+                            console.log(result.message);
+                            if (confirm("出库单修改成功，是否返回上一页？"))
+                            // window.location.href = "ingredientsOut.html";
+                                history.back();
+                            else window.location.reload();
+                        } else alert(result.message);
+                    },
+                    error: function (result) {
+                        console.log(result.message);
+                        alert("出库单修改失败！");
+                    }
+                });
+            }
+        }
+        //更新领料单状态为已出库
+        for (var k = 0; k < ingredientsReceiveIdArray.length; k++) {
+            $.ajax({
+                type: "POST",
+                url: "updateIngredientsReceiveState",
+                async: false,
+                data: {
+                    id: ingredientsReceiveIdArray[k]
+                },
+                dataType: "json",
+                success: function (result) {
+                    if (result.status == "success")
+                        console.log(result.message);
+                },
+                error: function (result) {
+                    console.log(result.message);
+                    alert("领料单状态更新失败！");
+                }
+            });
+        }
+    }else {
+
     }
 }
 
@@ -1967,22 +1978,62 @@ function print() {
 
 }
 
+/**
+ * 判定出库日期内是否结账
+ * @param item
+ */
+function isSettled() {
+    var date = $("#creationDate").val();  // 获取出库日期
+    if(date === "") {
+        date = new Date();
+    }
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "ingredientOutIsSettled",       // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            date: date
+        },
+        dataType: "json",
+        success:function (result) {
+            if (result !== undefined && result.status === "success"){
+                console.log(result.message);
+                return true;
+            }else {
+                alert(result.message);
+                $("#creationDate").val("");  // 重新输入出库时间
+                return false;
+            }
+        },
+        error:function (result) {
+            alert("结账数据获取失败,请重新进入该页面！");
+        }
+    });
+}
 
 /**
  * 单价输入框输入完成后自动计算总金额并显示
  */
-function totalCalculate() {
-    var ListCount = $("input[name^='unitPrice']").length;
-    var allTotalPrice = 0;
-    for (var i = 1; i < ListCount; i++) {
-        var $i = i;
-        var amount = $("#amount" + $i).val();
-        var unitPrice = $("#unitPrice" + $i).val();
-        var totalPrice = (parseFloat(amount) * parseFloat(unitPrice)).toFixed(2);
-        $("#totalPrice" + $i).val(totalPrice);
-        allTotalPrice += parseFloat(totalPrice);
+function totalCalculate(item) {
+    if (parseFloat($(item).val()) < 0) {
+        alert("输入数不能小于0！");
+        $(item).val(0);
+    } else {
+        var ListCount = $("input[name^='unitPrice']").length;
+        var allTotalPrice = 0;
+        var allTotalReceiveAmount = 0;
+        for (var i = 1; i < ListCount; i++) {
+            var $i = i;
+            var amount = $("#amount" + $i).val();
+            allTotalReceiveAmount += parseFloat(amount);
+            var unitPrice = $("#unitPrice" + $i).val();
+            var totalPrice = (parseFloat(amount) * parseFloat(unitPrice)).toFixed(2);
+            $("#totalPrice" + $i).val(totalPrice);
+            allTotalPrice += parseFloat(totalPrice);
+        }
+        $("#totalPrice").text(allTotalPrice.toFixed(2));
+        $("#totalReceiveAmount").text(allTotalReceiveAmount.toFixed(3));
     }
-    $("#totalPrice").text(allTotalPrice.toFixed(2));
 }
 
 /**
@@ -1990,17 +2041,22 @@ function totalCalculate() {
  * @param item
  */
 function setUnitPrice(item) {
-    var id = $(item).attr("id");   // 获取ID
-    var serialNumber = id.charAt(id.length - 1);   // 获取序号
-    var amount = parseFloat($("#amount" + serialNumber).val());
-    var totalPrice = parseFloat($(item).val());
-    $("#unitPrice" + serialNumber).val((totalPrice / amount).toFixed(3));
-    var ListCount = $("input[name^='unitPrice']").length;
-    var allTotalPrice = 0;
-    for (var i = 1; i < ListCount; i++) {
-        var $i = i;
-        allTotalPrice += parseFloat($("#totalPrice" + $i).val());
+    if (parseFloat($(item).val()) < 0) {
+        alert("输入数不能小于0！");
+        $(item).val(0);
+    } else {
+        var id = $(item).attr("id");   // 获取ID
+        var serialNumber = id.charAt(id.length - 1);   // 获取序号
+        var amount = parseFloat($("#amount" + serialNumber).val());
+        var totalPrice = parseFloat($(item).val());
+        $("#unitPrice" + serialNumber).val((totalPrice / amount).toFixed(3));
+        var ListCount = $("input[name^='unitPrice']").length;
+        var allTotalPrice = 0;
+        for (var i = 1; i < ListCount; i++) {
+            var $i = i;
+            allTotalPrice += parseFloat($("#totalPrice" + $i).val());
+        }
+        $("#totalPrice").text(allTotalPrice.toFixed(2));
     }
-    $("#totalPrice").text(allTotalPrice.toFixed(2));
 }
 

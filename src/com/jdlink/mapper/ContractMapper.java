@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+
 
 /**
  * Created by matt on 2018/4/23.
@@ -183,6 +183,9 @@ public interface ContractMapper {
 
     int searchOtherContractCount(Contract contract);
 
-
+    /**
+     * 获取合同条目（包含理化性质）
+     */
+    List<QuotationItem> getQuotationItemList();
 
  }

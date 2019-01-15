@@ -143,7 +143,7 @@
                 <div class="pull-left col-md-6">
                     <a class="btn btn-primary btn-xs" id="function_-335" href="#" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; addIngredientsIn();}"><span
                             class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                    <a class="btn btn-primary btn-xs" id="function_" href="#" onclick="addRedIngredientsIn();" hidden><span
+                    <a class="btn btn-primary btn-xs" id="function_" href="#" onclick="addRedIngredientsIn();" ><span
                             class="glyphicon glyphicon-plus" aria-hidden="true"></span> 红字入库单</a>
                     <a class="btn btn-primary btn-xs" href="ingredientsIn.html"><span
                             class="glyphicon glyphicon-chevron-left" href="ingredientsIn.html" id="function_-336" onclick="checkAuthority($(this))" aria-hidden="true"></span> 归类入库单</a>
@@ -250,6 +250,16 @@
                                     <input type="date" class="input-sm form-control" id="search-endDate" title=""
                                            onkeydown="enterSearch()"/>
                                 </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-2"></div>
+                    <div class="form-horizontal col-md-4">
+                        <div class="form-group">
+                            <label for="search-amount" class="col-sm-4 control-label">数量</label>
+                            <div class="col-xs-7">
+                                <input type="number" class="form-control" id="search-amount"
+                                       name="search-amount" placeholder="" onkeydown="enterSearch()">
+                            </div>
                         </div>
                     </div>
                 </div>

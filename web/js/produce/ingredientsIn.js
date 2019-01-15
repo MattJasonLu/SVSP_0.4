@@ -384,8 +384,8 @@ function setIngredientsInList(result) {
                     break;
                 case (3):
                     // 入库单状态
-                    if (obj.state != null)
-                        $(this).html(obj.state.name);
+                    if (obj.checkStateItem != null)
+                        $(this).html(obj.checkStateItem.dictionaryItemName);
                     break;
                 case (4):
                     // 总金额
@@ -1556,16 +1556,18 @@ function setProcurementItemList(result) {
     console.log("数据为：");
     console.log(result);
     var tr = $("#cloneTr1");
-    tr.siblings().remove();
+    $(".newLine").remove();   // 删除旧数据
+    var totalDemandQuantity = 0;
     $.each(result.data, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
-        if (item.state == null || item.state.name != "待领料") {
+        if (item.state == null || item.state.name !== "待领料") {
             var clonedTr = tr.clone();
             clonedTr.show();
             // 循环遍历cloneTr的每一个td元素，并赋值
+            var obj = eval(item);
+            totalDemandQuantity += parseFloat(obj.demandQuantity.toFixed(3));
             clonedTr.children("td").each(function (inner_index) {
                 //1生成领料单号
-                var obj = eval(item);
                 // 根据索引为部分td赋值
                 switch (inner_index) {
                     // 申请单编号
@@ -1591,7 +1593,7 @@ function setProcurementItemList(result) {
                         break;
                     // 需求数量
                     case (6):
-                        $(this).html(obj.demandQuantity.toFixed(2));
+                        $(this).html(obj.demandQuantity.toFixed(3));
                         break;
                     // 备注
                     case (7):
@@ -1609,12 +1611,13 @@ function setProcurementItemList(result) {
             });
             // 把克隆好的tr追加到原来的tr前面
             clonedTr.insertBefore(tr);
+            clonedTr.addClass("newLine");
             clonedTr.removeAttr('id');
         }
-
     });
     // 隐藏无数据的tr
     tr.hide();
+    $("#totalDemandQuantity").text(totalDemandQuantity.toFixed(3));
 }
 
 /**
@@ -1886,7 +1889,7 @@ function save() {
                     if (result.status == "success") {
                         console.log(result.message);
                         if (confirm("入库单添加成功，是否返回主页面？"))
-                            window.location.href = "ingredientsIn.html";
+                            window.location.href = "ingredientsInDetial.html";
                         else window.location.reload();
                     } else alert(result.message);
                 },

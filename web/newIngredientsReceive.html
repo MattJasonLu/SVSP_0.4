@@ -214,6 +214,26 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-4">
+                        <div class="form-group">
+                            <label for="search1-amount" class="col-sm-4 control-label">库存量</label>
+                            <div class="col-xs-7">
+                                <input type="number" class="form-control" id="search1-amount"
+                                       name="search1-amount" placeholder="" onkeydown="enterSearch1()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-4">
+                        <div class="form-group">
+                            <label for="search1-inAmount" class="col-sm-4 control-label">入库数</label>
+                            <div class="col-xs-7">
+                                <input type="number" class="form-control" id="search1-inAmount"
+                                       name="search1-inAmount" placeholder="" onkeydown="enterSearch1()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <h4 class="text-center">&nbsp;&nbsp;&nbsp;&nbsp;库存列表</h4>
@@ -251,6 +271,19 @@
                     <td class="text-center" name="inId"></td>
                     <td class="text-center" name="inAmount"></td>
                     <td class="text-center" name="inPrice"></td>
+                </tr>
+                <tr >
+                    <th class="text-center" ></th>
+                    <th class="text-center" ></th>
+                    <th class="text-center" ></th>
+                    <th class="text-center" ></th>
+                    <th class="text-center" ></th>
+                    <th class="text-center" >合计</th>
+                    <th class="text-center" id="totalWareHouseAmount"></th>
+                    <th class="text-center" ></th>
+                    <th class="text-center" ></th>
+                    <th class="text-center" id="totalInAmount"></th>
+                    <th class="text-center" ></th>
                 </tr>
                 </tbody>
             </table>

@@ -1597,5 +1597,49 @@ function print() {
         // printDelay: 333,      // 布局完打印页面之后与真正执行打印功能中间的间隔
         // copyTagClasses: true
     });
+}
 
+/**
+ * 确认结账功能(锁定)
+ * @constructor
+ */
+function settled() {
+    var items = $("input[name='select']:checked");//判断复选框是否选中
+    if(items.length <= 0){
+        alert("请勾选需要结账的数据!");
+    }else {
+        if(confirm("确定结账?")){
+            //点击确定后操作
+            var outIdList = [];
+            $(items).each(function () {
+                if($(this).parent().parent().next().html().length > 0){
+                    var ingredientsOutId = $(this).parent().parent().next().html();
+                    outIdList.push(ingredientsOutId);
+                }
+            });
+            var ingredientsOut1 = {};
+            ingredientsOut1.receiveIdList = [];
+            ingredientsOut1.receiveIdList = outIdList;
+            console.log(ingredientsOut1);
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "ingredientOutSettled",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(ingredientsOut1),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success:function (result) {
+                    if (result !== undefined && result.status === "success"){
+                        alert(result.message);
+                        window.location.reload();
+                    }else {
+                        alert(result.message);
+                    }
+                },
+                error:function (result) {
+                    alert("服务器错误！");
+                }
+            });
+        }
+    }
 }

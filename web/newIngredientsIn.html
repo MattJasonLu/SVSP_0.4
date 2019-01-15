@@ -224,6 +224,17 @@
                     <td class="text-center" name="state"></td>
                     <td class="text-center" hidden name="id"></td>
                 </tr>
+                <tr>
+                    <th class="text-center"></th>
+                    <th class="text-center"></th>
+                    <th class="text-center"></th>
+                    <th class="text-center"></th>
+                    <th class="text-center">合计</th>
+                    <th class="text-center"></th>
+                    <th class="text-center" id="totalDemandQuantity"></th>
+                    <th class="text-center"></th>
+                    <th class="text-center"></th>
+                </tr>
                 </tbody>
             </table>
             <!--分页-->
@@ -280,7 +291,7 @@
                     <th class="text-center">日期:</th>
                     <th colspan="2" class="text-center"><input type="date" class="text-left form-control" id="creationDate"></th>
                     <th class="text-center">文件编号:</th>
-                    <th colspan="2" class="text-right"><input title="" style="display: inline" type="text" class="form-control" id="fileId"></th>
+                    <th colspan="3" class="text-right"><input title="" style="display: inline" type="text" class="form-control" id="fileId"></th>
                 </tr>
                 </thead>
                 <tbody id="tbody1">
@@ -296,6 +307,7 @@
                     <td class="text-center" rowspan="1">过账</td>
                     <td class="text-center" rowspan="1">附注</td>
                     <td class="text-center" rowspan="1">仓库<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></td>
+                    <th class="text-center">税率</th>
                     <!--<td class="text-center" rowspan="2">处置设备</td>-->
                     <td class="text-center" rowspan="1" hidden>采购单编号</td>
                 </tr>
@@ -332,10 +344,11 @@
                     <!--<td class="text-center"><span id="fen0"></span></td>-->
                     <td class="text-center"><input title="" type="text" class="form-control text-center" name="post"
                                                    id="post0"></td>
-                    <td class="text-center"><span name="remarks" id="remarks0"></span></td>
+                    <td class="text-center"><span class="focus" name="remarks" id="remarks0"></span></td>
                     <td class="text-center"><select class="focus text-center"
                                                     id="wareHouseName0" name="wareHouseName" required onchange="setWareHouse(this)"></select>
                     </td>
+                    <td class="text-right"><select name="rate" class="focus text-center"></select></td>
                     <!--<td class="text-center"><select id="equipment0" name="equipment" class="focus"></select></td>-->
                     <td class="text-center"  hidden><span id="procurementId0" name="procurementId"></span></td>
                 </tr>
@@ -352,7 +365,7 @@
                     <td class="text-center" id="totalPrice"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
                 </tr>
                 <tr>
                     <td class="text-left" colspan="4"><p style="display:inline;">记账人：<input style="display: inline;width: 60px" title="" class="form-control" type="text"
@@ -365,7 +378,7 @@
                     <td class="text-left" colspan="2" style="width: 150px;"><p style="display: inline">验收人：<input style="display:inline;;width: 60px" title=""
                                                                                        class="form-control" type="text"
                                                                                        maxlength="4" id="acceptor"></p></td>
-                    <td class="text-left"><p style="display: inline">经手人：<input style="display:inline;width: 60px" title="" class="form-control" type="text"
+                    <td class="text-left" colspan="2"><p style="display: inline">经手人：<input style="display:inline;width: 60px" title="" class="form-control" type="text"
                                                                  maxlength="4" id="handlers"></p></td>
                 </tr>
                 </tbody>

@@ -300,9 +300,9 @@ public class PRIngredientsController {
                 ingredients.setUnit(data[i][14].toString());
                 // 根据计量单位名称获取计量单位数据字典ID 并设置
                 UnitDataItem unitDataItem = new UnitDataItem();
-                if (data[i][14].toString() != null && !data[i][14].toString().equals("") && !data[i][14].toString().equals("null")){
+                if (data[i][14].toString() != null && !data[i][14].toString().equals("") && !data[i][14].toString().equals("null")) {
                     DataDictionaryItem item = dictionaryService.getDatadictionaryItemByName(data[i][14].toString(), 25);
-                    if(item != null){
+                    if (item != null) {
                         unitDataItem.setDataDictionaryItemId(item.getDataDictionaryItemId());
                     }
                 }
@@ -339,9 +339,9 @@ public class PRIngredientsController {
                 }
                 EquipmentDataItem equipmentDataItem = new EquipmentDataItem();
                 // 设置处置设备字典ID：根据处置设备的名称获取字典ID并设置
-                if (data[i][16].toString() != null && !data[i][16].toString().equals("") && !data[i][16].toString().equals("null")){
+                if (data[i][16].toString() != null && !data[i][16].toString().equals("") && !data[i][16].toString().equals("null")) {
                     DataDictionaryItem item = dictionaryService.getDatadictionaryItemByName(data[i][16].toString(), 5);
-                    if(item != null){
+                    if (item != null) {
                         equipmentDataItem.setDataDictionaryItemId(item.getDataDictionaryItemId());
                     }
                 }
@@ -638,7 +638,7 @@ public class PRIngredientsController {
     public String addIngredientsReceive(@RequestBody IngredientsReceive ingredientsReceive) {
         JSONObject res = new JSONObject();
         try {
-            if(ingredientsReceive.getCreationDate() == null) {
+            if (ingredientsReceive.getCreationDate() == null) {
                 ingredientsReceive.setCreationDate(new Date());
             }
             ingredientsService.addAllReceive(ingredientsReceive);
@@ -1593,7 +1593,62 @@ public class PRIngredientsController {
         }
     }
 
+    /**
+     * 结账功能
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("ingredientOutSettled")
+    @ResponseBody
+    public String ingredientOutSettled(@RequestBody IngredientsOut ingredientsOut) {
+        JSONObject res = new JSONObject();
+        try {
+            ingredientsService.outSettled(ingredientsOut);
+            res.put("status", "success");
+            res.put("message", "出库单锁定成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "出库单锁定失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 根据时间判定该月的数据是否结账（锁定）
+     *
+     * @param date
+     * @return
+     */
+    @RequestMapping("ingredientOutIsSettled")
+    @ResponseBody
+    public String isSettled(Date date) {
+        JSONObject res = new JSONObject();
+        try {
+            if(date == null){   // 如果出库日期为空则赋值为当前日期
+                date = new Date();
+            }
+            List<String> stringList=ingredientsService.getDateBbySettled();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");  // 获取出库时间的年月份
+            String yearAndMouth = sdf.format(date);
+            if (stringList.contains(yearAndMouth)) {
+                res.put("message", "无法出库,"+ yearAndMouth + "月份出库单已结账");
+                res.put("status", "fail");
+            }else {
+                res.put("message","可以出库！");
+                res.put("status", "success");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "结账数据获取失败！");
+        }
+        return res.toString();
+    }
+
     //////////////辅料备件物品维护
+
     /**
      * 获取辅料备件物品分页数据
      *
@@ -1731,9 +1786,9 @@ public class PRIngredientsController {
     public String addIngredient(@RequestBody IngredientsIn ingredientsIn) {
         JSONObject res = new JSONObject();
         try {
-            for(Ingredients ingredients : ingredientsIn.getIngredientsList()){
+            for (Ingredients ingredients : ingredientsIn.getIngredientsList()) {
                 Ingredients ingredients1 = ingredientsService.getIngredientByNameAndSpecification(ingredients);
-                if(ingredients1 != null){
+                if (ingredients1 != null) {
                     res.put("status", "fail");
                     res.put("message", ingredients.getName() + "已存在!");
                 } else {   // 如果物品不存在则新增
@@ -1790,8 +1845,8 @@ public class PRIngredientsController {
                 ingredients.setSpecification(data[i][3].toString());//规格
                 // 根据名称和规格获取对象
                 Ingredients ingredients1 = ingredientsService.getIngredientByNameAndSpecification(ingredients);
-                if(ingredients1 == null){   // 不存在该物品则新增
-                   ingredientsService.addIngredient(ingredients);
+                if (ingredients1 == null) {   // 不存在该物品则新增
+                    ingredientsService.addIngredient(ingredients);
                 }
                 }
             }
@@ -1861,6 +1916,7 @@ public class PRIngredientsController {
 
     /**
      * 根据物品编码获取对象
+     *
      * @param code
      * @return
      */
@@ -1873,6 +1929,7 @@ public class PRIngredientsController {
 
     /**
      * 根据前两位编码获取最新的物品编码
+     *
      * @param type
      * @return
      */
@@ -1883,11 +1940,11 @@ public class PRIngredientsController {
         String code = "";
         String count1 = count + "";
         int length = count1.length();  // 获取数量位数
-        for(int i = 0; i < (6 - length); i++) {
+        for (int i = 0; i < (6 - length); i++) {
             count1 = "0" + count1;
         }
         code = type + count1;
-        while (ingredientsService.getCountByCode(code) > 0){   // 如果存在就一直加1
+        while (ingredientsService.getCountByCode(code) > 0) {   // 如果存在就一直加1
             int index = Integer.parseInt(code);
             index += 1;
             code = index + "";
@@ -1900,16 +1957,16 @@ public class PRIngredientsController {
      */
     @RequestMapping("setInventory")
     @ResponseBody
-    public void setInventory(){
-      //  ingredientsService.deleteInventory();    // 删除原库存。
+    public void setInventory() {
+        //  ingredientsService.deleteInventory();    // 删除原库存。
         Page page = new Page();
         page.setStart(0);
         page.setCount(0);
-      //  List<Ingredients> ingredientsList = ingredientsService.listPageInItem(page);
+        //  List<Ingredients> ingredientsList = ingredientsService.listPageInItem(page);
         Ingredients ingredients2 = new Ingredients();
         ingredients2.setId("20171200041");
         List<Ingredients> ingredientsList = ingredientsService.searchInItem(ingredients2);
-        for(Ingredients ingredients : ingredientsList) {
+        for (Ingredients ingredients : ingredientsList) {
             Ingredients ingredients1 = new Ingredients();
             ingredients1.setCode(ingredients.getCode());
             ingredients1.setName(ingredients.getName());
