@@ -1422,7 +1422,7 @@
 
     <update id="updateIngredient" parameterType="Ingredients">
         update t_pl_ingredientslist
-        set ingredientsName=#{name},code=#{code},specification=#{specification} where id=#{id};
+        set ingredientsName=#{name},code=#{code},specification=#{specification},materialCategoryId=#{materialCategoryItem.dataDictionaryItemId},unitId=#{unitDataItem.dataDictionaryItemId} where id=#{id};
     </update>
 
     <delete id="deleteIngredient" parameterType="int">

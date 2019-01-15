@@ -532,6 +532,67 @@ function deleteIngredient(e) {
  * @param e
  */
 function edit(e) {
+
+    //单位
+    $.ajax({
+        type:'POST',
+        url:"getUnitByDataDictionary",
+        //data:JSON.stringify(data),
+        dataType: "json",
+        async: false,
+        contentType: "application/json;charset=utf-8",
+        success: function (result){
+            if (result != undefined){
+                console.log(result);
+                var unit=$('#modify_unit');
+                unit.children().remove();
+                $.each(result.data,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    unit.append(option);
+                });
+                unit.get(0).selectedIndex=0;
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
+
+    });
+    //物资类别
+    $.ajax({
+        type:'POST',
+        url:"getMaterialCategoryByDataDictionary",
+        //data:JSON.stringify(data),
+        dataType: "json",
+        async: false,
+        contentType: "application/json;charset=utf-8",
+        success: function (result){
+            if (result != undefined){
+                console.log(result);
+                var materialCategoryItem=$('#modify_materialCategoryItem');
+                materialCategoryItem.children().remove();
+                $.each(result.data,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    materialCategoryItem.append(option);
+                });
+                materialCategoryItem.get(0).selectedIndex=0;
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
+
+    });
     var id = parseInt(getIngredientId(e));  // 获取ID
     $.ajax({
         type: "POST",
@@ -544,11 +605,18 @@ function edit(e) {
         success: function (result) {
             if (result.status == "success" && result.data != null) {
                 var data = result.data;
+                console.log(data)
                 // 设置数据
                 $("#modify_id").text(data.id);
                 $("#modify_name").val(data.name);
                 $("#modify_code").val(data.code);
                 $("#modify_specification").val(data.specification);
+                if(data.materialCategoryItem!=null){
+                    $("#modify_materialCategoryItem").val(data.materialCategoryItem.dataDictionaryItemId);
+                }
+                if(data.unitDataItem!=null){
+                    $("#modify_unit").val(data.unitDataItem.dataDictionaryItemId);
+                }
                 $("#modifyModal").modal('show');
             } else {
                 alert(result.message);
@@ -570,6 +638,12 @@ function modify() {
     ingredient.name = $("#modify_name").val();
     ingredient.code = $("#modify_code").val();
     ingredient.specification = $("#modify_specification").val();
+    var materialCategoryItem={};
+    materialCategoryItem.dataDictionaryItemId=$("#modify_materialCategoryItem").val();
+    ingredient.materialCategoryItem=materialCategoryItem;
+    var unitDataItem={};
+    unitDataItem.dataDictionaryItemId=$("#modify_unit").val();
+    ingredient.unitDataItem=unitDataItem;
     $.ajax({
         type: "POST",
         url: "updateIngredient",
