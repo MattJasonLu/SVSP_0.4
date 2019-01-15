@@ -226,4 +226,14 @@ public class ProductionDailyServiceImpl implements ProductionDailyService
     public void updateSampleSoftTest(SoftTest softTest) {
         productionDailyMapper.updateSampleSoftTest(softTest);
     }
+
+    @Override
+    public void updateSewaGeregistration(Sewageregistration sewageregistration) {
+        productionDailyMapper.updateSewaGeregistration(sewageregistration);
+    }
+
+    @Override
+    public void updateSewaGeregistrationItem(SewageregistrationItem sewageregistrationItem) {
+        productionDailyMapper.updateSewaGeregistrationItem(sewageregistrationItem);
+    }
 }

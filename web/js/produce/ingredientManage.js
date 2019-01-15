@@ -316,6 +316,40 @@ function loadPageIngredientList() {
         }
     });
     isSearch = false;
+    setSeniorSelectedList();
+}
+
+/*高级查询下拉框设置*/
+
+function setSeniorSelectedList() {
+    //运输方式
+    $.ajax({
+        type: 'POST',
+        url: "getMaterialCategoryByDataDictionary",
+        async: false,
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                // console.log(result);
+                var materialCategoryItem = $('#search-materialCategoryItem');
+                materialCategoryItem.children().remove();
+                $.each(result.data, function (index, item) {
+                    var option = $('<option/>');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    materialCategoryItem.append(option);
+                });
+                materialCategoryItem.get(0).selectedIndex = -1;
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
 }
 
 /**
@@ -365,6 +399,18 @@ function setIngredientList(result) {
                 case (3):
                     // 规格型号
                     $(this).html(obj.specification);
+                    break;
+                    //单位
+                case (4):
+                    if(obj.unitDataItem!=null){
+                        $(this).html(obj.unitDataItem.dictionaryItemName);
+                    }
+                    break;
+                    //物资类别
+                case (5):
+                    if(obj.materialCategoryItem!=null){
+                        $(this).html(obj.materialCategoryItem.dictionaryItemName);
+                    }
                     break;
             }
         });
@@ -486,6 +532,67 @@ function deleteIngredient(e) {
  * @param e
  */
 function edit(e) {
+
+    //单位
+    $.ajax({
+        type:'POST',
+        url:"getUnitByDataDictionary",
+        //data:JSON.stringify(data),
+        dataType: "json",
+        async: false,
+        contentType: "application/json;charset=utf-8",
+        success: function (result){
+            if (result != undefined){
+                console.log(result);
+                var unit=$('#modify_unit');
+                unit.children().remove();
+                $.each(result.data,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    unit.append(option);
+                });
+                unit.get(0).selectedIndex=0;
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
+
+    });
+    //物资类别
+    $.ajax({
+        type:'POST',
+        url:"getMaterialCategoryByDataDictionary",
+        //data:JSON.stringify(data),
+        dataType: "json",
+        async: false,
+        contentType: "application/json;charset=utf-8",
+        success: function (result){
+            if (result != undefined){
+                console.log(result);
+                var materialCategoryItem=$('#modify_materialCategoryItem');
+                materialCategoryItem.children().remove();
+                $.each(result.data,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    materialCategoryItem.append(option);
+                });
+                materialCategoryItem.get(0).selectedIndex=0;
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
+
+    });
     var id = parseInt(getIngredientId(e));  // 获取ID
     $.ajax({
         type: "POST",
@@ -498,11 +605,18 @@ function edit(e) {
         success: function (result) {
             if (result.status == "success" && result.data != null) {
                 var data = result.data;
+                console.log(data)
                 // 设置数据
                 $("#modify_id").text(data.id);
                 $("#modify_name").val(data.name);
                 $("#modify_code").val(data.code);
                 $("#modify_specification").val(data.specification);
+                if(data.materialCategoryItem!=null){
+                    $("#modify_materialCategoryItem").val(data.materialCategoryItem.dataDictionaryItemId);
+                }
+                if(data.unitDataItem!=null){
+                    $("#modify_unit").val(data.unitDataItem.dataDictionaryItemId);
+                }
                 $("#modifyModal").modal('show');
             } else {
                 alert(result.message);
@@ -524,6 +638,12 @@ function modify() {
     ingredient.name = $("#modify_name").val();
     ingredient.code = $("#modify_code").val();
     ingredient.specification = $("#modify_specification").val();
+    var materialCategoryItem={};
+    materialCategoryItem.dataDictionaryItemId=$("#modify_materialCategoryItem").val();
+    ingredient.materialCategoryItem=materialCategoryItem;
+    var unitDataItem={};
+    unitDataItem.dataDictionaryItemId=$("#modify_unit").val();
+    ingredient.unitDataItem=unitDataItem;
     $.ajax({
         type: "POST",
         url: "updateIngredient",
@@ -586,7 +706,8 @@ function searchIngredient() {
             name: $("#search-name").val(),
             code: $.trim($("#search-code").val()),
             specification: $.trim($("#search-specification").val()),
-            page: page
+            page: page,
+            materialCategoryItem:{dataDictionaryItemId:$('#search-materialCategoryItem').val()}
         };
     } else {
         data1 = {
@@ -626,6 +747,68 @@ function searchIngredient() {
  */
 function add() {
     $("#modalId").modal('show');
+    /*下拉框设置*/
+//单位
+    $.ajax({
+        type:'POST',
+        url:"getUnitByDataDictionary",
+        //data:JSON.stringify(data),
+        dataType: "json",
+        async: false,
+        contentType: "application/json;charset=utf-8",
+        success: function (result){
+            if (result != undefined){
+                console.log(result);
+                var unit=$('#add_unitDataItem0');
+                unit.children().remove();
+                $.each(result.data,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    unit.append(option);
+                });
+                unit.get(0).selectedIndex=0;
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
+
+    });
+    //物资类别
+    $.ajax({
+        type:'POST',
+        url:"getMaterialCategoryByDataDictionary",
+        //data:JSON.stringify(data),
+        dataType: "json",
+        async: false,
+        contentType: "application/json;charset=utf-8",
+        success: function (result){
+            if (result != undefined){
+                console.log(result);
+                var materialCategoryItem=$('#add_materialCategoryItem0');
+                materialCategoryItem.children().remove();
+                $.each(result.data,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    materialCategoryItem.append(option);
+                });
+                materialCategoryItem.get(0).selectedIndex=0;
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
+
+    });
+
 }
 
 /**
@@ -641,6 +824,12 @@ function save() {
         ingredient.name = $("#add_name" + $i).val();
         ingredient.code = $("#add_code" + $i).val();
         ingredient.specification = $("#add_specification" + $i).val();
+        var unitDataItem={};
+        unitDataItem.dataDictionaryItemId=$("#add_unitDataItem" + $i).val();
+        ingredient.unitDataItem=unitDataItem;
+        var materialCategoryItem={};
+        materialCategoryItem.dataDictionaryItemId=$("#add_materialCategoryItem" + $i).val();
+        ingredient.materialCategoryItem=materialCategoryItem;
         ingredientsIn.ingredientsList.push(ingredient);
     }
     $.ajax({

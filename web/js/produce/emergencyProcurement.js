@@ -540,7 +540,7 @@ function saveEmer() {
             generalManager:$('#generalManager').val(),
             procurementCategory:0,//代表是应急采购
             materialCategoryItem:{dataDictionaryItemId:$('#materialCategoryItem').val()},
-            nonMaterial:true,
+            nonMaterial:false,//代表物资
         }
         //执行添加到后台的ajax
         $.ajax({

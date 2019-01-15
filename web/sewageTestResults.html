@@ -220,10 +220,10 @@
                                 <div class="col-xs-7">
                                     <select type="text" class="form-control" id="search-checkState" name="search-laboratoryDate"  onchange="searchData();">
                                           <option></option>
-                                        <option>待提交</option>
-                                        <option>已提交</option>
-                                        <option>已作废</option>
-                                        <option>已确认</option>
+                                        <option value="64">待提交</option>
+                                        <option value="73">已提交</option>
+                                        <option value="69">已作废</option>
+                                        <option value="74">已确认</option>
                                     </select>
                                 </div>
                             </div>
@@ -909,7 +909,6 @@
                                 <th>采样点</th>
                                 <th>PH</th>
                                 <th>COD</th>
-                                <th>BOD5</th>
                                 <th>氨氮</th>
                                 <th>碳酸盐碱度(Cao)</th>
                                 <th>碳酸盐碱度(CaCo3)</th>
@@ -917,6 +916,7 @@
                                 <th>重碳酸盐碱度(Cao)</th>
                                 <th>重碳酸盐碱度(CaCo3)</th>
                                 <th>重碳酸盐碱度(HCO3-)</th>
+                                <th>BOD5</th>
                                 <th>总氮</th>
                                 <th>总磷	</th>
                                 <th>备注</th>
@@ -928,7 +928,6 @@
                                 <td><input class="form-control" name="produceCompany" type="text" id="address"></td>
                                 <td><input class="form-control" name="wastesName" id="ph"></td>
                                 <td><input class="form-control" name="wastesCode" id="COD"></td>
-                                <td><input class="form-control" name="formType" id="BOD5"></td>
                                 <td><input class="form-control" name="remark" id="N2" ></td>
                                 <td><input class="form-control" name="remark" id="alkalinity"></td>
                                 <td><input class="form-control" name="remark" id="alkalinityCaCo3"></td>
@@ -936,6 +935,7 @@
                                 <td><input class="form-control" name="remark" id="bicarbonate"></td>
                                 <td><input class="form-control" name="remark" id="bicarbonateCaCo3"></td>
                                 <td><input class="form-control" name="remark" id="bicarbonateHCO3"></td>
+                                <td><input class="form-control" name="formType" id="BOD5"></td>
                                 <td><input class="form-control" name="remark" id="nitrogen"></td>
                                 <td><input class="form-control" name="remark" id="phosphorus"></td>
                                 <td><input class="form-control" name="remark" id="remarks"></td>

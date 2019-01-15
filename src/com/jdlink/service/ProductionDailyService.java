@@ -139,4 +139,8 @@ public interface ProductionDailyService {
     void sampleTestSoft(String id, String address);
 
     void updateSampleSoftTest(SoftTest softTest);
+
+    void updateSewaGeregistration(Sewageregistration sewageregistration);
+
+    void updateSewaGeregistrationItem(SewageregistrationItem sewageregistrationItem);
 }

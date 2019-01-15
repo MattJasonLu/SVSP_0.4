@@ -4,6 +4,7 @@ import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Dictionary.DataDictionaryItem;
 import com.jdlink.domain.Dictionary.EquipmentDataItem;
+import com.jdlink.domain.Dictionary.MaterialCategoryItem;
 import com.jdlink.domain.Dictionary.UnitDataItem;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
@@ -1831,6 +1832,15 @@ public class PRIngredientsController {
 
                 Ingredients ingredients = new Ingredients();
                 ingredients.setName(data[i][2].toString());//名称
+                MaterialCategoryItem materialCategoryItem=new MaterialCategoryItem();
+                 int materialCategoryId=dictionaryService.getdatadictionaryitemIdByName(data[i][1].toString(),28);
+                    materialCategoryItem.setDataDictionaryItemId(materialCategoryId);
+                ingredients.setMaterialCategoryItem(materialCategoryItem);
+                UnitDataItem unitDataItem=new UnitDataItem();
+                 int unitId=dictionaryService.getdatadictionaryitemIdByName(data[i][4].toString(),25);
+                    unitDataItem.setDataDictionaryItemId(unitId);
+                    ingredients.setUnitDataItem(unitDataItem);
+
                 ingredients.setCode(data[i][0].toString());//编码
                 ingredients.setSpecification(data[i][3].toString());//规格
                 // 根据名称和规格获取对象

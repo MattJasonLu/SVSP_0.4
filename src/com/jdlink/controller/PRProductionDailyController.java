@@ -855,7 +855,11 @@ public class PRProductionDailyController {
                         productionDailyService.addSewaGeregistrationItem(sewageregistrationItem);
 
                 } else {
-                    throw new DuplicateKeyException("预约单号重复，请检查后导入");
+                    productionDailyService.updateSewaGeregistration(sewageregistration);
+//                    throw new DuplicateKeyException("预约单号重复，请检查后导入");
+                    for (SewageregistrationItem sewageregistrationItem : sewageregistration.getSewageregistrationItemList())
+                        productionDailyService.updateSewaGeregistrationItem(sewageregistrationItem);
+
                 }
             }
             res.put("status", "success");

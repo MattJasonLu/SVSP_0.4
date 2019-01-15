@@ -396,13 +396,14 @@ function setSoftTestList(result) {
                         $(this).html(setNumber2Line(parseFloat(obj.electricalConductivity).toFixed(2)));
                     break;
                 case (7):
+                    // 酚酞碱度
+                    $(this).html(setNumber2Line(parseFloat(obj.phenolphthalein).toFixed(2)));
+                    break;
+                case (8):
                     // 全碱度
                         $(this).html(setNumber2Line(parseFloat(obj.basicity).toFixed(2)));
                     break;
-                case (8):
-                    // 酚酞碱度
-                        $(this).html(setNumber2Line(parseFloat(obj.phenolphthalein).toFixed(2)));
-                    break;
+
                 case (9):
                     // 备注
                     $(this).html(obj.remarks);
