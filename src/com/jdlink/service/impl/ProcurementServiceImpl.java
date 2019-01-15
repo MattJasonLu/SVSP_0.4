@@ -256,6 +256,21 @@ public class ProcurementServiceImpl implements ProcurementService {
     }
 
     @Override
+    public void updateApplyMouth(String procurementPlanId, String applyMouth) {
+        procurementMapper.updateApplyMouth(procurementPlanId, applyMouth);
+    }
+
+    @Override
+    public List<ProcurementPlanItem> loadPageProcurementTotal(Page page) {
+        return procurementMapper.loadPageProcurementTotal(page);
+    }
+
+    @Override
+    public int loadPageProcurementTotalCount() {
+        return procurementMapper.loadPageProcurementTotalCount();
+    }
+
+    @Override
     public List<Material> searchMaterial(Material material){ return procurementMapper.searchMaterial(material);}
 
     @Override

@@ -57,7 +57,7 @@
         select  * from datadictionaryitem where  dataDictionaryItemId=#{checkStateId}
     </select>
     <select id="getSecondarysampleItem" resultType="SecondarySampleItem">
-        select  * from t_pr_secondarysampleitem where sampleinformationId=#{id};
+        select  * from t_pr_secondarysampleitem where sampleinformationId=#{id} limit 0,1;
     </select>
 <!--根据编号获取对象-->
     <select id="getSecondarysampleById" parameterType="String" resultMap="SecondarysampleRM">

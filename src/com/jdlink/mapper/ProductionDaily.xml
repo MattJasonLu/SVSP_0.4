@@ -811,7 +811,7 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
         select * from datadictionaryitem where dataDictionaryItemId=#{softPointId}
     </select>
     <select id="getSoftgeregistrationItem" resultType="SewageregistrationItem"   parameterType="String">
-    select * from t_pr_softgeregistrationitem where sampleinformationId=#{id};
+    select * from t_pr_softgeregistrationitem where sampleinformationId=#{id} limit 0,1;
     </select>
     <!--获取污水送样登记-->
     <select id="sewageList" resultMap="SewageregistrationRM">
@@ -832,7 +832,7 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
     </select>
 
     <select id="getSewageregistrationItem" parameterType="String" resultType="SewageregistrationItem">
-        select  * from t_pr_sewageregistrationitem where sampleinformationId=#{id};
+        select  * from t_pr_sewageregistrationitem where sampleinformationId=#{id} limit 0,1;
     </select>
 
     <!--根据编号获取污水登记信息-->

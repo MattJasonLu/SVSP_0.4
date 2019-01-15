@@ -220,6 +220,19 @@ public class Client {
      */
     private ClientStateItem clientStateItem;
 
+    /*库容==>
+    *
+    * */
+    private float capacity;
+
+    public float getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(float capacity) {
+        this.capacity = capacity;
+    }
+
     public ApplicationStatusItem getApplicationStatusItem() {
         return applicationStatusItem;
     }

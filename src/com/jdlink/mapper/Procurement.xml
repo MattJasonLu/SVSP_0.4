@@ -332,6 +332,11 @@
       (#{procurementPlanId},#{createName},NOW(),#{adjustName},#{adjustDate},#{approvalName},'ToSubmit',NOW(),64,#{applyMouth});
     </insert>
 
+    <!--更新主表的申请月份-->
+    <update id="updateApplyMouth" >
+        update t_pr_procumentplan set applyMouth=#{1} where procurementPlanId=#{0}
+    </update>
+
 <!--根据主键查出申购部门-->
     <select id="getApplyDepartmentByReceiptNumber" parameterType="String" resultType="String">
         select applyDepartment from t_pl_procurement where receiptNumber=#{receiptNumber}
@@ -377,10 +382,26 @@
             limit #{page.start}, #{page.count}
         </if>
     </select>
+
     <!--通过编号获取采购计划单条目对象-->
     <select id="getProcurementPlanItemById" resultMap="ProcurementPlanItemRM">
-        select * from t_pr_procumentplanitem where id=#{id};
+        select * from t_pr_procumentplanitem where id=#{id}
     </select>
+
+    <!--获取采购计划单明细++>采购计划费用汇总表加载页面-->
+    <select id="loadPageProcurementTotal" resultMap="ProcurementPlanItemRM">
+        select * from t_pr_procumentplanitem
+        <if test="start != null and count != null and count != 0">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <!--获取采购计划明细总数-->
+    <select id="loadPageProcurementTotalCount" resultType="int">
+        select count(*) from t_pr_procumentplanitem;
+    </select>
+
+
     <!--通过编号获取采购计划单条目对象集合-->
     <select id="getProcurementPlanItemList" resultMap="ProcurementPlanItemRM">
         select  *from t_pr_procumentplanitem where procurementPlanId=#{procurementPlanId}
@@ -557,7 +578,11 @@
                 or suppliesName like "%"#{keywords}"%"
                 or specifications like "%"#{keywords}"%"
                 or remarks like "%"#{keywords}"%"
-             </if>
+                or applyMouth like "%"#{keywords}"%"
+                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName  like "%"#{keywords}"%" and  dataDictionaryId=28)
+                or unitId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName  like "%"#{keywords}"%" and  dataDictionaryId=25)
+                or proposer like "%"#{keywords}"%"
+            </if>
             <if test="procurementPlanId!=null and procurementPlanId!=''">
                 and procurementPlanId like "%"#{procurementPlanId}"%"
             </if>
@@ -566,6 +591,17 @@
             </if>
             <if test="specifications!=null and specifications!=''">
                 and specifications like "%"#{specifications}"%"
+            </if>
+            <if test="proposer!=null and proposer!=''">
+                and proposer like "%"#{proposer}"%"
+            </if>
+            <if test="applyMouth!=null and applyMouth!=''">
+                and applyMouth like "%"#{applyMouth}"%"
+            </if>
+            <if test="materialCategoryItem!=null">
+                <if test="materialCategoryItem.dataDictionaryItemId!=0">
+                    and materialCategoryId=#{materialCategoryItem.dataDictionaryItemId}
+                </if>
             </if>
         </where>
         <if test="page != null and page.start != null and page.count != null">
@@ -581,6 +617,11 @@
                 or suppliesName like "%"#{keywords}"%"
                 or specifications like "%"#{keywords}"%"
                 or remarks like "%"#{keywords}"%"
+                or applyMouth like "%"#{keywords}"%"
+                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName  like "%"#{keywords}"%" and  dataDictionaryId=28)
+                or unitId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName  like "%"#{keywords}"%" and  dataDictionaryId=25)
+                or proposer like "%"#{keywords}"%"
+
             </if>
             <if test="procurementPlanId!=null and procurementPlanId!=''">
                 and procurementPlanId like "%"#{procurementPlanId}"%"
@@ -590,6 +631,17 @@
             </if>
             <if test="specifications!=null and specifications!=''">
                 and specifications like "%"#{specifications}"%"
+            </if>
+            <if test="proposer!=null and proposer!=''">
+                and proposer like "%"#{proposer}"%"
+            </if>
+            <if test="applyMouth!=null and applyMouth!=''">
+                and applyMouth like "%"#{applyMouth}"%"
+            </if>
+            <if test="materialCategoryItem!=null">
+                <if test="materialCategoryItem.dataDictionaryItemId!=0">
+                    and materialCategoryId=#{materialCategoryItem.dataDictionaryItemId}
+                </if>
             </if>
         </where>
     </select>
