@@ -126,8 +126,8 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="form-horizontal col-md-3">
-                        <p style="display: inline">出库数量：
-                            <input style="display: inline;width: 65%" type="text" class="form-control" id="search-storageQuantity" name="search-storageQuantity" placeholder="" onkeyup="enterSearch()">
+                        <p style="display: inline">物品名称：
+                            <input style="display: inline;width: 65%" type="text" class="form-control" id="search-wastesName" name="search-storageQuantity" placeholder="" onkeyup="enterSearch()">
                         </p>
                     </div>
                     <div class="form-horizontal col-md-3">
@@ -150,6 +150,7 @@
                             <input style="display: inline;width: 20%"  type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown="" onkeyup="enterSearch()"/>
                         </p>
                     </div>
+
                     <!--<div class="form-horizontal col-md-3">-->
                     <!--&lt;!&ndash;<div class="form-group">&ndash;&gt;-->
                     <!--&lt;!&ndash;<label for="search-materialForm" class="col-sm-4 control-label">业务员</label>&ndash;&gt;-->
@@ -158,6 +159,19 @@
                     <!--&lt;!&ndash;</div>&ndash;&gt;-->
                     <!--&lt;!&ndash;</div>&ndash;&gt;-->
                     <!--</div>-->
+                </div>
+                <br>
+                <div class="row">
+                    <div class="form-horizontal col-md-3">
+                        <p style="display: inline">仓库：
+                            <select style="display: inline;width: 65%" type="text" class="form-control" id="search-waresHouse" name="search-storageQuantity" placeholder="" onkeyup="enterSearch()"></select>
+                        </p>
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <p style="display: inline">危废代码：
+                            <select style="display: inline;width: 65%" type="text" class="form-control" id="search-wastesCode" name="search-storageQuantity" placeholder="" onkeyup="enterSearch()"></select>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -171,15 +185,14 @@
                         </label>
                     </th>
                     <th class="text-center">出库单号</th>
-                    <th class="text-center">出库日期</th>
                     <th class="text-center">仓库</th>
-                    <th class="text-center">危废名称</th>
                     <th class="text-center">危废代码</th>
-                    <th class="text-center">出库类别</th>
-                    <th class="text-center">出库数量</th>
-                    <th class="text-center">物质形态</th>
+                    <th class="text-center">危废名称</th>
                     <th class="text-center">处置方式</th>
+                    <th class="text-center">出库数量</th>
                     <th class="text-center">包装方式</th>
+                    <th class="text-center">转移联单</th>
+                    <th class="text-center">出库日期</th>
                     <th class="text-center">状态</th>
                     <th class="text-center">操作</th>
                 </tr>
@@ -193,10 +206,9 @@
                     </td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center"></td>
                     <td class="text-center"></td><!--出库单号-->
                     <td class="text-center "></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>

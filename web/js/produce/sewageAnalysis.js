@@ -801,54 +801,41 @@ function addAppoint() {
                     else
                         isCOD=0;
                     var isBOD5;
-                    if($(this).children('td').eq(2).find('label').eq(2).find("input").prop('checked')==true){
+                    if($(this).children('td').eq(2).find('label').eq(4).find("input").prop('checked')==true){
                         isBOD5=1;
                     }
                     else
                         isBOD5=0;
-                    // var alkalinity;
-                    // if($(this).children('td').eq(3).find('label').eq(3).find("input").prop('checked')==true){
-                    //     isO2=1;
-                    // }
-                    // else
-                    //     alkalinity=0;
+
                     var isN2;
-                    if($(this).children('td').eq(2).find('label').eq(3).find("input").prop('checked')==true){
+                    if($(this).children('td').eq(2).find('label').eq(2).find("input").prop('checked')==true){
                         isN2=1;
                     }
                     else
                         isN2=0;
-                    // var bicarbonate;
-                    // if($(this).children('td').eq(3).find('label').eq(5).find("input").prop('checked')==true){
-                    //     isLye=1;
-                    // }
-                    // else
-                    //     bicarbonate=0;
+
                     var nitrogen;
-                    if($(this).children('td').eq(2).find('label').eq(4).find("input").prop('checked')==true){
+                    if($(this).children('td').eq(2).find('label').eq(5).find("input").prop('checked')==true){
                         nitrogen=1;
                     }
                     else
                         nitrogen=0;
                     var phosphorus;
-                    if($(this).children('td').eq(2).find('label').eq(5).find("input").prop('checked')==true){
+                    if($(this).children('td').eq(2).find('label').eq(6).find("input").prop('checked')==true){
                         phosphorus=1;
                     }
                     else
                         phosphorus=0;
 
                     var  lye;
-                      if($(this).children('td').eq(2).find('label').eq(6).find("input").prop('checked')==true){
+                      if($(this).children('td').eq(2).find('label').eq(3).find("input").prop('checked')==true){
                           lye=1;
                       }
                       else
                           lye=0;
 
 
-
                     var   dataItem={
-                        // wastesCode:$(this).children('td').eq(1).find("button").attr('title'),
-                        // wastesName:$(this).children('td').eq(2).find("input").val(),
                         ph:isPH,
                         cod:isCOD,
                         bod5:isBOD5,
@@ -1639,38 +1626,38 @@ function adjust(item) {
                             }
 
                             if(item.bod5==1){
-                                clonedTr.children('td').eq(2).children("label").eq(2).find("input").prop('checked',true)
-                            }
-                            if(item.bod5==0){
-                                clonedTr.children('td').eq(2).children("label").eq(2).find("input").prop('checked',false)
-                            }
-
-                            if(item.n2==1){
-                                clonedTr.children('td').eq(2).children("label").eq(3).find("input").prop('checked',true)
-                            }
-                            if(item.n2==0){
-                                clonedTr.children('td').eq(2).children("label").eq(3).find("input").prop('checked',false)
-                            }
-
-                            if(item.nitrogen==1){
                                 clonedTr.children('td').eq(2).children("label").eq(4).find("input").prop('checked',true)
                             }
-                            if(item.nitrogen==0){
+                            if(item.bod5==0){
                                 clonedTr.children('td').eq(2).children("label").eq(4).find("input").prop('checked',false)
                             }
 
-                            if(item.phosphorus==1){
+                            if(item.n2==1){
+                                clonedTr.children('td').eq(2).children("label").eq(2).find("input").prop('checked',true)
+                            }
+                            if(item.n2==0){
+                                clonedTr.children('td').eq(2).children("label").eq(2).find("input").prop('checked',false)
+                            }
+
+                            if(item.nitrogen==1){
                                 clonedTr.children('td').eq(2).children("label").eq(5).find("input").prop('checked',true)
                             }
-                            if(item.phosphorus==0){
+                            if(item.nitrogen==0){
                                 clonedTr.children('td').eq(2).children("label").eq(5).find("input").prop('checked',false)
                             }
 
-                            if(item.lye==1){
+                            if(item.phosphorus==1){
                                 clonedTr.children('td').eq(2).children("label").eq(6).find("input").prop('checked',true)
                             }
-                            if(item.lye==0){
+                            if(item.phosphorus==0){
                                 clonedTr.children('td').eq(2).children("label").eq(6).find("input").prop('checked',false)
+                            }
+
+                            if(item.lye==1){
+                                clonedTr.children('td').eq(2).children("label").eq(3).find("input").prop('checked',true)
+                            }
+                            if(item.lye==0){
+                                clonedTr.children('td').eq(2).children("label").eq(3).find("input").prop('checked',false)
                             }
 
 
@@ -1757,19 +1744,14 @@ function adjustConfir() {
         else
             isCOD=0;
         var isBOD5;
-        if($(this).children('td').eq(2).find('label').eq(2).find("input").prop('checked')==true){
+        if($(this).children('td').eq(2).find('label').eq(4).find("input").prop('checked')==true){
             isBOD5=1;
         }
         else
             isBOD5=0;
-        // var alkalinity;
-        // if($(this).children('td').eq(3).find('label').eq(3).find("input").prop('checked')==true){
-        //     isO2=1;
-        // }
-        // else
-        //     alkalinity=0;
+
         var isN2;
-        if($(this).children('td').eq(2).find('label').eq(3).find("input").prop('checked')==true){
+        if($(this).children('td').eq(2).find('label').eq(2).find("input").prop('checked')==true){
             isN2=1;
         }
         else
@@ -1781,20 +1763,20 @@ function adjustConfir() {
         // else
         //     bicarbonate=0;
         var nitrogen;
-        if($(this).children('td').eq(2).find('label').eq(4).find("input").prop('checked')==true){
+        if($(this).children('td').eq(2).find('label').eq(5).find("input").prop('checked')==true){
             nitrogen=1;
         }
         else
             nitrogen=0;
         var phosphorus;
-        if($(this).children('td').eq(2).find('label').eq(5).find("input").prop('checked')==true){
+        if($(this).children('td').eq(2).find('label').eq(6).find("input").prop('checked')==true){
             phosphorus=1;
         }
         else
             phosphorus=0;
 
         var  lye;
-        if($(this).children('td').eq(2).find('label').eq(6).find("input").prop('checked')==true){
+        if($(this).children('td').eq(2).find('label').eq(3).find("input").prop('checked')==true){
             lye=1;
         }
         else

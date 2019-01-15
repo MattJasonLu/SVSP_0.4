@@ -229,7 +229,7 @@ function add() {
 
         //点击确定后操作
         var applyMouth=$.trim($('#year').val()+"-"+$('#applyMonth option:selected').text());
-        if(applyMouth.length==0){
+        if(applyMouth.length=='-'){
             applyMouth='';
         }
         var data={
@@ -255,7 +255,7 @@ function add() {
                     $.each(items, function () {
                         if ($(this).parent().parent().parent().children('td').eq(1).html().length > 0) {
                             var dataItem = {
-                                applyMouth:applyMouth,
+                                applyMouth:$(this).parent().parent().parent().children('td').eq(8).html(),
                                 wareHouseName: $('#procurementPlanId').val(),
                                 receiptNumber: $(this).parent().parent().parent().children('td').eq(10).html(),
                                 suppliesName: $(this).parent().parent().parent().children('td').eq(2).html(),
