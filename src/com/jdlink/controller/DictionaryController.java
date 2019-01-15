@@ -679,9 +679,10 @@ public class DictionaryController {
     }
 
 
-    /*
-           获取供应商类型字典数据
-            */
+    /**
+     * 获取供应商类型字典数据
+     * @return 供应商类型字典数据
+     */
     @RequestMapping("getSupplierTypeByDataDictionary")
     @ResponseBody
     public String getSupplierTypeByDataDictionary() {
@@ -703,8 +704,8 @@ public class DictionaryController {
 
 
     /*
-         获取开票类型字典数据
-          */
+     获取开票类型字典数据
+      */
     @RequestMapping("getTicketRate1ByDataDictionary")
     @ResponseBody
     public String getTicketRate1ByDataDictionary() {

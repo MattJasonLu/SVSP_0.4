@@ -44,7 +44,7 @@
         select * from datadictionaryitem where dataDictionaryItemId=#{dataDictionaryItemId}
     </select>
     <!--查询客户-->
-    <resultMap id="ClientRM" type="Client">
+    <resultMap id="ClientRM" type="Client" autoMapping="true">
         <association property="ticketRateItem" column="ticketRateId" select="getTicketRateItem"/>
     </resultMap>
     <!--开票类型数据字典-->
@@ -240,6 +240,20 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
 
     <select id="count" resultType="int">
         SELECT COUNT(*) FROM t_contract;
+    </select>
+    <!--获取合同条目列表（包含理化性质）-->
+    <select id="getQuotationItemList" resultMap="QuotationItemRM">
+        select t_quotationitem.quotationItemId, t_quotationitem.wastesCode, t_quotationitem.wastesName, t_quotationitem.contractAmount,
+          t_quotationitem.unitPriceTax, t_quotationitem.packageTypeId,
+          t_contract.clientId, t_pr_sampleinfoanalysis.heat, t_pr_sampleinfoanalysis.ash, t_pr_sampleinfoanalysis.PH,
+          water,chlorine,fluorine,phosphorus,sulfur
+        from (t_quotationitem left join t_pr_sampleinfoanalysis
+            on t_quotationitem.wastesName=t_pr_sampleinfoanalysis.wastesName
+               and t_quotationitem.wastesCode=t_pr_sampleinfoanalysis.wastesCode
+          left join t_contract on t_quotationitem.contractId=t_contract.contractId)
+        where t_quotationitem.contractId in (select t_contract.contractId
+                                             from t_contract where checkStateId!=69 or checkStateId is null )
+        order by t_contract.nowtime desc;
     </select>
 
     <!--列出合同中的所有涉及到的业务员-->
@@ -453,11 +467,19 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
 
     <!--获取最新的合同数据(不分合同类别)==>合约量统计-->
     <resultMap id="QuotationItemRM" type="QuotationItem">
-        <association property="contract" column="contractId" select="getContractById"></association>
-        <association property="client" column="clientId" select="getClient"></association>
-        <collection property="packageTypeItem" column="packageTypeId" select="getPackageTypeItem"></collection>
-        <collection property="transportItem" column="transportId" select="getTransportItem"></collection>
-        <collection property="unitDataItem" column="unitId" select="getUnitDataItem"></collection>
+        <result property="heat" column="heat"/>
+        <result property="ash" column="ash"/>
+        <result property="ph" column="PH"/>
+        <result property="waterContent" column="water"/>
+        <result property="sulfurContent" column="sulfur"/>
+        <result property="chlorineContent" column="chlorine"/>
+        <result property="fluorineContent" column="fluorine"/>
+        <result property="phosphorusContent" column="phosphorus"/>
+        <association property="contract" column="contractId" select="getContractById"/>
+        <association property="client" column="clientId" select="getClient"/>
+        <collection property="packageTypeItem" column="packageTypeId" select="getPackageTypeItem"/>
+        <collection property="transportItem" column="transportId" select="getTransportItem"/>
+        <collection property="unitDataItem" column="unitId" select="getUnitDataItem"/>
     </resultMap>
     <select id="getContractById" resultType="Contract">
         select * from t_contract where contractId=#{contractId};

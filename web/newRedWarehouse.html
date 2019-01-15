@@ -17,9 +17,9 @@
     <link href="css/loading2.css" rel="stylesheet">
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/newRedIngredientsIn.js"></script>
+    <script src="js/produce/newRedWarehouse.js"></script>
 </head>
-<body onload="loadRedIngredientsList();">
+<body onload="loadSelect();">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -83,12 +83,6 @@
 <div class="container-fluid">
     <div class="row">
         <div class="sidebar">
-            <!--<h4>博客管理系统(四月)</h4>-->
-            <!--<div class="cover">-->
-            <!--<h4><img class="img-circle" src="image/icons.png"/></h4>-->
-            <!--<b>Hi~ 小主</b>-->
-            <!--<p>超级管理员</p>-->
-            <!--</div>-->
             <ul class="sidenav animated fadeInUp">
                 <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
                 <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list"
@@ -144,22 +138,11 @@
             <h4 class="sub-header" id="head">危废红字入库单新增</h4>
         </div>
         <br>
-        <h4 class="text-center">红字入库单</h4>
+        <h4 class="text-center">危废红字入库单</h4>
         <p class="text-center pull-right"><b>NO.</b><span id="view-id" class="text-left"></span></p>
         <form method="post" id="ingredientsInForm" enctype="multipart/form-data">
             <table class="table table-bordered">
                 <thead>
-                <tr>
-                    <th class="text-center">单位:</th>
-                    <th colspan="4" class="text-left"><input class="form-control" style="display: inline" type="text" title="" id="companyName">
-                    </th>
-                    <th class="text-center">日期:</th>
-                    <th colspan="2" class="text-center"><input type="date" class="text-left form-control" id="creationDate"></th>
-                    <th class="text-center">文件编号:</th>
-                    <th colspan="2" class="text-right"><input title="" style="display: inline" type="text" class="form-control" id="fileId"></th>
-                </tr>
-                </thead>
-                <tbody id="tbody1">
                 <tr>
                     <th class="text-center">联单编号</th>
                     <th class="text-center">产废单位</th>
@@ -175,58 +158,37 @@
                     <th class="text-center">库区</th>
                     <th class="text-center">税率</th>
                 </tr>
-                <tr id="clone3" class="clone">
-                <tr id="inboundClonedTr" style="display: none;">
-                    <td class="text-center" name="transferDraftId"><input class="focus" type="text" name="transferDraftId" title=""></td>
-                    <td class="text-left" name="produceCompanyName"><select name="produceCompanyName"></select></td>
-                    <td class="text-left" name="wastesName"><input class="focus" type="text" name="wastesName" title=""></td>
-                    <td class="text-center" name="wastesCode"><select name="wastesCode"></select></td>
-                    <td class="text-right"><input type="number" name="wastesAmount"></td>
-                    <td class="text-right" name="unitPriceTax"></td>
+                </thead>
+                <tbody id="inboundOrderData">
+                <tr id="inboundClonedTr">
+                    <td class="text-center"><input class="form-control" type="text" name="transferDraftId" title=""></td>
+                    <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="produceCompany"></select>
+                    <td class="text-left"><input class="form-control" type="text" name="wastesName" title=""></td>
+                    <td class="text-center"><select class="form-control" name="wastesCode" ></select></td>
+                    <td class="text-right"><input class="form-control" type="number" name="wastesAmount"></td>
+                    <td class="text-right"><input class="form-control" name="unitPriceTax"></td>
                     <td class="text-right" name="totalPrice"></td>
-                    <td class="text-right"><select name="processWay"></select></td>
-                    <td class="text-right"><select name="handleCategory"></select></td>
-                    <td class="text-right"><input type="text" name="remarks"></td>
-                    <td class="text-right"><select name="warehouse"></select></td>
-                    <td class="text-right"><input type="text" name="warehouseArea"></td>
-                    <td class="text-right"><select name="rate"></select></td>
-                </tr>
+                    <td class="text-right"><select class="form-control" name="processWay"></select></td>
+                    <td class="text-right"><select class="form-control" name="handleCategory"></select></td>
+                    <td class="text-right"><input class="form-control" type="text" name="remarks"></td>
+                    <td class="text-right"><select class="form-control" name="warehouse"></select></td>
+                    <td class="text-right"><input class="form-control" type="text" name="warehouseArea"></td>
+                    <td class="text-right"><select class="form-control" name="rate"></select></td>
                 </tr>
                 <tr id="plusBtn">
                     <td><a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
-                    <td colspan="10"></td>
-                </tr>
-                <tr>
-                    <td colspan="7" class="text-center">合计</td>
-                    <td class="text-center" id="totalPrice"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                </tr>
-                <tr>
-                    <td class="text-left" colspan="4"><p style="display:inline;">记账人：<input style="display: inline;width: 60px" title="" class="form-control" type="text"
-                                                                                            maxlength="4" id="bookkeeper"></p></td>
-                    <td class="text-left" colspan="3"><p style="display: inline">审批人：<input style="display: inline;width: 60px" title="" class="form-control" type="text"
-                                                                                            maxlength="4" id="approver"></p></td>
-                    <td class="text-left" colspan="1" style="width: 150px;"><p style="display: inline">保管人：<input style="display:inline;;width: 60px" title=""
-                                                                                                                  class="form-control"  type="text"
-                                                                                                                  maxlength="4" id="keeper"></p></td>
-                    <td class="text-left" colspan="2" style="width: 150px;"><p style="display: inline">验收人：<input style="display:inline;;width: 60px" title=""
-                                                                                                                  class="form-control" type="text"
-                                                                                                                  maxlength="4" id="acceptor"></p></td>
-                    <td class="text-left"><p style="display: inline">经手人：<input style="display:inline;width: 60px" title="" class="form-control" type="text"
-                                                                                maxlength="4" id="handlers"></p></td>
+                    <td colspan="12"></td>
                 </tr>
                 </tbody>
             </table>
         </form>
         <div class="row text-center">
-            <a class="btn btn-success" id="save" onclick="save();">入库</a>
+            <a class="btn btn-success" id="save" onclick="addInboundOrder();">入库</a>
             <a class="btn btn-danger" onclick="history.back();">返回</a>
         </div>
     </div>
 </div>
-<div class="loader ">
+<div class="loader">
     <div class="dot"></div>
     <div class="dot"></div>
     <div class="dot"></div>
