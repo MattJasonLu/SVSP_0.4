@@ -132,5 +132,10 @@ public class StockServiceImpl implements StockService
         stockMapper.perfectStockItem(stockItem);
     }
 
+    @Override
+    public void updateCapacity(String clientId, float capacity) {
+        stockMapper.updateCapacity(clientId, capacity);
+    }
+
 
 }
