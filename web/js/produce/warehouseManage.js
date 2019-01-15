@@ -950,12 +950,14 @@ function viewData(e) {
                 clonedTr.find("td[name='wastesCode']").text(data.wastes.wastesId);
             }
             clonedTr.find("td[name='wastesAmount']").text(parseFloat(data.wastesAmount).toFixed(3));
-            clonedTr.find("td[name='unitPriceTax']").text(data.unitPriceTax);
-            clonedTr.find("td[name='totalPrice']").text(data.totalPrice);
-            if (data.processWay != null)
-                clonedTr.find("td[name='processWay']").text(data.processWay.name);
-            if (data.handleCategory != null)
-                clonedTr.find("td[name='handleCategory']").text(data.handleCategory.name);
+            clonedTr.find("td[name='unitPriceTax']").text(parseFloat(data.unitPriceTax.toFixed(2)));
+            clonedTr.find("td[name='totalPrice']").text(parseFloat(data.totalPrice.toFixed(2)));
+            if (data.processWayItem != null) {
+                console.log(data.processWayItem);
+                clonedTr.find("td[name='processWay']").text(data.processWayItem.dictionaryItemName);
+            }
+            if (data.handleCategoryItem != null)
+                clonedTr.find("td[name='handleCategory']").text(data.handleCategoryItem.dictionaryItemName);
             clonedTr.find("td[name='remarks']").text(data.remarks);
             clonedTr.find("td[name='warehouseArea']").text(data.warehouseArea);
             clonedTr.find("td[name='inboundOrderItemId']").text(data.inboundOrderItemId);

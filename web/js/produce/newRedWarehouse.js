@@ -220,7 +220,7 @@ function loadSelect() {
                 produceCompany.children().remove();
                 $.each(data, function (index, item) {
                     var option = $('<option />');
-                    option.val(item.client);
+                    option.val(item.clientId);
                     option.text(item.companyName);
                     produceCompany.append(option);
                 });
@@ -236,7 +236,7 @@ function loadSelect() {
         language: 'zh_CN',
         size: 4
     });
-
+    $('.selectpicker').selectpicker('refresh');
     $('.loader').hide();
 }
 
@@ -288,6 +288,43 @@ function addNewLine(item) {
         size: 4
     });
 }
+/**
+ * 删除行
+ * @param e
+ */
+function delLine(e) {
+    var tr = e.parentElement.parentElement;
+    var length = $(tr.parentNode).children().length - 4;         // 行数
+    var tBody = $("#tbody1");                                  // 删除前获取父节点
+    tr.parentNode.removeChild(tr);
+    console.log("行数:"+length);
+    for (var i = 1; i < length; i++) {             // 更新ID
+        tBody.children().eq(i).find("input,select,span").each(function () {
+            var id = $(this).prop('id');
+            var newId = id.replace(/[0-9]\d*/, i - 1);
+            $(this).prop('id', newId);
+        });
+        tBody.children().eq(i).find("span[name='serialNumber']").text(i);// 更新序号
+    }
+    // totalCalculate(); // 减行后重新计算金额
+    console.log("length:"+$("span[name='serialNumber']").length);
+    if($("span[name='serialNumber']").length === 1){  // 如果只有一行则不允许删除
+        $("a[name='delbtn']").remove();
+    }
+}
+/**
+ * 单价输入框输入完成后自动计算总金额并显示
+ */
+function totalCalculate() {
+    // 遍历数据
+    $("#inboundOrderData").children().not("#plusBtn").each(function () {
+        var wastesAmount = $(this).find("input[name='wastesAmount']").val();
+        var unitPriceTax = $(this).find("input[name='unitPriceTax']").val();
+        var totalPrice = (parseFloat(wastesAmount) * parseFloat(unitPriceTax)).toFixed(2);
+        if (isNaN(totalPrice)) totalPrice = 0; // 不显示NaN
+        $(this).find("td[name='totalPrice']").text(totalPrice);
+    });
+}
 
 
 /**
@@ -296,7 +333,8 @@ function addNewLine(item) {
 function addInboundOrder() {
     var inboundOrderItemList = [];
     var wareHouse = {};
-    $("#inboundOrderData").children().not("#inboundClonedTr").each(function () {
+    $("#inboundOrderData").children().not("#plusBtn").each(function () {
+        console.log($(this).html());
         var inboundOrder = {};
         inboundOrder.transferDraftId = $(this).find("input[name='transferDraftId']").val();
         inboundOrder.produceCompany = {
@@ -307,13 +345,16 @@ function addInboundOrder() {
         wastes.wastesId = $(this).find("select[name='wastesCode']").val();
         inboundOrder.wastes = wastes;
         inboundOrder.wastesAmount = $(this).find("input[name='wastesAmount']").val();
-        inboundOrder.unitPriceTax = $(this).find("td[name='unitPriceTax']").val();
+        inboundOrder.unitPriceTax = $(this).find("input[name='unitPriceTax']").val();
         inboundOrder.totalPrice = $(this).find("td[name='totalPrice']").text();
         inboundOrder.processWayItem = {
             dataDictionaryItemId: $(this).find("select[name='processWay']").val()
         };
         inboundOrder.handleCategoryItem = {
             dataDictionaryItemId: $(this).find("select[name='handleCategory']").val()
+        };
+        inboundOrder.ticketRateItem = {
+            dataDictionaryItemId: $(this).find("select[name='rate']").val()
         };
         inboundOrder.remarks = $(this).find("input[name='remarks']").val();
         inboundOrder.wareHouse = {

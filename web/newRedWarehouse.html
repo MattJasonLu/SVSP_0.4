@@ -133,7 +133,7 @@
                 <li>入库管理</li>
                 <li class="active">危废入库</li>
             </ol>
-            <p class="text-center pull-right"><b>编号</b><span class="id"></span></p>
+            <!--<p class="text-center pull-right"><b>编号</b><span class="id"></span></p>-->
 
             <h4 class="sub-header" id="head">危废红字入库单新增</h4>
         </div>
@@ -162,17 +162,17 @@
                 <tbody id="inboundOrderData">
                 <tr id="inboundClonedTr">
                     <td class="text-center"><input class="form-control" type="text" name="transferDraftId" title=""></td>
-                    <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="produceCompany"></select>
-                    <td class="text-left"><input class="form-control" type="text" name="wastesName" title=""></td>
+                    <td><select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="produceCompany"></select></td>
+                    <td class="text-left"><input class="form-control" type="text" name="wastesName"  style="width: 100px;"></td>
                     <td class="text-center"><select class="form-control" name="wastesCode" ></select></td>
-                    <td class="text-right"><input class="form-control" type="number" name="wastesAmount"></td>
-                    <td class="text-right"><input class="form-control" name="unitPriceTax"></td>
-                    <td class="text-right" name="totalPrice"></td>
+                    <td class="text-right"><input class="form-control" type="number" name="wastesAmount" onkeyup="totalCalculate();" style="width: 100px;"></td>
+                    <td class="text-right"><input class="form-control" type="number" name="unitPriceTax" onkeyup="totalCalculate();" style="width: 100px;"></td>
+                    <td class="text-right" name="totalPrice" style="width: 50px;"></td>
                     <td class="text-right"><select class="form-control" name="processWay"></select></td>
                     <td class="text-right"><select class="form-control" name="handleCategory"></select></td>
-                    <td class="text-right"><input class="form-control" type="text" name="remarks"></td>
+                    <td class="text-right"><input class="form-control" type="text" name="remarks" style="width: 50px;"></td>
                     <td class="text-right"><select class="form-control" name="warehouse"></select></td>
-                    <td class="text-right"><input class="form-control" type="text" name="warehouseArea"></td>
+                    <td class="text-right"><input class="form-control" type="text" name="warehouseArea" style="width: 50px;"></td>
                     <td class="text-right"><select class="form-control" name="rate"></select></td>
                 </tr>
                 <tr id="plusBtn">

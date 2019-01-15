@@ -312,7 +312,7 @@
                 produceCompanyId, processWay, handleCategory,remarks, warehouseArea, recordState,
                 isQualified, wastesName, wastesCode, wastesCategory, wastesAmount,unitPriceTax,
                 totalPrice, laboratoryTestId, category, formType, packageType, processWayId,
-                handleCategoryId, recordStateId, formTypeId, packageTypeId, wareHouseId)
+                handleCategoryId, recordStateId, formTypeId, packageTypeId, wareHouseId, tickRateId)
                 VALUES
                 (#{inboundOrderItem.inboundOrderItemId}, #{inboundOrderItem.transferDraftId},#{inboundOrderItem.inboundOrderId},
                 #{inboundOrderItem.produceCompany.clientId}, #{inboundOrderItem.processWay},#{inboundOrderItem.handleCategory}, #{inboundOrderItem.remarks},
@@ -323,7 +323,7 @@
                 #{inboundOrderItem.processWayItem.dataDictionaryItemId},
                 #{inboundOrderItem.handleCategoryItem.dataDictionaryItemId}, #{inboundOrderItem.recordStateItem.dataDictionaryItemId},
                 #{inboundOrderItem.formTypeItem.dataDictionaryItemId}, #{inboundOrderItem.packageTypeItem.dataDictionaryItemId},
-                #{inboundOrderItem.wareHouse.wareHouseId});
+                #{inboundOrderItem.wareHouse.wareHouseId}, #{inboundOrderItem.ticketRateItem.dataDictionaryItemId});
 
                 insert into t_pl_wasteinto
                 (clientId,wastesCode,handleCategory,processWay,remarks,nowTime,transferDraftId,wastesCategory,laboratoryTestId)
