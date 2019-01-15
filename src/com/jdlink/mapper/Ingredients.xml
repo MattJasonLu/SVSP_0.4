@@ -1302,8 +1302,19 @@
     <resultMap id="IngredientsRM" type="Ingredients" autoMapping="true">
         <id column="itemId" property="id"/>
         <result column="ingredientsName" property="name"/>
+        <association property="materialCategoryItem" column="materialCategoryId" select="getMaterialCategoryItem"></association>
+        <association property="unitDataItem" column="unitId" select="getUnitId"></association>
     </resultMap>
 
+    <!--获取和物资累呗数据字典-->
+    <select id="getMaterialCategoryItem" resultType="MaterialCategoryItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{materialCategoryId}
+    </select>
+
+    <!--获取单位数据字典-->
+    <select id="getUnitId" resultType="UnitDataItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{unitId}
+    </select>
     <select id="getIngredientsList" resultMap="IngredientsRM">
         select * from t_pl_ingredientslist
         order by nowTime desc
@@ -1332,6 +1343,8 @@
                 or ingredientsName like "%"#{keywords}"%"
                 or code like "%"#{keywords}"%"
                 or specification like "%"#{keywords}"%"
+                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=28)
+                or unitId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=25)
             </if>
             <if test="id != '' and id != null">
                 and id like "%"#{id}"%"
@@ -1344,6 +1357,11 @@
             </if>
             <if test="specification != '' and specification != null">
                 and specification like "%"#{specification}"%"
+            </if>
+            <if test="materialCategoryItem!=null">
+                <if test="materialCategoryItem.dataDictionaryItemId!=0">
+                    and materialCategoryId=#{materialCategoryItem.dataDictionaryItemId}
+                </if>
             </if>
         </where>
         order by nowTime desc
@@ -1360,6 +1378,8 @@
                 or ingredientsName like "%"#{keywords}"%"
                 or code like "%"#{keywords}"%"
                 or specification like "%"#{keywords}"%"
+                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=28)
+                or unitId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=25)
             </if>
             <if test="id != '' and id != null">
                 and id like "%"#{id}"%"
@@ -1372,6 +1392,11 @@
             </if>
             <if test="specification != '' and specification != null">
                 and specification like "%"#{specification}"%"
+            </if>
+            <if test="materialCategoryItem!=null">
+                <if test="materialCategoryItem.dataDictionaryItemId!=0">
+                    and materialCategoryId=#{materialCategoryItem.dataDictionaryItemId}
+                </if>
             </if>
         </where>
     </select>
@@ -1388,12 +1413,12 @@
 
     <insert id="addIngredient" parameterType="Ingredients">
         insert into t_pl_ingredientslist
-        (ingredientsName, code,specification,nowTime) values (#{name},#{code},#{specification},NOW());
+        (ingredientsName, code,specification,nowTime,materialCategoryId,unitId) values (#{name},#{code},#{specification},NOW(),#{materialCategoryItem.dataDictionaryItemId},#{unitDataItem.dataDictionaryItemId});
     </insert>
 
     <update id="updateIngredient" parameterType="Ingredients">
         update t_pl_ingredientslist
-        set ingredientsName=#{name},code=#{code},specification=#{specification} where id=#{id};
+        set ingredientsName=#{name},code=#{code},specification=#{specification},materialCategoryId=#{materialCategoryItem.dataDictionaryItemId},unitId=#{unitDataItem.dataDictionaryItemId} where id=#{id};
     </update>
 
     <delete id="deleteIngredient" parameterType="int">

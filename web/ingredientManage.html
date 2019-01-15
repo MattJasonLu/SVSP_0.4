@@ -181,6 +181,13 @@
                                        onkeydown="enterSearch()">
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="search-materialCategoryItem" class="col-sm-4 control-label">物资类别</label>
+                            <div class="col-xs-7">
+                                <select type="text" class="form-control" id="search-materialCategoryItem" name="search-id" placeholder=""
+                                        onchange="searchIngredient()"></select>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
@@ -219,11 +226,15 @@
                 <th class="text-center">物品名称</th>
                 <th class="text-center">物品编码</th>
                 <th class="text-center">规格型号</th>
+                <th class="text-center">单位</th>
+                <th class="text-center">物资类别</th>
                 <th class="text-center">操作</th>
             </tr>
             </thead>
             <tbody>
             <tr id="clone">
+                <td class="text-center"></td>
+                <td class="text-center"></td>
                 <td class="text-center"></td>
                 <td class="text-center"></td>
                 <td class="text-center"></td>
@@ -269,7 +280,7 @@
 <input type="file" name="excelPath" id="idExcel" style="display:none">
 <!--新增模态框-->
 <div class="modal fade" id="modalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog" role="document" style="width: 60%">
         <div class="modal-content">
             <div class="modal-header"><b>辅料备件物品管理</b></div>
             <div class="modal-body">
@@ -280,6 +291,8 @@
                         <th class="text-center">物品名称</th>
                         <th class="text-center">物品编码</th>
                         <th class="text-center">规格型号</th>
+                        <th class="text-center">单位</th>
+                        <th class="text-center">物资类别</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -292,12 +305,16 @@
                             <p id="break2" name="test" style="color: red;display: none">请输入8位编码</p>
                         </td>
                         <td class="text-center"><input class="text-center form-control" id="add_specification0"></td>
+                        <td class="text-center"><select class="text-center form-control" id="add_unitDataItem0"></select></td>
+                        <td class="text-center"><select class="text-center form-control" id="add_materialCategoryItem0"></select></td>
                     </tr>
                     <tr id="plusBtn">
                         <td>
                             <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span
                                     class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
                         </td>
+                        <td></td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -314,7 +331,7 @@
 </div>
 <!--编辑模态框-->
 <div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog" role="document" style="width: 60%">
         <div class="modal-content">
             <div class="modal-header"><b>辅料备件物品管理</b></div>
             <div class="modal-body">
@@ -325,6 +342,8 @@
                         <th class="text-center">物品名称</th>
                         <th class="text-center">物品编码</th>
                         <th class="text-center">规格型号</th>
+                        <th class="text-center">单位</th>
+                        <th class="text-center">物资类别</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -333,6 +352,9 @@
                         <td class="text-center"><input class="text-center form-control" id="modify_name"></td>
                         <td class="text-center"><input class="text-center form-control" id="modify_code"></td>
                         <td class="text-center"><input class="text-center form-control" id="modify_specification"></td>
+                        <td class="text-center"><select class="text-center form-control" id="modify_unit"></select></td>
+                        <td class="text-center"><select class="text-center form-control" id="modify_materialCategoryItem"></select></td>
+
                     </tr>
                     </tbody>
                 </table>
