@@ -365,13 +365,17 @@ function setOutBoundList(result) {
                     case (1):
                         $(this).html(obj.outboundOrderId);
                         break;
+                      //转移联单
+                    case (8):
+                        $(this).html(obj.transferDraftId);
+                        break;
                     // 出库日期
-                    case (2):
+                    case (9):
                         $(this).html(getDateStr(obj.outboundDate));
                         break;
 
                     // 仓库
-                    case (3):
+                    case (2):
                         if(obj.wareHouse!=null){
                             $(this).html(obj.wareHouse.wareHouseName);
                         }
@@ -384,18 +388,12 @@ function setOutBoundList(result) {
                         }
                         break;
                         //危废代码
-                    case (5):
+                    case (3):
                         $(this).html(obj.wasteCategory);
                         break;
-                        //出库类别
-                    case (6):
-                        if(obj.boundType!=null){
-                            $(this).html(obj.boundType.name);
-                        }
 
-                        break
                     //出库数量
-                    case (7):
+                    case (6):
                         if(obj.secondaryCategoryItem!=null){
                            if((obj.secondaryCategoryItem.dictionaryItemName)=='桶'){
                                $(this).html(obj.outboundNumber+'只');
@@ -406,26 +404,21 @@ function setOutBoundList(result) {
                         }
 
                         break;
-                    //物质形态
-                    case (8):
-                        if(obj.formTypeItem!=null){
-                            $(this).html(obj.formTypeItem.dictionaryItemName);
-                        }
-                        break;
                     //处置方式
-                    case (9):
+                    case (5):
                         if(obj.processWayItem!=null){
                             $(this).html(obj.processWayItem.dictionaryItemName);
                         }
                         break;
                         //包装方式
-                    case (10):
+                    case (7):
                         if(obj.packageTypeItem!=null){
                             $(this).html(obj.packageTypeItem.dictionaryItemName);
                         }
                         break;
+
                         //状态
-                    case (11):
+                    case (10):
                         if(obj.checkStateItem!=null){
                             $(this).html(obj.checkStateItem.dictionaryItemName);
                         }
@@ -791,6 +784,7 @@ function save() {
                     wareHouse:{wareHouseName:$(this).children('td').eq(2).html()},
                     formTypeItem:{dictionaryItemName:($(this).children('td').eq(4).html())},
                     packageTypeItem:{dictionaryItemName:($(this).children('td').eq(5).html())},
+                    transferDraftId:$('#modal-transferDraftId').val()
                 };
                 // console.log(data);
                 $.ajax({
@@ -1519,136 +1513,47 @@ function confirmCancel(){
 
 //次生出库信息高级查询
 function searchSecOutbound() {
-    $('#tbody1').find('.myclass').hide();
-    array.length=0;//清空数组
-    array1.length=0;//清空数组
-    array=[].concat(array0);
-    isSearch=true;
+    isSearch = true;
+    var page = {};
+    var pageNumber = 1;                       // 显示首页
+    page.pageNumber = pageNumber;
+    page.count = countValue();
+    page.start = (pageNumber - 1) * page.count;
+    // 精确查询
+    if ($("#senior").is(':visible')) {
 
-    //如果需要按日期范围查询 寻找最早入库的日期
-    var date;
-
+        data = {
+            page: page,
+        };
+        console.log(data);
+        // 模糊查询
+    } else {
+        var keywords=$.trim($("#searchContent").val());
+        data = {
+            keywords: keywords,
+            page: page
+        };
+    }
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getNewestDateSec",                  // url
+        url: "searchSecOutbound",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        //data:{'outboundOrderId':outboundOrderId},
+        data: JSON.stringify(data),
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                date=getDateStr(result.dateList[0]);
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
                 console.log(result);
-            }
-            else {
+                setPageClone(result);
+                setPageCloneAfter(pageNumber);        // 重新设置页码
+            } else {
                 alert(result.message);
             }
         },
-        error:function (result) {
-            alert("服务器异常！");
+        error: function (result) {
+            console.log(result);
         }
-
     });
-
-    var text=$.trim($('#searchContent').val());
-    //1出库日期
-    var outBoundDate=$.trim($('#search-storageDate').val());
-
-    var endDate=$.trim($('#search-endDate').val());
-    //2出库数量
-    var outBoundNumber=$.trim($('#search-storageQuantity').val());
-    //3出库单号
-    var outboundOrderId =$.trim($('#search-storageNumber').val());
-    //4进料方式
-    var processWay=$.trim($('#search-materialForm option:selected').text());
-    //业务员
-    var salesman=$.trim($('#search-salesman').val());
-
-    var wareHouseName=$.trim($('#search-warehouseId').val());
-
-    var startDate=getDateByStr(outBoundDate);
-    var endDate=getDateByStr(endDate);
-
-    for(var j=0;j<array.length;j++){
-        $.each(array[j],function () {
-
-            if(startDate.toString()=='Invalid Date'){
-                startDate=getDateByStr(date);
-            }
-            if(endDate.toString()=='Invalid Date'){
-                endDate=new Date();
-            }
-            var start=$(this).children('td').eq(2).text();
-            if(start.length==0){
-                start=date;
-            }
-
-            if(!($(this).children('td').eq(5).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
-            &&$(this).children('td').eq(6).text().indexOf(processWay)!=-1&&$(this).children('td').eq(1).text().indexOf(outboundOrderId)!=-1
-                &&(getDateByStr(start)<=endDate&&getDateByStr(start)>=startDate)
-            )){
-                $(this).hide();
-           }
-            if(($(this).children('td').eq(5).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
-                &&$(this).children('td').eq(6).text().indexOf(processWay)!=-1&&$(this).children('td').eq(1).text().indexOf(outboundOrderId)!=-1
-                &&(getDateByStr(start)<=endDate&&getDateByStr(start)>=startDate))){
-               array1.push($(this));
-            }
-        });
-    }
-
-    var total;
-
-    if(array1.length%countValue()==0){
-        total=array1.length/countValue()
-    }
-
-    if(array1.length%countValue()>0){
-        total=Math.ceil(array1.length/countValue());
-    }
-
-    if(array1.length/countValue()<1){
-        total=1;
-    }
-
-    $("#totalPage").text("共" + total + "页");
-
-    var myArray = new Array();
-    $('.beforeClone').remove();
-    for ( i = 0; i < total; i++) {
-        var li = $("#next").prev();
-        myArray[i] = i+1;
-        var clonedLi = li.clone();
-        clonedLi.show();
-        clonedLi.find('a:first-child').text(myArray[i]);
-        clonedLi.find('a:first-child').click(function () {
-            var num = $(this).text();
-            switchPage(num);
-            AddAndRemoveClass(this);
-        });
-        clonedLi.addClass("beforeClone");
-        clonedLi.removeAttr("id");
-        clonedLi.insertAfter(li);
-    }
-    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
-    $("#previous").next().next().eq(0).addClass("oldPageClass");
-    setPageCloneAfter(1);
-    for(var i=0;i<array1.length;i++){
-        array1[i].hide();
-    }
-
-    for(var i=0;i<countValue();i++){
-        $(array1[i]).show();
-        $('#tbody1').append((array1[i]));
-    }
-
-    // isSearch=false;
-    // if(outBoundDate.length<=0&&outBoundNumber.length<=0&&processWay.length<=0&&outboundOrderId.length<=0){
-    //     switchPage(1);
-    //     $('.myclass').each(function () {
-    //         $(this).show();
-    //     })
-    // }
 }
 
 /**
@@ -1668,10 +1573,10 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
             if(last-event.timeStamp==0){
-                searchSecondaryOuntBound();
+                searchSecOutbound();
             }
             else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
-                searchSecondaryOuntBound();      //
+                searchSecOutbound();      //
             }
         },600);
     });

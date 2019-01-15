@@ -65,4 +65,7 @@ public interface ProcurementService {
     List<Procurement> getEmergencyProcurementOffList(Page page);
     int totalEmcOffRecord();
     List<Date>getNewestOffEm();
+    void updateApplyMouth(String procurementPlanId,String applyMouth);
+    List<ProcurementPlanItem>loadPageProcurementTotal(Page page);
+    int loadPageProcurementTotalCount();
 }

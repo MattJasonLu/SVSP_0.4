@@ -73,4 +73,10 @@ public interface ProcurementMapper {
     void setProcurementFilePath(Procurement procurement);
 
     int totalEmcOffRecord();
+
+    void updateApplyMouth(String procurementPlanId,String applyMouth);
+
+    List<ProcurementPlanItem>loadPageProcurementTotal(Page page);
+
+    int loadPageProcurementTotalCount();
 }
