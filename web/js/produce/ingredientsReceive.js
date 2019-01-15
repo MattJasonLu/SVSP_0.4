@@ -1496,7 +1496,7 @@ function delLine(e) {
  */
 function setInventoryList(result) {
     var tr = $("#cloneTr1");
-    $(".newLine").remove();  // 删除旧数据
+    $(".newLine2").remove();  // 删除旧数据
     var totalWareHouseAmount = 0;  // 总库存量
     var totalInAmount = 0;             // 总入库数
     $.each(result.data, function (index, item) {
@@ -1520,7 +1520,7 @@ function setInventoryList(result) {
             clonedTr.find("td[name='inPrice']").text(obj.inPrice.toFixed(2));
             // 把克隆好的tr追加到原来的tr前面
             clonedTr.insertBefore(tr);
-            clonedTr.addClass("newLine");
+            clonedTr.addClass("newLine2");
             clonedTr.removeAttr('id');
         }
     });
