@@ -779,7 +779,6 @@ function save() {
             //点击确定后操作
             var index=0;
             $(".myclass2").each(function () {
-
                 var data={
                     outboundDate:$('#date').val(),
                     creator:$('#creator').val(),
@@ -809,7 +808,6 @@ function save() {
                                 alert("添加成功！");
                                 window.location.href="secondaryOutbound.html";
                             }
-
                         }
                         if (result != undefined && result.status == "back"){
                             index++;
@@ -2054,9 +2052,6 @@ function searchSecOutboundAdd() {
 
 //次生出库结账
 function Settled() {
-
-
-
     var items = $("input[name='select']:checked");//判断复选框是否选中
 
         if(items.length<=0){

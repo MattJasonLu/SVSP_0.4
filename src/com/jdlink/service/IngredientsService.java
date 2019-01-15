@@ -69,7 +69,8 @@ public interface IngredientsService {
     int searchOutItemCount(Ingredients ingredients);
     List<Ingredients> listPageOutItem(Page page);
     List<Ingredients> searchOutItem(Ingredients ingredients);
-
+    void outSettled(IngredientsOut ingredientsOut);
+    List<String> getDateBbySettled();
 
     ////////////辅料备件物品维护//
     List<Ingredients> getIngredientsList(Page page);

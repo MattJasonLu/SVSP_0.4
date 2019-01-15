@@ -578,6 +578,7 @@ function searchIngredientIn() {
             keywords = "OutBounded";
             break;
     }
+    console.log("amount:"+$.trim($("#search-amount").val()));
     if ($("#senior").is(':visible')) {
         data1 = {
             startDate: $("#search-startDate").val(),
@@ -588,7 +589,8 @@ function searchIngredientIn() {
             name: $.trim($("#search-name").val()),
             specification : $.trim($("#search-specification").val()),
             page: page,
-            code:$("#search-code").val(),
+            code:$.trim($("#search-code").val()),
+            amount:parseFloat($.trim($("#search-amount").val()))
         };
     } else {
         data1 = {

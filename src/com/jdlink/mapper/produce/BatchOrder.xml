@@ -405,8 +405,9 @@ select wasteInventoryId,inboundDate,actualCount,secondaryCategoryId,wareHouseId 
 
     <!--获取已结账的出库单的日期次生-->
     <select id="getDateBbySettled" resultType="String">
-SELECT date_format(outboundDate,'%Y-%m')  FROM t_pl_outboundorder WHERE checkStateId=253 and boundType="SecondaryOutbound";
+        SELECT date_format(outboundDate,'%Y-%m')  FROM t_pl_outboundorder WHERE checkStateId=253 and boundType="SecondaryOutbound";
     </select>
+
     <!--获取已结账的出库单的日期危废-->
     <select id="getDateBbySettledWastes" resultType="String">
 SELECT date_format(outboundDate,'%Y-%m')  FROM t_pl_outboundorder WHERE checkStateId=253 and boundType="WasteOutbound";

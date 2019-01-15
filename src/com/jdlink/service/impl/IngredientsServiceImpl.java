@@ -361,6 +361,20 @@ public class IngredientsServiceImpl implements IngredientsService {
         return ingredientsMapper.searchOutItem(ingredients);
     }
 
+    /**
+     * 结账功能
+     * @param ingredientsOut
+     */
+    @Override
+    public void outSettled(IngredientsOut ingredientsOut) { ingredientsMapper.outSettled(ingredientsOut);}
+
+    /**
+     * 获取结账的出库单的年月份集合
+     * @return
+     */
+    @Override
+    public List<String> getDateBbySettled() { return ingredientsMapper.getDateBbySettled(); }
+
     ////////////辅料备件物品维护//
     public List<Ingredients> getIngredientsList(Page page) { return ingredientsMapper.getIngredientsList(page);}
 

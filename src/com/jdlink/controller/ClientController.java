@@ -373,6 +373,7 @@ public class ClientController {
             JSONArray sampleInfoList = JSONArray.fromArray(sampleInformationList.toArray(new SampleInformation[sampleInformationList.size()]));
             // 获取企业的有效合同数据
             List<Contract> contractList = contractService.getContractByClientId(client1.getClientId());
+         //   List<Contract> contractList = contractService.getContractByClientId("0025");
             JSONArray contractInfo = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
             // 派车
 

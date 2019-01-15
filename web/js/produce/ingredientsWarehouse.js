@@ -432,6 +432,8 @@ function search1() {
             specification: $.trim($("#search1-specification").val()),
             inId: $.trim($("#search1-inId").val()),
             outId: $.trim($("#search1-outId").val()),
+            amount: parseFloat($.trim($("#search1-amount").val())),
+            inAmount: parseFloat($.trim($("#search1-inAmount").val())),
             page:page
         };
     } else {
