@@ -927,17 +927,17 @@ function viewData(e) {
         $("#inboundPlanOrderId").val(obj.inboundPlanOrderId);
         $("#transferDraftId").val(obj.transferDraftId);
         if (obj.produceCompany != null) $("#produceCompany").val(obj.produceCompany.companyName);
-        $("#prepareTransferCount").val(obj.prepareTransferCount);
-        $("#transferCount").val(obj.transferCount);
-        $("#storageCount").val(obj.storageCount);
+        $("#prepareTransferCount").val(parseFloat(obj.prepareTransferCount).toFixed(3));
+        $("#transferCount").val(parseFloat(obj.transferCount).toFixed(3));
+        $("#storageCount").val(parseFloat(obj.storageCount).toFixed(3));
         $("#planDate").val(getDateStr(obj.planDate));
         $("#transferDate").val(getDateStr(obj.transferDate));
         if (obj.wastes != null) {
             $("#wastesName").val(obj.wastes.name);
             $("#wastesCode").val(obj.wastes.wastesId);
         }
-        $("#poundsCount").val(obj.poundsCount);
-        $("#leftCount").val(obj.leftCount);
+        $("#poundsCount").val(parseFloat(obj.poundsCount).toFixed(3));
+        $("#leftCount").val(parseFloat(obj.leftCount).toFixed(3));
     }
 }
 var inboundPlanOrder = {};
