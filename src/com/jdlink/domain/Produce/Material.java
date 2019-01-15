@@ -113,6 +113,17 @@ public class Material {
     //辅料备件数据结构(取数据)
     private Ingredients ingredients;
 
+    /*申请年月*/
+    private String applyMouth;
+
+    public String getApplyMouth() {
+        return applyMouth;
+    }
+
+    public void setApplyMouth(String applyMouth) {
+        this.applyMouth = applyMouth;
+    }
+
     public Ingredients getIngredients() {
         return ingredients;
     }

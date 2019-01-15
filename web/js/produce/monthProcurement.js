@@ -384,7 +384,7 @@ function saveMonth() {
     //在添加物料表
     data={
         suppliesCategory:$('#suppliesCategory').val(),
-        applyMouth:$('#applyMonth option:selected').text()+"月份",
+        applyMouth:$('#year').val()+"-"+$('#applyMonth option:selected').text(),
         demandTime:($('#demandTime').val()).toString(),
         applyDepartment:$('#applyDepartment option:selected').text(),
         proposer:$('#proposer').val(),
@@ -469,6 +469,7 @@ function saveMonth() {
         demandQuantity:demandQuantity,
         note:note,
         materialCategoryItem:{dataDictionaryItemId:materialCategoryId},
+        applyMouth:$('#year').val()+"-"+$('#applyMonth option:selected').text(),
     }
     console.log(materialdata);
         $('.selectpicker').selectpicker('refresh');

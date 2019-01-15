@@ -79,16 +79,17 @@ public class InboundServiceImpl implements InboundService {
         // 获取月份
         //得到一个NumberFormat的实例
         NumberFormat nf = NumberFormat.getInstance();
-        //设置是否使用分组
-        nf.setGroupingUsed(false);
-        //设置最大整数位数
-        nf.setMaximumIntegerDigits(2);
-        //设置最小整数位数
-        nf.setMinimumIntegerDigits(2);
-        // 获取最新编号
-        String month = nf.format(calendar.get(Calendar.MONTH) + 1);
-        String prefix = year + month;
+//        //设置是否使用分组
+//        nf.setGroupingUsed(false);
+//        //设置最大整数位数
+//        nf.setMaximumIntegerDigits(2);
+//        //设置最小整数位数
+//        nf.setMinimumIntegerDigits(2);
+//        // 获取最新编号
+//        String month = nf.format(calendar.get(Calendar.MONTH) + 1);
+//        String prefix = year + month;
         // 获取数量
+        String prefix = year;
         int count = getInboundPlanCountByPrefix(prefix) + 1;
         //得到一个NumberFormat的实例
         nf = NumberFormat.getInstance();
@@ -100,7 +101,7 @@ public class InboundServiceImpl implements InboundService {
         nf.setMinimumIntegerDigits(5);
         // 获取最新编号
         String countStr = nf.format(count);
-        return "HWPL" + year + month + countStr;
+        return "HWPL" + year + countStr;
     }
 
     @Override
