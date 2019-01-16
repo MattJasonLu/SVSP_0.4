@@ -20,10 +20,14 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.text.Normalizer;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -1195,6 +1199,43 @@ public class InboundController {
             res.put("message", "更新失败");
         }
         return res.toString();
+    }
+
+    /**
+     * 保存入库计划单的图片
+     * @param req 请求
+     * @param file 图片文件
+     * @param inboundPlanOrderId 入库计划单编号
+     * @return 成功与否
+     */
+    @RequestMapping("saveInboundPlanOrderImg")
+    @ResponseBody
+    public void saveInboundPlanOrderImg(HttpServletRequest req, HttpServletResponse resp, @RequestParam("file") MultipartFile file,
+                                          @RequestParam("inboundPlanOrderId") String inboundPlanOrderId) {
+        JSONObject res = new JSONObject();
+        try {
+            String fileName = System.currentTimeMillis()+file.getOriginalFilename(); // 文件名设置为当前时间加上传的文件名
+            // 获取文件的真实路径然后拼接前面的文件名，uploaded是存放文件的目录名
+            String filePath = "Files" + File.separator + "Image";
+            String destFileName = filePath + File.separator + fileName;
+            File fileDir = new File(filePath);
+            if (!fileDir.exists()) {
+                fileDir.mkdirs();
+            }
+            // 初始化目录(第一次上传目录不存在需要初始化)
+            File destFile = new File(destFileName);
+            file.transferTo(destFile); // 将file复制给destFile
+            // 将路径进行保存
+            // 2更新路径
+            inboundService.updateInboundPlanOrderImgUrl(inboundPlanOrderId, fileName);
+            res.put("status", "success");
+            res.put("message", "图片更新成功");
+            resp.sendRedirect("InboundPlanOrder.html");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "图片更新失败");
+        }
     }
 
 }

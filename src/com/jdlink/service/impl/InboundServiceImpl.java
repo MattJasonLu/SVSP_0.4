@@ -224,4 +224,9 @@ public class InboundServiceImpl implements InboundService {
     @Override
     public int getInventoryByWastesNameAndWareHouse(String wastesName,String wareHouseName){ return inboundMapper.getInventoryByWastesNameAndWareHouse(wastesName,wareHouseName);}
 
+    @Override
+    public void updateInboundPlanOrderImgUrl(String id, String imgUrl) {
+        inboundMapper.updateInboundPlanOrderImgUrl(id, imgUrl);
+    }
+
 }

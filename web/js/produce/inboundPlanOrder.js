@@ -1339,6 +1339,19 @@ function showComparison(e) {
     }
 }
 
+/**
+ * 显示图片
+ * @param e
+ */
+function showImg(e) {
+    // 获取编号
+    var id = getIdByMenu(e);
+    // 设置编号
+    $("#imgInboundPlanOrderId").val(id);
+    // 显示图片模态框
+    $("#imgModal").modal("show");
+}
+
 var rejectId;
 
 /**
