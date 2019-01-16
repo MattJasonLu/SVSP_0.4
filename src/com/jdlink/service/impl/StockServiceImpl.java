@@ -43,6 +43,11 @@ public class StockServiceImpl implements StockService
     }
 
     @Override
+    public Stock getByName(String stockName) {
+        return stockMapper.getByName(stockName);
+    }
+
+    @Override
     public void updateStock(Stock stock) {
         stockMapper.updateStock(stock);
     }

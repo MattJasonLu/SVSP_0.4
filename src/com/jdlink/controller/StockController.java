@@ -145,6 +145,25 @@ public class StockController {
         }
      return  res.toString();
     }
+//根据公司名获取信息
+    @RequestMapping("getStockByName")
+    @ResponseBody
+    public String getStockByName(String stockName){
+        JSONObject res = new JSONObject();
+        try {
+            Stock stock=stockService.getByName(stockName);
+            JSONObject json=JSONObject.fromBean(stock);
+            res.put("stock",json);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+     return  res.toString();
+    }
     //修改申报信息==>主表
     @RequestMapping("adjust1Stock")
     @ResponseBody
