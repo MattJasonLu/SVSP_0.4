@@ -39,4 +39,5 @@ public interface OutboundOrderService {
     List<Date>getNewestDate();
     List<OutboundOrder> getOutBoundOrderByClientId(String id);
     List<Date>getNewestDateSec();
+
 }

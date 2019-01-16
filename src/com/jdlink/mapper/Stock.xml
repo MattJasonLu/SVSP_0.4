@@ -204,4 +204,10 @@ select * from t_quotationitem where applicationStatusId=48 and clientId=#{client
         update t_pr_stockitem set handleCategoryId=#{handleCategoryItem.dataDictionaryItemId}
         , disposalAdvice=#{disposalAdvice} where id=#{id}
     </update>
+
+
+    <!--更新库容-->
+    <update id="updateCapacity">
+        update client set capacity=#{1} where clientId=#{0};
+    </update>
  </mapper>

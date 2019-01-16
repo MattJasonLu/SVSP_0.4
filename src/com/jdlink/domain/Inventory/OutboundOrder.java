@@ -157,6 +157,18 @@ public class OutboundOrder {
     //包装方式数据字典
     private PackageTypeItem packageTypeItem;
 
+    /*分页*/
+
+    private Page page;
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
     public FormTypeItem getFormTypeItem() {
         return formTypeItem;
     }

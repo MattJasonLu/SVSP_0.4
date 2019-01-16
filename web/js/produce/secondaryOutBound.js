@@ -46,8 +46,29 @@ function totalPage() {
                 totalRecord = 0;
             }
         });
-    } else {
-        totalRecord=array1.length;
+    }
+    else {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchSecOutboundCount",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                // console.log(result);
+                if (result > 0) {
+                    totalRecord = result;
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
     }
     var count = countValue();                         // 可选
     return loadPages(totalRecord, count);
@@ -136,17 +157,31 @@ function switchPage(pageNumber) {
             }
         });
     }
-    if (isSearch) {//查询用的
-        for(var i=0;i<array1.length;i++){
-            $(array1[i]).hide();
-        }
-        var i=parseInt((pageNumber-1)*countValue());
-        var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
-        for(var i=i;i<=j;i++){
-            $('#tbody1').append(array1[i]);
-            $(array1[i]).show();
-        }
+    else {
+        data['page'] = page;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchSecOutbound",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    // console.log(result);
+                    setOutBoundList(result.data);
+                } else {
+                    console.log("fail: " + result);
+                    // setClientList(result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                // setClientList(result);
+            }
+        });
     }
+
 }
 
 /**
@@ -207,16 +242,29 @@ function inputSwitchPage() {
                 }
             });
         }
-        if (isSearch) {//查询用的
-            for(var i=0;i<array1.length;i++){
-                $(array1[i]).hide();
-            }
-            var i=parseInt((pageNumber-1)*countValue());
-            var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
-            for(var i=i;i<=j;i++){
-                $('#tbody1').append(array1[i]);
-                $(array1[i]).show();
-            }
+        else {
+            data['page'] = page;
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "searchSecOutbound",         // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    if (result != undefined) {
+                        // console.log(result);
+                        setOutBoundList(result.data);
+                    } else {
+                        console.log("fail: " + result);
+                        // setClientList(result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                    // setClientList(result);
+                }
+            });
         }
     }
 }
@@ -279,13 +327,7 @@ function onLoadSecondary()
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
-    if(array0.length==0){
-        for (var i = 1; i <= totalPage(); i++) {
-            switchPage(parseInt(i));
 
-            array0.push($('.myclass'));
-        }
-    }
     $.ajax({
         type: "POST",                       // 方法类型
         url: "loadSecOutBoundList",                  // url
@@ -310,37 +352,65 @@ function onLoadSecondary()
         }
 
     });
-    //进料方式高级检索
+
+    //设置处置方式下拉框
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getProcessWay",                  // url
-       // data:JSON.stringify(page),
+        url: "getProcessWayByDataDictionary",        // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
                 console.log(result);
-                var processWay=$('#search-materialForm');
-                processWay.children().remove();
-                $.each(result.processWayList,function (index,item) {
-                    var option=$('<option/>')
-                    option.val(index);
-                    option.text(item.name);
-                    processWay.append(option);
-                })
-                processWay.get(0).selectedIndex=-1;
+                // 高级检索下拉框数据填充
+                var materialCategoryItem = $("#search-materialForm");
+                materialCategoryItem.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    materialCategoryItem.append(option);
+                });
+                materialCategoryItem.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
             }
-        else {
-                alert(result.message);
-            }
-
-
         },
-        error:function (result) {
-            alert("服务器异常")
+        error: function (result) {
+            console.log("error: " + result);
         }
     });
+
+    //设置仓库
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "listWareHouse",        // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                console.log(result);
+                // 高级检索下拉框数据填充
+                var materialCategoryItem = $("#search-waresHouse");
+                materialCategoryItem.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.wareHouseId);
+                    option.text(item.wareHouseName);
+                    materialCategoryItem.append(option);
+                });
+                materialCategoryItem.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+
     isSearch=false;
 }
 
@@ -1523,6 +1593,12 @@ function searchSecOutbound() {
     if ($("#senior").is(':visible')) {
 
         data = {
+            wastesName:$.trim($('#search-wastesName').val()),
+            processWayItem:{dataDictionaryItemId:$('#search-materialForm').val()},
+            startDate:$('#search-storageDate').val(),
+            endDate:$('#search-endDate').val(),
+            wareHouse:{wareHouseId:$('#search-waresHouse').val()},
+            wasteCategory:$.trim($('#search-wastesCode').val()),
             page: page,
         };
         console.log(data);
@@ -1544,7 +1620,7 @@ function searchSecOutbound() {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 console.log(result);
-                setPageClone(result);
+                setPageClone(result.data);
                 setPageCloneAfter(pageNumber);        // 重新设置页码
             } else {
                 alert(result.message);
