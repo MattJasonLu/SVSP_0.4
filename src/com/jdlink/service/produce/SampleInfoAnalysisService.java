@@ -49,7 +49,5 @@ public interface SampleInfoAnalysisService {
      */
     void setState(String id, CheckState checkState);
 
-
-
-    List<ReceiveSampleAnalysis>  getByMoreFactor(String clientId,String wastesCode,String wastesName);
+    List<SampleInfoAnalysis>  getByMoreFactor(String clientId,String wastesCode,String wastesName);
 }

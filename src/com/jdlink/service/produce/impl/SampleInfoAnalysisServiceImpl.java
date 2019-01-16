@@ -50,9 +50,7 @@ public class SampleInfoAnalysisServiceImpl implements SampleInfoAnalysisService 
     }
 
     @Override
-    public List<ReceiveSampleAnalysis> getByMoreFactor(String clientId, String wastesCode, String wastesName) {
+    public List<SampleInfoAnalysis> getByMoreFactor(String clientId, String wastesCode, String wastesName) {
         return sampleInfoAnalysisMapper.getByMoreFactor(clientId, wastesCode, wastesName);
     }
-
-
 }

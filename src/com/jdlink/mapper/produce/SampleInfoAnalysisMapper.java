@@ -49,6 +49,5 @@ public interface SampleInfoAnalysisMapper {
       */
      void setState(@Param("id") String id, @Param("checkState") CheckState checkState, @Param("newId") String newId);
 
-
-     List<ReceiveSampleAnalysis>  getByMoreFactor(String clientId,String wastesCode,String wastesName);
+     List<SampleInfoAnalysis>  getByMoreFactor(String clientId,String wastesCode,String wastesName);
 }

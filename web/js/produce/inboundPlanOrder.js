@@ -1236,7 +1236,6 @@ function showComparison(e) {
                 var wastesName = obj.wastes.name;
                 var wastesCode = obj.wastes.wastesId;
                 var data={
-                    id:id,
                     produceCompany:{clientId:clientId},
                     wastesName:wastesName,
                     wastesCode:wastesCode
@@ -1277,7 +1276,12 @@ function showComparison(e) {
         var tr = $("#cloneTr2");
 
         var sampleInfoAnalysis=result.sampleInfoAnalysis;
-
+        if (sampleInfoAnalysis == null) {
+            // 隐藏无数据的tr
+            tr.hide();
+            alert("没有对应化验单！");
+            return;
+        }
 
         var clonedTr = tr.clone();
 
@@ -1405,7 +1409,7 @@ function reject() {
  * @returns {string} 联单编号
  */
 function getIdByMenu(e) {
-    console.log(e.parent().html());
+    // console.log(e.parent().html());
     return e.parent().parent().find("td[name='inboundPlanOrderId']").text();
 }
 
