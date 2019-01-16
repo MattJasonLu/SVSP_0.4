@@ -1217,6 +1217,123 @@ function addAppoint() {
     });
 }
 
+/**
+ * 显示对比框
+ */
+function showComparison(e) {
+    $("#cloneTr2").siblings().remove();
+    var id = getIdByMenu(e);
+    $.ajax({
+        type: "POST",
+        url: "getInboundPlanOrder",
+        async: false,
+        dataType: "json",
+        data: {"inboundPlanOrderId": id},
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                var obj = eval(result.data);
+                var clientId = obj.produceCompany.clientId;
+                var wastesName = obj.wastes.name;
+                var wastesCode = obj.wastes.wastesId;
+                var data={
+                    id:id,
+                    produceCompany:{clientId:clientId},
+                    wastesName:wastesName,
+                    wastesCode:wastesCode
+                };
+
+                console.log(id);
+
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "comparison",                  // url
+                    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    data:JSON.stringify(data),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success:function (result) {
+                        if (result != undefined && result.status == "success") {
+                            setCompareList(result);
+                        }
+                    },
+                    error:function (result) {
+
+                    }
+                });
+                $("#comparison").modal('show');
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
+
+    function setCompareList(result) {
+        console.log(result);
+        // 获取id为cloneTr的tr元素
+        var tr = $("#cloneTr2");
+
+        var sampleInfoAnalysis=result.sampleInfoAnalysis;
+
+
+        var clonedTr = tr.clone();
+
+        clonedTr.show();
+        if(sampleInfoAnalysis.produceCompany !=null){
+            clonedTr.children('td').eq(1).html(sampleInfoAnalysis.produceCompany.companyName)
+        }
+        clonedTr.children('td').eq(2).html(sampleInfoAnalysis.wastesName);
+        clonedTr.children('td').eq(3).html(sampleInfoAnalysis.wastesCode);
+        if(sampleInfoAnalysis.formType!=null){
+            clonedTr.children('td').eq(4).html(sampleInfoAnalysis.formType.name);
+        }
+        clonedTr.children('td').eq(5).html(setNumber2Line(sampleInfoAnalysis.PH.toFixed(2)));
+        clonedTr.children('td').eq(6).html(setNumber2Line(sampleInfoAnalysis.ash.toFixed(2)));
+        clonedTr.children('td').eq(7).html(setNumber2Line(sampleInfoAnalysis.chlorine.toFixed(2)));
+        clonedTr.children('td').eq(8).html(setNumber2Line(sampleInfoAnalysis.sulfur.toFixed(2)));
+        clonedTr.children('td').eq(9).html(setNumber2Line(sampleInfoAnalysis.chlorine.toFixed(2)));
+        clonedTr.children('td').eq(10).html(setNumber2Line(sampleInfoAnalysis.fluorine.toFixed(2)));
+        clonedTr.children('td').eq(11).html(setNumber2Line(sampleInfoAnalysis.phosphorus.toFixed(2)));
+        clonedTr.children('td').eq(12).html(setNumber2Line(sampleInfoAnalysis.flashPoint.toFixed(2)));
+        clonedTr.children('td').eq(13).html(setNumber2Line(sampleInfoAnalysis.viscosity));
+        clonedTr.children('td').eq(14).html(setNumber2Line(sampleInfoAnalysis.hotMelt));
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+        // tr.siblings().remove();
+        $.each(result.receiveSampleAnalysisList, function (index, item) {
+            var obj = eval(item);
+            // 克隆tr，每次遍历都可以产生新的tr
+            var clonedTr = tr.clone();
+            clonedTr.show();
+            if(obj.produceCompany !=null){
+                clonedTr.children('td').eq(1).html(obj.produceCompany.companyName)
+            }
+            clonedTr.children('td').eq(2).html(obj.wastesName);
+            clonedTr.children('td').eq(3).html(obj.wastesCode);
+            if(obj.formType!=null){
+                clonedTr.children('td').eq(4).html(obj.formType.name);
+            }
+            clonedTr.children('td').eq(5).html(setNumber2Line(obj.PH.toFixed(2)));
+            clonedTr.children('td').eq(6).html(setNumber2Line(obj.ash.toFixed(2)));
+            clonedTr.children('td').eq(7).html(setNumber2Line(obj.chlorine.toFixed(2)));
+            clonedTr.children('td').eq(8).html(setNumber2Line(obj.sulfur.toFixed(2)));
+            clonedTr.children('td').eq(9).html(setNumber2Line(obj.chlorine.toFixed(2)));
+            clonedTr.children('td').eq(10).html(setNumber2Line(obj.fluorine.toFixed(2)));
+            clonedTr.children('td').eq(11).html(setNumber2Line(obj.phosphorus.toFixed(2)));
+            clonedTr.children('td').eq(12).html(setNumber2Line(obj.flashPoint.toFixed(2)));
+            clonedTr.children('td').eq(13).html(setNumber2Line(obj.viscosity));
+            clonedTr.children('td').eq(14).html(setNumber2Line(obj.hotMelt));
+            clonedTr.removeAttr("id");
+            clonedTr.insertBefore(tr);
+        });
+        // 隐藏无数据的tr
+        tr.hide();
+
+    }
+}
 
 var rejectId;
 
@@ -1228,6 +1345,25 @@ function showReject(e) {
     // 获取编号
     var id = getIdByMenu(e);
     rejectId = id;
+    // 显示拒收原因
+    $.ajax({
+        type: "POST",
+        url: "getInboundPlanOrder",
+        async: false,
+        dataType: "json",
+        data: {"inboundPlanOrderId": id},
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                $("#advice").val(result.data.advice);
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
     $("#rejectModal").modal("show");
 }
 
