@@ -11,7 +11,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/ingredientsWarehouse.js"></script>
+    <script src="js/produce/ingredientReceiveAndSendTable.js"></script>
 </head>
 <body onload="loadInventoryList();">
 <!--导航条-->
@@ -144,9 +144,6 @@
                     <a class="btn btn-primary btn-xs" id="function_-356" href="#" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel();}"><span
                             class="glyphicon glyphicon-arrow-up"
                             aria-hidden="true"></span> 导出</a>
-                    <a class="btn btn-primary btn-xs" href="ingredientReceiveAndSendTable.html" onclick=""><span
-                            class="glyphicon glyphicon-arrow-up"
-                            aria-hidden="true"></span> 收发汇总表</a>
                 </div>
                 <!--查询框-->
                 <div class="row">
@@ -267,14 +264,14 @@
                             <th class="text-center">物品名称</th>
                             <th class="text-center">规格</th>
                             <th class="text-center">计量单位</th>
-                            <th class="text-center">库存量</th>
-                            <th class="text-center">仓库</th>
-                            <th class="text-center">入库单</th>
-                            <th class="text-center">入库数</th>
-                            <th class="text-center">入库单价</th>
-                            <th class="text-center">出库单</th>
-                            <th class="text-center">出库数</th>
-                            <th class="text-center">出库单价</th>
+                            <th class="text-center">期初数</th>
+                            <th class="text-center">期初金额</th>
+                            <th class="text-center">入库总数</th>
+                            <th class="text-center">入库金额</th>
+                            <th class="text-center">出库总数</th>
+                            <th class="text-center">出库金额</th>
+                            <th class="text-center">库存数</th>
+                            <th class="text-center">库存金额</th>
                         </tr>
                         </thead>
                         <tbody id="ingredientsInventoryData">
@@ -411,6 +408,5 @@
 </div>
 </body>
 <script>
-    $('#embed').load('embed/loginLogModal.html');
 </script>
 </html>
