@@ -53,4 +53,6 @@ public interface StockMapper {
   void updateQuotationItemState(String quotationItemId);
 
   void perfectStockItem(StockItem stockItem);
+
+  void updateCapacity(String clientId,float capacity);
 }

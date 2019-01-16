@@ -290,5 +290,15 @@ public class BatchOrderServiceImpl implements BatchOrderService
         return batchOrderMapper.searchWastesInventoryCount(wasteInventory);
     }
 
+    @Override
+    public List<OutboundOrder> searchSecOutbound(OutboundOrder outboundOrder) {
+        return batchOrderMapper.searchSecOutbound(outboundOrder);
+    }
+
+    @Override
+    public int searchSecOutboundCount(OutboundOrder outboundOrder) {
+        return batchOrderMapper.searchSecOutboundCount(outboundOrder);
+    }
+
 
 }
