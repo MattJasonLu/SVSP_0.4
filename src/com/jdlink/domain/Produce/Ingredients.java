@@ -1,10 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
-import com.jdlink.domain.Dictionary.CheckStateItem;
-import com.jdlink.domain.Dictionary.EquipmentDataItem;
-import com.jdlink.domain.Dictionary.IngredientStateItem;
-import com.jdlink.domain.Dictionary.UnitDataItem;
+import com.jdlink.domain.Dictionary.*;
 import com.jdlink.domain.Page;
 
 import java.util.Arrays;
@@ -184,6 +181,14 @@ public class Ingredients {
      */
     private float inPrice;
     /**
+     * 入库金额
+     */
+    private float inTotalPrice;
+    /**
+     * 入库总数
+     */
+    private float inTotalAmount;
+    /**
      * 领料单价
      */
     private float receivePrice;
@@ -203,6 +208,81 @@ public class Ingredients {
      * 出库单价
      */
     private float outPrice;
+    /**
+     * 出库金额
+     */
+    private float outTotalPrice;
+    /**
+     * 出库总数
+     */
+    private float outTotalAmount;
+    /**
+     * 期初数（上月最后一天库存量）
+     */
+    private float monthBeginAmount;
+    /**
+     * 期初金额
+     */
+    private float monthBeginTotalPrice;
+
+    /*物资类别数据字典*/
+    private MaterialCategoryItem materialCategoryItem;
+
+    public float getInTotalPrice() {
+        return inTotalPrice;
+    }
+
+    public void setInTotalPrice(float inTotalPrice) {
+        this.inTotalPrice = inTotalPrice;
+    }
+
+    public float getInTotalAmount() {
+        return inTotalAmount;
+    }
+
+    public void setInTotalAmount(float inTotalAmount) {
+        this.inTotalAmount = inTotalAmount;
+    }
+
+    public float getOutTotalPrice() {
+        return outTotalPrice;
+    }
+
+    public void setOutTotalPrice(float outTotalPrice) {
+        this.outTotalPrice = outTotalPrice;
+    }
+
+    public float getOutTotalAmount() {
+        return outTotalAmount;
+    }
+
+    public void setOutTotalAmount(float outTotalAmount) {
+        this.outTotalAmount = outTotalAmount;
+    }
+
+    public float getMonthBeginAmount() {
+        return monthBeginAmount;
+    }
+
+    public void setMonthBeginAmount(float monthBeginAmount) {
+        this.monthBeginAmount = monthBeginAmount;
+    }
+
+    public float getMonthBeginTotalPrice() {
+        return monthBeginTotalPrice;
+    }
+
+    public void setMonthBeginTotalPrice(float monthBeginTotalPrice) {
+        this.monthBeginTotalPrice = monthBeginTotalPrice;
+    }
+
+    public MaterialCategoryItem getMaterialCategoryItem() {
+        return materialCategoryItem;
+    }
+
+    public void setMaterialCategoryItem(MaterialCategoryItem materialCategoryItem) {
+        this.materialCategoryItem = materialCategoryItem;
+    }
 
     public String getInId() {
         return inId;

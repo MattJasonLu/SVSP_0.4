@@ -748,6 +748,10 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
         values
         (#{id},#{laboratorySignatory},#{sendingPerson},NOW(),#{water},#{address},#{client.clientId},NOW(),86,#{sewagePointItem.dataDictionaryItemId})
     </insert>
+    <update id="updateSewaGeregistration" parameterType="Sewageregistration">
+        update t_pr_sewageregistration set laboratorySignatory=#{laboratorySignatory},sendingPerson=#{sendingPerson},address=#{address},clientId=#{client.clientId},water=#{water},sewagePointId=#{sewagePointItem.dataDictionaryItemId}  where id=#{id}
+    </update>
+
 
     <!--获得主表最新的主键-->
     <select id="getNewestId" resultType="String">
@@ -759,6 +763,13 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
         insert into  t_pr_sewageregistrationitem(id,wastesCode, wastesName, sampleinformationId, ph, cod, bod5, o2, lye, n2,alkalinity,bicarbonate,nitrogen,phosphorus,turbidity,basicity,phenolphthalein,remarks,identifie) values
         (#{id},#{wastesCode},#{wastesName},#{sampleinformationId},#{ph},#{cod},#{bod5},#{o2},#{lye},#{n2},#{alkalinity},#{bicarbonate},#{nitrogen},#{phosphorus},#{turbidity},#{basicity},#{phenolphthalein},#{remarks},#{identifie})
     </insert>
+
+    <update id="updateSewaGeregistrationItem" parameterType="SewageregistrationItem">
+        update t_pr_sewageregistrationitem set  wastesCode=#{wastesCode},wastesName=#{wastesName}, ph=#{ph},cod=#{cod},bod5=#{bod5},o2=#{o2},
+        lye=#{lye},n2=#{n2},alkalinity=#{alkalinity},bicarbonate=#{bicarbonate},nitrogen=#{nitrogen},phosphorus=#{phosphorus},turbidity=#{turbidity},basicity=#{basicity},phenolphthalein=#{phenolphthalein},remarks=#{remarks},identifie=#{identifie}
+        where sampleinformationId=#{sampleinformationId}
+
+    </update>
 
     <!--添加软水登记主表-->
     <insert id="addSoftGeregistration" parameterType="Sewageregistration">
@@ -800,7 +811,7 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
         select * from datadictionaryitem where dataDictionaryItemId=#{softPointId}
     </select>
     <select id="getSoftgeregistrationItem" resultType="SewageregistrationItem"   parameterType="String">
-    select * from t_pr_softgeregistrationitem where sampleinformationId=#{id};
+    select * from t_pr_softgeregistrationitem where sampleinformationId=#{id} limit 0,1;
     </select>
     <!--获取污水送样登记-->
     <select id="sewageList" resultMap="SewageregistrationRM">
@@ -821,7 +832,7 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
     </select>
 
     <select id="getSewageregistrationItem" parameterType="String" resultType="SewageregistrationItem">
-        select  * from t_pr_sewageregistrationitem where sampleinformationId=#{id};
+        select  * from t_pr_sewageregistrationitem where sampleinformationId=#{id} limit 0,1;
     </select>
 
     <!--根据编号获取污水登记信息-->

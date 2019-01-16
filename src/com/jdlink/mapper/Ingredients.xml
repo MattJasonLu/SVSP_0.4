@@ -7,6 +7,7 @@
     <!-- 入库单-->
     <resultMap id="IngredientsInRM" type="IngredientsIn" autoMapping="true">
         <id column="id" property="id"/>
+        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"/>
         <collection property="ingredientsList" select="getInItems" column="id"
                     ofType="com.jdlink.domain.Produce.Ingredients"
                     javaType="ArrayList"/>
@@ -55,7 +56,8 @@
     </select>
 
     <select id="listPageInItem" resultMap="InIngredientsRM">
-        select a.*,b.companyName,b.creationDate,b.state,b.checkStateId from t_pr_ingredients as a join t_pr_ingredients_in as b on
+        select a.*,b.companyName,b.creationDate,b.state,b.checkStateId from t_pr_ingredients as a join
+        t_pr_ingredients_in as b on
         a.inId=b.id
         where b.checkStateId != 69
         order by creationTime desc,serialNumberIn ASC
@@ -119,7 +121,8 @@
     </select>
 
     <select id="searchInItem" parameterType="Ingredients" resultMap="InIngredientsRM">
-        select a.*,b.companyName,b.creationDate,b.state,b.checkStateId from t_pr_ingredients as a join t_pr_ingredients_in as b on
+        select a.*,b.companyName,b.creationDate,b.state,b.checkStateId from t_pr_ingredients as a join
+        t_pr_ingredients_in as b on
         a.inId=b.id
         <where>
             <if test="keywords != null and keywords != ''">
@@ -167,6 +170,9 @@
             </if>
             <if test="specification !=null and specification !='' ">
                 and specification like "%"#{specification}"%"
+            </if>
+            <if test="amount !=null and amount !='' ">
+                and amount = #{amount}
             </if>
         </where>
         order by creationTime desc
@@ -224,8 +230,10 @@
             <if test="specification !=null and specification !='' ">
                 and specification like "%"#{specification}"%"
             </if>
+            <if test="amount !=null and amount !='' ">
+                and amount = #{amount}
+            </if>
         </where>
-        order by creationDate desc
     </select>
 
     <select id="searchInCount" parameterType="IngredientsIn" resultType="int">
@@ -590,7 +598,8 @@
     </select>
 
     <select id="searchReceiveItem" parameterType="Ingredients" resultMap="ReceiveIngredientsRM">
-        select a.*,b.state,b.department,b.creationDate,b.checkStateId from t_pr_ingredients as a join t_pr_ingredients_receive as b on
+        select a.*,b.state,b.department,b.creationDate,b.checkStateId from t_pr_ingredients as a join
+        t_pr_ingredients_receive as b on
         a.receiveId=b.id
         <where>
             <if test="keywords != null and keywords != ''">
@@ -728,25 +737,40 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or itemId = #{keywords}
+                or code like #{keywords}"%"
                 or name like "%"#{keywords}"%"
-                or wareHouseName like "%"#{keywords}"%"
-                or amount like "%"#{keywords}"%"
-                or unit like "%"#{keywords}"%"
-                or ingredientState like "%"#{keywords}"%"
                 or specification like "%"#{keywords}"%"
-                or code like "%"#{keywords}"%"
+                or unit like "%"#{keywords}"%"
+                or wareHouseName like "%"#{keywords}"%"
+                or inId like "%"#{keywords}"%"
+                or outId like "%"#{keywords}"%"
             </if>
             <if test="wareHouseName != null and wareHouseName != ''">
-                wareHouseName like "%"#{wareHouseName}"%"
+                and wareHouseName like "%"#{wareHouseName}"%"
             </if>
             <if test="code != null and code != ''">
-                code like "%"#{code}"%"
+                and code like #{code}"%"
             </if>
             <if test="name != null and name != ''">
-                name like "%"#{name}"%"
+                and name like "%"#{name}"%"
+            </if>
+            <if test="specification != null and specification != ''">
+                and specification = #{specification}
+            </if>
+            <if test="unit != null and unit != ''">
+                and unit = #{unit}
+            </if>
+            <if test="inId != null and inId != ''">
+                and inId like "%"#{inId}"%"
+            </if>
+            <if test="outId != null and outId != ''">
+                and outId like "%"#{outId}"%"
             </if>
             <if test="amount != null and amount != ''">
-                amount = #{amount}
+                and amount =#{amount}
+            </if>
+            <if test="inAmount != null and inAmount != ''">
+                and inAmount =#{inAmount}
             </if>
         </where>
     </select>
@@ -765,25 +789,31 @@
                 or outId like "%"#{keywords}"%"
             </if>
             <if test="wareHouseName != null and wareHouseName != ''">
-                wareHouseName like "%"#{wareHouseName}"%"
+                and wareHouseName like "%"#{wareHouseName}"%"
             </if>
             <if test="code != null and code != ''">
-                code like #{code}"%"
+                and code like #{code}"%"
             </if>
             <if test="name != null and name != ''">
-                name like "%"#{name}"%"
+                and name like "%"#{name}"%"
             </if>
             <if test="specification != null and specification != ''">
-                specification = #{specification}
+                and specification = #{specification}
             </if>
             <if test="unit != null and unit != ''">
-                unit = #{unit}
+                and unit = #{unit}
             </if>
             <if test="inId != null and inId != ''">
-                inId like "%"#{inId}"%"
+                and inId like "%"#{inId}"%"
             </if>
             <if test="outId != null and outId != ''">
-                outId like "%"#{outId}"%"
+                and outId like "%"#{outId}"%"
+            </if>
+            <if test="amount != null and amount != ''">
+                and amount =#{amount}
+            </if>
+            <if test="inAmount != null and inAmount != ''">
+                and inAmount =#{inAmount}
             </if>
         </where>
         <if test="page != null and page.start != null and page.count != null and page.count != 0">
@@ -796,7 +826,8 @@
         <if test="ingredientsList != null and ingredientsList.size() > 0">
             <foreach collection="ingredientsList" item="ingredients" index="index"><!--将库存加回-->
                 update t_pr_ingredients_inventory
-                set amount= amount + #{ingredients.receiveAmount},receiveAmount=receiveAmount-#{ingredients.receiveAmount},ingredientStateId=38
+                set amount= amount +
+                #{ingredients.receiveAmount},receiveAmount=receiveAmount-#{ingredients.receiveAmount},ingredientStateId=38
                 where receiveId=#{id} and name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName} and
                 specification=#{ingredients.specification};
             </foreach>
@@ -900,7 +931,8 @@
                 update t_pr_ingredients_inventory
                 set
                 amount=amount-#{ingredients.receiveAmount},ingredientStateId=IF((amount-#{ingredients.receiveAmount})>0,40,39),
-                receiveId =#{ingredients.id},receiveAmount=receiveAmount+#{ingredients.receiveAmount},receivePrice=#{ingredients.unitPrice}
+                receiveId
+                =#{ingredients.id},receiveAmount=receiveAmount+#{ingredients.receiveAmount},receivePrice=#{ingredients.unitPrice}
                 where itemId=#{ingredients.itemId};
             </foreach>
         </if>
@@ -919,8 +951,8 @@
         <result column="aid" property="aid"/>
         <result column="outId" property="id"/>
         <result column="serialNumberOut" property="serialNumber"/>
-        <association property="equipmentDataItem" column="equipmentId" select="getEquipmentDataItem" />
-        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem" />
+        <association property="equipmentDataItem" column="equipmentId" select="getEquipmentDataItem"/>
+        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"/>
     </resultMap>
 
     <select id="getOutItems" parameterType="String" resultMap="OutIngredientsRM">
@@ -1302,8 +1334,19 @@
     <resultMap id="IngredientsRM" type="Ingredients" autoMapping="true">
         <id column="itemId" property="id"/>
         <result column="ingredientsName" property="name"/>
+        <association property="materialCategoryItem" column="materialCategoryId" select="getMaterialCategoryItem"></association>
+        <association property="unitDataItem" column="unitId" select="getUnitId"></association>
     </resultMap>
 
+    <!--获取和物资累呗数据字典-->
+    <select id="getMaterialCategoryItem" resultType="MaterialCategoryItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{materialCategoryId}
+    </select>
+
+    <!--获取单位数据字典-->
+    <select id="getUnitId" resultType="UnitDataItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{unitId}
+    </select>
     <select id="getIngredientsList" resultMap="IngredientsRM">
         select * from t_pl_ingredientslist
         order by nowTime desc
@@ -1332,6 +1375,8 @@
                 or ingredientsName like "%"#{keywords}"%"
                 or code like "%"#{keywords}"%"
                 or specification like "%"#{keywords}"%"
+                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=28)
+                or unitId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=25)
             </if>
             <if test="id != '' and id != null">
                 and id like "%"#{id}"%"
@@ -1344,6 +1389,11 @@
             </if>
             <if test="specification != '' and specification != null">
                 and specification like "%"#{specification}"%"
+            </if>
+            <if test="materialCategoryItem!=null">
+                <if test="materialCategoryItem.dataDictionaryItemId!=0">
+                    and materialCategoryId=#{materialCategoryItem.dataDictionaryItemId}
+                </if>
             </if>
         </where>
         order by nowTime desc
@@ -1360,6 +1410,8 @@
                 or ingredientsName like "%"#{keywords}"%"
                 or code like "%"#{keywords}"%"
                 or specification like "%"#{keywords}"%"
+                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=28)
+                or unitId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=25)
             </if>
             <if test="id != '' and id != null">
                 and id like "%"#{id}"%"
@@ -1372,6 +1424,11 @@
             </if>
             <if test="specification != '' and specification != null">
                 and specification like "%"#{specification}"%"
+            </if>
+            <if test="materialCategoryItem!=null">
+                <if test="materialCategoryItem.dataDictionaryItemId!=0">
+                    and materialCategoryId=#{materialCategoryItem.dataDictionaryItemId}
+                </if>
             </if>
         </where>
     </select>
@@ -1386,14 +1443,29 @@
         where left(code,2)=#{type};
     </select>
 
+    <!--获取已结账的出库单的年月份集合-->
+    <select id="getDateBbySettled" resultType="String">
+          SELECT date_format(creationDate,'%Y-%m')  FROM t_pr_ingredients_out
+          WHERE checkStateId=253;
+    </select>
+
     <insert id="addIngredient" parameterType="Ingredients">
         insert into t_pl_ingredientslist
-        (ingredientsName, code,specification,nowTime) values (#{name},#{code},#{specification},NOW());
+        (ingredientsName, code,specification,nowTime,materialCategoryId,unitId) values (#{name},#{code},#{specification},NOW(),#{materialCategoryItem.dataDictionaryItemId},#{unitDataItem.dataDictionaryItemId});
     </insert>
 
     <update id="updateIngredient" parameterType="Ingredients">
         update t_pl_ingredientslist
-        set ingredientsName=#{name},code=#{code},specification=#{specification} where id=#{id};
+        set ingredientsName=#{name},code=#{code},specification=#{specification},materialCategoryId=#{materialCategoryItem.dataDictionaryItemId},unitId=#{unitDataItem.dataDictionaryItemId} where id=#{id};
+    </update>
+
+    <!--锁定出库单-->
+    <update id="outSettled" parameterType="IngredientsOut">
+        <if test="receiveIdList != null and receiveIdList.size() > 0">
+            <foreach collection="receiveIdList" index="index" item="id">
+                update t_pr_ingredients_out set checkStateId=253 where id=#{id};
+            </foreach>
+        </if>
     </update>
 
     <delete id="deleteIngredient" parameterType="int">

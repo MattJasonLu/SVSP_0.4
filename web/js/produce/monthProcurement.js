@@ -317,7 +317,16 @@ function addNewLine(item) {
         success:function (result) {
             if (result != undefined && result.status == "success"){
                 console.log(result)
-             $(item).parent().parent().prev().children('td').eq(2).find('input').val(result.data)
+             // $(item).parent().parent().prev().children('td').eq(2).find('input').val(result.data)
+                if(result.data!=null){
+                    $(item).parent().parent().prev().children('td').eq(2).find('input').val(result.data.specification)
+                    if(result.data.unitDataItem!=null){
+                        $(item).parent().parent().prev().children('td').eq(3).find('select').val(result.data.unitDataItem.dataDictionaryItemId)
+                    }
+                    if(result.data.materialCategoryItem!=null){
+                        $(item).parent().parent().prev().children('td').eq(7).find('select').val(result.data.materialCategoryItem.dataDictionaryItemId)
+                    }
+                }
             }
             else {
 
@@ -375,7 +384,7 @@ function saveMonth() {
     //在添加物料表
     data={
         suppliesCategory:$('#suppliesCategory').val(),
-        applyMouth:$('#applyMonth option:selected').text()+"月份",
+        applyMouth:$('#year').val()+"-"+$('#applyMonth option:selected').text(),
         demandTime:($('#demandTime').val()).toString(),
         applyDepartment:$('#applyDepartment option:selected').text(),
         proposer:$('#proposer').val(),
@@ -384,8 +393,7 @@ function saveMonth() {
         purchasingHead:$('#purchasingHead').val(),
         generalManager:$('#generalManager').val(),
         procurementCategory:1,//代表是月季采购
-        materialCategoryItem:{dataDictionaryItemId:$('#materialCategoryItem').val()},
-        nonMaterial:true,
+        nonMaterial:false,//物资
     }
     console.log(data)
     //执行添加到后台的ajax
@@ -452,6 +460,7 @@ function saveMonth() {
    var inventory=$(this).children('td').eq(4).children('input').val();
    var demandQuantity=$(this).children('td').eq(5).children('input').val();
    var note=$(this).children('td').eq(6).children('input').val();
+   var materialCategoryId=$(this).children('td').eq(7).children('select').val();
    var materialdata={
         suppliesName:suppliesName,
         specifications:specifications,
@@ -459,7 +468,8 @@ function saveMonth() {
         inventory:inventory,
         demandQuantity:demandQuantity,
         note:note,
-       materialCategoryItem:{dataDictionaryItemId:$('#materialCategoryItem').val()},
+        materialCategoryItem:{dataDictionaryItemId:materialCategoryId},
+        applyMouth:$('#year').val()+"-"+$('#applyMonth option:selected').text(),
     }
     console.log(materialdata);
         $('.selectpicker').selectpicker('refresh');
@@ -639,13 +649,13 @@ function setMonthProcurementList(result) {
                             }
                             break;
                             //物资类别
-                        case (12):
-                            if(obj.materialCategoryItem!=null){
-                                $(this).html((obj.materialCategoryItem.dictionaryItemName));
-                            }
-                            break;
+                        // case (12):
+                        //     if(obj.materialCategoryItem!=null){
+                        //         $(this).html((obj.materialCategoryItem.dictionaryItemName));
+                        //     }
+                        //     break;
                             //附件地址
-                        case (13):
+                        case (12):
                             $(this).html((obj.procurementFileURL));
                             break;
                     }
@@ -910,7 +920,13 @@ function setMonthProcurementListModal(result) {
                     case (5):
                         $(this).html(obj.note);
                         break;
-                    // 采购部门负责人
+                    // 物资类别
+                    case (6):
+                        if(obj.materialCategoryItem!=null){
+                            $(this).html(obj.materialCategoryItem.dictionaryItemName);
+                        }
+                        break;
+
                 }
             });
             // 把克隆好的tr追加到原来的tr前面
@@ -1309,7 +1325,18 @@ function getIngredientsList() {
      success:function (result) {
          if (result != undefined && result.status == "success"){
              console.log(result)
-             $('.myclass').children('td').eq(2).find("input").val(result.data)
+             if(result.data!=null){
+                 $('.myclass').children('td').eq(2).find("input").val(result.data.specification)
+                 if(result.data.unitDataItem!=null){
+                     $('.myclass').children('td').eq(3).find("select").val(result.data.unitDataItem.dataDictionaryItemId)
+
+                 }
+                 if(result.data.materialCategoryItem!=null){
+                     $('.myclass').children('td').eq(7).find("select").val(result.data.materialCategoryItem.dataDictionaryItemId)
+
+                 }
+             }
+
          }
          else {
 
@@ -1550,7 +1577,15 @@ function findSpecification(item) {
         success:function (result) {
             if (result != undefined && result.status == "success"){
                 console.log(result)
-                $(item).parents('.myclass').children('td').eq(2).find('input').val(result.data)
+                if(result.data!=null){
+                    $(item).parents('.myclass').children('td').eq(2).find('input').val(result.data.specification)
+                    if(result.data.unitDataItem!=null){
+                        $(item).parents('.myclass').children('td').eq(3).find('select').val(result.data.unitDataItem.dataDictionaryItemId)
+                    }
+                    if(result.data.materialCategoryItem!=null){
+                        $(item).parents('.myclass').children('td').eq(7).find('select').val(result.data.materialCategoryItem.dataDictionaryItemId)
+                    }
+                }
             }
             else {
 

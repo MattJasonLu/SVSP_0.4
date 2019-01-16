@@ -30,6 +30,9 @@ public class ProcurementPlan {
     //创建日期结束
     private Date createDateEnd;
 
+    //申请年月
+    private String applyMouth;
+
 
     //修改人
     private String adjustName;
@@ -67,6 +70,14 @@ public class ProcurementPlan {
 
     //物资类别数据字典
     private MaterialCategoryItem materialCategoryItem;
+
+    public String getApplyMouth() {
+        return applyMouth;
+    }
+
+    public void setApplyMouth(String applyMouth) {
+        this.applyMouth = applyMouth;
+    }
 
     public MaterialCategoryItem getMaterialCategoryItem() {
         return materialCategoryItem;

@@ -428,4 +428,9 @@ contractMapper.updateFreight2(id);
         return contractMapper.searchOtherContractCount(contract);
     }
 
+    @Override
+    public List<QuotationItem> getQuotationItemList() {
+        return contractMapper.getQuotationItemList();
+    }
+
 }

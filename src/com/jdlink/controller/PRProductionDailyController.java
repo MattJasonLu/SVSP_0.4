@@ -501,6 +501,12 @@ public class PRProductionDailyController {
                     } else {
                         sewageTest.setPhosphorus(-9999);
                     }
+                    sewageTest.setAlkalinity(-9999);
+                    sewageTest.setAlkalinityCaCo3(-9999);
+                    sewageTest.setAlkalinityHCO3(-9999);
+                    sewageTest.setBicarbonate(-9999);
+                    sewageTest.setBicarbonateCaCo3(-9999);
+                    sewageTest.setBicarbonateHCO3(-9999);
                     if (sewageTestService.getSewageTestById(id) == null) {
                         sewageTestService.addSewageTest(sewageTest);
                     } else {
@@ -571,6 +577,12 @@ public class PRProductionDailyController {
             } else {
                 sewageTest.setPhosphorus(-9999);
             }
+            sewageTest.setAlkalinity(-9999);
+            sewageTest.setAlkalinityCaCo3(-9999);
+            sewageTest.setAlkalinityHCO3(-9999);
+            sewageTest.setBicarbonate(-9999);
+            sewageTest.setBicarbonateCaCo3(-9999);
+            sewageTest.setBicarbonateHCO3(-9999);
             if (sewageTestService.getSewageTestById(id) == null) {
                 sewageTestService.addSewageTest(sewageTest);
             }
@@ -843,7 +855,11 @@ public class PRProductionDailyController {
                         productionDailyService.addSewaGeregistrationItem(sewageregistrationItem);
 
                 } else {
-                    throw new DuplicateKeyException("预约单号重复，请检查后导入");
+                    productionDailyService.updateSewaGeregistration(sewageregistration);
+//                    throw new DuplicateKeyException("预约单号重复，请检查后导入");
+                    for (SewageregistrationItem sewageregistrationItem : sewageregistration.getSewageregistrationItemList())
+                        productionDailyService.updateSewaGeregistrationItem(sewageregistrationItem);
+
                 }
             }
             res.put("status", "success");

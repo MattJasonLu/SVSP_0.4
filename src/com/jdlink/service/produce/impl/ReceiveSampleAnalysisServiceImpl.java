@@ -49,5 +49,10 @@ public class ReceiveSampleAnalysisServiceImpl implements ReceiveSampleAnalysisSe
         receiveSampleAnalysisMapper.update(receiveSampleAnalysis);
     }
 
+    @Override
+    public List<ReceiveSampleAnalysis> getByMoreFactor(String clientId, String wastesCode, String wastesName) {
+        return receiveSampleAnalysisMapper.getByMoreFactor(clientId, wastesCode, wastesName);
+    }
+
 
 }

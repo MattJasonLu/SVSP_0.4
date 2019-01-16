@@ -400,37 +400,34 @@ function setProcurementPlan(result) {
                 case (2):
                     $(this).html(data.procurementPlanId);
                     break;
+                //申请月份
+                case(3):
+                    $(this).html(data.applyMouth);
+                    break;
 
                 // 创建人
-                case (3):
+                case (4):
                     $(this).html(data.createName);
                     break;
 
                 //创建日期
-                case (4):
+                case (5):
                     $(this).html(getDateStr(data.createDate));
                     break;
 
                 // 修改人
-                case (5):
+                case (6):
                     $(this).html((data.adjustName));
                     break;
 
                 //修改日期
-                case (6):
+                case (7):
                     $(this).html(getDateStr(data.adjustDate));
                     break;
 
                 // 审批人
-                case (7):
-                    $(this).html(data.approvalName);
-                    break;
                 case (8):
-               //物资类别
-                    if(data.materialCategoryItem!=null){
-                        $(this).html(data.materialCategoryItem.dictionaryItemName);
-                    }
-
+                    $(this).html(data.approvalName);
                     break;
                 // 状态
                 case (9):
@@ -523,8 +520,11 @@ function setViewModal(result) {
         $(clonedTr).children('td').eq(6).html(obj.price.toFixed(2))
         //统计金额
         $(clonedTr).children('td').eq(7).html(obj.priceTotal.toFixed(2))
+        if(obj.materialCategoryItem!=null){
+            $(clonedTr).children('td').eq(8).html(obj.materialCategoryItem.dictionaryItemName)
+        }
         //备注
-        $(clonedTr).children('td').eq(8).html(obj.remarks)
+        $(clonedTr).children('td').eq(9).html(obj.remarks)
             clonedTr.removeAttr('id');
             clonedTr.insertBefore(tr);
 
@@ -605,8 +605,10 @@ function setAdjustModal(result) {
         $(clonedTr).children('td').eq(7).html(obj.priceTotal.toFixed(2))
         //备注
         $(clonedTr).children('td').eq(8).html(obj.remarks)
-
-        $(clonedTr).children('td').eq(9).html(obj.id)
+             if(obj.materialCategoryItem!=null){
+                 $(clonedTr).children('td').eq(9).html(obj.materialCategoryItem.dictionaryItemName)
+             }
+        $(clonedTr).children('td').eq(10).html(obj.id)
 
         $('#procurementPlanId').val(obj.procurementPlanId);
         clonedTr.removeAttr('id');
@@ -701,7 +703,7 @@ function confirmAdjust() {
             if (result != undefined && result.status == "success"){
                 $('.myclass3').each(function () {
                     var dataItem={
-                        id:$(this).children('td').eq(9).html(),
+                        id:$(this).children('td').eq(10).html(),
                         demandQuantity:$(this).children('td').eq(4).find('input').val(),
                         price:$(this).children('td').eq(6).find('input').val(),
                         priceTotal:$(this).children('td').eq(7).html(),
@@ -956,7 +958,9 @@ function searchData() {
         if(checkState.length<=0){
             checkState=null;
         }
+        var applyMouth=$('#year').val()+"-"+$('#applyMonth option:selected').text();
         data1 = {
+            applyMouth:applyMouth,
             procurementPlanId:$('#search-procurementPlanId').val(),
             adjustName:$('#search-adjustName').val(),
             approvalName:$('#search-approvalName').val(),

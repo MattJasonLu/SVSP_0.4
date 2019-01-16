@@ -286,11 +286,13 @@ public class InboundController {
                 inboundOrderItem.setInboundOrderItemId(RandomUtil.getRandomEightNumber());
                 // 入库单号
                 inboundOrderItem.setInboundOrderId(inboundOrder.getInboundOrderId());
-                Client produceCompany = clientService.getByName(inboundOrderItem.getProduceCompany().getCompanyName());
-                // 设置生产单位
-                inboundOrderItem.setProduceCompany(produceCompany);
+                if (inboundOrderItem.getProduceCompany().getClientId() == null || inboundOrderItem.getProduceCompany().getClientId().equals("")) {
+                    Client produceCompany = clientService.getByName(inboundOrderItem.getProduceCompany().getCompanyName());
+                    // 设置生产单位
+                    inboundOrderItem.setProduceCompany(produceCompany);
+                }
                 // 根据客户编号和危废编码找到化验单中的对应的信息，绑定
-                String clientId = produceCompany.getClientId();
+                String clientId = inboundOrderItem.getProduceCompany().getClientId();
                 String wastesCode = inboundOrderItem.getWastes().getWastesId();
                 LaboratoryTest laboratoryTest = laboratoryTestService.getLaboratoryTestByWastesCodeAndClientId(wastesCode, clientId);
                 if (laboratoryTest != null) inboundOrderItem.setLaboratoryTest(laboratoryTest);

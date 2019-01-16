@@ -4,10 +4,7 @@ import com.jdlink.domain.Contract;
 import com.jdlink.domain.Dictionary.MaterialCategoryItem;
 import com.jdlink.domain.Dictionary.UnitDataItem;
 import com.jdlink.domain.Page;
-import com.jdlink.domain.Produce.Material;
-import com.jdlink.domain.Produce.Procurement;
-import com.jdlink.domain.Produce.ProcurementPlan;
-import com.jdlink.domain.Produce.ProcurementPlanItem;
+import com.jdlink.domain.Produce.*;
 import com.jdlink.domain.Unit;
 import com.jdlink.service.ProcurementService;
 import com.jdlink.service.dictionary.DictionaryService;
@@ -519,6 +516,10 @@ public class ProcurementController {
                         //创建物资对象
                         Material material = new Material();
 
+                        if (String.valueOf(data.get(i)[3][2]) != "null") {
+                            material.setApplyMouth(String.valueOf(data.get(i)[3][2]));//申请月份
+                        }
+
                         MaterialCategoryItem materialCategoryItem1=new MaterialCategoryItem();
                         materialCategoryItem.setDataDictionaryItemId(174);
                         material.setMaterialCategoryItem(materialCategoryItem);
@@ -974,6 +975,8 @@ public class ProcurementController {
             String proposer=procurementService.getApplyDepartmentByReceiptNumber(receiptNumber);
 
             procurementPlanItem.setProcurementPlanId(material.getWareHouseName());//外键
+            //更新主表的申请月份
+                procurementService.updateApplyMouth(material.getWareHouseName(),material.getApplyMouth());
             procurementPlanItem.setProposer(proposer);//申请部门
             procurementPlanItem.setSuppliesName(material.getSuppliesName());//物资名称
             procurementPlanItem.setSpecifications(material.getSpecifications());//规格
@@ -995,6 +998,7 @@ public class ProcurementController {
             //            procurementPlanItem.setUnit(material.getUnit());//单位
             procurementPlanItem.setDemandQuantity((int)material.getDemandQuantity());//需求数量
             procurementPlanItem.setRemarks(material.getNote());//备注
+            procurementPlanItem.setApplyMouth(material.getApplyMouth());
             procurementService.addProcurementPlanItem(procurementPlanItem);
 
             //物资的状态更新为失效
@@ -1395,6 +1399,31 @@ public class ProcurementController {
         return res.toString();
     }
 
+    /*采购计划费用汇总表导出*/
+    @RequestMapping("exportExcelProcurementPlanTotal")
+    @ResponseBody
+    public String exportExcelProcurementPlanTotal(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "申请日期/物资类别/物资名称/规格型号/单位/申购部门/需求数量/单价(元)/预计金额(元)/备注";
+            name = "采购计划费用汇总表";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
+    }
 
     /**
      * 根据物品主键获取物品数据
@@ -1425,15 +1454,15 @@ public class ProcurementController {
         JSONObject res=new JSONObject();
 
         try {
-          String specification=procurementService.getSpecificationById(id);
+            Ingredients ingredients=procurementService.getSpecificationById(id);
             res.put("status", "success");
-            res.put("message", "获取规格成功");
-            res.put("data", specification);
+            res.put("message", "获取物资信息成功");
+            res.put("data", ingredients);
         }
         catch (Exception e){
             e.printStackTrace();
             res.put("status", "fail");
-            res.put("message", "获取规格失败");
+            res.put("message", "获取物资信息失败");
         }
 
         return res.toString();
@@ -1520,4 +1549,34 @@ public class ProcurementController {
 
          return res.toString();
     }
+
+    /*获取采购计划单明细++>采购计划费用汇总表加载页面*/
+    @RequestMapping("loadPageProcurementTotal")
+    @ResponseBody
+    public String loadPageProcurementTotal(@RequestBody Page page){
+        JSONObject res=new JSONObject();
+
+        try {
+            List<ProcurementPlanItem> procurementPlanItemList=procurementService.loadPageProcurementTotal(page);
+            res.put("status", "success");
+            res.put("message", "计划明细查询成功");
+            res.put("data", procurementPlanItemList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "计划明细查询失败");
+        }
+
+        return res.toString();
+
+    }
+
+    /*获取采购计划名字总数*/
+    @RequestMapping("loadPageProcurementTotalCount")
+    @ResponseBody
+    public int loadPageProcurementTotalCount(){
+        return procurementService.loadPageProcurementTotalCount();
+    }
+
 }

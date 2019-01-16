@@ -61,10 +61,41 @@
     <update id="update">
         update t_pr_sampleinfoanalysis set sampleId=#{sampleId}, transferDraftId=#{transferDraftId},
         produceCompanyId=#{produceCompany.clientId}, wastesName=#{wastesName}, wastesCode=#{wastesCode},
-        wastesCategory=#{wastesCategory} ,handleCategory=#{handleCategory}, formType=#{formType}, PH=#{PH}, ash=#{ash}, water=#{water},
-        heat=#{heat}, sulfur=#{sulfur}, fluorine=#{fluorine}, chlorine=#{chlorine}, phosphorus=#{phosphorus}, flashPoint=#{flashPoint},
-        viscosity=#{viscosity}, hotMelt=#{hotMelt}, sender=#{sender}, signer=#{signer}, signDate=#{signDate},
-        remark=#{remark} where id=#{id};
+        wastesCategory=#{wastesCategory} ,handleCategory=#{handleCategory}, formType=#{formType},
+        sender=#{sender}, signer=#{signer}, signDate=#{signDate}, remark=#{remark} where id=#{id};
+        <if test="PH != null and PH != ''">
+            update t_pr_sampleinfoanalysis set PH=#{PH} where id=#{id} and PH != '-9999';
+        </if>
+        <if test="ash != null and ash != ''">
+            update t_pr_sampleinfoanalysis set ash=#{ash} where id=#{id} and ash != '-9999';
+        </if>
+        <if test="water != null and water != ''">
+            update t_pr_sampleinfoanalysis set water=#{water} where id=#{id} and water != '-9999';
+        </if>
+        <if test="heat != null and heat != ''">
+            update t_pr_sampleinfoanalysis set heat=#{heat} where id=#{id} and heat != '-9999';
+        </if>
+        <if test="sulfur != null and sulfur != ''">
+            update t_pr_sampleinfoanalysis set sulfur=#{sulfur} where id=#{id} and sulfur != '-9999';
+        </if>
+        <if test="fluorine != null and fluorine != ''">
+            update t_pr_sampleinfoanalysis set fluorine=#{fluorine} where id=#{id} and fluorine != '-9999';
+        </if>
+        <if test="chlorine != null and chlorine != ''">
+            update t_pr_sampleinfoanalysis set chlorine=#{chlorine} where id=#{id} and chlorine != '-9999';
+        </if>
+        <if test="phosphorus != null and phosphorus != ''">
+            update t_pr_sampleinfoanalysis set phosphorus=#{phosphorus} where id=#{id} and phosphorus != '-9999';
+        </if>
+        <if test="flashPoint != null and flashPoint != ''">
+            update t_pr_sampleinfoanalysis set flashPoint=#{flashPoint} where id=#{id} and flashPoint != '-9999';
+        </if>
+        <if test="viscosity != null and viscosity != ''">
+            update t_pr_sampleinfoanalysis set viscosity=#{viscosity} where id=#{id} and viscosity != '-9999';
+        </if>
+        <if test="hotMelt != null and hotMelt != ''">
+            update t_pr_sampleinfoanalysis set hotMelt=#{hotMelt} where id=#{id} and hotMelt != '-9999';
+        </if>
     </update>
 
     <!--获取仓储部化验单数量-->
@@ -111,13 +142,9 @@
     <update id="setState">
         update t_pr_sampleinfoanalysis set checkState=#{checkState},checkStateId=69, id=concat(#{id}, #{newId}) where id=#{id};
     </update>
-    <resultMap id="ReceiveSampleAnalysisRM" type="ReceiveSampleAnalysis" autoMapping="true">
-        <id property="id" column="id"/>
-        <association property="produceCompany" column="produceCompanyId" select="getProduceCompany"/>
-    </resultMap>
 
     <!--根据条件获取相应信息-->
-    <select id="getByMoreFactor" resultMap="ReceiveSampleAnalysisRM" >
-        select * from t_pr_receivesampleanalysis where produceCompanyId=#{0} or wastesCode=#{1} or wastesName=#{2} order by createTime desc;
+    <select id="getByMoreFactor" resultMap="SampleInfoAnalysisRM" >
+        select * from t_pr_sampleinfoanalysis where produceCompanyId=#{0} and wastesCode=#{1} and wastesName=#{2} order by createTime desc;
     </select>
 </mapper>

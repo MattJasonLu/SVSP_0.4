@@ -29,6 +29,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static com.jdlink.domain.Inventory.BoundType.SecondaryOutbound;
 import static com.jdlink.domain.Produce.HandleCategory.*;
 import static com.jdlink.util.ScienceToNumber.getNumber;
 
@@ -800,27 +801,20 @@ public class BatchOrderController {
         return res.toString();
     }
 
-
-
     //添加次生出库单
     @RequestMapping("addSecondary")
     @ResponseBody
     public String addSecondary(@RequestBody OutboundOrder outboundOrder){
         JSONObject res=new JSONObject();
-
         try{
-
             List<String> stringList=batchOrderService.getDateBbySettled();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
             String yearAndMouth=sdf.format(outboundOrder.getOutboundDate());
-
             if(stringList.contains(yearAndMouth)){
-
                 res.put("message", "无法出库,出库日期为:"+yearAndMouth+"月份已结账");
                 res.put("status", "back");
-            }
-            else {
-                            Date date = new Date();   //获取当前时间
+            }else {
+            Date date = new Date();   //获取当前时间
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
 
             String prefix = simpleDateFormat.format(date);
@@ -1464,7 +1458,6 @@ public class BatchOrderController {
     @ResponseBody
     public String confirmSettled(String outboundOrderId){
         JSONObject res=new JSONObject();
-
         try {
          batchOrderService.confirmSettled(outboundOrderId);
             res.put("status", "success");
@@ -1506,4 +1499,45 @@ public class BatchOrderController {
     public int searchWastesInventoryCount(@RequestBody WasteInventory wasteInventory){
          return batchOrderService.searchWastesInventoryCount(wasteInventory);
     }
+
+    /*次生出库查询*/
+    @RequestMapping("searchSecOutbound")
+    @ResponseBody
+    public String searchSecOutbound(@RequestBody OutboundOrder outboundOrder){
+        JSONObject res=new JSONObject();
+
+        try {
+           List<OutboundOrder> outboundOrderList=batchOrderService.searchSecOutbound(outboundOrder);
+//            List<OutboundOrder> outboundOrderList=new ArrayList<>();
+//            for(int i=0;i<outboundOrderList1.size();i++){
+//                if(outboundOrderList1.get(i).getBoundType()==SecondaryOutbound){
+//                    outboundOrderList.add(outboundOrderList1.get(i));
+//                }
+//            }
+            res.put("status", "success");
+            res.put("message", "高级查询成功");
+            res.put("data", outboundOrderList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "高级查询失败");
+
+        }
+
+
+            return res.toString();
+    }
+
+    /*次生出库查询计数
+     * */
+    @RequestMapping("searchSecOutboundCount")
+    @ResponseBody
+    public int searchSecOutboundCount(@RequestBody OutboundOrder outboundOrder){
+
+        return batchOrderService.searchSecOutboundCount(outboundOrder);
+    }
 }
+
+
+

@@ -52,6 +52,8 @@ public class StockController {
             stock.setStockId(newId);
         }
         stock.setCheckState(CheckState.ToSubmit);//设置为待提交
+        //更新产废单位的库容
+        stockService.updateCapacity(stock.getClient().getClientId(),stock.getClient().getCapacity());
         stockService.add(stock);
         return res.toString();
     }
@@ -149,6 +151,7 @@ public class StockController {
     public String adjustStock(@RequestBody Stock stock) {
         JSONObject res=new JSONObject();
         try {
+            stockService.updateCapacity(stock.getClient().getClientId(),stock.getClient().getCapacity());
             //更新stock字段
             stockService.updateStock(stock);
             //stockService.time1(stock);

@@ -25,7 +25,7 @@ function getProcurement() {
         }
     })
 
-    //获取等路人信息
+    //获取登录人信息
     var data = getCurrentUserData();
     if (data != null) {
         $('#createName').val(data.username)
@@ -145,9 +145,9 @@ function setMonthProcurementList(result) {
                 case (7):
                     $(this).html(obj.note);
                     break;
-                //创建时间
+                //申请时间
                 case (8):
-                    $(this).html(getDateStr(obj.createDate));
+                    $(this).html((obj.applyMouth));
                     break;
                 //物资类别
                 case (9):
@@ -190,11 +190,10 @@ function enterSearch() {
 
 //按照时间查询
 function searchData() {
-    var createDateStart = $('#search-inDate').val();
-    var createDateEnd = $('#search-endDate').val();
+
+    var applyMouth=$('#year').val()+"-"+$('#applyMonth option:selected').text();
     var data = {
-        createDateStart: createDateStart,
-        createDateEnd: createDateEnd,
+        applyMouth:applyMouth,
         materialCategoryItem:{'dataDictionaryItemId':$('#search-materialCategoryItem').val()},
     }
     console.log(data)
@@ -229,7 +228,12 @@ function add() {
     if(confirm("确定添加?")){
 
         //点击确定后操作
+        var applyMouth=$.trim($('#year').val()+"-"+$('#applyMonth option:selected').text());
+        if(applyMouth.length=='-'){
+            applyMouth='';
+        }
         var data={
+            applyMouth:applyMouth,
             procurementPlanId:$('#procurementPlanId').val(),
             createName:$('#createName').val(),
         }
@@ -251,7 +255,7 @@ function add() {
                     $.each(items, function () {
                         if ($(this).parent().parent().parent().children('td').eq(1).html().length > 0) {
                             var dataItem = {
-
+                                applyMouth:$(this).parent().parent().parent().children('td').eq(8).html(),
                                 wareHouseName: $('#procurementPlanId').val(),
                                 receiptNumber: $(this).parent().parent().parent().children('td').eq(10).html(),
                                 suppliesName: $(this).parent().parent().parent().children('td').eq(2).html(),

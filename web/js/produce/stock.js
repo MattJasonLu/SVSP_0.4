@@ -449,6 +449,12 @@ function setStockList(result) {
                     }
                     else $(this).html("");
                     break;
+
+                case (9):
+                    if(obj.client!=null){
+                        $(this).html(obj.client.capacity.toFixed(2));
+                    }
+                    break;
                 // case (8):
                 //     if (obj.clientType != null)
                 //         $(this).html(obj.clientType.name);
@@ -924,7 +930,7 @@ function delLine(e) {
 function save() {
     //收集数据
     var data = {
-        'client': {'clientId': $('#proWasteCompany').selectpicker('val')},
+        'client': {'clientId': $('#proWasteCompany').selectpicker('val'),capacity:$('#capacity').val()},
         'transport': $("#transport").val(),//运输公司
         'transportTelephone': $("#transportTelephone").val(),//运输公司联系电话
         'plateNumber': $("#plateNumber").val(),//车牌号
@@ -1103,6 +1109,12 @@ function loadAdjustStock() {
                 console.log(result);
                 var obj = eval(result.stock);
                 var data = eval(result.data);
+
+                //库容
+                if(obj.client!=null){
+                    $('#capacity').val((obj.client.capacity).toFixed(2))
+                }
+
                 //车牌号
                 $('#plateNumber').prop('value', obj.plateNumber);
                 //赋值是否自运单位
@@ -1272,7 +1284,7 @@ function loadAdjustStock() {
 //修改页面方法
 function adjustStock1() {
     var data = {
-        'client': {'clientId': $('#proWasteCompany').selectpicker('val')},
+        'client': {'clientId': $('#proWasteCompany').selectpicker('val'),capacity:$('#capacity').val()},
         // 'proContactName':$("#proContactName").val(),//产废单位联系人
         // 'proTelephone':$("#proTelephone").val(),//产废联系人电话
         'transport': $("#transport").val(),//运输公司
@@ -1553,7 +1565,7 @@ function viewStock(item) {
                                    break;
                                // 数量(公斤)
                                case (3):
-                                   $(this).html(obj.number);
+                                   $(this).html(obj.number.toFixed(3));
                                    break;
                                // 成分
                                case (4):
@@ -1829,7 +1841,7 @@ function getClentInfo(item) {
                                 case (0):
                                     $(this).html(index+1);
                                     break;
-                                // 产废单位联系人
+                                // 危险废物的名称
                                 case (1):
                                         $(this).html(obj.wastesName);
                                     break;
@@ -2042,7 +2054,7 @@ function perfect(item) {
                                     break;
                                 // 数量(公斤)
                                 case (3):
-                                    $(this).html(obj.number);
+                                    $(this).html(obj.number.toFixed(3));
                                     break;
                                 // 成分
                                 case (4):

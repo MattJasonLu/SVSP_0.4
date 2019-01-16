@@ -112,7 +112,7 @@ function setDataList(result) {
                     $(this).html(getDateStr(obj.transferDate));
                     break;
                 case (7):
-                    $(this).html(obj.transferCount);
+                    $(this).html(parseFloat(obj.transferCount).toFixed(3));
                     break;
                 // case (8):
                 //     $(this).html(obj.poundsCount);
@@ -121,7 +121,7 @@ function setDataList(result) {
                 //     $(this).html(obj.storageCount);
                 //     break;
                 case (8):
-                    $(this).html(obj.leftCount);
+                    $(this).html(parseFloat(obj.leftCount).toFixed(3));
                     break;
                 // case (11):
                 //     $(this).html(obj.prepareTransferCount);
@@ -138,9 +138,9 @@ function setDataList(result) {
                     if (obj.wastes != null)
                         $(this).html(obj.wastes.category);
                     break;
-                case (12):
-                    $(this).html(obj.unitPriceTax);
-                    break;
+                // case (12):
+                //     $(this).html(obj.unitPriceTax);
+                //     break;
             }
         });
         // 把克隆好的tr追加到原来的tr前面
@@ -195,7 +195,7 @@ function addPlan2Order() {
                             console.log(result);
                             var data = eval(result.data);
                             if (data != null) plan.wastesAmount = data.netWeight;
-                            else console.log("未找到联单号对应的磅单");
+                            else console.log("未找到联单号对应的磅单，无法获取数量！");
                         } else {
                             console.log(result);
                         }
@@ -283,7 +283,7 @@ function setSelectItem() {
                     option.text(item.dictionaryItemName);
                     processWay.append(option);
                 });
-                processWay.get(0).selectedIndex = -1;
+                processWay.get(0).selectedIndex = 0;
             } else {
                 console.log(result);
             }
@@ -319,6 +319,33 @@ function setSelectItem() {
             console.log(result);
         }
     });
+    // 获取开票税率
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getTicketRate1ByDataDictionary",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined && result.status == "success") {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var rate = $("select[name='rate']");
+                rate.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    rate.append(option);
+                });
+                rate.get(0).selectedIndex = -1;
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
 }
 
 /**
@@ -346,6 +373,9 @@ function addInboundOrder(type) {
         };
         inboundOrder.handleCategoryItem = {
             dataDictionaryItemId: $(this).find("select[name='handleCategory']").val()
+        };
+        inboundOrder.ticketRateItem = {
+            dataDictionaryItemId: $(this).find("select[name='rate']").val()
         };
         inboundOrder.remarks = $(this).find("input[name='remarks']").val();
         inboundOrder.wareHouse = {
@@ -950,12 +980,14 @@ function viewData(e) {
                 clonedTr.find("td[name='wastesCode']").text(data.wastes.wastesId);
             }
             clonedTr.find("td[name='wastesAmount']").text(parseFloat(data.wastesAmount).toFixed(3));
-            clonedTr.find("td[name='unitPriceTax']").text(data.unitPriceTax);
-            clonedTr.find("td[name='totalPrice']").text(data.totalPrice);
-            if (data.processWay != null)
-                clonedTr.find("td[name='processWay']").text(data.processWay.name);
-            if (data.handleCategory != null)
-                clonedTr.find("td[name='handleCategory']").text(data.handleCategory.name);
+            clonedTr.find("td[name='unitPriceTax']").text(parseFloat(data.unitPriceTax.toFixed(2)));
+            clonedTr.find("td[name='totalPrice']").text(parseFloat(data.totalPrice.toFixed(2)));
+            if (data.processWayItem != null) {
+                console.log(data.processWayItem);
+                clonedTr.find("td[name='processWay']").text(data.processWayItem.dictionaryItemName);
+            }
+            if (data.handleCategoryItem != null)
+                clonedTr.find("td[name='handleCategory']").text(data.handleCategoryItem.dictionaryItemName);
             clonedTr.find("td[name='remarks']").text(data.remarks);
             clonedTr.find("td[name='warehouseArea']").text(data.warehouseArea);
             clonedTr.find("td[name='inboundOrderItemId']").text(data.inboundOrderItemId);

@@ -2,24 +2,18 @@
  * 模态框
  */
 function showModal(item) {
-
-
     $("#cloneTr2").siblings().remove();
     var id=$(item).parent().prev().prev().html();
 
     var clientId=$(item).parent().prev().html();
-
-
     var wastesName=$(item).parent().parent().children('td').eq(3).html();
-
-
     var wastesCode=$(item).parent().parent().children('td').eq(4).html();
 
     var data={
-        id:id,
-        produceCompany:{clientId:clientId},
-        wastesName:wastesName,
-        wastesCode:wastesCode,
+        id: id,
+        produceCompany: { clientId:clientId },
+        wastesName: wastesName,
+        wastesCode: wastesCode
     };
 
     console.log(id);
@@ -40,13 +34,13 @@ function showModal(item) {
         error:function (result) {
             
         }
-    })
+    });
 
     $("#comparison").modal('show');
 }
 
 function setCompareList(result) {
-    console.log(result)
+    console.log(result);
     // 获取id为cloneTr的tr元素
     var tr = $("#cloneTr2");
 

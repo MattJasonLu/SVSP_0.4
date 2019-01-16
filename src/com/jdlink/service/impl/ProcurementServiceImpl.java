@@ -1,10 +1,7 @@
 package com.jdlink.service.impl;
 
 import com.jdlink.domain.Page;
-import com.jdlink.domain.Produce.Material;
-import com.jdlink.domain.Produce.Procurement;
-import com.jdlink.domain.Produce.ProcurementPlan;
-import com.jdlink.domain.Produce.ProcurementPlanItem;
+import com.jdlink.domain.Produce.*;
 import com.jdlink.mapper.ProcurementMapper;
 import com.jdlink.service.ProcurementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -220,7 +217,7 @@ public class ProcurementServiceImpl implements ProcurementService {
     }
 
     @Override
-    public String getSpecificationById(int id) {
+    public Ingredients getSpecificationById(int id) {
         return procurementMapper.getSpecificationById(id);
     }
 
@@ -256,6 +253,21 @@ public class ProcurementServiceImpl implements ProcurementService {
     @Override
     public List<Date> getNewestOffEm() {
         return procurementMapper.getNewestOffEm();
+    }
+
+    @Override
+    public void updateApplyMouth(String procurementPlanId, String applyMouth) {
+        procurementMapper.updateApplyMouth(procurementPlanId, applyMouth);
+    }
+
+    @Override
+    public List<ProcurementPlanItem> loadPageProcurementTotal(Page page) {
+        return procurementMapper.loadPageProcurementTotal(page);
+    }
+
+    @Override
+    public int loadPageProcurementTotalCount() {
+        return procurementMapper.loadPageProcurementTotalCount();
     }
 
     @Override

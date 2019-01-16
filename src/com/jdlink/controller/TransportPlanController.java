@@ -155,43 +155,41 @@ public class TransportPlanController {
         try {
             List<TransportPlanItem> transportPlanItemList = new ArrayList<>();
             // 取出危废合同的所有信息
-            List<Contract> contractList = contractService.listPageManege(null);
+            List<QuotationItem> quotationItemList = contractService.getQuotationItemList();
+
             // 所有危废合同
-            for (Contract contract : contractList) {
-                List<QuotationItem> quotationItemList = contract.getQuotationItemList();
-                for (QuotationItem quotationItem : quotationItemList) {
-                    // 创建运输计划条目明细
-                    TransportPlanItem transportPlanItem = new TransportPlanItem();
-                    transportPlanItem.setProduceCompany(contract.getClient());
-                    transportPlanItem.setWastesName(quotationItem.getWastesName());
-                    transportPlanItem.setWastesCode(quotationItem.getWastesCode());
-                    transportPlanItem.setPackageTypeItem(quotationItem.getPackageTypeItem());
-                    transportPlanItem.setHeat(quotationItem.getHeat());
-                    transportPlanItem.setPh(quotationItem.getPh());
-                    transportPlanItem.setAsh(quotationItem.getAsh());
-                    transportPlanItem.setWaterContent(quotationItem.getWaterContent());
-                    transportPlanItem.setChlorineContent(quotationItem.getChlorineContent());
-                    transportPlanItem.setSulfurContent(quotationItem.getSulfurContent());
-                    transportPlanItem.setPhosphorusContent(quotationItem.getPhosphorusContent());
-                    transportPlanItem.setFluorineContent(quotationItem.getFluorineContent());
-                    transportPlanItem.setWastesAmount(quotationItem.getContractAmount());
-                    transportPlanItemList.add(transportPlanItem);
-                }
+            for (QuotationItem quotationItem : quotationItemList) {
+                // 创建运输计划条目明细
+                TransportPlanItem transportPlanItem = new TransportPlanItem();
+                transportPlanItem.setProduceCompany(quotationItem.getClient());
+                transportPlanItem.setWastesName(quotationItem.getWastesName());
+                transportPlanItem.setWastesCode(quotationItem.getWastesCode());
+                transportPlanItem.setPackageTypeItem(quotationItem.getPackageTypeItem());
+                transportPlanItem.setHeat(quotationItem.getHeat());
+                transportPlanItem.setPh(quotationItem.getPh());
+                transportPlanItem.setAsh(quotationItem.getAsh());
+                transportPlanItem.setWaterContent(quotationItem.getWaterContent());
+                transportPlanItem.setChlorineContent(quotationItem.getChlorineContent());
+                transportPlanItem.setSulfurContent(quotationItem.getSulfurContent());
+                transportPlanItem.setPhosphorusContent(quotationItem.getPhosphorusContent());
+                transportPlanItem.setFluorineContent(quotationItem.getFluorineContent());
+                transportPlanItem.setWastesAmount(quotationItem.getContractAmount());
+                transportPlanItemList.add(transportPlanItem);
             }
-            // 获取所有库存申报的数据
-            List<Stock> stockList = stockService.list();
-            for (Stock stock : stockList) {
-                List<StockItem> stockItemList = stock.getStockItemList();
-                for (StockItem stockItem : stockItemList) {
-                    // 创建运输计划单条目
-                    TransportPlanItem transportPlanItem = new TransportPlanItem();
-                    transportPlanItem.setProduceCompany(stock.getClient());
-                    transportPlanItem.setWastesName(stockItem.getWastesName());
-                    transportPlanItem.setWastesCode(stockItem.getWastesCode());
-                    transportPlanItem.setWastesAmount(stockItem.getNumber());
-                    transportPlanItemList.add(transportPlanItem);
-                }
-            }
+            // 获取所有库存申报的数据 （已去除）
+//            List<Stock> stockList = stockService.list();
+//            for (Stock stock : stockList) {
+//                List<StockItem> stockItemList = stock.getStockItemList();
+//                for (StockItem stockItem : stockItemList) {
+//                    // 创建运输计划单条目
+//                    TransportPlanItem transportPlanItem = new TransportPlanItem();
+//                    transportPlanItem.setProduceCompany(stock.getClient());
+//                    transportPlanItem.setWastesName(stockItem.getWastesName());
+//                    transportPlanItem.setWastesCode(stockItem.getWastesCode());
+//                    transportPlanItem.setWastesAmount(stockItem.getNumber());
+//                    transportPlanItemList.add(transportPlanItem);
+//                }
+//            }
             JSONArray data = JSONArray.fromArray(transportPlanItemList.toArray(new TransportPlanItem[transportPlanItemList.size()]));
             res.put("status", "success");
             res.put("message", "获取成功");

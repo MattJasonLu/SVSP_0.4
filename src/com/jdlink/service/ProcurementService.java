@@ -1,10 +1,7 @@
 package com.jdlink.service;
 
 import com.jdlink.domain.Page;
-import com.jdlink.domain.Produce.Material;
-import com.jdlink.domain.Produce.Procurement;
-import com.jdlink.domain.Produce.ProcurementPlan;
-import com.jdlink.domain.Produce.ProcurementPlanItem;
+import com.jdlink.domain.Produce.*;
 
 import java.util.Date;
 import java.util.List;
@@ -61,11 +58,14 @@ public interface ProcurementService {
     List<ProcurementPlanItem> getProcurementPlanItemListByPage(ProcurementPlanItem procurementPlanItem);
     List<ProcurementPlanItem> searchAdjust(ProcurementPlanItem procurementPlanItem);
     void updateMaterialCategoryItemForProcurementPlan(String procurementPlanId,int MaterialCategoryId);
-    String getSpecificationById(int id);
+    Ingredients getSpecificationById(int id);
     ProcurementPlanItem getIngredientById(int id);
     void deleteMonthProcurementById(int id);
     void setProcurementFilePath(Procurement procurement);
     List<Procurement> getEmergencyProcurementOffList(Page page);
     int totalEmcOffRecord();
     List<Date>getNewestOffEm();
+    void updateApplyMouth(String procurementPlanId,String applyMouth);
+    List<ProcurementPlanItem>loadPageProcurementTotal(Page page);
+    int loadPageProcurementTotalCount();
 }

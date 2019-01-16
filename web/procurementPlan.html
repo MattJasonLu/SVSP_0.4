@@ -184,13 +184,34 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group hidden">
                                 <label for="search-materialCategoryItem" class="col-sm-4 control-label">物资类别</label>
                                 <div class="col-xs-7">
                                     <select type="date" class="input-sm form-control" id="search-materialCategoryItem" title="" onchange="searchData()"></select></div>
                             </div>
 
-
+                            <div class="form-group" >
+                                <label class="col-sm-4 control-label">申请年月</label>
+                                <div class="input-group">
+                                    <input class="" style="width:70px" id="year" onkeyup="enterSearch()">
+                                    年
+                                    <select title="" class="months" id="applyMonth" onchange="searchData()">
+                                        <option value="1"></option>
+                                        <option value="1">01</option>
+                                        <option value="1">02</option>
+                                        <option value="1">03</option>
+                                        <option value="1">04</option>
+                                        <option value="1">05</option>
+                                        <option value="1">06</option>
+                                        <option value="1">07</option>
+                                        <option value="1">08</option>
+                                        <option value="1">09</option>
+                                        <option value="1">10</option>
+                                        <option value="1">11</option>
+                                        <option value="1">12</option>
+                                    </select>月
+                                </div>
+                            </div>
 
                         </div>
                     </div>
@@ -230,12 +251,13 @@
                     </th>
                     <th class="text-center">序号</th>
                     <th class="text-center">月度采购计划单号</th>
+                    <th class="text-center">申请月份</th>
                     <th class="text-center">创建人</th>     <!--时间，精确到秒 下同-->
                     <th class="text-center">创建日期</th>
                     <th class="text-center">修改人</th>
                     <th class="text-center">修改日期</th>
                     <th class="text-center">审批人</th>
-                    <th class="text-center">物资类别</th>
+                    <!--<th class="text-center">物资类别</th>-->
                     <th class="text-center">状态</th>
                     <th class="text-center">所属类别</th>
                     <th class="text-center">操作</th>
@@ -254,8 +276,9 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>     <!--时间，精确到秒 下同-->
                     <td class="text-center"></td>
+                    <td class="text-center"></td>     <!--时间，精确到秒 下同-->
+                    <!--<td class="text-center"></td>-->
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">
@@ -324,12 +347,14 @@
                             <td class="text-center">需求数量</td>
                             <td class="text-center">单位</td>
                             <td class="text-center">单价</td>
-                            <td class="text-center">统计金额</td>
+                            <td class="text-center">预计金额</td>
+                            <td class="text-center">物资类别</td>
                             <td class="text-center">备注</td>
                         </tr>
                       </thead>
                         <tbody>
                         <tr id="cloneTr2" class="myclass1">
+                            <td class="text-center"></td>
                             <td class="text-center"></td>
                             <td class="text-center"></td>
                             <td class="text-center"></td>
@@ -391,8 +416,9 @@
                             <td class="text-center" style="width: 15%;">需求数量</td>
                             <td class="text-center">单位</td>
                             <td class="text-center" style="width: 15%;">单价</td>
-                            <td class="text-center">统计金额</td>
+                            <td class="text-center">预计金额</td>
                             <td class="text-center">备注</td>
+                            <td class="text-center">物资类别</td>
                         </tr>
                         </thead>
                         <tbody id="tbody1">
@@ -404,6 +430,7 @@
                             <td class="text-center"><input  style="width: 35%;" onkeyup="Cal(this)"></td><!--需求数量-->
                             <td class="text-center"></td>
                             <td class="text-center"><input  style="width: 35%;" onkeyup="Cal2(this)"></td><!--单价-->
+                            <td class="text-center"></td>
                             <td class="text-center"></td>
                             <td class="text-center"></td>
                             <td class="text-center hidden"></td>

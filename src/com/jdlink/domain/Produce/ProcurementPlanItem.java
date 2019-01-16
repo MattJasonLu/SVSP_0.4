@@ -48,6 +48,9 @@ public class ProcurementPlanItem {
 
     //物资类别数据字典
     private MaterialCategoryItem materialCategoryItem;
+
+    //申请年月
+    private String applyMouth;
     /**
      * 页码
      */
@@ -60,6 +63,14 @@ public class ProcurementPlanItem {
      * 物品编码
      */
     private String code;
+
+    public String getApplyMouth() {
+        return applyMouth;
+    }
+
+    public void setApplyMouth(String applyMouth) {
+        this.applyMouth = applyMouth;
+    }
 
     public String getCode() {
         return code;

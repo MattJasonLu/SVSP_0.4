@@ -132,6 +132,10 @@ public class InboundOrderItem {
      * 所在仓库
      */
     private WareHouse wareHouse;
+    /**
+     * 开票税率
+     */
+    private TicketRateItem ticketRateItem;
 
     public SecondaryCategoryItem getSecondaryCategoryItem() {
         return secondaryCategoryItem;
@@ -363,6 +367,14 @@ public class InboundOrderItem {
 
     public void setWareHouse(WareHouse wareHouse) {
         this.wareHouse = wareHouse;
+    }
+
+    public TicketRateItem getTicketRateItem() {
+        return ticketRateItem;
+    }
+
+    public void setTicketRateItem(TicketRateItem ticketRateItem) {
+        this.ticketRateItem = ticketRateItem;
     }
 
     @Override

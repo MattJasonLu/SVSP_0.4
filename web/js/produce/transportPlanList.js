@@ -1377,28 +1377,28 @@ function setWastesDataList(result) {
                         $(this).html(obj.packageTypeItem.dictionaryItemName);
                     break;
                 case (6):
-                    $(this).html(obj.heat);
+                    $(this).html(setNumber2Line(parseFloat(obj.heat).toFixed(0)));
                     break;
                 case (7):
-                    $(this).html(obj.ph);
+                    $(this).html(setNumber2Line(parseFloat(obj.ph).toFixed(0)));
                     break;
                 case (8):
-                    $(this).html(obj.ash);
+                    $(this).html(setNumber2Line(parseFloat(obj.ash).toFixed(2)));
                     break;
                 case (9):
-                    $(this).html(obj.waterContent);
+                    $(this).html(setNumber2Line(parseFloat(obj.waterContent).toFixed(2)));
                     break;
                 case (10):
-                    $(this).html(obj.chlorineContent);
+                    $(this).html(setNumber2Line(parseFloat(obj.chlorineContent).toFixed(2)));
                     break;
                 case (11):
-                    $(this).html(obj.sulfurContent);
+                    $(this).html(setNumber2Line(parseFloat(obj.sulfurContent).toFixed(2)));
                     break;
                 case (12):
-                    $(this).html(obj.phosphorusContent);
+                    $(this).html(setNumber2Line(parseFloat(obj.phosphorusContent).toFixed(2)));
                     break;
                 case (13):
-                    $(this).html(obj.fluorineContent);
+                    $(this).html(setNumber2Line(parseFloat(obj.fluorineContent).toFixed(2)));
                     break;
                 case (14):
                     $(this).html(obj.id);

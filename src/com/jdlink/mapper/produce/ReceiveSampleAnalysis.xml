@@ -114,5 +114,8 @@
         update t_pr_receivesampleanalysis set checkState=#{checkState},checkStateId=69,id=concat(#{id}, #{newId}) where id=#{id};
     </update>
 
-
+    <!--根据条件获取相应信息-->
+    <select id="getByMoreFactor" resultMap="ReceiveSampleAnalysisRM" >
+        select * from t_pr_receivesampleanalysis where produceCompanyId=#{0} and wastesCode=#{1} and wastesName=#{2} order by createTime desc;
+    </select>
 </mapper>

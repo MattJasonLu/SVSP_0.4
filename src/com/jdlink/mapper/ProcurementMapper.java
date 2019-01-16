@@ -64,7 +64,7 @@ public interface ProcurementMapper {
     void updateMaterialState(int id);
     void updateMaterialCategoryItemForProcurementPlan(String procurementPlanId,int MaterialCategoryId);
 
-    String getSpecificationById(int id);
+    Ingredients getSpecificationById(int id);
 
     ProcurementPlanItem getIngredientById(int id);
 
@@ -73,4 +73,10 @@ public interface ProcurementMapper {
     void setProcurementFilePath(Procurement procurement);
 
     int totalEmcOffRecord();
+
+    void updateApplyMouth(String procurementPlanId,String applyMouth);
+
+    List<ProcurementPlanItem>loadPageProcurementTotal(Page page);
+
+    int loadPageProcurementTotalCount();
 }

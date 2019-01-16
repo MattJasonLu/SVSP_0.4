@@ -51,5 +51,5 @@ public interface ReceiveSampleAnalysisMapper {
      void update(ReceiveSampleAnalysis receiveSampleAnalysis);
 
 
-
+     List<ReceiveSampleAnalysis>  getByMoreFactor(String clientId,String wastesCode,String wastesName);
 }
