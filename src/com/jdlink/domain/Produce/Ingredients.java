@@ -52,6 +52,14 @@ public class Ingredients {
      */
     private float amount;
     /**
+     * 总库存量(截至当天)
+     */
+    private float totalAmount;
+    /**
+     * 总库存金额
+     */
+    private float allTotalPrice;
+    /**
      * 单价
      */
     private float unitPrice;
@@ -227,6 +235,22 @@ public class Ingredients {
 
     /*物资类别数据字典*/
     private MaterialCategoryItem materialCategoryItem;
+
+    public float getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(float totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public float getAllTotalPrice() {
+        return allTotalPrice;
+    }
+
+    public void setAllTotalPrice(float allTotalPrice) {
+        this.allTotalPrice = allTotalPrice;
+    }
 
     public float getInTotalPrice() {
         return inTotalPrice;

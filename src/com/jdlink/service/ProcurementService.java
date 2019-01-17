@@ -56,6 +56,7 @@ public interface ProcurementService {
      */
     ProcurementPlanItem getProcurementPlanItemById(String id);
     List<ProcurementPlanItem> getProcurementPlanItemListByPage(ProcurementPlanItem procurementPlanItem);
+    int countProcurementPlanItemList();
     List<ProcurementPlanItem> searchAdjust(ProcurementPlanItem procurementPlanItem);
     void updateMaterialCategoryItemForProcurementPlan(String procurementPlanId,int MaterialCategoryId);
     Ingredients getSpecificationById(int id);

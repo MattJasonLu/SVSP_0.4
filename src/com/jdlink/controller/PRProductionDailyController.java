@@ -961,7 +961,7 @@ public class PRProductionDailyController {
                 map.get(id).setSewageregistrationItemList(sewageregistrationItemArrayList);
             }
             for (String key : map.keySet()) {
-                Sewageregistration sewageregistration1 = productionDailyService.getSewaGeregistrationById(map.get(key).getId());
+                Sewageregistration sewageregistration1 = productionDailyService.getSoftGeregistrationById(map.get(key).getId());
                 Sewageregistration sewageregistration = map.get(key);
                 if (sewageregistration1 == null) {
                     //插入新数据
@@ -969,9 +969,10 @@ public class PRProductionDailyController {
                     for (SewageregistrationItem sewageregistrationItem : sewageregistration.getSewageregistrationItemList())
                         productionDailyService.addSoftGeregistrationItem(sewageregistrationItem);
                 } else {
-                    res.put("status", "fail");
-                    res.put("message", "预约单号重复，请检查后导入");
-                    return res.toString();
+                    productionDailyService.updateSoftGeregistration(sewageregistration);
+                    productionDailyService.deleteSoftGeregistrationItem(sewageregistration.getId());   //删除子项
+                    for (SewageregistrationItem sewageregistrationItem : sewageregistration.getSewageregistrationItemList())  // 重新添加
+                        productionDailyService.addSoftGeregistrationItem(sewageregistrationItem);
                 }
             }
             res.put("status", "success");

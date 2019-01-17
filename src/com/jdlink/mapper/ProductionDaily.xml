@@ -841,7 +841,7 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
     </select>
 
     <!--根据编号获取软水登记信息-->
-    <select id="getSoftGeregistrationById" resultMap="SoftgeregistrationRM"   parameterType="String">
+    <select id="getSoftGeregistrationById" resultMap="SoftgeregistrationRM" parameterType="String">
            select * from t_pr_softgeregistration where id=#{id};
     </select>
 
@@ -877,6 +877,17 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
                 WHERE id = #{sampleId};
             </foreach>
         </if>
+    </update>
+
+    <update id="updateSoftGeregistration" parameterType="Sewageregistration">
+        UPDATE t_pr_softgeregistration
+        SET
+        sendingPerson=#{sendingPerson},address=#{address},softPointId=#{softPointItem.dataDictionaryItemId}
+        WHERE id =#{id};
+    </update>
+
+    <update id="deleteSoftGeregistrationItem" parameterType="String">
+        delete from t_pr_softgeregistrationitem WHERE sampleinformationId=#{id};
     </update>
 
     <!--拒收==》污水-->
