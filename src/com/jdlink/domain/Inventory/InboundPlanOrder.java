@@ -115,6 +115,10 @@ public class InboundPlanOrder {
      * 建议
      */
     private String advice;
+    /**
+     * 图片路径
+     */
+    private String imgUrl;
 
     public String getInboundPlanOrderId() {
         return inboundPlanOrderId;
@@ -322,6 +326,14 @@ public class InboundPlanOrder {
 
     public void setAdvice(String advice) {
         this.advice = advice;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
     @Override

@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jdlink.mapper.ProcurementMapper" >
-   <!--添加采购-->
+<mapper namespace="com.jdlink.mapper.ProcurementMapper">
+    <!--添加采购-->
     <insert id="add" parameterType="Procurement">
         insert into t_pl_procurement(receiptNumber, applyMouth, demandTime, applyDepartment, proposer, divisionHead, purchasingDirector, generalManager, id1, procurementCategory,nowTIme,purchasingHead,applyDate,suppliesCategory,state,createDate,checkStateId,MaterialCategoryId,nonMaterial,nonMaterialId)
       values (#{receiptNumber},#{applyMouth},#{demandTime},#{applyDepartment},#{proposer},#{divisionHead},#{purchasingDirector},#{generalManager},#{id1},#{procurementCategory},NOW(),#{purchasingHead},#{applyDate},#{suppliesCategory},'ToSubmit',NOW(),64,#{materialCategoryItem.dataDictionaryItemId},#{nonMaterial},#{nonMaterialItem.dataDictionaryItemId});
@@ -21,10 +21,11 @@
     <resultMap id="ProcurementRM" type="Procurement" autoMapping="true">
         <result property="receiptNumber" column="receiptNumber" javaType="String"></result>
         <result property="unit" column="unit" javaType="Unit"></result>
-       <association property="nonMaterialItem" column="nonMaterialId" select="getNonMaterialItem"></association>
+        <association property="nonMaterialItem" column="nonMaterialId" select="getNonMaterialItem"></association>
         <collection property="materialList" column="receiptNumber" select="getMaterial" ofType="Material"></collection>
-          <collection property="checkStateItem" column="checkStateId" select="getCheckState"></collection>
-        <collection property="materialCategoryItem" column="MaterialCategoryId" select="getMaterialCategoryItem"></collection>
+        <collection property="checkStateItem" column="checkStateId" select="getCheckState"></collection>
+        <collection property="materialCategoryItem" column="MaterialCategoryId"
+                    select="getMaterialCategoryItem"></collection>
     </resultMap>
 
     <!--获取非物资类别数据字典-->
@@ -41,9 +42,10 @@
         select * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
     </select>
 
-    
+
     <resultMap id="MaterialRM" type="Material">
-        <association property="materialCategoryItem" column="MaterialCategoryId" select="getMaterialCategoryItem"></association>
+        <association property="materialCategoryItem" column="MaterialCategoryId"
+                     select="getMaterialCategoryItem"></association>
         <association property="ingredientStateItem" column="stateId" select="getIngredientStateItem"></association>
         <association property="ingredientStateItem" column="stateId" select="getIngredientStateItem"></association>
         <collection property="unitDataItem" column="unitId" select="getUnitDataItem"></collection>
@@ -64,7 +66,8 @@
     </select>
     <!--获取月季采购-->
     <select id="getProcurementList" resultMap="ProcurementRM">
-        select * from t_pl_procurement where procurementCategory=1 and nonMaterial=0 order by checkStateId=69,nowTime desc
+        select * from t_pl_procurement where procurementCategory=1 and nonMaterial=0 order by checkStateId=69,nowTime
+        desc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
@@ -84,7 +87,8 @@
     </select>
     <!--获取应急采购（物资）-->
     <select id="getEmergencyProcurementList" resultMap="ProcurementRM">
-        select * from t_pl_procurement   where procurementCategory=0 and  nonMaterial=0  order by checkStateId=69, nowTime desc
+        select * from t_pl_procurement where procurementCategory=0 and nonMaterial=0 order by checkStateId=69, nowTime
+        desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -92,7 +96,8 @@
 
     <!--获取应急采购（非物资）-->
     <select id="getEmergencyProcurementOffList" resultMap="ProcurementRM">
-        select * from t_pl_procurement   where procurementCategory=0 and  nonMaterial=1  order by checkStateId=69, nowTime desc
+        select * from t_pl_procurement where procurementCategory=0 and nonMaterial=1 order by checkStateId=69, nowTime
+        desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -173,7 +178,7 @@
             </if>
         </where>
     </select>
-<!--加载辅料列表-->
+    <!--加载辅料列表-->
     <select id="getIngredientsList" resultType="String">
         select ingredientsName from t_pl_ingredientslist;
     </select>
@@ -224,7 +229,8 @@
                 or unit like "%"#{keywords}"%"
                 or demandQuantity like "%"#{keywords}"%"
                 or inventory like "%"#{keywords}"%"
-                or stateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like  "%"#{keywords}"%")
+                or stateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
             </if>
             <if test="suppliesName != null and suppliesName != ''">
                 and suppliesName like "%"#{suppliesName}"%"
@@ -240,7 +246,8 @@
             </if>
             <if test="ingredientStateItem != null">
                 <if test="ingredientStateItem.dictionaryItemName!=''">
-                    and stateId in( select dataDictionaryItemId from datadictionaryitem where dictionaryItemName = #{ingredientStateItem.dictionaryItemName} and dataDictionaryId=11)
+                    and stateId in( select dataDictionaryItemId from datadictionaryitem where dictionaryItemName =
+                    #{ingredientStateItem.dictionaryItemName} and dataDictionaryId=11)
                 </if>
             </if>
         </where>
@@ -257,7 +264,8 @@
                 or unit like "%"#{keywords}"%"
                 or demandQuantity like "%"#{keywords}"%"
                 or inventory like "%"#{keywords}"%"
-                or stateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like  "%"#{keywords}"%")
+                or stateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
             </if>
             <if test="suppliesName != null and suppliesName != ''">
                 and suppliesName like "%"#{suppliesName}"%"
@@ -273,7 +281,8 @@
             </if>
             <if test="ingredientStateItem != null">
                 <if test="ingredientStateItem.dictionaryItemName!=''">
-                    and stateId in( select dataDictionaryItemId from datadictionaryitem where dictionaryItemName = #{ingredientStateItem.dictionaryItemName} and dataDictionaryId=11)
+                    and stateId in( select dataDictionaryItemId from datadictionaryitem where dictionaryItemName =
+                    #{ingredientStateItem.dictionaryItemName} and dataDictionaryId=11)
                 </if>
             </if>
         </where>
@@ -299,7 +308,6 @@
     </update>
 
 
-
     <!--获取采购单明细-->
     <select id="getProcurement" resultMap="MaterialRM">
         select * from t_pl_material where (receiptNumber in(select receiptNumber from t_pl_procurement where t_pl_procurement.checkStateId=73 and procurementCategory=1))and (t_pl_material.checkStateId=70);
@@ -309,18 +317,20 @@
     <select id="searchNewProcurementPlan" parameterType="Material" resultMap="MaterialRM">
         select * from t_pl_material
         <where>
-           <if test="applyMouth!='' and applyMouth!=null">
-               and applyMouth like "%"#{applyMouth}"%"
-           </if>
-            <if test="materialCategoryItem!=null">
-              <if test="materialCategoryItem.dataDictionaryItemId!=0">
-                  and materialCategoryId =#{materialCategoryItem.dataDictionaryItemId}
-              </if>
+            <if test="applyMouth!='' and applyMouth!=null">
+                and applyMouth like "%"#{applyMouth}"%"
             </if>
-            and t_pl_material.receiptNumber in(select t_pl_procurement.receiptNumber from t_pl_procurement where t_pl_procurement.checkStateId=73 and t_pl_procurement.procurementCategory=1) and (t_pl_material.checkStateId=70);
+            <if test="materialCategoryItem!=null">
+                <if test="materialCategoryItem.dataDictionaryItemId!=0">
+                    and materialCategoryId =#{materialCategoryItem.dataDictionaryItemId}
+                </if>
+            </if>
+            and t_pl_material.receiptNumber in(select t_pl_procurement.receiptNumber from t_pl_procurement where
+            t_pl_procurement.checkStateId=73 and t_pl_procurement.procurementCategory=1) and
+            (t_pl_material.checkStateId=70);
         </where>
     </select>
-    
+
     <!--在采购计划主表总查询前缀一样的单号数目-->
     <select id="getPrefixCount" resultType="int" parameterType="String">
         select  count(*) from t_pr_procumentplan where procurementPlanId like "%"#{prefix}"%"
@@ -333,11 +343,11 @@
     </insert>
 
     <!--更新主表的申请月份-->
-    <update id="updateApplyMouth" >
+    <update id="updateApplyMouth">
         update t_pr_procumentplan set applyMouth=#{1} where procurementPlanId=#{0}
     </update>
 
-<!--根据主键查出申购部门-->
+    <!--根据主键查出申购部门-->
     <select id="getApplyDepartmentByReceiptNumber" parameterType="String" resultType="String">
         select applyDepartment from t_pl_procurement where receiptNumber=#{receiptNumber}
     </select>
@@ -349,38 +359,52 @@
 
     <!--添加采购单明细-->
     <insert id="addProcurementPlanItem" parameterType="procurementPlanItem">
-        insert into t_pr_procumentplanitem(procurementPlanId, category, suppliesName, specifications, proposer, demandQuantity, unit, price, priceTotal, remarks,unitId,MaterialCategoryId,applyMouth) values
-     (#{procurementPlanId},#{category},#{suppliesName},#{specifications},#{proposer},#{demandQuantity},#{unit},#{price},#{priceTotal},#{remarks},#{unitDataItem.dataDictionaryItemId},#{materialCategoryItem.dataDictionaryItemId},#{applyMouth});
-
-</insert>
+        insert into t_pr_procumentplanitem
+        (procurementPlanId, category, suppliesName, specifications, proposer, demandQuantity, unit, price,
+        priceTotal, remarks,unitId,MaterialCategoryId,applyMouth,ingredientStateId)
+        values
+     (#{procurementPlanId},#{category},#{suppliesName},#{specifications},#{proposer},
+     #{demandQuantity},#{unit},#{price},#{priceTotal},#{remarks},#{unitDataItem.dataDictionaryItemId},
+     #{materialCategoryItem.dataDictionaryItemId},#{applyMouth},35);
+    </insert>
 
     <resultMap id="ProcurementPlanRM" type="ProcurementPlan">
-        <result  property="procurementPlanId" column="procurementPlanId"></result>
-        <collection property="procurementPlanItemList" column="procurementPlanId" select="getProcurementPlanItemList"></collection>
-    <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
+        <result property="procurementPlanId" column="procurementPlanId"></result>
+        <collection property="procurementPlanItemList" column="procurementPlanId"
+                    select="getProcurementPlanItemList"></collection>
+        <collection property="checkStateItem" column="checkStateId" select="getCheckStateItem"></collection>
     </resultMap>
     <!--状态数据字典-->
     <select id="getCheckStateItem" resultType="CheckStateItem">
         select  * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
     </select>
     <resultMap id="ProcurementPlanItemRM" type="ProcurementPlanItem">
-        <association property="materialCategoryItem" column="materialCategoryId" select="getMaterialCategoryItem"></association>
+        <association property="materialCategoryItem" column="materialCategoryId"
+                     select="getMaterialCategoryItem"></association>
         <collection property="unitDataItem" column="unitId" select="getUnitDataItem">
         </collection>
     </resultMap>
     <!--获取辅料备件物品-->
     <resultMap id="ProcurementPlanItemRM1" type="ProcurementPlanItem">
-        <result  property="specifications" column="specification"></result>
+        <result property="specifications" column="specification"></result>
     </resultMap>
 
     <!--采购计划分页查询-->
     <select id="getProcurementPlanItemListByPage" resultMap="ProcurementPlanItemRM">
         select a.* from t_pr_procumentplanitem as a left join t_pr_procumentplan as b
-            on a.procurementPlanId = b.procurementPlanId and b.checkStateId != 69
-            order by a.procurementPlanId desc
+        on a.procurementPlanId = b.procurementPlanId
+        where b.checkStateId != 69 and a.ingredientStateId != 36
+        order by a.procurementPlanId desc
         <if test="page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
+    </select>
+
+    <select id="countProcurementPlanItemList" resultType="int">
+        select count(*) from t_pr_procumentplanitem as a left join t_pr_procumentplan as b
+        on a.procurementPlanId = b.procurementPlanId
+        where b.checkStateId != 69 and a.ingredientStateId != 36
+        order by a.procurementPlanId desc
     </select>
 
     <!--通过编号获取采购计划单条目对象-->
@@ -407,7 +431,7 @@
         select  *from t_pr_procumentplanitem where procurementPlanId=#{procurementPlanId}
     </select>
     <select id="getProcurementPlanList" resultMap="ProcurementPlanRM">
-        select * from t_pr_procumentplan   order by checkStateId=69,createDate desc
+        select * from t_pr_procumentplan order by checkStateId=69,createDate desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -466,9 +490,11 @@
                 or adjustName like "%"#{keywords}"%"
                 or adjustDate like binary"%"#{keywords}"%"
                 or approvalName like "%"#{keywords}"%"
-                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
-                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
-                 or applyMouth like binary"%"#{keywords}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
+                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName
+                like "%"#{keywords}"%")
+                or applyMouth like binary"%"#{keywords}"%"
             </if>
             <if test="applyMouth!='' and applyMouth!=null">
                 and applyMouth like "%"#{applyMouth}"%"
@@ -516,7 +542,7 @@
 
     <!--采购计划单查询查询计数-->
     <select id="searchProcurementPlanCount" parameterType="ProcurementPlan" resultType="int">
-    select  count(*) from t_pr_procumentplan
+        select count(*) from t_pr_procumentplan
         <where>
             <if test="keywords!='' and keywords!=null">
                 or procurementPlanId like "%"#{keywords}"%"
@@ -525,8 +551,10 @@
                 or adjustName like "%"#{keywords}"%"
                 or adjustDate like binary"%"#{keywords}"%"
                 or approvalName like "%"#{keywords}"%"
-                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
-                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
+                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName
+                like "%"#{keywords}"%")
                 or applyMouth like binary"%"#{keywords}"%"
             </if>
             <if test="applyMouth!='' and applyMouth!=null">
@@ -571,37 +599,44 @@
 
     <!--采购计划单明细查询-->
     <select id="searchProcurementPlanItem" parameterType="ProcurementPlanItem" resultMap="ProcurementPlanItemRM">
-        select * from t_pr_procumentplanitem
+        select a.* from t_pr_procumentplanitem as a join t_pr_procumentplan as b on
+        a.procurementPlanId=b.procurementPlanId
         <where>
             <if test="keywords!='' and keywords!=null">
-                or procurementPlanId like "%"#{keywords}"%"
-                or suppliesName like "%"#{keywords}"%"
-                or specifications like "%"#{keywords}"%"
-                or remarks like "%"#{keywords}"%"
-                or applyMouth like "%"#{keywords}"%"
-                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName  like "%"#{keywords}"%" and  dataDictionaryId=28)
-                or unitId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName  like "%"#{keywords}"%" and  dataDictionaryId=25)
-                or proposer like "%"#{keywords}"%"
+                or a.procurementPlanId like "%"#{keywords}"%"
+                or a.suppliesName like "%"#{keywords}"%"
+                or a.specifications like "%"#{keywords}"%"
+                or a.remarks like "%"#{keywords}"%"
+                or a.applyMouth like "%"#{keywords}"%"
+                or a.materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName
+                like "%"#{keywords}"%" and dataDictionaryId=28)
+                or a.unitId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%" and dataDictionaryId=25)
+                or a.proposer like "%"#{keywords}"%"
             </if>
             <if test="procurementPlanId!=null and procurementPlanId!=''">
-                and procurementPlanId like "%"#{procurementPlanId}"%"
+                and a.procurementPlanId like "%"#{procurementPlanId}"%"
             </if>
             <if test="suppliesName!=null and suppliesName!=''">
-                and suppliesName like "%"#{suppliesName}"%"
+                and a.suppliesName like "%"#{suppliesName}"%"
             </if>
             <if test="specifications!=null and specifications!=''">
-                and specifications like "%"#{specifications}"%"
+                and a.specifications like "%"#{specifications}"%"
             </if>
             <if test="proposer!=null and proposer!=''">
-                and proposer like "%"#{proposer}"%"
+                and a.proposer like "%"#{proposer}"%"
             </if>
             <if test="applyMouth!=null and applyMouth!=''">
-                and applyMouth like "%"#{applyMouth}"%"
+                and a.applyMouth like "%"#{applyMouth}"%"
             </if>
             <if test="materialCategoryItem!=null">
                 <if test="materialCategoryItem.dataDictionaryItemId!=0">
-                    and materialCategoryId=#{materialCategoryItem.dataDictionaryItemId}
+                    and a.materialCategoryId=#{materialCategoryItem.dataDictionaryItemId}
                 </if>
+            </if>
+            <if test="1==1">
+                and a.ingredientStateId != 36
+                and b.checkStateId != 69
             </if>
         </where>
         <if test="page != null and page.start != null and page.count != null">
@@ -610,38 +645,44 @@
     </select>
 
     <select id="searchProcurementPlanItemTotal" parameterType="ProcurementPlanItem" resultType="int">
-        select count(*) from t_pr_procumentplanitem
+        select count(*) from t_pr_procumentplanitem as a join t_pr_procumentplan as b on
+        a.procurementPlanId=b.procurementPlanId
         <where>
             <if test="keywords!='' and keywords!=null">
-                or procurementPlanId like "%"#{keywords}"%"
-                or suppliesName like "%"#{keywords}"%"
-                or specifications like "%"#{keywords}"%"
-                or remarks like "%"#{keywords}"%"
-                or applyMouth like "%"#{keywords}"%"
-                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName  like "%"#{keywords}"%" and  dataDictionaryId=28)
-                or unitId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName  like "%"#{keywords}"%" and  dataDictionaryId=25)
-                or proposer like "%"#{keywords}"%"
-
+                or a.procurementPlanId like "%"#{keywords}"%"
+                or a.suppliesName like "%"#{keywords}"%"
+                or a.specifications like "%"#{keywords}"%"
+                or a.remarks like "%"#{keywords}"%"
+                or a.applyMouth like "%"#{keywords}"%"
+                or a.materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName
+                like "%"#{keywords}"%" and dataDictionaryId=28)
+                or a.unitId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%" and dataDictionaryId=25)
+                or a.proposer like "%"#{keywords}"%"
             </if>
             <if test="procurementPlanId!=null and procurementPlanId!=''">
-                and procurementPlanId like "%"#{procurementPlanId}"%"
+                and a.procurementPlanId like "%"#{procurementPlanId}"%"
             </if>
             <if test="suppliesName!=null and suppliesName!=''">
-                and suppliesName like "%"#{suppliesName}"%"
+                and a.suppliesName like "%"#{suppliesName}"%"
             </if>
             <if test="specifications!=null and specifications!=''">
-                and specifications like "%"#{specifications}"%"
+                and a.specifications like "%"#{specifications}"%"
             </if>
             <if test="proposer!=null and proposer!=''">
-                and proposer like "%"#{proposer}"%"
+                and a.proposer like "%"#{proposer}"%"
             </if>
             <if test="applyMouth!=null and applyMouth!=''">
-                and applyMouth like "%"#{applyMouth}"%"
+                and a.applyMouth like "%"#{applyMouth}"%"
             </if>
             <if test="materialCategoryItem!=null">
                 <if test="materialCategoryItem.dataDictionaryItemId!=0">
-                    and materialCategoryId=#{materialCategoryItem.dataDictionaryItemId}
+                    and a.materialCategoryId=#{materialCategoryItem.dataDictionaryItemId}
                 </if>
+            </if>
+            <if test="1==1">
+                and a.ingredientStateId != 36
+                and b.checkStateId != 69
             </if>
         </where>
     </select>
@@ -656,9 +697,9 @@
     <select id="searchAdjust" parameterType="ProcurementPlanItem" resultType="ProcurementPlanItem">
         select * from t_pr_procumentplanitem
         <where>
-        <if test="suppliesName!='' and suppliesName!=null">
-         and suppliesName like "%"#{suppliesName}"%"
-        </if>
+            <if test="suppliesName!='' and suppliesName!=null">
+                and suppliesName like "%"#{suppliesName}"%"
+            </if>
             <if test="specifications!='' and specifications!=null">
                 and specifications like "%"#{specifications}"%"
             </if>
@@ -666,17 +707,18 @@
                 and proposer like "%"#{proposer}"%"
             </if>
             and procurementPlanId=#{procurementPlanId}
-       </where>
+        </where>
 
     </select>
 
-<!--将物资类别更新到采购主表中去-->
+    <!--将物资类别更新到采购主表中去-->
     <update id="updateMaterialCategoryItemForProcurementPlan">
         update t_pr_procumentplan set MaterialCategoryId=#{1} where procurementPlanId=#{0}
     </update>
 
     <resultMap id="IngredientsRM" type="Ingredients">
-        <association property="materialCategoryItem" column="materialCategoryId" select="getMaterialCategoryItem"></association>
+        <association property="materialCategoryItem" column="materialCategoryId"
+                     select="getMaterialCategoryItem"></association>
         <association property="unitDataItem" column="unitId" select="getUnitDataItem"></association>
     </resultMap>
     <!--根据辅料备件主键获取规格-->
@@ -688,8 +730,8 @@
         select * from t_pl_ingredientslist where id=#{id}
     </select>
 
- <!--根据编号删除月度采购明细-->
-<select id="deleteMonthProcurementById" parameterType="int">
+    <!--根据编号删除月度采购明细-->
+    <select id="deleteMonthProcurementById" parameterType="int">
     delete  from t_pl_material where id=#{id}
 </select>
 

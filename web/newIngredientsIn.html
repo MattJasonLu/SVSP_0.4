@@ -199,13 +199,12 @@
                                >
                     </th>
                     <th class="text-center">计划单编号</th>
+                    <th class="text-center">物资编号</th>
                     <th class="text-center">物资名称</th>
                     <th class="text-center">规格型号</th>
                     <th class="text-center">计量单位</th>
-                    <th class="text-center">库存量</th>
                     <th class="text-center">需求数量</th>
                     <th class="text-center">备注</th>
-                    <th class="text-center">状态</th>
                     <th class="text-center" hidden>物资编号</th>
                 </tr>
                 </thead>
@@ -214,14 +213,13 @@
                     <td class="text-center" style="width: 40px">
                         <input name="select" class="checkbox" type="checkbox" >
                     </td>
-                    <td class="text-center" name="receiptNumber"></td>
+                    <td class="text-center" name="procurementPlanId"></td>
+                    <td class="text-center" name="code"></td>
                     <td class="text-center" name="suppliesName"></td>
                     <td class="text-center" name="specifications"></td>
                     <td class="text-center" name="unit"></td>
-                    <td class="text-center" name="inventory"></td>
                     <td class="text-center" name="demandQuantity"></td>
                     <td class="text-center" name="note"></td>
-                    <td class="text-center" name="state"></td>
                     <td class="text-center" hidden name="id"></td>
                 </tr>
                 <tr>
@@ -232,7 +230,6 @@
                     <th class="text-center">合计</th>
                     <th class="text-center"></th>
                     <th class="text-center" id="totalDemandQuantity"></th>
-                    <th class="text-center"></th>
                     <th class="text-center"></th>
                 </tr>
                 </tbody>
@@ -280,7 +277,7 @@
         </div>
         <br>
         <h4 class="text-center">&nbsp;&nbsp;&nbsp;&nbsp;入库单</h4>
-        <p class="text-center pull-right"><b>NO.</b><span id="view-id" class="text-left"></span></p>
+        <p class="text-center pull-right" ><b>NO.</b><span id="view-id" class="text-left" ></span></p>
         <form method="post" id="ingredientsInForm" enctype="multipart/form-data">
             <table class="table table-bordered">
                 <thead>

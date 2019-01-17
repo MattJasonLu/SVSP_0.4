@@ -1385,6 +1385,7 @@ function loadPages1(totalRecord, count) {
     else
         return parseInt(totalRecord / count) + 1;
 }
+var oldId = "";
 
 /**
  * 设置领料单列表
@@ -1554,6 +1555,7 @@ function loadIngredientsReceiveList() {
             }
         });
     }
+    oldId = $("#view-id").text();
 }
 
 /**
@@ -1765,6 +1767,7 @@ function confirmInsert() {
     ingredientsOut.id = getCurrentIngredientsOutId();
     var totalPrice = 0;
     var totalReceiveAmount = 0;
+    var wareHouseName = "";
     // 遍历领料单表格行，获取勾选的计划列表
     $("#ingredientsReceiveList").children().not("#clone").each(function () {
         var isCheck = $(this).find("input[name='select']").prop('checked');
@@ -1781,6 +1784,7 @@ function confirmInsert() {
             ingredients.unitPrice =  $(this).find("td[name='unitPrice']").text();
             ingredients.receiveId = $(this).find("td[name='receiveId']").text();
             ingredients.wareHouseName = $(this).find("td[name='wareHouseName']").text();
+            wareHouseName = ingredients.wareHouseName;
             ingredients.aid = $(this).find("td[name='receiveId']").text();                     //辅料备件领料单号
             ingredients.serialNumberA = "add";
             totalReceiveAmount += parseFloat(ingredients.receiveAmount);
@@ -1790,6 +1794,30 @@ function confirmInsert() {
             ingredientsList.push(ingredients);
         }
     });
+    /**
+     * 根据仓库名更新单号
+     */
+    $.ajax({
+        type: "POST",
+        url: "getWareHouseByName",
+        async: false,
+        data: {
+            name: wareHouseName
+        },
+        dataType: "json",
+        success: function (result) {
+            if (result != null && result.status === "success") {
+                $("#view-id").text(result.data.prefix + oldId);   // 赋值新ID
+            } else console.log(result.message);
+        },
+        error: function (result) {
+            console.log(result.message);
+        }
+    });
+    ingredientsOut.id = $("#view-id").text();   // 更新最新的单据ID
+    for(var i = 0; i < ingredientsOut.ingredientsList.length; i++){
+        ingredientsOut.ingredientsList[i].id = ingredientsOut.id;
+    }
     //将数据遍历赋值到出库单中
     var num = $("span[name='serialNumber']").length - 1;
     var tr = $("#clone3");
@@ -1832,7 +1860,9 @@ function confirmInsert() {
  * 保存
  */
 function save() {
-    if(isSettled()) {
+    isSettled();   // 是否结账
+    if(isC) {
+        console.log("save");
         //获取输入的数据
         var totalPrice = 0;
         var totalAmount = 0;
@@ -1978,6 +2008,8 @@ function print() {
 
 }
 
+var isC = true;   // 是否继续
+
 /**
  * 判定出库日期内是否结账
  * @param item
@@ -1998,10 +2030,12 @@ function isSettled() {
         success:function (result) {
             if (result !== undefined && result.status === "success"){
                 console.log(result.message);
-                return true;
+                isC = true;
+                 return true;
             }else {
                 alert(result.message);
                 $("#creationDate").val("");  // 重新输入出库时间
+                isC = false;
                 return false;
             }
         },

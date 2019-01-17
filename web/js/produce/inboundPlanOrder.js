@@ -1339,6 +1339,51 @@ function showComparison(e) {
     }
 }
 
+var imgUrl = '';
+/**
+ * 显示图片
+ * @param e
+ */
+function showImg(e) {
+    // 获取编号
+    var id = getIdByMenu(e);
+
+    // 设置编号
+    $("#imgInboundPlanOrderId").val(id);
+    // 获取入库计划单对象信息
+    $.ajax({
+        type: "POST",
+        url: "getInboundPlanOrder",
+        async: false,
+        dataType: "json",
+        data: {"inboundPlanOrderId": id},
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                // 更新危废图片路径
+                imgUrl = result.data.imgUrl;
+            } else {
+                console.log(result.message);
+                imgUrl = '';
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            imgUrl = '';
+        }
+    });
+    // 显示图片模态框
+    $("#imgModal").modal("show");
+}
+// 设置点击事件
+function downloadImg() {
+    if (imgUrl == '') {
+        alert("未上传图片！");
+    } else {
+        window.open('downloadFile?filePath=' + imgUrl);
+    }
+}
+
 var rejectId;
 
 /**

@@ -806,6 +806,7 @@ public class PRProductionDailyController {
                     map.get(id).setSewagePointItem(sewagePointItem);
                     map.get(id).setAddress(data[i][2].toString());
                     map.get(id).setWater(true); // 表明为污水数据
+                    map.get(id).setSampleTime(data[i][3].toString());
                     map.get(id).setCreationDate(DateUtil.getDateFromStr(data[i][10].toString()));
                     //新存储一个id对象时，将以下两个累计数据清零
                     sewageregistrationItemArrayList = new ArrayList<>();
@@ -827,20 +828,27 @@ public class PRProductionDailyController {
                 }
                 sewageregistrationItem.setId(id1);
                 // 设置检测项目
-                if ((data[i][3].toString().equals("R") || data[i][3].toString().equals("1") || data[i][3].toString().equals("1.0")))
-                    sewageregistrationItem.setPh(1);
+                //PH
                 if ((data[i][4].toString().equals("R") || data[i][4].toString().equals("1") || data[i][4].toString().equals("1.0")))
-                    sewageregistrationItem.setCod(1);
+                    sewageregistrationItem.setPh(1);
+                //COD
                 if ((data[i][5].toString().equals("R") || data[i][5].toString().equals("1") || data[i][5].toString().equals("1.0")))
-                    sewageregistrationItem.setBod5(1);
+                    sewageregistrationItem.setCod(1);
+                //氨氮
                 if ((data[i][6].toString().equals("R") || data[i][6].toString().equals("1") || data[i][6].toString().equals("1.0")))
                     sewageregistrationItem.setN2(1);
+                //碱度
                 if ((data[i][7].toString().equals("R") || data[i][7].toString().equals("1") || data[i][7].toString().equals("1.0")))
-                    sewageregistrationItem.setNitrogen(1);
-                if ((data[i][8].toString().equals("R") || data[i][8].toString().equals("1") || data[i][8].toString().equals("1.0")))
-                    sewageregistrationItem.setPhosphorus(1);
-                if ((data[i][9].toString().equals("R") || data[i][9].toString().equals("1") || data[i][9].toString().equals("1.0")))
                     sewageregistrationItem.setLye(1);
+                //BOD5
+                if ((data[i][8].toString().equals("R") || data[i][8].toString().equals("1") || data[i][8].toString().equals("1.0")))
+                    sewageregistrationItem.setBod5(1);
+                //总氮
+                if ((data[i][9].toString().equals("R") || data[i][9].toString().equals("1") || data[i][9].toString().equals("1.0")))
+                    sewageregistrationItem.setNitrogen(1);
+                //总磷
+                if ((data[i][10].toString().equals("R") || data[i][10].toString().equals("1") || data[i][10].toString().equals("1.0")))
+                    sewageregistrationItem.setPhosphorus(1);
                 sewageregistrationItem.setSampleinformationId(id);
                 sewageregistrationItemArrayList.add(sewageregistrationItem);
                 map.get(id).setSewageregistrationItemList(sewageregistrationItemArrayList);
@@ -953,7 +961,7 @@ public class PRProductionDailyController {
                 map.get(id).setSewageregistrationItemList(sewageregistrationItemArrayList);
             }
             for (String key : map.keySet()) {
-                Sewageregistration sewageregistration1 = productionDailyService.getSewaGeregistrationById(map.get(key).getId());
+                Sewageregistration sewageregistration1 = productionDailyService.getSoftGeregistrationById(map.get(key).getId());
                 Sewageregistration sewageregistration = map.get(key);
                 if (sewageregistration1 == null) {
                     //插入新数据
@@ -961,9 +969,10 @@ public class PRProductionDailyController {
                     for (SewageregistrationItem sewageregistrationItem : sewageregistration.getSewageregistrationItemList())
                         productionDailyService.addSoftGeregistrationItem(sewageregistrationItem);
                 } else {
-                    res.put("status", "fail");
-                    res.put("message", "预约单号重复，请检查后导入");
-                    return res.toString();
+                    productionDailyService.updateSoftGeregistration(sewageregistration);
+                    productionDailyService.deleteSoftGeregistrationItem(sewageregistration.getId());   //删除子项
+                    for (SewageregistrationItem sewageregistrationItem : sewageregistration.getSewageregistrationItemList())  // 重新添加
+                        productionDailyService.addSoftGeregistrationItem(sewageregistrationItem);
                 }
             }
             res.put("status", "success");

@@ -1983,21 +1983,21 @@ function Cal(item) {
         if ($.trim($(this).children('td').eq(3).children('input').val().length) <= 0) {
             $(this).children('td').eq(3).children('input').val(0);
         }
-        console.log('走到这')
+        // console.log('走到这');
         weeklyDemandTotalAggregate += parseFloat($(this).children('td').eq(3).children('input').val());
-    })
+    });
     //计算周需求总量合计
-    $("#weeklyDemandTotalAdd4").html(weeklyDemandTotalAggregate)
+    $("#weeklyDemandTotalAdd4").text(parseFloat(weeklyDemandTotalAggregate).toFixed(2));
 
     //计算比例==》周需求总量/计算周需求总量合计
     $('.myclass3').each(function () {
-        console.log('走到这')
+        // console.log('走到这');
         var proportion = (parseFloat($(this).children('td').eq(3).children('input').val()) / parseFloat($("#weeklyDemandTotalAdd4").html())).toFixed(2);
         if (isNaN(proportion)) { //如果输入的不是数字就默认0
             proportion = 0;
         }
-        $(this).children('td').eq(5).html(proportion)
-    })
+        $(this).children('td').eq(5).text(parseFloat(proportion).toFixed(2));
+    });
 
 
     //计算每日配比量合计
@@ -2011,7 +2011,7 @@ function Cal(item) {
         }
         totalDailyAmount += totalDaily1;
     });
-    console.log(totalDailyAmount)
+    console.log(totalDailyAmount);
     $('#dailyRatioTota4').html(parseFloat(totalDailyAmount).toFixed(2));
 
 }
