@@ -721,6 +721,6 @@
 
     <!--更新入库计划单的图片路径-->
     <update id="updateInboundPlanOrderImgUrl">
-        update t_pl_inboundorderitem set imgUrl=#{1} where inboundOrderItemId=#{0};
+        update t_pl_inboundplanorder set imgUrl=#{1} where inboundPlanOrderId=#{0};
     </update>
 </mapper>
