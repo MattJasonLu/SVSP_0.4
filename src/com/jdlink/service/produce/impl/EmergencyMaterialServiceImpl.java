@@ -23,4 +23,19 @@ public class EmergencyMaterialServiceImpl implements EmergencyMaterialService {
     public List<EmergencyMaterial> loadEmergencyTSList(Page page) {
         return emergencyMaterialMapper.loadEmergencyTSList(page);
     }
+
+    @Override
+    public EmergencyMaterial getEmergencyTSById(String planId) {
+        return emergencyMaterialMapper.getEmergencyTSById(planId);
+    }
+
+    @Override
+    public void updateEmergencyTS(EmergencyMaterial emergencyMaterial) {
+        emergencyMaterialMapper.updateEmergencyTS(emergencyMaterial);
+    }
+
+    @Override
+    public void setEmergencyMaterialFilePath(EmergencyMaterial EmergencyMaterial) {
+        emergencyMaterialMapper.setEmergencyMaterialFilePath(EmergencyMaterial);
+    }
 }

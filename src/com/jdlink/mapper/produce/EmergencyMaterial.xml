@@ -33,4 +33,24 @@
             limit #{start}, #{count}
         </if>
     </select>
+
+    <!--根据编号获取应急暂存数据-->
+    <select id="getEmergencyTSById" resultMap="EmergencyMaterialRM" parameterType="String">
+        select * from t_pl_emergencymaterial where planId=#{planId}
+    </select>
+
+    <!--应急暂存更新-->
+    <update id="updateEmergencyTS" parameterType="EmergencyMaterial">
+        update t_pl_emergencymaterial set emergencyNumber=#{emergencyNumber},wastesCode=#{wastesCode},
+        wastesName=#{wastesName},supplierId=#{supplier.supplierId} where planId=#{planId}
+    </update>
+
+    <!--插入应急暂存合同附件-->
+    <update id="setEmergencyMaterialFilePath" parameterType="EmergencyMaterial">
+        <if test="FileUrl != null and FileUrl != ''">
+            UPDATE t_pl_emergencymaterial SET FileUrl=#{FileUrl} WHERE planId=#{planId};
+            INSERT INTO t_document (planId, filePath, documentType) VALUES (#{planId},
+            #{FileUrl},'EmergencyMaterial');
+        </if>
+    </update>
 </mapper>

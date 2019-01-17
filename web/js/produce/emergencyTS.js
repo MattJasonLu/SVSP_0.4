@@ -395,6 +395,10 @@ function setEmergencyTSList(result) {
 
                     break;
                 }
+                //附件路径
+                case (9):
+                    $(this).html(obj.fileUrl);
+                    break;
 
             }
         });
@@ -478,6 +482,240 @@ function addDate() {
 }
 
 /*完善模态框*/
-function perfectInfo() {
+function perfectInfo(item) {
+
+    //赋值危废代码
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size:4
+    });
+    $.ajax({
+        type: 'POST',
+        url: "getWastesInfoList",
+        async: false,
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                var obj=eval(result)
+                var code =$('#8code');
+                code.children().remove();
+                $.each(obj.data, function (index, item) {
+                    var option = $('<option/>');
+                    option.val(item.code);
+                    option.text(item.code);
+                    code.append(option);
+                });
+                $('.selectpicker').selectpicker('refresh');
+            }
+        },
+        error:function (result) {
+
+        }
+    })
+
+    //赋值处置单位
+    $.ajax({
+        type: 'POST',
+        url: "listSupplier",
+        async: false,
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success:function (result) {
+            if (result != undefined){
+                console.log(result)
+                var obj=eval(result)
+                var emergencyProduceCompany =$('#emergencyProduceCompany');
+                emergencyProduceCompany.children().remove();
+                $.each(obj, function (index, item) {
+                    var option = $('<option/>');
+                    option.val(item.supplierId);
+                    option.text(item.companyName);
+                    emergencyProduceCompany.append(option);
+                });
+                $('.selectpicker').selectpicker('refresh');
+            }
+        },
+        error:function (result) {
+
+        }
+    })
+
+
+
+    var planId=$(item).parent().parent().children('td').eq(1).html();
+    $('#id').text(planId);
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getEmergencyTSById",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:{planId:planId},
+        dataType: "json",
+        // contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                var data=eval(result.data);
+                console.log(data)
+
+                if(data.supplier!=null){
+                    $('#emergencyProduceCompany').selectpicker('val',data.supplier.supplierId)
+                }
+
+                $('#Name').val(data.wastesName)
+
+                $('#8code').selectpicker('val',data.wastesCode)
+
+                $('#emergencyTransferDraftId').val(data.emergencyNumber)
+
+
+
+
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    })
     $("#perfectInfo").modal('show')
+}
+
+/*查看*/
+function viewData(item) {
+    var planId=$(item).parent().parent().children('td').eq(1).html();
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getEmergencyTSById",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:{planId:planId},
+        dataType: "json",
+        // contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                       var data=eval(result.data);
+                       console.log(data)
+                           $('#planId').val(data.planId)
+                if(data.client!=null){
+                    $('#client').val(data.client.companyName)
+                }
+                if(data.supplier!=null){
+                    $('#supplier').val(data.supplier.companyName)
+                }
+
+                $('#wastesName').val(data.wastesName)
+
+                $('#wastesCode').val(data.wastesCode)
+
+                $('#emergencyNumber').val(data.emergencyNumber)
+                if(data.createTime!=null){
+                    $('#createTime').val(getDateStr(data.createTime))
+                }
+                if(data.checkStateItem!=null){
+                    $('#checkStateItem').val(data.checkStateItem.dictionaryItemName)
+                }
+
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    })
+
+
+    $('#view').modal('show')
+}
+
+/*完善信息方法*/
+function confirmPerfect() {
+    var data={
+        planId:$('#id').text(),
+        wastesCode:$('#8code').selectpicker('val'),
+        supplier:{supplierId:$('#emergencyProduceCompany').selectpicker('val')},
+        emergencyNumber:$('#emergencyTransferDraftId').val(),
+        wastesName:$('#Name').val(),
+    }
+    console.log(data)
+
+    //上传附件
+    var planId=$('#id').text();
+    var formFile = new FormData();
+    formFile.append("planId",planId)
+    if ($('#file').prop('type') != 'text') {
+        var multipartFile = $('#file')[0].files[0];
+        formFile.append("multipartFile", multipartFile);
+        if(multipartFile!=undefined){
+            //保存采购附件
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "saveEmergencyMaterialFile",                     // url
+                cache: false,
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: formFile,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    if (result != undefined && result.status == "success") {
+
+                    }
+                    else {
+
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                    alert("服务器异常!");
+                }
+            });
+        }
+
+    }
+
+
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "updateEmergencyTS",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:JSON.stringify(data),
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                alert(result.message);
+                //附件上传
+
+                window.location.reload()
+            }
+            else {
+
+                alert(result.message);
+
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    })
+
+
+}
+
+//附件下载
+function downLoadFile(item) {
+    var contractAppendicesUrl=$(item).parent().prev().html();
+    if (contractAppendicesUrl != null && contractAppendicesUrl != "") {
+        window.open('downloadFile?filePath=' + contractAppendicesUrl);
+        window.location.reload()
+    } else {
+        alert("未上传文件");
+        // window.location.reload()
+    }
 }
