@@ -744,12 +744,12 @@ and sewageregistrationItemList[0].phenolphthalein==0 and  sewageregistrationItem
 
     <!--添加污水登记主表-->
     <insert id="addSewaGeregistration" parameterType="Sewageregistration">
-        insert into  t_pr_sewageregistration(id,laboratorySignatory,sendingPerson,nowTime,water,address,clientId,createTime,checkStateId,sewagePointId)
+        insert into  t_pr_sewageregistration(id,laboratorySignatory,sendingPerson,nowTime,water,address,clientId,createTime,checkStateId,sewagePointId,sampleTime)
         values
-        (#{id},#{laboratorySignatory},#{sendingPerson},NOW(),#{water},#{address},#{client.clientId},NOW(),86,#{sewagePointItem.dataDictionaryItemId})
+        (#{id},#{laboratorySignatory},#{sendingPerson},NOW(),#{water},#{address},#{client.clientId},NOW(),86,#{sewagePointItem.dataDictionaryItemId},#{sampleTime})
     </insert>
     <update id="updateSewaGeregistration" parameterType="Sewageregistration">
-        update t_pr_sewageregistration set laboratorySignatory=#{laboratorySignatory},sendingPerson=#{sendingPerson},address=#{address},clientId=#{client.clientId},water=#{water},sewagePointId=#{sewagePointItem.dataDictionaryItemId}  where id=#{id}
+        update t_pr_sewageregistration set laboratorySignatory=#{laboratorySignatory},sendingPerson=#{sendingPerson},address=#{address},clientId=#{client.clientId},water=#{water},sewagePointId=#{sewagePointItem.dataDictionaryItemId},sampleTime=#{sampleTime} where id=#{id}
     </update>
 
 
