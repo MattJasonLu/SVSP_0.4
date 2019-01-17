@@ -6,6 +6,7 @@ import com.jdlink.mapper.ProcurementMapper;
 import com.jdlink.service.ProcurementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Date;
 import java.util.List;
@@ -205,6 +206,9 @@ public class ProcurementServiceImpl implements ProcurementService {
     public List<ProcurementPlanItem> getProcurementPlanItemListByPage(ProcurementPlanItem procurementPlanItem) {
         return procurementMapper.getProcurementPlanItemListByPage(procurementPlanItem);
     }
+
+    @Override
+    public int countProcurementPlanItemList() { return procurementMapper.countProcurementPlanItemList(); }
 
     @Override
     public List<ProcurementPlanItem> searchAdjust(ProcurementPlanItem procurementPlanItem) {

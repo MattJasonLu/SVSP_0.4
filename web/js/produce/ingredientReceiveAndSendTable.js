@@ -314,6 +314,7 @@ function loadInventoryList() {
         contentType: 'application/json;charset=utf-8',
         success: function (result) {
             if (result != undefined && result.status == "success") {
+                console.log(result);
                 setPageClone(result.data);
                 setPageCloneAfter(pageNumber);      // 大于指定页数时省略显示页码
             } else {
@@ -348,41 +349,28 @@ function setInventoryList(result) {
             clonedTr.find("td[name='name']").text(obj.name);
             clonedTr.find("td[name='specification']").text(obj.specification);
             clonedTr.find("td[name='unit']").text(obj.unit);
-            if(obj.unit === "公斤" || obj.unit === "千克"){
-                clonedTr.find("td[name='amount']").text(obj.amount.toFixed(3));
-            }else {
-                clonedTr.find("td[name='amount']").text(obj.amount.toFixed(0));
-            }
             clonedTr.find("td[name='wareHouseName']").text(obj.wareHouseName);
-            clonedTr.find("td[name='inId']").text(obj.inId);
-            clonedTr.find("td[name='inAmount']").text(obj.inAmount.toFixed(3));
-            clonedTr.find("td[name='inPrice']").text(obj.inPrice.toFixed(2));
-            clonedTr.find("td[name='outId']").text(obj.outId);
-            clonedTr.find("td[name='outAmount']").text(obj.outAmount.toFixed(3));
-            clonedTr.find("td[name='outPrice']").text(obj.outPrice.toFixed(2));
+            if(obj.unit === "公斤" || obj.unit === "千克"){
+                clonedTr.find("td[name='monthBeginAmount']").text(obj.monthBeginAmount.toFixed(3));
+                clonedTr.find("td[name='inTotalAmount']").text(obj.inTotalAmount.toFixed(3));
+                clonedTr.find("td[name='outTotalAmount']").text(obj.outTotalAmount.toFixed(3));
+                clonedTr.find("td[name='totalAmount']").text(obj.totalAmount.toFixed(3));
+            }else {
+                clonedTr.find("td[name='monthBeginAmount']").text(obj.monthBeginAmount.toFixed(0));
+                clonedTr.find("td[name='inTotalAmount']").text(obj.inTotalAmount.toFixed(0));
+                clonedTr.find("td[name='outTotalAmount']").text(obj.outTotalAmount.toFixed(0));
+                clonedTr.find("td[name='totalAmount']").text(obj.totalAmount.toFixed(0));
+            }
+            clonedTr.find("td[name='monthBeginTotalPrice']").text(obj.monthBeginTotalPrice.toFixed(2));
+            clonedTr.find("td[name='creationDate']").text(getDateStr(obj.creationDate));
+            clonedTr.find("td[name='inTotalPrice']").text(obj.inTotalPrice.toFixed(2));
+            clonedTr.find("td[name='outTotalPrice']").text(obj.outTotalPrice.toFixed(2));
+            clonedTr.find("td[name='allTotalPrice']").text(obj.allTotalPrice.toFixed(3));
             // 把克隆好的tr追加到原来的tr前面
             clonedTr.insertBefore(tr);
             clonedTr.removeAttr('id');
         }
     });
-    var clonedTr = tr.clone();
-    clonedTr.show();
-    clonedTr.children("td").each(function (inner_index) {
-        // 根据索引为部分td赋值
-        switch (inner_index) {
-            // 合计
-            case (3):
-                $(this).html("合计");
-                break;
-            // 库存量
-            case (6):
-                $(this).html(totalAmount.toFixed(3));
-                break;
-        }
-    });
-    // 把克隆好的tr追加到原来的tr前面
-    clonedTr.insertBefore(tr);
-    clonedTr.removeAttr('id');
     // 隐藏无数据的tr
     tr.hide();
 }
@@ -430,10 +418,6 @@ function search1() {
             name: $.trim($("#search1-name").val()),
             wareHouseName: $.trim($("#search1-wareHouseName").val()),
             specification: $.trim($("#search1-specification").val()),
-            inId: $.trim($("#search1-inId").val()),
-            outId: $.trim($("#search1-outId").val()),
-            amount: parseFloat($.trim($("#search1-amount").val())),
-            inAmount: parseFloat($.trim($("#search1-inAmount").val())),
             page:page
         };
     } else {

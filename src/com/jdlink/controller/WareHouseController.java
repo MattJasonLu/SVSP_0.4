@@ -134,4 +134,28 @@ public class WareHouseController {
         return res.toString();
     }
 
+    /**
+     * 通过名称获取仓库对象
+     * @param name 仓库名
+     * @return 仓库对象
+     */
+    @RequestMapping("getWareHouseByName")
+    @ResponseBody
+    public String getWareHouseByName(String name) {
+        JSONObject res=new JSONObject();
+        try {
+            WareHouse wareHouse = wareHouseService.getWareHouseByName(name);
+            if (wareHouse == null) throw new NullPointerException("未找到数据");
+            JSONObject data = JSONObject.fromBean(wareHouse);
+            res.put("status", "success");
+            res.put("message", "获取成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取失败");
+        }
+        return res.toString();
+    }
+
 }

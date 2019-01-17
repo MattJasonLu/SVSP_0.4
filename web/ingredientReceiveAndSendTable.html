@@ -141,9 +141,12 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" id="function_-356" href="#" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel();}"><span
+                    <a class="btn btn-primary btn-xs" id="" href="#" onclick="exportExcel();"><span
+                        class="glyphicon glyphicon-arrow-up"
+                        aria-hidden="true"></span> 导出</a>
+                    <a class="btn btn-primary btn-xs" href="ingredientsWarehouse.html" ><span
                             class="glyphicon glyphicon-arrow-up"
-                            aria-hidden="true"></span> 导出</a>
+                            aria-hidden="true"></span> 返回</a>
                 </div>
                 <!--查询框-->
                 <div class="row">
@@ -208,44 +211,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-horizontal col-md-4">
-                            <div class="form-group">
-                                <label for="search1-inId" class="col-sm-4 control-label">入库单号</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search1-inId"
-                                           name="search1-inId" placeholder="" onkeydown="enterSearch1()">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-4">
-                            <div class="form-group">
-                                <label for="search1-outId" class="col-sm-4 control-label">出库单号</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search1-outId"
-                                           name="search1-outId" placeholder="" onkeydown="enterSearch1()">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-horizontal col-md-4">
-                            <div class="form-group">
-                                <label for="search1-amount" class="col-sm-4 control-label">库存量</label>
-                                <div class="col-xs-7">
-                                    <input type="number" class="form-control" id="search1-amount"
-                                           name="search1-amount" placeholder="" onkeydown="enterSearch1()">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-4">
-                            <div class="form-group">
-                                <label for="search1-inAmount" class="col-sm-4 control-label">入库数</label>
-                                <div class="col-xs-7">
-                                    <input type="number" class="form-control" id="search1-inAmount"
-                                           name="search1-inAmount" placeholder="" onkeydown="enterSearch1()">
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -264,8 +229,10 @@
                             <th class="text-center">物品名称</th>
                             <th class="text-center">规格</th>
                             <th class="text-center">计量单位</th>
+                            <th class="text-center">仓库</th>
                             <th class="text-center">期初数</th>
                             <th class="text-center">期初金额</th>
+                            <th class="text-center">入库时间</th>
                             <th class="text-center">入库总数</th>
                             <th class="text-center">入库金额</th>
                             <th class="text-center">出库总数</th>
@@ -286,22 +253,20 @@
                             <td class="text-center" name="name"></td>
                             <td class="text-center" name="specification"></td>
                             <td class="text-center" name="unit"></td>
-                            <td class="text-center" name="amount"></td>
                             <td class="text-center" name="wareHouseName"></td>
-                            <td class="text-center" name="inId"></td>
-                            <td class="text-center" name="inAmount"></td>
-                            <td class="text-center" name="inPrice"></td>
-                            <td class="text-center" name="outId"></td>
-                            <td class="text-center" name="outAmount"></td>
-                            <td class="text-center" name="outPrice"></td>
+                            <td class="text-center" name="monthBeginAmount"></td>
+                            <td class="text-center" name="monthBeginTotalPrice"></td>
+                            <td class="text-center" name="creationDate"></td>
+                            <td class="text-center" name="inTotalAmount"></td>
+                            <td class="text-center" name="inTotalPrice"></td>
+                            <td class="text-center" name="outTotalAmount"></td>
+                            <td class="text-center" name="outTotalPrice"></td>
+                            <td class="text-center" name="totalAmount"></td>
+                            <td class="text-center" name="allTotalPrice"></td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
-            </div>
-            <!--自动提示后隐藏-->
-            <div>
-                <input type="hidden" id="hidvalue" value="作废成功！"/>
             </div>
             <!--分页-->
             <nav aria-label="Page navigation" class="text-center">
@@ -341,70 +306,8 @@
                     </li>
                 </ol>
             </nav>
-            <!--导入模态框-->
-            <div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                    aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="TitleMyModalLabel">导入表格数据</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form id="modelAssign" method="post">
-                                <div class="form-group">
-                                    <font size="+2">提示：</font>
-                                    <font size="+1" class="text-center">请按照模板格式导入数据！</font>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer center">
-                            <button type="button" class="btn btn-default" onclick="downloadInModal()">下载模板</button>
-                            <button type="button" class="btn btn-primary" onclick="importInExcel()">导入数据</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--查看模态框-->
-            <div class="modal fade bs-example-modal-lg" id="viewModal" tabindex="-1" role="dialog"
-                 aria-labelledby="myModalLabel">
-                <div class="modal-dialog modal-lg" role="document" style="width: 90%">
-                    <div class="modal-content">
-                        <br>
-                        <!--<div class="text-center"><span id="creationDate"></span>&nbsp;&nbsp;&nbsp;&nbsp;预处理单</div>-->
-                        <h4 class="modal-title text-center">辅料/备件明细</h4>
-                        <br>
-                        <table class="table table-bordered" style="border:none">
-                            <thead style="border:none">
-                            <tr>
-                                <p class="text-center pull-right"><b>NO.</b><span id="view-id" class="text-left"></span>
-                                </p>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td class="text-center">危废名称</td>
-                                <td class="text-center">货架位置</td>
-                                <td class="text-center">总数量</td>
-                                <td class="text-center">仓库号</td>
-                            </tr>
-                            <tr id="viewClone">
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <!---->
         </div>
     </div>
-    <!--导入-->
-    <input type="file" name="excelPath" id="idExcel" style="display:none">
-    <div id="embed"></div>
 </div>
 </body>
 <script>

@@ -1271,6 +1271,7 @@ function loadPages1(totalRecord, count) {
 }
 
 var ingredientsReceive1 = {}; // 暂存出库单数据
+var oldId = "";   // 领料单原始编号
 /**
  * 设置首页数据
  */
@@ -1438,6 +1439,7 @@ function loadInventoryListData() {
             }
         });
     }
+    oldId = $("#view-id").text();
 }
 
 /**
@@ -1563,12 +1565,12 @@ var totalReceiveAmount = 0;
 function confirmInsert() {
     totalReceiveAmount = 0;
     var ingredientsList = [];
-    ingredientsReceive.id = $("#view-id").text();
     if (ingredientsReceive1 != null && ingredientsReceive1.ingredientsList != null && ingredientsReceive1.ingredientsList.length > 0) {
         ingredientsReceive.ingredientsList = ingredientsReceive1.ingredientsList; // 将更新的数据赋给对象
     }
     var i = $("span[name='serialNumber']").length - 1;  //序号
     // 遍历库存列表，生成领料单
+    var wareHouseName = "";
     $("#ingredientsInventoryData").children().not("#cloneTr1").each(function () {
         var isCheck = $(this).find("input[name='select']").prop('checked');
         if (isCheck) {
@@ -1581,9 +1583,10 @@ function confirmInsert() {
                 ingredients.serialNumber = i;
                 ingredients.specification = $(this).find("td[name='specification']").text();
                 ingredients.wareHouseName = $(this).find("td[name='wareHouseName']").text();
+                wareHouseName = ingredients.wareHouseName;
                 ingredients.amount = parseFloat($(this).find("td[name='amount']").text());
                 ingredients.unit = $(this).find("td[name='unit']").text();
-                ingredients.id = ingredientsReceive.id;
+                ingredients.id = $("#view-id").text();
                 ingredients.code = $(this).find("td[name='code']").text();
                 ingredients.inId = $(this).find("td[name='inId']").text();
                 ingredients.inAmount = $(this).find("td[name='inAmount']").text();
@@ -1597,6 +1600,30 @@ function confirmInsert() {
             }
         }
     });
+    /**
+     * 根据仓库名更新单号
+     */
+    $.ajax({
+        type: "POST",
+        url: "getWareHouseByName",
+        async: false,
+        data: {
+            name: wareHouseName
+        },
+        dataType: "json",
+        success: function (result) {
+            if (result != null && result.status === "success") {
+                $("#view-id").text(result.data.prefix + oldId);   // 赋值新ID
+            } else console.log(result.message);
+        },
+        error: function (result) {
+            console.log(result.message);
+        }
+    });
+    ingredientsReceive.id = $("#view-id").text();   // 更新最新的单据ID
+    for(var i = 0; i < ingredientsReceive.ingredientsList.length; i++){
+        ingredientsReceive.ingredientsList[i].id = ingredientsReceive.id;
+    }
     //将数据遍历赋值到领料单中
     ingredientsReceive.totalAmount = totalReceiveAmount;
     var tr = $("#clone3");
@@ -1749,7 +1776,7 @@ function save() {
     console.log("数据为：");
     console.log(ingredientsReceive);
     if (confirm("确认保存？")) {
-        if ($("#save").text() == "领料") {
+        if ($("#save").text() === "领料") {
             //将领料单数据插入到数据库
             $.ajax({
                 type: "POST",

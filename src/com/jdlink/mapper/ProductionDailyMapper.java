@@ -24,6 +24,8 @@ public interface ProductionDailyMapper {
     List<SoftWater> listPageSoftWater(Page page);
     void addSoftWater(SoftWater softWater);
     void confirmAllSoftWaterCheck(Sewageregistration sewageregistration);
+    void updateSoftGeregistration(Sewageregistration sewageregistration);
+    void deleteSoftGeregistrationItem(String id);
     /**
      * 获取生产日报的编号
      * @return 编号
