@@ -11,9 +11,26 @@ function loadRoleList() {
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
-            if(result != null && result.status ==="success") {
-                   setRoleList(result.data);
-            }else {
+            if (result != null && result.status === "success") {
+                setRoleList(result.data);
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            alert("服务器错误，请重新加载！");
+        }
+    });
+    $.ajax({   // 获取仓库数据
+        type: "POST",                       // 方法类型
+        url: "listWareHouse",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != null && result.status === "success") {
+                console.log(result);
+                setWareHouseList(result.data);   // 设置模态框仓库数据
+            } else {
                 console.log(result.message);
             }
         },
@@ -54,17 +71,20 @@ function setRoleList(result) {
  * 修改角色可选择的仓库列表
  */
 function editModal(e) {
-    roleId = $(e).parent().parent().find("td[name='id']");   // 获取角色ID
+    roleId = $(e).parent().parent().find("td[name='id']").text();   // 获取角色ID
     $.ajax({   // 获取仓库数据
         type: "POST",                       // 方法类型
-        url: "listWareHouse",                  // url
+        url: "getWareHouseIdListByRoleId",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            roleId: roleId
+        },
         dataType: "json",
         success: function (result) {
-            if(result != null && result.status ==="success") {
+            if (result != null && result.status === "success") {
                 console.log(result);
-                setWareHouseList(result.data);
-            }else {
+                setWareHouseSelect(result.data);
+            } else {
                 console.log(result.message);
             }
         },
@@ -93,19 +113,60 @@ function setWareHouseList(result) {
         clonedTr.insertBefore(tr);
         clonedTr.find("td[name='wareHouseId']").text(obj.wareHouseId);
         clonedTr.find("td[name='wareHouseName']").text(obj.wareHouseName);
-        clonedTr.find("input[name='select']").prop('checked', true);   // 默认全选
+        clonedTr.find("input[name='select']").prop('checked', false);   // 默认全选
     });
     // 隐藏无数据的tr
     tr.hide();
 }
-// $("input[name='wastesList[" + $i + "].isPH']").prop('checked');
+
+/**
+ * 设置仓库选中
+ */
+function setWareHouseSelect(result) {
+    $("#tBody").children().not("#cloneTr1").each(function () {
+        if (result.indexOf(parseInt($(this).find("td[name='wareHouseId']").text()))> -1) {  // 如果该仓库已分配
+            $(this).find("input[name='select']").prop('checked', true);  // 设置选中
+        }
+    });
+}
+
 /**
  * 保存修改数据
  */
-function saveDate(){
-    roleId;
-    var length = $("td[name='wareHouseId']").length;   // 获取长度
-    // for() {
-    //
-    // }
+function saveDate() {
+    //  roleId;
+    var wareHouseDistributionList = {};
+    wareHouseDistributionList.wareHouseDistributionList = [];
+    wareHouseDistributionList.roleId = roleId;
+    $("#tBody").children().not("#cloneTr1").each(function () {  // 遍历克隆行获取数据
+        if ($(this).find("input[name='select']").prop('checked')) {  // 如果选中
+            var wareHouseDistribution = {};
+            wareHouseDistribution.roleId = roleId;
+            wareHouseDistribution.wareHouseId = $(this).find("td[name='wareHouseId']").text();
+            wareHouseDistribution.selected = true;
+            wareHouseDistributionList.wareHouseDistributionList.push(wareHouseDistribution);
+        }
+    });
+    console.log("添加的数据：");
+    console.log(wareHouseDistributionList);
+    $.ajax({   // 保存设置
+        type: "POST",                       // 方法类型
+        url: "deleteAndAddWareHouseDistribution",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(wareHouseDistributionList),
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
+        success: function (result) {
+            if (result != null && result.status === "success") {
+                alert(result.message);
+                window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            alert("服务器错误，请重新加载！");
+        }
+    });
+
 }

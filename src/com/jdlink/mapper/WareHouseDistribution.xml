@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.WareHouseDistributionMapper">
+
+    <select id="getWareHouseIdListByRoleId" parameterType="int" resultType="int">
+        select wareHouseId from t_pr_warehouse_distribution where roleId=#{roleId} and selected=1;
+    </select>
+
+    <insert id="addAll" parameterType="WareHouseDistributionList">
+        <if test="wareHouseDistributionList != null and wareHouseDistributionList.size() > 0">
+            <foreach collection="wareHouseDistributionList" item="wareHouseDistribution" index="index">
+                insert into t_pr_warehouse_distribution
+                (roleId,wareHouseId,selected)
+                values
+                (#{wareHouseDistribution.roleId},#{wareHouseDistribution.wareHouseId},#{wareHouseDistribution.selected});
+            </foreach>
+        </if>
+    </insert>
+
+    <delete id="deleteByRoleId" parameterType="int">
+        delete from t_pr_warehouse_distribution where roleId=#{roleId};
+    </delete>
+
+</mapper>
