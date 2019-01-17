@@ -311,11 +311,13 @@ function switchPage(pageNumber) {
     //addClass("active");
     page.start = (pageNumber - 1) * page.count;
     if (!isSearch) {
+        var data1 = {};
+        data1.page = page;
         $.ajax({
             type: "POST",                       // 方法类型
             url: "getSampleInfoAnalysis",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: page,
+            data: JSON.stringify(data1),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {

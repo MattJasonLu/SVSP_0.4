@@ -394,7 +394,11 @@ function setSewageList(result) {
                             }
 
                             break;
+                            //采样时间
                         case (3):
+                            $(this).html(obj.sampleTime);
+                            break;
+                        case (4):
                             // 检测项目
                             project="";
                             var array=[];
@@ -454,15 +458,15 @@ function setSewageList(result) {
                             var hash=unique1(array).join(" ");
                             $(this).html(hash);
                             break;
-                        case (4):
+                        case (5):
                             // 送样人
                             $(this).html(obj.sendingPerson);
                             break;
-                        case (5):
+                        case (6):
                             // 签收人
                             $(this).html(obj.laboratorySignatory);
                             break;
-                        case (6):
+                        case (7):
                             // 状态
                             if(obj.checkStateItem!=null){
                                 $(this).html(obj.checkStateItem.dictionaryItemName);
@@ -774,6 +778,7 @@ function addAppoint() {
         water:true,
           sewagePointItem:{dataDictionaryItemId:$('#address').val()},
          id:$('#reservationId').val(),
+          sampleTime:$('#sampleTime').val(),
     };
     console.log(data);
    //添加主表
@@ -1568,6 +1573,9 @@ function adjust(item) {
                 if (result != undefined && result.status == "success"){
                     console.log(result)
                     //赋值
+
+                    /*采样时间*/
+                    $("#sampleTime1").val(result.data.sampleTime)
                     // 公司名称
                     if(result.data.client!=null){
                         $('#companyName').val(result.data.client.companyName);
@@ -1707,6 +1715,7 @@ function adjustConfir() {
         sendingPerson:$('#sendingPerson2').val(),
         sewagePointItem:{dataDictionaryItemId:$('#address2').val()},
         laboratorySignatory:$('#laboratorySignatory2').val(),
+        sampleTime:$('#sampleTime1').val(),
     };
     //更新主表后删除字表数据
     $.ajax({
