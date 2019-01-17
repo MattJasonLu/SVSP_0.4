@@ -811,7 +811,7 @@
                                 <th style="width: 180px">样品单号</th>
                                 <th>采样点</th>
                                 <th>浊度FTU</th>
-                                <th>硬度</th>
+                                <th style="width: 13%">硬度</th>
                                 <th>ph</th>
                                 <th>电导率</th>
                                 <th>全碱度</th>
@@ -826,7 +826,7 @@
                                     <p id="break" style="color: red">样品单号已存在</p></td>
                                 <td><input class="form-control" name="produceCompany"></td>
                                 <td><input class="form-control" name="wastesName"></td>
-                                <td><input class="form-control" name="wastesCode"></td>
+                                <td><input class="form-control" name="wastesCode" onkeyup="addfields(this)"></td>
                                 <td><input class="form-control" name="formType"></td>
                                 <td><input class="form-control" name="remark"></td>
                                 <td><input class="form-control" name="remark"></td>
@@ -888,7 +888,7 @@
                                 <td><input class="form-control" name="produceCompany" id="address"></td>
                                 <td><input class="form-control" name="wastesName" id="turbidity"></td>
                                 <td><input class="form-control" name="formType" id="PH"></td>
-                                <td><input class="form-control" name="wastesCode" id="hardness"></td>
+                                <td><input class="form-control" name="wastesCode" id="hardness" onkeyup="addfields(this)"></td>
                                 <td><input class="form-control" name="remark" id="electricalConductivity"></td>
                                 <td><input class="form-control" name="remark" id="phenolphthalein"></td>
                                 <td><input class="form-control" name="remark" id="basicity"></td>

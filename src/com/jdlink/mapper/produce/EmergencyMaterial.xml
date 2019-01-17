@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdlink.mapper.produce.EmergencyMaterialMapper" >
+
+<!--应急暂存新增-->
+    <insert id="addEmergencyMaterial" parameterType="EmergencyMaterial">
+        insert into  t_pl_emergencymaterial (planId, clientId, wastesName, FileUrl, emergencyNumber, supplierId, wastesCode, createTime, nowTIme,checkStateId) values
+        (#{planId},#{client.clientId},#{wastesName},#{FileUrl},#{emergencyNumber},#{supplier.supplierId},#{wastesCode},NOW(),NOW(),67);
+    </insert>
+
+    <resultMap id="EmergencyMaterialRM" type="EmergencyMaterial">
+        <association property="client" column="clientId" select="getClient"></association>
+        <association property="supplier" column="supplierId" select="getSupplier"></association>
+        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"></association>
+    </resultMap>
+
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
+    </select>
+    <select id="getClient" resultType="Client">
+        select * from client where clientId=#{clientId}
+    </select>
+
+    <select id="getSupplier" resultType="Supplier">
+        select * from t_supplier where supplierId=#{supplier}
+    </select>
+
+    <select id="loadEmergencyTSList" resultMap="EmergencyMaterialRM">
+        select * from t_pl_emergencymaterial order by createTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+</mapper>

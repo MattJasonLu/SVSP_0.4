@@ -340,7 +340,7 @@ function loadEmergencyTSList() {
 function setEmergencyTSList(result) {
     //console.log(eval(result));//可以取到
     // 获取id为cloneTr的tr元素
-    var tr = $("#cloneTr1");//克隆一行
+    var tr = $("#cloneTr");//克隆一行
     tr.siblings().remove();
     $.each(result.data, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
@@ -351,67 +351,50 @@ function setEmergencyTSList(result) {
         clonedTr.children("td").each(function (inner_index) {
             // 根据索引为部分td赋值
             switch (inner_index) {
-                // 合同编号
+                // 计划单号
                 case (1):
-                    $(this).html(obj.contractId);
+                    $(this).html(obj.planId);
                     break;
-                //处置单位名称
+                //应急单位
                 case (2):
                     if(obj.client!=null){
                         $(this).html(obj.client.companyName);
                     }
                     break;
-                // 合同名称
+                // 处置单位
                 case (3):
-                    $(this).html(obj.contractName);
+                    if(obj.supplier!=null){
+                        $(this).html(obj.supplier.companyName);
+                    }
                     break;
 
-                // 联系人
+                // 危废名称
                 case (4):
-                    $(this).html(obj.contactName);
+                    $(this).html(obj.wastesName);
                     break;
-                // 联系方式
+                // 危废代码
                 case (5):
-                    $(this).html(obj.telephone);
+                    $(this).html(obj.wastesCode);
                     break;
-                // 签订日期
+                // 应急联单编号
                 case (6):
-                    if (obj.beginTime != null) {
-                        var time = gettime(obj.beginTime);
-                        $(this).html(time);
-                    }
+                    $(this).html(obj.emergencyNumber);
+
                     break;
-                // 截至日期
+                // 创建时间
                 case (7):
-                    if (obj.endTime != null) {
-                        var time = gettime(obj.endTime);
-                        $(this).html(time);
-                    }
+                  if(obj.createTime!=null){
+                      $(this).html(getDateStr(obj.createTime));
+                  }
                     break;
+                    //状态
                 case (8):{
-                    if(obj.small=="false"||obj.small==false){
-                        $(this).html("不是");
-                    }
-                    if(obj.small=="true"||obj.small==true){
-                        $(this).html("是");
-                    }
+                   if(obj.checkStateItem!=null){
+                       $(this).html((obj.checkStateItem.dictionaryItemName));
+                   }
 
                     break;
                 }
-                //录入人
-                case (9):
-                    $(this).html(obj.reviewer);
-                    break;
-                // 状态
-                case (10):
-                    if (obj.checkStateItem != null){
-                        $(this).html(obj.checkStateItem.dictionaryItemName);
-                        // if(obj.checkStateItem.dictionaryItemName=='已作废'){
-                        //     $(this).parent().hide();
-                        // }
-                    }
-
-                    break;
 
             }
         });
@@ -464,6 +447,34 @@ function addModal() {
     
     
     $("#addModal").modal('show')
+}
+
+/*新增方法实现*/
+function addDate() {
+    var data={
+        planId:$('#emergencyId').val(),
+        client:{clientId:$('#emergencyCompany').selectpicker('val')},
+        wastesName:$('#emergencyName').val(),
+    }
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "addEmergencyMaterial",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                alert(result.message)
+            }
+            else
+                alert(result.message)
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    })
+
 }
 
 /*完善模态框*/

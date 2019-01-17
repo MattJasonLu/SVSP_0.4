@@ -1,6 +1,7 @@
 package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Dictionary.CheckStateItem;
 import com.jdlink.domain.Supplier;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,6 +36,17 @@ public class EmergencyMaterial {
 
     /*创建时间*/
     private Date createTime;
+
+    /*状态数据字典*/
+   private CheckStateItem checkStateItem;
+
+    public CheckStateItem getCheckStateItem() {
+        return checkStateItem;
+    }
+
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
+    }
 
     public String getFileUrl() {
         return FileUrl;

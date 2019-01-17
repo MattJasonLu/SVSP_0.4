@@ -224,6 +224,10 @@ public class SewageTestController {
                         }
                         //硬度
                         if(data.get(i)[j][3]!="null"){
+                            if(!(data.get(i)[j][3].toString()).contains("*10-3")){
+                                softTest.setHardness((data.get(i)[j][3].toString())+"*10-3");
+                            }
+                            else
                             softTest.setHardness((data.get(i)[j][3].toString()));
                         }
                         if(data.get(i)[j][3]=="null"){
