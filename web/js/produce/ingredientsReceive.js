@@ -1688,8 +1688,6 @@ function calculateTotalReceiveAmount(item) {
         var $i1 = serialNumber;
         var receiveAmount = parseFloat($("#receiveAmount" + $i1).val());
         var amount = parseFloat($("#amount" + $i1).text());
-        console.log("序号:" + serialNumber);
-        console.log("领料数：" + receiveAmount + "--" + amount);
         if (receiveAmount > amount) {
             alert("领料数大于库存量，请重新输入！");
             $("#receiveAmount" + $i1).val(amount);
@@ -1762,6 +1760,7 @@ function save() {
             ingredientsReceive.ingredientsList[i].receiveAmount = $("#receiveAmount" + $i).val();
             ingredientsReceive.ingredientsList[i].unitPrice = $("#unitPrice" + $i).val();
             ingredientsReceive.ingredientsList[i].totalPrice = $("#totalPrice" + $i).val();
+            ingredientsReceive.ingredientsList[i].id = $("#view-id").text();
             ingredientsReceive.ingredientsList[i].post = $("#post" + $i).val();
             totalPrice += parseFloat(ingredientsReceive.ingredientsList[i].totalPrice);
             if (ingredientsReceive.ingredientsList[i].receiveAmount == ingredientsReceive.ingredientsList[i].amount) {

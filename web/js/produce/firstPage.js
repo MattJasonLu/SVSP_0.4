@@ -58,7 +58,7 @@ function loadNavigationList() {
                     console.log(result);
                     setMenuTwo(organizationList);//递归设置二级菜单导航条
                     var href = window.location.href.toString();
-                    console.log("跳转链接:" + href.substring(href.length - 14));  // 截取最后几位即跳转的内部链接
+                   // console.log("跳转链接:" + href.substring(href.length - 14));  // 截取最后几位即跳转的内部链接
                     if (href.substring(href.length - 14) === "firstPage.html") { // 判断是否为板块首页
                         setProcessIcon(organizationList); // 首页设置流程节点图标
                     }
