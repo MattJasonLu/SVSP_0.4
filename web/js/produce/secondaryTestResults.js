@@ -259,7 +259,7 @@ function inputSwitchPage() {
                 success: function (result) {
                     if (result != undefined && result.status == "success") {
                         console.log(result);
-                        setDataList(result.data);
+                        setDataList(result);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -273,24 +273,23 @@ function inputSwitchPage() {
             data1['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "searchSecondaryTest",                  // url
+                url: "searchSecondaryTest",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data1),
                 dataType: "json",
-                contentType: "application/json; charset=utf-8",
+                contentType: 'application/json;charset=utf-8',
                 success: function (result) {
-                    // console.log(result);
-                    if (result > 0) {
-                        totalRecord = result;
-                        console.log("总记录数为:" + result);
+                    if (result != undefined) {
+                        // console.log(result);
+                        setDataList(result);
                     } else {
                         console.log("fail: " + result);
-                        totalRecord = 0;
+                        // setClientList(result);
                     }
                 },
                 error: function (result) {
                     console.log("error: " + result);
-                    totalRecord = 0;
+                    // setClientList(result);
                 }
             });
         }
@@ -735,7 +734,8 @@ function setCancel(item) {
 //修改
 function setAdjust(item) {
     var id = $(item).parent().parent().children('td').eq(1).html();
-
+    $('#addModa2').find('input').val('')
+    $('#addModa2').find('input').removeAttr('readonly')
     //根据编号获取信息
     $.ajax({
         type: "POST",                       // 方法类型

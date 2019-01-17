@@ -387,18 +387,15 @@ function setSewageList(result) {
                         case (2):
                             // 采样点
                             if(obj.sewagePointItem!=null){
-                                $(this).html((obj.sewagePointItem.dictionaryItemName));
-                            }
-                            else {
-                                $(this).html(obj.address);
+                                if(obj.sampleTime==''){
+                                    $(this).html((obj.sewagePointItem.dictionaryItemName));
+                                }
+                                else
+                                    $(this).html((obj.sewagePointItem.dictionaryItemName)+"("+obj.sampleTime+")");
                             }
 
                             break;
-                            //采样时间
                         case (3):
-                            $(this).html(obj.sampleTime);
-                            break;
-                        case (4):
                             // 检测项目
                             project="";
                             var array=[];
@@ -458,15 +455,15 @@ function setSewageList(result) {
                             var hash=unique1(array).join(" ");
                             $(this).html(hash);
                             break;
-                        case (5):
+                        case (4):
                             // 送样人
                             $(this).html(obj.sendingPerson);
                             break;
-                        case (6):
+                        case (5):
                             // 签收人
                             $(this).html(obj.laboratorySignatory);
                             break;
-                        case (7):
+                        case (6):
                             // 状态
                             if(obj.checkStateItem!=null){
                                 $(this).html(obj.checkStateItem.dictionaryItemName);
@@ -1108,8 +1105,13 @@ function view(item) {
 
                 //采样点
                 if(result.data.sewagePointItem!=null){
-                    // $('#address1').text(result.data.sewagePointItem.dictionaryItemName);
-                    $('#address1').text(result.data.address);
+                    if(result.data.sampleTime==''){
+                        $('#address1').text(result.data.sewagePointItem.dictionaryItemName);
+                    }
+                    else {
+                        $('#address1').text(result.data.sewagePointItem.dictionaryItemName+"("+result.data.sampleTime+")");
+                    }
+                    // $('#address1').text(result.data.address);
                 }
 
 
@@ -1294,7 +1296,12 @@ function setSubmit(item) {
 
                     //采样点
                     if(result.data.sewagePointItem!=null){
-                        $('#address1').text(result.data.sewagePointItem.dictionaryItemName)
+                        if(result.data.sampleTime==''){
+                            $('#address1').text(result.data.sewagePointItem.dictionaryItemName)
+                        }
+                        else
+                            $('#address1').text(result.data.sewagePointItem.dictionaryItemName+"("+result.data.sampleTime+")")
+
                     }
 
 
