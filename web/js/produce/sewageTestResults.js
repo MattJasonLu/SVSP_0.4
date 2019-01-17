@@ -903,7 +903,8 @@ function setCancel(item) {
 //修改
 function setAdjust(item) {
     var id = $(item).parent().parent().children('td').eq(1).html();
-
+    $('#addModa2').find('input').val('')
+    $('#addModa2').find('input').removeAttr('readonly')
     //根据编号获取信息
     $.ajax({
         type: "POST",                       // 方法类型

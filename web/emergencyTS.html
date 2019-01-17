@@ -255,17 +255,12 @@
                             </label>
                         </th>
                         <th class="text-center">计划单号</th>
-                        <th class="text-center">计划日期</th>
-                        <th class="text-center">产废单位</th>
-                        <th class="text-center">转移时间</th>
-                        <th class="text-center">联单号</th>
+                        <th class="text-center">应急单位</th>
+                        <th class="text-center">处置单位</th>
                         <th class="text-center">危废名称</th>
                         <th class="text-center">危废代码</th>
-                        <!--<th class="text-center">拟转移量</th>-->
-                        <th class="text-center">转移量</th>
-                        <!--<th class="text-center">已入库数量</th>-->
-                        <th class="text-center">剩余数量</th>
-                        <!--<th class="text-center">磅单数量</th>-->
+                        <th class="text-center">应急联单编号</th>
+                        <th class="text-center">创建时间</th>
                         <th class="text-center">状态</th>
                         <th class="text-center">操作</th>
                     </tr>
@@ -277,19 +272,14 @@
                                 <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
                             </label>
                         </td>
-                        <td class="text-center" name="inboundPlanOrderId">计划单号</td>
-                        <td class="text-center" name="planDate">计划日期</td>
-                        <td class="text-center" name="produceCompanyName">产废单位</td>
-                        <td class="text-center" name="transferDate">转移时间</td>
-                        <td class="text-center" name="transferDraftId">联单号</td>
-                        <td class="text-center" name="wastesName">危废名称</td>
-                        <td class="text-center" name="wastesCode">危废代码</td>
-                        <!--<td class="text-center" name="prepareTransferCount">拟转移量</td>-->
-                        <td class="text-center" name="transferCount">转移量</td>
-                        <!--<td class="text-center" name="storageCount">已入库数量</td>-->
-                        <td class="text-center" name="leftCount">剩余数量</td>
-                        <!--<td class="text-center" name="poundsCount">磅单数量</td>-->
-                        <td class="text-center" name="checkState">状态</td>
+                        <td class="text-center" name="inboundPlanOrderId"></td>
+                        <td class="text-center" name="planDate"></td>
+                        <td class="text-center" name="produceCompanyName"></td>
+                        <td class="text-center" name="transferDate"></td>
+                        <td class="text-center" name="transferDraftId"></td>
+                        <td class="text-center" name="wastesName"></td>
+                        <td class="text-center" name="wastesCode"></td>
+                        <td class="text-center" name="transferCount"></td>
                         <td class="text-center">
                             <a href="#" id="function_-244" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; viewData($(e));}" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                             <a href="#" id="function_-245" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; perfectInfo($(e));}" title="完善信息"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
