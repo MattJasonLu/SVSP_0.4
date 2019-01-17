@@ -38,4 +38,19 @@ public class EmergencyMaterialServiceImpl implements EmergencyMaterialService {
     public void setEmergencyMaterialFilePath(EmergencyMaterial EmergencyMaterial) {
         emergencyMaterialMapper.setEmergencyMaterialFilePath(EmergencyMaterial);
     }
+
+    @Override
+    public int loadEmergencyMaterialCount() {
+        return emergencyMaterialMapper.loadEmergencyMaterialCount();
+    }
+
+    @Override
+    public List<EmergencyMaterial> searchEmergencyMaterial(EmergencyMaterial emergencyMaterial) {
+        return emergencyMaterialMapper.searchEmergencyMaterial(emergencyMaterial);
+    }
+
+    @Override
+    public int searchEmergencyMaterialCount(EmergencyMaterial emergencyMaterial) {
+        return emergencyMaterialMapper.searchEmergencyMaterialCount(emergencyMaterial);
+    }
 }

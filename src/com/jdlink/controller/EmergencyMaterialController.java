@@ -145,4 +145,41 @@ public class EmergencyMaterialController {
 
         return res.toString();
     }
+
+    /*获取应急暂存总数*/
+    @RequestMapping("loadEmergencyMaterialCount")
+    @ResponseBody
+    public int loadEmergencyMaterialCount(){
+
+        return emergencyMaterialService.loadEmergencyMaterialCount();
+    }
+
+    /*查询*/
+    @RequestMapping("searchEmergencyMaterial")
+    @ResponseBody
+    public String searchEmergencyMaterial(@RequestBody EmergencyMaterial emergencyMaterial){
+        JSONObject res=new JSONObject();
+
+        try {
+       List<EmergencyMaterial> emergencyMaterialList=emergencyMaterialService.searchEmergencyMaterial(emergencyMaterial);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", emergencyMaterialList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+
+        }
+          return res.toString();
+    }
+
+    /*查询计数*/
+    @RequestMapping("searchEmergencyMaterialCount")
+    @ResponseBody
+    public int searchEmergencyMaterialCount(@RequestBody EmergencyMaterial emergencyMaterial){
+        return emergencyMaterialService.searchEmergencyMaterialCount(emergencyMaterial);
+
+    }
 }

@@ -2,6 +2,7 @@ package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Dictionary.CheckStateItem;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Supplier;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,6 +40,28 @@ public class EmergencyMaterial {
 
     /*状态数据字典*/
    private CheckStateItem checkStateItem;
+
+   /*分页*/
+    private Page page;
+
+    /*关键字*/
+    private String keyword;
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
 
     public CheckStateItem getCheckStateItem() {
         return checkStateItem;
