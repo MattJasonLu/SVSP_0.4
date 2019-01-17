@@ -50,6 +50,13 @@ public interface ReceiveSampleAnalysisService {
      */
     void update(ReceiveSampleAnalysis receiveSampleAnalysis);
 
-
+    /**
+     * 通过对应参数获取
+     * @param clientId
+     * @param wastesCode
+     * @param wastesName
+     * @return
+     */
+    List<ReceiveSampleAnalysis>  getByMoreFactor(String clientId,String wastesCode,String wastesName);
 
 }

@@ -16,7 +16,6 @@
     <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
     <script type="text/javascript" src="js/jquery/jquery-ui.min.js" charset="UTF-8"></script>
     <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
-    <script src="js/produce/stock.js"></script>
     <!--引用百度地图API-->
     <style type="text/css">
         html,body{margin:0;padding:0;}
@@ -149,7 +148,7 @@
     <div class="modal fade bs-example-modal-lg" id="stockInfoForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg" role="document" id="print1">
             <div class="modal-content" >
-                <h4 class="sub-header text-center">库存申报信息</h4>
+                <h4 class="sub-header text-center">库存信息</h4>
                 <div style="margin: 5%;">
                     <div class="modal-body">
                         <div class="row">
@@ -192,23 +191,23 @@
                         </form>
                     </div>
                     <div class="row">
-                        <div class="form-horizontal col-md-4">
-                            <p class="text-left"><b>运输公司&nbsp;&nbsp;</b><span id="transport"></span></p>
-                        </div>
-                        <div class="form-horizontal col-md-3">
-                        </div>
-                        <div class="form-horizontal col-md-5">
-                            <p class="text-left"><b>车牌号&nbsp;&nbsp;</b><span id="plateNumber"></span></p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-horizontal col-md-6">
-                            <p class="text-left"><b>是否自运单位&nbsp;&nbsp;</b> <input type="checkbox" id="selfEmployed" disabled="disabled"></p>
-                        </div>
-                        <div class="form-horizontal col-md-1"></div>
-                        <div class="form-horizontal col-md-5">
-                            <p class="text-left"><b>运输公司联系电话&nbsp;&nbsp;</b><span id="transportTelephone"></span></p>
-                        </div>
+                        <!--<div class="form-horizontal col-md-4">-->
+                            <!--<p class="text-left"><b>运输公司&nbsp;&nbsp;</b><span id="transport"></span></p>-->
+                        <!--</div>-->
+                        <!--<div class="form-horizontal col-md-3">-->
+                        <!--</div>-->
+                        <!--<div class="form-horizontal col-md-5">-->
+                            <!--<p class="text-left"><b>车牌号&nbsp;&nbsp;</b><span id="plateNumber"></span></p>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="row">-->
+                        <!--<div class="form-horizontal col-md-6">-->
+                            <!--&lt;!&ndash;<p class="text-left"><b>是否自运单位&nbsp;&nbsp;</b> <input type="checkbox" id="selfEmployed" disabled="disabled"></p>&ndash;&gt;-->
+                        <!--</div>-->
+                        <!--<div class="form-horizontal col-md-1"></div>-->
+                        <!--<div class="form-horizontal col-md-5">-->
+                            <!--<p class="text-left"><b>运输公司联系电话&nbsp;&nbsp;</b><span id="transportTelephone"></span></p>-->
+                        <!--</div>-->
                     </div>
                     <div class="row text-center">
                         <!--<a class="btn btn-primary hidden-print" onclick="showApproval()" id="btn">审批</a>-->
@@ -259,7 +258,7 @@
         // });
         var opts = {
             width : 250,       //信息框宽度
-            height : 100,      //信息框高度
+            height : 150,      //信息框高度
             title : "企业信息"   //信息框标题
         };
         var infoWindow = new BMap.InfoWindow("北控安耐得环保科技发展常州有限公司(春江镇滨江经济开发区滨江三路1号)",opts); //创建信息窗口对象
@@ -273,12 +272,32 @@
         map.centerAndZoom(point1,11);//设定地图的中心点和坐标并将地图显示在地图容器中
         var opts1 = {
             width : 250,       //信息框宽度
-            height : 100,      //信息框高度
+            height : 150,      //信息框高度
             title : "企业信息"   //信息框标题
         };
-        var infoWindow1 = new BMap.InfoWindow("<p id='info'>常州上通汽车销售服务有限公司(<a onclick='viewStock()'>详情</a>)</p>"+"<p>联系人：鲍丹</p>"+"<p>联系电话：0519-69665550</p>",opts1); //创建信息窗口对象
+        var infoWindow1 = new BMap.InfoWindow("<p id='info' style='display: inline'>常州上通汽车销售服务有限公司</p>(<a style='display: inline' onclick='viewStock()'>详情</a>)"+
+            "<p>联系人：鲍丹</p>"+
+            "<p>库容：50T</p>"+
+            "<p>联系电话：0519-69665550</p>",opts1); //创建信息窗口对象
         marker1.addEventListener("click", function(){
             map.openInfoWindow(infoWindow1,point1); //开启信息窗口
+        });
+        //标注点三
+        var point2 = new BMap.Point(120.010365,31.723407);//定义一个中心点坐标
+        var marker2 = new BMap.Marker(point2);//新建标注点
+        map.addOverlay(marker2);//向地图中添加标记点
+        map.centerAndZoom(point2,11);//设定地图的中心点和坐标并将地图显示在地图容器中
+        var opts2 = {
+            width : 250,       //信息框宽度
+            height : 150,      //信息框高度
+            title : "企业信息"   //信息框标题
+        };
+        var infoWindow2 = new BMap.InfoWindow("<p id='info' style='display: inline'>常州市华荣友佳纺织染整有限公司</p>(<a style='display: inline' onclick='viewStock()'>详情</a>)"+
+            "<p>联系人：朱华雄</p>"+
+            "<p>库容：50T</p>"+
+            "<p>联系电话：0519-8816828</p>",opts2); //创建信息窗口对象
+        marker2.addEventListener("click", function(){
+            map.openInfoWindow(infoWindow2,point2); //开启信息窗口
         });
         // marker1.enableDragging();//允许标注拖拽功能
         // marker1.addEventListener("dragend",function (e) {
@@ -431,7 +450,183 @@
             run(iNow);
         })
     });
+    //查看
+    function viewStock() {
+        //查看页面 审批隐藏 打印显示 驳回隐藏
+        $('#btn').hide();//审批隐藏
+        $('#print').show();//打印显示
+        $('#back').hide();
+        //完善隐藏
+        $('#perfect').hide();
+        //申报编号
+        var companyName = $("#info").text();
+        console.log("1");
+        var client = {};
+        client.companyName = companyName;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getStockByName",                   // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {
+                'stockName': client.companyName
+            },
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result.stock);
+                    var obj = result.stock;
+                    //1赋值
+                    //产废单位联系人
+                    // if (obj.selfEmployed == false) {//说明不是自运单位
+                        //根据运输供应商赋值
+                        $.ajax({
+                            type: "POST",                       // 方法类型
+                            url: "getSupplierListById",                  // url
+                            data: {'supplierId': obj.transport},
+                            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                            dataType: "json",
+                            //contentType: "application/json; charset=utf-8",
+                            success: function (result) {
+                                if (result != undefined && result.status == "success") {
+                                    //console.log(result);
+                                    var obj = eval(result.supplier);
+                                    console.log(obj);
+                                    if (obj != null) {
+                                        $('#transport').text(obj.companyName);//运输公司
+                                    }
+                                }
+                                else {
+                                    alert(result.message);
+                                }
+                            },
+                            error: function (result) {
+                                alert("服务器异常！");
+                            }
+                        });
+                        $('#plateNumber').text(obj.plateNumber);//车牌号
+                        $('#transportTelephone').text(obj.transportTelephone);//运输公司联系方式
+                    // }
+                    // if (obj.selfEmployed == true) {//说明不是自运单位
+                        $('#transport').text("");//运输公司
+                        $('#plateNumber').text("");//车牌号
+                        $('#transportTelephone').text("");//运输公司联系方式
+                    // }
+                    //赋值产废单位联系人
+                    if (obj.client != null) {
+                        $('#proContactName').text(obj.client.contactName);
+                    }
+                    if (obj.client != null) {
+                        if (obj.client.phone != '') {
+                            //赋值产废单位电话
+                            $('#proTelephone').text(obj.client.phone);
+                        }
+                        else {
+                            $('#proTelephone').text(obj.client.mobile);
+                        }
+                    }
+                    //赋值是否自运单位
+                    // $('#selfEmployed').prop('checked', obj.selfEmployed);
+                    // //产废公司
+                    if (obj.client != null) {
+                        $('#proWasteCompany').text(obj.client.companyName);
+                    }
+                    if(obj.stockItemList!=null){
+                        var tr = $("#cloneTr1");
+                        tr.children('td').eq(6).html("");
+                        tr.children('td').eq(7).html("");
+                        tr.siblings().remove();
+                        $.each(obj.stockItemList, function (index, item) {
+                            var obj=eval(item);
+                            // 克隆tr，每次遍历都可以产生新的tr
+                            var clonedTr = tr.clone();
+                            clonedTr.show();
+                            // 循环遍历cloneTr的每一个td元素，并赋值
+                            clonedTr.children("td").each(function (inner_index) {
+                                //1生成领料单号
+                                var obj = eval(item);
+                                // 根据索引为部分td赋值
+                                switch (inner_index) {
+                                    // 序号
+                                    case (0):
+                                        $(this).html(index+1);
+                                        break;
+                                    // 危险废物的名称
+                                    case (1):
+                                        $(this).html(obj.wastesName);
+                                        break;
+                                    // 危废编码
+                                    case (2):
+                                        $(this).html(obj.wastesCode);
+                                        break;
+                                    // 数量(公斤)
+                                    case (3):
+                                        $(this).html(obj.number);
+                                        break;
+                                    // 成分
+                                    case (4):
 
+                                        $(this).html(obj.content);
+                                        break;
+                                    // 备注
+                                    case (5):
+                                        $(this).html(obj.remarks);
+                                        break;
+                                    //进料方式
+                                    case (6):
+                                        if(obj.handleCategoryItem!=null){
+                                            $(this).html(obj.handleCategoryItem.dictionaryItemName)
+                                        }
+                                        break;
+                                    //处置意见
+                                    case (7):
+                                        $(this).html(obj.disposalAdvice);
+                                        break;
+                                    //明细编号
+                                    case (8):
+                                        $(this).html(obj.id);
+                                        break;
+                                }
+                            });
+                            // 把克隆好的tr追加到原来的tr前面
+                            clonedTr.removeAttr("id");
+                            clonedTr.insertBefore(tr);
+
+
+                        });
+                        // 隐藏无数据的tr
+                        tr.hide();
+                        tr.removeAttr('class');
+                    }
+                } else {
+                    alert(result.message);
+                    // $("#modal3_contactName").text("");
+                    $("#modal3_contractState").text("");
+                    $("#modal3_contractVersion").text("");
+                    $("#modal3_companyName").text("");
+                    // $("#modal3_contactName").text("");
+                    $("#modal3_contractId").text("");
+                    $("#modal3_beginTime").text("");
+                    $("#modal3_endTime").text("");
+                    $("#modal3_area").text("");
+                    $("#modal3_telephone").text("");
+                    $("#modal3_order").text("");
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+        $('#stockInfoForm').modal('show');
+        localStorage.clear();
+    }
+    //联系人赋值
+    function people() {
+        $("#people").text($("#proContactName").text())
+    }
+    //联系电话赋值
+    function telephone() {
+        $("#telephone").text($("#proTelephone").text())
+    }
 </script>
 <style>
     * {margin: 0;padding: 0}

@@ -718,4 +718,9 @@
     <select id="getInventoryByWastesNameAndWareHouse" resultType="int">
         select count(*) from t_pl_wasteinventory where wastesName=#{wastesName} and warseHouseId in (select warseHouseId from t_pl_warehouse where warehouseName =#{wareHouseName});
     </select>
+
+    <!--更新入库计划单的图片路径-->
+    <update id="updateInboundPlanOrderImgUrl">
+        update t_pl_inboundorderitem set imgUrl=#{1} where inboundOrderItemId=#{0};
+    </update>
 </mapper>

@@ -289,7 +289,7 @@
                     <th class="text-center">转移联单号</th>
                     <th class="text-center">计划日期</th>
                     <th class="text-center">产废单位</th>
-                    <th class="text-center">接收单位</th>
+                    <th class="text-center hidden">接收单位</th>
                     <th class="text-center">转移时间</th>
                     <th class="text-center">转移数量</th>
                     <!--<th class="text-center">磅单数量</th>-->
@@ -299,7 +299,6 @@
                     <th class="text-center">危废名称</th>
                     <th class="text-center">危废代码</th>
                     <th class="text-center">危废类别</th>
-                    <th class="text-center" style="width: 12%">附件</th>
                     <th class="text-center hidden">价格</th>
                 </tr>
                 </thead>
@@ -314,7 +313,7 @@
                     <td class="text-center" name="transferDraftId"></td>
                     <td class="text-center" name="planDate"></td>
                     <td class="text-center" name="produceCompanyName"></td>
-                    <td class="text-center" name="acceptCompanyName"></td>
+                    <td class="text-center hidden" name="acceptCompanyName"></td>
                     <td class="text-center" name="transferDate">5</td>
                     <td class="text-center" name="transferCount"></td>
                     <!--<td class="text-right" name="poundsCount">标准装</td>-->
@@ -324,7 +323,6 @@
                     <td class="text-center" name="wastesName"></td>
                     <td class="text-center" name="wastesCode"></td>
                     <td class="text-center" name="wastesCategory"></td>
-                    <td class="text-center" name="file"><input style="width: 100%" type="file" id="file"></td>
                     <td class="text-center hidden" name="unitPriceTax"></td>
                 </tr>
                 </tbody>
@@ -400,46 +398,50 @@
                 </div>
             </div>
             <br>
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th class="text-center">序号</th>
-                    <th class="text-center">入库计划号</th>
-                    <th class="text-center">联单编号</th>
-                    <th class="text-center">产废单位</th>
-                    <th class="text-center">危废名称</th>
-                    <th class="text-center">危废代码</th>
-                    <th class="text-center">危废数量</th>
-                    <th class="text-center">单价</th>
-                    <th class="text-center">金额</th>
-                    <th class="text-center">处理方式</th>
-                    <th class="text-center">进料方式</th>
-                    <th class="text-center">备注</th>
-                    <th class="text-center">仓库</th>
-                    <th class="text-center">库区</th>
-                    <th class="text-center">税率</th>
-                </tr>
-                </thead>
-                <tbody id="inboundOrderData">
-                <tr id="inboundClonedTr" style="display: none;">
-                    <td class="text-center" name="index">1</td>
-                    <td class="text-center" name="inboundPlanOrderId">inboundOrderId</td>
-                    <td class="text-center" name="transferDraftId">inboundOrderId</td>
-                    <td class="text-left" name="produceCompanyName">produceCompanyName</td>
-                    <td class="text-left" name="wastesName">废液</td>
-                    <td class="text-center" name="wastesCode">QW10001</td>
-                    <td class="text-right"><input type="number" name="wastesAmount"></td>
-                    <td class="text-right" name="unitPriceTax"></td>
-                    <td class="text-right" name="totalPrice"></td>
-                    <td class="text-right"><select name="processWay"></select></td>
-                    <td class="text-right"><select name="handleCategory"></select></td>
-                    <td class="text-right"><input type="text" name="remarks"></td>
-                    <td class="text-right"><select name="warehouse"></select></td>
-                    <td class="text-right"><input type="text" name="warehouseArea"></td>
-                    <td class="text-right"><select name="rate"></select></td>
-                </tr>
-                </tbody>
-            </table>
+            <div style="overflow-x: scroll">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th class="text-center">序号</th>
+                        <th class="text-center">入库计划号</th>
+                        <th class="text-center">联单编号</th>
+                        <th class="text-center">产废单位</th>
+                        <th class="text-center">危废名称</th>
+                        <th class="text-center">危废代码</th>
+                        <th class="text-center">危废数量</th>
+                        <!--<th class="text-center">单价</th>-->
+                        <!--<th class="text-center">金额</th>-->
+                        <th class="text-center">处理方式</th>
+                        <th class="text-center">进料方式</th>
+                        <th class="text-center">备注</th>
+                        <th class="text-center">仓库</th>
+                        <th class="text-center">库区</th>
+                        <th class="text-center">税率</th>
+                        <th class="text-center" style="width: 12%">附件</th>
+                    </tr>
+                    </thead>
+                    <tbody id="inboundOrderData">
+                    <tr id="inboundClonedTr" style="display: none;">
+                        <td class="text-center" name="index">1</td>
+                        <td class="text-center" name="inboundPlanOrderId"></td>
+                        <td class="text-center" name="transferDraftId"></td>
+                        <td class="text-left" name="produceCompanyName"></td>
+                        <td class="text-left" name="wastesName"></td>
+                        <td class="text-center" name="wastesCode"></td>
+                        <td class="text-right"><input class="form-control" type="number" name="wastesAmount" style="width: 100px;"></td>
+                        <!--<td class="text-right" name="unitPriceTax"></td>-->
+                        <!--<td class="text-right" name="totalPrice"></td>-->
+                        <td class="text-right"><select class="form-control" name="processWay"></select></td>
+                        <td class="text-right"><select class="form-control" name="handleCategory"></select></td>
+                        <td class="text-right"><input class="form-control" type="text" name="remarks" style="width: 50px;"></td>
+                        <td class="text-right"><select class="form-control" name="warehouse"></select></td>
+                        <td class="text-right"><input class="form-control" type="text" name="warehouseArea" style="width: 50px;"></td>
+                        <td class="text-right"><select class="form-control" name="rate"></select></td>
+                        <td class="text-center" name="file"><input style="width: 100%" type="file" id="file"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
             <div class="row text-center">
                 <a class="btn btn-success" onclick="addInboundOrder('save');">保存</a>
                 <a class="btn btn-primary" onclick="addInboundOrder('submit');">提交</a>

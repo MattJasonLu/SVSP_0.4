@@ -210,4 +210,11 @@ public interface InboundService {
      * @return
      */
     int getInventoryByWastesNameAndWareHouse(String wastesName,String wareHouseName);
+
+    /**
+     * 更新入库计划单的图片路径
+     * @param id 编号
+     * @param imgUrl 图片路径
+     */
+    void updateInboundPlanOrderImgUrl(String id, String imgUrl);
 }

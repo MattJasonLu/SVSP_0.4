@@ -41,12 +41,14 @@
             <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
                 <ul class="nav navbar-nav">
                     <li><a href="receiveManagement.html">首页</a></li>
-                    <li class="dropdown">
+                    <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">转移管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="transportPlanList.html">运输计划单</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="transferDraft.html">转移联单</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="InboundPlanOrder.html">现场验收</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -104,17 +106,17 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="dropdown active">
+                    <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">库存管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li class="dropdown-submenu">
                                 <a href="#">入库管理</a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="InboundPlanOrder.html">现场验收</a></li>
-                                    <li role="separator" class="divider"></li>
                                     <li><a href="warehouseManage.html">危废入库</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="secondWarehouseManage.html">次生入库</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="emergencyTS.html">应急暂存</a></li>
                                 </ul>
                             </li>
                             <li role="separator" class="divider"></li>
@@ -294,6 +296,8 @@
                             <a href="#" id="function_-244" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; viewData($(e));}" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                             <a href="#" id="function_-245" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; showSampleInfo($(e));}" title="预约送样"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
                             <a href="#" id="function_-246" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; setSignIn($(e));}" title="确认收货"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></a>
+                            <a href="#" onclick="showComparison($(this));" title="比对"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></a>
+                            <a href="#" onclick="showImg($(this));" title="危废图片"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span></a>
                             <a href="#" id="function_-247" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; showReject($(e));}" title="拒收"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
                             <a href="#" id="function_-248" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; setInvalid($(e));}" title="作废"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                         </td>
@@ -343,7 +347,7 @@
         <div class="modal fade bs-example-modal-lg" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">入库单新增</div>
+                    <div class="modal-header">现场验收新增</div>
                     <div class="modal-body">
                         <div class="row">
                             <div class="form-horizontal col-md-6">
@@ -660,6 +664,82 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" onclick="addAppoint();">预约</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--对比模态框-->
+        <div class="modal fade bs-example-modal-lg" id="comparison" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog" role="document" style="width: 70%">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="sub-header">理化性质对比</h5>
+                    </div>
+                    <table class="table-bordered" style="width: 100%">
+                        <thead>
+                        <tr>
+                            <th class="text-center">时间</th>
+                            <th class="text-center">产废单位</th>
+                            <th class="text-center">危废名称</th>
+                            <th class="text-center">危废代码</th>
+                            <th class="text-center">废物形态</th>
+                            <th class="text-center">PH</th>
+                            <th class="text-center">灰分</th>
+                            <th class="text-center">热值</th>
+                            <th class="text-center">硫含量</th>
+                            <th class="text-center">氯含量</th>
+                            <th class="text-center">氟含量</th>
+                            <th class="text-center">磷含量</th>
+                            <th class="text-center">闪点</th>
+                            <th class="text-center">粘度</th>
+                            <th class="text-center">热熔</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr id="cloneTr2">
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <!--<button type="button" class="btn btn-primary" id="confirm" data-dismiss="modal" onclick="confirm1()">确认审批</button>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--危废图片-->
+        <div class="modal fade" id="imgModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h5 class="sub-header text-center">危废图片</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="saveInboundPlanOrderImg" method="post" enctype="multipart/form-data">
+                            选择图片:<input type="file" name="file" accept="image/*" class="form-control" style="width: 200px;"/><br/>
+                            <input type="text" value="" id="imgInboundPlanOrderId" name="inboundPlanOrderId" class="hidden" />
+                            <input type="submit" value="上传" class="btn btn-primary"/>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-primary" onclick="reject()">确认拒收</button>-->
+                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
                     </div>
                 </div>
             </div>

@@ -29,6 +29,7 @@ public interface StockMapper {
      */
     List<Stock> list(Page page);
     Stock getById(String stockId);
+    Stock getByName(String stockName);
     //库存信息更新
     void updateStock(Stock stock);
 //更新危废表

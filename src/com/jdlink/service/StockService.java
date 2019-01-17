@@ -15,6 +15,7 @@ public interface StockService {
     List<Stock> list();
     List<Stock> list(Page page);
     Stock getById(String stockId);
+    Stock getByName(String stockName);
     void updateStock(Stock stock);
     void updateWastes(Wastes wastes);
     void submitStock(String stockId);

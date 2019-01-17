@@ -195,4 +195,11 @@ public interface InboundMapper {
     List<InboundOrderItem> getInboundOrderItemByClientId(String id);
 
     int getInventoryByWastesNameAndWareHouse(@Param("wastesName")String wastesName,@Param("wareHouseName")String wareHouseName);
+
+    /**
+     * 更新入库计划单的图片路径
+     * @param id 编号
+     * @param imgUrl 图片路径
+     */
+    void updateInboundPlanOrderImgUrl(String id, String imgUrl);
 }

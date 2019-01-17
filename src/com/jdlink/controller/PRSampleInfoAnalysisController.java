@@ -311,14 +311,20 @@ public class PRSampleInfoAnalysisController {
     @ResponseBody
     public String comparison(@RequestBody SampleInfoAnalysis sampleInfoAnalysis){
         JSONObject res=new JSONObject();
-
         try {
 
             //1先找出仓储部的化验信息
             SampleInfoAnalysis sampleInfoAnalysis1 = sampleInfoAnalysisService.getById(sampleInfoAnalysis.getId());
+            // --update by ljc 2019年1月16日
+            // 如果没有传递编号，则通过公司名，危废名，代码查找到符合条件的数据
+            if (sampleInfoAnalysis1 == null) {
+                List<SampleInfoAnalysis> sampleInfoAnalyses = sampleInfoAnalysisService.getByMoreFactor(sampleInfoAnalysis.getProduceCompany().getClientId(),sampleInfoAnalysis.getWastesCode(),sampleInfoAnalysis.getWastesName());
+                if (sampleInfoAnalyses.size() > 0) sampleInfoAnalysis1 = sampleInfoAnalyses.get(0);
+            }
+            // --update
 
             //2再找出符合条件市场部化验信息  ReceiveSampleAnalysis
-            List<ReceiveSampleAnalysis> receiveSampleAnalysisList=sampleInfoAnalysisService.getByMoreFactor(sampleInfoAnalysis.getProduceCompany().getClientId(),sampleInfoAnalysis.getWastesCode(),sampleInfoAnalysis.getWastesName());
+            List<ReceiveSampleAnalysis> receiveSampleAnalysisList=receiveSampleAnalysisService.getByMoreFactor(sampleInfoAnalysis.getProduceCompany().getClientId(),sampleInfoAnalysis.getWastesCode(),sampleInfoAnalysis.getWastesName());
 
 
             res.put("status", "success");
