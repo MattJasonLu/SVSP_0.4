@@ -29,6 +29,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 public class PRIngredientsController {
@@ -123,6 +125,31 @@ public class PRIngredientsController {
     public String addIngredientsIn(@RequestBody IngredientsIn ingredientsIn) {
         JSONObject res = new JSONObject();
         try {
+            String id = ingredientsIn.getId();
+            String regEx = "[^0-9]";
+            String reg = "[0-9]";
+            Pattern p = Pattern.compile(regEx);
+            Pattern p1 = Pattern.compile(reg);
+            Matcher m = p.matcher(id);
+            Matcher m1 = p1.matcher(id);
+            String id1 = m.replaceAll("").trim();  // 截取ID中的数字
+            String id2 = m1.replaceAll("").trim();  // 截取ID中的字符串
+            Long index = Long.parseLong(id1);
+            boolean e = false;
+            while(ingredientsService.getInById(id) != null) {
+                  index++;
+                  id = id2 + index;
+                  e = true;
+            }
+            if(e) {   // 如果该ID已被更新
+                ingredientsIn.setId(id);   // 更新ID
+                for(Ingredients ingredients : ingredientsIn.getIngredientsList()) {
+                    ingredients.setId(id);
+                }
+            }
+            if(ingredientsIn.getCreationDate() == null){
+                ingredientsIn.setCreationDate(new Date());
+            }
             ingredientsService.addIn(ingredientsIn);
             res.put("status", "success");
             res.put("message", "新建入库单成功");
@@ -638,7 +665,29 @@ public class PRIngredientsController {
     public String addIngredientsReceive(@RequestBody IngredientsReceive ingredientsReceive) {
         JSONObject res = new JSONObject();
         try {
-            if (ingredientsReceive.getCreationDate() == null) {
+            String id = ingredientsReceive.getId();
+            String regEx = "[^0-9]";
+            String reg = "[0-9]";
+            Pattern p = Pattern.compile(regEx);
+            Pattern p1 = Pattern.compile(reg);
+            Matcher m = p.matcher(id);
+            Matcher m1 = p1.matcher(id);
+            String id1 = m.replaceAll("").trim();  // 截取ID中的数字
+            String id2 = m1.replaceAll("").trim();  // 截取ID中的字符串
+            Long index = Long.parseLong(id1);
+            boolean e = false;
+            while(ingredientsService.getReceiveById(id) != null) {
+                index++;
+                id = id2 + index;
+                e = true;
+            }
+            if(e) {   // 如果该ID已被更新
+                ingredientsReceive.setId(id);   // 更新ID
+                for(Ingredients ingredients : ingredientsReceive.getIngredientsList()) {
+                    ingredients.setId(id);
+                }
+            }
+            if(ingredientsReceive.getCreationDate() == null){
                 ingredientsReceive.setCreationDate(new Date());
             }
             ingredientsService.addAllReceive(ingredientsReceive);
@@ -1178,8 +1227,31 @@ public class PRIngredientsController {
     public String addIngredientsOut(@RequestBody IngredientsOut ingredientsOut) {
         JSONObject res = new JSONObject();
         try {
-            if (ingredientsOut.getCreationDate() == null)
+            String id = ingredientsOut.getId();
+            String regEx = "[^0-9]";
+            String reg = "[0-9]";
+            Pattern p = Pattern.compile(regEx);
+            Pattern p1 = Pattern.compile(reg);
+            Matcher m = p.matcher(id);
+            Matcher m1 = p1.matcher(id);
+            String id1 = m.replaceAll("").trim();  // 截取ID中的数字
+            String id2 = m1.replaceAll("").trim();  // 截取ID中的字符串
+            Long index = Long.parseLong(id1);
+            boolean e = false;
+            while(ingredientsService.getOutById(id) != null) {
+                index++;
+                id = id2 + index;
+                e = true;
+            }
+            if(e) {   // 如果该ID已被更新
+                ingredientsOut.setId(id);   // 更新ID
+                for(Ingredients ingredients : ingredientsOut.getIngredientsList()) {
+                    ingredients.setId(id);
+                }
+            }
+            if(ingredientsOut.getCreationDate() == null){
                 ingredientsOut.setCreationDate(new Date());
+            }
             ingredientsService.addOut(ingredientsOut);
             res.put("status", "success");
             res.put("message", "新建成功");

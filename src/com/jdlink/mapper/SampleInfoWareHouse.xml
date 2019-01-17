@@ -124,6 +124,7 @@
         SELECT COUNT(*) FROM t_pr_sampleinfowarehouse as a join t_pr_sampleinfowarehouseitem as b on a.id=b.sampleId
         <where>
             <if test="keywords != null and keywords != ''">
+                or a.id = #{keywords}
                 or a.companyName LIKE "%"#{keywords}"%"
                 or a.wastesCode like "%"#{keywords}"%"
                 or a.wastesName like "%"#{keywords}"%"
@@ -192,6 +193,7 @@
         SELECT a.* FROM t_pr_sampleinfowarehouse as a join t_pr_sampleinfowarehouseitem as b on a.id=b.sampleId
         <where>
             <if test="keywords != null and keywords != ''">
+                or a.id = #{keywords}
                 or a.companyName LIKE "%"#{keywords}"%"
                 or a.wastesCode like "%"#{keywords}"%"
                 or a.wastesName like "%"#{keywords}"%"

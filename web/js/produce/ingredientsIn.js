@@ -18,6 +18,7 @@ function getDayDate(date) {
 var currentPage = 1;                          //当前页数
 var isSearch = false;
 var data1;
+var oldId = "";   // 新增页面入库单ID
 
 /**
  * 返回count值
@@ -26,7 +27,7 @@ function countValue() {
     var mySelect = document.getElementById("count");
     var index = mySelect.selectedIndex;
     var text = mySelect.options[index].text;
-    if(text == "全部"){
+    if (text == "全部") {
         text = "0";
     }
     return text;
@@ -348,7 +349,7 @@ function loadPageIngredientsInList() {
  * @returns {number}
  */
 function loadPages(totalRecord, count) {
-    if(count == 0)count = totalRecord;
+    if (count == 0) count = totalRecord;
     if (totalRecord == 0) {
         console.log("总记录数为0，请检查！");
         return 0;
@@ -900,7 +901,7 @@ function totalPage1() {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "countProcurementItemList",                  // url
+            url: "countProcurementPlanItemList",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
@@ -1256,6 +1257,8 @@ function loadProcurementItemList() {
         $("#next").attr("disabled", "true");
         $("#endPage").attr("disabled", "true");
     }
+    $(".newLine2").remove();  // 删除历史数据
+    // $(".newLine").remove();  // 删除历史数据
     var page = {};
     page.count = countValue1();                                 // 可选
     page.pageNumber = pageNumber;
@@ -1272,6 +1275,8 @@ function loadProcurementItemList() {
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result != undefined && result.status == "success") {
+                console.log("采购计划数据");
+                console.log(result);
                 setPageClone1(result);
                 setPageCloneAfter1(pageNumber);        // 重新设置页码
             } else {
@@ -1350,7 +1355,7 @@ function loadProcurementItemList() {
                         var unitPrice = obj.unitPrice;
                         var totalPrice = parseFloat(amount) * parseFloat(unitPrice);
                         allTotalPrice += totalPrice;
-                        clonedTr.find("input[name='totalPrice']").val(totalPrice);
+                        clonedTr.find("input[name='totalPrice']").val(totalPrice.toFixed(2));
                         // if (amount != null && unitPrice != null && amount != "" && unitPrice != "") {
                         //     clonedTr.find("span[id^='hundredThousand']").text(Math.floor(totalPrice / 100000));
                         //     clonedTr.find("span[id^='tenThousand']").text(Math.floor(totalPrice % 100000 / 10000));
@@ -1385,7 +1390,7 @@ function loadProcurementItemList() {
                         ingredientsIn1.ingredientsList.push(ingredients);
                     });
                     tr.hide();
-                    $("#totalPrice").text(allTotalPrice);
+                    $("#totalPrice").text(allTotalPrice.toFixed(2));
                     // if (allTotalPrice != null && allTotalPrice != undefined && allTotalPrice != NaN && allTotalPrice != "") {
                     //     $("#total-hundredThousand").text(Math.floor(allTotalPrice / 100000));
                     //     $("#total-tenThousand").text(Math.floor(allTotalPrice % 100000 / 10000));
@@ -1409,6 +1414,7 @@ function loadProcurementItemList() {
             }
         });
     }
+    oldId = $("#view-id").text();    // 入库单编号
 }
 
 var ingredientsListDel = []; // 存储删除的数据
@@ -1435,7 +1441,7 @@ function delLine(e) {
         tBody.children().eq(i - 1).find("span[name='serialNumber']").text(i - 1);// 更新序号
     }
     totalCalculate(); // 减行后重新计算金额
-    if($("span[name='serialNumber']").length == 2){  // 如果只有一行则不允许删除
+    if ($("span[name='serialNumber']").length == 2) {  // 如果只有一行则不允许删除
         $("a[name='delbtn']").remove();
     }
 }
@@ -1553,67 +1559,36 @@ function setfileId() {
 
 //设置月度采购申请表数据
 function setProcurementItemList(result) {
-    console.log("数据为：");
-    console.log(result);
     var tr = $("#cloneTr1");
-    $(".newLine").remove();   // 删除旧数据
+    $(".newLine3").remove();   // 删除旧数据
     var totalDemandQuantity = 0;
     $.each(result.data, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
-        if (item.state == null || item.state.name !== "待领料") {
-            var clonedTr = tr.clone();
-            clonedTr.show();
-            // 循环遍历cloneTr的每一个td元素，并赋值
-            var obj = eval(item);
-            totalDemandQuantity += parseFloat(obj.demandQuantity.toFixed(3));
-            clonedTr.children("td").each(function (inner_index) {
-                //1生成领料单号
-                // 根据索引为部分td赋值
-                switch (inner_index) {
-                    // 申请单编号
-                    case (1):
-                        $(this).html(obj.procurementPlanId);
-                        break;
-                    // 物资名称
-                    case (2):
-                        $(this).html(obj.suppliesName);
-                        break;
-                    // 规格型号
-                    case (3):
-                        $(this).html(obj.specifications);
-                        break;
-                    // 计量单位
-                    case (4):
-                        if (obj.unitDataItem != null)
-                            $(this).html(obj.unitDataItem.dictionaryItemName);
-                        break;
-                    // 库存量
-                    case (5):
-                        // $(this).html(obj.inventory.toFixed(2));
-                        break;
-                    // 需求数量
-                    case (6):
-                        $(this).html(obj.demandQuantity.toFixed(3));
-                        break;
-                    // 备注
-                    case (7):
-                        $(this).html(obj.remarks);
-                        break;
-                    // 状态
-                    case (8):
-                        if (obj.ingredientStateItem != null)
-                            $(this).html(obj.ingredientStateItem.dictionaryItemName);
-                        break;
-                    case (9):
-                        $(this).html(obj.id);
-                        break;
-                }
-            });
-            // 把克隆好的tr追加到原来的tr前面
-            clonedTr.insertBefore(tr);
-            clonedTr.addClass("newLine");
-            clonedTr.removeAttr('id');
+        var clonedTr = tr.clone();
+        clonedTr.show();
+        // 循环遍历cloneTr的每一个td元素，并赋值
+        var obj = eval(item);
+        totalDemandQuantity += parseFloat(obj.demandQuantity.toFixed(3));
+        clonedTr.find("td[name='procurementPlanId']").text(obj.procurementPlanId);
+        clonedTr.find("td[name='code']").text(obj.code);
+        clonedTr.find("td[name='suppliesName']").text(obj.suppliesName);
+        clonedTr.find("td[name='specifications']").text(obj.specifications);
+        if (obj.unitDataItem != null){
+            clonedTr.find("td[name='unit']").text(obj.unitDataItem.dictionaryItemName);
+            if(obj.unitDataItem.dictionaryItemNam === "吨"){
+                clonedTr.find("td[name='demandQuantity']").text(obj.demandQuantity.toFixed(3));
+            }else {
+                clonedTr.find("td[name='demandQuantity']").text(obj.demandQuantity.toFixed(0));
+            }
+        } else {
+            clonedTr.find("td[name='demandQuantity']").text(obj.demandQuantity.toFixed(3));
         }
+        clonedTr.find("td[name='note']").text(obj.remarks);
+        clonedTr.find("td[name='id']").text(obj.id);
+        // 把克隆好的tr追加到原来的tr前面
+        clonedTr.insertBefore(tr);
+        clonedTr.addClass("newLine3");
+        clonedTr.removeAttr('id');
     });
     // 隐藏无数据的tr
     tr.hide();
@@ -1659,7 +1634,7 @@ function confirmInsert1() {
     if (ingredientsIn1 != null && ingredientsIn1.ingredientsList != null && ingredientsIn1.ingredientsList.length > 0) {
         ingredientsIn.ingredientsList = ingredientsIn1.ingredientsList;  // 将更新数据赋给对象
     }
-    ingredientsIn.id = $("#view-id").text();
+    //ingredientsIn.id = $("#view-id").text();
     // 检测是否有修改数据，若有添加进去
     var i = $("span[name='serialNumber']").length - 1;  //序号
     // ingredientsList = ingredientsIn1.ingredientsList;  // 将之前数据赋值给数组
@@ -1690,7 +1665,7 @@ function confirmInsert1() {
                             ingredients.code = data.code;                    // 编码
                             ingredients.name = data.suppliesName;            // 物品名称
                             ingredients.specification = data.specifications; // 规格
-                            if (data.unitDataItem != null){
+                            if (data.unitDataItem != null) {
                                 var unitDataItem = {};
                                 unitDataItem.dictionaryItemName = data.unitDataItem.dictionaryItemName;
                                 ingredients.unit = data.unitDataItem.dictionaryItemName;
@@ -1741,7 +1716,7 @@ function confirmInsert1() {
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
         clonedTr.insertBefore(tr);
-        clonedTr.addClass("newLine");
+        clonedTr.addClass("newLine2");
         ingredientsIn.ingredientsList.push(item);    // 将新增的数据添到对象中
     });
     tr.hide();
@@ -1815,6 +1790,7 @@ function save() {
         for (var i = 0; i < ingredientsIn.ingredientsList.length; i++) {
             var $i = i + 1;
             if (ingredientsIn.ingredientsList[i].serialNumberA != 'del') {
+                ingredientsIn.ingredientsList[i].id = $("#view-id").text();
                 ingredientsIn.ingredientsList[i].unitPrice = $("#unitPrice" + $i).val();
                 ingredientsIn.ingredientsList[i].amount = $("#amount" + $i).val();
                 ingredientsIn.ingredientsList[i].post = $("#post" + $i).val();
@@ -2047,6 +2023,26 @@ function setWareHouse(item) {
     var wareHosue = $(item).find("option:selected").text();
     // 设置其余行的仓库
     $("select[name='wareHouseName']").val(wareHosue);
+    /**
+     * 根据仓库名更新入库单号
+     */
+    $.ajax({
+        type: "POST",
+        url: "getWareHouseByName",
+        async: false,
+        data: {
+            name: wareHosue
+        },
+        dataType: "json",
+        success: function (result) {
+            if (result != null && result.status === "success") {
+                $("#view-id").text(result.data.prefix + oldId);   // 赋值新ID
+            } else console.log(result.message);
+        },
+        error: function (result) {
+            console.log(result.message);
+        }
+    });
 }
 
 /**

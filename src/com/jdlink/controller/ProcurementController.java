@@ -154,6 +154,23 @@ public class ProcurementController {
         }
     }
 
+
+/**
+ * 获取采购计划单物料明细总数
+ * @return
+ */
+    @RequestMapping("countProcurementPlanItemList")
+    @ResponseBody
+    public int countProcurementPlanItemList() {
+        try {
+            return procurementService.countProcurementPlanItemList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+
     /**
      * 获取查询物料明细总数
      * @return

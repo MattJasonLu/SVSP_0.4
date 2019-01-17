@@ -492,7 +492,7 @@ function setBarConfig(myChart) {
                 //设置轴线的属性
                 axisLine: {
                     lineStyle: {
-                        color: '#6ab2ec',
+                        color: 'black',
                     }
                 },
                 data: xData,
@@ -507,13 +507,13 @@ function setBarConfig(myChart) {
                     //  改变轴线颜色
                     lineStyle: {
                         // 使用深浅的间隔色
-                        color: '#132a6e'
+                        color: 'black'
                     }
                 },
                 //设置轴线的属性
                 axisLine: {
                     lineStyle: {
-                        color: '#6ab2ec',
+                        color: 'black',
                     }
                 }
             }

@@ -141,6 +141,13 @@ public class ProductionDailyServiceImpl implements ProductionDailyService
     }
 
     @Override
+    public void updateSoftGeregistration(Sewageregistration sewageregistration) { productionDailyMapper.updateSoftGeregistration(sewageregistration);}
+
+    @Override
+    public void deleteSoftGeregistrationItem(String id){ productionDailyMapper.deleteSoftGeregistrationItem(id);}
+
+
+    @Override
     public List<Sewageregistration> sewageList(Page page) {
         return productionDailyMapper.sewageList(page);
     }
