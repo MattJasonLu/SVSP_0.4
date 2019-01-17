@@ -266,9 +266,9 @@ public class InboundController {
             recordStateItem.setDataDictionaryItemId(20);
             inboundOrder.setRecordStateItem(recordStateItem);
             // 设置审核状态
-            inboundOrder.setCheckState(CheckState.NewBuild);
+            inboundOrder.setCheckState(CheckState.Submitted);
             CheckStateItem checkStateItem = new CheckStateItem();
-            checkStateItem.setDataDictionaryItemId(75);
+            checkStateItem.setDataDictionaryItemId(73);
             inboundOrder.setCheckStateItem(checkStateItem);
             // 设置入库类别
             inboundOrder.setBoundType(BoundType.WasteInbound);
