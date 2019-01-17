@@ -934,8 +934,7 @@
                 update t_pr_ingredients_inventory
                 set
                 amount=amount-#{ingredients.receiveAmount},ingredientStateId=IF((amount-#{ingredients.receiveAmount})>0,40,39),
-                receiveId
-                =#{ingredients.id},receiveAmount=receiveAmount+#{ingredients.receiveAmount},receivePrice=#{ingredients.unitPrice}
+                receiveId=#{ingredients.id},receiveAmount=receiveAmount+#{ingredients.receiveAmount},receivePrice=#{ingredients.unitPrice}
                 where itemId=#{ingredients.itemId};
             </foreach>
         </if>

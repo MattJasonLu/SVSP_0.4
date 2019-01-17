@@ -143,8 +143,8 @@ public class PRIngredientsController {
             }
             if(e) {   // 如果该ID已被更新
                 ingredientsIn.setId(id);   // 更新ID
-                for(Ingredients ingredients : ingredientsIn.getIngredientsList()) {
-                    ingredients.setId(id);
+                for(int i = 0; i < ingredientsIn.getIngredientsList().size(); i++) {
+                    ingredientsIn.getIngredientsList().get(i).setId(id);
                 }
             }
             if(ingredientsIn.getCreationDate() == null){
@@ -683,8 +683,8 @@ public class PRIngredientsController {
             }
             if(e) {   // 如果该ID已被更新
                 ingredientsReceive.setId(id);   // 更新ID
-                for(Ingredients ingredients : ingredientsReceive.getIngredientsList()) {
-                    ingredients.setId(id);
+                for(int i = 0; i < ingredientsReceive.getIngredientsList().size(); i++) {
+                    ingredientsReceive.getIngredientsList().get(i).setId(id);
                 }
             }
             if(ingredientsReceive.getCreationDate() == null){
@@ -1245,8 +1245,8 @@ public class PRIngredientsController {
             }
             if(e) {   // 如果该ID已被更新
                 ingredientsOut.setId(id);   // 更新ID
-                for(Ingredients ingredients : ingredientsOut.getIngredientsList()) {
-                    ingredients.setId(id);
+                for(int i = 0; i < ingredientsOut.getIngredientsList().size(); i++) {
+                    ingredientsOut.getIngredientsList().get(i).setId(id);
                 }
             }
             if(ingredientsOut.getCreationDate() == null){
