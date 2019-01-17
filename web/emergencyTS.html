@@ -12,7 +12,7 @@
     <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
     <script src="js/bootstrap/3.3.6/bootstrap.js"></script>
     <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
-    <script src="js/bootstrap/bootstrap-select.min.js"></script><!---->
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
     <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
     <script language="javascript" src="js/bootstrap/printThis.js"></script>
     <link href="css/dropdown-submenu.css" rel="stylesheet">
@@ -22,7 +22,7 @@
     <script src="js/util.js"></script>
     <script src="js/produce/emergencyTS.js"></script>
 </head>
-<body onload="loadPageList();">
+<body onload="loadEmergencyTSList();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -348,7 +348,7 @@
                             <div class="form-group">
                                 <label for="emergencyId" class="col-sm-4 control-label">编号</label>
                                 <div class="col-xs-8">
-                                    <input type="text" class="form-control" id="emergencyId" name="emergencyId">
+                                    <input type="text" class="form-control" id="emergencyId" name="emergencyId" placeholder="年月日+三位编号">
                                 </div>
                             </div>
                             <div class="form-group">

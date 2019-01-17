@@ -59,6 +59,19 @@ public class Sewageregistration {
 
     //软水采样点数字字典
     private SoftPointItem softPointItem;
+
+
+    /*采样时间*/
+    private String sampleTime;
+
+    public String getSampleTime() {
+        return sampleTime;
+    }
+
+    public void setSampleTime(String sampleTime) {
+        this.sampleTime = sampleTime;
+    }
+
     /**
      * 一键签收预约单编号数组
      */

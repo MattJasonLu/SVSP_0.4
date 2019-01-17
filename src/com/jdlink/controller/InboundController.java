@@ -1216,8 +1216,8 @@ public class InboundController {
         try {
             String fileName = System.currentTimeMillis()+file.getOriginalFilename(); // 文件名设置为当前时间加上传的文件名
             // 获取文件的真实路径然后拼接前面的文件名，uploaded是存放文件的目录名
-            String filePath = "Files" + File.separator + "Image";
-            String destFileName = filePath + File.separator + fileName;
+            String filePath = "Files/Image";
+            String destFileName = filePath + "/" + fileName;
             File fileDir = new File(filePath);
             if (!fileDir.exists()) {
                 fileDir.mkdirs();
@@ -1227,7 +1227,7 @@ public class InboundController {
             file.transferTo(destFile); // 将file复制给destFile
             // 将路径进行保存
             // 2更新路径
-            inboundService.updateInboundPlanOrderImgUrl(inboundPlanOrderId, fileName);
+            inboundService.updateInboundPlanOrderImgUrl(inboundPlanOrderId, destFileName);
             res.put("status", "success");
             res.put("message", "图片更新成功");
             resp.sendRedirect("InboundPlanOrder.html");
