@@ -10,4 +10,16 @@ public interface EmergencyMaterialMapper {
     void addEmergencyMaterial(EmergencyMaterial emergencyMaterial);
 
     List<EmergencyMaterial>loadEmergencyTSList(Page page);
+
+    EmergencyMaterial getEmergencyTSById(String planId);
+
+    void updateEmergencyTS(EmergencyMaterial emergencyMaterial);
+
+    void setEmergencyMaterialFilePath(EmergencyMaterial EmergencyMaterial);
+
+    int loadEmergencyMaterialCount();
+
+    List<EmergencyMaterial> searchEmergencyMaterial(EmergencyMaterial emergencyMaterial);
+
+    int searchEmergencyMaterialCount(EmergencyMaterial emergencyMaterial);
 }

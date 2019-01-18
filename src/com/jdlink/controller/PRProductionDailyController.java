@@ -806,7 +806,13 @@ public class PRProductionDailyController {
                     map.get(id).setSewagePointItem(sewagePointItem);
                     map.get(id).setAddress(data[i][2].toString());
                     map.get(id).setWater(true); // 表明为污水数据
-                    map.get(id).setSampleTime(data[i][3].toString());
+                    if(data[i][3].toString()!="null"){
+                        map.get(id).setSampleTime(data[i][3].toString());
+                    }
+                    if(data[i][3].toString()=="null"){
+                        map.get(id).setSampleTime("");
+                    }
+
                     map.get(id).setCreationDate(DateUtil.getDateFromStr(data[i][10].toString()));
                     //新存储一个id对象时，将以下两个累计数据清零
                     sewageregistrationItemArrayList = new ArrayList<>();
