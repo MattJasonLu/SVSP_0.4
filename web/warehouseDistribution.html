@@ -29,7 +29,6 @@
     .sidebar-collapse .sidenav > li > a:hover {
         color: rgb(229, 229, 229);
 
-
         background-color: #0088cc;
     }
 
@@ -118,7 +117,7 @@
                     <thead>
                     <tr>
                         <th class="text-center" hidden>编号</th>
-                        <th class="text-center" >序号</th>
+                        <th class="text-center">序号</th>
                         <th class="text-center">角色名</th>
                         <th class="text-center">操作</th>
                     </tr>
@@ -129,7 +128,8 @@
                         <td class="text-center" name="serialNumber"></td>
                         <td class="text-center" name="roleName"></td>
                         <td class="text-center">
-                            <a href="#" id="" onclick="editModal(this)" title="编辑"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                            <a href="#" id="" onclick="editModal(this)" title="编辑"><span
+                                    class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
                         </td>
                     </tr>
                     </tbody>
@@ -150,22 +150,22 @@
                     <thead>
                     <tr>
                         <th class="text-center" hidden>仓库编号</th>
-                        <th class="text-center" >仓库名</th>
-                        <th class="text-center" >分配</th>
+                        <th class="text-center">仓库名</th>
+                        <th class="text-center">分配</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tBody">
                     <tr id="cloneTr1">
                         <td class="text-center" name="wareHouseId" hidden></td>
                         <td class="text-center" name="wareHouseName"></td>
-                        <td class="text-center" ><input title="" type="checkbox" name="select"></td>
+                        <td class="text-center"><input title="" type="checkbox" name="select"></td>
                     </tr>
                     </tbody>
                 </table>
             </div>
             <div class="modal-footer">
-                    <a class="btn btn-primary" onclick="saveDate();">保存</a>
-                    <a type="button" class="btn btn-default" data-dismiss="modal">取消</a>
+                <a class="btn btn-primary" onclick="saveDate();">保存</a>
+                <a type="button" class="btn btn-default" data-dismiss="modal">取消</a>
             </div>
         </div>
     </div>

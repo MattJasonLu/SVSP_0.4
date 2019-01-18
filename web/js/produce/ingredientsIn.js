@@ -1506,16 +1506,17 @@ function setSelectedList() {
     //设置仓库下拉框
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getWareHouseList",                  // url
+        url: "getWareHouseListByCurrentUser",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
-            if (result != undefined) {
-                var data = eval(result);
+            if (result != null && result.status === "success") {
+                console.log(result);
+                var data = eval(result.data);
                 // 高级检索下拉框数据填充
                 var state = $("select[name='wareHouseName']");
                 state.children().remove();
-                $.each(data.array, function (index, item) {
+                $.each(data, function (index, item) {
                     var option = $('<option />');
                     option.val(item.wareHouseName);
                     option.text(item.wareHouseName);
@@ -1523,7 +1524,7 @@ function setSelectedList() {
                 });
                 state.get(0).selectedIndex = -1;
             } else {
-                console.log("fail: " + result);
+                alert(result.message);
             }
         },
         error: function (result) {
