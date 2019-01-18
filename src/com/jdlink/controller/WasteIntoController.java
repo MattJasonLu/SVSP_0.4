@@ -453,9 +453,10 @@ public class WasteIntoController {
                     for (SecondarySampleItem secondarySampleItem : secondarySample.getSecondarySampleItemList())
                         wasteIntoService.addSecondarySampleItem(secondarySampleItem);
                 } else {
-                    res.put("status", "fail");
-                    res.put("message", "预约单号重复，请检查后导入");
-                    return res.toString();
+                    wasteIntoService.updateSecondarySampleAnalysis(secondarySample);
+                    wasteIntoService.deleteSecondarySampleItemById(secondarySample.getId());
+                    for (SecondarySampleItem secondarySampleItem : secondarySample.getSecondarySampleItemList())
+                        wasteIntoService.addSecondarySampleItem(secondarySampleItem);
                 }
             }
             res.put("status", "success");
