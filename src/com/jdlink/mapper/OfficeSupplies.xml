@@ -4,4 +4,91 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jdlink.mapper.OfficeSuppliesMapper" >
 
+    <!--*********************************************映射集*********************************************-->
+
+    <!--办公用品入库单映射集-->
+    <resultMap id="OfficeSuppliesInboundRM" type="OfficeSuppliesInbound" autoMapping="true">
+        <association property="checkStateItem" column="checkStateItemId" select="getDataDictionaryItem"/>
+        <collection property="officeSuppliesItemList" column="inboundId" select="getInboundItemList"/>
+    </resultMap>
+
+    <!--办公用品出库单映射集-->
+    <resultMap id="OfficeSuppliesOutboundRM" type="OfficeSuppliesOutbound" autoMapping="true">
+        <association property="checkStateItem" column="checkStateItemId" select="getDataDictionaryItem"/>
+        <collection property="officeSuppliesItemList" column="outboundId" select="getOutboundItemList"/>
+    </resultMap>
+
+    <!--单据条目映射集-->
+    <resultMap id="OfficeSuppliesItemRM" type="OfficeSuppliesItem" autoMapping="true">
+        <association property="unitDataItem" column="unitDataItemId" select="getDataDictionaryItem"/>
+        <association property="ticketRateItem" column="ticketRateItemId" select="getDataDictionaryItem"/>
+    </resultMap>
+
+    <!--查找数据字典条目-->
+    <select id="getDataDictionaryItem" resultType="DataDictionaryItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{0};
+    </select>
+
+    <!--获取入库条目-->
+    <select id="getInboundItemList" resultMap="OfficeSuppliesItemRM">
+        select * from t_pr_officesuppliesinbounditem where inboundId=#{inboundId};
+    </select>
+
+    <!--获取出库条目-->
+    <select id="getOutboundItemList" resultMap="OfficeSuppliesItemRM">
+        select * from t_pr_officesuppliesoutbounditem where outboundId=#{outboundId};
+    </select>
+
+    <!--*********************************************映射集*********************************************-->
+
+
+    <!--*********************************************办公用品入库*********************************************-->
+
+    <!--查询办公用品入库单-->
+    <select id="listOfficeSuppliesInbound" resultMap="OfficeSuppliesInboundRM">
+        select * from t_pr_officesuppliesinbound;
+    </select>
+
+    <!--增加办公用品入库单-->
+    <insert id="addOfficeSuppliesInbound">
+        insert into t_pr_officesuppliesinbound (inboundId, totalTaxPrice, totalPrice, inboundDate, checkStateItemId) values
+        #{inboundId}, #{totalTaxPrice}, #{totalPrice}, #{inboundDate}, #{checkStateItem.dataDictionaryItemId};
+        <foreach collection="officeSuppliesItemList" item="officeSuppliesItem">
+            insert into t_pr_officesuppliesinbounditem (itemId, inboundId, outboundId, supplierId, itemCode, itemName,
+            itemSpecifications, unitDataItemId, itemAmount, leftAmount, taxUnitPrice, unitPrice, totalTaxPrice, totalPrice,
+            inboundDate, outboundDate, ticketRateItemId, author, createTime, remark) values
+            #{itemId}, #{inboundId}, #{outboundId}, #{supplier.supplierId}, #{itemCode}, #{itemName}, #{itemSpecifications},
+            #{unitDataItem.dataDictionaryItemId}, #{itemAmount}, #{leftAmount}, #{taxUnitPrice}, #{unitPrice}, #{totalTaxPrice},
+            #{totalPrice}, #{inboundDate}, #{outboundDate}, #{ticketRateItem.dataDictionaryItemId}, #{author}, #{createTime},
+            #{remark};
+        </foreach>
+    </insert>
+
+    <!--*********************************************办公用品入库*********************************************-->
+
+
+    <!--*********************************************办公用品出库*********************************************-->
+
+    <!--查询办公用品出库单-->
+    <select id="listOfficeSuppliesOutbound" resultMap="OfficeSuppliesOutboundRM">
+        select * from t_pr_officesuppliesoutbound;
+    </select>
+
+    <!--增加办公用品出库单-->
+    <insert id="addOfficeSuppliesOutbound">
+        insert into t_pr_officesuppliesoutbound (outboundId, totalTaxPrice, totalPrice, outboundDate, checkStateItemId) values
+        #{inboundId}, #{totalTaxPrice}, #{totalPrice}, #{outboundDate}, #{checkStateItem.dataDictionaryItemId};
+        <foreach collection="officeSuppliesItemList" item="officeSuppliesItem">
+            insert into t_pr_officesuppliesoutbounditem (itemId, inboundId, outboundId, supplierId, itemCode, itemName,
+            itemSpecifications, unitDataItemId, itemAmount, leftAmount, taxUnitPrice, unitPrice, totalTaxPrice, totalPrice,
+            inboundDate, outboundDate, ticketRateItemId, author, createTime, remark) values
+            #{itemId}, #{inboundId}, #{outboundId}, #{supplier.supplierId}, #{itemCode}, #{itemName}, #{itemSpecifications},
+            #{unitDataItem.dataDictionaryItemId}, #{itemAmount}, #{leftAmount}, #{taxUnitPrice}, #{unitPrice}, #{totalTaxPrice},
+            #{totalPrice}, #{inboundDate}, #{outboundDate}, #{ticketRateItem.dataDictionaryItemId}, #{author}, #{createTime},
+            #{remark};
+        </foreach>
+    </insert>
+
+    <!--*********************************************办公用品出库*********************************************-->
+
 </mapper>
