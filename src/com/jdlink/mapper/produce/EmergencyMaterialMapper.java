@@ -22,4 +22,6 @@ public interface EmergencyMaterialMapper {
     List<EmergencyMaterial> searchEmergencyMaterial(EmergencyMaterial emergencyMaterial);
 
     int searchEmergencyMaterialCount(EmergencyMaterial emergencyMaterial);
+
+    void approvalEmergencyMaterial(String planId);
 }

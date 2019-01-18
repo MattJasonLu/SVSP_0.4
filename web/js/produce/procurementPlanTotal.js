@@ -174,6 +174,7 @@ function switchPage(pageNumber) {
                 if (result != undefined) {
                     // console.log(result);
                     setProcureTotalList(result);
+                    CalTotal();
                 } else {
                     console.log("fail: " + result);
                     // setClientList(result);
@@ -197,6 +198,7 @@ function switchPage(pageNumber) {
                 if (result != undefined) {
                     // console.log(result);
                     setProcureTotalList(result);
+                    CalTotal();
                 } else {
                     console.log("fail: " + result);
                     // setClientList(result);
@@ -261,6 +263,7 @@ function inputSwitchPage() {
                     if (result != undefined) {
                         console.log(result);
                         setProcureTotalList(result);
+                        CalTotal();
                     } else {
                         console.log("fail: " + result);
                     }
@@ -282,6 +285,7 @@ function inputSwitchPage() {
                     if (result != undefined) {
                         // console.log(result);
                         setProcureTotalList(result);
+                        CalTotal();
                     } else {
                         console.log("fail: " + result);
                         // setClientList(result);

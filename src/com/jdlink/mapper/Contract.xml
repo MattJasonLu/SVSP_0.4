@@ -421,8 +421,8 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     </select>
     <!--添加合同中的报价单明细1223-->
     <insert id="addQuotationItem" parameterType="QuotationItem">
-        insert into t_quotationitem(contractId,clientId,wastesCode,wastesName,packageType,util,unitPriceTax,contractAmount,totalPrice,transport,supplierId,packageTypeList,remarks,packageTypeId,transportId,unitId) values
-         (#{contractId},#{client.clientId},#{wastesCode},#{wastesName},#{packageType},#{util},#{unitPriceTax},#{contractAmount},#{totalPrice},#{transport},#{supplier.supplierId},#{packageTypeList},#{remarks},#{packageTypeItem.dataDictionaryItemId},#{transportItem.dataDictionaryItemId},#{unitDataItem.dataDictionaryItemId});
+        insert into t_quotationitem(contractId,clientId,wastesCode,wastesName,packageType,util,unitPriceTax,contractAmount,totalPrice,transport,supplierId,packageTypeList,remarks,packageTypeId,transportId,unitId,beginTime,endTime) values
+         (#{contractId},#{client.clientId},#{wastesCode},#{wastesName},#{packageType},#{util},#{unitPriceTax},#{contractAmount},#{totalPrice},#{transport},#{supplier.supplierId},#{packageTypeList},#{remarks},#{packageTypeItem.dataDictionaryItemId},#{transportItem.dataDictionaryItemId},#{unitDataItem.dataDictionaryItemId},#{beginTime},#{endTime});
     </insert>
     <!--根据供应商编号查询供应商-->
     <select id="getSupplierListById" parameterType="String" resultType="Supplier">
@@ -525,63 +525,84 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <!--合同合约量页面查询-->
     <select id="searchContractVolume" resultMap="QuotationItemRM" parameterType="QuotationItem">
         select * from t_quotationitem
-
+        <where>
         <if test="keywords!=null and keywords!=''">
-            where (
-            t_quotationitem.clientId in(select client.clientId from client
-            where client.
-            companyName like "%"#{keywords
-            }"%")
-            or
-            wastesName like "%"#{keywords}"%"
+         or clientId in(select clientId from client where companyName like "%"#{keywords}"%")
+          or wastesName like "%"#{keywords}"%"
             or wastesCode like "%"#{keywords}"%"
-            or contractAmount like "%"#{keywords}"%"
-            or unitPriceTax like "%"#{keywords}"%"
-            or unitPriceTax like "%"#{keywords}"%"
-            or t_quotationitem.contractId in(select contractId from t_contract where t_contract.beginTime like
-            binary "%"#{keywords}"%")
-            or t_quotationitem.contractId in(select contractId from t_contract where t_contract.endTime like
-            binary "%"#{keywords}"%")
-            )
-            and (t_quotationitem.contractId in(select contractId from t_contract where contractType is NOT NULL and
-            period is NULL and contractContent is NULL and modelVersion is null) and t_quotationitem.contractId is not null)
+           or contractAmount =#{keywords}
+            or unitPriceTax =#{keywords}
+            or totalPrice =#{keywords}
+            or beginTime like binary"%"#{keywords}"%"
+            or endTime like binary"%"#{keywords}"%"
         </if>
         <if test="client!=null">
                              <if test="client.companyName!=''">
-                                 where t_quotationitem.clientId in(select client.clientId from client where client.companyName like "%"#{client.companyName}"%") and (t_quotationitem.contractId in(select contractId from t_contract where contractType is NOT NULL and
-                                 period is NULL and contractContent is NULL and modelVersion is null)
+                                and clientId in(select clientId from client where companyName like "%"#{client.companyName}"%")
                              </if>
-                             <if test="client.companyName==''">
-                                 where (t_quotationitem.contractId in(select contractId from t_contract where contractType is NOT NULL and
-                                 period is NULL and contractContent is NULL and modelVersion is null)
-                             </if>
+
                          </if>
-
-        <if test="contract!=null">
-            <if test="contract.beginTime!=''">
-               and t_quotationitem.contractId in(select contractId from t_contract where  t_contract.beginTime <![CDATA[ <= ]]> DATE_FORMAT(#{contract.beginTime}, '%Y-%m-%d %H:%i:%S') and t_contract.endTime <![CDATA[ >= ]]> DATE_FORMAT(#{contract.beginTime}, '%Y-%m-%d %H:%i:%S')
-
-            </if>
-            <if test="contract.endTime!=''">
-                and t_quotationitem.contractId in(select contractId from t_contract where  t_contract.beginTime <![CDATA[ <= ]]> DATE_FORMAT(#{contract.endTime}, '%Y-%m-%d %H:%i:%S') and t_contract.endTime <![CDATA[ >= ]]> DATE_FORMAT(#{contract.endTime}, '%Y-%m-%d %H:%i:%S')
-
-            </if>
+        <if test="beginTime!=null">
+            <![CDATA[
+                and beginTime >= #{beginTime}
+                ]]>
         </if>
-
-
-
-
-
-
-
-        <if test="keywords==''">
-            where (t_quotationitem.contractId in(select contractId from t_contract where contractType is NOT NULL and
-            period is NULL and contractContent is NULL and modelVersion is null) and t_quotationitem.contractId is not null)
+            <if test="wastesName!=null and wastesName!=''">
+                and wastesName like "%"#{wastesName}"%"
+            </if>
+            <if test="wastesCode!=null and wastesCode!=''">
+                and wastesCode like "%"#{wastesCode}"%"
+            </if>
+        <if test="endTime!=null">
+            <![CDATA[
+                and endTime <= #{endTime}
+                ]]>
         </if>
-
+            and contractId is not null
+        </where>
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
+    </select>
+
+    <select id="searchContractVolumeCount" resultType="int" parameterType="QuotationItem">
+        select count(*) from t_quotationitem
+        <where>
+            <if test="keywords!=null and keywords!=''">
+                or clientId in(select clientId from client where companyName like "%"#{keywords}"%")
+                or wastesName like "%"#{keywords}"%"
+                or wastesCode like "%"#{keywords}"%"
+                or contractAmount =#{keywords}
+                or unitPriceTax =#{keywords}
+                or totalPrice =#{keywords}
+                or beginTime like binary"%"#{keywords}"%"
+                or endTime like binary"%"#{keywords}"%"
+            </if>
+            <if test="client!=null">
+                <if test="client.companyName!=''">
+                    and clientId in(select clientId from client where companyName like "%"#{client.companyName}"%")
+                </if>
+
+            </if>
+            <if test="wastesName!=null and wastesName!=''">
+                and wastesName like "%"#{wastesName}"%"
+            </if>
+            <if test="wastesCode!=null and wastesCode!=''">
+                and wastesCode like "%"#{wastesCode}"%"
+            </if>
+            <if test="beginTime!=null">
+                <![CDATA[
+                and beginTime >= #{beginTime}
+                ]]>
+            </if>
+
+            <if test="endTime!=null">
+                <![CDATA[
+                and endTime <= #{endTime}
+                ]]>
+            </if>
+            and contractId is not null
+        </where>
     </select>
 
     <!--审批合同模板-->

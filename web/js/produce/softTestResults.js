@@ -689,7 +689,7 @@ function save() {
         if(turbidity.length==0){
             turbidity=-9999;
         }
-        var hardness=$.trim($(this).children('td').eq(3).find('input').val());
+        var hardness=$.trim($(this).children('td').eq(3).find('input').val()+"*10-3");
         if(hardness.length==0){
             hardness=-9999;
         }
@@ -868,10 +868,6 @@ function setAdjust(item) {
                 }
 
                 if(obj.hardness!=-9999){
-                    if(obj.hardness.indexOf('*10-3')==-1){
-                        $('#hardness').val(obj.hardness+"*10-3");
-                    }
-                    else
                     $('#hardness').val(obj.hardness);
                 }
                 else {
@@ -1027,7 +1023,7 @@ function addfields(item) {
             hardness=hardness+"*10-3";
         }
         $(item).val(hardness)
-    },1000);
+    },0);
 
 
 }

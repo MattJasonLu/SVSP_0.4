@@ -231,7 +231,7 @@ public class SewageTestController {
                             softTest.setHardness((data.get(i)[j][3].toString()));
                         }
                         if(data.get(i)[j][3]=="null"){
-                            softTest.setHardness("");
+                            softTest.setHardness("-9999");
                         }
                         //ph
                         if(data.get(i)[j][4]!="null"){

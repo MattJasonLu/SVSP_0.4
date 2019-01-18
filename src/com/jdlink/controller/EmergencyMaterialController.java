@@ -182,4 +182,26 @@ public class EmergencyMaterialController {
         return emergencyMaterialService.searchEmergencyMaterialCount(emergencyMaterial);
 
     }
+
+    /*审批应急暂存*/
+    @RequestMapping("approvalEmergencyMaterial")
+    @ResponseBody
+    public String approvalEmergencyMaterial(String planId){
+        JSONObject res=new JSONObject();
+
+        try {
+            emergencyMaterialService.approvalEmergencyMaterial(planId);
+            res.put("status", "success");
+            res.put("message", "审批通过，已入库");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "审批失败");
+        }
+
+
+
+        return res.toString();
+    }
 }
