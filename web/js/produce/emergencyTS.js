@@ -21,7 +21,7 @@ function totalPage() {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "loadPageDeriveContractListCount",                  // url
+            url: "loadEmergencyMaterialCount",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
@@ -41,7 +41,7 @@ function totalPage() {
     } else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchDeriveContractCount",                  // url
+            url: "searchEmergencyMaterialCount",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data),
             dataType: "json",
@@ -164,7 +164,7 @@ function switchPage(pageNumber) {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "loadPageDeriveContractList",         // url
+            url: "loadEmergencyTSList",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(page),
             dataType: "json",
@@ -172,7 +172,7 @@ function switchPage(pageNumber) {
             success: function (result) {
                 if (result != undefined) {
                     // console.log(result);
-                    setDeriveContractList(result);
+                    setEmergencyTSList(result);
                 } else {
                     console.log("fail: " + result);
                     // setClientList(result);
@@ -187,7 +187,7 @@ function switchPage(pageNumber) {
         data['page'] = page;
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchDeriveContract",         // url
+            url: "searchEmergencyMaterial",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data),
             dataType: "json",
@@ -195,7 +195,7 @@ function switchPage(pageNumber) {
             success: function (result) {
                 if (result != undefined) {
                     // console.log(result);
-                    setDeriveContractList(result);
+                    setEmergencyTSList(result);
                 } else {
                     console.log("fail: " + result);
                     // setClientList(result);
@@ -251,7 +251,7 @@ function inputSwitchPage() {
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "loadPageDeriveContractList",         // url
+                url: "loadEmergencyTSList",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(page),
                 dataType: "json",
@@ -259,7 +259,7 @@ function inputSwitchPage() {
                 success: function (result) {
                     if (result != undefined) {
                         console.log(result);
-                        setDeriveContractList(result);
+                        setEmergencyTSList(result);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -272,7 +272,7 @@ function inputSwitchPage() {
             data['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "searchDeriveContract",         // url
+                url: "searchEmergencyMaterial",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data),
                 dataType: "json",
@@ -280,7 +280,7 @@ function inputSwitchPage() {
                 success: function (result) {
                     if (result != undefined) {
                         // console.log(result);
-                        setDeriveContractList(result);
+                        setEmergencyTSList(result);
                     } else {
                         console.log("fail: " + result);
                         // setClientList(result);
@@ -332,6 +332,8 @@ function loadEmergencyTSList() {
         }
     });
     isSearch = false;
+
+
 }
 
 /**设置合同数据
@@ -395,6 +397,10 @@ function setEmergencyTSList(result) {
 
                     break;
                 }
+                //附件路径
+                case (9):
+                    $(this).html(obj.fileUrl);
+                    break;
 
             }
         });
@@ -466,6 +472,7 @@ function addDate() {
         success:function (result) {
             if (result != undefined && result.status == "success"){
                 alert(result.message)
+                window.location.reload()
             }
             else
                 alert(result.message)
@@ -478,6 +485,316 @@ function addDate() {
 }
 
 /*完善模态框*/
-function perfectInfo() {
+function perfectInfo(item) {
+
+    //赋值危废代码
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size:4
+    });
+    $.ajax({
+        type: 'POST',
+        url: "getWastesInfoList",
+        async: false,
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                var obj=eval(result)
+                var code =$('#8code');
+                code.children().remove();
+                $.each(obj.data, function (index, item) {
+                    var option = $('<option/>');
+                    option.val(item.code);
+                    option.text(item.code);
+                    code.append(option);
+                });
+                $('.selectpicker').selectpicker('refresh');
+            }
+        },
+        error:function (result) {
+
+        }
+    })
+
+    //赋值处置单位
+    $.ajax({
+        type: 'POST',
+        url: "listSupplier",
+        async: false,
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success:function (result) {
+            if (result != undefined){
+                console.log(result)
+                var obj=eval(result)
+                var emergencyProduceCompany =$('#emergencyProduceCompany');
+                emergencyProduceCompany.children().remove();
+                $.each(obj, function (index, item) {
+                    var option = $('<option/>');
+                    option.val(item.supplierId);
+                    option.text(item.companyName);
+                    emergencyProduceCompany.append(option);
+                });
+                $('.selectpicker').selectpicker('refresh');
+            }
+        },
+        error:function (result) {
+
+        }
+    })
+
+
+
+    var planId=$(item).parent().parent().children('td').eq(1).html();
+    $('#id').text(planId);
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getEmergencyTSById",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:{planId:planId},
+        dataType: "json",
+        // contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                var data=eval(result.data);
+                console.log(data)
+
+                if(data.supplier!=null){
+                    $('#emergencyProduceCompany').selectpicker('val',data.supplier.supplierId)
+                }
+
+                $('#Name').val(data.wastesName)
+
+                $('#8code').selectpicker('val',data.wastesCode)
+
+                $('#emergencyTransferDraftId').val(data.emergencyNumber)
+
+
+
+
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    })
     $("#perfectInfo").modal('show')
+}
+
+/*查看*/
+function viewData(item) {
+    var planId=$(item).parent().parent().children('td').eq(1).html();
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getEmergencyTSById",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:{planId:planId},
+        dataType: "json",
+        // contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                       var data=eval(result.data);
+                       console.log(data)
+                           $('#planId').val(data.planId)
+                if(data.client!=null){
+                    $('#client').val(data.client.companyName)
+                }
+                if(data.supplier!=null){
+                    $('#supplier').val(data.supplier.companyName)
+                }
+
+                $('#wastesName').val(data.wastesName)
+
+                $('#wastesCode').val(data.wastesCode)
+
+                $('#emergencyNumber').val(data.emergencyNumber)
+                if(data.createTime!=null){
+                    $('#createTime').val(getDateStr(data.createTime))
+                }
+                if(data.checkStateItem!=null){
+                    $('#checkStateItem').val(data.checkStateItem.dictionaryItemName)
+                }
+
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    })
+
+
+    $('#view').modal('show')
+}
+
+/*完善信息方法*/
+function confirmPerfect() {
+    var data={
+        planId:$('#id').text(),
+        wastesCode:$('#8code').selectpicker('val'),
+        supplier:{supplierId:$('#emergencyProduceCompany').selectpicker('val')},
+        emergencyNumber:$('#emergencyTransferDraftId').val(),
+        wastesName:$('#Name').val(),
+    }
+    console.log(data)
+
+    //上传附件
+    var planId=$('#id').text();
+    var formFile = new FormData();
+    formFile.append("planId",planId)
+    if ($('#file').prop('type') != 'text') {
+        var multipartFile = $('#file')[0].files[0];
+        formFile.append("multipartFile", multipartFile);
+        if(multipartFile!=undefined){
+            //保存采购附件
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "saveEmergencyMaterialFile",                     // url
+                cache: false,
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: formFile,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    if (result != undefined && result.status == "success") {
+
+                    }
+                    else {
+
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                    alert("服务器异常!");
+                }
+            });
+        }
+
+    }
+
+
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "updateEmergencyTS",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:JSON.stringify(data),
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                alert(result.message);
+                //附件上传
+
+                window.location.reload()
+            }
+            else {
+
+                alert(result.message);
+
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    })
+
+
+}
+
+//附件下载
+function downLoadFile(item) {
+    var contractAppendicesUrl=$(item).parent().prev().html();
+    if (contractAppendicesUrl != null && contractAppendicesUrl != "") {
+        window.open('downloadFile?filePath=' + contractAppendicesUrl);
+        window.location.reload()
+    } else {
+        alert("未上传文件");
+        // window.location.reload()
+    }
+}
+
+/*查询*/
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if (last - event.timeStamp == 0) {
+                searchData();
+            } else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchData();      //
+            }
+        }, 600);
+    });
+});
+
+//高级查询
+function searchData() {
+    isSearch = true;
+    var page = {};
+    var pageNumber = 1;                       // 显示首页
+    page.pageNumber = pageNumber;
+    page.count = countValue();
+    page.start = (pageNumber - 1) * page.count;
+    // 精确查询
+    if ($("#senior").is(':visible')) {
+        data = {
+            planId:$.trim($('#search-inboundPlanOrderId').val()),
+            wastesName:$.trim($('#search-wastesName').val()),
+            wastesCode:$.trim($('#search-wastesCode').val()),
+            emergencyNumber:$.trim($('#search-emergencyNumber').val()),
+            checkStateItem:{dataDictionaryItemId:$("#search-checkState").val()},
+            client:{companyName:$.trim($("#search-companyName").val())},
+            supplier:{companyName:$.trim($("#search-transferDraftId").val())},
+            page: page,
+        };
+        console.log(data);
+        // 模糊查询
+    } else {
+        var keyword=$.trim($("#searchContent").val());
+        data = {
+            keyword: keyword,
+            page: page
+        };
+    }
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "searchEmergencyMaterial",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                setPageClone(result);
+                setPageCloneAfter(pageNumber);        // 重新设置页码
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+
+}
+
+/**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchData();      //
+    }
 }
