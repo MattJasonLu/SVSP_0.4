@@ -2560,6 +2560,8 @@ function contractWastesSave() {
                                 contractAmount: $(this).children('td').eq(5).children('input').val(),
                                 totalPrice: $(this).children('td').eq(7).children('input').val(),
                                 remarks: $(this).children('td').eq(9).children('input').val(),
+                                beginTime: $('#beginTime').val(),
+                                endTime: $('#endTime').val(),
                             };
                             //console.log(quotationItemData);
                             //1添加报价单明细
@@ -2777,6 +2779,8 @@ function contractWastesSave() {
                                 totalPrice: $(this).children('td').eq(7).children('input').val(),
                                 remarks: $(this).children('td').eq(9).children('input').val(),
                                 // pictureFile:$(this).children('td').eq(10).find("input[name='picture']").get(0).files[0]
+                                beginTime: $('#beginTime').val(),
+                                endTime: $('#endTime').val(),
                             };
                             console.log(quotationItemData);
                             //1添加报价单明细
@@ -4833,6 +4837,8 @@ function contractAdjustSave() {
                             contractAmount: $(this).children('td').eq(5).children('input').val(),
                             totalPrice: $(this).children('td').eq(7).children('input').val(),
                             remarks: $(this).children('td').eq(9).children('input').val(),
+                            beginTime: $('#beginTime').val(),
+                            endTime: $('#endTime').val(),
                         };
                         console.log(quotationItemData);
                         //1添加报价单明细
@@ -5079,6 +5085,8 @@ function contractAdjustSave() {
                             contractAmount: $(this).children('td').eq(5).children('input').val(),
                             totalPrice: $(this).children('td').eq(7).children('input').val(),
                             remarks: $(this).children('td').eq(9).children('input').val(),
+                            beginTime: $('#beginTime').val(),
+                            endTime: $('#endTime').val(),
                         };
                         console.log(quotationItemData);
                         // 1添加报价单明细

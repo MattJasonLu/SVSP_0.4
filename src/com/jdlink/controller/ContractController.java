@@ -1419,17 +1419,7 @@ public class ContractController {
         JSONObject res=new JSONObject();
 
         try {
-            List<QuotationItem> quotationItemList1=new ArrayList<>() ;
             List<QuotationItem> quotationItemList=contractService.searchContractVolume(quotationItem) ;
-//            for(int i=0;i<quotationItemList.size();i++){
-//                Contract contract=quotationItemList.get(i).getContract();
-//                if(contract!=null){
-//                    if(contract.getContractType()!=null&&contract.getPeriod().length()==0&&contract.getContractContent().length()==0&&contract.getModelVersion().length()==0){
-//                        quotationItemList1.add(quotationItemList.get(i));
-//                    }
-//                }
-//            }
-
             res.put("message", "查询成功");
             res.put("status", "success");
             res.put("data", quotationItemList);
@@ -1442,6 +1432,13 @@ public class ContractController {
         return res.toString();
     }
 
+  /*合同合约量页面查询计数*/
+  @RequestMapping("searchContractVolumeCount")
+  @ResponseBody
+  public int searchContractVolumeCount(@RequestBody QuotationItem quotationItem){
+
+      return contractService.searchContractVolumeCount(quotationItem);
+  }
 
     //合约量导出
     @RequestMapping("exportContractVolume")

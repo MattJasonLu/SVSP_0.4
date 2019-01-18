@@ -188,4 +188,6 @@ public interface ContractMapper {
      */
     List<QuotationItem> getQuotationItemList();
 
+    int searchContractVolumeCount(QuotationItem quotationItem);
+
  }
