@@ -441,7 +441,6 @@ public class WasteIntoController {
                 secondarySampleItem.setSampleinformationId(id);
                 secondarySampleItemArrayList.add(secondarySampleItem);
                 map.get(id).setSecondarySampleItemList(secondarySampleItemArrayList);
-
             }
             }
             for (String key : map.keySet()) {
