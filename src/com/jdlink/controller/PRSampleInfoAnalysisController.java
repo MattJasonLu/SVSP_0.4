@@ -206,7 +206,11 @@ public class PRSampleInfoAnalysisController {
 //                sampleInfoAnalysis.setSignDate(DateUtil.getDateFromStr(data[i][19].toString()));
                 sampleInfoAnalysis.setRemark(data[i][17].toString());
                 sampleInfoAnalysis.setCheckState(CheckState.NewBuild);
-                sampleInfoAnalysisService.add(sampleInfoAnalysis);
+                if(sampleInfoAnalysisService.getById(sampleInfoAnalysis.getId()) == null){
+                    sampleInfoAnalysisService.add(sampleInfoAnalysis);
+                }else {
+                    sampleInfoAnalysisService.update(sampleInfoAnalysis);
+                }
             }
             res.put("status", "success");
             res.put("message", "导入成功");

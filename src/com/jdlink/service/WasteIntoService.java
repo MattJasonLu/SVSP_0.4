@@ -20,6 +20,8 @@ public interface WasteIntoService {
     void confirmSecondarySampleById(String id,String laboratorySignatory);
     void confirmAllSecondAnalysisCheck(SecondarySample secondarySample);
     void rejectSecondarySampleById(String id,String advice);
+    void updateSecondarySampleAnalysis(SecondarySample secondarySample);
+    void deleteSecondarySampleItemById(String id);
     int wastesCountById(String id);
     SecondarySampleItem getByWastesId(String id);
     List<SecondarySample>searchSecondary(SecondarySample secondarySample);
