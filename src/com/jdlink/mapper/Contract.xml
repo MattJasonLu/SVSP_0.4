@@ -547,12 +547,18 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 and beginTime >= #{beginTime}
                 ]]>
         </if>
-
+            <if test="wastesName!=null and wastesName!=''">
+                and wastesName like "%"#{wastesName}"%"
+            </if>
+            <if test="wastesCode!=null and wastesCode!=''">
+                and wastesCode like "%"#{wastesCode}"%"
+            </if>
         <if test="endTime!=null">
             <![CDATA[
                 and endTime <= #{endTime}
                 ]]>
         </if>
+            and contractId is not null
         </where>
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
@@ -578,6 +584,12 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 </if>
 
             </if>
+            <if test="wastesName!=null and wastesName!=''">
+                and wastesName like "%"#{wastesName}"%"
+            </if>
+            <if test="wastesCode!=null and wastesCode!=''">
+                and wastesCode like "%"#{wastesCode}"%"
+            </if>
             <if test="beginTime!=null">
                 <![CDATA[
                 and beginTime >= #{beginTime}
@@ -589,6 +601,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 and endTime <= #{endTime}
                 ]]>
             </if>
+            and contractId is not null
         </where>
     </select>
 
