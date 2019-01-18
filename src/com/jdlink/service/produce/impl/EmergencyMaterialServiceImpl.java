@@ -53,4 +53,9 @@ public class EmergencyMaterialServiceImpl implements EmergencyMaterialService {
     public int searchEmergencyMaterialCount(EmergencyMaterial emergencyMaterial) {
         return emergencyMaterialMapper.searchEmergencyMaterialCount(emergencyMaterial);
     }
+
+    @Override
+    public void approvalEmergencyMaterial(String planId) {
+        emergencyMaterialMapper.approvalEmergencyMaterial(planId);
+    }
 }

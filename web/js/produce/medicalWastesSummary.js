@@ -189,6 +189,7 @@ function switchPage(pageNumber) {
                 if (result != undefined) {
                     console.log("走到这了！");
                     setMedicalWastesList(result);
+                    calculationTotal();
                 } else {
                     console.log("fail: " + result);
                     // setClientList(result);
@@ -213,6 +214,7 @@ function switchPage(pageNumber) {
                 if (result != undefined) {
                     // console.log(result);
                     setMedicalWastesList(result);
+                    calculationTotal();
                 } else {
                     console.log("fail: " + result);
                     // setClientList(result);
@@ -276,6 +278,7 @@ function inputSwitchPage() {
                     if (result != undefined) {
                         // console.log(result);
                         setMedicalWastesList(result);
+                        calculationTotal();
                     } else {
                         console.log("fail: " + result);
                         // setClientList(result);
@@ -300,6 +303,7 @@ function inputSwitchPage() {
                     if (result != undefined) {
                         // console.log(result);
                         setMedicalWastesList(result);
+                        calculationTotal();
                     } else {
                         console.log("fail: " + result);
                         // setClientList(result);

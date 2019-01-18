@@ -172,6 +172,28 @@ public class QuotationItem {
     //申报状态数据字典 用于库存申报
     private ApplicationStatusItem applicationStatusItem;
 
+    /*合同签约时间*/
+    private Date beginTime;
+
+    /*合同截止时间*/
+    private Date endTime;
+
+    public Date getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
     public ApplicationStatusItem getApplicationStatusItem() {
         return applicationStatusItem;
     }

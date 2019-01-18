@@ -47,6 +47,17 @@ public class EmergencyMaterial {
     /*关键字*/
     private String keyword;
 
+    /*暂存数量*/
+    private float temporaryCount;
+
+    public float getTemporaryCount() {
+        return temporaryCount;
+    }
+
+    public void setTemporaryCount(float temporaryCount) {
+        this.temporaryCount = temporaryCount;
+    }
+
     public Page getPage() {
         return page;
     }
