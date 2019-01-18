@@ -42,7 +42,7 @@
     <!--应急暂存更新-->
     <update id="updateEmergencyTS" parameterType="EmergencyMaterial">
         update t_pl_emergencymaterial set emergencyNumber=#{emergencyNumber},wastesCode=#{wastesCode},
-        wastesName=#{wastesName},supplierId=#{supplier.supplierId} where planId=#{planId}
+        wastesName=#{wastesName},supplierId=#{supplier.supplierId},temporaryCount=#{temporaryCount} where planId=#{planId}
     </update>
 
     <!--插入应急暂存合同附件-->
@@ -156,4 +156,9 @@
 
         </where>
     </select>
+
+    <!--审批应急暂存-->
+    <update id="approvalEmergencyMaterial" parameterType="String">
+        update t_pl_emergencymaterial set  checkStateId=76 where planId=#{planId}
+    </update>
 </mapper>
