@@ -843,7 +843,8 @@ function setCancel(item) {
 //修改
 function setAdjust(item) {
     var id = $(item).parent().parent().children('td').eq(1).html();
-
+   $('#addModal2').find('input').val('')
+    $('#addModal2').find('input').removeAttr('readonly')
     //根据编号获取信息
     $.ajax({
         type: "POST",                       // 方法类型
@@ -867,6 +868,10 @@ function setAdjust(item) {
                 }
 
                 if(obj.hardness!=-9999){
+                    if(obj.hardness.indexOf('*10-3')==-1){
+                        $('#hardness').val(obj.hardness+"*10-3");
+                    }
+                    else
                     $('#hardness').val(obj.hardness);
                 }
                 else {
@@ -1008,4 +1013,21 @@ function testing(item) {
 
         }
     })
+}
+
+
+
+
+
+
+function addfields(item) {
+    var hardness=$.trim($(item).val()).replace("*10-3",'');
+    setTimeout(function () {
+        if(hardness.length>0){
+            hardness=hardness+"*10-3";
+        }
+        $(item).val(hardness)
+    },1000);
+
+
 }

@@ -173,9 +173,12 @@ public class PRReceiveSampleAnalysisController {
                 receiveSampleAnalysis.setHotMelt(data[i][17].toString());
                 receiveSampleAnalysis.setRemark(data[i][18].toString());
                 receiveSampleAnalysis.setCheckState(CheckState.NewBuild);
-                receiveSampleAnalysisService.add(receiveSampleAnalysis);
+                if(receiveSampleAnalysisService.getById(receiveSampleAnalysis.getId()) == null) {
+                    receiveSampleAnalysisService.add(receiveSampleAnalysis);
+                }else {
+                    receiveSampleAnalysisService.update(receiveSampleAnalysis);
+                }
             }
-
             res.put("status", "success");
             res.put("message", "导入成功");
         } catch (DuplicateKeyException e) {

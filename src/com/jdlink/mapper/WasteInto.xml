@@ -110,9 +110,17 @@
 
     <!--拒收-->
     <update id="rejectSecondarySampleById" >
-        update t_pr_secondarysample set checkStateId=88,advice=#{1} ,nowTime=NOW() where id=#{0}
+        update t_pr_secondarysample set checkStateId=88,advice=#{1} ,nowTime=NOW() where id=#{0};
     </update>
 
+    <!--更新次生送样-->
+    <update id="updateSecondarySampleAnalysis" parameterType="SecondarySample">
+        update t_pr_secondarysample set sendingPerson=#{sendingPerson},address=#{address},secondaryPointId=#{secondaryPointItem.dataDictionaryItemId};
+    </update>
+    
+    <delete id="deleteSecondarySampleItemById" parameterType="String">
+        delete from t_pr_secondarysampleitem where sampleinformationId=#{id};
+    </delete>
 
     <!--次生送样查询-->
     <select id="searchSecondary" resultMap="SecondarysampleRM">
@@ -183,7 +191,6 @@
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%")
                 or id in(select sampleinformationId from t_pr_secondarysampleitem where t_pr_secondarysampleitem.wastesName like  #{keywords})
             </if>
-
             <if test="secondarySampleItemList[0].water==1">
                 and  t_pr_secondarysample.id in(select DISTINCT sampleinformationId  from t_pr_secondarysampleitem where t_pr_secondarysampleitem.water=1)
             </if>

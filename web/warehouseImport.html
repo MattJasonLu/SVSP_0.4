@@ -13,9 +13,8 @@
     <script language="javascript" src="js/bootstrap/printThis.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/ingredientsInDetail.js"></script>
 </head>
-<body onload="loadPageIngredientsInList();">
+<body onload="">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -79,12 +78,6 @@
 <div class="container-fluid">
     <div class="row">
         <div class="sidebar">
-            <!--<h4>博客管理系统(四月)</h4>-->
-            <!--<div class="cover">-->
-            <!--<h4><img class="img-circle" src="image/icons.png"/></h4>-->
-            <!--<b>Hi~ 小主</b>-->
-            <!--<p>超级管理员</p>-->
-            <!--</div>-->
             <ul class="sidenav animated fadeInUp">
                 <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
                 <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list"
@@ -143,15 +136,8 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" id="function_-335" href="#" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; addIngredientsIn();}"><span
+                    <a class="btn btn-primary btn-xs" href="warehouseImportNew.html" onclick=""><span
                             class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                    <a class="btn btn-primary btn-xs" id="function_" href="#" onclick="addRedIngredientsIn();" hidden><span
-                            class="glyphicon glyphicon-plus" aria-hidden="true"></span> 红字入库单</a>
-                    <a class="btn btn-primary btn-xs" href="ingredientsIn.html"><span
-                            class="glyphicon glyphicon-chevron-left" href="ingredientsIn.html" id="function_-336" onclick="checkAuthority($(this))" aria-hidden="true"></span> 归类入库单</a>
-                    <a class="btn btn-primary btn-xs" href="#" id="function_-338" href="#" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportInExcel();}"><span
-                            class="glyphicon glyphicon-arrow-up"
-                            aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
                 <div class="input-group col-md-4 pull-right">
@@ -269,24 +255,23 @@
                             </label>
                         </th>
                         <th class="text-center">入库单号</th>
-                        <th class="text-center">单位名</th>
-                        <th class="text-center">入库单状态</th>
+                        <th class="text-center">采购单位</th>
                         <th class="text-center">物品编码</th>
                         <th class="text-center">物品名称</th>
-                        <th class="text-center">规格</th>
+                        <th class="text-center">物品规格</th>
                         <th class="text-center">计量单位</th>
                         <th class="text-center">数量</th>
                         <th class="text-center">单价</th>
                         <th class="text-center">金额</th>
-                        <th class="text-center">仓库</th>
                         <th class="text-center">入库日期</th>
                         <th class="text-center">税率</th>
+                        <th class="text-center">备注</th>
                         <th class="text-center" hidden>编号</th>
                         <th class="text-center">操作</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr id="clone" ondblclick="toViewIngredientsIn1(this)">
+                    <tr id="clone">
                         <td class="text-center">
                             <label>
                                 <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1"
@@ -305,14 +290,13 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
-                        <td class="text-center"></td>
                         <td class="text-center" hidden></td>
                         <td class="text-center">
-                            <a title="查看" href="#" id="function_-339" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; toViewIngredientsIn(e);}"><span
+                            <a title="查看" href="#" onclick=""><span
                                     class="glyphicon glyphicon-search" aria-hidden="true"></span> </a>
-                            <a title="修改" href="#" id="function_-340" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; ingredientsInModify(e);}"><span
+                            <a title="修改" href="#" onclick=""><span
                                     class="glyphicon glyphicon-pencil" aria-hidden="true"></span> </a>
-                            <a title="作废" href="#" id="function_-341" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; invalidIngredientsIn(e);}"><span
+                            <a title="作废" href="#" onclick=""><span
                                     class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> </a>
                         </td>
                     </tr>

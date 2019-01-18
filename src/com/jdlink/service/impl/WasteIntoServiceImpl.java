@@ -61,6 +61,12 @@ public class WasteIntoServiceImpl implements WasteIntoService {
     }
 
     @Override
+    public void updateSecondarySampleAnalysis(SecondarySample secondarySample){ wasteIntoMapper.updateSecondarySampleAnalysis(secondarySample);}
+
+    @Override
+    public void deleteSecondarySampleItemById(String id) { wasteIntoMapper.deleteSecondarySampleItemById(id);}
+
+    @Override
     public List<String> getNewestId() {
         return wasteIntoMapper.getNewestId();
     }

@@ -201,15 +201,15 @@
                             <div class="form-group">
                                 <label for="search-inboundPlanOrderId" class="col-sm-4 control-label">计划单号</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-inboundPlanOrderId" name="search-inboundPlanOrderId" placeholder="" onkeyup="searchData();">
+                                    <input type="text" class="form-control" id="search-inboundPlanOrderId" name="search-inboundPlanOrderId" placeholder="" onkeyup="enterSearch();">
                                 </div>
                             </div>
                         </div>
                         <div class="form-horizontal col-md-6">
                             <div class="form-group">
-                                <label for="search-transferDraftId" class="col-sm-4 control-label">联单编号</label>
+                                <label for="search-transferDraftId" class="col-sm-4 control-label">处置单位</label>
                                 <div class="col-xs-7">
-                                    <input class="form-control" name="search-transferDraftId" id="search-transferDraftId" onkeyup="searchData();">
+                                    <input class="form-control" name="search-transferDraftId" id="search-transferDraftId" onkeyup="enterSearch();">
                                 </div>
                             </div>
                         </div>
@@ -219,7 +219,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">危废名称</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-wastesName" title=""/>
+                                    <input type="text" class="form-control" id="search-wastesName" title="" onkeyup="enterSearch()"/>
                                 </div>
                             </div>
                         </div>
@@ -227,22 +227,44 @@
                             <div class="form-group">
                                 <label for="search-wastesCode" class="col-sm-4 control-label">危废代码</label>
                                 <div class="col-xs-7">
-                                    <input class="form-control" name="search-wastesCode" id="search-wastesCode" onkeyup="searchData();">
+                                    <input class="form-control" name="search-wastesCode" id="search-wastesCode" onkeyup="enterSearch();">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-
                         <div class="form-horizontal col-md-6">
                             <div class="form-group">
-                                <label for="search-companyName" class="col-sm-4 control-label">产废单位</label>
+                                <label for="search-companyName" class="col-sm-4 control-label">应急单位</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="" onkeyup="searchData();">
+                                    <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="" onkeyup="enterSearch();">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group">
+                                <label for="search-emergencyNumber" class="col-sm-4 control-label">应急联单编号</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-emergencyNumber" name="search-companyName" placeholder="" onkeyup="enterSearch();">
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group">
+                                <label for="search-checkState" class="col-sm-4 control-label">状态</label>
+                                <div class="col-xs-7">
+                                    <select type="text" class="form-control" id="search-checkState" name="search-companyName" placeholder="" onchange="searchData();">
+                                        <option></option>
+                                        <option value="67">待审批</option>
+                                        <option value="76">审批通过</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <div class="table">
@@ -255,17 +277,12 @@
                             </label>
                         </th>
                         <th class="text-center">计划单号</th>
-                        <th class="text-center">计划日期</th>
-                        <th class="text-center">产废单位</th>
-                        <th class="text-center">转移时间</th>
-                        <th class="text-center">联单号</th>
+                        <th class="text-center">应急单位</th>
+                        <th class="text-center">处置单位</th>
                         <th class="text-center">危废名称</th>
                         <th class="text-center">危废代码</th>
-                        <!--<th class="text-center">拟转移量</th>-->
-                        <th class="text-center">转移量</th>
-                        <!--<th class="text-center">已入库数量</th>-->
-                        <th class="text-center">剩余数量</th>
-                        <!--<th class="text-center">磅单数量</th>-->
+                        <th class="text-center">应急联单编号</th>
+                        <th class="text-center">创建时间</th>
                         <th class="text-center">状态</th>
                         <th class="text-center">操作</th>
                     </tr>
@@ -277,24 +294,22 @@
                                 <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
                             </label>
                         </td>
-                        <td class="text-center" name="inboundPlanOrderId">计划单号</td>
-                        <td class="text-center" name="planDate">计划日期</td>
-                        <td class="text-center" name="produceCompanyName">产废单位</td>
-                        <td class="text-center" name="transferDate">转移时间</td>
-                        <td class="text-center" name="transferDraftId">联单号</td>
-                        <td class="text-center" name="wastesName">危废名称</td>
-                        <td class="text-center" name="wastesCode">危废代码</td>
-                        <!--<td class="text-center" name="prepareTransferCount">拟转移量</td>-->
-                        <td class="text-center" name="transferCount">转移量</td>
-                        <!--<td class="text-center" name="storageCount">已入库数量</td>-->
-                        <td class="text-center" name="leftCount">剩余数量</td>
-                        <!--<td class="text-center" name="poundsCount">磅单数量</td>-->
-                        <td class="text-center" name="checkState">状态</td>
+                        <td class="text-center" name="inboundPlanOrderId"></td>
+                        <td class="text-center" name="planDate"></td>
+                        <td class="text-center" name="produceCompanyName"></td>
+                        <td class="text-center" name="transferDate"></td>
+                        <td class="text-center" name="transferDraftId"></td>
+                        <td class="text-center" name="wastesName"></td>
+                        <td class="text-center" name="wastesCode"></td>
+                        <td class="text-center" name="transferCount"></td>
+                        <td class="text-center hidden" name="transferCount"></td>
                         <td class="text-center">
                             <a href="#" id="function_-244" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; viewData($(e));}" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                             <a href="#" id="function_-245" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; perfectInfo($(e));}" title="完善信息"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
                             <a href="#" id="function_-246" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; confirmDate($(e));}" title="确认"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></a>
                             <a href="#" id="function_-247" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; approvalDate($(e));}" title="审批"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                            <a href="#" title="下载附件" onclick="downLoadFile(this);"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> </a>
+
                         </td>
                     </tr>
                     </tbody>
@@ -329,7 +344,7 @@
                                id="pageNumber" title=""></li>
                     <li class="showLi">每页显示:</li>
                     <li class="selectLi">
-                        <select id="count" onchange="loadPageList()" title="">
+                        <select id="count" onchange="loadEmergencyTSList()" title="">
                             <option>5</option>
                             <option selected>15</option>
                             <option>50</option>
@@ -390,29 +405,102 @@
                 </div>
             </div>
         </div>
+
+        <!--查看模态框-->
+        <div class="modal fade bs-example-modal-lg" id="view" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">应急暂存查看</div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="planId" class="col-sm-2 control-label">计划单号</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="focus" id="planId" name="emergencyProduceCompany">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="client" class="col-sm-2 control-label">应急单位</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="focus" id="client" name="Name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="supplier" class="col-sm-2 control-label">处置单位</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="focus" id="supplier" name="emergencyProduceCompany">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="wastesName" class="col-sm-2 control-label">危废名称</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="focus" id="wastesName" name="Name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="wastesCode" class="col-sm-2 control-label">危废代码</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="focus" id="wastesCode" name="8code">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="emergencyNumber" class="col-sm-2 control-label">应急联单编号</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="focus" id="emergencyNumber" name="emergencyTransferDraftId">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="createTime" class="col-sm-2 control-label">创建时间</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="focus" id="createTime" name="emergencyProduceCompany">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="checkStateItem" class="col-sm-2 control-label">状态</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="focus" id="checkStateItem" name="Name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-primary" ;"></button>-->
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!--应急暂存完善信息模态框-->
         <div class="modal fade bs-example-modal-lg" id="perfectInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">应急暂存</div>
+                    &nbsp;  &nbsp; &nbsp;计划单号<span id="id"></span>
                     <div class="modal-body">
                         <div class="row">
                             <div class="form-group">
-                                <label for="8code" class="col-sm-4 control-label">8位代码</label>
-                                <div class="col-xs-8">
-                                    <input type="text" class="form-control" id="8code" name="8code">
+                                <label for="8code" class="col-sm-2 control-label">8位代码</label>
+                                <div class="col-xs-4">
+                                    <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="8code" name="emergencyCompany"></select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="emergencyTransferDraftId" class="col-sm-4 control-label">应急联单编号</label>
-                                <div class="col-xs-8">
+                                <label for="emergencyTransferDraftId" class="col-sm-2 control-label">应急联单编号</label>
+                                <div class="col-xs-4">
                                     <input type="text" class="form-control" id="emergencyTransferDraftId" name="emergencyTransferDraftId">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="emergencyProduceCompany" class="col-sm-4 control-label">处置单位</label>
-                                <div class="col-xs-8">
-                                    <input type="text" class="form-control" id="emergencyProduceCompany" name="emergencyProduceCompany">
+                                <label for="emergencyProduceCompany" class="col-sm-2 control-label">处置单位</label>
+                                <div class="col-xs-4">
+                                    <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="emergencyProduceCompany" name="emergencyCompany"></select>
                                 </div>
                             </div>
                             <!--<div class="form-group">-->
@@ -422,8 +510,8 @@
                                 <!--</div>-->
                             <!--</div>-->
                             <div class="form-group">
-                                <label for="Name" class="col-sm-4 control-label">物料名称</label>
-                                <div class="col-xs-8">
+                                <label for="Name" class="col-sm-2 control-label">物料名称</label>
+                                <div class="col-xs-4">
                                     <input type="text" class="form-control" id="Name" name="Name">
                                 </div>
                             </div>
@@ -434,15 +522,15 @@
                                 <!--</div>-->
                             <!--</div>-->
                             <div class="form-group">
-                                <label for="inboundPlanOrderId" class="col-sm-4 control-label">合同上传</label>
-                                <div class="col-xs-8">
-                                    <input type="file" class="form-control" id="inboundPlanOrderId" name="inboundPlanOrderId">
+                                <label for="file" class="col-sm-2 control-label">合同上传</label>
+                                <div class="col-xs-4">
+                                    <input type="file" class="form-control" id="file" name="file">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="confirmApproval" onclick="confirmApproval();">完善信息</button>
+                        <button type="button" class="btn btn-primary" id="confirmApproval" onclick="confirmPerfect();">完善信息</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     </div>
                 </div>
