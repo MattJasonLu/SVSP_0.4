@@ -257,24 +257,24 @@
     select  * from t_pr_softest
     <where>
         <if test="keyword!='' and keyword!=null">
-            or id = #{keyword}
-            or address = #{keyword}
-            or remarks = #{keyword}
+            or id like "%"#{keyword}"%"
+            or addresslike "%"#{keyword}"%"
+            or remarks like "%"#{keyword}"%"
             or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName = #{keyword} and  datadictionaryitem.dataDictionaryId=11)
         </if>
-            <if test="id!=null and id!=''">
-               and id =#{id}
-            </if>
+        <if test="id!=null and id!=''">
+            and id like "%"#{id}"%"
+        </if>
         <if test="remarks!=null and remarks!=''">
-            and remarks =#{remarks}
+            and remarks like "%"#{remarks}"%"
         </if>
         <if test="address!=null and address!=''">
-            and address =#{address}
+            and address like "%"#{address}"%"
         </if>
         <if test="checkStateItem!=null">
-          <if test="checkStateItem.dataDictionaryItemId!=0">
-              and checkStateId=#{checkStateItem.dataDictionaryItemId}
-          </if>
+            <if test="checkStateItem.dataDictionaryItemId!=0">
+                and checkStateId=#{checkStateItem.dataDictionaryItemId}
+            </if>
         </if>
     </where>
           order by checkStateId=69 ,id desc
@@ -288,19 +288,19 @@
         select count(*) from t_pr_softest
         <where>
             <if test="keyword!='' and keyword!=null">
-                or id = #{keyword}
-                or address = #{keyword}
-                or remarks = #{keyword}
+                or id like "%"#{keyword}"%"
+                or addresslike "%"#{keyword}"%"
+                or remarks like "%"#{keyword}"%"
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName = #{keyword} and  datadictionaryitem.dataDictionaryId=11)
             </if>
             <if test="id!=null and id!=''">
-                and id =#{id}
+                and id like "%"#{id}"%"
             </if>
             <if test="remarks!=null and remarks!=''">
-                and remarks =#{remarks}
+                and remarks like "%"#{remarks}"%"
             </if>
             <if test="address!=null and address!=''">
-                and address =#{address}
+                and address like "%"#{address}"%"
             </if>
             <if test="checkStateItem!=null">
                 <if test="checkStateItem.dataDictionaryItemId!=0">
@@ -313,23 +313,22 @@
 
     <!--污水化验查询-->
     <select id="searchSewageTest" parameterType="SewageTest" resultMap="SewageTestRM">
-
         select  * from t_pr_sewagetest
         <where>
             <if test="keyword!='' and keyword!=null">
-                or id = #{keyword}
-                or address = #{keyword}
-                or remarks = #{keyword}
+                or id like "%"#{keyword}"%"
+                or address like "%"#{keyword}"%"
+                or remarks like "%"#{keyword}"%"
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName = #{keyword} and  datadictionaryitem.dataDictionaryId=11)
             </if>
-            <if test="id!=null and id!=''">
-                and id =#{id}
+            <if test="id!=null and id !=''">
+                and id like "%"#{id}"%"
             </if>
             <if test="remarks!=null and remarks!=''">
-                and remarks =#{remarks}
+                and remarks like "%"#{remarks}"%"
             </if>
-            <if test="address!=null and address!=''">
-                and address =#{address}
+            <if test="address!=null and address !=''">
+                and address like "%"#{address}"%"
             </if>
             <if test="checkStateItem!=null">
                 <if test="checkStateItem.dataDictionaryItemId!=0">
@@ -348,19 +347,19 @@
         select count(*) from t_pr_sewagetest
         <where>
             <if test="keyword!='' and keyword!=null">
-                or id = #{keyword}
-                or address = #{keyword}
-                or remarks = #{keyword}
+                or id like "%"#{keyword}"%"
+                or address like "%"#{keyword}"%"
+                or remarks like "%"#{keyword}"%"
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName = #{keyword} and  datadictionaryitem.dataDictionaryId=11)
             </if>
-            <if test="id!=null and id!=''">
-                and id =#{id}
+            <if test="id!=null and id !=''">
+                and id like "%"#{id}"%"
             </if>
             <if test="remarks!=null and remarks!=''">
-                and remarks =#{remarks}
+                and remarks like "%"#{remarks}"%"
             </if>
-            <if test="address!=null and address!=''">
-                and address =#{address}
+            <if test="address!=null and address !=''">
+                and address like "%"#{address}"%"
             </if>
             <if test="checkStateItem!=null">
                 <if test="checkStateItem.dataDictionaryItemId!=0">
@@ -376,20 +375,20 @@
         select * from t_pr_secondarytest
         <where>
             <if test="keyword!='' and keyword!=null">
-                or wastesName= #{keyword}
-                or id = #{keyword}
-                or address = #{keyword}
-                or remarks = #{keyword}
+                or wastesName like "%"#{keyword}"%"
+                or id like "%"#{keyword}"%"
+                or address like "%"#{keyword}"%"
+                or remarks like "%"#{keyword}"%"
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName = #{keyword} and  datadictionaryitem.dataDictionaryId=11)
             </if>
             <if test="id!=null and id!=''">
-                and id =#{id}
+                and id like "%"#{id}"%"
             </if>
             <if test="remarks!=null and remarks!=''">
-                and remarks =#{remarks}
+                and remarks like "%"#{remarks}"%"
             </if>
             <if test="address!=null and address!=''">
-                and address =#{address}
+                and address like "%"#{address}"%"
             </if>
             <if test="checkStateItem!=null">
                 <if test="checkStateItem.dataDictionaryItemId!=0">
@@ -409,20 +408,20 @@
         select count(*)  from t_pr_secondarytest
         <where>
             <if test="keyword!='' and keyword!=null">
-                or wastesName= #{keyword}
-                or id = #{keyword}
-                or address = #{keyword}
-                or remarks = #{keyword}
+                or wastesName like "%"#{keyword}"%"
+                or id like "%"#{keyword}"%"
+                or address like "%"#{keyword}"%"
+                or remarks like "%"#{keyword}"%"
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName = #{keyword} and  datadictionaryitem.dataDictionaryId=11)
             </if>
             <if test="id!=null and id!=''">
-                and id =#{id}
+                and id like "%"#{id}"%"
             </if>
             <if test="remarks!=null and remarks!=''">
-                and remarks =#{remarks}
+                and remarks like "%"#{remarks}"%"
             </if>
             <if test="address!=null and address!=''">
-                and address =#{address}
+                and address like "%"#{address}"%"
             </if>
             <if test="checkStateItem!=null">
                 <if test="checkStateItem.dataDictionaryItemId!=0">
