@@ -11,8 +11,13 @@ import java.util.List;
 public class CityServiceImpl implements CityService {
     @Autowired
     CityMapper cityMapper;
+
+
     @Override
     public List<City> getCity(String provinceId) {
         return cityMapper.getCity(provinceId);
     }
+
+    @Override
+    public List<City> listCity() { return cityMapper.listCity(); }
 }

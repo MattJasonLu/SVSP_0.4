@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface CityService {
     List<City> getCity(String provinceId);
+    List<City> listCity();
 }
