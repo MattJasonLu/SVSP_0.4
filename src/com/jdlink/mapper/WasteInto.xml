@@ -115,7 +115,7 @@
 
     <!--更新次生送样-->
     <update id="updateSecondarySampleAnalysis" parameterType="SecondarySample">
-        update t_pr_secondarysample set sendingPerson=#{sendingPerson},address=#{address},secondaryPointId=#{secondaryPointItem.dataDictionaryItemId};
+        update t_pr_secondarysample set sendingPerson=#{sendingPerson},address=#{address},secondaryPointId=#{secondaryPointItem.dataDictionaryItemId} where id=#{id};
     </update>
     
     <delete id="deleteSecondarySampleItemById" parameterType="String">
