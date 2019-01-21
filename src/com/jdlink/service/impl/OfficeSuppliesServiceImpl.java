@@ -80,4 +80,24 @@ public class OfficeSuppliesServiceImpl implements OfficeSuppliesService {
     public void addOfficeSuppliesOutbound(OfficeSuppliesOutbound officeSuppliesOutbound) {
         officeSuppliesMapper.addOfficeSuppliesOutbound(officeSuppliesOutbound);
     }
+
+    @Override
+    public OfficeSuppliesItem getOfficeSuppliesInboundItemById(String id) {
+        return officeSuppliesMapper.getOfficeSuppliesInboundItemById(id);
+    }
+
+    @Override
+    public void updateOfficeSuppliesInboundItem(OfficeSuppliesItem officeSuppliesItem) {
+        officeSuppliesMapper.updateOfficeSuppliesInboundItem(officeSuppliesItem);
+    }
+
+    @Override
+    public OfficeSuppliesItem getOfficeSuppliesOutboundItemById(String id) {
+        return officeSuppliesMapper.getOfficeSuppliesOutboundItemById(id);
+    }
+
+    @Override
+    public void updateOfficeSuppliesOutboundItem(OfficeSuppliesItem officeSuppliesItem) {
+        officeSuppliesMapper.updateOfficeSuppliesOutboundItem(officeSuppliesItem);
+    }
 }

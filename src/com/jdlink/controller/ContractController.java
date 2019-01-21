@@ -1121,8 +1121,8 @@ public class ContractController {
         try {
 
             Contract contract = contractService.getByContractId(contractId);
-            JSONArray array3 = JSONArray.fromArray(TicketRate1.values());
-            res.put("ticketRateStrList1", array3);
+//            JSONArray array3 = JSONArray.fromArray(TicketRate1.values());
+//            res.put("ticketRateStrList1", array3);
             //查询客户list形式返回
             List client = clientService.list();
             JSONArray json = JSONArray.fromObject(client);
