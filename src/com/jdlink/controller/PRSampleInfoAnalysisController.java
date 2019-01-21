@@ -143,7 +143,7 @@ public class PRSampleInfoAnalysisController {
                 System.out.println();
             }
 
-            for (int i = 1; i < data.length; i++) {
+            for (int i = 2; i < data.length; i++) {
                 SampleInfoAnalysis sampleInfoAnalysis = new SampleInfoAnalysis();
                 // 如果样品编号存在则赋值
                 System.out.println("w:"+data[i][18].toString());
@@ -206,11 +206,16 @@ public class PRSampleInfoAnalysisController {
 //                sampleInfoAnalysis.setSignDate(DateUtil.getDateFromStr(data[i][19].toString()));
                 sampleInfoAnalysis.setRemark(data[i][17].toString());
                 sampleInfoAnalysis.setCheckState(CheckState.NewBuild);
-                if(sampleInfoAnalysisService.getById(sampleInfoAnalysis.getId()) == null){
-                    sampleInfoAnalysisService.add(sampleInfoAnalysis);
-                }else {
-                    sampleInfoAnalysisService.update(sampleInfoAnalysis);
+                try {
+                    if(sampleInfoAnalysisService.getById(sampleInfoAnalysis.getId()) == null){
+                        sampleInfoAnalysisService.add(sampleInfoAnalysis);
+                    }else {
+                        sampleInfoAnalysisService.update(sampleInfoAnalysis);
+                    }
+                }catch (Exception e) {
+                    e.printStackTrace();
                 }
+
             }
             res.put("status", "success");
             res.put("message", "导入成功");

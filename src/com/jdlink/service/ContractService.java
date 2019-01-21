@@ -155,4 +155,6 @@ public interface ContractService {
      * 获取合同条目（包含理化性质）
      */
     List<QuotationItem> getQuotationItemList();
+
+    int searchContractVolumeCount(QuotationItem quotationItem);
 }

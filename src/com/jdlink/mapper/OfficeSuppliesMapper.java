@@ -22,6 +22,13 @@ public interface OfficeSuppliesMapper {
     void addOfficeSuppliesInbound(OfficeSuppliesInbound officeSuppliesInbound);
 
     /**
+     * 获取办公用品入库单中前缀匹配的单据数量
+     * @param prefix 前缀
+     * @return 单据数量
+     */
+    int getOfficeSupplierInboundCountByPrefix(String prefix);
+
+    /**
      * 获取办公用品出库单
      * @param officeSuppliesItem 办公用品条目
      * @return 办公用品出库单

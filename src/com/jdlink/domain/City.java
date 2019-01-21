@@ -1,40 +1,61 @@
 package com.jdlink.domain;
 
 public class City {
-    String cityid;
-    String cityname;
-    String provincedId;
+    /**
+     *  城市编号
+     */
+    private String cityId;
+    /**
+     * 城市名
+     */
+    private String cityName;
+    /**
+     * 省份编号
+     */
+    private String provinceId;
+    /**
+     * 产废单位数
+     */
+    private int number;
 
-    public String getCityid() {
-        return cityid;
+    public int getNumber() {
+        return number;
     }
 
-    public void setCityid(String cityid) {
-        this.cityid = cityid;
+    public void setNumber(int number) {
+        this.number = number;
     }
 
-    public String getCityname() {
-        return cityname;
+    public String getCityId() {
+        return cityId;
     }
 
-    public void setCityname(String cityname) {
-        this.cityname = cityname;
+    public void setCityId(String cityId) {
+        this.cityId = cityId;
     }
 
-    public String getProvincedId() {
-        return provincedId;
+    public String getCityName() {
+        return cityName;
     }
 
-    public void setProvincedId(String provincedId) {
-        this.provincedId = provincedId;
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getProvinceId() {
+        return provinceId;
+    }
+
+    public void setProvinceId(String provinceId) {
+        this.provinceId = provinceId;
     }
 
     @Override
     public String toString() {
         return "City{" +
-                "cityid='" + cityid + '\'' +
-                ", cityname='" + cityname + '\'' +
-                ", provincedId='" + provincedId + '\'' +
+                "cityId='" + cityId + '\'' +
+                ", cityName='" + cityName + '\'' +
+                ", provinceId='" + provinceId + '\'' +
                 '}';
     }
 }

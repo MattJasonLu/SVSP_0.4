@@ -46,6 +46,26 @@ public class RandomUtil {
     }
 
     /**
+     * 产生8位带字母和数字的字符串
+     * @return 带字母和数字的字符串
+     */
+    public static String getRandomEightChar() {
+        String val = "";
+        Random random = new Random();
+        for ( int i = 0; i < 8; i++ ) {
+            String str = random.nextInt( 2 ) % 2 == 0 ? "num" : "char";
+            if ( "char".equalsIgnoreCase( str ) ) { // 产生字母
+                int nextInt = random.nextInt( 2 ) % 2 == 0 ? 65 : 97;
+                // System.out.println(nextInt + "!!!!"); 1,0,1,1,1,0,0
+                val += (char) ( nextInt + random.nextInt( 26 ) );
+            } else if ( "num".equalsIgnoreCase( str ) ) { // 产生数字
+                val += String.valueOf( random.nextInt( 10 ) );
+            }
+        }
+        return val;
+    }
+
+    /**
      * 根据当前时间及数据库数据数量计算编号
      * @return 编号
      */

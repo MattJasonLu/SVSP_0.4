@@ -387,7 +387,7 @@ function setSewageList(result) {
                         case (2):
                             // 采样点
                             if(obj.sewagePointItem!=null){
-                                if(obj.sampleTime==''){
+                                if(obj.sampleTime==''||obj.sampleTime=='null'||obj.sampleTime==null){
                                     $(this).html((obj.sewagePointItem.dictionaryItemName));
                                 }
                                 else

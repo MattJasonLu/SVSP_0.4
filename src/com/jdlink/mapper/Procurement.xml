@@ -644,6 +644,21 @@
         </if>
     </select>
 
+
+
+    <!--&lt;!&ndash;采购计划费用汇总表查询&ndash;&gt;-->
+    <!--<select id="searchProcurementPlanTotal" parameterType="ProcurementPlanItem" resultMap="ProcurementPlanItemRM">-->
+        <!--select * from t_pr_procumentplanitem-->
+        <!--<where>-->
+            <!--<if test="keywords!='' and keywords!=''">-->
+                <!---->
+            <!--</if>-->
+            <!---->
+        <!--</where>-->
+    <!--</select>-->
+    
+    
+    
     <select id="searchProcurementPlanItemTotal" parameterType="ProcurementPlanItem" resultType="int">
         select count(*) from t_pr_procumentplanitem as a join t_pr_procumentplan as b on
         a.procurementPlanId=b.procurementPlanId

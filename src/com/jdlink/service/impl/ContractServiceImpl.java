@@ -433,4 +433,9 @@ contractMapper.updateFreight2(id);
         return contractMapper.getQuotationItemList();
     }
 
+    @Override
+    public int searchContractVolumeCount(QuotationItem quotationItem) {
+        return contractMapper.searchContractVolumeCount(quotationItem);
+    }
+
 }
