@@ -123,4 +123,41 @@
 
     <!--*********************************************办公用品出库*********************************************-->
 
+    <!--*********************************************办公用品条目*********************************************-->
+
+    <!--获取办公用品入库单条目-->
+    <select id="getOfficeSuppliesInboundItemById" resultMap="OfficeSuppliesItemRM">
+        select * from t_pr_officesuppliesinbounditem where itemId = #{0};
+    </select>
+
+    <!--更新办公用品条目-->
+    <update id="updateOfficeSuppliesInboundItem">
+        update t_pr_officesuppliesinbounditem set inboundId=#{inboundId}, outboundId=#{outboundId},
+        supplierId=#{supplier.supplierId}, itemCode=#{itemCode}, itemName=#{itemName},
+        itemSpecifications=#{itemSpecifications}, unitDataItemId=#{unitDataItem.dataDictionaryItemId},
+        itemAmount=#{itemAmount}, leftAmount=#{leftAmount}, taxUnitPrice=#{taxUnitPrice},
+        unitPrice=#{unitPrice}, totalTaxPrice=#{totalTaxPrice}, totalPrice=#{totalPrice},
+        inboundDate=#{inboundDate}, outboundDate=#{outboundDate}, author=#{author}, remark=#{remark}
+        where itemId=#{itemId};
+    </update>
+
+    <!--获取办公用品出库单条目-->
+    <select id="getOfficeSuppliesOutboundItemById" resultMap="OfficeSuppliesItemRM">
+        select * from t_pr_officesuppliesoutbounditem where itemId = #{0};
+    </select>
+
+    <!--更新办公用品条目-->
+    <update id="updateOfficeSuppliesOutboundItem">
+        update t_pr_officesuppliesoutbounditem set inboundId=#{inboundId}, outboundId=#{outboundId},
+        supplierId=#{supplier.supplierId}, itemCode=#{itemCode}, itemName=#{itemName},
+        itemSpecifications=#{itemSpecifications}, unitDataItemId=#{unitDataItem.dataDictionaryItemId},
+        itemAmount=#{itemAmount}, leftAmount=#{leftAmount}, taxUnitPrice=#{taxUnitPrice},
+        unitPrice=#{unitPrice}, totalTaxPrice=#{totalTaxPrice}, totalPrice=#{totalPrice},
+        inboundDate=#{inboundDate}, outboundDate=#{outboundDate}, author=#{author}, remark=#{remark}
+        where itemId=#{itemId};
+    </update>
+
+    <!--*********************************************办公用品条目*********************************************-->
+
+
 </mapper>

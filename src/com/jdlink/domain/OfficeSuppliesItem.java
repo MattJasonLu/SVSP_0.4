@@ -50,7 +50,7 @@ public class OfficeSuppliesItem {
      */
     private Float leftAmount;
     /**
-     * 含税单位
+     * 含税单价
      */
     private Float taxUnitPrice;
     /**

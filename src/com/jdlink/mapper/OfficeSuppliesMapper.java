@@ -41,4 +41,30 @@ public interface OfficeSuppliesMapper {
      */
     void addOfficeSuppliesOutbound(OfficeSuppliesOutbound officeSuppliesOutbound);
 
+    /**
+     * 通过条目编号获取办公用品条目
+     * @param id 编号
+     * @return 办公用品条目
+     */
+    OfficeSuppliesItem getOfficeSuppliesInboundItemById(String id);
+
+    /**
+     * 更新办公用品入库单条目
+     * @param officeSuppliesItem 办公用品入库单条目
+     */
+    void updateOfficeSuppliesInboundItem(OfficeSuppliesItem officeSuppliesItem);
+
+    /**
+     * 通过条目编号获取办公用品条目
+     * @param id 编号
+     * @return 办公用品条目
+     */
+    OfficeSuppliesItem getOfficeSuppliesOutboundItemById(String id);
+
+    /**
+     * 更新办公用品出库单条目
+     * @param officeSuppliesItem 办公用品出库单条目
+     */
+    void updateOfficeSuppliesOutboundItem(OfficeSuppliesItem officeSuppliesItem);
+
 }
