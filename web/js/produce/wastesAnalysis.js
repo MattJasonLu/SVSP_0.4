@@ -228,7 +228,7 @@ function setDataList(result) {
         clonedTr.find("td[name='wastesCode']").text(obj.wastesCode);
         if(obj.formType != null)
             clonedTr.find("td[name='formType']").text(obj.formType.name);
-        clonedTr.find("td[name='PH']").text(setNumber2Line(parseFloat(obj.PH).toFixed(2)));
+        clonedTr.find("td[name='PH']").text(setNumber2Line(parseFloat(obj.PH).toFixed(0)));
         clonedTr.find("td[name='ash']").text(setNumber2Line(parseFloat(obj.ash).toFixed(2)));
         clonedTr.find("td[name='water']").text(setNumber2Line(parseFloat(obj.water).toFixed(2)));
         clonedTr.find("td[name='heat']").text(setNumber2Line(parseFloat(obj.heat).toFixed(2)));

@@ -6091,6 +6091,10 @@ function adjustNewContract() {
     $("#Yes").hide()
     $("#No").hide()
 
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 6
+    });
 
     //危废编码赋值
     $.ajax({
@@ -6244,10 +6248,7 @@ function adjustNewContract() {
     });
 
 
-    $('.selectpicker').selectpicker({
-        language: 'zh_CN',
-        size: 6
-    });
+
 
 
     //赋值
@@ -6399,37 +6400,44 @@ function adjustNewContract() {
                             })
 
                             cloneTr.children('td').eq(12).html(item.picture);
+
                             //危废编码赋值
-                            $.ajax({
-                                type: 'POST',
-                                url: "getWastesInfoList",
-                                async: false,
-                                dataType: "json",
-                                contentType: "application/json;charset=utf-8",
-                                success: function (result) {
-                                    if (result != undefined && result.status == "success") {
-                                        // console.log(result);
-                                        var obj = eval(result);
-                                        var wastesCode = cloneTr.children('td').eq(1).find('select');
-                                        wastesCode.children().remove();
-                                        $.each(obj.data, function (index, item) {
-                                            var option = $('<option/>');
-                                            option.val(item.code);
-                                            option.text(item.code);
-                                            wastesCode.append(option);
-                                        });
-                                        wastesCode.selectpicker('val', item.wastesCode);
-                                        wastesCode.removeAttr('id');
-                                        $('.selectpicker').selectpicker('refresh');
-                                    }
-                                    else {
-                                        alert(result.message);
-                                    }
-                                },
-                                error: function (result) {
-                                    console.log(result);
-                                }
-                            });
+                            //==>优化
+                            var wastesCode = cloneTr.children('td').eq(1).find('select');
+                            wastesCode.selectpicker('val', item.wastesCode);
+                            // $('.selectpicker').selectpicker('refresh');
+
+
+                            // $.ajax({
+                            //     type: 'POST',
+                            //     url: "getWastesInfoList",
+                            //     async: false,
+                            //     dataType: "json",
+                            //     contentType: "application/json;charset=utf-8",
+                            //     success: function (result) {
+                            //         if (result != undefined && result.status == "success") {
+                            //             // console.log(result);
+                            //             var obj = eval(result);
+                            //             var wastesCode = cloneTr.children('td').eq(1).find('select');
+                            //             wastesCode.children().remove();
+                            //             $.each(obj.data, function (index, item) {
+                            //                 var option = $('<option/>');
+                            //                 option.val(item.code);
+                            //                 option.text(item.code);
+                            //                 wastesCode.append(option);
+                            //             });
+                            //             wastesCode.selectpicker('val', item.wastesCode);
+                            //             wastesCode.removeAttr('id');
+                            //             $('.selectpicker').selectpicker('refresh');
+                            //         }
+                            //         else {
+                            //             alert(result.message);
+                            //         }
+                            //     },
+                            //     error: function (result) {
+                            //         console.log(result);
+                            //     }
+                            // });
 
                             cloneTr.removeAttr('id');
                             cloneTr.insertAfter(tr);
@@ -6525,37 +6533,42 @@ function adjustNewContract() {
                                 cloneTr.children('td').eq(4).children('select').val(item.unitDataItem.dataDictionaryItemId);
                             }
                             cloneTr.children('td').eq(9).children('input').val(item.remarks);
+
+
                             //危废编码赋值
-                            $.ajax({
-                                type: 'POST',
-                                url: "getWastesInfoList",
-                                async: false,
-                                dataType: "json",
-                                contentType: "application/json;charset=utf-8",
-                                success: function (result) {
-                                    if (result != undefined && result.status == "success") {
-                                        // console.log(result);
-                                        var obj = eval(result);
-                                        var wastesCode = cloneTr.children('td').eq(1).find('select');
-                                        wastesCode.children().remove();
-                                        $.each(obj.data, function (index, item) {
-                                            var option = $('<option/>');
-                                            option.val(item.code);
-                                            option.text(item.code);
-                                            wastesCode.append(option);
-                                        });
-                                        cloneTr.children('td').eq(1).find('select').selectpicker('val', item.wastesCode);
-                                        wastesCode.removeAttr('id');
-                                        $('.selectpicker').selectpicker('refresh');
-                                    }
-                                    else {
-                                        alert(result.message);
-                                    }
-                                },
-                                error: function (result) {
-                                    console.log(result);
-                                }
-                            });
+                            //==>优化
+                            var wastesCode = cloneTr.children('td').eq(1).find('select');
+                            wastesCode.selectpicker('val', item.wastesCode);
+                            // $.ajax({
+                            //     type: 'POST',
+                            //     url: "getWastesInfoList",
+                            //     async: false,
+                            //     dataType: "json",
+                            //     contentType: "application/json;charset=utf-8",
+                            //     success: function (result) {
+                            //         if (result != undefined && result.status == "success") {
+                            //             // console.log(result);
+                            //             var obj = eval(result);
+                            //             var wastesCode = cloneTr.children('td').eq(1).find('select');
+                            //             wastesCode.children().remove();
+                            //             $.each(obj.data, function (index, item) {
+                            //                 var option = $('<option/>');
+                            //                 option.val(item.code);
+                            //                 option.text(item.code);
+                            //                 wastesCode.append(option);
+                            //             });
+                            //             cloneTr.children('td').eq(1).find('select').selectpicker('val', item.wastesCode);
+                            //             wastesCode.removeAttr('id');
+                            //             $('.selectpicker').selectpicker('refresh');
+                            //         }
+                            //         else {
+                            //             alert(result.message);
+                            //         }
+                            //     },
+                            //     error: function (result) {
+                            //         console.log(result);
+                            //     }
+                            // });
 
                             //上传文件复制
                             cloneTr.children('td').eq(10).children('input').text(item.picture);

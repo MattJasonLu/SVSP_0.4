@@ -4,7 +4,7 @@
 
 var isSearch = false;
 var currentPage = 1;                          //当前页数
-var data;
+var data1;
 
 array = [];//存放所有的tr
 array1 = [];//存放目标的tr

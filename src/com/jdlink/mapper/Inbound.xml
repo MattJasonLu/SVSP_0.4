@@ -304,7 +304,7 @@
         (#{inboundOrderId}, #{inboundDate}, #{wareHouse.wareHouseId}, #{boundType},
         #{keeperId}, #{directorId}, #{approverId}, #{checkState}, #{remarks},
         #{creatorId}, #{createDate}, #{departmentId}, #{companyId}, #{modifierId}, #{modifyDate},
-        #{recordState}, 0, NOW(), #{checkStateItem.dataDictionaryItemId},
+        #{recordState}, 0, NOW(),75,
         #{recordStateItem.dataDictionaryItemId});
         <if test="inboundOrderItemList.size() > 0">
             <foreach collection="inboundOrderItemList" item="inboundOrderItem" index="index">
