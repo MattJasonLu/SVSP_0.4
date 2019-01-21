@@ -73,7 +73,6 @@
     <!--通过报价单查询危废信息-->
     <select id="getQuotationItem" resultMap="QuotationItemRM">
         select * from t_quotationitem where t_quotationitem.contractId=#{contractId} order by wastesCode;
-
     </select>
     <insert id="add" parameterType="Contract">
         insert into t_contract (contractId,contractType, companyName, clientId, contractVersion,
@@ -475,19 +474,23 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         <result property="chlorineContent" column="chlorine"/>
         <result property="fluorineContent" column="fluorine"/>
         <result property="phosphorusContent" column="phosphorus"/>
+        <result property="startDate" column="startDate"/>
         <association property="contract" column="contractId" select="getContractById"/>
         <association property="client" column="clientId" select="getClient"/>
         <collection property="packageTypeItem" column="packageTypeId" select="getPackageTypeItem"/>
         <collection property="transportItem" column="transportId" select="getTransportItem"/>
         <collection property="unitDataItem" column="unitId" select="getUnitDataItem"/>
     </resultMap>
+
     <select id="getContractById" resultType="Contract">
         select * from t_contract where contractId=#{contractId};
     </select>
+
     <select id="contractVolume" resultType="int">
       select  count(*) from t_quotationitem  where
-  t_quotationitem.contractId in(select contractId from t_contract where  contractType is NOT  NULL  and period is NULL and contractContent is NULL  and  modelVersion is null);
+      t_quotationitem.contractId in(select contractId from t_contract where  contractType is NOT  NULL  and period is NULL and contractContent is NULL  and  modelVersion is null);
     </select>
+
     <select id="ContractList" resultMap="QuotationItemRM">
         select * from t_quotationitem where t_quotationitem.contractId in(select contractId from t_contract where
         contractType is NOT NULL and period is NULL and contractContent is NULL and modelVersion is null and checkStateId!=69)
@@ -497,6 +500,23 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         </if>
     </select>
 
+    <!--根据签订日期范围查询合同明细:统计图表-->
+    <select id="getQuotationItemByRange" resultMap="QuotationItemRM">
+        select SUM(a.contractAmount) as contractAmount,b.beginTime as startDate from t_quotationitem as a left join t_contract as b
+        on a.contractId=b.contractId
+        <where>
+            <if test="startDate != null and startDate != ''">
+            <![CDATA[AND DATE_FORMAT(b.beginTime, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+            <![CDATA[AND DATE_FORMAT(b.beginTime, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')]]>
+            </if>
+            <if test="1==1">
+                AND b.checkStateId != 69
+            </if>
+        </where>
+        GROUP BY DATE_FORMAT(b.beginTime, '%Y%m') ORDER BY b.beginTime ASC;
+    </select>
 
     <!--插入文件-->
     <update id="setFilePath" parameterType="QuotationItem">

@@ -269,6 +269,9 @@ contractMapper.updateFreight2(id);
     }
 
     @Override
+    public List<QuotationItem> getQuotationItemByRange(Date startDate, Date endDate) { return contractMapper.getQuotationItemByRange(startDate,endDate); }
+
+    @Override
     public int contractVolume() {
         return contractMapper.contractVolume();
     }

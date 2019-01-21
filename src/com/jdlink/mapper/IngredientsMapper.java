@@ -67,6 +67,8 @@ public interface IngredientsMapper {
     void reduceOldInventory(Ingredients ingredients);
 
     List<Ingredients> getIngredientsInItemByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("equipment")Equipment equipment);
+
+    List<Ingredients> getIngredientsInItemAmountByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
     /**
      * 用于判断库存表中该物品在某仓库中是否存在库存
      * @param ingredients
@@ -169,6 +171,7 @@ public interface IngredientsMapper {
     void delIngredientsOutItem(Ingredients ingredients);
 
     List<Ingredients> getIngredientsOutItemByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("equipment")Equipment equipment);
+    List<Ingredients> getIngredientsOutItemAmountByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
     int countOutItem();
     int searchOutItemCount(Ingredients ingredients);
     List<Ingredients> listPageOutItem(Page page);

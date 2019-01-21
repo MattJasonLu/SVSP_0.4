@@ -7,6 +7,7 @@ import com.jdlink.domain.Page;
 import com.jdlink.mapper.InboundMapper;
 import com.jdlink.service.InboundService;
 import com.jdlink.util.RandomUtil;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -216,6 +217,16 @@ public class InboundServiceImpl implements InboundService {
     @Override
     public List<InboundOrderItem> getSecondInboundOrderItemByRange(Date startDate, Date endDate) {
         return inboundMapper.getSecondInboundOrderItemByRange(startDate, endDate);
+    }
+
+    @Override
+    public List<InboundOrderItem> getWastesInboundOrderItemAmountByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate){
+        return inboundMapper.getWastesInboundOrderItemAmountByRange(startDate, endDate);
+    }
+
+    @Override
+    public List<InboundOrderItem> getSecondInboundOrderItemAmountByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate) {
+        return  inboundMapper.getSecondInboundOrderItemAmountByRange(startDate, endDate);
     }
 
     @Override
