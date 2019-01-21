@@ -5,6 +5,7 @@ import com.jdlink.domain.OfficeSuppliesInbound;
 import com.jdlink.domain.OfficeSuppliesItem;
 import com.jdlink.domain.OfficeSuppliesOutbound;
 
+import java.util.Date;
 import java.util.List;
 
 public interface OfficeSuppliesService {
@@ -21,6 +22,19 @@ public interface OfficeSuppliesService {
      * @param officeSuppliesInbound 办公用品入库单
      */
     void addOfficeSuppliesInbound(OfficeSuppliesInbound officeSuppliesInbound);
+
+    /**
+     * 获取办公用品入库单中前缀匹配的单据数量
+     * @param prefix 前缀
+     * @return 单据数量
+     */
+    int getOfficeSupplierInboundCountByPrefix(String prefix);
+
+    /**
+     * 获取办公用品入库单编号
+     * @return 入库单编号
+     */
+    String getOfficeSupplierInboundId(Date date);
 
     /**
      * 获取办公用品出库单

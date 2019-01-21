@@ -395,12 +395,13 @@ public class WasteIntoController {
                 }
             }
             Map<String, SecondarySample> map = new HashMap<>();
-            List<SecondarySampleItem> secondarySampleItemArrayList = new ArrayList<>();
+
             String id1 = "";
             for (int i = 2; i < data.length; i++) {
                 if(data[i][0].toString()!="null"){
                 String id = data[i][0].toString();
                 SecondarySampleItem secondarySampleItem = new SecondarySampleItem();
+                List<SecondarySampleItem> secondarySampleItemArrayList = new ArrayList<>();
                 //map内不存在即添加公共数据，存在即添加List内数据
                 if (!map.keySet().contains(id)) {
                     map.put(id, new SecondarySample());
@@ -410,7 +411,6 @@ public class WasteIntoController {
                     int dataDictionaryItemId = dictionaryService.getdatadictionaryitemIdByName(data[i][2].toString(), 39);
                     secondaryPointItem.setDataDictionaryItemId(dataDictionaryItemId);
                     map.get(id).setSecondaryPointItem(secondaryPointItem);
-                    map.get(id).setAddress(data[i][2].toString());
                     map.get(id).setCreationDate(DateUtil.getDateFromStr(data[i][7].toString()));
                     //新存储一个id对象时，将以下两个累计数据清零
                     secondarySampleItemArrayList = new ArrayList<>();
