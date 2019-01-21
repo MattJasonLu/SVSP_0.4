@@ -1,17 +1,47 @@
+var monthInAndOutList = [50.19,510,13.16,19.1,202.0,5.1];   // 月份出入库数（本月出入数）
+var cityOfProduceCompanyNumberList = [['常州',435],['苏州',552],['溧阳',20],['江阴',20],['其他',101]];   // 产废单位城市分布数量（产废城市分布）
+var newCityOfProduceCompanyNumberList = [];   // 城市分布饼状图数据
+var cityList = [];  // 城市数组
+var outAndInPercentList = [['危废',0.8],['次生',0.52],['辅料',0.34]];              // 危废/次生/辅料 出入库百分比：库存/入库
+var wastesAmountList = [[3.70,2.20,1.50],[4.20,1.82,2.32],[3.92,1.91,2.01],[3.88,2.34,1.54],[4.80,2.90,1.90],[6.60,3.30,3.30],[7.20,3.10,4.10]];   // 危废入库量，出库量，处置量数据数组
+var secondaryAmountList = [[8,2.20,1.50],[4.20,1.82,2.32],[3.92,1.91,2.01],[3.88,2.34,1.54],[4.80,2.90,1.90],[6.60,3.30,3.30],[7.20,3.10,4.10]];   // 次生入库量，出库量，处置量数据数组
+var ingredientAmountList = [[8,2.20,1.50],[4.20,1.82,2.32],[3.92,1.91,2.01],[3.88,2.34,1.54],[4.80,2.90,1.90],[6.60,3.30,3.30],[7.20,3.10,4.10]];   // 辅料入库量，出库量，处置量数据数组
+var wastesContractAmountList = [3949.76, 94.00, 146.40, 20.00, 180.00, 3.50];   // 危废合同签约量数组
+var yearAndMonthList = [201801, 201802, 201803, 201804, 201805, 201806];             // 折线图年月份数组
+var colorList = ['#0175EE',
+    '#D89446','#06B5C6','#25AE4F','#373693','#009E9A','#AC266F'];   // 颜色数组
+var colorNewList = [];    // 城市分布颜色数组
+
+
 /**
  * 加载图表数据
  */
 function loadChartList() {
     loadNavigationList();   // 动态菜单部署
+    cityList = [];   // 清空旧数据
+    getCityData();   // 获取并设置产废单位城市分布数据
+    for(var i = 0; i < cityOfProduceCompanyNumberList.length; i++) {  // 将城市数据插入到城市数组中
+        cityList.push(cityOfProduceCompanyNumberList[i].cityName);
+        colorNewList.push(colorList[i]);
+        var data = {};
+        data.value = cityOfProduceCompanyNumberList[i].number;
+        data.name = cityOfProduceCompanyNumberList[i].cityName;
+        newCityOfProduceCompanyNumberList.push(data);
+    }
+    loadData();   //
 }
 
-$(function () {
+/**
+ * 加载表图
+ */
+function loadData() {
     drawLayer02Label($("#layer02_01 canvas").get(0), "本月危废入库数", 60, 200);  // 第三参数：，第四参数：折线长度
     drawLayer02Label($("#layer02_02 canvas").get(0), "本月辅料入库数", 60, 200);
     drawLayer02Label($("#layer02_03 canvas").get(0), "本月次生入库数", 60, 200);
     drawLayer02Label($("#layer02_04 canvas").get(0), "本月危废出库数", 30, 200);
     drawLayer02Label($("#layer02_05 canvas").get(0), "本月辅料出库数", 30, 200);
     drawLayer02Label($("#layer02_06 canvas").get(0), "本月次生出库数", 30, 200);
+    setMonthOutAndInData();    // 设置月份出入库数据
 
     renderLegend();
     //饼状图
@@ -27,11 +57,23 @@ $(function () {
     var myChart2 = echarts.init(document.getElementById("layer05_right_chart"));
     var myChart3 = echarts.init(document.getElementById("layer06_right_chart"));
     var myChart5 = echarts.init(document.getElementById('layer08_right_bar_graph'));
-    renderLayer04Right(myChart1);
-    renderLayer04Right(myChart2);
-    renderLayer04Right(myChart3);
+    renderLayer04Right(myChart1,wastesAmountList);
+    renderLayer04Right(myChart2,secondaryAmountList);
+    renderLayer04Right(myChart3,ingredientAmountList);
     setBarConfig(myChart5);    // 设置条形图
-});
+}
+
+/**
+ * 设置本月出入库数据
+ */
+function setMonthOutAndInData(){
+    $("#in1").text(monthInAndOutList[0]);  // 危废入库
+    $("#in2").text(monthInAndOutList[1]);   // 辅料入库
+    $("#in3").text(monthInAndOutList[2]);   // 次生入库
+    $("#out1").text(monthInAndOutList[3]);  // 危废出库
+    $("#out2").text(monthInAndOutList[4]);  // 辅料出库
+    $("#out3").text(monthInAndOutList[5]);  // 次生出库
+}
 
 /**
  * 设置每日出入库数
@@ -62,6 +104,8 @@ function drawLayer02Label(canvasObj, text, textBeginX, lineEndX) {
 
 //接入机型占比
 
+
+
 var COLOR = {
     MACHINE: {
         TYPE_A: '#0175EE',
@@ -78,10 +122,9 @@ var COLOR = {
  * 设置产废单位城市分布图节点
  */
 function renderLegend() {
-    drawLegend(COLOR.MACHINE.TYPE_A, 20, '常州');   // 第二参数：Y坐标
-    drawLegend(COLOR.MACHINE.TYPE_B, 40, '苏州');
-    drawLegend(COLOR.MACHINE.TYPE_C, 60, '溧阳');
-    drawLegend(COLOR.MACHINE.TYPE_D, 80, '江阴');
+    for(var i=0; i < cityOfProduceCompanyNumberList.length; i++) {
+        drawLegend(colorList[i%7], 20*(i+1), cityOfProduceCompanyNumberList[i].cityName);   // 第二参数：Y坐标
+    }
 }
 
 /**
@@ -102,9 +145,15 @@ function drawLegend(pointColor, pointY, text) {
  * 设置圆形库存量显示图
  */
 function renderLayer03Right() {
-    drawLayer03Right($("#layer03_right_chart01 canvas").get(0), "#027825", 0.8);   // 危废
-    drawLayer03Right($("#layer03_right_chart02 canvas").get(0), "#006DD6", 0.52);   // 次生
-    drawLayer03Right($("#layer03_right_chart03 canvas").get(0), "#238681", 0.34);   // 辅料
+    for(var i = 0; i < outAndInPercentList.length; i++) {
+        var div = "<div id='layer03_right_chart"+(i+1)+"' class=\"layer03-right-chart\">\n" +
+            "<canvas width=\"130\" height=\"150\" style=\"margin:40px 0 0 20px;\"></canvas>\n" +
+            "<div class=\"layer03-right-chart-label\">"+outAndInPercentList[i][0]+"</div>\n" +
+            "</div>";                           // 定义环状图标签
+        $("#layer03_right_label").after(div);   // 将标签插入
+        var $i = i+1;
+        drawLayer03Right($("#layer03_right_chart"+ $i +" canvas").get(0), colorList[i%7], outAndInPercentList[i][1]);   // 赋值
+    }
 }
 
 /**
@@ -165,7 +214,7 @@ function renderChartBar01() {
                 show: false,
                 x: 'center',
                 y: 'bottom',
-                data: ['常州', '苏州', '溧阳', '江阴']
+                data: cityList
             },
             toolbox: {},
             label: {
@@ -175,7 +224,7 @@ function renderChartBar01() {
                 }
             },
             calculable: true,
-            color: [COLOR.MACHINE.TYPE_A, COLOR.MACHINE.TYPE_B, COLOR.MACHINE.TYPE_C, COLOR.MACHINE.TYPE_D],
+            color: colorNewList,
             series: [
                 {
                     name: '',
@@ -183,128 +232,30 @@ function renderChartBar01() {
                     radius: [40, 80],
                     center: ['50%', '50%'],
                     //roseType : 'area',
-                    data: [
-                        {value: 435, name: '常州'},
-                        {value: 552, name: '苏州'},
-                        {value: 20, name: '溧阳'},
-                        {value: 20, name: '江阴'}
-                    ]
+                    // data: [
+                    //     {value: 435, name: '常州'},
+                    //     {value: 552, name: '苏州'},
+                    //     {value: 20, name: '溧阳'},
+                    //     {value: 20, name: '江阴'}
+                    // ]
+                    data: newCityOfProduceCompanyNumberList
                 }
             ]
-        }
-    );
-
-}
-
-/**
- * 设置曲线图
- */
-function renderLayer04Left() {
-    var myChart = echarts.init(document.getElementById("layer04_left_chart"));
-    myChart.setOption(
-        {
-            title: {
-                text: ''
-            },
-            tooltip: {
-                trigger: 'axis'
-            },
-            legend: {
-                data: []
-            },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '5%',
-                top: '4%',
-                containLabel: true
-            },
-            xAxis:
-                {
-                    type: 'category',
-                    boundaryGap: false,
-                    data: getLatestDays(31),
-                    axisLabel: {
-                        textStyle: {
-                            color: "white", //刻度颜色
-                            fontSize: 8  //刻度大小
-                        },
-                        rotate: 45,
-                        interval: 2
-                    },
-                    axisTick: {show: false},
-                    axisLine: {
-                        show: true,
-                        lineStyle: {
-                            color: '#0B3148',
-                            width: 1,
-                            type: 'solid'
-                        }
-                    }
-                },
-            yAxis:
-                {
-                    type: 'value',
-                    axisTick: {show: false},
-                    axisLabel: {
-                        textStyle: {
-                            color: "white", //刻度颜色
-                            fontSize: 8  //刻度大小
-                        }
-                    },
-                    axisLine: {
-                        show: true,
-                        lineStyle: {
-                            color: '#0B3148',
-                            width: 1,
-                            type: 'solid'
-                        }
-                    },
-                    splitLine: {
-                        show: false
-                    }
-                },
-            tooltip: {
-                formatter: '{c}',
-                backgroundColor: '#FE8501'
-            },
-            series: [
-                {
-                    name: '',
-                    type: 'line',
-                    smooth: true,
-                    areaStyle: {
-                        normal: {
-                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                                offset: 0,
-                                color: '#026B6F'
-                            }, {offset: 1, color: '#012138'}], false),
-                            opacity: 0.2
-                        }
-                    },
-                    itemStyle: {
-                        normal: {
-                            color: '#009991'
-                        },
-                        lineStyle: {
-                            normal: {
-                                color: '#009895',
-                                opacity: 1
-                            }
-                        }
-                    },
-                    symbol: 'none',
-                    data: [48, 52, 45, 46, 89, 120, 110, 100, 88, 96, 88, 45, 78, 67, 89, 103, 104, 56, 45, 104, 112, 132, 120, 110, 89, 95, 90, 89, 102, 110, 110]
-                }
-            ]
-        }
-    );
+        });
 }
 
 /**
  * 设置危废折线图数据
  */
-function renderLayer04Right(myChart) {
+function renderLayer04Right(myChart,list) {
+    var yInList = [];
+    var yOutList = [];
+    var yInventoryList = [];
+    for(var i = 0; i < list.length; i++) {
+        yInList.push(list[i][0]);
+        yOutList.push(list[i][1]);
+        yInventoryList.push(list[i][2]);
+    }
     myChart.setOption({
             title: {
                 text: ''
@@ -350,7 +301,7 @@ function renderLayer04Right(myChart) {
                         type: 'solid'
                     }
                 },
-                data: [201801, 201802, 201803, 201804, 201805, 201806]   // 设置折线图x轴数据
+                data: yearAndMonthList  // 设置折线图x轴数据
             },
             yAxis: {
                 type: 'value',
@@ -388,7 +339,7 @@ function renderLayer04Right(myChart) {
                             }
                         }
                     },
-                    data: [3.70, 4.20, 3.92, 3.88, 4.80, 6.60, 7.20]    // 设置折线图y轴数据
+                    data: yInList    // 设置折线图y轴数据
                 },
                 {
                     name: '处置量',
@@ -404,7 +355,7 @@ function renderLayer04Right(myChart) {
                             }
                         }
                     },
-                    data: [2.20, 1.82, 1.91, 2.34, 2.90, 3.30, 3.10]    // 设置折线图y轴数据
+                    data: yOutList    // 设置折线图y轴数据
                 },
                 {
                     name: '库存量',
@@ -420,7 +371,7 @@ function renderLayer04Right(myChart) {
                             }
                         }
                     },
-                    data: [1.50, 2.32, 2.01, 1.54, 1.90, 3.30, 4.10]   // 设置折线图y轴数据
+                    data: yInventoryList   // 设置折线图y轴数据
                 }
             ]
         }
@@ -431,25 +382,25 @@ function renderLayer04Right(myChart) {
  * 设置条形图
  */
 function setBarConfig(myChart) {
-    var xData = ['2017年1月','2017年2月','2017年3月','2017年4月','2017年5月','2017年6月'];  // X轴数据
-   // var yData1 = [3,9,1,2,8,3];                                // Y轴第一个条形图数据
-     var yData1 = [3949.76,94.00,146.40,20.00,180.00,3.50];                                // Y轴第一个条形图数据
+    var xData = yearAndMonthList;  // X轴数据
+    // var yData1 = [3,9,1,2,8,3];                                // Y轴第一个条形图数据
+    var yData1 = wastesContractAmountList;                                // Y轴第一个条形图数据
     var option = {
         //--------------    标题 title  ----------------
         title: {
             text: '危废合同签约量条形图',
-            textStyle:{                 //---主标题内容样式
-                color:'black'
+            textStyle: {                 //---主标题内容样式
+                color: 'black'
             },
-            subtext:'',          //---副标题内容样式
-            subtextStyle:{
-                color:'black'
+            subtext: '',          //---副标题内容样式
+            subtextStyle: {
+                color: 'black'
             },
-            padding:[0,0,100,100]               //---标题位置,因为图形是是放在一个dom中,因此用padding属性来定位
+            padding: [0, 0, 100, 100]               //---标题位置,因为图形是是放在一个dom中,因此用padding属性来定位
         },
         /* 柱状图颜色 */
         // color: ['#06a45f', '#078ed6', '#e3982f'],
-        color:  '#078ed6',
+        color: '#078ed6',
         /* 四周边距(单位默认px，可以使用百分比) */
         grid: {
             left: 40,
@@ -487,7 +438,7 @@ function setBarConfig(myChart) {
             {
                 name: '月份',                 //---轴名称
                 show: true,                  //---是否显示
-                nameGap:15,                 //---坐标轴名称与轴线之间的距离
+                nameGap: 15,                 //---坐标轴名称与轴线之间的距离
                 type: 'category',
                 //设置轴线的属性
                 axisLine: {
@@ -547,4 +498,68 @@ function setBarConfig(myChart) {
         ]
     };
     myChart.setOption(option);
+}
+
+/**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        search();      //
+    }
+}
+
+/**
+ * 查询功能
+ */
+function search() {
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "searchChartList",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: data = {
+            startDate: $("#search-startDate").val(),
+            endDate: $("#search-endDate").val(),
+        },
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            console.log(result);
+            if (result.data != undefined || result.status == "success") {
+                setData(result.data);
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器错误！");
+        }
+    });
+}
+
+/**
+ * 获取并设置产废单位城市分布数据
+ */
+function getCityData(){
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getCityOfProduceCompanyNumber",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            console.log(result);
+            if (result.data != undefined || result.status == "success") {
+                cityOfProduceCompanyNumberList = [];
+                cityOfProduceCompanyNumberList = result.data;
+                console.log(cityOfProduceCompanyNumberList);
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器错误！");
+        }
+    });
 }

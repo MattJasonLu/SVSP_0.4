@@ -8,24 +8,39 @@
 
     <!--办公用品入库单映射集-->
     <resultMap id="OfficeSuppliesInboundRM" type="OfficeSuppliesInbound" autoMapping="true">
-        <association property="checkStateItem" column="checkStateItemId" select="getDataDictionaryItem"/>
+        <association property="checkStateItem" column="checkStateItemId" select="getCheckStateItem"/>
         <collection property="officeSuppliesItemList" column="inboundId" select="getInboundItemList"/>
     </resultMap>
 
     <!--办公用品出库单映射集-->
     <resultMap id="OfficeSuppliesOutboundRM" type="OfficeSuppliesOutbound" autoMapping="true">
-        <association property="checkStateItem" column="checkStateItemId" select="getDataDictionaryItem"/>
+        <association property="checkStateItem" column="checkStateItemId" select="getCheckStateItem"/>
         <collection property="officeSuppliesItemList" column="outboundId" select="getOutboundItemList"/>
     </resultMap>
 
     <!--单据条目映射集-->
     <resultMap id="OfficeSuppliesItemRM" type="OfficeSuppliesItem" autoMapping="true">
-        <association property="unitDataItem" column="unitDataItemId" select="getDataDictionaryItem"/>
-        <association property="ticketRateItem" column="ticketRateItemId" select="getDataDictionaryItem"/>
+        <association property="supplier" column="supplierId" select="getSupplier"/>
+        <association property="unitDataItem" column="unitDataItemId" select="getUnitDataItem"/>
+        <association property="ticketRateItem" column="ticketRateItemId" select="getTicketRateItem"/>
     </resultMap>
 
+    <!--获取供应商信息-->
+    <select id="getSupplier" resultType="Supplier">
+        select * from t_supplier where supplierId=#{0};
+    </select>
+
     <!--查找数据字典条目-->
-    <select id="getDataDictionaryItem" resultType="DataDictionaryItem">
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{0};
+    </select>
+
+    <!--查找数据字典条目-->
+    <select id="getUnitDataItem" resultType="UnitDataItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{0};
+    </select>
+    <!--查找数据字典条目-->
+    <select id="getTicketRateItem" resultType="TicketRateItem">
         select * from datadictionaryitem where dataDictionaryItemId=#{0};
     </select>
 
@@ -51,18 +66,29 @@
 
     <!--增加办公用品入库单-->
     <insert id="addOfficeSuppliesInbound">
-        insert into t_pr_officesuppliesinbound (inboundId, totalTaxPrice, totalPrice, inboundDate, checkStateItemId) values
-        #{inboundId}, #{totalTaxPrice}, #{totalPrice}, #{inboundDate}, #{checkStateItem.dataDictionaryItemId};
-        <foreach collection="officeSuppliesItemList" item="officeSuppliesItem">
-            insert into t_pr_officesuppliesinbounditem (itemId, inboundId, outboundId, supplierId, itemCode, itemName,
-            itemSpecifications, unitDataItemId, itemAmount, leftAmount, taxUnitPrice, unitPrice, totalTaxPrice, totalPrice,
-            inboundDate, outboundDate, ticketRateItemId, author, createTime, remark) values
-            #{itemId}, #{inboundId}, #{outboundId}, #{supplier.supplierId}, #{itemCode}, #{itemName}, #{itemSpecifications},
-            #{unitDataItem.dataDictionaryItemId}, #{itemAmount}, #{leftAmount}, #{taxUnitPrice}, #{unitPrice}, #{totalTaxPrice},
-            #{totalPrice}, #{inboundDate}, #{outboundDate}, #{ticketRateItem.dataDictionaryItemId}, #{author}, #{createTime},
-            #{remark};
-        </foreach>
+        insert into t_pr_officesuppliesinbound (inboundId, totalTaxPrice, totalPrice, inboundDate, createTime, checkStateItemId) values
+        (#{inboundId}, #{totalTaxPrice}, #{totalPrice}, #{inboundDate}, NOW(), #{checkStateItem.dataDictionaryItemId});
+        <if test="officeSuppliesItemList.size() > 0 ">
+            <foreach collection="officeSuppliesItemList" item="officeSuppliesItem">
+                insert into t_pr_officesuppliesinbounditem (itemId, inboundId, outboundId, supplierId, itemCode, itemName,
+                itemSpecifications, unitDataItemId, itemAmount, leftAmount, taxUnitPrice, unitPrice, totalTaxPrice, totalPrice,
+                inboundDate, outboundDate, ticketRateItemId, author, createTime, remark) values
+                (#{officeSuppliesItem.itemId}, #{officeSuppliesItem.inboundId}, #{officeSuppliesItem.outboundId},
+                #{officeSuppliesItem.supplier.supplierId}, #{officeSuppliesItem.itemCode}, #{officeSuppliesItem.itemName},
+                #{officeSuppliesItem.itemSpecifications}, #{officeSuppliesItem.unitDataItem.dataDictionaryItemId},
+                #{officeSuppliesItem.itemAmount}, #{officeSuppliesItem.leftAmount},
+                #{officeSuppliesItem.taxUnitPrice}, #{officeSuppliesItem.unitPrice}, #{officeSuppliesItem.totalTaxPrice},
+                #{officeSuppliesItem.totalPrice}, #{officeSuppliesItem.inboundDate}, #{officeSuppliesItem.outboundDate},
+                #{officeSuppliesItem.ticketRateItem.dataDictionaryItemId}, #{officeSuppliesItem.author},
+                NOW(), #{officeSuppliesItem.remark});
+            </foreach>
+        </if>
     </insert>
+
+    <!--获取办公用品入库单中前缀匹配的单据数量-->
+    <select id="getOfficeSupplierInboundCountByPrefix" resultType="int">
+        select count(*) from t_pr_officesuppliesinbound where inboundId like #{0}"%";
+    </select>
 
     <!--*********************************************办公用品入库*********************************************-->
 
@@ -76,17 +102,23 @@
 
     <!--增加办公用品出库单-->
     <insert id="addOfficeSuppliesOutbound">
-        insert into t_pr_officesuppliesoutbound (outboundId, totalTaxPrice, totalPrice, outboundDate, checkStateItemId) values
-        #{inboundId}, #{totalTaxPrice}, #{totalPrice}, #{outboundDate}, #{checkStateItem.dataDictionaryItemId};
-        <foreach collection="officeSuppliesItemList" item="officeSuppliesItem">
-            insert into t_pr_officesuppliesoutbounditem (itemId, inboundId, outboundId, supplierId, itemCode, itemName,
-            itemSpecifications, unitDataItemId, itemAmount, leftAmount, taxUnitPrice, unitPrice, totalTaxPrice, totalPrice,
-            inboundDate, outboundDate, ticketRateItemId, author, createTime, remark) values
-            #{itemId}, #{inboundId}, #{outboundId}, #{supplier.supplierId}, #{itemCode}, #{itemName}, #{itemSpecifications},
-            #{unitDataItem.dataDictionaryItemId}, #{itemAmount}, #{leftAmount}, #{taxUnitPrice}, #{unitPrice}, #{totalTaxPrice},
-            #{totalPrice}, #{inboundDate}, #{outboundDate}, #{ticketRateItem.dataDictionaryItemId}, #{author}, #{createTime},
-            #{remark};
-        </foreach>
+        insert into t_pr_officesuppliesoutbound (outboundId, totalTaxPrice, totalPrice, outboundDate, createTime, checkStateItemId) values
+        (#{inboundId}, #{totalTaxPrice}, #{totalPrice}, #{outboundDate}, NOW(), #{checkStateItem.dataDictionaryItemId});
+        <if test="officeSuppliesItemList.size() > 0 ">
+            <foreach collection="officeSuppliesItemList" item="officeSuppliesItem">
+                insert into t_pr_officesuppliesoutbounditem (itemId, inboundId, outboundId, supplierId, itemCode, itemName,
+                itemSpecifications, unitDataItemId, itemAmount, leftAmount, taxUnitPrice, unitPrice, totalTaxPrice, totalPrice,
+                inboundDate, outboundDate, ticketRateItemId, author, createTime, remark) values
+                (#{officeSuppliesItem.itemId}, #{officeSuppliesItem.inboundId}, #{officeSuppliesItem.outboundId},
+                #{officeSuppliesItem.supplier.supplierId}, #{officeSuppliesItem.itemCode}, #{officeSuppliesItem.itemName},
+                #{officeSuppliesItem.itemSpecifications}, #{officeSuppliesItem.unitDataItem.dataDictionaryItemId},
+                #{officeSuppliesItem.itemAmount}, #{officeSuppliesItem.leftAmount},
+                #{officeSuppliesItem.taxUnitPrice}, #{officeSuppliesItem.unitPrice}, #{officeSuppliesItem.totalTaxPrice},
+                #{officeSuppliesItem.totalPrice}, #{officeSuppliesItem.inboundDate}, #{officeSuppliesItem.outboundDate},
+                #{officeSuppliesItem.ticketRateItem.dataDictionaryItemId}, #{officeSuppliesItem.author},
+                NOW(), #{officeSuppliesItem.remark});
+            </foreach>
+        </if>
     </insert>
 
     <!--*********************************************办公用品出库*********************************************-->

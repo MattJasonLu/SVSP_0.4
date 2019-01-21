@@ -4,34 +4,34 @@
 function loadSelect() {
     loadNavigationList();   // 设置动态菜单
     // 设置危废代码
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getWastesInfoList",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            if (result !== undefined) {
-                var data = eval(result);
-                // 高级检索下拉框数据填充
-                var wastesCode = $("select[name='wastesCode']");
-                wastesCode.children().remove();
-                $.each(data.data, function (index, item) {
-                    var option = $('<option />');
-                    option.val(item.code);
-                    option.text(item.code);
-                    wastesCode.append(option);
-                });
-                // wastesCode.get(0).selectedIndex = -1;
-                //刷新下拉数据
-                $('.selectpicker').selectpicker('refresh');
-            } else {
-                console.log("fail: " + result);
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-        }
-    });
+    // $.ajax({
+    //     type: "POST",                       // 方法类型
+    //     url: "getWastesInfoList",                  // url
+    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     dataType: "json",
+    //     success: function (result) {
+    //         if (result !== undefined) {
+    //             var data = eval(result);
+    //             // 高级检索下拉框数据填充
+    //             var wastesCode = $("select[name='wastesCode']");
+    //             wastesCode.children().remove();
+    //             $.each(data.data, function (index, item) {
+    //                 var option = $('<option />');
+    //                 option.val(item.code);
+    //                 option.text(item.code);
+    //                 wastesCode.append(option);
+    //             });
+    //             // wastesCode.get(0).selectedIndex = -1;
+    //             //刷新下拉数据
+    //             $('.selectpicker').selectpicker('refresh');
+    //         } else {
+    //             console.log("fail: " + result);
+    //         }
+    //     },
+    //     error: function (result) {
+    //         console.log("error: " + result);
+    //     }
+    // });
     // $.ajax({
     //     type: "POST",                            // 方法类型
     //     url: "getFormTypeByDataDictionary",                  // url
@@ -82,57 +82,57 @@ function loadSelect() {
     //     }
     // });
     // 处理方式
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "getProcessWayByDataDictionary",                  // url
-        async: false,
-        dataType: "json",
-        success: function (result) {
-            if (result != undefined) {
-                var data = eval(result);
-                var processWay = $("select[name='processWay']");
-                processWay.children().remove();
-                $.each(data.data, function (index, item) {
-                    var option = $('<option />');
-                    option.val(item.dataDictionaryItemId);
-                    option.text(item.dictionaryItemName);
-                    processWay.append(option);
-                });
-                processWay.get(0).selectedIndex = -1;
-            }
-        },
-        error: function (result) {
-
-        }
-    });
+    // $.ajax({
+    //     type: "POST",                            // 方法类型
+    //     url: "getProcessWayByDataDictionary",                  // url
+    //     async: false,
+    //     dataType: "json",
+    //     success: function (result) {
+    //         if (result != undefined) {
+    //             var data = eval(result);
+    //             var processWay = $("select[name='processWay']");
+    //             processWay.children().remove();
+    //             $.each(data.data, function (index, item) {
+    //                 var option = $('<option />');
+    //                 option.val(item.dataDictionaryItemId);
+    //                 option.text(item.dictionaryItemName);
+    //                 processWay.append(option);
+    //             });
+    //             processWay.get(0).selectedIndex = -1;
+    //         }
+    //     },
+    //     error: function (result) {
+    //
+    //     }
+    // });
 
     // 获取仓库数据
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "listWareHouse",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            if (result !== undefined && result.status == "success") {
-                var data = eval(result);
-                // 高级检索下拉框数据填充
-                var warehouse = $("select[name='warehouse']");
-                warehouse.children().remove();
-                $.each(data.data, function (index, item) {
-                    var option = $('<option />');
-                    option.val(item.wareHouseId);
-                    option.text(item.wareHouseName);
-                    warehouse.append(option);
-                });
-                warehouse.get(0).selectedIndex = -1;
-            } else {
-                console.log(result);
-            }
-        },
-        error: function (result) {
-            console.log(result);
-        }
-    });
+    // $.ajax({
+    //     type: "POST",                       // 方法类型
+    //     url: "listWareHouse",                  // url
+    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     dataType: "json",
+    //     success: function (result) {
+    //         if (result !== undefined && result.status == "success") {
+    //             var data = eval(result);
+    //             // 高级检索下拉框数据填充
+    //             var warehouse = $("select[name='warehouse']");
+    //             warehouse.children().remove();
+    //             $.each(data.data, function (index, item) {
+    //                 var option = $('<option />');
+    //                 option.val(item.wareHouseId);
+    //                 option.text(item.wareHouseName);
+    //                 warehouse.append(option);
+    //             });
+    //             warehouse.get(0).selectedIndex = -1;
+    //         } else {
+    //             console.log(result);
+    //         }
+    //     },
+    //     error: function (result) {
+    //         console.log(result);
+    //     }
+    // });
 
     // 设置计量单位
     // $.ajax({
@@ -160,29 +160,55 @@ function loadSelect() {
     // });
 
     // 设置进料方式
+    // $.ajax({
+    //     type: "POST",                            // 方法类型
+    //     url: "getHandleCategoryByDataDictionary",                  // url
+    //     async: false,
+    //     dataType: "json",
+    //     success: function (result) {
+    //         if (result != undefined) {
+    //             var data = eval(result);
+    //             var handleCategory = $("select[name='handleCategory']");
+    //             handleCategory.children().remove();
+    //             $.each(data.data, function (index, item) {
+    //                 var option = $('<option />');
+    //                 option.val(item.dataDictionaryItemId);
+    //                 option.text(item.dictionaryItemName);
+    //                 handleCategory.append(option);
+    //             });
+    //             handleCategory.get(0).selectedIndex = -1;
+    //         }
+    //     },
+    //     error: function (result) {
+    //         console.log(result);
+    //     }
+    // });
+
+    // 设置计量单位
     $.ajax({
         type: "POST",                            // 方法类型
-        url: "getHandleCategoryByDataDictionary",                  // url
+        url: "getUnitByDataDictionary",                  // url
         async: false,
         dataType: "json",
         success: function (result) {
             if (result != undefined) {
                 var data = eval(result);
-                var handleCategory = $("select[name='handleCategory']");
-                handleCategory.children().remove();
+                var unitDataItem = $("select[name='unitDataItem']");
+                unitDataItem.children().remove();
                 $.each(data.data, function (index, item) {
                     var option = $('<option />');
                     option.val(item.dataDictionaryItemId);
                     option.text(item.dictionaryItemName);
-                    handleCategory.append(option);
+                    unitDataItem.append(option);
                 });
-                handleCategory.get(0).selectedIndex = -1;
+                unitDataItem.get(0).selectedIndex = -1;
             }
         },
         error: function (result) {
             console.log(result);
         }
     });
+
     // 设置税率
     $.ajax({
         type: "POST",                            // 方法类型
@@ -207,30 +233,56 @@ function loadSelect() {
             console.log(result);
         }
     });
-    // 设置产废单位
+    // // 设置产废单位
+    // $.ajax({
+    //     type: "POST",                            // 方法类型
+    //     url: "getAllClients",                  // url
+    //     async: false,
+    //     dataType: "json",
+    //     success: function (result) {
+    //         if (result != undefined) {
+    //             var data = eval(result);
+    //             var produceCompany = $("select[name='produceCompany']");
+    //             produceCompany.children().remove();
+    //             $.each(data, function (index, item) {
+    //                 var option = $('<option />');
+    //                 option.val(item.clientId);
+    //                 option.text(item.companyName);
+    //                 produceCompany.append(option);
+    //             });
+    //             produceCompany.selectpicker('val', '');
+    //         }
+    //     },
+    //     error: function (result) {
+    //         console.log(result);
+    //     }
+    // });
+
+    // 设置供应商
     $.ajax({
         type: "POST",                            // 方法类型
-        url: "getAllClients",                  // url
+        url: "listSupplier",                  // url
         async: false,
         dataType: "json",
         success: function (result) {
             if (result != undefined) {
                 var data = eval(result);
-                var produceCompany = $("select[name='produceCompany']");
-                produceCompany.children().remove();
+                var supplier = $("select[name='supplier']");
+                supplier.children().remove();
                 $.each(data, function (index, item) {
                     var option = $('<option />');
-                    option.val(item.clientId);
+                    option.val(item.supplierId);
                     option.text(item.companyName);
-                    produceCompany.append(option);
+                    supplier.append(option);
                 });
-                produceCompany.selectpicker('val', '');
+                supplier.selectpicker('val', '');
             }
         },
         error: function (result) {
             console.log(result);
         }
     });
+
     // 中文重写select 查询为空提示信息
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
@@ -333,28 +385,30 @@ function totalCalculate() {
 function addInboundOrder() {
     var officeSuppliesItemList = [];
     $("#inboundOrderData").children().not("#plusBtn").each(function () {
-        console.log($(this).html());
-        var inboundOrder = {};
-        inboundOrder.supplier = {
+        // console.log($(this).html());
+        var item = {};
+        item.supplier = {
             supplierId: $(this).find("select[name='supplier']").selectpicker('val')
         };
-        inboundOrder.itemCode = $(this).find("input[name='itemCode']").val();
-        inboundOrder.itemName = $(this).find("input[name='itemName']").val();
-        inboundOrder.itemSpecifications = $(this).find("input[name='itemSpecifications']").val();
-        inboundOrder.unitDataItem = {
+        item.itemCode = $(this).find("input[name='itemCode']").val();
+        item.itemName = $(this).find("input[name='itemName']").val();
+        item.itemSpecifications = $(this).find("input[name='itemSpecifications']").val();
+        item.unitDataItem = {
             dataDictionaryItemId: $(this).find("select[name='unitDataItem']").val()
         };
-        inboundOrder.itemAmount = $(this).find("input[name='itemAmount']").val();
-        inboundOrder.taxUnitPrice = $(this).find("input[name='taxUnitPrice']").val();
-        inboundOrder.totalPrice = $(this).find("td[name='totalPrice']").text();
-        inboundOrder.inboundDate = $(this).find("input[name='inboundDate']").val();
-        inboundOrder.ticketRateItem = {
+        item.itemAmount = $(this).find("input[name='itemAmount']").val();
+        item.taxUnitPrice = $(this).find("input[name='taxUnitPrice']").val();
+        item.totalPrice = $(this).find("td[name='totalPrice']").text();
+        item.inboundDate = $(this).find("input[name='inboundDate']").val();
+        item.ticketRateItem = {
             dataDictionaryItemId: $(this).find("select[name='rate']").val()
         };
-        inboundOrder.remarks = $(this).find("input[name='remarks']").val();
-        officeSuppliesItemList.push(inboundOrder);
+        item.remark = $(this).find("input[name='remark']").val();
+        officeSuppliesItemList.push(item);
     });
     var data = {};
+    // 入库单的入库日期设置为条目的第一个
+    data.inboundDate = officeSuppliesItemList[0].inboundDate;
     data.officeSuppliesItemList = officeSuppliesItemList;
     $.ajax({
         type: "POST",                       // 方法类型
