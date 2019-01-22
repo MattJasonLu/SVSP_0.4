@@ -23,13 +23,13 @@ public class OfficeSuppliesServiceImpl implements OfficeSuppliesService {
 
 
     @Override
-    public List<OfficeSuppliesInbound> listOfficeSuppliesInbound(OfficeSuppliesItem officeSuppliesItem) {
+    public List<OfficeSuppliesItem> listOfficeSuppliesInbound(OfficeSuppliesItem officeSuppliesItem) {
         return officeSuppliesMapper.listOfficeSuppliesInbound(officeSuppliesItem);
     }
 
     @Override
-    public int countOfficeSuppliesInboundItem() {
-        return officeSuppliesMapper.countOfficeSuppliesInboundItem();
+    public int countOfficeSuppliesInboundItem(OfficeSuppliesItem officeSuppliesItem) {
+        return officeSuppliesMapper.countOfficeSuppliesInboundItem(officeSuppliesItem);
     }
 
     @Override

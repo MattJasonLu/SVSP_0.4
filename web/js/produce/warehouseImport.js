@@ -39,11 +39,14 @@ function countValue() {
 function totalPage() {
     var totalRecord = 0;
     if (!isSearch) {
+        var data2 = {};
         $.ajax({
             type: "POST",                       // 方法类型
             url: "countOfficeSuppliesInboundItem",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data2),
             dataType: "json",
+            contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     if (result.data > 0) {
@@ -62,18 +65,17 @@ function totalPage() {
     } else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchIngredientsInTotal",                  // url
+            url: "countOfficeSuppliesInboundItem",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 // console.log(result);
-                if (result > 0) {
-                    totalRecord = result;
-                    console.log("总记录数为:" + result);
+                if (result.data > 0) {
+                    totalRecord = result.data;
                 } else {
-                    console.log("fail: " + result);
+                    console.log("fail: " + result.data);
                     totalRecord = 0;
                 }
             },
@@ -408,20 +410,23 @@ function setIngredientsInList(result) {
 function setSeniorSelectedList() {
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getIngredientsInSeniorSelectedList",                  // url
+        url: "getCheckStateDataByDictionary",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
             if (result != undefined) {
                 var data = eval(result);
                 // 高级检索下拉框数据填充
-                var state = $("#search-state");
+                var state = $("#search_checkState");
                 state.children().remove();
-                $.each(data.stateList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    state.append(option);
+                $.each(data.data, function (index, item) {
+                    if (item.dataDictionaryItemId == 69 ||
+                        item.dataDictionaryItemId == 75) {
+                        var option = $('<option />');
+                        option.val(item.dataDictionaryItemId);
+                        option.text(item.dictionaryItemName);
+                        state.append(option);
+                    }
                 });
                 state.get(0).selectedIndex = -1;
             } else {
@@ -441,50 +446,37 @@ function setSeniorSelectedList() {
  */
 function enterSearch() {
     if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
-        searchIngredientIn();      //
+        searchData();      //
     }
 }
 
 /**
  * 查询功能
  */
-function searchIngredientIn() {
+function searchData() {
     isSearch = true;
     var page = {};
     var pageNumber = 1;                       // 显示首页
     page.pageNumber = pageNumber;
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
-    var state = null;
-    if ($("#search-state").val() == 0) state = "新建";//新建
-    if ($("#search-state").val() == 1) state = "已作废";//已作废
-    if ($("#search-state").val() == 2) state = "已出库";//已出库
     var keywords = $.trim($("#searchContent").val());
-    //模糊查询状态字段转换
-    // switch (keywords) {
-    //     case "新建":
-    //         keywords = "NewBuild";
-    //         break;
-    //     case "已作废":
-    //         keywords = "Invalid";
-    //         break;
-    //     case "作废":
-    //         keywords = "Invalid";
-    //         break;
-    //     case "已出库":
-    //         keywords = "OutBounded";
-    //         break;
-    //     case "出库":
-    //         keywords = "OutBounded";
-    //         break;
-    // }
     if ($("#senior").is(':visible')) {
         data1 = {
-            startDate: $("#search-startDate").val(),
-            endDate: $("#search-endDate").val(),
-            id: $.trim($("#search-Id").val()),
-            companyName: $.trim($("#search-companyName").val()),
-            checkStateItem: {dictionaryItemName: state},
+            inboundId: $("#search_inboundId").val(),
+            supplier: {
+                companyName: $("#search_supplierName").val()
+            },
+            itemCode: $("#search_itemCode").val(),
+            itemName: $("#search_itemName").val(),
+            itemSpecifications: $("#search_itemSpecifications").val(),
+            checkStateItem: {
+                dataDictionaryItemId: $("#search_checkState").val()
+            },
+            // 起始时间
+            author: $("#search_startDate").val(),
+            // 结束时间
+            remark: $("#search_endDate").val(),
             page: page
         };
     } else {
@@ -497,7 +489,7 @@ function searchIngredientIn() {
     else {
         $.ajax({
             type: "POST",                            // 方法类型
-            url: "searchIngredientsIn",                 // url
+            url: "listOfficeSuppliesInbound",                 // url
             async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
