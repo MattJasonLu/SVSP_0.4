@@ -41,15 +41,17 @@ function totalPage() {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "totalIngredientsInRecord",                  // url
+            url: "countOfficeSuppliesInboundItem",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
-                if (result > 0) {
-                    totalRecord = result;
-                } else {
-                    console.log("fail: " + result);
-                    totalRecord = 0;
+                if (result != undefined && result.status == "success") {
+                    if (result.data > 0) {
+                        totalRecord = result.data;
+                    } else {
+                        console.log("fail: " + result.data);
+                        totalRecord = 0;
+                    }
                 }
             },
             error: function (result) {
@@ -389,6 +391,8 @@ function setIngredientsInList(result) {
         if (obj.ticketRateItem != null)
         clonedTr.find("td[name='ticketRateItem']").text(obj.ticketRateItem.dictionaryItemName);
         clonedTr.find("td[name='remark']").text(obj.remark);
+        if (obj.checkStateItem != null)
+        clonedTr.find("td[name='checkState']").text(obj.checkStateItem.dictionaryItemName);
         clonedTr.find("td[name='itemId']").text(obj.itemId);
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
@@ -871,13 +875,13 @@ function setViewIngredientsClone(result) {
 /**
  * 作废功能
  */
-function invalidIngredientsIn(item) {
-    var id = getIngredientsInId(item);
-    if ($(item).parent().parent().children().eq(3).text() == '新建') {
+function setInvalid(e) {
+    var id = getIdByMenu(e);
+    // if ($(e).parent().parent().children().eq(3).text() == '新建') {
         if (confirm("是否作废？")) {
             $.ajax({
                 type: "POST",
-                url: "invalidIngredientsIn",
+                url: "setInvalidOfficeSuppliesInboundItem",
                 async: false,
                 data: {
                     id: id
@@ -885,7 +889,7 @@ function invalidIngredientsIn(item) {
                 dataType: "json",
                 success: function (result) {
                     if (result.status == "success") {
-                        alert("作废成功！");
+                        alert(result.message);
                         window.location.reload();
                     } else {
                         alert(result.message);
@@ -897,9 +901,9 @@ function invalidIngredientsIn(item) {
                 }
             });
         }
-    } else {
-        alert("单据不可作废！");
-    }
+    // } else {
+    //     alert("单据不可作废！");
+    // }
 }
 
 /**

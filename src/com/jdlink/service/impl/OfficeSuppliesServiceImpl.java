@@ -28,6 +28,11 @@ public class OfficeSuppliesServiceImpl implements OfficeSuppliesService {
     }
 
     @Override
+    public int countOfficeSuppliesInboundItem() {
+        return officeSuppliesMapper.countOfficeSuppliesInboundItem();
+    }
+
+    @Override
     public void addOfficeSuppliesInbound(OfficeSuppliesInbound officeSuppliesInbound) {
         officeSuppliesMapper.addOfficeSuppliesInbound(officeSuppliesInbound);
     }
@@ -77,6 +82,11 @@ public class OfficeSuppliesServiceImpl implements OfficeSuppliesService {
     }
 
     @Override
+    public int countOfficeSuppliesOutboundItem() {
+        return officeSuppliesMapper.countOfficeSuppliesOutboundItem();
+    }
+
+    @Override
     public void addOfficeSuppliesOutbound(OfficeSuppliesOutbound officeSuppliesOutbound) {
         officeSuppliesMapper.addOfficeSuppliesOutbound(officeSuppliesOutbound);
     }
@@ -92,6 +102,11 @@ public class OfficeSuppliesServiceImpl implements OfficeSuppliesService {
     }
 
     @Override
+    public void setInvalidOfficeSuppliesInboundItem(String id) {
+        officeSuppliesMapper.setInvalidOfficeSuppliesInboundItem(id);
+    }
+
+    @Override
     public OfficeSuppliesItem getOfficeSuppliesOutboundItemById(String id) {
         return officeSuppliesMapper.getOfficeSuppliesOutboundItemById(id);
     }
@@ -99,5 +114,10 @@ public class OfficeSuppliesServiceImpl implements OfficeSuppliesService {
     @Override
     public void updateOfficeSuppliesOutboundItem(OfficeSuppliesItem officeSuppliesItem) {
         officeSuppliesMapper.updateOfficeSuppliesOutboundItem(officeSuppliesItem);
+    }
+
+    @Override
+    public void setInvalidOfficeSuppliesOutboundItem(String id) {
+        officeSuppliesMapper.setInvalidOfficeSuppliesOutboundItem(id);
     }
 }
