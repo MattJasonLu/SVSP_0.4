@@ -1533,7 +1533,10 @@ function viewStock(item) {
                 if (obj.client != null) {
                     $('#proWasteCompany').text(obj.client.companyName);
                 }
-
+                //库容
+                if (obj.client != null) {
+                    $('#capacity').text(obj.client.capacity.toFixed(2));
+                }
                if(obj.stockItemList!=null){
                    var tr = $("#cloneTr1");
 
@@ -1664,7 +1667,7 @@ function approval(item) {
     $('#back').show();
     //完善隐藏
     $('#perfect').hide();//打印隐藏
-    stockId = item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+  var   stockId = item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getStockById",                   // url
@@ -1680,7 +1683,36 @@ function approval(item) {
                 //1赋值
                 //产废单位联系人
                 if (obj.selfEmployed == false) {//说明不是自运单位
-                    $('#transport').text(obj.transport);//运输公司
+
+                    //根据运输供应商赋值
+                    $.ajax({
+                        type: "POST",                       // 方法类型
+                        url: "getSupplierListById",                  // url
+                        data: {'supplierId': obj.transport},
+                        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                        dataType: "json",
+                        //contentType: "application/json; charset=utf-8",
+                        success: function (result) {
+                            if (result != undefined && result.status == "success") {
+                                //console.log(result);
+                                var obj = eval(result.supplier);
+                                console.log(obj);
+                                if (obj != null) {
+                                    $('#transport').text(obj.companyName);//运输公司
+
+                                }
+
+                            }
+                            else {
+                                alert(result.message);
+                            }
+                        },
+                        error: function (result) {
+                            alert("服务器异常！");
+                        }
+                    });
+
+
                     $('#plateNumber').text(obj.plateNumber);//车牌号
                     $('#transportTelephone').text(obj.transportTelephone);//运输公司联系方式
                 }
@@ -1690,25 +1722,102 @@ function approval(item) {
                     $('#transportTelephone').text("");//运输公司联系方式
                 }
                 //赋值产废单位联系人
-                $('#proContactName').text(obj.proContactName);
-                //赋值产废单位电话
-                $('#proTelephone').text(obj.proTelephone);
-                //赋值是否自运单位
-                $('#selfEmployed').prop('checked', obj.selfEmployed);
-                //赋值审批意见
-                $('#opinion').val(obj.opinion);
-                //赋值驳回意见
-                $('#backContent').val(obj.backContent);
-                for (var i = 0; i < obj.wastesList.length; i++) {
-                    if (i > 0) addWastesNewLine();
-                    var $i = i;
-                    $("input[name='wastesList[" + $i + "].name']").val(obj.wastesList[i].name);//废物名称
-                    $("input[name='wastesList[" + $i + "].code']").val(obj.wastesList[i].code);//废物编码
-                    $("input[name='wastesList[" + $i + "].wasteAmount']").val(obj.wastesList[i].wasteAmount);//废物数量
-                    $("input[name='wastesList[" + $i + "].component']").val(obj.wastesList[i].component);//成分
-                    $("input[name='wastesList[" + $i + "].remarks']").val(obj.wastesList[i].remarks);//备注
+                if (obj.client != null) {
+                    $('#proContactName').text(obj.client.contactName);
+                }
+                if (obj.client != null) {
+                    if (obj.client.phone != '') {
+                        //赋值产废单位电话
+                        $('#proTelephone').text(obj.client.phone);
+                    }
+                    else {
+                        $('#proTelephone').text(obj.client.mobile);
+                    }
+
                 }
 
+                //赋值是否自运单位
+                $('#selfEmployed').prop('checked', obj.selfEmployed);
+                //产废公司
+                if (obj.client != null) {
+                    $('#proWasteCompany').text(obj.client.companyName);
+                }
+                //库容
+                if (obj.client != null) {
+                    $('#capacity').text(obj.client.capacity.toFixed(2));
+                }
+                if(obj.stockItemList!=null){
+                    var tr = $("#cloneTr1");
+
+                    tr.children('td').eq(6).html("")
+                    tr.children('td').eq(7).html("")
+                    tr.siblings().remove();
+                    $.each(obj.stockItemList, function (index, item) {
+                        var obj=eval(item);
+                        // 克隆tr，每次遍历都可以产生新的tr
+                        var clonedTr = tr.clone();
+                        clonedTr.show();
+                        // 循环遍历cloneTr的每一个td元素，并赋值
+                        clonedTr.children("td").each(function (inner_index) {
+                            //1生成领料单号
+                            var obj = eval(item);
+                            // 根据索引为部分td赋值
+                            switch (inner_index) {
+                                // 序号
+                                case (0):
+                                    $(this).html(index+1);
+                                    break;
+                                // 危险废物的名称
+                                case (1):
+                                    $(this).html(obj.wastesName);
+                                    break;
+                                // 危废编码
+                                case (2):
+                                    $(this).html(obj.wastesCode);
+                                    break;
+                                // 数量(公斤)
+                                case (3):
+                                    $(this).html(obj.number.toFixed(3));
+                                    break;
+                                // 成分
+                                case (4):
+
+                                    $(this).html(obj.content);
+                                    break;
+                                // 备注
+                                case (5):
+                                    $(this).html(obj.remarks);
+                                    break;
+                                //进料方式
+                                case (6):
+
+                                    if(obj.handleCategoryItem!=null){
+                                        $(this).html(obj.handleCategoryItem.dictionaryItemName)
+                                    }
+
+
+                                    break;
+                                //处置意见
+                                case (7):
+                                    $(this).html(obj.disposalAdvice);
+                                    break;
+                                //明细编号
+                                case (8):
+                                    $(this).html(obj.id);
+                                    break;
+                            }
+                        });
+                        // 把克隆好的tr追加到原来的tr前面
+                        clonedTr.removeAttr("id");
+                        clonedTr.insertBefore(tr);
+
+
+                    });
+                    // 隐藏无数据的tr
+                    tr.hide();
+                    tr.removeAttr('class');
+
+                }
 
             } else {
                 alert(result.message);
@@ -2012,6 +2121,10 @@ function perfect(item) {
                         $('#proTelephone').text(obj.client.mobile);
                     }
 
+                }
+                //库容
+                if (obj.client != null) {
+                    $('#capacity').text(obj.client.capacity.toFixed(2));
                 }
 
                 //赋值是否自运单位
