@@ -59,11 +59,11 @@ public class SampleInfoAnalysis {
     /**
      * 水分
      */
-    private float water;
+    private String water;
     /**
      * 热值
      */
-    private float heat;
+    private String heat;
     /**
      * 氟
      */
@@ -221,19 +221,19 @@ public class SampleInfoAnalysis {
         this.ash = ash;
     }
 
-    public float getWater() {
+    public String getWater() {
         return water;
     }
 
-    public void setWater(float water) {
+    public void setWater(String water) {
         this.water = water;
     }
 
-    public float getHeat() {
+    public String getHeat() {
         return heat;
     }
 
-    public void setHeat(float heat) {
+    public void setHeat(String heat) {
         this.heat = heat;
     }
 

@@ -307,14 +307,14 @@ public class PRSampleInfoWareHouseController {
                         sampleAnalysis.setAsh(-9999);  // 如果不存在则设置为不可能值-9999
                     }
                     if (wastes.getIsWater()) {
-                        sampleAnalysis.setWater(0); // 如果检测项目存在设置初始值为0
+                        sampleAnalysis.setWater("0"); // 如果检测项目存在设置初始值为0
                     } else {
-                        sampleAnalysis.setWater(-9999);  // 如果不存在则设置为不可能值-9999
+                        sampleAnalysis.setWater("-9999");  // 如果不存在则设置为不可能值-9999
                     }
                     if (wastes.getIsHeat()) {
-                        sampleAnalysis.setHeat(0); // 如果检测项目存在设置初始值为0
+                        sampleAnalysis.setHeat("0"); // 如果检测项目存在设置初始值为0
                     } else {
-                        sampleAnalysis.setHeat(-9999);  // 如果不存在则设置为不可能值-9999
+                        sampleAnalysis.setHeat("-9999");  // 如果不存在则设置为不可能值-9999
                     }
                     if (wastes.getIsSulfur()) {
                         sampleAnalysis.setSulfur(0); // 如果检测项目存在设置初始值为0
@@ -408,14 +408,14 @@ public class PRSampleInfoWareHouseController {
                                 sampleAnalysis.setAsh(-9999);  // 如果不存在则设置为不可能值-9999
                             }
                             if (wastes.getIsWater()) {
-                                sampleAnalysis.setWater(0); // 如果检测项目存在设置初始值为0
+                                sampleAnalysis.setWater("0"); // 如果检测项目存在设置初始值为0
                             } else {
-                                sampleAnalysis.setWater(-9999);  // 如果不存在则设置为不可能值-9999
+                                sampleAnalysis.setWater("-9999");  // 如果不存在则设置为不可能值-9999
                             }
                             if (wastes.getIsHeat()) {
-                                sampleAnalysis.setHeat(0); // 如果检测项目存在设置初始值为0
+                                sampleAnalysis.setHeat("0"); // 如果检测项目存在设置初始值为0
                             } else {
-                                sampleAnalysis.setHeat(-9999);  // 如果不存在则设置为不可能值-9999
+                                sampleAnalysis.setHeat("-9999");  // 如果不存在则设置为不可能值-9999
                             }
                             if (wastes.getIsSulfur()) {
                                 sampleAnalysis.setSulfur(0); // 如果检测项目存在设置初始值为0
