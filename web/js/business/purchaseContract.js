@@ -575,6 +575,7 @@ function searchPurchaseContract() {
             small=0;
         }
         data = {
+            quotationItemList:[{wastesName:$.trim($("#search-wastesName").val())}],
             client:{companyName:$.trim($("#search-companyName").val()),contactName:$.trim($("#search-contactName").val())} ,
             checkStateItem:{dataDictionaryItemId:$("#search-checkState").val()},
             beginTime:$("#beginTime").val(),
