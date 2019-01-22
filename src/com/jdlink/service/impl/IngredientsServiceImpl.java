@@ -121,6 +121,10 @@ public class IngredientsServiceImpl implements IngredientsService {
     }
 
     @Override
+    public List<Ingredients> getIngredientsInItemAmountByRange(Date startDate,Date endDate) {
+        return ingredientsMapper.getIngredientsInItemAmountByRange(startDate, endDate); }
+
+    @Override
     public int countInItem() {
         return ingredientsMapper.countInItem();
     }
@@ -340,6 +344,9 @@ public class IngredientsServiceImpl implements IngredientsService {
     public List<Ingredients> getIngredientsOutItemByRange(Date startDate, Date endDate, Equipment equipment) {
         return ingredientsMapper.getIngredientsOutItemByRange(startDate, endDate, equipment);
     }
+
+    @Override
+    public List<Ingredients> getIngredientsOutItemAmountByRange(Date startDate, Date endDate) { return ingredientsMapper.getIngredientsOutItemAmountByRange(startDate, endDate); }
 
     @Override
     public int countOutItem() {

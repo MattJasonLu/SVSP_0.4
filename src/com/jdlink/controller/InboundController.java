@@ -12,7 +12,6 @@ import com.jdlink.service.dictionary.DictionaryService;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
-import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -804,7 +803,11 @@ public class InboundController {
                 } else {
                     inboundOrder.setInboundOrderId(inboundService.getInboundOrderId());
                 }
-                inboundOrder.setInboundDate(DateUtil.getDateFromStr(data[i][1].toString()));
+                try {
+                    inboundOrder.setInboundDate(DateUtil.getDateFromStr(data[i][1].toString()));
+                } catch (Exception e) {
+                    throw new RuntimeException("时间格式异常");
+                }
                 // 设置入库类别
                 inboundOrder.setBoundType(BoundType.WasteInbound);
                 // 设置状态
@@ -913,6 +916,10 @@ public class InboundController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "单号已存在");
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "时间格式异常，请调整！");
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");

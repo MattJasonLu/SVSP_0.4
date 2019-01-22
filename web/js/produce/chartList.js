@@ -7,6 +7,10 @@ var wastesAmountList = [[3.70,2.20,1.50],[4.20,1.82,2.32],[3.92,1.91,2.01],[3.88
 var secondaryAmountList = [[8,2.20,1.50],[4.20,1.82,2.32],[3.92,1.91,2.01],[3.88,2.34,1.54],[4.80,2.90,1.90],[6.60,3.30,3.30],[7.20,3.10,4.10]];   // 次生入库量，出库量，处置量数据数组
 var ingredientAmountList = [[8,2.20,1.50],[4.20,1.82,2.32],[3.92,1.91,2.01],[3.88,2.34,1.54],[4.80,2.90,1.90],[6.60,3.30,3.30],[7.20,3.10,4.10]];   // 辅料入库量，出库量，处置量数据数组
 var wastesContractAmountList = [3949.76, 94.00, 146.40, 20.00, 180.00, 3.50];   // 危废合同签约量数组
+var wastesAmountYearAndMonthList = [];
+var secondaryAmountYearAndMonthList = [];
+var ingredientAmountYearAndMonthList = [];
+var wastesContractAmountYearAndMonthList = [];
 var yearAndMonthList = [201801, 201802, 201803, 201804, 201805, 201806];             // 折线图年月份数组
 var colorList = ['#0175EE',
     '#D89446','#06B5C6','#25AE4F','#373693','#009E9A','#AC266F'];   // 颜色数组
@@ -19,28 +23,29 @@ var colorNewList = [];    // 城市分布颜色数组
 function loadChartList() {
     loadNavigationList();   // 动态菜单部署
     cityList = [];   // 清空旧数据
-    getCityData();   // 获取并设置产废单位城市分布数据
+    getCityData();   // 获取并设置产废单位城市分布饼图数据
     for(var i = 0; i < cityOfProduceCompanyNumberList.length; i++) {  // 将城市数据插入到城市数组中
         cityList.push(cityOfProduceCompanyNumberList[i].cityName);
-        colorNewList.push(colorList[i]);
+        colorNewList.push(colorList[i%7]);
         var data = {};
         data.value = cityOfProduceCompanyNumberList[i].number;
         data.name = cityOfProduceCompanyNumberList[i].cityName;
         newCityOfProduceCompanyNumberList.push(data);
     }
-    loadData();   //
+    search();   // 获取并设置最新数据
+    loadData();   // 根据最新数据加载图表
 }
 
 /**
  * 加载表图
  */
 function loadData() {
-    drawLayer02Label($("#layer02_01 canvas").get(0), "本月危废入库数", 60, 200);  // 第三参数：，第四参数：折线长度
-    drawLayer02Label($("#layer02_02 canvas").get(0), "本月辅料入库数", 60, 200);
-    drawLayer02Label($("#layer02_03 canvas").get(0), "本月次生入库数", 60, 200);
-    drawLayer02Label($("#layer02_04 canvas").get(0), "本月危废出库数", 30, 200);
-    drawLayer02Label($("#layer02_05 canvas").get(0), "本月辅料出库数", 30, 200);
-    drawLayer02Label($("#layer02_06 canvas").get(0), "本月次生出库数", 30, 200);
+    drawLayer02Label($("#layer02_01 canvas").get(0), "危废入库数", 60, 200);  // 第三参数：，第四参数：折线长度
+    drawLayer02Label($("#layer02_02 canvas").get(0), "辅料入库数", 60, 200);
+    drawLayer02Label($("#layer02_03 canvas").get(0), "次生入库数", 60, 200);
+    drawLayer02Label($("#layer02_04 canvas").get(0), "危废出库数", 30, 200);
+    drawLayer02Label($("#layer02_05 canvas").get(0), "辅料出库数", 30, 200);
+    drawLayer02Label($("#layer02_06 canvas").get(0), "次生出库数", 30, 200);
     setMonthOutAndInData();    // 设置月份出入库数据
 
     renderLegend();
@@ -104,8 +109,6 @@ function drawLayer02Label(canvasObj, text, textBeginX, lineEndX) {
 
 //接入机型占比
 
-
-
 var COLOR = {
     MACHINE: {
         TYPE_A: '#0175EE',
@@ -145,14 +148,15 @@ function drawLegend(pointColor, pointY, text) {
  * 设置圆形库存量显示图
  */
 function renderLayer03Right() {
+    $(".layer03-right-chart").remove();  // 删除历史数据
     for(var i = 0; i < outAndInPercentList.length; i++) {
         var div = "<div id='layer03_right_chart"+(i+1)+"' class=\"layer03-right-chart\">\n" +
             "<canvas width=\"130\" height=\"150\" style=\"margin:40px 0 0 20px;\"></canvas>\n" +
-            "<div class=\"layer03-right-chart-label\">"+outAndInPercentList[i][0]+"</div>\n" +
+            "<div class=\"layer03-right-chart-label\">"+outAndInPercentList[i].name+"</div>\n" +
             "</div>";                           // 定义环状图标签
         $("#layer03_right_label").after(div);   // 将标签插入
         var $i = i+1;
-        drawLayer03Right($("#layer03_right_chart"+ $i +" canvas").get(0), colorList[i%7], outAndInPercentList[i][1]);   // 赋值
+        drawLayer03Right($("#layer03_right_chart"+ $i +" canvas").get(0), colorList[i%7], outAndInPercentList[i].number);   // 赋值
     }
 }
 
@@ -181,7 +185,7 @@ function drawLayer03Right(canvasObj, colorValue, rate) {
     ctx.closePath();
 
     ctx.beginPath();
-    ctx.arc(circle.x, circle.y, circle.r, 1.5 * Math.PI, (1.5 + rate * 2) * Math.PI)
+    ctx.arc(circle.x, circle.y, circle.r, 1.5 * Math.PI, (1.5 + rate * 2) * Math.PI);
     ctx.lineWidth = 10;
     ctx.lineCap = 'round';
     ctx.strokeStyle = colorValue;
@@ -382,7 +386,7 @@ function renderLayer04Right(myChart,list) {
  * 设置条形图
  */
 function setBarConfig(myChart) {
-    var xData = yearAndMonthList;  // X轴数据
+    var xData = wastesContractAmountYearAndMonthList;  // X轴数据
     // var yData1 = [3,9,1,2,8,3];                                // Y轴第一个条形图数据
     var yData1 = wastesContractAmountList;                                // Y轴第一个条形图数据
     var option = {
@@ -517,16 +521,16 @@ function search() {
         type: "POST",                            // 方法类型
         url: "searchChartList",                 // url
         async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: data = {
+        data: {
             startDate: $("#search-startDate").val(),
-            endDate: $("#search-endDate").val(),
+            endDate: $("#search-endDate").val()
         },
         dataType: "json",
-        contentType: "application/json; charset=utf-8",
         success: function (result) {
             console.log(result);
-            if (result.data != undefined || result.status == "success") {
-                setData(result.data);
+            if (result != null || result.status === "success") {
+                 console.log(result);
+                 setData(result);
             } else {
                 console.log(result.message);
             }
@@ -536,6 +540,93 @@ function search() {
             alert("服务器错误！");
         }
     });
+}
+
+/**
+ * 设置数组数据
+ * @param result
+ */
+function setData(result) {
+    // 清空旧数据
+    outAndInPercentList = [];
+    wastesContractAmountList = [];
+    monthInAndOutList = [];
+    var wastesOutboundOrderList = result.wastesOutboundOrderList;
+    var secondOutboundOrderList = result.secondOutboundOrderList;
+    var inboundOrderItemList = result.inboundOrderItemList;
+    var secondInboundOrderItemList = result.secondInboundOrderItemList;
+    var ingredientsInList = result.ingredientsInList;
+    var ingredientsOutList = result.ingredientsOutList;
+    var contractItemList = result.contractItemList;
+    var wastesOutboundOrderTotalAmount = 0;   // 危废出库总数
+    var secondOutboundOrderTotalAmount = 0;   // 次生出库总数
+    var inboundOrderItemTotalAmount = 0;       // 危废入库总数
+    var secondInboundOrderItemTotalAmount = 0;   // 次生入库总数
+    var ingredientsInTotalAmount = 0;          // 辅料入库总数
+    var ingredientsOutTotalAmount = 0;         // 辅料出库总数
+    // 获取数组中最长的长度
+    var length = Math.max(wastesOutboundOrderList.length,secondOutboundOrderList.length,inboundOrderItemList.length,
+        secondInboundOrderItemList.length,ingredientsInList.length,ingredientsOutList.length,contractItemList.length);
+    for(var i = 0; i < length; i++) {   // 循环处理数据
+        if(i < wastesOutboundOrderList.length) {
+             var data = {};
+             wastesOutboundOrderTotalAmount += wastesOutboundOrderList[i].outboundNumber;
+        }
+        if(i < secondOutboundOrderList.length) {
+            secondOutboundOrderTotalAmount += secondOutboundOrderList[i].outboundNumber;
+        }
+        if(i < inboundOrderItemList.length) {
+            inboundOrderItemTotalAmount += inboundOrderItemList[i].wastesAmount;
+        }
+        if(i < secondInboundOrderItemList.length) {
+            secondInboundOrderItemTotalAmount += secondInboundOrderItemList[i].wastesAmount;
+        }
+        if(i < ingredientsInList.length) {
+            ingredientsInTotalAmount += ingredientsInList[i].amount;
+        }
+        if(i < ingredientsOutList.length) {
+            ingredientsOutTotalAmount += ingredientsOutList[i].receiveAmount;
+        }
+        if(i < contractItemList.length) {
+            wastesContractAmountYearAndMonthList.push(getYearAndMonth(contractItemList[i].startDate));   // 设置合同年月份
+            wastesContractAmountList.push(contractItemList[i].contractAmount.toFixed(3));
+        }
+    }
+    // 设置出入库百分比数据（环状图）
+    var wastesData = {};
+    wastesData.name = '危废';
+    wastesData.number = (wastesOutboundOrderTotalAmount/inboundOrderItemTotalAmount).toFixed(2);
+    var secondData = {};
+    secondData.name = '次生';
+    secondData.number = (secondOutboundOrderTotalAmount/secondInboundOrderItemTotalAmount).toFixed(2);
+    var ingredientData = {};
+    ingredientData.name = '辅料';
+    ingredientData.number = (ingredientsOutTotalAmount/ingredientsInTotalAmount).toFixed(2);
+    outAndInPercentList.push(wastesData);
+    outAndInPercentList.push(secondData);
+    outAndInPercentList.push(ingredientData);
+    monthInAndOutList.push(inboundOrderItemTotalAmount.toFixed(3));
+    monthInAndOutList.push(ingredientsInTotalAmount.toFixed(3));
+    monthInAndOutList.push(secondInboundOrderItemTotalAmount.toFixed(3));
+    monthInAndOutList.push(wastesOutboundOrderTotalAmount.toFixed(3));
+    monthInAndOutList.push(ingredientsOutTotalAmount.toFixed(3));
+    monthInAndOutList.push(secondOutboundOrderTotalAmount.toFixed(3));
+    loadData();   // 根据最新数据加载图表
+}
+
+/**
+ * 返回年月份
+ * @param obj
+ * @returns {string}
+ */
+function getYearAndMonth(obj) {
+    var year = (parseInt(obj.year) + 1900).toString();
+    var month = parseInt((obj.month) + 1).toString();
+    if(parseInt(month) < 10) {
+        month = "0" + month;
+    }
+    return year + month;
+
 }
 
 /**

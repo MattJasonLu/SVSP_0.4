@@ -61,6 +61,27 @@ public class OfficeSuppliesController {
     }
 
     /**
+     * 获取办公用品入库单条目数量
+     * @return 入库单条目数量
+     */
+    @RequestMapping("countOfficeSuppliesInboundItem")
+    @ResponseBody
+    public String countOfficeSuppliesInboundItem() {
+        JSONObject res = new JSONObject();
+        try {
+            int count = officeSuppliesService.countOfficeSuppliesInboundItem();
+            res.put("status", "success");
+            res.put("message", "获取数据成功");
+            res.put("data", count);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取数据失败");
+        }
+        return res.toString();
+    }
+
+    /**
      * 增加办公用品入库单
      * @param officeSuppliesInbound 办公用品入库单
      * @return 成功与否
@@ -151,5 +172,143 @@ public class OfficeSuppliesController {
     }
 
     /*******************************************************出库部分********************************************************/
+
+
+
+    /*******************************************************条目部分********************************************************/
+
+    /**
+     * 获取办公用品入库单条目
+     * @param id 编号
+     * @return 办公用品入库单条目
+     */
+    @RequestMapping("getOfficeSuppliesInboundItemById")
+    @ResponseBody
+    public String getOfficeSuppliesInboundItemById(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            OfficeSuppliesItem officeSuppliesItem = officeSuppliesService.getOfficeSuppliesInboundItemById(id);
+            JSONObject data = JSONObject.fromBean(officeSuppliesItem);
+            res.put("status", "success");
+            res.put("message", "获取数据成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取数据失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 更新办公用品条目
+     * @param officeSuppliesItem 办公用品条目
+     * @return 成功与否
+     */
+    @RequestMapping("updateOfficeSuppliesInboundItem")
+    @ResponseBody
+    public String updateOfficeSuppliesInboundItem(@RequestBody OfficeSuppliesItem officeSuppliesItem) {
+        JSONObject res = new JSONObject();
+        try {
+            officeSuppliesService.updateOfficeSuppliesInboundItem(officeSuppliesItem);
+            res.put("status", "success");
+            res.put("message", "更新成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 作废办公用品入库单
+     * @param id 编号
+     * @return 成功与否
+     */
+    @RequestMapping("setInvalidOfficeSuppliesInboundItem")
+    @ResponseBody
+    public String setInvalidOfficeSuppliesInboundItem(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            officeSuppliesService.setInvalidOfficeSuppliesInboundItem(id);
+            res.put("status", "success");
+            res.put("message", "作废成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 获取办公用品出库单条目
+     * @param id 编号
+     * @return 出库单条目
+     */
+    @RequestMapping("getOfficeSuppliesOutboundItemById")
+    @ResponseBody
+    public String getOfficeSuppliesOutboundItemById(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            OfficeSuppliesItem officeSuppliesItem = officeSuppliesService.getOfficeSuppliesOutboundItemById(id);
+            JSONObject data = JSONObject.fromBean(officeSuppliesItem);
+            res.put("status", "success");
+            res.put("message", "获取数据成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取数据失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 更新办公用品条目
+     * @param officeSuppliesItem 办公用品条目
+     * @return 成功与否
+     */
+    @RequestMapping("updateOfficeSuppliesOutboundItem")
+    @ResponseBody
+    public String updateOfficeSuppliesOutboundItem(@RequestBody OfficeSuppliesItem officeSuppliesItem) {
+        JSONObject res = new JSONObject();
+        try {
+            officeSuppliesService.updateOfficeSuppliesOutboundItem(officeSuppliesItem);
+            res.put("status", "success");
+            res.put("message", "更新成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 作废办公用品出库单
+     * @param id 编号
+     * @return 成功与否
+     */
+    @RequestMapping("setInvalidOfficeSuppliesOutboundItem")
+    @ResponseBody
+    public String setInvalidOfficeSuppliesOutboundItem(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            officeSuppliesService.setInvalidOfficeSuppliesOutboundItem(id);
+            res.put("status", "success");
+            res.put("message", "作废成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+        }
+        return res.toString();
+    }
+
+    /*******************************************************条目部分********************************************************/
+
+
 
 }

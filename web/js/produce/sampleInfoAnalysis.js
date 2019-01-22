@@ -363,8 +363,8 @@ function setDataList(result) {
             clonedTr.find("td[name='formType']").text(obj.formType.name);
         clonedTr.find("td[name='PH']").text(setNumber2Line(parseFloat(obj.PH).toFixed(0)));
         clonedTr.find("td[name='ash']").text(setNumber2Line(parseFloat(obj.ash).toFixed(2)));
-        clonedTr.find("td[name='water']").text(setNumber2Line(parseFloat(obj.water).toFixed(2)));
-        clonedTr.find("td[name='heat']").text(setNumber2Line(parseFloat(obj.heat).toFixed(0)));
+        clonedTr.find("td[name='water']").text(setNumber2Line(obj.water));
+        clonedTr.find("td[name='heat']").text(setNumber2Line(obj.heat));
         clonedTr.find("td[name='sulfur']").text(setNumber2Line(parseFloat(obj.sulfur).toFixed(2)));
         clonedTr.find("td[name='chlorine']").text(setNumber2Line(parseFloat(obj.chlorine).toFixed(2)));
         clonedTr.find("td[name='fluorine']").text(setNumber2Line(parseFloat(obj.fluorine).toFixed(2)));
@@ -797,7 +797,7 @@ function showEditModal(e) {
                     $("#editAsh").removeAttr("disabled");
                     $("#editAsh").val(ash);
                 }
-                var water = setNumber2Line(parseFloat(data.water).toFixed(2));
+                var water = setNumber2Line(data.water);
                 if (water == "--") {
                     $("#editWater").attr("disabled","disabled");
                     $("#editWater").val("");
@@ -806,7 +806,7 @@ function showEditModal(e) {
                     $("#editWater").removeAttr("disabled");
                     $("#editWater").val(water);
                 }
-                var heat = setNumber2Line(parseFloat(data.heat).toFixed(2));
+                var heat = setNumber2Line(data.heat);
                 if (heat == "--") {
                     $("#editHeat").attr("disabled","disabled");
                     $("#editHeat").val("");
@@ -1236,8 +1236,8 @@ function viewData(e) {
                     $("#viewFormType").text(data.formType.name);
                 $("#viewPH").text(setNumber2Line(parseFloat(data.PH).toFixed(0)));
                 $("#viewAsh").text(setNumber2Line(parseFloat(data.ash).toFixed(2)));
-                $("#viewWater").text(setNumber2Line(parseFloat(data.water).toFixed(2)));
-                $("#viewHeat").text(setNumber2Line(parseFloat(data.heat).toFixed(0)));
+                $("#viewWater").text(setNumber2Line(data.water));
+                $("#viewHeat").text(setNumber2Line(data.heat));
                 $("#viewFluorine").text(setNumber2Line(parseFloat(data.fluorine).toFixed(2)));
                 $("#viewChlorine").text(setNumber2Line(parseFloat(data.chlorine).toFixed(2)));
                 $("#viewSulfur").text(setNumber2Line(parseFloat(data.sulfur).toFixed(2)));

@@ -22,6 +22,7 @@ public interface IngredientsService {
     void updateDataIn(IngredientsIn ingredientsIn);
     int getAmountItems(Ingredients ingredients);
     List<Ingredients> getIngredientsInItemByRange(Date startDate,Date endDate,Equipment equipment);
+    List<Ingredients> getIngredientsInItemAmountByRange(Date startDate,Date endDate);
     int countInItem();
     int searchInItemCount(Ingredients ingredients);
     List<Ingredients> listPageInItem(Page page);
@@ -65,6 +66,7 @@ public interface IngredientsService {
     void updateOut(IngredientsOut ingredientsOut);
     void updateDataOut(IngredientsOut ingredientsOut);
     List<Ingredients> getIngredientsOutItemByRange(Date startDate, Date endDate,Equipment equipment);
+    List<Ingredients> getIngredientsOutItemAmountByRange(Date startDate, Date endDate);
     int countOutItem();
     int searchOutItemCount(Ingredients ingredients);
     List<Ingredients> listPageOutItem(Page page);

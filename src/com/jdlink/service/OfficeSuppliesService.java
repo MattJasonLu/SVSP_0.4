@@ -18,6 +18,12 @@ public interface OfficeSuppliesService {
     List<OfficeSuppliesInbound> listOfficeSuppliesInbound(OfficeSuppliesItem officeSuppliesItem);
 
     /**
+     * 获取办公用品入库单条目的数量
+     * @return 数量
+     */
+    int countOfficeSuppliesInboundItem();
+
+    /**
      * 增加办公用品入库单
      * @param officeSuppliesInbound 办公用品入库单
      */
@@ -31,7 +37,8 @@ public interface OfficeSuppliesService {
     int getOfficeSupplierInboundCountByPrefix(String prefix);
 
     /**
-     * 获取办公用品入库单编号
+     * 根据入库时间获取办公用品入库单编号
+     * @param date 入库时间
      * @return 入库单编号
      */
     String getOfficeSupplierInboundId(Date date);
@@ -44,9 +51,53 @@ public interface OfficeSuppliesService {
     List<OfficeSuppliesOutbound> listOfficeSuppliesOutbound(OfficeSuppliesItem officeSuppliesItem);
 
     /**
+     * 获取办公用品出库单条目的数量
+     * @return 数量
+     */
+    int countOfficeSuppliesOutboundItem();
+
+    /**
      * 增加办公用品出库单
      * @param officeSuppliesOutbound 办公用品出库单
      */
     void addOfficeSuppliesOutbound(OfficeSuppliesOutbound officeSuppliesOutbound);
+
+    /**
+     * 通过条目编号获取办公用品条目
+     * @param id 编号
+     * @return 办公用品条目
+     */
+    OfficeSuppliesItem getOfficeSuppliesInboundItemById(String id);
+
+    /**
+     * 更新办公用品入库单条目
+     * @param officeSuppliesItem 办公用品入库单条目
+     */
+    void updateOfficeSuppliesInboundItem(OfficeSuppliesItem officeSuppliesItem);
+
+    /**
+     * 作废办公用品入库单条目
+     * @param id 需要作废的条目编号
+     */
+    void setInvalidOfficeSuppliesInboundItem(String id);
+
+    /**
+     * 通过条目编号获取办公用品条目
+     * @param id 编号
+     * @return 办公用品条目
+     */
+    OfficeSuppliesItem getOfficeSuppliesOutboundItemById(String id);
+
+    /**
+     * 更新办公用品出库单条目
+     * @param officeSuppliesItem 办公用品出库单条目
+     */
+    void updateOfficeSuppliesOutboundItem(OfficeSuppliesItem officeSuppliesItem);
+
+    /**
+     * 作废办公用品出库单条目
+     * @param id 需要作废的条目编号
+     */
+    void setInvalidOfficeSuppliesOutboundItem(String id);
 
 }

@@ -41,15 +41,17 @@ function totalPage() {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "totalIngredientsInRecord",                  // url
+            url: "countOfficeSuppliesInboundItem",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
-                if (result > 0) {
-                    totalRecord = result;
-                } else {
-                    console.log("fail: " + result);
-                    totalRecord = 0;
+                if (result != undefined && result.status == "success") {
+                    if (result.data > 0) {
+                        totalRecord = result.data;
+                    } else {
+                        console.log("fail: " + result.data);
+                        totalRecord = 0;
+                    }
                 }
             },
             error: function (result) {
@@ -389,6 +391,8 @@ function setIngredientsInList(result) {
         if (obj.ticketRateItem != null)
         clonedTr.find("td[name='ticketRateItem']").text(obj.ticketRateItem.dictionaryItemName);
         clonedTr.find("td[name='remark']").text(obj.remark);
+        if (obj.checkStateItem != null)
+        clonedTr.find("td[name='checkState']").text(obj.checkStateItem.dictionaryItemName);
         clonedTr.find("td[name='itemId']").text(obj.itemId);
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
@@ -555,40 +559,33 @@ function toViewIngredientsIn1(item) {
  * 显示查看模态框
  * @param id
  */
-function showViewModal(id) {
-    $(".newLine").remove();
+function showViewModal(e) {
+    var id = getIdByMenu(e);
     $.ajax({
         type: "POST",
-        url: "getIngredientsInById",
+        url: "getOfficeSuppliesInboundItemById",
         async: false,
         data: {
             id: id
         },
         dataType: "json",
         success: function (result) {
-            if (result.status == "success") {
-                //设置数据
-                var data = eval(result.data);
+            if (result != undefined && result.status == "success") {
+                // 设置数据
+                var obj = eval(result.data);
                 console.log(result);
-                setViewIngredientsClone(result.data);
-                $("#view-id").text(data.id);
-                $("#view-companyName").text(data.companyName);
-                $("#view-creationDate").text(getDayDate(data.creationDate));
-                $("#view-fileId").text(data.fileId);
-                $("#view-hundredThousand").text(Math.floor(data.totalPrice / 100000));
-                $("#view-tenThousand").text(Math.floor(data.totalPrice % 100000 / 10000));
-                $("#view-thousand").text(Math.floor((data.totalPrice % 100000) % 10000 / 1000));
-                $("#view-hundred").text(Math.floor((data.totalPrice % 100000) % 10000 % 1000 / 100));
-                $("#view-ten").text(Math.floor((data.totalPrice % 100000) % 10000 % 1000 % 100 / 10));
-                $("#view-yuan").text(Math.floor((data.totalPrice % 100000) % 10000 % 1000 % 100 % 10));
-                var jiao = data.totalPrice % 100000 % 10000 % 1000 % 100 % 10 % 1 * 10;
-                $("#view-jiao").text(Math.floor(jiao));
-                $("#view-fen").text(Math.floor(jiao % 1 * 10));
-                $("#view-bookkeeper").text(data.bookkeeper);
-                $("#view-approver").text(data.approver);
-                $("#view-keeper").text(data.keeper);
-                $("#view-acceptor").text(data.acceptor);
-                $("#view-handlers").text(data.handlers);
+                $("#inboundId").val(obj.inboundId);
+                if (obj.supplier != null) $("#supplierName").val(obj.supplier.companyName);
+                $("#itemCode").val(obj.itemCode);
+                $("#itemName").val(obj.itemName);
+                $("#itemSpecifications").val(obj.itemSpecifications);
+                if (obj.ticketRateItem != null) $("#ticketRateItem").val(obj.ticketRateItem.dictionaryItemName);
+                if (obj.unitDataItem != null) $("#unitDataItem").val(obj.unitDataItem.dictionaryItemName);
+                $("#itemAmount").val(parseFloat(obj.itemAmount).toFixed(3));
+                $("#taxUnitPrice").val(parseFloat(obj.taxUnitPrice).toFixed(2));
+                $("#totalTaxPrice").val(parseFloat(obj.totalTaxPrice).toFixed(2));
+                $("#inboundDate").val(getDateStr(obj.inboundDate));
+                $("#remark").val(obj.remark);
             } else {
                 alert(result.message);
             }
@@ -599,6 +596,180 @@ function showViewModal(id) {
         }
     });
     $("#viewModal").modal('show');
+}
+
+var editId = '';
+/**
+ * 显示编辑模态框
+ * @param e
+ */
+function showEditModal(e) {
+    var id = getIdByMenu(e);
+    editId = id;
+    // 设置供应商
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "listSupplier",                  // url
+        async: false,
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                var supplier = $("#edit_supplierName");
+                supplier.children().remove();
+                $.each(data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.supplierId);
+                    option.text(item.companyName);
+                    supplier.append(option);
+                });
+                supplier.selectpicker('val', '');
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+    // 中文重写select 查询为空提示信息
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 4
+    });
+    $('.selectpicker').selectpicker('refresh');
+    // 设置税率
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getTicketRate1ByDataDictionary",                  // url
+        async: false,
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                var rate = $("#edit_ticketRateItem");
+                rate.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    rate.append(option);
+                });
+                rate.get(0).selectedIndex = -1;
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+    // 设置计量单位
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getUnitByDataDictionary",                  // url
+        async: false,
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                var unitDataItem = $("#edit_unitDataItem");
+                unitDataItem.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    unitDataItem.append(option);
+                });
+                unitDataItem.get(0).selectedIndex = -1;
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+    // 通过编号获取办公用品入库单条目
+    $.ajax({
+        type: "POST",
+        url: "getOfficeSuppliesInboundItemById",
+        async: false,
+        data: {
+            id: id
+        },
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                // 设置数据
+                var obj = eval(result.data);
+                console.log(result);
+                $("#edit_inboundId").val(obj.inboundId);
+                if (obj.supplier != null) $("#edit_supplierName").selectpicker('val', obj.supplier.supplierId);
+                $("#edit_itemCode").val(obj.itemCode);
+                $("#edit_itemName").val(obj.itemName);
+                $("#edit_itemSpecifications").val(obj.itemSpecifications);
+                if (obj.ticketRateItem != null) $("#edit_ticketRateItem").val(obj.ticketRateItem.dataDictionaryItemId);
+                if (obj.unitDataItem != null) $("#edit_unitDataItem").val(obj.unitDataItem.dataDictionaryItemId);
+                $("#edit_itemAmount").val(parseFloat(obj.itemAmount).toFixed(3));
+                $("#edit_taxUnitPrice").val(parseFloat(obj.taxUnitPrice).toFixed(2));
+                $("#edit_totalTaxPrice").val(parseFloat(obj.totalTaxPrice).toFixed(2));
+                $("#edit_inboundDate").val(getDateStr(obj.inboundDate));
+                $("#edit_remark").val(obj.remark);
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常!");
+        }
+    });
+    $("#editModal").modal('show');
+
+}
+
+/**
+ * 更新信息
+ */
+function editData() {
+    // 获取数据
+    var data = {
+        itemId: editId,
+        inboundId: $("#edit_inboundId").val(),
+        supplier: {
+            supplierId: $("#edit_supplierName").selectpicker('val')
+        },
+        itemCode: $("#edit_itemCode").val(),
+        itemName: $("#edit_itemName").val(),
+        itemSpecifications: $("#edit_itemSpecifications").val(),
+        ticketRateItem: {
+            dataDictionaryItemId: $("#edit_ticketRateItem").val()
+        },
+        unitDataItem: {
+            dataDictionaryItemId: $("#edit_unitDataItem").val()
+        },
+        itemAmount: $("#edit_itemAmount").val(),
+        taxUnitPrice: $("#edit_taxUnitPrice").val(),
+        totalTaxPrice: $("#edit_totalTaxPrice").val(),
+        inboundDate: $("#edit_inboundDate").val(),
+        remark: $("#edit_remark").val()
+    };
+    // 更新
+    $.ajax({
+        type: "POST",
+        url: "updateOfficeSuppliesInboundItem",
+        async: false,
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                alert(result.message);
+                window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常!");
+        }
+    });
 }
 
 /**
@@ -704,13 +875,13 @@ function setViewIngredientsClone(result) {
 /**
  * 作废功能
  */
-function invalidIngredientsIn(item) {
-    var id = getIngredientsInId(item);
-    if ($(item).parent().parent().children().eq(3).text() == '新建') {
+function setInvalid(e) {
+    var id = getIdByMenu(e);
+    // if ($(e).parent().parent().children().eq(3).text() == '新建') {
         if (confirm("是否作废？")) {
             $.ajax({
                 type: "POST",
-                url: "invalidIngredientsIn",
+                url: "setInvalidOfficeSuppliesInboundItem",
                 async: false,
                 data: {
                     id: id
@@ -718,7 +889,7 @@ function invalidIngredientsIn(item) {
                 dataType: "json",
                 success: function (result) {
                     if (result.status == "success") {
-                        alert("作废成功！");
+                        alert(result.message);
                         window.location.reload();
                     } else {
                         alert(result.message);
@@ -730,7 +901,16 @@ function invalidIngredientsIn(item) {
                 }
             });
         }
-    } else {
-        alert("单据不可作废！");
-    }
+    // } else {
+    //     alert("单据不可作废！");
+    // }
+}
+
+/**
+ * 获取条目编号
+ * @param e 点击事件
+ * @returns {jQuery} 条目编号
+ */
+function getIdByMenu(e) {
+    return $(e).parent().parent().find("td[name='itemId']").text();
 }
