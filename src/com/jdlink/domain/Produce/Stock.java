@@ -79,6 +79,7 @@ public class Stock {
     //状态数据字典
     private CheckStateItem checkStateItem;
 
+   /*录入人*/
 
 
 

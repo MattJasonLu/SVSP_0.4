@@ -1,5 +1,6 @@
 package com.jdlink.domain;
 
+import com.jdlink.domain.Dictionary.CheckStateItem;
 import com.jdlink.domain.Dictionary.TicketRateItem;
 import com.jdlink.domain.Dictionary.UnitDataItem;
 
@@ -89,6 +90,10 @@ public class OfficeSuppliesItem {
      * 备注
      */
     private String remark;
+    /**
+     * 审批状态
+     */
+    private CheckStateItem checkStateItem;
     /**
      * 关键字
      */
@@ -256,6 +261,14 @@ public class OfficeSuppliesItem {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public CheckStateItem getCheckStateItem() {
+        return checkStateItem;
+    }
+
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
     }
 
     public String getKeyword() {

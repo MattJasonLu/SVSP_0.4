@@ -12,7 +12,7 @@
         <result property="plateNumber" column="plateNumber" javaType="String"></result>
         <result property="checkState" column="checkState" javaType="CheckState"></result>
         <result property="proWasteCompany" column="proWasteCompany" javaType="String"></result>
-        <collection property="wastesList" select="getWastes" column="stockId" ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
+        <!--<collection property="wastesList" select="getWastes" column="stockId" ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>-->
         <collection property="client" column="clientId" select="getClient"></collection>
         <collection property="supplier" column="supplierId" select="getSupplier"></collection>
         <collection property="stockItemList" column="stockId" select="getStockItem"></collection>
@@ -93,8 +93,10 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
                 or supplierId in(select supplierId from t_supplier where phone like "%"#{keyword}"%")
                 or clientId in(select clientId from client where contactName like "%"#{keyword}"%")
                 or clientId in(select clientId from client where phone like "%"#{keyword}"%")
+                or clientId in(select clientId from client where capacity = #{keyword})
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%")
                 or proTelephone like "%"#{keyword}"%"
+
             </if>
             <if test="supplier != null">
                 <if test="supplier.companyName!=''">
@@ -134,6 +136,7 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
                 or supplierId in(select supplierId from t_supplier where phone like "%"#{keyword}"%")
                 or clientId in(select clientId from client where contactName like "%"#{keyword}"%")
                 or clientId in(select clientId from client where phone like "%"#{keyword}"%")
+                or clientId in(select clientId from client where capacity = #{keyword})
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%")
                 or proTelephone like "%"#{keyword}"%"
             </if>

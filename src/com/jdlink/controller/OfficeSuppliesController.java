@@ -61,6 +61,27 @@ public class OfficeSuppliesController {
     }
 
     /**
+     * 获取办公用品入库单条目数量
+     * @return 入库单条目数量
+     */
+    @RequestMapping("countOfficeSuppliesInboundItem")
+    @ResponseBody
+    public String countOfficeSuppliesInboundItem() {
+        JSONObject res = new JSONObject();
+        try {
+            int count = officeSuppliesService.countOfficeSuppliesInboundItem();
+            res.put("status", "success");
+            res.put("message", "获取数据成功");
+            res.put("data", count);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取数据失败");
+        }
+        return res.toString();
+    }
+
+    /**
      * 增加办公用品入库单
      * @param officeSuppliesInbound 办公用品入库单
      * @return 成功与否
@@ -201,6 +222,27 @@ public class OfficeSuppliesController {
     }
 
     /**
+     * 作废办公用品入库单
+     * @param id 编号
+     * @return 成功与否
+     */
+    @RequestMapping("setInvalidOfficeSuppliesInboundItem")
+    @ResponseBody
+    public String setInvalidOfficeSuppliesInboundItem(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            officeSuppliesService.setInvalidOfficeSuppliesInboundItem(id);
+            res.put("status", "success");
+            res.put("message", "作废成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+        }
+        return res.toString();
+    }
+
+    /**
      * 获取办公用品出库单条目
      * @param id 编号
      * @return 出库单条目
@@ -240,6 +282,27 @@ public class OfficeSuppliesController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "更新失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 作废办公用品出库单
+     * @param id 编号
+     * @return 成功与否
+     */
+    @RequestMapping("setInvalidOfficeSuppliesOutboundItem")
+    @ResponseBody
+    public String setInvalidOfficeSuppliesOutboundItem(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            officeSuppliesService.setInvalidOfficeSuppliesOutboundItem(id);
+            res.put("status", "success");
+            res.put("message", "作废成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
         }
         return res.toString();
     }

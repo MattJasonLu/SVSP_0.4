@@ -684,16 +684,18 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         select  * from t_contract
         <where>
             <if test="keyword!='' and keyword!=null">
-                or  contractId like binary"%"#{keyword}"%"
-                or  clientId in(select clientId from client where companyName like  binary"%"#{keyword}"%")
-               or contractName like binary"%"#{keyword}"%"
-                or contactName in (select contactName from client where contactName like  binary"%"#{keyword}"%")
-                or beginTime   like binary"%"#{keyword}"%"
-                or  endTime   like   binary"%"#{keyword}"%"
-                or small  like  binary#{keyword}
-                or reviewer  like   binary"%"#{keyword}"%"
-                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
-                and contractType='Wastes' and period is  null and checkStateId != 69 order  by  nowTime desc
+                and (contractId like binary"%"#{keyword}"%"
+                or clientId in(select clientId from client where companyName like binary"%"#{keyword}"%")
+                or contractName like binary"%"#{keyword}"%"
+                or contactName in (select contactName from client where contactName like binary"%"#{keyword}"%")
+                or beginTime like binary"%"#{keyword}"%"
+                or endTime like binary"%"#{keyword}"%"
+                or small like binary#{keyword}
+                or reviewer like binary"%"#{keyword}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keyword}"%" and dataDictionaryId=11)
+                )
+                and contractType='Wastes'and period is  null
             </if>
 
             <if test="checkStateItem!=null">
@@ -719,9 +721,10 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 <![CDATA[ and DATE_FORMAT(endTime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
             </if>
             <if test="keyword==''">
-                and contractType='Wastes' and period is  null and checkStateId != 69 order  by  nowTime desc
+                and contractType='Wastes'and period is  null
             </if>
         </where>
+        order  by  nowTime desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
@@ -732,16 +735,18 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         select  * from t_contract
         <where>
             <if test="keyword!='' and keyword!=null">
-                or  contractId like binary"%"#{keyword}"%"
-                or  clientId in(select clientId from client where companyName like  binary"%"#{keyword}"%")
+                and (contractId like binary"%"#{keyword}"%"
+                or clientId in(select clientId from client where companyName like binary"%"#{keyword}"%")
                 or contractName like binary"%"#{keyword}"%"
-                or contactName in (select contactName from client where contactName like  binary"%"#{keyword}"%")
-                or beginTime   like binary"%"#{keyword}"%"
-                or  endTime   like   binary"%"#{keyword}"%"
-                or small  like  binary#{keyword}
-                or reviewer  like   binary"%"#{keyword}"%"
-                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
-                and contractType='Emergency' and period is  null  order  by  nowTime desc
+                or contactName in (select contactName from client where contactName like binary"%"#{keyword}"%")
+                or beginTime like binary"%"#{keyword}"%"
+                or endTime like binary"%"#{keyword}"%"
+                or small like binary#{keyword}
+                or reviewer like binary"%"#{keyword}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keyword}"%" and dataDictionaryId=11)
+                )
+                and contractType='Emergency' and period is null order by nowTime desc
             </if>
 
             <if test="checkStateItem!=null">
@@ -780,16 +785,17 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         select  * from t_contract
         <where>
             <if test="keyword!='' and keyword!=null">
-                or  contractId like binary"%"#{keyword}"%"
-                or  clientId in(select clientId from client where companyName like  binary"%"#{keyword}"%")
+                and (contractId like binary"%"#{keyword}"%"
+                or clientId in(select clientId from client where companyName like binary"%"#{keyword}"%")
                 or contractName like binary"%"#{keyword}"%"
-                or contactName in (select contactName from client where contactName like  binary"%"#{keyword}"%")
-                or beginTime   like binary"%"#{keyword}"%"
-                or  endTime   like   binary"%"#{keyword}"%"
-                or small  like  binary#{keyword}
-                or reviewer  like   binary"%"#{keyword}"%"
-                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
-                and contractType='Logistics' and period is  null  order  by  nowTime desc
+                or contactName in (select contactName from client where contactName like binary"%"#{keyword}"%")
+                or beginTime like binary"%"#{keyword}"%"
+                or endTime like binary"%"#{keyword}"%"
+                or small like binary#{keyword}
+                or reviewer like binary"%"#{keyword}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keyword}"%" and dataDictionaryId=11)
+                )and contractType='Logistics' and period is null order by nowTime desc
             </if>
 
             <if test="checkStateItem!=null">
@@ -828,16 +834,18 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         select  count(*) from t_contract
         <where>
             <if test="keyword!='' and keyword!=null">
-                or  contractId like binary"%"#{keyword}"%"
-                or  clientId in(select clientId from client where companyName like  binary"%"#{keyword}"%")
+                and (contractId like binary"%"#{keyword}"%"
+                or clientId in(select clientId from client where companyName like binary"%"#{keyword}"%")
                 or contractName like binary"%"#{keyword}"%"
-                or contactName in (select contactName from client where contactName like  binary"%"#{keyword}"%")
-                or beginTime   like binary"%"#{keyword}"%"
-                or  endTime   like   binary"%"#{keyword}"%"
-                or small  like  binary#{keyword}
-                or reviewer  like   binary"%"#{keyword}"%"
-                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
-                and contractType='Wastes' and period is  null  order  by  nowTime desc
+                or contactName in (select contactName from client where contactName like binary"%"#{keyword}"%")
+                or beginTime like binary"%"#{keyword}"%"
+                or endTime like binary"%"#{keyword}"%"
+                or small like binary#{keyword}
+                or reviewer like binary"%"#{keyword}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keyword}"%" and dataDictionaryId=11)
+                )
+                and contractType='Wastes'and period is  null
             </if>
 
             <if test="checkStateItem!=null">
@@ -863,9 +871,10 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 <![CDATA[ and DATE_FORMAT(endTime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
             </if>
             <if test="keyword==''">
-                and contractType='Wastes' and period is  null  order  by  nowTime desc
+                and contractType='Wastes'and period is  null
             </if>
         </where>
+
     </select>
 
     <!--应急合同查询总数-->
@@ -873,16 +882,18 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         select  count(*) from t_contract
         <where>
             <if test="keyword!='' and keyword!=null">
-                or  contractId like binary"%"#{keyword}"%"
-                or  clientId in(select clientId from client where companyName like  binary"%"#{keyword}"%")
+                and (contractId like binary"%"#{keyword}"%"
+                or clientId in(select clientId from client where companyName like binary"%"#{keyword}"%")
                 or contractName like binary"%"#{keyword}"%"
-                or contactName in (select contactName from client where contactName like  binary"%"#{keyword}"%")
-                or beginTime   like binary"%"#{keyword}"%"
-                or  endTime   like   binary"%"#{keyword}"%"
-                or small  like  binary#{keyword}
-                or reviewer  like   binary"%"#{keyword}"%"
-                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
-                and contractType='Emergency' and period is  null  order  by  nowTime desc
+                or contactName in (select contactName from client where contactName like binary"%"#{keyword}"%")
+                or beginTime like binary"%"#{keyword}"%"
+                or endTime like binary"%"#{keyword}"%"
+                or small like binary#{keyword}
+                or reviewer like binary"%"#{keyword}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keyword}"%" and dataDictionaryId=11)
+                )
+                and contractType='Emergency' and period is null order by nowTime desc
             </if>
 
             <if test="checkStateItem!=null">
@@ -918,16 +929,17 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         select  count(*) from t_contract
         <where>
             <if test="keyword!='' and keyword!=null">
-                or  contractId like binary"%"#{keyword}"%"
-                or  clientId in(select clientId from client where companyName like  binary"%"#{keyword}"%")
+                and (contractId like binary"%"#{keyword}"%"
+                or clientId in(select clientId from client where companyName like binary"%"#{keyword}"%")
                 or contractName like binary"%"#{keyword}"%"
-                or contactName in (select contactName from client where contactName like  binary"%"#{keyword}"%")
-                or beginTime   like binary"%"#{keyword}"%"
-                or  endTime   like   binary"%"#{keyword}"%"
-                or small  like  binary#{keyword}
-                or reviewer  like   binary"%"#{keyword}"%"
-                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
-                and contractType='Logistics' and period is  null  order  by  nowTime desc
+                or contactName in (select contactName from client where contactName like binary"%"#{keyword}"%")
+                or beginTime like binary"%"#{keyword}"%"
+                or endTime like binary"%"#{keyword}"%"
+                or small like binary#{keyword}
+                or reviewer like binary"%"#{keyword}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keyword}"%" and dataDictionaryId=11)
+                )and contractType='Logistics' and period is null order by nowTime desc
             </if>
 
             <if test="checkStateItem!=null">
@@ -977,16 +989,17 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         select  * from t_contract
         <where>
             <if test="keyword!='' and keyword!=null">
-                or  contractId like binary"%"#{keyword}"%"
-                or  clientId in(select clientId from client where companyName like  binary"%"#{keyword}"%")
+                and (contractId like binary"%"#{keyword}"%"
+                or clientId in(select clientId from client where companyName like binary"%"#{keyword}"%")
                 or contractName like binary"%"#{keyword}"%"
-                or contactName in (select contactName from client where contactName like  binary"%"#{keyword}"%")
-                or beginTime   like binary"%"#{keyword}"%"
-                or  endTime   like   binary"%"#{keyword}"%"
-                or small  like  binary#{keyword}
-                or reviewer  like   binary"%"#{keyword}"%"
-                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
-                and contractType='Derive' and period is  null  order  by  nowTime desc
+                or contactName in (select contactName from client where contactName like binary"%"#{keyword}"%")
+                or beginTime like binary"%"#{keyword}"%"
+                or endTime like binary"%"#{keyword}"%"
+                or small like binary#{keyword}
+                or reviewer like binary"%"#{keyword}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keyword}"%" and dataDictionaryId=11)
+                )and contractType='Derive' and period is null order by nowTime desc
             </if>
 
             <if test="checkStateItem!=null">
@@ -1025,16 +1038,17 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         select  count(*) from t_contract
         <where>
             <if test="keyword!='' and keyword!=null">
-                or  contractId like binary"%"#{keyword}"%"
-                or  clientId in(select clientId from client where companyName like  binary"%"#{keyword}"%")
+                and (contractId like binary"%"#{keyword}"%"
+                or clientId in(select clientId from client where companyName like binary"%"#{keyword}"%")
                 or contractName like binary"%"#{keyword}"%"
-                or contactName in (select contactName from client where contactName like  binary"%"#{keyword}"%")
-                or beginTime   like binary"%"#{keyword}"%"
-                or  endTime   like   binary"%"#{keyword}"%"
-                or small  like  binary#{keyword}
-                or reviewer  like   binary"%"#{keyword}"%"
-                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
-                and contractType='Derive' and period is  null  order  by  nowTime desc
+                or contactName in (select contactName from client where contactName like binary"%"#{keyword}"%")
+                or beginTime like binary"%"#{keyword}"%"
+                or endTime like binary"%"#{keyword}"%"
+                or small like binary#{keyword}
+                or reviewer like binary"%"#{keyword}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keyword}"%" and dataDictionaryId=11)
+                )and contractType='Derive' and period is null order by nowTime desc
             </if>
 
             <if test="checkStateItem!=null">
@@ -1083,16 +1097,17 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         select  * from t_contract
         <where>
             <if test="keyword!='' and keyword!=null">
-                or  contractId like binary"%"#{keyword}"%"
-                or  clientId in(select clientId from client where companyName like  binary"%"#{keyword}"%")
+                and (contractId like binary"%"#{keyword}"%"
+                or clientId in(select clientId from client where companyName like binary"%"#{keyword}"%")
                 or contractName like binary"%"#{keyword}"%"
-                or contactName in (select contactName from client where contactName like  binary"%"#{keyword}"%")
-                or beginTime   like binary"%"#{keyword}"%"
-                or  endTime   like   binary"%"#{keyword}"%"
-                or small  like  binary#{keyword}
-                or reviewer  like   binary"%"#{keyword}"%"
-                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
-                and contractType='Purchase' and period is  null  order  by  nowTime desc
+                or contactName in (select contactName from client where contactName like binary"%"#{keyword}"%")
+                or beginTime like binary"%"#{keyword}"%"
+                or endTime like binary"%"#{keyword}"%"
+                or small like binary#{keyword}
+                or reviewer like binary"%"#{keyword}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keyword}"%" and dataDictionaryId=11)
+                )and contractType='Purchase' and period is null order by nowTime desc
             </if>
 
             <if test="checkStateItem!=null">
@@ -1131,16 +1146,17 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         select  count(*) from t_contract
         <where>
             <if test="keyword!='' and keyword!=null">
-                or  contractId like binary"%"#{keyword}"%"
-                or  clientId in(select clientId from client where companyName like  binary"%"#{keyword}"%")
+                and (contractId like binary"%"#{keyword}"%"
+                or clientId in(select clientId from client where companyName like binary"%"#{keyword}"%")
                 or contractName like binary"%"#{keyword}"%"
-                or contactName in (select contactName from client where contactName like  binary"%"#{keyword}"%")
-                or beginTime   like binary"%"#{keyword}"%"
-                or  endTime   like   binary"%"#{keyword}"%"
-                or small  like  binary#{keyword}
-                or reviewer  like   binary"%"#{keyword}"%"
-                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
-                and contractType='Purchase' and period is  null  order  by  nowTime desc
+                or contactName in (select contactName from client where contactName like binary"%"#{keyword}"%")
+                or beginTime like binary"%"#{keyword}"%"
+                or endTime like binary"%"#{keyword}"%"
+                or small like binary#{keyword}
+                or reviewer like binary"%"#{keyword}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keyword}"%" and dataDictionaryId=11)
+                )and contractType='Purchase' and period is null order by nowTime desc
             </if>
 
             <if test="checkStateItem!=null">
@@ -1190,16 +1206,17 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         select  * from t_contract
         <where>
             <if test="keyword!='' and keyword!=null">
-                or  contractId like binary"%"#{keyword}"%"
-                or  clientId in(select clientId from client where companyName like  binary"%"#{keyword}"%")
+                and (contractId like binary"%"#{keyword}"%"
+                or clientId in(select clientId from client where companyName like binary"%"#{keyword}"%")
                 or contractName like binary"%"#{keyword}"%"
-                or contactName in (select contactName from client where contactName like  binary"%"#{keyword}"%")
-                or beginTime   like binary"%"#{keyword}"%"
-                or  endTime   like   binary"%"#{keyword}"%"
-                or small  like  binary#{keyword}
-                or reviewer  like   binary"%"#{keyword}"%"
-                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
-                and contractType='Other' and period is  null  order  by  nowTime desc
+                or contactName in (select contactName from client where contactName like binary"%"#{keyword}"%")
+                or beginTime like binary"%"#{keyword}"%"
+                or endTime like binary"%"#{keyword}"%"
+                or small like binary#{keyword}
+                or reviewer like binary"%"#{keyword}"%"
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keyword}"%" and dataDictionaryId=11)
+                )and contractType='Other' and period is null order by nowTime desc
             </if>
 
             <if test="checkStateItem!=null">
@@ -1233,12 +1250,12 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         </if>
     </select>
 
-    <!--采购合同查询计数-->
+    <!--其他合同查询计数-->
     <select id="searchOtherContractCount" resultType="int">
         select  count(*) from t_contract
         <where>
             <if test="keyword!='' and keyword!=null">
-                or  contractId like binary"%"#{keyword}"%"
+                and ( contractId like binary"%"#{keyword}"%"
                 or  clientId in(select clientId from client where companyName like  binary"%"#{keyword}"%")
                 or contractName like binary"%"#{keyword}"%"
                 or contactName in (select contactName from client where contactName like  binary"%"#{keyword}"%")
@@ -1247,7 +1264,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 or small  like  binary#{keyword}
                 or reviewer  like   binary"%"#{keyword}"%"
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
-                and contractType='Other' and period is  null  order  by  nowTime desc
+                )and contractType='Other' and period is  null  order  by  nowTime desc
             </if>
 
             <if test="checkStateItem!=null">

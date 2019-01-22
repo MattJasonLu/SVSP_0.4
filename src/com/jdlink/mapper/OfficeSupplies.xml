@@ -23,6 +23,7 @@
         <association property="supplier" column="supplierId" select="getSupplier"/>
         <association property="unitDataItem" column="unitDataItemId" select="getUnitDataItem"/>
         <association property="ticketRateItem" column="ticketRateItemId" select="getTicketRateItem"/>
+        <association property="checkStateItem" column="checkStateItemId" select="getCheckStateItem"/>
     </resultMap>
 
     <!--获取供应商信息-->
@@ -46,12 +47,12 @@
 
     <!--获取入库条目-->
     <select id="getInboundItemList" resultMap="OfficeSuppliesItemRM">
-        select * from t_pr_officesuppliesinbounditem where inboundId=#{inboundId};
+        select * from t_pr_officesuppliesinbounditem where inboundId=#{inboundId} and (checkStateItemId != 69 or checkStateItemId is null);
     </select>
 
     <!--获取出库条目-->
     <select id="getOutboundItemList" resultMap="OfficeSuppliesItemRM">
-        select * from t_pr_officesuppliesoutbounditem where outboundId=#{outboundId};
+        select * from t_pr_officesuppliesoutbounditem where outboundId=#{outboundId} and (checkStateItemId != 69 or checkStateItemId is null);
     </select>
 
     <!--*********************************************映射集*********************************************-->
@@ -61,7 +62,15 @@
 
     <!--查询办公用品入库单-->
     <select id="listOfficeSuppliesInbound" resultMap="OfficeSuppliesInboundRM">
-        select * from t_pr_officesuppliesinbound;
+        select * from t_pr_officesuppliesinbound
+        <if test="page != null and page.start != null and page.count != null and page.count != 0">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--获取办公用品入库单条目的数量-->
+    <select id="countOfficeSuppliesInboundItem" resultType="int">
+        select count(*) from t_pr_officesuppliesinbounditem;
     </select>
 
     <!--增加办公用品入库单-->
@@ -72,7 +81,7 @@
             <foreach collection="officeSuppliesItemList" item="officeSuppliesItem">
                 insert into t_pr_officesuppliesinbounditem (itemId, inboundId, outboundId, supplierId, itemCode, itemName,
                 itemSpecifications, unitDataItemId, itemAmount, leftAmount, taxUnitPrice, unitPrice, totalTaxPrice, totalPrice,
-                inboundDate, outboundDate, ticketRateItemId, author, createTime, remark) values
+                inboundDate, outboundDate, ticketRateItemId, author, createTime, remark, checkStateItemId) values
                 (#{officeSuppliesItem.itemId}, #{officeSuppliesItem.inboundId}, #{officeSuppliesItem.outboundId},
                 #{officeSuppliesItem.supplier.supplierId}, #{officeSuppliesItem.itemCode}, #{officeSuppliesItem.itemName},
                 #{officeSuppliesItem.itemSpecifications}, #{officeSuppliesItem.unitDataItem.dataDictionaryItemId},
@@ -80,7 +89,7 @@
                 #{officeSuppliesItem.taxUnitPrice}, #{officeSuppliesItem.unitPrice}, #{officeSuppliesItem.totalTaxPrice},
                 #{officeSuppliesItem.totalPrice}, #{officeSuppliesItem.inboundDate}, #{officeSuppliesItem.outboundDate},
                 #{officeSuppliesItem.ticketRateItem.dataDictionaryItemId}, #{officeSuppliesItem.author},
-                NOW(), #{officeSuppliesItem.remark});
+                NOW(), #{officeSuppliesItem.remark}, 75);
             </foreach>
         </if>
     </insert>
@@ -97,7 +106,15 @@
 
     <!--查询办公用品出库单-->
     <select id="listOfficeSuppliesOutbound" resultMap="OfficeSuppliesOutboundRM">
-        select * from t_pr_officesuppliesoutbound;
+        select * from t_pr_officesuppliesoutbound
+        <if test="page != null and page.start != null and page.count != null and page.count != 0">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--获取办公用品出库单的数量-->
+    <select id="countOfficeSuppliesOutboundItem" resultType="int">
+        select count(*) from t_pr_officesuppliesoutbounditem;
     </select>
 
     <!--增加办公用品出库单-->
@@ -108,7 +125,7 @@
             <foreach collection="officeSuppliesItemList" item="officeSuppliesItem">
                 insert into t_pr_officesuppliesoutbounditem (itemId, inboundId, outboundId, supplierId, itemCode, itemName,
                 itemSpecifications, unitDataItemId, itemAmount, leftAmount, taxUnitPrice, unitPrice, totalTaxPrice, totalPrice,
-                inboundDate, outboundDate, ticketRateItemId, author, createTime, remark) values
+                inboundDate, outboundDate, ticketRateItemId, author, createTime, remark, checkStateItemId) values
                 (#{officeSuppliesItem.itemId}, #{officeSuppliesItem.inboundId}, #{officeSuppliesItem.outboundId},
                 #{officeSuppliesItem.supplier.supplierId}, #{officeSuppliesItem.itemCode}, #{officeSuppliesItem.itemName},
                 #{officeSuppliesItem.itemSpecifications}, #{officeSuppliesItem.unitDataItem.dataDictionaryItemId},
@@ -116,7 +133,7 @@
                 #{officeSuppliesItem.taxUnitPrice}, #{officeSuppliesItem.unitPrice}, #{officeSuppliesItem.totalTaxPrice},
                 #{officeSuppliesItem.totalPrice}, #{officeSuppliesItem.inboundDate}, #{officeSuppliesItem.outboundDate},
                 #{officeSuppliesItem.ticketRateItem.dataDictionaryItemId}, #{officeSuppliesItem.author},
-                NOW(), #{officeSuppliesItem.remark});
+                NOW(), #{officeSuppliesItem.remark}, 75);
             </foreach>
         </if>
     </insert>
@@ -141,6 +158,11 @@
         where itemId=#{itemId};
     </update>
 
+    <!--作废办公用品入库单条目-->
+    <update id="setInvalidOfficeSuppliesInboundItem">
+        update t_pr_officesuppliesinbounditem set checkStateItemId=69 where itemId=#{0};
+    </update>
+
     <!--获取办公用品出库单条目-->
     <select id="getOfficeSuppliesOutboundItemById" resultMap="OfficeSuppliesItemRM">
         select * from t_pr_officesuppliesoutbounditem where itemId = #{0};
@@ -155,6 +177,11 @@
         unitPrice=#{unitPrice}, totalTaxPrice=#{totalTaxPrice}, totalPrice=#{totalPrice},
         inboundDate=#{inboundDate}, outboundDate=#{outboundDate}, author=#{author}, remark=#{remark}
         where itemId=#{itemId};
+    </update>
+
+    <!--作废办公用品出库单条目-->
+    <update id="setInvalidOfficeSuppliesOutboundItem">
+        update t_pr_officesuppliesoutbounditem set checkStateItemId=69 where itemId=#{0};
     </update>
 
     <!--*********************************************办公用品条目*********************************************-->
