@@ -186,19 +186,20 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
     <resultMap id="OutBoundOrderList" type="OutboundOrder" autoMapping="true">
         <!--领料单信息-->
         <collection property="materialRequisitionOrder" column="materialRequisitionId"
-                    select="getMaterialRequisitionOrder" ofType="MaterialRequisitionOrder"></collection>
+                    select="getMaterialRequisitionOrder" ofType="MaterialRequisitionOrder" />
         <!--危废信息-->
-        <collection property="wastes" column="id" select="getWastes" ofType="Wastes"></collection>
+        <collection property="wastes" column="id" select="getWastes" ofType="Wastes" />
         <!--业务员-->
-        <collection property="salesman" column="salesmanId" select="getSalesman1" ofType="Salesman"></collection>
+        <collection property="salesman" column="salesmanId" select="getSalesman1" ofType="Salesman" />
         <!--客户-->
-        <collection property="client" column="clientId" select="getClient1" ofType="Client"></collection>
+        <collection property="client" column="clientId" select="getClient1" ofType="Client" />
         <!--仓库-->
-        <collection property="wareHouse" column="wareHouseId" select="getWareHouse" ofType="WareHouse"></collection>
+        <collection property="wareHouse" column="wareHouseId" select="getWareHouse" ofType="WareHouse" />
         <collection property="wasteInventory" column="inboundOrderId" select="getWasteInventory"
-                    ofType="WasteInventory"></collection>
-        <collection property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"></collection>
+                    ofType="WasteInventory" />
+        <collection property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest" />
     </resultMap>
+
     <!--获取领料单信息-->
     <select id="getMaterialRequisitionOrder" resultType="MaterialRequisitionOrder" parameterType="String">
         select * from t_pl_materialrequisitionorder where materialRequisitionId=#{materialRequisitionId};
@@ -340,6 +341,43 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
             <![CDATA[WHERE DATE_FORMAT(outboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{0}, '%Y-%m-%d')
             AND DATE_FORMAT(outboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{1}, '%Y-%m-%d')]]>;
        </select>
+
+    <!--根据日期范围查询危废出库明细:统计图表-->
+    <select id="getWastesOutboundOrderItemAmountByRange" resultType="OutboundOrder">
+        select SUM(outboundNumber) as outboundNumber,outboundDate from t_pl_outboundorder
+        <where>
+            <if test="startDate != null and startDate != ''">
+                <![CDATA[AND DATE_FORMAT(outboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[AND DATE_FORMAT(outboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')]]>
+            </if>
+            <if test="1==1">
+                AND checkStateId != 69
+                AND boundType = 'WasteOutbound'
+            </if>
+        </where>
+        GROUP BY DATE_FORMAT(outboundDate, '%Y%m') ORDER BY outboundDate ASC;
+    </select>
+
+    <!--根据日期范围查询次生出库明细:统计图表-->
+    <select id="getSecondOutboundOrderItemAmountByRange" resultType="OutboundOrder">
+        select SUM(outboundNumber) as outboundNumber,outboundDate from t_pl_outboundorder
+        <where>
+            <if test="startDate != null and startDate != ''">
+                <![CDATA[AND DATE_FORMAT(outboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[AND DATE_FORMAT(outboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')]]>
+            </if>
+            <if test="1==1">
+                AND checkStateId != 69
+                AND boundType = 'SecondaryOutbound'
+            </if>
+        </where>
+        GROUP BY DATE_FORMAT(outboundDate, '%Y%m') ORDER BY outboundDate ASC;
+    </select>
+
     <!--根据时间范围以及设备查询出库单-->
     <select id="getOutBoundByDateRangeAndEquipment" resultMap="OutBoundOrderList" >
             SELECT * FROM t_pl_outboundorder

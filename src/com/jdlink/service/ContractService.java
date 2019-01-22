@@ -81,7 +81,7 @@ public interface ContractService {
     Contract getWastesInfoByCompanyName(String companyName,Date creationDate);
 
     List<QuotationItem> ContractList(Page page);
-
+    List<QuotationItem> getQuotationItemByRange(Date StartDate, Date endDate);
     int contractVolume();
 
     void setFilePath(QuotationItem quotationItem);

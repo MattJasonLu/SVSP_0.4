@@ -109,6 +109,17 @@ public class OutboundOrderServiceImpl implements OutboundOrderService{
     }
 
     @Override
+    public List<OutboundOrder> getWastesOutboundOrderItemAmountByRange(Date startDate, Date endDate) {
+        return outboundOrderMapper.getWastesOutboundOrderItemAmountByRange(startDate, endDate);
+    }
+
+    @Override
+    public List<OutboundOrder> getSecondOutboundOrderItemAmountByRange(Date startDate, Date endDate) {
+        return outboundOrderMapper.getSecondOutboundOrderItemAmountByRange(startDate, endDate);
+    }
+
+
+    @Override
     public List<OutboundOrder> getOutBoundByDateAndEquipment(Date date, String equipment) {
         return outboundOrderMapper.getOutBoundByDateRangeAndEquipment(date,date,equipment);
     }

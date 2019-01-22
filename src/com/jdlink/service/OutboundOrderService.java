@@ -27,6 +27,8 @@ public interface OutboundOrderService {
     void upHandelCategoryById(String outboundOrderId,int   id);
     void  updateSecondart(OutboundOrder outboundOrder);
     List<OutboundOrder>  getOutBoundByRange(Date startDate, Date endDate);
+    List<OutboundOrder> getWastesOutboundOrderItemAmountByRange(Date startDate, Date endDate);
+    List<OutboundOrder> getSecondOutboundOrderItemAmountByRange(Date startDate, Date endDate);
     List<OutboundOrder> getOutBoundByDate (Date date);
     List<OutboundOrder>  getOutBoundByDateRangeAndEquipment(Date startDate, Date endDate,String equipment);
     List<OutboundOrder> getOutBoundByDateAndEquipment (Date date,String equipment);

@@ -2,11 +2,16 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.City;
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Inventory.InboundOrder;
+import com.jdlink.domain.Inventory.InboundOrderItem;
+import com.jdlink.domain.Inventory.OutboundOrder;
 import com.jdlink.domain.Page;
+import com.jdlink.domain.Produce.Ingredients;
+import com.jdlink.domain.Produce.Secondary;
 import com.jdlink.domain.Produce.SecondarySample;
 import com.jdlink.domain.Produce.WayBill;
-import com.jdlink.service.CityService;
-import com.jdlink.service.ClientService;
+import com.jdlink.domain.QuotationItem;
+import com.jdlink.service.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 public class ChartListController {
@@ -27,7 +30,22 @@ public class ChartListController {
     ClientService clientService;
     @Autowired
     CityService cityService;
+    @Autowired
+    InboundService inboundService;
+    @Autowired
+    MedicalWastesService medicalWastesService;
+    @Autowired
+    OutboundOrderService outboundOrderService;
+    @Autowired
+    IngredientsService ingredientsService;
+    @Autowired
+    ContractService contractService;
 
+
+    /**
+     * 获取产废单位饼图数据
+     * @return
+     */
     @RequestMapping("getCityOfProduceCompanyNumber")
     @ResponseBody
     public String getCityOfProduceCompanyNumber() {
@@ -86,5 +104,54 @@ public class ChartListController {
         return res.toString();
     }
 
+
+    /**
+     * 获取统计图表数据
+     * @return
+     */
+    @RequestMapping("searchChartList")
+    @ResponseBody
+    public String searchChartList(Date startDate,Date endDate) {
+        JSONObject res = new JSONObject();
+        try {
+            if(startDate == null && endDate == null) {  // 默认时间为当前日期的近六月
+                startDate = new Date();
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(startDate);
+                calendar.add(Calendar.MONTH, -6);//当前时间前去6个月，即6个月前的时间
+                endDate = calendar.getTime();  // 设置endDate为六月前时间
+            }
+            // 根据日期范围获取各板块按年月分组的数量/日期数据
+            List<OutboundOrder> wastesOutboundOrderList = outboundOrderService.getWastesOutboundOrderItemAmountByRange(startDate,endDate);  // 获取危废出库数量和日期数据
+            List<OutboundOrder> secondOutboundOrderList = outboundOrderService.getSecondOutboundOrderItemAmountByRange(startDate, endDate); // 获取次生出库数量和日期数据
+            List<InboundOrderItem> inboundOrderItemList = inboundService.getWastesInboundOrderItemAmountByRange(startDate,endDate);  // 根据日期获取危废入库数量和日期数据
+            List<InboundOrderItem> secondInboundOrderItemList = inboundService.getSecondInboundOrderItemAmountByRange(startDate,endDate); // 获取次生入库数量和日期数据
+            List<Ingredients> ingredientsInList = ingredientsService.getIngredientsInItemAmountByRange(startDate,endDate);  // 获取辅料入库数量和日期数据
+            List<Ingredients> ingredientsOutList = ingredientsService.getIngredientsOutItemAmountByRange(startDate,endDate);   // 获取辅料出库数量和日期数据
+            List<QuotationItem> contractItemList = contractService.getQuotationItemByRange(startDate,endDate);   // 获取合同合约量即签订日期数据
+            JSONArray array1 = JSONArray.fromArray(wastesOutboundOrderList.toArray(new OutboundOrder[wastesOutboundOrderList.size()]));
+            JSONArray array2 = JSONArray.fromArray(secondOutboundOrderList.toArray(new OutboundOrder[secondOutboundOrderList.size()]));
+            JSONArray array3 = JSONArray.fromArray(inboundOrderItemList.toArray(new InboundOrderItem[inboundOrderItemList.size()]));
+            JSONArray array4 = JSONArray.fromArray(secondInboundOrderItemList.toArray(new InboundOrderItem[secondInboundOrderItemList.size()]));
+            JSONArray array5 = JSONArray.fromArray(ingredientsInList.toArray(new Ingredients[ingredientsInList.size()]));
+            JSONArray array6 = JSONArray.fromArray(ingredientsOutList.toArray(new Ingredients[ingredientsOutList.size()]));
+            JSONArray array7 = JSONArray.fromArray(contractItemList.toArray(new QuotationItem[contractItemList.size()]));
+            res.put("wastesOutboundOrderList", array1);
+            res.put("secondOutboundOrderList", array2);
+            res.put("inboundOrderItemList", array3);
+            res.put("secondInboundOrderItemList", array4);
+            res.put("ingredientsInList", array5);
+            res.put("ingredientsOutList", array6);
+            res.put("contractItemList", array7);
+            res.put("status", "success");
+            res.put("message", "数据获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "数据获取失败！");
+        }
+        // 返回结果
+        return res.toString();
+    }
 
 }

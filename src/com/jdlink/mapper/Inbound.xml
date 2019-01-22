@@ -39,6 +39,7 @@
 
     <resultMap id="InboundOrderItemRM" type="InboundOrderItem" autoMapping="true">
         <id column="inboundOrderItemId" property="inboundOrderItemId"/>
+        <result property="inboundDate" column="inboundDate" />
         <association property="produceCompany" select="getProduceCompany" column="produceCompanyId"/>
         <association property="wastes" javaType="Wastes">
             <id property="name" column="wastesName"/>
@@ -47,12 +48,12 @@
         </association>
         <association property="wareHouse" column="wareHouseId" select="getWarehouse"/>
         <association property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"/>
-        <association property="processWayItem" column="processWayId" select="getProcessWayItem"></association>
-        <association property="handleCategoryItem" column="handleCategoryId" select="getHandleCategoryItem"></association>
-        <association property="formTypeItem" column="formTypeId" select="getFormTypeItem"></association>
-        <association property="packageTypeItem" column="packageTypeId" select="getPackageTypeItem"></association>
-        <association property="unitDataItem" column="unitId" select="getUnitDataItem"></association>
-        <association property="secondaryCategoryItem" column="secondaryCategoryId" select="getSecondaryCategoryItem"></association>
+        <association property="processWayItem" column="processWayId" select="getProcessWayItem" />
+        <association property="handleCategoryItem" column="handleCategoryId" select="getHandleCategoryItem" />
+        <association property="formTypeItem" column="formTypeId" select="getFormTypeItem" />
+        <association property="packageTypeItem" column="packageTypeId" select="getPackageTypeItem" />
+        <association property="unitDataItem" column="unitId" select="getUnitDataItem" />
+        <association property="secondaryCategoryItem" column="secondaryCategoryId" select="getSecondaryCategoryItem" />
     </resultMap>
 
     <!--获取物质形态数据字典-->
@@ -84,6 +85,7 @@
     <select id="getProcessWayItem" resultType="ProcessWayItem">
         select * from datadictionaryitem where dataDictionaryItemId=#{processWayId}
     </select>
+
     <select id="getWarehouse" resultType="WareHouse">
         select * from t_pl_warehouse where warehouseId=#{wareHouseId};
     </select>
@@ -356,6 +358,25 @@
             ]]>);
     </select>
 
+    <!--根据日期范围查询危废入库明细数据:统计图表-->
+    <select id="getWastesInboundOrderItemAmountByRange" resultMap="InboundOrderItemRM">
+        select SUM(a.wastesAmount) as wastesAmount,b.inboundDate from t_pl_inboundorderitem as a left join t_pl_inboundorder as b
+        on a.inboundOrderId=b.inboundOrderId
+        <where>
+            <if test="startDate != null and startDate != ''">
+                <![CDATA[AND DATE_FORMAT(b.inboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[AND DATE_FORMAT(b.inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')]]>
+            </if>
+            <if test="1==1">
+                AND b.checkStateId != 69
+                AND b.boundType='WasteInbound'
+            </if>
+        </where>
+        GROUP BY DATE_FORMAT(b.inboundDate, '%Y%m') ORDER BY b.inboundDate ASC;
+    </select>
+
     <!--获取日期范围内的次生入库明细-->
     <select id="getSecondInboundOrderItemByRange" resultMap="InboundOrderItemRM">
         SELECT * FROM t_pl_inboundorderitem WHERE t_pl_inboundorderitem.inboundOrderId IN
@@ -365,6 +386,25 @@
             AND DATE_FORMAT(t_pl_inboundorder.inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')
             AND t_pl_inboundorder.boundType='SecondaryInbound'
             ]]>);
+    </select>
+
+    <!--根据日期范围查询次生入库明细数据:统计图表-->
+    <select id="getSecondInboundOrderItemAmountByRange" resultMap="InboundOrderItemRM">
+        select SUM(a.wastesAmount) as wastesAmount,b.inboundDate from t_pl_inboundorderitem as a left join t_pl_inboundorder as b
+        on a.inboundOrderId=b.inboundOrderId
+        <where>
+            <if test="startDate != null and startDate != ''">
+                <![CDATA[AND DATE_FORMAT(b.inboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[AND DATE_FORMAT(b.inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')]]>
+            </if>
+            <if test="1==1">
+                AND b.checkStateId != 69
+                AND b.boundType='SecondaryInbound'
+            </if>
+        </where>
+        GROUP BY DATE_FORMAT(b.inboundDate, '%Y%m') ORDER BY b.inboundDate ASC;
     </select>
 
     <!--增加次生入库单-->

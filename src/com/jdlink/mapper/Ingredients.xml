@@ -17,6 +17,7 @@
         <id column="itemId" property="itemId"/>
         <result column="inId" property="id"/>
         <result column="unit" property="unit"/>
+        <result column="creationDate" property="creationDate"/>
         <result column="procurementId" property="procurementId"/>
         <result column="serialNumberIn" property="serialNumber"/>
         <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"/>
@@ -294,6 +295,23 @@
                 and equipment = #{equipment};
             </if>
         </where>
+    </select>
+
+    <!--根据签订日期范围查询辅料入库明细:统计图表-->
+    <select id="getIngredientsInItemAmountByRange" resultMap="InIngredientsRM">
+        select SUM(a.amount) as amount,b.creationDate from t_pr_ingredients as a left join t_pr_ingredients_in as b on a.inId=b.id
+        <where>
+            <if test="startDate != null and startDate != ''">
+                <![CDATA[AND DATE_FORMAT(b.creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[AND DATE_FORMAT(b.creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')]]>
+            </if>
+            <if test="1==1">
+                AND b.checkStateId != 69
+            </if>
+        </where>
+        GROUP BY DATE_FORMAT(b.creationDate, '%Y%m') ORDER BY b.creationDate ASC;
     </select>
 
     <select id="getAmountItems" parameterType="Ingredients" resultType="int">
@@ -953,6 +971,7 @@
         <result column="aid" property="aid"/>
         <result column="outId" property="id"/>
         <result column="serialNumberOut" property="serialNumber"/>
+        <result column="creationDate" property="creationDate"/>
         <association property="equipmentDataItem" column="equipmentId" select="getEquipmentDataItem"/>
         <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"/>
     </resultMap>
@@ -1001,6 +1020,23 @@
                 AND equipment = #{equipment};
             </if>
         </where>
+    </select>
+
+    <!--根据签订日期范围查询辅料出库明细:统计图表-->
+    <select id="getIngredientsOutItemAmountByRange" resultMap="InIngredientsRM">
+        select SUM(a.receiveAmount) as receiveAmount,b.creationDate from t_pr_ingredients as a left join t_pr_ingredients_out as b on a.outId=b.id
+        <where>
+            <if test="startDate != null and startDate != ''">
+                <![CDATA[AND DATE_FORMAT(b.creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[AND DATE_FORMAT(b.creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')]]>
+            </if>
+            <if test="1==1">
+                AND b.checkStateId != 69
+            </if>
+        </where>
+        GROUP BY DATE_FORMAT(b.creationDate, '%Y%m') ORDER BY b.creationDate ASC;
     </select>
 
     <select id="getOutById" parameterType="String" resultMap="IngredientsOutRM">
