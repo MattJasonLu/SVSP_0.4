@@ -43,12 +43,8 @@ public class OfficeSuppliesController {
     public String listOfficeSuppliesInbound(@RequestBody OfficeSuppliesItem officeSuppliesItem) {
         JSONObject res = new JSONObject();
         try {
-            List<OfficeSuppliesInbound> officeSuppliesInboundList = officeSuppliesService.listOfficeSuppliesInbound(officeSuppliesItem);
-            List<OfficeSuppliesItem> inboundItemList = new ArrayList<>();
-            for (OfficeSuppliesInbound officeSuppliesInbound : officeSuppliesInboundList) {
-                inboundItemList.addAll(officeSuppliesInbound.getOfficeSuppliesItemList());
-            }
-            JSONArray data = JSONArray.fromArray(inboundItemList.toArray(new OfficeSuppliesItem[inboundItemList.size()]));
+            List<OfficeSuppliesItem> officeSuppliesItemList = officeSuppliesService.listOfficeSuppliesInbound(officeSuppliesItem);
+            JSONArray data = JSONArray.fromArray(officeSuppliesItemList.toArray(new OfficeSuppliesItem[officeSuppliesItemList.size()]));
             res.put("status", "success");
             res.put("message", "获取数据成功");
             res.put("data", data);
@@ -66,10 +62,10 @@ public class OfficeSuppliesController {
      */
     @RequestMapping("countOfficeSuppliesInboundItem")
     @ResponseBody
-    public String countOfficeSuppliesInboundItem() {
+    public String countOfficeSuppliesInboundItem(@RequestBody OfficeSuppliesItem officeSuppliesItem) {
         JSONObject res = new JSONObject();
         try {
-            int count = officeSuppliesService.countOfficeSuppliesInboundItem();
+            int count = officeSuppliesService.countOfficeSuppliesInboundItem(officeSuppliesItem);
             res.put("status", "success");
             res.put("message", "获取数据成功");
             res.put("data", count);

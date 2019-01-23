@@ -692,12 +692,17 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 or endTime like binary"%"#{keyword}"%"
                 or small like binary#{keyword}
                 or reviewer like binary"%"#{keyword}"%"
+                or contractId in(select contractId from  t_quotationitem where wastesName = #{keyword})
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
                 "%"#{keyword}"%" and dataDictionaryId=11)
                 )
                 and contractType='Wastes'and period is  null
             </if>
-
+            <if test="quotationItemList.size()>0">
+                <if test="quotationItemList[0].wastesName!=null and quotationItemList[0].wastesName!=''">
+                    and contractId in(select contractId from  t_quotationitem where wastesName = #{quotationItemList[0].wastesName})
+                </if>
+            </if>
             <if test="checkStateItem!=null">
                 <if test="checkStateItem.dataDictionaryItemId!=0">
                     and checkStateId=#{checkStateItem.dataDictionaryItemId}
@@ -743,12 +748,17 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 or endTime like binary"%"#{keyword}"%"
                 or small like binary#{keyword}
                 or reviewer like binary"%"#{keyword}"%"
+                or contractId in(select contractId from  t_quotationitem where wastesName = #{keyword})
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
                 "%"#{keyword}"%" and dataDictionaryId=11)
                 )
                 and contractType='Emergency' and period is null order by nowTime desc
             </if>
-
+            <if test="quotationItemList.size()>0">
+                <if test="quotationItemList[0].wastesName!=null and quotationItemList[0].wastesName!=''">
+                    and contractId in(select contractId from  t_quotationitem where wastesName = #{quotationItemList[0].wastesName})
+                </if>
+            </if>
             <if test="checkStateItem!=null">
                 <if test="checkStateItem.dataDictionaryItemId!=0">
                     and checkStateId=#{checkStateItem.dataDictionaryItemId}
@@ -793,6 +803,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 or endTime like binary"%"#{keyword}"%"
                 or small like binary#{keyword}
                 or reviewer like binary"%"#{keyword}"%"
+                or contractId in(select contractId from  t_quotationitem where wastesName = #{keyword})
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
                 "%"#{keyword}"%" and dataDictionaryId=11)
                 )and contractType='Logistics' and period is null order by nowTime desc
@@ -801,6 +812,11 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
             <if test="checkStateItem!=null">
                 <if test="checkStateItem.dataDictionaryItemId!=0">
                     and checkStateId=#{checkStateItem.dataDictionaryItemId}
+                </if>
+            </if>
+            <if test="quotationItemList.size()>0">
+                <if test="quotationItemList[0].wastesName!=null and quotationItemList[0].wastesName!=''">
+                    and contractId in(select contractId from  t_quotationitem where wastesName = #{quotationItemList[0].wastesName})
                 </if>
             </if>
             <if test="client!=null">
@@ -842,12 +858,17 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 or endTime like binary"%"#{keyword}"%"
                 or small like binary#{keyword}
                 or reviewer like binary"%"#{keyword}"%"
+                or contractId in(select contractId from  t_quotationitem where wastesName = #{keyword})
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
                 "%"#{keyword}"%" and dataDictionaryId=11)
                 )
                 and contractType='Wastes'and period is  null
             </if>
-
+            <if test="quotationItemList.size()>0">
+                <if test="quotationItemList[0].wastesName!=null and quotationItemList[0].wastesName!=''">
+                    and contractId in(select contractId from  t_quotationitem where wastesName = #{quotationItemList[0].wastesName})
+                </if>
+            </if>
             <if test="checkStateItem!=null">
                 <if test="checkStateItem.dataDictionaryItemId!=0">
                     and checkStateId=#{checkStateItem.dataDictionaryItemId}
@@ -890,12 +911,17 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 or endTime like binary"%"#{keyword}"%"
                 or small like binary#{keyword}
                 or reviewer like binary"%"#{keyword}"%"
+                or contractId in(select contractId from  t_quotationitem where wastesName = #{keyword})
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
                 "%"#{keyword}"%" and dataDictionaryId=11)
                 )
                 and contractType='Emergency' and period is null order by nowTime desc
             </if>
-
+            <if test="quotationItemList.size()>0">
+                <if test="quotationItemList[0].wastesName!=null and quotationItemList[0].wastesName!=''">
+                    and contractId in(select contractId from  t_quotationitem where wastesName = #{quotationItemList[0].wastesName})
+                </if>
+            </if>
             <if test="checkStateItem!=null">
                 <if test="checkStateItem.dataDictionaryItemId!=0">
                     and checkStateId=#{checkStateItem.dataDictionaryItemId}
@@ -936,6 +962,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 or beginTime like binary"%"#{keyword}"%"
                 or endTime like binary"%"#{keyword}"%"
                 or small like binary#{keyword}
+                or contractId in(select contractId from  t_quotationitem where wastesName = #{keyword})
                 or reviewer like binary"%"#{keyword}"%"
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
                 "%"#{keyword}"%" and dataDictionaryId=11)
@@ -945,6 +972,11 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
             <if test="checkStateItem!=null">
                 <if test="checkStateItem.dataDictionaryItemId!=0">
                     and checkStateId=#{checkStateItem.dataDictionaryItemId}
+                </if>
+            </if>
+            <if test="quotationItemList.size()>0">
+                <if test="quotationItemList[0].wastesName!=null and quotationItemList[0].wastesName!=''">
+                    and contractId in(select contractId from  t_quotationitem where wastesName = #{quotationItemList[0].wastesName})
                 </if>
             </if>
             <if test="client!=null">
@@ -995,13 +1027,18 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 or contactName in (select contactName from client where contactName like binary"%"#{keyword}"%")
                 or beginTime like binary"%"#{keyword}"%"
                 or endTime like binary"%"#{keyword}"%"
+                or contractId in(select contractId from  t_quotationitem where wastesName = #{keyword})
                 or small like binary#{keyword}
                 or reviewer like binary"%"#{keyword}"%"
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
                 "%"#{keyword}"%" and dataDictionaryId=11)
                 )and contractType='Derive' and period is null order by nowTime desc
             </if>
-
+            <if test="quotationItemList.size()>0">
+                <if test="quotationItemList[0].wastesName!=null and quotationItemList[0].wastesName!=''">
+                    and contractId in(select contractId from  t_quotationitem where wastesName = #{quotationItemList[0].wastesName})
+                </if>
+            </if>
             <if test="checkStateItem!=null">
                 <if test="checkStateItem.dataDictionaryItemId!=0">
                     and checkStateId=#{checkStateItem.dataDictionaryItemId}
@@ -1045,12 +1082,17 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 or beginTime like binary"%"#{keyword}"%"
                 or endTime like binary"%"#{keyword}"%"
                 or small like binary#{keyword}
+                or contractId in(select contractId from  t_quotationitem where wastesName = #{keyword})
                 or reviewer like binary"%"#{keyword}"%"
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
                 "%"#{keyword}"%" and dataDictionaryId=11)
                 )and contractType='Derive' and period is null order by nowTime desc
             </if>
-
+            <if test="quotationItemList.size()>0">
+                <if test="quotationItemList[0].wastesName!=null and quotationItemList[0].wastesName!=''">
+                    and contractId in(select contractId from  t_quotationitem where wastesName = #{quotationItemList[0].wastesName})
+                </if>
+            </if>
             <if test="checkStateItem!=null">
                 <if test="checkStateItem.dataDictionaryItemId!=0">
                     and checkStateId=#{checkStateItem.dataDictionaryItemId}
@@ -1104,12 +1146,17 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 or beginTime like binary"%"#{keyword}"%"
                 or endTime like binary"%"#{keyword}"%"
                 or small like binary#{keyword}
+                or contractId in(select contractId from  t_quotationitem where wastesName = #{keyword})
                 or reviewer like binary"%"#{keyword}"%"
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
                 "%"#{keyword}"%" and dataDictionaryId=11)
                 )and contractType='Purchase' and period is null order by nowTime desc
             </if>
-
+            <if test="quotationItemList.size()>0">
+                <if test="quotationItemList[0].wastesName!=null and quotationItemList[0].wastesName!=''">
+                    and contractId in(select contractId from  t_quotationitem where wastesName = #{quotationItemList[0].wastesName})
+                </if>
+            </if>
             <if test="checkStateItem!=null">
                 <if test="checkStateItem.dataDictionaryItemId!=0">
                     and checkStateId=#{checkStateItem.dataDictionaryItemId}
@@ -1153,6 +1200,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 or beginTime like binary"%"#{keyword}"%"
                 or endTime like binary"%"#{keyword}"%"
                 or small like binary#{keyword}
+                or contractId in(select contractId from  t_quotationitem where wastesName = #{keyword})
                 or reviewer like binary"%"#{keyword}"%"
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
                 "%"#{keyword}"%" and dataDictionaryId=11)
@@ -1162,6 +1210,11 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
             <if test="checkStateItem!=null">
                 <if test="checkStateItem.dataDictionaryItemId!=0">
                     and checkStateId=#{checkStateItem.dataDictionaryItemId}
+                </if>
+            </if>
+            <if test="quotationItemList.size()>0">
+                <if test="quotationItemList[0].wastesName!=null and quotationItemList[0].wastesName!=''">
+                    and contractId in(select contractId from  t_quotationitem where wastesName = #{quotationItemList[0].wastesName})
                 </if>
             </if>
             <if test="client!=null">
@@ -1212,6 +1265,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 or contactName in (select contactName from client where contactName like binary"%"#{keyword}"%")
                 or beginTime like binary"%"#{keyword}"%"
                 or endTime like binary"%"#{keyword}"%"
+                or contractId in(select contractId from  t_quotationitem where wastesName = #{keyword})
                 or small like binary#{keyword}
                 or reviewer like binary"%"#{keyword}"%"
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
@@ -1222,6 +1276,11 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
             <if test="checkStateItem!=null">
                 <if test="checkStateItem.dataDictionaryItemId!=0">
                     and checkStateId=#{checkStateItem.dataDictionaryItemId}
+                </if>
+            </if>
+            <if test="quotationItemList.size()>0">
+                <if test="quotationItemList[0].wastesName!=null and quotationItemList[0].wastesName!=''">
+                    and contractId in(select contractId from  t_quotationitem where wastesName = #{quotationItemList[0].wastesName})
                 </if>
             </if>
             <if test="client!=null">
@@ -1262,6 +1321,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 or beginTime   like binary"%"#{keyword}"%"
                 or  endTime   like   binary"%"#{keyword}"%"
                 or small  like  binary#{keyword}
+                or contractId in(select contractId from  t_quotationitem where wastesName = #{keyword})
                 or reviewer  like   binary"%"#{keyword}"%"
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and  dataDictionaryId=11)
                 )and contractType='Other' and period is  null  order  by  nowTime desc
@@ -1278,6 +1338,11 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 </if>
                 <if test="client.contactName!=null and client.contactName!=''">
                     and clientId in(select clientId from  client where contactName=#{client.contactName})
+                </if>
+            </if>
+            <if test="quotationItemList.size()>0">
+                <if test="quotationItemList[0].wastesName!=null and quotationItemList[0].wastesName!=''">
+                    and contractId in(select contractId from  t_quotationitem where wastesName = #{quotationItemList[0].wastesName})
                 </if>
             </if>
             <if test="small!=null" >

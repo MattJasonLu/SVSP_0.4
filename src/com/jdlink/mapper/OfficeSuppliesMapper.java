@@ -13,13 +13,13 @@ public interface OfficeSuppliesMapper {
      * @param officeSuppliesItem 办公用品条目
      * @return 办公用品入库单
      */
-    List<OfficeSuppliesInbound> listOfficeSuppliesInbound(OfficeSuppliesItem officeSuppliesItem);
+    List<OfficeSuppliesItem> listOfficeSuppliesInbound(OfficeSuppliesItem officeSuppliesItem);
 
     /**
      * 获取办公用品入库单条目的数量
      * @return 数量
      */
-    int countOfficeSuppliesInboundItem();
+    int countOfficeSuppliesInboundItem(OfficeSuppliesItem officeSuppliesItem);
 
     /**
      * 增加办公用品入库单
