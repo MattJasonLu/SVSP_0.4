@@ -126,6 +126,7 @@ public interface IngredientsMapper {
 
     Ingredients getAmountAndReceive(Ingredients ingredients);
     List<Ingredients> getInventoryList(Page page);
+    Ingredients getSumByIngredient(Ingredients ingredients);
     int searchInventoryCount(Ingredients ingredients);
     int countInventory();
     List<Ingredients> searchInventory(Ingredients ingredients);
