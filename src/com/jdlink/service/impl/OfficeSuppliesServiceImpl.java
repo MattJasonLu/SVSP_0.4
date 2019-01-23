@@ -77,14 +77,15 @@ public class OfficeSuppliesServiceImpl implements OfficeSuppliesService {
     }
 
     @Override
-    public List<OfficeSuppliesOutbound> listOfficeSuppliesOutbound(OfficeSuppliesItem officeSuppliesItem) {
+    public List<OfficeSuppliesItem> listOfficeSuppliesOutbound(OfficeSuppliesItem officeSuppliesItem) {
         return officeSuppliesMapper.listOfficeSuppliesOutbound(officeSuppliesItem);
     }
 
     @Override
-    public int countOfficeSuppliesOutboundItem() {
-        return officeSuppliesMapper.countOfficeSuppliesOutboundItem();
+    public int countOfficeSuppliesOutboundItem(OfficeSuppliesItem officeSuppliesItem) {
+        return officeSuppliesMapper.countOfficeSuppliesOutboundItem(officeSuppliesItem);
     }
+
 
     @Override
     public void addOfficeSuppliesOutbound(OfficeSuppliesOutbound officeSuppliesOutbound) {
