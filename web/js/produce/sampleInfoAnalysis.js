@@ -3,7 +3,7 @@
  */
 var isSearch = false;
 var currentPage = 1;                          //当前页数
-var data;
+var data1;
 
 /**********************客户部分**********************/
 /**
@@ -20,8 +20,10 @@ function countValue() {
  * */
 function totalPage() {
     var totalRecord = 0;
+    console.log("查询条件");
+    console.log(data1);
     if (!isSearch) {
-        var data1 = {};
+        // data1 = {};
         $.ajax({
             type: "POST",                       // 方法类型
             url: "countSampleInfoAnalysis",                  // url
@@ -33,6 +35,7 @@ function totalPage() {
                 if (result != undefined && result.status == "success") {
                     if (result.data > 0) {
                         totalRecord = result.data;
+                        console.log("总记录数为:"+result.data);
                     } else {
                         console.log("fail: " + result.data);
                         totalRecord = 0;
@@ -49,13 +52,14 @@ function totalPage() {
             type: "POST",                       // 方法类型
             url: "countSampleInfoAnalysis",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data),
+            data: JSON.stringify(data1),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     if (result.data > 0) {
                         totalRecord = result.data;
+                        console.log("总记录数为:"+result.data);
                     } else {
                         console.log("fail: " + result.data);
                         totalRecord = 0;
@@ -169,7 +173,7 @@ function switchPage(pageNumber) {
     //addClass("active");
     page.start = (pageNumber - 1) * page.count;
     if (!isSearch) {
-        var data1 = {};
+        data1 = {};
         data1.page = page;
         $.ajax({
             type: "POST",                       // 方法类型
@@ -190,12 +194,12 @@ function switchPage(pageNumber) {
             }
         });
     } else {
-        data['page'] = page;
+        data1['page'] = page;
         $.ajax({
             type: "POST",                       // 方法类型
             url: "getSampleInfoAnalysis",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data),
+            data: JSON.stringify(data1),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
@@ -252,7 +256,7 @@ function inputSwitchPage() {
         page.pageNumber = pageNumber;
         page.start = (pageNumber - 1) * page.count;
         if (!isSearch) {
-            var data1 = {};
+            data1 = {};
             data1.page = page;
             $.ajax({
                 type: "POST",                       // 方法类型
@@ -274,12 +278,12 @@ function inputSwitchPage() {
                 }
             });
         } else {
-            data['page'] = page;
+            data1['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
                 url: "getSampleInfoAnalysis",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(data),
+                data: JSON.stringify(data1),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (result) {
@@ -313,7 +317,7 @@ function loadPageList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
-    var data1 = {};
+    data1 = {};
     data1.page = page;
     $.ajax({
         type: "POST",                       // 方法类型
@@ -339,6 +343,8 @@ function loadPageList() {
     isSearch = false;
     // getCheckState();
 }
+
+
 
 /**
  * 设置数据
@@ -383,6 +389,15 @@ function setDataList(result) {
 }
 
 /**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchData();      //
+    }
+}
+
+/**
  * 查找
  */
 function searchData() {
@@ -391,22 +406,23 @@ function searchData() {
     page.pageNumber = pageNumber;
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
+    data1 = {};
     // 精确查询
     if ($("#senior").is(':visible')) {
-        data = {
-            transferDraftId: $("#search-transferDraftId").val(),
-            wastesName: $("#search-wastesName").val(),
+        data1 = {
+            transferDraftId: $.trim($("#search-transferDraftId").val()),
+            wastesName: $.trim($("#search-wastesName").val()),
             produceCompany: {
-                companyName: $("#search-produceCompanyName").val()
+                companyName: $.trim($("#search-produceCompanyName").val())
             },
-            wastesCode: $("#search-wastesCode").val(),
+            wastesCode: $.trim($("#search-wastesCode").val()),
             page: page
         };
-        console.log(data);
+        console.log(data1);
         // 模糊查询
     } else {
-        data = {
-            keyword: $("#searchContent").val(),
+        data1 = {
+            keyword: $.trim($("#searchContent").val()),
             page: page
         };
     }
@@ -414,7 +430,7 @@ function searchData() {
         type: "POST",                       // 方法类型
         url: "getSampleInfoAnalysis",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(data),
+        data: JSON.stringify(data1),
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function (result) {

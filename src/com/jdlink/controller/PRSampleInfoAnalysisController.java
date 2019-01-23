@@ -114,7 +114,7 @@ public class PRSampleInfoAnalysisController {
      */
     @RequestMapping("countSampleInfoAnalysis")
     @ResponseBody
-    public String countSampleInfoAnalysis(SampleInfoAnalysis sampleInfoAnalysis) {
+    public String countSampleInfoAnalysis(@RequestBody SampleInfoAnalysis sampleInfoAnalysis) {
         JSONObject res = new JSONObject();
         try {
             int count = sampleInfoAnalysisService.count(sampleInfoAnalysis);
