@@ -133,11 +133,32 @@ public class OfficeSuppliesController {
     public String listOfficeSuppliesOutbound(@RequestBody OfficeSuppliesItem officeSuppliesItem) {
         JSONObject res = new JSONObject();
         try {
-            List<OfficeSuppliesOutbound> officeSuppliesOutboundList = officeSuppliesService.listOfficeSuppliesOutbound(officeSuppliesItem);
-            JSONArray data = JSONArray.fromArray(officeSuppliesOutboundList.toArray(new OfficeSuppliesOutbound[officeSuppliesOutboundList.size()]));
+            List<OfficeSuppliesItem> officeSuppliesItemList = officeSuppliesService.listOfficeSuppliesOutbound(officeSuppliesItem);
+            JSONArray data = JSONArray.fromArray(officeSuppliesItemList.toArray(new OfficeSuppliesItem[officeSuppliesItemList.size()]));
             res.put("status", "success");
             res.put("message", "获取数据成功");
             res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取数据失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 获取办公用品出库单条目数量
+     * @return 出库单条目数量
+     */
+    @RequestMapping("countOfficeSuppliesOutboundItem")
+    @ResponseBody
+    public String countOfficeSuppliesOutboundItem(@RequestBody OfficeSuppliesItem officeSuppliesItem) {
+        JSONObject res = new JSONObject();
+        try {
+            int count = officeSuppliesService.countOfficeSuppliesOutboundItem(officeSuppliesItem);
+            res.put("status", "success");
+            res.put("message", "获取数据成功");
+            res.put("data", count);
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");

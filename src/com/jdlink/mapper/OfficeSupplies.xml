@@ -178,8 +178,45 @@
     <!--*********************************************办公用品出库*********************************************-->
 
     <!--查询办公用品出库单-->
-    <select id="listOfficeSuppliesOutbound" resultMap="OfficeSuppliesOutboundRM">
-        select * from t_pr_officesuppliesoutbound
+    <select id="listOfficeSuppliesOutbound" resultMap="OfficeSuppliesItemRM">
+        select * from t_pr_officesuppliesoutbounditem
+        <where>
+            <if test="keywords != null and keywords != ''">
+                and (outboundId like "%"#{keywords}"%"
+                or supplierId in (select supplierId from t_supplier where companyName like "%"#{keywords}"%")
+                or itemCode like "%"#{keywords}"%"
+                or itemName like "%"#{keywords}"%"
+                or itemSpecifications like "%"#{keywords}"%")
+            </if>
+            <if test="outboundId != null and outboundId != ''">
+                and outboundId like "%"#{outboundId}"%"
+            </if>
+            <if test="supplier != null and supplier.companyName != null and supplier.companyName !=''">
+                and supplierId in (select supplierId from t_supplier where companyName like "%"#{supplier.companyName}"%")
+            </if>
+            <if test="itemCode != null and itemCode !=''">
+                and itemCode like "%"#{itemCode}"%"
+            </if>
+            <if test="itemName != null and itemName !=''">
+                and itemName like "%"#{itemName}"%"
+            </if>
+            <if test="itemSpecifications != null and itemSpecifications !=''">
+                and itemSpecifications like "%"#{itemSpecifications}"%"
+            </if>
+            <if test="checkStateItem != null and checkStateItem.dataDictionaryItemId != ''">
+                and checkStateItemId = #{checkStateItem.dataDictionaryItemId}
+            </if>
+            <if test="author !=null and author !=''">
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{author}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="remark !=null and remark !=''">
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{remark}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="true">
+                and (checkStateItemId != '69' or checkStateItemId is null)
+            </if>
+        </where>
+        order by outboundId desc
         <if test="page != null and page.start != null and page.count != null and page.count != 0">
             limit #{page.start}, #{page.count}
         </if>
@@ -187,7 +224,43 @@
 
     <!--获取办公用品出库单的数量-->
     <select id="countOfficeSuppliesOutboundItem" resultType="int">
-        select count(*) from t_pr_officesuppliesoutbounditem;
+        select count(*) from t_pr_officesuppliesoutbounditem
+        <where>
+            <if test="keywords != null and keywords != ''">
+                and (outboundId like "%"#{keywords}"%"
+                or supplierId in (select supplierId from t_supplier where companyName like "%"#{keywords}"%")
+                or itemCode like "%"#{keywords}"%"
+                or itemName like "%"#{keywords}"%"
+                or itemSpecifications like "%"#{keywords}"%")
+            </if>
+            <if test="outboundId != null and outboundId != ''">
+                and outboundId like "%"#{outboundId}"%"
+            </if>
+            <if test="supplier != null and supplier.companyName != null and supplier.companyName !=''">
+                and supplierId in (select supplierId from t_supplier where companyName like "%"#{supplier.companyName}"%")
+            </if>
+            <if test="itemCode != null and itemCode !=''">
+                and itemCode like "%"#{itemCode}"%"
+            </if>
+            <if test="itemName != null and itemName !=''">
+                and itemName like "%"#{itemName}"%"
+            </if>
+            <if test="itemSpecifications != null and itemSpecifications !=''">
+                and itemSpecifications like "%"#{itemSpecifications}"%"
+            </if>
+            <if test="checkStateItem != null and checkStateItem.dataDictionaryItemId != ''">
+                and checkStateItemId = #{checkStateItem.dataDictionaryItemId}
+            </if>
+            <if test="author !=null and author !=''">
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{author}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="remark !=null and remark !=''">
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{remark}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="true">
+                and (checkStateItemId != '69' or checkStateItemId is null)
+            </if>
+        </where>
     </select>
 
     <!--增加办公用品出库单-->
