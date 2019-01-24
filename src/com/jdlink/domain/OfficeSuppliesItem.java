@@ -97,7 +97,7 @@ public class OfficeSuppliesItem {
     /**
      * 关键字
      */
-    private String keyword;
+    private String keywords;
     /**
      * 页码
      */
@@ -271,12 +271,12 @@ public class OfficeSuppliesItem {
         this.checkStateItem = checkStateItem;
     }
 
-    public String getKeyword() {
-        return keyword;
+    public String getKeywords() {
+        return keywords;
     }
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
 
     public Page getPage() {

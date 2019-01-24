@@ -42,7 +42,7 @@ function totalPage() {
         var data2 = {};
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "countOfficeSuppliesInboundItem",                  // url
+            url: "countOfficeSuppliesOutboundItem",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data2),
             dataType: "json",
@@ -65,7 +65,7 @@ function totalPage() {
     } else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "countOfficeSuppliesInboundItem",                  // url
+            url: "countOfficeSuppliesOutboundItem",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
@@ -173,7 +173,7 @@ function switchPage(pageNumber) {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "loadPageIngredientsInList",         // url
+            url: "listOfficeSuppliesOutbound",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(page),
             dataType: "json",
@@ -193,7 +193,7 @@ function switchPage(pageNumber) {
         data1['page'] = page;
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchIngredientsIn",         // url
+            url: "listOfficeSuppliesOutbound",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
@@ -259,7 +259,7 @@ function inputSwitchPage() {
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "loadPageIngredientsInList",         // url
+                url: "listOfficeSuppliesOutbound",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(page),
                 dataType: "json",
@@ -280,7 +280,7 @@ function inputSwitchPage() {
             data1['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "searchIngredientsIn",         // url
+                url: "listOfficeSuppliesOutbound",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data1),
                 dataType: "json",
@@ -324,7 +324,7 @@ function loadPageContent() {
     data1.page = page;
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "listOfficeSuppliesInbound",   // url
+        url: "listOfficeSuppliesOutbound",   // url
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
         data: JSON.stringify(data1),
         dataType: "json",
@@ -378,23 +378,23 @@ function setIngredientsInList(result) {
         var clonedTr = tr.clone();
         clonedTr.show();
         // 循环遍历cloneTr的每一个td元素，并赋值
-        clonedTr.find("td[name='inboundId']").text(obj.inboundId);
+        clonedTr.find("td[name='outboundId']").text(obj.outboundId);
         if (obj.supplier != null)
-        clonedTr.find("td[name='supplierName']").text(obj.supplier.companyName);
+            clonedTr.find("td[name='supplierName']").text(obj.supplier.companyName);
         clonedTr.find("td[name='itemCode']").text(obj.itemCode);
         clonedTr.find("td[name='itemName']").text(obj.itemName);
         clonedTr.find("td[name='itemSpecifications']").text(obj.itemSpecifications);
         if (obj.unitDataItem != null)
-        clonedTr.find("td[name='unitDataItem']").text(obj.unitDataItem.dictionaryItemName);
+            clonedTr.find("td[name='unitDataItem']").text(obj.unitDataItem.dictionaryItemName);
         clonedTr.find("td[name='itemAmount']").text(parseFloat(obj.itemAmount).toFixed(2));
         clonedTr.find("td[name='taxUnitPrice']").text(parseFloat(obj.taxUnitPrice).toFixed(2));
         clonedTr.find("td[name='totalTaxPrice']").text(parseFloat(obj.totalTaxPrice).toFixed(2));
-        clonedTr.find("td[name='inboundDate']").text(getDateStr(obj.inboundDate));
+        clonedTr.find("td[name='outboundDate']").text(getDateStr(obj.outboundDate));
         if (obj.ticketRateItem != null)
-        clonedTr.find("td[name='ticketRateItem']").text(obj.ticketRateItem.dictionaryItemName);
+            clonedTr.find("td[name='ticketRateItem']").text(obj.ticketRateItem.dictionaryItemName);
         clonedTr.find("td[name='remark']").text(obj.remark);
         if (obj.checkStateItem != null)
-        clonedTr.find("td[name='checkState']").text(obj.checkStateItem.dictionaryItemName);
+            clonedTr.find("td[name='checkState']").text(obj.checkStateItem.dictionaryItemName);
         clonedTr.find("td[name='itemId']").text(obj.itemId);
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
@@ -463,7 +463,7 @@ function searchData() {
     var keywords = $.trim($("#searchContent").val());
     if ($("#senior").is(':visible')) {
         data1 = {
-            inboundId: $("#search_inboundId").val(),
+            outboundId: $("#search_outboundId").val(),
             supplier: {
                 companyName: $("#search_supplierName").val()
             },
@@ -489,7 +489,7 @@ function searchData() {
     else {
         $.ajax({
             type: "POST",                            // 方法类型
-            url: "listOfficeSuppliesInbound",                 // url
+            url: "listOfficeSuppliesOutbound",                 // url
             async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
@@ -679,7 +679,7 @@ function showEditModal(e) {
     // 通过编号获取办公用品入库单条目
     $.ajax({
         type: "POST",
-        url: "getOfficeSuppliesInboundItemById",
+        url: "getOfficeSuppliesOutboundItemById",
         async: false,
         data: {
             id: id
@@ -690,7 +690,7 @@ function showEditModal(e) {
                 // 设置数据
                 var obj = eval(result.data);
                 console.log(result);
-                $("#edit_inboundId").val(obj.inboundId);
+                $("#edit_outboundId").val(obj.outboundId);
                 if (obj.supplier != null) $("#edit_supplierName").selectpicker('val', obj.supplier.supplierId);
                 $("#edit_itemCode").val(obj.itemCode);
                 $("#edit_itemName").val(obj.itemName);
@@ -700,7 +700,7 @@ function showEditModal(e) {
                 $("#edit_itemAmount").val(parseFloat(obj.itemAmount).toFixed(3));
                 $("#edit_taxUnitPrice").val(parseFloat(obj.taxUnitPrice).toFixed(2));
                 $("#edit_totalTaxPrice").val(parseFloat(obj.totalTaxPrice).toFixed(2));
-                $("#edit_inboundDate").val(getDateStr(obj.inboundDate));
+                $("#edit_outboundDate").val(getDateStr(obj.outboundDate));
                 $("#edit_remark").val(obj.remark);
             } else {
                 alert(result.message);
@@ -722,7 +722,7 @@ function editData() {
     // 获取数据
     var data = {
         itemId: editId,
-        inboundId: $("#edit_inboundId").val(),
+        outboundId: $("#edit_outboundId").val(),
         supplier: {
             supplierId: $("#edit_supplierName").selectpicker('val')
         },
@@ -738,13 +738,13 @@ function editData() {
         itemAmount: $("#edit_itemAmount").val(),
         taxUnitPrice: $("#edit_taxUnitPrice").val(),
         totalTaxPrice: $("#edit_totalTaxPrice").val(),
-        inboundDate: $("#edit_inboundDate").val(),
+        outboundDate: $("#edit_outboundDate").val(),
         remark: $("#edit_remark").val()
     };
     // 更新
     $.ajax({
         type: "POST",
-        url: "updateOfficeSuppliesInboundItem",
+        url: "updateOfficeSuppliesOutboundItem",
         async: false,
         data: JSON.stringify(data),
         dataType: "json",
@@ -870,29 +870,29 @@ function setViewIngredientsClone(result) {
 function setInvalid(e) {
     var id = getIdByMenu(e);
     // if ($(e).parent().parent().children().eq(3).text() == '新建') {
-        if (confirm("是否作废？")) {
-            $.ajax({
-                type: "POST",
-                url: "setInvalidOfficeSuppliesInboundItem",
-                async: false,
-                data: {
-                    id: id
-                },
-                dataType: "json",
-                success: function (result) {
-                    if (result.status == "success") {
-                        alert(result.message);
-                        window.location.reload();
-                    } else {
-                        alert(result.message);
-                    }
-                },
-                error: function (result) {
-                    console.log(result);
-                    alert("服务器异常!");
+    if (confirm("是否作废？")) {
+        $.ajax({
+            type: "POST",
+            url: "setInvalidOfficeSuppliesOutboundItem",
+            async: false,
+            data: {
+                id: id
+            },
+            dataType: "json",
+            success: function (result) {
+                if (result.status == "success") {
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
                 }
-            });
-        }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常!");
+            }
+        });
+    }
     // } else {
     //     alert("单据不可作废！");
     // }

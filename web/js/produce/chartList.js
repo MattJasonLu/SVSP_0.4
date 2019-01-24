@@ -1,19 +1,19 @@
-var monthInAndOutList = [50.19,510,13.16,19.1,202.0,5.1];   // 月份出入库数（本月出入数）
-var cityOfProduceCompanyNumberList = [['常州',435],['苏州',552],['溧阳',20],['江阴',20],['其他',101]];   // 产废单位城市分布数量（产废城市分布）
+var monthInAndOutList = [50.19, 510, 13.16, 19.1, 202.0, 5.1];   // 月份出入库数（本月出入数）
+var cityOfProduceCompanyNumberList = [['常州', 435], ['苏州', 552], ['溧阳', 20], ['江阴', 20], ['其他', 101]];   // 产废单位城市分布数量（产废城市分布）
 var newCityOfProduceCompanyNumberList = [];   // 城市分布饼状图数据
 var cityList = [];  // 城市数组
-var outAndInPercentList = [['危废',0.8],['次生',0.52],['辅料',0.34]];              // 危废/次生/辅料 出入库百分比：库存/入库
-var wastesAmountList = [[3.70,2.20,1.50],[4.20,1.82,2.32],[3.92,1.91,2.01],[3.88,2.34,1.54],[4.80,2.90,1.90],[6.60,3.30,3.30],[7.20,3.10,4.10]];   // 危废入库量，出库量，处置量数据数组
-var secondaryAmountList = [[8,2.20,1.50],[4.20,1.82,2.32],[3.92,1.91,2.01],[3.88,2.34,1.54],[4.80,2.90,1.90],[6.60,3.30,3.30],[7.20,3.10,4.10]];   // 次生入库量，出库量，处置量数据数组
-var ingredientAmountList = [[8,2.20,1.50],[4.20,1.82,2.32],[3.92,1.91,2.01],[3.88,2.34,1.54],[4.80,2.90,1.90],[6.60,3.30,3.30],[7.20,3.10,4.10]];   // 辅料入库量，出库量，处置量数据数组
+var outAndInPercentList = [['危废', 0.8], ['次生', 0.52], ['辅料', 0.34]];              // 危废/次生/辅料 出入库百分比：库存/入库
+var wastesAmountList = [[3.70, 2.20, 1.50], [4.20, 1.82, 2.32], [3.92, 1.91, 2.01], [3.88, 2.34, 1.54], [4.80, 2.90, 1.90], [6.60, 3.30, 3.30], [7.20, 3.10, 4.10]];   // 危废入库量，出库量，处置量数据数组
+var secondaryAmountList = [[8, 2.20, 1.50], [4.20, 1.82, 2.32], [3.92, 1.91, 2.01], [3.88, 2.34, 1.54], [4.80, 2.90, 1.90], [6.60, 3.30, 3.30], [7.20, 3.10, 4.10]];   // 次生入库量，出库量，处置量数据数组
+var ingredientAmountList = [[8, 2.20, 1.50], [4.20, 1.82, 2.32], [3.92, 1.91, 2.01], [3.88, 2.34, 1.54], [4.80, 2.90, 1.90], [6.60, 3.30, 3.30], [7.20, 3.10, 4.10]];   // 辅料入库量，出库量，处置量数据数组
 var wastesContractAmountList = [3949.76, 94.00, 146.40, 20.00, 180.00, 3.50];   // 危废合同签约量数组
-var wastesAmountYearAndMonthList = [];
-var secondaryAmountYearAndMonthList = [];
-var ingredientAmountYearAndMonthList = [];
+// var wastesAmountYearAndMonthList = [];
+// var secondaryAmountYearAndMonthList = [];
+// var ingredientAmountYearAndMonthList = [];
 var wastesContractAmountYearAndMonthList = [];
-var yearAndMonthList = [201801, 201802, 201803, 201804, 201805, 201806];             // 折线图年月份数组
+// var yearAndMonthList = [201801, 201802, 201803, 201804, 201805, 201806];             // 折线图年月份数组
 var colorList = ['#0175EE',
-    '#D89446','#06B5C6','#25AE4F','#373693','#009E9A','#AC266F'];   // 颜色数组
+    '#D89446', '#06B5C6', '#25AE4F', '#373693', '#009E9A', '#AC266F'];   // 颜色数组
 var colorNewList = [];    // 城市分布颜色数组
 
 
@@ -24,9 +24,9 @@ function loadChartList() {
     loadNavigationList();   // 动态菜单部署
     cityList = [];   // 清空旧数据
     getCityData();   // 获取并设置产废单位城市分布饼图数据
-    for(var i = 0; i < cityOfProduceCompanyNumberList.length; i++) {  // 将城市数据插入到城市数组中
+    for (var i = 0; i < cityOfProduceCompanyNumberList.length; i++) {  // 将城市数据插入到城市数组中
         cityList.push(cityOfProduceCompanyNumberList[i].cityName);
-        colorNewList.push(colorList[i%7]);
+        colorNewList.push(colorList[i % 7]);
         var data = {};
         data.value = cityOfProduceCompanyNumberList[i].number;
         data.name = cityOfProduceCompanyNumberList[i].cityName;
@@ -54,7 +54,6 @@ function loadData() {
     //renderChartBar02();
     //库存环形图
     renderLayer03Right();
-
     //曲线图
     //   renderLayer04Left();
     //折线图
@@ -62,17 +61,17 @@ function loadData() {
     var myChart2 = echarts.init(document.getElementById("layer05_right_chart"));
     var myChart3 = echarts.init(document.getElementById("layer06_right_chart"));
     var myChart5 = echarts.init(document.getElementById('layer08_right_bar_graph'));
-    renderLayer04Right(myChart1,wastesAmountList);
-    renderLayer04Right(myChart2,secondaryAmountList);
-    renderLayer04Right(myChart3,ingredientAmountList);
+    renderLayer04Right(myChart1, wastesAmountList);
+    renderLayer04Right(myChart2, secondaryAmountList);
+    renderLayer04Right(myChart3, ingredientAmountList);
     setBarConfig(myChart5);    // 设置条形图
 }
 
 /**
  * 设置本月出入库数据
  */
-function setMonthOutAndInData(){
-    $("#in1").text(monthInAndOutList[0]);  // 危废入库
+function setMonthOutAndInData() {
+    $("#in1").text(monthInAndOutList[0]);   // 危废入库
     $("#in2").text(monthInAndOutList[1]);   // 辅料入库
     $("#in3").text(monthInAndOutList[2]);   // 次生入库
     $("#out1").text(monthInAndOutList[3]);  // 危废出库
@@ -125,8 +124,8 @@ var COLOR = {
  * 设置产废单位城市分布图节点
  */
 function renderLegend() {
-    for(var i=0; i < cityOfProduceCompanyNumberList.length; i++) {
-        drawLegend(colorList[i%7], 20*(i+1), cityOfProduceCompanyNumberList[i].cityName);   // 第二参数：Y坐标
+    for (var i = 0; i < cityOfProduceCompanyNumberList.length; i++) {
+        drawLegend(colorList[i % 7], 20 * (i + 1), cityOfProduceCompanyNumberList[i].cityName);   // 第二参数：Y坐标
     }
 }
 
@@ -149,14 +148,14 @@ function drawLegend(pointColor, pointY, text) {
  */
 function renderLayer03Right() {
     $(".layer03-right-chart").remove();  // 删除历史数据
-    for(var i = 0; i < outAndInPercentList.length; i++) {
-        var div = "<div id='layer03_right_chart"+(i+1)+"' class=\"layer03-right-chart\">\n" +
+    for (var i = 0; i < outAndInPercentList.length; i++) {
+        var div = "<div id='layer03_right_chart" + (i + 1) + "' class=\"layer03-right-chart\">\n" +
             "<canvas width=\"130\" height=\"150\" style=\"margin:40px 0 0 20px;\"></canvas>\n" +
-            "<div class=\"layer03-right-chart-label\">"+outAndInPercentList[i].name+"</div>\n" +
+            "<div class=\"layer03-right-chart-label\">" + outAndInPercentList[i].name + "</div>\n" +
             "</div>";                           // 定义环状图标签
         $("#layer03_right_label").after(div);   // 将标签插入
-        var $i = i+1;
-        drawLayer03Right($("#layer03_right_chart"+ $i +" canvas").get(0), colorList[i%7], outAndInPercentList[i].number);   // 赋值
+        var $i = i + 1;
+        drawLayer03Right($("#layer03_right_chart" + $i + " canvas").get(0), colorList[i % 7], outAndInPercentList[i].number);   // 赋值
     }
 }
 
@@ -251,14 +250,18 @@ function renderChartBar01() {
 /**
  * 设置危废折线图数据
  */
-function renderLayer04Right(myChart,list) {
+function renderLayer04Right(myChart, list) {
+    var monthList = [];
     var yInList = [];
     var yOutList = [];
     var yInventoryList = [];
-    for(var i = 0; i < list.length; i++) {
-        yInList.push(list[i][0]);
-        yOutList.push(list[i][1]);
-        yInventoryList.push(list[i][2]);
+    for (var i = 0; i < list.length; i++) {
+        if(monthList.indexOf(list[i].date) === -1){  // 不存在即添加,过滤重复数据
+            yInList.push(list[i].inNumber.toFixed(3));
+            yOutList.push(list[i].outNumber.toFixed(3));
+            yInventoryList.push(list[i].number.toFixed(3));
+            monthList.push(list[i].date);
+        }
     }
     myChart.setOption({
             title: {
@@ -271,13 +274,13 @@ function renderLayer04Right(myChart,list) {
                 top: 20,
                 right: 5,
                 textStyle: {
-                    color: 'white'
+                    color: 'black'
                 },
                 orient: 'vertical',
                 data: [
                     {name: '入库量', icon: 'circle'},
                     {name: '处置量', icon: 'circle'},
-                    {name: '库存量', icon: 'circle'}
+                    {name: '差额', icon: 'circle'}
                 ]
             },
             grid: {
@@ -305,7 +308,7 @@ function renderLayer04Right(myChart,list) {
                         type: 'solid'
                     }
                 },
-                data: yearAndMonthList  // 设置折线图x轴数据
+                data: monthList  // 设置折线图x轴数据
             },
             yAxis: {
                 type: 'value',
@@ -362,7 +365,7 @@ function renderLayer04Right(myChart,list) {
                     data: yOutList    // 设置折线图y轴数据
                 },
                 {
-                    name: '库存量',
+                    name: '差额',
                     type: 'line',
                     itemStyle: {
                         normal: {
@@ -529,8 +532,8 @@ function search() {
         success: function (result) {
             console.log(result);
             if (result != null || result.status === "success") {
-                 console.log(result);
-                 setData(result);
+                console.log(result);
+                setData(result);
             } else {
                 console.log(result.message);
             }
@@ -551,6 +554,13 @@ function setData(result) {
     outAndInPercentList = [];
     wastesContractAmountList = [];
     monthInAndOutList = [];
+    wastesAmountList = [];
+    secondaryAmountList = [];
+    ingredientAmountList = [];
+    wastesAmountYearAndMonthList = [];
+    secondaryAmountYearAndMonthList = [];
+    ingredientAmountYearAndMonthList = [];
+    wastesContractAmountYearAndMonthList = [];
     var wastesOutboundOrderList = result.wastesOutboundOrderList;
     var secondOutboundOrderList = result.secondOutboundOrderList;
     var inboundOrderItemList = result.inboundOrderItemList;
@@ -565,43 +575,161 @@ function setData(result) {
     var ingredientsInTotalAmount = 0;          // 辅料入库总数
     var ingredientsOutTotalAmount = 0;         // 辅料出库总数
     // 获取数组中最长的长度
-    var length = Math.max(wastesOutboundOrderList.length,secondOutboundOrderList.length,inboundOrderItemList.length,
-        secondInboundOrderItemList.length,ingredientsInList.length,ingredientsOutList.length,contractItemList.length);
-    for(var i = 0; i < length; i++) {   // 循环处理数据
-        if(i < wastesOutboundOrderList.length) {
-             var data = {};
-             wastesOutboundOrderTotalAmount += wastesOutboundOrderList[i].outboundNumber;
-        }
-        if(i < secondOutboundOrderList.length) {
-            secondOutboundOrderTotalAmount += secondOutboundOrderList[i].outboundNumber;
-        }
-        if(i < inboundOrderItemList.length) {
-            inboundOrderItemTotalAmount += inboundOrderItemList[i].wastesAmount;
-        }
-        if(i < secondInboundOrderItemList.length) {
-            secondInboundOrderItemTotalAmount += secondInboundOrderItemList[i].wastesAmount;
-        }
-        if(i < ingredientsInList.length) {
-            ingredientsInTotalAmount += ingredientsInList[i].amount;
-        }
-        if(i < ingredientsOutList.length) {
-            ingredientsOutTotalAmount += ingredientsOutList[i].receiveAmount;
-        }
-        if(i < contractItemList.length) {
+    var length = Math.max(wastesOutboundOrderList.length, secondOutboundOrderList.length, inboundOrderItemList.length,
+        secondInboundOrderItemList.length, ingredientsInList.length, ingredientsOutList.length, contractItemList.length);
+    for (var i = 0; i < length; i++) {   // 循环处理数据
+        var data = {};
+        data.inNumber = 0;  //入库
+        data.outNumber = 0;  // 处置
+        data.number = 0;    // 库存
+
+        // setWastesInData(i,data);
+        // setTimeout(function(i,data){
+        //     setWastesOutData(i,data);
+        // },100);
+        // setSecondInData(i,data);
+        // setTimeout(function(i,data){
+        //     setSecondOutData(i,data);
+        // },100);
+        // setIngredientInData(i,data);
+        // setTimeout(function(i,data){
+        //     setIngredientOutData(i,data);
+        // },100);
+        setWastesInData(i,data);
+        setWastesOutData(i,data);
+        setSecondInData(i,data);
+        setSecondOutData(i,data);
+        setIngredientInData(i,data);
+        setIngredientOutData(i,data);
+        if (i < contractItemList.length) {
             wastesContractAmountYearAndMonthList.push(getYearAndMonth(contractItemList[i].startDate));   // 设置合同年月份
             wastesContractAmountList.push(contractItemList[i].contractAmount.toFixed(3));
         }
     }
+    // 设置辅料入库数据
+    function setIngredientInData(i,data) {
+        if (i < ingredientsInList.length) {
+            var index = getIndexByDate(ingredientAmountList, getYearAndMonth(ingredientsInList[i].creationDate));
+            if (index > -1) { // 存在该月份即更新出库数据
+                ingredientAmountList[index].inNumber = ingredientsInList[i].amount;
+                ingredientAmountList[index].number = ingredientAmountList[index].inNumber - ingredientAmountList[index].outNumber;
+            } else {  // 不存在即插入新月份数据,最终根据月份进行升序排序
+                data.date = getYearAndMonth(ingredientsInList[i].creationDate);
+                data.inNumber = ingredientsInList[i].amount;
+                data.number = data.inNumber - data.outNumber;
+                ingredientAmountList.push(data);   // 插入数据
+            }
+            ingredientsInTotalAmount += ingredientsInList[i].amount;
+        }
+    }
+    // 设置次生出库数据
+    function setSecondOutData(i,data) {
+        if (i < secondOutboundOrderList.length) {
+            var index = getIndexByDate(secondaryAmountList, getYearAndMonth(secondOutboundOrderList[i].outboundDate));
+            if (index > -1) { // 存在该月份即更新出库数据
+                console.log("出库次生日期存在:" + secondaryAmountList[index].date);
+                secondaryAmountList[index].outNumber = secondOutboundOrderList[i].outboundNumber;
+                secondaryAmountList[index].number = secondaryAmountList[index].inNumber - secondaryAmountList[index].outNumber;
+            } else {  // 不存在即插入新月份数据,最终根据月份进行升序排序
+                console.log("出库次生日期不存在:" + getYearAndMonth(secondOutboundOrderList[i].outboundDate));
+                data.outNumber = secondOutboundOrderList[i].outboundNumber;
+                data.date = getYearAndMonth(secondOutboundOrderList[i].outboundDate);
+                data.number = data.inNumber - data.outNumber;
+                secondaryAmountList.push(data);   // 插入数据
+            }
+            secondOutboundOrderTotalAmount += secondOutboundOrderList[i].outboundNumber;
+        }
+    }
+    // 设置危废出库数据
+    function setWastesOutData(i,data) {
+        if (i < wastesOutboundOrderList.length) {
+            var index = getIndexByDate(wastesAmountList, getYearAndMonth(wastesOutboundOrderList[i].outboundDate));
+            // console.log("出库index:"+index+",月："+getYearAndMonth(wastesOutboundOrderList[i].outboundDate));
+            if (index > -1) { // 存在该月份即更新出库数据
+                wastesAmountList[index].outNumber = wastesOutboundOrderList[i].outboundNumber;
+                wastesAmountList[index].number = wastesAmountList[index].inNumber - wastesAmountList[index].outNumber;
+            } else {  // 不存在即插入新月份数据
+                data.outNumber = wastesOutboundOrderList[i].outboundNumber;
+                data.date = getYearAndMonth(wastesOutboundOrderList[i].outboundDate);
+                data.number = data.inNumber - data.outNumber;
+                wastesAmountList.push(data);   // 插入数据
+            }
+            wastesOutboundOrderTotalAmount += wastesOutboundOrderList[i].outboundNumber;
+        }
+    }
+    // 设置辅料出库数据
+    function setIngredientOutData(i,data) {
+        if (i < ingredientsOutList.length) {
+            var index = getIndexByDate(ingredientAmountList, getYearAndMonth(ingredientsOutList[i].creationDate));
+            if (index > -1) { // 存在该月份即更新出库数据
+                ingredientAmountList[index].outNumber = ingredientsInList[i].receiveAmount;
+                ingredientAmountList[index].number = ingredientAmountList[index].inNumber - ingredientAmountList[index].outNumber;
+            } else {  // 不存在即插入新月份数据,最终根据月份进行升序排序
+                ingredientAmountYearAndMonthList.push(getYearAndMonth(ingredientsInList[i].creationDate));
+                data.outNumber = ingredientsOutList[i].amount;
+                data.date = getYearAndMonth(ingredientsInList[i].creationDate);
+                data.number = data.inNumber - data.outNumber;
+                ingredientAmountList.push(data);   // 插入数据
+            }
+            ingredientsOutTotalAmount += ingredientsOutList[i].receiveAmount;
+        }
+    }
+    // 设置危废入库数据
+    function setWastesInData(i,data){
+        if (i < inboundOrderItemList.length) {
+            var index = getIndexByDate(wastesAmountList, getYearAndMonth(inboundOrderItemList[i].inboundDate));
+            //console.log("入库index:"+index+",月："+getYearAndMonth(inboundOrderItemList[i].inboundDate));
+            if (index > -1) { // 存在该月份即更新出库数据
+                wastesAmountList[index].inNumber = inboundOrderItemList[i].wastesAmount;
+                wastesAmountList[index].number = wastesAmountList[index].inNumber - wastesAmountList[index].outNumber;
+            } else {  // 不存在即插入新月份数据,最终根据月份进行升序排序
+                data.inNumber = inboundOrderItemList[i].wastesAmount;
+                data.date = getYearAndMonth(inboundOrderItemList[i].inboundDate);
+                data.number = data.inNumber - data.outNumber;
+                wastesAmountList.push(data);   // 插入数据
+            }
+            inboundOrderItemTotalAmount += inboundOrderItemList[i].wastesAmount;
+        }
+    }
+    // 设置次生入库数据
+    function setSecondInData(i,data){
+        if (i < secondInboundOrderItemList.length) {
+            var index = getIndexByDate(secondaryAmountList, getYearAndMonth(secondInboundOrderItemList[i].inboundDate));
+            if (index > -1) { // 存在该月份即更新出库数据
+                console.log("入库次生日期存在:" + secondaryAmountList[index].date);
+                secondaryAmountList[index].inNumber = secondInboundOrderItemList[i].wastesAmount;
+                secondaryAmountList[index].number = secondaryAmountList[index].inNumber - secondaryAmountList[index].outNumber;
+            } else {  // 不存在即插入新月份数据,最终根据月份进行升序排序
+                console.log("入库次生日期不存在:" + getYearAndMonth(secondInboundOrderItemList[i].inboundDate));
+                data.inNumber = secondInboundOrderItemList[i].wastesAmount;
+                data.date = getYearAndMonth(secondInboundOrderItemList[i].inboundDate);
+                data.number = data.inNumber - data.outNumber;
+                secondaryAmountList.push(data);   // 插入数据
+            }
+            secondInboundOrderItemTotalAmount += secondInboundOrderItemList[i].wastesAmount;
+        }
+    }
+    // 将数组按日期进行排序
+    wastesAmountList = sortListByDate(wastesAmountList);
+    secondaryAmountList = sortListByDate(secondaryAmountList);
+    ingredientAmountList = sortListByDate(ingredientAmountList);
+    console.log("折线图数据：");
+    console.log("危废");
+    console.log(wastesAmountList);
+    console.log("次生");
+    console.log(secondaryAmountList);
+    console.log("辅料");
+    console.log(ingredientAmountList);
     // 设置出入库百分比数据（环状图）
     var wastesData = {};
     wastesData.name = '危废';
-    wastesData.number = (wastesOutboundOrderTotalAmount/inboundOrderItemTotalAmount).toFixed(2);
+    wastesData.number = (wastesOutboundOrderTotalAmount / inboundOrderItemTotalAmount).toFixed(2);
     var secondData = {};
     secondData.name = '次生';
-    secondData.number = (secondOutboundOrderTotalAmount/secondInboundOrderItemTotalAmount).toFixed(2);
+    secondData.number = (secondOutboundOrderTotalAmount / secondInboundOrderItemTotalAmount).toFixed(2);
     var ingredientData = {};
     ingredientData.name = '辅料';
-    ingredientData.number = (ingredientsOutTotalAmount/ingredientsInTotalAmount).toFixed(2);
+    ingredientData.number = (ingredientsOutTotalAmount / ingredientsInTotalAmount).toFixed(2);
     outAndInPercentList.push(wastesData);
     outAndInPercentList.push(secondData);
     outAndInPercentList.push(ingredientData);
@@ -615,6 +743,41 @@ function setData(result) {
 }
 
 /**
+ * 根据日期判断该数据是否存在于数组中，如果存在则返回数组位置，否则返回-1
+ * @param list
+ * @param date
+ */
+function getIndexByDate(list, date) {
+    var index = -1;
+    for (var i = 0; i < list.length; i++) {
+        if (list[i].date === date) {
+            index = i;
+            break;
+        }
+    }
+    return index;
+}
+
+/**
+ * 根据date将list升序排序(冒泡算法)
+ * @param date
+ */
+function sortListByDate(list) {
+    console.log(list);
+    for (var i = 0; i < list.length - 1; i++) {
+        for (var j = 0; j < list.length - 1 - i; j++) {
+            if (parseInt(list[j].date) > parseInt(list[j + 1].date)) {   // 如果小则调换顺序
+                var data = {};
+                data = list[j];
+                list[j] = list[j + 1];
+                list[j + 1] = data;
+            }
+        }
+    }
+    return list;
+}
+
+/**
  * 返回年月份
  * @param obj
  * @returns {string}
@@ -622,17 +785,16 @@ function setData(result) {
 function getYearAndMonth(obj) {
     var year = (parseInt(obj.year) + 1900).toString();
     var month = parseInt((obj.month) + 1).toString();
-    if(parseInt(month) < 10) {
+    if (parseInt(month) < 10) {
         month = "0" + month;
     }
     return year + month;
-
 }
 
 /**
  * 获取并设置产废单位城市分布数据
  */
-function getCityData(){
+function getCityData() {
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getCityOfProduceCompanyNumber",                 // url

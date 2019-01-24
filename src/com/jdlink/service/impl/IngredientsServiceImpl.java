@@ -227,6 +227,9 @@ public class IngredientsServiceImpl implements IngredientsService {
     }
 
     @Override
+    public Ingredients getSumByIngredient(Ingredients ingredients) { return ingredientsMapper.getSumByIngredient(ingredients); }
+
+    @Override
     public int searchInventoryCount(Ingredients ingredients) {
         return ingredientsMapper.searchInventoryCount(ingredients);
     }

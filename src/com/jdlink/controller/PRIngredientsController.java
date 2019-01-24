@@ -1040,6 +1040,17 @@ public class PRIngredientsController {
         JSONObject res = new JSONObject();
         try {
             List<Ingredients> ingredientsList = ingredientsService.getInventoryList(page);
+            for(int i = 0; i < ingredientsList.size(); i++) {
+                Ingredients ingredients1 = ingredientsService.getSumByIngredient(ingredientsList.get(i));
+                ingredientsList.get(i).setTotalAmount(ingredients1.getTotalAmount());
+                ingredientsList.get(i).setAllTotalPrice(ingredients1.getAllTotalPrice());
+                ingredientsList.get(i).setInTotalAmount(ingredients1.getInTotalAmount());
+                ingredientsList.get(i).setInTotalPrice(ingredients1.getInTotalPrice());
+                ingredientsList.get(i).setOutTotalAmount(ingredients1.getOutTotalAmount());
+                ingredientsList.get(i).setOutTotalPrice(ingredients1.getOutTotalPrice());
+                ingredientsList.get(i).setMonthBeginAmount(ingredients1.getMonthBeginAmount());
+                ingredientsList.get(i).setMonthBeginTotalPrice(ingredients1.getMonthBeginTotalPrice());
+            }
             JSONArray data = JSONArray.fromArray(ingredientsList.toArray(new Ingredients[ingredientsList.size()]));
             res.put("data", data);
             res.put("status", "success");
@@ -1096,6 +1107,17 @@ public class PRIngredientsController {
         JSONObject res = new JSONObject();
         try {
             List<Ingredients> ingredientsList = ingredientsService.searchInventory(ingredients);
+            for(int i = 0; i < ingredientsList.size(); i++) {
+                Ingredients ingredients1 = ingredientsService.getSumByIngredient(ingredientsList.get(i));
+                ingredientsList.get(i).setTotalAmount(ingredients1.getTotalAmount());
+                ingredientsList.get(i).setAllTotalPrice(ingredients1.getAllTotalPrice());
+                ingredientsList.get(i).setInTotalAmount(ingredients1.getInTotalAmount());
+                ingredientsList.get(i).setInTotalPrice(ingredients1.getInTotalPrice());
+                ingredientsList.get(i).setOutTotalAmount(ingredients1.getOutTotalAmount());
+                ingredientsList.get(i).setOutTotalPrice(ingredients1.getOutTotalPrice());
+                ingredientsList.get(i).setMonthBeginAmount(ingredients1.getMonthBeginAmount());
+                ingredientsList.get(i).setMonthBeginTotalPrice(ingredients1.getMonthBeginTotalPrice());
+            }
             JSONArray data = JSONArray.fromArray(ingredientsList.toArray(new Ingredients[ingredientsList.size()]));
             res.put("data", data);
             res.put("status", "success");

@@ -299,7 +299,8 @@
 
     <!--根据签订日期范围查询辅料入库明细:统计图表-->
     <select id="getIngredientsInItemAmountByRange" resultMap="InIngredientsRM">
-        select SUM(a.amount) as amount,b.creationDate from t_pr_ingredients as a left join t_pr_ingredients_in as b on a.inId=b.id
+        select SUM(a.amount) as amount,b.creationDate from t_pr_ingredients as a left join t_pr_ingredients_in as b on
+        a.inId=b.id
         <where>
             <if test="startDate != null and startDate != ''">
                 <![CDATA[AND DATE_FORMAT(b.creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')]]>
@@ -738,11 +739,30 @@
 
     <!--获取库存/收发汇总表数据-->
     <select id="getInventoryList" resultType="Ingredients">
-        select a.*,b.creationDate as creationDate from t_pr_ingredients_inventory as a join t_pr_ingredients_in as b on a.inId=b.id
+        select a.*,b.creationDate as creationDate from t_pr_ingredients_inventory as a join t_pr_ingredients_in as b on
+        a.inId=b.id
         order by inId DESC,itemId asc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count};
         </if>
+    </select>
+
+    <!--收发汇总表获取合计数据-->
+    <select id="getSumByIngredient" parameterType="Ingredients" resultType="Ingredients">
+        select sum(amount) as totalAmount,sum(amount*inPrice) as allTotalPrice,sum(inAmount)
+        as inTotalAmount,sum(inAmount*inPrice) as inTotalPrice,
+        sum(outAmount) as outTotalAmount,sum(outAmount*outPrice) as outTotalPrice,
+        (select sum(amount)
+        from t_pr_ingredients_inventory as a1 left join t_pr_ingredients_in as b1 on a1.inId=b1.id
+        where DATE_FORMAT(DATE_SUB(#{creationDate},INTERVAL 1 MONTH),'%Y-%m-%d') >= DATE_FORMAT(b1.creationDate,'%Y-%m-%d')
+        and a1.name=#{name} and a1.specification=#{specification} and a1.wareHouseName=#{wareHouseName})  as monthBeginAmount,
+        (select sum(amount*inPrice)
+        from t_pr_ingredients_inventory as a1 left join t_pr_ingredients_in as b1 on a1.inId=b1.id
+        where DATE_FORMAT(DATE_SUB(#{creationDate},INTERVAL 1 MONTH),'%Y-%m-%d') >= DATE_FORMAT(b1.creationDate,'%Y-%m-%d')
+        and a1.name=#{name} and a1.specification=#{specification} and a1.wareHouseName=#{wareHouseName}) as monthBeginTotalPrice
+        from t_pr_ingredients_inventory as a1 left join t_pr_ingredients_in as b1 on a1.inId=b1.id
+        where DATE_FORMAT(#{creationDate},'%Y-%m-%d') >= DATE_FORMAT(b1.creationDate,'%Y-%m-%d')
+        and a1.name=#{name} and a1.specification=#{specification} and a1.wareHouseName=#{wareHouseName}
     </select>
 
     <select id="countInventory" resultType="int">
@@ -754,87 +774,87 @@
     </select>
 
     <select id="searchInventoryCount" parameterType="Ingredients" resultType="int">
-        select count(*) from t_pr_ingredients_inventory
+        select count(*) from t_pr_ingredients_inventory as a left join t_pr_ingredients_in as b on a.inId=b.id
         <where>
             <if test="keywords != null and keywords != ''">
-                or itemId = #{keywords}
-                or code like #{keywords}"%"
-                or name like "%"#{keywords}"%"
-                or specification like "%"#{keywords}"%"
-                or unit like "%"#{keywords}"%"
-                or wareHouseName like "%"#{keywords}"%"
-                or inId like "%"#{keywords}"%"
-                or outId like "%"#{keywords}"%"
+                or a.itemId = #{keywords}
+                or a.code like #{keywords}"%"
+                or a.name like "%"#{keywords}"%"
+                or a.specification like "%"#{keywords}"%"
+                or a.unit like "%"#{keywords}"%"
+                or a.wareHouseName like "%"#{keywords}"%"
+                or a.inId like "%"#{keywords}"%"
+                or a.outId like "%"#{keywords}"%"
             </if>
             <if test="wareHouseName != null and wareHouseName != ''">
-                and wareHouseName like "%"#{wareHouseName}"%"
+                and a.wareHouseName like "%"#{wareHouseName}"%"
             </if>
             <if test="code != null and code != ''">
-                and code like #{code}"%"
+                and a.code like #{code}"%"
             </if>
             <if test="name != null and name != ''">
-                and name like "%"#{name}"%"
+                and a.name like "%"#{name}"%"
             </if>
             <if test="specification != null and specification != ''">
-                and specification = #{specification}
+                and a.specification = #{specification}
             </if>
             <if test="unit != null and unit != ''">
-                and unit = #{unit}
+                and a.unit = #{unit}
             </if>
             <if test="inId != null and inId != ''">
-                and inId like "%"#{inId}"%"
+                and a.inId like "%"#{inId}"%"
             </if>
             <if test="outId != null and outId != ''">
-                and outId like "%"#{outId}"%"
+                and a.outId like "%"#{outId}"%"
             </if>
             <if test="amount != null and amount != ''">
-                and amount =#{amount}
+                and a.amount =#{amount}
             </if>
             <if test="inAmount != null and inAmount != ''">
-                and inAmount =#{inAmount}
+                and a.inAmount =#{inAmount}
             </if>
         </where>
     </select>
 
     <select id="searchInventory" resultType="Ingredients">
-        select * from t_pr_ingredients_inventory
+        select a.*,b.creationDate from t_pr_ingredients_inventory as a left join t_pr_ingredients_in as b on a.inId=b.id
         <where>
             <if test="keywords != null and keywords != ''">
-                or itemId = #{keywords}
-                or code like #{keywords}"%"
-                or name like "%"#{keywords}"%"
-                or specification like "%"#{keywords}"%"
-                or unit like "%"#{keywords}"%"
-                or wareHouseName like "%"#{keywords}"%"
-                or inId like "%"#{keywords}"%"
-                or outId like "%"#{keywords}"%"
+                or a.itemId = #{keywords}
+                or a.code like #{keywords}"%"
+                or a.name like "%"#{keywords}"%"
+                or a.specification like "%"#{keywords}"%"
+                or a.unit like "%"#{keywords}"%"
+                or a.wareHouseName like "%"#{keywords}"%"
+                or a.inId like "%"#{keywords}"%"
+                or a.outId like "%"#{keywords}"%"
             </if>
             <if test="wareHouseName != null and wareHouseName != ''">
-                and wareHouseName like "%"#{wareHouseName}"%"
+                and a.wareHouseName like "%"#{wareHouseName}"%"
             </if>
             <if test="code != null and code != ''">
-                and code like #{code}"%"
+                and a.code like #{code}"%"
             </if>
             <if test="name != null and name != ''">
-                and name like "%"#{name}"%"
+                and a.name like "%"#{name}"%"
             </if>
             <if test="specification != null and specification != ''">
-                and specification = #{specification}
+                and a.specification = #{specification}
             </if>
             <if test="unit != null and unit != ''">
-                and unit = #{unit}
+                and a.unit = #{unit}
             </if>
             <if test="inId != null and inId != ''">
-                and inId like "%"#{inId}"%"
+                and a.inId like "%"#{inId}"%"
             </if>
             <if test="outId != null and outId != ''">
-                and outId like "%"#{outId}"%"
+                and a.outId like "%"#{outId}"%"
             </if>
             <if test="amount != null and amount != ''">
-                and amount =#{amount}
+                and a.amount =#{amount}
             </if>
             <if test="inAmount != null and inAmount != ''">
-                and inAmount =#{inAmount}
+                and a.inAmount =#{inAmount}
             </if>
         </where>
         <if test="page != null and page.start != null and page.count != null and page.count != 0">
@@ -1024,7 +1044,8 @@
 
     <!--根据签订日期范围查询辅料出库明细:统计图表-->
     <select id="getIngredientsOutItemAmountByRange" resultMap="InIngredientsRM">
-        select SUM(a.receiveAmount) as receiveAmount,b.creationDate from t_pr_ingredients as a left join t_pr_ingredients_out as b on a.outId=b.id
+        select SUM(a.receiveAmount) as receiveAmount,b.creationDate from t_pr_ingredients as a left join
+        t_pr_ingredients_out as b on a.outId=b.id
         <where>
             <if test="startDate != null and startDate != ''">
                 <![CDATA[AND DATE_FORMAT(b.creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')]]>
@@ -1372,7 +1393,8 @@
     <resultMap id="IngredientsRM" type="Ingredients" autoMapping="true">
         <id column="itemId" property="id"/>
         <result column="ingredientsName" property="name"/>
-        <association property="materialCategoryItem" column="materialCategoryId" select="getMaterialCategoryItem"></association>
+        <association property="materialCategoryItem" column="materialCategoryId"
+                     select="getMaterialCategoryItem"></association>
         <association property="unitDataItem" column="unitId" select="getUnitId"></association>
     </resultMap>
 
@@ -1415,8 +1437,10 @@
                 or ingredientsName like "%"#{keywords}"%"
                 or code like "%"#{keywords}"%"
                 or specification like "%"#{keywords}"%"
-                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=28)
-                or unitId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=25)
+                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName
+                like "%"#{keywords}"%" and dataDictionaryId=28)
+                or unitId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%" and dataDictionaryId=25)
             </if>
             <if test="id != '' and id != null">
                 and id like "%"#{id}"%"
@@ -1450,8 +1474,10 @@
                 or ingredientsName like "%"#{keywords}"%"
                 or code like "%"#{keywords}"%"
                 or specification like "%"#{keywords}"%"
-                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=28)
-                or unitId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=25)
+                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName
+                like "%"#{keywords}"%" and dataDictionaryId=28)
+                or unitId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%" and dataDictionaryId=25)
             </if>
             <if test="id != '' and id != null">
                 and id like "%"#{id}"%"
