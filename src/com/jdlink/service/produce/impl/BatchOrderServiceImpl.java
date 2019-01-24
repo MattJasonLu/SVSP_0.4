@@ -300,5 +300,15 @@ public class BatchOrderServiceImpl implements BatchOrderService
         return batchOrderMapper.searchSecOutboundCount(outboundOrder);
     }
 
+    @Override
+    public List<BatchingOrder> searchBatchingOrder(BatchingOrder batchingOrder) {
+        return batchOrderMapper.searchBatchingOrder(batchingOrder);
+    }
+
+    @Override
+    public int searchBatchingTotal(BatchingOrder batchingOrder) {
+        return batchOrderMapper.searchBatchingTotal(batchingOrder);
+    }
+
 
 }

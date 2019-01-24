@@ -82,7 +82,7 @@
     select count(*) from t_pl_batchingorder;
 </select>
     <select id="total1" resultType="int">
-    select count(*) from t_pl_batchingorder where checkStateId=79;
+    select count(*) from t_pl_batchingorder where checkStateId=79 and round(batchingNumber,3)>0;
 </select>
     <insert id="addBatchingOrder" parameterType="BatchingOrder">
         insert into t_pl_batchingorder(batchingOrderId, batchingDate, createDate, remarks, wareHouseId,  recordstate,  batchingNumber,  nowTime, inboundOrderId,creator,checkState,inboundOrderItemId)

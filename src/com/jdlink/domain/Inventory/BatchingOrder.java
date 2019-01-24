@@ -112,7 +112,11 @@ public class BatchingOrder {
   /*关键字*/
     private String keyword;
 
+    /*配料起始日期*/
+    private Date beginTime;
 
+    /*配料截止日期*/
+    private Date endTime;
 /********以下数据结构暂时不用************/
     /*接收单位*/
     private Client acceptCompany;
@@ -158,6 +162,22 @@ public class BatchingOrder {
      */
     private String inboundOrderId;
 
+
+    public Date getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 
     public String getKeyword() {
         return keyword;
