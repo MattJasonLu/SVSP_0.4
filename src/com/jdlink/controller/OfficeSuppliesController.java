@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -174,9 +175,37 @@ public class OfficeSuppliesController {
      */
     @RequestMapping("addOfficeSuppliesOutbound")
     @ResponseBody
-    public String addOfficeSuppliesOutbound(@RequestBody OfficeSuppliesOutbound officeSuppliesOutbound) {
+    public String addOfficeSuppliesOutbound(@RequestBody OfficeSuppliesOutbound officeSuppliesOutbound, HttpSession session) {
         JSONObject res = new JSONObject();
         try {
+            // 获取用户的信息
+            String author = "";
+            User user = userService.getCurrentUserInfo(session);
+            if (user != null) author = user.getName();
+            CheckStateItem checkStateItem = new CheckStateItem();
+            checkStateItem.setDataDictionaryItemId(75);
+            // 设置出库单编号
+            officeSuppliesOutbound.setOutboundId(officeSuppliesService.getOfficeSupplierOutboundId(officeSuppliesOutbound.getOutboundDate()));
+            for (OfficeSuppliesItem officeSuppliesItem : officeSuppliesOutbound.getOfficeSuppliesItemList()) {
+                // 通过条目编号获取办公用品入库单条目数据
+                OfficeSuppliesItem officeSuppliesInboundItem = officeSuppliesService.getOfficeSuppliesInboundItemById(officeSuppliesItem.getInboundItemId());
+                // 设置数据
+                officeSuppliesItem.setInboundId(officeSuppliesInboundItem.getInboundId());
+                officeSuppliesItem.setOutboundId(officeSuppliesOutbound.getOutboundId());
+                officeSuppliesItem.setSupplier(officeSuppliesInboundItem.getSupplier());
+                officeSuppliesItem.setItemCode(officeSuppliesInboundItem.getItemCode());
+                officeSuppliesItem.setItemName(officeSuppliesInboundItem.getItemName());
+                officeSuppliesItem.setItemSpecifications(officeSuppliesInboundItem.getItemSpecifications());
+                officeSuppliesItem.setUnitDataItem(officeSuppliesInboundItem.getUnitDataItem());
+                officeSuppliesItem.setInboundDate(officeSuppliesInboundItem.getInboundDate());
+                officeSuppliesItem.setTicketRateItem(officeSuppliesInboundItem.getTicketRateItem());
+                // 设置作者和审批状态
+                officeSuppliesItem.setAuthor(author);
+                officeSuppliesItem.setCheckStateItem(checkStateItem);
+                // 设置条目的主键
+                officeSuppliesItem.setItemId(officeSuppliesOutbound.getOutboundId() + RandomUtil.getRandomEightChar());
+            }
+            // 增加记录
             officeSuppliesService.addOfficeSuppliesOutbound(officeSuppliesOutbound);
             res.put("status", "success");
             res.put("message", "新增成功");

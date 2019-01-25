@@ -54,6 +54,13 @@ public interface OfficeSuppliesMapper {
     void addOfficeSuppliesOutbound(OfficeSuppliesOutbound officeSuppliesOutbound);
 
     /**
+     * 获取办公用品出库单中前缀匹配的单据数量
+     * @param prefix 前缀
+     * @return 单据数量
+     */
+    int getOfficeSupplierOutboundCountByPrefix(String prefix);
+
+    /**
      * 通过条目编号获取办公用品条目
      * @param id 编号
      * @return 办公用品条目

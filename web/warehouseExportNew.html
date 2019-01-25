@@ -255,6 +255,7 @@
                     <th class="text-center">入库日期</th>
                     <th class="text-center">税率</th>
                     <th class="text-center">备注</th>
+                    <th class="text-center hidden">编号</th>
                 </tr>
                 </thead>
                 <tbody id="ingredientsInventoryData">
@@ -274,6 +275,7 @@
                     <td class="text-center" name="inboundDate"></td>
                     <td class="text-center" name="ticketRateItem"></td>
                     <td class="text-center" name="remark"></td>
+                    <td class="text-center hidden" name="itemId"></td>
                 </tr>
                 </tbody>
             </table>
@@ -335,9 +337,8 @@
                         <th class="text-center">单价</th>
                         <th class="text-center">金额</th>
                         <th class="text-center">入库日期</th>
-                        <th class="text-center">税率</th>
                         <th class="text-center">备注</th>
-                        <th class="text-center" hidden>入库单编号</th>
+                        <th class="text-center hidden">编号</th>
                     </tr>
                 </thead>
                 <tbody id="tbody1">
@@ -348,18 +349,18 @@
                         <td class="text-center" name="itemName"></td>
                         <td class="text-center" name="itemSpecifications"></td>
                         <td class="text-center" name="unitDataItem"></td>
-                        <td class="text-center"><input type="number" class="form-control" name="itemAmount"></td>
-                        <td class="text-center"><input type="number" class="form-control" name="taxUnitPrice"></td>
-                        <td class="text-center"><input type="number" class="form-control" name="totalTaxPrice"></td>
+                        <td class="text-center"><input type="number" class="form-control" name="itemAmount" style="width: 80px;"></td>
+                        <td class="text-center"><input type="number" class="form-control" name="taxUnitPrice" style="width: 80px;"></td>
+                        <td class="text-center"><input type="number" class="form-control" name="totalTaxPrice" style="width: 80px;"></td>
                         <td class="text-center"><input type="date" class="form-control" name="outboundDate"></td>
-                        <td class="text-center"><input type="text" class="form-control" name="remark"></td>
-                        <td class="text-center" name="itemId" hidden></td>
+                        <td class="text-center"><input type="text" class="form-control" name="remark" style="width: 100px;"></td>
+                        <td class="text-center hidden" name="itemId"></td>
                     </tr>
                 </tbody>
             </table>
         </form>
         <div class="row text-center">
-            <a class="btn btn-success" id="save" onclick="save();">新增</a>
+            <a class="btn btn-primary" id="save" onclick="save();">新增</a>
             <a class="btn btn-default" onclick="history.back();">返回</a>
             <!--<a class="btn btn-danger" onclick="setInventory()">清空并设置库存数据</a>-->
         </div>
