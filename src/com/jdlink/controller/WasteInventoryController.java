@@ -609,46 +609,7 @@ catch (Exception e){
         }
     }
 
-    /**
-     * 配料单页面高价检索
-     */
-    @RequestMapping("searchBatchOrder")
-    @ResponseBody
-    public String searchBatchOrder(@RequestBody BatchingOrder batchingOrder){
-        JSONObject res=new JSONObject();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String nowdayTime = dateFormat.format(batchingOrder.getCreateDate());
-        batchingOrder.setTime(nowdayTime);
-//        java.sql.Date sqlDate=java.sql.Date.valueOf(nowdayTime);
-//        batchingOrder.setCreateDate(sqlDate);
-//        System.out.println(batchingOrder.getCreateDate()+"QQQ");
-        try{
-        List<BatchingOrder>  batchingOrderList= wasteInventoryService.searchBatchingOrder(batchingOrder);
-          res.put("status", "success");
-          res.put("message", "高级查询成功");
-          res.put("batchingOrderList", batchingOrderList);
-      }
-      catch (Exception e){
-          e.printStackTrace();
-          res.put("status", "fail");
-          res.put("message", "高级查询失败");
-      }
-        return  res.toString();
-    }
-    /**
-     * 获取配料单高级查询总数
-     */
-    @RequestMapping("searchBatchingTotal")
-    @ResponseBody
-    public int searchBatchingTotal(@RequestBody BatchingOrder batchingOrder){
-        try {
-            return wasteInventoryService.searchBatchingTotal(batchingOrder);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        }
 
-    }
     /**
      * 获得领料单总数
      *

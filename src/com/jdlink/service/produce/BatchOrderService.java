@@ -72,4 +72,6 @@ public interface BatchOrderService {
     int searchWastesInventoryCount(WasteInventory wasteInventory);
     List<OutboundOrder>searchSecOutbound(OutboundOrder outboundOrder);
     int searchSecOutboundCount(OutboundOrder outboundOrder);
+    List<BatchingOrder>searchBatchingOrder(BatchingOrder batchingOrder);
+    int searchBatchingTotal(BatchingOrder batchingOrder);
 }
