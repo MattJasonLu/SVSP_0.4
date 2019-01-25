@@ -629,6 +629,7 @@ function searchWasteInto() {
                 if (result != undefined && result.status == "success"){
                     console.log(result)
                     setPageClone(result.data)
+                    setPageCloneAfter(pageNumber)
                 } else {
                     alert(result.message);
 
