@@ -505,7 +505,7 @@ public class BatchOrderController {
 
             //处置方式适配
             ProcessWayItem processWayItem =batchingOrder.getProcessWayItem();
-            if(processWayItem.getDataDictionaryItemId()!=0){
+            if(processWayItem.getDictionaryItemName()!=""){
                 int  dataDictionaryItemId= dictionaryService.getdatadictionaryitemIdByName(processWayItem.getDictionaryItemName(),8);
                 processWayItem.setDataDictionaryItemId(dataDictionaryItemId);
             }
@@ -515,7 +515,7 @@ public class BatchOrderController {
             //进料方式适配
 
             HandleCategoryItem handleCategoryItem=batchingOrder.getHandleCategoryItem();
-            if(handleCategoryItem.getDataDictionaryItemId()!=0){
+            if(handleCategoryItem.getDictionaryItemName()!=""){
                 int  dataDictionaryItemId1= dictionaryService.getdatadictionaryitemIdByName(handleCategoryItem.getDictionaryItemName(),6);
                 handleCategoryItem.setDataDictionaryItemId(dataDictionaryItemId1);
 
@@ -1536,6 +1536,39 @@ public class BatchOrderController {
     public int searchSecOutboundCount(@RequestBody OutboundOrder outboundOrder){
 
         return batchOrderService.searchSecOutboundCount(outboundOrder);
+    }
+
+    /**
+     * 配料单页面高价检索
+     */
+    @RequestMapping("searchBatchOrder")
+    @ResponseBody
+    public String searchBatchOrder(@RequestBody BatchingOrder batchingOrder){
+        JSONObject res=new JSONObject();
+
+        try{
+            List<BatchingOrder>  batchingOrderList= batchOrderService.searchBatchingOrder(batchingOrder);
+            res.put("status", "success");
+            res.put("message", "高级查询成功");
+            res.put("batchingOrderList", batchingOrderList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "高级查询失败");
+        }
+        return  res.toString();
+    }
+    /**
+     * 获取配料单高级查询总数
+     */
+    @RequestMapping("searchBatchingTotal")
+    @ResponseBody
+    public int searchBatchingTotal(@RequestBody BatchingOrder batchingOrder){
+
+            return batchOrderService.searchBatchingTotal(batchingOrder);
+
+
     }
 }
 
