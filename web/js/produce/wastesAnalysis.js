@@ -1,3 +1,7 @@
+
+var isSearch = false;
+var currentPage = 1;                          //当前页数
+var data1;
 /**
  * 模态框
  */
@@ -114,12 +118,13 @@ var data1 = {};
  * */
 function totalPage() {
     var totalRecord = 0;
-    console.log(data1);
     if (!isSearch) {
+        data1 = {};
         $.ajax({
             type: "POST",                       // 方法类型
             url: "countSampleInfoAnalysis",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
             dataType: "json",
             data: JSON.stringify(data1),
             contentType: "application/json; charset=utf-8",
@@ -127,6 +132,7 @@ function totalPage() {
                 if (result != undefined && result.status == "success") {
                     if (result.data > 0) {
                         totalRecord = result.data;
+                        console.log("总记录数为:"+result.data);
                     } else {
                         console.log("fail: " + result.data);
                         totalRecord = 0;
@@ -150,6 +156,7 @@ function totalPage() {
                 if (result != undefined && result.status == "success") {
                     if (result.data > 0) {
                         totalRecord = result.data;
+                        console.log("总记录数为:"+result.data);
                     } else {
                         console.log("fail: " + result.data);
                         totalRecord = 0;
