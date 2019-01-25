@@ -1,3 +1,7 @@
+
+var isSearch = false;
+var currentPage = 1;                          //当前页数
+var data1;
 /**
  * 模态框
  */
@@ -114,17 +118,22 @@ var data1;
  * */
 function totalPage() {
     var totalRecord = 0;
+    console.log("查询条件");
+    console.log(data1);
     if (!isSearch) {
+        data1 = {};
         $.ajax({
             type: "POST",                       // 方法类型
             url: "countSampleInfoAnalysis",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     if (result.data > 0) {
                         totalRecord = result.data;
+                        console.log("总记录数为:"+result.data);
                     } else {
                         console.log("fail: " + result.data);
                         totalRecord = 0;
@@ -139,7 +148,7 @@ function totalPage() {
     } else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchWastesDailyCount",                  // url
+            url: "countSampleInfoAnalysis",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
@@ -148,6 +157,7 @@ function totalPage() {
                 if (result != undefined && result.status == "success") {
                     if (result.data > 0) {
                         totalRecord = result.data;
+                        console.log("总记录数为:"+result.data);
                     } else {
                         console.log("fail: " + result.data);
                         totalRecord = 0;
@@ -629,6 +639,7 @@ function searchWasteInto() {
                 if (result != undefined && result.status == "success"){
                     console.log(result)
                     setPageClone(result.data)
+                    setPageCloneAfter(pageNumber)
                 } else {
                     alert(result.message);
 
