@@ -61,4 +61,26 @@ public interface SewageTestService {
     List<SecondaryTest>  searchSecondaryTest(SecondaryTest secondaryTest);
 
     int searchSecondaryTestCount(SecondaryTest secondaryTest);
+
+    List<String>getAllRawSampleId();
+
+    int CountById(String id);
+
+    void addRawSample(RawSample rawSample);
+
+    RawSampleItem  getRawSampleItemById(String id);
+
+    void addRawSampleItem(RawSampleItem rawSampleItem);
+
+    List<RawSample>loadRawSampleList(Page page);
+
+    RawSample  getRawSampleById(String id);
+
+    void updateRawSample(RawSample rawSample);
+
+    void deleteRawSampleItem(String id);
+
+    void cancelRawSample(String id);
+
+    void rejectRawSampleItemById(String id ,String advice);
 }

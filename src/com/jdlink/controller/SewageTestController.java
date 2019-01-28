@@ -5,6 +5,7 @@ import com.jdlink.domain.Produce.*;
 import com.jdlink.service.produce.SewageTestService;
 import com.jdlink.util.DBUtil;
 import com.jdlink.util.ImportUtil;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -1352,6 +1353,200 @@ public class SewageTestController {
     public int searchSecondaryTestCount(@RequestBody SecondaryTest secondaryTest){
         return sewageTestService.searchSecondaryTestCount(secondaryTest);
     }
+
+
+   /*=========================原辅材料送样与化验===================================================================>*/
+
+
+    //检测原辅材料预约单号是否存在
+    @RequestMapping("testingRawSampleId")
+    @ResponseBody
+    public String testingRawSampleId(String id){
+        JSONObject res=new JSONObject();
+
+        try {
+            List<String> rawSampleIdList=sewageTestService.getAllRawSampleId();
+            boolean bool = rawSampleIdList.contains(id);
+            res.put("status", "success");
+            res.put("message", "检验完毕");
+            res.put("data", bool);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "检验失败");
+
+        }
+
+        return res.toString();
+
+    }
+
+
+    //添加原辅材料主表
+    @RequestMapping("addRawSample")
+    @ResponseBody
+    public String addRawSample(@RequestBody RawSample rawSample) {
+        JSONObject res = new JSONObject();
+
+        try {
+            sewageTestService.addRawSample(rawSample);
+            res.put("status", "success");
+            res.put("message", "添加主表成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "success");
+            res.put("message", "添加主表失败");
+
+        }
+
+        return res.toString();
+
+    }
+
+    //添加原辅材料子表
+    @RequestMapping("addRawSampleItem")
+    @ResponseBody
+    public String addRawSampleItem(@RequestBody RawSampleItem rawSampleItem) {
+        JSONObject res = new JSONObject();
+
+        try {
+            String id1;
+            int index = sewageTestService.CountById(rawSampleItem.getSampleinformationId());
+            do {
+                index += 1;
+                String index1 = index + "";
+                if (index < 10) index1 = "000" + index;
+                else if (index < 100) index1 = "00" + index;
+                else if (index < 1000) index1 = "0" + index;
+                id1 = rawSampleItem.getSampleinformationId() + index1;
+            } while (sewageTestService.getRawSampleItemById(id1) != null);
+            rawSampleItem.setId(id1);
+//            String id = productionDailyService.getNewestId().get(0);
+            sewageTestService.addRawSampleItem(rawSampleItem);
+            res.put("status", "success");
+            res.put("message", "字表添加成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "字表添加失败");
+
+        }
+
+        return res.toString();
+
+
+    }
+
+    //////加载原辅材料页面////
+    @RequestMapping("loadRawSampleList")
+    @ResponseBody
+    public String loadRawSampleList(@RequestBody Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            List<RawSample> rawSampleList = sewageTestService.loadRawSampleList(page);
+            res.put("data", rawSampleList);
+            res.put("status", "success");
+            res.put("message", "分页数据获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "分页数据获取失败！");
+        }
+        // 返回结果
+        return res.toString();
+    }
+
+    /*根据编号获取原辅材料*/
+    @RequestMapping("getRawSampleById")
+    @ResponseBody
+    public String getRawSampleById(String id){
+        JSONObject res=new JSONObject();
+
+         try {
+             RawSample rawSample=sewageTestService.getRawSampleById(id);
+             res.put("status", "success");
+             res.put("message", "查询成功");
+             res.put("data", rawSample);
+
+         }
+         catch (Exception e){
+             e.printStackTrace();
+             res.put("status", "fail");
+             res.put("message", "查询失败");
+
+         }
+
+
+        return res.toString();
+    }
+
+
+    //更新原辅材料
+    @RequestMapping("updateRawSample")
+    @ResponseBody
+    public String updateRawSample(@RequestBody RawSample rawSample){
+        JSONObject res=new JSONObject();
+        try {
+            //1更新主表
+            sewageTestService.updateRawSample(rawSample);
+            //2删除字表
+            sewageTestService.deleteRawSampleItem(rawSample.getId());
+            res.put("status", "success");
+            res.put("message", "主表更新成功,字表删除成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "主表更新失败,字表删除失败");
+        }
+
+
+        return res.toString();
+
+
+    }
+
+    /*作废原辅材料*/
+     @RequestMapping("cancelRawSample")
+      @ResponseBody
+    public String cancelRawSample(String id){
+         JSONObject res=new JSONObject();
+
+          try {
+         sewageTestService.cancelRawSample(id);
+              res.put("status", "success");
+              res.put("message", "作废成功");
+          }
+          catch (Exception e){
+              e.printStackTrace();
+              res.put("status", "fail");
+              res.put("message", "作废失败");
+
+          }
+
+         return res.toString();
+     }
+
+     @RequestMapping("rejectRawSampleItemById")
+    @ResponseBody
+    public String rejectRawSampleItemById(String id ,String advice){
+         JSONObject res=new JSONObject();
+
+         try {
+         sewageTestService.rejectRawSampleItemById(id, advice);
+             res.put("status", "success");
+             res.put("message", "已拒收");
+         }
+         catch (Exception e){
+             e.printStackTrace();
+             res.put("status", "fail");
+             res.put("message", "拒收失败");
+
+         }
+
+         return res.toString();
+     }
 }
 
 
