@@ -136,18 +136,18 @@ public class PRIngredientsController {
             String id2 = m1.replaceAll("").trim();  // 截取ID中的字符串
             Long index = Long.parseLong(id1);
             boolean e = false;
-            while(ingredientsService.getInById(id) != null) {
-                  index++;
-                  id = id2 + index;
-                  e = true;
+            while (ingredientsService.getInById(id) != null) {
+                index++;
+                id = id2 + index;
+                e = true;
             }
-            if(e) {   // 如果该ID已被更新
+            if (e) {   // 如果该ID已被更新
                 ingredientsIn.setId(id);   // 更新ID
-                for(int i = 0; i < ingredientsIn.getIngredientsList().size(); i++) {
+                for (int i = 0; i < ingredientsIn.getIngredientsList().size(); i++) {
                     ingredientsIn.getIngredientsList().get(i).setId(id);
                 }
             }
-            if(ingredientsIn.getCreationDate() == null){
+            if (ingredientsIn.getCreationDate() == null) {
                 ingredientsIn.setCreationDate(new Date());
             }
             ingredientsService.addIn(ingredientsIn);
@@ -676,18 +676,18 @@ public class PRIngredientsController {
             String id2 = m1.replaceAll("").trim();  // 截取ID中的字符串
             Long index = Long.parseLong(id1);
             boolean e = false;
-            while(ingredientsService.getReceiveById(id) != null) {
+            while (ingredientsService.getReceiveById(id) != null) {
                 index++;
                 id = id2 + index;
                 e = true;
             }
-            if(e) {   // 如果该ID已被更新
+            if (e) {   // 如果该ID已被更新
                 ingredientsReceive.setId(id);   // 更新ID
-                for(int i = 0; i < ingredientsReceive.getIngredientsList().size(); i++) {
+                for (int i = 0; i < ingredientsReceive.getIngredientsList().size(); i++) {
                     ingredientsReceive.getIngredientsList().get(i).setId(id);
                 }
             }
-            if(ingredientsReceive.getCreationDate() == null){
+            if (ingredientsReceive.getCreationDate() == null) {
                 ingredientsReceive.setCreationDate(new Date());
             }
             ingredientsService.addAllReceive(ingredientsReceive);
@@ -1040,7 +1040,7 @@ public class PRIngredientsController {
         JSONObject res = new JSONObject();
         try {
             List<Ingredients> ingredientsList = ingredientsService.getInventoryList(page);
-            for(int i = 0; i < ingredientsList.size(); i++) {
+            for (int i = 0; i < ingredientsList.size(); i++) {
                 Ingredients ingredients1 = ingredientsService.getSumByIngredient(ingredientsList.get(i));
                 ingredientsList.get(i).setTotalAmount(ingredients1.getTotalAmount());
                 ingredientsList.get(i).setAllTotalPrice(ingredients1.getAllTotalPrice());
@@ -1107,7 +1107,7 @@ public class PRIngredientsController {
         JSONObject res = new JSONObject();
         try {
             List<Ingredients> ingredientsList = ingredientsService.searchInventory(ingredients);
-            for(int i = 0; i < ingredientsList.size(); i++) {
+            for (int i = 0; i < ingredientsList.size(); i++) {
                 Ingredients ingredients1 = ingredientsService.getSumByIngredient(ingredientsList.get(i));
                 ingredientsList.get(i).setTotalAmount(ingredients1.getTotalAmount());
                 ingredientsList.get(i).setAllTotalPrice(ingredients1.getAllTotalPrice());
@@ -1260,18 +1260,18 @@ public class PRIngredientsController {
             String id2 = m1.replaceAll("").trim();  // 截取ID中的字符串
             Long index = Long.parseLong(id1);
             boolean e = false;
-            while(ingredientsService.getOutById(id) != null) {
+            while (ingredientsService.getOutById(id) != null) {
                 index++;
                 id = id2 + index;
                 e = true;
             }
-            if(e) {   // 如果该ID已被更新
+            if (e) {   // 如果该ID已被更新
                 ingredientsOut.setId(id);   // 更新ID
-                for(int i = 0; i < ingredientsOut.getIngredientsList().size(); i++) {
+                for (int i = 0; i < ingredientsOut.getIngredientsList().size(); i++) {
                     ingredientsOut.getIngredientsList().get(i).setId(id);
                 }
             }
-            if(ingredientsOut.getCreationDate() == null){
+            if (ingredientsOut.getCreationDate() == null) {
                 ingredientsOut.setCreationDate(new Date());
             }
             ingredientsService.addOut(ingredientsOut);
@@ -1720,17 +1720,17 @@ public class PRIngredientsController {
     public String isSettled(Date date) {
         JSONObject res = new JSONObject();
         try {
-            if(date == null){   // 如果出库日期为空则赋值为当前日期
+            if (date == null) {   // 如果出库日期为空则赋值为当前日期
                 date = new Date();
             }
-            List<String> stringList=ingredientsService.getDateBbySettled();
+            List<String> stringList = ingredientsService.getDateBbySettled();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");  // 获取出库时间的年月份
             String yearAndMouth = sdf.format(date);
             if (stringList.contains(yearAndMouth)) {
-                res.put("message", "无法出库,"+ yearAndMouth + "月份出库单已结账");
+                res.put("message", "无法出库," + yearAndMouth + "月份出库单已结账");
                 res.put("status", "fail");
-            }else {
-                res.put("message","可以出库！");
+            } else {
+                res.put("message", "可以出库！");
                 res.put("status", "success");
             }
         } catch (Exception e) {
@@ -1921,27 +1921,27 @@ public class PRIngredientsController {
             }
             for (int i = 1; i < data.length; i++) {
                 // 设置数据
-                if(data[i][1].toString()!="null"){// 类别不为空时添加
-
-
-                Ingredients ingredients = new Ingredients();
-                ingredients.setName(data[i][2].toString());//名称
-                MaterialCategoryItem materialCategoryItem=new MaterialCategoryItem();
-                 int materialCategoryId=dictionaryService.getdatadictionaryitemIdByName(data[i][1].toString(),28);
+                if (!data[i][1].toString().equals("null")) {// 类别不为空时添加
+                    Ingredients ingredients = new Ingredients();
+                    ingredients.setName(data[i][2].toString());//名称
+                    MaterialCategoryItem materialCategoryItem = new MaterialCategoryItem();
+                    int materialCategoryId = dictionaryService.getdatadictionaryitemIdByName(data[i][1].toString(), 28);
                     materialCategoryItem.setDataDictionaryItemId(materialCategoryId);
-                ingredients.setMaterialCategoryItem(materialCategoryItem);
-                UnitDataItem unitDataItem=new UnitDataItem();
-                 int unitId=dictionaryService.getdatadictionaryitemIdByName(data[i][4].toString(),25);
+                    ingredients.setMaterialCategoryItem(materialCategoryItem);
+                    UnitDataItem unitDataItem = new UnitDataItem();
+                    int unitId = dictionaryService.getdatadictionaryitemIdByName(data[i][4].toString(), 25);
                     unitDataItem.setDataDictionaryItemId(unitId);
                     ingredients.setUnitDataItem(unitDataItem);
 
-                ingredients.setCode(data[i][0].toString());//编码
-                ingredients.setSpecification(data[i][3].toString());//规格
-                // 根据名称和规格获取对象
-                Ingredients ingredients1 = ingredientsService.getIngredientByNameAndSpecification(ingredients);
-                if (ingredients1 == null) {   // 不存在该物品则新增
-                    ingredientsService.addIngredient(ingredients);
-                }
+                    ingredients.setCode(data[i][0].toString());//编码
+                    ingredients.setSpecification(data[i][3].toString());//规格
+                    // 根据名称和规格获取对象
+                    Ingredients ingredients1 = ingredientsService.getIngredientByNameAndSpecification(ingredients);
+                    if (ingredients1 == null) {   // 不存在该物品则新增
+                        ingredientsService.addIngredient(ingredients);
+                    } else { // 存在即更新编码和计量单位
+                        ingredientsService.updateCodeByIngredient(ingredients);
+                    }
                 }
             }
             res.put("status", "success");
@@ -2073,5 +2073,143 @@ public class PRIngredientsController {
             ingredients1.setInPrice(ingredients.getUnitPrice());
             ingredientsService.addInventoryItem(ingredients1);
         }
+    }
+
+    ////////////辅料备件物品管理树状结构////////
+
+    /**
+     * 获取辅料物品树状数据
+     *
+     * @return
+     */
+    @RequestMapping("loadIngredientsTreeList")
+    @ResponseBody
+    public String loadIngredientsTreeList() {
+        JSONObject res = new JSONObject();
+        try {
+            List<IngredientsTree> ingredientsTreeList = ingredientsService.listIngredientsTree();
+            JSONArray data = JSONArray.fromArray(ingredientsTreeList.toArray(new IngredientsTree[ingredientsTreeList.size()]));
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "数据获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "数据获取失败！");
+        }
+        // 返回结果
+        return res.toString();
+    }
+
+    /**
+     * 导入物品树状结构
+     *
+     * @param excelFile
+     * @return
+     */
+    @RequestMapping("importIngredientsTreeExcel")
+    @ResponseBody
+    public String importIngredientsTreeExcel(MultipartFile excelFile) {
+        JSONObject res = new JSONObject();
+        try {
+            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+            System.out.println("数据如下：");
+            for (int i = 0; i < data.length; i++) {
+                for (int j = 0; j < data[0].length; j++) {
+                    System.out.print(data[i][j].toString());
+                    System.out.print(",");
+                }
+                System.out.println();
+            }
+            for (int i = 1; i < data.length; i++) {
+                // 设置数据
+                if (!data[i][0].toString().equals("null") && data[i][0].toString() != null
+                        && !data[i][1].toString().equals("null") && data[i][1].toString() != null
+                        && !data[i][3].toString().equals("null") && data[i][3].toString() != null) {  // id和父节点ID/名称不为空时添加
+                    IngredientsTree ingredientsTree = new IngredientsTree();
+                    ingredientsTree.setId(Integer.parseInt(data[i][0].toString()));
+                    ingredientsTree.setpId(Integer.parseInt(data[i][1].toString()));
+                    MaterialCategoryItem materialCategoryItem = new MaterialCategoryItem();
+
+                    DataDictionaryItem dataDictionaryItemM = dictionaryService.getDatadictionaryItemByName(data[i][2].toString(), 28);
+                    if (dataDictionaryItemM != null) {
+                        int materialCategoryId = dataDictionaryItemM.getDataDictionaryItemId();
+                        materialCategoryItem.setDataDictionaryItemId(materialCategoryId);
+                        ingredientsTree.setMaterialCategoryItem(materialCategoryItem);
+                    }
+                    ingredientsTree.setName(data[i][3].toString());
+                    ingredientsTree.setSpecification(data[i][4].toString());
+                    UnitDataItem unitDataItem = new UnitDataItem();
+                    DataDictionaryItem dataDictionaryItemU = dictionaryService.getDatadictionaryItemByName(data[i][5].toString(), 25);
+                    if (dataDictionaryItemU != null) {
+                        int unitId = dataDictionaryItemU.getDataDictionaryItemId();
+                        unitDataItem.setDataDictionaryItemId(unitId);
+                        ingredientsTree.setUnitDataItem(unitDataItem);
+                    }
+                    IngredientsTree ingredientsTree1 = ingredientsService.getIngredientsTreeById(ingredientsTree.getId());// 根据ID获取对象
+                    if (ingredientsTree1 == null) { // 如果存在则更新，不存在则新增
+                        ingredientsService.addIngredientsTree(ingredientsTree);
+                    } else {
+                        ingredientsService.updateIngredientTree(ingredientsTree);
+                    }
+                }
+            }
+            res.put("status", "success");
+            res.put("message", "导入成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导入失败，请重试！");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 根据Id获取对象数据
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping("getIngredientsTreeById")
+    @ResponseBody
+    public String getIngredientsTreeById(int id) {
+        JSONObject res = new JSONObject();
+        try {
+            //根据id查询出相应的对象信息
+            IngredientsTree ingredientsTree = ingredientsService.getIngredientsTreeById(id);
+            //新建一个对象并给它赋值
+            JSONObject data = JSONObject.fromBean(ingredientsTree);
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "获取数据成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取数据失败");
+        }
+        return res.toString();
+    }
+
+
+    /**
+     * 根据Id更新辅料树状部分数据（编码，名称，规格，计量单位）
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("updateIngredientsTree")
+    @ResponseBody
+    public String updateIngredientsTree(@RequestBody IngredientsTree ingredientsTree) {
+        JSONObject res = new JSONObject();
+        try {
+            ingredientsService.updatePartIngredientTreeBuId(ingredientsTree);
+            res.put("status", "success");
+            res.put("message", "更新成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+        return res.toString();
     }
 }

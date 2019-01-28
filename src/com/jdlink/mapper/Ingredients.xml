@@ -1389,13 +1389,36 @@
         </if>
     </insert>
 
+    <!--获取已结账的出库单的年月份集合-->
+    <select id="getDateBbySettled" resultType="String">
+          SELECT date_format(creationDate,'%Y-%m')  FROM t_pr_ingredients_out
+          WHERE checkStateId=253;
+    </select>
+
+    <!--锁定出库单-->
+    <update id="outSettled" parameterType="IngredientsOut">
+        <if test="receiveIdList != null and receiveIdList.size() > 0">
+            <foreach collection="receiveIdList" index="index" item="id">
+                update t_pr_ingredients_out set checkStateId=253 where id=#{id};
+            </foreach>
+        </if>
+    </update>
+
     <!--辅料备件物品维护-->
     <resultMap id="IngredientsRM" type="Ingredients" autoMapping="true">
         <id column="itemId" property="id"/>
         <result column="ingredientsName" property="name"/>
         <association property="materialCategoryItem" column="materialCategoryId"
-                     select="getMaterialCategoryItem"></association>
-        <association property="unitDataItem" column="unitId" select="getUnitId"></association>
+                     select="getMaterialCategoryItem" />
+        <association property="unitDataItem" column="unitId" select="getUnitId" />
+    </resultMap>
+
+   <!--辅料备件物品管理树状-->
+    <resultMap id="IngredientsTreeRM" type="IngredientsTree" autoMapping="true">
+        <id column="id" property="id" />
+        <association property="materialCategoryItem" column="materialCategoryId"
+                     select="getMaterialCategoryItem" />
+        <association property="unitDataItem" column="unitId" select="getUnitId" />
     </resultMap>
 
     <!--获取和物资累呗数据字典-->
@@ -1408,10 +1431,9 @@
         select * from datadictionaryitem where dataDictionaryItemId=#{unitId}
     </select>
 
-
     <select id="getIngredientsList" resultMap="IngredientsRM">
         select * from t_pl_ingredientslist
-        order by nowTime desc
+        order by nowTime desc,code asc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count};
         </if>
@@ -1476,7 +1498,7 @@
                 or specification like "%"#{keywords}"%"
                 or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName
                 like "%"#{keywords}"%" and dataDictionaryId=28)
-                or unitId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                or unitId in (select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
                 "%"#{keywords}"%" and dataDictionaryId=25)
             </if>
             <if test="id != '' and id != null">
@@ -1509,15 +1531,11 @@
         where left(code,2)=#{type};
     </select>
 
-    <!--获取已结账的出库单的年月份集合-->
-    <select id="getDateBbySettled" resultType="String">
-          SELECT date_format(creationDate,'%Y-%m')  FROM t_pr_ingredients_out
-          WHERE checkStateId=253;
-    </select>
-
+    <!--新增辅料备件物品-->
     <insert id="addIngredient" parameterType="Ingredients">
         insert into t_pl_ingredientslist
-        (ingredientsName, code,specification,nowTime,materialCategoryId,unitId) values (#{name},#{code},#{specification},NOW(),#{materialCategoryItem.dataDictionaryItemId},#{unitDataItem.dataDictionaryItemId});
+        (ingredientsName, code,specification,nowTime,materialCategoryId,unitId)
+        values (#{name},#{code},#{specification},NOW(),#{materialCategoryItem.dataDictionaryItemId},#{unitDataItem.dataDictionaryItemId});
     </insert>
 
     <update id="updateIngredient" parameterType="Ingredients">
@@ -1525,18 +1543,44 @@
         set ingredientsName=#{name},code=#{code},specification=#{specification},materialCategoryId=#{materialCategoryItem.dataDictionaryItemId},unitId=#{unitDataItem.dataDictionaryItemId} where id=#{id};
     </update>
 
-    <!--锁定出库单-->
-    <update id="outSettled" parameterType="IngredientsOut">
-        <if test="receiveIdList != null and receiveIdList.size() > 0">
-            <foreach collection="receiveIdList" index="index" item="id">
-                update t_pr_ingredients_out set checkStateId=253 where id=#{id};
-            </foreach>
-        </if>
+    <update id="updateCodeByIngredient" parameterType="Ingredients">
+        update t_pl_ingredientslist
+        set code=#{code},unitId=#{unitDataItem.dataDictionaryItemId}
+        where ingredientsName=#{name} and specification=#{specification} and materialCategoryId=#{materialCategoryItem.dataDictionaryItemId};
     </update>
 
     <delete id="deleteIngredient" parameterType="int">
         delete from t_pl_ingredientslist where id=#{id};
     </delete>
 
+    <!--辅料物品树状结构-->
+    <!--获取辅料备件物品树状结构数据-->
+    <select id="listIngredientsTree" resultMap="IngredientsTreeRM">
+        select * from t_pl_ingredients_list_tree;
+    </select>
+
+    <select id="getIngredientsTreeById" parameterType="int" resultMap="IngredientsTreeRM">
+        select * from t_pl_ingredients_list_tree where id=#{id};
+    </select>
+
+    <insert id="addIngredientsTree" parameterType="IngredientsTree">
+        insert into t_pl_ingredients_list_tree
+        (id,pId,name,specification,materialCategoryId,unitId,creationTime,modifyTime)
+        values
+        (#{id},#{pId},#{name},#{specification},#{materialCategoryItem.dataDictionaryItemId},
+        #{unitDataItem.dataDictionaryItemId},NOW(),NOW());
+    </insert>
+
+    <update id="updateIngredientTree" parameterType="IngredientsTree">
+        update t_pl_ingredients_list_tree
+        set name=#{name},specification=#{specification},materialCategoryId=#{materialCategoryItem.dataDictionaryItemId},
+        unitId=#{unitDataItem.dataDictionaryItemId},pId=#{pId},modifyTime=NOW() where id=#{id};
+    </update>
+
+    <update id="updatePartIngredientTreeBuId" parameterType="IngredientsTree">
+        update t_pl_ingredients_list_tree
+        set name=#{name},specification=#{specification},unitId=#{unitDataItem.dataDictionaryItemId},id=#{code},
+        modifyTime=NOW() where id=#{id};
+    </update>
 
 </mapper>

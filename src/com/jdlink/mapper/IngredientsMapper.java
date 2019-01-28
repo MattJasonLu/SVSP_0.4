@@ -193,6 +193,8 @@ public interface IngredientsMapper {
 
     void updateIngredient(Ingredients ingredients);
 
+    void updateCodeByIngredient(Ingredients ingredients);
+
     void deleteIngredient(int id);
 
     List<Ingredients> searchIngredient(Ingredients ingredients);
@@ -203,4 +205,14 @@ public interface IngredientsMapper {
 
     int getCountByType(String type);
 
+    ///////////////////辅料备件管理树状结构///////
+    void addIngredientsTree(IngredientsTree ingredientsTree);
+
+    void updateIngredientTree(IngredientsTree ingredientsTree);
+
+    List<IngredientsTree> listIngredientsTree();
+
+    IngredientsTree getIngredientsTreeById(int id);
+
+    void updatePartIngredientTreeBuId(IngredientsTree ingredientsTree);
 }
