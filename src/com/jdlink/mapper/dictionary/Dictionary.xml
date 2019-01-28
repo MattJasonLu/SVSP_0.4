@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jdlink.mapper.dictionary.DictionaryMapper" >
+<mapper namespace="com.jdlink.mapper.dictionary.DictionaryMapper">
 
- <!--查询主表个数，便于赋值主键-->
+    <!--查询主表个数，便于赋值主键-->
     <select id="getIdCount" resultType="int">
         select count(*) from datadictionary;
     </select>
@@ -29,8 +29,9 @@
 
     <!--字典数据导入-->
     <insert id="importDictionaryExcel" parameterType="DataDictionary">
-        insert into datadictionary (dictionaryType, dictionaryName, dateTime) values (#{dictionaryType},#{dictionaryName},NOW())
-        <foreach collection="dataDictionaryItemList" item="dataDictionaryItem" index="index" >
+        insert into datadictionary (dictionaryType, dictionaryName, dateTime) values
+        (#{dictionaryType},#{dictionaryName},NOW())
+        <foreach collection="dataDictionaryItemList" item="dataDictionaryItem" index="index">
             insert into datadictionaryitem(dataDictionaryId,dictionaryItemType,dictionaryItemName) values
             (#{dataDictionaryItem.dataDictionaryId},#{dataDictionaryItem.dictionaryItemType},#{dataDictionaryItem.dictionaryItemName})
         </foreach>
@@ -39,7 +40,8 @@
     <resultMap id="DataDictionaryRM" type="DataDictionary" autoMapping="true">
         <result property="dataDictionaryId" column="dataDictionaryId"></result>
         <result property="dateTime" column="dateTime"></result>
-        <collection property="dataDictionaryItemList" column="dataDictionaryId" select="getDataDictionaryItemList"></collection>
+        <collection property="dataDictionaryItemList" column="dataDictionaryId"
+                    select="getDataDictionaryItemList"></collection>
     </resultMap>
 
     <!--查询明细-->
@@ -48,7 +50,7 @@
     </select>
     <!--加载页面数据-->
     <select id="getDictionariesDataList" resultMap="DataDictionaryRM">
-        select * from datadictionary order  by dateTime
+        select * from datadictionary order by dateTime
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -78,9 +80,9 @@
                 or dictionaryName like "%"#{keywords}"%"
                 or dateTime like binary"%"#{keywords}"%"
             </if>
-          <if test="dictionaryType!=null and dictionaryType!=''">
-              and dictionaryType like "%"#{dictionaryType}"%"
-          </if>
+            <if test="dictionaryType!=null and dictionaryType!=''">
+                and dictionaryType like "%"#{dictionaryType}"%"
+            </if>
             <if test="dictionaryName!=null and dictionaryName!=''">
                 and dictionaryName like "%"#{dictionaryName}"%"
             </if>
@@ -93,7 +95,7 @@
 
     <!--查看计数-->
     <select id="searchDictionaryCount" resultType="int" parameterType="DataDictionary">
-    select count(*) from datadictionary
+        select count(*) from datadictionary
         <where>
             <if test="keywords!=null and keywords!=''">
                 or dictionaryType like "%"#{keywords}"%"
@@ -120,15 +122,14 @@
     </select>
 
     <!--根据明细名称获取编号(加入主表的编号是因为会重复)-->
-    <select id="getdatadictionaryitemIdByName"  resultType="int">
+    <select id="getdatadictionaryitemIdByName" resultType="int">
         select dataDictionaryItemId from  datadictionaryitem where dictionaryItemName=#{0} and dataDictionaryId=#{1}
     </select>
 
-   <!--根据明细名称获取对象-->
-    <select id="getDatadictionaryItemByName"  resultType="DataDictionaryItem">
+    <!--根据明细名称获取对象-->
+    <select id="getDatadictionaryItemByName" resultType="DataDictionaryItem">
         select * from  datadictionaryitem where dictionaryItemName=#{0} and dataDictionaryId=#{1}
     </select>
-
 
     <!--查询主表的dictionaryType-->
     <select id="getDictionaryTypeListFromDataDictionary" resultType="String">

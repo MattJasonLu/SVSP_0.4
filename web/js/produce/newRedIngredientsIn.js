@@ -167,18 +167,23 @@ function setIngredient(item){
     console.log("$i:"+$i);
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getIngredientAsProcurementPlanItemById",          // url
+        url: "getIngredientsTreeById",          // url
         async: false, // 同步：意思是当有返回值以后才会进行后面的js程序
         data: {
             id: id
         },
         dataType: "json",
         success: function (result) {
+            console.log(result);
             if (result != undefined && result.status == "success") {
                 if (result.data != null) {
+                    console.log("获取数据为");
                     console.log(result.data);
                     $("#code" + $i).text(result.data.code);   // 物品编码
-                    $("#specification" + $i).text(result.data.specifications);   // 规格型号
+                    $("#specification" + $i).text(result.data.specification);   // 规格型号
+                    if(result.data.unitDataItem != null) {
+                        $("#unit"+ $i).val(result.data.unitDataItem.dataDictionaryItemId);
+                    }
                 }
             }
         },
