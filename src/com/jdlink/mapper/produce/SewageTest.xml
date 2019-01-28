@@ -430,6 +430,89 @@
             </if>
         </where>
     </select>
+
+
+    <!--查询所有的原辅材料送样编号-->
+    <select id="getAllRawSampleId" resultType="String">
+        select id from  t_pr_rawsample;
+    </select>
+
+    <!--添加原辅材料-->
+    <insert id="addRawSample" parameterType="RawSample">
+        insert into t_pr_rawsample (id, laboratorySignatory, sendingPerson, checkStateId, createTime,rawMaterialsId) values
+        (#{id},#{laboratorySignatory},#{sendingPerson},86,NOW(),#{rawMaterialsItem.dataDictionaryItemId});
+    </insert>
+
+    <!--查询原材料送样明细中-->
+    <select id="CountById" resultType="int" parameterType="String">
+    select count(*) from t_pr_rawsampleitem where id like "%"#{id}"%";
+  </select>
+
+
+    <!--通过单号获取原辅材料-->
+    <select id="getRawSampleById" resultMap="RawSampleRM">
+        select  * from t_pr_rawsample where id=#{id};
+    </select>
+
+
+
+    <!--通过单号获取原辅材料明细 -->
+    <select id="getRawSampleItemById" resultType="RawSampleItem" parameterType="String">
+        select * from t_pr_rawsampleitem where id=#{id}
+    </select>
+
+    <!--添加原辅材料送样明细-->
+    <insert id="addRawSampleItem" parameterType="RawSampleItem">
+        insert into t_pr_rawsampleitem (id, sodium, calcium, dry, adsorption, ph, water, ash, particle, density,sampleinformationId)
+        values (#{id},#{sodium},#{calcium},#{dry},#{adsorption},#{ph},#{water},#{ash},#{particle},#{density},#{sampleinformationId});
+    </insert>
+
+    <resultMap id="RawSampleRM" type="RawSample">
+        <result property="id" column="id"></result>
+        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"></association>
+
+        <association property="rawMaterialsItem" column="rawMaterialsId" select="getRawMaterialsItem"></association>
+
+        <association property="rawSampleItemList" column="id" select="getRawSampleItemList"></association>
+    </resultMap>
+
+    <!--加载原辅材料类别数据字典-->
+    <select id="getRawMaterialsItem" resultType="RawMaterialsItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{rawMaterialsId}
+    </select>
+
+   <select id="getRawSampleItemList" resultType="RawSampleItem">
+       select * from t_pr_rawsampleitem where sampleinformationId=#{id}
+   </select>
+    <!--加载原辅材料页面-->
+    <select id="loadRawSampleList" resultMap="RawSampleRM">
+        select * from t_pr_rawsample where checkStateId!=69
+        order by CONVERT(id,SIGNED) desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <!--更新主表-->
+    <update id="updateRawSample" parameterType="RawSample">
+        update t_pr_rawsample set laboratorySignatory=#{laboratorySignatory},sendingPerson=#{sendingPerson},
+        rawMaterialsId=#{rawMaterialsItem.dataDictionaryItemId},id=#{newId} where id=#{id}
+    </update>
+
+    <!--删除字表-->
+    <delete id="deleteRawSampleItem" parameterType="String">
+        delete from t_pr_rawsampleitem where sampleinformationId=#{sampleinformationId}
+    </delete>
+
+    <!--作废原辅材料-->
+    <update id="cancelRawSample" parameterType="String">
+        update t_pr_rawsample set checkStateId=69 where id=#{id}
+    </update>
+
+    <!--原辅材料拒收-->
+    <update id="rejectRawSampleItemById">
+        update t_pr_rawsample set advice=#{1},checkStateId=88 where id=#{0}
+    </update>
 </mapper>
 
 

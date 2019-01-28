@@ -457,7 +457,14 @@ function setMedicalWastesList(result) {
                 case (11):
                     $(this).html(obj.earlyNumber.toFixed(3));
                     break;
+                    //库存量:
+                //期初量
+                case (12):
+                    if(index==0){
+                        $(this).html(obj.wastesAmount.toFixed(3));
+                    }
 
+                    break;
             }
             clonedTr.removeAttr("id");
             clonedTr.insertBefore(tr);
@@ -493,6 +500,8 @@ function calculationTotal() {
 
     var earlyNumberTotal=0;
 
+    var wastesAmountTotal=0;
+
     $('.myclass').each(function () {
         thisMonthWastesTotal+=parseFloat($(this).children('td').eq(3).html());
         directDisposalTotal+=parseFloat($(this).children('td').eq(4).html());
@@ -503,6 +512,11 @@ function calculationTotal() {
         errorNumberTotal+=parseFloat($(this).children('td').eq(9).html());
         wetNumberTotal+=parseFloat($(this).children('td').eq(10).html());
         earlyNumberTotal+=parseFloat($(this).children('td').eq(11).html());
+        var wastesAmount=parseFloat($(this).children('td').eq(12).html());
+           if(isNaN(wastesAmount)){
+               wastesAmount=0;
+           }
+        wastesAmountTotal+=wastesAmount;
     })
     console.log(thisMonthWastesTotal)
     $("#tbody2").find('tr').children("td").eq(2).html(thisMonthWastesTotal.toFixed(3))
@@ -514,6 +528,7 @@ function calculationTotal() {
     $("#tbody2").find('tr').children("td").eq(8).html(errorNumberTotal.toFixed(3))
     $("#tbody2").find('tr').children("td").eq(9).html(wetNumberTotal.toFixed(3))
     $("#tbody2").find('tr').children("td").eq(10).html(earlyNumberTotal.toFixed(3))
+    $("#tbody2").find('tr').children("td").eq(11).html(wastesAmountTotal.toFixed(3))
 }
 
 
@@ -547,7 +562,6 @@ function searchMedicalWastes() {
             beginTime:$("#search-storageDate").val(),
             endTime:$("#search-endDate").val(),
             page: page,
-            checkStateItem:{dataDictionaryItemId:$("#search-checkState").val()}
         };
         console.log(data);
         // 模糊查询

@@ -257,5 +257,60 @@ public class SewageTestImpl implements SewageTestService{
         return sewageTestMapper.searchSecondaryTestCount(secondaryTest);
     }
 
+    @Override
+    public List<String> getAllRawSampleId() {
+        return sewageTestMapper.getAllRawSampleId();
+    }
+
+    @Override
+    public int CountById(String id) {
+        return sewageTestMapper.CountById(id);
+    }
+
+    @Override
+    public void addRawSample(RawSample rawSample) {
+        sewageTestMapper.addRawSample(rawSample);
+    }
+
+    @Override
+    public RawSampleItem getRawSampleItemById(String id) {
+        return sewageTestMapper.getRawSampleItemById(id);
+    }
+
+    @Override
+    public void addRawSampleItem(RawSampleItem rawSampleItem) {
+        sewageTestMapper.addRawSampleItem(rawSampleItem);
+    }
+
+    @Override
+    public List<RawSample> loadRawSampleList(Page page) {
+        return sewageTestMapper.loadRawSampleList(page);
+    }
+
+    @Override
+    public RawSample getRawSampleById(String id) {
+        return sewageTestMapper.getRawSampleById(id);
+    }
+
+    @Override
+    public void updateRawSample(RawSample rawSample) {
+        sewageTestMapper.updateRawSample(rawSample);
+    }
+
+    @Override
+    public void deleteRawSampleItem(String id) {
+        sewageTestMapper.deleteRawSampleItem(id);
+    }
+
+    @Override
+    public void cancelRawSample(String id) {
+        sewageTestMapper.cancelRawSample(id);
+    }
+
+    @Override
+    public void rejectRawSampleItemById(String id, String advice) {
+        sewageTestMapper.rejectRawSampleItemById(id,advice);
+    }
+
 
 }
