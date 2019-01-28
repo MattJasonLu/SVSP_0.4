@@ -863,6 +863,9 @@ public class DictionaryController {
     }
 
 
+
+
+
     /**
      * 根据明细名称获取编号
      */
@@ -1016,4 +1019,29 @@ public class DictionaryController {
         }
         return res.toString();
     }
+
+
+    /**
+     * 获取原辅材料类别
+     */
+    @RequestMapping("getRawMaterialsByDataDictionary")
+    @ResponseBody
+    public String getRawMaterialsByDataDictionary() {
+        JSONObject res = new JSONObject();
+        try {
+            List<DataDictionaryItem> formTypeList = dictionaryService.getSelectListByDataDictionary(41);
+            JSONArray data = JSONArray.fromArray(formTypeList.toArray());
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "获取获取原辅材料类别成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取原辅材料类别失败");
+
+        }
+        return res.toString();
+    }
+
+
 }
