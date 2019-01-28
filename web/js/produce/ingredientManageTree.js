@@ -39,7 +39,7 @@ var setting = {
         beforeClick: beforeClick, // 选中前事件
         beforeRename: beforeRename,
         onRemove: onRemove,// 删除按钮点击后事件
-        onRename: onRename, // 编辑按钮点击后事件
+        onRename: false, // 编辑按钮点击后事件
         //beforeDrag: zTreeBeforeDrag,// 拖拽执行前事件
         beforeDrop: false, // 拖拽释放前执行事件（用于提示是否执行顺序调换）
         //    onClick:onclick, // 点击后事件
@@ -248,72 +248,12 @@ function onRemove(e, treeId, treeNode) {
     });
 }
 
-/**
- * 重命名
- * */
-function onRename(e, treeId, treeNode, isCancel) {
-    organization1.id = treeNode.id;
-    organization1.pId = treeNode.pId;
-    organization1.name = treeNode.name;
-    console.log("数据：");
-    console.log(organization1);
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getMenuByName",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(organization1),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            // console.log(result);
-            if (result != null && result.status == "success" && result.data != null) {
-                alert("名称重复！");
-                window.location.reload();
-            } else if (result != null && result.data == null) { // 如果不存在改名字则进行改名
-                if (organization1 != null) {
-                    $.ajax({
-                        type: "POST",                       // 方法类型
-                        url: "updateMenuName",                  // url
-                        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                        data: JSON.stringify(organization1),
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8",
-                        success: function (result) {
-                            // console.log(result);
-                            if (result != null && result.status == "success") {
-                                // window.location.reload(); // 重新设置页面
-                            } else {
-                                alert(result.message);
-                            }
-                        },
-                        error: function (result) {
-                            alert(result.message);
-                        }
-                    });
-                }
-            }
-        },
-        error: function (result) {
-            alert(result.message);
-        }
-    });
-}
-
 function showLog(str) {
     if (!log) log = $("#log");
     log.append("<li class='" + className + "'>" + str + "</li>");
     if (log.children("li").length > 8) {
         log.get(0).removeChild(log.children("li")[0]);
     }
-}
-
-function getTime() {  // 获取当前时间
-    var now = new Date(),
-        h = now.getHours(),
-        m = now.getMinutes(),
-        s = now.getSeconds(),
-        ms = now.getMilliseconds();
-    return (h + ":" + m + ":" + s + " " + ms);
 }
 
 var newCount = 1;       // 新节点个数，起始值为1

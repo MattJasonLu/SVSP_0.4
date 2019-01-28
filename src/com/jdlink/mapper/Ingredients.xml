@@ -1406,8 +1406,8 @@
 
     <!--辅料备件物品维护-->
     <resultMap id="IngredientsRM" type="Ingredients" autoMapping="true">
-        <id column="itemId" property="id"/>
-        <result column="ingredientsName" property="name"/>
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
         <association property="materialCategoryItem" column="materialCategoryId"
                      select="getMaterialCategoryItem" />
         <association property="unitDataItem" column="unitId" select="getUnitId" />
@@ -1432,31 +1432,31 @@
     </select>
 
     <select id="getIngredientsList" resultMap="IngredientsRM">
-        select * from t_pl_ingredientslist
-        order by nowTime desc,code asc
+        select * from t_pl_ingredients_list_tree where materialCategoryId is not null
+        order by creationTime desc,code asc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count};
         </if>
     </select>
 
     <select id="getCountIngredientsList" resultType="int">
-        select count(*) from t_pl_ingredientslist;
+        select count(*) from t_pl_ingredients_list_tree where materialCategoryId is not null;
     </select>
 
     <select id="getIngredientByNameAndSpecification" resultMap="IngredientsRM">
-        select * from t_pl_ingredientslist where ingredientsName=#{name} and specification=#{specification};
+        select * from t_pl_ingredients_list_tree where name=#{name} and specification=#{specification} and materialCategoryId is not null;
     </select>
 
     <select id="getIngredientById" resultMap="IngredientsRM">
-        select * from t_pl_ingredientslist where id=#{id};
+        select * from t_pl_ingredients_list_tree where id=#{id};
     </select>
 
     <select id="searchIngredient" parameterType="Ingredients" resultMap="IngredientsRM">
-        select * from t_pl_ingredientslist
+        select * from t_pl_ingredients_list_tree
         <where>
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
-                or ingredientsName like "%"#{keywords}"%"
+                or name like "%"#{keywords}"%"
                 or code like "%"#{keywords}"%"
                 or specification like "%"#{keywords}"%"
                 or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName
@@ -1468,7 +1468,7 @@
                 and id like "%"#{id}"%"
             </if>
             <if test="name != '' and name != null">
-                and ingredientsName like "%"#{name}"%"
+                and name like "%"#{name}"%"
             </if>
             <if test="code != '' and code != null">
                 and code like "%"#{code}"%"
@@ -1481,31 +1481,34 @@
                     and materialCategoryId=#{materialCategoryItem.dataDictionaryItemId}
                 </if>
             </if>
+            <if test="1==1">
+                and materialCategoryId is not null
+            </if>
         </where>
-        order by nowTime desc
+        order by creationTime desc
         <if test="page != null and page.start != null and page.count != null and page.count != 0">
             limit #{page.start}, #{page.count};
         </if>
     </select>
 
     <select id="searchCountIngredient" parameterType="Ingredients" resultType="int">
-        select count(*) from t_pl_ingredientslist
+        select count(*) from t_pl_ingredients_list_tree
         <where>
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
-                or ingredientsName like "%"#{keywords}"%"
+                or name like "%"#{keywords}"%"
                 or code like "%"#{keywords}"%"
                 or specification like "%"#{keywords}"%"
                 or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName
                 like "%"#{keywords}"%" and dataDictionaryId=28)
-                or unitId in (select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                or unitId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
                 "%"#{keywords}"%" and dataDictionaryId=25)
             </if>
             <if test="id != '' and id != null">
                 and id like "%"#{id}"%"
             </if>
             <if test="name != '' and name != null">
-                and ingredientsName like "%"#{name}"%"
+                and name like "%"#{name}"%"
             </if>
             <if test="code != '' and code != null">
                 and code like "%"#{code}"%"
@@ -1518,39 +1521,44 @@
                     and materialCategoryId=#{materialCategoryItem.dataDictionaryItemId}
                 </if>
             </if>
+            <if test="1==1">
+                and materialCategoryId is not null
+            </if>
         </where>
     </select>
 
     <select id="getCountByCode" parameterType="String" resultType="int">
-        select count(*) from t_pl_ingredientslist
+        select count(*) from t_pl_ingredients_list_tree
         where code=#{code};
     </select>
 
     <select id="getCountByType" parameterType="String" resultType="int">
-        select count(*) from t_pl_ingredientslist
+        select count(*) from t_pl_ingredients_list_tree
         where left(code,2)=#{type};
     </select>
 
     <!--新增辅料备件物品-->
     <insert id="addIngredient" parameterType="Ingredients">
-        insert into t_pl_ingredientslist
-        (ingredientsName, code,specification,nowTime,materialCategoryId,unitId)
-        values (#{name},#{code},#{specification},NOW(),#{materialCategoryItem.dataDictionaryItemId},#{unitDataItem.dataDictionaryItemId});
+        insert into t_pl_ingredients_list_tree
+        (id,name,code,specification,creationTime,materialCategoryId,unitId)
+        values
+        (#{code},#{name},#{code},#{specification},NOW(),#{materialCategoryItem.dataDictionaryItemId},#{unitDataItem.dataDictionaryItemId});
     </insert>
 
     <update id="updateIngredient" parameterType="Ingredients">
-        update t_pl_ingredientslist
-        set ingredientsName=#{name},code=#{code},specification=#{specification},materialCategoryId=#{materialCategoryItem.dataDictionaryItemId},unitId=#{unitDataItem.dataDictionaryItemId} where id=#{id};
+        update t_pl_ingredients_list_tree
+        set name=#{name},code=#{code},specification=#{specification},materialCategoryId=#{materialCategoryItem.dataDictionaryItemId},unitId=#{unitDataItem.dataDictionaryItemId}
+        where id=#{id};
     </update>
 
     <update id="updateCodeByIngredient" parameterType="Ingredients">
-        update t_pl_ingredientslist
-        set code=#{code},unitId=#{unitDataItem.dataDictionaryItemId}
-        where ingredientsName=#{name} and specification=#{specification} and materialCategoryId=#{materialCategoryItem.dataDictionaryItemId};
+        update t_pl_ingredients_list_tree
+        set code=#{code},id=#{code},unitId=#{unitDataItem.dataDictionaryItemId}
+        where name=#{name} and specification=#{specification} and materialCategoryId=#{materialCategoryItem.dataDictionaryItemId};
     </update>
 
     <delete id="deleteIngredient" parameterType="int">
-        delete from t_pl_ingredientslist where id=#{id};
+        delete from t_pl_ingredients_list_tree where id=#{id};
     </delete>
 
     <!--辅料物品树状结构-->
@@ -1578,9 +1586,9 @@
 
     <insert id="addIngredientsTree" parameterType="IngredientsTree">
         insert into t_pl_ingredients_list_tree
-        (id,pId,name,specification,materialCategoryId,unitId,creationTime,modifyTime)
+        (id,code,pId,name,specification,materialCategoryId,unitId,creationTime,modifyTime)
         values
-        (#{id},#{pId},#{name},#{specification},#{materialCategoryItem.dataDictionaryItemId},
+        (#{id},#{id},#{pId},#{name},#{specification},#{materialCategoryItem.dataDictionaryItemId},
         #{unitDataItem.dataDictionaryItemId},NOW(),NOW());
     </insert>
 
@@ -1592,7 +1600,7 @@
 
     <update id="updatePartIngredientTreeBuId" parameterType="IngredientsTree">
         update t_pl_ingredients_list_tree
-        set name=#{name},specification=#{specification},unitId=#{unitDataItem.dataDictionaryItemId},id=#{code},
+        set name=#{name},specification=#{specification},unitId=#{unitDataItem.dataDictionaryItemId},id=#{code},code=#{code}
         modifyTime=NOW() where id=#{id};
     </update>
 
