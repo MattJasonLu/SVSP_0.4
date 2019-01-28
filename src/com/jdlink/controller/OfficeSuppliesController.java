@@ -106,6 +106,29 @@ public class OfficeSuppliesController {
                 officeSuppliesItem.setItemId(officeSuppliesInbound.getInboundId() + RandomUtil.getRandomEightChar());
                 // 设置制单人
                 officeSuppliesItem.setAuthor(author);
+                // 计算税价
+                if (officeSuppliesItem.getTicketRateItem() != null) {
+                    // 根据税率计算原价
+                    Float unitPrice = (float) 0.0;
+                    switch (officeSuppliesItem.getTicketRateItem().getDataDictionaryItemId()) {
+                        // 16%
+                        case 132:
+                            unitPrice = officeSuppliesItem.getTaxUnitPrice() / (1 + (float) (16.0 / 100.0));
+                            break;
+                        // 3%
+                        case 133:
+                            unitPrice = officeSuppliesItem.getTaxUnitPrice() / (1 + (float) (3.0 / 100.0));
+                            break;
+                        default:
+                            break;
+                    }
+                    // 设置原价
+                    officeSuppliesItem.setUnitPrice(unitPrice);
+                    // 设置不含税总价
+                    officeSuppliesItem.setTotalPrice(unitPrice * officeSuppliesItem.getItemAmount());
+                }
+                // 设置剩余数量
+                officeSuppliesItem.setLeftAmount(officeSuppliesItem.getItemAmount());
             }
             // 增加入库单
             officeSuppliesService.addOfficeSuppliesInbound(officeSuppliesInbound);
@@ -204,6 +227,28 @@ public class OfficeSuppliesController {
                 officeSuppliesItem.setCheckStateItem(checkStateItem);
                 // 设置条目的主键
                 officeSuppliesItem.setItemId(officeSuppliesOutbound.getOutboundId() + RandomUtil.getRandomEightChar());
+                // 设置剩余数量 = 入库总数 - 出库数量
+                officeSuppliesItem.setLeftAmount(officeSuppliesInboundItem.getItemAmount() - officeSuppliesItem.getItemAmount());
+                if (officeSuppliesItem.getTicketRateItem() != null) {
+                    // 根据税率计算原价
+                    Float unitPrice = (float) 0.0;
+                    switch (officeSuppliesItem.getTicketRateItem().getDataDictionaryItemId()) {
+                        // 16%
+                        case 132:
+                            unitPrice = officeSuppliesItem.getTaxUnitPrice() / (1 + (float) (16.0 / 100.0));
+                            break;
+                        // 3%
+                        case 133:
+                            unitPrice = officeSuppliesItem.getTaxUnitPrice() / (1 + (float) (3.0 / 100.0));
+                            break;
+                        default:
+                            break;
+                    }
+                    // 设置原价
+                    officeSuppliesItem.setUnitPrice(unitPrice);
+                    // 设置不含税总价
+                    officeSuppliesItem.setTotalPrice(unitPrice * officeSuppliesItem.getItemAmount());
+                }
             }
             // 增加记录
             officeSuppliesService.addOfficeSuppliesOutbound(officeSuppliesOutbound);

@@ -280,6 +280,8 @@
                 #{officeSuppliesItem.totalTaxPrice}, #{officeSuppliesItem.totalPrice}, #{officeSuppliesItem.inboundDate},
                 #{officeSuppliesItem.outboundDate}, #{officeSuppliesItem.ticketRateItem.dataDictionaryItemId},
                 #{officeSuppliesItem.author}, NOW(), #{officeSuppliesItem.remark}, 75);
+                update t_pr_officesuppliesinbounditem set leftAmount=#{officeSuppliesItem.leftAmount}
+                where itemId=#{officeSuppliesItem.inboundItemId};
             </foreach>
         </if>
     </insert>
