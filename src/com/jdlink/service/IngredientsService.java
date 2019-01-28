@@ -105,10 +105,18 @@ public interface IngredientsService {
 
     void updateIngredientTree(IngredientsTree ingredientsTree);
 
+    int maxByPId(int pId);
+
+    int countTreeByPId(int pId);
+
     List<IngredientsTree> listIngredientsTree();
 
     IngredientsTree getIngredientsTreeById(int id);
 
     void updatePartIngredientTreeBuId(IngredientsTree ingredientsTree);
+
+    void deleteById(int id);
+
+    List<IngredientsTree> getChildrenIngredientsTreeById(int id);
 
 }

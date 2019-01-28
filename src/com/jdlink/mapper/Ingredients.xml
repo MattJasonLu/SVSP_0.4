@@ -1563,6 +1563,19 @@
         select * from t_pl_ingredients_list_tree where id=#{id};
     </select>
 
+    <select id="maxByPId" parameterType="int" resultType="int">
+        select max(id) from t_pl_ingredients_list_tree where pId=#{pId};
+    </select>
+
+    <select id="countTreeByPId" parameterType="int" resultType="int">
+        select count(id) from t_pl_ingredients_list_tree where pId=#{pId};
+    </select>
+
+    <!--根据ID获取其子节点-->
+    <select id="getChildrenIngredientsTreeById" resultMap="IngredientsTreeRM">
+        select * from t_pl_ingredients_list_tree where pId=#{id};
+    </select>
+
     <insert id="addIngredientsTree" parameterType="IngredientsTree">
         insert into t_pl_ingredients_list_tree
         (id,pId,name,specification,materialCategoryId,unitId,creationTime,modifyTime)
@@ -1583,4 +1596,7 @@
         modifyTime=NOW() where id=#{id};
     </update>
 
+    <delete id="deleteById" parameterType="int">
+        delete from t_pl_ingredients_list_tree where id=#{id};
+    </delete>
 </mapper>

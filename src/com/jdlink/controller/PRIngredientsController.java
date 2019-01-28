@@ -2212,4 +2212,90 @@ public class PRIngredientsController {
         }
         return res.toString();
     }
+
+    /**
+     * 新增
+     *
+     * @return
+     */
+    @RequestMapping("addIngredientsTree")
+    @ResponseBody
+    public String addIngredientsTree(@RequestBody IngredientsTree ingredientsTree) {
+        JSONObject res = new JSONObject();
+        try {
+            int id = 0;
+            id = ingredientsService.countTreeByPId(ingredientsTree.getpId());
+            if(id == 0) {  // 如果该节点没有子节点则新增ID
+                id = ingredientsTree.getpId() * 1000 + 1;
+            }else{ // 如果有子节点则设置为最大子节点ID+1
+                id = ingredientsService.maxByPId(ingredientsTree.getpId()) + 1; // 获取其子节点最大编码+1
+            }
+            while (ingredientsService.getIngredientsTreeById(id) != null) {
+                id += 1;
+            }
+            String name = "新物品";
+            ingredientsTree.setId(id);
+            ingredientsTree.setName(name);
+            ingredientsService.addIngredientsTree(ingredientsTree);    // 新增菜单模块和权限树模块
+            res.put("status", "success");
+            res.put("message", "新增成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "新增失败！");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 删除
+     *
+     * @return
+     */
+    @RequestMapping("deleteIngredientsTreeById")
+    @ResponseBody
+    public String deleteIngredientsTreeById(int id) {
+        JSONObject res = new JSONObject();
+        try {
+            IngredientsTree ingredientsTree = new IngredientsTree();
+            ingredientsTree.setId(id);
+            List<IngredientsTree> ingredientsTrees = getTreeIngredientsTreeList(id);  // 获取孩子节点
+            ingredientsTree.setIngredientsTreeList(ingredientsTrees);     // 设置树状结构
+            delete(ingredientsTree);
+            res.put("status", "success");
+            res.put("message", "删除成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "删除失败！");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 递归获取树状结构
+     *
+     * @return
+     */
+    public List<IngredientsTree> getTreeIngredientsTreeList(int id) {
+        List<IngredientsTree> ingredientsTreeList = ingredientsService.getChildrenIngredientsTreeById(id);
+        for (int i = 0; i < ingredientsTreeList.size(); i++) {
+            ingredientsTreeList.get(i).setIngredientsTreeList(getTreeIngredientsTreeList(ingredientsTreeList.get(i).getId()));
+        }
+        return ingredientsTreeList;
+    }
+
+    /**
+     * 递归删除节点及其子节点
+     *
+     */
+    public void delete(IngredientsTree ingredientsTree) {
+        ingredientsService.deleteById(ingredientsTree.getId());
+        if (ingredientsTree.getIngredientsTreeList() != null && ingredientsTree.getIngredientsTreeList().size() > 0) {
+            for (IngredientsTree ingredientsTree1 : ingredientsTree.getIngredientsTreeList()) {
+                delete(ingredientsTree1);
+            }
+        }
+    }
+
 }

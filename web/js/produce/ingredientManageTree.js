@@ -169,7 +169,7 @@ function cancel() {
 }
 
 /**
- * 保存链接
+ * 保存更新的数据
  */
 function save() {
     var ingredientsTree = {};
@@ -203,7 +203,7 @@ function save() {
                 alert(result.message);
             }
         });
-    } else if (organization1.id == null) {
+    } else if (ingredientsTree.id == null) {
         alert("保存失败，编号丢失！");
     }
 }
@@ -227,32 +227,25 @@ function beforeRemove(treeId, treeNode) {
  * 删除功能
  * */
 function onRemove(e, treeId, treeNode) {
-    organization1.id = treeNode.id;
-    organization1.pId = treeNode.pId;
-    organization1.name = treeNode.name;
-    console.log("删除的数据：");
-    console.log(organization1);
-    if (organization1 != null) {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "deleteMenu",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(organization1),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                // console.log(result);
-                if (result != null && result.status == "success") {
-                    window.location.reload(); // 重新设置页面
-                } else {
-                    alert(result.message);
-                }
-            },
-            error: function (result) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "deleteIngredientsTreeById",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            id: treeNode.id
+        },
+        dataType: "json",
+        success: function (result) {
+            if (result != null && result.status === "success") {
+                //window.location.reload(); // 重新设置页面
+            } else {
                 alert(result.message);
             }
-        });
-    }
+        },
+        error: function (result) {
+            alert(result.message);
+        }
+    });
 }
 
 /**
@@ -377,47 +370,28 @@ $(document).ready(function () {
  * @param item
  */
 function addMenu(item) {
-    if (checkAuthorityById(-532)) {  // 验证权限
-        organization1.level = organization1.id.toString().length;
+    var ingredientsTree = {};
+    ingredientsTree.pId = organization1.id;
+    if (organization1 != null) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "getCurrentUserInfo",                  // url
+            url: "addIngredientsTree",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(ingredientsTree),
             dataType: "json",
+            contentType: "application/json; charset=utf-8",
             success: function (result) {
                 // console.log(result);
-                if (result != null && result.status === "success") {
-                    organization1.founder = result.data.name;  // 设置登陆用户名
+                if (result != null && result.status == "success") {
+                    window.location.reload(); // 刷新页面
                 } else {
-                    console.log(result.message);
+                    alert(result.message);
                 }
             },
             error: function (result) {
                 alert(result.message);
             }
         });
-        console.log(organization1);
-        if (organization1 != null) {
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "addMenu",                  // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(organization1),
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (result) {
-                    // console.log(result);
-                    if (result != null && result.status == "success") {
-                        window.location.reload(); // 刷新页面
-                    } else {
-                        alert(result.message);
-                    }
-                },
-                error: function (result) {
-                    alert(result.message);
-                }
-            });
-        }
     }
 }
 
@@ -470,48 +444,6 @@ function loadIngredientsTreeList() {
             alert("服务器错误！");
         }
     });
-}
-
-/**
- * 查询
- */
-function search() {
-    $('.myclass').each(function () {
-        $(this).show();
-    });
-    array = [];//清空数组
-    array1 = [];
-    array.push($('.myclass'));
-    var text = $.trim($('#search').val());
-    for (var j = 0; j < array.length; j++) {
-        $.each(array[j], function () {
-            if (($(this).children('td').text().indexOf(text) == -1)) {
-                $(this).hide();
-            }
-            if ($(this).children('td').text().indexOf(text) != -1) {
-                array1.push($(this));
-            }
-        });
-    }
-    for (var i = 0; i < array1.length; i++) {
-        $.each(array1[i], function () {
-            $('#tbody1').append(this);
-        });
-    }
-
-    if (text.length <= 0) {
-        $('.myclass').each(function () {
-            $(this).show();
-        })
-    }
-}
-
-/**
- * 点击跳转页面
- * @param item
- */
-function toUrl(item) {
-    window.location.href = $(item).text();
 }
 
 /**

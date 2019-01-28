@@ -4,6 +4,7 @@ import com.jdlink.domain.Dictionary.MaterialCategoryItem;
 import com.jdlink.domain.Dictionary.UnitDataItem;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 辅料备件物品管理树状结构
@@ -45,6 +46,18 @@ public class IngredientsTree {
      * 物资类别数据字典
      */
     private MaterialCategoryItem materialCategoryItem;
+    /**
+     * 子节点
+     */
+    private List<IngredientsTree> ingredientsTreeList;
+
+    public List<IngredientsTree> getIngredientsTreeList() {
+        return ingredientsTreeList;
+    }
+
+    public void setIngredientsTreeList(List<IngredientsTree> ingredientsTreeList) {
+        this.ingredientsTreeList = ingredientsTreeList;
+    }
 
     public int getId() {
         return id;

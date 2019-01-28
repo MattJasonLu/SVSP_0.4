@@ -437,4 +437,17 @@ public class IngredientsServiceImpl implements IngredientsService {
 
     @Override
     public void updatePartIngredientTreeBuId(IngredientsTree ingredientsTree){ ingredientsMapper.updatePartIngredientTreeBuId(ingredientsTree);}
+
+    @Override
+    public int maxByPId(int pId) { return ingredientsMapper.maxByPId(pId); }
+
+    @Override
+    public  int countTreeByPId(int pId) { return ingredientsMapper.countTreeByPId(pId); }
+
+    @Override
+    public void deleteById(int id) { ingredientsMapper.deleteById(id);}
+
+    @Override
+    public List<IngredientsTree> getChildrenIngredientsTreeById(int id) { return ingredientsMapper.getChildrenIngredientsTreeById(id); }
+
 }

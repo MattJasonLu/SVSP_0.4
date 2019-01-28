@@ -215,4 +215,12 @@ public interface IngredientsMapper {
     IngredientsTree getIngredientsTreeById(int id);
 
     void updatePartIngredientTreeBuId(IngredientsTree ingredientsTree);
+
+    int maxByPId(int pId);
+
+    int countTreeByPId(int pId);
+
+    void deleteById(int id);
+
+    List<IngredientsTree> getChildrenIngredientsTreeById(int id);
 }
