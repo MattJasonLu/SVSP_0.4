@@ -523,7 +523,7 @@
                 or sendingPerson like #{keywords}
                 or laboratorySignatory like #{keywords}
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and  dataDictionaryId=11)
-                 or rawMaterialsId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and  dataDictionaryId=41)
+                or rawMaterialsId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and  dataDictionaryId=41)
 
             </if>
 
@@ -563,22 +563,22 @@
 
             <if test="checkStateItem !=null">
                 <if test="checkStateItem.dataDictionaryItemId!=0">
-                    and checkStateId = #{checkStateItem.dataDictionaryItemId}  and t_pr_sewageregistration.water=1
+                    and checkStateId = #{checkStateItem.dataDictionaryItemId}
                 </if>
 
             </if>
 
             <if test="sendingPerson !='' and sendingPerson !=null">
-                and sendingPerson LIKE "%"#{sendingPerson}"%"  and t_pr_sewageregistration.water=1
+                and sendingPerson LIKE "%"#{sendingPerson}"%"
             </if>
             <if test="laboratorySignatory !='' and laboratorySignatory !=null">
-                and laboratorySignatory LIKE "%"#{laboratorySignatory}"%"  and t_pr_sewageregistration.water=1
+                and laboratorySignatory LIKE "%"#{laboratorySignatory}"%"
             </if>
-             <if test="rawMaterialsItem!=null">
-                    <if test="rawMaterialsItem.dataDictionaryItemId!=0">
-                        and rawMaterialsId=#{rawMaterialsItem.dataDictionaryItemId}
-                    </if>
-             </if>
+            <if test="rawMaterialsItem!=null">
+                <if test="rawMaterialsItem.dataDictionaryItemId!=0">
+                    and rawMaterialsId=#{rawMaterialsItem.dataDictionaryItemId}
+                </if>
+            </if>
         </where>
         <if test="page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
@@ -637,16 +637,16 @@
 
             <if test="checkStateItem !=null">
                 <if test="checkStateItem.dataDictionaryItemId!=0">
-                    and checkStateId = #{checkStateItem.dataDictionaryItemId}  and t_pr_sewageregistration.water=1
+                    and checkStateId = #{checkStateItem.dataDictionaryItemId}
                 </if>
 
             </if>
 
             <if test="sendingPerson !='' and sendingPerson !=null">
-                and sendingPerson LIKE "%"#{sendingPerson}"%"  and t_pr_sewageregistration.water=1
+                and sendingPerson LIKE "%"#{sendingPerson}"%"
             </if>
             <if test="laboratorySignatory !='' and laboratorySignatory !=null">
-                and laboratorySignatory LIKE "%"#{laboratorySignatory}"%"  and t_pr_sewageregistration.water=1
+                and laboratorySignatory LIKE "%"#{laboratorySignatory}"%"
             </if>
             <if test="rawMaterialsItem!=null">
                 <if test="rawMaterialsItem.dataDictionaryItemId!=0">
