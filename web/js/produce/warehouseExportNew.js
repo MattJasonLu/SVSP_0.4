@@ -407,7 +407,7 @@ function loadInventoryListData() {
         contentType: 'application/json;charset=utf-8',
         success: function (result) {
             if (result != undefined && result.status == "success") {
-                console.log(result.data);
+                // console.log(result.data);
                 setPageClone1(result);
                 setPageCloneAfter1(pageNumber);        // 重新设置页码
             } else {
@@ -605,7 +605,8 @@ function setInventoryList(result) {
         // console.log(item);
         // 克隆tr，每次遍历都可以 产生新的tr
         var obj = eval(item);
-        // if (item.amount > 0) {  // 只显示库存量大于0的
+        console.log(obj);
+        if (parseFloat(obj.leftAmount) > 0) {  // 只显示库存量大于0的
             var clonedTr = tr.clone();
             clonedTr.show();
             // 循环遍历cloneTr的每一个td元素，并赋值
@@ -615,7 +616,7 @@ function setInventoryList(result) {
             clonedTr.find("td[name='itemName']").text(obj.itemName);
             clonedTr.find("td[name='itemSpecifications']").text(obj.itemSpecifications);
             if (obj.unitDataItem != null) clonedTr.find("td[name='unitDataItem']").text(obj.unitDataItem.dictionaryItemName);
-            clonedTr.find("td[name='itemAmount']").text(parseFloat(obj.itemAmount).toFixed(3));
+            clonedTr.find("td[name='itemAmount']").text(parseFloat(obj.leftAmount).toFixed(3));
             clonedTr.find("td[name='taxUnitPrice']").text(parseFloat(obj.taxUnitPrice).toFixed(2));
             clonedTr.find("td[name='totalTaxPrice']").text(parseFloat(obj.totalTaxPrice).toFixed(2));
             clonedTr.find("td[name='inboundDate']").text(getDateStr(obj.inboundDate));
@@ -626,7 +627,7 @@ function setInventoryList(result) {
             clonedTr.insertBefore(tr);
             clonedTr.addClass("newLine2");
             clonedTr.removeAttr('id');
-        // }
+        }
     });
     // 隐藏无数据的tr
     tr.hide();
@@ -756,22 +757,6 @@ function calculateTotalReceiveAmount(item) {
     }
 }
 
-/**
- * 单价输入框输入完成后自动计算总金额并显示
- */
-function totalCalculate() {
-    var ListCount = $("input[name^='unitPrice']").length;
-    var allTotalPrice = 0;
-    for (var i = 1; i < ListCount; i++) {
-        var $i = i;
-        var receiveAmount = $("#receiveAmount" + $i).val();
-        var unitPrice = $("#unitPrice" + $i).val();
-        var totalPrice = (parseFloat(receiveAmount) * parseFloat(unitPrice)).toFixed(2);
-        $("#totalPrice" + $i).val(totalPrice);
-        allTotalPrice += parseFloat(totalPrice);
-    }
-    $("#totalPrice").text(allTotalPrice.toFixed(2));
-}
 
 /**
  * 输入总额计算并设置单价
@@ -952,4 +937,17 @@ function setInventory() {
             alert("服务器错误！");
         }
     });
+}
+
+/**
+ * 单价输入框输入完成后自动计算总金额并显示
+ */
+function totalCalculate(e) {
+    var tr = $(e).parent().parent();
+    var wastesAmount = tr.find("input[name='itemAmount']").val();
+    var unitPriceTax = tr.find("input[name='taxUnitPrice']").val();
+    var totalPrice = (parseFloat(wastesAmount) * parseFloat(unitPriceTax)).toFixed(2);
+    if (isNaN(totalPrice)) totalPrice = 0; // 不显示NaN
+    tr.find("input[name='totalTaxPrice']").val(totalPrice);
+
 }
