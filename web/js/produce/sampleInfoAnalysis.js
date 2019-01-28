@@ -637,7 +637,8 @@ function setInvalid(e) {    //已作废
                 if (result !== undefined && result.status === "success") {
                     console.log(result);
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                     alert(result.message);
                 }
@@ -946,7 +947,9 @@ function editData() {
             if (result != undefined && result.status == "success") {
                 console.log(result);
                 alert(result.message);
-                window.location.reload();
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $("#editModal").modal("hide");  // 关闭打开的模态框
             } else {
                 alert(result.message);
             }

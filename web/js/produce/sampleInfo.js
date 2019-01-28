@@ -723,7 +723,8 @@ function confirmCheck() {
         success: function (result) {
             if (result.status == "success") {
                 alert(result.message);
-                window.location.reload();
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
             } else {
                 alert(result.message);
             }
@@ -1192,7 +1193,9 @@ function updateAppointBySampleId() {
                             alert("服务器异常!");
                         }
                     });
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
+                    $("#adjustModal").modal("hide");  // 关闭打开的模态框
                 } else {
                     alert(data.message);
                     console.log(data.exception);
@@ -1572,7 +1575,8 @@ function deleteSample(menu) {
                         var data = eval(result);
                         alert(data.message);
                         if (data.status == "success") {
-                            window.location.reload();
+                            $("#pageNumber").val(currentPage);   // 设置当前页页数
+                            inputSwitchPage();  // 跳转当前页
                         }
                     }
                 },
@@ -1705,7 +1709,9 @@ function rejection1() {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 alert(result.message);
-                window.location.reload();
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $("#rejection1").modal("hide");  // 关闭打开的模态框
             }
         },
         error: function (result) {
