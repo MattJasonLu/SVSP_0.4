@@ -83,4 +83,10 @@ public interface SewageTestService {
     void cancelRawSample(String id);
 
     void rejectRawSampleItemById(String id ,String advice);
+
+    List<RawSample> searchRawSample(RawSample rawSample);
+
+    int searchRawSampleCount(RawSample rawSample);
+
+    int searchRawSampleTotal();
 }

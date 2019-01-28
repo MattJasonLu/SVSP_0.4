@@ -1547,6 +1547,42 @@ public class SewageTestController {
 
          return res.toString();
      }
+
+     /*原辅材料送样总数*/
+     @RequestMapping("searchRawSampleTotal")
+     @ResponseBody
+     public int searchRawSampleTotal(){
+         return sewageTestService.searchRawSampleTotal();
+     }
+
+     /*原辅材料送样查询*/
+    @RequestMapping("searchRawSample")
+    @ResponseBody
+    public String searchRawSample(@RequestBody RawSample rawSample){
+        JSONObject res=new JSONObject();
+
+        try{
+     List<RawSample> rawSampleList=sewageTestService.searchRawSample(rawSample);
+            res.put("data", rawSampleList);
+            res.put("status", "success");
+            res.put("message", "分页数据获取成功!");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "分页数据获取失败！");
+
+        }
+
+        return res.toString();
+    }
+
+    /*原辅材料送样查询计数*/
+    @RequestMapping("searchRawSampleCount")
+    @ResponseBody
+    public int searchRawSampleCount(@RequestBody RawSample rawSample){
+       return sewageTestService.searchRawSampleCount(rawSample);
+    }
 }
 
 
