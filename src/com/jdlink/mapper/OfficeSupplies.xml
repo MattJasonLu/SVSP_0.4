@@ -266,23 +266,28 @@
     <!--增加办公用品出库单-->
     <insert id="addOfficeSuppliesOutbound">
         insert into t_pr_officesuppliesoutbound (outboundId, totalTaxPrice, totalPrice, outboundDate, createTime, checkStateItemId) values
-        (#{inboundId}, #{totalTaxPrice}, #{totalPrice}, #{outboundDate}, NOW(), #{checkStateItem.dataDictionaryItemId});
+        (#{outboundId}, #{totalTaxPrice}, #{totalPrice}, #{outboundDate}, NOW(), #{checkStateItem.dataDictionaryItemId});
         <if test="officeSuppliesItemList.size() > 0 ">
             <foreach collection="officeSuppliesItemList" item="officeSuppliesItem">
-                insert into t_pr_officesuppliesoutbounditem (itemId, inboundId, outboundId, supplierId, itemCode, itemName,
+                insert into t_pr_officesuppliesoutbounditem (itemId, inboundItemId, inboundId, outboundId, supplierId, itemCode, itemName,
                 itemSpecifications, unitDataItemId, itemAmount, leftAmount, taxUnitPrice, unitPrice, totalTaxPrice, totalPrice,
                 inboundDate, outboundDate, ticketRateItemId, author, createTime, remark, checkStateItemId) values
-                (#{officeSuppliesItem.itemId}, #{officeSuppliesItem.inboundId}, #{officeSuppliesItem.outboundId},
-                #{officeSuppliesItem.supplier.supplierId}, #{officeSuppliesItem.itemCode}, #{officeSuppliesItem.itemName},
-                #{officeSuppliesItem.itemSpecifications}, #{officeSuppliesItem.unitDataItem.dataDictionaryItemId},
-                #{officeSuppliesItem.itemAmount}, #{officeSuppliesItem.leftAmount},
-                #{officeSuppliesItem.taxUnitPrice}, #{officeSuppliesItem.unitPrice}, #{officeSuppliesItem.totalTaxPrice},
-                #{officeSuppliesItem.totalPrice}, #{officeSuppliesItem.inboundDate}, #{officeSuppliesItem.outboundDate},
-                #{officeSuppliesItem.ticketRateItem.dataDictionaryItemId}, #{officeSuppliesItem.author},
-                NOW(), #{officeSuppliesItem.remark}, 75);
+                (#{officeSuppliesItem.itemId}, #{officeSuppliesItem.inboundItemId}, #{officeSuppliesItem.inboundId},
+                #{officeSuppliesItem.outboundId}, #{officeSuppliesItem.supplier.supplierId}, #{officeSuppliesItem.itemCode},
+                #{officeSuppliesItem.itemName}, #{officeSuppliesItem.itemSpecifications},
+                #{officeSuppliesItem.unitDataItem.dataDictionaryItemId}, #{officeSuppliesItem.itemAmount},
+                #{officeSuppliesItem.leftAmount}, #{officeSuppliesItem.taxUnitPrice}, #{officeSuppliesItem.unitPrice},
+                #{officeSuppliesItem.totalTaxPrice}, #{officeSuppliesItem.totalPrice}, #{officeSuppliesItem.inboundDate},
+                #{officeSuppliesItem.outboundDate}, #{officeSuppliesItem.ticketRateItem.dataDictionaryItemId},
+                #{officeSuppliesItem.author}, NOW(), #{officeSuppliesItem.remark}, 75);
             </foreach>
         </if>
     </insert>
+
+    <!--获取办公用品出库单中前缀匹配的单据数量-->
+    <select id="getOfficeSupplierOutboundCountByPrefix" resultType="int">
+        select count(*) from t_pr_officesuppliesoutbound where outboundId like #{0}"%";
+    </select>
 
     <!--*********************************************办公用品出库*********************************************-->
 
