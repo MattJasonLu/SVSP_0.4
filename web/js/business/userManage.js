@@ -292,6 +292,7 @@ function loadRoleAndFunction() {
         $(function () {
             $('#tree').treeview({
                 data: data, //节点数据
+             //   showCheckbox:true,
                 multiSelect: true, //是否可以同时选择多个节点      Boolean
                 nodeIcon: "glyphicon glyphicon-unchecked", //所有节点的默认图标
                 selectedIcon: "glyphicon glyphicon-check", //节点被选中时显示的图标         String
@@ -306,10 +307,13 @@ function loadRoleAndFunction() {
                     /*disabled: true,*/ //是否禁用节点
                     expanded: false, //是否展开节点
                     selected: false //是否选中节点
-                }
+                },
+                onNodeSelected: nodeChecked,   // 父子节点关联全选
+                onNodeUnselected: nodeUnchecked   // 父子节点关联全不选
             });
         });
         $('#tree').treeview('collapseAll', {silent: true}); // 折叠所有节点
+
         // 设置子功能
         function setFunctionChildren(children) {
             var childList = [];
@@ -327,9 +331,89 @@ function loadRoleAndFunction() {
             return childList;
         }
     }
-
 }
 
+/**
+ * 设置子节点全选
+ * @type {boolean}
+ */
+var nodeCheckedSilent = false;
+function nodeChecked(event, node) {
+    if (nodeCheckedSilent) {
+        return;
+    }
+    nodeCheckedSilent = true;
+    checkAllParent(node);
+    checkAllSon(node);
+    nodeCheckedSilent = false;
+}
+
+var nodeUncheckedSilent = false;
+
+/**
+ * 子节点全不选
+ * @param event
+ * @param node
+ */
+function nodeUnchecked(event, node) {
+    if (nodeUncheckedSilent)
+        return;
+    nodeUncheckedSilent = true;
+    uncheckAllParent(node);
+    uncheckAllSon(node);
+    nodeUncheckedSilent = false;
+}
+
+//选中全部父节点
+function checkAllParent(node) {
+    $('#searchTree').treeview('selectNode', node.nodeId, {silent: true});
+    var parentNode = $('#tree').treeview('getParent', node.nodeId);
+    if (!("nodeId" in parentNode)) {
+        return;
+    } else {
+        checkAllParent(parentNode);
+    }
+}
+
+//取消全部父节点
+function uncheckAllParent(node) {
+    $('#searchTree').treeview('unselectNode', node.nodeId, {silent: true});
+    var siblings = $('#tree').treeview('getSiblings', node.nodeId);
+    var parentNode = $('#tree').treeview('getParent', node.nodeId);
+    if (!("nodeId" in parentNode)) {
+        return;
+    }
+    var isAllUnchecked = true;  //是否全部没选中
+    for (var i in siblings) {
+        if (siblings[i].state.selected) {
+            isAllUnchecked = false;
+            break;
+        }
+    }
+    if (isAllUnchecked) {
+        uncheckAllParent(parentNode);
+    }
+}
+
+//级联选中所有子节点
+function checkAllSon(node) {
+    $('#tree').treeview('selectNode', node.nodeId, {silent: true});
+    if (node.nodes != null && node.nodes.length > 0) {
+        for (var i in node.nodes) {
+            checkAllSon(node.nodes[i]);
+        }
+    }
+}
+
+//级联取消所有子节点
+function uncheckAllSon(node) {
+    $('#tree').treeview('unselectNode', node.nodeId, {silent: true});
+    if (node.nodes != null && node.nodes.length > 0) {
+        for (var i in node.nodes) {
+            uncheckAllSon(node.nodes[i]);
+        }
+    }
+}
 /**
  * 通过用户编号显示权限
  * @param e
@@ -362,6 +446,7 @@ function showAuthorityById(e) {
         }
     });
 }
+
 /**
  * 设置功能勾选
  * @param result
@@ -372,7 +457,7 @@ function setFunctionChecked(result) {
     for (var i = 0; i < data.length; i++) {
         var name = data[i].functionName;
         var id = data[i].id;
-        console.log("functionId="+id);
+        console.log("functionId=" + id);
         var nodes = $('#tree').treeview('search', [name, {
             ignoreCase: true,     // case insensitive
             exactMatch: true,    // like or equals
@@ -423,7 +508,7 @@ function saveAuthority() {
 /**
  * 更新权限表
  */
-function setFunctionTreeByMenuTree(){
+function setFunctionTreeByMenuTree() {
     $('.loader').show();  // 显示进度条
     $.ajax({
         type: "post",
@@ -508,7 +593,7 @@ function addRole() {
  */
 function deleteRole(e) {
     var roleId = $(e).parent().parent().find("td[name='id']").text();
-    if(confirm("确认删除？")) {
+    if (confirm("确认删除？")) {
         $.ajax({
             type: "POST",
             url: "deleteRole",
@@ -569,6 +654,7 @@ function adjustRole(e) {
 }
 
 var editId;
+
 /**
  * 显示编辑模态框
  */
