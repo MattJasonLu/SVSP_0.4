@@ -482,8 +482,8 @@ function importExcel() {
  * @param e
  */
 function exportExcel() {
-    var name = 't_pl_ingredientslist';
-    var sqlWords = 'select id,ingredientsName,code,specification from t_pl_ingredientslist';
+    var name = 't_pl_ingredients_list_tree';
+    var sqlWords = 'select id,name,specification,(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=unitId) as unit,(select dictionaryItemName from datadictionaryitem where dataDictionaryItemId=materialCategoryId) as category from t_pl_ingredients_list_tree as a ORDER BY id asc;';
     window.open('exportExcelIngredient?name=' + name + '&sqlWords=' + sqlWords);
 }
 

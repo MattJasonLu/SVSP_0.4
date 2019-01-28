@@ -88,6 +88,7 @@ function showUrl(treeNode) {
         "<th class=\"text-center\">名称</th>\n" +
         "<th class=\"text-center\">规格</th>\n" +
         "<th class=\"text-center\">计量单位</th>\n" +
+        "<th class=\"text-center\">类别</th>\n" +
         "</tr>\n" +
         "</thead>\n" +
         "<tbody id=\"tbody1\">\n" +
@@ -96,6 +97,7 @@ function showUrl(treeNode) {
         "<td class=\"text-center\" ><input class='text-center' id='name'></td>\n" +
         "<td class=\"text-center\" ><input class='text-center' id='specification'></td>\n" +
         "<td class=\"text-center\" ><select class='text-center' id='unit'></select></td>\n" +
+        "<td class=\"text-center\" ><select class='text-center' id='materialCategoryItem'></select></td>\n" +
         "</tr>\n" +
         "</tbody>\n" +
         "</table>\n" +
@@ -134,6 +136,34 @@ function showUrl(treeNode) {
             console.log(result);
         }
     });
+    $.ajax({  // 物资类别
+        type:'POST',
+        url:"getMaterialCategoryByDataDictionary",
+        dataType: "json",
+        async: false,
+        contentType: "application/json;charset=utf-8",
+        success: function (result){
+            if (result != undefined){
+                console.log(result);
+                var materialCategoryItem=$('#materialCategoryItem');
+                materialCategoryItem.children().remove();
+                $.each(result.data,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    materialCategoryItem.append(option);
+                });
+                materialCategoryItem.get(0).selectedIndex=0;
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
+
+    });
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getIngredientsTreeById",                  // url
@@ -149,6 +179,9 @@ function showUrl(treeNode) {
                 $("#specification").val(result.data.specification);
                 if (result.data.unitDataItem != null) {
                     $("#unit").val(result.data.unitDataItem.dataDictionaryItemId);
+                }
+                if(result.data.materialCategoryItem != null) {
+                    $("#materialCategoryItem").val(result.data.materialCategoryItem.dataDictionaryItemId);
                 }
             } else {
                 console.log(result.message);
@@ -180,6 +213,9 @@ function save() {
     var unitDataItem = {};
     unitDataItem.dataDictionaryItemId = $("#unit").find("option:checked").val();
     ingredientsTree.unitDataItem = unitDataItem;
+    var materialCategoryItem = {};
+    materialCategoryItem.dataDictionaryItemId = $("#materialCategoryItem").find("option:checked").val();
+    ingredientsTree.materialCategoryItem = materialCategoryItem;
     console.log("保存：");
     console.log(ingredientsTree);
     if (ingredientsTree != null) {

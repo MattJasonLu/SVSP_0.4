@@ -1969,7 +1969,7 @@ public class PRIngredientsController {
         try {
             DBUtil db = new DBUtil();
             // 设置表头
-            String tableHead = "编号/物品编码/物品名称/规格型号";
+            String tableHead = "编码/物品名称/规格型号/计量单位/类别";
             name = "辅料备件物品列表";   // 重写文件名
             db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
             res.put("status", "success");
@@ -2130,7 +2130,6 @@ public class PRIngredientsController {
                     ingredientsTree.setId(Integer.parseInt(data[i][0].toString()));
                     ingredientsTree.setpId(Integer.parseInt(data[i][1].toString()));
                     MaterialCategoryItem materialCategoryItem = new MaterialCategoryItem();
-
                     DataDictionaryItem dataDictionaryItemM = dictionaryService.getDatadictionaryItemByName(data[i][2].toString(), 28);
                     if (dataDictionaryItemM != null) {
                         int materialCategoryId = dataDictionaryItemM.getDataDictionaryItemId();
@@ -2138,6 +2137,9 @@ public class PRIngredientsController {
                         ingredientsTree.setMaterialCategoryItem(materialCategoryItem);
                     }
                     ingredientsTree.setName(data[i][3].toString());
+                    if(data[i][4].toString().equals("null")){
+                        data[i][4] = "";
+                    }
                     ingredientsTree.setSpecification(data[i][4].toString());
                     UnitDataItem unitDataItem = new UnitDataItem();
                     DataDictionaryItem dataDictionaryItemU = dictionaryService.getDatadictionaryItemByName(data[i][5].toString(), 25);
