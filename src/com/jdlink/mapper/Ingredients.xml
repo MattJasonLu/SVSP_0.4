@@ -1600,7 +1600,8 @@
 
     <update id="updatePartIngredientTreeBuId" parameterType="IngredientsTree">
         update t_pl_ingredients_list_tree
-        set name=#{name},specification=#{specification},unitId=#{unitDataItem.dataDictionaryItemId},id=#{code},code=#{code}
+        set name=#{name},specification=#{specification},unitId=#{unitDataItem.dataDictionaryItemId},
+        materialCategoryId=#{materialCategoryItem.dataDictionaryItemId},id=#{code},code=#{code},
         modifyTime=NOW() where id=#{id};
     </update>
 
