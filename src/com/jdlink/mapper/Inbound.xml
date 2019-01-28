@@ -499,36 +499,31 @@
         select count(*) from t_pl_inboundorder
         <where>
             <if test="keyword != null and keyword != ''">
-                and boundType=#{boundType}
                 and (inboundOrderId like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y-%m-%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y-%c-%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y-%c-%e') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y%m%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y%c%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y%c%e') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y.%m.%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y.%c.%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y.%c.%e') like "%"#{keyword}"%"
+--                 or DATE_FORMAT(inboundDate,'%Y-%m-%d') like "%"#{keyword}"%"
+--                 or DATE_FORMAT(inboundDate,'%Y-%c-%d') like "%"#{keyword}"%"
+--                 or DATE_FORMAT(inboundDate,'%Y-%c-%e') like "%"#{keyword}"%"
+--                 or DATE_FORMAT(inboundDate,'%Y%m%d') like "%"#{keyword}"%"
+--                 or DATE_FORMAT(inboundDate,'%Y%c%d') like "%"#{keyword}"%"
+--                 or DATE_FORMAT(inboundDate,'%Y%c%e') like "%"#{keyword}"%"
+--                 or DATE_FORMAT(inboundDate,'%Y.%m.%d') like "%"#{keyword}"%"
+--                 or DATE_FORMAT(inboundDate,'%Y.%c.%d') like "%"#{keyword}"%"
+--                 or DATE_FORMAT(inboundDate,'%Y.%c.%e') like "%"#{keyword}"%"
                 or recordState=#{keyword}
-                or checkState=#{keyword})
-                or warehouseId in (select warehouseId from t_pl_warehouse where warehouseName like "%"#{keyword}"%")
+                or checkState=#{keyword}
                 or remarks like "%"#{keyword}"%"
+                or warehouseId in (select warehouseId from t_pl_warehouse where warehouseName like "%"#{keyword}"%"))
             </if>
             <if test="inboundOrderId != null and inboundOrderId != ''">
                 and inboundOrderId LIKE "%"#{inboundOrderId}"%"
             </if>
             <if test="companyId != null and companyId != ''">
                 <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
-                <![CDATA[
-                and (DATE_FORMAT(inboundDate,'%Y-%m-%d') >= #{companyId})
-                ]]>
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{companyId}, '%Y-%m-%d') ]]>
             </if>
             <if test="modifierId != null and modifierId != ''">
                 <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
-                <![CDATA[
-                and (DATE_FORMAT(inboundDate,'%Y-%m-%d') <= #{modifierId})
-                ]]>
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{modifierId}, '%Y-%m-%d') ]]>
             </if>
             <if test="true">
                 and boundType=#{boundType}
@@ -550,36 +545,31 @@
         select * from t_pl_inboundorder
         <where>
             <if test="keyword != null and keyword != ''">
-                and boundType=#{boundType}
                 and (inboundOrderId like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y-%m-%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y-%c-%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y-%c-%e') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y%m%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y%c%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y%c%e') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y.%m.%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y.%c.%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y.%c.%e') like "%"#{keyword}"%"
+--                 or DATE_FORMAT(inboundDate,'%Y-%m-%d') like "%"#{keyword}"%"
+--                 or DATE_FORMAT(inboundDate,'%Y-%c-%d') like "%"#{keyword}"%"
+--                 or DATE_FORMAT(inboundDate,'%Y-%c-%e') like "%"#{keyword}"%"
+--                 or DATE_FORMAT(inboundDate,'%Y%m%d') like "%"#{keyword}"%"
+--                 or DATE_FORMAT(inboundDate,'%Y%c%d') like "%"#{keyword}"%"
+--                 or DATE_FORMAT(inboundDate,'%Y%c%e') like "%"#{keyword}"%"
+--                 or DATE_FORMAT(inboundDate,'%Y.%m.%d') like "%"#{keyword}"%"
+--                 or DATE_FORMAT(inboundDate,'%Y.%c.%d') like "%"#{keyword}"%"
+--                 or DATE_FORMAT(inboundDate,'%Y.%c.%e') like "%"#{keyword}"%"
                 or recordState=#{keyword}
-                or checkState=#{keyword})
+                or checkState=#{keyword}
                 or remarks like "%"#{keyword}"%"
-                or warehouseId in (select warehouseId from t_pl_warehouse where warehouseName like "%"#{keyword}"%")
+                or warehouseId in (select warehouseId from t_pl_warehouse where warehouseName like "%"#{keyword}"%"))
             </if>
             <if test="inboundOrderId != null and inboundOrderId != ''">
                 and inboundOrderId LIKE "%"#{inboundOrderId}"%"
             </if>
             <if test="companyId != null and companyId != ''">
                 <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
-                <![CDATA[
-                and (DATE_FORMAT(inboundDate,'%Y-%m-%d') >= #{companyId})
-                ]]>
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{companyId}, '%Y-%m-%d') ]]>
             </if>
             <if test="modifierId != null and modifierId != ''">
                 <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
-                <![CDATA[
-                and (DATE_FORMAT(inboundDate,'%Y-%m-%d') <= #{modifierId})
-                ]]>
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{modifierId}, '%Y-%m-%d') ]]>
             </if>
             <if test="true">
                 and boundType=#{boundType}

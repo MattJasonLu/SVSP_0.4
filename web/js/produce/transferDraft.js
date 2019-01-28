@@ -1277,6 +1277,59 @@ function importExcel() {
 }
 
 /**
+ * 导入模态框
+ */
+function importExcel2Choose() {
+    $("#importExcel2Modal").modal('show');
+}
+
+/**
+ * 下载模板
+ */
+function downloadModal2() {
+    var filePath = 'Files/Templates/转移联单模板.xlsx';
+    var r = confirm("是否下载模板?");
+    if (r == true) {
+        window.open('downloadFile?filePath=' + filePath);
+    }
+}
+
+/**
+ * 导入excel
+ */
+function importExcel2() {
+    document.getElementById("idExcel").click();
+    document.getElementById("idExcel").addEventListener("change", function () {
+        var eFile = document.getElementById("idExcel").files[0];
+        var formFile = new FormData();
+        formFile.append("pdfFile", eFile);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "importTransferDraftExcel",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: formFile,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                if (result != undefined) {
+                    console.log(result);
+                    if (result.status == "success") {
+                        alert(result.message);
+                        window.location.reload();         //刷新
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    });
+}
+
+/**
  * 延时搜索及回车搜索功能
  */
 $(document).ready(function () {//页面载入是就会进行加载里面的内容
