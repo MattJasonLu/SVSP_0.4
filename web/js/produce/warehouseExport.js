@@ -555,7 +555,7 @@ function showViewModal(e) {
     var id = getIdByMenu(e);
     $.ajax({
         type: "POST",
-        url: "getOfficeSuppliesInboundItemById",
+        url: "getOfficeSuppliesOutboundItemById",
         async: false,
         data: {
             id: id
@@ -566,7 +566,7 @@ function showViewModal(e) {
                 // 设置数据
                 var obj = eval(result.data);
                 console.log(result);
-                $("#inboundId").val(obj.inboundId);
+                $("#outboundId").val(obj.outboundId);
                 if (obj.supplier != null) $("#supplierName").val(obj.supplier.companyName);
                 $("#itemCode").val(obj.itemCode);
                 $("#itemName").val(obj.itemName);
@@ -576,7 +576,7 @@ function showViewModal(e) {
                 $("#itemAmount").val(parseFloat(obj.itemAmount).toFixed(3));
                 $("#taxUnitPrice").val(parseFloat(obj.taxUnitPrice).toFixed(2));
                 $("#totalTaxPrice").val(parseFloat(obj.totalTaxPrice).toFixed(2));
-                $("#inboundDate").val(getDateStr(obj.inboundDate));
+                $("#outboundDate").val(getDateStr(obj.outboundDate));
                 $("#remark").val(obj.remark);
             } else {
                 alert(result.message);
