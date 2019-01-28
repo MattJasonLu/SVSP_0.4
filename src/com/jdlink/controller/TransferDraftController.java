@@ -550,4 +550,29 @@ public class TransferDraftController {
         }
         return res.toString();
     }
+
+    /**
+     * 导入转移联单excel
+     * @param excelFile 转移联单excel
+     * @return 成功与否
+     */
+    @RequestMapping("importTransferDraftExcel")
+    @ResponseBody
+    public String importTransferDraftExcel(MultipartFile excelFile) {
+        JSONObject res = new JSONObject();
+        try {
+            // TODO 2019年1月28日
+//            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+//            for (int i = 1; i < data.length; i++) {
+//
+//            }
+            res.put("status", "success");
+            res.put("message", "导入成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导入失败");
+        }
+        return res.toString();
+    }
 }
