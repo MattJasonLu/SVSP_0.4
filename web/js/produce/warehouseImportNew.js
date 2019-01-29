@@ -367,15 +367,15 @@ function delLine(e) {
 /**
  * 单价输入框输入完成后自动计算总金额并显示
  */
-function totalCalculate() {
-    // 遍历数据
-    $("#inboundOrderData").children().not("#plusBtn").each(function () {
-        var wastesAmount = $(this).find("input[name='wastesAmount']").val();
-        var unitPriceTax = $(this).find("input[name='unitPriceTax']").val();
-        var totalPrice = (parseFloat(wastesAmount) * parseFloat(unitPriceTax)).toFixed(2);
-        if (isNaN(totalPrice)) totalPrice = 0; // 不显示NaN
-        $(this).find("td[name='totalPrice']").text(totalPrice);
-    });
+function totalCalculate(e) {
+    var tr = $(e).parent().parent();
+    var wastesAmount = tr.find("input[name='itemAmount']").val();
+    var unitPriceTax = tr.find("input[name='taxUnitPrice']").val();
+    var totalPrice = (parseFloat(wastesAmount) * parseFloat(unitPriceTax)).toFixed(2);
+    if (isNaN(totalPrice)) totalPrice = 0; // 不显示NaN
+    console.log(wastesAmount + " * " + unitPriceTax);
+    tr.find("td[name='totalPrice']").text(totalPrice);
+
 }
 
 
@@ -398,7 +398,7 @@ function addInboundOrder() {
         };
         item.itemAmount = $(this).find("input[name='itemAmount']").val();
         item.taxUnitPrice = $(this).find("input[name='taxUnitPrice']").val();
-        item.totalPrice = $(this).find("td[name='totalPrice']").text();
+        item.totalTaxPrice = $(this).find("td[name='totalPrice']").text();
         item.inboundDate = $(this).find("input[name='inboundDate']").val();
         item.ticketRateItem = {
             dataDictionaryItemId: $(this).find("select[name='rate']").val()

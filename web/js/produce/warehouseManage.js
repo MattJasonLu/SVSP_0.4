@@ -787,6 +787,7 @@ function setInboundOrderDataList(result) {
  * 查找
  */
 function searchData() {
+    isSearch = true;
     var page = {};
     var pageNumber = 1;                       // 显示首页
     page.pageNumber = pageNumber;
@@ -824,6 +825,7 @@ function searchData() {
             if (result !== undefined && result.status === "success") {
                 console.log(result);
                 setPageClone(result.data);
+                setPageCloneAfter(pageNumber);
             } else {
                 alert(result.message);
             }
@@ -832,7 +834,6 @@ function searchData() {
             console.log(result);
         }
     });
-    isSearch = true;
 }
 
 

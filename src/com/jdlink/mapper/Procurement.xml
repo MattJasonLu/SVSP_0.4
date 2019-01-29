@@ -180,7 +180,7 @@
     </select>
     <!--加载辅料列表-->
     <select id="getIngredientsList" resultType="String">
-        select ingredientsName from t_pl_ingredientslist;
+        select name from t_pl_ingredients_list_tree where materialCategoryId is not null;
     </select>
     <!--作废-->
     <update id="setProcurementListCancel" parameterType="String">
@@ -738,11 +738,11 @@
     </resultMap>
     <!--根据辅料备件主键获取规格-->
     <select id="getSpecificationById" resultMap="IngredientsRM" parameterType="int">
-        select * from t_pl_ingredientslist where id=#{id}
+        select * from t_pl_ingredients_list_tree where id=#{id}
     </select>
 
     <select id="getIngredientById" resultMap="ProcurementPlanItemRM1" parameterType="int">
-        select * from t_pl_ingredientslist where id=#{id}
+        select * from t_pl_ingredients_list_tree where id=#{id}
     </select>
 
     <!--根据编号删除月度采购明细-->

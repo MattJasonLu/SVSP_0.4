@@ -10,7 +10,8 @@ var data1;
 
 array = [];//存放所有的tr
 array1 = [];//存放目标的tr
-array0=[];
+array0 = [];
+
 /**
  * 返回count值
  * */
@@ -393,13 +394,13 @@ function setSewageTestList(result) {
                     $(this).html(setNumber2Line(parseFloat(obj.ph).toFixed(2)));
                     break;
                 case (4):
-               console.log(obj.COD)
+                    console.log(obj.COD)
                     $(this).html(setNumber2Line(parseFloat(obj.COD).toFixed(2)));
                     break;
 
                 case (5):
                     // 氨氮
-                        $(this).html(setNumber2Line(parseFloat(obj.n2).toFixed(2)));
+                    $(this).html(setNumber2Line(parseFloat(obj.n2).toFixed(2)));
                     break;
                 case (6):
                     // 碳酸盐碱度(Cao)
@@ -445,12 +446,12 @@ function setSewageTestList(result) {
                 case (13):
 
                     // 总氮
-                        $(this).html(setNumber2Line(parseFloat(obj.nitrogen).toFixed(2)));
+                    $(this).html(setNumber2Line(parseFloat(obj.nitrogen).toFixed(2)));
                     break;
                 case (14):
 
                     // 总磷
-                        $(this).html(setNumber2Line(parseFloat(obj.phosphorus).toFixed(2)));
+                    $(this).html(setNumber2Line(parseFloat(obj.phosphorus).toFixed(2)));
                     break;
                 case (15):
                     // 备注
@@ -624,11 +625,11 @@ function searchData() {
     if ($("#senior").is(':visible')) {
 
         data1 = {
-            id:$.trim($('#search-id').val()),
-            address:$.trim($('#search-address').val()),
-            remarks:$.trim($('#search-remarks').val()),
+            id: $.trim($('#search-id').val()),
+            address: $.trim($('#search-address').val()),
+            remarks: $.trim($('#search-remarks').val()),
             page: page,
-            checkStateItem:{dataDictionaryItemId:$('#search-checkState').val()}
+            checkStateItem: {dataDictionaryItemId: $('#search-checkState').val()}
 
         };
     }
@@ -730,56 +731,55 @@ function delLine(item) {
 function save() {
     $('.myclass2').each(function () {
 
-        var ph=$.trim($(this).children('td').eq(2).find('input').val());
-            if(ph.length==0){
-                ph=-9999;
+        var ph = $.trim($(this).children('td').eq(2).find('input').val());
+        if (ph.length == 0) {
+            ph = -9999;
         }
-        var cod=$.trim($(this).children('td').eq(3).find('input').val());
-        if(cod.length==0){
-            cod=-9999;
+        var cod = $.trim($(this).children('td').eq(3).find('input').val());
+        if (cod.length == 0) {
+            cod = -9999;
         }
-        var bod5=$.trim($(this).children('td').eq(4).find('input').val());
-        if(bod5.length==0){
-            bod5=-9999;
+        var bod5 = $.trim($(this).children('td').eq(4).find('input').val());
+        if (bod5.length == 0) {
+            bod5 = -9999;
         }
-        var n2=$.trim($(this).children('td').eq(5).find('input').val());
-        if(n2.length==0){
-            n2=-9999;
+        var n2 = $.trim($(this).children('td').eq(5).find('input').val());
+        if (n2.length == 0) {
+            n2 = -9999;
         }
-        var alkalinity=$.trim($(this).children('td').eq(6).find('input').val());
-        if(alkalinity.length==0){
-            alkalinity=-9999;
+        var alkalinity = $.trim($(this).children('td').eq(6).find('input').val());
+        if (alkalinity.length == 0) {
+            alkalinity = -9999;
         }
-        var alkalinityCaCo3=$.trim($(this).children('td').eq(7).find('input').val());
-        if(alkalinityCaCo3.length==0){
-            alkalinityCaCo3=-9999;
+        var alkalinityCaCo3 = $.trim($(this).children('td').eq(7).find('input').val());
+        if (alkalinityCaCo3.length == 0) {
+            alkalinityCaCo3 = -9999;
         }
-        var alkalinityHCO3=$.trim($(this).children('td').eq(8).find('input').val());
-        if(alkalinityHCO3.length==0){
-            alkalinityHCO3=-9999;
-        }
-
-        var bicarbonate=$.trim($(this).children('td').eq(9).find('input').val());
-        if(bicarbonate.length==0){
-            bicarbonate=-9999;
-        }
-        var bicarbonateCaCo3=$.trim($(this).children('td').eq(10).find('input').val());
-        if(bicarbonateCaCo3.length==0){
-            bicarbonateCaCo3=-9999;
-        }
-        var bicarbonateHCO3=$.trim($(this).children('td').eq(11).find('input').val());
-        if(bicarbonateHCO3.length==0){
-            bicarbonateHCO3=-9999;
-        }
-        var nitrogen=$.trim($(this).children('td').eq(12).find('input').val());
-        if(nitrogen.length==0){
-            nitrogen=-9999;
-        }
-        var phosphorus=$.trim($(this).children('td').eq(13).find('input').val());
-        if(phosphorus.length==0){
-            phosphorus=-9999;
+        var alkalinityHCO3 = $.trim($(this).children('td').eq(8).find('input').val());
+        if (alkalinityHCO3.length == 0) {
+            alkalinityHCO3 = -9999;
         }
 
+        var bicarbonate = $.trim($(this).children('td').eq(9).find('input').val());
+        if (bicarbonate.length == 0) {
+            bicarbonate = -9999;
+        }
+        var bicarbonateCaCo3 = $.trim($(this).children('td').eq(10).find('input').val());
+        if (bicarbonateCaCo3.length == 0) {
+            bicarbonateCaCo3 = -9999;
+        }
+        var bicarbonateHCO3 = $.trim($(this).children('td').eq(11).find('input').val());
+        if (bicarbonateHCO3.length == 0) {
+            bicarbonateHCO3 = -9999;
+        }
+        var nitrogen = $.trim($(this).children('td').eq(12).find('input').val());
+        if (nitrogen.length == 0) {
+            nitrogen = -9999;
+        }
+        var phosphorus = $.trim($(this).children('td').eq(13).find('input').val());
+        if (phosphorus.length == 0) {
+            phosphorus = -9999;
+        }
 
 
         var data = {
@@ -819,7 +819,7 @@ function setSubmit(item) {
 
     var id = $(item).parent().parent().children('td').eq(1).html();
 
-    console.log(id)
+    console.log(id);
 
     if (confirm("确认提交?")) {
         $.ajax({
@@ -831,8 +831,9 @@ function setSubmit(item) {
             //contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined && result.status == "success") {
-                    alert(result.message)
-                    window.location.reload();
+                    alert(result.message);
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 }
 
             },
@@ -859,8 +860,9 @@ function setConfirm(item) {
             //contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined && result.status == "success") {
-                    alert(result.message)
-                    window.location.reload();
+                    alert(result.message);
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 }
 
             },
@@ -886,8 +888,9 @@ function setCancel(item) {
             //contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined && result.status == "success") {
-                    alert(result.message)
-                    window.location.reload();
+                    alert(result.message);
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 }
 
             },
@@ -920,59 +923,59 @@ function setAdjust(item) {
                 console.log(obj)
                 $('#id').val(obj.id);
                 $('#address').val(obj.address);
-                if(obj.ph!=-9999){
+                if (obj.ph != -9999) {
                     $('#ph').val(obj.ph.toFixed(2));
                 }
                 else {
-                    $('#ph').attr('readonly','readonly')
+                    $('#ph').attr('readonly', 'readonly')
                 }
-                if(obj.COD!=-9999){
+                if (obj.COD != -9999) {
                     $('#COD').val(obj.COD.toFixed(2));
                 }
                 else {
-                    $('#COD').attr('readonly','readonly')
+                    $('#COD').attr('readonly', 'readonly')
                 }
-                if(obj.BOD5!=-9999){
+                if (obj.BOD5 != -9999) {
                     $('#BOD5').val(obj.BOD5.toFixed(2));
                 }
                 else {
-                    $('#BOD5').attr('readonly','readonly')
+                    $('#BOD5').attr('readonly', 'readonly')
                 }
-                if(obj.n2!=-9999){
+                if (obj.n2 != -9999) {
                     $('#N2').val(obj.n2.toFixed(2));
                 }
                 else {
-                    $('#N2').attr('readonly','readonly')
+                    $('#N2').attr('readonly', 'readonly')
                 }
-                if(obj.alkalinity!=-9999){
+                if (obj.alkalinity != -9999) {
                     $('#alkalinity').val(obj.alkalinity.toFixed(2));
                 }
-                if(obj.alkalinityCaCo3!=-9999){
+                if (obj.alkalinityCaCo3 != -9999) {
                     $('#alkalinityCaCo3').val(obj.alkalinityCaCo3.toFixed(2));
                 }
-                if(obj.alkalinityHCO3!=-9999){
+                if (obj.alkalinityHCO3 != -9999) {
                     $('#alkalinityHCO3').val(obj.alkalinityHCO3.toFixed(2));
                 }
-                if(obj.bicarbonate!=-9999){
+                if (obj.bicarbonate != -9999) {
                     $('#bicarbonate').val(obj.bicarbonate.toFixed(2));
                 }
-                if(obj.bicarbonateCaCo3!=-9999){
+                if (obj.bicarbonateCaCo3 != -9999) {
                     $('#bicarbonateCaCo3').val(obj.bicarbonateCaCo3.toFixed(2));
                 }
-                if(obj.bicarbonateHCO3!=-9999){
+                if (obj.bicarbonateHCO3 != -9999) {
                     $('#bicarbonateHCO3').val(obj.bicarbonateHCO3.toFixed(2));
                 }
-                if(obj.nitrogen!=-9999){
+                if (obj.nitrogen != -9999) {
                     $('#nitrogen').val(obj.nitrogen.toFixed(2));
                 }
                 else {
-                    $('#nitrogen').attr('readonly','readonly')
+                    $('#nitrogen').attr('readonly', 'readonly')
                 }
-                if(obj.phosphorus!=-9999){
+                if (obj.phosphorus != -9999) {
                     $('#phosphorus').val(obj.phosphorus.toFixed(2));
                 }
                 else {
-                    $('#phosphorus').attr('readonly','readonly')
+                    $('#phosphorus').attr('readonly', 'readonly')
                 }
                 $('#remarks').val(obj.remarks);
 
@@ -991,53 +994,53 @@ function setAdjust(item) {
 
 //污水化验单修改
 function adjustSewageTest() {
-    var ph=$.trim($('#ph').val());
-    if(ph.length==0){
-        ph=-9999;
+    var ph = $.trim($('#ph').val());
+    if (ph.length == 0) {
+        ph = -9999;
     }
-    var cod=$.trim($('#COD').val());
-    if(cod.length==0){
-        cod=-9999;
+    var cod = $.trim($('#COD').val());
+    if (cod.length == 0) {
+        cod = -9999;
     }
-    var bod5=$.trim($('#BOD5').val());
-    if(bod5.length==0){
-        bod5=-9999;
+    var bod5 = $.trim($('#BOD5').val());
+    if (bod5.length == 0) {
+        bod5 = -9999;
     }
-    var n2=$.trim($('#N2').val());
-    if(n2.length==0){
-        n2=-9999;
+    var n2 = $.trim($('#N2').val());
+    if (n2.length == 0) {
+        n2 = -9999;
     }
-    var alkalinity=$.trim($('#alkalinity').val());
-    if(alkalinity.length==0){
-        alkalinity=-9999;
+    var alkalinity = $.trim($('#alkalinity').val());
+    if (alkalinity.length == 0) {
+        alkalinity = -9999;
     }
-    var alkalinityCaCo3=$.trim($('#alkalinityCaCo3').val());
-    if(alkalinityCaCo3.length==0){
-        alkalinityCaCo3=-9999;
+    var alkalinityCaCo3 = $.trim($('#alkalinityCaCo3').val());
+    if (alkalinityCaCo3.length == 0) {
+        alkalinityCaCo3 = -9999;
     }
-    var alkalinityHCO3=$.trim($('#alkalinityHCO3').val());
-    if(alkalinityHCO3.length==0){
-        alkalinityHCO3=-9999;
+    var alkalinityHCO3 = $.trim($('#alkalinityHCO3').val());
+    if (alkalinityHCO3.length == 0) {
+        alkalinityHCO3 = -9999;
     }
-    var bicarbonate=$.trim($('#bicarbonate').val());
-    if(bicarbonate.length==0){
-        bicarbonate=-9999;
+    var bicarbonate = $.trim($('#bicarbonate').val());
+    if (bicarbonate.length == 0) {
+        bicarbonate = -9999;
     }
-    var bicarbonateCaCo3=$.trim($('#bicarbonateCaCo3').val());
-    if(bicarbonateCaCo3.length==0){
-        bicarbonateCaCo3=-9999;
+    var bicarbonateCaCo3 = $.trim($('#bicarbonateCaCo3').val());
+    if (bicarbonateCaCo3.length == 0) {
+        bicarbonateCaCo3 = -9999;
     }
-    var bicarbonateHCO3=$.trim($('#bicarbonateHCO3').val());
-    if(bicarbonateHCO3.length==0){
-        bicarbonateHCO3=-9999;
+    var bicarbonateHCO3 = $.trim($('#bicarbonateHCO3').val());
+    if (bicarbonateHCO3.length == 0) {
+        bicarbonateHCO3 = -9999;
     }
-    var nitrogen=$.trim($('#nitrogen').val());
-    if(nitrogen.length==0){
-        nitrogen=-9999;
+    var nitrogen = $.trim($('#nitrogen').val());
+    if (nitrogen.length == 0) {
+        nitrogen = -9999;
     }
-    var phosphorus=$.trim($('#phosphorus').val());
-    if(phosphorus.length==0){
-        phosphorus=-9999;
+    var phosphorus = $.trim($('#phosphorus').val());
+    if (phosphorus.length == 0) {
+        phosphorus = -9999;
     }
     var data = {
         id: $('#id').val(),
@@ -1047,12 +1050,12 @@ function adjustSewageTest() {
         bod5: bod5,
         n2: n2,
         alkalinity: alkalinity,
-        alkalinityCaCo3:alkalinityCaCo3,
+        alkalinityCaCo3: alkalinityCaCo3,
         alkalinityHCO3: alkalinityHCO3,
         bicarbonate: bicarbonate,
-        bicarbonateCaCo3:bicarbonateCaCo3,
-        bicarbonateHCO3:bicarbonateHCO3,
-        nitrogen:nitrogen,
+        bicarbonateCaCo3: bicarbonateCaCo3,
+        bicarbonateHCO3: bicarbonateHCO3,
+        nitrogen: nitrogen,
         phosphorus: phosphorus,
         remarks: $('#remarks').val()
     }
@@ -1068,9 +1071,10 @@ function adjustSewageTest() {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 //赋值
-              alert(result.message)
-                window.location.reload();
-
+                alert(result.message);
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $('#addModa2').modal('hide');
             }
 
         },
@@ -1088,32 +1092,32 @@ function testing(item) {
     $(item).parent().children('p').eq(0).hide()
     $(item).parent().children('p').eq(1).hide()
 
-    var id=$.trim($(item).val());
+    var id = $.trim($(item).val());
 
     $.ajax({
         type: "POST",                       // 方法类型
         url: "testingSewageTestId",              // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data:{'id':id},
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
+        data: {'id': id},
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
                 console.log(result)
-                if(result.data==true){
-                  $(item).parent().children('p').eq(1).show()
+                if (result.data == true) {
+                    $(item).parent().children('p').eq(1).show()
                     $(item).parent().children('p').eq(0).hide()
                 }
-                if(result.data==false){
+                if (result.data == false) {
                     $(item).parent().children('p').eq(0).show()
                     $(item).parent().children('p').eq(1).hide()
                 }
-                if($.trim(id).length<=0){
+                if ($.trim(id).length <= 0) {
                     $('#pass').hide();
                     $('#break').hide();
                 }
             }
         },
-        error:function (result) {
+        error: function (result) {
 
         }
     })

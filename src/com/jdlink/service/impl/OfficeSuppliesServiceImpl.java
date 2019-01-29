@@ -86,10 +86,48 @@ public class OfficeSuppliesServiceImpl implements OfficeSuppliesService {
         return officeSuppliesMapper.countOfficeSuppliesOutboundItem(officeSuppliesItem);
     }
 
-
     @Override
     public void addOfficeSuppliesOutbound(OfficeSuppliesOutbound officeSuppliesOutbound) {
         officeSuppliesMapper.addOfficeSuppliesOutbound(officeSuppliesOutbound);
+    }
+
+    @Override
+    public int getOfficeSupplierOutboundCountByPrefix(String prefix) {
+        return officeSuppliesMapper.getOfficeSupplierOutboundCountByPrefix(prefix);
+    }
+
+    @Override
+    public String getOfficeSupplierOutboundId(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        // 如果时间对象为空则获取当前时间
+        if (date != null) calendar.setTime(date);
+        // 获取年份
+        String year = String.valueOf(calendar.get(Calendar.YEAR));
+        // 获取月份
+        //得到一个NumberFormat的实例
+        NumberFormat nf = NumberFormat.getInstance();
+        //设置是否使用分组
+        nf.setGroupingUsed(false);
+        //设置最大整数位数
+        nf.setMaximumIntegerDigits(2);
+        //设置最小整数位数
+        nf.setMinimumIntegerDigits(2);
+        // 获取最新编号
+        String month = nf.format(calendar.get(Calendar.MONTH) + 1);
+        String prefix = year + month;
+        // 获取数量
+        int count = getOfficeSupplierOutboundCountByPrefix(prefix) + 1;
+        //得到一个NumberFormat的实例
+        nf = NumberFormat.getInstance();
+        //设置是否使用分组
+        nf.setGroupingUsed(false);
+        //设置最大整数位数
+        nf.setMaximumIntegerDigits(5);
+        //设置最小整数位数
+        nf.setMinimumIntegerDigits(5);
+        // 获取最新编号
+        String countStr = nf.format(count);
+        return prefix + countStr;
     }
 
     @Override

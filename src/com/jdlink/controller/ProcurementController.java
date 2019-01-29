@@ -1469,7 +1469,6 @@ public class ProcurementController {
     @ResponseBody
     public String getSpecificationById(int id){
         JSONObject res=new JSONObject();
-
         try {
             Ingredients ingredients=procurementService.getSpecificationById(id);
             res.put("status", "success");

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+    <TITLE>辅料备件物品树状管理</TITLE>
+    <meta charset="UTF-8">
+    <!--<meta http-equiv="content-type" content="text/html; charset=UTF-8">-->
+    <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <link href="css/dashboard.css" rel="stylesheet">
+    <link href="css/dropdown-submenu.css" rel="stylesheet">
+    <link href="css/bootstrap/navbar.css" rel="stylesheet">
+    <link href="css/loading1.css" rel="stylesheet">
+    <link href="css/loading2.css" rel="stylesheet">
+    <script src="js/bootstrap/navbar.js"></script>
+    <link rel="stylesheet" href="zTree_v3-master/css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <script type="text/javascript" src="zTree_v3-master/js/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="zTree_v3-master/js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="zTree_v3-master/js/jquery.ztree.excheck.js"></script>
+    <script type="text/javascript" src="zTree_v3-master/js/jquery.ztree.exedit.js"></script>
+    <script src="js/time.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/produce/ingredientManageTree.js"></script>
+</HEAD>
+<body>
+<!--导航条-->
+<nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
+    <div class="main-title">
+        <ul class="nav navbar-nav navbar-left navbar-side">
+            <li>
+                <a href="#" onclick="$('body').toggleClass('sidebar-collapse');" style="width: 50px">
+                    <span class="glyphicon glyphicon-menu-hamburger"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="container navbar-left" style="width: 70%;">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="firstPage.html">首页</a></li>
+                <li><a href="ingredientsManageTree.html">辅料备件物品树状管理</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
+        <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+        <li class="dropdown">
+            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+               aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="personalInformation.html">个人信息</a></li>
+                <li><a href="#">待办事项</a></li>
+                <li><a href="admin.html">注销</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="sidebar">
+            <ul class="sidenav animated fadeInUp">
+                <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
+                <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list"
+                                                                           aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span
+                        class="sr-only">(current)</span></a></li>
+                <li><a class="withripple" href="businessModel.html"><span class="glyphicon glyphicon-user"
+                                                                          aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="compatibilityPlan.html"><span class="glyphicon glyphicon-list"
+                                                                              aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in"
+                                                                              aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="storageManagement.html"><span class="glyphicon glyphicon-save"
+                                                                              aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="preprocessingManagement.html"><span
+                        class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="dispositionManagement.html"><span class="glyphicon glyphicon-retweet"
+                                                                                  aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="secondaryManagement.html"><span class="glyphicon glyphicon-tags"
+                                                                                aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="procurementManagement.html"><span
+                        class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span
+                        class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="reportManagement.html"><span class="glyphicon glyphicon-edit"
+                                                                             aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="basicData.html"><span class="glyphicon glyphicon-signal"
+                                                                      aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span
+                        class="iright pull-right">&gt;</span></a></li>
+                <li class="active"><a class="withripple" href="infrastructure.html"><span
+                        class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span
+                        class="iright pull-right">&gt;</span></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="row">
+            <div>
+                <ol class="breadcrumb"><!--历史记录导航栏-->
+                    <!--<li><a href="infrastructure.html">系统设置</a></li>-->
+                    <!--<li class="active">动态菜单管理</li>-->
+                </ol>
+            </div>
+            <h4 class="sub-header">辅料备件物品树状管理</h4>
+        </div>
+        <div class="row">
+            <div>
+                <!--操作按钮-->
+                <div class="pull-left col-md-6">
+                    <a class="btn btn-primary btn-xs"
+                       onclick="importExcelChoose();"><span
+                            class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>导入</a>
+                    <a class="btn btn-primary btn-xs" href="ingredientManage.html"
+                    ><span  class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>返回</a>
+                </div>
+            </div>
+        </div>
+        <!--导入框-->
+        <div class="" id="importExcelModal" hidden>
+            <div class="row text-left" >
+                <button type="button" class="close" onclick="closeModal()"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="TitleMyModalLabel">导入表格数据</h4>
+            </div>
+            <div class="row">
+                <form id="modelAssign" method="post">
+                    <div class="form-group">
+                        <font size="+2">提示：</font>
+                        <font size="+1" class="text-center">请按照模板格式导入数据！</font>
+                    </div>
+                </form>
+            </div>
+            <div class="row center">
+                <button type="button" class="btn btn-default" id="downloadModal" onclick="downloadModal()">
+                    下载模板
+                </button>
+                <button type="button" class="btn btn-primary" onclick="importExcel()">导入数据</button>
+                <button type="button" class="btn btn-danger" onclick="closeModal()">关闭</button>
+            </div>
+        </div>
+        <div class="content_wrap" style="width: 200%;height: 150%;background-color: #fff;border:none">
+            <br>
+            <div class="row">
+                <div class="col-md-2" id="zTree">
+                    <div class="zTreeDemoBackground left" style="width: 100%;background-color: #fff;border:none">
+                        <ul id="treeDemo" class="ztree"
+                            style="width: 70%;height:100%;border:none;background-color:#fff;font-size: larger"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--导入-->
+        <input type="file" name="excelPath" id="idExcel" style="display:none">
+    </div>
+</div>
+<div class="loader"><!--进度条-->
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+</div>
+<style type="text/css">
+    .ztree li span.button.add {
+        margin-left: 2px;
+        margin-right: -1px;
+        background-position: -144px 0;
+        vertical-align: top;
+        *vertical-align: middle
+    }
+
+    a {
+        text-decoration: none;
+    }
+</style>
+</body>
+</HTML>

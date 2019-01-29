@@ -650,7 +650,7 @@ function setSubmit(item) {
 
     var id = $(item).parent().parent().children('td').eq(1).html();
 
-    console.log(id)
+    console.log(id);
 
     if (confirm("确认提交?")) {
         $.ajax({
@@ -662,8 +662,9 @@ function setSubmit(item) {
             //contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined && result.status == "success") {
-                    alert(result.message)
-                    window.location.reload();
+                    alert(result.message);
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 }
 
             },
@@ -690,8 +691,9 @@ function setConfirm(item) {
             //contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined && result.status == "success") {
-                    alert(result.message)
-                    window.location.reload();
+                    alert(result.message);
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 }
 
             },
@@ -717,8 +719,9 @@ function setCancel(item) {
             //contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined && result.status == "success") {
-                    alert(result.message)
-                    window.location.reload();
+                    alert(result.message);
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 }
 
             },
@@ -809,9 +812,10 @@ function adjustSecondaryTest() {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 //赋值
-                alert(result.message)
-                window.location.reload();
-
+                alert(result.message);
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $('#addModa2').modal('hide');
             }
 
         },

@@ -15,6 +15,10 @@ public class OfficeSuppliesItem {
      */
     private String itemId;
     /**
+     * 入库单条目编号
+     */
+    private String inboundItemId;
+    /**
      * 入库单号
      */
     private String inboundId;
@@ -109,6 +113,14 @@ public class OfficeSuppliesItem {
 
     public void setItemId(String itemId) {
         this.itemId = itemId;
+    }
+
+    public String getInboundItemId() {
+        return inboundItemId;
+    }
+
+    public void setInboundItemId(String inboundItemId) {
+        this.inboundItemId = inboundItemId;
     }
 
     public String getInboundId() {

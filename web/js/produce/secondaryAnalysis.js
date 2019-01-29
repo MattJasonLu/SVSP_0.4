@@ -4,9 +4,11 @@
 function reset() {
     window.location.reload();
 }
+
 var currentPage = 1;                          //当前页数
 var isSearch = false;
 var data1;
+
 /**
  * 计算总页数
  * */
@@ -158,12 +160,12 @@ function switchPage(pageNumber) {
         $.ajax({
             type: "POST",                       // 方法类型
             url: "getSecondIntoList",                  // url
-            data:JSON.stringify(page),
+            data: JSON.stringify(page),
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             contentType: 'application/json;charset=utf-8',
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
                     console.log(result);
                     setSecIntoList(result.data);
                 }
@@ -172,39 +174,40 @@ function switchPage(pageNumber) {
 
                 }
             },
-            error:function (result) {
+            error: function (result) {
                 alert("服务器异常！")
             }
         });
     }
-    else{
+    else {
         data1['page'] = page;
         $.ajax({
-        type: "POST",                            // 方法类型
-        url: "searchSecondary",                 // url
-        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(data1),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            console.log(result);
-            if (result.data != undefined || result.status == "success") {
-                setSecIntoList(result.data);
-            } else {
-                console.log(result.message);
+            type: "POST",                            // 方法类型
+            url: "searchSecondary",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                console.log(result);
+                if (result.data != undefined || result.status == "success") {
+                    setSecIntoList(result.data);
+                } else {
+                    console.log(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器错误！");
             }
-        },
-        error: function (result) {
-            console.log(result);
-            alert("服务器错误！");
-        }
-    });}
+        });
+    }
 }
 
 /**
  * 输入页数跳转页面
  * */
-function inputSwitchPage()  {
+function inputSwitchPage() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
     $("#current").find("a").text("当前页：" + pageNumber);
     if (pageNumber == null || pageNumber == undefined) {
@@ -242,7 +245,7 @@ function inputSwitchPage()  {
             $.ajax({
                 type: "POST",                       // 方法类型
                 url: "getSecondIntoList",                  // url
-                data:JSON.stringify(page),// url
+                data: JSON.stringify(page),// url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 dataType: "json",
                 contentType: 'application/json;charset=utf-8',
@@ -259,7 +262,7 @@ function inputSwitchPage()  {
                 }
             });
         }
-        if (isSearch){
+        if (isSearch) {
             data1['page'] = page;
             $.ajax({
                 type: "POST",                            // 方法类型
@@ -280,7 +283,8 @@ function inputSwitchPage()  {
                     console.log(result);
                     alert("服务器错误！");
                 }
-            });}
+            });
+        }
     }
 }
 
@@ -319,12 +323,12 @@ function secondaryAnalysis() {
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getSecondIntoList",                  // url
-        data:JSON.stringify(page),
+        data: JSON.stringify(page),
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         contentType: 'application/json;charset=utf-8',
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
                 console.log(result);
                 setPageClone(result.data);
                 setPageCloneAfter(pageNumber);        // 重新设置页码
@@ -334,7 +338,7 @@ function secondaryAnalysis() {
 
             }
         },
-        error:function (result) {
+        error: function (result) {
             alert("服务器异常！")
         }
     });
@@ -391,56 +395,56 @@ function setSecIntoList(result) {
                     break;
                 case (2):
                     // 危废名称
-                    wastesName="";
-                    var array=[];
-                    if(obj.secondarySampleItemList!=null) {
-                        $.each(obj.secondarySampleItemList,function (index,item) {
-                               array.push(item.wastesName);
+                    wastesName = "";
+                    var array = [];
+                    if (obj.secondarySampleItemList != null) {
+                        $.each(obj.secondarySampleItemList, function (index, item) {
+                            array.push(item.wastesName);
                         })
                     }
-                   var hash=unique1(array).join(" ");
+                    var hash = unique1(array).join(" ");
                     $(this).html(hash.toString());
                     break;
                 case (3):
                     // 检测项目
-                    project="";
-                    if(obj.secondarySampleItemList!=null){
-                        $.each(obj.secondarySampleItemList,function (index,item) {
+                    project = "";
+                    if (obj.secondarySampleItemList != null) {
+                        $.each(obj.secondarySampleItemList, function (index, item) {
 
-                                if (item.cod == 1) {
-                                    project += "COD ";
-                                }
-                                if (item.bod5 == 1) {
-                                    project += "BOD5 ";
-                                }
-                                if (item.ph == 1) {
-                                    project += "PH ";
-                                }
-                                if (item.electricalConductivity == 1) {
-                                    project += "电导率 ";
-                                }
-                                if (item.hardness == 1) {
-                                    project += "硬度 ";
-                                }
-                                if (item.lye == 1) {
-                                    project += "碱度 ";
-                                }
-                                if (item.n2 == 1) {
-                                    project += "氮气 ";
-                                }
-                                if (item.scorchingRate == 1) {
-                                    project += "热灼减率 ";
-                                }
-                                if (item.water == 1) {
-                                    project += "水分 ";
-                                }
+                            if (item.cod == 1) {
+                                project += "COD ";
+                            }
+                            if (item.bod5 == 1) {
+                                project += "BOD5 ";
+                            }
+                            if (item.ph == 1) {
+                                project += "PH ";
+                            }
+                            if (item.electricalConductivity == 1) {
+                                project += "电导率 ";
+                            }
+                            if (item.hardness == 1) {
+                                project += "硬度 ";
+                            }
+                            if (item.lye == 1) {
+                                project += "碱度 ";
+                            }
+                            if (item.n2 == 1) {
+                                project += "氮气 ";
+                            }
+                            if (item.scorchingRate == 1) {
+                                project += "热灼减率 ";
+                            }
+                            if (item.water == 1) {
+                                project += "水分 ";
+                            }
                         })
 
                     }
-                    var projectArray=project.split(" ");
+                    var projectArray = project.split(" ");
 
                     // console.log(projectArray)
-                    var array=unique1(projectArray).join(" ")
+                    var array = unique1(projectArray).join(" ")
                     $(this).html(array.toString());
                     break;
                 case (4):
@@ -453,14 +457,14 @@ function setSecIntoList(result) {
                     break;
                 case (6):
                     // 采样点
-                    if(obj.secondaryPointItem!=null){
+                    if (obj.secondaryPointItem != null) {
                         $(this).html(obj.secondaryPointItem.dictionaryItemName);
                     }
 
                     break;
                 case (7):
                     // 状态
-                    if(obj.checkStateItem!=null){
+                    if (obj.checkStateItem != null) {
                         $(this).html(obj.checkStateItem.dictionaryItemName);
                     }
 
@@ -482,12 +486,12 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
     $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
-            if(last-event.timeStamp=== 0){
+            if (last - event.timeStamp === 0) {
                 searchSecInto();
-            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+            } else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
                 searchSecInto();      //
             }
-        },600);
+        }, 600);
     });
 });
 
@@ -502,59 +506,62 @@ function searchSecInto() {
     page.start = (pageNumber - 1) * page.count;
     if ($("#senior").is(':visible')) {
         var water;
-        if($('#water').prop('checked')==true){
-            water=1;
+        if ($('#water').prop('checked') == true) {
+            water = 1;
         }
         else
-            water=0;
+            water = 0;
         var scorchingRate;
-        if($('#scorchingRate').prop('checked')==true){
-            scorchingRate=1;
+        if ($('#scorchingRate').prop('checked') == true) {
+            scorchingRate = 1;
         }
         else
-            scorchingRate=0;
+            scorchingRate = 0;
 
 
-        var state=$('#search-checkState').val()
-        if(state==''){
-            state=null
+        var state = $('#search-checkState').val()
+        if (state == '') {
+            state = null
         }
         data1 = {
 
-            secondaryPointItem:{dataDictionaryItemId:$.trim($("#search-address").val())} ,
+            secondaryPointItem: {dataDictionaryItemId: $.trim($("#search-address").val())},
             sendingPerson: $.trim($("#search-remarks").val()),
             laboratorySignatory: $.trim($("#search-laboratorySignatory").val()),
             //remarks: $.trim($("#search-remarks").val()),
-            checkStateItem:{dataDictionaryItemId:state},
-            secondarySampleItemList:[{water:water,scorchingRate:scorchingRate,  wastesName:$.trim($("#search-wastesName").val()),}],
+            checkStateItem: {dataDictionaryItemId: state},
+            secondarySampleItemList: [{
+                water: water,
+                scorchingRate: scorchingRate,
+                wastesName: $.trim($("#search-wastesName").val()),
+            }],
             page: page
         };
     }
-    else{
-        var keywords= $.trim($("#searchContent").val());
+    else {
+        var keywords = $.trim($("#searchContent").val());
 
 
         var scorchingRate;
 
-        if(keywords=='热灼减率'){
-            scorchingRate=1;
-            keywords='';
+        if (keywords == '热灼减率') {
+            scorchingRate = 1;
+            keywords = '';
         }
         var water;
-        if(keywords=='水分'){
-            water=1;
-            keywords='';
+        if (keywords == '水分') {
+            water = 1;
+            keywords = '';
         }
 
         // else
         //     keywords= $.trim($("#searchContent").val());
 
 
-
         data1 = {
-            keywords:keywords,
+            keywords: keywords,
             page: page,
-            secondarySampleItemList:[{water:water,scorchingRate:scorchingRate}],
+            secondarySampleItemList: [{water: water, scorchingRate: scorchingRate}],
         };
         console.log(data1)
     }
@@ -593,12 +600,6 @@ function enterSearch() {
 }
 
 
-
-
-
-
-
-
 /**
  *
  * 导出
@@ -628,8 +629,8 @@ function exportExcel() {
                 if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
                 else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
             }
-            var sqlWords = "select a.id,b.wastesName,a.sendingPerson,a.laboratorySignatory,a.address, c.dictionaryItemName ,b.water,b.scorchingRate from t_pr_secondarysample a join t_pr_secondarysampleitem b on b.sampleinformationId=a.id join  datadictionaryitem c on c.dataDictionaryItemId=a.checkStateId  and  a.id "+sql;
-  console.log(sqlWords)
+            var sqlWords = "select a.id,b.wastesName,a.sendingPerson,a.laboratorySignatory,a.address, c.dictionaryItemName ,b.water,b.scorchingRate from t_pr_secondarysample a join t_pr_secondarysampleitem b on b.sampleinformationId=a.id join  datadictionaryitem c on c.dataDictionaryItemId=a.checkStateId  and  a.id " + sql;
+            console.log(sqlWords)
         }
         window.open('exportSecondarySample?name=' + name + '&sqlWords=' + sqlWords);
     }
@@ -730,7 +731,6 @@ function setSelectList() {
     });
 
 
-
 }
 
 function setSelectList1() {
@@ -771,8 +771,8 @@ function setSelectList1() {
 }
 
 
-
 var num = 1;
+
 /**
  * 预约登记/修改-新增样品1
  */
@@ -785,7 +785,7 @@ function addNewLine(item) {
     else tr = $("#addBtn3").prev();
     // 克隆tr，每次遍历都可以产生新的tr
     var clonedTr = tr.clone();
-    clonedTr.children('td').eq(0).html(($('.myclass').length)+1);
+    clonedTr.children('td').eq(0).html(($('.myclass').length) + 1);
     if (clonedTr.children('td').eq(0).html() != 1) {     // 将非第一行的所有行加上减行号
         var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
         clonedTr.children('td').eq(0).prepend(delBtn);
@@ -805,7 +805,6 @@ function addNewLine(item) {
     //     $(this).prop('id', newId);
     // });
     // clonedTr.addClass("newLine");
-
 
 
     clonedTr.insertAfter(tr);
@@ -850,12 +849,12 @@ function delLine(item) {
 function addAppoint() {
 
 //主表
-    var  data={
+    var data = {
         // client:{clientId:$('#model-companyCode').selectpicker('val')}
-        id:$('#reservationId').val(),
-        laboratorySignatory:$('#laboratorySignatory').val(),
-        sendingPerson:$('#sendingPerson').val(),
-        secondaryPointItem:{dataDictionaryItemId:$('#address').val()},
+        id: $('#reservationId').val(),
+        laboratorySignatory: $('#laboratorySignatory').val(),
+        sendingPerson: $('#sendingPerson').val(),
+        secondaryPointItem: {dataDictionaryItemId: $('#address').val()},
     };
     console.log(data)
     //添加主表
@@ -868,28 +867,28 @@ function addAppoint() {
         processData: false,
         contentType: 'application/json;charset=utf-8',
         success: function (result) {
-            if (result != undefined && result.status == "success"){
+            if (result != undefined && result.status == "success") {
                 $('.myclass').each(function () {
                     var water;
-                    if($(this).children('td').eq(4).find('label').eq(0).find("input").prop('checked')==true){
-                         water=1;
+                    if ($(this).children('td').eq(4).find('label').eq(0).find("input").prop('checked') == true) {
+                        water = 1;
                     }
                     else
-                        water=0;
+                        water = 0;
                     var scorchingRate;
-                    if($(this).children('td').eq(4).find('label').eq(1).find("input").prop('checked')==true){
-                        scorchingRate=1;
+                    if ($(this).children('td').eq(4).find('label').eq(1).find("input").prop('checked') == true) {
+                        scorchingRate = 1;
                     }
                     else
-                        scorchingRate=0;
+                        scorchingRate = 0;
 
-                    var   dataItem={
-                        sampleinformationId:$('#reservationId').val(),
-                        wastesCode:$(this).children('td').eq(1).find("button").attr('title'),
-                        wastesName:$(this).children('td').eq(2).find("select option:selected").text(),
-                        water:water,
-                        scorchingRate:scorchingRate,
-                        identifie:$(this).children('td').eq(3).find("input").val(),
+                    var dataItem = {
+                        sampleinformationId: $('#reservationId').val(),
+                        wastesCode: $(this).children('td').eq(1).find("button").attr('title'),
+                        wastesName: $(this).children('td').eq(2).find("select option:selected").text(),
+                        water: water,
+                        scorchingRate: scorchingRate,
+                        identifie: $(this).children('td').eq(3).find("input").val(),
                     };
                     console.log(dataItem)
                     $.ajax({
@@ -914,9 +913,6 @@ function addAppoint() {
     });
 
 
-
-
-
 }
 
 
@@ -932,7 +928,7 @@ function addNewLine1(item) {
     // 克隆tr，每次遍历都可以产生新的tr
     var clonedTr = tr.clone();
     clonedTr.show();
-    clonedTr.children('td').eq(0).html(($('.myclass2 ').length)+1);
+    clonedTr.children('td').eq(0).html(($('.myclass2 ').length) + 1);
     if (clonedTr.children('td').eq(0).html() != 1) {     // 将非第一行的所有行加上减行号
         var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
         clonedTr.children('td').eq(0).prepend(delBtn);
@@ -954,7 +950,6 @@ function addNewLine1(item) {
     // clonedTr.addClass("newLine");
 
 
-
     clonedTr.insertAfter(tr);
     clonedTr.removeAttr("id");
     //清空数据为重新初始化selectpicker
@@ -967,7 +962,7 @@ function addNewLine1(item) {
 
 //查看
 function view(item) {
-    var id=$(item).parent().parent().children('td').eq(1).html();
+    var id = $(item).parent().parent().children('td').eq(1).html();
     console.log(id)
     $('#reservationId1').text(id)
     $("#appointModa2").modal('show');
@@ -978,14 +973,14 @@ function view(item) {
         url: "getSecondarysampleById",              // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data:{"id":id},
+        data: {"id": id},
         //contentType: 'application/json;charset=utf-8',
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
                 console.log(result)
                 //赋值
                 // 公司名称
-                if(result.data.client!=null){
+                if (result.data.client != null) {
                     $('#companyName').val(result.data.client.companyName);
                 }
                 //化验室签收人
@@ -995,18 +990,17 @@ function view(item) {
                 $('#sendingPerson1').text(result.data.sendingPerson)
 
                 //采样点
-                if(result.data.secondaryPointItem!=null){
+                if (result.data.secondaryPointItem != null) {
                     $('#address1').text(result.data.secondaryPointItem.dictionaryItemName)
                 }
 
 
+                if (result.data.secondarySampleItemList != null) {
 
-                if(result.data.secondarySampleItemList!=null){
-
-                    var tr=$('#clonrTr');
+                    var tr = $('#clonrTr');
                     tr.siblings().remove();
 
-                    $.each(result.data.secondarySampleItemList,function (index,item) {
+                    $.each(result.data.secondarySampleItemList, function (index, item) {
 
                         var clonedTr = tr.clone();
 
@@ -1069,7 +1063,6 @@ function view(item) {
                     tr.removeAttr('class');
 
 
-
                 }
 
             }
@@ -1077,7 +1070,7 @@ function view(item) {
 
             }
         },
-        error:function (result) {
+        error: function (result) {
 
         }
     });
@@ -1088,7 +1081,7 @@ function view(item) {
 /**
  * 一键签收
  */
-function confirmAllCheck(){
+function confirmAllCheck() {
     var laboratorySigner = "";
     $.ajax({
         type: "POST",                             // 方法类型
@@ -1108,11 +1101,11 @@ function confirmAllCheck(){
     });
     var idList = [];   // 承装需要确认收样的预约单号
     $.each($("input[name='select']:checked"), function (index, item) {
-        if($(item).parent().parent().parent().find("td[name='state']").text() === "待收样") {   // 将待收样的物品
+        if ($(item).parent().parent().parent().find("td[name='state']").text() === "待收样") {   // 将待收样的物品
             idList.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
         }
     });
-    if(idList.length > 0) {
+    if (idList.length > 0) {
         var sampleInformation = {};
         sampleInformation.laboratorySignatory = laboratorySigner;
         sampleInformation.sampleIdList = idList;
@@ -1143,19 +1136,19 @@ function confirmAllCheck(){
 }
 
 //确认收样
-function setSubmit(item)  {
-    var id=$(item).parent().parent().children('td').eq(1).html();
-    var state=$(item).parent().parent().children('td').eq(7).html();
-    if(state=='已作废'){
+function setSubmit(item) {
+    var id = $(item).parent().parent().children('td').eq(1).html();
+    var state = $(item).parent().parent().children('td').eq(7).html();
+    if (state == '已作废') {
         alert("单据已作废,无法收样")
     }
-    if(state=='已拒收'){
+    if (state == '已拒收') {
         alert("单据已拒收,无法收样")
     }
-    if(state=='已收样'){
+    if (state == '已收样') {
         alert("单据已收样,无法收样")
     }
-    if(state=='待收样'){
+    if (state == '待收样') {
         $('#reservationId1').text(id)
         $("#appointModa2").modal('show');
         $('#confirm').show();
@@ -1165,14 +1158,14 @@ function setSubmit(item)  {
             url: "getSecondarysampleById",              // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
-            data:{"id":id},
+            data: {"id": id},
             //contentType: 'application/json;charset=utf-8',
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
                     console.log(result)
                     //赋值
                     // 公司名称
-                    if(result.data.client!=null){
+                    if (result.data.client != null) {
                         $('#companyName').val(result.data.client.companyName);
                     }
                     //化验室签收人
@@ -1182,18 +1175,18 @@ function setSubmit(item)  {
                     $('#sendingPerson1').text(result.data.sendingPerson)
 
                     //采样点
-                    if(result.data.secondaryPointItem!=null){
+                    if (result.data.secondaryPointItem != null) {
                         $('#address1').text(result.data.secondaryPointItem.dictionaryItemName)
 
                     }
 
 
-                    if(result.data.secondarySampleItemList!=null){
+                    if (result.data.secondarySampleItemList != null) {
 
-                        var tr=$('#clonrTr');
+                        var tr = $('#clonrTr');
                         tr.siblings().remove();
 
-                        $.each(result.data.secondarySampleItemList,function (index,item) {
+                        $.each(result.data.secondarySampleItemList, function (index, item) {
 
                             var clonedTr = tr.clone();
 
@@ -1258,7 +1251,6 @@ function setSubmit(item)  {
                         tr.removeAttr('class');
 
 
-
                     }
 
                 }
@@ -1266,7 +1258,7 @@ function setSubmit(item)  {
 
                 }
             },
-            error:function (result) {
+            error: function (result) {
 
             }
         });
@@ -1277,26 +1269,28 @@ function setSubmit(item)  {
 
 //确认送样方法==>真正的方法
 function confirmSample() {
-    var id=  $('#reservationId1').text()
+    var id = $('#reservationId1').text()
 
-    var   laboratorySignatory = $('#laboratorySignatory1').val();
+    var laboratorySignatory = $('#laboratorySignatory1').val();
 
-    var wastesName=$('#wastesName').val()
+    var wastesName = $('#wastesName').val()
 
     $.ajax({
         type: "POST",                       // 方法类型
         url: "confirmSecondarySampleById",              // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data:{"id":id,'laboratorySignatory':laboratorySignatory,'wastesName':wastesName},
+        data: {"id": id, 'laboratorySignatory': laboratorySignatory, 'wastesName': wastesName},
         //contentType: 'application/json;charset=utf-8',
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                alert(result.message)
-                window.location.reload();
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                alert(result.message);
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $("#appointModa2").modal('hide');
             }
         },
-        error:function (result) {
+        error: function (result) {
 
 
         }
@@ -1311,16 +1305,16 @@ function confirmSample() {
  * 拒收框
  */
 function rejection(item) {
-    var id=$(item).parent().parent().children('td').eq(1).html();
-    var state=$(item).parent().parent().children('td').eq(7).html();
-    if(state=='已收样'){
+    var id = $(item).parent().parent().children('td').eq(1).html();
+    var state = $(item).parent().parent().children('td').eq(7).html();
+    if (state == '已收样') {
         alert('单据已收样,不可拒收!')
     }
-    if(state=='已作废'){
+    if (state == '已作废') {
         alert('单据已作废,不可拒收!')
     }
     console.log(id)
-    if(state=='待收样'||state=='已拒收'){
+    if (state == '待收样' || state == '已拒收') {
         $('#id1').text(id);
         $("#rejection1").modal('show')
 
@@ -1330,19 +1324,17 @@ function rejection(item) {
             url: "getSecondarysampleById",              // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
-            data:{"id":id},
+            data: {"id": id},
             //contentType: 'application/json;charset=utf-8',
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
                     console.log(result)
                     $('#advice').val(result.data.advice);
-
-                }
-                else {
+                } else {
 
                 }
             },
-            error:function (result) {
+            error: function (result) {
 
             }
         });
@@ -1352,23 +1344,25 @@ function rejection(item) {
 
 //真正的拒收方法
 function rejection1() {
-    var id=  $('#id1').text();;
-    var advice=   $('#advice').val();
-
+    var id = $('#id1').text();
+    ;
+    var advice = $('#advice').val();
     $.ajax({
         type: "POST",                       // 方法类型
         url: "rejectSecondarySampleById",              // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data:{"id":id,"advice":advice},
-        success:function (result) {
+        data: {"id": id, "advice": advice},
+        success: function (result) {
             if (result != undefined && result.status == "success") {
                 alert(result.message)
-                window.location.reload();
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $("#rejection1").modal('hide');
             }
 
         },
-        error:function (result) {
+        error: function (result) {
             alert("服务器异常！")
         }
     })
@@ -1430,16 +1424,16 @@ function importExcel() {
 function secondaryAnalysisModify(item) {
     $('#pass1').hide();
     $('#break1').hide();
-    var checkState=$(item).parent().parent().children('td').eq(7).html();
+    var checkState = $(item).parent().parent().children('td').eq(7).html();
 
-    if(checkState=='已收样'){
+    if (checkState == '已收样') {
         alert('单据已收样,不可修改!')
     }
 
-    if(checkState=='已拒收'){
+    if (checkState == '已拒收') {
         alert('单据已拒收,不可修改!')
     }
-    if(checkState=='已作废'){
+    if (checkState == '已作废') {
         alert('单据已作废,不可修改!')
     }
 
@@ -1472,22 +1466,21 @@ function secondaryAnalysisModify(item) {
         }
     });
 
-    if(checkState!='已作废'&&checkState!='已拒收'&&checkState!='已收样'){
+    if (checkState != '已作废' && checkState != '已拒收' && checkState != '已收样') {
         $('.selectpicker').selectpicker({
             language: 'zh_CN',
-            size:4
+            size: 4
         });
         $('.selectpicker').data('selectpicker', null);
         $('.bootstrap-select').find("button:first").remove();
         $('#addClone1').siblings().not($('#plusBtn1')).remove();
         setSelectList1();
-        var id=$(item).parent().parent().children('td').eq(1).html();
+        var id = $(item).parent().parent().children('td').eq(1).html();
         console.log(id)
         $('#reservationId2').val(id)
         $('#reservationId3').val(id)
         $("#appointModa3").modal('show');
         $('#confirm').hide();
-
 
 
         //根据编号查找
@@ -1496,14 +1489,14 @@ function secondaryAnalysisModify(item) {
             url: "getSecondarysampleById",              // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
-            data:{"id":id},
+            data: {"id": id},
             //contentType: 'application/json;charset=utf-8',
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
                     console.log(result)
                     //赋值
                     // 公司名称
-                    if(result.data.client!=null){
+                    if (result.data.client != null) {
                         $('#companyName').val(result.data.client.companyName);
                     }
                     //化验室签收人
@@ -1513,33 +1506,32 @@ function secondaryAnalysisModify(item) {
                     $('#sendingPerson2').val(result.data.sendingPerson)
 
                     //采样点
-                    if(result.data.secondaryPointItem!=null){
+                    if (result.data.secondaryPointItem != null) {
                         $('#address2').val(result.data.secondaryPointItem.dataDictionaryItemId)
                     }
 
 
+                    if (result.data.secondarySampleItemList != null) {
 
-                    if(result.data.secondarySampleItemList!=null){
-
-                        var tr=$('#addClone1');
+                        var tr = $('#addClone1');
                         //tr.siblings().remove();
 
-                        $.each(result.data.secondarySampleItemList,function (index,item) {
+                        $.each(result.data.secondarySampleItemList, function (index, item) {
 
                             var clonedTr = tr.clone();
 
-                            clonedTr.attr('class','myclass2');
+                            clonedTr.attr('class', 'myclass2');
 
                             clonedTr.show();
 
                             var obj = eval(item);
 
-                            if((index + 1)!=1){
+                            if ((index + 1) != 1) {
                                 var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
                                 clonedTr.children('td').eq(0).html(delBtn);
-                                clonedTr.children("td:eq(0)").append(index+1);
+                                clonedTr.children("td:eq(0)").append(index + 1);
                             }
-                            if((index + 1)==1){
+                            if ((index + 1) == 1) {
                                 clonedTr.children('td').eq(0).html(index + 1);
                             }
 
@@ -1548,21 +1540,21 @@ function secondaryAnalysisModify(item) {
                             clonedTr.children('td').eq(2).find('select').val(obj.wastesName)
 
 
-                            if(obj.water==1){
-                                clonedTr.children('td').eq(4).children("label").eq(0).find("input").prop('checked',true)
+                            if (obj.water == 1) {
+                                clonedTr.children('td').eq(4).children("label").eq(0).find("input").prop('checked', true)
                             }
-                            if(obj.water==0){
-                                clonedTr.children('td').eq(4).children("label").eq(0).find("input").prop('checked',false)
-                            }
-
-                            if(obj.scorchingRate==1){
-                                clonedTr.children('td').eq(4).children("label").eq(1).find("input").prop('checked',true)
-                            }
-                            if(obj.scorchingRate==0){
-                                clonedTr.children('td').eq(4).children("label").eq(1).find("input").prop('checked',false)
+                            if (obj.water == 0) {
+                                clonedTr.children('td').eq(4).children("label").eq(0).find("input").prop('checked', false)
                             }
 
-                            clonedTr.children('td').eq(1).find('select').selectpicker('val',obj.wastesCode);
+                            if (obj.scorchingRate == 1) {
+                                clonedTr.children('td').eq(4).children("label").eq(1).find("input").prop('checked', true)
+                            }
+                            if (obj.scorchingRate == 0) {
+                                clonedTr.children('td').eq(4).children("label").eq(1).find("input").prop('checked', false)
+                            }
+
+                            clonedTr.children('td').eq(1).find('select').selectpicker('val', obj.wastesCode);
 
                             clonedTr.removeAttr("id");
                             clonedTr.insertBefore(tr);
@@ -1571,7 +1563,7 @@ function secondaryAnalysisModify(item) {
                             // $('.selectpicker').selectpicker();
                             $('.selectpicker').selectpicker({
                                 language: 'zh_CN',
-                                size:6
+                                size: 6
                             });
                             $('.selectpicker').selectpicker('refresh');
                         });
@@ -1581,7 +1573,6 @@ function secondaryAnalysisModify(item) {
                         tr.removeAttr('class');
 
 
-
                     }
 
                 }
@@ -1589,13 +1580,11 @@ function secondaryAnalysisModify(item) {
 
                 }
             },
-            error:function (result) {
+            error: function (result) {
 
             }
         });
     }
-
-
 
 
 }
@@ -1603,12 +1592,12 @@ function secondaryAnalysisModify(item) {
 //确认修改
 function adjust() {
 
-    var data={
-        newId:$('#reservationId2').val(),
-        id:$('#reservationId3').val(),
-        sendingPerson:$('#sendingPerson2').val(),
-        secondaryPointItem:{dataDictionaryItemId:$('#address2').val()},
-        laboratorySignatory:$('#laboratorySignatory2').val(),
+    var data = {
+        newId: $('#reservationId2').val(),
+        id: $('#reservationId3').val(),
+        sendingPerson: $('#sendingPerson2').val(),
+        secondaryPointItem: {dataDictionaryItemId: $('#address2').val()},
+        laboratorySignatory: $('#laboratorySignatory2').val(),
     };
 
     //更新主表后删除字表数据
@@ -1620,29 +1609,29 @@ function adjust() {
         data: JSON.stringify(data),
         processData: false,
         contentType: 'application/json;charset=utf-8',
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
                 $('.myclass2').each(function () {
                     var water;
-                    if($(this).children('td').eq(4).find('label').eq(0).find("input").prop('checked')==true){
-                        water=1;
+                    if ($(this).children('td').eq(4).find('label').eq(0).find("input").prop('checked') == true) {
+                        water = 1;
                     }
                     else
-                        water=0;
+                        water = 0;
                     var scorchingRate;
-                    if($(this).children('td').eq(4).find('label').eq(1).find("input").prop('checked')==true){
-                        scorchingRate=1;
+                    if ($(this).children('td').eq(4).find('label').eq(1).find("input").prop('checked') == true) {
+                        scorchingRate = 1;
                     }
                     else
-                        scorchingRate=0;
+                        scorchingRate = 0;
 
-                    var   dataItem={
-                        sampleinformationId:$('#reservationId2').val(),
-                        wastesCode:$(this).children('td').eq(1).find("button").attr('title'),
-                        wastesName:$(this).children('td').eq(2).find("select option:selected").text(),
-                        water:water,
-                        scorchingRate:scorchingRate,
-                        identifie:$(this).children('td').eq(3).find("input").val(),
+                    var dataItem = {
+                        sampleinformationId: $('#reservationId2').val(),
+                        wastesCode: $(this).children('td').eq(1).find("button").attr('title'),
+                        wastesName: $(this).children('td').eq(2).find("select option:selected").text(),
+                        water: water,
+                        scorchingRate: scorchingRate,
+                        identifie: $(this).children('td').eq(3).find("input").val(),
                     };
                     console.log(dataItem)
                     $.ajax({
@@ -1657,51 +1646,53 @@ function adjust() {
 
 
                 })
-                alert("修改成功！")
-                window.location.reload();
+                alert("修改成功！");
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $("#appointModa3").modal('hide');
             }
         },
-        error:function (result) {
+        error: function (result) {
 
         }
     })
-
 
 
 }
 
 //作废
 function setInvalid(item) {
-    var id=$(item).parent().parent().children('td').eq(1).html();
+    var id = $(item).parent().parent().children('td').eq(1).html();
 
-    var state=$(item).parent().parent().children('td').eq(7).html();
-    if(state=='已收样'){
+    var state = $(item).parent().parent().children('td').eq(7).html();
+    if (state == '已收样') {
         alert("单据已收样,无法作废!")
     }
-    if(state=='已拒收'){
+    if (state == '已拒收') {
         alert("单据已拒收,无法作废!")
     }
-    if(state=='已作废'){
+    if (state == '已作废') {
         alert("单据已作废,无法再次作废!")
     }
-    if(state=='待收样') {
-        if(confirm("确认作废?")){
+    if (state == '待收样') {
+        if (confirm("确认作废?")) {
             //点击确定后操作
             $.ajax({
                 type: "POST",                       // 方法类型
                 url: "cancelSecondaryGeregistration",              // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 dataType: "json",
-                data: {'id':id},
+                data: {'id': id},
                 //processData: false,
                 //contentType: 'application/json;charset=utf-8',
-                success:function (result) {
-                    if (result != undefined && result.status == "success"){
+                success: function (result) {
+                    if (result != undefined && result.status == "success") {
                         alert(result.message)
-                        window.location.reload();
+                        $("#pageNumber").val(currentPage);   // 设置当前页页数
+                        inputSwitchPage();  // 跳转当前页
                     }
                 },
-                error:function (result) {
+                error: function (result) {
 
                 }
             })
@@ -1717,30 +1708,30 @@ function testing(item) {
     $('#pass').hide();
     $('#break').hide();
 
-    var id=$.trim($(item).val());
+    var id = $.trim($(item).val());
 
     $.ajax({
         type: "POST",                       // 方法类型
         url: "testingSecondaryId",              // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data:{'id':id},
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
+        data: {'id': id},
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
                 console.log(result)
-                if(result.data==true){
+                if (result.data == true) {
                     $('#break').show();
                 }
-                if(result.data==false){
+                if (result.data == false) {
                     $('#pass').show();
                 }
-                if($.trim(id).length<=0){
+                if ($.trim(id).length <= 0) {
                     $('#pass').hide();
                     $('#break').hide();
                 }
             }
         },
-        error:function (result) {
+        error: function (result) {
 
         }
     })
@@ -1751,30 +1742,30 @@ function testing1(item) {
     $('#pass1').hide();
     $('#break1').hide();
 
-    var id=$.trim($(item).val());
+    var id = $.trim($(item).val());
 
     $.ajax({
         type: "POST",                       // 方法类型
         url: "testingSecondaryId",              // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data:{'id':id},
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
+        data: {'id': id},
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
                 console.log(result)
-                if(result.data==true){
+                if (result.data == true) {
                     $('#break1').show();
                 }
-                if(result.data==false){
+                if (result.data == false) {
                     $('#pass1').show();
                 }
-                if($.trim(id).length<=0){
+                if ($.trim(id).length <= 0) {
                     $('#pass1').hide();
                     $('#break1').hide();
                 }
             }
         },
-        error:function (result) {
+        error: function (result) {
 
         }
     })

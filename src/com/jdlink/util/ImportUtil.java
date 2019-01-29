@@ -179,7 +179,16 @@ public class ImportUtil {
                                                 obj[j] = new SimpleDateFormat("yyyy/MM/dd").format(date);
                                                 break;
                                             case 22:
-                                                obj[j] = new SimpleDateFormat(" yyyy/MM/dd").format(date);
+                                                obj[j] = new SimpleDateFormat("yyyy/MM/dd").format(date);
+                                                break;
+                                            case 58:
+                                                obj[j] = new SimpleDateFormat("yyyy/MM/dd").format(date);
+                                                break;
+                                            case 20:
+                                                obj[j] = new SimpleDateFormat("HH:mm").format(date);
+                                                break;
+                                            case 32:
+                                                obj[j] = new SimpleDateFormat("HH:mm").format(date);
                                                 break;
                                             default:
                                                 break;

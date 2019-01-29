@@ -592,10 +592,14 @@ function findSpecification(item) {
         success:function (result) {
             if (result != undefined && result.status == "success"){
                 console.log(result)
-                $(item).parents('.myclass').children('td').eq(2).find('input').val(result.data)
+                if(result.data!=null){
+                    $(item).parents('.myclass').children('td').eq(2).find('input').val(result.data.specification);
+                    if(result.data.unitDataItem!=null){
+                        $(item).parents('.myclass').children('td').eq(3).find('select').val(result.data.unitDataItem.dataDictionaryItemId)
+                    }
+                }
             }
             else {
-
                 alert(result.message);
 
             }
