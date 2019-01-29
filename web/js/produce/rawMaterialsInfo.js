@@ -799,6 +799,10 @@ function view(item) {
                 //送样人
                 $('#sendingPerson1').text(result.data.sendingPerson);
 
+                //材料类别
+                if(result.data.rawMaterialsItem!=null){
+                    $('#rawMaterialsItem1').text(result.data.rawMaterialsItem.dictionaryItemName);
+                }
 
 
 
@@ -1285,7 +1289,7 @@ function setSubmit(item) {
         //根据编号查找
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "getSewaGeregistrationById",              // url
+            url: "getRawSampleById",              // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             data:{"id":id},
@@ -1293,34 +1297,26 @@ function setSubmit(item) {
             success:function (result) {
                 if (result != undefined && result.status == "success"){
                     console.log(result)
-                    //赋值
-                    // 公司名称
-                    if(result.data.client=null){
-                        $('#companyName').val(result.data.client.companyName);
-                    }
+
                     //化验室签收人
-                    $('#laboratorySignatory').val(result.data.laboratorySignatory)
+                    $('#laboratorySignatory').val(result.data.laboratorySignatory);
 
                     //送样人
-                    $('#sendingPerson1').text(result.data.sendingPerson)
+                    $('#sendingPerson1').text(result.data.sendingPerson);
 
-                    //采样点
-                    if(result.data.sewagePointItem!=null){
-                        if(result.data.sampleTime==''){
-                            $('#address1').text(result.data.sewagePointItem.dictionaryItemName)
-                        }
-                        else
-                            $('#address1').text(result.data.sewagePointItem.dictionaryItemName+"("+result.data.sampleTime+")")
-
+                    //材料类别
+                    if(result.data.rawMaterialsItem!=null){
+                        $('#rawMaterialsItem1').text(result.data.rawMaterialsItem.dictionaryItemName);
                     }
 
 
-                    if(result.data.sewageregistrationItemList!=null){
+
+                    if(result.data.rawSampleItemList!=null){
 
                         var tr=$('#clonrTr');
                         tr.siblings().remove();
 
-                        $.each(result.data.sewageregistrationItemList,function (index,item) {
+                        $.each(result.data.rawSampleItemList,function (index,item) {
 
                             var clonedTr = tr.clone();
 
@@ -1333,35 +1329,34 @@ function setSubmit(item) {
                             clonedTr.children('td').eq(1).html(obj.identifie);
                             // clonedTr.children('td').eq(2).html(obj.wastesName);
                             project = "";
-                            if (obj.cod == 1) {
-                                project += "COD ";
+                            if (obj.sodium == true) {
+                                project += "氢氧化钠 ";
                             }
-                            if (obj.bod5 == 1) {
-                                project += "BOD5 ";
+                            if (obj.calcium == true) {
+                                project += "氢氧化钙 ";
                             }
-                            if (obj.ph == 1) {
+                            if (obj.dry == true) {
+                                project += "干燥减量 ";
+                            }
+                            if (obj.adsorption == true) {
+                                project += "碘吸附值 ";
+                            }
+                            if (obj.ph == true) {
                                 project += "PH ";
                             }
-                            if (obj.electricalConductivity == 1) {
-                                project += "电导率 ";
+                            if (obj.water == true) {
+                                project += "水分 ";
                             }
-                            if (obj.hardness == 1) {
-                                project += "硬度 ";
+                            if (obj.ash == true) {
+                                project += "灰分 ";
                             }
-                            if (obj.lye == 1) {
-                                project += "碱度 ";
+                            if (obj.particle == true) {
+                                project += '粒度分布 ';
                             }
-                            if (obj.n2 == 1) {
-                                project += "氨氮 ";
+                            if (obj.density == true) {
+                                project += "表观密度 ";
                             }
-                            if (obj.nitrogen == 1) {
-                                project += "总氮 ";
-                            }
-                            if (obj.phosphorus == 1) {
-                                project += "总磷 ";
-                            }
-
-                            clonedTr.children('td').eq(2).html(project);
+                            clonedTr.children('td').eq(1).html(project);
 
                             clonedTr.removeAttr("id");
                             clonedTr.insertBefore(tr);
@@ -1402,6 +1397,57 @@ function setSubmit(item) {
     if(state=='已收样'){
         alert("单据已收样,无法收样")
     }
+}
+
+//确认送样方法==>真正的方法
+function confirmSample() {
+
+
+
+
+    var id=$("#reservationId1").text();
+
+    var laboratorySignatory=$('#laboratorySignatory').val();
+
+
+
+    var ph;
+
+    var cod;
+
+    var bod5;
+
+    var n2;
+
+    var phosphorus;
+
+    var nitrogen;
+
+    var lye;
+
+
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "confirmRawSampleById",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{"id":id,'laboratorySignatory':laboratorySignatory},
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                alert("已收样!")
+                window.location.reload();
+            }
+        },
+        error:function (result) {
+
+
+        }
+
+    });
+
+
 }
 
 /**
@@ -1666,7 +1712,7 @@ function importExcelChoose() {
  * 下载模板
  * */
 function downloadModal() {
-    var filePath = 'Files/Templates/污水分析日报模板.xls';
+    var filePath = 'Files/Templates/原辅材料送样登记导入模板.xls';
     var r = confirm("是否下载模板?");
     if (r == true) {
         window.open('downloadFile?filePath=' + filePath);
@@ -1733,4 +1779,61 @@ function exportExcel() {
     }
     console.log("sql:"+sqlWords);
     window.open('exportRawSample?name=' + name + '&sqlWords=' + sqlWords);
+}
+
+/**
+ * 一键签收
+ */
+function confirmAllCheck(){
+    var laboratorySigner = "";
+    $.ajax({
+        type: "POST",                             // 方法类型
+        url: "getCurrentUserInfo",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result.status === "success" && result.data != null) {
+                laboratorySigner = result.data.name;      // 获取签收人
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+    var idList = [];   // 承装需要确认收样的预约单号
+    $.each($("input[name='select']:checked"), function (index, item) {
+        if($(item).parent().parent().parent().find("td[name='state']").text() === "待收样") {   // 将待收样的物品
+            idList.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
+        }
+    });
+    if(idList.length > 0) {
+        var sampleInformation = {};
+        sampleInformation.laboratorySignatory = laboratorySigner;
+        sampleInformation.sampleIdList = idList;
+        console.log(sampleInformation);
+        $.ajax({
+            type: "POST",                             // 方法类型
+            url: "confirmAllRawSampleisCheck",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(sampleInformation),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result.status == "success") {
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.dir(result);
+                alert("服务器异常!");
+            }
+        });
+    } else {
+        alert("请勾选需要收样的单号！");
+    }
 }

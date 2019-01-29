@@ -662,6 +662,162 @@
     <select id="searchRawSampleTotal" resultType="int">
         select count(*) from t_pr_rawsample;
     </select>
+
+    <!--添加原辅材料化验-->
+    <insert id="addRawMaterialsTest" parameterType="RawMaterialsTest">
+        insert into t_pr_rawmaterialstest(id, RawMaterialsName, createTime, sodium, calcium, dry, adsorption, ph, water, ash, particle, density, remarks,checkStateId)
+        values (#{id},#{rawMaterialsName},NOW(),#{sodium},#{calcium},#{dry},#{adsorption},#{ph},#{water},#{ash},#{particle},#{density},#{remarks},64);
+    </insert>
+
+
+    <!--查询所有的次生化验单号-->
+    <select id="getAllRawMaterialsTestId" resultType="String">
+      select id from  t_pr_rawmaterialstest;
+    </select>
+
+    <resultMap id="RawMaterialsTestRM" type="RawMaterialsTest">
+        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"></association>
+    </resultMap>
+    <!--原辅材料化验单页面加载-->
+    <select id="loadRawMaterialsTestList" resultMap="RawMaterialsTestRM">
+              select * from t_pr_rawmaterialstest where checkStateId!=69
+        order by CONVERT(id,SIGNED) desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+
+    </select>
+
+    <!--根据编号获取原辅材料化验单-->
+    <select id="getRawMaterialsTestById" parameterType="String" resultMap="RawMaterialsTestRM">
+        select * from t_pr_rawmaterialstest where id=#{id}
+    </select>
+
+    <!--更新原辅材料化验单-->
+    <update id="updateRawMaterialsTestById" parameterType="RawMaterialsTest">
+        update t_pr_rawmaterialstest set rawMaterialsName=#{rawMaterialsName},sodium=#{sodium},calcium=#{calcium},dry=#{dry},adsorption=#{adsorption},ph=#{ph},
+        water=#{water},ash=#{ash},particle=#{particle},density=#{density},remarks=#{remarks} where id=#{id}
+    </update>
+
+    <!--原辅材料化验单总数-->
+    <select id="rawMaterialsTestTotal" resultType="int">
+        select count(*) from t_pr_rawmaterialstest;
+    </select>
+
+    <!--提交原辅材料化验-->
+    <update id="submitRawMaterialsTest" parameterType="String">
+        update t_pr_rawmaterialstest set  checkStateId=73 where id=#{id};
+    </update>
+
+    <!--签收原辅材料化验-->
+    <update id="confirmRawMaterialsTest" parameterType="String">
+        update t_pr_rawmaterialstest set  checkStateId=74 where id=#{id};
+    </update>
+
+    <!--作废原辅材料化验-->
+    <update id="cancelRawMaterialsTest" parameterType="String">
+        update t_pr_rawmaterialstest set  checkStateId=69,id=CONCAT("I-",#{id}) where id=#{id};
+    </update>
+
+    <!--原辅材料收样状态为待收样-->
+    <update id="cancelRawMaterialsTestAfter" parameterType="String">
+        update t_pr_rawsample set checkStateId =86  where id=#{id} ;
+    </update>
+
+
+    <!--原辅材料化验单查询-->
+    <select id="searchRawMaterialsTest" resultMap="RawMaterialsTestRM" parameterType="RawMaterialsTest">
+        select * from t_pr_rawmaterialstest
+        <where>
+            <if test="keyword!=null and keyword!=''">
+                or id like "%"#{keyword}"%"
+                or rawMaterialsName like "%"#{keyword}"%"
+                or remarks like "%"#{keyword}"%"
+                or sodium = #{keyword}
+                or calcium = #{keyword}
+                or dry = #{keyword}
+                or adsorption = #{keyword}
+                or ph = #{keyword}
+                or water = #{keyword}
+                or ash = #{keyword}
+                or particle = #{keyword}
+                or density = #{keyword}
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and dataDictionaryId=11)
+            </if>
+            <if test="id!=null and id!=''">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="remarks!=null and remarks!=''">
+                and remarks like "%"#{remarks}"%"
+            </if>
+            <if test="rawMaterialsName!=null and rawMaterialsName!=''">
+                and rawMaterialsName like "%"#{rawMaterialsName}"%"
+            </if>
+            <if test="checkStateItem!=null">
+               <if test="checkStateItem.dataDictionaryItemId!=0">
+                   and checkStateId=#{checkStateItem.dataDictionaryItemId}
+               </if>
+            </if>
+        </where>
+        <if test="page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--原辅材料化验单查询计数-->
+    <select id="searchRawMaterialsTestCount" resultType="int" parameterType="RawMaterialsTest">
+        select count(*) from t_pr_rawmaterialstest
+        <where>
+            <if test="keyword!=null and keyword!=''">
+                or id like "%"#{keyword}"%"
+                or rawMaterialsName like "%"#{keyword}"%"
+                or remarks like "%"#{keyword}"%"
+                or sodium = #{keyword}
+                or calcium = #{keyword}
+                or dry = #{keyword}
+                or adsorption = #{keyword}
+                or ph = #{keyword}
+                or water = #{keyword}
+                or ash = #{keyword}
+                or particle = #{keyword}
+                or density = #{keyword}
+                or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%" and dataDictionaryId=11)
+            </if>
+            <if test="id!=null and id!=''">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="remarks!=null and remarks!=''">
+                and remarks like "%"#{remarks}"%"
+            </if>
+            <if test="rawMaterialsName!=null and rawMaterialsName!=''">
+                and rawMaterialsName like "%"#{rawMaterialsName}"%"
+            </if>
+            <if test="checkStateItem!=null">
+                <if test="checkStateItem.dataDictionaryItemId!=0">
+                    and checkStateId=#{checkStateItem.dataDictionaryItemId}
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <!--确认送样==>原辅材料-->
+    <update id="confirmRawSampleById">
+    update t_pr_rawsample set checkStateId=87,laboratorySignatory=#{1} where id=#{0};
+</update>
+
+
+    <!--一键签收功能 原辅材料送样-->
+    <update id="confirmAllRawSampleisCheck" parameterType="RawSample">
+        <if test="sampleIdList.size() > 0">
+            <foreach collection="sampleIdList" item="sampleId" index="index">
+                UPDATE t_pr_rawsample
+                SET
+                checkStateId=87,laboratorySignatory=#{laboratorySignatory}
+                WHERE id = #{sampleId};
+            </foreach>
+        </if>
+    </update>
+
 </mapper>
 
 
