@@ -41,6 +41,14 @@
             limit #{start}, #{count}
         </if>
     </select>
+
+    <select id="UpdatePeriodAndInventory" resultMap="MedicalWastesRM" parameterType="String">
+
+           select * from t_pl_medicalwastes where checkStateId!=71 and  dateTime>#{keyword}
+           order by dateTime
+
+
+    </select>
     <!--高级查询-->
     <select id="searchMedicalWastes" parameterType="MedicalWastes" resultMap="MedicalWastesRM">
         select  * from t_pl_medicalwastes
@@ -122,7 +130,7 @@
         directDisposal=#{directDisposal},cookingWastes=#{cookingWastes},afterCookingNumber=#{afterCookingNumber},
         afterCookingInbound=#{afterCookingInbound},thisMonthSendCooking=#{thisMonthSendCooking},
         errorNumber=#{errorNumber},wetNumber=#{wetNumber},nowTime=NOW(),equipment=#{equipment},
-        equipmentId=#{equipmentDataItem.dataDictionaryItemId},incineration=#{incineration}
+        equipmentId=#{equipmentDataItem.dataDictionaryItemId},incineration=#{incineration},earlyNumber=#{earlyNumber},wastesAmount=#{wastesAmount}
         where medicalWastesId=#{medicalWastesId};
     </update>
     

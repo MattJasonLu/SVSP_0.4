@@ -128,6 +128,39 @@ public class MedicalWastes {
      */
     private Page page;
 
+    /*消毒剂*/
+    private float disinfectant;
+
+    /*消毒剂*/
+    private float deodorant;
+
+    /*吨袋*/
+    private float bag;
+
+    public float getDisinfectant() {
+        return disinfectant;
+    }
+
+    public void setDisinfectant(float disinfectant) {
+        this.disinfectant = disinfectant;
+    }
+
+    public float getDeodorant() {
+        return deodorant;
+    }
+
+    public void setDeodorant(float deodorant) {
+        this.deodorant = deodorant;
+    }
+
+    public float getBag() {
+        return bag;
+    }
+
+    public void setBag(float bag) {
+        this.bag = bag;
+    }
+
     public Page getPage() {
         return page;
     }
