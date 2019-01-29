@@ -312,5 +312,20 @@ public class SewageTestImpl implements SewageTestService{
         sewageTestMapper.rejectRawSampleItemById(id,advice);
     }
 
+    @Override
+    public List<RawSample> searchRawSample(RawSample rawSample) {
+        return sewageTestMapper.searchRawSample(rawSample);
+    }
+
+    @Override
+    public int searchRawSampleCount(RawSample rawSample) {
+        return sewageTestMapper.searchRawSampleCount(rawSample);
+    }
+
+    @Override
+    public int searchRawSampleTotal() {
+        return sewageTestMapper.searchRawSampleTotal();
+    }
+
 
 }

@@ -1,7 +1,7 @@
 /*原辅材料送样脚本*/
 var currentPage = 1;                          //当前页数
 var isSearch = false;
-var data1;
+var data;
 
 /**
  * 返回count值
@@ -20,7 +20,7 @@ function totalPage() {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "totalSewageRecord",                  // url
+            url: "searchRawSampleTotal",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
@@ -39,9 +39,9 @@ function totalPage() {
     } else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchSewageTotal",                  // url
+            url: "searchRawSampleCount",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data1),
+            data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
@@ -250,14 +250,14 @@ function switchPage(pageNumber) {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "loadPageSewageList",         // url
+            url: "loadRawSampleList",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(page),
             dataType: "json",
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined) {
-                    setSewageList(result.data);
+                    setRawSampleList(result.data);
                 } else {
                     console.log("fail: " + result);
                 }
@@ -267,18 +267,18 @@ function switchPage(pageNumber) {
             }
         });
     } else {
-        data1['page'] = page;
+        data['page'] = page;
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchSewage",         // url
+            url: "searchRawSample",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data1),
+            data: JSON.stringify(data),
             dataType: "json",
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined) {
                     // console.log(result);
-                    setSewageList(result.data);
+                    setRawSampleList(result);
                 } else {
                     console.log("fail: " + result);
                 }
@@ -333,7 +333,7 @@ function inputSwitchPage() {
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "loadPageSewageList",         // url
+                url: "loadRawSampleList",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(page),
                 dataType: "json",
@@ -341,7 +341,7 @@ function inputSwitchPage() {
                 success: function (result) {
                     if (result != undefined) {
                         console.log(result);
-                        setSewageList(result.data);
+                        setRawSampleList(result.data);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -351,18 +351,18 @@ function inputSwitchPage() {
                 }
             });
         } else {
-            data1['page'] = page;
+            data['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "searchSewage",         // url
+                url: "searchRawSample",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(data1),
+                data: JSON.stringify(data),
                 dataType: "json",
                 contentType: 'application/json;charset=utf-8',
                 success: function (result) {
                     if (result != undefined) {
                         // console.log(result);
-                        setSewageList(result.data);
+                        setRawSampleList(result);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -435,7 +435,33 @@ function loadRawSampleList() {
     });
     isSearch = false;
 
-
+    //为原辅类别做下拉框
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getRawMaterialsByDataDictionary",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                //处理类别
+                var rawMaterialsItem = $('#search-rawMaterialsItem');
+                rawMaterialsItem.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    rawMaterialsItem.append(option);
+                });
+                rawMaterialsItem.get(0).selectedIndex = 0;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
 }
 
 
@@ -1447,4 +1473,184 @@ function rejection1() {
     })
 
 
+}
+
+/**
+ * 延时搜索及回车搜索功能
+ */
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp == 0){
+                searchRawSample();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchRawSample();      //
+            }
+        },400);
+    });
+});
+
+/*查询*/
+function searchRawSample() {
+    isSearch = true;
+    var page = {};
+    var pageNumber = 1;                       // 显示首页
+    page.pageNumber = pageNumber;
+    page.count = countValue();
+    page.start = (pageNumber - 1) * page.count;
+    // 精确查询
+    if ($("#senior").is(':visible')) {
+        var sodium;
+        var calcium;
+        var dry;
+        var adsorption;
+        var ph;
+        var water;
+        var ash;
+        var particle;
+        var density;
+        if($('#search-sodium').prop('checked')==true){
+            sodium=true;
+        }
+        else
+            sodium=false;
+
+        if($('#search-calcium').prop('checked')==true){
+            calcium=true;
+        }
+        else
+            calcium=false;
+
+        if($('#search-dry').prop('checked')==true){
+            dry=true;
+        }
+        else
+            dry=false;
+
+        if($('#search-adsorption').prop('checked')==true){
+            adsorption=true;
+        }
+        else
+            adsorption=false;
+
+        if($('#search-ph').prop('checked')==true){
+            ph=true;
+        }
+        else
+            ph=false;
+
+        if($('#search-water').prop('checked')==true){
+            water=true;
+        }
+        else
+            water=false;
+
+        if($('#search-ash').prop('checked')==true){
+            ash=true;
+        }
+        else
+            ash=false;
+
+        if($('#search-particle').prop('checked')==true){
+            particle=true;
+        }
+        else
+            particle=false;
+
+        if($('#search-density').prop('checked')==true){
+            density=true;
+        }
+        else
+            density=false;
+
+        data = {
+            sendingPerson:$.trim($('#search-remarks').val()),
+            laboratorySignatory:$.trim($('#search-laboratorySignatory').val()),
+            rawMaterialsItem:{dataDictionaryItemId:$('#search-rawMaterialsItem').val()},
+            rawSampleItemList:[{sodium:sodium,calcium:calcium,dry:dry,adsorption:adsorption,ph:ph,water:water,ash:ash,particle:particle,density:density}],
+            checkStateItem:{dataDictionaryItemId:$("#search-checkState").val()},
+            page: page,
+        };
+        console.log(data);
+        // 模糊查询
+    } else {
+        var keywords=$.trim($("#searchContent").val());
+
+        if(keywords=='氢氧化钠'){
+            sodium=true;
+            keywords='';
+        }
+        if(keywords=='氢氧化钙'){
+            calcium=true;
+            keywords='';
+        }
+        if(keywords=='干燥减量'){
+            dry=true;
+            keywords='';
+        }
+        if(keywords=='碘吸附值'){
+            adsorption=true;
+            keywords='';
+        }
+        if(keywords=='PH'){
+            ph=true;
+            keywords='';
+        }
+        if(keywords=='水分'){
+            water=true;
+            keywords='';
+        }
+        if(keywords=='灰分'){
+            ash=true;
+            keywords='';
+        }
+
+        if(keywords=='粒度分布'){
+            particle=true;
+            keywords='';
+        }
+
+        if(keywords=='表观密度'){
+            density=true;
+            keywords='';
+        }
+
+        data = {
+            keywords: keywords,
+            page: page,
+            rawSampleItemList:[{sodium:sodium,calcium:calcium,dry:dry,adsorption:adsorption,ph:ph,water:water,ash:ash,particle:particle,density:density}],
+        };
+    }
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "searchRawSample",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                setPageClone(result);
+                setPageCloneAfter(pageNumber);        // 重新设置页码
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+
+}
+
+/**
+ * 回车查询
+ */
+function enterSearch(){
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchRawSample();      //
+    }
 }
