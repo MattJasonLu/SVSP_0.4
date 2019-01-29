@@ -757,9 +757,7 @@ function save() {
 function setSubmit(item) {
 
     var id = $(item).parent().parent().children('td').eq(1).html();
-
-    console.log(id)
-
+    console.log(id);
     if (confirm("确认提交?")) {
         $.ajax({
             type: "POST",                       // 方法类型
@@ -770,8 +768,9 @@ function setSubmit(item) {
             //contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined && result.status == "success") {
-                    alert(result.message)
-                    window.location.reload();
+                    alert(result.message);
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 }
 
             },
@@ -798,8 +797,9 @@ function setConfirm(item) {
             //contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined && result.status == "success") {
-                    alert(result.message)
-                    window.location.reload();
+                    alert(result.message);
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 }
 
             },
@@ -825,10 +825,10 @@ function setCancel(item) {
             //contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined && result.status == "success") {
-                    alert(result.message)
-                    window.location.reload();
+                    alert(result.message);
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 }
-
             },
             error: function (result) {
                 alert("服务器异常！")
@@ -961,11 +961,11 @@ function adjustSoftTest() {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 //赋值
-                alert(result.message)
-                window.location.reload();
-
+                alert(result.message);
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $('#addModal2').modal('hide');
             }
-
         },
         error: function (result) {
             alert("服务器异常！")

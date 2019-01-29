@@ -729,7 +729,8 @@ function confirmAllCheck(){
             success: function (result) {
                 if (result.status == "success") {
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                     alert(result.message);
                 }
@@ -761,7 +762,9 @@ function confirmCheck() {
         success: function (result) {
             if (result.status == "success") {
                 alert(result.message);
-                window.location.reload();
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $('#viewAppointModal').modal('hide');
             } else {
                 alert(result.message);
             }
@@ -1241,7 +1244,9 @@ function updateAppointBySampleId() {
                 var data = eval(result);
                 if (data.status == "success") {
                     alert(data.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
+                    $('#adjustModal').modal('hide');
                 } else {
                     alert(data.message);
                     console.log(data.exception);
@@ -1615,7 +1620,8 @@ function deleteSample(menu) {
                         var data = eval(result);
                         alert(data.message);
                         if (data.status == "success") {
-                            window.location.reload();
+                            $("#pageNumber").val(currentPage);   // 设置当前页页数
+                            inputSwitchPage();  // 跳转当前页
                         }
                     }
                 },
@@ -1748,7 +1754,9 @@ function rejection1() {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 alert(result.message);
-                window.location.reload();
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $('#rejection1').modal('hide');
             }
         },
         error: function (result) {
