@@ -506,7 +506,8 @@
 
     <!--作废原辅材料-->
     <update id="cancelRawSample" parameterType="String">
-        update t_pr_rawsample set checkStateId=69 where id=#{id}
+       update t_pr_rawsample set  checkStateId=69,id=CONCAT("I-",#{id}) where id=#{id};
+        update t_pr_rawsampleitem set sampleinformationId=CONCAT("I-",#{id}) where sampleinformationId=#{id};
     </update>
 
     <!--原辅材料拒收-->

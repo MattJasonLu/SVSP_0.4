@@ -453,7 +453,7 @@ function loadRawSampleList() {
                     option.text(item.dictionaryItemName);
                     rawMaterialsItem.append(option);
                 });
-                rawMaterialsItem.get(0).selectedIndex = 0;
+                rawMaterialsItem.get(0).selectedIndex =-1;
             } else {
                 console.log("fail: " + result);
             }
@@ -1653,4 +1653,84 @@ function enterSearch(){
     if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
         searchRawSample();      //
     }
+}
+
+/**
+ * 导入模态框
+ * */
+function importExcelChoose() {
+    $("#importExcelModal").modal('show');
+}
+
+/**
+ * 下载模板
+ * */
+function downloadModal() {
+    var filePath = 'Files/Templates/污水分析日报模板.xls';
+    var r = confirm("是否下载模板?");
+    if (r == true) {
+        window.open('downloadFile?filePath=' + filePath);
+    }
+}
+
+/**
+ * 导入excel
+ */
+function importExcel() {
+    document.getElementById("idExcel").click();
+    document.getElementById("idExcel").addEventListener("change", function () {
+        var eFile = document.getElementById("idExcel").files[0];
+        var formFile = new FormData();
+        formFile.append("excelFile", eFile);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "importRawSampleExcel",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: formFile,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                if (result != undefined) {
+                    console.log(result);
+                    if (result.status == "success") {
+                        alert(result.message);
+                        window.location.reload();         //刷新
+                    } else {
+                        alert(result.message);
+                        window.location.reload();
+                    }
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    });
+}
+
+/**
+ * 导出excel
+ * @param e
+ */
+function exportExcel() {
+    var name = 't_pr_rawsample';
+    // 获取勾选项
+    var idArry = [];
+    $.each($("input[name='select']:checked"),function(index,item){
+        idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
+    });
+    var sqlWords = '';
+    var sql = ' in (';
+    if (idArry.length > 0) {
+        for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+            if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
+            else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
+        }
+        sqlWords = "select  a.id,a.sendingPerson,a.laboratorySignatory,c.dictionaryItemName,b.sodium,b.calcium,b.dry,b.adsorption,b.ph,b.water,b.ash,b.particle,b.density  from  t_pr_rawsample a join  t_pr_rawsampleitem b on b.sampleinformationId=a.id join datadictionaryitem c on c.dataDictionaryItemId=a.checkStateId and a.id" + sql;
+    }else {          // 若无勾选项则导出全部
+        sqlWords = "select  a.id,a.sendingPerson,a.laboratorySignatory,c.dictionaryItemName,b.sodium,b.calcium,b.dry,b.adsorption,b.ph,b.water,b.ash,b.particle,b.density  from  t_pr_rawsample a join  t_pr_rawsampleitem b on b.sampleinformationId=a.id join datadictionaryitem c on c.dataDictionaryItemId=a.checkStateId and a.id";
+    }
+    console.log("sql:"+sqlWords);
+    window.open('exportRawSample?name=' + name + '&sqlWords=' + sqlWords);
 }
