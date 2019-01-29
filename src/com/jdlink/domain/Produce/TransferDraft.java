@@ -40,6 +40,30 @@ public class TransferDraft {
      */
     private Wastes wastes;
     /**
+     * 1库数量
+     */
+    private Float count1H;
+    /**
+     * 2库数量
+     */
+    private Float count2H;
+    /**
+     * 智能库数量
+     */
+    private Float countZN;
+    /**
+     * 入库时分
+     */
+    private String inboundTime;
+    /**
+     * 出库时分
+     */
+    private String outboundTime;
+    /**
+     * 联单编号
+     */
+    private String transferId;
+    /**
      * 外运目的-是否中转储存
      */
     private boolean outwardIsTransit;
@@ -200,6 +224,10 @@ public class TransferDraft {
      */
     private Date signDate;
     /**
+     * 备注
+     */
+    private String remark;
+    /**
      * 记录最后操作时间，用于排序
      */
     private Date nowTime;
@@ -258,6 +286,62 @@ public class TransferDraft {
 
     public void setWastes(Wastes wastes) {
         this.wastes = wastes;
+    }
+
+    public Float getCount1H() {
+        return count1H;
+    }
+
+    public void setCount1H(Float count1H) {
+        this.count1H = count1H;
+    }
+
+    public Float getCount2H() {
+        return count2H;
+    }
+
+    public void setCount2H(Float count2H) {
+        this.count2H = count2H;
+    }
+
+    public Float getCountZN() {
+        return countZN;
+    }
+
+    public void setCountZN(Float countZN) {
+        this.countZN = countZN;
+    }
+
+    public String getInboundTime() {
+        return inboundTime;
+    }
+
+    public void setInboundTime(String inboundTime) {
+        this.inboundTime = inboundTime;
+    }
+
+    public String getOutboundTime() {
+        return outboundTime;
+    }
+
+    public void setOutboundTime(String outboundTime) {
+        this.outboundTime = outboundTime;
+    }
+
+    public String getTransferId() {
+        return transferId;
+    }
+
+    public void setTransferId(String transferId) {
+        this.transferId = transferId;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public boolean isOutwardIsTransit() {

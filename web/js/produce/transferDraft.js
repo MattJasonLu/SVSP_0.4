@@ -333,44 +333,30 @@ function setDataList(result) {
     var tr = $("#cloneTr");
     tr.siblings().remove();
     $.each(result, function (index, item) {
+        var obj = eval(item);
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
         clonedTr.show();
         // 循环遍历cloneTr的每一个td元素，并赋值
-        clonedTr.children("td").each(function (inner_index) {
-            var obj = eval(item);
-            // 根据索引为部分td赋值
-            switch (inner_index) {
-                case (1):
-                    $(this).html(obj.id);
-                    break;
-                case (2):
-                    if (obj.produceCompany != null)
-                        $(this).html(obj.produceCompany.companyName);
-                    break;
-                case (3):
-                    if (obj.transportCompany != null)
-                        $(this).html(obj.transportCompany.companyName);
-                    break;
-                case (4):
-                    if (obj.acceptCompany != null)
-                        $(this).html(obj.acceptCompany.companyName);
-                    break;
-                case (5):
-                    $(this).html(obj.dispatcher);
-                    break;
-                case (6):
-                    $(this).html(obj.destination);
-                    break;
-                case (7):
-                    $(this).html(getTimeStr(obj.transferTime));
-                    break;
-                case (8):
-                    if (obj.checkStateItem != null)
-                        $(this).html(obj.checkStateItem.dictionaryItemName);
-                    break;
-            }
-        });
+        clonedTr.find("td[name='transferTime']").text(getDateStr(obj.transferTime));
+        clonedTr.find("td[name='inboundTime']").text(obj.inboundTime);
+        clonedTr.find("td[name='outboundTime']").text(obj.outboundTime);
+        clonedTr.find("td[name='transferId']").text(obj.transferId);
+        if (obj.produceCompany != null) {
+            clonedTr.find("td[name='produceCompany']").text(obj.produceCompany.companyName);
+        }
+        if (obj.wastes != null) {
+            clonedTr.find("td[name='wastesName']").text(obj.wastes.name);
+            clonedTr.find("td[name='wastesCode']").text(obj.wastes.wastesId);
+            clonedTr.find("td[name='transferCount']").text(parseFloat(obj.wastes.transferCount).toFixed(2));
+        }
+        clonedTr.find("td[name='count1H']").text(parseFloat(obj.count1H).toFixed(2));
+        clonedTr.find("td[name='count2H']").text(parseFloat(obj.count2H).toFixed(2));
+        clonedTr.find("td[name='countZN']").text(parseFloat(obj.countZN).toFixed(2));
+        clonedTr.find("td[name='firstBrand']").text(obj.firstBrand);
+        clonedTr.find("td[name='firstCarrier']").text(obj.firstCarrier);
+        clonedTr.find("td[name='recipient']").text(obj.recipient);
+        clonedTr.find("td[name='remark']").text(obj.remark);
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
         clonedTr.insertBefore(tr);
@@ -1302,7 +1288,7 @@ function importExcel2() {
     document.getElementById("idExcel").addEventListener("change", function () {
         var eFile = document.getElementById("idExcel").files[0];
         var formFile = new FormData();
-        formFile.append("pdfFile", eFile);
+        formFile.append("excelFile", eFile);
         $.ajax({
             type: "POST",                       // 方法类型
             url: "importTransferDraftExcel",              // url
