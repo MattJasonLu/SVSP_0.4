@@ -473,6 +473,7 @@ function saveMedicalWastes() {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 console.log(result);
+                UpdatePeriodAndInventory(getDateStr(result.date));
                 alert(result.message);
                 window.location.href = "medicalWasteManager.html";
             }
