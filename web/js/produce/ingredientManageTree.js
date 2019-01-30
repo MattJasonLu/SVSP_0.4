@@ -153,7 +153,7 @@ function showUrl(treeNode) {
                     option.text(item.dictionaryItemName);
                     materialCategoryItem.append(option);
                 });
-                materialCategoryItem.get(0).selectedIndex=0;
+                materialCategoryItem.get(0).selectedIndex = -1;
             }
             else {
                 alert(result.message);
