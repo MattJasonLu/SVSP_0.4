@@ -94,4 +94,11 @@ public class MedicalWastesServiceImpl implements MedicalWastesService {
     public List<MedicalWastes> UpdatePeriodAndInventory(@Param(value="keyword") String keyword) {
         return medicalWastesMapper.UpdatePeriodAndInventory(keyword);
     }
+
+    @Override
+    public MedicalWastes getCumulative(MedicalWastes medicalWastes) {
+        return medicalWastesMapper.getCumulative(medicalWastes);
+    }
+
+
 }

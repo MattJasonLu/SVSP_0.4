@@ -128,6 +128,105 @@ public class MedicalWastes {
      */
     private Page page;
 
+    /*本日进场危废合计*/
+    private float thisMonthWastesTotal;
+
+    /*本日直接转外处置量合计*/
+    private float directDisposalTotal;
+
+    /*本日蒸煮医废(过磅)合计*/
+    private float cookingWastesTotal;
+
+    /*蒸煮后重量合计*/
+    private float afterCookingNumberTotal;
+
+    /*蒸煮后入库量合计*/
+    private float afterCookingInboundTotal;
+
+    /*本日蒸煮后外送量合计*/
+    private float thisMonthSendCookingTotal;
+
+    /*误差量合计*/
+    private float errorNumberTotal;
+
+    /*水分含量合计*/
+    private float wetNumberTotal;
+
+    /*焚烧量合计*/
+    private float incinerationTotal;
+
+    public float getIncinerationTotal() {
+        return incinerationTotal;
+    }
+
+    public void setIncinerationTotal(float incinerationTotal) {
+        this.incinerationTotal = incinerationTotal;
+    }
+
+    public float getThisMonthWastesTotal() {
+        return thisMonthWastesTotal;
+    }
+
+    public void setThisMonthWastesTotal(float thisMonthWastesTotal) {
+        this.thisMonthWastesTotal = thisMonthWastesTotal;
+    }
+
+    public float getDirectDisposalTotal() {
+        return directDisposalTotal;
+    }
+
+    public void setDirectDisposalTotal(float directDisposalTotal) {
+        this.directDisposalTotal = directDisposalTotal;
+    }
+
+    public float getCookingWastesTotal() {
+        return cookingWastesTotal;
+    }
+
+    public void setCookingWastesTotal(float cookingWastesTotal) {
+        this.cookingWastesTotal = cookingWastesTotal;
+    }
+
+    public float getAfterCookingNumberTotal() {
+        return afterCookingNumberTotal;
+    }
+
+    public void setAfterCookingNumberTotal(float afterCookingNumberTotal) {
+        this.afterCookingNumberTotal = afterCookingNumberTotal;
+    }
+
+    public float getAfterCookingInboundTotal() {
+        return afterCookingInboundTotal;
+    }
+
+    public void setAfterCookingInboundTotal(float afterCookingInboundTotal) {
+        this.afterCookingInboundTotal = afterCookingInboundTotal;
+    }
+
+    public float getThisMonthSendCookingTotal() {
+        return thisMonthSendCookingTotal;
+    }
+
+    public void setThisMonthSendCookingTotal(float thisMonthSendCookingTotal) {
+        this.thisMonthSendCookingTotal = thisMonthSendCookingTotal;
+    }
+
+    public float getErrorNumberTotal() {
+        return errorNumberTotal;
+    }
+
+    public void setErrorNumberTotal(float errorNumberTotal) {
+        this.errorNumberTotal = errorNumberTotal;
+    }
+
+    public float getWetNumberTotal() {
+        return wetNumberTotal;
+    }
+
+    public void setWetNumberTotal(float wetNumberTotal) {
+        this.wetNumberTotal = wetNumberTotal;
+    }
+
     /*消毒剂*/
     private float disinfectant;
 
