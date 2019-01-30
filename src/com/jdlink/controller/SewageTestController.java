@@ -1,13 +1,18 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.Dictionary.RawMaterialsItem;
+import com.jdlink.domain.Dictionary.SewagePointItem;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
+import com.jdlink.service.dictionary.DictionaryService;
 import com.jdlink.service.produce.SewageTestService;
 import com.jdlink.util.DBUtil;
+import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,12 +22,17 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class SewageTestController {
     @Autowired
     SewageTestService sewageTestService;
+    @Autowired
+    DictionaryService dictionaryService;
 
     /**
      * 导入污水化验单数据
@@ -1547,6 +1557,749 @@ public class SewageTestController {
 
          return res.toString();
      }
+
+     /*原辅材料送样总数*/
+     @RequestMapping("searchRawSampleTotal")
+     @ResponseBody
+     public int searchRawSampleTotal(){
+         return sewageTestService.searchRawSampleTotal();
+     }
+
+     /*原辅材料送样查询*/
+    @RequestMapping("searchRawSample")
+    @ResponseBody
+    public String searchRawSample(@RequestBody RawSample rawSample){
+        JSONObject res=new JSONObject();
+
+        try{
+     List<RawSample> rawSampleList=sewageTestService.searchRawSample(rawSample);
+            res.put("data", rawSampleList);
+            res.put("status", "success");
+            res.put("message", "分页数据获取成功!");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "分页数据获取失败！");
+
+        }
+
+        return res.toString();
+    }
+
+    /*原辅材料送样查询计数*/
+    @RequestMapping("searchRawSampleCount")
+    @ResponseBody
+    public int searchRawSampleCount(@RequestBody RawSample rawSample){
+       return sewageTestService.searchRawSampleCount(rawSample);
+    }
+
+
+    /**
+     * 原辅材料送样导入
+     *
+     * @param excelFile
+     * @return
+     */
+    @RequestMapping("importRawSampleExcel")
+    @ResponseBody
+    public String importRawSampleExcel(MultipartFile excelFile) {
+        JSONObject res = new JSONObject();
+        try {
+            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+            System.out.println(data);
+            for(int i=2;i<data.length;i++){
+                 if(data[i][0].toString()!="null"){
+                     RawSample rawSample=new RawSample();
+                     rawSample.setId(data[i][0].toString());
+                     rawSample.setNewId(data[i][0].toString());
+                     if(data[i][1].toString()!="null"){
+                         rawSample.setSendingPerson(data[i][1].toString());
+                     }
+                     if(data[i][2].toString()!="null"){
+                         RawMaterialsItem rawMaterialsItem=new RawMaterialsItem();
+                         int dataDictionaryItemId=dictionaryService.getdatadictionaryitemIdByName(data[i][2].toString(),41);
+                         rawMaterialsItem.setDataDictionaryItemId(dataDictionaryItemId);
+                         rawSample.setRawMaterialsItem(rawMaterialsItem);
+                     }
+                     RawSampleItem rawSampleItem=new RawSampleItem();
+                     rawSampleItem.setSampleinformationId(data[i][0].toString());
+                     String id1;
+                     int index = sewageTestService.CountById(data[i][0].toString());
+                     do {
+                         index += 1;
+                         String index1 = index + "";
+                         if (index < 10) index1 = "000" + index;
+                         else if (index < 100) index1 = "00" + index;
+                         else if (index < 1000) index1 = "0" + index;
+                         id1 = rawSampleItem.getSampleinformationId() + index1;
+                     } while (sewageTestService.getRawSampleItemById(id1) != null);
+                     rawSampleItem.setId(id1);
+                     //氢氧化钠
+                     if(data[i][3].toString().equals("1")){
+                         rawSampleItem.setSodium(true);
+                     }
+                     else
+                         rawSampleItem.setSodium(false);
+                     //氢氧化钙
+                     if(data[i][4].toString().equals("1")){
+                         rawSampleItem.setCalcium(true);
+                     }
+                     else
+                         rawSampleItem.setCalcium(false);
+                     //干燥减量
+                     if(data[i][5].toString().equals("1")){
+                         rawSampleItem.setDry(true);
+                     }
+                     else
+                         rawSampleItem.setDry(false);
+                     //碘吸附值
+                     if(data[i][6].toString().equals("1")){
+                         rawSampleItem.setAdsorption(true);
+                     }
+                     else
+                         rawSampleItem.setAdsorption(false);
+                     //PH
+                     if(data[i][7].toString().equals("1")){
+                         rawSampleItem.setPh(true);
+                     }
+                     else
+                         rawSampleItem.setPh(false);
+                     //水分
+                     if(data[i][8].toString().equals("1")){
+                         rawSampleItem.setWater(true);
+                     }
+                     else
+                         rawSampleItem.setWater(false);
+                     //灰分
+                     if(data[i][9].toString().equals("1")){
+                         rawSampleItem.setAsh(true);
+                     }
+                     else
+                         rawSampleItem.setAsh(false);
+                     //粒度分布
+                     if(data[i][10].toString().equals("1")){
+                         rawSampleItem.setParticle(true);
+                     }
+                     else
+                         rawSampleItem.setParticle(false);
+                     //表观密度
+                     if(data[i][10].toString().equals("1")){
+                         rawSampleItem.setDensity(true);
+                     }
+                     else
+                         rawSampleItem.setDensity(false);
+
+                     //判断有没有预约单号相同的，有的话更新，没有添加
+
+                     RawSample rawSample1=sewageTestService.getRawSampleById(data[i][0].toString());
+                     if(rawSample1!=null){//更新
+                         //删除字表
+                         sewageTestService.deleteRawSampleItem(data[i][0].toString());
+                         //更新主表
+                         sewageTestService.updateRawSample(rawSample);
+                         //添加字表
+                         sewageTestService.addRawSampleItem(rawSampleItem);
+                     }
+                     if(rawSample1==null){//没有就是全部添加
+                         sewageTestService.addRawSample(rawSample);
+                         sewageTestService.addRawSampleItem(rawSampleItem);
+                     }
+                 }
+
+
+
+            }
+
+            res.put("status", "success");
+            res.put("message", "导入成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导入失败");
+        }
+        return res.toString();
+    }
+
+    //原辅材料送样导出
+    @RequestMapping("exportRawSample")
+    @ResponseBody
+    public String exportRawSample(String name, HttpServletResponse response, String sqlWords){
+        JSONObject res = new JSONObject();
+
+        try {
+            DBUtil db = new DBUtil();
+            String tableHead = "预约单号/送样人/签收人/状态/氢氧化钠/氢氧化钙/干燥减量/碘吸附值/PH/水分/灰分/粒度分布/表观密度";
+            name = "原辅材料送样";   //重写文件名
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+
+        }
+
+
+        return res.toString();
+    }
+
+
+   /*添加原辅材料化验*/
+    @RequestMapping("addRawMaterialsTest")
+    @ResponseBody
+    public String addRawMaterialsTest(@RequestBody RawMaterialsTest rawMaterialsTest){
+        JSONObject res=new JSONObject();
+
+        try{
+                    sewageTestService.addRawMaterialsTest(rawMaterialsTest);
+                    res.put("status", "success");
+                    res.put("message", "添加成功");
+
+        }
+
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "添加失败");
+        }
+
+        return res.toString();
+    }
+
+
+
+    //检测原辅材料化验单号
+    @RequestMapping("testingRawMaterialsTestId")
+    @ResponseBody
+    public String testingRawMaterialsTestId(String  id){
+
+        JSONObject res=new JSONObject();
+
+        try {
+            List<String> rawMaterialsTestIdList=sewageTestService.getAllRawMaterialsTestId();
+            boolean bool = rawMaterialsTestIdList.contains(id);
+            res.put("status", "success");
+            res.put("message", "检验完毕");
+            res.put("data", bool);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "检验失败");
+
+        }
+
+        return res.toString();
+
+    }
+
+    /*加载原辅材料化验页面*/
+    @RequestMapping("loadRawMaterialsTestList")
+    @ResponseBody
+    public String loadRawMaterialsTestList(@RequestBody Page page){
+        JSONObject res=new JSONObject();
+
+        try{
+             List<RawMaterialsTest>  rawMaterialsTestList=sewageTestService.loadRawMaterialsTestList(page);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", rawMaterialsTestList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+
+        }
+
+
+          return res.toString();
+    }
+
+    /*根据单号获取原辅化验单号*/
+    @RequestMapping("getRawMaterialsTestById")
+    @ResponseBody
+    public String getRawMaterialsTestById(String id){
+        JSONObject res=new JSONObject();
+
+        try{
+            RawMaterialsTest rawMaterialsTest=sewageTestService.getRawMaterialsTestById(id);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", rawMaterialsTest);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+
+        }
+
+
+
+          return res.toString();
+    }
+
+    /*更新原辅材料化验单*/
+    @RequestMapping("updateRawMaterialsTestById")
+    @ResponseBody
+    public String updateRawMaterialsTestById(@RequestBody RawMaterialsTest rawMaterialsTest){
+            JSONObject res=new JSONObject();
+                          try {
+                    sewageTestService.updateRawMaterialsTestById(rawMaterialsTest);
+                              res.put("status", "success");
+                              res.put("message", "更新成功");
+                          }
+                          catch (Exception e){
+                              e.printStackTrace();
+                              res.put("status", "fail");
+                              res.put("message", "更新失败");
+                          }
+             return res.toString();
+    }
+
+      /*原辅材料化验单总数*/
+    @RequestMapping("rawMaterialsTestTotal")
+    @ResponseBody
+    public int rawMaterialsTestTotal(){
+        return sewageTestService.rawMaterialsTestTotal();
+
+    }
+
+    /*提交原辅材料化验单*/
+    @RequestMapping("submitRawMaterialsTest")
+    @ResponseBody
+    public String submitRawMaterialsTest(String id){
+        JSONObject res=new JSONObject();
+
+        try{
+             sewageTestService.submitRawMaterialsTest(id);
+            res.put("status", "success");
+            res.put("message", "提交成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "提交失败");
+        }
+
+
+        return res.toString();
+    }
+
+
+    //签收原辅材料化验单
+    @RequestMapping("confirmRawMaterialsTest")
+    @ResponseBody
+    public String confirmRawMaterialsTest(String id){
+        JSONObject res=new JSONObject();
+
+
+        try {
+            sewageTestService.confirmRawMaterialsTest(id);
+            res.put("status", "success");
+            res.put("message", "已确认");
+        }
+
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "确认失败");
+        }
+
+        return res.toString();
+    }
+
+
+    //作废原辅材料化验单
+    @RequestMapping("cancelRawMaterialsTest")
+    @ResponseBody
+    public String cancelRawMaterialsTest(String id){
+        JSONObject res=new JSONObject();
+
+        try {
+            sewageTestService.cancelRawMaterialsTest(id);
+            //污水收样状态为待收样
+            sewageTestService.cancelRawMaterialsTestAfter(id);
+            res.put("status", "success");
+            res.put("message", "已作废");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+
+        }
+
+        return res.toString();
+    }
+
+
+    //原辅材料化验单导入
+    @RequestMapping("importRawMaterialsTestResultsExcel")
+    @ResponseBody
+    public String importRawMaterialsTestResultsExcel(MultipartFile excelFile){
+        JSONObject res=new JSONObject();
+        Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+        System.out.println(data);
+        try {
+          for(int i=2;i<data.length;i++){
+              if(data[i][0].toString()!="null"){
+                  RawMaterialsTest rawMaterialsTest=new RawMaterialsTest();
+                  rawMaterialsTest.setId(data[i][0].toString());
+                  if(data[i][1].toString()!="null"){
+                      rawMaterialsTest.setRawMaterialsName(data[i][1].toString());
+                  }
+                  if(data[i][2].toString()!="null"){
+                      rawMaterialsTest.setSodium(Float.parseFloat(data[i][2].toString()));
+                  }
+                  if(data[i][2].toString()=="null"){
+                      rawMaterialsTest.setSodium(-9999);
+                  }
+
+                  if(data[i][3].toString()!="null"){
+                      rawMaterialsTest.setCalcium(Float.parseFloat(data[i][3].toString()));
+                  }
+                  if(data[i][3].toString()=="null"){
+                      rawMaterialsTest.setCalcium(-9999);
+                  }
+
+                  if(data[i][4].toString()!="null"){
+                      rawMaterialsTest.setDry(Float.parseFloat(data[i][4].toString()));
+                  }
+                  if(data[i][4].toString()=="null"){
+                      rawMaterialsTest.setDry(-9999);
+                  }
+
+                  if(data[i][5].toString()!="null"){
+                      rawMaterialsTest.setAdsorption(Float.parseFloat(data[i][5].toString()));
+                  }
+                  if(data[i][5].toString()=="null"){
+                      rawMaterialsTest.setAdsorption(-9999);
+                  }
+                  if(data[i][6].toString()!="null"){
+                      rawMaterialsTest.setPh(Float.parseFloat(data[i][6].toString()));
+                  }
+                  if(data[i][6].toString()=="null"){
+                      rawMaterialsTest.setPh(-9999);
+                  }
+                  if(data[i][7].toString()!="null"){
+                      rawMaterialsTest.setWater(Float.parseFloat(data[i][7].toString()));
+                  }
+                  if(data[i][7].toString()=="null"){
+                      rawMaterialsTest.setWater(-9999);
+                  }
+                  if(data[i][8].toString()!="null"){
+                      rawMaterialsTest.setAsh(Float.parseFloat(data[i][8].toString()));
+                  }
+                  if(data[i][8].toString()=="null"){
+                      rawMaterialsTest.setAsh(-9999);
+                  }
+                  if(data[i][9].toString()!="null"){
+                      rawMaterialsTest.setParticle(Float.parseFloat(data[i][9].toString()));
+                  }
+                  if(data[i][9].toString()=="null"){
+                      rawMaterialsTest.setParticle(-9999);
+                  }
+                  if(data[i][10].toString()!="null"){
+                      rawMaterialsTest.setDensity(Float.parseFloat(data[i][10].toString()));
+                  }
+                  if(data[i][10].toString()=="null"){
+                      rawMaterialsTest.setDensity(-9999);
+                  }
+                  if(data[i][11].toString()!="null"){
+                      rawMaterialsTest.setRemarks(data[i][11].toString());
+                  }
+
+                  //如果存在更新,不存在就添加
+                  RawMaterialsTest rawMaterialsTest1=sewageTestService.getRawMaterialsTestById(data[i][0].toString());
+
+                    if(rawMaterialsTest1!=null){
+                        sewageTestService.updateRawMaterialsTestById(rawMaterialsTest);
+                    }
+                  if(rawMaterialsTest1==null){
+                      sewageTestService.addRawMaterialsTest(rawMaterialsTest);
+                  }
+              }
+          }
+            res.put("status", "success");
+            res.put("message", "导入成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导入失败");
+
+        }
+
+
+
+        return res.toString();
+
+    }
+
+
+    /**
+     * 原辅材料化验单导出(带表头字段)
+     *
+     * @param name
+     * @param response
+     * @param sqlWords
+     * @return
+     */
+    @RequestMapping("exportExcelRawMaterialsTest")
+    @ResponseBody
+    public String exportExcelRawMaterialsTest(String name, HttpServletResponse response, String sqlWords) {
+        JSONObject res = new JSONObject();
+        try {
+            DBUtil db = new DBUtil();
+            // 设置表头
+            String tableHead = "化验单号/氢氧化钠/氢氧化钙/干燥减量/碘吸附值/PH/水分/灰分/粒度分布/表观密度/备注";
+
+            if(name.equals("1")){
+                name = "原辅材料化验单";
+            }else{
+                name = "原辅材料化验单";
+            }
+            db.exportExcel2(name, response, sqlWords, tableHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+        }
+        return res.toString();
+    }
+
+    /*原辅材料化验单查询*/
+    @RequestMapping("searchRawMaterialsTest")
+    @ResponseBody
+    public String searchRawMaterialsTest(@RequestBody RawMaterialsTest rawMaterialsTest ){
+        JSONObject res=new JSONObject();
+
+        try{
+           List<RawMaterialsTest> rawMaterialsTestList=sewageTestService.searchRawMaterialsTest(rawMaterialsTest);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", rawMaterialsTestList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+
+     return res.toString();
+    }
+    /*原辅材料化验单查询计数*/
+    @RequestMapping("searchRawMaterialsTestCount")
+    @ResponseBody
+    public  int searchRawMaterialsTestCount(@RequestBody RawMaterialsTest rawMaterialsTest ){
+
+        return sewageTestService.searchRawMaterialsTestCount(rawMaterialsTest);
+    }
+
+    //确认送样==》原辅材料送样
+    @RequestMapping("confirmRawSampleById")
+    @ResponseBody
+    public String confirmRawSampleById(String id, String laboratorySignatory) {
+        JSONObject res = new JSONObject();
+        try {
+            sewageTestService.confirmRawSampleById(id, laboratorySignatory);
+
+            //根据样品单号获取送样信息
+            RawSample rawSample=sewageTestService.getRawSampleById(id);
+            RawSampleItem rawSampleItem=rawSample.getRawSampleItemList().get(0);
+            RawMaterialsTest rawMaterialsTest=new RawMaterialsTest();
+
+            //单号
+            rawMaterialsTest.setId(id);
+
+            //材料类别
+            if(rawSample.getRawMaterialsItem()!=null){
+                rawMaterialsTest.setRawMaterialsName(rawSample.getRawMaterialsItem().getDictionaryItemName());
+            }
+
+           if(rawSampleItem.getSodium()==true){
+               rawMaterialsTest.setSodium(0);
+           }
+           else
+               rawMaterialsTest.setSodium(-9999);
+
+            if(rawSampleItem.getCalcium()==true){
+                rawMaterialsTest.setCalcium(0);
+            }
+            else
+                rawMaterialsTest.setCalcium(-9999);
+
+            if(rawSampleItem.getDry()==true){
+                rawMaterialsTest.setDry(0);
+            }
+            else
+                rawMaterialsTest.setDry(-9999);
+
+            if(rawSampleItem.getAdsorption()==true){
+                rawMaterialsTest.setAdsorption(0);
+            }
+            else
+                rawMaterialsTest.setAdsorption(-9999);
+
+            if(rawSampleItem.getPh()==true){
+                rawMaterialsTest.setPh(0);
+            }
+            else
+                rawMaterialsTest.setPh(-9999);
+
+            if(rawSampleItem.getWater()==true){
+                rawMaterialsTest.setWater(0);
+            }
+            else
+                rawMaterialsTest.setWater(-9999);
+
+            if(rawSampleItem.getAsh()==true){
+                rawMaterialsTest.setAsh(0);
+            }
+            else
+                rawMaterialsTest.setAsh(-9999);
+
+            if(rawSampleItem.getParticle()==true){
+                rawMaterialsTest.setParticle(0);
+            }
+            else
+                rawMaterialsTest.setParticle(-9999);
+
+            if(rawSampleItem.getDensity()==true){
+                rawMaterialsTest.setDensity(0);
+            }
+            else
+                rawMaterialsTest.setDensity(-9999);
+
+
+            if (sewageTestService.getRawMaterialsTestById(id) == null) {
+                sewageTestService.addRawMaterialsTest(rawMaterialsTest);
+            }
+            else {
+                sewageTestService.updateRawMaterialsTestById(rawMaterialsTest);
+            }
+            res.put("status", "success");
+            res.put("message", "收样成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "收样失败");
+        }
+        return res.toString();
+    }
+
+
+    /**
+     * 一键签收原辅材料送样
+     *
+     * @return
+     */
+    @RequestMapping("confirmAllRawSampleisCheck")
+    @ResponseBody
+    public String confirmAllRawSampleisCheck(@RequestBody RawSample RawSample) {
+        JSONObject res = new JSONObject();
+        try {
+            // 改变单据状态
+            sewageTestService.confirmAllRawSampleisCheck(RawSample);
+            if(RawSample.getSampleIdList().size() > 0){
+                for (String id : RawSample.getSampleIdList()) {
+                    //根据样品单号获取送样信息
+                    RawSample rawSample=sewageTestService.getRawSampleById(id);
+                    RawSampleItem rawSampleItem=rawSample.getRawSampleItemList().get(0);
+                    RawMaterialsTest rawMaterialsTest=new RawMaterialsTest();
+
+                    //单号
+                    rawMaterialsTest.setId(id);
+
+                    //材料类别
+                    if(rawSample.getRawMaterialsItem()!=null){
+                        rawMaterialsTest.setRawMaterialsName(rawSample.getRawMaterialsItem().getDictionaryItemName());
+                    }
+
+                    if(rawSampleItem.getSodium()==true){
+                        rawMaterialsTest.setSodium(0);
+                    }
+                    else
+                        rawMaterialsTest.setSodium(-9999);
+
+                    if(rawSampleItem.getCalcium()==true){
+                        rawMaterialsTest.setCalcium(0);
+                    }
+                    else
+                        rawMaterialsTest.setCalcium(-9999);
+
+                    if(rawSampleItem.getDry()==true){
+                        rawMaterialsTest.setDry(0);
+                    }
+                    else
+                        rawMaterialsTest.setDry(-9999);
+
+                    if(rawSampleItem.getAdsorption()==true){
+                        rawMaterialsTest.setAdsorption(0);
+                    }
+                    else
+                        rawMaterialsTest.setAdsorption(-9999);
+
+                    if(rawSampleItem.getPh()==true){
+                        rawMaterialsTest.setPh(0);
+                    }
+                    else
+                        rawMaterialsTest.setPh(-9999);
+
+                    if(rawSampleItem.getWater()==true){
+                        rawMaterialsTest.setWater(0);
+                    }
+                    else
+                        rawMaterialsTest.setWater(-9999);
+
+                    if(rawSampleItem.getAsh()==true){
+                        rawMaterialsTest.setAsh(0);
+                    }
+                    else
+                        rawMaterialsTest.setAsh(-9999);
+
+                    if(rawSampleItem.getParticle()==true){
+                        rawMaterialsTest.setParticle(0);
+                    }
+                    else
+                        rawMaterialsTest.setParticle(-9999);
+
+                    if(rawSampleItem.getDensity()==true){
+                        rawMaterialsTest.setDensity(0);
+                    }
+                    else
+                        rawMaterialsTest.setDensity(-9999);
+
+
+                    if (sewageTestService.getRawMaterialsTestById(id) == null) {
+                        sewageTestService.addRawMaterialsTest(rawMaterialsTest);
+                    }
+                    else {
+                        sewageTestService.updateRawMaterialsTestById(rawMaterialsTest);
+                    }
+                }
+                res.put("status", "success");
+                res.put("message", "收样成功");
+            }else {
+                res.put("status", "success");
+                res.put("message", "请勾选需要签收的单据");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "收样失败");
+        }
+        return res.toString();
+    }
 }
 
 

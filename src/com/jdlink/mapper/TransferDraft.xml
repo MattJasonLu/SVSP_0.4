@@ -76,7 +76,9 @@
         firstOrigin, firstStation, firstDestination, firstCarrierSign, secondCarrier, secondCarryTime, secondModel,
         secondBrand, secondTransportNumber, secondOrigin, secondStation, secondDestination, secondCarrierSign,
         acceptCompanyLicense, recipient, acceptDate, disposeIsUse, disposeIsStore, disposeIsBurn, disposeIsLandFill,
-        disposeIsOther, headSign, signDate, nowTime, formTypeId, handleCategoryId, packageTypeId) values (#{id}, 'NewBuild', #{produceCompany.clientId},
+        disposeIsOther, headSign, signDate, nowTime, formTypeId, handleCategoryId, packageTypeId, checkStateId,
+        count1H, count2H, countZN, inboundTime, outboundTime, transferId) values
+        (#{id}, 'NewBuild', #{produceCompany.clientId},
         #{produceCompany.companyName}, #{produceCompany.phone}, #{produceCompany.location}, #{produceCompany.postCode},
         #{transportCompany.supplierId}, #{transportCompany.companyName}, #{transportCompany.phone},
         #{transportCompany.location}, #{transportCompany.postCode}, #{acceptCompany.clientId}, #{acceptCompany.companyName},
@@ -90,7 +92,8 @@
         #{secondTransportNumber}, #{secondOrigin}, #{secondStation}, #{secondDestination}, #{secondCarrierSign},
         #{acceptCompanyLicense}, #{recipient}, #{acceptDate}, #{disposeIsUse}, #{disposeIsStore}, #{disposeIsBurn},
         #{disposeIsLandFill}, #{disposeIsOther}, #{headSign}, #{signDate}, NOW(), #{wastes.formTypeItem.dataDictionaryItemId},
-        #{wastes.handleCategoryItem.dataDictionaryItemId}, #{wastes.packageTypeItem.dataDictionaryItemId});
+        #{wastes.handleCategoryItem.dataDictionaryItemId}, #{wastes.packageTypeItem.dataDictionaryItemId}, #{checkStateItem.dataDictionaryItemId},
+        #{count1H}, #{count2H}, #{countZN}, #{inboundTime}, #{outboundTime}, #{transferId});
     </insert>
 
     <select id="getById" parameterType="String" resultMap="TransferDraftRM">

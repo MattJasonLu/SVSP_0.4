@@ -318,6 +318,27 @@ function inputSwitchPage() {
     }
 }
 
+/*更新期初与库存*/
+function UpdatePeriodAndInventory() {
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "UpdatePeriodAndInventory",                  // url
+        dataType: "json",
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            alert("服务器异常！")
+
+        }
+    });
+}
 //加载医危废数据
 function loadMedicalWastesList() {
     $('.loader').show();
@@ -334,13 +355,7 @@ function loadMedicalWastesList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
-    // if(array0.length==0){
-    //     for (var i = 1; i <= totalPage(); i++) {
-    //         switchPage(parseInt(i));
-    //
-    //         array0.push($('.myclass'));
-    //     }
-    // }
+    UpdatePeriodAndInventory();
     $.ajax({
         type: "POST",                            // 方法类型
         url: "loadMedicalWastesList",                  // url
@@ -453,13 +468,17 @@ function setMedicalWastesList(result) {
                 case (10):
                     $(this).html(obj.wetNumber.toFixed(3));
                     break;
-                    //期初量
+                    //焚烧量
                 case (11):
+                    $(this).html(obj.incineration.toFixed(3));
+                    break;
+                    //期初量
+                case (12):
                     $(this).html(obj.earlyNumber.toFixed(3));
                     break;
                     //库存量:
                 //期初量
-                case (12):
+                case (13):
                     if(index==0){
                         $(this).html(obj.wastesAmount.toFixed(3));
                     }
@@ -498,6 +517,8 @@ function calculationTotal() {
 
     var wetNumberTotal=0;
 
+    var incinerationTotal=0;
+
     var earlyNumberTotal=0;
 
     var wastesAmountTotal=0;
@@ -510,9 +531,10 @@ function calculationTotal() {
         afterCookingInboundTotal+=parseFloat($(this).children('td').eq(7).html());
         thisMonthSendCookingTotal+=parseFloat($(this).children('td').eq(8).html());
         errorNumberTotal+=parseFloat($(this).children('td').eq(9).html());
+        incinerationTotal+=parseFloat($(this).children('td').eq(11).html());
         wetNumberTotal+=parseFloat($(this).children('td').eq(10).html());
-        earlyNumberTotal+=parseFloat($(this).children('td').eq(11).html());
-        var wastesAmount=parseFloat($(this).children('td').eq(12).html());
+        earlyNumberTotal+=parseFloat($(this).children('td').eq(12).html());
+        var wastesAmount=parseFloat($(this).children('td').eq(13).html());
            if(isNaN(wastesAmount)){
                wastesAmount=0;
            }
@@ -527,8 +549,9 @@ function calculationTotal() {
     $("#tbody2").find('tr').children("td").eq(7).html(thisMonthSendCookingTotal.toFixed(3))
     $("#tbody2").find('tr').children("td").eq(8).html(errorNumberTotal.toFixed(3))
     $("#tbody2").find('tr').children("td").eq(9).html(wetNumberTotal.toFixed(3))
-    $("#tbody2").find('tr').children("td").eq(10).html(earlyNumberTotal.toFixed(3))
-    $("#tbody2").find('tr').children("td").eq(11).html(wastesAmountTotal.toFixed(3))
+    $("#tbody2").find('tr').children("td").eq(10).html(incinerationTotal.toFixed(3))
+    $("#tbody2").find('tr').children("td").eq(11).html(earlyNumberTotal.toFixed(3))
+    $("#tbody2").find('tr').children("td").eq(12).html(wastesAmountTotal.toFixed(3))
 }
 
 

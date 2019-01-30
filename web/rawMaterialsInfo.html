@@ -136,11 +136,19 @@
                     <a class="btn btn-primary btn-xs" href="#" id="function_-160" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; appointModal();}"><span
                             class="glyphicon glyphicon-plus" aria-hidden="true"></span> 预约登记</a>
                 </div>
+                <a class="btn btn-primary btn-xs" href="#" id="function_-161" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose();}"><span
+                        class="glyphicon glyphicon-arrow-down"
+                        aria-hidden="true"></span> 导入</a>
+                <a class="btn btn-primary btn-xs" href="#" id="function_-162" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel();}"><span
+                        class="glyphicon glyphicon-arrow-up"
+                        aria-hidden="true"></span> 导出</a>
+                <a class="btn btn-primary btn-xs" id="" onclick="confirmAllCheck()"><span
+                        class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>确认收样</a>
                 <!--查询框-->
                 <div class="input-group col-md-4 pull-right">
                     <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                     <span class="input-group-btn">
-                        <a class="btn btn-default" onclick="searchClient();"><span
+                        <a class="btn btn-default" onclick="searchRawSample();"><span
                                 class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                         <a class="btn btn-default" onclick="$('#senior').toggle();"><span
                                 class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
@@ -153,41 +161,96 @@
         <div class="panel panel-default" id="senior" style="display: none;">
             <div class="panel-body">
                 <div class="row">
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="search-companyName" class="col-sm-4 control-label">产废单位</label>
+                            <label class="col-sm-3 control-label" for="search-rawMaterialsItem">材料类别</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-companyName"
-                                       name="search-companyName" placeholder="" onkeyup="searchClient();">
+                                <select type="text" class="form-control" id="search-rawMaterialsItem" name="search-sewageName"
+                                        placeholder="" onchange="searchRawSample()"></select>
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="search-name" class="col-sm-4 control-label">业务员</label>
+                            <label for="search-sewageName" class="col-sm-4 control-label">检测项目</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-name" name="search-name"
-                                       placeholder="" onkeyup="searchClient();">
+                                <div class="checkbox" id="search-sewageName">
+                                    <label >
+                                        <input type="checkbox"
+                                               value="true" id="search-sodium" onchange="searchRawSample()">氢氧化钠
+                                    </label>
+                                    <label >
+                                        <input id="search-calcium" type="checkbox"
+                                               value="true" onchange="searchRawSample()">氢氧化钙
+                                    </label>
+                                    <label >
+                                        <input id="search-dry" type="checkbox"
+                                               value="true" onchange="searchRawSample()">干燥减量
+                                    </label>
+                                    <label >
+                                        <input id="search-adsorption" type="checkbox"
+                                               value="true" onchange="searchRawSample()">碘吸附值
+                                    </label>
+                                    <label >
+                                        <input id="search-ph" type="checkbox" value="true" onchange="searchRawSample()">PH
+                                    </label>
+                                    <label >
+                                        <input id="search-water" type="checkbox"
+                                               value="true" onchange="searchRawSample()">水分
+                                    </label>
+                                    <label >
+                                        <input id="search-ash" type="checkbox" name="wastesList[0].isWater"
+                                               value="true" onchange="searchRawSample()">灰分
+                                    </label>
+                                    <label >
+                                        <input id="search-particle" type="checkbox"
+                                               value="true" onchange="searchRawSample()">粒度分布
+                                    </label>
+                                    <label >
+                                        <input id="search-density" type="checkbox"
+                                               value="true" onchange="searchRawSample()">表观密度
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-3">
+
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="search-contactName" class="col-sm-4 control-label">联系人</label>
+                            <label for="search-remarks" class="col-sm-3 control-label">送样人</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-contactName"
-                                       name="search-contactName" placeholder="" onkeyup="searchClient();">
+                                <input type="text" class="form-control" id="search-remarks" name="search-remarks"
+                                       placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="search-phone" class="col-sm-4 control-label">联系电话</label>
+                            <label for="search-laboratorySignatory" class="col-sm-4 control-label">签收人</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-phone" name="search-phone"
-                                       placeholder="" onkeyup="searchClient();">
+                                <input type="text" class="form-control" id="search-laboratorySignatory" name="search-remarks"
+                                       placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="search-laboratorySignatory" class="col-sm-3 control-label">收样状态</label>
+                            <div class="col-xs-7">
+                                <select class="form-control" id="search-checkState" onchange="searchRawSample()">
+                                    <option></option>
+                                    <option value=69>已作废</option>
+                                    <option value=86>待收样</option>
+                                    <option value=87>已收样</option>
+                                    <option value=88>已拒收</option>
+                                </select>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -449,13 +512,13 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <!--<label for="sendingPerson" class="col-sm-4 control-label">采样点</label>-->
-                        <!--<span id="address1"></span>-->
+                        <label for="sendingPerson" class="col-sm-4 control-label">材料类别</label>
+                        <span id="rawMaterialsItem1"></span>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="laboratorySignatory" class="col-sm-4 control-label">化验室签收人</label>
                         <div class="col-md-6">
-                            <span  id="laboratorySignatory"></span>
+                            <input  id="laboratorySignatory" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -619,6 +682,31 @@
     </div>
 </div>
 
+
+<!--导入模态框-->
+<div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="TitleMyModalLabel">导入表格数据</h4>
+            </div>
+            <div class="modal-body">
+                <form id="modelAssign" method="post">
+                    <div class="form-group">
+                        <font size="+2">提示：</font>
+                        <font size="+1" class="text-center">请按照模板格式导入数据！</font>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-default" onclick="downloadModal()">下载模板</button>
+                <button type="button" class="btn btn-primary" onclick="importExcel()">导入数据</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div id="embed"></div>
 </body>

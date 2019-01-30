@@ -83,4 +83,38 @@ public interface SewageTestService {
     void cancelRawSample(String id);
 
     void rejectRawSampleItemById(String id ,String advice);
+
+    List<RawSample> searchRawSample(RawSample rawSample);
+
+    int searchRawSampleCount(RawSample rawSample);
+
+    int searchRawSampleTotal();
+
+    void addRawMaterialsTest(RawMaterialsTest rawMaterialsTest);
+
+    List<String> getAllRawMaterialsTestId();
+
+    List<RawMaterialsTest>loadRawMaterialsTestList(Page page);
+
+    RawMaterialsTest getRawMaterialsTestById(String id);
+
+    void updateRawMaterialsTestById(RawMaterialsTest rawMaterialsTest);
+
+    int rawMaterialsTestTotal();
+
+    void submitRawMaterialsTest(String id);
+
+    void confirmRawMaterialsTest(String id);
+
+    void cancelRawMaterialsTest(String id);
+
+    void cancelRawMaterialsTestAfter(String id);
+
+    List<RawMaterialsTest>searchRawMaterialsTest(RawMaterialsTest rawMaterialsTest);
+
+    int searchRawMaterialsTestCount(RawMaterialsTest rawMaterialsTest);
+
+    void confirmRawSampleById(String id,String laboratorySignatory);
+
+    void confirmAllRawSampleisCheck(RawSample rawSample);
 }

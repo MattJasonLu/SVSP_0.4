@@ -460,7 +460,8 @@ function saveMedicalWastes() {
         wetNumber: $('#wetNumber').val(),
         incineration: $('#incineration').val(),
         unitDataItem: { dataDictionaryItemId: $('#unit').val() },
-        equipmentDataItem: { dataDictionaryItemId:$('#equipment').selectpicker('val') }
+        equipmentDataItem: { dataDictionaryItemId:$('#equipment').selectpicker('val') },
+        earlyNumber :$('#earlyNumber').val(),
     };
     $.ajax({
         type: "POST",                            // 方法类型
@@ -472,6 +473,7 @@ function saveMedicalWastes() {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 console.log(result);
+                UpdatePeriodAndInventory(getDateStr(result.date));
                 alert(result.message);
                 window.location.href = "medicalWasteManager.html";
             }
@@ -501,13 +503,7 @@ function loadMedicalWastesList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
-    // if(array0.length==0){
-    //     for (var i = 1; i <= totalPage(); i++) {
-    //         switchPage(parseInt(i));
-    //
-    //         array0.push($('.myclass'));
-    //     }
-    // }
+    // UpdatePeriodAndInventory();
     $.ajax({
         type: "POST",                            // 方法类型
         url: "loadMedicalWastesList",                  // url
@@ -572,54 +568,62 @@ function setMedicalWastesList(result) {
                 case (6):
                     $(this).html(getDateStr(obj.adjustDate));
                     break;
-                //本月进厂危废
+                // 期初库存
                 case (7):
+                    $(this).html(obj.earlyNumber.toFixed(3));
+                    break;
+                //本月进厂危废
+                case (8):
                     $(this).html(obj.thisMonthWastes.toFixed(3));
                     break;
                 //本日直接转外处置量
-                case (8):
+                case (9):
                     $(this).html(obj.directDisposal.toFixed(3));
                     break;
                 //本日蒸煮医废(过磅)
-                case (9):
+                case (10):
                     $(this).html(obj.cookingWastes.toFixed(3));
                     break;
                 //蒸煮后重量
-                case (10):
+                case (11):
                     $(this).html(obj.afterCookingNumber.toFixed(3));
                     break;
                 //蒸煮后入库量
-                case (11):
+                case (12):
                     $(this).html(obj.afterCookingInbound.toFixed(3));
                     break;
                 //本月蒸煮后外送量
-                case (12):
+                case (13):
                     $(this).html(obj.thisMonthSendCooking.toFixed(3));
                     break;
                     //焚烧量
-                case (13):
+                case (14):
                     $(this).html(obj.incineration.toFixed(3));
                     break;
                 //误差量
-                case (14):
+                case (15):
                     $(this).html(obj.errorNumber.toFixed(3));
                     break;
                 //水分含量
-                case (15):
+                case (16):
                     $(this).html(obj.wetNumber.toFixed(3));
                     break;
-                case (16):
+                //月末库存
+                case (17):
+                    $(this).html(obj.wastesAmount.toFixed(3));
+                    break;
+                case (18):
                     if (obj.unitDataItem != null) {
                         $(this).html(obj.unitDataItem.dictionaryItemName);
                     }
                     break;
                 //处置设备
-                case (17):
+                case (19):
                     if (obj.equipmentDataItem != null) {
                         $(this).html(obj.equipmentDataItem.dictionaryItemName);
                     }
                     break;
-                case (18):
+                case (20):
                     if (obj.checkStateItem != null) {
                         $(this).html(obj.checkStateItem.dictionaryItemName);
                     }
@@ -971,6 +975,7 @@ function medicalWasteManagerModify(item) {
                 $('#departmentName').val(obj.departmentName);
                 $('#adjustName').val(obj.adjustName);
                 $('#adjustDate').val(getDateStr(obj.adjustDate));
+                $('#earlyNumber').val(parseFloat(obj.earlyNumber).toFixed(3));
                 $('#thisMonthWastes').val(parseFloat(obj.thisMonthWastes).toFixed(3));
                 $('#directDisposal').val(parseFloat(obj.directDisposal).toFixed(3));
                 $('#cookingWastes').val(parseFloat(obj.cookingWastes).toFixed(3));
@@ -1026,6 +1031,7 @@ function medicalWasteManagerModify(item) {
 function adjustMedicalWaste() {
     var data={
         medicalWastesId  : $('#medicalWastesId').val(),
+        earlyNumber: $('#earlyNumber').val(),
         dateTime: $('#dateTime').val(),
         department: $('#department').val(),
         departmentName: $('#departmentName').val(),
@@ -1053,8 +1059,10 @@ function adjustMedicalWaste() {
          contentType: "application/json; charset=utf-8",
         success:function (result) {
             if (result != undefined && result.status == "success"){
+                console.log(getDateStr(result.date))
+                UpdatePeriodAndInventory(getDateStr(result.date));
                 alert("修改成功")
-                window.location.reload();
+                 window.location.reload();
             }
         },
         error:function (result) {
@@ -1066,3 +1074,25 @@ function adjustMedicalWaste() {
 }
 
 
+/*更新期初与库存*/
+function UpdatePeriodAndInventory(dateTime) {
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "UpdatePeriodAndInventory",                  // url
+        dataType: "json",
+        data:{"keyword":dateTime},
+        async: false,
+        // contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            alert("服务器异常！")
+
+        }
+    });
+}

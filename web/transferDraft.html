@@ -280,14 +280,21 @@
                                    id="allSel" onclick="allSelect();">
                         </label>
                     </th>
+                    <th class="text-center">日期</th>
+                    <th class="text-center">进厂</th>
+                    <th class="text-center">出厂</th>
                     <th class="text-center">联单编号</th>
-                    <th class="text-center" style="width: 300px">产生单位</th>
-                    <th class="text-center">运输单位</th>
-                    <th class="text-center">接收单位</th>
-                    <th class="text-center">发运人</th>
-                    <th class="text-center">运达地</th>
-                    <th class="text-center">转移时间</th>
-                    <th class="text-center">状态</th>
+                    <th class="text-center" style="width: 300px">废物来源/去向</th>
+                    <th class="text-center">名称</th>
+                    <th class="text-center">种类</th>
+                    <th class="text-center">毛重</th>
+                    <th class="text-center">1号库</th>
+                    <th class="text-center">2号库</th>
+                    <th class="text-center">智能库</th>
+                    <th class="text-center">车牌号</th>
+                    <th class="text-center">运输人</th>
+                    <th class="text-center">接受人</th>
+                    <th class="text-center">备注</th>
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>
@@ -298,14 +305,21 @@
                             <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
                         </label>
                     </td>
-                    <td class="text-center">0001</td>
-                    <td class="text-center">测试产生单位</td>
-                    <td class="text-center">测试运输单位</td>
-                    <td class="text-center">常州北控安耐得</td>
-                    <td class="text-center">张三</td>
-                    <td class="text-center">南京</td>
-                    <td class="text-center">2018-08-01</td>
-                    <td class="text-center">已完成</td>
+                    <td class="text-center" name="transferTime"></td>
+                    <td class="text-center" name="inboundTime"></td>
+                    <td class="text-center" name="outboundTime"></td>
+                    <td class="text-center" name="transferId"></td>
+                    <td class="text-center" style="width: 300px" name="produceCompany"></td>
+                    <td class="text-center" name="wastesName"></td>
+                    <td class="text-center" name="wastesCode"></td>
+                    <td class="text-center" name="transferCount"></td>
+                    <td class="text-center" name="count1H"></td>
+                    <td class="text-center" name="count2H"></td>
+                    <td class="text-center" name="countZN"></td>
+                    <td class="text-center" name="firstBrand"></td>
+                    <td class="text-center" name="firstCarrier"></td>
+                    <td class="text-center" name="recipient"></td>
+                    <td class="text-center" name="remark"></td>
                     <td class="text-center">
                         <a href="#" id="function_-155" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; viewData(e);}" title="查看"><span
                                 class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>

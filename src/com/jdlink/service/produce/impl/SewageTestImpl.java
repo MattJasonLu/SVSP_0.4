@@ -312,5 +312,90 @@ public class SewageTestImpl implements SewageTestService{
         sewageTestMapper.rejectRawSampleItemById(id,advice);
     }
 
+    @Override
+    public List<RawSample> searchRawSample(RawSample rawSample) {
+        return sewageTestMapper.searchRawSample(rawSample);
+    }
+
+    @Override
+    public int searchRawSampleCount(RawSample rawSample) {
+        return sewageTestMapper.searchRawSampleCount(rawSample);
+    }
+
+    @Override
+    public int searchRawSampleTotal() {
+        return sewageTestMapper.searchRawSampleTotal();
+    }
+
+    @Override
+    public void addRawMaterialsTest(RawMaterialsTest rawMaterialsTest) {
+        sewageTestMapper.addRawMaterialsTest(rawMaterialsTest);
+    }
+
+    @Override
+    public List<String> getAllRawMaterialsTestId() {
+        return sewageTestMapper.getAllRawMaterialsTestId();
+    }
+
+    @Override
+    public List<RawMaterialsTest> loadRawMaterialsTestList(Page page) {
+        return sewageTestMapper.loadRawMaterialsTestList(page);
+    }
+
+    @Override
+    public RawMaterialsTest getRawMaterialsTestById(String id) {
+        return sewageTestMapper.getRawMaterialsTestById(id);
+    }
+
+    @Override
+    public void updateRawMaterialsTestById(RawMaterialsTest rawMaterialsTest) {
+        sewageTestMapper.updateRawMaterialsTestById(rawMaterialsTest);
+    }
+
+    @Override
+    public int rawMaterialsTestTotal() {
+        return sewageTestMapper.rawMaterialsTestTotal();
+    }
+
+    @Override
+    public void submitRawMaterialsTest(String id) {
+        sewageTestMapper.submitRawMaterialsTest(id);
+    }
+
+    @Override
+    public void confirmRawMaterialsTest(String id) {
+        sewageTestMapper.confirmRawMaterialsTest(id);
+    }
+
+    @Override
+    public void cancelRawMaterialsTest(String id) {
+        sewageTestMapper.cancelRawMaterialsTest(id);
+    }
+
+    @Override
+    public void cancelRawMaterialsTestAfter(String id) {
+        sewageTestMapper.cancelRawMaterialsTestAfter(id);
+    }
+
+    @Override
+    public List<RawMaterialsTest> searchRawMaterialsTest(RawMaterialsTest rawMaterialsTest) {
+        return sewageTestMapper.searchRawMaterialsTest(rawMaterialsTest);
+    }
+
+    @Override
+    public int searchRawMaterialsTestCount(RawMaterialsTest rawMaterialsTest) {
+        return sewageTestMapper.searchRawMaterialsTestCount(rawMaterialsTest);
+    }
+
+    @Override
+    public void confirmRawSampleById(String id, String laboratorySignatory) {
+        sewageTestMapper.confirmRawSampleById(id, laboratorySignatory);
+    }
+
+    @Override
+    public void confirmAllRawSampleisCheck(RawSample rawSample) {
+        sewageTestMapper.confirmAllRawSampleisCheck(rawSample);
+    }
+
 
 }

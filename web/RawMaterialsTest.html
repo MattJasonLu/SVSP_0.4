@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>次生化验单</title>
+    <title>原辅材料化验单</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -12,11 +12,11 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/secondaryTestResults.js"></script>
+    <script src="js/produce/RawMaterialsTest.js"></script>
     <link href="css/loading1.css" rel="stylesheet">
     <link href="css/loading2.css" rel="stylesheet">
 </head>
-<body onload="loadPageList()">
+<body onload="loadRawMaterialsTestList()">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -162,7 +162,7 @@
                 <li><a href="#">次生化验</a></li>
             </ol>
         </div>
-        <h4 class="sub-header">次生化验单</h4>
+        <h4 class="sub-header">原辅材料化验单</h4>
         <div class="row">
             <div>
                 <!--操作按钮-->
@@ -200,9 +200,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="search-address" class="col-sm-4 control-label">采样点</label>
+                            <label for="search-rawMaterialsName" class="col-sm-4 control-label">材料类别</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-address" name="search-laboratory" placeholder="" onkeyup="enterSearch();">
+                                <select type="text" class="form-control" id="search-rawMaterialsName" name="search-laboratory" placeholder="" onchange="searchData();"></select>
                             </div>
                         </div>
                     </div>
@@ -217,6 +217,7 @@
                             <label for="search-checkState" class="col-sm-4 control-label">单据状态</label>
                             <div class="col-xs-7">
                                 <select type="text" class="form-control" id="search-checkState" name="search-laboratoryDate"  onchange="searchData();">
+                                    <option ></option>
                                     <option value="64">待提交</option>
                                     <option value="73">已提交</option>
                                     <option value="69">已作废</option>
@@ -273,14 +274,19 @@
                             <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
                         </label>
                     </th>
-                    <th class="text-center">样品单号</th>
-                    <!--<th class="text-center hidden">收样日期</th>-->
-                    <th class="text-center">废物名称</th>
-                    <th class="text-center">热灼减率%</th>
+                    <th class="text-center">预约单号</th>
+                    <th class="text-center">材料类别</th>
+                    <th class="text-center">氢氧化钠含量%</th>
+                    <th class="text-center">氢氧化钙含量%</th>
+                    <th class="text-center">干燥减量%</th>
+                    <th class="text-center">碘吸附值mg/g</th>
+                    <th class="text-center">pH值</th>
                     <th class="text-center">水分%</th>
+                    <th class="text-center">灰分%</th>
+                    <th class="text-center">粒度分布%</th>
+                    <th class="text-center">表观密度g/ml</th>
                     <th class="text-center">备注</th>
-                    <th class="text-center">单据状态</th>
-                    <th class="text-center">采样点</th>
+                    <th class="text-center">状态</th>
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>
@@ -291,14 +297,19 @@
                             <input name="select" class="checkbox" type="checkbox" value="option1" aria-label="...">
                         </label>
                     </td>
-                    <td class="text-center" name="id">Q10000001</td>
-                    <!--<td class="text-center hidden">张三</td>-->
-                    <td class="text-center">李四</td>
-                    <td class="text-center">2018-7-31</td>
-                    <td class="text-center">安耐得环保常州分公司</td>
-                    <td class="text-center">待签收</td>
-                    <td class="text-center">待签收</td>
-                    <td class="text-center">待签收</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" name="id"></td>
+                    <td class="text-center" name="id"></td>
+                    <td class="text-center" name="id"></td>
+                    <td class="text-center" name="id"></td>
+                    <td class="text-center" name="id"></td>
+                    <td class="text-center" name="id"></td>
                     <td class="text-center">
                         <!--<a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>-->
                         <!--<a href="#" onclick="setInvalid(this);" title="修改"><span class="glyphicon glyphicon-circle" aria-hidden="true"></span></a>-->
@@ -787,7 +798,7 @@
 
 <!--新增模态框-->
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document" style="width: 1000px">
+    <div class="modal-dialog" role="document" style="width: 1800px">
         <div class="modal-content" id="addModal1" >
             <form method="post" enctype="multipart/form-data">
                 <div class="modal-header">
@@ -799,34 +810,37 @@
                         <thead>
                         <tr>
                             <th>样品单号</th>
-                            <!--<th class="hidden">收样日期</th>-->
-                            <th>废物名称</th>
-                            <th>热灼减率%</th>
+                            <th style="width: 5%">材料类别</th>
+                            <th>氢氧化钠含量%</th>
+                            <th>氢氧化钙含量%</th>
+                            <th>干燥减量%</th>
+                            <th>碘吸附值mg/g</th>
+                            <th>pH值</th>
                             <th>水分%</th>
+                            <th>灰分%</th>
+                            <th>粒度分布%</th>
+                            <th>表观密度g/ml</th>
                             <th>备注</th>
                         </tr>
                         </thead>
                         <tbody >
                         <tr id="addTable" class="myclass3">
-                            <td><input class="form-control" name="transferDraftId" onkeyup="testing(this)">
+                            <td><input class="form-control" name="transferDraftId" onkeyup="testing(this)" id="id">
                                 <p id="pass"  style="color: green">通过</p>
                                 <p id="break" style="color: red">样品单号已存在</p>
                             </td>
                             <!--<td><input class="form-control hidden" name="produceCompany" type="date"></td>-->
-                            <td><input class="form-control" name="wastesName" ></td>
-                            <td><input class="form-control" name="wastesCode" ></td>
-                            <td><input class="form-control" name="formType" ></td>
-                            <td><input class="form-control" name="remark" ></td>
-                        </tr>
-                        <tr id="plusBtn">
-                            <td>
-                                <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <!--<td></td>-->
+                            <td><select class="form-control" id="rawMaterialsName" onchange="Choice()"></select></td>
+                            <td><input class="form-control" id="sodium"></td>
+                            <td><input class="form-control" id="calcium"></td>
+                            <td><input class="form-control"  id="dry"></td>
+                            <td><input class="form-control" id="adsorption"></td>
+                            <td><input class="form-control" id="ph"></td>
+                            <td><input class="form-control" id="water"></td>
+                            <td><input class="form-control" id="ash" ></td>
+                            <td><input class="form-control" id="particle" ></td>
+                            <td><input class="form-control"  id="density" ></td>
+                            <td><input class="form-control"  id="remarks"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -854,27 +868,43 @@
                         <thead>
                         <tr>
                             <th>样品单号</th>
-                            <!--<th class="hidden">收样日期</th>-->
-                            <th>废物名称</th>
-                            <th>热灼减率%</th>
+                            <th style="width: 10%">材料类别</th>
+                            <th>氢氧化钠含量%</th>
+                            <th>氢氧化钙含量%</th>
+                            <th>干燥减量%</th>
+                            <th>碘吸附值mg/g</th>
+                            <th>pH值</th>
                             <th>水分%</th>
+                            <th>灰分%</th>
+                            <th>粒度分布%</th>
+                            <th>表观密度g/ml</th>
                             <th>备注</th>
                         </tr>
                         </thead>
                         <tbody >
                         <tr  class="myclass2">
-                            <td><input class="form-control" name="transferDraftId" id="id" readonly></td>
-                            <!--<td><input class="form-control hidden" name="produceCompany" type="date" id="dateTime"></td>-->
-                            <td><input class="form-control" name="wastesName" id="wastesName"></td>
-                            <td><input class="form-control" name="wastesCode" id="scorchingRate"></td>
-                            <td><input class="form-control" name="formType" id="water"></td>
-                            <td><input class="form-control" name="remark" id="remarks"></td>
+                            <td><input class="form-control" name="transferDraftId" onkeyup="testing(this)" id="id1">
+                                <!--<p id="pass"  style="color: green">通过</p>-->
+                                <!--<p id="break" style="color: red">样品单号已存在</p>-->
+                            </td>
+                            <!--<td><input class="form-control hidden" name="produceCompany" type="date"></td>-->
+                            <td><input class="form-control" id="rawMaterialsName2" readonly></td>
+                            <td><input class="form-control" id="sodium2"></td>
+                            <td><input class="form-control" id="calcium2"></td>
+                            <td><input class="form-control"  id="dry2"></td>
+                            <td><input class="form-control" id="adsorption2"></td>
+                            <td><input class="form-control" id="ph2"></td>
+                            <td><input class="form-control" id="water2"></td>
+                            <td><input class="form-control" id="ash2" ></td>
+                            <td><input class="form-control" id="particle2" ></td>
+                            <td><input class="form-control"  id="density2" ></td>
+                            <td><input class="form-control"  id="remarks2"></td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="adjustSecondaryTest();">修改</button>
+                    <button type="button" class="btn btn-primary" onclick="adjustRawMaterialsTest();">修改</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </form>

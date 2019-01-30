@@ -73,26 +73,30 @@ public class MedicalWastesController {
     public String addMedicalWastes(@RequestBody MedicalWastes medicalWastes){
         JSONObject res=new JSONObject();
         try{
-            //获取前一天的危废
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String date = sdf.format(medicalWastes.getDateTime());       //将Date类型转换成String类型
-            MedicalWastes medicalWastes1=medicalWastesService.getMedicalWasteFromPrevious(date);
-//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-//            Date start = (Date)sdf.parseObject(medicalWastes.getDateTime());
-            if(medicalWastes1!=null){
-                float earlyNumber=medicalWastes1.getWastesAmount();
-                if(earlyNumber<0){
-                    earlyNumber=0;
+
+            if(medicalWastes.getEarlyNumber()==0){
+                //获取前一天的危废
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String date = sdf.format(medicalWastes.getDateTime());       //将Date类型转换成String类型
+                MedicalWastes medicalWastes1=medicalWastesService.getMedicalWasteFromPrevious(date);
+
+                if(medicalWastes1!=null){
+                    float earlyNumber=medicalWastes1.getWastesAmount();
+                    if(earlyNumber<0){
+                        earlyNumber=0;
+                    }
+                    medicalWastes.setEarlyNumber(earlyNumber);//设置期初
                 }
-                medicalWastes.setEarlyNumber(earlyNumber);//设置期初
+                if(medicalWastes1==null) {
+                    medicalWastes.setEarlyNumber(0);//设置期初
+                }
             }
-            if(medicalWastes1==null) {
-                medicalWastes.setEarlyNumber(0);//设置期初
-            }
-            //设置库存医废库存量=期初量+入库-焚烧-直接转处置量-误差量-水分-蒸煮后转移量
-            float wastesAmount=medicalWastes.getEarlyNumber()+medicalWastes.getThisMonthWastes()-medicalWastes.getWastesAmount()+medicalWastes.getIncineration()-medicalWastes.getDirectDisposal()-medicalWastes.getWetNumber()-medicalWastes.getAfterCookingNumber();
+
+            //设置库存医废库存量=期初量+蒸煮后入库KG-焚烧-蒸煮后转移量
+            float wastesAmount=medicalWastes.getEarlyNumber()+medicalWastes.getAfterCookingInbound()-medicalWastes.getIncineration()-medicalWastes.getThisMonthSendCooking();
             medicalWastes.setWastesAmount(wastesAmount);
             medicalWastesService.addMedicalWastes(medicalWastes);
+            res.put("date",medicalWastes.getDateTime());
             res.put("status", "success");
             res.put("message", "添加成功");
 
@@ -262,7 +266,7 @@ public class MedicalWastesController {
     @ResponseBody
     public String importMedicalWaste(MultipartFile excelFile){
         JSONObject res=new JSONObject();
-        Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+        List<Object[][]> data = ImportUtil.getInstance().getExcelFileData(excelFile);
         try{
             Calendar cal = Calendar.getInstance();
             //获取年
@@ -271,148 +275,136 @@ public class MedicalWastesController {
             String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
             //序列号
             String number = "00001";
-            for(int i=1;i<data.length;i++){
-                MedicalWastes medicalWastes=new MedicalWastes();
+            for(int i=0;i<data.size();i++){//遍历页
+                for(int j=2;j<data.get(i).length;j++){
 
 
+                    if(data.get(i)[j][0].toString()!="null"){
 
-                UnitDataItem unitDataItem=new UnitDataItem();
-                unitDataItem.setDataDictionaryItemId(138);
-                medicalWastes.setUnitDataItem(unitDataItem);
-                //寻找最新的编号
-                List<String> medicalWastesIdList=medicalWastesService.getNewId();
-                if(medicalWastesIdList.size()==0){
-                    number = "00001";
-                }
-                if (medicalWastesIdList.size()>0){
-                    String s = medicalWastesIdList.get(0);//原字符串
-                    String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
-                    number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
-                }
-                String medicalWastesId=year+mouth+number;
 
-                 medicalWastes.setMedicalWastesId(medicalWastesId);
-
-                 //日期
-                if(data[i][0]!="null"){
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-                    Date start = (Date)sdf.parseObject(data[i][0].toString());
-//          String datestr=data[i][0].toString().replace("年","-").replace("月","-").replace("日","");
-//          SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-                  medicalWastes.setDateTime(start);
-                }
-                if(data[i][0]=="null"){
-                    medicalWastes.setDateTime(null);
-                }
-                //找到要添加的医危废的前一天的数据(为了获得昨天的库存数据做为今天的期初数据)
-                if(medicalWastes.getDateTime()!=null){
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    String date = sdf.format(medicalWastes.getDateTime());       //将Date类型转换成String类型
-                    MedicalWastes medicalWastes1=medicalWastesService.getMedicalWasteFromPrevious(date);
-                    if(medicalWastes1!=null){
-                        //加入昨天的库存作为今天的期初
-                        float earlyNumber=medicalWastes1.getWastesAmount();
-                        if(earlyNumber<0){
-                            earlyNumber=0;
+                        MedicalWastes medicalWastes=new MedicalWastes();
+                        UnitDataItem unitDataItem=new UnitDataItem();
+                        unitDataItem.setDataDictionaryItemId(138);
+                        medicalWastes.setUnitDataItem(unitDataItem);
+                        //寻找最新的编号
+                        List<String> medicalWastesIdList=medicalWastesService.getNewId();
+                        if(medicalWastesIdList.size()==0){
+                            number = "00001";
                         }
-                        medicalWastes.setEarlyNumber(earlyNumber);
+                        if (medicalWastesIdList.size()>0){
+                            String s = medicalWastesIdList.get(0);//原字符串
+                            String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
+                            number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
+                        }
+                        String medicalWastesId=year+mouth+number;
+
+                        medicalWastes.setMedicalWastesId(medicalWastesId);
+
+                        //日期
+                        if(data.get(i)[j][0]!="null"){
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                            Date start = (Date)sdf.parseObject(data.get(i)[j][0].toString());
+                            medicalWastes.setDateTime(start);
+                        }
+                        if(data.get(i)[j][0]=="null"){
+                            medicalWastes.setDateTime(null);
+                        }
+                        //找到要添加的医危废的前一天的数据(为了获得昨天的库存数据做为今天的期初数据)
+                        if(medicalWastes.getDateTime()!=null){
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                            String date = sdf.format(medicalWastes.getDateTime());       //将Date类型转换成String类型
+                            MedicalWastes medicalWastes1=medicalWastesService.getMedicalWasteFromPrevious(date);
+
+                        }
+
+                        //期初量
+                        if(data.get(i)[j][1]!="null"){
+                            medicalWastes.setEarlyNumber(Float.parseFloat(data.get(i)[j][1].toString()));
+                        }
+                        if(data.get(i)[j][1]=="null"){
+                            medicalWastes.setEarlyNumber(0);
+                        }
+
+
+                        //接运单量kg(入库量)
+                        if(data.get(i)[j][2]!="null"){
+                            medicalWastes.setThisMonthWastes(Float.parseFloat(data.get(i)[j][2].toString()));
+                        }
+                        if(data.get(i)[j][2]=="null"){
+                            medicalWastes.setThisMonthWastes(0);
+                        }
+
+                        //本日蒸煮医废(过磅)
+                        if(data.get(i)[j][3]!="null"){
+                            medicalWastes.setCookingWastes(Float.parseFloat(data.get(i)[j][3].toString()));
+                        }
+                        if(data.get(i)[j][3]=="null"){
+                            medicalWastes.setCookingWastes(0);
+                        }
+
+                        //直接转处置量
+                        if(data.get(i)[j][5]!="null"){
+                            medicalWastes.setDirectDisposal(Float.parseFloat(data.get(i)[j][5].toString()));
+                        }
+                        if(data.get(i)[j][5]=="null"){
+                            medicalWastes.setDirectDisposal(0);
+                        }
+
+
+                        //蒸煮后入库量
+                        if(data.get(i)[j][6]!="null"){
+                            medicalWastes.setAfterCookingInbound(Float.parseFloat(data.get(i)[j][6].toString()));
+                        }
+
+                        if(data.get(i)[j][6]=="null"){
+                            medicalWastes.setAfterCookingInbound(0);
+                        }
+
+                        /*蒸煮后转移量*/
+                        if(data.get(i)[j][7]!="null"){
+                            medicalWastes.setThisMonthSendCooking(Float.parseFloat(data.get(i)[j][7].toString()));
+                        }
+
+                        if(data.get(i)[j][7]=="null"){
+                            medicalWastes.setThisMonthSendCooking(0);
+                        }
+
+                        //焚烧量
+                        if(data.get(i)[j][8]!="null"){
+                            medicalWastes.setIncineration(Float.parseFloat(data.get(i)[j][8].toString()));
+                        }
+                        if(data.get(i)[j][8]=="null"){
+                            medicalWastes.setIncineration(0);
+                        }
+
+                        /*误差量*/
+                        //接运单量kg-蒸煮量（称重量）kg-转移到瑞意的量kg
+                        //接运单与称重差KG(误差)
+                        medicalWastes.setErrorNumber(medicalWastes.getThisMonthWastes()-medicalWastes.getCookingWastes()-medicalWastes.getDirectDisposal()-medicalWastes.getThisMonthSendCooking());
+
+
+
+                        //水分量=蒸煮量（称重量）kg-蒸煮后量KG
+
+
+                        medicalWastes.setWetNumber(medicalWastes.getCookingWastes()-medicalWastes.getAfterCookingInbound());
+
+                        //算库存公式为:本日医废进厂+期初量-焚烧-直接转处置量-水分-蒸煮后转移量-误差量
+                        float wastesAmount=medicalWastes.getEarlyNumber()+medicalWastes.getAfterCookingInbound()-medicalWastes.getIncineration()-medicalWastes.getThisMonthSendCooking();
+
+                        medicalWastes.setWastesAmount(wastesAmount);
+
+                        //处置设备
+                        //medicalWastes.setEquipment(Equipment.getEquipment((data[i][11].toString())));
+
+                        medicalWastesService.addMedicalWastes(medicalWastes);
                     }
-                    else {
-                        medicalWastes.setEarlyNumber(0);
-                    }
-                }
 
-                //本日进厂危废
-                if(data[i][1]!="null"){
-                    medicalWastes.setThisMonthWastes(Float.parseFloat(data[i][1].toString()));
                 }
-                if(data[i][1]=="null"){
-                    medicalWastes.setThisMonthWastes(0);
-                }
-
-
-                //本日直接转外处置量
-                if(data[i][2]!="null"){
-                    medicalWastes.setDirectDisposal(Float.parseFloat(data[i][2].toString()));
-                }
-                if(data[i][2]=="null"){
-                    medicalWastes.setDirectDisposal(0);
-                }
-
-                //本日蒸煮医废(过磅)
-                if(data[i][3]!="null"){
-                    medicalWastes.setCookingWastes(Float.parseFloat(data[i][3].toString()));
-                }
-                if(data[i][3]=="null"){
-                    medicalWastes.setCookingWastes(0);
-                }
-
-                //蒸煮后重量
-                if(data[i][4]!="null"){
-                    medicalWastes.setAfterCookingNumber(Float.parseFloat(data[i][4].toString()));
-                }
-                if(data[i][4]=="null"){
-                    medicalWastes.setAfterCookingNumber(0);
-                }
-
-
-                //蒸煮后入库量
-                if(data[i][5]!="null"){
-                    medicalWastes.setAfterCookingInbound(Float.parseFloat(data[i][5].toString()));
-                }
-
-                if(data[i][5]=="null"){
-                    medicalWastes.setAfterCookingInbound(0);
-                }
-
-                //本月蒸煮后外送量
-                if(data[i][6]!="null"){
-                    medicalWastes.setThisMonthSendCooking(Float.parseFloat(data[i][6].toString()));
-                }
-                if(data[i][6]=="null"){
-                    medicalWastes.setThisMonthSendCooking(0);
-                }
-
-                //焚烧量
-                if(data[i][7]!="null"){
-                    medicalWastes.setIncineration(Float.parseFloat(data[i][7].toString()));
-                }
-                if(data[i][7]=="null"){
-                    medicalWastes.setIncineration(0);
-                }
-
-                if(data[i][8]!="null"){
-                    //接运单与称重差KG(误差)
-                    medicalWastes.setErrorNumber(Float.parseFloat(data[i][8].toString()));
-                }
-                if(data[i][8]=="null"){
-                    medicalWastes.setErrorNumber(0);
-                }
-
-                //水分含量
-
-                if(data[i][4]=="null"){
-                    data[i][4]=0;
-                }
-                if(data[i][5]=="null"){
-                    data[i][5]=0;
-                }
-
-                medicalWastes.setWetNumber(Float.parseFloat(data[i][4].toString())-Float.parseFloat(data[i][5].toString()));
-
-                //算库存公式为:本日医废进厂+期初量-焚烧-直接转处置量-水分-蒸煮后转移量
-                float wastesAmount=medicalWastes.getThisMonthWastes()+medicalWastes.getEarlyNumber()-medicalWastes.getIncineration()-medicalWastes.getWetNumber()-medicalWastes.getThisMonthSendCooking()-medicalWastes.getDirectDisposal();
-//               if(wastesAmount<0){
-//                   wastesAmount=0;
-//               }
-                medicalWastes.setWastesAmount(wastesAmount);
-
-                //处置设备
-                //medicalWastes.setEquipment(Equipment.getEquipment((data[i][11].toString())));
-
-                medicalWastesService.addMedicalWastes(medicalWastes);
-
             }
+//            for(int i=2;i<data.length;i++){
+//
+//            }
             res.put("status", "success");
             res.put("message", "导入成功");
         }
@@ -456,7 +448,11 @@ public class MedicalWastesController {
 
 
         try {
-              medicalWastesService.updateMedicalWaste(medicalWastes);
+            float wastesAmount=medicalWastes.getEarlyNumber()+medicalWastes.getAfterCookingInbound()-medicalWastes.getIncineration()-(medicalWastes.getDirectDisposal());
+            medicalWastes.setWastesAmount(wastesAmount);
+            medicalWastesService.updateMedicalWaste(medicalWastes);
+            MedicalWastes medicalWastes1=medicalWastesService.getMedicalWasteById(medicalWastes.getMedicalWastesId());
+            res.put("date",medicalWastes1.getDateTime());
             res.put("status", "success");
             res.put("message", "更新成功");
         }
@@ -516,4 +512,64 @@ public class MedicalWastesController {
         return res.toString();
     }
 
-}
+
+    /*接口专用来更新期初库存*/
+    @RequestMapping("UpdatePeriodAndInventory")
+    @ResponseBody
+    public String UpdatePeriodAndInventory(String keyword){
+        JSONObject res=new JSONObject();
+
+        try {
+            List<MedicalWastes> medicalWastesList=medicalWastesService.UpdatePeriodAndInventory(keyword);
+           for(int i=0;i<medicalWastesList.size();i++){
+               UpdatePeriodAndInventory(medicalWastesList.get(i));
+           }
+
+            res.put("status", "success");
+            res.put("message", "更新成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+
+          return res.toString();
+    }
+
+    /*更新期初与库存*/
+    public void UpdatePeriodAndInventory(MedicalWastes medicalWastesList){
+
+
+            //1更新期初
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String date = sdf.format(medicalWastesList.getDateTime());       //将Date类型转换成String类型
+            //前一天的医危废对象
+            MedicalWastes medicalWastes1=medicalWastesService.getMedicalWasteFromPrevious(date);
+            if(medicalWastes1!=null){
+                //加入昨天的库存作为今天的期初
+                float earlyNumber=medicalWastes1.getWastesAmount();
+                if(earlyNumber<0){
+                    earlyNumber=0;
+                }
+                //获得新的期初
+                medicalWastesList.setEarlyNumber(earlyNumber);
+
+            }
+            else {
+                medicalWastesList.setEarlyNumber(medicalWastesList.getEarlyNumber());
+            }
+            //2更新库存
+            float wastesAmount=medicalWastesList.getEarlyNumber()+medicalWastesList.getAfterCookingInbound()-medicalWastesList.getIncineration()-medicalWastesList.getThisMonthSendCooking();
+            medicalWastesList.setWastesAmount(wastesAmount);
+            //更新期初与库存
+               medicalWastesService.updateMedicalWaste(medicalWastesList);
+
+
+        }
+
+    }
+
+
+

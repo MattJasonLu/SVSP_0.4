@@ -43,7 +43,7 @@ public class RawSample {
     /*原辅材料类别数据字典*/
     private RawMaterialsItem rawMaterialsItem;
 
-    /*检测项目(字表)*/
+    /*检测项目(子表)*/
     private List<RawSampleItem> rawSampleItemList=new ArrayList<>();
 
     /*拒收原因*/
