@@ -476,20 +476,22 @@ function setIngredientsInList(result) {
 function setSeniorSelectedList() {
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getIngredientsInSeniorSelectedList",                  // url
+        url: "getCheckStateDataByDictionary",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
             if (result != undefined) {
-                var data = eval(result);
+                var data = eval(result.data);
                 // 高级检索下拉框数据填充
                 var state = $("#search-state");
                 state.children().remove();
-                $.each(data.stateList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    state.append(option);
+                $.each(data, function (index, item) {
+                    if(item.dataDictionaryItemId === 75 || item.dataDictionaryItemId === 69){
+                        var option = $('<option />');
+                        option.val(item.dataDictionaryItemId);
+                        option.text(item.dictionaryItemName);
+                        state.append(option);
+                    }
                 });
                 state.get(0).selectedIndex = -1;
             } else {
@@ -555,37 +557,17 @@ function searchIngredientIn() {
     page.pageNumber = pageNumber;
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
-    var state = null;
-    if ($("#search-state").val() == 0) state = "NewBuild";//新建
-    if ($("#search-state").val() == 1) state = "Invalid";//已作废
-    if ($("#search-state").val() == 2) state = "OutBounded";//已出库
+    var checkStateItem = {};
+    checkStateItem.dataDictionaryItemId = parseInt($("#search-state").val());
     var keywords = $.trim($("#searchContent").val());
     //模糊查询状态字段转换
-    switch (keywords) {
-        case "新建":
-            keywords = "NewBuild";
-            break;
-        case "已作废":
-            keywords = "Invalid";
-            break;
-        case "作废":
-            keywords = "Invalid";
-            break;
-        case "已出库":
-            keywords = "OutBounded";
-            break;
-        case "出库":
-            keywords = "OutBounded";
-            break;
-    }
-    console.log("amount:"+$.trim($("#search-amount").val()));
     if ($("#senior").is(':visible')) {
         data1 = {
             startDate: $("#search-startDate").val(),
             endDate: $("#search-endDate").val(),
             id: $.trim($("#search-Id").val()),
             companyName: $.trim($("#search-companyName").val()),
-            state: state,
+            checkStateItem: checkStateItem,
             name: $.trim($("#search-name").val()),
             specification : $.trim($("#search-specification").val()),
             page: page,

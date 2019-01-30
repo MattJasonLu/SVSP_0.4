@@ -139,7 +139,8 @@
                 or DATE_FORMAT(samplingDate,'%Y.%c.%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or b.transferId like "%"#{keywords}"%"
-                or a.applyState like "%"#{keywords}"%"
+                or a.applyStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
             </if>
             <if test="id != null and id != ''">
                 and b.transferId LIKE "%"#{id}"%"
@@ -150,8 +151,8 @@
             <if test='wastesCode != null and wastesCode != ""'>
                 and a.wastesCode LIKE "%"#{wastesCode}"%"
             </if>
-            <if test='applyState != null and applyState != ""'>
-                and a.applyState LIKE "%"#{applyState}"%"
+            <if test="applicationStatusItem != null">
+                and a.applyStateId = #{applicationStatusItem.dataDictionaryItemId}
             </if>
             <if test='laboratorySigner != null and laboratorySigner != ""'>
                 and a.laboratorySigner LIKE "%"#{laboratorySigner}"%"
@@ -208,7 +209,8 @@
                 or DATE_FORMAT(samplingDate,'%Y.%c.%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or b.transferId like "%"#{keywords}"%"
-                or a.applyState like "%"#{keywords}"%"
+                or a.applyStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
             </if>
             <if test="id != null and id != ''">
                 and b.transferId LIKE "%"#{id}"%"
@@ -219,8 +221,8 @@
             <if test='wastesCode != null and wastesCode != ""'>
                 and a.wastesCode LIKE "%"#{wastesCode}"%"
             </if>
-            <if test='applyState != null and applyState != ""'>
-                and a.applyState LIKE "%"#{applyState}"%"
+            <if test="applicationStatusItem != null">
+                and a.applyStateId = #{applicationStatusItem.dataDictionaryItemId}
             </if>
             <if test='laboratorySigner != null and laboratorySigner != ""'>
                 and a.laboratorySigner LIKE "%"#{laboratorySigner}"%"
