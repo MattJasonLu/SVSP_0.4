@@ -96,6 +96,7 @@ public class MedicalWastesController {
             float wastesAmount=medicalWastes.getEarlyNumber()+medicalWastes.getAfterCookingInbound()-medicalWastes.getIncineration()-medicalWastes.getThisMonthSendCooking();
             medicalWastes.setWastesAmount(wastesAmount);
             medicalWastesService.addMedicalWastes(medicalWastes);
+            res.put("date",medicalWastes.getDateTime());
             res.put("status", "success");
             res.put("message", "添加成功");
 
