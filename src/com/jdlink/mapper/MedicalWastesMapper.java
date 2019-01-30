@@ -27,4 +27,6 @@ public interface MedicalWastesMapper {
     int searchMedicalWastesCount(MedicalWastes medicalWastes);
 
     List<MedicalWastes>UpdatePeriodAndInventory(@Param(value="keyword") String keyword );
+
+    MedicalWastes getCumulative(MedicalWastes medicalWastes);
 }

@@ -146,8 +146,17 @@ public class MedicalWastesController {
     public  String searchMedicalWastes(@RequestBody MedicalWastes medicalWastes){
         JSONObject res=new JSONObject();
         try{
-        List<MedicalWastes> medicalWastesList=medicalWastesService.searchMedicalWastes(medicalWastes);
-            res.put("medicalWastesList",medicalWastesList);
+         List<MedicalWastes> medicalWastesList=medicalWastesService.searchMedicalWastes(medicalWastes);
+            MedicalWastes medicalWastes1;
+           if(medicalWastes.getKeyword()!=null){
+                medicalWastes1=null;
+           }
+           else {
+                medicalWastes1=medicalWastesService.getCumulative(medicalWastes);
+           }
+
+            res.put("medicalWastes",medicalWastes1);
+           res.put("medicalWastesList",medicalWastesList);
             res.put("status", "success");
             res.put("message", "高级查询成功");
         }
@@ -379,8 +388,7 @@ public class MedicalWastesController {
 
                         /*误差量*/
                         //接运单量kg-蒸煮量（称重量）kg-转移到瑞意的量kg
-                        //接运单与称重差KG(误差)
-                        medicalWastes.setErrorNumber(medicalWastes.getThisMonthWastes()-medicalWastes.getCookingWastes()-medicalWastes.getDirectDisposal()-medicalWastes.getThisMonthSendCooking());
+                        medicalWastes.setErrorNumber(medicalWastes.getThisMonthWastes()-medicalWastes.getCookingWastes()-medicalWastes.getDirectDisposal());
 
 
 
@@ -448,7 +456,7 @@ public class MedicalWastesController {
 
 
         try {
-            float wastesAmount=medicalWastes.getEarlyNumber()+medicalWastes.getAfterCookingInbound()-medicalWastes.getIncineration()-(medicalWastes.getDirectDisposal());
+            float wastesAmount=medicalWastes.getEarlyNumber()+medicalWastes.getAfterCookingInbound()-medicalWastes.getIncineration()-medicalWastes.getDirectDisposal()-medicalWastes.getThisMonthSendCooking();
             medicalWastes.setWastesAmount(wastesAmount);
             medicalWastesService.updateMedicalWaste(medicalWastes);
             MedicalWastes medicalWastes1=medicalWastesService.getMedicalWasteById(medicalWastes.getMedicalWastesId());
