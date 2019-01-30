@@ -221,6 +221,7 @@
                     <th class="text-center">登记人</th>
                     <th class="text-center">修改人</th>
                     <th class="text-center">修改时间</th>
+                    <th class="text-center">期初库存</th>
                     <th class="text-center">本日进厂危废</th>
                     <th class="text-center">本日直接转外处置量</th>
                     <th class="text-center">本日蒸煮医废(过磅)	</th>
@@ -230,6 +231,7 @@
                     <th class="text-center">焚烧量</th>
                     <th class="text-center">误差量</th>
                     <th class="text-center">水分含量</th>
+                    <th class="text-center">月末库存</th>
                     <th class="text-center">计量单位</th>
                     <th class="text-center">处置设备</th>
                     <th class="text-center">状态</th>
@@ -243,6 +245,8 @@
                             <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
                         </label>
                     </td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -433,11 +437,7 @@
                         <thead>
                         <tr>
                             <th style="width: 180px">登记单号</th>
-                            <!--<th>登记日期</th>-->
-                            <!--<th>登记部门</th>-->
-                            <!--<th>登记人</th>-->
-                            <!--<th>修改人</th>-->
-                            <!--<th>修改时间</th>-->
+                            <th>期初数量</th>
                             <th>本日进厂危废</th>
                             <th>本日直接转外处置量</th>
                             <th>本日蒸煮医废(过磅)</th>
@@ -453,11 +453,7 @@
                         <tbody >
                         <tr id="addTable1" class="myclass3">
                             <td><input class="form-control" name="transferDraftId" id="medicalWastesId" readonly></td><!--登记单号-->
-                            <!--<td><input class="form-control" name="produceCompany" type="date" id="dateTime"></td>&lt;!&ndash;登记日期&ndash;&gt;-->
-                            <!--<td><input class="form-control" name="wastesName" id="department"></td>&lt;!&ndash;登记部门&ndash;&gt;-->
-                            <!--<td><input class="form-control" name="wastesCode" id="departmentName"></td>&lt;!&ndash;登记人&ndash;&gt;-->
-                            <!--<td><input class="form-control" name="formType" id="adjustName"></td>&lt;!&ndash;修改人&ndash;&gt;-->
-                            <!--<td><input class="form-control" name="remark" id="adjustDate" type="date" ></td>&lt;!&ndash;修改时间&ndash;&gt;-->
+                            <td><input class="form-control" name="transferDraftId" id="earlyNumber"></td><!--期初数量-->
                             <td><input class="form-control" name="remark" id="thisMonthWastes" onkeyup="geterrorNumberByWastes()"></td><!--本日进厂危废-->
                             <td><input class="form-control" name="remark" id="directDisposal" onkeyup="geterrorNumberByDisposal()"></td><!--本日直接转外处置量	-->
                             <td><input class="form-control" name="remark" id="cookingWastes" onkeyup="geterrorNumberByCook()"></td><!--本日蒸煮医废(过磅)-->

@@ -4,6 +4,7 @@ import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.MedicalWastes;
 import com.jdlink.mapper.MedicalWastesMapper;
 import com.jdlink.service.MedicalWastesService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -87,5 +88,10 @@ public class MedicalWastesServiceImpl implements MedicalWastesService {
     @Override
     public int searchMedicalWastesCount(MedicalWastes medicalWastes) {
         return medicalWastesMapper.searchMedicalWastesCount(medicalWastes);
+    }
+
+    @Override
+    public List<MedicalWastes> UpdatePeriodAndInventory(@Param(value="keyword") String keyword) {
+        return medicalWastesMapper.UpdatePeriodAndInventory(keyword);
     }
 }
