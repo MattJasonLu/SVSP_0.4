@@ -75,6 +75,24 @@
         </if>
     </select>
 
+
+    <!--根据日期计算年累计-->
+    <select id="getCumulative" resultType="MedicalWastes" parameterType="MedicalWastes">
+
+            select sum(thisMonthWastes) thisMonthWastesTotal,sum(directDisposal) directDisposalTotal,sum(cookingWastes) cookingWastesTotal,sum(afterCookingNumber) afterCookingNumberTotal,sum(afterCookingInbound) afterCookingInboundTotal ,sum(thisMonthSendCooking) thisMonthSendCookingTotal,sum(errorNumber) errorNumberTotal,sum(wetNumber)wetNumberTotal,sum(incineration)incinerationTotal
+        from t_pl_medicalwastes
+            <where>
+                <if test="beginTime!=null">
+                    <![CDATA[ and DATE_FORMAT(dateTime, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d') ]]>
+                </if>
+                <if test="endTime!=null">
+                    <![CDATA[ and DATE_FORMAT(dateTime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
+                </if>
+            </where>
+
+
+    </select>
+
     <!--高级查询计数-->
     <select id="searchMedicalWastesCount"  resultType="int">
         select count(*) from t_pl_medicalwastes
