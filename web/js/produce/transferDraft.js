@@ -357,6 +357,7 @@ function setDataList(result) {
         clonedTr.find("td[name='firstCarrier']").text(obj.firstCarrier);
         clonedTr.find("td[name='recipient']").text(obj.recipient);
         clonedTr.find("td[name='remark']").text(obj.remark);
+        clonedTr.find("td[name='id']").text(obj.id);
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
         clonedTr.insertBefore(tr);
@@ -1088,12 +1089,62 @@ function viewData(e) {
 }
 
 /**
+ * 查看数据
+ * @param e
+ */
+function viewData2(e) {
+    $("#viewModal").find('input:text').val('');
+    var id = getIdByMenu(e);
+    $.ajax({
+        type: "POST",
+        url: "getTransferDraftById",
+        async: false,
+        dataType: "json",
+        data: {
+            "id": id
+        },
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                var obj = eval(result.data);
+                $("#view_transferTime").val(getDateStr(obj.transferTime));
+                $("#view_inboundTime").val(obj.inboundTime);
+                $("#view_outboundTime").val(obj.outboundTime);
+                $("#view_transferId").val(obj.transferId);
+                if (obj.produceCompany != null) {
+                    $("#view_produceCompany").val(obj.produceCompany.companyName);
+                }
+                if (obj.wastes != null) {
+                    $("#view_wastesName").val(obj.wastes.name);
+                    $("#view_wastesCode").val(obj.wastes.wastesId);
+                    $("#view_transferCount").val(parseFloat(obj.wastes.transferCount).toFixed(2));
+                }
+                $("#view_count1H").val(parseFloat(obj.count1H).toFixed(2));
+                $("#view_count2H").val(parseFloat(obj.count2H).toFixed(2));
+                $("#view_countZN").val(parseFloat(obj.countZN).toFixed(2));
+                $("#view_firstBrand").val(obj.firstBrand);
+                $("#view_firstCarrier").val(obj.firstCarrier);
+                $("#view_recipient").val(obj.recipient);
+                $("#view_remark").val(obj.remark);
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
+    $("#viewModal").modal("show");
+}
+
+/**
  * 通过操作菜单来获取编号
  * @param e 点击的按钮
  * @returns {string} 联单编号
  */
 function getIdByMenu(e) {
-    return e.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+    return $(e).parent().parent().find("td[name='id']").text();
 }
 
 /**
