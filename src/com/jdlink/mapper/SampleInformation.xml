@@ -114,8 +114,8 @@
             <if test="keywords != null and keywords != ''">
                 or companyName LIKE "%"#{keywords}"%"
                 or wastesCode like "%"#{keywords}"%"
+                or laboratorySigner like "%"#{keywords}"%"
                 or wastesName like "%"#{keywords}"%"
-                or sendingPerson like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -126,7 +126,8 @@
                 or DATE_FORMAT(samplingDate,'%Y.%c.%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or id like "%"#{keywords}"%"
-                or applyState like "%"#{keywords}"%"
+                or applyStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
             </if>
             <if test="id != null and id != ''">
                 and id LIKE "%"#{id}"%"
@@ -137,11 +138,11 @@
             <if test='wastesCode != null and wastesCode != ""'>
                 and wastesCode LIKE "%"#{wastesCode}"%"
             </if>
-            <if test='applyState != null and applyState != ""'>
-                and applyState LIKE "%"#{applyState}"%"
+            <if test="applicationStatusItem != null">
+                and applyStateId = #{applicationStatusItem.dataDictionaryItemId}
             </if>
-            <if test='sendingPerson != null and sendingPerson != ""'>
-                and sendingPerson LIKE "%"#{sendingPerson}"%"
+            <if test='laboratorySigner != null and laboratorySigner != ""'>
+                and laboratorySigner LIKE "%"#{laboratorySigner}"%"
             </if>
             <if test='isPH != null and isPH != ""'>
                 and isPH = #{isPH}
@@ -197,7 +198,8 @@
                 or DATE_FORMAT(samplingDate,'%Y.%c.%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(samplingDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or id like "%"#{keywords}"%"
-                or applyState like "%"#{keywords}"%"
+                or applyStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
             </if>
             <if test="id != null and id != ''">
                 and id LIKE "%"#{id}"%"
@@ -208,8 +210,8 @@
             <if test='wastesCode != null and wastesCode != ""'>
                 and wastesCode LIKE "%"#{wastesCode}"%"
             </if>
-            <if test='applyState != null and applyState != ""'>
-                and applyState LIKE "%"#{applyState}"%"
+            <if test="applicationStatusItem != null">
+                and applyStateId = #{applicationStatusItem.dataDictionaryItemId}
             </if>
             <if test='laboratorySigner != null and laboratorySigner != ""'>
                 and laboratorySigner LIKE "%"#{laboratorySigner}"%"

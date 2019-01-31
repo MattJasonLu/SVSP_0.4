@@ -723,13 +723,13 @@ function setData(result) {
     // 设置出入库百分比数据（环状图）
     var wastesData = {};
     wastesData.name = '危废';
-    wastesData.number = (wastesOutboundOrderTotalAmount / inboundOrderItemTotalAmount).toFixed(2);
+    wastesData.number = (wastesOutboundOrderTotalAmount / inboundOrderItemTotalAmount).toFixed(4);
     var secondData = {};
     secondData.name = '次生';
-    secondData.number = (secondOutboundOrderTotalAmount / secondInboundOrderItemTotalAmount).toFixed(2);
+    secondData.number = (secondOutboundOrderTotalAmount / secondInboundOrderItemTotalAmount).toFixed(4);
     var ingredientData = {};
     ingredientData.name = '辅料';
-    ingredientData.number = (ingredientsOutTotalAmount / ingredientsInTotalAmount).toFixed(2);
+    ingredientData.number = (ingredientsOutTotalAmount / ingredientsInTotalAmount).toFixed(4);
     outAndInPercentList.push(wastesData);
     outAndInPercentList.push(secondData);
     outAndInPercentList.push(ingredientData);

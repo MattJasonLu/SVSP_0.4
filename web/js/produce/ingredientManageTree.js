@@ -14,9 +14,9 @@ var setting = {
         showRenameBtn: false,      // 控制是否显示修改按钮
         drag: {
             autoExpandTrigger: true, //托拽节点时父节点是否自动展开
-            prev: true,            // 是否允许拖拽到目标节点之前
+            prev: false,            // 是否允许拖拽到目标节点之前
             inner: false,        // 是否允许拖拽到目标节点子节点中
-            next: true,           // 是否允许拖拽到目标节点之后
+            next: false,           // 是否允许拖拽到目标节点之后
             isCopy: false,        // 拖拽是否进行复制
             isMove: true
         },
@@ -206,6 +206,7 @@ function cancel() {
  */
 function save() {
     var ingredientsTree = {};
+    // 获取数据
     ingredientsTree.id = organizationId;  // 旧编码（ID）
     ingredientsTree.code = $("#id").val();
     ingredientsTree.name = $("#name").val();
@@ -230,7 +231,7 @@ function save() {
                 // console.log(result);
                 if (result != null && result.status === "success") {
                     alert("保存成功！");
-                    $("#url1").hide();
+                    $("#url1").hide();   // 隐藏
                 } else {
                     alert(result.message);
                 }

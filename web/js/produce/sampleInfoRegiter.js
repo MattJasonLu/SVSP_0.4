@@ -481,20 +481,23 @@ function setSampleList(result) {
 function setSeniorSelectedList() {
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getSampleInfoWareHouseSeniorSelectedList",                  // url
+        url: "getApplyStateDataByDictionary",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
             if (result != undefined) {
-                var data = eval(result);
+                var data = eval(result.data);
                 // 高级检索下拉框数据填充
                 var applyState = $("#search-state");
                 applyState.children().remove();
-                $.each(data.applyStateList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    applyState.append(option);
+                $.each(data, function (index, item) {
+                    if(item.dataDictionaryItemId === 62 || item.dataDictionaryItemId === 61 ||
+                        item.dataDictionaryItemId === 60 || item.dataDictionaryItemId === 55){
+                        var option = $('<option />');
+                        option.val(item.dataDictionaryItemId);
+                        option.text(item.dictionaryItemName);
+                        applyState.append(option);
+                    }
                 });
                 applyState.get(0).selectedIndex = -1;
             } else {
@@ -1298,18 +1301,15 @@ function searchSampleInfo() {
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
     // 精确查询
-    var applyState = null;
-    if ($("#search-state").val() == 0) applyState = "ToCollected";
-    if ($("#search-state").val() == 1) applyState = "Received";
-    if ($("#search-state").val() == 2) applyState = "Rejected";
-    if ($("#search-state").val() == 3) applyState = "Invalid";
+    var applicationStatusItem = {};
+    applicationStatusItem.dataDictionaryItemId = parseInt($("#search-state").val());
     if ($("#senior").is(':visible')) {
         data = {
             id: $.trim($("#search-id").val()),
             companyName: $.trim($("#search-companyName").val()),
             wastesCode: $.trim($("#search-wastesCode").val()),
             laboratorySigner: $.trim($("#search-signer").val()),
-            applyState: applyState,
+            applicationStatusItem: applicationStatusItem,
             isPH: $("#isPH1").prop("checked"),
             isAsh: $("#isAsh1").prop("checked"),
             isWater: $("#isWater1").prop("checked"),
@@ -1388,30 +1388,6 @@ function searchSampleInfo() {
                 var isHotMelt = true;
                 keywords = "";
                 break;
-            case "待":
-                keywords = "ToCollected";
-                break;
-            case "待收样":
-                keywords = "ToCollected";
-                break;
-            case "已收样":
-                keywords = "Received";
-                break;
-            case "收样":
-                keywords = "Received";
-                break;
-            case "已拒收":
-                keywords = "Rejected";
-                break;
-            case "拒收":
-                keywords = "Rejected";
-                break;
-            case "已作废":
-                keywords = "Invalid";
-                break;
-            case "作废":
-                keywords = "Invalid";
-                break;
             case "液态":
                 keywords = "Liquid";
                 break;
@@ -1447,6 +1423,8 @@ function searchSampleInfo() {
             isHotMelt : isHotMelt
         }
     }
+    console.log("查询条件：");
+    console.log(data);
     $.ajax({
         type: "POST",                            // 方法类型
         url: "searchSampleInfoWareHouse",                 // url

@@ -2087,7 +2087,9 @@ public class PRIngredientsController {
     public String loadIngredientsTreeList() {
         JSONObject res = new JSONObject();
         try {
+            // 获取树状数据
             List<IngredientsTree> ingredientsTreeList = ingredientsService.listIngredientsTree();
+            // 转换
             JSONArray data = JSONArray.fromArray(ingredientsTreeList.toArray(new IngredientsTree[ingredientsTreeList.size()]));
             res.put("data", data);
             res.put("status", "success");
@@ -2280,8 +2282,8 @@ public class PRIngredientsController {
      * @return
      */
     public List<IngredientsTree> getTreeIngredientsTreeList(int id) {
-        List<IngredientsTree> ingredientsTreeList = ingredientsService.getChildrenIngredientsTreeById(id);
-        for (int i = 0; i < ingredientsTreeList.size(); i++) {
+        List<IngredientsTree> ingredientsTreeList = ingredientsService.getChildrenIngredientsTreeById(id);   // 获取子节点
+        for (int i = 0; i < ingredientsTreeList.size(); i++) {  // 如果子节点存在子节点则获取
             ingredientsTreeList.get(i).setIngredientsTreeList(getTreeIngredientsTreeList(ingredientsTreeList.get(i).getId()));
         }
         return ingredientsTreeList;
@@ -2292,8 +2294,8 @@ public class PRIngredientsController {
      *
      */
     public void delete(IngredientsTree ingredientsTree) {
-        ingredientsService.deleteById(ingredientsTree.getId());
-        if (ingredientsTree.getIngredientsTreeList() != null && ingredientsTree.getIngredientsTreeList().size() > 0) {
+        ingredientsService.deleteById(ingredientsTree.getId());   // 删除节点
+        if (ingredientsTree.getIngredientsTreeList() != null && ingredientsTree.getIngredientsTreeList().size() > 0) {  // 如果存在子节点则删除
             for (IngredientsTree ingredientsTree1 : ingredientsTree.getIngredientsTreeList()) {
                 delete(ingredientsTree1);
             }

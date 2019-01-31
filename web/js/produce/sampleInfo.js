@@ -441,20 +441,23 @@ function setSampleList(result) {
 function setSeniorSelectedList() {
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getSampleInfoWareHouseSeniorSelectedList",                  // url
+        url: "getApplyStateDataByDictionary",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
             if (result != undefined) {
-                var data = eval(result);
+                var data = eval(result.data);
                 // 高级检索下拉框数据填充
                 var applyState = $("#search-state");
                 applyState.children().remove();
-                $.each(data.applyStateList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    applyState.append(option);
+                $.each(data, function (index, item) {
+                    if(item.dataDictionaryItemId === 62 || item.dataDictionaryItemId === 61 ||
+                        item.dataDictionaryItemId === 60 || item.dataDictionaryItemId === 55){
+                        var option = $('<option />');
+                        option.val(item.dataDictionaryItemId);
+                        option.text(item.dictionaryItemName);
+                        applyState.append(option);
+                    }
                 });
                 applyState.get(0).selectedIndex = -1;
             } else {
@@ -1246,20 +1249,15 @@ function searchSampleInfo() {
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
     // 精确查询
-    var applyState = null;
-    var state = $("#search-state").val();
-    console.log(state);
-    if (state == 0) applyState = "ToCollected";
-    if (state == 1) applyState = "Received";
-    if (state == 2) applyState = "Rejected";
-    if (state == 3) applyState = "Invalid";
+    var applicationStatusItem = {};
+    applicationStatusItem.dataDictionaryItemId = parseInt($("#search-state").val());
     if ($("#senior").is(':visible')) {
         data = {
             id: $.trim($("#search-id").val()),
             companyName: $.trim($("#search-companyName").val()),
             wastesCode: $.trim($("#search-wastesCode").val()),
             sendingPerson: $.trim($("#search-sendingPerson").val()),
-            applyState: applyState,
+            applicationStatusItem: applicationStatusItem,
             isPH: $("#isPH1").prop("checked"),
             isAsh: $("#isAsh1").prop("checked"),
             isWater: $("#isWater1").prop("checked"),
@@ -1334,30 +1332,6 @@ function searchSampleInfo() {
             case "热融":
                 var isHotMelt = true;
                 keywords = "";
-                break;
-            case "待收样":
-                keywords = "ToCollected";
-                break;
-            case "待":
-                keywords = "ToCollected";
-                break;
-            case "已收样":
-                keywords = "Rejected";
-                break;
-            case "收样":
-                keywords = "Rejected";
-                break;
-            case "已拒收":
-                keywords = "Received";
-                break;
-            case "拒收":
-                keywords = "Received";
-                break;
-            case "已作废":
-                keywords = "Invalid";
-                break;
-            case "作废":
-                keywords = "Invalid";
                 break;
         }
         data = {
