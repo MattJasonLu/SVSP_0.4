@@ -124,6 +124,16 @@
                     <a class="btn btn-primary btn-xs" href="ingredientManage.html"
                     ><span  class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>返回</a>
                 </div>
+                <!--查询框-->
+                <div class="input-group col-md-4 pull-right">
+                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent" onkeydown="enterSearch()">
+                    <span class="input-group-btn">
+                            <a class="btn btn-default" onclick="searchData();"><span class="glyphicon glyphicon-search"
+                                                                                     aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog"
+                                                                                aria-hidden="true"></span> 重置</a>
+                        </span>
+                </div>
             </div>
         </div>
         <!--导入框-->
