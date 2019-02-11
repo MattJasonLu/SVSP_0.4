@@ -1054,7 +1054,7 @@ function loadPageBurnOrderList() {
         }
     });
     // 设置高级检索的下拉框数据
-    //setSeniorSelectedList();
+    setSeniorSelectedList();
     isSearch = false;
 
 
@@ -1099,7 +1099,6 @@ function setBurnOrderList(result) {
                     if(obj.checkStateItem!=null){
                         $(this).html(obj.checkStateItem.dictionaryItemName);
                     }
-
                     break;
                 case (3):
                     // 创建日期
@@ -1146,20 +1145,24 @@ function setSeniorSelectedList() {
     //设置状态下拉框
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getPretreatmentStateList",                  // url
+        url: "getCheckStateDataByDictionary",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
-            if (result != undefined) {
+            if (result != undefined && result.status == "success") {
                 var data = eval(result);
                 // 高级检索下拉框数据填充
                 var state = $("#search-state");
                 state.children().remove();
-                $.each(data.stateList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    state.append(option);
+                $.each(data.data, function (index, item) {
+                    if (item.dataDictionaryItemId === 74 ||
+                        item.dataDictionaryItemId === 69 ||
+                        item.dataDictionaryItemId === 75) {
+                        var option = $('<option />');
+                        option.val(item.dataDictionaryItemId);
+                        option.text(item.dictionaryItemName);
+                        state.append(option);
+                    }
                 });
                 state.get(0).selectedIndex = -1;
             } else {
@@ -1278,56 +1281,19 @@ function searchBurnOrder() {
     page.pageNumber = pageNumber;
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
-    var state = $('#search-state').val();
-    if(state.length==0){
-        state=null
-    }
-    // if ($("#search-state").val() == 0) state = "NewBuild";//新建
-    // if ($("#search-state").val() == 1) state = "Confirm";//已确认
-    // if ($("#search-state").val() == 2) state = "Invalid";//已作废
     if ($("#senior").is(':visible')) {
         data1 = {
             id: $.trim($("#search-id").val()),
             startDate: $("#search-startDate").val(),
             endDate: $("#search-endDate").val(),
             remarks: $.trim($("#search-remarks").val()),
-            checkStateItem:{dataDictionaryItemId:state},
+            checkStateItem:{
+                dataDictionaryItemId:$('#search-state').val()
+            },
             page: page
         };
     } else {
         var keywords = $.trim($("#searchContent").val());
-        // switch (keywords) {
-        //     case("新建"):
-        //         keywords = "NewBuild";
-        //         break;
-        //     case("待审批"):
-        //         keywords = "ToExamine";
-        //         break;
-        //     case("审批中"):
-        //         keywords = "Examining";
-        //         break;
-        //     case("审批通过"):
-        //         keywords = "Approval";
-        //         break;
-        //     case("已驳回"):
-        //         keywords = "Backed";
-        //         break;
-        //     case("驳回"):
-        //         keywords = "Backed";
-        //         break;
-        //     case("已作废"):
-        //         keywords = "Invalid";
-        //         break;
-        //     case("作废"):
-        //         keywords = "Invalid";
-        //         break;
-        //     case("已确认"):
-        //         keywords = "Confirm";
-        //         break;
-        //     case("确认"):
-        //         keywords = "Confirm";
-        //         break;
-        // }
         data1 = {
             page: page,
             keywords: keywords

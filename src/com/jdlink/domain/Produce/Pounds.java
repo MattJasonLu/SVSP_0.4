@@ -2,6 +2,7 @@ package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Dictionary.CheckStateItem;
 import com.jdlink.domain.Page;
 import jxl.write.DateTime;
 
@@ -100,6 +101,10 @@ public class Pounds {
      */
     private CheckState state;
     /**
+     * 状态数据字典
+     */
+    private CheckStateItem checkStateItem;
+    /**
      * 分页
      */
     private Page page;
@@ -115,6 +120,14 @@ public class Pounds {
      * 日期查询 终止时间
      */
     private Date endDate;
+
+    public CheckStateItem getCheckStateItem() {
+        return checkStateItem;
+    }
+
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
+    }
 
     public String getInboundPlanOrderId() {
         return inboundPlanOrderId;
