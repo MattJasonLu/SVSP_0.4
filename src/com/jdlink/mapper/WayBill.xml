@@ -105,6 +105,8 @@
                 or remarks like "%"#{keywords}"%"
                 or produceCompanyOperator like "%"#{keywords}"%"
                 or state like "%"#{keywords}"%"
+                or checkStateId in (select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
             </if>
             <if test="id != '' and id != null">
                 and id like "%"#{id}"%"
@@ -160,7 +162,8 @@
                 or DATE_FORMAT(wayBillDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or remarks like "%"#{keywords}"%"
                 or produceCompanyOperator like "%"#{keywords}"%"
-                or state like "%"#{keywords}"%"
+                or checkStateId in (select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
             </if>
             <if test="id != '' and id != null">
                 and id like "%"#{id}"%"

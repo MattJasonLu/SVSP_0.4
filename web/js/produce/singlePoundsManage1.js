@@ -390,9 +390,10 @@ function setPoundsList(result) {
                     break;
                 case(11):
                     //状态
-                    if (obj.state != null)
-                        $(this).html(obj.state.name);
-                    break;
+                    if (obj.checkStateItem != null) {
+                        $(this).html(obj.checkStateItem.dictionaryItemName);
+                        break;
+                    }
                 case(12):
                     //备注
                     $(this).html(obj.remarks);
@@ -413,7 +414,7 @@ function setPoundsList(result) {
 function setSeniorSelectedList() {
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getPoundsSeniorSelectedList",                  // url
+        url: "getCheckStateDataByDictionary",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
@@ -422,11 +423,14 @@ function setSeniorSelectedList() {
                 // 高级检索下拉框数据填充
                 var state = $("#search-state");
                 state.children().remove();
-                $.each(data.stateList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    state.append(option);
+                $.each(data.data, function (index, item) {
+                    if (item.dataDictionaryItemId == 69 ||
+                        item.dataDictionaryItemId == 75) {
+                        var option = $('<option />');
+                        option.val(item.dataDictionaryItemId);
+                        option.text(item.dictionaryItemName);
+                        state.append(option);
+                    }
                 });
                 state.get(0).selectedIndex = -1;
             } else {
@@ -597,15 +601,9 @@ function searchPounds() {
     page.pageNumber = pageNumber;
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
-    var state = null;
     if ($("#senior").is(':visible')) {
         var deliveryCompany = {};
         deliveryCompany.companyName = $.trim($("#search-deliveryCompany").val());
-        switch($("#search-state").val()){
-            case "0":state="NewBuild";break;
-            case "1":state="Confirm";break;
-            case "2":state="Invalid";break;
-        }
         data = {
             transferId: $.trim($("#search-transferId").val()),
             deliveryCompany: deliveryCompany,
@@ -613,43 +611,13 @@ function searchPounds() {
             goodsName: $.trim($("#search-goods").val()),
             startDate: $("#search-startDate").val(),
             endDate: $("#search-endDate").val(),
-            state: state,
+            checkStateItem: {
+                dataDictionaryItemId: $("#search-state").val()
+            },
             page: page
         };
     } else {
         var keywords = $.trim($("#searchContent").val());
-        switch (keywords) {
-            case("新建"):
-                keywords = "NewBuild";
-                break;
-            case("待审批"):
-                keywords = "ToExamine";
-                break;
-            case("审批中"):
-                keywords = "Examining";
-                break;
-            case("审批通过"):
-                keywords = "Approval";
-                break;
-            case("已驳回"):
-                keywords = "Backed";
-                break;
-            case("驳回"):
-                keywords = "Backed";
-                break;
-            case("已作废"):
-                keywords = "Invalid";
-                break;
-            case("作废"):
-                keywords = "Invalid";
-                break;
-            case("已确认"):
-                keywords = "Confirm";
-                break;
-            case("确认"):
-                keywords = "Confirm";
-                break;
-        }
         data = {
             page: page,
             keywords: keywords
