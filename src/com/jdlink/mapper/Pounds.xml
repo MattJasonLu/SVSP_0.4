@@ -6,10 +6,17 @@
 <mapper namespace="com.jdlink.mapper.PoundsMapper">
     <resultMap id="PoundsRM" type="Pounds" autoMapping="true">
         <id property="id" column="id"/>
+        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"/>
         <association property="deliveryCompany" column="deliveryCompanyId" select="getDeliveryCompany"/>
     </resultMap>
+
     <select id="getDeliveryCompany" parameterType="String" resultType="Client">
         SELECT * FROM client WHERE clientId=#{deliveryCompanyId};
+    </select>
+
+    <!--获取状态数据字典-->
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
     </select>
 
     <select id="count" resultType="int">
@@ -30,7 +37,7 @@
 
     <select id="listPage" resultMap="PoundsRM">
         select * from t_pr_pounds
-        where state != 'Invalid'
+        where checkStateId != 69
         order by creationTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
@@ -68,7 +75,8 @@
                 or goodsName like "%"#{keywords}"%"
                 or businessType like "%"#{keywords}"%"
                 or driver like "%"#{keywords}"%"
-                or state like "%"#{keywords}"%"
+                or checkStateId in (select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
                 or remarks like "%"#{keywords}"%"
             </if>
             <if test="transferId != null and transferId != ''">
@@ -84,8 +92,8 @@
             <if test="goodsName != null and goodsName != ''">
                 and goodsName like "%"#{goodsName}"%"
             </if>
-            <if test="state != null and state != ''">
-                and state like "%"#{state}"%"
+            <if test="checkStateItem != null and checkStateItem.dataDictionaryItemId != 0">
+                and checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
             <if test="startDate !=null and startDate !=''">
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
@@ -123,7 +131,8 @@
                 or goodsName like "%"#{keywords}"%"
                 or businessType like "%"#{keywords}"%"
                 or driver like "%"#{keywords}"%"
-                or state like "%"#{keywords}"%"
+                or checkStateId in (select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
                 or remarks like "%"#{keywords}"%"
             </if>
             <if test="transferId != null and transferId != ''">
@@ -139,8 +148,8 @@
             <if test="goodsName != null and goodsName != ''">
                 and goodsName like "%"#{goodsName}"%"
             </if>
-            <if test="state != null and state != ''">
-                and state like "%"#{state}"%"
+            <if test="checkStateItem != null and checkStateItem.dataDictionaryItemId != 0">
+                and checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
             <if test="startDate !=null and startDate !=''">
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
@@ -152,7 +161,7 @@
     </select>
 
     <update id="invalid" parameterType="String">
-        update t_pr_pounds set state = 'Invalid',id=CONCAT('I-',id)
+        update t_pr_pounds set state = 'Invalid',checkStateId=69,id=CONCAT('I-',id)
         where id = #{id}
     </update>
 
@@ -183,11 +192,11 @@
         insert into t_pr_pounds
         (id,transferId,founder,creationDate,enterLicencePlate,goodsName,grossWeight,netWeight,tare,
         deliveryCompanyId,receiveCompanyName,businessType,enterTime,outTime,driver,weighman,remarks,
-        nowTime,state,wastesCode,creationTime)
+        nowTime,state,checkStateId,wastesCode,creationTime)
         values
         (#{id},#{transferId},#{founder},#{creationDate},#{outLicencePlate},
         #{goodsName},#{grossWeight},#{netWeight},#{tare},#{deliveryCompany.clientId},#{receiveCompanyName},
-        #{businessType},#{enterTime},#{outTime},#{driver},#{weighman},#{remarks},NOW(),'Confirm',#{wastesCode},NOW());
+        #{businessType},#{enterTime},#{outTime},#{driver},#{weighman},#{remarks},NOW(),'NewBuild',75,#{wastesCode},NOW());
 
         update t_pl_inboundplanorder
         set poundsCount = #{netWeight}

@@ -101,10 +101,7 @@
                 and id like "%"#{id}"%"
             </if>
             <if test="checkStateItem != null">
-                <if test="checkStateItem.dictionaryItemName!=''">
-                    and checkStateId in(select dataDictionaryItemId from datadictionaryitem where
-                    dictionaryItemName=#{checkStateItem.dictionaryItemName} )
-                </if>
+                and checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
             <if test="startDate !=null and startDate !=''">
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
@@ -139,6 +136,8 @@
                 or a.unitPrice like "%"#{keywords}"%"
                 or a.totalPrice like "%"#{keywords}"%"
                 or a.wareHouseName like "%"#{keywords}"%"
+                or b.checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%" and dataDictionaryId=11)
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -155,8 +154,8 @@
             <if test="code != '' and code != null">
                 and code like #{code}"%"
             </if>
-            <if test="state != null and state !=''">
-                and state like "%"#{state}"%"
+            <if test="checkStateItem != null">
+                and checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
             <if test="startDate !=null and startDate !=''">
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
@@ -198,6 +197,8 @@
                 or a.unitPrice like "%"#{keywords}"%"
                 or a.totalPrice like "%"#{keywords}"%"
                 or a.wareHouseName like "%"#{keywords}"%"
+                or b.checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%" and dataDictionaryId=11)
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -212,10 +213,10 @@
                 and inId like "%"#{id}"%"
             </if>
             <if test="code != '' and code != null">
-                and code like "%"#{code}"%"
+                and code like #{code}"%"
             </if>
-            <if test="state != null and state !=''">
-                and state like "%"#{state}"%"
+            <if test="checkStateItem != null">
+                and checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
             <if test="startDate !=null and startDate !=''">
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
@@ -267,11 +268,7 @@
                 and id like "%"#{id}"%"
             </if>
             <if test="checkStateItem != null">
-                <if test="checkStateItem.dictionaryItemName!=''">
-                    and checkStateId in(select dataDictionaryItemId from datadictionaryitem where
-                    dictionaryItemName=#{checkStateItem.dictionaryItemName} )
-                </if>
-
+                and checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
             <if test="startDate !=null and startDate !=''">
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
@@ -625,7 +622,8 @@
             <if test="keywords != null and keywords != ''">
                 or b.id like "%"#{keywords}"%"
                 or b.department like "%"#{keywords}"%"
-                or b.state like "%"#{keywords}"%"
+                or b.checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
                 or a.name like "%"#{keywords}"%"
                 or a.code like "%"#{keywords}"%"
                 or a.specification like "%"#{keywords}"%"
@@ -652,8 +650,8 @@
             <if test="department != null and department != ''">
                 and b.department like "%"#{department}"%"
             </if>
-            <if test="state != null and state !=''">
-                and b.state like "%"#{state}"%"
+            <if test="checkStateItem != null">
+                and b.checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
             <if test="startDate !=null and startDate !=''">
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
@@ -683,7 +681,8 @@
             <if test="keywords != null and keywords != ''">
                 or b.id like "%"#{keywords}"%"
                 or b.department like "%"#{keywords}"%"
-                or b.state like "%"#{keywords}"%"
+                or b.checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
                 or a.name like "%"#{keywords}"%"
                 or a.code like "%"#{keywords}"%"
                 or a.specification like "%"#{keywords}"%"
@@ -710,15 +709,14 @@
             <if test="department != null and department != ''">
                 and b.department like "%"#{department}"%"
             </if>
-            <if test="state != null and state !=''">
-                and b.state like "%"#{state}"%"
+            <if test="checkStateItem != null">
+                and b.checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
             <if test="startDate !=null and startDate !=''">
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
             </if>
             <if test="endDate !=null and endDate !=''">
-                <![CDATA[ and  DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
-                <![CDATA[ and  DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
             <if test="name != null and name != ''">
                 and a.name like "%"#{name}"%"
@@ -1097,7 +1095,6 @@
                     and checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName
                     =#{checkStateItem.dictionaryItemName})
                 </if>
-
             </if>
             <if test="startDate !=null and startDate !=''">
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
@@ -1168,7 +1165,8 @@
             <if test="keywords != null and keywords != ''">
                 or b.id like "%"#{keywords}"%"
                 or b.department like "%"#{keywords}"%"
-                or state like "%"#{keywords}"%"
+                or b.checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
                 or code like "%"#{keywords}"%"
                 or a.name like "%"#{keywords}"%"
                 or a.specification like "%"#{keywords}"%"
@@ -1198,8 +1196,8 @@
             <if test="department != '' and department != null">
                 and b.department like "%"#{department}"%"
             </if>
-            <if test="state != null and state !=''">
-                and b.state like "%"#{state}"%"
+            <if test="checkStateItem != null">
+                and b.checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
             <if test="name != null and name != ''">
                 and a.name like "%"#{name}"%"
@@ -1229,7 +1227,8 @@
             <if test="keywords != null and keywords != ''">
                 or b.id like "%"#{keywords}"%"
                 or b.department like "%"#{keywords}"%"
-                or state like "%"#{keywords}"%"
+                or b.checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
                 or code like "%"#{keywords}"%"
                 or a.name like "%"#{keywords}"%"
                 or a.specification like "%"#{keywords}"%"
@@ -1259,8 +1258,8 @@
             <if test="department != '' and department != null">
                 and b.department like "%"#{department}"%"
             </if>
-            <if test="state != null and state !=''">
-                and b.state like "%"#{state}"%"
+            <if test="checkStateItem != null">
+                and b.checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
             <if test="name != null and name != ''">
                 and a.name like "%"#{name}"%"

@@ -337,10 +337,8 @@ function loadPagePretreatmentList() {
         }
     });
     // 设置高级检索的下拉框数据
-    //setSeniorSelectedList();
+    setSeniorSelectedList();
     isSearch = false;
-
-
 }
 
 /**
@@ -382,7 +380,6 @@ function setPretreatmentList(result) {
                     if(obj.checkStateItem!=null){
                         $(this).html(obj.checkStateItem.dictionaryItemName);
                     }
-
                     break;
                 case (3):
                     // 创建日期
@@ -437,20 +434,24 @@ function setSeniorSelectedList() {
     //设置状态下拉框
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getPretreatmentStateList",                  // url
+        url: "getCheckStateDataByDictionary",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
-            if (result != undefined) {
+            if (result != undefined && result.status == "success") {
                 var data = eval(result);
                 // 高级检索下拉框数据填充
                 var state = $("#search-state");
                 state.children().remove();
-                $.each(data.stateList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    state.append(option);
+                $.each(data.data, function (index, item) {
+                    if (item.dataDictionaryItemId === 74 ||
+                        item.dataDictionaryItemId === 69 ||
+                        item.dataDictionaryItemId === 75) {
+                        var option = $('<option />');
+                        option.val(item.dataDictionaryItemId);
+                        option.text(item.dictionaryItemName);
+                        state.append(option);
+                    }
                 });
                 state.get(0).selectedIndex = -1;
             } else {
@@ -599,13 +600,14 @@ function searchPretreatment() {
     page.pageNumber = pageNumber;
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
-    var state = $('#search-state').val();
     if ($("#senior").is(':visible')) {
         data1 = {
             id: $.trim($("#search-id").val()),
             startDate: $("#search-startDate").val(),
             endDate: $("#search-endDate").val(),
-            checkStateItem: {dataDictionaryItemId:state},
+            checkStateItem: {
+                dataDictionaryItemId: $('#search-state').val()
+            },
             page: page
         };
     } else {

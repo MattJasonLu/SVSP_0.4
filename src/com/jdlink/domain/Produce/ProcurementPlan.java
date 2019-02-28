@@ -67,7 +67,6 @@ public class ProcurementPlan {
     //状态数据字典
     private CheckStateItem checkStateItem;
 
-
     //物资类别数据字典
     private MaterialCategoryItem materialCategoryItem;
 

@@ -3,7 +3,7 @@ var setting = {
         addHoverDom: addHoverDom,     //鼠标悬停时显示用户自定义的控件，如zTree内部的编辑，删除等
         removeHoverDom: removeHoverDom,//鼠标失去悬停焦点时隐藏用户自定义的控件
         selectedMulti: false,         //设置是否允许同事选中多个节点
-        fontCss: {} // 设置字体
+        fontCss: setFontCss,              // 设置字体
     },
     edit: {
         enable: true,                  //设置zTree是否处于编辑状态
@@ -14,9 +14,9 @@ var setting = {
         showRenameBtn: false,      // 控制是否显示修改按钮
         drag: {
             autoExpandTrigger: true, //托拽节点时父节点是否自动展开
-            prev: true,            // 是否允许拖拽到目标节点之前
+            prev: false,            // 是否允许拖拽到目标节点之前
             inner: false,        // 是否允许拖拽到目标节点子节点中
-            next: true,           // 是否允许拖拽到目标节点之后
+            next: false,           // 是否允许拖拽到目标节点之后
             isCopy: false,        // 拖拽是否进行复制
             isMove: true
         },
@@ -153,7 +153,7 @@ function showUrl(treeNode) {
                     option.text(item.dictionaryItemName);
                     materialCategoryItem.append(option);
                 });
-                materialCategoryItem.get(0).selectedIndex=0;
+                materialCategoryItem.get(0).selectedIndex = -1;
             }
             else {
                 alert(result.message);
@@ -206,6 +206,7 @@ function cancel() {
  */
 function save() {
     var ingredientsTree = {};
+    // 获取数据
     ingredientsTree.id = organizationId;  // 旧编码（ID）
     ingredientsTree.code = $("#id").val();
     ingredientsTree.name = $("#name").val();
@@ -230,7 +231,7 @@ function save() {
                 // console.log(result);
                 if (result != null && result.status === "success") {
                     alert("保存成功！");
-                    $("#url1").hide();
+                    $("#url1").hide();   // 隐藏
                 } else {
                     alert(result.message);
                 }
@@ -329,6 +330,8 @@ function selectAll() {
     zTree.setting.edit.editNameSelectAll = $("#selectAll").attr("checked");
 }
 
+var key = {};   // 搜索功能对象
+
 /**
  * 首页加载
  */
@@ -339,6 +342,10 @@ $(document).ready(function () {
     $.fn.zTree.init($("#treeDemo"), setting, zNodes);//根据参数初始化树
     $('.loader').hide();  // 隐藏进度条
     $("#selectAll").bind("click", selectAll);
+    // // 查询功能
+    // document.getElementById("key").value = ""; 			    //绑定事件
+    // key = $("#key");
+    // key.bind("focus", focusKey).bind("blur", blurKey).bind("propertychange", searchNode).bind("input", searchNode);
 });
 
 /**
@@ -476,4 +483,77 @@ function importExcel() {
             }
         });
     });
+}
+
+var lastValue  = "";  // 上一次搜索值
+var nodeList = [];   // 搜索到的节点
+
+/**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchData();      //
+    }
+}
+
+/**
+ * 搜索节点
+ */
+function searchData() {
+  // closeTree();   // 重新展开树
+    var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+    var value = $.trim($("#searchContent").val());
+    var keyType = "name";
+    if (lastValue === value) return;
+    lastValue = value;
+    if (value === ""){
+        updateNodes(false);
+        return;
+    }
+    updateNodes(false);
+    nodeList = zTree.getNodesByParamFuzzy(keyType, value); //调用ztree的模糊查询功能，得到符合条件的节点
+    updateNodes(true); //更新节点
+    console.log("查询的节点:");
+    console.log(nodeList);
+}
+
+/**
+ * 高亮显示被搜索到的节点
+ */
+function updateNodes(highlight) {
+    var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+    for( var i=0, l=nodeList.length; i<l; i++) {
+        nodeList[i].highlight = highlight;
+        zTree.expandNode(nodeList[i].getParentNode(), true, false, false); //将搜索到的节点的父节点展开
+        zTree.updateNode(nodeList[i]);
+    }
+}
+
+/**
+ * 只展开根节点下的一级节点
+ */
+function closeTree() {
+    var tree = $.fn.zTree.getZTreeObj('treeDemo');
+    //获取 zTree 的全部节点数据将节点数据转换为简单 Array 格式
+    var nodes = tree.transformToArray(tree.getNodes());
+    for(var i=0;i<nodes.length;i++){
+        if(nodes[i].level < 2){
+            console.log(nodes[i].name);
+            //根节点展开
+            tree.expandNode(nodes[i],true,true,false)
+        }else{
+            tree.expandNode(nodes[i],false,true,false)
+        }
+    }
+}
+
+/**
+ * 设置字体颜色
+ * @param treeId
+ * @param treeNode
+ * @returns {*}
+ */
+function setFontCss(treeId, treeNode) {
+    return (!!treeNode.highlight) ? {color:"#FF3333 ", "font-weight":"bold"} : {color:"#333", "font-weight":"normal"};
 }

@@ -6,12 +6,18 @@
 <mapper namespace="com.jdlink.mapper.ProductionPlanMapper">
     <resultMap id="ProductionPlanRM" type="ProductionPlan" autoMapping="true">
         <id column="id" property="id"/>
+        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"/>
         <association property="auxiliaryConsumption" resultMap="AuxiliaryConsumptionRM" javaType="com.jdlink.domain.Produce.AuxiliaryConsumption"/>
     </resultMap>
 
     <resultMap id="AuxiliaryConsumptionRM" type="AuxiliaryConsumption" autoMapping="true">
         <result column="calcareousLime" property="calcareousLime" />
     </resultMap>
+
+    <!--获取状态数据字典-->
+    <select id="getCheckStateItem" resultType="CheckStateItem">
+        select * from datadictionaryitem where dataDictionaryItemId=#{checkStateId}
+    </select>
 
     <select id="count" resultType="int">
         select count(*) from t_pr_productionplan;
@@ -23,7 +29,7 @@
 
     <select id="listPage" resultMap="ProductionPlanRM">
         select * from t_pr_productionplan
-        where state != 'Invalid'
+        where checkStateId != 69
         order by id desc
         <if test="start != null and count != null">
             limit #{start}, #{count};
@@ -47,7 +53,8 @@
                 or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
-                or state like "%"#{keywords}"%"
+                or checkStateId in (select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
             </if>
             <if test="id != null and id != ''">
                 and id like "%"#{id}"%"
@@ -61,8 +68,8 @@
             <if test="endDate !=null and endDate !=''">
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
-            <if test="state != null and state != ''">
-                and state like "%"#{state}"%"
+            <if test="checkStateItem != null and checkStateItem.dataDictionaryItemId != 0">
+                and checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
         </where>
         order by creationDate desc
@@ -77,6 +84,8 @@
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
                 or founder like "%"#{keywords}"%"
+                or transportRate like "%"#{keywords}"%"
+                or planQuantity like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -86,7 +95,8 @@
                 or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
-                or state like "%"#{keywords}"%"
+                or checkStateId in (select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
             </if>
             <if test="id != null and id != ''">
                 and id like "%"#{id}"%"
@@ -100,8 +110,8 @@
             <if test="endDate !=null and endDate !=''">
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
-            <if test="state != null and state != ''">
-                and state like "%"#{state}"%"
+            <if test="checkStateItem != null and checkStateItem.dataDictionaryItemId != 0">
+                and checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
         </where>
     </select>
@@ -111,25 +121,25 @@
     </select>
 
     <update id="approval" parameterType="ProductionPlan">
-        update t_pr_productionplan set state = 'Approval',advice = #{advice} where id = #{id};
+        update t_pr_productionplan set state = 'Approval',checkStateId=76,advice = #{advice} where id = #{id};
     </update>
 
     <update id="reject" parameterType="ProductionPlan">
-        update t_pr_productionplan set state = 'Backed',advice = #{advice} where id = #{id};
+        update t_pr_productionplan set state = 'Backed',checkStateId=66,advice = #{advice} where id = #{id};
     </update>
 
     <update id="submit" parameterType="String">
-        update t_pr_productionplan set state = 'Examining' where id = #{id};
+        update t_pr_productionplan set state = 'Examining',checkStateId=63 where id = #{id};
     </update>
 
     <update id="invalid" parameterType="String">
         update t_pr_productionplan
-        set state = 'Invalid',id=CONCAT('I-',id)
+        set state = 'Invalid',checkStateId=69,id=CONCAT('I-',id)
          where id = #{id};
     </update>
 
     <update id="confirm" parameterType="String">
-        update t_pr_productionplan set state = 'ToExamine' where id = #{id};
+        update t_pr_productionplan set state = 'ToExamine',checkStateId=67 where id = #{id};
     </update>
 
     <update id="update" parameterType="ProductionPlan">
@@ -155,12 +165,12 @@
     </delete>
 
     <insert id="add" parameterType="ProductionPlan">
-        insert into t_pr_productionplan (id,founder,creationDate,transportRate,planQuantity,state,calcareousLime,
+        insert into t_pr_productionplan (id,founder,creationDate,transportRate,planQuantity,state,checkStateId,calcareousLime,
         waterScaleInhibitor,commonActivatedCarbon,naclo,activatedCarbon,standardBox,activatedCarbonParticles,
         woodenPallets,lye,standardTray_1m,causticSoda,standardTray_1_2m,urea,slagBag,hydrochloricAcid,flyAshBag,
         nahco3,tonBox,flour,steam,defoamer,dieselOil,flocculant,naturalGas,softWaterReducingAgent,electricQuantity,
         softWaterScaleInhibitor,industrialWater,pH,tapWaterQuantity,waterReducingAgent,nowTime)
-        values (#{id},#{founder},NOW(),#{transportRate},#{planQuantity},'NewBuild',#{auxiliaryConsumption.calcareousLime},
+        values (#{id},#{founder},NOW(),#{transportRate},#{planQuantity},'NewBuild',75,#{auxiliaryConsumption.calcareousLime},
         #{auxiliaryConsumption.waterScaleInhibitor},#{auxiliaryConsumption.commonActivatedCarbon},#{auxiliaryConsumption.naclo},
         #{auxiliaryConsumption.activatedCarbon},#{auxiliaryConsumption.standardBox},#{auxiliaryConsumption.activatedCarbonParticles},
         #{auxiliaryConsumption.woodenPallets},#{auxiliaryConsumption.lye},#{auxiliaryConsumption.standardTray_1m},#{auxiliaryConsumption.causticSoda},
