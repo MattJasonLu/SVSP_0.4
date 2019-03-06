@@ -2,6 +2,7 @@ package com.jdlink.mapper;
 
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.MedicalWastes;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -24,4 +25,8 @@ public interface MedicalWastesMapper {
     MedicalWastes getCurrentWastesAmount();
 
     int searchMedicalWastesCount(MedicalWastes medicalWastes);
+
+    List<MedicalWastes>UpdatePeriodAndInventory(@Param(value="keyword") String keyword );
+
+    MedicalWastes getCumulative(MedicalWastes medicalWastes);
 }

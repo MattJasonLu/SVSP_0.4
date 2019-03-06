@@ -1,5 +1,6 @@
 package com.jdlink.domain;
 
+import com.jdlink.domain.Dictionary.CheckStateItem;
 import com.jdlink.domain.Dictionary.TicketRateItem;
 import com.jdlink.domain.Dictionary.UnitDataItem;
 
@@ -13,6 +14,10 @@ public class OfficeSuppliesItem {
      * 条目编号
      */
     private String itemId;
+    /**
+     * 入库单条目编号
+     */
+    private String inboundItemId;
     /**
      * 入库单号
      */
@@ -50,7 +55,7 @@ public class OfficeSuppliesItem {
      */
     private Float leftAmount;
     /**
-     * 含税单位
+     * 含税单价
      */
     private Float taxUnitPrice;
     /**
@@ -90,9 +95,13 @@ public class OfficeSuppliesItem {
      */
     private String remark;
     /**
+     * 审批状态
+     */
+    private CheckStateItem checkStateItem;
+    /**
      * 关键字
      */
-    private String keyword;
+    private String keywords;
     /**
      * 页码
      */
@@ -104,6 +113,14 @@ public class OfficeSuppliesItem {
 
     public void setItemId(String itemId) {
         this.itemId = itemId;
+    }
+
+    public String getInboundItemId() {
+        return inboundItemId;
+    }
+
+    public void setInboundItemId(String inboundItemId) {
+        this.inboundItemId = inboundItemId;
     }
 
     public String getInboundId() {
@@ -258,12 +275,20 @@ public class OfficeSuppliesItem {
         this.remark = remark;
     }
 
-    public String getKeyword() {
-        return keyword;
+    public CheckStateItem getCheckStateItem() {
+        return checkStateItem;
     }
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
+    }
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
 
     public Page getPage() {

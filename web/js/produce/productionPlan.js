@@ -370,8 +370,10 @@ function setProductionPlanList(result) {
                     break;
                 // 状态
                 case (6):
-                    $(this).html(obj.state.name);
-                    break;
+                    if (obj.checkStateItem != null) {
+                        $(this).html(obj.checkStateItem.dictionaryItemName);
+                        break;
+                    }
             }
         });
         // 把克隆好的tr追加到原来的tr前面
@@ -388,20 +390,27 @@ function setProductionPlanList(result) {
 function setSeniorSelectedList() {
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getProductionPlanSeniorSelectedList",                  // url
+        url: "getCheckStateDataByDictionary",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
-            if (result != undefined) {
+            if (result != undefined && result.status == "success") {
                 var data = eval(result);
                 // 高级检索下拉框数据填充
                 var state = $("#search-state");
                 state.children().remove();
-                $.each(data.stateList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    state.append(option);
+                $.each(data.data, function (index, item) {
+                    if (item.dataDictionaryItemId == 76 ||
+                        item.dataDictionaryItemId == 63 ||
+                        item.dataDictionaryItemId == 67 ||
+                        item.dataDictionaryItemId == 66 ||
+                        item.dataDictionaryItemId == 69 ||
+                        item.dataDictionaryItemId == 75) {
+                        var option = $('<option />');
+                        option.val(item.dataDictionaryItemId);
+                        option.text(item.dictionaryItemName);
+                        state.append(option);
+                    }
                 });
                 state.get(0).selectedIndex = -1;
             } else {
@@ -537,50 +546,19 @@ function searchProductionPlan() {
     page.pageNumber = pageNumber;
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
-    var state = null;
-    if ($("#search-state").val() == 0) state = "NewBuild";    // 新建
-    if ($("#search-state").val() == 1) state = "ToExamine";  // 待审批
-    if ($("#search-state").val() == 2) state = "Examining";   // 审批中
-    if ($("#search-state").val() == 3) state = "Approval";   // 审批通过
-    if ($("#search-state").val() == 4) state = "Backed";    // 驳回
-    if ($("#search-state").val() == 5) state = "Invalid";    // 作废
     if ($("#senior").is(':visible')) {
         data = {
             id: $.trim($("#search-id").val()),
             founder: $.trim($("#search-founder").val()),
             startDate: $("#search-startDate").val(),
             endDate: $("#search-endDate").val(),
-            state: state,
+            checkStateItem: {
+                dataDictionaryItemId: $("#search-state").val()
+            },
             page: page
         };
     } else {
         var keywords = $.trim($("#searchContent").val());
-        switch (keywords) {
-            case("新建"):
-                keywords = "NewBuild";
-                break;
-            case("待审批"):
-                keywords = "ToExamine";
-                break;
-            case("审批中"):
-                keywords = "Examining";
-                break;
-            case("审批通过"):
-                keywords = "Approval";
-                break;
-            case("已驳回"):
-                keywords = "Backed";
-                break;
-            case("驳回"):
-                keywords = "Backed";
-                break;
-            case("已作废"):
-                keywords = "Invalid";
-                break;
-            case("作废"):
-                keywords = "Invalid";
-                break;
-        }
         data = {
             page: page,
             keywords: keywords

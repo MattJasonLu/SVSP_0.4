@@ -1341,8 +1341,10 @@ function confirmSample() {
         //contentType: 'application/json;charset=utf-8',
         success:function (result) {
             if (result != undefined && result.status == "success"){
-                alert("已收样!")
-                window.location.reload();
+                alert("已收样!");
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $("#appointModa2").modal('hide');
             }
         },
         error:function (result) {
@@ -1372,7 +1374,6 @@ function rejection(item) {
     if(state=='待收样'||state=='已拒收'){
         $('#id1').text(id);
         $("#rejection1").modal('show')
-
         //根据编号查找
         $.ajax({
             type: "POST",                       // 方法类型
@@ -1412,10 +1413,11 @@ function rejection1() {
         data:{"id":id,"advice":advice},
         success:function (result) {
             if (result != undefined && result.status == "success") {
-                alert(result.message)
-                window.location.reload();
+                alert(result.message);
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $("#rejection1").modal('hide');
             }
-
         },
         error:function (result) {
             alert("服务器异常！")
@@ -1711,8 +1713,10 @@ function adjust() {
     })
 
     //添加子表数据
-    alert("修改成功！")
-    window.location.reload();
+    alert("修改成功！");
+    $("#pageNumber").val(currentPage);   // 设置当前页页数
+    inputSwitchPage();  // 跳转当前页
+    $('#appointModa3').modal('hide');
 }
 
 //作废
@@ -1741,8 +1745,9 @@ function setInvalid(item) {
                 //contentType: 'application/json;charset=utf-8',
                 success:function (result) {
                     if (result != undefined && result.status == "success"){
-                        alert(result.message)
-                        window.location.reload();
+                        alert(result.message);
+                        $("#pageNumber").val(currentPage);   // 设置当前页页数
+                        inputSwitchPage();  // 跳转当前页
                     }
                 },
                 error:function (result) {

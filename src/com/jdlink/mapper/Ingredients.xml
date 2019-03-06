@@ -17,6 +17,7 @@
         <id column="itemId" property="itemId"/>
         <result column="inId" property="id"/>
         <result column="unit" property="unit"/>
+        <result column="creationDate" property="creationDate"/>
         <result column="procurementId" property="procurementId"/>
         <result column="serialNumberIn" property="serialNumber"/>
         <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"/>
@@ -100,10 +101,7 @@
                 and id like "%"#{id}"%"
             </if>
             <if test="checkStateItem != null">
-                <if test="checkStateItem.dictionaryItemName!=''">
-                    and checkStateId in(select dataDictionaryItemId from datadictionaryitem where
-                    dictionaryItemName=#{checkStateItem.dictionaryItemName} )
-                </if>
+                and checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
             <if test="startDate !=null and startDate !=''">
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
@@ -138,6 +136,8 @@
                 or a.unitPrice like "%"#{keywords}"%"
                 or a.totalPrice like "%"#{keywords}"%"
                 or a.wareHouseName like "%"#{keywords}"%"
+                or b.checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%" and dataDictionaryId=11)
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -154,8 +154,8 @@
             <if test="code != '' and code != null">
                 and code like #{code}"%"
             </if>
-            <if test="state != null and state !=''">
-                and state like "%"#{state}"%"
+            <if test="checkStateItem != null">
+                and checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
             <if test="startDate !=null and startDate !=''">
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
@@ -197,6 +197,8 @@
                 or a.unitPrice like "%"#{keywords}"%"
                 or a.totalPrice like "%"#{keywords}"%"
                 or a.wareHouseName like "%"#{keywords}"%"
+                or b.checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%" and dataDictionaryId=11)
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
@@ -211,10 +213,10 @@
                 and inId like "%"#{id}"%"
             </if>
             <if test="code != '' and code != null">
-                and code like "%"#{code}"%"
+                and code like #{code}"%"
             </if>
-            <if test="state != null and state !=''">
-                and state like "%"#{state}"%"
+            <if test="checkStateItem != null">
+                and checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
             <if test="startDate !=null and startDate !=''">
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
@@ -266,11 +268,7 @@
                 and id like "%"#{id}"%"
             </if>
             <if test="checkStateItem != null">
-                <if test="checkStateItem.dictionaryItemName!=''">
-                    and checkStateId in(select dataDictionaryItemId from datadictionaryitem where
-                    dictionaryItemName=#{checkStateItem.dictionaryItemName} )
-                </if>
-
+                and checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
             <if test="startDate !=null and startDate !=''">
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
@@ -294,6 +292,24 @@
                 and equipment = #{equipment};
             </if>
         </where>
+    </select>
+
+    <!--根据签订日期范围查询辅料入库明细:统计图表-->
+    <select id="getIngredientsInItemAmountByRange" resultMap="InIngredientsRM">
+        select SUM(a.amount) as amount,b.creationDate from t_pr_ingredients as a left join t_pr_ingredients_in as b on
+        a.inId=b.id
+        <where>
+            <if test="startDate != null and startDate != ''">
+                <![CDATA[AND DATE_FORMAT(b.creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[AND DATE_FORMAT(b.creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')]]>
+            </if>
+            <if test="1==1">
+                AND b.checkStateId != 69
+            </if>
+        </where>
+        GROUP BY DATE_FORMAT(b.creationDate, '%Y%m') ORDER BY b.creationDate ASC;
     </select>
 
     <select id="getAmountItems" parameterType="Ingredients" resultType="int">
@@ -606,7 +622,8 @@
             <if test="keywords != null and keywords != ''">
                 or b.id like "%"#{keywords}"%"
                 or b.department like "%"#{keywords}"%"
-                or b.state like "%"#{keywords}"%"
+                or b.checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
                 or a.name like "%"#{keywords}"%"
                 or a.code like "%"#{keywords}"%"
                 or a.specification like "%"#{keywords}"%"
@@ -633,8 +650,8 @@
             <if test="department != null and department != ''">
                 and b.department like "%"#{department}"%"
             </if>
-            <if test="state != null and state !=''">
-                and b.state like "%"#{state}"%"
+            <if test="checkStateItem != null">
+                and b.checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
             <if test="startDate !=null and startDate !=''">
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
@@ -664,7 +681,8 @@
             <if test="keywords != null and keywords != ''">
                 or b.id like "%"#{keywords}"%"
                 or b.department like "%"#{keywords}"%"
-                or b.state like "%"#{keywords}"%"
+                or b.checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
                 or a.name like "%"#{keywords}"%"
                 or a.code like "%"#{keywords}"%"
                 or a.specification like "%"#{keywords}"%"
@@ -691,15 +709,14 @@
             <if test="department != null and department != ''">
                 and b.department like "%"#{department}"%"
             </if>
-            <if test="state != null and state !=''">
-                and b.state like "%"#{state}"%"
+            <if test="checkStateItem != null">
+                and b.checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
             <if test="startDate !=null and startDate !=''">
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
             </if>
             <if test="endDate !=null and endDate !=''">
-                <![CDATA[ and  DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
-                <![CDATA[ and  DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
             <if test="name != null and name != ''">
                 and a.name like "%"#{name}"%"
@@ -720,11 +737,30 @@
 
     <!--获取库存/收发汇总表数据-->
     <select id="getInventoryList" resultType="Ingredients">
-        select a.*,b.creationDate as creationDate from t_pr_ingredients_inventory as a join t_pr_ingredients_in as b on a.inId=b.id
+        select a.*,b.creationDate as creationDate from t_pr_ingredients_inventory as a join t_pr_ingredients_in as b on
+        a.inId=b.id
         order by inId DESC,itemId asc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count};
         </if>
+    </select>
+
+    <!--收发汇总表获取合计数据-->
+    <select id="getSumByIngredient" parameterType="Ingredients" resultType="Ingredients">
+        select sum(amount) as totalAmount,sum(amount*inPrice) as allTotalPrice,sum(inAmount)
+        as inTotalAmount,sum(inAmount*inPrice) as inTotalPrice,
+        sum(outAmount) as outTotalAmount,sum(outAmount*outPrice) as outTotalPrice,
+        (select sum(amount)
+        from t_pr_ingredients_inventory as a1 left join t_pr_ingredients_in as b1 on a1.inId=b1.id
+        where DATE_FORMAT(DATE_SUB(#{creationDate},INTERVAL 1 MONTH),'%Y-%m-%d') >= DATE_FORMAT(b1.creationDate,'%Y-%m-%d')
+        and a1.name=#{name} and a1.specification=#{specification} and a1.wareHouseName=#{wareHouseName})  as monthBeginAmount,
+        (select sum(amount*inPrice)
+        from t_pr_ingredients_inventory as a1 left join t_pr_ingredients_in as b1 on a1.inId=b1.id
+        where DATE_FORMAT(DATE_SUB(#{creationDate},INTERVAL 1 MONTH),'%Y-%m-%d') >= DATE_FORMAT(b1.creationDate,'%Y-%m-%d')
+        and a1.name=#{name} and a1.specification=#{specification} and a1.wareHouseName=#{wareHouseName}) as monthBeginTotalPrice
+        from t_pr_ingredients_inventory as a1 left join t_pr_ingredients_in as b1 on a1.inId=b1.id
+        where DATE_FORMAT(#{creationDate},'%Y-%m-%d') >= DATE_FORMAT(b1.creationDate,'%Y-%m-%d')
+        and a1.name=#{name} and a1.specification=#{specification} and a1.wareHouseName=#{wareHouseName}
     </select>
 
     <select id="countInventory" resultType="int">
@@ -736,87 +772,87 @@
     </select>
 
     <select id="searchInventoryCount" parameterType="Ingredients" resultType="int">
-        select count(*) from t_pr_ingredients_inventory
+        select count(*) from t_pr_ingredients_inventory as a left join t_pr_ingredients_in as b on a.inId=b.id
         <where>
             <if test="keywords != null and keywords != ''">
-                or itemId = #{keywords}
-                or code like #{keywords}"%"
-                or name like "%"#{keywords}"%"
-                or specification like "%"#{keywords}"%"
-                or unit like "%"#{keywords}"%"
-                or wareHouseName like "%"#{keywords}"%"
-                or inId like "%"#{keywords}"%"
-                or outId like "%"#{keywords}"%"
+                or a.itemId = #{keywords}
+                or a.code like #{keywords}"%"
+                or a.name like "%"#{keywords}"%"
+                or a.specification like "%"#{keywords}"%"
+                or a.unit like "%"#{keywords}"%"
+                or a.wareHouseName like "%"#{keywords}"%"
+                or a.inId like "%"#{keywords}"%"
+                or a.outId like "%"#{keywords}"%"
             </if>
             <if test="wareHouseName != null and wareHouseName != ''">
-                and wareHouseName like "%"#{wareHouseName}"%"
+                and a.wareHouseName like "%"#{wareHouseName}"%"
             </if>
             <if test="code != null and code != ''">
-                and code like #{code}"%"
+                and a.code like #{code}"%"
             </if>
             <if test="name != null and name != ''">
-                and name like "%"#{name}"%"
+                and a.name like "%"#{name}"%"
             </if>
             <if test="specification != null and specification != ''">
-                and specification = #{specification}
+                and a.specification = #{specification}
             </if>
             <if test="unit != null and unit != ''">
-                and unit = #{unit}
+                and a.unit = #{unit}
             </if>
             <if test="inId != null and inId != ''">
-                and inId like "%"#{inId}"%"
+                and a.inId like "%"#{inId}"%"
             </if>
             <if test="outId != null and outId != ''">
-                and outId like "%"#{outId}"%"
+                and a.outId like "%"#{outId}"%"
             </if>
             <if test="amount != null and amount != ''">
-                and amount =#{amount}
+                and a.amount =#{amount}
             </if>
             <if test="inAmount != null and inAmount != ''">
-                and inAmount =#{inAmount}
+                and a.inAmount =#{inAmount}
             </if>
         </where>
     </select>
 
     <select id="searchInventory" resultType="Ingredients">
-        select * from t_pr_ingredients_inventory
+        select a.*,b.creationDate from t_pr_ingredients_inventory as a left join t_pr_ingredients_in as b on a.inId=b.id
         <where>
             <if test="keywords != null and keywords != ''">
-                or itemId = #{keywords}
-                or code like #{keywords}"%"
-                or name like "%"#{keywords}"%"
-                or specification like "%"#{keywords}"%"
-                or unit like "%"#{keywords}"%"
-                or wareHouseName like "%"#{keywords}"%"
-                or inId like "%"#{keywords}"%"
-                or outId like "%"#{keywords}"%"
+                or a.itemId = #{keywords}
+                or a.code like #{keywords}"%"
+                or a.name like "%"#{keywords}"%"
+                or a.specification like "%"#{keywords}"%"
+                or a.unit like "%"#{keywords}"%"
+                or a.wareHouseName like "%"#{keywords}"%"
+                or a.inId like "%"#{keywords}"%"
+                or a.outId like "%"#{keywords}"%"
             </if>
             <if test="wareHouseName != null and wareHouseName != ''">
-                and wareHouseName like "%"#{wareHouseName}"%"
+                and a.wareHouseName like "%"#{wareHouseName}"%"
             </if>
             <if test="code != null and code != ''">
-                and code like #{code}"%"
+                and a.code like #{code}"%"
             </if>
             <if test="name != null and name != ''">
-                and name like "%"#{name}"%"
+                and a.name like "%"#{name}"%"
             </if>
             <if test="specification != null and specification != ''">
-                and specification = #{specification}
+                and a.specification = #{specification}
             </if>
             <if test="unit != null and unit != ''">
-                and unit = #{unit}
+                and a.unit = #{unit}
             </if>
             <if test="inId != null and inId != ''">
-                and inId like "%"#{inId}"%"
+                and a.inId like "%"#{inId}"%"
             </if>
             <if test="outId != null and outId != ''">
-                and outId like "%"#{outId}"%"
+                and a.outId like "%"#{outId}"%"
             </if>
             <if test="amount != null and amount != ''">
-                and amount =#{amount}
+                and a.amount =#{amount}
             </if>
             <if test="inAmount != null and inAmount != ''">
-                and inAmount =#{inAmount}
+                and a.inAmount =#{inAmount}
             </if>
         </where>
         <if test="page != null and page.start != null and page.count != null and page.count != 0">
@@ -953,6 +989,7 @@
         <result column="aid" property="aid"/>
         <result column="outId" property="id"/>
         <result column="serialNumberOut" property="serialNumber"/>
+        <result column="creationDate" property="creationDate"/>
         <association property="equipmentDataItem" column="equipmentId" select="getEquipmentDataItem"/>
         <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"/>
     </resultMap>
@@ -1003,6 +1040,24 @@
         </where>
     </select>
 
+    <!--根据签订日期范围查询辅料出库明细:统计图表-->
+    <select id="getIngredientsOutItemAmountByRange" resultMap="InIngredientsRM">
+        select SUM(a.receiveAmount) as receiveAmount,b.creationDate from t_pr_ingredients as a left join
+        t_pr_ingredients_out as b on a.outId=b.id
+        <where>
+            <if test="startDate != null and startDate != ''">
+                <![CDATA[AND DATE_FORMAT(b.creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[AND DATE_FORMAT(b.creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')]]>
+            </if>
+            <if test="1==1">
+                AND b.checkStateId != 69
+            </if>
+        </where>
+        GROUP BY DATE_FORMAT(b.creationDate, '%Y%m') ORDER BY b.creationDate ASC;
+    </select>
+
     <select id="getOutById" parameterType="String" resultMap="IngredientsOutRM">
           select * from t_pr_ingredients_out where id = #{id};
      </select>
@@ -1040,7 +1095,6 @@
                     and checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName
                     =#{checkStateItem.dictionaryItemName})
                 </if>
-
             </if>
             <if test="startDate !=null and startDate !=''">
                 <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
@@ -1111,7 +1165,8 @@
             <if test="keywords != null and keywords != ''">
                 or b.id like "%"#{keywords}"%"
                 or b.department like "%"#{keywords}"%"
-                or state like "%"#{keywords}"%"
+                or b.checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
                 or code like "%"#{keywords}"%"
                 or a.name like "%"#{keywords}"%"
                 or a.specification like "%"#{keywords}"%"
@@ -1141,8 +1196,8 @@
             <if test="department != '' and department != null">
                 and b.department like "%"#{department}"%"
             </if>
-            <if test="state != null and state !=''">
-                and b.state like "%"#{state}"%"
+            <if test="checkStateItem != null">
+                and b.checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
             <if test="name != null and name != ''">
                 and a.name like "%"#{name}"%"
@@ -1172,7 +1227,8 @@
             <if test="keywords != null and keywords != ''">
                 or b.id like "%"#{keywords}"%"
                 or b.department like "%"#{keywords}"%"
-                or state like "%"#{keywords}"%"
+                or b.checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%")
                 or code like "%"#{keywords}"%"
                 or a.name like "%"#{keywords}"%"
                 or a.specification like "%"#{keywords}"%"
@@ -1202,8 +1258,8 @@
             <if test="department != '' and department != null">
                 and b.department like "%"#{department}"%"
             </if>
-            <if test="state != null and state !=''">
-                and b.state like "%"#{state}"%"
+            <if test="checkStateItem != null">
+                and b.checkStateId = #{checkStateItem.dataDictionaryItemId}
             </if>
             <if test="name != null and name != ''">
                 and a.name like "%"#{name}"%"
@@ -1332,12 +1388,36 @@
         </if>
     </insert>
 
+    <!--获取已结账的出库单的年月份集合-->
+    <select id="getDateBbySettled" resultType="String">
+          SELECT date_format(creationDate,'%Y-%m')  FROM t_pr_ingredients_out
+          WHERE checkStateId=253;
+    </select>
+
+    <!--锁定出库单-->
+    <update id="outSettled" parameterType="IngredientsOut">
+        <if test="receiveIdList != null and receiveIdList.size() > 0">
+            <foreach collection="receiveIdList" index="index" item="id">
+                update t_pr_ingredients_out set checkStateId=253 where id=#{id};
+            </foreach>
+        </if>
+    </update>
+
     <!--辅料备件物品维护-->
     <resultMap id="IngredientsRM" type="Ingredients" autoMapping="true">
-        <id column="itemId" property="id"/>
-        <result column="ingredientsName" property="name"/>
-        <association property="materialCategoryItem" column="materialCategoryId" select="getMaterialCategoryItem"></association>
-        <association property="unitDataItem" column="unitId" select="getUnitId"></association>
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <association property="materialCategoryItem" column="materialCategoryId"
+                     select="getMaterialCategoryItem" />
+        <association property="unitDataItem" column="unitId" select="getUnitId" />
+    </resultMap>
+
+   <!--辅料备件物品管理树状-->
+    <resultMap id="IngredientsTreeRM" type="IngredientsTree" autoMapping="true">
+        <id column="id" property="id" />
+        <association property="materialCategoryItem" column="materialCategoryId"
+                     select="getMaterialCategoryItem" />
+        <association property="unitDataItem" column="unitId" select="getUnitId" />
     </resultMap>
 
     <!--获取和物资累呗数据字典-->
@@ -1350,43 +1430,44 @@
         select * from datadictionaryitem where dataDictionaryItemId=#{unitId}
     </select>
 
-
     <select id="getIngredientsList" resultMap="IngredientsRM">
-        select * from t_pl_ingredientslist
-        order by nowTime desc
+        select * from t_pl_ingredients_list_tree where materialCategoryId is not null
+        order by creationTime desc,code asc
         <if test="start != null and count != null and count != 0">
             limit #{start}, #{count};
         </if>
     </select>
 
     <select id="getCountIngredientsList" resultType="int">
-        select count(*) from t_pl_ingredientslist;
+        select count(*) from t_pl_ingredients_list_tree where materialCategoryId is not null;
     </select>
 
     <select id="getIngredientByNameAndSpecification" resultMap="IngredientsRM">
-        select * from t_pl_ingredientslist where ingredientsName=#{name} and specification=#{specification};
+        select * from t_pl_ingredients_list_tree where name=#{name} and specification=#{specification} and materialCategoryId is not null;
     </select>
 
     <select id="getIngredientById" resultMap="IngredientsRM">
-        select * from t_pl_ingredientslist where id=#{id};
+        select * from t_pl_ingredients_list_tree where id=#{id};
     </select>
 
     <select id="searchIngredient" parameterType="Ingredients" resultMap="IngredientsRM">
-        select * from t_pl_ingredientslist
+        select * from t_pl_ingredients_list_tree
         <where>
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
-                or ingredientsName like "%"#{keywords}"%"
+                or name like "%"#{keywords}"%"
                 or code like "%"#{keywords}"%"
                 or specification like "%"#{keywords}"%"
-                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=28)
-                or unitId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=25)
+                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName
+                like "%"#{keywords}"%" and dataDictionaryId=28)
+                or unitId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%" and dataDictionaryId=25)
             </if>
             <if test="id != '' and id != null">
                 and id like "%"#{id}"%"
             </if>
             <if test="name != '' and name != null">
-                and ingredientsName like "%"#{name}"%"
+                and name like "%"#{name}"%"
             </if>
             <if test="code != '' and code != null">
                 and code like "%"#{code}"%"
@@ -1399,29 +1480,34 @@
                     and materialCategoryId=#{materialCategoryItem.dataDictionaryItemId}
                 </if>
             </if>
+            <if test="1==1">
+                and materialCategoryId is not null
+            </if>
         </where>
-        order by nowTime desc
+        order by creationTime desc
         <if test="page != null and page.start != null and page.count != null and page.count != 0">
             limit #{page.start}, #{page.count};
         </if>
     </select>
 
     <select id="searchCountIngredient" parameterType="Ingredients" resultType="int">
-        select count(*) from t_pl_ingredientslist
+        select count(*) from t_pl_ingredients_list_tree
         <where>
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
-                or ingredientsName like "%"#{keywords}"%"
+                or name like "%"#{keywords}"%"
                 or code like "%"#{keywords}"%"
                 or specification like "%"#{keywords}"%"
-                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=28)
-                or unitId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keywords}"%" and dataDictionaryId=25)
+                or materialCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName
+                like "%"#{keywords}"%" and dataDictionaryId=28)
+                or unitId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like
+                "%"#{keywords}"%" and dataDictionaryId=25)
             </if>
             <if test="id != '' and id != null">
                 and id like "%"#{id}"%"
             </if>
             <if test="name != '' and name != null">
-                and ingredientsName like "%"#{name}"%"
+                and name like "%"#{name}"%"
             </if>
             <if test="code != '' and code != null">
                 and code like "%"#{code}"%"
@@ -1434,47 +1520,91 @@
                     and materialCategoryId=#{materialCategoryItem.dataDictionaryItemId}
                 </if>
             </if>
+            <if test="1==1">
+                and materialCategoryId is not null
+            </if>
         </where>
     </select>
 
     <select id="getCountByCode" parameterType="String" resultType="int">
-        select count(*) from t_pl_ingredientslist
+        select count(*) from t_pl_ingredients_list_tree
         where code=#{code};
     </select>
 
     <select id="getCountByType" parameterType="String" resultType="int">
-        select count(*) from t_pl_ingredientslist
+        select count(*) from t_pl_ingredients_list_tree
         where left(code,2)=#{type};
     </select>
 
-    <!--获取已结账的出库单的年月份集合-->
-    <select id="getDateBbySettled" resultType="String">
-          SELECT date_format(creationDate,'%Y-%m')  FROM t_pr_ingredients_out
-          WHERE checkStateId=253;
-    </select>
-
+    <!--新增辅料备件物品-->
     <insert id="addIngredient" parameterType="Ingredients">
-        insert into t_pl_ingredientslist
-        (ingredientsName, code,specification,nowTime,materialCategoryId,unitId) values (#{name},#{code},#{specification},NOW(),#{materialCategoryItem.dataDictionaryItemId},#{unitDataItem.dataDictionaryItemId});
+        insert into t_pl_ingredients_list_tree
+        (id,name,code,specification,creationTime,materialCategoryId,unitId)
+        values
+        (#{code},#{name},#{code},#{specification},NOW(),#{materialCategoryItem.dataDictionaryItemId},#{unitDataItem.dataDictionaryItemId});
     </insert>
 
     <update id="updateIngredient" parameterType="Ingredients">
-        update t_pl_ingredientslist
-        set ingredientsName=#{name},code=#{code},specification=#{specification},materialCategoryId=#{materialCategoryItem.dataDictionaryItemId},unitId=#{unitDataItem.dataDictionaryItemId} where id=#{id};
+        update t_pl_ingredients_list_tree
+        set name=#{name},code=#{code},specification=#{specification},materialCategoryId=#{materialCategoryItem.dataDictionaryItemId},unitId=#{unitDataItem.dataDictionaryItemId}
+        where id=#{id};
     </update>
 
-    <!--锁定出库单-->
-    <update id="outSettled" parameterType="IngredientsOut">
-        <if test="receiveIdList != null and receiveIdList.size() > 0">
-            <foreach collection="receiveIdList" index="index" item="id">
-                update t_pr_ingredients_out set checkStateId=253 where id=#{id};
-            </foreach>
-        </if>
+    <update id="updateCodeByIngredient" parameterType="Ingredients">
+        update t_pl_ingredients_list_tree
+        set code=#{code},id=#{code},unitId=#{unitDataItem.dataDictionaryItemId}
+        where name=#{name} and specification=#{specification} and materialCategoryId=#{materialCategoryItem.dataDictionaryItemId};
     </update>
 
     <delete id="deleteIngredient" parameterType="int">
-        delete from t_pl_ingredientslist where id=#{id};
+        delete from t_pl_ingredients_list_tree where id=#{id};
     </delete>
 
+    <!--辅料物品树状结构-->
+    <!--获取辅料备件物品树状结构数据-->
+    <select id="listIngredientsTree" resultMap="IngredientsTreeRM">
+        select * from t_pl_ingredients_list_tree;
+    </select>
 
+    <select id="getIngredientsTreeById" parameterType="int" resultMap="IngredientsTreeRM">
+        select * from t_pl_ingredients_list_tree where id=#{id};
+    </select>
+
+    <select id="maxByPId" parameterType="int" resultType="int">
+        select max(id) from t_pl_ingredients_list_tree where pId=#{pId};
+    </select>
+
+    <select id="countTreeByPId" parameterType="int" resultType="int">
+        select count(id) from t_pl_ingredients_list_tree where pId=#{pId};
+    </select>
+
+    <!--根据ID获取其子节点-->
+    <select id="getChildrenIngredientsTreeById" resultMap="IngredientsTreeRM">
+        select * from t_pl_ingredients_list_tree where pId=#{id};
+    </select>
+
+    <insert id="addIngredientsTree" parameterType="IngredientsTree">
+        insert into t_pl_ingredients_list_tree
+        (id,code,pId,name,specification,materialCategoryId,unitId,creationTime,modifyTime)
+        values
+        (#{id},#{id},#{pId},#{name},#{specification},#{materialCategoryItem.dataDictionaryItemId},
+        #{unitDataItem.dataDictionaryItemId},NOW(),NOW());
+    </insert>
+
+    <update id="updateIngredientTree" parameterType="IngredientsTree">
+        update t_pl_ingredients_list_tree
+        set name=#{name},specification=#{specification},materialCategoryId=#{materialCategoryItem.dataDictionaryItemId},
+        unitId=#{unitDataItem.dataDictionaryItemId},pId=#{pId},modifyTime=NOW() where id=#{id};
+    </update>
+
+    <update id="updatePartIngredientTreeBuId" parameterType="IngredientsTree">
+        update t_pl_ingredients_list_tree
+        set name=#{name},specification=#{specification},unitId=#{unitDataItem.dataDictionaryItemId},
+        materialCategoryId=#{materialCategoryItem.dataDictionaryItemId},id=#{code},code=#{code},
+        modifyTime=NOW() where id=#{id};
+    </update>
+
+    <delete id="deleteById" parameterType="int">
+        delete from t_pl_ingredients_list_tree where id=#{id};
+    </delete>
 </mapper>

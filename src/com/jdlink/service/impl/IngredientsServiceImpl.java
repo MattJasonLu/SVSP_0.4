@@ -121,6 +121,10 @@ public class IngredientsServiceImpl implements IngredientsService {
     }
 
     @Override
+    public List<Ingredients> getIngredientsInItemAmountByRange(Date startDate,Date endDate) {
+        return ingredientsMapper.getIngredientsInItemAmountByRange(startDate, endDate); }
+
+    @Override
     public int countInItem() {
         return ingredientsMapper.countInItem();
     }
@@ -221,6 +225,9 @@ public class IngredientsServiceImpl implements IngredientsService {
     public List<Ingredients> getInventoryList(Page page) {
         return ingredientsMapper.getInventoryList(page);
     }
+
+    @Override
+    public Ingredients getSumByIngredient(Ingredients ingredients) { return ingredientsMapper.getSumByIngredient(ingredients); }
 
     @Override
     public int searchInventoryCount(Ingredients ingredients) {
@@ -342,6 +349,9 @@ public class IngredientsServiceImpl implements IngredientsService {
     }
 
     @Override
+    public List<Ingredients> getIngredientsOutItemAmountByRange(Date startDate, Date endDate) { return ingredientsMapper.getIngredientsOutItemAmountByRange(startDate, endDate); }
+
+    @Override
     public int countOutItem() {
         return ingredientsMapper.countOutItem();
     }
@@ -376,27 +386,68 @@ public class IngredientsServiceImpl implements IngredientsService {
     public List<String> getDateBbySettled() { return ingredientsMapper.getDateBbySettled(); }
 
     ////////////辅料备件物品维护//
+    @Override
     public List<Ingredients> getIngredientsList(Page page) { return ingredientsMapper.getIngredientsList(page);}
 
+    @Override
     public int getCountIngredientsList() { return ingredientsMapper.getCountIngredientsList();}
 
+    @Override
     public Ingredients getIngredientByNameAndSpecification(Ingredients ingredients) { return ingredientsMapper.getIngredientByNameAndSpecification(ingredients);}
 
+    @Override
     public Ingredients getIngredientById(int id){  return ingredientsMapper.getIngredientById(id); }
 
+    @Override
     public void addIngredient(Ingredients ingredients) { ingredientsMapper.addIngredient(ingredients);}
 
+    @Override
     public void updateIngredient(Ingredients ingredients) { ingredientsMapper.updateIngredient(ingredients);}
 
+    @Override
+    public void updateCodeByIngredient(Ingredients ingredients){ ingredientsMapper.updateCodeByIngredient(ingredients);}
+
+    @Override
     public void deleteIngredient(int id) { ingredientsMapper.deleteIngredient(id);}
 
+    @Override
     public List<Ingredients> searchIngredient(Ingredients ingredients) { return ingredientsMapper.searchIngredient(ingredients); }
 
+    @Override
     public int searchCountIngredient(Ingredients ingredients) { return ingredientsMapper.searchCountIngredient(ingredients); }
 
+    @Override
     public int getCountByCode(String code) { return ingredientsMapper.getCountByCode(code); }
 
+    @Override
     public int getCountByType(String type) { return ingredientsMapper.getCountByType(type); }
 
+    ///////////////////辅料备件管理树状结构///////
+    @Override
+    public void addIngredientsTree(IngredientsTree ingredientsTree) { ingredientsMapper.addIngredientsTree(ingredientsTree);}
+
+    @Override
+    public void updateIngredientTree(IngredientsTree ingredientsTree) { ingredientsMapper.updateIngredientTree(ingredientsTree);}
+
+    @Override
+    public List<IngredientsTree> listIngredientsTree() {return ingredientsMapper.listIngredientsTree(); }
+
+    @Override
+    public IngredientsTree getIngredientsTreeById(int id) { return ingredientsMapper.getIngredientsTreeById(id); }
+
+    @Override
+    public void updatePartIngredientTreeBuId(IngredientsTree ingredientsTree){ ingredientsMapper.updatePartIngredientTreeBuId(ingredientsTree);}
+
+    @Override
+    public int maxByPId(int pId) { return ingredientsMapper.maxByPId(pId); }
+
+    @Override
+    public  int countTreeByPId(int pId) { return ingredientsMapper.countTreeByPId(pId); }
+
+    @Override
+    public void deleteById(int id) { ingredientsMapper.deleteById(id);}
+
+    @Override
+    public List<IngredientsTree> getChildrenIngredientsTreeById(int id) { return ingredientsMapper.getChildrenIngredientsTreeById(id); }
 
 }

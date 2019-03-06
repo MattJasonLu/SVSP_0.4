@@ -318,6 +318,27 @@ function inputSwitchPage() {
     }
 }
 
+/*更新期初与库存*/
+function UpdatePeriodAndInventory() {
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "UpdatePeriodAndInventory",                  // url
+        dataType: "json",
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            alert("服务器异常！")
+
+        }
+    });
+}
 //加载医危废数据
 function loadMedicalWastesList() {
     $('.loader').show();
@@ -334,13 +355,7 @@ function loadMedicalWastesList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
-    // if(array0.length==0){
-    //     for (var i = 1; i <= totalPage(); i++) {
-    //         switchPage(parseInt(i));
-    //
-    //         array0.push($('.myclass'));
-    //     }
-    // }
+    // UpdatePeriodAndInventory();
     $.ajax({
         type: "POST",                            // 方法类型
         url: "loadMedicalWastesList",                  // url
@@ -433,13 +448,13 @@ function setMedicalWastesList(result) {
                 case (5):
                     $(this).html(obj.cookingWastes.toFixed(3));
                     break;
-                //蒸煮后重量
-                case (6):
-                    $(this).html(obj.afterCookingNumber.toFixed(3));
-                    break;
                 //蒸煮后入库量
-                case (7):
+                case (6):
                     $(this).html(obj.afterCookingInbound.toFixed(3));
+                    break;
+                //蒸煮后重量
+                case (7):
+                    $(this).html(obj.afterCookingNumber.toFixed(3));
                     break;
                 //本月蒸煮后外送量
                 case (8):
@@ -453,11 +468,19 @@ function setMedicalWastesList(result) {
                 case (10):
                     $(this).html(obj.wetNumber.toFixed(3));
                     break;
-                    //期初量
+                    //焚烧量
                 case (11):
+                    $(this).html(obj.incineration.toFixed(3));
+                    break;
+                    //期初量
+                case (12):
                     $(this).html(obj.earlyNumber.toFixed(3));
                     break;
-
+                    //库存量:
+                //期初量
+                case (13):
+                        $(this).html(obj.wastesAmount.toFixed(3));
+                    break;
             }
             clonedTr.removeAttr("id");
             clonedTr.insertBefore(tr);
@@ -481,8 +504,10 @@ function calculationTotal() {
 
     var cookingWastesTotal=0;
 
+    //蒸煮后重量
     var afterCookingNumberTotal=0;
 
+    //蒸煮后入库量
     var afterCookingInboundTotal=0;
 
     var thisMonthSendCookingTotal=0;
@@ -491,29 +516,41 @@ function calculationTotal() {
 
     var wetNumberTotal=0;
 
+    var incinerationTotal=0;
+
     var earlyNumberTotal=0;
+
+    var wastesAmountTotal=0;
 
     $('.myclass').each(function () {
         thisMonthWastesTotal+=parseFloat($(this).children('td').eq(3).html());
         directDisposalTotal+=parseFloat($(this).children('td').eq(4).html());
         cookingWastesTotal+=parseFloat($(this).children('td').eq(5).html());
-        afterCookingNumberTotal+=parseFloat($(this).children('td').eq(6).html());
-        afterCookingInboundTotal+=parseFloat($(this).children('td').eq(7).html());
+        afterCookingNumberTotal+=parseFloat($(this).children('td').eq(7).html());
+        afterCookingInboundTotal+=parseFloat($(this).children('td').eq(6).html());
         thisMonthSendCookingTotal+=parseFloat($(this).children('td').eq(8).html());
         errorNumberTotal+=parseFloat($(this).children('td').eq(9).html());
+        incinerationTotal+=parseFloat($(this).children('td').eq(11).html());
         wetNumberTotal+=parseFloat($(this).children('td').eq(10).html());
-        earlyNumberTotal+=parseFloat($(this).children('td').eq(11).html());
+        earlyNumberTotal+=parseFloat($(this).children('td').eq(12).html());
+        var wastesAmount=parseFloat($(this).children('td').eq(13).html());
+           if(isNaN(wastesAmount)){
+               wastesAmount=0;
+           }
+        wastesAmountTotal+=wastesAmount;
     })
     console.log(thisMonthWastesTotal)
     $("#tbody2").find('tr').children("td").eq(2).html(thisMonthWastesTotal.toFixed(3))
     $("#tbody2").find('tr').children("td").eq(3).html(directDisposalTotal.toFixed(3))
     $("#tbody2").find('tr').children("td").eq(4).html(cookingWastesTotal.toFixed(3))
-    $("#tbody2").find('tr').children("td").eq(5).html(afterCookingNumberTotal.toFixed(3))
-    $("#tbody2").find('tr').children("td").eq(6).html(afterCookingInboundTotal.toFixed(3))
+    $("#tbody2").find('tr').children("td").eq(6).html(afterCookingNumberTotal.toFixed(3))
+    $("#tbody2").find('tr').children("td").eq(5).html(afterCookingInboundTotal.toFixed(3))
     $("#tbody2").find('tr').children("td").eq(7).html(thisMonthSendCookingTotal.toFixed(3))
     $("#tbody2").find('tr').children("td").eq(8).html(errorNumberTotal.toFixed(3))
     $("#tbody2").find('tr').children("td").eq(9).html(wetNumberTotal.toFixed(3))
-    $("#tbody2").find('tr').children("td").eq(10).html(earlyNumberTotal.toFixed(3))
+    $("#tbody2").find('tr').children("td").eq(10).html(incinerationTotal.toFixed(3))
+    // $("#tbody2").find('tr').children("td").eq(11).html(earlyNumberTotal.toFixed(3))
+    // $("#tbody2").find('tr').children("td").eq(12).html(wastesAmountTotal.toFixed(3))
 }
 
 
@@ -547,7 +584,6 @@ function searchMedicalWastes() {
             beginTime:$("#search-storageDate").val(),
             endTime:$("#search-endDate").val(),
             page: page,
-            checkStateItem:{dataDictionaryItemId:$("#search-checkState").val()}
         };
         console.log(data);
         // 模糊查询
@@ -568,6 +604,19 @@ function searchMedicalWastes() {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 console.log(result);
+                /*赋值年累计*/
+                if(result.medicalWastes!=null){
+                   $('#thisMonthWastesTotal').html(result.medicalWastes.thisMonthWastesTotal.toFixed(3));
+                    $('#directDisposalTotal').html(result.medicalWastes.directDisposalTotal.toFixed(3));
+                    $('#cookingWastesTotal').html(result.medicalWastes.cookingWastesTotal.toFixed(3));
+                    $('#afterCookingNumberTotal').html(result.medicalWastes.afterCookingNumberTotal.toFixed(3));
+                    $('#afterCookingInboundTotal').html(result.medicalWastes.afterCookingInboundTotal.toFixed(3));
+                    $('#thisMonthSendCookingTotal').html(result.medicalWastes.thisMonthSendCookingTotal.toFixed(3));
+                    $('#errorNumberTotal').html(result.medicalWastes.errorNumberTotal.toFixed(3));
+                    $('#wetNumberTotal').html(result.medicalWastes.wetNumberTotal.toFixed(3));
+                    $('#incinerationTotal').html(result.medicalWastes.incinerationTotal.toFixed(3));
+                }
+
                 setPageClone(result);
                 setPageCloneAfter(pageNumber);        // 重新设置页码
                 calculationTotal();

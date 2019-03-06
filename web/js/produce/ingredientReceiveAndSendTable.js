@@ -9,7 +9,7 @@ function countValue() {
     var mySelect = document.getElementById("count");
     var index = mySelect.selectedIndex;
     var text = mySelect.options[index].text;
-    if(text == "全部"){
+    if(text === "全部"){
         text = "0";
     }
     return text;
@@ -350,7 +350,7 @@ function setInventoryList(result) {
             clonedTr.find("td[name='specification']").text(obj.specification);
             clonedTr.find("td[name='unit']").text(obj.unit);
             clonedTr.find("td[name='wareHouseName']").text(obj.wareHouseName);
-            if(obj.unit === "公斤" || obj.unit === "千克"){
+            if(obj.unit === "吨"){
                 clonedTr.find("td[name='monthBeginAmount']").text(obj.monthBeginAmount.toFixed(3));
                 clonedTr.find("td[name='inTotalAmount']").text(obj.inTotalAmount.toFixed(3));
                 clonedTr.find("td[name='outTotalAmount']").text(obj.outTotalAmount.toFixed(3));

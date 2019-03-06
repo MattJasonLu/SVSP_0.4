@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Dictionary.CheckStateItem;
 import com.jdlink.domain.Dictionary.FormTypeItem;
 import com.jdlink.domain.Dictionary.HandleCategoryItem;
 import com.jdlink.domain.Dictionary.PackageTypeItem;
@@ -541,6 +542,73 @@ public class TransferDraftController {
             transferDraft.setHeadSign("");                                // 单位负责人签字
             transferDraft.setSignDate(DateUtil.getDateTimeFromStr(str.get(50)));
             transferDraftService.add(transferDraft);
+            res.put("status", "success");
+            res.put("message", "导入成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导入失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 导入转移联单excel
+     * @param excelFile 转移联单excel
+     * @return 成功与否
+     */
+    @RequestMapping("importTransferDraftExcel")
+    @ResponseBody
+    public String importTransferDraftExcel(MultipartFile excelFile) {
+        JSONObject res = new JSONObject();
+        try {
+            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+            for (int i = 1; i < data.length; i++) {
+                TransferDraft transferDraft = new TransferDraft();
+                // 转移日期
+                transferDraft.setTransferTime(DateUtil.getDateFromStr(data[i][0].toString()));
+                // 入场
+                transferDraft.setInboundTime(data[i][1].toString());
+                // 出场
+                transferDraft.setOutboundTime(data[i][2].toString());
+                // 联单编号
+                transferDraft.setTransferId(data[i][3].toString());
+                // 单位
+                Client client = clientService.getByNameNotState(data[i][4].toString());
+                if (client == null) {
+                    client = new Client();
+                    client.setCompanyName(data[i][4].toString());
+                    clientService.add(client);
+                }
+                transferDraft.setProduceCompany(client);
+                // 危废
+                Wastes wastes = new Wastes();
+                wastes.setName(data[i][5].toString());
+                wastes.setWastesId(data[i][6].toString());
+                // 毛重
+                if (!data[i][7].toString().equals("null")) {
+                    wastes.setPrepareTransferCount(Float.parseFloat(data[i][7].toString()));
+                    wastes.setTransferCount(Float.parseFloat(data[i][7].toString()));
+                }
+                transferDraft.setWastes(wastes);
+                if (!data[i][8].toString().equals("null"))
+                transferDraft.setCount1H(Float.parseFloat(data[i][8].toString()));
+                if (!data[i][9].toString().equals("null"))
+                transferDraft.setCount2H(Float.parseFloat(data[i][9].toString()));
+                if (!data[i][10].toString().equals("null"))
+                transferDraft.setCountZN(Float.parseFloat(data[i][10].toString()));
+                transferDraft.setFirstBrand(data[i][11].toString());
+                transferDraft.setFirstCarrier(data[i][12].toString());
+                transferDraft.setRecipient(data[i][13].toString());
+                if (!data[i][14].toString().equals("null"))
+                transferDraft.setRemark(data[i][14].toString());
+                CheckStateItem checkStateItem = new CheckStateItem();
+                checkStateItem.setDataDictionaryItemId(75);
+                transferDraft.setCheckStateItem(checkStateItem);
+                // 设置主键
+                transferDraft.setId(RandomUtil.getRandomEightChar());
+                transferDraftService.add(transferDraft);
+            }
             res.put("status", "success");
             res.put("message", "导入成功");
         } catch (Exception e) {

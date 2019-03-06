@@ -43,7 +43,7 @@ function totalPage() {
     } else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchSecondaryDailyCount",                  // url
+            url: "searchSecondaryTestCount",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
@@ -170,7 +170,7 @@ function switchPage(pageNumber) {
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined && result.status == "success") {
-                    setDataList(result.data);
+                    setDataList(result);
                 } else {
                     console.log(result);
                 }
@@ -180,25 +180,27 @@ function switchPage(pageNumber) {
             }
         });
     }
-    else {
+    if (isSearch) {//查询用的
+        data1['page'] = page;
         $.ajax({
-            type: "POST",                       // 方法类型
-            url: "searchSecondaryDailyCount",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            type: "POST",                            // 方法类型
+            url: "searchSecondaryTest",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
-                if (result > 0) {
-                    totalRecord = result;
+                if (result != undefined && result.status == "success") {
+                    console.log(result)
+                    setDataList(result)
                 } else {
-                    console.log("fail: " + result);
-                    totalRecord = 0;
+                    alert(result.message);
+
                 }
             },
             error: function (result) {
-                console.log("error: " + result);
-                totalRecord = 0;
+                console.log(result);
+                alert("服务器错误！");
             }
         });
     }
@@ -216,26 +218,77 @@ function inputSwitchPage() {
     if (pageNumber == null || pageNumber == undefined) {
         window.alert("跳转页数不能为空！")
     } else {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "searchSecondaryDailyCount",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data1),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                if (result > 0) {
-                    totalRecord = result;
-                } else {
-                    console.log("fail: " + result);
-                    totalRecord = 0;
+        if (pageNumber == 1) {
+            $("#previous").addClass("disabled");
+            $("#firstPage").addClass("disabled");
+            $("#next").removeClass("disabled");
+            $("#endPage").removeClass("disabled");
+        }
+        if (pageNumber == totalPage()) {
+            $("#next").addClass("disabled");
+            $("#endPage").addClass("disabled");
+            $("#previous").removeClass("disabled");
+            $("#firstPage").removeClass("disabled");
+        }
+        if (pageNumber > 1) {
+            $("#previous").removeClass("disabled");
+            $("#firstPage").removeClass("disabled");
+        }
+        if (pageNumber < totalPage()) {
+            $("#next").removeClass("disabled");
+            $("#endPage").removeClass("disabled");
+        }
+        currentPage = pageNumber;
+        addPageClass(pageNumber);           // 设置页码标蓝
+        var page = {};
+        page.count = countValue();//可选
+        page.pageNumber = pageNumber;
+        page.start = (pageNumber - 1) * page.count;
+        if (!isSearch) {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "loadPageSecondaryTestResultsList",         // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(page),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    if (result != undefined && result.status == "success") {
+                        console.log(result);
+                        setDataList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
                 }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-                totalRecord = 0;
-            }
-        });
+            });
+        }
+        else {
+            data1['page'] = page;
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "searchSecondaryTest",         // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data1),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    if (result != undefined) {
+                        // console.log(result);
+                        setDataList(result);
+                    } else {
+                        console.log("fail: " + result);
+                        // setClientList(result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                    // setClientList(result);
+                }
+            });
+        }
     }
 }
 
@@ -265,6 +318,7 @@ function loadPageList() {
             if (result != undefined && result.status == "success") {
                 console.log(result);
                 setPageClone(result.data);
+                setPageCloneAfter(pageNumber)
             } else {
                 console.log("fail: " + result);
             }
@@ -300,32 +354,32 @@ function setDataList(result) {
                 case (1):
                     $(this).html(obj.id);
                     break;
-                // 收样日期
-                case (2):
-                    $(this).html(getDateStr(obj.dateTime));
-                    break;
                 // 废物名称
-                case (3):
+                case (2):
                     $(this).html(obj.wastesName);
                     break;
                 // 热灼减率%
-                case (4):
-                    $(this).html(obj.scorchingRate.toFixed(2));
+                case (3):
+                    $(this).html(setNumber2Line(parseFloat(obj.scorchingRate).toFixed(2)));
                     break;
                 // 水分%
-                case (5):
-                    $(this).html(obj.water.toFixed(2));
+                case (4):
+
+                    $(this).html(setNumber2Line(parseFloat(obj.water).toFixed(2)));
                     break;
                 // 备注
-                case (6):
+                case (5):
                     $(this).html((obj.remarks));
                     break;
                 // 单据状态
-                case (7):
-                    if (obj.checkState != null) {
-                        $(this).html((obj.checkState.name));
+                case (6):
+                    if (obj.checkStateItem != null) {
+                        $(this).html((obj.checkStateItem.dictionaryItemName));
                     }
-
+                    break;
+                //采样点
+                case (7):
+                    $(this).html(obj.address);
                     break;
             }
         });
@@ -430,25 +484,20 @@ function searchData() {
     page.pageNumber = pageNumber;
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
-
     if ($("#senior").is(':visible')) {
 
         data1 = {
             id:$.trim($('#search-id').val()),
-            wastesName:$.trim($('#search-receiveDate').val()),
+            address:$.trim($('#search-address').val()),
             remarks:$.trim($('#search-remarks').val()),
-            scorchingRate:$.trim($('#search-scorchingRate').val()),
-            water:$.trim($('#search-water').val()),
-            dateTimeStart:$.trim($('#search-inDate').val()),
-            dateTimeEnd:$.trim($('#search-endDate').val()),
             page: page,
+            checkStateItem:{dataDictionaryItemId:$('#search-checkState').val()}
+
         };
     }
-    else{
+    else {
         var keyword = $.trim($("#searchContent").val());
-
-
-       data1 = {
+        data1 = {
             page: page,
             keyword: keyword
         }
@@ -459,15 +508,16 @@ function searchData() {
     else {
         $.ajax({
             type: "POST",                            // 方法类型
-            url: "searchSecondaryDaily",                 // url
+            url: "searchSecondaryTest",                 // url
             async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
-                if (result != undefined && result.status == "success"){
+                if (result != undefined && result.status == "success") {
                     console.log(result)
-                    setPageClone(result.data)
+                    setPageClone(result.data);
+                    setPageCloneAfter(pageNumber);        // 重新设置页码
                 } else {
                     alert(result.message);
 
@@ -479,8 +529,7 @@ function searchData() {
             }
         });
     }
-
-
+    console.log(data1)
 
 }
 

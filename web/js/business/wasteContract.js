@@ -556,6 +556,7 @@ function enterSearch() {
  * 查找客户
  */
 function searchWasteContract() {
+    isSearch = true;
     var page = {};
     var pageNumber = 1;                       // 显示首页
     page.pageNumber = pageNumber;
@@ -571,6 +572,7 @@ function searchWasteContract() {
             small=0;
         }
         data = {
+            quotationItemList:[{wastesName:$.trim($("#search-wastesName").val())}],
             client:{companyName:$.trim($("#search-companyName").val()),contactName:$.trim($("#search-contactName").val())} ,
             checkStateItem:{dataDictionaryItemId:$("#search-checkState").val()},
             beginTime:$("#beginTime").val(),
@@ -614,7 +616,7 @@ function searchWasteContract() {
             console.log(result);
         }
     });
-    isSearch = true;
+
 }
 
 /**

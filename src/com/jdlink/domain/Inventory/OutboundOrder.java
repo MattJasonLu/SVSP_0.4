@@ -158,7 +158,6 @@ public class OutboundOrder {
     private PackageTypeItem packageTypeItem;
 
     /*分页*/
-
     private Page page;
 
     public Page getPage() {

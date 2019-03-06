@@ -23,6 +23,7 @@
         <association property="supplier" column="supplierId" select="getSupplier"/>
         <association property="unitDataItem" column="unitDataItemId" select="getUnitDataItem"/>
         <association property="ticketRateItem" column="ticketRateItemId" select="getTicketRateItem"/>
+        <association property="checkStateItem" column="checkStateItemId" select="getCheckStateItem"/>
     </resultMap>
 
     <!--获取供应商信息-->
@@ -46,12 +47,12 @@
 
     <!--获取入库条目-->
     <select id="getInboundItemList" resultMap="OfficeSuppliesItemRM">
-        select * from t_pr_officesuppliesinbounditem where inboundId=#{inboundId};
+        select * from t_pr_officesuppliesinbounditem where inboundId=#{inboundId} and (checkStateItemId != 69 or checkStateItemId is null);
     </select>
 
     <!--获取出库条目-->
     <select id="getOutboundItemList" resultMap="OfficeSuppliesItemRM">
-        select * from t_pr_officesuppliesoutbounditem where outboundId=#{outboundId};
+        select * from t_pr_officesuppliesoutbounditem where outboundId=#{outboundId} and (checkStateItemId != 69 or checkStateItemId is null);
     </select>
 
     <!--*********************************************映射集*********************************************-->
@@ -60,8 +61,89 @@
     <!--*********************************************办公用品入库*********************************************-->
 
     <!--查询办公用品入库单-->
-    <select id="listOfficeSuppliesInbound" resultMap="OfficeSuppliesInboundRM">
-        select * from t_pr_officesuppliesinbound;
+    <select id="listOfficeSuppliesInbound" resultMap="OfficeSuppliesItemRM">
+        select * from t_pr_officesuppliesinbounditem
+        <where>
+            <if test="keywords != null and keywords != ''">
+              and (inboundId like "%"#{keywords}"%"
+                or supplierId in (select supplierId from t_supplier where companyName like "%"#{keywords}"%")
+                or itemCode like "%"#{keywords}"%"
+                or itemName like "%"#{keywords}"%"
+                or itemSpecifications like "%"#{keywords}"%")
+            </if>
+            <if test="inboundId != null and inboundId != ''">
+                and inboundId like "%"#{inboundId}"%"
+            </if>
+            <if test="supplier != null and supplier.companyName != null and supplier.companyName !=''">
+                and supplierId in (select supplierId from t_supplier where companyName like "%"#{supplier.companyName}"%")
+            </if>
+            <if test="itemCode != null and itemCode !=''">
+                and itemCode like "%"#{itemCode}"%"
+            </if>
+            <if test="itemName != null and itemName !=''">
+                and itemName like "%"#{itemName}"%"
+            </if>
+            <if test="itemSpecifications != null and itemSpecifications !=''">
+                and itemSpecifications like "%"#{itemSpecifications}"%"
+            </if>
+            <if test="checkStateItem != null and checkStateItem.dataDictionaryItemId != ''">
+                and checkStateItemId = #{checkStateItem.dataDictionaryItemId}
+            </if>
+            <if test="author !=null and author !=''">
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{author}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="remark !=null and remark !=''">
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{remark}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="true">
+                and (checkStateItemId != '69' or checkStateItemId is null)
+            </if>
+        </where>
+        order by inboundId desc
+        <if test="page != null and page.start != null and page.count != null and page.count != 0">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--获取办公用品入库单条目的数量-->
+    <select id="countOfficeSuppliesInboundItem" resultType="int">
+        select count(*) from t_pr_officesuppliesinbounditem
+        <where>
+            <if test="keywords != null and keywords != ''">
+                and (inboundId like "%"#{keywords}"%"
+                or supplierId in (select supplierId from t_supplier where companyName like "%"#{keywords}"%")
+                or itemCode like "%"#{keywords}"%"
+                or itemName like "%"#{keywords}"%"
+                or itemSpecifications like "%"#{keywords}"%")
+            </if>
+            <if test="inboundId != null and inboundId != ''">
+                and inboundId like "%"#{inboundId}"%"
+            </if>
+            <if test="supplier != null and supplier.companyName != null and supplier.companyName !=''">
+                and supplierId in (select supplierId from t_supplier where companyName like "%"#{supplier.companyName}"%")
+            </if>
+            <if test="itemCode != null and itemCode !=''">
+                and itemCode like "%"#{itemCode}"%"
+            </if>
+            <if test="itemName != null and itemName !=''">
+                and itemName like "%"#{itemName}"%"
+            </if>
+            <if test="itemSpecifications != null and itemSpecifications !=''">
+                and itemSpecifications like "%"#{itemSpecifications}"%"
+            </if>
+            <if test="checkStateItem != null and checkStateItem.dataDictionaryItemId != ''">
+                and checkStateItemId = #{checkStateItem.dataDictionaryItemId}
+            </if>
+            <if test="author !=null and author !=''">
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{author}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="remark !=null and remark !=''">
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{remark}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="true">
+                and (checkStateItemId != '69' or checkStateItemId is null)
+            </if>
+        </where>
     </select>
 
     <!--增加办公用品入库单-->
@@ -72,7 +154,7 @@
             <foreach collection="officeSuppliesItemList" item="officeSuppliesItem">
                 insert into t_pr_officesuppliesinbounditem (itemId, inboundId, outboundId, supplierId, itemCode, itemName,
                 itemSpecifications, unitDataItemId, itemAmount, leftAmount, taxUnitPrice, unitPrice, totalTaxPrice, totalPrice,
-                inboundDate, outboundDate, ticketRateItemId, author, createTime, remark) values
+                inboundDate, outboundDate, ticketRateItemId, author, createTime, remark, checkStateItemId) values
                 (#{officeSuppliesItem.itemId}, #{officeSuppliesItem.inboundId}, #{officeSuppliesItem.outboundId},
                 #{officeSuppliesItem.supplier.supplierId}, #{officeSuppliesItem.itemCode}, #{officeSuppliesItem.itemName},
                 #{officeSuppliesItem.itemSpecifications}, #{officeSuppliesItem.unitDataItem.dataDictionaryItemId},
@@ -80,7 +162,7 @@
                 #{officeSuppliesItem.taxUnitPrice}, #{officeSuppliesItem.unitPrice}, #{officeSuppliesItem.totalTaxPrice},
                 #{officeSuppliesItem.totalPrice}, #{officeSuppliesItem.inboundDate}, #{officeSuppliesItem.outboundDate},
                 #{officeSuppliesItem.ticketRateItem.dataDictionaryItemId}, #{officeSuppliesItem.author},
-                NOW(), #{officeSuppliesItem.remark});
+                NOW(), #{officeSuppliesItem.remark}, 75);
             </foreach>
         </if>
     </insert>
@@ -96,31 +178,166 @@
     <!--*********************************************办公用品出库*********************************************-->
 
     <!--查询办公用品出库单-->
-    <select id="listOfficeSuppliesOutbound" resultMap="OfficeSuppliesOutboundRM">
-        select * from t_pr_officesuppliesoutbound;
+    <select id="listOfficeSuppliesOutbound" resultMap="OfficeSuppliesItemRM">
+        select * from t_pr_officesuppliesoutbounditem
+        <where>
+            <if test="keywords != null and keywords != ''">
+                and (outboundId like "%"#{keywords}"%"
+                or supplierId in (select supplierId from t_supplier where companyName like "%"#{keywords}"%")
+                or itemCode like "%"#{keywords}"%"
+                or itemName like "%"#{keywords}"%"
+                or itemSpecifications like "%"#{keywords}"%")
+            </if>
+            <if test="outboundId != null and outboundId != ''">
+                and outboundId like "%"#{outboundId}"%"
+            </if>
+            <if test="supplier != null and supplier.companyName != null and supplier.companyName !=''">
+                and supplierId in (select supplierId from t_supplier where companyName like "%"#{supplier.companyName}"%")
+            </if>
+            <if test="itemCode != null and itemCode !=''">
+                and itemCode like "%"#{itemCode}"%"
+            </if>
+            <if test="itemName != null and itemName !=''">
+                and itemName like "%"#{itemName}"%"
+            </if>
+            <if test="itemSpecifications != null and itemSpecifications !=''">
+                and itemSpecifications like "%"#{itemSpecifications}"%"
+            </if>
+            <if test="checkStateItem != null and checkStateItem.dataDictionaryItemId != ''">
+                and checkStateItemId = #{checkStateItem.dataDictionaryItemId}
+            </if>
+            <if test="author !=null and author !=''">
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{author}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="remark !=null and remark !=''">
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{remark}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="true">
+                and (checkStateItemId != '69' or checkStateItemId is null)
+            </if>
+        </where>
+        order by outboundId desc
+        <if test="page != null and page.start != null and page.count != null and page.count != 0">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--获取办公用品出库单的数量-->
+    <select id="countOfficeSuppliesOutboundItem" resultType="int">
+        select count(*) from t_pr_officesuppliesoutbounditem
+        <where>
+            <if test="keywords != null and keywords != ''">
+                and (outboundId like "%"#{keywords}"%"
+                or supplierId in (select supplierId from t_supplier where companyName like "%"#{keywords}"%")
+                or itemCode like "%"#{keywords}"%"
+                or itemName like "%"#{keywords}"%"
+                or itemSpecifications like "%"#{keywords}"%")
+            </if>
+            <if test="outboundId != null and outboundId != ''">
+                and outboundId like "%"#{outboundId}"%"
+            </if>
+            <if test="supplier != null and supplier.companyName != null and supplier.companyName !=''">
+                and supplierId in (select supplierId from t_supplier where companyName like "%"#{supplier.companyName}"%")
+            </if>
+            <if test="itemCode != null and itemCode !=''">
+                and itemCode like "%"#{itemCode}"%"
+            </if>
+            <if test="itemName != null and itemName !=''">
+                and itemName like "%"#{itemName}"%"
+            </if>
+            <if test="itemSpecifications != null and itemSpecifications !=''">
+                and itemSpecifications like "%"#{itemSpecifications}"%"
+            </if>
+            <if test="checkStateItem != null and checkStateItem.dataDictionaryItemId != ''">
+                and checkStateItemId = #{checkStateItem.dataDictionaryItemId}
+            </if>
+            <if test="author !=null and author !=''">
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{author}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="remark !=null and remark !=''">
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{remark}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="true">
+                and (checkStateItemId != '69' or checkStateItemId is null)
+            </if>
+        </where>
     </select>
 
     <!--增加办公用品出库单-->
     <insert id="addOfficeSuppliesOutbound">
         insert into t_pr_officesuppliesoutbound (outboundId, totalTaxPrice, totalPrice, outboundDate, createTime, checkStateItemId) values
-        (#{inboundId}, #{totalTaxPrice}, #{totalPrice}, #{outboundDate}, NOW(), #{checkStateItem.dataDictionaryItemId});
+        (#{outboundId}, #{totalTaxPrice}, #{totalPrice}, #{outboundDate}, NOW(), #{checkStateItem.dataDictionaryItemId});
         <if test="officeSuppliesItemList.size() > 0 ">
             <foreach collection="officeSuppliesItemList" item="officeSuppliesItem">
-                insert into t_pr_officesuppliesoutbounditem (itemId, inboundId, outboundId, supplierId, itemCode, itemName,
+                insert into t_pr_officesuppliesoutbounditem (itemId, inboundItemId, inboundId, outboundId, supplierId, itemCode, itemName,
                 itemSpecifications, unitDataItemId, itemAmount, leftAmount, taxUnitPrice, unitPrice, totalTaxPrice, totalPrice,
-                inboundDate, outboundDate, ticketRateItemId, author, createTime, remark) values
-                (#{officeSuppliesItem.itemId}, #{officeSuppliesItem.inboundId}, #{officeSuppliesItem.outboundId},
-                #{officeSuppliesItem.supplier.supplierId}, #{officeSuppliesItem.itemCode}, #{officeSuppliesItem.itemName},
-                #{officeSuppliesItem.itemSpecifications}, #{officeSuppliesItem.unitDataItem.dataDictionaryItemId},
-                #{officeSuppliesItem.itemAmount}, #{officeSuppliesItem.leftAmount},
-                #{officeSuppliesItem.taxUnitPrice}, #{officeSuppliesItem.unitPrice}, #{officeSuppliesItem.totalTaxPrice},
-                #{officeSuppliesItem.totalPrice}, #{officeSuppliesItem.inboundDate}, #{officeSuppliesItem.outboundDate},
-                #{officeSuppliesItem.ticketRateItem.dataDictionaryItemId}, #{officeSuppliesItem.author},
-                NOW(), #{officeSuppliesItem.remark});
+                inboundDate, outboundDate, ticketRateItemId, author, createTime, remark, checkStateItemId) values
+                (#{officeSuppliesItem.itemId}, #{officeSuppliesItem.inboundItemId}, #{officeSuppliesItem.inboundId},
+                #{officeSuppliesItem.outboundId}, #{officeSuppliesItem.supplier.supplierId}, #{officeSuppliesItem.itemCode},
+                #{officeSuppliesItem.itemName}, #{officeSuppliesItem.itemSpecifications},
+                #{officeSuppliesItem.unitDataItem.dataDictionaryItemId}, #{officeSuppliesItem.itemAmount},
+                #{officeSuppliesItem.leftAmount}, #{officeSuppliesItem.taxUnitPrice}, #{officeSuppliesItem.unitPrice},
+                #{officeSuppliesItem.totalTaxPrice}, #{officeSuppliesItem.totalPrice}, #{officeSuppliesItem.inboundDate},
+                #{officeSuppliesItem.outboundDate}, #{officeSuppliesItem.ticketRateItem.dataDictionaryItemId},
+                #{officeSuppliesItem.author}, NOW(), #{officeSuppliesItem.remark}, 75);
+                update t_pr_officesuppliesinbounditem set leftAmount=#{officeSuppliesItem.leftAmount}
+                where itemId=#{officeSuppliesItem.inboundItemId};
             </foreach>
         </if>
     </insert>
 
+    <!--获取办公用品出库单中前缀匹配的单据数量-->
+    <select id="getOfficeSupplierOutboundCountByPrefix" resultType="int">
+        select count(*) from t_pr_officesuppliesoutbound where outboundId like #{0}"%";
+    </select>
+
     <!--*********************************************办公用品出库*********************************************-->
+
+    <!--*********************************************办公用品条目*********************************************-->
+
+    <!--获取办公用品入库单条目-->
+    <select id="getOfficeSuppliesInboundItemById" resultMap="OfficeSuppliesItemRM">
+        select * from t_pr_officesuppliesinbounditem where itemId = #{0};
+    </select>
+
+    <!--更新办公用品条目-->
+    <update id="updateOfficeSuppliesInboundItem">
+        update t_pr_officesuppliesinbounditem set inboundId=#{inboundId}, outboundId=#{outboundId},
+        supplierId=#{supplier.supplierId}, itemCode=#{itemCode}, itemName=#{itemName},
+        itemSpecifications=#{itemSpecifications}, unitDataItemId=#{unitDataItem.dataDictionaryItemId},
+        itemAmount=#{itemAmount}, leftAmount=#{leftAmount}, taxUnitPrice=#{taxUnitPrice},
+        unitPrice=#{unitPrice}, totalTaxPrice=#{totalTaxPrice}, totalPrice=#{totalPrice},
+        inboundDate=#{inboundDate}, outboundDate=#{outboundDate}, author=#{author}, remark=#{remark}
+        where itemId=#{itemId};
+    </update>
+
+    <!--作废办公用品入库单条目-->
+    <update id="setInvalidOfficeSuppliesInboundItem">
+        update t_pr_officesuppliesinbounditem set checkStateItemId=69 where itemId=#{0};
+    </update>
+
+    <!--获取办公用品出库单条目-->
+    <select id="getOfficeSuppliesOutboundItemById" resultMap="OfficeSuppliesItemRM">
+        select * from t_pr_officesuppliesoutbounditem where itemId = #{0};
+    </select>
+
+    <!--更新办公用品条目-->
+    <update id="updateOfficeSuppliesOutboundItem">
+        update t_pr_officesuppliesoutbounditem set inboundId=#{inboundId}, outboundId=#{outboundId},
+        supplierId=#{supplier.supplierId}, itemCode=#{itemCode}, itemName=#{itemName},
+        itemSpecifications=#{itemSpecifications}, unitDataItemId=#{unitDataItem.dataDictionaryItemId},
+        itemAmount=#{itemAmount}, leftAmount=#{leftAmount}, taxUnitPrice=#{taxUnitPrice},
+        unitPrice=#{unitPrice}, totalTaxPrice=#{totalTaxPrice}, totalPrice=#{totalPrice},
+        inboundDate=#{inboundDate}, outboundDate=#{outboundDate}, author=#{author}, remark=#{remark}
+        where itemId=#{itemId};
+    </update>
+
+    <!--作废办公用品出库单条目-->
+    <update id="setInvalidOfficeSuppliesOutboundItem">
+        update t_pr_officesuppliesoutbounditem set checkStateItemId=69 where itemId=#{0};
+    </update>
+
+    <!--*********************************************办公用品条目*********************************************-->
+
 
 </mapper>

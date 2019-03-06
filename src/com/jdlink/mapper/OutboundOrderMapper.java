@@ -3,6 +3,7 @@ package com.jdlink.mapper;
 import com.jdlink.domain.Inventory.OutboundOrder;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.HandleCategory;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -13,9 +14,13 @@ public interface OutboundOrderMapper {
     void updateMaterialRequisitionOrderCheck1(OutboundOrder outboundOrder);
 
     List<OutboundOrder> loadOutBoundList(Page page);
-    List<OutboundOrder>  loadWastesOutBoundList(Page page);
+
+    List<OutboundOrder> loadWastesOutBoundList(Page page);
+
     int total();
+
     int totalWastesOutBoundRecord();
+
     int searchCount(OutboundOrder outboundOrder);
 
     List<OutboundOrder> getByOutBoundOrderId(String outboundOrderId);
@@ -37,17 +42,33 @@ public interface OutboundOrderMapper {
     void updateSecOutBoundOrder(OutboundOrder outboundOrder);
 
     void upWastesInventoryNumber(OutboundOrder outboundOrder);
+
     int getHandelCategoryById(String outboundNumber);
-    void upHandelCategoryById(String outboundOrderId,int id);
-    void  updateSecondart(OutboundOrder outboundOrder);
-     List<OutboundOrder>  getOutBoundByRange(Date startDate, Date endDate);
-    List<OutboundOrder>  getOutBoundByDateRangeAndEquipment(Date startDate, Date endDate,String equipment);
+
+    void upHandelCategoryById(String outboundOrderId, int id);
+
+    void updateSecondart(OutboundOrder outboundOrder);
+
+    List<OutboundOrder> getOutBoundByRange(Date startDate, Date endDate);
+
+    List<OutboundOrder> getWastesOutboundOrderItemAmountByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+
+    List<OutboundOrder> getSecondOutboundOrderItemAmountByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+
+    List<OutboundOrder> getOutBoundByDateRangeAndEquipment(Date startDate, Date endDate, String equipment);
+
     void cancelOutBoundOrder(String outboundOrderId);
-   int  totalSecondaryInventory();
-    List<OutboundOrder>  loadSecOutBoundList(Page page);
+
+    int totalSecondaryInventory();
+
+    List<OutboundOrder> loadSecOutBoundList(Page page);
+
     int totalSecOutBoundRecord();
-    List<Date>getNewestDate();
+
+    List<Date> getNewestDate();
+
     List<OutboundOrder> getOutBoundOrderByClientId(String id);
-    List<Date>getNewestDateSec();
+
+    List<Date> getNewestDateSec();
 
 }

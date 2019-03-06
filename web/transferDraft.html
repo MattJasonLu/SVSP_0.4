@@ -174,7 +174,9 @@
                     <a class="btn btn-primary btn-xs" href="transferDraftInfo.html" id="function_-152" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; localStorage.removeItem('transferDraftId');}"><span class="glyphicon glyphicon-plus"
                                                                                    aria-hidden="true"></span> 新增</a>
                     <a class="btn btn-primary btn-xs" id="function_-153" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose();}"><span
-                            class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                        class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> PDF导入</a>
+                    <a class="btn btn-primary btn-xs" onclick="importExcel2Choose();"><span
+                            class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> Excel导入</a>
                     <a class="btn btn-primary btn-xs" id="function_-154" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel(e);}"><span
                             class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                 </div>
@@ -278,14 +280,22 @@
                                    id="allSel" onclick="allSelect();">
                         </label>
                     </th>
+                    <th class="text-center">日期</th>
+                    <th class="text-center">进厂</th>
+                    <th class="text-center">出厂</th>
                     <th class="text-center">联单编号</th>
-                    <th class="text-center" style="width: 300px">产生单位</th>
-                    <th class="text-center">运输单位</th>
-                    <th class="text-center">接收单位</th>
-                    <th class="text-center">发运人</th>
-                    <th class="text-center">运达地</th>
-                    <th class="text-center">转移时间</th>
-                    <th class="text-center">状态</th>
+                    <th class="text-center" style="width: 300px">废物来源/去向</th>
+                    <th class="text-center">名称</th>
+                    <th class="text-center">种类</th>
+                    <th class="text-center">毛重</th>
+                    <th class="text-center">1号库</th>
+                    <th class="text-center">2号库</th>
+                    <th class="text-center">智能库</th>
+                    <th class="text-center">车牌号</th>
+                    <th class="text-center">运输人</th>
+                    <th class="text-center">接受人</th>
+                    <th class="text-center">备注</th>
+                    <th class="text-center hidden">编号</th>
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>
@@ -296,16 +306,24 @@
                             <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
                         </label>
                     </td>
-                    <td class="text-center">0001</td>
-                    <td class="text-center">测试产生单位</td>
-                    <td class="text-center">测试运输单位</td>
-                    <td class="text-center">常州北控安耐得</td>
-                    <td class="text-center">张三</td>
-                    <td class="text-center">南京</td>
-                    <td class="text-center">2018-08-01</td>
-                    <td class="text-center">已完成</td>
+                    <td class="text-center" name="transferTime"></td>
+                    <td class="text-center" name="inboundTime"></td>
+                    <td class="text-center" name="outboundTime"></td>
+                    <td class="text-center" name="transferId"></td>
+                    <td class="text-center" style="width: 300px" name="produceCompany"></td>
+                    <td class="text-center" name="wastesName"></td>
+                    <td class="text-center" name="wastesCode"></td>
+                    <td class="text-center" name="transferCount"></td>
+                    <td class="text-center" name="count1H"></td>
+                    <td class="text-center" name="count2H"></td>
+                    <td class="text-center" name="countZN"></td>
+                    <td class="text-center" name="firstBrand"></td>
+                    <td class="text-center" name="firstCarrier"></td>
+                    <td class="text-center" name="recipient"></td>
+                    <td class="text-center" name="remark"></td>
+                    <td class="text-center hidden" name="id"></td>
                     <td class="text-center">
-                        <a href="#" id="function_-155" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; viewData(e);}" title="查看"><span
+                        <a href="#" id="function_-155" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; viewData2(e);}" title="查看"><span
                                 class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
                         <a href="#" id="function_-156" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; setSubmit(e);}" title="提交"><span
                                 class="glyphicon glyphicon glyphicon-export" aria-hidden="true"></span></a>
@@ -859,6 +877,115 @@
         </div>
     </div>
 </div>
+<!--入库单明细查看模态框-->
+<div class="modal fade bs-example-modal-lg" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">转移联单</div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="view_transferTime" class="col-sm-4 control-label">日期</label>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control" id="view_transferTime" name="transferTime" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="view_inboundTime" class="col-sm-4 control-label">进厂</label>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control" id="view_inboundTime" name="inboundTime" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="view_outboundTime" class="col-sm-4 control-label">出场</label>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control" id="view_outboundTime" name="produceCompany" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="view_transferId" class="col-sm-4 control-label">联单编号</label>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control" id="view_transferId" name="transferCount" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="view_produceCompany" class="col-sm-4 control-label">废物来源/去向</label>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control" id="view_produceCompany" name="leftCount" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="view_firstBrand" class="col-sm-4 control-label">车牌号</label>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control" id="view_firstBrand" name="firstBrand" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="view_firstCarrier" class="col-sm-4 control-label">运输人</label>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control" id="view_firstCarrier" name="firstCarrier" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="view_recipient" class="col-sm-4 control-label">接受人</label>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control" id="view_recipient" name="recipient" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="view_wastesName" class="col-sm-4 control-label">危废名称</label>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control" id="view_wastesName" name="wastesName" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="view_wastesCode" class="col-sm-4 control-label">危废种类</label>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control" id="view_wastesCode" name="wastesCode" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="view_transferCount" class="col-sm-4 control-label">毛重</label>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control" id="view_transferCount" name="transferCount" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="view_count1H" class="col-sm-4 control-label">1号库净重</label>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control" id="view_count1H" name="count1H" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="view_count2H" class="col-sm-4 control-label">2号库净重</label>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control" id="view_count2H" name="count2H" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="view_countZN" class="col-sm-4 control-label">智能库净重</label>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control" id="view_countZN" name="countZN" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="view_remark" class="col-sm-4 control-label">备注</label>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control" id="view_remark" name="remark" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!--导入模态框-->
 <div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -879,6 +1006,30 @@
             <div class="modal-footer center">
                 <button type="button" class="btn btn-default" onclick="downloadModal()">下载模板</button>
                 <button type="button" class="btn btn-primary" onclick="importExcel()">导入数据</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--导入excel模态框-->
+<div class="modal fade" id="importExcel2Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >导入表格数据</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    <div class="form-group">
+                        <font size="+2">提示：</font>
+                        <font size="+1" class="text-center">请按照模板格式导入数据！</font>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-default" onclick="downloadModal2()">下载模板</button>
+                <button type="button" class="btn btn-primary" onclick="importExcel2()">导入数据</button>
             </div>
         </div>
     </div>

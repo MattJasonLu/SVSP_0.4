@@ -22,6 +22,7 @@ public interface IngredientsService {
     void updateDataIn(IngredientsIn ingredientsIn);
     int getAmountItems(Ingredients ingredients);
     List<Ingredients> getIngredientsInItemByRange(Date startDate,Date endDate,Equipment equipment);
+    List<Ingredients> getIngredientsInItemAmountByRange(Date startDate,Date endDate);
     int countInItem();
     int searchInItemCount(Ingredients ingredients);
     List<Ingredients> listPageInItem(Page page);
@@ -42,6 +43,7 @@ public interface IngredientsService {
     void updateDataReceive(IngredientsReceive ingredientsReceive);
     Ingredients getAmountAndReceive(Ingredients ingredients);
     List<Ingredients> getInventoryList(Page page);
+    Ingredients getSumByIngredient(Ingredients ingredients);
     int searchInventoryCount(Ingredients ingredients);
     int countInventory();
     List<Ingredients> searchInventory(Ingredients ingredients);
@@ -65,6 +67,7 @@ public interface IngredientsService {
     void updateOut(IngredientsOut ingredientsOut);
     void updateDataOut(IngredientsOut ingredientsOut);
     List<Ingredients> getIngredientsOutItemByRange(Date startDate, Date endDate,Equipment equipment);
+    List<Ingredients> getIngredientsOutItemAmountByRange(Date startDate, Date endDate);
     int countOutItem();
     int searchOutItemCount(Ingredients ingredients);
     List<Ingredients> listPageOutItem(Page page);
@@ -85,6 +88,8 @@ public interface IngredientsService {
 
     void updateIngredient(Ingredients ingredients);
 
+    void updateCodeByIngredient(Ingredients ingredients);
+
     void deleteIngredient(int id);
 
     List<Ingredients> searchIngredient(Ingredients ingredients);
@@ -94,5 +99,24 @@ public interface IngredientsService {
     int getCountByCode(String code);
 
     int getCountByType(String type);
+
+    ///////////////////辅料备件管理树状结构///////
+    void addIngredientsTree(IngredientsTree ingredientsTree);
+
+    void updateIngredientTree(IngredientsTree ingredientsTree);
+
+    int maxByPId(int pId);
+
+    int countTreeByPId(int pId);
+
+    List<IngredientsTree> listIngredientsTree();
+
+    IngredientsTree getIngredientsTreeById(int id);
+
+    void updatePartIngredientTreeBuId(IngredientsTree ingredientsTree);
+
+    void deleteById(int id);
+
+    List<IngredientsTree> getChildrenIngredientsTreeById(int id);
 
 }

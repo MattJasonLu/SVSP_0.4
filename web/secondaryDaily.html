@@ -139,70 +139,76 @@
             <div class="panel panel-default" id="senior" style="display: none;">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="form-horizontal col-md-4">
+                        <div class="form-horizontal col-sm-6">
                             <div class="form-group">
-                            <label for="search-receiveDate" class="col-sm-5 control-label">废物名称</label>
-                            <div class="col-xs-6">
-                            <input type="text" class="form-control" id="search-receiveDate"
-                                name="search-receiveDate" placeholder="" onkeyup="enterSearch()">
+                                <label for="search-id" class="col-sm-4 control-label">样品单号</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-id" name="search-laboratoryTestNumber" placeholder="" onkeyup="enterSearch();">
+                                </div>
                             </div>
-                            </div>
-                        </div>
-
-                        <div class="form-horizontal col-md-4">
                             <div class="form-group">
-                                <label for="search-id" class="col-sm-5 control-label">单号</label>
-                                <div class="col-xs-6">
-                                    <input type="text" class="form-control" id="search-id"
-                                           name="search-receiveDate" placeholder="" onkeyup="enterSearch()">
+                                <label for="search-address" class="col-sm-4 control-label">采样点</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-address" name="search-laboratory" placeholder="" onkeyup="enterSearch();">
                                 </div>
                             </div>
                         </div>
-
-                        <div class="form-horizontal col-md-4">
+                        <div class="form-horizontal col-sm-6">
                             <div class="form-group">
-                                <label for="search-remarks" class="col-sm-5 control-label">备注</label>
-                                <div class="col-xs-6">
-                                    <input type="text" class="form-control" id="search-remarks"
-                                           name="search-receiveDate" placeholder="" onkeyup="enterSearch()">
+                                <label for="search-remarks" class="col-sm-4 control-label">备注</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-remarks" name="search-record" placeholder="" onkeyup="enterSearch();">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="search-checkState" class="col-sm-4 control-label">单据状态</label>
+                                <div class="col-xs-7">
+                                    <select type="text" class="form-control" id="search-checkState" name="search-laboratoryDate"  onchange="searchData();">
+                                        <option value="64">待提交</option>
+                                        <option value="73">已提交</option>
+                                        <option value="69">已作废</option>
+                                        <option value="74">已确认</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!--<div class="form-group">-->
+                            <!--<label for="search-scorchingRate" class="col-sm-4 control-label">热灼减率</label>-->
+                            <!--<div class="col-xs-7">-->
+                            <!--<input type="text" class="form-control" id="search-scorchingRate" name="search-queryNumber" placeholder="" onkeyup="searchData();">-->
+                            <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="form-group">-->
+                            <!--<label for="search-water" class="col-sm-4 control-label">水分</label>-->
+                            <!--<div class="col-xs-7">-->
+                            <!--<input type="text" class="form-control" id="search-water" name="search-companyName" placeholder="" onkeyup="searchData();">-->
+                            <!--</div>-->
+                            <!--</div>-->
                         </div>
-
 
                     </div>
                     <div class="row">
-                        <div class="form-horizontal col-md-4">
-                            <div class="form-group" style="margin-left: -10px;">
-                                <label class="col-sm-3 control-label">收样日期 </label>
-                                <div class="input-group">
-                                    <input type="date" class="input-sm form-control" id="search-inDate" title="" onkeyup="enterSearch()"/>
-                                    <span class="input-group-addon">-</span>
-                                    <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeyup="enterSearch()"/>
-                                </div>
-                            </div>
-                        </div>
+                        <!--<div class="form-horizontal col-md-6">-->
+                        <!--<div class="form-group">-->
+                        <!--<label class="col-sm-3 control-label" style="margin-left: 40px">收样日期 </label>-->
+                        <!--<div class="input-group">-->
+                        <!--<input type="date" class="input-sm form-control" id="search-inDate" title="" onkeydown="" onkeyup="enterSearch()"/>-->
+                        <!--<span class="input-group-addon">-</span>-->
+                        <!--<input type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown="" onkeyup="enterSearch()"/>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <div class="form-horizontal col-md-6">
 
-                        <div class="form-horizontal col-md-4">
-                            <div class="form-group">
-                                <label for="search-scorchingRate" class="col-sm-5 control-label">热灼减率</label>
-                                <div class="col-xs-6">
-                                    <input type="text" class="form-control" id="search-scorchingRate"
-                                           name="search-receiveDate" placeholder="" onkeyup="enterSearch()">
-                                </div>
-                            </div>
                         </div>
+                        <div class="form-horizontal col-md-6">
 
-                        <div class="form-horizontal col-md-4">
-                            <div class="form-group">
-                                <label for="search-water" class="col-sm-5 control-label">水分</label>
-                                <div class="col-xs-6">
-                                    <input type="text" class="form-control" id="search-water"
-                                           name="search-receiveDate" placeholder="" onkeyup="enterSearch()">
-                                </div>
-                            </div>
                         </div>
                     </div>
+                    <div class="row">
+
+                    </div>
+
+
                 </div>
             </div>
             <br>
@@ -214,12 +220,14 @@
                                 <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
                             </label>
                         </th>
-                        <th class="text-center">单号</th>
-                        <th class="text-center">收样日期</th>
+                        <th class="text-center">样品单号</th>
+                        <!--<th class="text-center hidden">收样日期</th>-->
                         <th class="text-center">废物名称</th>
-                        <th class="text-center">热灼减率 %</th>
-                        <th class="text-center">水分 %</th>
+                        <th class="text-center">热灼减率%</th>
+                        <th class="text-center">水分%</th>
                         <th class="text-center">备注</th>
+                        <th class="text-center">单据状态</th>
+                        <th class="text-center">采样点</th>
                     </tr>
                 </thead>
                 <tbody id="tbody1">
@@ -230,12 +238,14 @@
                                 <!--<input class="checkbox" type="checkbox" value="option1" name="select" id="select">-->
                             </label>
                         </td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
+                        <td class="text-center" name="id">Q10000001</td>
+                        <!--<td class="text-center hidden">张三</td>-->
+                        <td class="text-center">李四</td>
+                        <td class="text-center">2018-7-31</td>
+                        <td class="text-center">安耐得环保常州分公司</td>
+                        <td class="text-center">待签收</td>
+                        <td class="text-center">待签收</td>
+                        <td class="text-center">待签收</td>
                     </tr>
                 </tbody>
             </table>

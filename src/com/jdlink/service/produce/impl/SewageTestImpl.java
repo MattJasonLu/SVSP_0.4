@@ -257,5 +257,145 @@ public class SewageTestImpl implements SewageTestService{
         return sewageTestMapper.searchSecondaryTestCount(secondaryTest);
     }
 
+    @Override
+    public List<String> getAllRawSampleId() {
+        return sewageTestMapper.getAllRawSampleId();
+    }
+
+    @Override
+    public int CountById(String id) {
+        return sewageTestMapper.CountById(id);
+    }
+
+    @Override
+    public void addRawSample(RawSample rawSample) {
+        sewageTestMapper.addRawSample(rawSample);
+    }
+
+    @Override
+    public RawSampleItem getRawSampleItemById(String id) {
+        return sewageTestMapper.getRawSampleItemById(id);
+    }
+
+    @Override
+    public void addRawSampleItem(RawSampleItem rawSampleItem) {
+        sewageTestMapper.addRawSampleItem(rawSampleItem);
+    }
+
+    @Override
+    public List<RawSample> loadRawSampleList(Page page) {
+        return sewageTestMapper.loadRawSampleList(page);
+    }
+
+    @Override
+    public RawSample getRawSampleById(String id) {
+        return sewageTestMapper.getRawSampleById(id);
+    }
+
+    @Override
+    public void updateRawSample(RawSample rawSample) {
+        sewageTestMapper.updateRawSample(rawSample);
+    }
+
+    @Override
+    public void deleteRawSampleItem(String id) {
+        sewageTestMapper.deleteRawSampleItem(id);
+    }
+
+    @Override
+    public void cancelRawSample(String id) {
+        sewageTestMapper.cancelRawSample(id);
+    }
+
+    @Override
+    public void rejectRawSampleItemById(String id, String advice) {
+        sewageTestMapper.rejectRawSampleItemById(id,advice);
+    }
+
+    @Override
+    public List<RawSample> searchRawSample(RawSample rawSample) {
+        return sewageTestMapper.searchRawSample(rawSample);
+    }
+
+    @Override
+    public int searchRawSampleCount(RawSample rawSample) {
+        return sewageTestMapper.searchRawSampleCount(rawSample);
+    }
+
+    @Override
+    public int searchRawSampleTotal() {
+        return sewageTestMapper.searchRawSampleTotal();
+    }
+
+    @Override
+    public void addRawMaterialsTest(RawMaterialsTest rawMaterialsTest) {
+        sewageTestMapper.addRawMaterialsTest(rawMaterialsTest);
+    }
+
+    @Override
+    public List<String> getAllRawMaterialsTestId() {
+        return sewageTestMapper.getAllRawMaterialsTestId();
+    }
+
+    @Override
+    public List<RawMaterialsTest> loadRawMaterialsTestList(Page page) {
+        return sewageTestMapper.loadRawMaterialsTestList(page);
+    }
+
+    @Override
+    public RawMaterialsTest getRawMaterialsTestById(String id) {
+        return sewageTestMapper.getRawMaterialsTestById(id);
+    }
+
+    @Override
+    public void updateRawMaterialsTestById(RawMaterialsTest rawMaterialsTest) {
+        sewageTestMapper.updateRawMaterialsTestById(rawMaterialsTest);
+    }
+
+    @Override
+    public int rawMaterialsTestTotal() {
+        return sewageTestMapper.rawMaterialsTestTotal();
+    }
+
+    @Override
+    public void submitRawMaterialsTest(String id) {
+        sewageTestMapper.submitRawMaterialsTest(id);
+    }
+
+    @Override
+    public void confirmRawMaterialsTest(String id) {
+        sewageTestMapper.confirmRawMaterialsTest(id);
+    }
+
+    @Override
+    public void cancelRawMaterialsTest(String id) {
+        sewageTestMapper.cancelRawMaterialsTest(id);
+    }
+
+    @Override
+    public void cancelRawMaterialsTestAfter(String id) {
+        sewageTestMapper.cancelRawMaterialsTestAfter(id);
+    }
+
+    @Override
+    public List<RawMaterialsTest> searchRawMaterialsTest(RawMaterialsTest rawMaterialsTest) {
+        return sewageTestMapper.searchRawMaterialsTest(rawMaterialsTest);
+    }
+
+    @Override
+    public int searchRawMaterialsTestCount(RawMaterialsTest rawMaterialsTest) {
+        return sewageTestMapper.searchRawMaterialsTestCount(rawMaterialsTest);
+    }
+
+    @Override
+    public void confirmRawSampleById(String id, String laboratorySignatory) {
+        sewageTestMapper.confirmRawSampleById(id, laboratorySignatory);
+    }
+
+    @Override
+    public void confirmAllRawSampleisCheck(RawSample rawSample) {
+        sewageTestMapper.confirmAllRawSampleisCheck(rawSample);
+    }
+
 
 }

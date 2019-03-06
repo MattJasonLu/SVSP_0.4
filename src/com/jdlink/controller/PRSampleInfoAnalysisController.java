@@ -2,6 +2,8 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Dictionary.CheckStateItem;
+import com.jdlink.domain.Dictionary.FormTypeItem;
 import com.jdlink.domain.FormType;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.HandleCategory;
@@ -112,7 +114,7 @@ public class PRSampleInfoAnalysisController {
      */
     @RequestMapping("countSampleInfoAnalysis")
     @ResponseBody
-    public String countSampleInfoAnalysis(SampleInfoAnalysis sampleInfoAnalysis) {
+    public String countSampleInfoAnalysis(@RequestBody SampleInfoAnalysis sampleInfoAnalysis) {
         JSONObject res = new JSONObject();
         try {
             int count = sampleInfoAnalysisService.count(sampleInfoAnalysis);
@@ -134,22 +136,11 @@ public class PRSampleInfoAnalysisController {
         try {
             // 获取危废入库的表格数据
             Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
-            System.out.println("数据为");
-            System.out.println("列："+data[0].length+",行："+data.length);
-            for(int i = 0; i < data.length;i++){
-                for(int j = 0; j < data[0].length;j++){
-                    System.out.print(data[i][j].toString()+" ");
-                }
-                System.out.println();
-            }
-
             for (int i = 2; i < data.length; i++) {
                 SampleInfoAnalysis sampleInfoAnalysis = new SampleInfoAnalysis();
                 // 如果样品编号存在则赋值
-                System.out.println("w:"+data[i][18].toString());
                 if (!data[i][18].toString().trim().equals("") && data[i][18].toString() != null && !data[i][18].toString().equals("null")) {
-                    System.out.println("q:"+data[i][18].toString().trim() );
-                    sampleInfoAnalysis.setId(data[i][18].toString() + "R");
+                    sampleInfoAnalysis.setId(data[i][18].toString());
                     sampleInfoAnalysis.setSampleId(data[i][18].toString());
                     // 若不存在则赋联单编号
                 } else {
@@ -157,7 +148,7 @@ public class PRSampleInfoAnalysisController {
                 }
                 sampleInfoAnalysis.setTransferDraftId(data[i][0].toString());
                 // 设置产废单位，若不存在则添加单位
-                Client produceCompany = clientService.getByName(data[i][1].toString());
+                Client produceCompany = clientService.getByNameNotState(data[i][1].toString());
                 if (produceCompany == null) {
                     produceCompany = new Client();
                     produceCompany.setClientId(clientService.getCurrentId());
@@ -192,24 +183,38 @@ public class PRSampleInfoAnalysisController {
                 }
 //                sampleInfoAnalysis.setSender(data[i][6].toString());
 //                sampleInfoAnalysis.setSigner(data[i][7].toString());
-                sampleInfoAnalysis.setPH(Float.parseFloat(data[i][6].toString()));
-                sampleInfoAnalysis.setHeat(Float.parseFloat(data[i][7].toString()));
-                sampleInfoAnalysis.setAsh(Float.parseFloat(data[i][8].toString()));
-                sampleInfoAnalysis.setWater(Float.parseFloat(data[i][9].toString()));
-                sampleInfoAnalysis.setFluorine(Float.parseFloat(data[i][10].toString()));
-                sampleInfoAnalysis.setChlorine(Float.parseFloat(data[i][11].toString()));
-                sampleInfoAnalysis.setSulfur(Float.parseFloat(data[i][12].toString()));
-                sampleInfoAnalysis.setPhosphorus(Float.parseFloat(data[i][13].toString()));
-                sampleInfoAnalysis.setFlashPoint(Float.parseFloat(data[i][14].toString()));
-                sampleInfoAnalysis.setViscosity(data[i][15].toString());
-                sampleInfoAnalysis.setHotMelt(data[i][16].toString());
+                if (!data[i][6].toString().equals("null")) sampleInfoAnalysis.setPH(Float.parseFloat(data[i][6].toString()));
+                else sampleInfoAnalysis.setPH(-9999);
+                if (!data[i][7].toString().equals("null")) sampleInfoAnalysis.setHeat(data[i][7].toString());
+                else sampleInfoAnalysis.setHeat("-9999");
+                if (!data[i][8].toString().equals("null")) sampleInfoAnalysis.setAsh(Float.parseFloat(data[i][8].toString()));
+                else sampleInfoAnalysis.setAsh(-9999);
+                if (!data[i][9].toString().equals("null")) sampleInfoAnalysis.setWater(data[i][9].toString());
+                else sampleInfoAnalysis.setWater("-9999");
+                if (!data[i][10].toString().equals("null")) sampleInfoAnalysis.setFluorine(Float.parseFloat(data[i][10].toString()));
+                else sampleInfoAnalysis.setFluorine(-9999);
+                if (!data[i][11].toString().equals("null")) sampleInfoAnalysis.setChlorine(Float.parseFloat(data[i][11].toString()));
+                else sampleInfoAnalysis.setChlorine(-9999);
+                if (!data[i][12].toString().equals("null")) sampleInfoAnalysis.setSulfur(Float.parseFloat(data[i][12].toString()));
+                else sampleInfoAnalysis.setSulfur(-9999);
+                if (!data[i][13].toString().equals("null")) sampleInfoAnalysis.setPhosphorus(Float.parseFloat(data[i][13].toString()));
+                else sampleInfoAnalysis.setPhosphorus(-9999);
+                if (!data[i][14].toString().equals("null")) sampleInfoAnalysis.setFlashPoint(Float.parseFloat(data[i][14].toString()));
+                else sampleInfoAnalysis.setFlashPoint(-9999);
+                if (!data[i][15].toString().equals("null")) sampleInfoAnalysis.setViscosity(data[i][15].toString());
+                else sampleInfoAnalysis.setViscosity("-9999");
+                if (!data[i][16].toString().equals("null")) sampleInfoAnalysis.setHotMelt(data[i][16].toString());
+                else sampleInfoAnalysis.setHotMelt("-9999");
 //                sampleInfoAnalysis.setSignDate(DateUtil.getDateFromStr(data[i][19].toString()));
                 sampleInfoAnalysis.setRemark(data[i][17].toString());
                 sampleInfoAnalysis.setCheckState(CheckState.NewBuild);
+                CheckStateItem checkStateItem = new CheckStateItem();
+                checkStateItem.setDataDictionaryItemId(75);
+                sampleInfoAnalysis.setCheckStateItem(checkStateItem);
                 try {
                     if(sampleInfoAnalysisService.getById(sampleInfoAnalysis.getId()) == null){
                         sampleInfoAnalysisService.add(sampleInfoAnalysis);
-                    }else {
+                    } else {
                         sampleInfoAnalysisService.update(sampleInfoAnalysis);
                     }
                 }catch (Exception e) {
@@ -258,15 +263,15 @@ public class PRSampleInfoAnalysisController {
         JSONObject res = new JSONObject();
         try {
             // 为零则设置为-9999
-            if (sampleInfoAnalysis.getPH() == 0) sampleInfoAnalysis.setPH(-9999);
-            if (sampleInfoAnalysis.getAsh() == 0) sampleInfoAnalysis.setAsh(-9999);
-            if (sampleInfoAnalysis.getWater() == 0) sampleInfoAnalysis.setWater(-9999);
-            if (sampleInfoAnalysis.getHeat() == 0) sampleInfoAnalysis.setHeat(-9999);
-            if (sampleInfoAnalysis.getSulfur() == 0) sampleInfoAnalysis.setSulfur(-9999);
-            if (sampleInfoAnalysis.getChlorine() == 0) sampleInfoAnalysis.setChlorine(-9999);
-            if (sampleInfoAnalysis.getFluorine() == 0) sampleInfoAnalysis.setFluorine(-9999);
-            if (sampleInfoAnalysis.getPhosphorus() == 0) sampleInfoAnalysis.setPhosphorus(-9999);
-            if (sampleInfoAnalysis.getFlashPoint() == 0) sampleInfoAnalysis.setFlashPoint(-9999);
+//            if (sampleInfoAnalysis.getPH() == 0) sampleInfoAnalysis.setPH(-9999);
+//            if (sampleInfoAnalysis.getAsh() == 0) sampleInfoAnalysis.setAsh(-9999);
+//            if (sampleInfoAnalysis.getWater() == 0) sampleInfoAnalysis.setWater(-9999);
+////            if (sampleInfoAnalysis.getHeat() == 0) sampleInfoAnalysis.setHeat(-9999);
+//            if (sampleInfoAnalysis.getSulfur() == 0) sampleInfoAnalysis.setSulfur(-9999);
+//            if (sampleInfoAnalysis.getChlorine() == 0) sampleInfoAnalysis.setChlorine(-9999);
+//            if (sampleInfoAnalysis.getFluorine() == 0) sampleInfoAnalysis.setFluorine(-9999);
+//            if (sampleInfoAnalysis.getPhosphorus() == 0) sampleInfoAnalysis.setPhosphorus(-9999);
+//            if (sampleInfoAnalysis.getFlashPoint() == 0) sampleInfoAnalysis.setFlashPoint(-9999);
             // 增加
             sampleInfoAnalysis.setId(sampleInfoAnalysis.getTransferDraftId());
             sampleInfoAnalysis.setCheckState(CheckState.NewBuild);

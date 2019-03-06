@@ -115,6 +115,8 @@ public interface ContractMapper {
 
    List<QuotationItem> ContractList(Page page);
 
+   List<QuotationItem> getQuotationItemByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+
    int contractVolume();
 
     void setFilePath(QuotationItem quotationItem);

@@ -861,8 +861,10 @@ function addAppoint() {
 
 
                 })
-                alert("预约登记成功！")
-                window.location.reload();
+                alert("预约登记成功！");
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $('#appointModal').modal('hide');
             }
         },
         error: function (result) {
@@ -1431,8 +1433,10 @@ var laboratorySignatory=$('#laboratorySignatory').val();
     //contentType: 'application/json;charset=utf-8',
     success:function (result) {
         if (result != undefined && result.status == "success"){
-            alert("已收样!")
-            window.location.reload();
+            alert("已收样!");
+            $("#pageNumber").val(currentPage);   // 设置当前页页数
+            inputSwitchPage();  // 跳转当前页
+            $("#appointModa2").modal('hide');
         }
     },
     error:function (result) {
@@ -1505,7 +1509,9 @@ function rejection1() {
         success:function (result) {
             if (result != undefined && result.status == "success") {
                 alert(result.message)
-                window.location.reload();
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $("#rejection1").modal('hide');
             }
 
             },
@@ -1735,13 +1741,13 @@ function adjustConfir() {
         contentType: 'application/json;charset=utf-8',
         success:function (result) {
             if (result != undefined && result.status == "success"){
-                console.log(result)
+                console.log(result);
             }
         },
         error:function (result) {
 
         }
-    })
+    });
     
     
     
@@ -1819,8 +1825,10 @@ function adjustConfir() {
         })
     })
     //添加子表数据
-    alert("修改成功！")
-    window.location.reload();
+    alert("修改成功！");
+    $("#pageNumber").val(currentPage);   // 设置当前页页数
+    inputSwitchPage();  // 跳转当前页
+    $("#appointModa3").modal('hide');
 }
 
 //作废
@@ -1853,7 +1861,8 @@ function setInvalid(item) {
                 success:function (result) {
                     if (result != undefined && result.status == "success"){
                         alert(result.message)
-                        window.location.reload();
+                        $("#pageNumber").val(currentPage);   // 设置当前页页数
+                        inputSwitchPage();  // 跳转当前页
                     }
                 },
                 error:function (result) {

@@ -77,4 +77,7 @@ public interface BatchOrderMapper {
     List<OutboundOrder>searchSecOutbound(OutboundOrder outboundOrder);
 
     int searchSecOutboundCount(OutboundOrder outboundOrder);
+
+    List<BatchingOrder>searchBatchingOrder(BatchingOrder batchingOrder);
+    int searchBatchingTotal(BatchingOrder batchingOrder);
 }

@@ -34,7 +34,7 @@
 
     <!--获取配料单信息-->
     <select id="BatchList" resultMap="BatchingOrderRM">
-        select * from t_pl_batchingorder where  batchingNumber>0  order by checkStateId=69,batchingOrderId desc
+        select * from t_pl_batchingorder where  round(batchingNumber,3)>0  order by checkStateId=69,batchingOrderId desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -587,6 +587,84 @@ SELECT date_format(outboundDate,'%Y-%m')  FROM t_pl_outboundorder WHERE checkSta
                 <![CDATA[ and DATE_FORMAT(outboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
             and boundType="SecondaryOutbound"
+        </where>
+    </select>
+
+<!--配料单查询-->
+<select id="searchBatchingOrder" parameterType="BatchingOrder" resultMap="BatchingOrderRM">
+    select  * from t_pl_batchingorder
+    <where>
+        <if test="keyword!=null and keyword!=''">
+               or batchingOrderId like binary"%"#{keyword}"%"
+              or wareHouseId in(select warehouseId from t_pl_warehouse where warehouseName like binary"%"#{keyword}"%")
+               or produceCompany in (select clientId from client where companyName like binary"%"#{keyword}"%")
+                or wastesName like binary"%"#{keyword}"%"
+              or batchingDate like binary"%"#{keyword}"%"
+            or createDate like binary"%"#{keyword}"%"
+            or transferDraftId like binary"%"#{keyword}"%"
+            or handleCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like binary"%"#{keyword}"%"  and dataDictionaryId=6)
+            or processWayId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like binary"%"#{keyword}"%"  and dataDictionaryId=8)
+        </if>
+               <if test="produceCompany!=null">
+                       <if test="produceCompany.companyName!='' and produceCompany.companyName!=null">
+                           and produceCompany in(select clientId from client where companyName like binary"%"#{produceCompany.companyName}"%")
+                       </if>
+               </if>
+        <if test="wastesName!=''and wastesName!=null">
+             and wastesName like binary"%"#{wastesName}"%"
+        </if>
+        <if test="processWayItem!=null">
+            <if test="processWayItem.dataDictionaryItemId!=0">
+                and processWayId =#{processWayItem.dataDictionaryItemId}
+            </if>
+        </if>
+        <if test="beginTime!=null">
+            <![CDATA[ and DATE_FORMAT(batchingDate, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d') ]]>
+        </if>
+        <if test="endTime!=null">
+            <![CDATA[ and DATE_FORMAT(batchingDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
+        </if>
+    </where>
+    order by batchingOrderId desc
+    <if test="page != null and page.start != null and page.count != null">
+        limit #{page.start}, #{page.count}
+    </if>
+</select>
+
+    <!--配料单查询计数-->
+    <select id="searchBatchingTotal" resultType="int" parameterType="BatchingOrder">
+        select count(*) from t_pl_batchingorder
+        <where>
+            <if test="keyword!=null and keyword!=''">
+                or batchingOrderId like binary"%"#{keyword}"%"
+                or wareHouseId in(select warehouseId from t_pl_warehouse where warehouseName like binary"%"#{keyword}"%")
+                or produceCompany in (select clientId from client where companyName like binary"%"#{keyword}"%")
+                or wastesName like binary"%"#{keyword}"%"
+                or batchingDate like binary"%"#{keyword}"%"
+                or createDate like binary"%"#{keyword}"%"
+                or transferDraftId like binary"%"#{keyword}"%"
+                or handleCategoryId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like binary"%"#{keyword}"%"  and dataDictionaryId=6)
+                or processWayId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like binary"%"#{keyword}"%" and dataDictionaryId=8)
+            </if>
+            <if test="produceCompany!=null">
+                <if test="produceCompany.companyName!='' and produceCompany.companyName!=null">
+                    and produceCompany in(select clientId from client where companyName like binary"%"#{produceCompany.companyName}"%")
+                </if>
+            </if>
+            <if test="wastesName!=''and wastesName!=null">
+                and wastesName like binary"%"#{wastesName}"%"
+            </if>
+            <if test="processWayItem!=null">
+                <if test="processWayItem.dataDictionaryItemId!=0">
+                    and processWayId =#{processWayItem.dataDictionaryItemId}
+                </if>
+            </if>
+            <if test="beginTime!=null">
+                <![CDATA[ and DATE_FORMAT(batchingDate, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endTime!=null">
+                <![CDATA[ and DATE_FORMAT(batchingDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
+            </if>
         </where>
     </select>
 </mapper>

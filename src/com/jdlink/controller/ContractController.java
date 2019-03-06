@@ -190,10 +190,10 @@ public class ContractController {
         JSONObject res = new JSONObject();
         JSONArray array1 = JSONArray.fromArray(ContractType.values());
         res.put("contractNameStrList", array1);
-        JSONArray array2 = JSONArray.fromArray(Province.values());
-        res.put("provinceStrList", array2);
-        JSONArray array3 = JSONArray.fromArray(TicketRate1.values());
-        res.put("ticketRateStrList1", array3);
+//        JSONArray array2 = JSONArray.fromArray(Province.values());
+//        res.put("provinceStrList", array2);
+//        JSONArray array3 = JSONArray.fromArray(TicketRate1.values());
+//        res.put("ticketRateStrList1", array3);
         //查询客户list形式返回
         List client = clientService.list();
         JSONArray json = JSONArray.fromObject(client);
@@ -203,14 +203,14 @@ public class ContractController {
         JSONArray json2 = JSONArray.fromObject(supplier);
         res.put("supplierNameList", json2);
         //查询模板名称
-        List modelName = contractService.modelName(key);
-        List list1 = removeDuplicate(modelName);
+//        List modelName = contractService.modelName(key);
+//        List list1 = removeDuplicate(modelName);
 
         //查询最新的合同编号
 
         res.put("contractId", contractService.getNewestContractId1()+ 1);
-        JSONArray json1 = JSONArray.fromObject(list1);
-        res.put("modelNameList", json1);
+//        JSONArray json1 = JSONArray.fromObject(list1);
+//        res.put("modelNameList", json1);
         return res.toString();
     }
 
@@ -1121,8 +1121,8 @@ public class ContractController {
         try {
 
             Contract contract = contractService.getByContractId(contractId);
-            JSONArray array3 = JSONArray.fromArray(TicketRate1.values());
-            res.put("ticketRateStrList1", array3);
+//            JSONArray array3 = JSONArray.fromArray(TicketRate1.values());
+//            res.put("ticketRateStrList1", array3);
             //查询客户list形式返回
             List client = clientService.list();
             JSONArray json = JSONArray.fromObject(client);
@@ -1571,14 +1571,14 @@ public class ContractController {
     public String searchWasteContract(@RequestBody Contract contract){
         JSONObject res=new JSONObject();
              try {
-                 List<Contract> contractList=new ArrayList<>();
-                 List<Contract> contractList1=contractService.searchWasteContract(contract);
-                 /*过滤*/
-                 for(int i=0;i<contractList1.size();i++){
-                     if(contractList1.get(i).getContractType()==Wastes){
-                         contractList.add(contractList1.get(i));
-                     }
-                 }
+                 List<Contract> contractList=contractService.searchWasteContract(contract);
+//                 List<Contract> contractList1=contractService.searchWasteContract(contract);
+//                 /*过滤*/
+//                 for(int i=0;i<contractList1.size();i++){
+//                     if(contractList1.get(i).getContractType()==Wastes){
+//                         contractList.add(contractList1.get(i));
+//                     }
+//                 }
                  res.put("status", "success");
                  res.put("message", "查询成功");
                  res.put("data", contractList);
@@ -1598,15 +1598,15 @@ public class ContractController {
     @ResponseBody
     public int searchWasteContractCount(@RequestBody Contract contract){
 
-        List<Contract> contractList=new ArrayList<>();
-        List<Contract> contractList1=contractService.searchWasteContract(contract);
-        /*过滤*/
-        for(int i=0;i<contractList1.size();i++){
-            if(contractList1.get(i).getContractType()==Wastes){
-                contractList.add(contractList1.get(i));
-            }
-        }
-        return  contractList.size();
+//        List<Contract> contractList=new ArrayList<>();
+//        List<Contract> contractList1=contractService.searchWasteContract(contract);
+//        /*过滤*/
+//        for(int i=0;i<contractList1.size();i++){
+//            if(contractList1.get(i).getContractType()==Wastes){
+//                contractList.add(contractList1.get(i));
+//            }
+//        }
+        return  contractService.searchWasteContractCount(contract);
 
 
     }
@@ -1654,14 +1654,14 @@ public class ContractController {
     public String searchEmergencyContract(@RequestBody Contract contract){
         JSONObject res=new JSONObject();
         try {
-            List<Contract> contractList=new ArrayList<>();
-            List<Contract> contractList1=contractService.searchEmergencyContract(contract);
-            /*过滤*/
-            for(int i=0;i<contractList1.size();i++){
-                if(contractList1.get(i).getContractType()==Emergency){
-                    contractList.add(contractList1.get(i));
-                }
-            }
+            List<Contract> contractList=contractService.searchEmergencyContract(contract);
+//            List<Contract> contractList1=contractService.searchEmergencyContract(contract);
+//            /*过滤*/
+//            for(int i=0;i<contractList1.size();i++){
+//                if(contractList1.get(i).getContractType()==Emergency){
+//                    contractList.add(contractList1.get(i));
+//                }
+//            }
             res.put("status", "success");
             res.put("message", "查询成功");
             res.put("data", contractList);
@@ -1680,15 +1680,15 @@ public class ContractController {
     @RequestMapping("searchEmergencyContractCount")
     @ResponseBody
     public int searchEmergencyContractCount(@RequestBody Contract contract){
-        List<Contract> contractList=new ArrayList<>();
-        List<Contract> contractList1=contractService.searchEmergencyContract(contract);
-        /*过滤*/
-        for(int i=0;i<contractList1.size();i++){
-            if(contractList1.get(i).getContractType()==Emergency){
-                contractList.add(contractList1.get(i));
-            }
-        }
-        return  contractList.size();
+//        List<Contract> contractList=new ArrayList<>();
+//        List<Contract> contractList1=contractService.searchEmergencyContract(contract);
+//        /*过滤*/
+//        for(int i=0;i<contractList1.size();i++){
+//            if(contractList1.get(i).getContractType()==Emergency){
+//                contractList.add(contractList1.get(i));
+//            }
+//        }
+        return  contractService.searchEmergencyContractCount(contract);
 
 
     }
@@ -1734,14 +1734,14 @@ public class ContractController {
     public String searchLogisticsContract(@RequestBody Contract contract){
         JSONObject res=new JSONObject();
         try {
-            List<Contract> contractList=new ArrayList<>();
-            List<Contract> contractList1=contractService.searchLogisticsContract(contract);
-            /*过滤*/
-            for(int i=0;i<contractList1.size();i++){
-                if(contractList1.get(i).getContractType()==Logistics){
-                    contractList.add(contractList1.get(i));
-                }
-            }
+            List<Contract> contractList=contractService.searchLogisticsContract(contract);
+//            List<Contract> contractList1=contractService.searchLogisticsContract(contract);
+//            /*过滤*/
+//            for(int i=0;i<contractList1.size();i++){
+//                if(contractList1.get(i).getContractType()==Logistics){
+//                    contractList.add(contractList1.get(i));
+//                }
+//            }
             res.put("status", "success");
             res.put("message", "查询成功");
             res.put("data", contractList);
@@ -1760,15 +1760,15 @@ public class ContractController {
     @RequestMapping("searchLogisticsContractCount")
     @ResponseBody
     public int searchLogisticsContractCount(@RequestBody Contract contract){
-        List<Contract> contractList=new ArrayList<>();
-        List<Contract> contractList1=contractService.searchLogisticsContract(contract);
-        /*过滤*/
-        for(int i=0;i<contractList1.size();i++){
-            if(contractList1.get(i).getContractType()==Logistics){
-                contractList.add(contractList1.get(i));
-            }
-        }
-        return  contractList.size();
+//        List<Contract> contractList=new ArrayList<>();
+//        List<Contract> contractList1=contractService.searchLogisticsContract(contract);
+//        /*过滤*/
+//        for(int i=0;i<contractList1.size();i++){
+//            if(contractList1.get(i).getContractType()==Logistics){
+//                contractList.add(contractList1.get(i));
+//            }
+//        }
+        return  contractService.searchLogisticsContractCount(contract);
 
 
     }
@@ -1814,14 +1814,14 @@ public class ContractController {
     public String searchDeriveContract(@RequestBody Contract contract){
         JSONObject res=new JSONObject();
         try {
-            List<Contract> contractList=new ArrayList<>();
-            List<Contract> contractList1=contractService.searchDeriveContract(contract);
-            /*过滤*/
-            for(int i=0;i<contractList1.size();i++){
-                if(contractList1.get(i).getContractType()==Derive){
-                    contractList.add(contractList1.get(i));
-                }
-            }
+            List<Contract> contractList=contractService.searchDeriveContract(contract);
+//            List<Contract> contractList1=contractService.searchDeriveContract(contract);
+//            /*过滤*/
+//            for(int i=0;i<contractList1.size();i++){
+//                if(contractList1.get(i).getContractType()==Derive){
+//                    contractList.add(contractList1.get(i));
+//                }
+//            }
             res.put("status", "success");
             res.put("message", "查询成功");
             res.put("data", contractList);
@@ -1840,15 +1840,15 @@ public class ContractController {
     @RequestMapping("searchDeriveContractCount")
     @ResponseBody
     public int searchDeriveContractCount(@RequestBody Contract contract){
-        List<Contract> contractList=new ArrayList<>();
-        List<Contract> contractList1=contractService.searchDeriveContract(contract);
-        /*过滤*/
-        for(int i=0;i<contractList1.size();i++){
-            if(contractList1.get(i).getContractType()==Derive){
-                contractList.add(contractList1.get(i));
-            }
-        }
-        return  contractList.size();
+//        List<Contract> contractList=new ArrayList<>();
+//        List<Contract> contractList1=contractService.searchDeriveContract(contract);
+//        /*过滤*/
+//        for(int i=0;i<contractList1.size();i++){
+//            if(contractList1.get(i).getContractType()==Derive){
+//                contractList.add(contractList1.get(i));
+//            }
+//        }
+        return  contractService.searchDeriveContractCount(contract);
 
 
     }
@@ -1896,14 +1896,14 @@ public class ContractController {
     public String searchPurchaseContract(@RequestBody Contract contract){
         JSONObject res=new JSONObject();
         try {
-            List<Contract> contractList=new ArrayList<>();
-            List<Contract> contractList1=contractService.searchPurchaseContract(contract);
-            /*过滤*/
-            for(int i=0;i<contractList1.size();i++){
-                if(contractList1.get(i).getContractType()==Purchase){
-                    contractList.add(contractList1.get(i));
-                }
-            }
+            List<Contract> contractList=contractService.searchPurchaseContract(contract);
+//            List<Contract> contractList1=contractService.searchPurchaseContract(contract);
+//            /*过滤*/
+//            for(int i=0;i<contractList1.size();i++){
+//                if(contractList1.get(i).getContractType()==Purchase){
+//                    contractList.add(contractList1.get(i));
+//                }
+//            }
             res.put("status", "success");
             res.put("message", "查询成功");
             res.put("data", contractList);
@@ -1924,15 +1924,15 @@ public class ContractController {
     @ResponseBody
     public int searchPurchaseContractCount(@RequestBody Contract contract){
 
-        List<Contract> contractList=new ArrayList<>();
-        List<Contract> contractList1=contractService.searchPurchaseContract(contract);
-        for(int i=0;i<contractList1.size();i++){
-            if(contractList1.get(i).getContractType()==Purchase){
-                contractList.add(contractList1.get(i));
-            }
-        }
+//        List<Contract> contractList=new ArrayList<>();
+//        List<Contract> contractList1=contractService.searchPurchaseContract(contract);
+//        for(int i=0;i<contractList1.size();i++){
+//            if(contractList1.get(i).getContractType()==Purchase){
+//                contractList.add(contractList1.get(i));
+//            }
+//        }
 
-        return  contractList.size();
+        return  contractService.searchPurchaseContractCount(contract);
 
 
     }
@@ -1982,14 +1982,14 @@ public class ContractController {
     public String searchOtherContract(@RequestBody Contract contract){
         JSONObject res=new JSONObject();
         try {
-            List<Contract> contractList=new ArrayList<>();
-            List<Contract> contractList1=contractService.searchOtherContract(contract);
-            /*过滤*/
-            for(int i=0;i<contractList1.size();i++){
-                if(contractList1.get(i).getContractType()==Other){
-                    contractList.add(contractList1.get(i));
-                }
-            }
+            List<Contract> contractList=contractService.searchOtherContract(contract);
+//            List<Contract> contractList1=contractService.searchOtherContract(contract);
+//            /*过滤*/
+//            for(int i=0;i<contractList1.size();i++){
+//                if(contractList1.get(i).getContractType()==Other){
+//                    contractList.add(contractList1.get(i));
+//                }
+//            }
             res.put("status", "success");
             res.put("message", "查询成功");
             res.put("data", contractList);
@@ -2009,15 +2009,15 @@ public class ContractController {
     @RequestMapping("searchOtherContractCount")
     @ResponseBody
     public int searchOtherContractCount(@RequestBody Contract contract){
-        List<Contract> contractList=new ArrayList<>();
-        List<Contract> contractList1=contractService.searchOtherContract(contract);
-        /*过滤*/
-        for(int i=0;i<contractList1.size();i++){
-            if(contractList1.get(i).getContractType()==Other){
-                contractList.add(contractList1.get(i));
-            }
-        }
-        return  contractList.size();
+//        List<Contract> contractList=new ArrayList<>();
+//        List<Contract> contractList1=contractService.searchOtherContract(contract);
+//        /*过滤*/
+//        for(int i=0;i<contractList1.size();i++){
+//            if(contractList1.get(i).getContractType()==Other){
+//                contractList.add(contractList1.get(i));
+//            }
+//        }
+        return  contractService.searchOtherContractCount(contract);
 
 
     }

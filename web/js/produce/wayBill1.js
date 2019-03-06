@@ -570,28 +570,7 @@ function searchWayBill() {
     page.pageNumber = pageNumber;
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
-    var state = null;
     if ($("#senior").is(':visible')) {
-        switch ($("#search-wayBillState").val()) {
-            case "0":
-                state = "NewBuild";
-                break;//新建
-            case "1":
-                state = "ToExamine";
-                break;//待审批
-            case "2":
-                state = "Examining";
-                break;//审批中
-            case "3":
-                state = "Approval";
-                break;//审批通过
-            case "4":
-                state = "Backed";
-                break;//驳回
-            case "5":
-                state = "Invalid";
-                break; // 作废
-        }
         data = {
             id: $.trim($("#search-id").val()),
             produceCompanyName: $.trim($("#search-companyName").val()),
@@ -604,49 +583,10 @@ function searchWayBill() {
             checkStateItem: {
                 dataDictionaryItemId: $("#search-wayBillState").val()
             },
-            state: state,
             page: page
         };
     } else {
         var keywords = $.trim($("#searchContent").val());
-        switch (keywords) {
-            case("新建"):
-                keywords = "NewBuild";
-                break;
-            case("待审批"):
-                keywords = "ToExamine";
-                break;
-            case("审批中"):
-                keywords = "Examining";
-                break;
-            case("审批通过"):
-                keywords = "Approval";
-                break;
-            case("已驳回"):
-                keywords = "Backed";
-                break;
-            case("驳回"):
-                keywords = "Backed";
-                break;
-            case("已作废"):
-                keywords = "Invalid";
-                break;
-            case("作废"):
-                keywords = "Invalid";
-                break;
-            case("已确认"):
-                keywords = "Confirm";
-                break;
-            case("确认"):
-                keywords = "Confirm";
-                break;
-            case ("已出库"):
-                keywords = "OutBounded";
-                break;
-            case ("出库"):
-                keywords = "OutBounded";
-                break;
-        }
         data = {
             page: page,
             keywords: keywords

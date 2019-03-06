@@ -221,13 +221,14 @@
                 <th class="text-center">本日进厂危废</th>
                 <th class="text-center">本日直接转外处置量</th>
                 <th class="text-center">本日蒸煮医废(过磅)	</th>
-                <th class="text-center">蒸煮后重量</th>
                 <th class="text-center">蒸煮后入库量</th>
+                <th class="text-center">蒸煮后重量</th>
                 <th class="text-center">本日蒸煮后外送量</th>
                 <th class="text-center">误差量</th>
                 <th class="text-center">水分含量</th>
+                <th class="text-center">焚烧量</th>
                 <th class="text-center">期初量</th>
-                <!--<th class="text-center">库存量</th>-->
+                <th class="text-center">库存量</th>
             </tr>
             </thead>
             <tbody id="tbody1">
@@ -248,7 +249,8 @@
                 <td class="text-center"></td>
                 <td class="text-center"></td>
                 <td class="text-center"></td>
-                <!--<td class="text-center"></td>-->
+                <td class="text-center"></td>
+                <td class="text-center"></td>
             </tr>
             </tbody>
             <tbody id="tbody2">
@@ -264,6 +266,21 @@
                 <td class="text-center"></td>
                 <td class="text-center"></td>
                 <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+            </tr>
+            <tr style="font-weight: bolder">
+                <td  class="text-center">年累计(公斤)</td>
+                <td  class="text-center"></td>
+                <td  class="text-center" id="thisMonthWastesTotal"></td><!--本日进厂危废年累计-->
+                <td  class="text-center" id="directDisposalTotal"></td><!--本日直接转外处置量年累计-->
+                <td class="text-center" id="cookingWastesTotal"></td><!--本日蒸煮医废(过磅)年累计-->
+                <td class="text-center" id="afterCookingInboundTotal"></td><!--蒸煮后入库量	年累计-->
+                <td class="text-center" id="afterCookingNumberTotal"></td><!--蒸煮后重量年累计-->
+                <td class="text-center" id="thisMonthSendCookingTotal"></td><!--本日蒸煮后外送量年累计-->
+                <td class="text-center" id="errorNumberTotal"></td><!--误差量年累计-->
+                <td class="text-center" id="wetNumberTotal"></td><!--水分含量年累计-->
+                <td class="text-center" id="incinerationTotal"></td><!--焚烧量年累计-->
             </tr>
             </tbody>
 

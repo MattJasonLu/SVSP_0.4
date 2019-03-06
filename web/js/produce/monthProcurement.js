@@ -1576,9 +1576,9 @@ function findSpecification(item) {
         // contentType: "application/json;charset=utf-8",
         success:function (result) {
             if (result != undefined && result.status == "success"){
-                console.log(result)
+                console.log(result);
                 if(result.data!=null){
-                    $(item).parents('.myclass').children('td').eq(2).find('input').val(result.data.specification)
+                    $(item).parents('.myclass').children('td').eq(2).find('input').val(result.data.specification);
                     if(result.data.unitDataItem!=null){
                         $(item).parents('.myclass').children('td').eq(3).find('select').val(result.data.unitDataItem.dataDictionaryItemId)
                     }

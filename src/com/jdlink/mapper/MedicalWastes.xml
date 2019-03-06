@@ -41,6 +41,14 @@
             limit #{start}, #{count}
         </if>
     </select>
+
+    <select id="UpdatePeriodAndInventory" resultMap="MedicalWastesRM" parameterType="String">
+
+           select * from t_pl_medicalwastes where checkStateId!=71 and  dateTime>#{keyword}
+           order by dateTime
+
+
+    </select>
     <!--高级查询-->
     <select id="searchMedicalWastes" parameterType="MedicalWastes" resultMap="MedicalWastesRM">
         select  * from t_pl_medicalwastes
@@ -65,6 +73,24 @@
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
+    </select>
+
+
+    <!--根据日期计算年累计-->
+    <select id="getCumulative" resultType="MedicalWastes" parameterType="MedicalWastes">
+
+            select sum(thisMonthWastes) thisMonthWastesTotal,sum(directDisposal) directDisposalTotal,sum(cookingWastes) cookingWastesTotal,sum(afterCookingNumber) afterCookingNumberTotal,sum(afterCookingInbound) afterCookingInboundTotal ,sum(thisMonthSendCooking) thisMonthSendCookingTotal,sum(errorNumber) errorNumberTotal,sum(wetNumber)wetNumberTotal,sum(incineration)incinerationTotal
+        from t_pl_medicalwastes
+            <where>
+                <if test="beginTime!=null">
+                    <![CDATA[ and DATE_FORMAT(dateTime, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d') ]]>
+                </if>
+                <if test="endTime!=null">
+                    <![CDATA[ and DATE_FORMAT(dateTime, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d') ]]>
+                </if>
+            </where>
+
+
     </select>
 
     <!--高级查询计数-->
@@ -122,7 +148,7 @@
         directDisposal=#{directDisposal},cookingWastes=#{cookingWastes},afterCookingNumber=#{afterCookingNumber},
         afterCookingInbound=#{afterCookingInbound},thisMonthSendCooking=#{thisMonthSendCooking},
         errorNumber=#{errorNumber},wetNumber=#{wetNumber},nowTime=NOW(),equipment=#{equipment},
-        equipmentId=#{equipmentDataItem.dataDictionaryItemId},incineration=#{incineration}
+        equipmentId=#{equipmentDataItem.dataDictionaryItemId},incineration=#{incineration},earlyNumber=#{earlyNumber},wastesAmount=#{wastesAmount}
         where medicalWastesId=#{medicalWastesId};
     </update>
     

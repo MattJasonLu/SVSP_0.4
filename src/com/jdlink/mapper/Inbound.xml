@@ -39,6 +39,7 @@
 
     <resultMap id="InboundOrderItemRM" type="InboundOrderItem" autoMapping="true">
         <id column="inboundOrderItemId" property="inboundOrderItemId"/>
+        <result property="inboundDate" column="inboundDate" />
         <association property="produceCompany" select="getProduceCompany" column="produceCompanyId"/>
         <association property="wastes" javaType="Wastes">
             <id property="name" column="wastesName"/>
@@ -47,12 +48,12 @@
         </association>
         <association property="wareHouse" column="wareHouseId" select="getWarehouse"/>
         <association property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"/>
-        <association property="processWayItem" column="processWayId" select="getProcessWayItem"></association>
-        <association property="handleCategoryItem" column="handleCategoryId" select="getHandleCategoryItem"></association>
-        <association property="formTypeItem" column="formTypeId" select="getFormTypeItem"></association>
-        <association property="packageTypeItem" column="packageTypeId" select="getPackageTypeItem"></association>
-        <association property="unitDataItem" column="unitId" select="getUnitDataItem"></association>
-        <association property="secondaryCategoryItem" column="secondaryCategoryId" select="getSecondaryCategoryItem"></association>
+        <association property="processWayItem" column="processWayId" select="getProcessWayItem" />
+        <association property="handleCategoryItem" column="handleCategoryId" select="getHandleCategoryItem" />
+        <association property="formTypeItem" column="formTypeId" select="getFormTypeItem" />
+        <association property="packageTypeItem" column="packageTypeId" select="getPackageTypeItem" />
+        <association property="unitDataItem" column="unitId" select="getUnitDataItem" />
+        <association property="secondaryCategoryItem" column="secondaryCategoryId" select="getSecondaryCategoryItem" />
     </resultMap>
 
     <!--获取物质形态数据字典-->
@@ -84,6 +85,7 @@
     <select id="getProcessWayItem" resultType="ProcessWayItem">
         select * from datadictionaryitem where dataDictionaryItemId=#{processWayId}
     </select>
+
     <select id="getWarehouse" resultType="WareHouse">
         select * from t_pl_warehouse where warehouseId=#{wareHouseId};
     </select>
@@ -304,7 +306,7 @@
         (#{inboundOrderId}, #{inboundDate}, #{wareHouse.wareHouseId}, #{boundType},
         #{keeperId}, #{directorId}, #{approverId}, #{checkState}, #{remarks},
         #{creatorId}, #{createDate}, #{departmentId}, #{companyId}, #{modifierId}, #{modifyDate},
-        #{recordState}, 0, NOW(), #{checkStateItem.dataDictionaryItemId},
+        #{recordState}, 0, NOW(),75,
         #{recordStateItem.dataDictionaryItemId});
         <if test="inboundOrderItemList.size() > 0">
             <foreach collection="inboundOrderItemList" item="inboundOrderItem" index="index">
@@ -356,6 +358,25 @@
             ]]>);
     </select>
 
+    <!--根据日期范围查询危废入库明细数据:统计图表-->
+    <select id="getWastesInboundOrderItemAmountByRange" resultMap="InboundOrderItemRM">
+        select SUM(a.wastesAmount) as wastesAmount,b.inboundDate from t_pl_inboundorderitem as a left join t_pl_inboundorder as b
+        on a.inboundOrderId=b.inboundOrderId
+        <where>
+            <if test="startDate != null and startDate != ''">
+                <![CDATA[AND DATE_FORMAT(b.inboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[AND DATE_FORMAT(b.inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')]]>
+            </if>
+            <if test="1==1">
+                AND b.checkStateId != 69
+                AND b.boundType='WasteInbound'
+            </if>
+        </where>
+        GROUP BY DATE_FORMAT(b.inboundDate, '%Y%m') ORDER BY b.inboundDate ASC;
+    </select>
+
     <!--获取日期范围内的次生入库明细-->
     <select id="getSecondInboundOrderItemByRange" resultMap="InboundOrderItemRM">
         SELECT * FROM t_pl_inboundorderitem WHERE t_pl_inboundorderitem.inboundOrderId IN
@@ -365,6 +386,25 @@
             AND DATE_FORMAT(t_pl_inboundorder.inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')
             AND t_pl_inboundorder.boundType='SecondaryInbound'
             ]]>);
+    </select>
+
+    <!--根据日期范围查询次生入库明细数据:统计图表-->
+    <select id="getSecondInboundOrderItemAmountByRange" resultMap="InboundOrderItemRM">
+        select SUM(a.wastesAmount) as wastesAmount,b.inboundDate from t_pl_inboundorderitem as a left join t_pl_inboundorder as b
+        on a.inboundOrderId=b.inboundOrderId
+        <where>
+            <if test="startDate != null and startDate != ''">
+                <![CDATA[AND DATE_FORMAT(b.inboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[AND DATE_FORMAT(b.inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')]]>
+            </if>
+            <if test="1==1">
+                AND b.checkStateId != 69
+                AND b.boundType='SecondaryInbound'
+            </if>
+        </where>
+        GROUP BY DATE_FORMAT(b.inboundDate, '%Y%m') ORDER BY b.inboundDate ASC;
     </select>
 
     <!--增加次生入库单-->
@@ -459,36 +499,23 @@
         select count(*) from t_pl_inboundorder
         <where>
             <if test="keyword != null and keyword != ''">
-                and boundType=#{boundType}
                 and (inboundOrderId like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y-%m-%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y-%c-%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y-%c-%e') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y%m%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y%c%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y%c%e') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y.%m.%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y.%c.%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y.%c.%e') like "%"#{keyword}"%"
                 or recordState=#{keyword}
-                or checkState=#{keyword})
-                or warehouseId in (select warehouseId from t_pl_warehouse where warehouseName like "%"#{keyword}"%")
+                or checkState=#{keyword}
                 or remarks like "%"#{keyword}"%"
+                or inboundOrderId in
+                (select inboundOrderId from t_pl_inboundorderitem where produceCompanyId in
+                (select clientId from client where companyName like "%"#{keyword}"%"))
+                or warehouseId in (select warehouseId from t_pl_warehouse where warehouseName like "%"#{keyword}"%"))
             </if>
             <if test="inboundOrderId != null and inboundOrderId != ''">
                 and inboundOrderId LIKE "%"#{inboundOrderId}"%"
             </if>
             <if test="companyId != null and companyId != ''">
-                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
-                <![CDATA[
-                and (DATE_FORMAT(inboundDate,'%Y-%m-%d') >= #{companyId})
-                ]]>
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{companyId}, '%Y-%m-%d') ]]>
             </if>
             <if test="modifierId != null and modifierId != ''">
-                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
-                <![CDATA[
-                and (DATE_FORMAT(inboundDate,'%Y-%m-%d') <= #{modifierId})
-                ]]>
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{modifierId}, '%Y-%m-%d') ]]>
             </if>
             <if test="true">
                 and boundType=#{boundType}
@@ -510,36 +537,23 @@
         select * from t_pl_inboundorder
         <where>
             <if test="keyword != null and keyword != ''">
-                and boundType=#{boundType}
                 and (inboundOrderId like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y-%m-%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y-%c-%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y-%c-%e') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y%m%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y%c%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y%c%e') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y.%m.%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y.%c.%d') like "%"#{keyword}"%"
-                or DATE_FORMAT(inboundDate,'%Y.%c.%e') like "%"#{keyword}"%"
                 or recordState=#{keyword}
-                or checkState=#{keyword})
+                or checkState=#{keyword}
                 or remarks like "%"#{keyword}"%"
-                or warehouseId in (select warehouseId from t_pl_warehouse where warehouseName like "%"#{keyword}"%")
+                or inboundOrderId in
+                (select inboundOrderId from t_pl_inboundorderitem where produceCompanyId in
+                (select clientId from client where companyName like "%"#{keyword}"%"))
+                or warehouseId in (select warehouseId from t_pl_warehouse where warehouseName like "%"#{keyword}"%"))
             </if>
             <if test="inboundOrderId != null and inboundOrderId != ''">
                 and inboundOrderId LIKE "%"#{inboundOrderId}"%"
             </if>
             <if test="companyId != null and companyId != ''">
-                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
-                <![CDATA[
-                and (DATE_FORMAT(inboundDate,'%Y-%m-%d') >= #{companyId})
-                ]]>
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{companyId}, '%Y-%m-%d') ]]>
             </if>
             <if test="modifierId != null and modifierId != ''">
-                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
-                <![CDATA[
-                and (DATE_FORMAT(inboundDate,'%Y-%m-%d') <= #{modifierId})
-                ]]>
+                <![CDATA[ and DATE_FORMAT(inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{modifierId}, '%Y-%m-%d') ]]>
             </if>
             <if test="true">
                 and boundType=#{boundType}
@@ -554,7 +568,7 @@
                 and warehouseId in (select warehouseId from t_pl_warehouse where warehouseName like "%"#{wareHouse.wareHouseName}"%")
             </if>
         </where>
-        order by  nowTime desc
+        order by nowTime desc
         <if test="page != null and page.start != null and page.count != null and page.count != 0">
             limit #{page.start}, #{page.count};
         </if>
