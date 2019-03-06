@@ -142,7 +142,6 @@ public class UtilController {
     @ResponseBody
     public String getUrl(String filePath) {
         JSONObject res = new JSONObject();
-
         try {
             res.put("status", "success");
             res.put("message", "获取路径成功");

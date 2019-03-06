@@ -19,9 +19,9 @@ public class ApprovalNode {
      */
     private Integer roleId;
     /**
-     * 审批流父节点角色ID
+     * 审批流父节点ID
      */
-    private Integer rolePId;
+    private Integer approvalPId;
     /**
      * 审批时间
      */
@@ -34,6 +34,10 @@ public class ApprovalNode {
      * 审批意见
      */
     private String approvalAdvice;
+    /**
+     *  用户姓名
+     */
+    private String userName;
 
     public Integer getId() {
         return id;
@@ -59,12 +63,12 @@ public class ApprovalNode {
         this.roleId = roleId;
     }
 
-    public Integer getRolePId() {
-        return rolePId;
+    public Integer getApprovalPId() {
+        return approvalPId;
     }
 
-    public void setRolePId(Integer rolePId) {
-        this.rolePId = rolePId;
+    public void setApprovalPId(Integer approvalPId) {
+        this.approvalPId = approvalPId;
     }
 
     public Date getApprovalDate() {
@@ -91,13 +95,21 @@ public class ApprovalNode {
         this.approvalAdvice = approvalAdvice;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     @Override
     public String toString() {
         return "ApprovalNode{" +
                 "id=" + id +
                 ", approvalProcessId=" + approvalProcessId +
                 ", roleId=" + roleId +
-                ", rolePId=" + rolePId +
+                ", approvalPId=" + approvalPId +
                 ", approvalDate=" + approvalDate +
                 ", approvalState=" + approvalState +
                 ", approvalAdvice='" + approvalAdvice + '\'' +
