@@ -30,35 +30,35 @@
         select  * from t_approval_node_model where approval_process_id = #{id};
     </select>
 
-     <select id="search" parameterType="ApprovalProcess" resultMap="ApprovalProcessRM">
-         select * from t_approval_process_model
-         <where>
-             <if test="keywords != null and keywords != ''">
-                 or id like "%"#{keywords}"%"
-                 or type like "%"#{keywords}"%"
-                 or creator like "%"#{keywords}"%"
-                 or DATE_FORMAT(creation_date,'%Y-%m-%d') like "%"#{keywords}"%"
-                 or DATE_FORMAT(creation_date,'%Y-%c-%d') like "%"#{keywords}"%"
-                 or DATE_FORMAT(creation_date,'%Y-%c-%e') like "%"#{keywords}"%"
-                 or DATE_FORMAT(creation_date,'%Y%m%d') like "%"#{keywords}"%"
-                 or DATE_FORMAT(creation_date,'%Y%c%d') like "%"#{keywords}"%"
-                 or DATE_FORMAT(creation_date,'%Y%c%e') like "%"#{keywords}"%"
-                 or DATE_FORMAT(creation_date,'%Y.%m.%d') like "%"#{keywords}"%"
-                 or DATE_FORMAT(creation_date,'%Y.%c.%d') like "%"#{keywords}"%"
-                 or DATE_FORMAT(creation_date,'%Y.%c.%e') like "%"#{keywords}"%"
-             </if>
-             <if test="type != null and type != ''">
-                 and type like "%"#{type}"%"
-             </if>
-             <if test="creator != null and creator != ''">
-                 and creator like "%"#{creator}"%"
-             </if>
-         </where>
-         order by id ASC
-         <if test="page.start != null and page.count != null">
-             limit #{page.start}, #{page.count}
-         </if>
-     </select>
+    <select id="search" parameterType="ApprovalProcess" resultMap="ApprovalProcessRM">
+        select * from t_approval_process_model
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or type like "%"#{keywords}"%"
+                or creator like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y.%c.%e') like "%"#{keywords}"%"
+            </if>
+            <if test="type != null and type != ''">
+                and type like "%"#{type}"%"
+            </if>
+            <if test="creator != null and creator != ''">
+                and creator like "%"#{creator}"%"
+            </if>
+        </where>
+        order by id ASC
+        <if test="page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
 
     <select id="searchTotal" parameterType="ApprovalProcess" resultType="int">
         select count(*) from t_approval_process_model
@@ -85,4 +85,21 @@
             </if>
         </where>
     </select>
+
+    <!--获取非空的页面链接数据-->
+    <select id="getUrlList" resultType="Organization">
+        select * from menu_page where url is not null;
+    </select>
+
+    <insert id="addApprovalProcess" parameterType="ApprovalProcess">
+        insert into t_approval_process_model (type, creation_date, modify_date, creator, modifier)
+        values
+        (#{type},NOW(),NOW(),#{type},#{creator},#{modifier});
+    </insert>
+
+    <insert id="addApprovalNode" parameterType="ApprovalNode">
+        insert into t_approval_node_model (id,approval_process_id,role_id,approval_pid,approval_date,approval_state,approval_advice,user_name)
+         values
+         (#{id},#{approvalProcessId},#{roleId},#{approvalPId},#{approvalDate},#{approvalState},#{approvalAdvice},#{userName})
+    </insert>
 </mapper>

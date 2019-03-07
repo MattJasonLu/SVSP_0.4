@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.Approval.ApprovalProcess;
+import com.jdlink.domain.Produce.Organization;
 import com.jdlink.service.produce.ApprovalManageService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -50,6 +51,31 @@ public class ApprovalManageController {
             List<ApprovalProcess> approvalProcessList = approvalManageService.search(approvalProcess);
             // 计算最后页位置
             JSONArray array = JSONArray.fromArray(approvalProcessList.toArray(new ApprovalProcess[approvalProcessList.size()]));
+            res.put("data", array);
+            res.put("status", "success");
+            res.put("message", "数据获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "数据获取失败！");
+        }
+        // 返回结果
+        return res.toString();
+    }
+
+    /**
+     * 获取网页链接数据
+     * @return
+     */
+    @RequestMapping("getUrlList")
+    @ResponseBody
+    public String getUrlList() {
+        JSONObject res = new JSONObject();
+        try {
+            // 取出查询客户
+            List<Organization> organizationList = approvalManageService.getUrlList();
+            // 计算最后页位置
+            JSONArray array = JSONArray.fromArray(organizationList.toArray(new Organization[organizationList.size()]));
             res.put("data", array);
             res.put("status", "success");
             res.put("message", "数据获取成功!");
