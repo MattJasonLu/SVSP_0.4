@@ -1,5 +1,7 @@
 package com.jdlink.domain.Approval;
 
+import com.jdlink.domain.Page;
+
 import java.util.Date;
 import java.util.List;
 
@@ -43,6 +45,30 @@ public class ApprovalProcess {
      * 修改人
      */
     private String modifier;
+    /**
+     * 粗查询关键字
+     */
+    private String keywords;
+    /**
+     * 分页
+     */
+    private Page page;
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
 
     public Integer getId() {
         return id;
