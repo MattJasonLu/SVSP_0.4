@@ -22,7 +22,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/produce/approvalManage.js"></script>
 </head>
-<body onload="loadNavigationList();">
+<body onload="loadPageWayBillList();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -101,14 +101,12 @@
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
                         <a class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
                     <!--查询框-->
                     <div class="input-group col-md-4 pull-right">
                         <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                         <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="searchApproval();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="searchData();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
                             <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
                         </span>
@@ -121,35 +119,9 @@
                     <div class="row">
                         <div class="form-horizontal col-md-4">
                             <div class="form-group">
-                                <label for="search_id" class="col-sm-4 control-label">主键</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search_id" name="id" placeholder="" onkeyup="searchApproval();">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-4">
-                            <div class="form-group">
                                 <label for="search_type" class="col-sm-4 control-label">审批流类型</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search_type" name="type" placeholder="" onkeyup="searchApproval();">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-4">
-                            <div class="form-group">
-                                <label for="search_approvalNodeList" class="col-sm-4 control-label">审批节点</label>
-                                <div class="col-xs-7">
-                                    <input class="form-control" name="approvalNodeList" id="search_approvalNodeList" onkeyup="searchApproval();">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-horizontal col-md-4">
-                            <div class="form-group">
-                                <label for="search_creationDate" class="col-sm-4 control-label">创建日期</label>
-                                <div class="col-xs-7">
-                                    <input type="date" class="form-control" id="search_creationDate" name="creationDate" placeholder="" onkeyup="searchApproval();">
+                                    <input type="text" class="form-control" id="search_type" name="type" onkeyup="enterSearch()">
                                 </div>
                             </div>
                         </div>
@@ -157,7 +129,7 @@
                             <div class="form-group">
                                 <label for="search_creator" class="col-sm-4 control-label">创建人</label>
                                 <div class="col-xs-7">
-                                    <input class="form-control" name="creator" id="search_creator" onchange="searchApproval()">
+                                    <input class="form-control" name="creator" id="search_creator" onkeyup="enterSearch()">
                                 </div>
                             </div>
                         </div>
@@ -173,24 +145,20 @@
                                 <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
                             </label>
                         </th>
-                        <th class="text-center">主键</th>
-                        <th class="text-center">单据号</th>
+                        <th class="text-center">编号</th>
                         <th class="text-center">审批流类型</th>
-                        <th class="text-center">审批节点</th>
                         <th class="text-center">创建日期</th>
                         <th class="text-center">创建人</th>
                         <th class="text-center">操作</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr id="cloneTr">
+                    <tbody id="tBody">
+                    <tr>
                         <td class="text-center">
                             <label>
                                 <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
                             </label>
                         </td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
@@ -230,7 +198,7 @@
                     <li ><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;" id="pageNumber"></li>
                     <li class="showLi">每页显示:</li>
                     <li class="selectLi">
-                        <select id="count" onchange="loadPageQuestionnaireList()">
+                        <select id="count" onchange="loadPageWayBillList()">
                             <option>5</option>
                             <option selected>15</option>
                             <option>50</option>
