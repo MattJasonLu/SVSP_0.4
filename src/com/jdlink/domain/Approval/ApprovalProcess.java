@@ -16,6 +16,10 @@ public class ApprovalProcess {
      */
     private String orderId;
     /**
+     * 页面链接
+     */
+    private String url;
+    /**
      * 审批流类型
      */
     private String type;
@@ -102,6 +106,14 @@ public class ApprovalProcess {
 
     public void setModifier(String modifier) {
         this.modifier = modifier;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Override
