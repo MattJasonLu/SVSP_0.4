@@ -1804,9 +1804,75 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="examineBtn">审批</button>
+                    <button type="button" class="btn btn-primary" id="examineBtn1">审批</button>
                     <button type="button" class="btn btn-danger" id="backBtn">驳回</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--审批模态框-->
+    <div class="modal fade bs-example-modal-lg" id="approval" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" >
+                <div class="modal-header">
+                    <h2>单据信息</h2>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover table-bordered" style="border: 1px">
+                        <tr>
+                            <td style="width: 20%">标题1</td>
+                            <td style="width: 80%"></td>
+                        </tr>
+                        <tr>
+                            <td>标题2</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>标题3</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>标题4</td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    <hr>
+                    <h3>审批轨迹</h3>
+                    <table class="table table-hover table-condensed">
+                        <tr>
+                            <td class="text-center" style="width: 20%"><span class="glyphicon glyphicon-arrow-down"></span></td>
+                            <td style="width: 80%;padding: 10px">
+                                <p id="time" style="color: #8ec9ff;">2019年03月06日 16时04分星期三</p>
+                                <h3>发起人：<span>寇斯丁胡</span></h3>
+                                <b>审批意见:</b><span style="display: inline-block;width: 80%">审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span class="glyphicon glyphicon-arrow-down"></span></td>
+                            <td>
+                                <textarea title="" style="width: 65%;height: 20%"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span class="glyphicon glyphicon-arrow-down"></span></td>
+                            <td>
+                                <textarea title="" style="width: 65%;height: 20%"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span class="glyphicon glyphicon-arrow-down"></span></td>
+                            <td>
+                                <textarea title="" style="width: 65%;height: 20%"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="approval1">审批</button>
+                    <button type="button" class="btn btn-danger" id="disapproval">驳回</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </div>
         </div>
@@ -2382,6 +2448,12 @@
     /*}*/
 </style>
 <script type="text/javascript">
+    $("#examineBtn1").click(
+        function () {
+            $("#approval").modal('show');
+        }
+    );
+
     $('#embed').load('embed/loginLogModal.html');
     /**
      * 聚焦输入框
