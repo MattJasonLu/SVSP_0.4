@@ -134,7 +134,6 @@ public class UtilController {
         }
     }
 
-
     /**
      * 返回下载路径
      */
@@ -142,7 +141,6 @@ public class UtilController {
     @ResponseBody
     public String getUrl(String filePath) {
         JSONObject res = new JSONObject();
-
         try {
             res.put("status", "success");
             res.put("message", "获取路径成功");
@@ -156,8 +154,6 @@ public class UtilController {
         return res.toString();
 
     }
-
-
 
     /**
      * 下载模板

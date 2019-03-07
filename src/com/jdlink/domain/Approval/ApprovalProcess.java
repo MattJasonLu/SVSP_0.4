@@ -31,6 +31,14 @@ public class ApprovalProcess {
      * 修改日期
      */
     private Date modifyDate;
+    /**
+     * 创建人
+     */
+    private String creator;
+    /**
+     * 修改人
+     */
+    private String modifier;
 
     public Integer getId() {
         return id;
@@ -78,6 +86,22 @@ public class ApprovalProcess {
 
     public void setModifyDate(Date modifyDate) {
         this.modifyDate = modifyDate;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public String getModifier() {
+        return modifier;
+    }
+
+    public void setModifier(String modifier) {
+        this.modifier = modifier;
     }
 
     @Override
