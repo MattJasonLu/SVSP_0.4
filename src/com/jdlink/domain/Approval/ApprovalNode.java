@@ -9,7 +9,7 @@ public class ApprovalNode {
     /**
      * 主键ID
      */
-    private Integer id;
+    private String id;
     /**
      * 审批流程ID，外键
      */
@@ -21,7 +21,7 @@ public class ApprovalNode {
     /**
      * 审批流父节点ID
      */
-    private Integer approvalPId;
+    private String approvalPId;
     /**
      * 审批时间
      */
@@ -39,12 +39,16 @@ public class ApprovalNode {
      */
     private String userName;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public void setApprovalPId(String approvalPId) {
+        this.approvalPId = approvalPId;
     }
 
     public Integer getApprovalProcessId() {
@@ -63,12 +67,8 @@ public class ApprovalNode {
         this.roleId = roleId;
     }
 
-    public Integer getApprovalPId() {
+    public String getApprovalPId() {
         return approvalPId;
-    }
-
-    public void setApprovalPId(Integer approvalPId) {
-        this.approvalPId = approvalPId;
     }
 
     public Date getApprovalDate() {
