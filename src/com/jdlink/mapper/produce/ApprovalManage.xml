@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdlink.mapper.produce.ApprovalManageMapper">
+
+    <resultMap id="ApprovalProcessRM" type="ApprovalProcess" autoMapping="true">
+        <id column="id" property="id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="creationDate" column="creation_date"/>
+        <result property="modifyDate" column="modify_date"/>
+        <collection property="approvalNodeList" select="getItems" column="id"
+                    ofType="com.jdlink.domain.Approval.ApprovalProcess"
+                    javaType="ArrayList"/>
+    </resultMap>
+
+    <resultMap id="ApprovalNodeRM" type="ApprovalNode" autoMapping="true">
+        <id column="id" property="id"/>
+        <result property="approvalProcessId" column="approval_process_id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="approvalPId" column="approval_pid"/>
+        <result property="approvalDate" column="approval_date"/>
+        <result property="approvalState" column="approval_state"/>
+        <result property="approvalAdvice" column="approval_advice"/>
+        <result property="userName" column="user_name"/>
+    </resultMap>
+
+    <!--根据审批流ID获取审批流节点数据-->
+    <select id="getItems" parameterType="int" resultMap="ApprovalNodeRM">
+        select  * from t_approval_node_model where approval_process_id = #{id};
+    </select>
+
+     <select id="search" parameterType="ApprovalProcess" resultMap="ApprovalProcessRM">
+         select * from t_approval_process_model
+         <where>
+             <if test="keywords != null and keywords != ''">
+                 or id like "%"#{keywords}"%"
+                 or type like "%"#{keywords}"%"
+                 or creator like "%"#{keywords}"%"
+                 or DATE_FORMAT(creation_date,'%Y-%m-%d') like "%"#{keywords}"%"
+                 or DATE_FORMAT(creation_date,'%Y-%c-%d') like "%"#{keywords}"%"
+                 or DATE_FORMAT(creation_date,'%Y-%c-%e') like "%"#{keywords}"%"
+                 or DATE_FORMAT(creation_date,'%Y%m%d') like "%"#{keywords}"%"
+                 or DATE_FORMAT(creation_date,'%Y%c%d') like "%"#{keywords}"%"
+                 or DATE_FORMAT(creation_date,'%Y%c%e') like "%"#{keywords}"%"
+                 or DATE_FORMAT(creation_date,'%Y.%m.%d') like "%"#{keywords}"%"
+                 or DATE_FORMAT(creation_date,'%Y.%c.%d') like "%"#{keywords}"%"
+                 or DATE_FORMAT(creation_date,'%Y.%c.%e') like "%"#{keywords}"%"
+             </if>
+             <if test="type != null and type != ''">
+                 and type like "%"#{type}"%"
+             </if>
+             <if test="creator != null and creator != ''">
+                 and creator like "%"#{creator}"%"
+             </if>
+         </where>
+         order by id ASC
+         <if test="page.start != null and page.count != null">
+             limit #{page.start}, #{page.count}
+         </if>
+     </select>
+
+    <select id="searchTotal" parameterType="ApprovalProcess" resultType="int">
+        select count(*) from t_approval_process_model
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or type like "%"#{keywords}"%"
+                or creator like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y.%c.%e') like "%"#{keywords}"%"
+            </if>
+            <if test="type != null and type != ''">
+                and type like "%"#{type}"%"
+            </if>
+            <if test="creator != null and creator != ''">
+                and creator like "%"#{creator}"%"
+            </if>
+        </where>
+    </select>
+</mapper>
