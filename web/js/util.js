@@ -167,6 +167,14 @@ function allSelect() {
     if (isChecked) $("input[name='select']").prop('checked', true);
     else $("input[name='select']").prop('checked', false);
 }
+/**
+ * 全选功能2
+ */
+function allSelect1() {
+    var isChecked = $('#allSel1').prop('checked');
+    if (isChecked) $("input[name='select1']").prop('checked', true);
+    else $("input[name='select1']").prop('checked', false);
+}
 
 ///
 /**

@@ -276,8 +276,9 @@ function setDataList(result) {
             "                        <td class=\"text-center\">"+getDateStr(item.creationDate)+"</td>\n" +
             "                        <td class=\"text-center\">"+item.creator+"</td>\n" +
             "                        <td class=\"dropdown text-center\">\n" +
-            "                            <a href=\"#\" title=\"查看\"><span class=\"glyphicon glyphicon glyphicon-search\" aria-hidden=\"true\"></span></a>\n" +
+            "                            <a href=\"#\" title=\"查看\" onclick=\"showViewModal()\"><span class=\"glyphicon glyphicon glyphicon-search\" aria-hidden=\"true\"></span></a>\n" +
             "                            <a href=\"#\" title=\"编辑\" onclick=\"showEditModal()\"><span class=\"glyphicon glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></a>\n" +
+            "                            <a href=\"#\" title=\"链接配置\" onclick=\"hrefShow()\"><span class=\"glyphicon glyphicon-retweet\" aria-hidden=\"true\"></span></a>\n" +
             "                            <a href=\"#\" title=\"删除\"><span class=\"glyphicon glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></a>\n" +
             "                        </td>\n" +
             "                    </tr>";
@@ -369,6 +370,18 @@ function searchData() {
 function showEditModal() {
     $("#editModal").modal("show");   // 显示编辑模态框
 
+}/**
+ * 打开查看模态框
+ */
+function showViewModal() {
+    $("#viewModal").modal("show");   // 显示编辑模态框
+
+}/**
+ * 打开新增模态框
+ */
+function showNewAddModal() {
+    $("#newAddModal").modal("show");   // 显示编辑模态框
+
 }
 
 function addNewLine(item) {
@@ -387,4 +400,41 @@ function addNewLine(item) {
     clonedTr.children('td').eq(0).append(delBtn);   // 增加减行按钮
     clonedTr.insertAfter(tr);
     clonedTr.removeAttr("id");
+}
+
+
+/**
+ * 链接模态框
+ */
+function hrefShow() {
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getUrlList",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result.data != undefined || result.status == "success") {
+                $('#hrefTBody').empty();  // 删除旧数据
+                $.each(result.data, function (index, item) {
+                    var tr = "<tr >\n" +
+                        "                                <td class=\"text-center\">\n" +
+                        "                                    <label>\n" +
+                        "                                        <input name=\"select1\" class=\"checkbox\" type=\"checkbox\" id=\"blankCheckbox1\" value=\"option1\" aria-label=\"...\">\n" +
+                        "                                    </label>\n" +
+                        "                                </td>\n" +
+                        "                                <td class=\"text-center\">"+item.name+"</td>\n" +
+                        "                                <td class=\"text-center\">"+item.url+"</td>\n" +
+                        "                            </tr>";
+                    $('#hrefTBody').append(tr);
+                });
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器错误！");
+        }
+    });
+    $("#hrefModal").modal('show');
 }

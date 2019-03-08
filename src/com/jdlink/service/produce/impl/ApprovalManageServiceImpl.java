@@ -2,6 +2,7 @@ package com.jdlink.service.produce.impl;
 
 import com.jdlink.domain.Approval.ApprovalNode;
 import com.jdlink.domain.Approval.ApprovalProcess;
+import com.jdlink.domain.Produce.Organization;
 import com.jdlink.mapper.produce.ApprovalManageMapper;
 import com.jdlink.service.produce.ApprovalManageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
     public int searchTotal(ApprovalProcess approvalProcess) { return approvalManageMapper.searchTotal(approvalProcess); }
 
     @Override
+
     public ApprovalProcess getApprovalProcessByOrderId(String orderId) {
         return approvalManageMapper.getApprovalProcessByOrderId(orderId);
     }
@@ -35,6 +37,9 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
     public void updateApprovalById(String id, int stateId) {
         approvalManageMapper.updateApprovalById(id, stateId);
     }
+
+    public List<Organization> getUrlList() { return approvalManageMapper.getUrlList(); }
+
 
 
 }
