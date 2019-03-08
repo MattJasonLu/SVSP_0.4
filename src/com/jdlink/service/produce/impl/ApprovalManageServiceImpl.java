@@ -1,5 +1,6 @@
 package com.jdlink.service.produce.impl;
 
+import com.jdlink.domain.Approval.ApprovalNode;
 import com.jdlink.domain.Approval.ApprovalProcess;
 import com.jdlink.mapper.produce.ApprovalManageMapper;
 import com.jdlink.service.produce.ApprovalManageService;
@@ -19,4 +20,21 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
 
     @Override
     public int searchTotal(ApprovalProcess approvalProcess) { return approvalManageMapper.searchTotal(approvalProcess); }
+
+    @Override
+    public ApprovalProcess getApprovalProcessByOrderId(String orderId) {
+        return approvalManageMapper.getApprovalProcessByOrderId(orderId);
+    }
+
+    @Override
+    public ApprovalNode getNodeByIdAndRoleId(int id, String roleId) {
+        return approvalManageMapper.getNodeByIdAndRoleId(id, roleId);
+    }
+
+    @Override
+    public void updateApprovalById(String id, int stateId) {
+        approvalManageMapper.updateApprovalById(id, stateId);
+    }
+
+
 }
