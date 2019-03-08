@@ -81,6 +81,7 @@ function load() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
+    console.log(page)
     $.ajax({
         type: "POST",
         url: "getDictionariesDataList",

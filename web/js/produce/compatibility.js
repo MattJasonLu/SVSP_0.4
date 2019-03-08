@@ -547,7 +547,7 @@ function getList1() {
     setPwList();
     isSearch = false;
 
-
+    getCurrentUserData();
 }
 
 /*加载表格数据
