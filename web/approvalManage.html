@@ -163,7 +163,7 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
-                        <td class="dropdown text-center">
+                        <td class="text-center">
                             <a href="#" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
                             <a href="#" title="编辑" onclick="showEditModal()"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
                             <a href="#" title="链接配置" onclick="hrefShow()"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span></a>
@@ -246,7 +246,7 @@
                     </table>
                 </div>
                 <div class="modal-footer center">
-                    <button type="button" class="btn btn-primary">关闭</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
                 </div>
             </div>
         </div>
@@ -274,11 +274,11 @@
                                 <th class="text-center">链接</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr id="cloneTr1">
+                            <tbody id="hrefTBody">
+                            <tr >
                                 <td class="text-center">
                                     <label>
-                                        <input name="select" class="checkbox" type="checkbox" id="blankCheckbox1" value="option1" aria-label="...">
+                                        <input name="select1" class="checkbox" type="checkbox" id="blankCheckbox1" value="option1" aria-label="...">
                                     </label>
                                 </td>
                                 <td class="text-center"></td>
@@ -290,7 +290,7 @@
                 </div>
                 <div class="modal-footer center">
                     <button type="button" class="btn btn-success" onclick="save();">保存</button>
-                    <button type="button" class="btn btn-primary">关闭</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
                 </div>
             </div>
         </div>
