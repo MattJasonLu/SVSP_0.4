@@ -100,7 +100,7 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" onclick="showNewAddModal()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                     </div>
                     <!--查询框-->
                     <div class="input-group col-md-4 pull-right">
@@ -164,7 +164,7 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center">
-                            <a href="#" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                            <a href="#" title="查看" onclick="showViewModal()"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
                             <a href="#" title="编辑" onclick="showEditModal()"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
                             <a href="#" title="链接配置" onclick="hrefShow()"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span></a>
                             <a href="#" title="删除"><span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span></a>
@@ -210,6 +210,91 @@
         </div>
     </div>
 
+    <!--查看模态框-->
+    <div class="modal fade" id="newAddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="newAdd">新增</h4>
+                </div>
+                <div class="modal-body">
+                    <p style="display: inline"><b>编号：</b><input class="number" title=""></p>
+                    <p style="display: inline" class="pull-right"><b>审批流类型：</b><input class="type" title=""></p>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>审批节点编号</th>
+                            <th>角色</th>
+                            <th>父节点编号</th>
+                        </tr>
+                        </thead>
+                        <tbody >
+                        <tr id="cloneTr4" class="myclass3" >
+                            <td><input title="" class="form-control" name="id" ></td>
+                            <td><select title="" class="form-control" name="roleId" ></select></td>
+                            <td><input title="" class="form-control" name="approvalPId" ></td>
+                        </tr>
+                        <tr id="plus2">
+                            <td>
+                                <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer center">
+                    <button type="button" class="btn btn-success">保存</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--查看模态框-->
+    <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="view">信息查看</h4>
+                </div>
+                <div class="modal-body">
+                    <p style="display: inline"><b>编号：</b><input class="number" title=""></p>
+                    <p style="display: inline" class="pull-right"><b>审批流类型：</b><input class="type" title=""></p>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>审批节点编号</th>
+                            <th>角色</th>
+                            <th>父节点编号</th>
+                        </tr>
+                        </thead>
+                        <tbody >
+                        <tr id="cloneTr3" class="myclass3" >
+                            <td><input title="" class="form-control" name="id" ></td>
+                            <td><select title="" class="form-control" name="roleId" ></select></td>
+                            <td><input title="" class="form-control" name="approvalPId" ></td>
+                        </tr>
+                        <tr id="plus1">
+                            <td>
+                                <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer center">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!--编辑模态框-->
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -246,7 +331,8 @@
                     </table>
                 </div>
                 <div class="modal-footer center">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-success">保存</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </div>
         </div>
@@ -290,7 +376,7 @@
                 </div>
                 <div class="modal-footer center">
                     <button type="button" class="btn btn-success" onclick="save();">保存</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </div>
         </div>

@@ -275,10 +275,10 @@ function setDataList(result) {
             "                        <td class=\"text-center\">"+item.type+"</td>\n" +
             "                        <td class=\"text-center\">"+getDateStr(item.creationDate)+"</td>\n" +
             "                        <td class=\"text-center\">"+item.creator+"</td>\n" +
-            "                        <td class=\"text-center\">\n" +
-            "                            <a href=\"#\" title=\"查看\"><span class=\"glyphicon glyphicon glyphicon-search\" aria-hidden=\"true\"></span></a>\n" +
+            "                        <td class=\"dropdown text-center\">\n" +
+            "                            <a href=\"#\" title=\"查看\" onclick=\"showViewModal()\"><span class=\"glyphicon glyphicon glyphicon-search\" aria-hidden=\"true\"></span></a>\n" +
             "                            <a href=\"#\" title=\"编辑\" onclick=\"showEditModal()\"><span class=\"glyphicon glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></a>\n" +
-            "                            <a href=\"#\" title=\"链接配置\" onclick=\"hrefShow()\"><span class=\"glyphicon glyphicon glyphicon-retweet\" aria-hidden=\"true\"></span></a>\n" +
+            "                            <a href=\"#\" title=\"链接配置\" onclick=\"hrefShow()\"><span class=\"glyphicon glyphicon-retweet\" aria-hidden=\"true\"></span></a>\n" +
             "                            <a href=\"#\" title=\"删除\"><span class=\"glyphicon glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></a>\n" +
             "                        </td>\n" +
             "                    </tr>";
@@ -369,6 +369,18 @@ function searchData() {
  */
 function showEditModal() {
     $("#editModal").modal("show");   // 显示编辑模态框
+
+}/**
+ * 打开查看模态框
+ */
+function showViewModal() {
+    $("#viewModal").modal("show");   // 显示编辑模态框
+
+}/**
+ * 打开新增模态框
+ */
+function showNewAddModal() {
+    $("#newAddModal").modal("show");   // 显示编辑模态框
 
 }
 
