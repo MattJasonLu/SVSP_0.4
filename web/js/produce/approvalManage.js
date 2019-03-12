@@ -485,8 +485,8 @@ function saveNewApproval() {
     approvalProcess.approvalNodeList = [];   // 节点集合
     var user = getCurrentUserData();  // 获取当前登陆人信息
     if (user != null) {
-        approvalProcess.modifier = getCurrentUserData().name;
-        approvalProcess.creator = getCurrentUserData().name;
+        approvalProcess.modifier = user.name;
+        approvalProcess.creator = user.name;
     } else {
         approvalProcess.modifier = "未登录";
         approvalProcess.creator = "未登录";
@@ -626,7 +626,7 @@ function saveModifyData() {
     approvalProcess.id = parseInt(approvalProcessId);   // 审批流编号
     var user = getCurrentUserData();  // 获取当前登陆人信息
     if (user != null) {
-        approvalProcess.modifier = getCurrentUserData().name;
+        approvalProcess.modifier = user.name;
     } else {
         approvalProcess.modifier = "未登录";
     }
@@ -755,6 +755,12 @@ function saveHref() {
     var approvalProcess = {};
     approvalProcess.id = approvalProcessId;   // 获取审批流模板ID
     approvalProcess.urlList = [];   // 页面链接
+    var user = getCurrentUserData();  // 获取当前登陆人信息
+    if (user != null) {
+        approvalProcess.modifier = user.name;
+    } else {
+        approvalProcess.modifier = "未登录";
+    }
     $.each($("input[name='select1']:checked"), function (index, item) {
         approvalProcess.urlList.push($(this).parent().parent().next().next().text());  // 获取选中的链接并传入集合
     });
