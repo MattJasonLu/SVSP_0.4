@@ -39,4 +39,6 @@ public interface ApprovalManageMapper {
 
     void addApprovalProcessModelUrl(ApprovalProcess approvalProcess);
 
+    ApprovalProcess getOrderIdAndUrlByRoleId(int id);
+
 }

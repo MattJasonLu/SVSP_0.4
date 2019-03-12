@@ -79,4 +79,9 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
         approvalManageMapper.addApprovalProcessModelUrl(approvalProcess);           // 新增当前的链接
     }
 
+    @Override
+    public ApprovalProcess getOrderIdAndUrlByRoleId(int id) {
+        return approvalManageMapper.getOrderIdAndUrlByRoleId(id);
+    }
+
 }
