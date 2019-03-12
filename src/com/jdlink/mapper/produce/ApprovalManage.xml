@@ -96,15 +96,24 @@
     <select id="getNodeByIdAndRoleId" resultMap="ApprovalNodeRM">
         select * from t_approval_node where id=#{0} and role_id=#{1};
     </select>
-    
+
     <!--根据节点编号更新节点状态-->
     <update id="updateApprovalById" parameterType="String">
         update t_approval_node set approval_state={1} where id=#{0};
     </update>
 
+    <update id="updateApprovalProcessById" parameterType="ApprovalProcess">
+        update t_approval_process_model set type=#{type},modify_date=#{modifyDate},modifier=#{modifier} where id=#{id};
+    </update>
+
     <!--获取非空的页面链接数据-->
     <select id="getUrlList" resultType="Organization">
         select * from menu_page where url is not null;
+    </select>
+
+    <!--根据ID获取审批流模板-->
+    <select id="getApprovalProcessModelById" parameterType="int" resultMap="ApprovalProcessRM">
+        select * from t_approval_process_model where id=#{id};
     </select>
 
     <insert id="addApprovalProcess" parameterType="ApprovalProcess">
@@ -115,8 +124,19 @@
 
     <insert id="addApprovalNode" parameterType="ApprovalNode">
         insert into t_approval_node_model (id,approval_process_id,role_id,approval_pid,approval_date,approval_state,approval_advice,user_name)
-         values
-         (#{id},#{approvalProcessId},#{roleId},#{approvalPId},#{approvalDate},#{approvalState},#{approvalAdvice},#{userName})
+        values
+        (#{id},#{approvalProcessId},#{roleId},#{approvalPId},#{approvalDate},#{approvalState},#{approvalAdvice},#{userName})
     </insert>
+
+    <!--根据审批流ID删除流程节点-->
+    <delete id="deleteModelNotesByApprovalProcessId" parameterType="int">
+        delete from t_approval_node_model where approval_process_id=#{id};
+    </delete>
+
+    <!--根据审批流ID删除审批流-->
+    <delete id="deleteModelProcessByApprovalProcessId" parameterType="int">
+        delete from t_approval_process_model where id=#{id};
+    </delete>
+
 
 </mapper>
