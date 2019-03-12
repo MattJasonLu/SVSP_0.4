@@ -35,4 +35,8 @@ public interface ApprovalManageMapper {
 
     void addApprovalProcess(ApprovalProcess approvalProcess);
 
+    void deleteUrlByApprovalProcessId(int id);
+
+    void addApprovalProcessModelUrl(ApprovalProcess approvalProcess);
+
 }
