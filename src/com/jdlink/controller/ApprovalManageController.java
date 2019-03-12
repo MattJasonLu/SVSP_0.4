@@ -187,4 +187,49 @@ public class ApprovalManageController {
         }
         return res.toString();
     }
+
+    /**
+     * 新增审批流模板
+     * @param approvalProcess
+     * @return
+     */
+    @RequestMapping("addApprovalModel")
+    @ResponseBody
+    public String addApprovalModel(@RequestBody ApprovalProcess approvalProcess) {
+        JSONObject res = new JSONObject();
+        try {
+            approvalManageService.addApprovalModel(approvalProcess);  // 修改审批流及节点
+            res.put("status", "success");
+            res.put("message", "新增成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "新增失败！");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 更新审批流模型绑定的url
+     * @param approvalProcess
+     * @return
+     */
+    @RequestMapping("updateApprovalProcessModelUrlById")
+    @ResponseBody
+    public String updateApprovalProcessModelUrlById(@RequestBody ApprovalProcess approvalProcess) {
+        JSONObject res = new JSONObject();
+        try {
+            approvalManageService.updateApprovalProcessModelUrlById(approvalProcess);  // 修改审批流及节点
+            res.put("status", "success");
+            res.put("message", "修改成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "修改失败！");
+        }
+        return res.toString();
+    }
+
+
+
 }

@@ -437,8 +437,118 @@ function showEditModal(e) {
  * 打开新增模态框
  */
 function showNewAddModal() {
-    $("#newAddModal").modal("show");   // 显示编辑模态框
+    $(".oldLine").remove();  // 删除历史数据
+    $.ajax({  // 获取所有角色数据
+        type: "POST",                            // 方法类型
+        url: "listRole",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result.data != undefined || result.status == "success") {
+                var role = $("select[name='role']");
+                $.each(result.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.id);
+                    option.text(item.roleName);
+                    role.append(option);
+                });
+                $("select[name='role']").val("");   // 初始化
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log("服务器错误！");
+        }
+    });
+    approvalProcessId = "";  // 清空审批流编号
+    $("#newAddModal").modal("show");   // 显示新增模态框
+}
 
+/**
+ * 设置审批流ID
+ * @param e
+ */
+function setApprovalId(e) {
+    approvalProcessId = $(e).val();   // 获取并设置审批流ID
+}
+
+/**
+ * 保存新增审批流数据
+ */
+function saveNewApproval() {
+    var approvalProcess = {};
+    approvalProcess.id = parseInt(approvalProcessId);   // 审批流编号
+    approvalProcess.type = $(".type").val();
+    var roleIdList = [];  // 选择的角色集合
+    var idList = [];    // 编号集合：检测是否重复
+    approvalProcess.approvalNodeList = [];   // 节点集合
+    var user = getCurrentUserData();  // 获取当前登陆人信息
+    if (user != null) {
+        approvalProcess.modifier = getCurrentUserData().name;
+        approvalProcess.creator = getCurrentUserData().name;
+    } else {
+        approvalProcess.modifier = "未登录";
+        approvalProcess.creator = "未登录";
+    }
+    $.each($("#add_plus").prevAll().not($("#cloneTr4")), function (index, item) {  // 获取节点数据
+        var approvalNode = {};
+        var id = $(this).find("input[name='id']").val();
+        if(id === ""){
+            alert("编号不能为空！");
+            $(this).find("input[name='id']").focus();  // 获取鼠标焦点
+            return false;
+        }else if(idList.indexOf(id) !== -1){
+            alert("编号不能重复！");
+            $(this).find("input[name='id']").focus();  // 获取鼠标焦点
+            return false;
+        }else{
+            idList.push(id);
+            approvalNode.id = id;
+        }
+        var roleId = $(this).find("select[name='role']").val();
+        if(roleId != null && roleId !== undefined && roleId !== ""){
+            approvalNode.roleId = roleId;
+        }else {
+            alert("角色不能为空！");
+            $(this).find("select[name='role']").focus();  // 获取鼠标焦点
+            return false;
+        }
+        approvalNode.approvalPId = $(this).find("span[name='approvalPId']").text();
+        approvalNode.approvalProcessId = approvalProcessId;   // 外键ID
+        approvalProcess.approvalNodeList.push(approvalNode);
+        if(roleIdList.indexOf(roleId) !== -1){  // 如果存在则提醒
+            alert("角色不能重复！");
+            $(this).find("select[name='role']").val("");
+            $(this).find("select[name='role']").focus();   // 获取鼠标焦点
+            return false;
+        }else {  // 不存在则添加
+            roleIdList.push(roleId);
+        }
+    });
+    console.log("保存数据为：");
+    console.log(approvalProcess);
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "addApprovalModel",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(approvalProcess),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            console.log(result);
+            if (result.data != undefined || result.status == "success") {
+                alert(result.message);
+                window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器错误！");
+        }
+    });
 }
 
 /**
@@ -465,9 +575,15 @@ function addNewLine(item) {
         clonedTr.find("input[name='id']").val(parseInt(id) + 1);  // 设置本行ID
         $(item).parent().parent().prev().find("span[name='approvalPId']").text(parseInt(id) + 1);  // 设置上一行父节点ID
     }else{  // 如果是第一行则ID新增
-        id = new Date().getFullYear() + getFormatNumber(approvalProcessId,3) + "000";
-        clonedTr.find("input[name='id']").val(parseInt(id) + 1);  // 设置本行ID
-        $(item).parent().parent().prev().find("span[name='approvalPId']").text(parseInt(id) + 1);  // 设置上一行父节点ID
+        if(approvalProcessId != ""){
+            id = new Date().getFullYear() + getFormatNumber(approvalProcessId,3) + "000";
+            clonedTr.find("input[name='id']").val(parseInt(id) + 1);  // 设置本行ID
+            $(item).parent().parent().prev().find("span[name='approvalPId']").text(parseInt(id) + 1);  // 设置上一行父节点ID
+        }else {
+            alert("请先设置审批流编号！");
+            $(".id").focus();   // 获取鼠标焦点
+            return false;
+        }
     }
     clonedTr.insertAfter(tr);
     clonedTr.removeAttr("id");
@@ -578,7 +694,8 @@ function saveModifyData() {
 /**
  * 链接模态框
  */
-function hrefShow() {
+function hrefShow(e) {
+    approvalProcessId = $(e).parent().parent().children().eq(1).text();  // 获取审批流ID
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getUrlList",                 // url
@@ -587,8 +704,9 @@ function hrefShow() {
         success: function (result) {
             if (result.data != undefined || result.status == "success") {
                 $('#hrefTBody').empty();  // 删除旧数据
+                console.log(result);
                 $.each(result.data, function (index, item) {
-                    var tr = "<tr >\n" +
+                    var tr = "<tr onclick='setChecked(this)'>\n" +
                         "                                <td class=\"text-center\">\n" +
                         "                                    <label>\n" +
                         "                                        <input name=\"select1\" class=\"checkbox\" type=\"checkbox\" id=\"blankCheckbox1\" value=\"option1\" aria-label=\"...\">\n" +
@@ -597,6 +715,17 @@ function hrefShow() {
                         "                                <td class=\"text-center\">" + item.name + "</td>\n" +
                         "                                <td class=\"text-center\">" + item.url + "</td>\n" +
                         "                            </tr>";
+                    if(parseInt(approvalProcessId) === item.pId){  // 选中
+                        tr = "<tr onclick='setChecked(this)'>\n" +
+                            "                                <td class=\"text-center\">\n" +
+                            "                                    <label>\n" +
+                            "                                        <input name=\"select1\" class=\"checkbox\" type=\"checkbox\" checked='checked' id=\"blankCheckbox1\" value=\"option1\" aria-label=\"...\">\n" +
+                            "                                    </label>\n" +
+                            "                                </td>\n" +
+                            "                                <td class=\"text-center\">" + item.name + "</td>\n" +
+                            "                                <td class=\"text-center\">" + item.url + "</td>\n" +
+                            "                            </tr>";
+                    }
                     $('#hrefTBody').append(tr);
                 });
             } else {
@@ -612,10 +741,46 @@ function hrefShow() {
 }
 
 /**
+ * 设置当前行选中
+ * @param e
+ */
+function setChecked(e) {
+    $(e).children().eq(0).find("input[name='select1']").attr("checked",true);  // 设置选中
+}
+
+/**
  * 保存链接数据
  */
 function saveHref() {
-
+    var approvalProcess = {};
+    approvalProcess.id = approvalProcessId;   // 获取审批流模板ID
+    approvalProcess.urlList = [];   // 页面链接
+    $.each($("input[name='select1']:checked"), function (index, item) {
+        approvalProcess.urlList.push($(this).parent().parent().next().next().text());  // 获取选中的链接并传入集合
+    });
+    console.log("链接数据为：");
+    console.log(approvalProcess);
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "updateApprovalProcessModelUrlById",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(approvalProcess),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            console.log(result);
+            if (result.data != undefined || result.status == "success") {
+                alert(result.message);
+                window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器错误！");
+        }
+    });
 }
 
 /**

@@ -38,7 +38,9 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
         approvalManageMapper.updateApprovalById(id, stateId);
     }
 
-    public List<Organization> getUrlList() { return approvalManageMapper.getUrlList(); }
+    public List<Organization> getUrlList() {
+        return approvalManageMapper.getUrlList();
+    }
 
     @Override
     public ApprovalProcess getApprovalProcessModelById(int id) { return approvalManageMapper.getApprovalProcessModelById(id); }
@@ -59,6 +61,22 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
             }
         }
 
+    }
+
+    @Override
+    public void addApprovalModel(ApprovalProcess approvalProcess) {
+        approvalManageMapper.addApprovalProcess(approvalProcess);
+        if(approvalProcess.getApprovalNodeList() != null && approvalProcess.getApprovalNodeList().size() > 0) {
+            for(ApprovalNode approvalNode : approvalProcess.getApprovalNodeList()) {
+                approvalManageMapper.addApprovalNode(approvalNode);
+            }
+        }
+    }
+
+    @Override
+    public void updateApprovalProcessModelUrlById(ApprovalProcess approvalProcess) {
+        approvalManageMapper.deleteUrlByApprovalProcessId(approvalProcess.getId());   // 删除之前链接
+        approvalManageMapper.addApprovalProcessModelUrl(approvalProcess);           // 新增当前的链接
     }
 
 }
