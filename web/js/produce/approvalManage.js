@@ -1,6 +1,6 @@
 var currentPage = 1;                          //当前页数
 var data = {};
-var wayBillId = "0000000000";
+var approvalProcessId = "";
 
 /**
  * 返回count值
@@ -271,15 +271,14 @@ function setDataList(result) {
             "                                <input name=\"select\" class=\"checkbox\" type=\"checkbox\" id=\"blankCheckbox\" value=\"option1\" aria-label=\"...\">\n" +
             "                            </label>\n" +
             "                        </td>\n" +
-            "                        <td class=\"text-center\">"+item.id+"</td>\n" +
-            "                        <td class=\"text-center\">"+item.type+"</td>\n" +
-            "                        <td class=\"text-center\">"+getDateStr(item.creationDate)+"</td>\n" +
-            "                        <td class=\"text-center\">"+item.creator+"</td>\n" +
+            "                        <td class=\"text-center\">" + item.id + "</td>\n" +
+            "                        <td class=\"text-center\">" + item.type + "</td>\n" +
+            "                        <td class=\"text-center\">" + getDateStr(item.creationDate) + "</td>\n" +
+            "                        <td class=\"text-center\">" + item.creator + "</td>\n" +
             "                        <td class=\"dropdown text-center\">\n" +
-            "                            <a href=\"#\" title=\"查看\" onclick=\"showViewModal()\"><span class=\"glyphicon glyphicon glyphicon-search\" aria-hidden=\"true\"></span></a>\n" +
-            "                            <a href=\"#\" title=\"编辑\" onclick=\"showEditModal()\"><span class=\"glyphicon glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></a>\n" +
-            "                            <a href=\"#\" title=\"链接配置\" onclick=\"hrefShow()\"><span class=\"glyphicon glyphicon-retweet\" aria-hidden=\"true\"></span></a>\n" +
-            "                            <a href=\"#\" title=\"删除\"><span class=\"glyphicon glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></a>\n" +
+            "                            <a href=\"#\" title=\"编辑\" onclick=\"showEditModal(this)\"><span class=\"glyphicon glyphicon glyphicon-pencil\" aria-hidden=\"true\"></span></a>\n" +
+            "                            <a href=\"#\" title=\"链接配置\" onclick=\"hrefShow(this)\"><span class=\"glyphicon glyphicon-retweet\" aria-hidden=\"true\"></span></a>\n" +
+            "                            <a href=\"#\" title=\"删除\" onclick='deleteModelById(this)'><span class=\"glyphicon glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></a>\n" +
             "                        </td>\n" +
             "                    </tr>";
         $('#tBody').append(tr);
@@ -367,16 +366,74 @@ function searchData() {
 /**
  * 打开编辑模态框
  */
-function showEditModal() {
+function showEditModal(e) {
+    $.ajax({  // 获取所有角色数据
+        type: "POST",                            // 方法类型
+        url: "listRole",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result.data != undefined || result.status == "success") {
+                var role = $("select[name='role']");
+                $.each(result.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.id);
+                    option.text(item.roleName);
+                    role.append(option);
+                });
+                $("select[name='role']").val(-1);   // 初始化
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log("服务器错误！");
+        }
+    });
+    approvalProcessId = $(e).parent().parent().children().eq(1).text();  // 获取审批流ID
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getApprovalProcessModelById",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            id: parseInt(approvalProcessId)
+        },
+        dataType: "json",
+        success: function (result) {
+            if (result.data != undefined || result.status == "success") {
+                var data = eval(result.data);
+                $("#edit_type").val(data.type);
+                $(".oldLine").remove();   // 清空历史行
+                var tr = $("#cloneTr1");
+                tr.hide();
+                var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>";
+                $.each(data.approvalNodeList, function (index, item) {
+                    var cloneTr = tr.clone();
+                    cloneTr.show();
+                    cloneTr.children('td').eq(0).find("a").remove();  // 删除旧按钮
+                    cloneTr.children('td').eq(0).append(delBtn);   // 增加减行按钮
+                    cloneTr.find("input[name='id']").val(item.id);
+                    cloneTr.find("select[name='role']").val(item.roleId);
+                    cloneTr.find("span[name='approvalPId']").text(item.approvalPId);
+                    cloneTr.addClass("oldLine");
+                    $("#edit_plus").before(cloneTr);
+                });
+                if($(".oldLine").length > 0){  // 存在行数
+                    tr.hide();  // 隐藏模板行
+                }
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log("服务器错误！");
+        }
+    });
     $("#editModal").modal("show");   // 显示编辑模态框
 
-}/**
- * 打开查看模态框
- */
-function showViewModal() {
-    $("#viewModal").modal("show");   // 显示编辑模态框
+}
 
-}/**
+/**
  * 打开新增模态框
  */
 function showNewAddModal() {
@@ -384,13 +441,17 @@ function showNewAddModal() {
 
 }
 
+/**
+ * 编辑功能加行
+ * @param item
+ */
 function addNewLine(item) {
     // 获取上一行tr
     var tr = $(item).parent().parent().prev();
     // 克隆tr，每次遍历都可以产生新的tr
     var clonedTr = tr.clone();
     $(clonedTr).children('td').eq(0).find('p').hide();
-    clonedTr.attr('class', 'myclass3');
+    clonedTr.attr('class', 'oldLine');
     clonedTr.show();
     // 清空旧数据
     clonedTr.children().find("input").val("");
@@ -398,10 +459,121 @@ function addNewLine(item) {
     var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>";
     clonedTr.children('td').eq(0).find("a").remove();
     clonedTr.children('td').eq(0).append(delBtn);   // 增加减行按钮
+
+    var id = $(item).parent().parent().prev().find("input[name='id']").val();  // 获取上一行ID
+    if(id != null && id !== "") {
+        clonedTr.find("input[name='id']").val(parseInt(id) + 1);  // 设置本行ID
+        $(item).parent().parent().prev().find("span[name='approvalPId']").text(parseInt(id) + 1);  // 设置上一行父节点ID
+    }else{  // 如果是第一行则ID新增
+        id = new Date().getFullYear() + getFormatNumber(approvalProcessId,3) + "000";
+        clonedTr.find("input[name='id']").val(parseInt(id) + 1);  // 设置本行ID
+        $(item).parent().parent().prev().find("span[name='approvalPId']").text(parseInt(id) + 1);  // 设置上一行父节点ID
+    }
     clonedTr.insertAfter(tr);
     clonedTr.removeAttr("id");
+
 }
 
+/**
+ * 编辑功能减行功能
+ * @param e
+ */
+function delLine(e) {
+    $(e).parent().parent().prev().find("span[name='approvalPId']").text("");  // 清空上一行父节点ID
+    $(e).parent().parent().remove();  // 删除行
+}
+
+/**
+ * 改变子节点父ID
+ * @param e
+ */
+function changeApprovalPId(e) {
+    // 获取下一级ID并设置
+    var id = $(e).val();
+    $.each($(e).parent().parent().prevAll().not($("#cloneTr1")),function(index, item){
+       if(id === $(this).find("input[name='id']").val()) {
+           alert("编号重复！");
+       }
+    });
+    $(e).parent().parent().prev().find("span[name='approvalPId']").text(id);
+}
+
+/**
+ * 保存修改数据
+ */
+function saveModifyData() {
+    var approvalProcess = {}; // 初始化对象
+    var roleIdList = [];  // 选择的角色集合
+    var idList = [];    // 编号集合：检测是否重复
+    approvalProcess.approvalNodeList = [];   // 节点集合
+    approvalProcess.type = $("#edit_type").val();  // 审批流类型
+    approvalProcess.id = parseInt(approvalProcessId);   // 审批流编号
+    var user = getCurrentUserData();  // 获取当前登陆人信息
+    if (user != null) {
+        approvalProcess.modifier = getCurrentUserData().name;
+    } else {
+        approvalProcess.modifier = "未登录";
+    }
+    $.each($("#edit_plus").prevAll().not($("#cloneTr1")), function (index, item) {  // 获取节点数据
+        var approvalNode = {};
+        var id = $(this).find("input[name='id']").val();
+        if(id === ""){
+            alert("编号不能为空！");
+            $(this).find("input[name='id']").focus();  // 获取鼠标焦点
+            return false;
+        }else if(idList.indexOf(id) !== -1){
+            alert("编号不能重复！");
+            $(this).find("input[name='id']").focus();  // 获取鼠标焦点
+            return false;
+        }else{
+            idList.push(id);
+            approvalNode.id = id;
+        }
+        var roleId = $(this).find("select[name='role']").val();
+        if(roleId != null && roleId !== undefined && roleId !== ""){
+            approvalNode.roleId = roleId;
+        }else {
+            alert("角色不能为空！");
+            $(this).find("select[name='role']").focus();  // 获取鼠标焦点
+            return false;
+        }
+        approvalNode.approvalPId = $(this).find("span[name='approvalPId']").text();
+        approvalNode.approvalProcessId = approvalProcessId;   // 外键ID
+        approvalProcess.approvalNodeList.push(approvalNode);
+        console.log(roleIdList);
+        if(roleIdList.indexOf(roleId) !== -1){  // 如果存在则提醒
+             alert("角色不能重复！");
+            $(this).find("select[name='role']").val("");
+            $(this).find("select[name='role']").focus();   // 获取鼠标焦点
+            return false;
+        }else {  // 不存在则添加
+            roleIdList.push(roleId);
+        }
+    });
+    console.log("保存数据为：");
+    console.log(approvalProcess);
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "updateApprovalProcessModelById",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(approvalProcess),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            console.log(result);
+            if (result.data != undefined || result.status == "success") {
+                alert(result.message);
+                window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器错误！");
+        }
+    });
+}
 
 /**
  * 链接模态框
@@ -422,8 +594,8 @@ function hrefShow() {
                         "                                        <input name=\"select1\" class=\"checkbox\" type=\"checkbox\" id=\"blankCheckbox1\" value=\"option1\" aria-label=\"...\">\n" +
                         "                                    </label>\n" +
                         "                                </td>\n" +
-                        "                                <td class=\"text-center\">"+item.name+"</td>\n" +
-                        "                                <td class=\"text-center\">"+item.url+"</td>\n" +
+                        "                                <td class=\"text-center\">" + item.name + "</td>\n" +
+                        "                                <td class=\"text-center\">" + item.url + "</td>\n" +
                         "                            </tr>";
                     $('#hrefTBody').append(tr);
                 });
@@ -437,4 +609,42 @@ function hrefShow() {
         }
     });
     $("#hrefModal").modal('show');
+}
+
+/**
+ * 保存链接数据
+ */
+function saveHref() {
+
+}
+
+/**
+ * 删除审批流
+ * @param e
+ */
+function deleteModelById(e) {
+    if (confirm("确认删除？")) {
+        var id = $(e).parent().parent().children().eq(1).text();  // 获取审批流ID
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "deleteApprovalProcessModelById",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                id: parseInt(id)
+            },
+            dataType: "json",
+            success: function (result) {
+                if (result.data != undefined || result.status == "success") {
+                    alert("删除成功！");
+                    window.location.reload();  // 刷新页面
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                alert("服务器错误！");
+            }
+        });
+    }
+
 }

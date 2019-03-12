@@ -40,6 +40,25 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
 
     public List<Organization> getUrlList() { return approvalManageMapper.getUrlList(); }
 
+    @Override
+    public ApprovalProcess getApprovalProcessModelById(int id) { return approvalManageMapper.getApprovalProcessModelById(id); }
 
+    @Override
+    public void deleteModelById(int id) {
+        approvalManageMapper.deleteModelNotesByApprovalProcessId(id);   // 删除节点
+        approvalManageMapper.deleteModelProcessByApprovalProcessId(id);   // 删除流
+    }
+
+    @Override
+    public void updateModelProcessById(ApprovalProcess approvalProcess) {
+        approvalManageMapper.deleteModelNotesByApprovalProcessId(approvalProcess.getId());   // 删除节点
+        approvalManageMapper.updateApprovalProcessById(approvalProcess);   // 更新审批流外层数据
+        if(approvalProcess.getApprovalNodeList() != null && approvalProcess.getApprovalNodeList().size() > 0) {
+            for(ApprovalNode approvalNode : approvalProcess.getApprovalNodeList()) {
+                 approvalManageMapper.addApprovalNode(approvalNode);   // 新增节点
+            }
+        }
+
+    }
 
 }

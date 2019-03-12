@@ -15,13 +15,22 @@ public interface ApprovalManageMapper {
 
     int searchTotal(ApprovalProcess approvalProcess);
 
-
     ApprovalProcess getApprovalProcessByOrderId(String orderId);
 
     ApprovalNode getNodeByIdAndRoleId(int id,String roleId);
 
     void updateApprovalById(String id,int stateId);
 
+    void updateApprovalProcessById(ApprovalProcess approvalProcess);
+
     List<Organization> getUrlList();
+
+    ApprovalProcess getApprovalProcessModelById(int id);
+
+    void deleteModelNotesByApprovalProcessId(int id);
+
+    void deleteModelProcessByApprovalProcessId(int id);
+
+    void addApprovalNode(ApprovalNode approvalNode);
 
 }

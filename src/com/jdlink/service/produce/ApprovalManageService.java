@@ -21,4 +21,11 @@ public interface ApprovalManageService {
 
     List<Organization> getUrlList();
 
+    ApprovalProcess getApprovalProcessModelById(int id);
+
+    void deleteModelById(int id);
+
+    void updateModelProcessById(ApprovalProcess approvalProcess);
+
+
 }
