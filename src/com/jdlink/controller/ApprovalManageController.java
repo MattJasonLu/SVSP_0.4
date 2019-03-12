@@ -215,4 +215,27 @@ public class ApprovalManageController {
         }
         return res.toString();
     }
+
+    /**
+     * 新增审批流模板
+     * @param approvalProcess
+     * @return
+     */
+    @RequestMapping("addApprovalModel")
+    @ResponseBody
+    public String addApprovalModel(@RequestBody ApprovalProcess approvalProcess) {
+        JSONObject res = new JSONObject();
+        try {
+            approvalManageService.addApprovalModel(approvalProcess);  // 修改审批流及节点
+            res.put("status", "success");
+            res.put("message", "新增成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "新增失败！");
+        }
+        return res.toString();
+    }
+
+
 }

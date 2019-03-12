@@ -219,7 +219,7 @@
                     <h4 class="modal-title" id="newAdd">新增</h4>
                 </div>
                 <div class="modal-body">
-                    <p style="display: inline"><b>编号：</b><input class="number" title=""></p>
+                    <p style="display: inline" class=""><b>审批流编号：</b><input class="id" type="number" title="" onkeyup="setApprovalId(this)"></p>
                     <p style="display: inline" class="pull-right"><b>审批流类型：</b><input class="type" title=""></p>
                     <table class="table table-bordered">
                         <thead>
@@ -230,12 +230,12 @@
                         </tr>
                         </thead>
                         <tbody >
-                        <tr id="cloneTr4" class="myclass3" >
+                        <tr id="cloneTr4" class="myclass3" hidden>
                             <td><input title="" class="form-control" name="id" onkeyup="changeApprovalPId(this)"></td>
-                            <td><select title="" class="form-control" name="roleId" ></select></td>
+                            <td><select title="" class="form-control" name="role" ></select></td>
                             <td><span title="" class="form-control" name="approvalPId" ></span></td>
                         </tr>
-                        <tr id="plus2">
+                        <tr id="add_plus">
                             <td>
                                 <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
                             </td>
@@ -246,7 +246,7 @@
                     </table>
                 </div>
                 <div class="modal-footer center">
-                    <button type="button" class="btn btn-success">保存</button>
+                    <button type="button" class="btn btn-success" onclick="saveNewApproval()">保存</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
                 </div>
             </div>
