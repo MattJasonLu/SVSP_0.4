@@ -966,20 +966,21 @@ function getFormatNumber(str, number) {
 
 /*提交方法
 * 订单编号orderId
-* 角色编号roleId
+*网页地址
+* 创建人
 * */
-function publicSubmit(orderId, roleId) {
+function publicSubmit(orderId, url,userName,roleId) {
     $.ajax({
         type: "POST",                       // 方法类型
         url: "publicSubmit",              // url
-        data: {"orderId": orderId, "roleId": roleId},
+        data: {"url": url, "userName": userName,"orderId":orderId,"roleId":roleId},
         cache: false,
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 alert(result.message);
-                console.log(data);
+                // console.log(data);
             } else {
                 console.log(result.message);
             }
@@ -988,4 +989,9 @@ function publicSubmit(orderId, roleId) {
             console.log(result);
         }
     });
+}
+
+/*获取当前url*/
+function getUrl() {
+    return window.location.pathname.replace("/","");
 }

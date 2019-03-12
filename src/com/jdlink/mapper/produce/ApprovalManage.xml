@@ -104,8 +104,8 @@
     </select>
 
     <!--根据节点编号更新节点状态-->
-    <update id="updateApprovalById" parameterType="String">
-        update t_approval_node set approval_state={1} where id=#{0};
+    <update id="updateApprovalById">
+        update t_approval_node set approval_state=#{1} where id=#{0};
     </update>
 
     <update id="updateApprovalProcessById" parameterType="ApprovalProcess">
@@ -158,7 +158,55 @@
         delete from t_approval_process_model where id=#{id};
     </delete>
 
+    <!--根据url获取相应审批流对象-->
+   <select id="getModelProcessByUrl" parameterType="String" resultMap="ApprovalProcessRM">
+       select * from t_approval_process_model where id=(select approval_process_id from t_approval_url where url=#{url});
+   </select>
 
+    <!--添加审批流-->
+    <insert id="addApprovalFlow" parameterType="ApprovalProcess">
+        insert into t_approval_process (order_id, url, creation_date, modify_date, creator, modifier, type) values
+        (#{orderId},#{url},NOW(),NOW(),#{creator},#{modifier},#{type});
+    </insert>
+
+    <!--根据创建时间拿出最新的审批流对象-->
+    <resultMap id="ApprovalProcessFlow" type="ApprovalProcess">
+        <id column="id" property="id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="url" column="url"/>
+        <result property="creationDate" column="creation_date"/>
+        <result property="modifyDate" column="modify_date"/>
+        <collection property="approvalNodeList" select="getApprovalNodeList" column="id"
+                    ofType="com.jdlink.domain.Approval.ApprovalProcess"
+                    javaType="ArrayList"/>
+    </resultMap>
+    <resultMap id="ApprovalNodeListRM" type="ApprovalNode">
+        <id column="id" property="id"/>
+        <result property="approvalProcessId" column="approval_process_id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="approvalPId" column="approval_pid"/>
+        <result property="approvalDate" column="approval_date"/>
+        <result property="approvalState" column="approval_state"/>
+        <result property="approvalAdvice" column="approval_advice"/>
+        <result property="userName" column="user_name"/>
+    </resultMap>
+    <select id="getApprovalNodeList" resultMap="ApprovalNodeListRM">
+         select  * from t_approval_node where approval_process_id = #{id};
+    </select>
+    <select id="getNewestApprovalProcessByCreateTime" resultMap="ApprovalProcessFlow">
+      select * from t_approval_process order by creation_date desc limit 0,1;
+    </select>
+
+    <!--更新审批流节点-->
+    <insert id="updateApprovalNode" parameterType="ApprovalNode">
+        insert into t_approval_node (id, approval_process_id, role_id, approval_pid, approval_date, approval_state, approval_advice, user_name) values
+        (#{id},#{approvalProcessId},#{roleId},#{approvalPId},NOW(),3,#{approvalAdvice},#{userName});
+    </insert>
+
+    <!--寻找发起节点(审批父节点为空)-->
+    <select id="getApprovalNodeByNullApprovalPId" parameterType="Integer" resultMap="ApprovalNodeListRM">
+select * from t_approval_node where  role_id=#{1}  and approval_process_id=#{0};
+    </select>
 
 
 </mapper>

@@ -39,4 +39,14 @@ public interface ApprovalManageMapper {
 
     void addApprovalProcessModelUrl(ApprovalProcess approvalProcess);
 
+    ApprovalProcess getModelProcessByUrl(String url);
+
+    void addApprovalFlow(ApprovalProcess approvalProcess);
+
+    ApprovalProcess getNewestApprovalProcessByCreateTime();
+
+    void updateApprovalNode(ApprovalNode approvalNode);
+
+    ApprovalNode getApprovalNodeByNullApprovalPId(int approvalProcessId,int roleId);
+
 }

@@ -97,25 +97,15 @@ public class ApprovalManageController {
 
     /*提交公共方法*/
     @RequestMapping("publicSubmit")
-    public String publicSubmit(String orderId,String roleId) {
+    @ResponseBody
+    public String publicSubmit(String orderId,String userName,String url,String roleId) {
 
         JSONObject res = new JSONObject();
 
         try {
-            //1根据订单号找出审批流对象,再找出节点列表
-            ApprovalProcess approvalProcess = approvalManageService.getApprovalProcessByOrderId(orderId);
-            if (approvalProcess != null) {
-                //在根据角色编号和审批流主键找出相应的节点
-                ApprovalNode approvalNode = approvalManageService.getNodeByIdAndRoleId(approvalProcess.getId(), roleId);
-                //更新审批节点新父节点状态为审批中
-                approvalManageService.updateApprovalById(approvalNode.getApprovalPId(), 2);
-                //更新本节点新父节点状态为已提交
-                approvalManageService.updateApprovalById(approvalNode.getId(), 5);
-                res.put("status", "success");
-                res.put("message", "提交成功");
-            }
-
-
+        approvalManageService.publicSubmit(orderId, userName, url,roleId);
+            res.put("status", "success");
+            res.put("message", "提交成功");
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");

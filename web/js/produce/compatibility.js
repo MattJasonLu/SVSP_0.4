@@ -818,30 +818,43 @@ function cancelPw(item) {
  * 提交方法
  */
 function submit(item) {
-    var compatibilityId = $(item).parent().parent().children('td').eq(2).text();
-    if (confirm("确认提交?")) {
-        $.ajax({
-            type: "POST",
-            url: "submitPw",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data: {'compatibilityId': compatibilityId},
-            //contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                if (result != undefined && result.status == "success") {
-                    alert(result.message);
-                    window.location.reload();
-                }
-                else {
-                    alert(result.message);
-                }
-            },
-            error: function (result) {
-                alert("服务器异常！")
-            }
 
-        });
-    }
+  var state= $(item).parent().parent().children('td').eq(13).text();//订单号
+
+        if (confirm("确认提交?")) {
+            var compatibilityId = $(item).parent().parent().children('td').eq(2).text();//订单号
+            //用户角色ID
+            var user=getCurrentUserData();
+            console.log(user);
+            var url=getUrl();
+            publicSubmit(compatibilityId,url,user.name,user.role.id)
+            $.ajax({
+                type: "POST",
+                url: "submitPw",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: {'compatibilityId': compatibilityId},
+                //contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result != undefined && result.status == "success") {
+                        alert(result.message);
+                        window.location.reload();
+                    }
+                    else {
+                        alert(result.message);
+                    }
+                },
+                error: function (result) {
+                    alert("服务器异常！")
+                }
+
+            });
+        }
+    // if(state=='待提交'){
+    // }
+    // else {
+    //     alert('仅待提交状态时提交')
+    // }
 
 }
 
