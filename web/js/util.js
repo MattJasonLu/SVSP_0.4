@@ -967,14 +967,13 @@ function getFormatNumber(str, number) {
 
 /*提交方法
 * 订单编号orderId
-*网页地址
-* 创建人
+* 角色编号roleId
 * */
 function publicSubmit(orderId, url,userName,roleId) {
     $.ajax({
         type: "POST",                       // 方法类型
         url: "publicSubmit",              // url
-        data: {"url": url, "userName": userName, "orderId": orderId, "roleId": roleId},
+        data: {"url": url, "userName": userName,"orderId":orderId,"roleId":roleId},
         cache: false,
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
@@ -990,41 +989,8 @@ function publicSubmit(orderId, url,userName,roleId) {
             console.log(result);
         }
     });
-
-    /**
-     * 获取当前登陆人代办事项
-     */
-    function getCurrentRoleToDoThings() {
-        var user = getCurrentUserData();  // 获取当前登陆用户信息
-        var data = {};
-        if (user != null) {
-            var roleId = user.role.id;  // 获取当前角色ID
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "getOrderIdAndUrlByRoleId",                  // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: {
-                    id: roleId
-                },
-                dataType: "json",
-                success: function (result) {
-                    if (result != null && result.status === "success") {
-                        data = eval(result.data);
-                        console.log("待办事项");
-                        console.log(data);
-                    }
-                },
-                error: function (result) {
-                    console.log(result.message);
-                }
-            });
-            return data;
-        } else {  // 如果未获取到数据需要重新登陆
-            window.location.href = "admin.html";
-        }
-
-    }
 }
+
 /*获取当前url*/
 function getUrl() {
     return window.location.pathname.replace("/","");
