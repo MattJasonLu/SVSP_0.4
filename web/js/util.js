@@ -956,10 +956,43 @@ function publicApproval(orderId, roleId) {
 function getFormatNumber(str, number) {
     if (str.length > number) {  // 超过位数截取前number位
         str = str.substring(0, number);
-    } else if(str.length < number){  // 不足位数用0补足
+    } else if (str.length < number) {  // 不足位数用0补足
         for (var i = 0; i <= number - str.length; i++) {  // 获取需要填充的位数
             str = "0" + str;
         }
     }
     return str;
+}
+
+/**
+ * 获取当前登陆人代办事项
+ */
+function getCurrentRoleToDoThings() {
+    var user = getCurrentUserData();  // 获取当前登陆用户信息
+    var data = {};
+    if (user != null) {
+        var roleId = user.role.id;  // 获取当前角色ID
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getOrderIdAndUrlByRoleId",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data:{
+                id: roleId
+            },
+            dataType: "json",
+            success: function (result) {
+                if (result != null && result.status === "success") {
+                    data = eval(result.data);
+                    console.log("待办事项");
+                    console.log(data);
+                }
+            },
+            error: function (result) {
+                console.log(result.message);
+            }
+        });
+        return data;
+    } else {  // 如果未获取到数据需要重新登陆
+        window.location.href = "admin.html";
+    }
 }

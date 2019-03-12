@@ -92,7 +92,6 @@
         </where>
     </select>
 
-
     <!--根据点单号查询审批流对象-->
     <select id="getApprovalProcessByOrderId" parameterType="String" resultMap="ApprovalProcessRM">
         select * from t_approval_process where order_id=#{orderId};
@@ -125,6 +124,12 @@
     <!--根据ID获取审批流模板-->
     <select id="getApprovalProcessModelById" parameterType="int" resultMap="ApprovalProcessRM">
         select * from t_approval_process_model where id=#{id};
+    </select>
+
+    <!--根据角色ID获取获取审批中的审批流数据-->
+    <select id="getOrderIdAndUrlByRoleId" parameterType="int" resultMap="ApprovalProcessRM">
+       select * from t_approval_process where id in
+       (select approval_process_id from t_approval_node where role_id=#{id} and approval_state=2);
     </select>
 
     <insert id="addApprovalProcess" parameterType="ApprovalProcess">

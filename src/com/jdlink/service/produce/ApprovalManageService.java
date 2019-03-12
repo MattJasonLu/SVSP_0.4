@@ -29,4 +29,6 @@ public interface ApprovalManageService {
     void addApprovalModel(ApprovalProcess approvalProcess);
 
     void updateApprovalProcessModelUrlById(ApprovalProcess approvalProcess);
+
+    ApprovalProcess getOrderIdAndUrlByRoleId(int id);
 }
