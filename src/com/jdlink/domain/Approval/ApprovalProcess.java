@@ -30,6 +30,10 @@ public class ApprovalProcess {
      */
     private List<ApprovalNode> approvalNodeList;
     /**
+     * 审批流模板对应页面链接
+     */
+    private List<String> urlList;
+    /**
      * 创建日期
      */
     private Date creationDate;
@@ -53,6 +57,14 @@ public class ApprovalProcess {
      * 分页
      */
     private Page page;
+
+    public List<String> getUrlList() {
+        return urlList;
+    }
+
+    public void setUrlList(List<String> urlList) {
+        this.urlList = urlList;
+    }
 
     public String getKeywords() {
         return keywords;

@@ -25,6 +25,12 @@
         <result property="userName" column="user_name"/>
     </resultMap>
 
+    <resultMap id="OrganizationRM" type="Organization" autoMapping="true">
+        <id column="id" property="id"/>
+        <result property="pId" column="approval_process_id"/>
+    </resultMap>
+
+
     <!--根据审批流ID获取审批流节点数据-->
     <select id="getItems" parameterType="int" resultMap="ApprovalNodeRM">
         select  * from t_approval_node_model where approval_process_id = #{id};
@@ -106,9 +112,14 @@
         update t_approval_process_model set type=#{type},modify_date=#{modifyDate},modifier=#{modifier} where id=#{id};
     </update>
 
-    <!--获取非空的页面链接数据-->
-    <select id="getUrlList" resultType="Organization">
-        select * from menu_page where url is not null;
+    <!--根据审批流ID删除对应url-->
+    <update id="deleteUrlByApprovalProcessId" parameterType="int">
+        update t_approval_url set url=null where approval_process_id=#{id};
+    </update>
+
+    <!--获取非空的审批页面链接数据-->
+    <select id="getUrlList" resultMap="OrganizationRM">
+        select * from t_approval_url where url is not null;
     </select>
 
     <!--根据ID获取审批流模板-->
@@ -128,6 +139,15 @@
         (#{id},#{approvalProcessId},#{roleId},#{approvalPId},#{approvalDate},#{approvalState},#{approvalAdvice},#{userName})
     </insert>
 
+    <!--新增审批流模板绑定页面链接-->
+    <insert id="addApprovalProcessModelUrl" parameterType="ApprovalProcess">
+        <if test="urlList != null and urlList.size() > 0">
+            <foreach collection="urlList" index="index" item="item">
+                update t_approval_url set approval_process_id=#{id},modifier=#{modifier},modify_date=NOW() where url=#{item};
+            </foreach>
+        </if>
+    </insert>
+
     <!--根据审批流ID删除流程节点-->
     <delete id="deleteModelNotesByApprovalProcessId" parameterType="int">
         delete from t_approval_node_model where approval_process_id=#{id};
@@ -137,6 +157,8 @@
     <delete id="deleteModelProcessByApprovalProcessId" parameterType="int">
         delete from t_approval_process_model where id=#{id};
     </delete>
+
+
 
 
 </mapper>

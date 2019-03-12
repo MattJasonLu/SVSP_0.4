@@ -694,7 +694,8 @@ function saveModifyData() {
 /**
  * 链接模态框
  */
-function hrefShow() {
+function hrefShow(e) {
+    approvalProcessId = $(e).parent().parent().children().eq(1).text();  // 获取审批流ID
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getUrlList",                 // url
@@ -703,8 +704,9 @@ function hrefShow() {
         success: function (result) {
             if (result.data != undefined || result.status == "success") {
                 $('#hrefTBody').empty();  // 删除旧数据
+                console.log(result);
                 $.each(result.data, function (index, item) {
-                    var tr = "<tr >\n" +
+                    var tr = "<tr onclick='setChecked(this)'>\n" +
                         "                                <td class=\"text-center\">\n" +
                         "                                    <label>\n" +
                         "                                        <input name=\"select1\" class=\"checkbox\" type=\"checkbox\" id=\"blankCheckbox1\" value=\"option1\" aria-label=\"...\">\n" +
@@ -713,6 +715,17 @@ function hrefShow() {
                         "                                <td class=\"text-center\">" + item.name + "</td>\n" +
                         "                                <td class=\"text-center\">" + item.url + "</td>\n" +
                         "                            </tr>";
+                    if(parseInt(approvalProcessId) === item.pId){  // 选中
+                        tr = "<tr onclick='setChecked(this)'>\n" +
+                            "                                <td class=\"text-center\">\n" +
+                            "                                    <label>\n" +
+                            "                                        <input name=\"select1\" class=\"checkbox\" type=\"checkbox\" checked='checked' id=\"blankCheckbox1\" value=\"option1\" aria-label=\"...\">\n" +
+                            "                                    </label>\n" +
+                            "                                </td>\n" +
+                            "                                <td class=\"text-center\">" + item.name + "</td>\n" +
+                            "                                <td class=\"text-center\">" + item.url + "</td>\n" +
+                            "                            </tr>";
+                    }
                     $('#hrefTBody').append(tr);
                 });
             } else {
@@ -728,10 +741,46 @@ function hrefShow() {
 }
 
 /**
+ * 设置当前行选中
+ * @param e
+ */
+function setChecked(e) {
+    $(e).children().eq(0).find("input[name='select1']").attr("checked",true);  // 设置选中
+}
+
+/**
  * 保存链接数据
  */
 function saveHref() {
-
+    var approvalProcess = {};
+    approvalProcess.id = approvalProcessId;   // 获取审批流模板ID
+    approvalProcess.urlList = [];   // 页面链接
+    $.each($("input[name='select1']:checked"), function (index, item) {
+        approvalProcess.urlList.push($(this).parent().parent().next().next().text());  // 获取选中的链接并传入集合
+    });
+    console.log("链接数据为：");
+    console.log(approvalProcess);
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "updateApprovalProcessModelUrlById",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(approvalProcess),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            console.log(result);
+            if (result.data != undefined || result.status == "success") {
+                alert(result.message);
+                window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器错误！");
+        }
+    });
 }
 
 /**
