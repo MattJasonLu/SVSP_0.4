@@ -12,7 +12,6 @@ public interface ApprovalManageService {
 
     int searchTotal(ApprovalProcess approvalProcess);
 
-
     ApprovalProcess getApprovalProcessByOrderId(String orderId);
 
     ApprovalNode getNodeByIdAndRoleId(int id,String roleId);
@@ -27,5 +26,5 @@ public interface ApprovalManageService {
 
     void updateModelProcessById(ApprovalProcess approvalProcess);
 
-
+    void addApprovalModel(ApprovalProcess approvalProcess);
 }

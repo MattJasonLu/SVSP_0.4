@@ -61,4 +61,14 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
 
     }
 
+    @Override
+    public void addApprovalModel(ApprovalProcess approvalProcess) {
+        approvalManageMapper.addApprovalProcess(approvalProcess);
+        if(approvalProcess.getApprovalNodeList() != null && approvalProcess.getApprovalNodeList().size() > 0) {
+            for(ApprovalNode approvalNode : approvalProcess.getApprovalNodeList()) {
+                approvalManageMapper.addApprovalNode(approvalNode);
+            }
+        }
+    }
+
 }

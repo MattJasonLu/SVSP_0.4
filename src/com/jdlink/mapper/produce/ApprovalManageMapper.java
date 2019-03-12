@@ -33,4 +33,6 @@ public interface ApprovalManageMapper {
 
     void addApprovalNode(ApprovalNode approvalNode);
 
+    void addApprovalProcess(ApprovalProcess approvalProcess);
+
 }

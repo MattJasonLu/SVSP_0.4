@@ -117,9 +117,9 @@
     </select>
 
     <insert id="addApprovalProcess" parameterType="ApprovalProcess">
-        insert into t_approval_process_model (type, creation_date, modify_date, creator, modifier)
+        insert into t_approval_process_model (id,type, creation_date, modify_date, creator, modifier)
         values
-        (#{type},NOW(),NOW(),#{type},#{creator},#{modifier});
+        (#{id},#{type},NOW(),NOW(),#{creator},#{modifier});
     </insert>
 
     <insert id="addApprovalNode" parameterType="ApprovalNode">
