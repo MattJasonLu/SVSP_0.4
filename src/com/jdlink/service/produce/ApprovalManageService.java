@@ -41,4 +41,6 @@ public interface ApprovalManageService {
     void updateApprovalNode(ApprovalNode approvalNode);
 
     ApprovalNode getApprovalNodeByNullApprovalPId(int approvalProcessId,int roleId);
+
+    ApprovalProcess getOrderIdAndUrlByRoleId(int id);
 }
