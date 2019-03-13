@@ -49,6 +49,8 @@ public interface ApprovalManageMapper {
 
     ApprovalNode getApprovalNodeByNullApprovalPId(int approvalProcessId,int roleId);
 
-    ApprovalProcess getOrderIdAndUrlByRoleId(int id);
+    List<ApprovalProcess> getOrderIdAndUrlByRoleId(ApprovalProcess approvalProcess);
+
+    int getOrderIdAndUrlByRoleIdCount(ApprovalProcess approvalProcess);
 
 }
