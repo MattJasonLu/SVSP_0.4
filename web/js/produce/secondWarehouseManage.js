@@ -1000,6 +1000,18 @@ function setInvalid(e) {    //已作废
     }
 }
 
+/**
+ * 审批
+ * @param item
+ */
+function approval() {
+    $("#approval2").modal('show')
+}
+
+/**
+ * 提交
+ * @param e
+ */
 function setSubmit(e) {
     var r = confirm("确认提交该入库单吗？");
     if (r) {

@@ -670,6 +670,12 @@ function setInvalid(e) {    //已作废
 }
 
 /**
+ * 审批
+ */
+function approval() {
+    $("#approval2").modal('show')
+}
+/**
  * 提交转移联单
  */
 function setSubmit(e) {    //已提交

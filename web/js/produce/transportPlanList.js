@@ -563,32 +563,33 @@ function setSubmit(e) {    //已提交
  * 审批
  */
 function setExamined(e) {    //已作废
-    var r = confirm("确认审批该运输计划单吗？");
-    if (r) {
-        var id = getIdByMenu(e);
-        $.ajax({
-            type: "POST",
-            url: "setTransportPlanExamined",
-            async: false,
-            dataType: "json",
-            data: {
-                id: id
-            },
-            success: function (result) {
-                if (result != undefined && result.status == "success") {
-                    console.log(result);
-                    alert(result.message);
-                    window.location.reload();
-                } else {
-                    alert(result.message);
-                }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常");
-            }
-        });
-    }
+    // var r = confirm("确认审批该运输计划单吗？");
+    // if (r) {
+    //     var id = getIdByMenu(e);
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "setTransportPlanExamined",
+    //         async: false,
+    //         dataType: "json",
+    //         data: {
+    //             id: id
+    //         },
+    //         success: function (result) {
+    //             if (result != undefined && result.status == "success") {
+    //                 console.log(result);
+    //                 alert(result.message);
+    //                 window.location.reload();
+    //             } else {
+    //                 alert(result.message);
+    //             }
+    //         },
+    //         error: function (result) {
+    //             console.log(result);
+    //             alert("服务器异常");
+    //         }
+    //     });
+    // }
+    $("#approval2").modal('show')
 }
 
 /**

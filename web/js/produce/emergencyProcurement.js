@@ -1134,6 +1134,13 @@ function cancel(item) {
 
 }
 
+/**
+ * 审批
+ * @param item
+ */
+function approval() {
+    $("#approval2").modal('show')
+}
 //提交
 function submit(item) {
     if(confirm("确定提交?")) {

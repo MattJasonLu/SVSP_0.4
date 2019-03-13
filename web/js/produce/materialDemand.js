@@ -729,34 +729,34 @@ function selected2(item) {
 * 审批*/
 function approvalMa(item) {
 
+    //
+    // $.ajax({
+    //     type: "POST",
+    //     url: "getMaterialRequireByMaterialRequireId",                  // url
+    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     dataType: "json",
+    //     data: {'materialRequireId': $(item).parent().parent().children('td').eq(2).html()},
+    //     //contentType: "application/json; charset=utf-8",
+    //     success: function (result) {
+    //         if (result != undefined && result.status == "success") {
+    //             console.log(result);
+    //             //赋值配伍单号
+    //             $("#remarks").val(result.data.opinion);
+    //         }
+    //         else {
+    //             alert(result.message);
+    //         }
+    //     },
+    //     error: function (result) {
+    //         alert("服务器异常！")
+    //     }
+    //
+    // });
+    //
+    // $('#materialRequireId').text($(item).parent().parent().children('td').eq(2).html())
+    //
 
-    $.ajax({
-        type: "POST",
-        url: "getMaterialRequireByMaterialRequireId",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        data: {'materialRequireId': $(item).parent().parent().children('td').eq(2).html()},
-        //contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            if (result != undefined && result.status == "success") {
-                console.log(result);
-                //赋值配伍单号
-                $("#remarks").val(result.data.opinion);
-            }
-            else {
-                alert(result.message);
-            }
-        },
-        error: function (result) {
-            alert("服务器异常！")
-        }
-
-    });
-
-    $('#materialRequireId').text($(item).parent().parent().children('td').eq(2).html())
-
-
-    $('#contractInfoForm2').modal('show');
+    $('#approval2').modal('show');
 
 
 }

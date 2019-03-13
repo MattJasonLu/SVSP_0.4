@@ -872,34 +872,34 @@ function submit(item) {
  * 审批方法
  */
 function approval(item) {
-    var compatibilityId = $(item).parent().parent().children('td').eq(2).text();
+    // var compatibilityId = $(item).parent().parent().children('td').eq(2).text();
+    //
+    // $.ajax({
+    //     type: "POST",
+    //     url: "getByCompatibilityId",                  // url
+    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     dataType: "json",
+    //     data: {'compatibilityId': compatibilityId},
+    //     //contentType: "application/json; charset=utf-8",
+    //     success: function (result) {
+    //         if (result != undefined && result.status == "success") {
+    //             console.log(result);
+    //             //赋值配伍单号
+    //             $("#remarks").val(result.data.approvalContent);
+    //             $('#compatibilityId').text(result.data.compatibilityId)
+    //         }
+    //         else {
+    //             alert(result.message);
+    //         }
+    //     },
+    //     error: function (result) {
+    //         alert("服务器异常！")
+    //     }
+    //
+    // });
 
-    $.ajax({
-        type: "POST",
-        url: "getByCompatibilityId",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        data: {'compatibilityId': compatibilityId},
-        //contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            if (result != undefined && result.status == "success") {
-                console.log(result);
-                //赋值配伍单号
-                $("#remarks").val(result.data.approvalContent);
-                $('#compatibilityId').text(result.data.compatibilityId)
-            }
-            else {
-                alert(result.message);
-            }
-        },
-        error: function (result) {
-            alert("服务器异常！")
-        }
 
-    });
-
-
-    $('#contractInfoForm2').modal('show');
+    $('#approval').modal('show');
 }
 
 //把按钮功能分出来做这个是审批

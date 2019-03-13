@@ -811,36 +811,37 @@ function submit1(id) {
  * 审批
  */
 function examination(item) {
-    var state = $(item).parent().prev().text();
-    productionPlanId = getProductionPlanId(item);
-    if (state == '审批中' || state == "已驳回" || state == "审批通过" ) {
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "getProductionPlan",                 // url
-            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {
-                id: productionPlanId
-            },
-            dataType: "json",
-            success: function (result) {
-                if (result.data != undefined || result.status == "success" || result.data != null) {
-                    var data = eval(result.data);
-                    $("#advice").val(data.advice);
-                    $('#examinationModal').modal('show');//手动触发模态框弹出
-                } else {
-                    alert(result.message);
-                }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常!");
-            }
-        });
-    } else if (state == "新建" || state == "待审批") {
-        alert("请提交后再进行审批操作！");
-    } else {
-        alert("单据不可审批！");
-    }
+    // var state = $(item).parent().prev().text();
+    // productionPlanId = getProductionPlanId(item);
+    // if (state == '审批中' || state == "已驳回" || state == "审批通过" ) {
+    //     $.ajax({
+    //         type: "POST",                            // 方法类型
+    //         url: "getProductionPlan",                 // url
+    //         async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+    //         data: {
+    //             id: productionPlanId
+    //         },
+    //         dataType: "json",
+    //         success: function (result) {
+    //             if (result.data != undefined || result.status == "success" || result.data != null) {
+    //                 var data = eval(result.data);
+    //                 $("#advice").val(data.advice);
+    //                 $('#examinationModal').modal('show');//手动触发模态框弹出
+    //             } else {
+    //                 alert(result.message);
+    //             }
+    //         },
+    //         error: function (result) {
+    //             console.log(result);
+    //             alert("服务器异常!");
+    //         }
+    //     });
+    // } else if (state == "新建" || state == "待审批") {
+    //     alert("请提交后再进行审批操作！");
+    // } else {
+    //     alert("单据不可审批！");
+    // }
+    $("#approval").modal('show')
 }
 
 function approval() {
