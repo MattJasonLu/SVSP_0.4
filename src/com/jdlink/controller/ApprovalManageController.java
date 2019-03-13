@@ -306,14 +306,15 @@ public class ApprovalManageController {
     public String getAllChildNode(String orderId,HttpSession session){
         JSONObject res=new JSONObject();
         try {
-            User user=(User)session.getAttribute("user");
-            if(user!=null){
-                ApprovalNode approvalNode=approvalManageService.getApprovalNodeByOrderIdAndRoleId(orderId,user.getRole().getId());
-                List<ApprovalNode> approvalNodeList=getAllChildApprovalNode(approvalNode);
-                res.put("data", approvalNodeList);
+            ApprovalProcess approvalProcess=approvalManageService.getApprovalProcessByOrderId(orderId);
+//            User user=(User)session.getAttribute("user");
+//            if(user!=null){
+//                ApprovalNode approvalNode=approvalManageService.getApprovalNodeByOrderIdAndRoleId(orderId,user.getRole().getId());
+//                List<ApprovalNode> approvalNodeList=getAllChildApprovalNode(approvalNode);
+                res.put("data", approvalProcess.getApprovalNodeList());
                 res.put("status", "success");
                 res.put("message", "子节点查询成功");
-            }
+//            }
         }
        catch (Exception e){
            e.printStackTrace();
