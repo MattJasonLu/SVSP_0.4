@@ -58,6 +58,17 @@ public class ApprovalProcess {
      */
     private Page page;
 
+    /*页面名称*/
+    private String urlName;
+
+    public String getUrlName() {
+        return urlName;
+    }
+
+    public void setUrlName(String urlName) {
+        this.urlName = urlName;
+    }
+
     public List<String> getUrlList() {
         return urlList;
     }

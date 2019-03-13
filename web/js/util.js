@@ -349,7 +349,6 @@ function addPageClass(pageNumber) {
     });
 }
 
-
 /**
  * 省略显示页码
  */
@@ -648,6 +647,7 @@ function getIdFromEquipment(Equipment) {
 function loadNavigationList() {
     console.log("旧动态菜单数据");
     console.log(JSON.parse(localStorage.getItem("menuOrganization")));
+    toDoThingRemind();   // 设置代办事项提醒
     if (JSON.parse(localStorage.getItem("menuOrganization")) == null) {  // 如果数据为空则进行查询
         // 获取动态菜单数据
         $.ajax({
@@ -683,7 +683,6 @@ function loadNavigationList() {
                 var url = data[i].url;
                 var icon = data[i].icon;
                 // 设置一级菜单
-                console.log("一级菜单名:" + localStorage.name);
                 if (0 < data[i].pId && data[i].pId < 10) {
                     j++;
                     // 设置需要插入的标签
@@ -703,8 +702,6 @@ function loadNavigationList() {
         }
         // 设置二级菜单
         if (secondMenuList != null && secondMenuList.length > 0) {    //设置二级菜单
-            console.log("设置二级菜单");
-            console.log(secondMenuList);
             $("#navbar").children().eq(0).children().remove();  // 删除之前二级菜单数据
             setMenuTwo(secondMenuList);//递归设置二级菜单导航条
             var href = window.location.href.toString();
@@ -729,13 +726,14 @@ function loadNavigationList() {
                 // 设置二级菜单选中
                 if ($("ol[class='breadcrumb']").find("li").eq(1).length > 0)  // 更新二级菜单名
                     localStorage.secondMenuName = $("ol[class='breadcrumb']").find("li").eq(1).text();  // 获取二级菜单名
-                console.log("二级菜单标蓝：" + localStorage.secondMenuName);
                 $("#navbar").find("a:contains('" + localStorage.secondMenuName + "')").parent().addClass("active");  // 设置二级菜单标蓝
             }
         }
         // 设置一级菜单选中标蓝
         $("ul[class='sidenav animated fadeInUp']").children().find("span[name='" + localStorage.name + "']").parent().parent().addClass("active");
     }
+    // 设置代办事项提示
+
 }
 
 /**
@@ -994,4 +992,30 @@ function publicSubmit(orderId, url,userName,roleId) {
 /*获取当前url*/
 function getUrl() {
     return window.location.pathname.replace("/","");
+}
+
+/**
+ * 代办事项提醒
+ */
+function toDoThingRemind() {
+    console.log("代办事项："+localStorage.toDoThingCount);
+    var count = parseInt(localStorage.toDoThingCount);   // 代办事项总数
+    var user = getCurrentUserData();
+    if(user == null || user === {}) {  // 如果未登陆则进行登陆
+        window.location.href="admin.html";
+    }else {
+        if(count > 0) {  // 如果存在代办事项则提醒
+            console.log("count:"+count);
+            $(".wrap").removeClass("wrap");  // 删除历史提醒
+            $(".wrap1").removeClass("wrap1");
+            $(".notice1").remove();
+            var div = "<div class=\"notice1\">"+count+"</div>";
+            $(".navbar-right").children().eq(0).children().children().after(div);
+            $(".navbar-right").children().eq(0).children().eq(0).addClass("wrap1");
+        }else{  // 不存在则删除历史提醒
+            $(".wrap").removeClass("wrap");
+            $(".wrap1").removeClass("wrap1");
+            $(".notice1").remove();
+        }
+    }
 }

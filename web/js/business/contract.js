@@ -1177,7 +1177,7 @@ function contractSubmit() {
 
         items.each(function () {//遍历
             var id = getContractId1(this);//获得合同编号
-            //console.log(id);
+            publicSubmit(id, getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
             getContractById(id);
 
         });

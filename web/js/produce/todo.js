@@ -95,7 +95,7 @@ function setDataList(result) {
           "                        </td>\n" +
           "                        <td class=\"text-center\">"+item.orderId+"</td>\n" +
           "                        <td class=\"text-center\">待审批</td>\n" +
-          "                        <td class=\"text-center\">"+item.urlList[0].keywords+"</td>\n" +
+          "                        <td class=\"text-center\">"+item.urlName+"</td>\n" +
           "                        <td class=\"text-center\">"+item.url+"</td>\n" +
           "                        <td class=\"text-center\">\n" +
           "                            <a href=\"emergencyTS.html\" id=\"function_-155\" onclick=\"checkAuthority($(this))\" title=\"跳转\">\n" +
