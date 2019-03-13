@@ -282,6 +282,87 @@
                 </li>
             </ol>
         </nav>
+        <!--审批模态框-->
+        <div class="modal fade bs-example-modal-lg" id="approval" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document" style="width: 70%">
+                <div class="modal-content" >
+                    <div class="modal-header">
+                        <h2>单据信息</h2>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-hover table-bordered" style="border: 1px">
+                            <tr>
+                                <td style="width: 10%">计划单编号</td>
+                                <td style="width: 40%"></td>
+                                <td style="width: 10%">创建日期</td>
+                                <td style="width: 40%"></td>
+                            </tr>
+                            <tr>
+                                <td>创建人</td>
+                                <td></td>
+                                <td>计划运转率</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>计划数量</td>
+                                <td></td>
+                                <td>状态</td>
+                                <td></td>
+                            </tr>
+                        </table>
+                        <hr>
+                        <h3>审批轨迹</h3>
+                        <table class="table table-hover table-condensed">
+                            <tr>
+                                <td class="text-center" style="width: 20%"><span class="glyphicon glyphicon-arrow-down"></span></td>
+                                <td style="width: 80%;padding: 10px">
+                                    <p class="time" style="color: #8ec9ff;">2019年03月06日 16时04分星期三</p>
+                                    <h3>发起人：<span>寇斯丁胡</span></h3>
+                                    <b>审批意见:</b>
+                                    <br>
+                                    <span style="display: inline-block;width: 80%">审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" style="width: 20%"><span class="glyphicon glyphicon-arrow-down"></span></td>
+                                <td style="width: 80%;padding: 10px">
+                                    <p class="time" style="color: #8ec9ff;">2019年03月07日 16时04分星期四</p>
+                                    <h3>发起人：<span>阿斯打算</span></h3>
+                                    <b>审批意见:</b>
+                                    <br>
+                                    <span style="display: inline-block;width: 80%">审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" style="width: 20%"><span class="glyphicon glyphicon-arrow-down"></span></td>
+                                <td style="width: 80%;padding: 10px">
+                                    <p class="time" style="color: #8ec9ff;">2019年03月08日 16时04分星期五</p>
+                                    <h3>发起人：<span>范德萨的</span></h3>
+                                    <b>审批意见:</b>
+                                    <br>
+                                    <span style="display: inline-block;width: 80%">审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" style="width: 20%"><span class="glyphicon glyphicon-arrow-down"></span></td>
+                                <td style="width: 80%;padding: 10px">
+                                    <p class="time" style="color: #8ec9ff;">2019年03月09日 16时04分星期六</p>
+                                    <h3>发起人：<span>玩儿未人</span></h3>
+                                    <b>审批意见:</b>
+                                    <br>
+                                    <span style="display: inline-block;width: 80%">审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="approval1">审批</button>
+                        <button type="button" class="btn btn-danger" id="disapproval">驳回</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--导入模态框-->
         <div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
