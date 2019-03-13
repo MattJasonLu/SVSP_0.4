@@ -522,30 +522,40 @@ function getList1() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
-    $.ajax({
-        type: "POST",
-        url: "getList1",
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(page),
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (result) {
-            if (result !== undefined && result.status === "success") {
-                console.log(result);
-                setPageClone(result);
-                setPageCloneAfter(pageNumber);        // 重新设置页码
+
+      if(getApprovalId()!=undefined){ //存在
+        $.trim($("#searchContent").val(getId()))
+        searchPw();
+        window.localStorage.removeItem('approvalId');
+    }
+
+      else {
+        $.ajax({
+            type: "POST",
+            url: "getList1",
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result !== undefined && result.status === "success") {
+                    console.log(result);
+                    setPageClone(result);
+                    setPageCloneAfter(pageNumber);        // 重新设置页码
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                alert("服务器异常！")
             }
-            else {
-                alert(result.message);
-            }
-        },
-        error: function (result) {
-            alert("服务器异常！")
-        }
-    });
-    // 设置高级检索的下拉框数据
-    setPwList();
-    isSearch = false;
+        });
+        // 设置高级检索的下拉框数据
+        setPwList();
+        isSearch = false;
+    }
+
 
     getCurrentUserData();
 }

@@ -745,6 +745,7 @@ function submitProcurementPlan(item) {
     if(confirm("确认提交?")){
         //点击确定后操作
         var procurementPlanId=$(item).parent().parent().children('td').eq(2).html();
+        publicSubmit(procurementPlanId, getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
         $.ajax({
             type: "POST",
             url: "submitProcurementPlan",
