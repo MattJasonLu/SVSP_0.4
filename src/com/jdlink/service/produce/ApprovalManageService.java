@@ -46,6 +46,9 @@ public interface ApprovalManageService {
 
     int getOrderIdAndUrlByRoleIdCount(ApprovalProcess approvalProcess);
 
+    ApprovalNode getApprovalNodeByOrderIdAndRoleId(String orderId,int roleId);
+
+    ApprovalNode  getApprovalNodeByPNodeIdAndApprovalProcessId(int approvalP0rocessId,String approvalPId);
 
 
 }

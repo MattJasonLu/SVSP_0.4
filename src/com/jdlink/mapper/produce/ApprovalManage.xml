@@ -126,10 +126,12 @@
             limit #{page.start}, #{page.count}
         </if>
     </select>
-    <!--根据点单号查询审批流对象-->
-    <select id="getApprovalProcessByOrderId" parameterType="String" resultMap="ApprovalProcessRM">
+    <!--根据点单号查询审批流(模板)对象-->
+    <select id="getApprovalProcessByOrderId" parameterType="String" resultMap="ApprovalProcessFlow">
         select * from t_approval_process where order_id=#{orderId};
     </select>
+
+
 
     <!--根据审批流主键和角色编号查询节点对象-->
     <select id="getNodeByIdAndRoleId" resultMap="ApprovalNodeRM">
@@ -190,6 +192,7 @@
 
 
     </select>
+
     <insert id="addApprovalProcess" parameterType="ApprovalProcess">
         insert into t_approval_process_model (id,type, creation_date, modify_date, creator, modifier)
         values
@@ -243,9 +246,11 @@
                     ofType="com.jdlink.domain.Approval.ApprovalProcess"
                     javaType="ArrayList"/>
     </resultMap>
-  <select id="getUrlName" resultType="ApprovalUrl">
+
+    <select id="getUrlName" resultType="ApprovalUrl">
       select * from
   </select>
+
     <resultMap id="ApprovalNodeListRM" type="ApprovalNode">
         <id column="id" property="id"/>
         <result property="approvalProcessId" column="approval_process_id"/>
@@ -256,9 +261,11 @@
         <result property="approvalAdvice" column="approval_advice"/>
         <result property="userName" column="user_name"/>
     </resultMap>
+
     <select id="getApprovalNodeList" resultMap="ApprovalNodeListRM">
          select  * from t_approval_node where approval_process_id = #{id};
     </select>
+
     <select id="getNewestApprovalProcessByCreateTime" resultMap="ApprovalProcessFlow">
       select * from t_approval_process order by creation_date desc limit 0,1;
     </select>
@@ -274,5 +281,14 @@
 select * from t_approval_node where  role_id=#{1}  and approval_process_id=#{0};
     </select>
 
+  <!--根据订单号和角色编号获取审批节点-->
+    <select id="getApprovalNodeByOrderIdAndRoleId" resultMap="ApprovalNodeListRM">
+        select * from t_approval_node where approval_process_id=(select id from t_approval_process where order_id=#{0}) and role_id=#{1};
+    </select>
 
+
+    <!--根据父节点主键和审批流主键获取审批节点-->
+    <select id="getApprovalNodeByPNodeIdAndApprovalProcessId" resultMap="ApprovalNodeListRM">
+        select * from t_approval_node where  approval_process_id=#{0} and approval_pid=#{1};
+    </select>
 </mapper>
