@@ -6875,7 +6875,26 @@ function cancel(item) {
 /**
  * 新审批
  */
-function approval() {
+function approval(item) {
+    var id=$(item).parent().parent().children("td").eq(1).html();
+    $.ajax({
+        type: "POST",
+        url: "getAllChildNode",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'orderId': id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                    console.log(result)
+            }
+            else {
+
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
     $("#approval").modal('show');
 }
 //把按钮功能分出来做这个是审批

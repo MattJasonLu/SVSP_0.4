@@ -162,5 +162,15 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
         return approvalManageMapper.getOrderIdAndUrlByRoleIdCount(approvalProcess);
     }
 
+    @Override
+    public ApprovalNode getApprovalNodeByOrderIdAndRoleId(String orderId, int roleId) {
+        return approvalManageMapper.getApprovalNodeByOrderIdAndRoleId(orderId, roleId);
+    }
+
+    @Override
+    public ApprovalNode getApprovalNodeByPNodeIdAndApprovalProcessId(int approvalP0rocessId, String approvalPId) {
+        return approvalManageMapper.getApprovalNodeByPNodeIdAndApprovalProcessId(approvalP0rocessId,approvalPId);
+    }
+
 
 }
