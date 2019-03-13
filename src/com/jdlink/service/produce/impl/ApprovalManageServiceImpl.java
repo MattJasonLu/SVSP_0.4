@@ -77,7 +77,6 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
 
     @Override
     public void updateApprovalProcessModelUrlById(ApprovalProcess approvalProcess) {
-        approvalManageMapper.deleteUrlByApprovalProcessId(approvalProcess.getId());   // 删除之前链接
         approvalManageMapper.addApprovalProcessModelUrl(approvalProcess);           // 新增当前的链接
     }
 
