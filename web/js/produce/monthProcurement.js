@@ -1540,6 +1540,7 @@ function downloadModal() {
 function setSubmit(item) {
     var receiptNumber=$(item).parent().parent().children('td').eq(1).text();
     if(confirm("确认提交?")){
+        publicSubmit(receiptNumber,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
         //点击确定后操作
         $.ajax({
             type: "POST",                       // 方法类型

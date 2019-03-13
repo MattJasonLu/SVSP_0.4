@@ -98,7 +98,7 @@ function setDataList(result) {
           "                        <td class=\"text-center\">"+item.urlName+"</td>\n" +
           "                        <td class=\"text-center\">"+item.url+"</td>\n" +
           "                        <td class=\"text-center\">\n" +
-          "                            <a href=\"emergencyTS.html\" id=\"function_-155\" onclick=\"checkAuthority($(this))\" title=\"跳转\">\n" +
+          "                            <a  id=\"function_-155\" onclick='go(this)' title=\"跳转\">\n" +
           "                                <span class=\"glyphicon glyphicon glyphicon-search\" aria-hidden=\"true\"></span>\n" +
           "                            </a>\n" +
           "                        </td>\n" +
@@ -107,6 +107,12 @@ function setDataList(result) {
     });
 }
 
+function go(item) {
+     var url=$(item).parent().prev().html();
+     var storage=window.localStorage;
+     storage['approvalId']=$(item).parent().parent().children('td').eq(1).html()
+     window.location.href=url;
+}
 /**
  * 点击页数跳转页面
  * @param pageNumber 跳转页数

@@ -1020,6 +1020,12 @@ function toDoThingRemind() {
     }
 }
 
+/*获取从待办事项传递过来的id*/
+function getApprovalId() {
+    var id=window.localStorage['approvalId'];
+    return id;
+}
+
 /**
  * 获取并设置代办事项总数
  */
