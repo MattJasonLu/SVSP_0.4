@@ -92,6 +92,40 @@
         </where>
     </select>
 
+
+    <!--审批流高级查询-->
+    <select id="searchApprovalProcessFlow" parameterType="ApprovalProcess" resultMap="ApprovalProcessFlow">
+        select * from t_approval_process
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or type like "%"#{keywords}"%"
+                or creator like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y.%c.%e') like "%"#{keywords}"%"
+            </if>
+            <if test="id != null and id != ''">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="type != null and type != ''">
+                and type like "%"#{type}"%"
+            </if>
+            <if test="creator != null and creator != ''">
+                and creator like "%"#{creator}"%"
+            </if>
+        </where>
+        order by id ASC
+        <if test="page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
     <!--根据点单号查询审批流对象-->
     <select id="getApprovalProcessByOrderId" parameterType="String" resultMap="ApprovalProcessRM">
         select * from t_approval_process where order_id=#{orderId};
@@ -127,11 +161,35 @@
     </select>
 
     <!--根据角色ID获取获取审批中的审批流数据-->
-    <select id="getOrderIdAndUrlByRoleId" parameterType="int" resultMap="ApprovalProcessRM">
-       select * from t_approval_process where id in
-       (select approval_process_id from t_approval_node where role_id=#{id} and approval_state=2);
+    <select id="getOrderIdAndUrlByRoleId" parameterType="ApprovalProcess" resultMap="ApprovalProcessFlow">
+
+    <if test="approvalNodeList.size()>0">
+        <if test="approvalNodeList[0].roleId!=null and approvalNodeList[0].roleId!=''">
+            select * from t_approval_process where id in
+            (select approval_process_id from t_approval_node where role_id=#{approvalNodeList[0].roleId} and approval_state=2)
+
+        </if>
+        <if test="page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </if>
+
+
     </select>
 
+    <!--根据角色ID获取获取审批中的审批流数据查询总数-->
+    <select id="getOrderIdAndUrlByRoleIdCount" parameterType="ApprovalProcess" resultType="int">
+
+        <if test="approvalNodeList.size()>0">
+            <if test="approvalNodeList[0].roleId!=null and approvalNodeList[0].roleId!=''">
+                select count(*) from t_approval_process where id in
+                (select approval_process_id from t_approval_node where role_id=#{approvalNodeList[0].roleId} and approval_state=2)
+
+            </if>
+        </if>
+
+
+    </select>
     <insert id="addApprovalProcess" parameterType="ApprovalProcess">
         insert into t_approval_process_model (id,type, creation_date, modify_date, creator, modifier)
         values
@@ -184,7 +242,11 @@
         <collection property="approvalNodeList" select="getApprovalNodeList" column="id"
                     ofType="com.jdlink.domain.Approval.ApprovalProcess"
                     javaType="ArrayList"/>
+        <collection property="urlList" column="url" select="selectUrlList"></collection>
     </resultMap>
+    <select id="selectUrlList" resultMap="ApprovalProcessRM" parameterType="String">
+        select name as  keywords from t_approval_url where url=#{url};
+    </select>
     <resultMap id="ApprovalNodeListRM" type="ApprovalNode">
         <id column="id" property="id"/>
         <result property="approvalProcessId" column="approval_process_id"/>
