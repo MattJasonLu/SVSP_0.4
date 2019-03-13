@@ -351,33 +351,39 @@ function loadPageMaterialList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
+    if(getApprovalId()!=undefined){ //存在
+        $.trim($("#searchContent").val(getApprovalId()));
+        searchMa();
+        window.localStorage.removeItem('approvalId');
+    }else {
+        $.ajax({
+            type: "POST",
+            url: "getMaterialList",
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result !== undefined && result.status === "success") {
+                    console.log(result);
+                    var obj = result.array;
+                    //设置下拉框数据
+                    setPageClone(result)
+                    setPageCloneAfter(pageNumber);        // 重新设置页码
+                    // setMaterialList(obj,n);
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                alert("服务器异常！")
+            }
+        });
+        isSearch = false;
+        //加载高级查询的数据
+    }
 
-    $.ajax({
-        type: "POST",
-        url: "getMaterialList",
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(page),
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (result) {
-            if (result !== undefined && result.status === "success") {
-                console.log(result);
-                var obj = result.array;
-                //设置下拉框数据
-                setPageClone(result)
-                setPageCloneAfter(pageNumber);        // 重新设置页码
-                // setMaterialList(obj,n);
-            }
-            else {
-                alert(result.message);
-            }
-        },
-        error: function (result) {
-            alert("服务器异常！")
-        }
-    });
-    isSearch = false;
-    //加载高级查询的数据
 
     //物质形态
     $.ajax({

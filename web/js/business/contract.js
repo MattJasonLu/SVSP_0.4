@@ -361,6 +361,11 @@ function loadPageContractManageList() {
     //         console.log("失败");
     //     }
     // });
+    if(getApprovalId()!=undefined){ //存在
+        $.trim($("#searchContent").val(getApprovalId()));
+        searchContract();
+        window.localStorage.removeItem('approvalId');
+    }
     setSeniorSelectedList();
 }
 
