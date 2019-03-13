@@ -502,7 +502,7 @@ function saveMonth() {
 }
 //加载月度采购申请表数据列表
 function getMontnProcurement() {
-    $('.loader').show();
+
     loadNavigationList();   // 设置动态菜单
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
@@ -527,6 +527,7 @@ function getMontnProcurement() {
         $.trim($("#searchContent").val(getApprovalId()));
         searchProcurement();
         window.localStorage.removeItem('approvalId');
+        $('.loader').hide();
     }else {
         $.ajax({
             type: "POST",                       // 方法类型

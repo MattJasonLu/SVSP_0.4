@@ -87,7 +87,7 @@ function setPageClone(result) {
 function setDataList(result) {
     $('#tBody').empty();  // 删除旧数据
     $.each(result, function (index, item) {
-      var tr=" <tr>\n" +
+      var tr=" <tr ondblclick='dbGo(this)'>\n" +
           "                        <td class=\"text-center\">\n" +
           "                            <label>\n" +
           "                                <input name=\"select\" class=\"checkbox\" type=\"checkbox\" id=\"blankCheckbox\" value=\"option1\" aria-label=\"...\">\n" +
@@ -107,6 +107,12 @@ function setDataList(result) {
     });
 }
 
+function dbGo(item) {
+    var url=$(item).children("td").eq(4).html();
+    var storage=window.localStorage;
+    storage['approvalId']=$(item).children("td").eq(1).html();
+    window.location.href=url;
+}
 function go(item) {
      var url=$(item).parent().prev().html();
      var storage=window.localStorage;

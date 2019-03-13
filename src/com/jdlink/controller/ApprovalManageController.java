@@ -299,4 +299,43 @@ public class ApprovalManageController {
         return approvalManageService.getOrderIdAndUrlByRoleIdCount(approvalProcess);
 
     }
+
+    /*根据单号和角色Id 获取该节点及所有子节点*/
+    @RequestMapping("getAllChildNode")
+    @ResponseBody
+    public String getAllChildNode(String orderId,HttpSession session){
+        JSONObject res=new JSONObject();
+        try {
+            User user=(User)session.getAttribute("user");
+            if(user!=null){
+                ApprovalNode approvalNode=approvalManageService.getApprovalNodeByOrderIdAndRoleId(orderId,user.getRole().getId());
+                List<ApprovalNode> approvalNodeList=getAllChildApprovalNode(approvalNode);
+                res.put("data", approvalNodeList);
+                res.put("status", "success");
+                res.put("message", "子节点查询成功");
+            }
+        }
+       catch (Exception e){
+           e.printStackTrace();
+           res.put("status", "fail");
+           res.put("message", "子节点查询失败");
+       }
+        return res.toString();
+    }
+
+    /*根据当前节点获取所有的子节点*/
+    public   List<ApprovalNode> getAllChildApprovalNode(ApprovalNode approvalNode){
+        int approvalProcessId=approvalNode.getApprovalProcessId();//审批流主键
+        List<ApprovalNode> approvalNodeList=new ArrayList<>();
+        approvalNodeList.add(approvalNode);
+           ApprovalNode approvalNode1=approvalNode;
+        ApprovalNode approvalNode2=null;
+        while (approvalManageService.getApprovalNodeByPNodeIdAndApprovalProcessId(approvalProcessId,approvalNode1.getId())!=null){
+            approvalNode2=approvalManageService.getApprovalNodeByPNodeIdAndApprovalProcessId(approvalProcessId,approvalNode1.getId());
+            approvalNodeList.add(approvalNode2);
+            approvalNode1=approvalNode2;
+        }
+
+        return approvalNodeList;
+    }
 }

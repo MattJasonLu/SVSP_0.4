@@ -524,7 +524,7 @@ function getList1() {
     page.start = (pageNumber - 1) * page.count;
 
       if(getApprovalId()!=undefined){ //存在
-        $.trim($("#searchContent").val(getId()))
+        $.trim($("#searchContent").val(getApprovalId()))
         searchPw();
         window.localStorage.removeItem('approvalId');
     }
