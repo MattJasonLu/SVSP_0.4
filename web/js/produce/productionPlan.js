@@ -292,30 +292,36 @@ function loadPageProductionPlanList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "loadPageProductionPlanList",          // url
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(page),
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (result) {
-            if (result != undefined && result.status == "success") {
-                console.log(result);
-                setPageClone(result.data);
-                setPageCloneAfter(pageNumber);        // 重新设置页码
-            } else {
-                console.log(result.message);
+    if(getApprovalId()!=undefined){ //存在
+        $.trim($("#searchContent").val(getApprovalId()));
+        searchProductionPlan();
+        window.localStorage.removeItem('approvalId');
+    }else {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "loadPageProductionPlanList",          // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result);
+                    setPageClone(result.data);
+                    setPageCloneAfter(pageNumber);        // 重新设置页码
+                } else {
+                    console.log(result.message);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                console.log("失败");
             }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-            console.log("失败");
-        }
-    });
+        });
+        isSearch = false;
+    }
     // 设置高级检索的下拉框数据
     setSeniorSelectedList();
-    isSearch = false;
 }
 
 /**
