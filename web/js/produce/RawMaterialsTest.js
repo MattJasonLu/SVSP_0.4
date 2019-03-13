@@ -915,6 +915,13 @@ function adjustRawMaterialsTest() {
 
 }
 
+/**
+ * 审批
+ * @param item
+ */
+function approval() {
+    $("#approval2").modal('show')
+}
 //提交
 function setSubmit(item) {
 

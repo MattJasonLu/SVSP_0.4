@@ -820,7 +820,7 @@ function examination(item) {
         alert("请提交后再进行审批操作！");
     } else {
         wayBillId = getWayBillId(item);
-        $('#examinationModal').modal('show');//手动触发模态框弹出
+        $('#approval').modal('show');//手动触发模态框弹出
     }
 }
 

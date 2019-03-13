@@ -944,6 +944,13 @@ function submit(item) {
     }
 }
 
+/**
+ * 审批
+ * @param item
+ */
+function approval() {
+    $("#approval2").modal('show')
+}
 //作废
 function cancel(item) {
     if(confirm("确定作废?")){

@@ -779,34 +779,34 @@ function submitProcurementPlan(item) {
 }
 
 //审批模态框显示
-function approvalProcurementPlan(item) {
+function approvalProcurementPlan() {
 
-    var procurementPlanId=$(item).parent().parent().children('td').eq(2).html();
+    // var procurementPlanId=$(item).parent().parent().children('td').eq(2).html();
+    //
+    // $('#procurementPlanId2').text(procurementPlanId)
+    //
+    // $.ajax({
+    //     type: "POST",
+    //     url: "getProcurementPlanById",
+    //     async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     data:{"procurementPlanId":procurementPlanId},
+    //     dataType: "json",
+    //     //contentType: 'application/json;charset=utf-8',
+    //     success:function (result) {
+    //         if (result != undefined && result.status == "success"){
+    //             console.log(result)
+    //             $('#approvalName').val(result.data.approvalName);
+    //             $('#advice').val(result.data.advice)
+    //         }
+    //     },
+    //     error:function (result) {
+    //
+    //     }
+    //
+    // })
 
-    $('#procurementPlanId2').text(procurementPlanId)
 
-    $.ajax({
-        type: "POST",
-        url: "getProcurementPlanById",
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data:{"procurementPlanId":procurementPlanId},
-        dataType: "json",
-        //contentType: 'application/json;charset=utf-8',
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                console.log(result)
-                $('#approvalName').val(result.data.approvalName);
-                $('#advice').val(result.data.advice)
-            }
-        },
-        error:function (result) {
-
-        }
-
-    })
-
-
-    $('#contractInfoForm2').modal('show');
+    $('#approval2').modal('show');
 
 
 
