@@ -942,32 +942,33 @@ function enterSearch() {
 }
 
 function approval(item) {
-
-    var contractId=item.parentElement.previousElementSibling.innerHTML;
-
-    if(confirm("确认审批通过?")){
-        //点击确定后操作
-     $.ajax({
-         type: "POST",                            // 方法类型
-         url: "approvalModel",                  // url
-         dataType: "json",
-         data:{"contractId":contractId},
-         async: false,
-         success:function (result) {
-             if (result != undefined && result.status == "success"){
-                 alert(result.message)
-                 window.location.reload()
-             }
-             else {
-
-                 alert(result.message);
-
-             }
-         },
-         error:function (result) {
-             alert('服务器异常!')
-         }
-         
-     })
-    }
+    //
+    // var contractId=item.parentElement.previousElementSibling.innerHTML;
+    //
+    // if(confirm("确认审批通过?")){
+    //     //点击确定后操作
+    //  $.ajax({
+    //      type: "POST",                            // 方法类型
+    //      url: "approvalModel",                  // url
+    //      dataType: "json",
+    //      data:{"contractId":contractId},
+    //      async: false,
+    //      success:function (result) {
+    //          if (result != undefined && result.status == "success"){
+    //              alert(result.message)
+    //              window.location.reload()
+    //          }
+    //          else {
+    //
+    //              alert(result.message);
+    //
+    //          }
+    //      },
+    //      error:function (result) {
+    //          alert('服务器异常!')
+    //      }
+    //
+    //  })
+    // }
+    $("#approval").modal('show')
 }
