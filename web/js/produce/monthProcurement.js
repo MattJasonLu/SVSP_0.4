@@ -523,30 +523,37 @@ function getMontnProcurement() {
             array0.push($('.myclass'));
         }
     }
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getProcurementList",
-        data: JSON.stringify(page),// url
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                $('.loader').hide();
-               // console.log(result)
-                //设置月度采购申请表数据
-                setPageClone(result);
-                setPageCloneAfter(pageNumber);        // 重新设置页码
-            }
-            else {
-                alert(result.message);
-            }
-        },
-        error:function (result) {
-            alert("服务器异常！")
+    if(getApprovalId()!=undefined){ //存在
+        $.trim($("#searchContent").val(getApprovalId()));
+        searchProcurement();
+        window.localStorage.removeItem('approvalId');
+    }else {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getProcurementList",
+            data: JSON.stringify(page),// url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    $('.loader').hide();
+                    // console.log(result)
+                    //设置月度采购申请表数据
+                    setPageClone(result);
+                    setPageCloneAfter(pageNumber);        // 重新设置页码
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error:function (result) {
+                alert("服务器异常！")
 
-        }
-    });
+            }
+        });
+    }
+
     //设置物资类别下拉框
     $.ajax({
         type: "POST",                       // 方法类型
