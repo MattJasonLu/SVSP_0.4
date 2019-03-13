@@ -165,7 +165,7 @@
 
     <if test="approvalNodeList.size()>0">
         <if test="approvalNodeList[0].roleId!=null and approvalNodeList[0].roleId!=''">
-            select * from t_approval_process where id in
+            select a.order_id,a.url,b.name as urlName from t_approval_process a join t_approval_url b on a.url=b.url where a.id in
             (select approval_process_id from t_approval_node where role_id=#{approvalNodeList[0].roleId} and approval_state=2)
 
         </if>
@@ -242,11 +242,10 @@
         <collection property="approvalNodeList" select="getApprovalNodeList" column="id"
                     ofType="com.jdlink.domain.Approval.ApprovalProcess"
                     javaType="ArrayList"/>
-        <collection property="urlList" column="url" select="selectUrlList"></collection>
     </resultMap>
-    <select id="selectUrlList" resultMap="ApprovalProcessRM" parameterType="String">
-        select name as  keywords from t_approval_url where url=#{url};
-    </select>
+  <select id="getUrlName" resultType="ApprovalUrl">
+      select * from
+  </select>
     <resultMap id="ApprovalNodeListRM" type="ApprovalNode">
         <id column="id" property="id"/>
         <result property="approvalProcessId" column="approval_process_id"/>
