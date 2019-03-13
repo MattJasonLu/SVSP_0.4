@@ -3,6 +3,7 @@ package com.jdlink.controller;
 import com.jdlink.domain.Approval.ApprovalNode;
 import com.jdlink.domain.Approval.ApprovalProcess;
 import com.jdlink.domain.Produce.Organization;
+import com.jdlink.domain.User;
 import com.jdlink.service.produce.ApprovalManageService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -250,19 +253,27 @@ public class ApprovalManageController {
 
     /**
      * 根据角色ID待办审批流数据
-     * @param id
+     * @param
      * @return
      */
     @RequestMapping("getOrderIdAndUrlByRoleId")
     @ResponseBody
-    public String getOrderIdAndUrlByRoleId(int id) {
+    public String getOrderIdAndUrlByRoleId(@RequestBody ApprovalProcess approvalProcess, HttpSession session) {
         JSONObject res = new JSONObject();
         try {
+            User user=(User)session.getAttribute("user");
+           if(user!=null){
+               List<ApprovalNode> approvalNodeList=new ArrayList<>();
+               ApprovalNode approvalNode=new ApprovalNode();
+               approvalNodeList.add(approvalNode);
+               approvalNode.setRoleId(user.getRole().getId());
+               approvalProcess.setApprovalNodeList(approvalNodeList);
+           }
             //根据id查询出相应的对象信息
-            ApprovalProcess approvalProcess = approvalManageService.getOrderIdAndUrlByRoleId(id);
+            List<ApprovalProcess> approvalProcess1 = approvalManageService.getOrderIdAndUrlByRoleId(approvalProcess);
             //新建一个对象并给它赋值
-            JSONObject data = JSONObject.fromBean(approvalProcess);
-            res.put("data", data);
+//            JSONObject data = JSONObject.fromBean(approvalProcess1);
+            res.put("data", approvalProcess1);
             res.put("status", "success");
             res.put("message", "获取数据成功");
         } catch (Exception e) {
@@ -273,5 +284,11 @@ public class ApprovalManageController {
         return res.toString();
     }
 
+  /*查询待办事项总数*/
+    @RequestMapping("getOrderIdAndUrlByRoleIdCount")
+    @ResponseBody
+    public int getOrderIdAndUrlByRoleIdCount(@RequestBody ApprovalProcess approvalProcess){
+        return approvalManageService.getOrderIdAndUrlByRoleIdCount(approvalProcess);
 
+    }
 }
