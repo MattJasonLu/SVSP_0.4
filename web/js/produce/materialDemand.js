@@ -874,6 +874,7 @@ function submitMa() {
             $.each(items, function () {
                 if ($(this).parent().parent().next().next().html().length > 0) {
                     var materialRequireId = $(this).parent().parent().next().next().html();
+                    publicSubmit(materialRequireId,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
                     //提交方法
                     $.ajax({
                         type: "POST",
