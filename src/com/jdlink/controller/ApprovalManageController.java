@@ -287,7 +287,15 @@ public class ApprovalManageController {
   /*查询待办事项总数*/
     @RequestMapping("getOrderIdAndUrlByRoleIdCount")
     @ResponseBody
-    public int getOrderIdAndUrlByRoleIdCount(@RequestBody ApprovalProcess approvalProcess){
+    public int getOrderIdAndUrlByRoleIdCount(@RequestBody ApprovalProcess approvalProcess, HttpSession session){
+        User user=(User)session.getAttribute("user");
+        if(user!=null){
+            List<ApprovalNode> approvalNodeList=new ArrayList<>();
+            ApprovalNode approvalNode=new ApprovalNode();
+            approvalNodeList.add(approvalNode);
+            approvalNode.setRoleId(user.getRole().getId());
+            approvalProcess.setApprovalNodeList(approvalNodeList);
+        }
         return approvalManageService.getOrderIdAndUrlByRoleIdCount(approvalProcess);
 
     }
