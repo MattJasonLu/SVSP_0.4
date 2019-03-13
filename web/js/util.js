@@ -1019,3 +1019,30 @@ function toDoThingRemind() {
         }
     }
 }
+
+/**
+ * 获取并设置代办事项总数
+ */
+function setToDoThingCount() {
+    var approvalProcess= {};
+    var page = {};
+    page.start = 0;
+    page.count = 15;
+    approvalProcess.page = page;
+    localStorage.toDoThingCount = 0;
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getOrderIdAndUrlByRoleIdCount",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(approvalProcess),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            localStorage.toDoThingCount = result;   // 代办事项总数
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器错误！");
+        }
+    });
+}
