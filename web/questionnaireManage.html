@@ -1815,7 +1815,7 @@
     </div>
     <!--审批模态框-->
     <div class="modal fade bs-example-modal-lg" id="approval" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg" role="document" style="width: 70%">
             <div class="modal-content" >
                 <div class="modal-header">
                     <h2>单据信息</h2>
@@ -1823,19 +1823,27 @@
                 <div class="modal-body">
                     <table class="table table-hover table-bordered" style="border: 1px">
                         <tr>
-                            <td style="width: 20%">标题1</td>
-                            <td style="width: 80%"></td>
+                            <td style="width: 10%">调查表编号</td>
+                            <td style="width: 40%"></td>
+                            <td style="width: 10%">企业名称</td>
+                            <td style="width: 40%"></td>
                         </tr>
                         <tr>
-                            <td>标题2</td>
+                            <td>所属行业</td>
+                            <td></td>
+                            <td>主要产品</td>
                             <td></td>
                         </tr>
                         <tr>
-                            <td>标题3</td>
+                            <td>状态</td>
+                            <td></td>
+                            <td>填报人</td>
                             <td></td>
                         </tr>
                         <tr>
-                            <td>标题4</td>
+                            <td>填报日期</td>
+                            <td></td>
+                            <td>录入人</td>
                             <td></td>
                         </tr>
                     </table>
@@ -2387,6 +2395,10 @@
         float: left;
         height: 38px;
         line-height: 38px;
+    }
+    #approval > td {
+        padding: 0;
+        margin: 0;
     }
 </style>
 <style>
