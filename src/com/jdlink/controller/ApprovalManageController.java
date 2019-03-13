@@ -95,6 +95,24 @@ public class ApprovalManageController {
         return res.toString();
     }
 
+    /*提交公共方法*/
+    @RequestMapping("publicSubmit")
+    @ResponseBody
+    public String publicSubmit(String orderId,String userName,String url,String roleId) {
+
+        JSONObject res = new JSONObject();
+
+        try {
+        approvalManageService.publicSubmit(orderId, userName, url,roleId);
+            res.put("status", "success");
+            res.put("message", "提交成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "提交失败");
+        }
+        return res.toString();
+    }
     /**
      * 获取网页链接数据
      * @return
@@ -230,6 +248,30 @@ public class ApprovalManageController {
         return res.toString();
     }
 
+    /**
+     * 根据角色ID待办审批流数据
+     * @param id
+     * @return
+     */
+    @RequestMapping("getOrderIdAndUrlByRoleId")
+    @ResponseBody
+    public String getOrderIdAndUrlByRoleId(int id) {
+        JSONObject res = new JSONObject();
+        try {
+            //根据id查询出相应的对象信息
+            ApprovalProcess approvalProcess = approvalManageService.getOrderIdAndUrlByRoleId(id);
+            //新建一个对象并给它赋值
+            JSONObject data = JSONObject.fromBean(approvalProcess);
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "获取数据成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取数据失败");
+        }
+        return res.toString();
+    }
 
 
 }

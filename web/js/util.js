@@ -922,11 +922,11 @@ function setProcessIcon1(organizationList) {
 
 //////////////////////////////////////////
 /*审批方法
-* 订单编号
-* 角色编号
+* 订单编号orderId
+* 角色编号roleId
 * */
 function publicApproval(orderId, roleId) {
-    $.ajax({
+       $.ajax({
         type: "POST",                       // 方法类型
         url: "publicApproval",              // url
         data: {"orderId": orderId, "roleId": roleId},
@@ -956,10 +956,42 @@ function publicApproval(orderId, roleId) {
 function getFormatNumber(str, number) {
     if (str.length > number) {  // 超过位数截取前number位
         str = str.substring(0, number);
-    } else if(str.length < number){  // 不足位数用0补足
+    } else if (str.length < number) {  // 不足位数用0补足
         for (var i = 0; i <= number - str.length; i++) {  // 获取需要填充的位数
             str = "0" + str;
         }
     }
     return str;
+}
+
+
+/*提交方法
+* 订单编号orderId
+* 角色编号roleId
+* */
+function publicSubmit(orderId, url,userName,roleId) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "publicSubmit",              // url
+        data: {"url": url, "userName": userName,"orderId":orderId,"roleId":roleId},
+        cache: false,
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                alert(result.message);
+                // console.log(data);
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+}
+
+/*获取当前url*/
+function getUrl() {
+    return window.location.pathname.replace("/","");
 }

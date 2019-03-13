@@ -29,4 +29,21 @@ public interface ApprovalManageService {
     void addApprovalModel(ApprovalProcess approvalProcess);
 
     void updateApprovalProcessModelUrlById(ApprovalProcess approvalProcess);
+
+    ApprovalProcess getModelProcessByUrl(String url);
+
+    void publicSubmit(String orderId,String userName,String url,String roleId);
+
+    void addApprovalFlow(ApprovalProcess approvalProcess);
+
+    ApprovalProcess getNewestApprovalProcessByCreateTime();
+
+    void updateApprovalNode(ApprovalNode approvalNode);
+
+    ApprovalNode getApprovalNodeByNullApprovalPId(int approvalProcessId,int roleId);
+
+    ApprovalProcess getOrderIdAndUrlByRoleId(int id);
+
+
+
 }
