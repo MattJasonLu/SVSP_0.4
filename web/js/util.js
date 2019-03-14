@@ -923,11 +923,11 @@ function setProcessIcon1(organizationList) {
 * 订单编号orderId
 * 角色编号roleId
 * */
-function publicApproval(orderId, roleId) {
+function publicApproval(orderId, roleId,approvalAdvice) {
        $.ajax({
         type: "POST",                       // 方法类型
         url: "publicApproval",              // url
-        data: {"orderId": orderId, "roleId": roleId},
+        data: {"orderId": orderId, "roleId": roleId,"approvalAdvice":approvalAdvice},
         cache: false,
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
@@ -1051,4 +1051,25 @@ function setToDoThingCount() {
             alert("服务器错误！");
         }
     });
+}
+
+/*查看顶级节点的状态是否通过（1）*/
+function selectSupremeNodeByOrderId(orderId) {
+    var flag=false;
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "selectSupremeNodeByOrderId",              // url
+        data: {"orderId":orderId},
+        cache: false,
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+                console.log(result)
+                flag=result;
+        },
+        error: function (result) {
+           alert('服务器异常')
+        }
+    });
+    return flag;
 }
