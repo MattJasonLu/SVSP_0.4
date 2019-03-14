@@ -59,4 +59,8 @@ public interface ApprovalManageMapper {
     ApprovalNode  getApprovalNodeByPNodeIdAndApprovalProcessId(int approvalP0rocessId,String approvalPId);
 
     ApprovalNode selectSupremeNodeByOrderId(String orderId);
+
+    ApprovalNode getApprovalNodeById(String id);
+
+    ApprovalProcess getApprovalProcessFlowByOrderId(String orderId);
 }

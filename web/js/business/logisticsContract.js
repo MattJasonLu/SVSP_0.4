@@ -682,7 +682,7 @@ function setApprovalModal (data) {
     var table=$('#approvalTable');
     table.empty();
     $.each(data,function (index,item) {
-        var tr="<tr>\n" +
+        var tr="<tr id='"+item.roleId+"' >\n" +
             "                        <td class=\"text-center\" style=\"width: 20%\"><span class=\"glyphicon glyphicon-arrow-down\"></span></td>\n" +
             "                        <td style=\"width: 80%;padding: 10px\">\n" +
             "                            <p class=\"time\" style=\"color: #8ec9ff;\">"+getTimeStr(item.approvalDate)+"</p>\n" +
@@ -695,6 +695,7 @@ function setApprovalModal (data) {
         table.append(tr);
     })
 
+    $("#"+getCurrentUserData().role.id+"").attr('style','color: red')
 
 }
 
@@ -730,13 +731,13 @@ function logisticModal() {
     //订单号和角色Id
 
 
-    var approvalAdvice=$('#advice').val();
+
 
 
 
 }
 
-
+/*确认审批*/
 function confirmApproval() {
     var orderId=   $('#ApprovalOrderId').text();
     var roleId=getCurrentUserData().role.id;
@@ -745,4 +746,44 @@ function confirmApproval() {
     if(selectSupremeNodeByOrderId(orderId)){//做订单的审批即可
     //订单审批
     }
+}
+
+/*点击驳回显示驳回内容*/
+function logisticBack() {
+    $('#contractInfoForm3').modal('show')
+    var orderId=   $('#ApprovalOrderId').text();
+    var roleId=getCurrentUserData().role.id;
+    //1根据订单号和觉得获取节点信息，然后赋值
+    $.ajax({
+        type: "POST",
+        url: "getApprovalNodeByOrderIdAndRoleId",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'orderId': orderId,"roleId":roleId},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                if(result.data!=null){
+                    $('#backContent').val(result.data.approvalAdvice);
+                }
+
+            }
+            else {
+
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
+}
+
+/*确认驳回*/
+function confirmBack() {
+    var orderId=   $('#ApprovalOrderId').text();
+    var roleId=getCurrentUserData().role.id;
+    var approvalAdvice=$('#backContent').val();
+    var radio=$("input[name='backLevel']:checked").val()
+    publicBack(orderId, roleId,approvalAdvice,radio)
+
 }

@@ -27,7 +27,7 @@ public class ApprovalNode {
      */
     private Date approvalDate;
     /**
-     * 审批状态（0驳回，1通过，2审批中，3待审批，4，未提交，5已提交）
+     * 审批状态（0驳回，1通过，2审批中，3待审批，4，未提交，5已提交  6重新提交,7重新审批）
      */
     private Integer approvalState;
     /**

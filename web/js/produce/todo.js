@@ -87,6 +87,18 @@ function setPageClone(result) {
 function setDataList(result) {
     $('#tBody').empty();  // 删除旧数据
     $.each(result, function (index, item) {
+        var state;
+
+        if(item.type=="6"){
+            state='重新提交'
+        }
+        if(item.type=="7"){
+            state='重新审批'
+        }
+        if(item.type=="2") {
+            state="待审批"
+        }
+        console.log(state)
       var tr=" <tr ondblclick='dbGo(this)'>\n" +
           "                        <td class=\"text-center\">\n" +
           "                            <label>\n" +
@@ -94,7 +106,7 @@ function setDataList(result) {
           "                            </label>\n" +
           "                        </td>\n" +
           "                        <td class=\"text-center\">"+item.orderId+"</td>\n" +
-          "                        <td class=\"text-center\">待审批</td>\n" +
+          "                        <td class=\"text-center\">"+state+"</td>\n" +
           "                        <td class=\"text-center\">"+item.urlName+"</td>\n" +
           "                        <td class=\"text-center\">"+item.url+"</td>\n" +
           "                        <td class=\"text-center\">\n" +
