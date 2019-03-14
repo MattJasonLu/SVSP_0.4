@@ -4,6 +4,7 @@ import com.jdlink.domain.Approval.ApprovalNode;
 import com.jdlink.domain.Approval.ApprovalProcess;
 import com.jdlink.domain.Produce.Organization;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public interface ApprovalManageMapper {
 
     ApprovalNode getNodeByIdAndRoleId(int id,String roleId);
 
-    void updateApprovalById(String id,int stateId);
+    void updateApprovalById(String id, int stateId, String approvalAdvice, String userName, Date date);
 
     void updateApprovalProcessById(ApprovalProcess approvalProcess);
 
@@ -57,4 +58,5 @@ public interface ApprovalManageMapper {
 
     ApprovalNode  getApprovalNodeByPNodeIdAndApprovalProcessId(int approvalP0rocessId,String approvalPId);
 
+    ApprovalNode selectSupremeNodeByOrderId(String orderId);
 }

@@ -36,9 +36,11 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
     }
 
     @Override
-    public void updateApprovalById(String id, int stateId) {
-        approvalManageMapper.updateApprovalById(id, stateId);
+    public void updateApprovalById(String id, int stateId, String approvalAdvice,String userName,Date date) {
+        approvalManageMapper.updateApprovalById(id, stateId, approvalAdvice,userName,date);
     }
+
+
 
     public List<Organization> getUrlList() {
         return approvalManageMapper.getUrlList();
@@ -107,18 +109,19 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
             ApprovalNode approvalNode=new ApprovalNode();
             approvalNode.setApprovalProcessId(approvalProcess2.getId());//绑定审批流对象
             approvalNode.setRoleId(approvalNodeList.get(i).getRoleId());//绑定角色
-            if(approvalNodeList.get(i).getRoleId()==Integer.parseInt(roleId)){ //创建人
-                approvalNode.setUserName(userName);
-                approvalNode.setApprovalPId(approvalProcess2.getId()+"-"+approvalNodeList.get(i).getApprovalPId());
-            }
-//            else {
-//                //绑定父节点
-//
-//            }
+               if(i==0){
+                   approvalNode.setUserName(userName);
+               }
+
+                if(approvalNodeList.get(i).getApprovalPId().trim().length()>0&&!approvalNodeList.get(i).getApprovalPId().trim().equals("")&&approvalNodeList.get(i).getApprovalPId().trim()!=""){
+                    approvalNode.setApprovalPId(approvalProcess2.getId()+"-"+approvalNodeList.get(i).getApprovalPId());
+                }
+
             //绑定主键
             approvalNode.setId(approvalProcess2.getId()+"-"+approvalNodeList.get(i).getId());
             approvalNodeList1.add(approvalNode);
         }
+
         for(int i=0;i<approvalNodeList1.size();i++){
             //跟新审批节点
             approvalManageMapper.updateApprovalNode(approvalNodeList1.get(i));
@@ -127,9 +130,10 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
         //本节点已提交
          //查询本节点
         ApprovalNode approvalNode=approvalManageMapper.getApprovalNodeByNullApprovalPId(approvalProcess2.getId(),Integer.parseInt(roleId));
-        approvalManageMapper.updateApprovalById(approvalNode.getId(),5);
+        approvalManageMapper.updateApprovalById(approvalNode.getId(),5,"",userName,new Date());
         //父节点审批中
-        approvalManageMapper.updateApprovalById(approvalNode.getApprovalPId(),2);
+        approvalManageMapper.updateApprovalById(approvalNode.getApprovalPId(),2,"","",null);
+
     }
 
     @Override
@@ -170,6 +174,11 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
     @Override
     public ApprovalNode getApprovalNodeByPNodeIdAndApprovalProcessId(int approvalP0rocessId, String approvalPId) {
         return approvalManageMapper.getApprovalNodeByPNodeIdAndApprovalProcessId(approvalP0rocessId,approvalPId);
+    }
+
+    @Override
+    public ApprovalNode selectSupremeNodeByOrderId(String orderId) {
+        return approvalManageMapper.selectSupremeNodeByOrderId(orderId);
     }
 
 

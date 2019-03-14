@@ -140,7 +140,7 @@
 
     <!--根据节点编号更新节点状态-->
     <update id="updateApprovalById">
-        update t_approval_node set approval_state=#{1} where id=#{0};
+        update t_approval_node set approval_state=#{1},approval_date=#{4},approval_advice=#{2},user_name=#{3} where id=#{0};
     </update>
 
     <update id="updateApprovalProcessById" parameterType="ApprovalProcess">
@@ -273,7 +273,7 @@
     <!--更新审批流节点-->
     <insert id="updateApprovalNode" parameterType="ApprovalNode">
         insert into t_approval_node (id, approval_process_id, role_id, approval_pid, approval_date, approval_state, approval_advice, user_name) values
-        (#{id},#{approvalProcessId},#{roleId},#{approvalPId},NOW(),3,#{approvalAdvice},#{userName});
+        (#{id},#{approvalProcessId},#{roleId},#{approvalPId},#{approvalDate},3,#{approvalAdvice},#{userName});
     </insert>
 
     <!--寻找发起节点(审批父节点为空)-->
@@ -290,5 +290,10 @@ select * from t_approval_node where  role_id=#{1}  and approval_process_id=#{0};
     <!--根据父节点主键和审批流主键获取审批节点-->
     <select id="getApprovalNodeByPNodeIdAndApprovalProcessId" resultMap="ApprovalNodeListRM">
         select * from t_approval_node where  approval_process_id=#{0} and approval_pid=#{1};
+    </select>
+    
+    <!--寻找最上级节点根据订单号和角色编号-->
+    <select id="selectSupremeNodeByOrderId" parameterType="String" resultMap="ApprovalNodeListRM">
+  select * from t_approval_node where length(approval_pid)=0 or approval_pid is null  and  approval_process_id=(select t_approval_process.id from t_approval_process where order_id=#{orderId})
     </select>
 </mapper>
