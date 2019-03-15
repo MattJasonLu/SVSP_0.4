@@ -92,27 +92,34 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
     @Override
     public void publicSubmit(String orderId, String userName, String url,String roleId) {
         //首先先根据订单号找出是否存在审批流
-        ApprovalProcess approvalProcess4=approvalManageMapper. getApprovalProcessFlowByOrderId(orderId);
-          if(approvalProcess4!=null){
-              //直接更新状态
-              List<ApprovalNode> approvalNodeList=approvalProcess4.getApprovalNodeList();
-                   for(int i=0;i<approvalNodeList.size();i++){
-                       //首先状态都为3
-                       approvalManageMapper.updateApprovalById(approvalNodeList.get(i).getId(),3,approvalNodeList.get(i).getApprovalAdvice(),approvalNodeList.get(i).getUserName(),null);
-                   }
-                   //找出本节点
-              ApprovalNode approvalNode=approvalManageMapper.getApprovalNodeByNullApprovalPId(approvalProcess4.getId(),Integer.parseInt(roleId));
-              approvalManageMapper.updateApprovalById(approvalNode.getId(),5,"",userName,new Date());
-              //父节点审批中
-              ApprovalNode approvalNode1=approvalManageMapper.getApprovalNodeById(approvalNode.getApprovalPId());
-              approvalManageMapper.updateApprovalById(approvalNode1.getId(),2,approvalNode1.getApprovalAdvice(),approvalNode1.getUserName(),null);
-          }
+        ApprovalProcess approvalProcess4 = approvalManageMapper.getApprovalProcessFlowByOrderId(orderId);
+        if (approvalProcess4 != null) {
+            ApprovalProcess approvalProcess = approvalManageMapper.getModelProcessByUrl(url);
+            if (approvalProcess.getApprovalNodeList().get(0).getRoleId() == Integer.parseInt(roleId)) {
+
+            //直接更新状态
+            List<ApprovalNode> approvalNodeList = approvalProcess4.getApprovalNodeList();
+            for (int i = 0; i < approvalNodeList.size(); i++) {
+                //首先状态都为3
+                approvalManageMapper.updateApprovalById(approvalNodeList.get(i).getId(), 3, approvalNodeList.get(i).getApprovalAdvice(), approvalNodeList.get(i).getUserName(), null);
+            }
+            //找出本节点
+            ApprovalNode approvalNode = approvalManageMapper.getApprovalNodeByNullApprovalPId(approvalProcess4.getId(), Integer.parseInt(roleId));
+            approvalManageMapper.updateApprovalById(approvalNode.getId(), 5, "", userName, new Date());
+            //父节点审批中
+            ApprovalNode approvalNode1 = approvalManageMapper.getApprovalNodeById(approvalNode.getApprovalPId());
+            approvalManageMapper.updateApprovalById(approvalNode1.getId(), 2, approvalNode1.getApprovalAdvice(), approvalNode1.getUserName(), null);
+        }
+    }
           else {
 
 
 
         //根据url找出审批流对象
         ApprovalProcess approvalProcess=approvalManageMapper.getModelProcessByUrl(url);
+        if(approvalProcess.getApprovalNodeList().get(0).getRoleId()==Integer.parseInt(roleId)){
+
+
         //创建实际的审批流对象设置相关的信息 1订单号,2创建人
         ApprovalProcess approvalProcess1=new ApprovalProcess();
         approvalProcess1.setOrderId(orderId);
@@ -155,6 +162,7 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
         //父节点审批中
         ApprovalNode approvalNode1=approvalManageMapper.getApprovalNodeById(approvalNode.getApprovalPId());
         approvalManageMapper.updateApprovalById(approvalNode1.getId(),2,approvalNode1.getApprovalAdvice(),approvalNode1.getUserName(),null);
+          }
           }
     }
 

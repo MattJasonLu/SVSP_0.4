@@ -116,8 +116,15 @@ public class ApprovalManageController {
 
         try {
         approvalManageService.publicSubmit(orderId, userName, url,roleId);
-            res.put("status", "success");
+        ApprovalProcess approvalProcess=approvalManageService.getApprovalProcessFlowByOrderId(orderId);
+        if(approvalProcess==null){
+            res.put("message", "提交失败,仅发起人提交");
+        }
+        else {
             res.put("message", "提交成功");
+        }
+            res.put("status", "success");
+
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");

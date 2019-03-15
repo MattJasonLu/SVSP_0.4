@@ -277,7 +277,7 @@
         (#{id},#{approvalProcessId},#{roleId},#{approvalPId},#{approvalDate},3,#{approvalAdvice},#{userName});
     </insert>
 
-    <!--寻找发起节点(审批父节点为空)-->
+    <!--寻找发起节点-->
     <select id="getApprovalNodeByNullApprovalPId" parameterType="Integer" resultMap="ApprovalNodeListRM">
 select * from t_approval_node where  role_id=#{1}  and approval_process_id=#{0};
     </select>
