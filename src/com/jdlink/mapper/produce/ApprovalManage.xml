@@ -298,7 +298,7 @@ select * from t_approval_node where  role_id=#{1}  and approval_process_id=#{0};
   select * from t_approval_node where length(approval_pid)=0 or approval_pid is null  and  approval_process_id=(select t_approval_process.id from t_approval_process where order_id=#{orderId})
     </select>
 
-    <!--根据审批节点主键获取审批流-->
+    <!--根据审批节点主键获取审批节点-->
     <select id="getApprovalNodeById" parameterType="String" resultMap="ApprovalNodeListRM">
         select * from t_approval_node where id=#{id};
     </select>

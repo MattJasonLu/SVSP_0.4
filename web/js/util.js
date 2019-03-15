@@ -934,7 +934,7 @@ function publicApproval(orderId, roleId,approvalAdvice) {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 alert(result.message);
-                console.log(data);
+                // console.log(data);
             } else {
                 console.log(result.message);
             }
@@ -1087,7 +1087,7 @@ function publicBack(orderId, roleId,approvalAdvice,radio) {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 alert(result.message);
-                console.log(data);
+                // console.log(data);
             } else {
                 console.log(result.message);
             }
@@ -1138,7 +1138,9 @@ function setApprovalModal (data) {
 
 /*信息查看*/
 function viewInfo() {
-    $('#function_-93').click();
+    // console.log($('#function_-112'))
+    //     // console.log($("a[title='查看']")[0])
+    $("a[title='查看']")[0].click();
 }
 
 /*点击审批显示审批内容*/
@@ -1188,7 +1190,8 @@ function confirmApproval() {
     if(selectSupremeNodeByOrderId(orderId)){//做订单的审批即可
         //订单审批
     }
-    window.location.reload();
+    // window.location.reload();
+    ApprovalModal();
 }
 
 /*点击驳回显示驳回内容*/
@@ -1229,5 +1232,5 @@ function confirmBack() {
     var approvalAdvice=$('#backContent').val();
     var radio=$("input[name='backLevel']:checked").val()
     publicBack(orderId, roleId,approvalAdvice,radio)
-    window.location.reload();
+    // window.location.reload();
 }

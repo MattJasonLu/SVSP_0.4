@@ -592,8 +592,17 @@
                 <h5 class="sub-header text-center">驳回意见</h5>
             </div>
             <div class="row">
+                <div class="form-group">
+                    <label for="search-contactName" class="col-sm-2 control-label">驳回层级</label>
+                    <div class="col-xs-4">
+                        <input type="radio"  name="backLevel" placeholder="" value=1 checked="checked">发起人
+                        <input type="radio"  name="backLevel" placeholder=""   value=0>上一级
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="form-horizontal col-md-12">
-                    <textarea class="form-control" rows="5" id="backContent" style="min-width: 70%"></textarea>
+                    <textarea class="form-control" rows="5" id="backContent" style="width: 100%"></textarea>
                 </div>
             </div>
             <div class="modal-footer">

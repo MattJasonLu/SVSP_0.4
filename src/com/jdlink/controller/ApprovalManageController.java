@@ -78,24 +78,35 @@ public class ApprovalManageController {
 
         try {
             User user=(User)session.getAttribute("user");
-           String userName= user.getName();
+            String userName= user.getName();
             //1根据订单号找出审批流对象,再找出节点列表
             ApprovalProcess approvalProcess = approvalManageService.getApprovalProcessByOrderId(orderId);
             if (approvalProcess != null) {
+
+
                 //在根据角色编号和审批流主键找出相应的节点
                 ApprovalNode approvalNode = approvalManageService.getNodeByIdAndRoleId(approvalProcess.getId(), roleId);
-                //更新审批节点新父节点状态为审批中
-                //1找到父节点
-               ApprovalNode approvalNode1=approvalManageService.getApprovalNodeById(approvalNode.getApprovalPId());
-               if(approvalNode1!=null){
-                   //假设有父节点跟新父节点状态为审批中
-                   approvalManageService.updateApprovalById(approvalNode1.getId(), 2,approvalNode1.getApprovalAdvice(),approvalNode1.getUserName(),null);
+                //找出他的子节点是否是1通过
+                ApprovalNode approvalNode3=approvalManageService.getApprovalNodeByPNodeIdAndApprovalProcessId(approvalProcess.getId(),approvalNode.getId());
+               if(approvalNode3.getApprovalState()==1||approvalNode3.getApprovalState()==5){ //通过
+                   //更新审批节点新父节点状态为审批中
+                   //1找到父节点
+                   ApprovalNode approvalNode1=approvalManageService.getApprovalNodeById(approvalNode.getApprovalPId());
+                   if(approvalNode1!=null){
+                       //假设有父节点跟新父节点状态为审批中
+                       approvalManageService.updateApprovalById(approvalNode1.getId(), 2,approvalNode1.getApprovalAdvice(),approvalNode1.getUserName(),null);
+                   }
+
+                   //更新本节点状态为通过
+                   approvalManageService.updateApprovalById(approvalNode.getId(), 1,approvalAdvice,userName,new Date());
+                   res.put("message", "审批通过");
+               }
+               else {
+                   res.put("message", "下级人员为审批通过，无法审批！");
                }
 
-                //更新本节点状态为通过
-                approvalManageService.updateApprovalById(approvalNode.getId(), 1,approvalAdvice,userName,new Date());
                 res.put("status", "success");
-                res.put("message", "审批通过");
+
             }
 
 
