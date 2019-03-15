@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -71,22 +72,41 @@ public class ApprovalManageController {
     /*审批公共方法*/
     @RequestMapping("publicApproval")
     @ResponseBody
-    public String publicApproval(String orderId,String roleId) {
+    public String publicApproval(String orderId,String roleId,String approvalAdvice,HttpSession session) {
 
         JSONObject res = new JSONObject();
 
         try {
+            User user=(User)session.getAttribute("user");
+            String userName= user.getName();
             //1根据订单号找出审批流对象,再找出节点列表
             ApprovalProcess approvalProcess = approvalManageService.getApprovalProcessByOrderId(orderId);
             if (approvalProcess != null) {
+
+
                 //在根据角色编号和审批流主键找出相应的节点
                 ApprovalNode approvalNode = approvalManageService.getNodeByIdAndRoleId(approvalProcess.getId(), roleId);
-                //更新审批节点新父节点状态为审批中
-                approvalManageService.updateApprovalById(approvalNode.getApprovalPId(), 2);
-                //更新本节点新父节点状态为通过
-                approvalManageService.updateApprovalById(approvalNode.getId(), 1);
+                //找出他的子节点是否是1通过
+                ApprovalNode approvalNode3=approvalManageService.getApprovalNodeByPNodeIdAndApprovalProcessId(approvalProcess.getId(),approvalNode.getId());
+               if(approvalNode3.getApprovalState()==1||approvalNode3.getApprovalState()==5){ //通过
+                   //更新审批节点新父节点状态为审批中
+                   //1找到父节点
+                   ApprovalNode approvalNode1=approvalManageService.getApprovalNodeById(approvalNode.getApprovalPId());
+                   if(approvalNode1!=null){
+                       //假设有父节点跟新父节点状态为审批中
+                       approvalManageService.updateApprovalById(approvalNode1.getId(), 2,approvalNode1.getApprovalAdvice(),approvalNode1.getUserName(),null);
+                   }
+
+                   //更新本节点状态为通过
+                   approvalManageService.updateApprovalById(approvalNode.getId(), 1,approvalAdvice,userName,new Date());
+                   res.put("message", "审批通过");
+               }
+               else {
+                   res.put("message", "下级人员为审批通过，无法审批！");
+               }
+
                 res.put("status", "success");
-                res.put("message", "审批通过");
+
             }
 
 
@@ -107,8 +127,15 @@ public class ApprovalManageController {
 
         try {
         approvalManageService.publicSubmit(orderId, userName, url,roleId);
-            res.put("status", "success");
+        ApprovalProcess approvalProcess=approvalManageService.getApprovalProcessFlowByOrderId(orderId);
+        if(approvalProcess==null){
+            res.put("message", "提交失败,仅发起人提交");
+        }
+        else {
             res.put("message", "提交成功");
+        }
+            res.put("status", "success");
+
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
@@ -328,7 +355,7 @@ public class ApprovalManageController {
     public   List<ApprovalNode> getAllChildApprovalNode(ApprovalNode approvalNode){
         int approvalProcessId=approvalNode.getApprovalProcessId();//审批流主键
         List<ApprovalNode> approvalNodeList=new ArrayList<>();
-        approvalNodeList.add(approvalNode);
+//        approvalNodeList.add(approvalNode);
            ApprovalNode approvalNode1=approvalNode;
         ApprovalNode approvalNode2=null;
         while (approvalManageService.getApprovalNodeByPNodeIdAndApprovalProcessId(approvalProcessId,approvalNode1.getId())!=null){
@@ -338,5 +365,61 @@ public class ApprovalManageController {
         }
 
         return approvalNodeList;
+    }
+
+    @RequestMapping("getApprovalNodeByOrderIdAndRoleId")
+    @ResponseBody
+    public String getApprovalNodeByOrderIdAndRoleId(String orderId,int roleId){
+        JSONObject res=new JSONObject();
+
+        try {
+            ApprovalNode approvalNode=approvalManageService.getApprovalNodeByOrderIdAndRoleId(orderId,roleId);
+            res.put("data", approvalNode);
+            res.put("status", "success");
+            res.put("message", "查询子节点成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询子节点失败");
+        }
+
+        return res.toString();
+    }
+
+    @RequestMapping("selectSupremeNodeByOrderId")
+    @ResponseBody
+    public Boolean selectSupremeNodeByOrderId(String orderId){
+        JSONObject res=new JSONObject();
+        ApprovalNode approvalNode=approvalManageService.selectSupremeNodeByOrderId(orderId);
+        if(approvalNode.getApprovalState()==1){
+           return  true;
+
+        }
+        else {
+            return  false;
+
+        }
+
+    }
+
+    /*驳回公共方法*/
+    @RequestMapping("publicBack")
+    @ResponseBody
+    public String publicBack(String orderId,int  roleId,String approvalAdvice,int radio){
+        JSONObject res=new JSONObject();
+
+        try {
+            approvalManageService.publicBack(orderId,roleId,approvalAdvice,radio);
+            res.put("status", "success");
+            res.put("message", "驳回成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "驳回失败");
+        }
+
+        return res.toString();
     }
 }

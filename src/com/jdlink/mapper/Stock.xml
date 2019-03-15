@@ -96,7 +96,7 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
                 or clientId in(select clientId from client where capacity = #{keyword})
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%")
                 or proTelephone like "%"#{keyword}"%"
-
+                or stockId like "%"#{keyword}"%"
             </if>
             <if test="supplier != null">
                 <if test="supplier.companyName!=''">
@@ -139,6 +139,7 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
                 or clientId in(select clientId from client where capacity = #{keyword})
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%")
                 or proTelephone like "%"#{keyword}"%"
+                or stockId like "%"#{keyword}"%"
             </if>
             <if test="supplier != null">
                 <if test="supplier.companyName!=''">

@@ -923,18 +923,18 @@ function setProcessIcon1(organizationList) {
 * 订单编号orderId
 * 角色编号roleId
 * */
-function publicApproval(orderId, roleId) {
+function publicApproval(orderId, roleId,approvalAdvice) {
        $.ajax({
         type: "POST",                       // 方法类型
         url: "publicApproval",              // url
-        data: {"orderId": orderId, "roleId": roleId},
+        data: {"orderId": orderId, "roleId": roleId,"approvalAdvice":approvalAdvice},
         cache: false,
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 alert(result.message);
-                console.log(data);
+                // console.log(data);
             } else {
                 console.log(result.message);
             }
@@ -1051,4 +1051,186 @@ function setToDoThingCount() {
             alert("服务器错误！");
         }
     });
+}
+
+/*查看顶级节点的状态是否通过（1）*/
+function selectSupremeNodeByOrderId(orderId) {
+    var flag=false;
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "selectSupremeNodeByOrderId",              // url
+        data: {"orderId":orderId},
+        cache: false,
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+                console.log(result)
+                flag=result;
+        },
+        error: function (result) {
+           alert('服务器异常')
+        }
+    });
+    return flag;
+}
+
+
+/*驳回公共方法*/
+function publicBack(orderId, roleId,approvalAdvice,radio) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "publicBack",              // url
+        data: {"orderId": orderId, "roleId": roleId,"approvalAdvice":approvalAdvice,"radio":radio},
+        cache: false,
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                alert(result.message);
+                // console.log(data);
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+}
+
+/*审批模态框*/
+function setApprovalModal (data) {
+    var table=$('#approvalTable');
+    table.empty();
+    $.each(data,function (index,item) {
+        if(index==0){
+            var tr="<tr id='"+item.roleId+"' >\n" +
+                "                        <td class=\"text-center\" style=\"width: 20%\"><span class=\"glyphicon glyphicon-arrow-down\"></span></td>\n" +
+                "                        <td style=\"width: 80%;padding: 10px\">\n" +
+                "                            <p class=\"time\" style=\"color: #8ec9ff;\">"+getTimeStr(item.approvalDate)+"</p>\n" +
+                "                            <h3>发起人：<span>"+item.userName+"</span></h3>\n" +
+                "                            <b>审批意见:</b>\n" +
+                "                            <br>\n" +
+                "                            <span style=\"display: inline-block;width: 80%\">"+item.approvalAdvice+"</span>\n" +
+                "                        </td>\n" +
+                "                    </tr>"
+        }
+        if(index>0) {
+            var tr="<tr id='"+item.roleId+"' >\n" +
+                "                        <td class=\"text-center\" style=\"width: 20%\"><span class=\"glyphicon glyphicon-arrow-down\"></span></td>\n" +
+                "                        <td style=\"width: 80%;padding: 10px\">\n" +
+                "                            <p class=\"time\" style=\"color: #8ec9ff;\">"+getTimeStr(item.approvalDate)+"</p>\n" +
+                "                            <h3>审批人：<span>"+item.userName+"</span></h3>\n" +
+                "                            <b>审批意见:</b>\n" +
+                "                            <br>\n" +
+                "                            <span style=\"display: inline-block;width: 80%\">"+item.approvalAdvice+"</span>\n" +
+                "                        </td>\n" +
+                "                    </tr>"
+        }
+
+        table.append(tr);
+    })
+
+    $("#"+getCurrentUserData().role.id+"").attr('style','color: red');
+    $("#"+getCurrentUserData().role.id+"").find('h3').children('span').text(getCurrentUserData().name);
+
+}
+
+/*信息查看*/
+function viewInfo() {
+    // console.log($('#function_-112'))
+    //     // console.log($("a[title='查看']")[0])
+    $("a[title='查看']")[0].click();
+}
+
+/*点击审批显示审批内容*/
+function ApprovalModal() {
+    var orderId=   $('#ApprovalOrderId').text();
+    var roleId=getCurrentUserData().role.id;
+    //1根据订单号和觉得获取节点信息，然后赋值
+    $.ajax({
+        type: "POST",
+        url: "getApprovalNodeByOrderIdAndRoleId",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'orderId': orderId,"roleId":roleId},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                if(result.data!=null){
+                    $('#advice').val(result.data.approvalAdvice);
+                }
+
+            }
+            else {
+
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
+
+    $('#publicApproval').modal('show');
+    //订单号和角色Id
+
+
+
+
+
+
+}
+
+/*确认审批*/
+function confirmApproval() {
+    var orderId=   $('#ApprovalOrderId').text();
+    var roleId=getCurrentUserData().role.id;
+    var approvalAdvice=$('#advice').val();
+    publicApproval(orderId, roleId,approvalAdvice);
+    if(selectSupremeNodeByOrderId(orderId)){//做订单的审批即可
+        //订单审批
+    }
+    // window.location.reload();
+    ApprovalModal();
+}
+
+/*点击驳回显示驳回内容*/
+function ApprovalBack() {
+
+    var orderId=   $('#ApprovalOrderId').text();
+    var roleId=getCurrentUserData().role.id;
+    //1根据订单号和觉得获取节点信息，然后赋值
+    $.ajax({
+        type: "POST",
+        url: "getApprovalNodeByOrderIdAndRoleId",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'orderId': orderId,"roleId":roleId},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                if(result.data!=null){
+                    $('#backContent').val(result.data.approvalAdvice);
+                }
+
+            }
+            else {
+
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
+    $('#backApproval').modal('show')
+}
+
+/*确认驳回*/
+function confirmBack() {
+    var orderId=   $('#ApprovalOrderId').text();
+    var roleId=getCurrentUserData().role.id;
+    var approvalAdvice=$('#backContent').val();
+    var radio=$("input[name='backLevel']:checked").val()
+    publicBack(orderId, roleId,approvalAdvice,radio)
+    // window.location.reload();
 }

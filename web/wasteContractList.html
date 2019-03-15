@@ -385,37 +385,13 @@
         <div class="modal-content" >
             <div class="modal-header">
                 <h2>单据信息</h2>
+                <span class="hidden" id="ApprovalOrderId"></span>
             </div>
             <div class="modal-body">
-                <table class="table table-hover table-bordered" style="border: 1px">
-                    <tr>
-                        <td style="width: 10%">合同编号</td>
-                        <td style="width: 40%"></td>
-                        <td style="width: 10%">单位名称</td>
-                        <td style="width: 40%"></td>
-                    </tr>
-                    <tr>
-                        <td>合同名称</td>
-                        <td></td>
-                        <td>联系人</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>联系方式</td>
-                        <td></td>
-                        <td>小额合同</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>录入人</td>
-                        <td></td>
-                        <td>状态</td>
-                        <td></td>
-                    </tr>
-                </table>
+                <button type="button" class="btn btn-primary" onclick="viewInfo()">信息查看</button>
                 <hr>
                 <h3>审批轨迹</h3>
-                <table class="table table-hover table-condensed">
+                <table class="table table-hover table-condensed" id="approvalTable">
                     <tr>
                         <td class="text-center" style="width: 20%"><span class="glyphicon glyphicon-arrow-down"></span></td>
                         <td style="width: 80%;padding: 10px">
@@ -433,7 +409,7 @@
                             <h3>发起人：<span>阿斯打算</span></h3>
                             <b>审批意见:</b>
                             <br>
-                            <span style="display: inline-block;width: 80%">审批通过</span>
+                            <span style="display: inline-block;width: 80%">审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过</span>
                         </td>
                     </tr>
                     <tr>
@@ -443,7 +419,7 @@
                             <h3>发起人：<span>范德萨的</span></h3>
                             <b>审批意见:</b>
                             <br>
-                            <span style="display: inline-block;width: 80%">审批通过</span>
+                            <span style="display: inline-block;width: 80%">审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过</span>
                         </td>
                     </tr>
                     <tr>
@@ -453,14 +429,14 @@
                             <h3>发起人：<span>玩儿未人</span></h3>
                             <b>审批意见:</b>
                             <br>
-                            <span style="display: inline-block;width: 80%">审批通过</span>
+                            <span style="display: inline-block;width: 80%">审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过</span>
                         </td>
                     </tr>
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="approval1">审批</button>
-                <button type="button" class="btn btn-danger" id="disapproval">驳回</button>
+                <button type="button" class="btn btn-primary" id="approval1" onclick="ApprovalModal()">审批</button>
+                <button type="button" class="btn btn-danger" id="disapproval" onclick="ApprovalBack()">驳回</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             </div>
         </div>
@@ -606,7 +582,7 @@
     </div>
 </div>
 <!--审批页面-->
-<div class="modal fade" id="contractInfoForm2" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+<div class="modal fade" id="publicApproval" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -619,7 +595,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" id="confirm" data-dismiss="modal" onclick="confirm1()">
+                <button type="button" class="btn btn-primary" id="confirm" data-dismiss="modal" onclick="confirmApproval()">
                     确认审批
                 </button>
             </div>
@@ -628,20 +604,29 @@
 </div>
 <input type="file" name="excelPath" id="idExcel" style="display:none">
 <!--驳回页面-->
-<div class="modal fade" id="contractInfoForm3" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+<div class="modal fade" id="backApproval" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="sub-header text-center">驳回意见</h5>
             </div>
             <div class="row">
+                <div class="form-group">
+                    <label for="search-contactName" class="col-sm-2 control-label">驳回层级</label>
+                    <div class="col-xs-4">
+                        <input type="radio"  name="backLevel" placeholder="" value=1 checked="checked">发起人
+                        <input type="radio"  name="backLevel" placeholder=""   value=0>上一级
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="form-horizontal col-md-12">
-                    <textarea class="form-control" rows="5" id="backContent" style="min-width: 70%"></textarea>
+                    <textarea class="form-control" rows="5" id="backContent" style="width: 100%"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" id="back1" data-dismiss="modal" onclick="back1()">确认驳回
+                <button type="button" class="btn btn-primary" id="back1" data-dismiss="modal" onclick="confirmBack()">确认驳回
                 </button>
             </div>
         </div>

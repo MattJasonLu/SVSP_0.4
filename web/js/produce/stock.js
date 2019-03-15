@@ -351,6 +351,7 @@ function loadPageStocktList() {
         $.trim($("#searchContent").val(getApprovalId()));
         searchStock();
         window.localStorage.removeItem('approvalId');
+        $('.loader').hide();
     }else {
         $.ajax({
             type: "POST",                       // 方法类型
@@ -1405,11 +1406,11 @@ function contractSubmit() {
 
             items.each(function () {//遍历
                 var id = getContractId1(this);//获得合同编号
-                //console.log(id);
+                publicSubmit(id, getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
                 getContractById(id);
 
             });
-            alert("提交成功!");
+            // alert("提交成功!");
             location.reload();
         }
 
@@ -2310,5 +2311,37 @@ function showPerfect() {
 
 
 
+
+}
+
+/**
+ * 新审批
+ */
+function approval(item) {
+    var id=$(item).parent().parent().children("td").eq(1).html();
+    $('#ApprovalOrderId').text(id);
+    $.ajax({
+        type: "POST",
+        url: "getAllChildNode",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'orderId': id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                if(result.data!=null){
+                    setApprovalModal(result.data);
+                    $("#approval").modal('show');
+                }
+
+            }
+            else {
+                alert('未提交，无法审批！')
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
 
 }

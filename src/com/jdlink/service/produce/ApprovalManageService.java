@@ -4,6 +4,7 @@ import com.jdlink.domain.Approval.ApprovalNode;
 import com.jdlink.domain.Approval.ApprovalProcess;
 import com.jdlink.domain.Produce.Organization;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ApprovalManageService {
@@ -16,7 +17,7 @@ public interface ApprovalManageService {
 
     ApprovalNode getNodeByIdAndRoleId(int id,String roleId);
 
-    void updateApprovalById(String id,int stateId);
+    void updateApprovalById(String id, int stateId, String approvalAdvice, String userName, Date date);
 
     List<Organization> getUrlList();
 
@@ -50,5 +51,11 @@ public interface ApprovalManageService {
 
     ApprovalNode  getApprovalNodeByPNodeIdAndApprovalProcessId(int approvalP0rocessId,String approvalPId);
 
+    ApprovalNode selectSupremeNodeByOrderId(String orderId);
 
+    void publicBack(String orderId,int  roleId,String approvalAdvice,int radio);
+
+    ApprovalNode getApprovalNodeById(String id);
+
+    ApprovalProcess getApprovalProcessFlowByOrderId(String orderId);
 }
