@@ -1073,3 +1073,27 @@ function selectSupremeNodeByOrderId(orderId) {
     });
     return flag;
 }
+
+
+/*驳回公共方法*/
+function publicBack(orderId, roleId,approvalAdvice,radio) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "publicBack",              // url
+        data: {"orderId": orderId, "roleId": roleId,"approvalAdvice":approvalAdvice,"radio":radio},
+        cache: false,
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                alert(result.message);
+                console.log(data);
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+}

@@ -1,5 +1,6 @@
 package com.jdlink.service.produce.impl;
 
+import com.jdlink.controller.ApprovalManageController;
 import com.jdlink.domain.Approval.ApprovalNode;
 import com.jdlink.domain.Approval.ApprovalProcess;
 import com.jdlink.domain.Produce.Organization;
@@ -90,6 +91,26 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
 
     @Override
     public void publicSubmit(String orderId, String userName, String url,String roleId) {
+        //首先先根据订单号找出是否存在审批流
+        ApprovalProcess approvalProcess4=approvalManageMapper. getApprovalProcessFlowByOrderId(orderId);
+          if(approvalProcess4!=null){
+              //直接更新状态
+              List<ApprovalNode> approvalNodeList=approvalProcess4.getApprovalNodeList();
+                   for(int i=0;i<approvalNodeList.size();i++){
+                       //首先状态都为3
+                       approvalManageMapper.updateApprovalById(approvalNodeList.get(i).getId(),3,approvalNodeList.get(i).getApprovalAdvice(),approvalNodeList.get(i).getUserName(),null);
+                   }
+                   //找出本节点
+              ApprovalNode approvalNode=approvalManageMapper.getApprovalNodeByNullApprovalPId(approvalProcess4.getId(),Integer.parseInt(roleId));
+              approvalManageMapper.updateApprovalById(approvalNode.getId(),5,"",userName,new Date());
+              //父节点审批中
+              ApprovalNode approvalNode1=approvalManageMapper.getApprovalNodeById(approvalNode.getApprovalPId());
+              approvalManageMapper.updateApprovalById(approvalNode1.getId(),2,approvalNode1.getApprovalAdvice(),approvalNode1.getUserName(),null);
+          }
+          else {
+
+
+
         //根据url找出审批流对象
         ApprovalProcess approvalProcess=approvalManageMapper.getModelProcessByUrl(url);
         //创建实际的审批流对象设置相关的信息 1订单号,2创建人
@@ -132,8 +153,9 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
         ApprovalNode approvalNode=approvalManageMapper.getApprovalNodeByNullApprovalPId(approvalProcess2.getId(),Integer.parseInt(roleId));
         approvalManageMapper.updateApprovalById(approvalNode.getId(),5,"",userName,new Date());
         //父节点审批中
-        approvalManageMapper.updateApprovalById(approvalNode.getApprovalPId(),2,"","",null);
-
+        ApprovalNode approvalNode1=approvalManageMapper.getApprovalNodeById(approvalNode.getApprovalPId());
+        approvalManageMapper.updateApprovalById(approvalNode1.getId(),2,approvalNode1.getApprovalAdvice(),approvalNode1.getUserName(),null);
+          }
     }
 
     @Override
@@ -181,5 +203,63 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
         return approvalManageMapper.selectSupremeNodeByOrderId(orderId);
     }
 
+    @Override
+    public void publicBack(String orderId, int roleId, String approvalAdvice, int radio) {
+        //判断驳回的层级来做
+        //1发起人，前面的节点状态改为重新审批，发起人的状态改为重新提交，当前节点变为驳回
+        //2上一级 前节点变为驳回 上一级变为重新提交
+        ApprovalNode approvalNode=approvalManageMapper.getApprovalNodeByOrderIdAndRoleId(orderId,roleId);
+        if(radio==1){
+
+                List<ApprovalNode> approvalNodeList=getAllChildApprovalNode(approvalNode);
+               //是倒叙的，发起者是最后一个
+                for(int x=0;x<approvalNodeList.size();x++){
+                    if(x<approvalNodeList.size()-1){
+                      //子节点更新
+                        approvalManageMapper.updateApprovalById(approvalNodeList.get(x).getId(),7,approvalNodeList.get(x).getApprovalAdvice(),approvalNodeList.get(x).getUserName(),new Date());
+                    }
+                    else {
+                        //根节点更新
+                        approvalManageMapper.updateApprovalById(approvalNodeList.get(x).getId(),6,approvalNodeList.get(x).getApprovalAdvice(),approvalNodeList.get(x).getUserName(),new Date());
+                    }
+                }
+
+        }
+        if(radio==0){//上一级
+            List<ApprovalNode> approvalNodeList=getAllChildApprovalNode(approvalNode);
+            //上一级就是第一个
+            approvalManageMapper.updateApprovalById(approvalNodeList.get(0).getId(),7,approvalNodeList.get(0).getApprovalAdvice(),approvalNodeList.get(0).getUserName(),new Date());
+        }
+
+        //最后更新本节点的装填为驳回0
+        approvalManageMapper.updateApprovalById(approvalNode.getId(),0,approvalAdvice,approvalNode.getUserName(),new Date());
+
+    }
+
+    @Override
+    public ApprovalNode getApprovalNodeById(String id) {
+        return approvalManageMapper.getApprovalNodeById(id);
+    }
+
+    @Override
+    public ApprovalProcess getApprovalProcessFlowByOrderId(String orderId) {
+        return approvalManageMapper.getApprovalProcessFlowByOrderId(orderId);
+    }
+
+    /*根据当前节点获取所有的子节点*/
+    public   List<ApprovalNode> getAllChildApprovalNode(ApprovalNode approvalNode){
+        int approvalProcessId=approvalNode.getApprovalProcessId();//审批流主键
+        List<ApprovalNode> approvalNodeList=new ArrayList<>();
+//        approvalNodeList.add(approvalNode);
+        ApprovalNode approvalNode1=approvalNode;
+        ApprovalNode approvalNode2=null;
+        while (approvalManageMapper.getApprovalNodeByPNodeIdAndApprovalProcessId(approvalProcessId,approvalNode1.getId())!=null){
+            approvalNode2=approvalManageMapper.getApprovalNodeByPNodeIdAndApprovalProcessId(approvalProcessId,approvalNode1.getId());
+            approvalNodeList.add(approvalNode2);
+            approvalNode1=approvalNode2;
+        }
+
+        return approvalNodeList;
+    }
 
 }

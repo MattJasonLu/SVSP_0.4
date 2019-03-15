@@ -85,8 +85,14 @@ public class ApprovalManageController {
                 //在根据角色编号和审批流主键找出相应的节点
                 ApprovalNode approvalNode = approvalManageService.getNodeByIdAndRoleId(approvalProcess.getId(), roleId);
                 //更新审批节点新父节点状态为审批中
-                approvalManageService.updateApprovalById(approvalNode.getApprovalPId(), 2,"","",null);
-                //更新本节点新父节点状态为通过
+                //1找到父节点
+               ApprovalNode approvalNode1=approvalManageService.getApprovalNodeById(approvalNode.getApprovalPId());
+               if(approvalNode1!=null){
+                   //假设有父节点跟新父节点状态为审批中
+                   approvalManageService.updateApprovalById(approvalNode1.getId(), 2,approvalNode1.getApprovalAdvice(),approvalNode1.getUserName(),null);
+               }
+
+                //更新本节点状态为通过
                 approvalManageService.updateApprovalById(approvalNode.getId(), 1,approvalAdvice,userName,new Date());
                 res.put("status", "success");
                 res.put("message", "审批通过");
@@ -331,7 +337,7 @@ public class ApprovalManageController {
     public   List<ApprovalNode> getAllChildApprovalNode(ApprovalNode approvalNode){
         int approvalProcessId=approvalNode.getApprovalProcessId();//审批流主键
         List<ApprovalNode> approvalNodeList=new ArrayList<>();
-        approvalNodeList.add(approvalNode);
+//        approvalNodeList.add(approvalNode);
            ApprovalNode approvalNode1=approvalNode;
         ApprovalNode approvalNode2=null;
         while (approvalManageService.getApprovalNodeByPNodeIdAndApprovalProcessId(approvalProcessId,approvalNode1.getId())!=null){
@@ -377,5 +383,25 @@ public class ApprovalManageController {
 
         }
 
+    }
+
+    /*驳回公共方法*/
+    @RequestMapping("publicBack")
+    @ResponseBody
+    public String publicBack(String orderId,int  roleId,String approvalAdvice,int radio){
+        JSONObject res=new JSONObject();
+
+        try {
+            approvalManageService.publicBack(orderId,roleId,approvalAdvice,radio);
+            res.put("status", "success");
+            res.put("message", "驳回成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "驳回失败");
+        }
+
+        return res.toString();
     }
 }

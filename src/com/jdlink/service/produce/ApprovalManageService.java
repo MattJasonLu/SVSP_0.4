@@ -52,4 +52,10 @@ public interface ApprovalManageService {
     ApprovalNode  getApprovalNodeByPNodeIdAndApprovalProcessId(int approvalP0rocessId,String approvalPId);
 
     ApprovalNode selectSupremeNodeByOrderId(String orderId);
+
+    void publicBack(String orderId,int  roleId,String approvalAdvice,int radio);
+
+    ApprovalNode getApprovalNodeById(String id);
+
+    ApprovalProcess getApprovalProcessFlowByOrderId(String orderId);
 }
