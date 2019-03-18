@@ -24,4 +24,10 @@ public interface EmergencyMaterialService {
     int searchEmergencyMaterialCount(EmergencyMaterial emergencyMaterial);
 
     void approvalEmergencyMaterial(String planId);
+
+    void setEmergencyTSToExamine(String planId);
+
+    void setEmergencyToApproval(String planId);
+
+    void setEmergencyToBack(String planId);
 }

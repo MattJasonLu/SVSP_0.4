@@ -573,4 +573,24 @@ public class PRWayBillController {
         }
         return res.toString();
     }
+
+    /*状态变为待提交*/
+    @RequestMapping("toSubmitWayBill")
+    @ResponseBody
+    public String toSubmitWayBill(String id){
+        JSONObject res=new JSONObject();
+
+        try {
+            wayBillService.toSubmitWayBill(id);
+            res.put("status", "success");
+            res.put("message", "提交成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "提交失败");
+        }
+
+        return res.toString();
+    }
 }

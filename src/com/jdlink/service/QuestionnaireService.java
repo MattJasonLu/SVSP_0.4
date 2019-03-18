@@ -25,4 +25,6 @@ public interface QuestionnaireService {
     void back(Questionnaire questionnaire);
     void examine(Questionnaire questionnaire);
     List<Questionnaire> searchQuestionnaireManage(Questionnaire questionnaire);
+    void submitQuestionnaire(String questionnaireId);
+    void toSubmitQuestionnaire(String questionnaireId);
 }

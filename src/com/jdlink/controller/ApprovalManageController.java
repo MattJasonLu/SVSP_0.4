@@ -102,7 +102,7 @@ public class ApprovalManageController {
                    res.put("message", "审批通过");
                }
                else {
-                   res.put("message", "下级人员为审批通过，无法审批！");
+                   res.put("message", "下级人员未审批通过或提交，无法审批！");
                }
 
                 res.put("status", "success");

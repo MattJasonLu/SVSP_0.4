@@ -792,7 +792,7 @@ function submit(item) {
                 success: function (result) {
                     if (result.status == "success") {
                         alert("提交成功！");
-                        window.location.reload();
+                        // window.location.reload();
                     } else {
                         alert(result.message);
                     }
@@ -802,6 +802,8 @@ function submit(item) {
                     alert("服务器异常!");
                 }
             });
+        // initSubmitFName(submitQuestionnaire.name);
+        publicSubmit(id,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
     } else if (state == '审批中') {
         alert("单据审批中，不可提交！");
     } else if (state == '已作废') {
@@ -824,7 +826,7 @@ function examination(item) {
     }
 }
 
-function approval() {
+function approvalNO() {
     $('#contractInfoForm2').modal('show');
     $("#passContent").val($("#advice").val());
 }
@@ -837,12 +839,12 @@ function reject() {
 /**
  * 审批通过
  * */
-function approval1() {
+function approval1(id) {
     console.log($("#advice").val());
     console.log($("#passContent").val());
     var advice = $("#passContent").val();
     var wayBill = {};
-    wayBill.id = wayBillId;
+    wayBill.id = id;
     wayBill.advice = advice;
     $.ajax({
         type: "POST",                            // 方法类型
@@ -874,10 +876,10 @@ function approval1() {
 /**
  * 审批驳回
  * */
-function reject1() {
+function reject1(id) {
     var advice = $("#backContent").val();
     var wayBill = {};
-    wayBill.id = wayBillId;
+    wayBill.id = id;
     wayBill.advice = advice;
     $.ajax({
         type: "POST",                            // 方法类型
@@ -2001,4 +2003,61 @@ function autoSetAmountAndPrice(item) {
          amountInput.val((amount / 1000).toFixed(3));
          priceInput.val((price * 1000).toFixed(2));
      }
+}
+
+function toSubmitWayBill(id) {
+    $.ajax({
+        type: "POST",
+        url: "toSubmitWayBill",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'id': id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+
+            }
+            else {
+                alert('未提交，无法审批！')
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
+}
+
+/**
+ * 新审批
+ */
+function approval(item) {
+    initSubmitFName(toSubmitWayBill.name);
+    initApprovalFName(approval1.name);
+    initBakcFName(reject1.name);
+    var id=$(item).parent().parent().children("td").eq(1).html();
+    $('#ApprovalOrderId').text(id);
+    $.ajax({
+        type: "POST",
+        url: "getAllChildNode",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'orderId': id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                if(result.data!=null){
+                    setApprovalModal(result.data);
+                    $("#approval").modal('show');
+                }
+
+            }
+            else {
+                alert('未提交，无法审批！')
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
+
 }

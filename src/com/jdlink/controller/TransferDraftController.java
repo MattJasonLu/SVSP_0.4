@@ -231,6 +231,44 @@ public class TransferDraftController {
         return res.toString();
     }
 
+    /*驳回*/
+    @RequestMapping("setTransferDraftToBack")
+    @ResponseBody
+    public String setTransferDraftToBack(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            // 作废转移联单
+            transferDraftService.setStateToBack(id);
+            res.put("status", "success");
+            res.put("message", "提交成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "提交失败");
+        }
+        return res.toString();
+    }
+
+    /*审批*/
+    @RequestMapping("setTransferDraftToApproval")
+    @ResponseBody
+    public String setTransferDraftToApproval(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            // 作废转移联单
+            transferDraftService.setStateToApproval(id);
+            res.put("status", "success");
+            res.put("message", "提交成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "提交失败");
+        }
+        return res.toString();
+    }
+
+
+
     /**
      * 获取联单数据
      *

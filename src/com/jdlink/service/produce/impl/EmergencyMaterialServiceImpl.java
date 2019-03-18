@@ -58,4 +58,19 @@ public class EmergencyMaterialServiceImpl implements EmergencyMaterialService {
     public void approvalEmergencyMaterial(String planId) {
         emergencyMaterialMapper.approvalEmergencyMaterial(planId);
     }
+
+    @Override
+    public void setEmergencyTSToExamine(String planId) {
+        emergencyMaterialMapper.setEmergencyTSToExamine(planId);
+    }
+
+    @Override
+    public void setEmergencyToApproval(String planId) {
+        emergencyMaterialMapper.setEmergencyToApproval(planId);
+    }
+
+    @Override
+    public void setEmergencyToBack(String planId) {
+        emergencyMaterialMapper.setEmergencyToBack(planId);
+    }
 }

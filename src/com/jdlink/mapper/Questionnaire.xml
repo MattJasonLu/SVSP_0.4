@@ -42,6 +42,7 @@
         <result property="author" column="author"/>
         <result property="time" column="time"/>
         <association property="client" column="clientId" select="getClient"/>
+        <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"></association>
         <collection property="rawWastesList" select="getRawWastes" column="questionnaireId"
                     ofType="com.jdlink.domain.RawWastes" javaType="ArrayList"/>
         <collection property="wasteInclusionTypeList" select="getInclusionType" column="questionnaireId"
@@ -51,14 +52,16 @@
         <collection property="deriveWastesList" select="getDeriveWastes" column="questionnaireId"
                     ofType="com.jdlink.domain.DeriveWastes" javaType="ArrayList"/>
     </resultMap>
-
+<select id="getCheckStateItem" resultType="CheckStateItem">
+    select * from datadictionaryitem where  dataDictionaryItemId=#{checkStateId};
+</select>
     <select id="getClient" resultType="Client">
         select * from client where clientId=#{clientId};
     </select>
 
     <insert id="add" parameterType="Questionnaire" >
-        insert into questionnaire ( questionnaireId, clientId, time, author, state, nowTime)
-        values ( #{questionnaireId}, #{client.clientId}, #{time}, #{author}, #{applyState}, NOW());
+        insert into questionnaire ( questionnaireId, clientId, time, author, state, nowTime,checkStateId)
+        values ( #{questionnaireId}, #{client.clientId}, #{time}, #{author}, #{applyState}, NOW(),56);
         <if test="rawWastesList.size() > 0">
             <foreach collection="rawWastesList" item="rawWastes" index="index">
             insert into r_questionnaireAndRawWastes (questionnaireId,rawWastesId)
@@ -279,7 +282,7 @@
         wasteName6=#{wasteName6}, otherRisk=#{otherRisk}, acceptIntend2=#{acceptIntend2}, unacceptReason2=#{unacceptReason2},
         conditionReason2=#{conditionReason2}, isStore=#{isStore}, storeReason=#{storeReason}, isProcess=#{isProcess},
         processReason=#{processReason}, acceptIntend3=#{acceptIntend3}, unacceptReason3=#{unacceptReason3}, conditionReason3=#{conditionReason3},nowTime=NOW(),
-        isExamined=TRUE
+        isExamined=TRUE,checkStateId=76
         WHERE questionnaireId=#{questionnaireId};
     </update>
 
@@ -294,7 +297,7 @@
         wasteName6=#{wasteName6}, otherRisk=#{otherRisk}, acceptIntend2=#{acceptIntend2}, unacceptReason2=#{unacceptReason2},
         conditionReason2=#{conditionReason2}, isStore=#{isStore}, storeReason=#{storeReason}, isProcess=#{isProcess},
         processReason=#{processReason}, acceptIntend3=#{acceptIntend3}, unacceptReason3=#{unacceptReason3}, conditionReason3=#{conditionReason3},nowTime=NOW(),
-        isExamined=TRUE
+        isExamined=TRUE,checkStateId=66
         WHERE questionnaireId=#{questionnaireId};
     </update>
 
@@ -308,7 +311,7 @@
 
     <!--数据分页-->
    <select id="listPage" resultMap="QuestionnaireRM">
-        SELECT * FROM questionnaire where state != 'Backed'
+        SELECT * FROM questionnaire
         ORDER BY questionnaire.time DESC
         <if test="start != null and count != null">
          limit #{start}, #{count};
@@ -362,13 +365,25 @@
           <if test="time!=null and time!=''">
               and questionnaire.time Like binary "%"#{time}"%"
           </if>
-          <if test="true">
-              and state != 'Backed'
-          </if>
+          <!--<if test="true">-->
+              <!--and state != 'Backed'-->
+          <!--</if>-->
       </where>
         order by questionnaire.time desc
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
     </select>
+
+  <!--提交调查表-->
+    <update id="submitQuestionnaire" parameterType="String">
+        update questionnaire set checkStateId=63 where questionnaireId=#{questionnaireId};
+    </update>
+
+    <!--驳回变为待提交-->
+    <update id="toSubmitQuestionnaire" parameterType="String">
+        update questionnaire set checkStateId=64
+      where questionnaireId=#{questionnaireId};
+    </update>
+
 </mapper>

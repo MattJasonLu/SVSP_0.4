@@ -784,6 +784,7 @@ function submit(item) {
 }
 
 function submit1(id) {
+    publicSubmit(id,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
     $.ajax({
         type: "POST",
         url: "submitProductionPlan",
@@ -844,9 +845,38 @@ function examination(item) {
     $("#approval").modal('show')
 }
 
-function approval() {
-    $('#approvalForm2').modal('show');
-    $("#passContent").val($("#advice").val());
+/**
+ * 新审批
+ */
+function approval(item) {
+    initApprovalFName(approval1.name);
+    initBakcFName(reject1.name);
+    var id=$(item).parent().parent().children("td").eq(1).html();
+    $('#ApprovalOrderId').text(id);
+    $.ajax({
+        type: "POST",
+        url: "getAllChildNode",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'orderId': id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                if(result.data!=null){
+                    setApprovalModal(result.data);
+                    $("#approval").modal('show');
+                }
+
+            }
+            else {
+                alert('未提交，无法审批！')
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
+
 }
 
 function reject() {
@@ -858,12 +888,12 @@ function reject() {
  * 审批通过
  *
  * */
-function approval1() {
+function approval1(id) {
     console.log($("#advice").val());
     console.log($("#passContent").val());
     var advice = $("#passContent").val();
     var productionPlan = {};
-    productionPlan.id = productionPlanId;
+    productionPlan.id = id;
     productionPlan.advice = advice;
     $.ajax({
         type: "POST",                            // 方法类型
@@ -895,10 +925,10 @@ function approval1() {
 /**
  * 审批驳回
  * */
-function reject1() {
+function reject1(id) {
     var advice = $("#backContent").val();
     var productionPlan = {};
-    productionPlan.id = productionPlanId;
+    productionPlan.id = id;
     productionPlan.advice = advice;
     $.ajax({
         type: "POST",                            // 方法类型

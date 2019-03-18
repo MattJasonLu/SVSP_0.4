@@ -36,5 +36,6 @@ public interface WayBillMapper {
     void deleteItem(String id);
     void updateSalesmanNameByCompanyName(@Param("salesmanName") String salesmanName,@Param("companyName") String companyName);
     WayBill getWayBillByContractId(String id);
+    void toSubmitWayBill(String id);
 }
 

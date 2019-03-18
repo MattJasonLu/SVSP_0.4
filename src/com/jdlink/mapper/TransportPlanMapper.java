@@ -53,4 +53,6 @@ public interface TransportPlanMapper {
      */
     int searchCount(TransportPlan transportPlan);
 
+    void setStateBack(String id);
+
 }
