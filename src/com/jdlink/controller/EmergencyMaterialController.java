@@ -204,4 +204,65 @@ public class EmergencyMaterialController {
 
         return res.toString();
     }
+
+    /*提交*/
+    @RequestMapping("setEmergencyTSToExamine")
+    @ResponseBody
+    public String setEmergencyTSToExamine(String planId){
+        JSONObject res=new JSONObject();
+
+        try {
+            emergencyMaterialService.setEmergencyTSToExamine(planId);
+            res.put("status", "success");
+            res.put("message", "提交成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "提交失败");
+        }
+
+        return res.toString();
+    }
+
+    /*审批*/
+    @RequestMapping("setEmergencyToApproval")
+    @ResponseBody
+    public String setEmergencyToApproval(String planId){
+        JSONObject res=new JSONObject();
+
+        try {
+            emergencyMaterialService.setEmergencyToApproval(planId);
+            res.put("status", "success");
+            res.put("message", "审批成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "审批失败");
+        }
+
+        return res.toString();
+    }
+
+
+    /*驳回*/
+    @RequestMapping("setEmergencyToBack")
+    @ResponseBody
+    public String setEmergencyToBack(String planId){
+        JSONObject res=new JSONObject();
+
+        try {
+            emergencyMaterialService.setEmergencyToBack(planId);
+            res.put("status", "success");
+            res.put("message", "驳回成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "驳回失败");
+        }
+
+        return res.toString();
+    }
 }

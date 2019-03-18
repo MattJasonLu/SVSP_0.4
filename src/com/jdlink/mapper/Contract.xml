@@ -147,7 +147,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         UPDATE t_contract SET checkState='Invalid', nowTime=NOW() WHERE contractId=#{contractId};
     </update>
     <update id="toSubmit" parameterType="String">
-        UPDATE t_contract SET checkStateId=67, nowTime=NOW() WHERE contractId=#{id} ;
+        UPDATE t_contract SET checkStateId=63, nowTime=NOW() WHERE contractId=#{id} ;
     </update>
     <select id="list" resultMap="ContractRM">
         select * from t_contract order by year desc ;

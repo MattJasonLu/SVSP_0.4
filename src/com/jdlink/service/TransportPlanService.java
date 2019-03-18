@@ -53,4 +53,7 @@ public interface TransportPlanService {
      * @return 查询数量
      */
     int searchCount(TransportPlan transportPlan);
+
+
+    void setStateBack(String id);
 }

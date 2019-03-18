@@ -423,6 +423,7 @@ function searchData() {
             if (result !== undefined && result.status === "success") {
                 console.log(result);
                 setPageClone(result.data);
+                setPageCloneAfter(pageNumber);        // 重新设置页码
             } else {
                 alert(result.message);
             }
@@ -668,20 +669,101 @@ function setInvalid(e) {    //已作废
         });
     }
 }
+/*审批*/
+function setApproval(id) {
+    $.ajax({
+        type: "POST",
+        url: "setTransferDraftToApproval",
+        async: false,
+        dataType: "json",
+        data: {
+            id: id
+        },
+        success: function (result) {
+            if (result !== undefined && result.status === "success") {
+                console.log(result);
+                alert(result.message);
+                window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
+}
+/*驳回*/
+function setBack(id) {
+    $.ajax({
+        type: "POST",
+        url: "setTransferDraftToBack",
+        async: false,
+        dataType: "json",
+        data: {
+            id: id
+        },
+        success: function (result) {
+            if (result !== undefined && result.status === "success") {
+                console.log(result);
+                alert(result.message);
+                window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
+}
 
 /**
- * 审批
+ * 新审批
  */
-function approval() {
-    $("#approval2").modal('show')
+function approval(item) {
+    initApprovalFName(setApproval.name);
+    initBakcFName(setBack.name);
+    var id=$(item).parent().parent().children("td").eq(4).html();
+    $('#ApprovalOrderId').text(id);
+    $.ajax({
+        type: "POST",
+        url: "getAllChildNode",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'orderId': id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                if(result.data!=null){
+                    setApprovalModal(result.data);
+                    $("#approval").modal('show');
+                }
+
+            }
+            else {
+                alert('未提交，无法审批！')
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
+
 }
+
+
+
 /**
  * 提交转移联单
  */
 function setSubmit(e) {    //已提交
     var r = confirm("确认提交该联单吗？");
     if (r) {
-        var id = getIdByMenu(e);
+        var id = $(e).parent().parent().children('td').eq(4).html();
+        publicSubmit(id,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
         $.ajax({
             type: "POST",
             url: "setTransferDraftToExamine",

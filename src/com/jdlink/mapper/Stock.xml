@@ -79,7 +79,7 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
         <!--</if>-->
     </update>
     <update id="submitStock" parameterType="String">
-        update t_pr_stock set  checkStateId=67 ,nowTime=NOW() where stockId=#{stockId};
+        update t_pr_stock set  checkStateId=63 ,nowTime=NOW() where stockId=#{stockId};
     </update>
     <update id="cancelStock" parameterType="String">
           update t_pr_stock set  checkStateId=69 ,nowTime=NOW() where stockId=#{stockId};
@@ -163,7 +163,7 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
         </where>
     </select>
     <update id="opinion" parameterType="Stock">
-    update t_pr_stock set opinion=#{1},checkStateId=68,nowTime=NOW() where stockId=#{0};
+    update t_pr_stock set opinion=#{1},checkStateId=76,nowTime=NOW() where stockId=#{0};
    </update>
     <update id="back" parameterType="Stock">
         update t_pr_stock set checkStateId=66,backContent=#{1},nowTime=NOW() where stockId=#{0}

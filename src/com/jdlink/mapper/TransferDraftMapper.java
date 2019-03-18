@@ -72,4 +72,7 @@ public interface TransferDraftMapper {
      */
     int searchCount(TransferDraft transferDraft);
 
+    void setStateToApproval(String id);
+
+    void setStateToBack(String id);
 }

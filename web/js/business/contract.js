@@ -1156,42 +1156,46 @@ function gettime(obj) {
 
 function contractSubmit() {
     //在此提交
-    var items = $("input[name='select']:checked");//判断复选框是否选中
-    if (items.length > 0) {
+    if(confirm("确定提交?")){
+        //点击确定后操作
+        var items = $("input[name='select']:checked");//判断复选框是否选中
+        if (items.length > 0) {
+            items.each(function () {//遍历
+                var id = getContractId1(this);//获得合同编号
+                publicSubmit(id, getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
+                getContractById(id);
 
-        function getContractById(id) {
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "submitContract1",              // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                dataType: "json",
-                data: {
-                    'id': id
-                },
-                success: function (result) {
-                    if (result != undefined) {
-                    } else {
-                        console.log("fail: " + result);
-                    }
-                },
-                error: function (result) {
-                    console.log("error: " + result);
-                }
             });
+            function getContractById(id) {
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "submitContract1",              // url
+                    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    dataType: "json",
+                    data: {
+                        'id': id
+                    },
+                    success: function (result) {
+                        if (result != undefined) {
+                        } else {
+                            console.log("fail: " + result);
+                        }
+                    },
+                    error: function (result) {
+                        console.log("error: " + result);
+                    }
+                });
+            }
+
+
+            alert("提交成功!");
+            // window.location.reload()
         }
-
-        items.each(function () {//遍历
-            var id = getContractId1(this);//获得合同编号
-            publicSubmit(id, getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
-            getContractById(id);
-
-        });
-        alert("提交成功!");
-      window.location.reload()
+        else {
+            alert("请勾选要提交的合同！")
+        }
     }
-    else {
-        alert("请勾选要提交的合同！")
-    }
+
 }
 
 function getContractId1(item) {
@@ -6875,7 +6879,7 @@ function cancel(item) {
 
 
 //把按钮功能分出来做这个是审批
-function confirm1() {
+function confirm1(id) {
     opinion = $('#advice').val();
     //console.log(opinion);
     //1获取文本框的值
@@ -6884,7 +6888,7 @@ function confirm1() {
         url: "approvalContract",
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data: {'contractId': contractId, 'opinion': opinion,},
+        data: {'contractId': id, 'opinion': opinion,},
         success: function (result) {
             var obj = eval(result);
             if (obj.state == "success") {
@@ -6901,7 +6905,7 @@ function confirm1() {
     });
 }
 
-function back1() {
+function back1(id) {
     backContent = $('#backContent').val();
     //设置状态驳回
     $.ajax({
@@ -6909,7 +6913,7 @@ function back1() {
         url: "backContract",
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data: {'contractId': contractId, 'backContent': backContent},
+        data: {'contractId': id, 'backContent': backContent},
         success: function (result) {
             var obj = eval(result);
             if (obj.state == "success") {

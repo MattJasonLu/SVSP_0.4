@@ -691,7 +691,17 @@
 
     <!--提交该入库单-->
     <update id="setInboundOrderStateSubmit" parameterType="String">
-        UPDATE t_pl_inboundorder SET checkState='ToExamine', checkStateId=67 WHERE inboundOrderId=#{inboundOrderId};
+        UPDATE t_pl_inboundorder SET checkState='ToExamine', checkStateId=63 WHERE inboundOrderId=#{inboundOrderId};
+    </update>
+
+    <!--审批-->
+    <update id="setInboundOrderStateApproval" parameterType="String">
+        UPDATE t_pl_inboundorder SET  checkStateId=76 WHERE inboundOrderId=#{inboundOrderId};
+    </update>
+
+    <!--驳回-->
+    <update id="setInboundOrderStateBack" parameterType="String">
+        UPDATE t_pl_inboundorder SET  checkStateId=66 WHERE inboundOrderId=#{inboundOrderId};
     </update>
 
     <!--获取入库单明细列表-->

@@ -70,4 +70,8 @@ public interface TransferDraftService {
      * @return 查询数量
      */
     int searchCount(TransferDraft transferDraft);
+
+    void setStateToApproval(String id);
+
+    void setStateToBack(String id);
 }

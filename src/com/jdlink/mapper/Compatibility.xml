@@ -62,7 +62,7 @@
     </update>
 
     <update id="submit" parameterType="String">
-        update t_pr_pw set checkStateId=67  where compatibilityId=#{compatibilityId}
+        update t_pr_pw set checkStateId=63  where compatibilityId=#{compatibilityId}
     </update>
 
     <update id="approvalCompatibility" >

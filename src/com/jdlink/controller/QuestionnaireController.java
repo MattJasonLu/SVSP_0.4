@@ -527,6 +527,24 @@ public class QuestionnaireController {
         return res.toString();
     }
 
+    /*提交调查表*/
+    @RequestMapping("submitQuestionnaire")
+    @ResponseBody
+    public String submitQuestionnaire(String orderId){
+        JSONObject res=new JSONObject();
+
+        try {
+            questionnaireService.submitQuestionnaire(orderId);
+            res.put("status", "success");
+            res.put("message", "提交成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "提交失败");
+        }
+        return res.toString();
+    }
     /**
      * 获取问卷编号
      *
@@ -639,9 +657,7 @@ public class QuestionnaireController {
     public String examineQuestionnaire(@RequestBody Questionnaire questionnaire) {
         JSONObject res = new JSONObject();
         try {
-            Questionnaire questionnaire1 = questionnaireService.getById(questionnaire.getQuestionnaireId());
-            if (questionnaire1.getApplyState() == ApplyState.ToSignIn) questionnaireService.examine(questionnaire);
-            else throw new RuntimeException("已签收");
+            questionnaireService.examine(questionnaire);
             res.put("status", "success");
             res.put("message", "审批成功!");
         } catch (RuntimeException e) {
@@ -667,9 +683,6 @@ public class QuestionnaireController {
     public String backQuestionnaire(@RequestBody Questionnaire questionnaire) {
         JSONObject res = new JSONObject();
         try {
-            Questionnaire oldQuestionnaire = questionnaireService.getById(questionnaire.getQuestionnaireId());
-            if (oldQuestionnaire.getApplyState() != null && oldQuestionnaire.getApplyState() == ApplyState.ToSignIn)
-                throw new RuntimeException("未审批");
             questionnaireService.back(questionnaire);
             res.put("status", "success");
             res.put("message", "驳回成功!");
@@ -1503,6 +1516,25 @@ public class QuestionnaireController {
         }
         return res.toString();
 
+    }
+
+    @RequestMapping("toSubmitQuestionnaire")
+    @ResponseBody
+    public String toSubmitQuestionnaire(String questionnaireId){
+        JSONObject res=new JSONObject();
+
+        try {
+            questionnaireService.toSubmitQuestionnaire(questionnaireId);
+            res.put("status", "success");
+            res.put("message", "更新成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+
+        return res.toString();
     }
 
 }

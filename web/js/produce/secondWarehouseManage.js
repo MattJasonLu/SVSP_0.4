@@ -1000,13 +1000,10 @@ function setInvalid(e) {    //已作废
     }
 }
 
-/**
- * 审批
- * @param item
- */
-function approval() {
-    $("#approval2").modal('show')
-}
+/*审批方法*/
+/*驳回方法*/
+
+
 
 /**
  * 提交
@@ -1016,6 +1013,7 @@ function setSubmit(e) {
     var r = confirm("确认提交该入库单吗？");
     if (r) {
         var id = getIdByMenu(e);
+        publicSubmit(id,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
         $.ajax({
             type: "POST",
             url: "setInboundOrderStateSubmit",
@@ -1475,3 +1473,81 @@ $(window).on('load', function () {
         dropupAuto:false
     });
 });
+
+function setInboundOrderStateApproval(id) {
+    $.ajax({
+        type: "POST",
+        url: "setInboundOrderStateApproval",
+        async: false,
+        dataType: "json",
+        data: {
+            id: id
+        },
+        success: function (result) {
+            if (result !== undefined && result.status === "success") {
+               alert(result.message)
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+}
+
+function setInboundOrderStateBack(id) {
+    $.ajax({
+        type: "POST",
+        url: "setInboundOrderStateBack",
+        async: false,
+        dataType: "json",
+        data: {
+            id: id
+        },
+        success: function (result) {
+            if (result !== undefined && result.status === "success") {
+                alert(result.message)
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+}
+
+/**
+ * 新审批
+ */
+function approval(item) {
+    initApprovalFName(setInboundOrderStateApproval.name);
+    initBakcFName(setInboundOrderStateBack.name);
+    var id=$(item).parent().parent().children("td").eq(1).html();
+    $('#ApprovalOrderId').text(id);
+    $.ajax({
+        type: "POST",
+        url: "getAllChildNode",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'orderId': id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                if(result.data!=null){
+                    setApprovalModal(result.data);
+                    $("#approval").modal('show');
+                }
+
+            }
+            else {
+                alert('未提交，无法审批！')
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
+
+}

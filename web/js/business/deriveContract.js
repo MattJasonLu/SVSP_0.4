@@ -660,6 +660,8 @@ function addContract() {
  * 新审批
  */
 function approval(item) {
+    initApprovalFName(confirm1.name);
+    initBakcFName(back1.name);
     var id=$(item).parent().parent().children("td").eq(1).html();
     $('#ApprovalOrderId').text(id);
     $.ajax({

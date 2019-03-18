@@ -147,4 +147,9 @@ public class WayBillServiceImpl implements WayBillService {
     @Override
     public WayBill getWayBillByContractId(String id){ return wayBillMapper.getWayBillByContractId(id); }
 
+    @Override
+    public void toSubmitWayBill(String id) {
+        wayBillMapper.toSubmitWayBill(id);
+    }
+
 }

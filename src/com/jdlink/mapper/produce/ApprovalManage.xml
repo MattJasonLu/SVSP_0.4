@@ -168,8 +168,7 @@
     <if test="approvalNodeList.size()>0">
         <if test="approvalNodeList[0].roleId!=null and approvalNodeList[0].roleId!=''">
             select a.id,a.order_id,a.url,b.name as urlName,c.approval_state as type from t_approval_process a join t_approval_url b on a.url=b.url join t_approval_node c on(a.id=c.approval_process_id and role_id=#{approvalNodeList[0].roleId}) where a.id in
-            (select approval_process_id from t_approval_node where role_id=#{approvalNodeList[0].roleId} and approval_state in(2,6,7))
-
+            (select approval_process_id from t_approval_node where role_id=#{approvalNodeList[0].roleId} and approval_state in(2,6,7)) order  by a.creation_date desc
         </if>
         <if test="page.start != null and page.count != null">
             limit #{page.start}, #{page.count}

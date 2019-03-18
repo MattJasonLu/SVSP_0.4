@@ -91,4 +91,14 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         return questionnaireMapper.searchQuestionnaireManage(questionnaire);
     }
 
+    @Override
+    public void submitQuestionnaire(String questionnaireId) {
+        questionnaireMapper.submitQuestionnaire(questionnaireId);
+    }
+
+    @Override
+    public void toSubmitQuestionnaire(String questionnaireId) {
+        questionnaireMapper.toSubmitQuestionnaire(questionnaireId);
+    }
+
 }
