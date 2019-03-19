@@ -221,4 +221,8 @@ public interface InboundService {
      * @param imgUrl 图片路径
      */
     void updateInboundPlanOrderImgUrl(String id, String imgUrl);
+
+    void setInboundOrderStateApproval(String inboundOrderId);
+
+    void setInboundOrderStateBack(String inboundOrderId);
 }

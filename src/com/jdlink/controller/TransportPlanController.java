@@ -391,6 +391,23 @@ public class TransportPlanController {
         return res.toString();
     }
 
+    /*驳回*/
+    @RequestMapping("setTransportPlanBack")
+    @ResponseBody
+    public String setTransportPlanBack(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            transportPlanService.setStateBack(id);
+            res.put("status", "success");
+            res.put("message", "驳回成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "驳回失败");
+        }
+        return res.toString();
+    }
+
     @RequestMapping("generateWayBill")
     @ResponseBody
     public String generateWayBill(String id) {

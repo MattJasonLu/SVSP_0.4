@@ -1,5 +1,6 @@
 package com.jdlink.domain;
 
+import com.jdlink.domain.Dictionary.CheckStateItem;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -63,6 +64,17 @@ public class Questionnaire {
      * 调查问卷关键字
      */
     private String keyword;
+
+    /*状态数据结构*/
+    private CheckStateItem checkStateItem;
+
+    public CheckStateItem getCheckStateItem() {
+        return checkStateItem;
+    }
+
+    public void setCheckStateItem(CheckStateItem checkStateItem) {
+        this.checkStateItem = checkStateItem;
+    }
 
     public String getKeyword() {
         return keyword;

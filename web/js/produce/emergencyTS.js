@@ -827,183 +827,183 @@ function enterSearch() {
     }
 }
 
-/*审批*/
-function approvalDate() {
+/*入库*/
+function InBoundDate(item) {
 
-    // var checkState=$(item).parent().prev().prev().html();
-    // if(checkState!='审批通过'){
-    //
-    //
-    // var planId=$(item).parent().parent().children('td').eq(1).html();
-    //
-    // $.ajax({
-    //     type: "POST",                       // 方法类型
-    //     url: "getEmergencyTSById",          // url
-    //     async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-    //     data:{planId:planId},
-    //     dataType: "json",
-    //     // contentType: 'application/json;charset=utf-8',
-    //     success:function (result) {
-    //         if (result != undefined && result.status == "success"){
-    //             var data=eval(result.data);
-    //             console.log(data)
-    //             $('#planId').val(data.planId)
-    //             if(data.client!=null){
-    //                 $('#client').val(data.client.companyName)
-    //             }
-    //             if(data.supplier!=null){
-    //                 $('#supplier').val(data.supplier.companyName)
-    //             }
-    //
-    //             $('#wastesName').val(data.wastesName)
-    //
-    //             $('#wastesCode').val(data.wastesCode)
-    //
-    //             $('#emergencyNumber').val(data.emergencyNumber)
-    //
-    //             $('#temporaryCount1').val(data.temporaryCount.toFixed(3))
-    //
-    //             if(data.createTime!=null){
-    //                 $('#createTime').val(getDateStr(data.createTime))
-    //             }
-    //             if(data.checkStateItem!=null){
-    //                 $('#checkStateItem').val(data.checkStateItem.dictionaryItemName)
-    //             }
-    //
-    //         }
-    //         else {
-    //             alert(result.message);
-    //         }
-    //     },
-    //     error:function (result) {
-    //         alert("服务器异常!")
-    //     }
-    // })
-    //
-    // // 获取仓库数据
-    // $.ajax({
-    //     type: "POST",                       // 方法类型
-    //     url: "listWareHouse",                  // url
-    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-    //     dataType: "json",
-    //     success: function (result) {
-    //         if (result !== undefined && result.status == "success") {
-    //             var data = eval(result);
-    //             // 高级检索下拉框数据填充
-    //             var warehouse = $("#wareHouse");
-    //             warehouse.children().remove();
-    //             $.each(data.data, function (index, item) {
-    //                 var option = $('<option />');
-    //                 option.val(item.wareHouseId);
-    //                 option.text(item.wareHouseName);
-    //                 warehouse.append(option);
-    //             });
-    //             warehouse.get(0).selectedIndex = -1;
-    //         } else {
-    //             console.log(result);
-    //         }
-    //     },
-    //     error: function (result) {
-    //         console.log(result);
-    //     }
-    // });
-    // // 获取处理方式
-    // $.ajax({
-    //     type: "POST",                       // 方法类型
-    //     url: "getProcessWayByDataDictionary",                  // url
-    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-    //     dataType: "json",
-    //     success: function (result) {
-    //         if (result !== undefined && result.status == "success") {
-    //             var data = eval(result);
-    //             // 高级检索下拉框数据填充
-    //             var processWay = $("#processWay");
-    //             processWay.children().remove();
-    //             $.each(data.data, function (index, item) {
-    //                 var option = $('<option />');
-    //                 option.val(item.dataDictionaryItemId);
-    //                 option.text(item.dictionaryItemName);
-    //                 processWay.append(option);
-    //             });
-    //             processWay.get(0).selectedIndex = 0;
-    //         } else {
-    //             console.log(result);
-    //         }
-    //     },
-    //     error: function (result) {
-    //         console.log(result);
-    //     }
-    // });
-    // // 获取进料方式
-    // $.ajax({
-    //     type: "POST",                       // 方法类型
-    //     url: "getHandleCategoryByDataDictionary",                  // url
-    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-    //     dataType: "json",
-    //     success: function (result) {
-    //         if (result !== undefined && result.status == "success") {
-    //             var data = eval(result);
-    //             // 高级检索下拉框数据填充
-    //             var handleCategory = $("#handleCategory");
-    //             handleCategory.children().remove();
-    //             $.each(data.data, function (index, item) {
-    //                 var option = $('<option />');
-    //                 option.val(item.dataDictionaryItemId);
-    //                 option.text(item.dictionaryItemName);
-    //                 handleCategory.append(option);
-    //             });
-    //             handleCategory.get(0).selectedIndex = -1;
-    //         } else {
-    //             console.log(result);
-    //         }
-    //     },
-    //     error: function (result) {
-    //         console.log(result);
-    //     }
-    // });
-    // // 获取开票税率
-    // $.ajax({
-    //     type: "POST",                       // 方法类型
-    //     url: "getTicketRate1ByDataDictionary",                  // url
-    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-    //     dataType: "json",
-    //     success: function (result) {
-    //         if (result !== undefined && result.status == "success") {
-    //             var data = eval(result);
-    //             // 高级检索下拉框数据填充
-    //             var rate = $("#ticketRateItem");
-    //             rate.children().remove();
-    //             $.each(data.data, function (index, item) {
-    //                 var option = $('<option />');
-    //                 option.val(item.dataDictionaryItemId);
-    //                 option.text(item.dictionaryItemName);
-    //                 rate.append(option);
-    //             });
-    //             rate.get(0).selectedIndex = -1;
-    //         } else {
-    //             console.log(result);
-    //         }
-    //     },
-    //     error: function (result) {
-    //         console.log(result);
-    //     }
-    // });
-    //
-    // $('#approval').show();
-    //
-    // $('#inBound').show();
-    //
-    // $('#view').modal('show')
-    //
-    // }
-    // else {
-    //     alert('审批通过的数据无法再次审批！')
-    // }
-    $("#approval2").modal('show')
+    var checkState=$(item).parent().prev().prev().html();
+    if(checkState!='审批通过'){
+
+
+    var planId=$(item).parent().parent().children('td').eq(1).html();
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getEmergencyTSById",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:{planId:planId},
+        dataType: "json",
+        // contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                var data=eval(result.data);
+                console.log(data)
+                $('#planId').val(data.planId)
+                if(data.client!=null){
+                    $('#client').val(data.client.companyName)
+                }
+                if(data.supplier!=null){
+                    $('#supplier').val(data.supplier.companyName)
+                }
+
+                $('#wastesName').val(data.wastesName)
+
+                $('#wastesCode').val(data.wastesCode)
+
+                $('#emergencyNumber').val(data.emergencyNumber)
+
+                $('#temporaryCount1').val(data.temporaryCount.toFixed(3))
+
+                if(data.createTime!=null){
+                    $('#createTime').val(getDateStr(data.createTime))
+                }
+                if(data.checkStateItem!=null){
+                    $('#checkStateItem').val(data.checkStateItem.dictionaryItemName)
+                }
+
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    })
+
+    // 获取仓库数据
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "listWareHouse",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined && result.status == "success") {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var warehouse = $("#wareHouse");
+                warehouse.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.wareHouseId);
+                    option.text(item.wareHouseName);
+                    warehouse.append(option);
+                });
+                warehouse.get(0).selectedIndex = -1;
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+    // 获取处理方式
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getProcessWayByDataDictionary",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined && result.status == "success") {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var processWay = $("#processWay");
+                processWay.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    processWay.append(option);
+                });
+                processWay.get(0).selectedIndex = 0;
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+    // 获取进料方式
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getHandleCategoryByDataDictionary",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined && result.status == "success") {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var handleCategory = $("#handleCategory");
+                handleCategory.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    handleCategory.append(option);
+                });
+                handleCategory.get(0).selectedIndex = -1;
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+    // 获取开票税率
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getTicketRate1ByDataDictionary",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined && result.status == "success") {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var rate = $("#ticketRateItem");
+                rate.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.dataDictionaryItemId);
+                    option.text(item.dictionaryItemName);
+                    rate.append(option);
+                });
+                rate.get(0).selectedIndex = -1;
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+
+    $('#approval').show();
+
+    $('#inBound').show();
+
+    $('#view').modal('show')
+
+    }
+    else {
+        alert('已入库的单据无法入库！')
+    }
+    // $("#approval2").modal('show')
 }
 
 /*审批过后进行入库*/
-function approval() {
+function InApproval() {
 
     if(confirm("审批通过直接入库，确认审批?")){
         //点击确定后操作
@@ -1076,5 +1076,115 @@ function approval() {
     }
 
 
+
+}
+
+function confirmDate(item) {
+    var planId=$(item).parent().parent().children('td').eq(1).html();
+
+    if(confirm("确定提交?")){
+        //点击确定后操作
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "setEmergencyTSToExamine",          // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            data:{planId:planId},
+            dataType: "json",
+            // contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(data)
+                    alert("提交成功")
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error:function (result) {
+                alert("服务器异常!")
+            }
+        })
+    }
+    publicSubmit(planId,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
+
+}
+
+function setEmergencyToApproval(id) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "setEmergencyToApproval",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:{planId:id},
+        dataType: "json",
+        // contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+
+
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    })
+}
+
+function setEmergencyToBack(id) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "setEmergencyToBack",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:{planId:id},
+        dataType: "json",
+        // contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+
+
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    })
+}
+
+/**
+ * 新审批
+ */
+function approval(item) {
+    initApprovalFName(setEmergencyToApproval.name);
+    initBakcFName(setEmergencyToBack.name);
+    var id=$(item).parent().parent().children("td").eq(1).html();
+    $('#ApprovalOrderId').text(id);
+    $.ajax({
+        type: "POST",
+        url: "getAllChildNode",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'orderId': id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                if(result.data!=null){
+                    setApprovalModal(result.data);
+                    $("#approval").modal('show');
+                }
+
+            }
+            else {
+                alert('未提交，无法审批！')
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
 
 }

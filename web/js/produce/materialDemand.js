@@ -797,7 +797,7 @@ function back(item) {
 }
 
 //把按钮功能分出来做这个是审批
-function confirm2() {
+function confirm1(id) {
     var materialRequireId = $('#materialRequireId').text();
     var opinion = $('#remarks').val();
     $.ajax({
@@ -805,7 +805,7 @@ function confirm2() {
         url: "approvalMa",
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data: {'materialRequireId': materialRequireId, 'opinion': opinion,},
+        data: {'materialRequireId': id, 'opinion': opinion,},
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 alert(result.message);
@@ -825,7 +825,7 @@ function confirm2() {
 }
 
 //把按钮功能分出来做这个是驳回
-function back2() {
+function back1(id) {
 
     var materialRequireId = $('#materialRequireId2').text();
     var opinion = $('#remarks1').val();
@@ -834,7 +834,7 @@ function back2() {
         url: "backMa",
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data: {'materialRequireId': materialRequireId, 'opinion': opinion,},
+        data: {'materialRequireId': id, 'opinion': opinion,},
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 alert(result.message);
@@ -1687,6 +1687,8 @@ function enterSearch() {
  * 新审批
  */
 function approval(item) {
+    initApprovalFName(confirm1.name);
+    initBakcFName(back1.name);
     var id=$(item).parent().parent().children("td").eq(2).html();
     $('#ApprovalOrderId').text(id);
     $.ajax({

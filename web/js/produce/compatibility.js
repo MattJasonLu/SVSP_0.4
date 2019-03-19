@@ -729,7 +729,7 @@ function back(item) {
 }
 
 //把按钮功能分出来做这个是审批
-function confirm1() {
+function confirm1(id) {
     opinion = $('#advice').val();
     //console.log(opinion);
     //1获取文本框的值
@@ -738,7 +738,7 @@ function confirm1() {
         url: "approvalPw",
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data: {'pwId': pwId, 'opinion': opinion,},
+        data: {'pwId': id, 'opinion': opinion,},
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 alert(result.message);
@@ -756,7 +756,7 @@ function confirm1() {
 }
 
 //把按钮功能分出来做这个是驳回
-function back1() {
+function back1(id) {
     var compatibilityId = $('#compatibilityId3').text();
     var opinion = $('#backContent').val();
     $.ajax({
@@ -764,7 +764,7 @@ function back1() {
         url: "backPw",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data: {'compatibilityId': compatibilityId, "opinion": opinion},
+        data: {'compatibilityId': id, "opinion": opinion},
         //contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result != undefined && result.status == "success") {
@@ -830,7 +830,7 @@ function cancelPw(item) {
 function submit(item) {
 
   var state= $(item).parent().parent().children('td').eq(13).text();//订单号
-
+    if(state=='待提交'||state=='已驳回'){
         if (confirm("确认提交?")) {
             var compatibilityId = $(item).parent().parent().children('td').eq(2).text();//订单号
             //用户角色ID
@@ -848,7 +848,7 @@ function submit(item) {
                 success: function (result) {
                     if (result != undefined && result.status == "success") {
                         alert(result.message);
-                        window.location.reload();
+                        // window.location.reload();
                     }
                     else {
                         alert(result.message);
@@ -860,6 +860,8 @@ function submit(item) {
 
             });
         }
+    }
+
     // if(state=='待提交'){
     // }
     // else {
@@ -868,39 +870,7 @@ function submit(item) {
 
 }
 
-/**
- * 审批方法
- */
-function approval(item) {
-    // var compatibilityId = $(item).parent().parent().children('td').eq(2).text();
-    //
-    // $.ajax({
-    //     type: "POST",
-    //     url: "getByCompatibilityId",                  // url
-    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-    //     dataType: "json",
-    //     data: {'compatibilityId': compatibilityId},
-    //     //contentType: "application/json; charset=utf-8",
-    //     success: function (result) {
-    //         if (result != undefined && result.status == "success") {
-    //             console.log(result);
-    //             //赋值配伍单号
-    //             $("#remarks").val(result.data.approvalContent);
-    //             $('#compatibilityId').text(result.data.compatibilityId)
-    //         }
-    //         else {
-    //             alert(result.message);
-    //         }
-    //     },
-    //     error: function (result) {
-    //         alert("服务器异常！")
-    //     }
-    //
-    // });
 
-
-    $('#approval').modal('show');
-}
 
 //把按钮功能分出来做这个是审批
 function confirmCompatibilityId() {
@@ -2319,6 +2289,8 @@ function searchData() {
  * 新审批
  */
 function approval(item) {
+    initApprovalFName(confirm1.name);
+    initBakcFName(back1.name);
     var id=$(item).parent().parent().children("td").eq(2).html();
     $('#ApprovalOrderId').text(id);
     $.ajax({

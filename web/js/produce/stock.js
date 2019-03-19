@@ -1394,7 +1394,7 @@ function contractSubmit() {
                     success: function (result) {
                         if (result != undefined && result.status == "success") {
                         } else {
-                            alert(result.message)
+                            // alert(result.message)
                         }
                     },
                     error: function (result) {
@@ -1410,8 +1410,8 @@ function contractSubmit() {
                 getContractById(id);
 
             });
-            // alert("提交成功!");
-            location.reload();
+            alert("提交成功!");
+
         }
 
     }
@@ -1859,7 +1859,7 @@ function showBack() {
 }
 
 //把按钮功能分出来做这个是审批
-function confirm1() {
+function confirm1(id) {
     opinion = $('#opinion').val();
     //console.log(opinion);
     //1获取文本框的值
@@ -1868,7 +1868,7 @@ function confirm1() {
         url: "approvalStock",
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data: {'stockId': stockId, 'opinion': opinion},
+        data: {'stockId': id, 'opinion': opinion},
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 alert(result.message);
@@ -1886,7 +1886,7 @@ function confirm1() {
 }
 
 //把按钮功能分出来做这个是驳回
-function back1() {
+function back1(id) {
     backContent = $('#backContent').val();
     //设置状态驳回
     $.ajax({
@@ -1894,7 +1894,7 @@ function back1() {
         url: "backStock",
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data: {'stockId': stockId, 'backContent': backContent},
+        data: {'stockId': id, 'backContent': backContent},
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 alert(result.message);
@@ -2318,6 +2318,8 @@ function showPerfect() {
  * 新审批
  */
 function approval(item) {
+    initApprovalFName(confirm1.name);
+    initBakcFName(back1.name);
     var id=$(item).parent().parent().children("td").eq(1).html();
     $('#ApprovalOrderId').text(id);
     $.ajax({

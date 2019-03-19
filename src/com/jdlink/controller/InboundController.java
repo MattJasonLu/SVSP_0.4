@@ -1245,4 +1245,45 @@ public class InboundController {
         }
     }
 
+
+    /*审批*/
+    @RequestMapping("setInboundOrderStateApproval")
+    @ResponseBody
+    public String setInboundOrderStateApproval(String id){
+        JSONObject res=new JSONObject();
+
+        try {
+            inboundService.setInboundOrderStateApproval(id);
+            res.put("status", "success");
+            res.put("message", "审批成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "审批失败");
+        }
+
+        return res.toString();
+
+    }
+    /*审批*/
+    @RequestMapping("setInboundOrderStateBack")
+    @ResponseBody
+    public String setInboundOrderStateBack(String id){
+        JSONObject res=new JSONObject();
+
+        try {
+            inboundService.setInboundOrderStateBack(id);
+            res.put("status", "success");
+            res.put("message", "驳回成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "驳回失败");
+        }
+
+        return res.toString();
+
+    }
 }
