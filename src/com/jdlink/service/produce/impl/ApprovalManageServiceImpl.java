@@ -101,14 +101,14 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
             List<ApprovalNode> approvalNodeList = approvalProcess4.getApprovalNodeList();
             for (int i = 0; i < approvalNodeList.size(); i++) {
                 //首先状态都为3
-                approvalManageMapper.updateApprovalById(approvalNodeList.get(i).getId(), 3, approvalNodeList.get(i).getApprovalAdvice(), approvalNodeList.get(i).getUserName(), null);
+                approvalManageMapper.updateApprovalById(approvalNodeList.get(i).getId(), 7, approvalNodeList.get(i).getApprovalAdvice(), approvalNodeList.get(i).getUserName(), null);
             }
             //找出本节点
             ApprovalNode approvalNode = approvalManageMapper.getApprovalNodeByNullApprovalPId(approvalProcess4.getId(), Integer.parseInt(roleId));
-            approvalManageMapper.updateApprovalById(approvalNode.getId(), 5, "", userName, new Date());
+            approvalManageMapper.updateApprovalById(approvalNode.getId(), 5, approvalNode.getApprovalAdvice(), userName, new Date());
             //父节点审批中
             ApprovalNode approvalNode1 = approvalManageMapper.getApprovalNodeById(approvalNode.getApprovalPId());
-            approvalManageMapper.updateApprovalById(approvalNode1.getId(), 2, approvalNode1.getApprovalAdvice(), approvalNode1.getUserName(), null);
+            approvalManageMapper.updateApprovalById(approvalNode1.getId(), 7, approvalNode1.getApprovalAdvice(), approvalNode1.getUserName(), null);
         }
     }
           else {

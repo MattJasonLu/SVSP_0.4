@@ -80,4 +80,6 @@ public interface ProcurementMapper {
     List<ProcurementPlanItem>loadPageProcurementTotal(Page page);
 
     int loadPageProcurementTotalCount();
+
+    void setProcurementListBack(String receiptNumber);
 }

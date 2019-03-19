@@ -647,6 +647,7 @@ function getIdFromEquipment(Equipment) {
 function loadNavigationList() {
     console.log("旧动态菜单数据");
     console.log(JSON.parse(localStorage.getItem("menuOrganization")));
+    setToDoThingCount(); // 获取并设置待办事项总数
     toDoThingRemind();   // 设置代办事项提醒
     if (JSON.parse(localStorage.getItem("menuOrganization")) == null) {  // 如果数据为空则进行查询
         // 获取动态菜单数据

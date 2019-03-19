@@ -69,4 +69,6 @@ public interface ProcurementService {
     void updateApplyMouth(String procurementPlanId,String applyMouth);
     List<ProcurementPlanItem>loadPageProcurementTotal(Page page);
     int loadPageProcurementTotalCount();
+
+    void setProcurementListBack(String receiptNumber);
 }
