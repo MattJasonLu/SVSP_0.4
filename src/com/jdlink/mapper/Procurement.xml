@@ -186,10 +186,14 @@
     <update id="setProcurementListCancel" parameterType="String">
         update t_pl_procurement set checkStateId=69,nowTIme=NOW() where receiptNumber=#{receiptNumber};
     </update>
+    <!--审批月度采购-->
     <update id="setProcurementListSubmit" parameterType="String">
-        update t_pl_procurement set checkStateId=73,nowTIme=NOW() where receiptNumber=#{receiptNumber};
+        update t_pl_procurement set checkStateId=76,nowTIme=NOW() where receiptNumber=#{receiptNumber};
     </update>
-
+    <!--驳回月度采购-->
+    <update id="setProcurementListBack" parameterType="String">
+        update t_pl_procurement set checkStateId=66,nowTIme=NOW() where receiptNumber=#{receiptNumber};
+    </update>
     <!--获取月度采购总数-->
     <select id="totalMouth" resultType="int">
         select count(*) from  t_pl_procurement where procurementCategory=1 and nonMaterial=0;
@@ -298,7 +302,7 @@
 
     <!--提交采购单-->
     <update id="submitProcurementListById" parameterType="String">
-    update t_pl_procurement set  checkStateId=73 where receiptNumber=#{receiptNumber}
+    update t_pl_procurement set  checkStateId=63 where receiptNumber=#{receiptNumber}
     </update>
 
     <!--更新采购单明细-->
@@ -455,7 +459,7 @@
 
     <!--提交采购计划单-->
     <update id="submitProcurementPlan" parameterType="String">
-        update t_pr_procumentplan set checkStateId=73 where procurementPlanId=#{procurementPlanId}
+        update t_pr_procumentplan set checkStateId=63 where procurementPlanId=#{procurementPlanId}
     </update>
 
     <!--审批采购计划单-->

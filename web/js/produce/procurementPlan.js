@@ -814,7 +814,7 @@ function approvalProcurementPlan() {
 }
 
 //审批通过
-function confirmProcurementPlan() {
+function confirmProcurementPlan(id) {
 
     var procurementPlanId= $('#procurementPlanId2').text();
 
@@ -827,7 +827,7 @@ function confirmProcurementPlan() {
         type: "POST",
         url: "approvalProcurementPlan",
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data:{"procurementPlanId":procurementPlanId,'approvalName':approvalName,'advice':advice},
+        data:{"procurementPlanId":id,'approvalName':approvalName,'advice':advice},
         dataType: "json",
         //contentType: 'application/json;charset=utf-8',
         success:function (result) {
@@ -878,7 +878,7 @@ function backProcurementPlan(item) {
 }
 
 //确认驳回
-function back() {
+function back(id) {
 
     var procurementPlanId= $('#procurementPlanId3').text();
 
@@ -890,7 +890,7 @@ function back() {
         type: "POST",
         url: "backProcurementPlan",
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data:{"procurementPlanId":procurementPlanId,'advice':advice},
+        data:{"procurementPlanId":id,'advice':advice},
         dataType: "json",
         //contentType: 'application/json;charset=utf-8',
         success:function (result) {
@@ -1154,4 +1154,38 @@ function print() {
     else {
         alert("只可打印审批通过的单据!")
     }
+}
+
+/**
+ * 新审批
+ */
+function approval(item) {
+    initApprovalFName(confirmProcurementPlan.name);
+    initBakcFName(back.name);
+    var id=$(item).parent().parent().children("td").eq(2).html();
+    $('#ApprovalOrderId').text(id);
+    $.ajax({
+        type: "POST",
+        url: "getAllChildNode",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'orderId': id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                if(result.data!=null){
+                    setApprovalModal(result.data);
+                    $("#approval").modal('show');
+                }
+
+            }
+            else {
+                alert('未提交，无法审批！')
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
+
 }
