@@ -290,7 +290,9 @@ function getEmProcurement() {
     if(getApprovalId()!=undefined){ //存在
         $.trim($("#searchContent").val(getApprovalId()));
         searchEm();
+        $('.loader').hide();
         window.localStorage.removeItem('approvalId');
+
     }else {
         $.ajax({
             type: "POST",                       // 方法类型
@@ -1133,22 +1135,103 @@ function cancel(item) {
 
 
 }
+//审批
+function approval1(id) {
 
+    //点击确定后操作
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "setProcurementListSubmit",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'receiptNumber': id},
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                alert(result.message);
+                window.location.reload();
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            alert("服务器异常!");
+        }
+    });
+
+
+}
+
+/*驳回*/
+function back(id) {
+
+    //点击确定后操作
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "setProcurementListBack",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'receiptNumber': id},
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                alert(result.message);
+                window.location.reload();
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            alert("服务器异常!");
+        }
+    });
+
+
+}
 /**
- * 审批
- * @param item
+ * 新审批
  */
-function approval() {
-    $("#approval2").modal('show')
+function approval(item) {
+    initApprovalFName(approval1.name);
+    initBakcFName(back.name);
+    var id=$(item).parent().parent().children("td").eq(1).html();
+    $('#ApprovalOrderId').text(id);
+    $.ajax({
+        type: "POST",
+        url: "getAllChildNode",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'orderId': id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                if(result.data!=null){
+                    setApprovalModal(result.data);
+                    $("#approval").modal('show');
+                }
+
+            }
+            else {
+                alert('未提交，无法审批！')
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
+
 }
 //提交
 function submit(item) {
     if(confirm("确定提交?")) {
         //点击确定后操作
         var receiptNumber = $(item).parent().parent().children('td').eq(1).text();
+        publicSubmit(receiptNumber,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "setProcurementListSubmit",          // url
+            url: "submitProcurementListById",          // url
             async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             data: {'receiptNumber': receiptNumber},

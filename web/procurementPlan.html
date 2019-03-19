@@ -287,7 +287,9 @@
                         <a href="#" title="查看" id="function_-315" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; viewProcurementPlan(e);}"><span class="glyphicon glyphicon-search"></span> </a>
                         <a href="#" title="修改" id="function_-316" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; procurementPlanModify(e);}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> </a>
                         <a href="#" title="提交" id="function_-317" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; submitProcurementPlan(e);}"><span class="glyphicon glyphicon-export" aria-hidden="true"></span> </a>
-                        <a href="#" title="审批" id="function_-318" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; approvalProcurementPlan(e);}"><span class="glyphicon glyphicon-import" aria-hidden="true"></span> </a>
+
+                        <a href="#" title="审批" id="function_-318" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; approval(e);}"><span class="glyphicon glyphicon-cd" aria-hidden="true"></span> </a>
+
                         <a href="#" title="驳回" id="function_-319" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; backProcurementPlan(e);}"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span> </a>
                         <a title="作废" href="#" id="function_-320" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; cancelProcurementPlan(e);}"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> </a>
                     </td>
@@ -331,48 +333,18 @@
     </div>
     <div id="embed"></div>
     <!--审批模态框-->
-    <div class="modal fade bs-example-modal-lg" id="approval2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal fade bs-example-modal-lg" id="approval" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg" role="document" style="width: 70%">
             <div class="modal-content" >
                 <div class="modal-header">
                     <h2>单据信息</h2>
+                    <span class="hidden" id="ApprovalOrderId"></span>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-hover table-bordered" style="border: 1px">
-                        <tr>
-                            <td style="width: 10%">序号</td>
-                            <td style="width: 40%"></td>
-                            <td style="width: 10%">月度采购计划单号</td>
-                            <td style="width: 40%"></td>
-                        </tr>
-                        <tr>
-                            <td>申请月份</td>
-                            <td></td>
-                            <td>创建人</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>创建日期</td>
-                            <td></td>
-                            <td>修改人</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>审批人</td>
-                            <td></td>
-                            <td>状态</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>所属类别</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </table>
+                    <button type="button" class="btn btn-primary" onclick="viewInfo()">信息查看</button>
                     <hr>
                     <h3>审批轨迹</h3>
-                    <table class="table table-hover table-condensed">
+                    <table class="table table-hover table-condensed" id="approvalTable">
                         <tr>
                             <td class="text-center" style="width: 20%"><span class="glyphicon glyphicon-arrow-down"></span></td>
                             <td style="width: 80%;padding: 10px">
@@ -416,14 +388,13 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="approval1">审批</button>
-                    <button type="button" class="btn btn-danger" id="disapproval">驳回</button>
+                    <button type="button" class="btn btn-primary" id="approval1" onclick="ApprovalModal()">审批</button>
+                    <button type="button" class="btn btn-danger" id="disapproval" onclick="ApprovalBack()">驳回</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </div>
         </div>
-    </div>
-    <!--查看模态框-->
+    </div>    <!--查看模态框-->
     <div class="modal fade bs-example-modal-lg" id="appointModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg" role="document" id="print1" style="width: 85%">
             <div class="modal-content" id="printThis" >
@@ -582,12 +553,12 @@
                 </div>
                 <div class="row">
                     <div class="form-horizontal col-md-12">
-                        <textarea class="form-control" rows="5" id="advice" style="min-width: 70%"></textarea>
+                        <textarea class="form-control" rows="5"  style="min-width: 70%"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" id="confirm" data-dismiss="modal" onclick="confirmProcurementPlan()">
+                    <button type="button" class="btn btn-primary"  data-dismiss="modal" onclick="confirmProcurementPlan()">
                         审批通过
                     </button>
                 </div>
@@ -613,7 +584,60 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-danger" id="back1" data-dismiss="modal" onclick="back()">确认驳回
+                    <button type="button" class="btn btn-danger"  data-dismiss="modal" onclick="back()">确认驳回
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--审批页面-->
+    <div class="modal fade" id="publicApproval" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="sub-header text-center">审批意见</h5>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-12">
+                        <textarea class="form-control" rows="5" id="advice" style="min-width: 70%"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="confirm" data-dismiss="modal" onclick="confirmApproval()">
+                        确认审批
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--驳回页面-->
+    <div class="modal fade" id="backApproval" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="sub-header text-center">驳回意见</h5>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">驳回层级</label>
+                        <div class="col-xs-4">
+                            <input type="radio"  name="backLevel" placeholder="" value=1 checked="checked">发起人
+                            <input type="radio"  name="backLevel" placeholder=""   value=0>上一级
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-12">
+                        <textarea class="form-control" rows="5" id="backContent" style="width: 100%"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="back1" data-dismiss="modal" onclick="confirmBack()">确认驳回
                     </button>
                 </div>
             </div>
