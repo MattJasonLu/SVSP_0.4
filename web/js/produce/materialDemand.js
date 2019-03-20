@@ -873,6 +873,7 @@ function getWeekDate() {
 
 /*提交功能*/
 function submitMa() {
+    initSubmitFName(submitByMrId.name);
     var items = $("input[name='select']:checked");//判断复选框是否选中
 
     if (items.length > 0) {
@@ -881,31 +882,13 @@ function submitMa() {
                 if ($(this).parent().parent().next().next().html().length > 0) {
                     var materialRequireId = $(this).parent().parent().next().next().html();
                     publicSubmit(materialRequireId,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
-                    //提交方法
-                    $.ajax({
-                        type: "POST",
-                        url: "submitByMrId",
-                        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                        dataType: "json",
-                        data: {'materialRequireId': materialRequireId},
-                        success: function (result) {
-                            if (result != undefined && result.status == "success") {
-                                console.log(result);
-                            }
-                            else {
-                                alert(result.message)
-                            }
-                        },
-                        error: function (result) {
-                            alert("服务器异常！")
-                        }
-                    });
+
                 }
             })
 
 
         }
-        alert('提交成功!')
+        // alert('提交成功!')
         window.location.reload();
     }
     else {
@@ -914,7 +897,26 @@ function submitMa() {
 
 
 }
-
+function submitByMrId(id) {
+    $.ajax({
+        type: "POST",
+        url: "submitByMrId",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'materialRequireId': id},
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+            }
+            else {
+                alert(result.message)
+            }
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+    });
+}
 /*作废*/
 function cancelMa(item) {
 
@@ -1687,6 +1689,7 @@ function enterSearch() {
  * 新审批
  */
 function approval(item) {
+    initSubmitFName(submitByMrId.name);
     initApprovalFName(confirm1.name);
     initBakcFName(back1.name);
     var id=$(item).parent().parent().children("td").eq(2).html();

@@ -90,8 +90,9 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
     }
 
     @Override
-    public void publicSubmit(String orderId, String userName, String url,String roleId) {
+    public String publicSubmit(String orderId, String userName, String url,String roleId) {
         //首先先根据订单号找出是否存在审批流
+        String message;
         ApprovalProcess approvalProcess4 = approvalManageMapper.getApprovalProcessFlowByOrderId(orderId);
         if (approvalProcess4 != null) {
             ApprovalProcess approvalProcess = approvalManageMapper.getModelProcessByUrl(url);
@@ -109,7 +110,13 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
             //父节点审批中
             ApprovalNode approvalNode1 = approvalManageMapper.getApprovalNodeById(approvalNode.getApprovalPId());
             approvalManageMapper.updateApprovalById(approvalNode1.getId(), 7, approvalNode1.getApprovalAdvice(), approvalNode1.getUserName(), null);
+                message="";
+                message="提交成功";
         }
+        else {
+                message="";
+                message="仅发起人才可提交";
+            }
     }
           else {
 
@@ -162,8 +169,15 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
         //父节点审批中
         ApprovalNode approvalNode1=approvalManageMapper.getApprovalNodeById(approvalNode.getApprovalPId());
         approvalManageMapper.updateApprovalById(approvalNode1.getId(),2,approvalNode1.getApprovalAdvice(),approvalNode1.getUserName(),null);
+            message="";
+            message="提交成功";
           }
+          else {
+            message="";
+            message="仅发起人才可提交";
+        }
           }
+          return  message;
     }
 
     @Override
@@ -212,36 +226,122 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
     }
 
     @Override
-    public void publicBack(String orderId, int roleId, String approvalAdvice, int radio) {
+    public String publicBack(String orderId, int roleId, String approvalAdvice, int radio) {
         //判断驳回的层级来做
         //1发起人，前面的节点状态改为重新审批，发起人的状态改为重新提交，当前节点变为驳回
         //2上一级 前节点变为驳回 上一级变为重新提交
+        String message = null;
+        //当前节点
         ApprovalNode approvalNode=approvalManageMapper.getApprovalNodeByOrderIdAndRoleId(orderId,roleId);
-        if(radio==1){
+       //子节点
+        ApprovalNode approvalNode3=approvalManageMapper.getApprovalNodeByPNodeIdAndApprovalProcessId(approvalNode.getApprovalProcessId(),approvalNode.getId());
+        //父节点
+        ApprovalNode approvalNode1=approvalManageMapper.getApprovalNodeById(approvalNode.getApprovalPId());
 
-                List<ApprovalNode> approvalNodeList=getAllChildApprovalNode(approvalNode);
-               //是倒叙的，发起者是最后一个
-                for(int x=0;x<approvalNodeList.size();x++){
-                    if(x<approvalNodeList.size()-1){
-                      //子节点更新
-                        approvalManageMapper.updateApprovalById(approvalNodeList.get(x).getId(),7,approvalNodeList.get(x).getApprovalAdvice(),approvalNodeList.get(x).getUserName(),new Date());
+        if(approvalNode3!=null) {
+            if (approvalNode1 != null) {
+   if(approvalNode.getApprovalState()==1){
+                 message="";
+                    message="当前级别已审批无法驳回!";
+                }
+   else if(approvalNode.getApprovalState()==1){
+       message="";
+       message="当前级别已审批无法驳回!";
+   }
+   else  if(approvalNode3.getApprovalState()!=1&&approvalNode3.getApprovalState()!=5){
+       message="";
+       message="下级已驳回";
+   }
+   else if(approvalNode.getApprovalState()!=2&&approvalNode.getApprovalState()!=7){
+       message="";
+       message="发起人无法驳回";
+   }
+   else if(approvalNode1.getApprovalState()==1){
+       message="";
+       message="上级已审批或驳回，无法驳回";
+   }
+           else if ((approvalNode.getApprovalState() == 2 || approvalNode.getApprovalState() == 7) && (approvalNode1.getApprovalState() == 3 || approvalNode1.getApprovalState() == 7) && (approvalNode3.getApprovalState() == 1 || approvalNode3.getApprovalState() == 5)) {
+                if (radio == 1) {
+
+                    List<ApprovalNode> approvalNodeList = getAllChildApprovalNode(approvalNode);
+                    //是倒叙的，发起者是最后一个
+                    for (int x = 0; x < approvalNodeList.size(); x++) {
+                        if (x < approvalNodeList.size() - 1) {
+                            //子节点更新
+                            approvalManageMapper.updateApprovalById(approvalNodeList.get(x).getId(), 7, approvalNodeList.get(x).getApprovalAdvice(), approvalNodeList.get(x).getUserName(), new Date());
+                        } else {
+                            //根节点更新
+                            approvalManageMapper.updateApprovalById(approvalNodeList.get(x).getId(), 6, approvalNodeList.get(x).getApprovalAdvice(), approvalNodeList.get(x).getUserName(), new Date());
+                        }
                     }
-                    else {
-                        //根节点更新
-                        approvalManageMapper.updateApprovalById(approvalNodeList.get(x).getId(),6,approvalNodeList.get(x).getApprovalAdvice(),approvalNodeList.get(x).getUserName(),new Date());
-                    }
+
+                }
+                if (radio == 0) {//上一级
+                    List<ApprovalNode> approvalNodeList = getAllChildApprovalNode(approvalNode);
+                    //上一级就是第一个
+                    approvalManageMapper.updateApprovalById(approvalNodeList.get(0).getId(), 7, approvalNodeList.get(0).getApprovalAdvice(), approvalNodeList.get(0).getUserName(), new Date());
                 }
 
+                //最后更新本节点的装填为驳回0
+                approvalManageMapper.updateApprovalById(approvalNode.getId(), 0, approvalAdvice, approvalNode.getUserName(), new Date());
+       message="";
+                message = "已驳回";
+            }
+
         }
-        if(radio==0){//上一级
-            List<ApprovalNode> approvalNodeList=getAllChildApprovalNode(approvalNode);
-            //上一级就是第一个
-            approvalManageMapper.updateApprovalById(approvalNodeList.get(0).getId(),7,approvalNodeList.get(0).getApprovalAdvice(),approvalNodeList.get(0).getUserName(),new Date());
+             if(approvalNode1==null){
+                 if(approvalNode.getApprovalState()==1){
+                     message="";
+                     message="当前级别已审批无法驳回!";
+                 }
+                 else if(approvalNode.getApprovalState()==0){
+                     message="";
+                     message="当前级别已驳回无法驳回!";
+                 }
+                 else  if(approvalNode3.getApprovalState()!=1&&approvalNode3.getApprovalState()!=5){
+                     message="";
+                     message="下级已驳回";
+                 }
+                 else if(approvalNode.getApprovalState()!=2&&approvalNode.getApprovalState()!=7){
+                     message="";
+                     message="发起人无法驳回";
+                 }
+
+                 else if ((approvalNode.getApprovalState() == 2 || approvalNode.getApprovalState() == 7) && (approvalNode3.getApprovalState() == 1 || approvalNode3.getApprovalState() == 5)) {
+                     if (radio == 1) {
+
+                         List<ApprovalNode> approvalNodeList = getAllChildApprovalNode(approvalNode);
+                         //是倒叙的，发起者是最后一个
+                         for (int x = 0; x < approvalNodeList.size(); x++) {
+                             if (x < approvalNodeList.size() - 1) {
+                                 //子节点更新
+                                 approvalManageMapper.updateApprovalById(approvalNodeList.get(x).getId(), 7, approvalNodeList.get(x).getApprovalAdvice(), approvalNodeList.get(x).getUserName(), new Date());
+                             } else {
+                                 //根节点更新
+                                 approvalManageMapper.updateApprovalById(approvalNodeList.get(x).getId(), 6, approvalNodeList.get(x).getApprovalAdvice(), approvalNodeList.get(x).getUserName(), new Date());
+                             }
+                         }
+
+                     }
+                     if (radio == 0) {//上一级
+                         List<ApprovalNode> approvalNodeList = getAllChildApprovalNode(approvalNode);
+                         //上一级就是第一个
+                         approvalManageMapper.updateApprovalById(approvalNodeList.get(0).getId(), 7, approvalNodeList.get(0).getApprovalAdvice(), approvalNodeList.get(0).getUserName(), new Date());
+                     }
+
+                     //最后更新本节点的装填为驳回0
+                     approvalManageMapper.updateApprovalById(approvalNode.getId(), 0, approvalAdvice, approvalNode.getUserName(), new Date());
+                     message="";
+                     message = "已驳回";
+                 }
+             }
+
+        }
+        else {
+            message="发起人无法驳回";
         }
 
-        //最后更新本节点的装填为驳回0
-        approvalManageMapper.updateApprovalById(approvalNode.getId(),0,approvalAdvice,approvalNode.getUserName(),new Date());
-
+         return message;
     }
 
     @Override

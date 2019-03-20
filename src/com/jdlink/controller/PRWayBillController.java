@@ -574,7 +574,7 @@ public class PRWayBillController {
         return res.toString();
     }
 
-    /*状态变为待提交*/
+    /*状态变为审批中*/
     @RequestMapping("toSubmitWayBill")
     @ResponseBody
     public String toSubmitWayBill(String id){

@@ -741,6 +741,7 @@ function back(id) {
  * 新审批
  */
 function approval(item) {
+    initSubmitFName(submitProcurementListById.name);
     initApprovalFName(approval1.name);
     initBakcFName(back.name);
     var id=$(item).parent().parent().children("td").eq(1).html();
@@ -1611,32 +1612,51 @@ function downloadModal() {
 
 //提交
 function setSubmit(item) {
+    initSubmitFName(submitProcurementListById.name);
     var receiptNumber=$(item).parent().parent().children('td').eq(1).text();
     if(confirm("确认提交?")){
         publicSubmit(receiptNumber,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
         //点击确定后操作
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "submitProcurementListById",          // url
-            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data:{'receiptNumber':receiptNumber},
-            //contentType: 'application/json;charset=utf-8',
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
-                    alert(result.message)
-                    window.location.reload()
-                }
-            },
-            error:function (result) {
-                
-            }
-        })
+        // $.ajax({
+        //     type: "POST",                       // 方法类型
+        //     url: "submitProcurementListById",          // url
+        //     async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        //     dataType: "json",
+        //     data:{'receiptNumber':receiptNumber},
+        //     //contentType: 'application/json;charset=utf-8',
+        //     success:function (result) {
+        //         if (result != undefined && result.status == "success"){
+        //             alert(result.message)
+        //             window.location.reload()
+        //         }
+        //     },
+        //     error:function (result) {
+        //
+        //     }
+        // })
     }
 
 
 }
+function submitProcurementListById(id) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "submitProcurementListById",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{'receiptNumber':id},
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                alert(result.message)
+                window.location.reload()
+            }
+        },
+        error:function (result) {
 
+        }
+    })
+}
 //根据编号查询规格
 function findSpecification(item) {
     var id=$(item).selectpicker('val');

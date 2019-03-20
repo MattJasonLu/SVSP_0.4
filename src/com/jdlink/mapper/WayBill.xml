@@ -289,6 +289,6 @@
 
     <!--状态变为待提交-->
     <update id="toSubmitWayBill" parameterType="String">
-        update t_pr_waybill set checkStateId=75 where id=#{id}
+        update t_pr_waybill set checkStateId=63 where id=#{id}
     </update>
 </mapper>

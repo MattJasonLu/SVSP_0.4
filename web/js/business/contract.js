@@ -1155,6 +1155,7 @@ function gettime(obj) {
 
 
 function contractSubmit() {
+    initSubmitFName(submitContract1.name);
     //在此提交
     if(confirm("确定提交?")){
         //点击确定后操作
@@ -1163,7 +1164,7 @@ function contractSubmit() {
             items.each(function () {//遍历
                 var id = getContractId1(this);//获得合同编号
                 publicSubmit(id, getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
-                getContractById(id);
+                // getContractById(id);
 
             });
             function getContractById(id) {
@@ -1188,7 +1189,7 @@ function contractSubmit() {
             }
 
 
-            alert("提交成功!");
+            // alert("提交成功!");
             // window.location.reload()
         }
         else {
@@ -1198,6 +1199,26 @@ function contractSubmit() {
 
 }
 
+function submitContract1(id) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "submitContract1",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {
+            'id': id
+        },
+        success: function (result) {
+            if (result != undefined) {
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+}
 function getContractId1(item) {
     return item.parentElement.parentElement.nextElementSibling.innerHTML;
 }
