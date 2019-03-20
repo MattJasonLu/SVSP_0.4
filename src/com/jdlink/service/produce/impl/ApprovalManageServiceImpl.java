@@ -110,9 +110,11 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
             //父节点审批中
             ApprovalNode approvalNode1 = approvalManageMapper.getApprovalNodeById(approvalNode.getApprovalPId());
             approvalManageMapper.updateApprovalById(approvalNode1.getId(), 7, approvalNode1.getApprovalAdvice(), approvalNode1.getUserName(), null);
+                message="";
                 message="提交成功";
         }
         else {
+                message="";
                 message="仅发起人才可提交";
             }
     }
@@ -167,9 +169,11 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
         //父节点审批中
         ApprovalNode approvalNode1=approvalManageMapper.getApprovalNodeById(approvalNode.getApprovalPId());
         approvalManageMapper.updateApprovalById(approvalNode1.getId(),2,approvalNode1.getApprovalAdvice(),approvalNode1.getUserName(),null);
+            message="";
             message="提交成功";
           }
           else {
+            message="";
             message="仅发起人才可提交";
         }
           }

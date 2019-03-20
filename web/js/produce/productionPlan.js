@@ -772,6 +772,7 @@ function edit(item) {
  * 提交功能
  */
 function submit(item) {
+    initSubmitFName(submitProductionPlan.name);
     var state = $(item).parent().prev().text();
     if (state == '待审批') {
         productionPlanId = getProductionPlanId(item);
@@ -785,27 +786,27 @@ function submit(item) {
 
 function submit1(id) {
     publicSubmit(id,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
-    $.ajax({
-        type: "POST",
-        url: "submitProductionPlan",
-        async: false,
-        data: {
-            id: id
-        },
-        dataType: "json",
-        success: function (result) {
-            if (result.status == "success") {
-                alert("提交成功！");
-                window.location.reload();
-            } else {
-                alert(result.message);
-            }
-        },
-        error: function (result) {
-            console.log(result);
-            alert("服务器异常!");
-        }
-    });
+    // $.ajax({
+    //     type: "POST",
+    //     url: "submitProductionPlan",
+    //     async: false,
+    //     data: {
+    //         id: id
+    //     },
+    //     dataType: "json",
+    //     success: function (result) {
+    //         if (result.status == "success") {
+    //             alert("提交成功！");
+    //             window.location.reload();
+    //         } else {
+    //             alert(result.message);
+    //         }
+    //     },
+    //     error: function (result) {
+    //         console.log(result);
+    //         alert("服务器异常!");
+    //     }
+    // });
 }
 
 function submitProductionPlan(id) {

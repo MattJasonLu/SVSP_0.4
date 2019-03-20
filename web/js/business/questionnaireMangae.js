@@ -1765,11 +1765,9 @@ function submitQuestionnaire(orderId) {
 
 /*提交调查表*/
 function submit(item) {
-
+    initSubmitFName(submitQuestionnaire.name);
     var id = getQuestionnaireId(item);
-
     if(confirm("确定提交?")){
-        submitQuestionnaire(id)
         //点击确定后操作
         publicSubmit(id, getUrl(), getCurrentUserData().name, getCurrentUserData().role.id)
     }

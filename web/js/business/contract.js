@@ -1155,6 +1155,7 @@ function gettime(obj) {
 
 
 function contractSubmit() {
+    initSubmitFName(submitContract1.name);
     //在此提交
     if(confirm("确定提交?")){
         //点击确定后操作
@@ -1163,7 +1164,7 @@ function contractSubmit() {
             items.each(function () {//遍历
                 var id = getContractId1(this);//获得合同编号
                 publicSubmit(id, getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
-                getContractById(id);
+                // getContractById(id);
 
             });
             function getContractById(id) {
@@ -1188,7 +1189,7 @@ function contractSubmit() {
             }
 
 
-            alert("提交成功!");
+            // alert("提交成功!");
             // window.location.reload()
         }
         else {

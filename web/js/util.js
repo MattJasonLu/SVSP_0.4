@@ -964,6 +964,13 @@ function toDoThingRemind() {
     }
 }
 
+var submitFName;
+
+/*传给提交方法名*/
+function initSubmitFName(functionName) {
+    submitFName = functionName;
+}
+
 /*审批方法
 * 订单编号orderId
 * 角色编号roleId
@@ -982,6 +989,10 @@ function publicApproval(orderId, roleId,approvalAdvice) {
                 //具体的提交方法
                 if(submitFName!=undefined&&submitFName!=null&&submitFName.length>=0){
                     window[submitFName](orderId);
+                    var url=getUrl();
+                    var storage=window.localStorage;
+                    storage['approvalId']=orderId;
+                    window.location.href=url;
                     if(selectSupremeNodeByOrderId(orderId)){//做订单的审批即可
                         //订单审批
 
@@ -1008,11 +1019,7 @@ function publicApproval(orderId, roleId,approvalAdvice) {
 
 }
 
-var submitFName;
-/*传给提交方法名*/
-function initSubmitFName(functionName) {
-    submitFName = functionName;
-}
+
 
 /*提交方法
 * 订单编号orderId
@@ -1027,29 +1034,28 @@ function publicSubmit(orderId, url,userName,roleId) {
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
-            if (result != undefined && result.status == "success"&&result.message=='提交成功') {
+            if (result != undefined && result.status == "success" && result.message == '提交成功') {
                 alert(result.message);
+                // console.log(result.message)
                 if(submitFName!=undefined&&submitFName!=null&&submitFName.length>=0){
                     window[submitFName](orderId);
                     window.location.reload()
-                    // var url=getUrl();
-                    // var storage=window.localStorage;
-                    // storage['approvalId']=orderId;
-                    // window.location.href=url;
+                    var url=getUrl();
+                    var storage=window.localStorage;
+                    storage['approvalId']=orderId;
+                    window.location.href=url;
                 }
 
-            } else {
+            }
+            else {
                alert(result.message);
             }
         },
         error: function (result) {
-            console.log(result);
+            alert(result.message);
         }
     });
-    var url=getUrl();
-    var storage=window.localStorage;
-    storage['approvalId']=orderId;
-    window.location.href=url;
+
 }
 
 /*获取当前url*/
@@ -1128,6 +1134,10 @@ function publicBack(orderId, roleId,approvalAdvice,radio) {
                 alert(result.message);
                 if(backFName!=undefined&&backFName!=null&&backFName.length>=0){
                     window[backFName](orderId);//以方法名调用改方法
+                    var url=getUrl();
+                    var storage=window.localStorage;
+                    storage['approvalId']=orderId;
+                    window.location.href=url;
                 }
             } else {
                 alert(result.message);

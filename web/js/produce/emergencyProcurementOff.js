@@ -920,29 +920,30 @@ function setEmProcurementListModal(result) {
 
 //提交
 function submit(item) {
+    initSubmitFName(submitProcurementListById.name);
     if(confirm("确定提交?")) {
         //点击确定后操作
         var receiptNumber = $(item).parent().parent().children('td').eq(1).text();
         publicSubmit(receiptNumber,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "submitProcurementListById",          // url
-            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data: {'receiptNumber': receiptNumber},
-            success: function (result) {
-                if (result != undefined && result.status == "success") {
-                    alert(result.message);
-                    // window.location.reload();
-                }
-                else {
-                    alert(result.message);
-                }
-            },
-            error: function (result) {
-                alert("服务器异常!");
-            }
-        });
+        // $.ajax({
+        //     type: "POST",                       // 方法类型
+        //     url: "submitProcurementListById",          // url
+        //     async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        //     dataType: "json",
+        //     data: {'receiptNumber': receiptNumber},
+        //     success: function (result) {
+        //         if (result != undefined && result.status == "success") {
+        //             alert(result.message);
+        //             // window.location.reload();
+        //         }
+        //         else {
+        //             alert(result.message);
+        //         }
+        //     },
+        //     error: function (result) {
+        //         alert("服务器异常!");
+        //     }
+        // });
     }
 }
 

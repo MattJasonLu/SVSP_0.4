@@ -1010,31 +1010,32 @@ function setInvalid(e) {    //已作废
  * @param e
  */
 function setSubmit(e) {
+    initSubmitFName(setInboundOrderStateSubmit.name);
     var r = confirm("确认提交该入库单吗？");
     if (r) {
         var id = getIdByMenu(e);
         publicSubmit(id,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
-        $.ajax({
-            type: "POST",
-            url: "setInboundOrderStateSubmit",
-            async: false,
-            dataType: "json",
-            data: {
-                inboundOrderId: id
-            },
-            success: function (result) {
-                if (result !== undefined && result.status === "success") {
-                    console.log(result);
-                    alert(result.message);
-                    window.location.reload();
-                } else {
-                    alert(result.message);
-                }
-            },
-            error: function (result) {
-                console.log(result);
-            }
-        });
+        // $.ajax({
+        //     type: "POST",
+        //     url: "setInboundOrderStateSubmit",
+        //     async: false,
+        //     dataType: "json",
+        //     data: {
+        //         inboundOrderId: id
+        //     },
+        //     success: function (result) {
+        //         if (result !== undefined && result.status === "success") {
+        //             console.log(result);
+        //             alert(result.message);
+        //             window.location.reload();
+        //         } else {
+        //             alert(result.message);
+        //         }
+        //     },
+        //     error: function (result) {
+        //         console.log(result);
+        //     }
+        // });
     }
 }
 function setInboundOrderStateSubmit(id) {

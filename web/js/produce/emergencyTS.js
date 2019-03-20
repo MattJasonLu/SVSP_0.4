@@ -1080,32 +1080,13 @@ function InApproval() {
 }
 
 function confirmDate(item) {
+    initSubmitFName(setEmergencyTSToExamine.name);
     var planId=$(item).parent().parent().children('td').eq(1).html();
 
     if(confirm("确定提交?")){
         //点击确定后操作
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "setEmergencyTSToExamine",          // url
-            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-            data:{planId:planId},
-            dataType: "json",
-            // contentType: 'application/json;charset=utf-8',
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
-                    console.log(data)
-                    alert("提交成功")
-                }
-                else {
-                    alert(result.message);
-                }
-            },
-            error:function (result) {
-                alert("服务器异常!")
-            }
-        })
+        publicSubmit(planId,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
     }
-    publicSubmit(planId,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
 
 }
 function setEmergencyTSToExamine(id) {
