@@ -438,6 +438,8 @@ function showEditModal(e) {
  */
 function showNewAddModal() {
     $(".oldLine").remove();  // 删除历史数据
+    $(".id").val("");
+    $(".type").val("");
     $.ajax({  // 获取所有角色数据
         type: "POST",                            // 方法类型
         url: "listRole",                 // url
