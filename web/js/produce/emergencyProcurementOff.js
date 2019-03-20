@@ -946,10 +946,33 @@ function submit(item) {
     }
 }
 
+function submitProcurementListById(id) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "submitProcurementListById",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'receiptNumber': id},
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                alert(result.message);
+                // window.location.reload();
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            alert("服务器异常!");
+        }
+    });
+}
+
 /**
  * 新审批
  */
 function approval(item) {
+    initSubmitFName(submitProcurementListById.name);
     initApprovalFName(approval1.name);
     initBakcFName(back.name);
     var id=$(item).parent().parent().children("td").eq(1).html();

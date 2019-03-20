@@ -808,6 +808,29 @@ function submit1(id) {
     });
 }
 
+function submitProductionPlan(id) {
+    $.ajax({
+        type: "POST",
+        url: "submitProductionPlan",
+        async: false,
+        data: {
+            id: id
+        },
+        dataType: "json",
+        success: function (result) {
+            if (result.status == "success") {
+                alert("提交成功！");
+                window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常!");
+        }
+    });
+}
 /**
  * 审批
  */
@@ -849,6 +872,7 @@ function examination(item) {
  * 新审批
  */
 function approval(item) {
+    initSubmitFName(submitProductionPlan.name);
     initApprovalFName(approval1.name);
     initBakcFName(reject1.name);
     var id=$(item).parent().parent().children("td").eq(1).html();

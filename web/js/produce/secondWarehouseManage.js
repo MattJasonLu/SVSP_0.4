@@ -1037,7 +1037,29 @@ function setSubmit(e) {
         });
     }
 }
-
+function setInboundOrderStateSubmit(id) {
+    $.ajax({
+        type: "POST",
+        url: "setInboundOrderStateSubmit",
+        async: false,
+        dataType: "json",
+        data: {
+            inboundOrderId: id
+        },
+        success: function (result) {
+            if (result !== undefined && result.status === "success") {
+                console.log(result);
+                alert(result.message);
+                window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+}
 /**
  * 查看数据
  * @param e
@@ -1522,6 +1544,7 @@ function setInboundOrderStateBack(id) {
  * 新审批
  */
 function approval(item) {
+    initSubmitFName(setInboundOrderStateSubmit.name);
     initApprovalFName(setInboundOrderStateApproval.name);
     initBakcFName(setInboundOrderStateBack.name);
     var id=$(item).parent().parent().children("td").eq(1).html();

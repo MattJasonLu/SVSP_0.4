@@ -724,6 +724,7 @@ function setBack(id) {
  * 新审批
  */
 function approval(item) {
+    initSubmitFName(setTransferDraftToExamine.name);
     initApprovalFName(setApproval.name);
     initBakcFName(setBack.name);
     var id=$(item).parent().parent().children("td").eq(4).html();
@@ -788,7 +789,30 @@ function setSubmit(e) {    //已提交
         });
     }
 }
-
+function setTransferDraftToExamine(id) {
+    $.ajax({
+        type: "POST",
+        url: "setTransferDraftToExamine",
+        async: false,
+        dataType: "json",
+        data: {
+            id: id
+        },
+        success: function (result) {
+            if (result !== undefined && result.status === "success") {
+                console.log(result);
+                alert(result.message);
+                window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
+}
 /**
  * 修改数据
  * @param e

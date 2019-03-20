@@ -1108,7 +1108,28 @@ function confirmDate(item) {
     publicSubmit(planId,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
 
 }
-
+function setEmergencyTSToExamine(id) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "setEmergencyTSToExamine",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:{planId:id},
+        dataType: "json",
+        // contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(data)
+                alert("提交成功")
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    })
+}
 function setEmergencyToApproval(id) {
     $.ajax({
         type: "POST",                       // 方法类型
@@ -1159,6 +1180,7 @@ function setEmergencyToBack(id) {
  * 新审批
  */
 function approval(item) {
+    initSubmitFName(setEmergencyTSToExamine.name);
     initApprovalFName(setEmergencyToApproval.name);
     initBakcFName(setEmergencyToBack.name);
     var id=$(item).parent().parent().children("td").eq(1).html();

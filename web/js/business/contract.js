@@ -1198,6 +1198,26 @@ function contractSubmit() {
 
 }
 
+function submitContract1(id) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "submitContract1",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {
+            'id': id
+        },
+        success: function (result) {
+            if (result != undefined) {
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+}
 function getContractId1(item) {
     return item.parentElement.parentElement.nextElementSibling.innerHTML;
 }

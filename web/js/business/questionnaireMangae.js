@@ -1751,7 +1751,7 @@ function submitQuestionnaire(orderId) {
         dataType: "json",
         success: function (result) {
             if (result != undefined && result.status == "success") {
-                alert(result.message);
+                // alert(result.message);
                 // console.log(data);
             } else {
                 console.log(result.message);
@@ -1765,9 +1765,11 @@ function submitQuestionnaire(orderId) {
 
 /*提交调查表*/
 function submit(item) {
-    initSubmitFName(submitQuestionnaire.name);
+
     var id = getQuestionnaireId(item);
+
     if(confirm("确定提交?")){
+        submitQuestionnaire(id)
         //点击确定后操作
         publicSubmit(id, getUrl(), getCurrentUserData().name, getCurrentUserData().role.id)
     }
@@ -1802,7 +1804,7 @@ function submit(item) {
      * 新审批
      */
     function approval(item) {
-        initSubmitFName(toSubmitQuestionnaire.name);
+        initSubmitFName(submitQuestionnaire.name);
         initApprovalFName(examineQuestionnaire.name);
         initBakcFName(back.name);
         var id = getQuestionnaireId(item);

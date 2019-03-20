@@ -33,7 +33,7 @@ public interface ApprovalManageService {
 
     ApprovalProcess getModelProcessByUrl(String url);
 
-    void publicSubmit(String orderId,String userName,String url,String roleId);
+    String publicSubmit(String orderId,String userName,String url,String roleId);
 
     void addApprovalFlow(ApprovalProcess approvalProcess);
 
@@ -53,7 +53,7 @@ public interface ApprovalManageService {
 
     ApprovalNode selectSupremeNodeByOrderId(String orderId);
 
-    void publicBack(String orderId,int  roleId,String approvalAdvice,int radio);
+    String publicBack(String orderId,int  roleId,String approvalAdvice,int radio);
 
     ApprovalNode getApprovalNodeById(String id);
 

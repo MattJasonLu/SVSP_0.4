@@ -561,6 +561,30 @@ function setSubmit(e) {    //已提交
     }
 }
 
+function setTransportPlanSubmit(id) {
+    $.ajax({
+        type: "POST",
+        url: "setTransportPlanSubmit",
+        async: false,
+        dataType: "json",
+        data: {
+            id: id
+        },
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                alert(result.message);
+                window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
+}
 /**
  * 审批
  */
@@ -1913,6 +1937,7 @@ function setModalsAndBackdropsOrder() {
  * 新审批
  */
 function approval(item) {
+    initSubmitFName(setTransportPlanSubmit.name);
     initApprovalFName(setExamined.name);
     initBakcFName(setTransportPlanBack.name);
     var id=$(item).parent().parent().children("td").eq(1).html();

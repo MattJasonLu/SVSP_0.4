@@ -813,6 +813,31 @@ function submit(item) {
     }
 }
 
+/*审批中*/
+function submitWayBill(id) {
+    $.ajax({
+        type: "POST",
+        url: "submitWayBill",
+        async: false,
+        data: {
+            id: id
+        },
+        dataType: "json",
+        success: function (result) {
+            if (result.status == "success") {
+                alert("提交成功！");
+                // window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常!");
+        }
+    });
+}
+
 /**
  * 审批
  */
@@ -2031,7 +2056,7 @@ function toSubmitWayBill(id) {
  * 新审批
  */
 function approval(item) {
-    initSubmitFName(toSubmitWayBill.name);
+    initSubmitFName(submitWayBill.name);
     initApprovalFName(approval1.name);
     initBakcFName(reject1.name);
     var id=$(item).parent().parent().children("td").eq(1).html();

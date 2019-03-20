@@ -914,7 +914,26 @@ function submitMa() {
 
 
 }
-
+function submitByMrId(id) {
+    $.ajax({
+        type: "POST",
+        url: "submitByMrId",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'materialRequireId': id},
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+            }
+            else {
+                alert(result.message)
+            }
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+    });
+}
 /*作废*/
 function cancelMa(item) {
 
@@ -1687,6 +1706,7 @@ function enterSearch() {
  * 新审批
  */
 function approval(item) {
+    initSubmitFName(submitByMrId.name);
     initApprovalFName(confirm1.name);
     initBakcFName(back1.name);
     var id=$(item).parent().parent().children("td").eq(2).html();
