@@ -82,28 +82,79 @@ public class ApprovalManageController {
             //1根据订单号找出审批流对象,再找出节点列表
             ApprovalProcess approvalProcess = approvalManageService.getApprovalProcessByOrderId(orderId);
             if (approvalProcess != null) {
-
-
                 //在根据角色编号和审批流主键找出相应的节点
+                //本节点
                 ApprovalNode approvalNode = approvalManageService.getNodeByIdAndRoleId(approvalProcess.getId(), roleId);
                 //找出他的子节点是否是1通过
+                //子节点
                 ApprovalNode approvalNode3=approvalManageService.getApprovalNodeByPNodeIdAndApprovalProcessId(approvalProcess.getId(),approvalNode.getId());
-               if(approvalNode3.getApprovalState()==1||approvalNode3.getApprovalState()==5){ //通过
-                   //更新审批节点新父节点状态为审批中
-                   //1找到父节点
-                   ApprovalNode approvalNode1=approvalManageService.getApprovalNodeById(approvalNode.getApprovalPId());
-                   if(approvalNode1!=null){
-                       //假设有父节点跟新父节点状态为审批中
-                       approvalManageService.updateApprovalById(approvalNode1.getId(), 2,approvalNode1.getApprovalAdvice(),approvalNode1.getUserName(),null);
-                   }
+               //父节点
+                //1找到父节点
+                ApprovalNode approvalNode1=approvalManageService.getApprovalNodeById(approvalNode.getApprovalPId());
+               //如果子节点不存在就是根节点无法审批
+                if(approvalNode3!=null){ //不是根节点
+                    if(approvalNode1!=null){
+                          if(approvalNode.getApprovalState()==1){
+                              res.remove("message");
+                            res.put("message", "当前级别已审批无法审批");
+                          }
+                          else if(approvalNode3.getApprovalState()!=1&&approvalNode3.getApprovalState()!=5){
+                              res.remove("message");
+                              res.put("message","下级未审批或提交当前无法审批");
+                          }
+                          else if(approvalNode.getApprovalState()!=2&&approvalNode.getApprovalState()!=7){
+                              res.remove("message");
+                              res.put("message","发起人无法提交");
+                          }
+                          else if(approvalNode1.getApprovalState()==1){
+                              res.remove("message");
+                              res.put("message","上级已审批,当前无法审批");
+                          }
+                     else  if((approvalNode.getApprovalState()==2||approvalNode.getApprovalState()==7)&&(approvalNode1.getApprovalState()==3||approvalNode1.getApprovalState()==7||approvalNode1.getApprovalState()==0)&&(approvalNode3.getApprovalState()==1||approvalNode3.getApprovalState()==5)){
 
-                   //更新本节点状态为通过
-                   approvalManageService.updateApprovalById(approvalNode.getId(), 1,approvalAdvice,userName,new Date());
-                   res.put("message", "审批通过");
-               }
-               else {
-                   res.put("message", "下级人员未审批通过或提交，无法审批！");
-               }
+                              //假设有父节点跟新父节点状态为审批中
+                              approvalManageService.updateApprovalById(approvalNode1.getId(), 2,approvalNode1.getApprovalAdvice(),approvalNode1.getUserName(),approvalNode1.getApprovalDate());
+                              //更新本节点状态为通过
+                              approvalManageService.updateApprovalById(approvalNode.getId(), 1,approvalAdvice,userName,new Date());
+                              res.remove("message");
+                              res.put("message","审批通过");
+                          }
+
+
+
+                    }
+                    else if(approvalNode1==null){
+                        if(approvalNode.getApprovalState()==1){
+                            res.remove("message");
+                            res.put("message", "当前级别已审批无法审批");
+                        }
+                        else if(approvalNode3.getApprovalState()!=1&&approvalNode3.getApprovalState()!=5){
+                            res.remove("message");
+                            res.put("message","下级未审批当前无法审批");
+                        }
+                        else if(approvalNode.getApprovalState()!=2&&approvalNode.getApprovalState()!=7){
+                            res.remove("message");
+                            res.put("message","发起人无法提交");
+                        }
+
+                       else if((approvalNode.getApprovalState()==2||approvalNode.getApprovalState()==7)&&(approvalNode3.getApprovalState()==1||approvalNode3.getApprovalState()==5)){
+                            approvalManageService.updateApprovalById(approvalNode.getId(), 1,approvalAdvice,userName,new Date());
+
+                            res.put("message","审批通过");
+                        }
+
+                    }
+
+
+                }
+                else if(approvalNode3==null){
+                    res.remove("message");
+                    res.put("message", "发起人无法审批");
+                }
+
+
+
+
 
                 res.put("status", "success");
 
@@ -126,14 +177,12 @@ public class ApprovalManageController {
         JSONObject res = new JSONObject();
 
         try {
-        approvalManageService.publicSubmit(orderId, userName, url,roleId);
-        ApprovalProcess approvalProcess=approvalManageService.getApprovalProcessFlowByOrderId(orderId);
-        if(approvalProcess==null){
-            res.put("message", "提交失败,仅发起人提交");
-        }
-        else {
-            res.put("message", "提交成功");
-        }
+       String message= approvalManageService.publicSubmit(orderId, userName, url,roleId);
+//        ApprovalProcess approvalProcess=approvalManageService.getApprovalProcessFlowByOrderId(orderId);
+//        if(approvalProcess==null){
+//            res.put("message", "提交失败,仅发起人提交");
+//        }
+            res.put("message", message);
             res.put("status", "success");
 
         } catch (Exception e) {
@@ -410,9 +459,9 @@ public class ApprovalManageController {
         JSONObject res=new JSONObject();
 
         try {
-            approvalManageService.publicBack(orderId,roleId,approvalAdvice,radio);
+           String message= approvalManageService.publicBack(orderId,roleId,approvalAdvice,radio);
             res.put("status", "success");
-            res.put("message", "驳回成功");
+            res.put("message", message);
         }
         catch (Exception e){
             e.printStackTrace();

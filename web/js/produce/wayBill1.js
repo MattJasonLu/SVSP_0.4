@@ -777,32 +777,11 @@ function editWayBill(item) {
  * 提交功能
  */
 function submit(item) {
+    initSubmitFName(submitWayBill.name);
     var state = $(item).parent().prev().text();
     var id = getWayBillId(item);
     if (state == '新建' || state == '已驳回') {
         if (confirm("确认提交？"))
-            $.ajax({
-                type: "POST",
-                url: "submitWayBill",
-                async: false,
-                data: {
-                    id: id
-                },
-                dataType: "json",
-                success: function (result) {
-                    if (result.status == "success") {
-                        alert("提交成功！");
-                        // window.location.reload();
-                    } else {
-                        alert(result.message);
-                    }
-                },
-                error: function (result) {
-                    console.log(result);
-                    alert("服务器异常!");
-                }
-            });
-        // initSubmitFName(submitQuestionnaire.name);
         publicSubmit(id,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
     } else if (state == '审批中') {
         alert("单据审批中，不可提交！");
@@ -811,6 +790,31 @@ function submit(item) {
     } else {
         alert("单据不可提交！");
     }
+}
+
+/*审批中*/
+function submitWayBill(id) {
+    $.ajax({
+        type: "POST",
+        url: "submitWayBill",
+        async: false,
+        data: {
+            id: id
+        },
+        dataType: "json",
+        success: function (result) {
+            if (result.status == "success") {
+                // alert("提交成功！");
+                // window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常!");
+        }
+    });
 }
 
 /**
@@ -2031,7 +2035,7 @@ function toSubmitWayBill(id) {
  * 新审批
  */
 function approval(item) {
-    initSubmitFName(toSubmitWayBill.name);
+    initSubmitFName(submitWayBill.name);
     initApprovalFName(approval1.name);
     initBakcFName(reject1.name);
     var id=$(item).parent().parent().children("td").eq(1).html();

@@ -1751,7 +1751,7 @@ function submitQuestionnaire(orderId) {
         dataType: "json",
         success: function (result) {
             if (result != undefined && result.status == "success") {
-                alert(result.message);
+                // alert(result.message);
                 // console.log(data);
             } else {
                 console.log(result.message);
@@ -1802,7 +1802,7 @@ function submit(item) {
      * 新审批
      */
     function approval(item) {
-        initSubmitFName(toSubmitQuestionnaire.name);
+        initSubmitFName(submitQuestionnaire.name);
         initApprovalFName(examineQuestionnaire.name);
         initBakcFName(back.name);
         var id = getQuestionnaireId(item);

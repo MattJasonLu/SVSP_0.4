@@ -749,33 +749,57 @@ function confirmAdjust() {
 
 //提交
 function submitProcurementPlan(item) {
+    initSubmitFName(submitProcurementPlan1.name);
     if(confirm("确认提交?")){
         //点击确定后操作
         var procurementPlanId=$(item).parent().parent().children('td').eq(2).html();
         publicSubmit(procurementPlanId, getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
-        $.ajax({
-            type: "POST",
-            url: "submitProcurementPlan",
-            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-            data:{"procurementPlanId":procurementPlanId},
-            dataType: "json",
-            //contentType: 'application/json;charset=utf-8',
-               success:function (result) {
-                   if (result != undefined && result.status == "success"){
-                       alert(result.message)
-                       window.location.reload()
-                   }
-                   else {
-                       alert(result.message)
-                   }
-               },
-            error:function (result) {
-                alert('服务器异常')
-            }
-        })
+        // $.ajax({
+        //     type: "POST",
+        //     url: "submitProcurementPlan",
+        //     async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        //     data:{"procurementPlanId":procurementPlanId},
+        //     dataType: "json",
+        //     //contentType: 'application/json;charset=utf-8',
+        //        success:function (result) {
+        //            if (result != undefined && result.status == "success"){
+        //                alert(result.message)
+        //                window.location.reload()
+        //            }
+        //            else {
+        //                alert(result.message)
+        //            }
+        //        },
+        //     error:function (result) {
+        //         alert('服务器异常')
+        //     }
+        // })
 
 
     }
+}
+
+function submitProcurementPlan1(id) {
+    $.ajax({
+        type: "POST",
+        url: "submitProcurementPlan",
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:{"procurementPlanId":id},
+        dataType: "json",
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                alert(result.message)
+                window.location.reload()
+            }
+            else {
+                alert(result.message)
+            }
+        },
+        error:function (result) {
+            alert('服务器异常')
+        }
+    })
 }
 
 //审批模态框显示
@@ -1160,6 +1184,7 @@ function print() {
  * 新审批
  */
 function approval(item) {
+    initSubmitFName(submitProcurementPlan1.name);
     initApprovalFName(confirmProcurementPlan.name);
     initBakcFName(back.name);
     var id=$(item).parent().parent().children("td").eq(2).html();

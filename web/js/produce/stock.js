@@ -1376,47 +1376,45 @@ function allSelect1() {
     else $("input[name='blankCheckbox1']").prop('checked', false);
 }//提交
 
+function submitStock(id) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "submitStock",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {
+            'stockId': id
+        },
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+            } else {
+                // alert(result.message)
+            }
+        },
+        error: function (result) {
+            alert("服务器异常！");
+            console.log("error: " + result);
+        }
+    });
+}
 function contractSubmit() {
+    initSubmitFName(submitStock.name);
     //在此提交
     var items = $("input[name='blankCheckbox1']:checked");//判断复选框是否选中
     if (items.length > 0) {
         if(confirm("确认提交?")){
             //点击确定后操作
-            function getContractById(id) {
-                $.ajax({
-                    type: "POST",                       // 方法类型
-                    url: "submitStock",              // url
-                    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                    dataType: "json",
-                    data: {
-                        'stockId': id
-                    },
-                    success: function (result) {
-                        if (result != undefined && result.status == "success") {
-                        } else {
-                            // alert(result.message)
-                        }
-                    },
-                    error: function (result) {
-                        alert("服务器异常！");
-                        console.log("error: " + result);
-                    }
-                });
-            }
-
             items.each(function () {//遍历
                 var id = getContractId1(this);//获得合同编号
                 publicSubmit(id, getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
-                getContractById(id);
-
             });
-            alert("提交成功!");
+            // alert("提交成功!");
 
         }
 
     }
     else {
-        alert("请勾选要提交的合同！")
+        alert("请勾选要提交的数据！")
     }
 }
 
@@ -2318,6 +2316,7 @@ function showPerfect() {
  * 新审批
  */
 function approval(item) {
+    initSubmitFName(submitStock.name);
     initApprovalFName(confirm1.name);
     initBakcFName(back1.name);
     var id=$(item).parent().parent().children("td").eq(1).html();
