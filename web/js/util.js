@@ -671,8 +671,8 @@ function loadNavigationList() {
         $(".fadeInUp").children().remove();   // 删除之前一级菜单
         var result = JSON.parse(localStorage.getItem("menuOrganization"));
         var data = result.organizationList;
-        // console.log("动态菜单数据：");
-        // console.log(result);
+        console.log("动态菜单数据：");
+        console.log(result);
         // 设置以及菜单
         var j = 0;
         var secondMenuList = [];  // 存放需要设置的二级菜单列表
