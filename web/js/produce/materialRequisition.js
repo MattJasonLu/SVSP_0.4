@@ -260,13 +260,13 @@ function LoadMaterialRequisitionOrder() {
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
     console.log(page);
-    if(array0.length==0){
-        for (var i = 1; i <= totalPage(); i++) {
-            switchPage(parseInt(i));
-
-            array0.push($('.myclass'));
-        }
-    }
+    // if(array0.length==0){
+    //     for (var i = 1; i <= totalPage(); i++) {
+    //         switchPage(parseInt(i));
+    //
+    //         array0.push($('.myclass'));
+    //     }
+    // }
     //1通过ajax获取领料单数据
     $.ajax({
         type: "POST",                       // 方法类型
@@ -696,82 +696,60 @@ $('#number').on('blur', '[contenteditable="true"]', function () {
 //领料单高级查询
 
 function searchMaterial() {
-
-    $('#tbody1').find('.myclass').hide();
-    array.length=0;//清空数组
-    array1.length=0;//清空数组
-    array=[].concat(array0);
     isSearch = true;
+    var page = {};
+    var pageNumber = 1;                       // 显示首页
+    page.pageNumber = pageNumber;
+    page.count = countValue();
+    page.start = (pageNumber - 1) * page.count;
+    // 精确查询
+    if ($("#senior").is(':visible')) {
 
-    var text = $.trim($('#searchContent').val());
-    //1厂家
-    var companyName = $.trim($('#search-Id').val());
-    //2危废代码
-    var wastesCode = $.trim($('#search-wastesCode').val());
-    //危废类别
-    var wastesCategory = $.trim($('#search-wastesType').val());
-    //领用数量
-    var number = $.trim($('#search-company').val());
 
-    for (var j = 0; j < array.length; j++) {
-        $.each(array[j], function () {
-            //console.log(this);
-            if (!($(this).children('td').eq(3).text().indexOf(companyName) != -1
-                && $(this).children('td').eq(5).text().indexOf(wastesCategory) != -1 && $(this).children('td').eq(7).text().indexOf(number) != -1 && $(this).children('td').text().indexOf(text) != -1
-            )) {
-                $(this).hide();
+        data = {
+            client:{companyName:$.trim($("#search-Id").val())} ,
+            wastesName:$.trim($("#search-wastesName").val()),
+            beginTime:$("#beginTime").val(),
+            endTime:$("#endTime").val(),
+            small:small,
+            page: page,
+            keyword:'',
+        };
+        console.log(data);
+        // 模糊查询
+    } else {
+        var keyword=$.trim($("#searchContent").val());
+        if(keyword=="是"){
+            keyword=true;
+        }
+        if(keyword=="不是"){
+            keyword=false;
+        }
+        data = {
+            keyword: keyword,
+            page: page
+        };
+    }
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "searchDeriveContract",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                setPageClone(result);
+                setPageCloneAfter(pageNumber);        // 重新设置页码
+            } else {
+                alert(result.message);
             }
-            if (($(this).children('td').eq(3).text().indexOf(companyName) != -1
-                && $(this).children('td').eq(5).text().indexOf(wastesCategory) != -1 && $(this).children('td').eq(7).text().indexOf(number) != -1 && $(this).children('td').text().indexOf(text) != -1)) {
-                array1.push($(this));
-            }
-        });
-    }
-
-    var total;
-
-    if (array1.length % countValue() == 0) {
-        total = array1.length / countValue()
-    }
-
-    if (array1.length % countValue() > 0) {
-        total = Math.ceil(array1.length / countValue());
-    }
-
-    if (array1.length / countValue() < 1) {
-        total = 1;
-    }
-
-    $("#totalPage").text("共" + total + "页");
-
-    var myArray = new Array();
-    $('.beforeClone').remove();
-    for (i = 0; i < total; i++) {
-        var li = $("#next").prev();
-        myArray[i] = i + 1;
-        var clonedLi = li.clone();
-        clonedLi.show();
-        clonedLi.find('a:first-child').text(myArray[i]);
-        clonedLi.find('a:first-child').click(function () {
-            var num = $(this).text();
-            switchPage(num);
-            AddAndRemoveClass(this);
-        });
-        clonedLi.addClass("beforeClone");
-        clonedLi.removeAttr("id");
-        clonedLi.insertAfter(li);
-    }
-    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
-    $("#previous").next().next().eq(0).addClass("oldPageClass");
-    setPageCloneAfter(1);
-    for (var i = 0; i < array1.length; i++) {
-        array1[i].hide();
-    }
-
-    for (var i = 0; i < countValue(); i++) {
-        $(array1[i]).show();
-        $('#tbody1').append((array1[i]));
-    }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
 
 
 }
