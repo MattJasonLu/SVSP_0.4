@@ -4783,6 +4783,16 @@ function contractAdjustSave() {
     if ($('#contractType').val() == '物流合同') {
         contractType1 = 'Logistics';
     }
+    if ($('#contractType').val() == '次生合同') {
+        contractType1 = 'Derive';
+    }
+    if ($('#contractType').val() == '采购合同') {
+        contractType1 = 'Purchase';
+    }
+    if ($('#contractType').val() == '其他合同') {
+        contractType1 = 'Other';
+    }
+
     if ($('input[name="contractVersion"]:checked').val() == 'customerContract') {
 
 

@@ -225,6 +225,17 @@ public class Client {
     * */
     private float capacity;
 
+    /*经纬度*/
+    private String latitudeAndLongitude;
+
+    public String getLatitudeAndLongitude() {
+        return latitudeAndLongitude;
+    }
+
+    public void setLatitudeAndLongitude(String latitudeAndLongitude) {
+        this.latitudeAndLongitude = latitudeAndLongitude;
+    }
+
     public float getCapacity() {
         return capacity;
     }
