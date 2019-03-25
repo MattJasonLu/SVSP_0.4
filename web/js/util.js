@@ -1087,7 +1087,7 @@ function getUrl() {
    console.log(window.location.href+"123")
 
     // return window.location.href
-    return window.location.pathname.replace("/","").replace("SVSP","").replace("/","");
+    return window.location.pathname.replace("/","").replace("SVSP","").replace("Test","").replace("/","");
     //主机:端口+网址
 
 }
