@@ -1066,6 +1066,9 @@ function getUrl() {
     // console.log(window.location.host+window.location.pathname)
     // return window.location.host+window.location.pathname
     // console.log(window.location.pathname.replace("/","").replace("SVSP","").replace("/",""))
+   console.log(window.location.href+"123")
+
+    // return window.location.href
     return window.location.pathname.replace("/","").replace("SVSP","").replace("/","");
     //主机:端口+网址
 
