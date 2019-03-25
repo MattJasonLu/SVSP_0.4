@@ -153,6 +153,12 @@
                                     <input type="text" class="form-control" id="search-Id" name="search-Id" placeholder="" onkeyup="enterSearch()">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="search-checkState" class="col-sm-4 control-label">状态</label>
+                                <div class="col-xs-7">
+                                    <select type="text" class="form-control" id="search-checkState" name="search-Id" placeholder="" onchange="searchMaterial()"></select>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
@@ -198,11 +204,11 @@
                             <th class="text-center">危废代码</th>
                             <th class="text-center hidden">配料数量</th>
                             <th class="text-center">领用数量</th>
-                            <th class="text-center">主管副总经理</th>
-                            <th class="text-center">部门仓库主管</th>
-                            <th class="text-center">保管员</th>
-                            <th class="text-center">领料部门主管</th>
-                            <th class="text-center">领料人</th>
+                            <th class="text-center" hidden>主管副总经理</th>
+                            <th class="text-center" hidden> 部门仓库主管</th>
+                            <th class="text-center" hidden>保管员</th>
+                            <th class="text-center" hidden>领料部门主管</th>
+                            <th class="text-center" hidden>领料人</th>
                             <th class="text-center">状态</th>
                             <th class="text-center">操作</th>
                         </tr>
@@ -221,11 +227,11 @@
                             <td class="text-center "></td>
                             <td class="text-center hidden"></td>
                             <td class="text-center "></td>
-                            <td class="text-center "></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
+                            <td class="text-center hidden"></td>
+                            <td class="text-center hidden"></td>
+                            <td class="text-center hidden"></td>
+                            <td class="text-center hidden"></td>
+                            <td class="text-center hidden"></td>
                             <td class="text-center"></td>
                             <td class="text-center">
                                 <a href="#" id="function_-270" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; view(e);}" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
