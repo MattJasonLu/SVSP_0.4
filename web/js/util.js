@@ -1060,7 +1060,15 @@ function publicSubmit(orderId, url,userName,roleId) {
 
 /*获取当前url*/
 function getUrl() {
-    return window.location.pathname.replace("/","");
+    // console.log(window.location.pathname) //相对路径
+    // // console.log(window.location.port)
+    // console.log(window.location.host)
+    // console.log(window.location.host+window.location.pathname)
+    // return window.location.host+window.location.pathname
+    // console.log(window.location.pathname.replace("/","").replace("SVSP","").replace("/",""))
+    return window.location.pathname.replace("/","").replace("SVSP","").replace("/","");
+    //主机:端口+网址
+
 }
 
 
