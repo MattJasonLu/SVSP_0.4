@@ -80,4 +80,9 @@ public interface BatchOrderMapper {
 
     List<BatchingOrder>searchBatchingOrder(BatchingOrder batchingOrder);
     int searchBatchingTotal(BatchingOrder batchingOrder);
+
+    List<MaterialRequisitionOrder> searchMaterialRequisitionOrder(MaterialRequisitionOrder materialRequisitionOrder);
+
+    int searchMaterialRequisitionOrderCount(MaterialRequisitionOrder materialRequisitionOrder);
 }
+
