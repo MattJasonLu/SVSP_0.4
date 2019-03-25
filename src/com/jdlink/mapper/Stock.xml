@@ -65,7 +65,7 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
         select * from  t_pr_stock where stockId=#{stockId}
     </select>
     <select id="getByName" parameterType="String" resultMap="StockRM">
-        select * from  t_pr_stock where clientId=(select clientId from client where companyName=#{client.companyName}) LIMIT 1;
+        select * from  t_pr_stock where clientId=(select clientId from client where companyName=#{stockName}) LIMIT 1;
     </select>
     <update id="updateStock" parameterType="Stock" >
         update t_pr_stock set proContactName=#{proContactName},proTelephone=#{proTelephone},

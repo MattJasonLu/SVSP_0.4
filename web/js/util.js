@@ -919,6 +919,11 @@ function setProcessIcon1(organizationList) {
     }
 }
 
+//字符串中返回字符的位置
+function getStrIndex(str,target) {
+    return str.indexOf(target);
+}
+
 //////////////////////////////////////////
 
 
