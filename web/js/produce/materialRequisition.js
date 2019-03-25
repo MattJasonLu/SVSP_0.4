@@ -73,7 +73,27 @@ function totalPage() {
         //         totalRecord = 0;
         //     }
         // });
-        totalRecord = array1.length;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchMaterialRequisitionOrderCount",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                // console.log(result);
+                if (result > 0) {
+                    totalRecord = result;
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
     }
     var count = countValue();                         // 可选
     var total = loadPages(totalRecord, count);
@@ -161,15 +181,28 @@ function switchPage(pageNumber) {
         });
     }
     if (isSearch) {//查询用的
-        for (var i = 0; i < array1.length; i++) {
-            $(array1[i]).hide();
-        }
-        var i = parseInt((pageNumber - 1) * countValue());
-        var j = parseInt((pageNumber - 1) * countValue()) + parseInt(countValue() - 1);
-        for (var i = i; i <= j; i++) {
-            $('#tbody1').append(array1[i]);
-            $(array1[i]).show();
-        }
+        data1['page'] = page;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchMaterialRequisitionOrder",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    // console.log(result);
+                    setMaterialRequisitionList(result);
+                } else {
+                    console.log("fail: " + result);
+                    // setClientList(result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                // setClientList(result);
+            }
+        });
     }
 }
 
@@ -230,15 +263,28 @@ function inputSwitchPage() {
             });
         }
         if (isSearch) {//查询用的
-            for (var i = 0; i < array1.length; i++) {
-                $(array1[i]).hide();
-            }
-            var i = parseInt((pageNumber - 1) * countValue());
-            var j = parseInt((pageNumber - 1) * countValue()) + parseInt(countValue() - 1);
-            for (var i = i; i <= j; i++) {
-                $('#tbody1').append(array1[i]);
-                $(array1[i]).show();
-            }
+            data1['page'] = page;
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "searchMaterialRequisitionOrder",         // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data1),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    if (result != undefined) {
+                        // console.log(result);
+                        setMaterialRequisitionList(result);
+                    } else {
+                        console.log("fail: " + result);
+                        // setClientList(result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                    // setClientList(result);
+                }
+            });
         }
     }
 }
@@ -297,6 +343,37 @@ function LoadMaterialRequisitionOrder() {
     //2加载高级搜索下拉框
     //setSenierList();
     isSearch = false;
+    loadSelect();
+}
+
+function loadSelect() {
+    // 设置状态
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getCheckStateDataByDictionary",                  // url
+        async: false,
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                var checkState = $("#search-checkState");
+                checkState.children().remove();
+                $.each(data.data, function (index, item) {
+                    var option = $('<option />');
+                    if(item.dictionaryItemName=='已出库'||item.dictionaryItemName=='已作废'||item.dictionaryItemName=='待出库'){
+                        option.val(item.dataDictionaryItemId);
+                        option.text(item.dictionaryItemName);
+                        checkState.append(option);
+                    }
+
+                });
+                checkState.get(0).selectedIndex = -1;
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
 }
 
 /**
@@ -705,36 +782,29 @@ function searchMaterial() {
     // 精确查询
     if ($("#senior").is(':visible')) {
 
-
-        data = {
+        data1 = {
             client:{companyName:$.trim($("#search-Id").val())} ,
             wastesName:$.trim($("#search-wastesName").val()),
-            beginTime:$("#beginTime").val(),
-            endTime:$("#endTime").val(),
-            small:small,
+            wasteCategory:$.trim($("#search-wastesType").val()),
+            recipientsNumber:$.trim($("#search-company").val()),
             page: page,
-            keyword:'',
+            checkStateItem:{dataDictionaryItemId:$('#search-checkState').val()}
         };
-        console.log(data);
+        console.log(data1);
         // 模糊查询
     } else {
         var keyword=$.trim($("#searchContent").val());
-        if(keyword=="是"){
-            keyword=true;
-        }
-        if(keyword=="不是"){
-            keyword=false;
-        }
-        data = {
+
+        data1 = {
             keyword: keyword,
             page: page
         };
     }
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "searchDeriveContract",                  // url
+        url: "searchMaterialRequisitionOrder",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(data),
+        data: JSON.stringify(data1),
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function (result) {
@@ -771,7 +841,7 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
             if (last - event.timeStamp == 0) {
-                searchMaterialRequisition();
+                searchMaterial();
             }
         }, 400);
     });

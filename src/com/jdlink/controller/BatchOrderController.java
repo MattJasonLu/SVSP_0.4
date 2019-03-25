@@ -1570,6 +1570,35 @@ public class BatchOrderController {
 
 
     }
+
+    /*领料单高级查询*/
+    @RequestMapping("searchMaterialRequisitionOrder")
+    @ResponseBody
+    public String searchMaterialRequisitionOrder(@RequestBody MaterialRequisitionOrder materialRequisitionOrder){
+
+        JSONObject res=new JSONObject();
+
+        try {
+            List<MaterialRequisitionOrder> materialRequireControllers=batchOrderService.searchMaterialRequisitionOrder(materialRequisitionOrder);
+            res.put("data", materialRequireControllers);
+            res.put("status", "success");
+            res.put("message", "高级查询成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "高级查询失败");
+        }
+
+        return res.toString();
+    }
+
+    /*领料单高级计数*/
+    @RequestMapping("searchMaterialRequisitionOrderCount")
+    @ResponseBody
+    public int searchMaterialRequisitionOrderCount(@RequestBody MaterialRequisitionOrder materialRequisitionOrder){
+         return  batchOrderService.searchMaterialRequisitionOrderCount(materialRequisitionOrder);
+    }
 }
 
 
