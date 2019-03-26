@@ -1213,35 +1213,42 @@ function viewInfo() {
 
 /*点击审批显示审批内容*/
 function ApprovalModal() {
-    var orderId=   $('#ApprovalOrderId').text();
-    var roleId=getCurrentUserData().role.id;
-    //1根据订单号和觉得获取节点信息，然后赋值
-    $.ajax({
-        type: "POST",
-        url: "getApprovalNodeByOrderIdAndRoleId",
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        data: {'orderId': orderId,"roleId":roleId},
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                console.log(result);
-                if(result.data!=null){
-                    $('#advice').val(result.data.approvalAdvice);
-                }
 
-            }
-            else {
+  if($("#"+getCurrentUserData().role.id+"").find('h3').text().indexOf('发起人')!=-1){
+                         alert('发起人无法审批');
+  }
+  else {
 
-            }
-        },
-        error:function (result) {
-            alert("服务器异常!")
-        }
-    });
 
-    $('#publicApproval').modal('show');
-    //订单号和角色Id
+      var orderId = $('#ApprovalOrderId').text();
+      var roleId = getCurrentUserData().role.id;
+      //1根据订单号和觉得获取节点信息，然后赋值
+      $.ajax({
+          type: "POST",
+          url: "getApprovalNodeByOrderIdAndRoleId",
+          async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+          dataType: "json",
+          data: {'orderId': orderId, "roleId": roleId},
+          success: function (result) {
+              if (result != undefined && result.status == "success") {
+                  console.log(result);
+                  if (result.data != null) {
+                      $('#advice').val(result.data.approvalAdvice);
+                  }
 
+              }
+              else {
+
+              }
+          },
+          error: function (result) {
+              alert("服务器异常!")
+          }
+      });
+
+      $('#publicApproval').modal('show');
+      //订单号和角色Id
+  }
 
 
 
@@ -1284,7 +1291,11 @@ function confirmApproval() {
 
 /*点击驳回显示驳回内容*/
 function ApprovalBack() {
-
+    console.log($("#"+getCurrentUserData().role.id+"").find('h3').text())
+    if($("#"+getCurrentUserData().role.id+"").find('h3').text().indexOf('发起人')!=-1){
+        alert('发起人无法驳回');
+    }
+    else {
     var orderId=   $('#ApprovalOrderId').text();
     var roleId=getCurrentUserData().role.id;
     //1根据订单号和觉得获取节点信息，然后赋值
@@ -1312,7 +1323,7 @@ function ApprovalBack() {
     });
     $('#backApproval').modal('show')
 }
-
+}
 /*确认驳回*/
 function confirmBack() {
 
