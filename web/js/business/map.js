@@ -25,7 +25,7 @@ function loadClientData() {
                     clonedDiv.insertBefore(div);
 
                 }
-                initMap(obj)
+                initMap(obj);
                 // 隐藏原来的div
                 div.hide();
             }
@@ -45,13 +45,13 @@ function createMap(obj){
     $.each(obj,function (index,item) {
         // console.log(item.latitudeAndLongitude)
          if($.trim(item.latitudeAndLongitude).length>0){
-             console.log(item.latitudeAndLongitude)
+             console.log(item.latitudeAndLongitude);
             var strIndex=getStrIndex(item.latitudeAndLongitude,",");
-            console.log(strIndex)
+            console.log(strIndex);
             var latitude=item.latitudeAndLongitude.substring(0,strIndex);
-            console.log(latitude)
+            console.log(latitude);
             var longitude=item.latitudeAndLongitude.substring(strIndex+1,item.latitudeAndLongitude.length);
-             console.log(longitude)
+             console.log(longitude);
              //标注点一
              var point = new BMap.Point(Number(latitude),Number(longitude));//定义一个中心点坐标
              map.centerAndZoom(point,11);//设定地图的中心点和坐标并将地图显示在地图容器中
@@ -78,7 +78,18 @@ function createMap(obj){
              });
 
          }
-    })
+         if(parseFloat(item.capacity).toFixed(3) >= 2000.00){
+             var color = "#22cb41"
+         }else if(1000 <= parseFloat(item.capacity).toFixed(3) && parseFloat(item.capacity).toFixed(3)< 2000){
+             color = "#c4cb1f"
+         }else {
+             color = "#cb2f2a"
+         }
+         var circle = new BMap.Circle(point,2000);
+         circle.setFillColor(color);
+         circle.setStrokeColor("transparent");
+         map.addOverlay(circle);
+    });
 
 
 
