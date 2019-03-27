@@ -40,12 +40,12 @@ function loadChartList() {
  * 加载表图
  */
 function loadData() {
-    drawLayer02Label($("#layer02_01 canvas").get(0), "危废入库数", 60, 200);  // 第三参数：，第四参数：折线长度
-    drawLayer02Label($("#layer02_02 canvas").get(0), "辅料入库数", 60, 200);
-    drawLayer02Label($("#layer02_03 canvas").get(0), "次生入库数", 60, 200);
-    drawLayer02Label($("#layer02_04 canvas").get(0), "危废出库数", 30, 200);
-    drawLayer02Label($("#layer02_05 canvas").get(0), "辅料出库数", 30, 200);
-    drawLayer02Label($("#layer02_06 canvas").get(0), "次生出库数", 30, 200);
+    drawLayer02Label($("#layer02_01 canvas").get(0), "危废入库数", 60, 130);  // 第三参数：，第四参数：折线长度
+    drawLayer02Label($("#layer02_02 canvas").get(0), "辅料入库数", 60, 130);
+    drawLayer02Label($("#layer02_03 canvas").get(0), "次生入库数", 60, 130);
+    drawLayer02Label($("#layer02_04 canvas").get(0), "危废出库数", 60, 130);
+    drawLayer02Label($("#layer02_05 canvas").get(0), "辅料出库数", 60, 130);
+    drawLayer02Label($("#layer02_06 canvas").get(0), "次生出库数", 60, 130);
     setMonthOutAndInData();    // 设置月份出入库数据
 
     renderLegend();
