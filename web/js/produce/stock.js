@@ -1895,7 +1895,7 @@ function back1(id) {
         data: {'stockId': id, 'backContent': backContent},
         success: function (result) {
             if (result != undefined && result.status == "success") {
-                alert(result.message);
+                // alert(result.message);
             }
             else {
                 alert(result.message)

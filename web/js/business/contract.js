@@ -6948,8 +6948,8 @@ function back1(id) {
         success: function (result) {
             var obj = eval(result);
             if (obj.state == "success") {
-                alert("已驳回！");
-                window.location.reload()
+                // alert("已驳回！");
+                // window.location.reload()
             }
             else {
                 alert("审批失败")

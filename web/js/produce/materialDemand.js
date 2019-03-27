@@ -837,9 +837,9 @@ function back1(id) {
         data: {'materialRequireId': id, 'opinion': opinion,},
         success: function (result) {
             if (result != undefined && result.status == "success") {
-                alert(result.message);
-                console.log(result);
-                window.location.reload();
+                // alert(result.message);
+                // console.log(result);
+                // window.location.reload();
             }
             else {
                 alert(result.message)
