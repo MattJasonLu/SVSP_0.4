@@ -768,8 +768,8 @@ function back1(id) {
         //contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result != undefined && result.status == "success") {
-                alert(result.message);
-                window.location.reload();
+                // alert(result.message);
+                // window.location.reload();
             }
             else {
                 alert(result.message);

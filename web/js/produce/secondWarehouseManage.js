@@ -1530,7 +1530,7 @@ function setInboundOrderStateBack(id) {
         },
         success: function (result) {
             if (result !== undefined && result.status === "success") {
-                alert(result.message)
+                // alert(result.message)
             } else {
                 console.log(result);
             }

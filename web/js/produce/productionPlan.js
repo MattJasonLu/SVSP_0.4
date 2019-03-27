@@ -967,8 +967,8 @@ function reject1(id) {
             if (result != undefined) {
                 var data = eval(result);
                 if (data.status == "success") {
-                    alert(data.message);
-                    window.location.reload();
+                    // alert(data.message);
+                    // window.location.reload();
                 } else {
                     alert(data.message);
                 }

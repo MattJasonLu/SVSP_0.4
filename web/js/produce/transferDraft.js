@@ -706,9 +706,9 @@ function setBack(id) {
         },
         success: function (result) {
             if (result !== undefined && result.status === "success") {
-                console.log(result);
-                alert(result.message);
-                window.location.reload();
+                // console.log(result);
+                // alert(result.message);
+                // window.location.reload();
             } else {
                 alert(result.message);
             }
@@ -761,32 +761,33 @@ function approval(item) {
  * 提交转移联单
  */
 function setSubmit(e) {    //已提交
+    initSubmitFName(setTransferDraftToExamine.name);
     var r = confirm("确认提交该联单吗？");
     if (r) {
         var id = $(e).parent().parent().children('td').eq(4).html();
         publicSubmit(id,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
-        $.ajax({
-            type: "POST",
-            url: "setTransferDraftToExamine",
-            async: false,
-            dataType: "json",
-            data: {
-                id: id
-            },
-            success: function (result) {
-                if (result !== undefined && result.status === "success") {
-                    console.log(result);
-                    alert(result.message);
-                    window.location.reload();
-                } else {
-                    alert(result.message);
-                }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常");
-            }
-        });
+        // $.ajax({
+        //     type: "POST",
+        //     url: "setTransferDraftToExamine",
+        //     async: false,
+        //     dataType: "json",
+        //     data: {
+        //         id: id
+        //     },
+        //     success: function (result) {
+        //         if (result !== undefined && result.status === "success") {
+        //             console.log(result);
+        //             // alert(result.message);
+        //             // window.location.reload();
+        //         } else {
+        //             alert(result.message);
+        //         }
+        //     },
+        //     error: function (result) {
+        //         console.log(result);
+        //         alert("服务器异常");
+        //     }
+        // });
     }
 }
 function setTransferDraftToExamine(id) {
