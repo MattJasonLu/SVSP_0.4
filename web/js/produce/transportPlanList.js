@@ -634,9 +634,9 @@ function setTransportPlanBack(id) {    //已作废
         },
         success: function (result) {
             if (result != undefined && result.status == "success") {
-                console.log(result);
-                alert(result.message);
-                window.location.reload();
+                // console.log(result);
+                // alert(result.message);
+                // window.location.reload();
             } else {
                 alert(result.message);
             }
