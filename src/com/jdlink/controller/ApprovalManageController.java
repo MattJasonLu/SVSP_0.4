@@ -201,9 +201,9 @@ public class ApprovalManageController {
     public String getUrlList() {
         JSONObject res = new JSONObject();
         try {
-            // 取出查询客户
+            // 取出数据
             List<Organization> organizationList = approvalManageService.getUrlList();
-            // 计算最后页位置
+            // 转化json格式传输
             JSONArray array = JSONArray.fromArray(organizationList.toArray(new Organization[organizationList.size()]));
             res.put("data", array);
             res.put("status", "success");
