@@ -33,8 +33,17 @@
         <association property="clientTypeItem" column="clientTypeId" select="getClientTypeItem"/>
         <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"/>
         <association property="clientStateItem" column="clientStateId" select="getClientStateItem"/>
+        <association property="warningUpper"  column="warningUpper" select="getWarningUpper"></association>
+        <association property="warningLower"  column="warningDown" select="getWarningLower"></association>
     </resultMap>
 
+    <select id="getWarningUpper" resultType="Warning">
+        select * from t_warning where id=#{warningUpper}
+    </select>
+
+    <select id="getWarningLower" resultType="Warning">
+        select * from t_warning where id=#{warningDown}
+    </select>
     <!--获取申报状态数据字典-->
     <select id="getApplicationStatusItem" resultType="ApplicationStatusItem">
         select * from datadictionaryitem where dataDictionaryItemId=#{applicationStatusId}

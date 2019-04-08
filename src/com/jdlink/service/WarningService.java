@@ -24,4 +24,6 @@ public interface WarningService {
     int totalWarningRecord();
 
     int searchWaringCount(Warning warning);
+
+    void reStartWarning(int id);
 }

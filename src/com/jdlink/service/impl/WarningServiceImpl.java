@@ -52,4 +52,9 @@ public class WarningServiceImpl implements WarningService {
     public int searchWaringCount(Warning warning) {
         return warningMapper.searchWaringCount(warning);
     }
+
+    @Override
+    public void reStartWarning(int id) {
+        warningMapper.reStartWarning(id);
+    }
 }
