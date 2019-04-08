@@ -264,7 +264,7 @@ function loadPageWayBillList() {
  */
 function setDataList(result) {
     $('#tBody').empty();  // 删除旧数据
-    $.each(result, function (index, item) {
+    $.each(result, function (index, item) {    // 遍历数据并插入
         var tr = "<tr>\n" +
             "                        <td class=\"text-center\">\n" +
             "                            <label>\n" +
@@ -281,7 +281,7 @@ function setDataList(result) {
             "                            <a href=\"#\" title=\"删除\" onclick='deleteModelById(this)'><span class=\"glyphicon glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></a>\n" +
             "                        </td>\n" +
             "                    </tr>";
-        $('#tBody').append(tr);
+        $('#tBody').append(tr);   // 插入新数据
     });
 }
 
@@ -375,7 +375,7 @@ function showEditModal(e) {
         success: function (result) {
             if (result.data != undefined || result.status == "success") {
                 var role = $("select[name='role']");
-                $.each(result.data, function (index, item) {
+                $.each(result.data, function (index, item) {   // 设置角色下拉框
                     var option = $('<option />');
                     option.val(item.id);
                     option.text(item.roleName);
@@ -391,6 +391,7 @@ function showEditModal(e) {
         }
     });
     approvalProcessId = $(e).parent().parent().children().eq(1).text();  // 获取审批流ID
+     // 根据编号获取数据
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getApprovalProcessModelById",                 // url
@@ -412,11 +413,12 @@ function showEditModal(e) {
                     cloneTr.show();
                     cloneTr.children('td').eq(0).find("a").remove();  // 删除旧按钮
                     cloneTr.children('td').eq(0).append(delBtn);   // 增加减行按钮
+                    // 赋值
                     cloneTr.find("input[name='id']").val(item.id);
                     cloneTr.find("select[name='role']").val(item.roleId);
                     cloneTr.find("span[name='approvalPId']").text(item.approvalPId);
-                    cloneTr.addClass("oldLine");
-                    $("#edit_plus").before(cloneTr);
+                    cloneTr.addClass("oldLine");    // 添加class
+                    $("#edit_plus").before(cloneTr);   // 插入新数据
                 });
                 if($(".oldLine").length > 0){  // 存在行数
                     tr.hide();  // 隐藏模板行
