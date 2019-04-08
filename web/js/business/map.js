@@ -39,7 +39,7 @@ function loadClientData() {
 //创建地图函数：
 function createMap(obj){
     // console.log(1)
-    //  console.log(obj);
+     console.log(obj);
     // console.log(2)
     var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
     $.each(obj,function (index,item) {

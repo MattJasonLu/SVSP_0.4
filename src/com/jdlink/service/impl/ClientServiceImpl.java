@@ -228,4 +228,16 @@ public class ClientServiceImpl implements ClientService {
     public Client getByNameNotState(String companyName) {
         return clientMapper.getByNameNotState(companyName);
     }
+
+    @Override
+    public Float getCurrentInBound(String clientId) {
+        return clientMapper.getCurrentInBound(clientId);
+    }
+
+    @Override
+    public Float getCurrentOutBound(String clientId) {
+        return clientMapper.getCurrentOutBound(clientId);
+    }
+
+
 }

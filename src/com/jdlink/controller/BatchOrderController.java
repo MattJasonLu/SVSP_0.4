@@ -715,7 +715,17 @@ public class BatchOrderController {
 
                 outboundOrder.setHandleCategoryItem(handleCategoryItem);
                 batchOrderService.addOutBoundOrder(outboundOrder);
-
+                Float InCount=clientService.getCurrentInBound(outboundOrder.getClient().getClientId());
+                if(InCount==null){
+                    InCount=0f;
+                }
+                Float OutCount=clientService.getCurrentOutBound(outboundOrder.getClient().getClientId());
+                if(OutCount==null){
+                    OutCount=0f;
+                }
+                Client client=clientService.getByClientId(outboundOrder.getClient().getClientId());
+                client.setCurrentInventory(InCount-OutCount);
+              clientService.update( client);
                 res.put("status", "success");
                 res.put("message", "出库成功");
             }

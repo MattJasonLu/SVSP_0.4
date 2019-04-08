@@ -315,6 +315,20 @@ public class ClientController {
         PrintWriter out = null;
         try {
             List<Client> clientList = clientService.list();
+//            for (int i=0;i<clientList.size();i++){
+//                Float InCount=clientService.getCurrentInBound(clientList.get(i).getClientId());
+//                if(InCount==null){
+//                    InCount=0f;
+//                }
+//                Float OutCount=clientService.getCurrentOutBound(clientList.get(i).getClientId());
+//                if(OutCount==null){
+//                    OutCount=0f;
+//                }
+//                clientList.get(i).setCurrentInventory(InCount-OutCount);
+//              clientService.update( clientList.get(i));
+//            }
+
+
             JSONArray array = JSONArray.fromArray(clientList.toArray(new Client[clientList.size()]));
 
             response.setCharacterEncoding("UTF-8");

@@ -73,4 +73,8 @@ public interface ClientMapper {
     List<Client> getClientByLikeCompanyName(String companyName);
 
     Client getClientByEqualCompanyName(String companyName);
+
+    Float getCurrentInBound(String clientId);
+
+    Float getCurrentOutBound(String clientId);
 }
