@@ -56,6 +56,10 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
         approvalManageMapper.deleteModelProcessByApprovalProcessId(id);   // 删除流
     }
 
+    /**
+     * 根据ID更新数据
+     * @param approvalProcess
+     */
     @Override
     public void updateModelProcessById(ApprovalProcess approvalProcess) {
         approvalManageMapper.deleteModelNotesByApprovalProcessId(approvalProcess.getId());   // 删除节点

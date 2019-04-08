@@ -126,12 +126,11 @@
             limit #{page.start}, #{page.count}
         </if>
     </select>
+
     <!--根据点单号查询审批流(模板)对象-->
     <select id="getApprovalProcessByOrderId" parameterType="String" resultMap="ApprovalProcessFlow">
         select * from t_approval_process where order_id=#{orderId};
     </select>
-
-
 
     <!--根据审批流主键和角色编号查询节点对象-->
     <select id="getNodeByIdAndRoleId" resultMap="ApprovalNodeRM">
