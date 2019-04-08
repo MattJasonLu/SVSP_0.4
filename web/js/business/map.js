@@ -79,16 +79,19 @@ function createMap(obj){
 
          }
          if(parseFloat(item.capacity).toFixed(3) >= 2000.00){
-             var color = "#22cb41"
+             var color = "#22cb41";
+             var radio = 3000;
          }else if(1000 <= parseFloat(item.capacity).toFixed(3) && parseFloat(item.capacity).toFixed(3)< 2000){
-             color = "#c4cb1f"
+             color = "#c4cb1f";
+             radio = 2000
          }else {
-             color = "#cb2f2a"
+             color = "#cb2f2a";
+             radio = 1000
          }
-         var circle = new BMap.Circle(point,2000);
-         circle.setFillColor(color);
-         circle.setStrokeColor("transparent");
-         map.addOverlay(circle);
+         var circle = new BMap.Circle(point,radio);         //radio为半径大小，point为标注点
+         circle.setFillColor(color);                        //设置圆形区域填充颜色
+         circle.setStrokeColor("transparent");              //设置圆形区域边框颜色
+         map.addOverlay(circle);                            //将圆形区域添加到地图中
     });
 
 
