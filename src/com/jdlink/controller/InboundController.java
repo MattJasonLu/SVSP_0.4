@@ -296,13 +296,32 @@ public class InboundController {
                     inboundOrderItem.setProduceCompany(produceCompany);
                 }
                 // 根据客户编号和危废编码找到化验单中的对应的信息，绑定
-                String clientId = inboundOrderItem.getProduceCompany().getClientId();
+
+                String clientId=clientService.getByName(inboundOrderItem.getProduceCompany().getCompanyName()).getClientId();
+
+
                 String wastesCode = inboundOrderItem.getWastes().getWastesId();
                 LaboratoryTest laboratoryTest = laboratoryTestService.getLaboratoryTestByWastesCodeAndClientId(wastesCode, clientId);
                 if (laboratoryTest != null) inboundOrderItem.setLaboratoryTest(laboratoryTest);
             }
             // 增加入库单
             inboundService.addInboundOrder(inboundOrder);
+            for (InboundOrderItem inboundOrderItem : inboundOrder.getInboundOrderItemList()) {
+                // 根据客户编号和危废编码找到化验单中的对应的信息，绑定
+                String clientId=clientService.getByName(inboundOrderItem.getProduceCompany().getCompanyName()).getClientId();
+                Float InCount=clientService.getCurrentInBound(clientId);
+                if(InCount==null){
+                    InCount=0f;
+                }
+                Float OutCount=clientService.getCurrentOutBound(clientId);
+                if(OutCount==null){
+                    OutCount=0f;
+                }
+                Client client=clientService.getByClientId(clientId);
+                client.setCurrentInventory(InCount-OutCount);
+                clientService.update( client);
+            }
+
             res.put("status", "success");
             res.put("message", "增加入库单成功");
         } catch (Exception e) {
