@@ -395,11 +395,11 @@ function setBarConfig(myChart) {
     var option = {
         //--------------    标题 title  ----------------
         title: {
-            text: '危废合同签约量条形图',
+            text: '',
             textStyle: {                 //---主标题内容样式
                 color: 'black'
             },
-            subtext: '',          //---副标题内容样式
+            subtext: '危废合同签约量条形图',          //---副标题内容样式
             subtextStyle: {
                 color: 'black'
             },
@@ -450,10 +450,10 @@ function setBarConfig(myChart) {
                 //设置轴线的属性
                 axisLine: {
                     lineStyle: {
-                        color: 'black',
+                        color: 'black'
                     }
                 },
-                data: xData,
+                data: xData
             }
         ],
         yAxis: [
@@ -497,7 +497,7 @@ function setBarConfig(myChart) {
                         position: 'top',
                         textStyle: {
                             color: '#5475c7',
-                            fontSize: 20,
+                            fontSize: 14
                         }
                     }
                 }
