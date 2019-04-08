@@ -1361,7 +1361,7 @@ function confirmBack() {
 function goToEmail() {
     var url = getCurrentUserInfo().email;
     url = getEmail(url);
-    if (url != "") {
+    if (url !== "") {
         window.location.href = "http://" + url;   // 跳转到相应得邮箱首页
     } else {
         alert("未找到对应的邮箱登录地址，请自己登录邮箱查看邮件！");
