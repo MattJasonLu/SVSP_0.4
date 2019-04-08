@@ -22,4 +22,6 @@ public interface WarningMapper {
     int totalWarningRecord();
 
     int searchWaringCount(Warning warning);
+
+    void reStartWarning(int id);
 }

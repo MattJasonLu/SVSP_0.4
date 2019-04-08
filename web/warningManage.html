@@ -169,6 +169,7 @@
                         <th class="text-center">名称</th>
                         <th class="text-center" style="width: 25%">阈值</th>
                         <th class="text-center">单位</th>
+                        <th class="text-center">状态</th>
                         <th class="text-center">操作</th>
                     </tr>
                     </thead>
@@ -180,14 +181,18 @@
                         </td>
                         <td class="text-center"></td>
                         <td class="text-center hidden"></td>
+                        <td class="text-center"></td>
                         <td class="text-center">
-                            <a href="#" id="function_-557" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; removeWarning(e);}" title="删除"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                            <a href="#" id="function_-557" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; removeWarning(e);}" title="作废"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                            <a href="#"  onclick="reStart(this)" title="启用"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
+
                         </td>
                     </tr>
                     <tr id="plusBtn" >
                         <td>
                             <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
                         </td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>

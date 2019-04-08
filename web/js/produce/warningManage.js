@@ -398,6 +398,15 @@ function setWarning(result) {
                     $(this).html(data.id);
                     break;
 
+                    //状态
+                case (5):
+                    if(data.useable==1){
+                        $(this).html('启用中');
+                    }else {
+                        $(this).html('已失效');
+                    }
+
+                    break;
 
             }
             clonedTr.removeAttr("id");
@@ -601,9 +610,9 @@ function save() {
  * 删除
  */
 function removeWarning(item) {
-    if(confirm("确定删除?")){
+    if(confirm("确定作废?")){
         //点击确定后操作
-        var id=$(item).parent().prev().html();
+        var id=$(item).parent().prev().prev().html();
         $.ajax({
             type: "POST",                       // 方法类型
             url: "deleteWarning",               // url
@@ -629,6 +638,36 @@ function removeWarning(item) {
     }
 
 
+}
+
+/*启用*/
+function reStart(item){
+    if(confirm("确定启用?")){
+        //点击确定后操作
+        var id=$(item).parent().prev().prev().html();
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "reStartWarning",               // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'id': id
+            },
+            dataType: "json",
+            success: function (result) {
+                if (result != undefined) {
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+            }
+        });
+
+
+    }
 }
 
 $(document).ready(function () {//页面载入是就会进行加载里面的内容

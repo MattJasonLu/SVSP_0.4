@@ -138,16 +138,35 @@ public class WarningController {
         try {
            warningService.deleteWarning(id);
             res.put("status", "success");
-            res.put("message", "删除成功");
+            res.put("message", "作废成功");
         }
         catch (Exception e){
             e.printStackTrace();
             res.put("status", "fail");
-            res.put("message", "删除失败");
+            res.put("message", "作废失败");
 
         }
         return res.toString();
 
+    }
+
+    @RequestMapping("reStartWarning")
+    @ResponseBody
+    public String reStartWarning(int id){
+        JSONObject res=new JSONObject();
+
+        try {
+            warningService.reStartWarning(id);
+            res.put("status", "success");
+            res.put("message", "启用成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "启用失败");
+
+        }
+        return res.toString();
     }
 
     /**

@@ -37,6 +37,17 @@ public class Warning {
      */
     private String keywords;
 
+    /*状态*/
+    private int useable;
+
+    public int getUseable() {
+        return useable;
+    }
+
+    public void setUseable(int useable) {
+        this.useable = useable;
+    }
+
     public Page getPage() {
         return page;
     }
