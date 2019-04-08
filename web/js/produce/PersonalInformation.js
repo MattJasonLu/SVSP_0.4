@@ -4,6 +4,7 @@ var oldPassword = "";
  * 显示信息
  */
 function viewPersonalInformation() {
+    loadNavigationList();    // 动态菜单加载
     $.ajax({
         type: "POST",                           // 方法类型
         url: "getCurrentUserInfo",            // url
@@ -11,7 +12,7 @@ function viewPersonalInformation() {
         dataType: "json",
         success: function (result) {
             if (result != undefined) {
-                console.log(result);
+               // console.log(result);
                 var data = result.data;
                 $("#username").text(data.username);//index + 1
                 $("#department").text(data.department);

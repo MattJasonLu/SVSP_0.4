@@ -429,7 +429,7 @@ function getCurrentUserData() {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 data = eval(result.data);
-                console.log(data);
+                // console.log(data);
                 // 各下拉框数据填充
                 // return result.data;
             } else {
@@ -960,7 +960,6 @@ function getFormatNumber(str, number) {
  * 代办事项提醒
  */
 function toDoThingRemind() {
-    console.log("代办事项："+localStorage.toDoThingCount);
     var count = parseInt(localStorage.toDoThingCount);   // 代办事项总数
     var user = getCurrentUserData();
     if(user == null || user === {}) {  // 如果未登陆则进行登陆
