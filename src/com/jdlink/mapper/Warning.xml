@@ -6,8 +6,8 @@
 
     <!--添加数据-->
     <insert id="add" parameterType="Warning">
-        insert into t_warning (warningName, warningThreshold, warningUnit,createTime)
-        values (#{warningName},#{warningThreshold},#{warningUnit},NOW());
+        insert into t_warning (warningName, warningThreshold, warningUnit,createTime,useable)
+        values (#{warningName},#{warningThreshold},#{warningUnit},NOW(),1);
     </insert>
 
     <!--更新数据-->
@@ -31,8 +31,13 @@
 
     <!--删除-->
     <delete id="deleteWarning" parameterType="int">
-        delete from t_warning where id=#{id};
+         update t_warning set useable=0 where id=#{id}
     </delete>
+
+    <!--启用-->
+    <update id="reStartWarning" parameterType="int">
+      update t_warning set useable=1 where id=#{id}
+    </update>
 
     <!--总数-->
     <select id="totalWarningRecord" resultType="int">

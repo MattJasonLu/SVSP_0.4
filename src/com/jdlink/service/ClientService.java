@@ -85,4 +85,8 @@ public interface ClientService {
 
     Client getByNameNotState(String companyName);
 
+    Float getCurrentInBound(String clientId);
+
+    Float getCurrentOutBound(String clientId);
+
 }

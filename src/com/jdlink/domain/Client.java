@@ -228,6 +228,44 @@ public class Client {
     /*经纬度*/
     private String latitudeAndLongitude;
 
+    /*当前剩余库存*/
+    private float currentInventory;
+
+    /*预警值
+    * 上限
+    * */
+    private Warning warningUpper;
+
+
+    /*预警值
+     * 下限
+     * */
+    private Warning warningLower;
+
+    public Warning getWarningUpper() {
+        return warningUpper;
+    }
+
+    public void setWarningUpper(Warning warningUpper) {
+        this.warningUpper = warningUpper;
+    }
+
+    public Warning getWarningLower() {
+        return warningLower;
+    }
+
+    public void setWarningLower(Warning warningLower) {
+        this.warningLower = warningLower;
+    }
+
+    public float getCurrentInventory() {
+        return currentInventory;
+    }
+
+    public void setCurrentInventory(float currentInventory) {
+        this.currentInventory = currentInventory;
+    }
+
     public String getLatitudeAndLongitude() {
         return latitudeAndLongitude;
     }

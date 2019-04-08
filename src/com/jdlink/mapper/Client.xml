@@ -33,8 +33,17 @@
         <association property="clientTypeItem" column="clientTypeId" select="getClientTypeItem"/>
         <association property="checkStateItem" column="checkStateId" select="getCheckStateItem"/>
         <association property="clientStateItem" column="clientStateId" select="getClientStateItem"/>
+        <association property="warningUpper"  column="warningUpper" select="getWarningUpper"></association>
+        <association property="warningLower"  column="warningDown" select="getWarningLower"></association>
     </resultMap>
 
+    <select id="getWarningUpper" resultType="Warning">
+        select * from t_warning where id=#{warningUpper}
+    </select>
+
+    <select id="getWarningLower" resultType="Warning">
+        select * from t_warning where id=#{warningDown}
+    </select>
     <!--获取申报状态数据字典-->
     <select id="getApplicationStatusItem" resultType="ApplicationStatusItem">
         select * from datadictionaryitem where dataDictionaryItemId=#{applicationStatusId}
@@ -240,7 +249,7 @@
          bankAccount=#{bankAccount}, taxNumber=#{taxNumber}, ticketType=#{ticketType}, isDisposal=#{isDisposal},nowTime=NOW(),
          taxAddress=#{taxAddress}, taxMobile=#{taxMobile},enterpriseTypeId=#{enterpriseTypeItem.dataDictionaryItemId},operationTypeId=#{operationTypeItem.dataDictionaryItemId},operationRecordId=#{operationRecordItem.dataDictionaryItemId},
          operationModelId=#{operationModelItem.dataDictionaryItemId},contingencyPlanId=#{contingencyPlanItem.dataDictionaryItemId},
-         applicationStatusId=#{applicationStatusItem.dataDictionaryItemId},ticketRateId=#{ticketRateItem.dataDictionaryItemId},latitudeAndLongitude=#{latitudeAndLongitude}
+         applicationStatusId=#{applicationStatusItem.dataDictionaryItemId},ticketRateId=#{ticketRateItem.dataDictionaryItemId},latitudeAndLongitude=#{latitudeAndLongitude},currentInventory=#{currentInventory}
          WHERE clientId=#{clientId} order by nowTime desc;
     </update>
 
@@ -339,4 +348,13 @@
         applicationStatus=#{applicationStatus},location=#{location}
         where clientId=#{clientId}
     </update>
+
+    <!--获取当前公司入库量-->
+    <select id="getCurrentInBound" parameterType="String" resultType="Float">
+          select sum(wastesAmount) from t_pl_inboundorderitem where produceCompanyId=#{clientId};
+    </select>
+    <!--获取当前公司出库量-->
+    <select id="getCurrentOutBound" parameterType="String" resultType="Float">
+          select sum(outboundNumber) from t_pl_outboundorder where clientId=#{clientId} and DATE_FORMAT(NOW(),'%Y-%m-%d') >= DATE_FORMAT(t_pl_outboundorder.outboundDate,'%Y-%m-%d');
+    </select>
 </mapper>
