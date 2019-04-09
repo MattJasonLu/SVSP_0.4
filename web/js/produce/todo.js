@@ -263,7 +263,6 @@ function inputSwitchPage() {
 
 function LoadTodo() {
     loadNavigationList(); // 设置动态菜单
-    sendEmail();   // 发送邮件 测试
     var pageNumber = 1;               // 显示首页
     currentPage = pageNumber;
     $("#current").find("a").text("当前页：1");

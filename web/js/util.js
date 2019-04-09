@@ -460,6 +460,7 @@ function unique1(arr) {
  * 获取当前登陆用户信息
  */
 function getCurrentUserInfo() {
+    var data = null;
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getCurrentUserInfo",              // url
@@ -468,10 +469,11 @@ function getCurrentUserInfo() {
         dataType: "json",
         success: function (result) {
             if (result.status == "fail") {
-                if (data == null || result.message == "用户未正常登陆") {
+                if (result.data == null || result.message == "用户未正常登陆") {
                     window.location.href = "admin.html";
                 }
             } else {
+                data = result.data;
                 console.log(result.message);
             }
         },
@@ -479,6 +481,7 @@ function getCurrentUserInfo() {
             console.log(result);
         }
     });
+    return data;
 }
 
 /**
@@ -1357,12 +1360,12 @@ function confirmBack() {
 /**
  * 跳转到指定的邮箱登录页面
  */
-
 function goToEmail() {
-    var url = getCurrentUserInfo().email;
-    url = getEmail(url);
+    console.log(getCurrentUserData());
+    var url = getCurrentUserData().email;
     if (url !== "") {
-        window.location.href = "http://" + url;   // 跳转到相应得邮箱首页
+        url = getEmail(url);
+        window.open("http://" + url, "_blank");  // 跳转到相应得邮箱首页
     } else {
         alert("未找到对应的邮箱登录地址，请自己登录邮箱查看邮件！");
     }
