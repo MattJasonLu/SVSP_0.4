@@ -3078,11 +3078,11 @@ $.ui.plugin.add( "draggable", "snap", {
 		$( o.snap.constructor !== String ? ( o.snap.items || ":data(ui-draggable)" ) : o.snap )
 			.each( function() {
 				var $t = $( this ),
-					$o = $t.offset();
+					$o = t.offset();
 				if ( this !== i.element[ 0 ] ) {
 					i.snapElements.push( {
 						item: this,
-						width: $t.outerWidth(), height: $t.outerHeight(),
+						width: t.outerWidth(), height: t.outerHeight(),
 						top: $o.top, left: $o.left
 					} );
 				}

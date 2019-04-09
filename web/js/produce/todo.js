@@ -98,7 +98,7 @@ function setDataList(result) {
         if(item.type=="2") {
             state="待审批"
         }
-        console.log(state)
+      //  console.log(state)
       var tr=" <tr ondblclick='dbGo(this)'>\n" +
           "                        <td class=\"text-center\">\n" +
           "                            <label>\n" +
