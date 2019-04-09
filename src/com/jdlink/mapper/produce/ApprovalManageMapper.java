@@ -3,6 +3,8 @@ package com.jdlink.mapper.produce;
 import com.jdlink.domain.Approval.ApprovalNode;
 import com.jdlink.domain.Approval.ApprovalProcess;
 import com.jdlink.domain.Produce.Organization;
+import com.jdlink.domain.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -63,4 +65,5 @@ public interface ApprovalManageMapper {
     ApprovalNode getApprovalNodeById(String id);
 
     ApprovalProcess getApprovalProcessFlowByOrderId(String orderId);
+
 }

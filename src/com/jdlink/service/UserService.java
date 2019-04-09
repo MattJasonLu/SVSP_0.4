@@ -119,4 +119,6 @@ public interface UserService {
      */
     User getCurrentUserInfo(HttpSession session);
 
+    List<User> getUserListByRoleId(int roleId);
+
 }

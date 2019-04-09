@@ -3,6 +3,8 @@ package com.jdlink.service.produce;
 import com.jdlink.domain.Approval.ApprovalNode;
 import com.jdlink.domain.Approval.ApprovalProcess;
 import com.jdlink.domain.Produce.Organization;
+import com.jdlink.domain.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -58,4 +60,6 @@ public interface ApprovalManageService {
     ApprovalNode getApprovalNodeById(String id);
 
     ApprovalProcess getApprovalProcessFlowByOrderId(String orderId);
+
+
 }
