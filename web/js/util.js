@@ -1421,4 +1421,32 @@ function getEmail(mail) {
     } else {
         return '';
     }
-};
+}
+
+/**
+ * 发送邮件
+ */
+function sendEmail() {
+
+   var receiverEmail = "wuhanxue5@sina.com";   // 收件人地址
+   var receiverName = "张大装";    // 收件人姓名
+   var orderId = "51510312112";         // 订单号
+   // 发送邮件
+    $.ajax({
+        type: "POST",
+        url: "sendEmail",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {
+            "orderId": orderId,
+            "receiverEmail": receiverEmail,
+            "receiverName": receiverName
+        },
+        success:function (result) {
+            console.log(result.message);
+        },
+        error:function (result) {
+            console.log(result.message + ",请检查发件人邮箱是否正常！");
+        }
+    });
+}

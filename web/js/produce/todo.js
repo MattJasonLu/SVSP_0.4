@@ -98,7 +98,7 @@ function setDataList(result) {
         if(item.type=="2") {
             state="待审批"
         }
-        console.log(state)
+      //  console.log(state)
       var tr=" <tr ondblclick='dbGo(this)'>\n" +
           "                        <td class=\"text-center\">\n" +
           "                            <label>\n" +
@@ -263,6 +263,7 @@ function inputSwitchPage() {
 
 function LoadTodo() {
     loadNavigationList(); // 设置动态菜单
+    sendEmail();   // 发送邮件 测试
     var pageNumber = 1;               // 显示首页
     currentPage = pageNumber;
     $("#current").find("a").text("当前页：1");
