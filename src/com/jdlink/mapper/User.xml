@@ -38,6 +38,10 @@
         SELECT * FROM user WHERE username=#{username};
     </select>
 
+    <select id="getUserListByRoleId" resultMap="UserRM" parameterType="int">
+        select * from user where roleId=#{roleId};
+    </select>
+
     <update id="update" parameterType="User" >
         update user set username=#{username}, password=#{password}, name=#{name}, age=#{age}, sex=#{sex}, nowTime=NOW() where id=#{id}
     </update>

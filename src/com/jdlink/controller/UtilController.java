@@ -198,30 +198,6 @@ public class UtilController {
         return  res.toString();
     }
 
-    /**
-     * 发送邮件
-     * @param orderId
-     * @param receiverEmail
-     * @param receiverName
-     * @return
-     */
-    @RequestMapping("sendEmail")
-    @ResponseBody
-    public String sendEmail(String orderId, String receiverEmail, String receiverName) {
-        JSONObject res=new JSONObject();
-        try{
-            String siginAdress = "222.191.244.156:9998/SVSP/admin.html\n(内网：http://172.16.1.92:9998/SVSP/admin.html)";   // 外网登录地址
-            String text = "Dear " + receiverName + ":\n    您有一个新的单据" + orderId + "待审批，请登陆系统查看：\n" + siginAdress;   // 邮件正文
-            EmailUtil.sendEmail(receiverEmail,text);   // 发送邮件
-            res.put("status", "success");
-            res.put("message", "邮件发送成功");
-        }catch (Exception e) {
-            e.printStackTrace();
-            res.put("status", "fail");
-            res.put("message", "邮件发送失败");
-        }
-        return  res.toString();
-    }
 }
 
 

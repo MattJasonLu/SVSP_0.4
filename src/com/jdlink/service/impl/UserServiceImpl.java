@@ -136,4 +136,8 @@ public class UserServiceImpl implements UserService {
         return (User) session.getAttribute("user");
     }
 
+    @Override
+    public List<User> getUserListByRoleId(int roleId) {
+        return userMapper.getUserListByRoleId(roleId);
+    }
 }
