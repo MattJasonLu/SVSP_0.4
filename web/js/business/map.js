@@ -84,7 +84,7 @@ function createMap(obj){
                  color = "#c4cb1f";
                  radio = 1000
              }
-             var circle = new BMap.Circle(point,radio);         //radio为半径大小，point为标注点
+             var circle = new BMap.Circle(point,parseFloat(item.capacity));         //radio为半径大小，point为标注点
              circle.setFillColor(color);                        //设置圆形区域填充颜色
              circle.setStrokeColor("transparent");              //设置圆形区域边框颜色
          }
