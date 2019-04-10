@@ -1374,6 +1374,13 @@ function goToEmail() {
 }
 
 /**
+ * 双击进入邮箱设置
+ */
+function emailSettings() {
+    $("#emailSettingsModal").modal('show')
+}
+
+/**
  * 根据用户的Email跳转到相应的电子邮箱首页
  * @param mail
  * @returns {string}
