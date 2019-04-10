@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>模板升级</title>
+    <title>邮箱设置</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
@@ -18,7 +18,7 @@
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
 </head>
-<body onload="getContractList();">
+<body onload="loadData();">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -98,7 +98,8 @@
         </li>
         <li><a href="#" title="邮件" onclick="goToEmail()"><span class="glyphicon glyphicon-envelope"></span></a></li>
         <li class="dropdown">
-            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+               aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
             <ul class="dropdown-menu">
                 <li><a href="personalInformation.html">个人信息</a></li>
                 <li><a href="admin.html">注销</a></li>
@@ -111,18 +112,43 @@
     <div class="row">
         <div class="sidebar">
             <ul class="sidenav animated fadeInUp">
-                <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
-                <li class="active"><a class="withripple" href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="compatibilityPlan.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="storageManagement.html"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="preprocessingManagement.html"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="dispositionManagement.html"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="secondaryManagement.html"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="procurementManagement.html"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="reportManagement.html"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="basicData.html"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="infrastructure.html"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list"
+                                                                           aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span
+                        class="sr-only">(current)</span></a></li>
+                <li class="active"><a class="withripple" href="businessModel.html"><span
+                        class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span
+                        class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="compatibilityPlan.html"><span class="glyphicon glyphicon-list"
+                                                                              aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in"
+                                                                              aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="storageManagement.html"><span class="glyphicon glyphicon-save"
+                                                                              aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="preprocessingManagement.html"><span
+                        class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="dispositionManagement.html"><span class="glyphicon glyphicon-retweet"
+                                                                                  aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="secondaryManagement.html"><span class="glyphicon glyphicon-tags"
+                                                                                aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="procurementManagement.html"><span
+                        class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span
+                        class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="reportManagement.html"><span class="glyphicon glyphicon-edit"
+                                                                             aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="basicData.html"><span class="glyphicon glyphicon-signal"
+                                                                      aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span
+                        class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="infrastructure.html"><span class="glyphicon glyphicon-cog"
+                                                                           aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
             </ul>
         </div>
     </div>
@@ -134,18 +160,65 @@
         </div>
         <h4 class="sub-header">邮箱设置</h4>
         <div class="row">
-            <div class="col-md-3">
-                <p><b>公司邮箱:</b><input class="form-control" type="email" title="" id="email"></p>
+            <div class="col-md-6">
+                <p><b>公司邮箱（请使用163邮箱）:</b><input class="form-control" type="text" title="" id="email" style="width: 50%"></p>
             </div>
-            <div class="col-md-3">
-                <p><b>客户端授权码:</b><input class="form-control" type="password" title="" id="password"></p>
+            <div class="col-md-6">
+                <p><b>客户端授权码:</b><input class="form-control" type="text" title="" id="password" style="width: 50%"></p>
             </div>
         </div>
         <div class="text-center">
             <a class="btn btn-success hidden-print" id="back" onclick="saveSettings()">保存</a>
-            <a class="btn btn-danger hidden-print" data-dismiss="modal" id="close">关闭</a>
         </div>
     </div>
 </div>
 </body>
+<script>
+    function loadData() {
+        loadNavigationList();    // 加载动态菜单
+        $.ajax({   // 获取公司邮箱信息
+            type: "POST",                       // 方法类型
+            url: "getCompanyEmail",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    // 赋值
+                    $("#email").val(result.data.email);
+                    $("#password").val(result.data.password);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    }
+
+    /**
+     * 修改公司邮箱信息
+     */
+    function saveSettings() {
+        var data = {};
+        data.email = $("#email").val();
+        data.password = $("#password").val();
+        $.ajax({   // 获取公司邮箱信息
+            type: "POST",                       // 方法类型
+            url: "updateCompanyEmail",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                   alert(result.message);
+                }else{
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                alert("修改失败！");
+            }
+        });
+    }
+</script>
 </html>

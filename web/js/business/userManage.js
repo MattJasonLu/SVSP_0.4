@@ -678,6 +678,7 @@ function showEditModal(e) {
                 $("#username").val(obj.username);
                 $("#name").val(obj.name);
                 $("#age").val(parseInt(obj.age));
+                $("#email").val(obj.email);
                 if (obj.sex) {
                     $("#sex").prop("checked", true);
                     $("#sex2").prop("checked", false);
@@ -706,7 +707,8 @@ function updateUserInfo() {
         password: $("#password").val(),
         name: $("#name").val(),
         sex: $("#sex").prop("checked"),
-        age: $("#age").val()
+        age: $("#age").val(),
+        email: $("#email").val()
     };
     $.ajax({
         type: "POST",                       // 方法类型

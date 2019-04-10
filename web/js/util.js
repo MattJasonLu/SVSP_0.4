@@ -655,6 +655,7 @@ function loadNavigationList() {
     // console.log(JSON.parse(localStorage.getItem("menuOrganization")));
     setToDoThingCount(); // 获取并设置待办事项总数
     toDoThingRemind();   // 设置代办事项提醒
+
     if (JSON.parse(localStorage.getItem("menuOrganization")) == null) {  // 如果数据为空则进行查询
         // 获取动态菜单数据
         $.ajax({
@@ -1433,4 +1434,11 @@ function getEmail(mail) {
     } else {
         return '';
     }
+}
+
+/**
+ * 双击进入邮箱设置
+ */
+function emailSettings() {
+    $("#emailSettingsModal").modal('show')
 }

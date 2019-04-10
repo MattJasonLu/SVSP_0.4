@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
@@ -119,7 +120,8 @@ public class ApprovalManageController {
                             List<User> userList = userService.getUserListByRoleId(approvalNode1.getRoleId());
                             for (User user1 : userList) {
                                 if (user1.getEmail() != null && !user1.getEmail().equals("")) {
-                                    EmailUtil.sendEmail(user1.getEmail(), user1.getName(), orderId);   // 发送邮件
+                                    User companyEmail = userService.getCompanyEmail();
+                                    EmailUtil.sendEmail(user1.getEmail(), user1.getName(), orderId, companyEmail);   // 发送邮件
                                 }
                             }
                             res.remove("message");

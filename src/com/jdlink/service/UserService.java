@@ -121,4 +121,8 @@ public interface UserService {
 
     List<User> getUserListByRoleId(int roleId);
 
+    User getCompanyEmail();
+
+    void updateCompanyEmail(User user);
+
 }
