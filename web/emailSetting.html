@@ -134,11 +134,15 @@
         </div>
         <h4 class="sub-header">邮箱设置</h4>
         <div class="row">
-            <p><b>公司邮箱</b><input type="email" title="" id="email"></p>
-            <p><b> 客户端授权码</b><input type="password" title="" id="password"></p>
+            <div class="col-md-3">
+                <p><b>公司邮箱:</b><input class="form-control" type="email" title="" id="email"></p>
+            </div>
+            <div class="col-md-3">
+                <p><b>客户端授权码:</b><input class="form-control" type="password" title="" id="password"></p>
+            </div>
         </div>
-        <div class="modal-footer row text-center">
-            <a class="btn btn-danger hidden-print" id="back" onclick="saveSettings()">保存</a>
+        <div class="text-center">
+            <a class="btn btn-success hidden-print" id="back" onclick="saveSettings()">保存</a>
             <a class="btn btn-danger hidden-print" data-dismiss="modal" id="close">关闭</a>
         </div>
     </div>
