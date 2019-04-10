@@ -140,4 +140,14 @@ public class UserServiceImpl implements UserService {
     public List<User> getUserListByRoleId(int roleId) {
         return userMapper.getUserListByRoleId(roleId);
     }
+
+    @Override
+    public User getCompanyEmail() {
+        return userMapper.getCompanyEmail();
+    }
+
+    @Override
+    public void updateCompanyEmail(User user) {
+        userMapper.updateCompanyEmail(user);
+    }
 }

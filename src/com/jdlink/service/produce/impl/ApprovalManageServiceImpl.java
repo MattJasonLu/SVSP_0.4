@@ -134,7 +134,8 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
                 for (User user1 : userList) {  // 给每个用户发送邮件
                     try {
                         if (user1.getEmail() != null && !user1.getEmail().equals("")) {
-                            EmailUtil.sendEmail(user1.getEmail(), user1.getName(), orderId);   // 发送邮件
+                            User companyEmail = userMapper.getCompanyEmail();
+                            EmailUtil.sendEmail(user1.getEmail(), user1.getName(), orderId, companyEmail);   // 发送邮件
                         }
                     }catch (MessagingException e){
                         e.printStackTrace();
@@ -296,7 +297,8 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
                                 for (User user1 : userList) {  // 给每个用户发送邮件
                                     try {
                                         if (user1.getEmail() != null && !user1.getEmail().equals("")) {
-                                            EmailUtil.sendEmail(user1.getEmail(), user1.getName(), orderId);   // 发送邮件
+                                            User companyEmail = userMapper.getCompanyEmail();
+                                            EmailUtil.sendEmail(user1.getEmail(), user1.getName(), orderId,companyEmail);   // 发送邮件
                                         }
                                     }catch (MessagingException e){
                                         e.printStackTrace();
@@ -315,7 +317,8 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
                         for (User user1 : userList) {  // 给每个用户发送邮件
                             try {
                                 if (user1.getEmail() != null && !user1.getEmail().equals("")) {
-                                    EmailUtil.sendEmail(user1.getEmail(), user1.getName(), orderId);   // 发送邮件
+                                    User companyEmail = userMapper.getCompanyEmail();
+                                    EmailUtil.sendEmail(user1.getEmail(), user1.getName(), orderId,companyEmail);   // 发送邮件
                                 }
                             }catch (MessagingException e){
                                 e.printStackTrace();
@@ -360,7 +363,8 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
                                 for (User user1 : userList) {  // 给每个用户发送邮件
                                     try {
                                         if (user1.getEmail() != null && !user1.getEmail().equals("")) {
-                                            EmailUtil.sendEmail(user1.getEmail(), user1.getName(), orderId);   // 发送邮件
+                                            User companyEmail = userMapper.getCompanyEmail();
+                                            EmailUtil.sendEmail(user1.getEmail(), user1.getName(), orderId, companyEmail);   // 发送邮件
                                         }
                                     }catch (MessagingException e){
                                         e.printStackTrace();
@@ -379,7 +383,8 @@ public class ApprovalManageServiceImpl implements ApprovalManageService {
                         for (User user1 : userList) {  // 给每个用户发送邮件
                             try {
                                 if (user1.getEmail() != null && !user1.getEmail().equals("")) {
-                                    EmailUtil.sendEmail(user1.getEmail(), user1.getName(), orderId);   // 发送邮件
+                                    User companyEmail = userMapper.getCompanyEmail();
+                                    EmailUtil.sendEmail(user1.getEmail(), user1.getName(), orderId, companyEmail);   // 发送邮件
                                 }
                             }catch (MessagingException e){
                                 e.printStackTrace();
