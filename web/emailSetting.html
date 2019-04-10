@@ -164,7 +164,13 @@
                 <p><b>公司邮箱（请使用163邮箱）:</b><input class="form-control" type="text" title="" id="email" style="width: 50%"></p>
             </div>
             <div class="col-md-6">
-                <p><b>客户端授权码:</b><input class="form-control" type="text" title="" id="password" style="width: 50%"></p>
+                <p><b>客户端授权码
+                        <a tabindex="0" class="btn" role="button" data-toggle="popover"
+                           data-trigger="focus" title="帮助"
+                           data-content="非邮箱密码，百度‘获取163邮箱客户端授权码’。"
+                           onclick="$(this).popover('toggle')">
+                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>
+                    :</b><input class="form-control" type="text" title="" id="password" style="width: 50%"></p>
             </div>
         </div>
         <div class="text-center">
