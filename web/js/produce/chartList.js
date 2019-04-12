@@ -395,11 +395,11 @@ function setBarConfig(myChart) {
     var option = {
         //--------------    标题 title  ----------------
         title: {
-            text: '',
+            text: '危废合同签约量条形图',
             textStyle: {                 //---主标题内容样式
                 color: 'black'
             },
-            subtext: '危废合同签约量条形图',          //---副标题内容样式
+            subtext: '',          //---副标题内容样式
             subtextStyle: {
                 color: 'black'
             },
