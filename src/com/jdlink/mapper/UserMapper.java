@@ -107,4 +107,10 @@ public interface UserMapper {
 
     void modifyPassword(User user);
 
+    List<User> getUserListByRoleId(int roleId);
+
+    User getCompanyEmail();
+
+    void updateCompanyEmail(User user);
+
 }

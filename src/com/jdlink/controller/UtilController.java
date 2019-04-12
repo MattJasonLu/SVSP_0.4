@@ -1,5 +1,6 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.EmailUtil;
 import com.jdlink.util.DBUtil;
 
 import javax.servlet.ServletContext;
@@ -196,7 +197,6 @@ public class UtilController {
         }
         return  res.toString();
     }
-
 
 }
 

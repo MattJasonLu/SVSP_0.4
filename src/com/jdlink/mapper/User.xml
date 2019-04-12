@@ -38,8 +38,12 @@
         SELECT * FROM user WHERE username=#{username};
     </select>
 
+    <select id="getUserListByRoleId" resultMap="UserRM" parameterType="int">
+        select * from user where roleId=#{roleId};
+    </select>
+
     <update id="update" parameterType="User" >
-        update user set username=#{username}, password=#{password}, name=#{name}, age=#{age}, sex=#{sex}, nowTime=NOW() where id=#{id}
+        update user set username=#{username}, password=#{password}, name=#{name}, age=#{age}, sex=#{sex},email=#{email}, nowTime=NOW() where id=#{id}
     </update>
     <select id="list" resultMap="UserRM">
         select * from user order by nowTime desc;
@@ -215,6 +219,17 @@
     <update id="modifyPassword" parameterType="User">
         update user set password=#{password}
         where username=#{username} and company=#{company};
+    </update>
+
+    <!--获取公司邮箱-->
+    <select id="getCompanyEmail" resultType="User">
+        select * from t_company_email;
+    </select>
+
+    <!--更新公司邮箱-->
+    <update id="updateCompanyEmail" >
+        delete from t_company_email;
+        insert into t_company_email (email, password) values (#{email},#{password});
     </update>
 
 </mapper>

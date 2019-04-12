@@ -460,6 +460,7 @@ function unique1(arr) {
  * 获取当前登陆用户信息
  */
 function getCurrentUserInfo() {
+    var data = null;
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getCurrentUserInfo",              // url
@@ -468,10 +469,11 @@ function getCurrentUserInfo() {
         dataType: "json",
         success: function (result) {
             if (result.status == "fail") {
-                if (data == null || result.message == "用户未正常登陆") {
+                if (result.data == null || result.message == "用户未正常登陆") {
                     window.location.href = "admin.html";
                 }
             } else {
+                data = result.data;
                 console.log(result.message);
             }
         },
@@ -479,6 +481,7 @@ function getCurrentUserInfo() {
             console.log(result);
         }
     });
+    return data;
 }
 
 /**
@@ -652,6 +655,7 @@ function loadNavigationList() {
     // console.log(JSON.parse(localStorage.getItem("menuOrganization")));
     setToDoThingCount(); // 获取并设置待办事项总数
     toDoThingRemind();   // 设置代办事项提醒
+
     if (JSON.parse(localStorage.getItem("menuOrganization")) == null) {  // 如果数据为空则进行查询
         // 获取动态菜单数据
         $.ajax({
@@ -1290,7 +1294,7 @@ function initBakcFName(functionName) {
 
 /*确认审批*/
 function confirmApproval() {
-    var orderId=   $('#ApprovalOrderId').text();
+    var orderId = $('#ApprovalOrderId').text();
     var roleId=getCurrentUserData().role.id;
     var approvalAdvice=$('#advice').val();
     publicApproval(orderId, roleId,approvalAdvice);
@@ -1343,29 +1347,38 @@ function ApprovalBack() {
 function confirmBack() {
 
     var orderId=   $('#ApprovalOrderId').text();
-    var roleId=getCurrentUserData().role.id;
+    var roleId = getCurrentUserData().role.id;
     var approvalAdvice=$('#backContent').val();
-    var radio=$("input[name='backLevel']:checked").val()
-    publicBack(orderId, roleId,approvalAdvice,radio)
+    var radio=$("input[name='backLevel']:checked").val();
+    publicBack(orderId, roleId,approvalAdvice,radio);
     var url=getUrl();
     var storage=window.localStorage;
     storage['approvalId']=orderId;
+
     window.location.href=url;
+
 
 }
 
 /**
  * 跳转到指定的邮箱登录页面
  */
-
 function goToEmail() {
-    var url = getCurrentUserInfo().email;
-    url = getEmail(url);
+    console.log(getCurrentUserData());
+    var url = getCurrentUserData().email;
     if (url !== "") {
-        window.location.href = "http://" + url;   // 跳转到相应得邮箱首页
+        url = getEmail(url);
+        window.open("http://" + url, "_blank");  // 跳转到相应得邮箱首页
     } else {
         alert("未找到对应的邮箱登录地址，请自己登录邮箱查看邮件！");
     }
+}
+
+/**
+ * 双击进入邮箱设置
+ */
+function emailSettings() {
+    $("#emailSettingsModal").modal('show')
 }
 
 /**
@@ -1421,4 +1434,11 @@ function getEmail(mail) {
     } else {
         return '';
     }
-};
+}
+
+/**
+ * 双击进入邮箱设置
+ */
+function emailSettings() {
+    $("#emailSettingsModal").modal('show')
+}

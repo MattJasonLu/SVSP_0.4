@@ -68,10 +68,9 @@
     <ul class="nav navbar-nav navbar-right">
         <li><a href="todo.html" title="事项">
             <span class="glyphicon glyphicon-bell"></span>
-            <div>1</div>
         </a>
         </li>
-        <li><a href="#" title="邮件" onclick="goToEmail()"><span class="glyphicon glyphicon-envelope"></span></a></li>
+        <li><a href="#" title="邮件" ondblclick="emailSettings()" onclick="goToEmail()"><span class="glyphicon glyphicon-envelope"></span></a></li>
         <li class="dropdown">
             <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
             <ul class="dropdown-menu">
@@ -159,7 +158,7 @@
                 </div>
             </div>
         </div>
-        <div class="main" style="overflow-y: scroll">
+        <div class="main" style="overflow-y: auto">
             <div id="layer02" class="layer box-shadow" style="height:15%;width: 97.5%">
                 <!--<div style="background-color:rgba(0,0,0,.3);"></div>-->
                 <div id="layer02_01" style="width:16%;">
@@ -247,7 +246,7 @@
                 <!--</div>-->
             </div>
             <!--柱状图-->
-            <div id="layer06" class="layer box-shadow" style="height:60%;width: 97.5%;margin-top: 5%">
+            <div id="layer06" class="layer box-shadow" style="height:40%;width: 97.5%;margin-top: 5%;margin-bottom: 20%">
                 <div id="layer08_right_bar_graph" style="height:98%;width: 95%;"></div>
             </div>
         </div>
@@ -258,6 +257,9 @@
 
 </script>
 <style type="text/css">
+    html{
+        min-height: 100%
+    }
     .box-shadow{
         border-radius: 10px;
         border:1px solid #aeaeae;
