@@ -160,22 +160,33 @@
 
     <!--一级菜单模态框-->
     <div class="modal fade" id="firstModal" tabindex="-1" role="dialog" aria-labelledby="firstModal">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" role="document" style="height: 100%">
             <div class="modal-content">
                 <div class="modal-header">
                     <h2>菜单设置</h2>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="box-shadow" style="width: 45%;height: 100%;float: left">
-                            <p>1111</p>
-                            <p>2222</p>
-                            <p>3333</p>
+                        <div class="box-shadow" style="width: 45%;height: 60%;float: left;overflow-y: auto">
+                            <p class="firstMenu">系统设置</p><a onclick="view()" class="glyphicon glyphicon-plus menu"></a>
+                            <hr class="firstMenu">
+                            <p class="firstMenu">商务管理</p><a onclick="view()" class="glyphicon glyphicon-plus menu"></a>
+                            <hr class="firstMenu">
+                            <p class="firstMenu">配伍计划</p><a onclick="view()" class="glyphicon glyphicon-plus menu"></a>
+                            <hr class="firstMenu">
+                            <p class="firstMenu">接收管理</p><a onclick="view()" class="glyphicon glyphicon-plus menu"></a>
+                            <hr class="firstMenu">
+                            <p class="firstMenu">贮存管理</p><a onclick="view()" class="glyphicon glyphicon-plus menu"></a>
+                            <hr class="firstMenu">
+                            <p class="firstMenu">处置管理</p><a onclick="view()" class="glyphicon glyphicon-plus menu"></a>
                         </div>
-                        <div class="box-shadow" style="width: 45%;height: 100%;float: left">
-                            <p><input type="checkbox" title="">1111</p>
-                            <p><input type="checkbox" title="">2222</p>
-                            <p><input type="checkbox" title="">3333</p>
+                        <div class="box-shadow" style="width: 45%;height: 60%;float: left;overflow-y: auto">
+                            <p class="firstMenu">系统设置</p><a onclick="view()" class="glyphicon glyphicon-minus menu"></a>
+                            <hr class="firstMenu">
+                            <p class="hidden"><input type="checkbox" title="">动态菜单管理</p>
+                            <p class="hidden"><input type="checkbox" title="">审批流管理</p>
+                            <p class="hidden"><input type="checkbox" title="">首页设置</p>
+                            <p class="hidden"><input type="checkbox" title="">邮箱设置</p>
                         </div>
                     </div>
                 </div>
@@ -227,8 +238,21 @@
         </div>
     </div>
 </body>
+<script>
+    function view() {
+        $("p").removeAttr("class");
+    }
+</script>
 <!--分页格式-->
 <style type="text/css">
+    .firstMenu{
+        margin: 5px;
+    }
+    .menu{
+        float: right;
+        margin-top: -23px;
+        margin-right: 5px
+    }
     .pagination > li {
         display: inline;
     }

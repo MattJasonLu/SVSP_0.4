@@ -5,38 +5,42 @@
     <script src="js/time.js"></script>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script type="text/javascript">
+        function allowDrop(ev)
+        {
+            ev.preventDefault();
+        }
+
+        function drag(ev)
+        {
+            ev.dataTransfer.setData("Text",ev.target.id);
+        }
+
+        function drop(ev)
+        {
+            ev.preventDefault();
+            var data=ev.dataTransfer.getData("Text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+    </script>
 </head>
 <body>
-<ul>
-    <li>机构概况
-        <ul>
-            <li>机构情况</li>
-            <li>机构组成</li>
-            <li>机构组成</li>
-        </ul>
-    </li>
-    <li>人才引进</li>
-    <li>新闻动态</li>
-    <li>文化生活</li>
-</ul>
+<div class="row">
+    <div class="box-shadow" id="div1" ondrop="drop(event)" ondragover="allowDrop(event)" style="height: 500px;width: 45%;float: left">
+        <p id="drag1" draggable="true" ondragstart="drag(event)">111111111111</p>
+        <p id="drag2" draggable="true" ondragstart="drag(event)">222222222222</p>
+        <p id="drag3" draggable="true" ondragstart="drag(event)">333333333333</p>
+        <p id="drag4" draggable="true" ondragstart="drag(event)">444444444444</p>
+    </div>
+    <div class="box-shadow" id="div2" ondrop="drop(event)" ondragover="allowDrop(event)" style="height: 500px;width: 45%;float: left"></div>
+</div>
 </body>
-
-
-
 <style>
-    ul li {
-        float: left;
-        width: 25%;
-        list-style-type: none;
-        font-size: 14px;
-        color: #ff273d;
-        position: relative;
-        line-height:25px;
-    }
-    ul li ul li {
-        /*float: none;*/
-        width: 100px;
-        background-color: #0066CC;
+    .box-shadow{
+        border-radius: 10px;
+        border:1px solid #aeaeae;
+        margin: 10px;
+        box-shadow: 0 0 10px #107093;
     }
 </style>
 </html>
