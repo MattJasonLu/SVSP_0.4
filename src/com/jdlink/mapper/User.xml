@@ -98,6 +98,9 @@
     <!--删除角色-->
     <delete id="deleteRoleById" parameterType="int" >
         delete from t_ur_role where id=#{id};
+        <!--删除首页节点配置数据-->
+        delete from t_ur_first_page_configuration_item where a_id in (select id from t_ur_first_page_configuration where role_id=#{id});
+        delete from t_ur_first_page_configuration where role_id=#{id};
     </delete>
 
     <!--列出所有功能-->
