@@ -18,6 +18,14 @@
         select page_id from t_ur_first_page_configuration_item where a_id in (select id from t_ur_first_page_configuration where first_menu_name=#{name} and role_id=#{id});
     </select>
 
+    <select id="getPageByMenuNameAndRoleId" resultType="Organization">
+       select * from menu_management where id in (select page_id from t_ur_first_page_configuration_item where a_id in (select id from t_ur_first_page_configuration where first_menu_name=#{name} and role_id=#{id}));
+    </select>
+
+    <select id="getFirstMenuNameListByRoleId" resultType="String">
+        select first_menu_name from t_ur_first_page_configuration where role_id=#{id};
+    </select>
+
     <insert id="addConfiguration" parameterType="Organization">
         insert into t_ur_first_page_configuration (id,first_menu_name,role_id) values (#{pId},#{name},#{id});
     </insert>

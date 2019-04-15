@@ -3,6 +3,7 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.Produce.Organization;
 import com.jdlink.domain.User;
+import com.jdlink.service.FirstPageConfigurationService;
 import com.jdlink.service.MenuManageService;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import net.sf.json.JSONArray;
@@ -22,6 +23,8 @@ import java.util.List;
 public class MenuManageController {
     @Autowired
     MenuManageService menuManageService;
+    @Autowired
+    FirstPageConfigurationService firstPageConfigurationService;
 
     /**
      * 获取菜单数据
@@ -413,14 +416,22 @@ public class MenuManageController {
      */
     @RequestMapping("getMenuTree")
     @ResponseBody
-    public String getMenuTree() {
+    public String getMenuTree(HttpSession session) {
         JSONObject res = new JSONObject();
         try {
             Organization organization = menuManageService.getMenuById(1);  // 获取动态菜单树状结构
             List<Organization> organizationList = getTreeMenuList(organization);
+           Organization organization1 = new Organization();
+            User user = (User) session.getAttribute("user");   // 获取当前用户
+            if(user != null && user.getRole() != null) {  // 获取该角色下的首页配置数据
+                List<Organization> firstMenuConfigurationList = firstPageConfigurationService.getPageConfigurationTreeByRoleId(user.getRole().getId());
+                organization1.setOrganizationList(firstMenuConfigurationList);
+            }
             organization.setOrganizationList(organizationList);
             JSONObject data = JSONObject.fromBean(organization);
+            JSONObject data1 = JSONObject.fromBean(organization1);
             res.put("data", data);
+            res.put("firstMenuConfiguration", data1);
             res.put("status", "success");
             res.put("message", "获取成功!");
         } catch (Exception e) {

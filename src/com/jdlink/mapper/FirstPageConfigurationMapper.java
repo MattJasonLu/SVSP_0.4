@@ -18,4 +18,8 @@ public interface FirstPageConfigurationMapper {
     void addConfigurationItem(Organization organization);
 
     List<Integer> getByMenuNameAndRoleId(Organization organization);
+
+    List<Organization> getPageByMenuNameAndRoleId(@Param("name")String name, @Param("id")int id) ;
+
+    List<String> getFirstMenuNameListByRoleId(int id);
 }
