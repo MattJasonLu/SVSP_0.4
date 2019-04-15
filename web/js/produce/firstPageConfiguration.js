@@ -88,7 +88,7 @@ function firstModalShow(e) {
         $("#firstMenu").children().remove();   // 删除历史数据
         $.each(JSON.parse(localStorage.getItem("menuOrganization")).organizationList, function (index, item) {   // 循环页面list进行部署
             if (index < data.length - 1) {
-                var p = "<p onclick='showChildrenPage(this)' class=\"firstMenu\">" + item.name + "</p><span hidden name=\"id\">" + item.id + "</span>\n" +
+                var p = "<p onclick='showChildrenPage(this)' onmouseover='changeBackgroundColor(this)' class=\"firstMenu\">" + item.name + "</p><span hidden name=\"id\">" + item.id + "</span>\n" +
                     "                            <hr class=\"firstMenu\">";
             } else {   // 最后一个节点无需分割线
                 var p = "<p onclick='showChildrenPage()' class=\"firstMenu\">" + item.name + "</p><span hidden name=\"id\">" + item.id + "</span>\n";
@@ -103,9 +103,22 @@ function firstModalShow(e) {
 var selectPageList = ["page"];    // 选中的页面url 后台获取
 
 /**
+ * 悬浮变色
+ */
+// function changeBackgroundColor(e) {
+//     $(".hover_background").css("background-color","white");  //移除旧背景色
+//     $(e).css("background-color","#8ec9ff");  //动态添加背景色
+//     $(e).addClass("hover_background");   //添加class
+// }
+
+/**
  * 显示该一级菜单下的页面
  */
 function showChildrenPage(e) {
+    $(".old_background").css("background-color","white");  //移除旧背景色
+    $(".old_background").removeAttr("class");  //移除class
+    $(e).css("background-color","#8ec9ff");  //动态添加背景色
+    $(e).addClass("old_background");   //添加class
     firstMenuName = $(e).text();      // 获取一级菜单名
     // 后台根据一级菜单获取选中页面的url
     var data = {};
@@ -150,17 +163,19 @@ function setPageUrlClone(data) {
             if (item.url != null && item.url !== "" && item.url !== "firstPage.html") {
                 if (index < data.organizationList.length - 1) {  // 末尾不设分割线
                     if (selectPageList.indexOf(item.id) !== -1) {   // 该页面为已选
-                        var p = "<div onclick='setChecked(this)'><input type='checkbox' checked  name='select'><p class=\"firstMenu\">" + item.name + "</p><span hidden name='id'>" + item.id + "</span></div>\n" +
+                        var p = "<div class=\"row\" onclick='setChecked(this)'><input style='float: left;margin-left: 30px;margin-top: 8px' type='checkbox' checked  name='select'><p style='float: left' class=\"firstMenu\">" + item.name + "</p><span hidden name='id'>" + item.id + "</span></div>\n" +
                             "                            <hr class=\"firstMenu\">";
                     } else {
-                        var p = "<div onclick='setChecked(this)'><input type='checkbox' name='select'><p class=\"firstMenu\">" + item.name + "</p><span hidden name='id'>" + item.id + "</span></div>\n" +
+                        var p = "<div class=\"row\" onclick='setChecked(this)'><input style='float: left;margin-left: 30px;margin-top: 8px' type='checkbox' name='select'><p style='float: left' class=\"firstMenu\">" + item.name + "</p><span hidden name='id'>" + item.id + "</span></div>\n" +
                             "                            <hr class=\"firstMenu\">";
                     }
                 } else {
                     if (selectPageList.indexOf(item.id) !== -1) {   // 该页面为已选
-                        var p = "<div onclick='setChecked(this)'><input type='checkbox' checked name='select'><p class=\"firstMenu\">" + item.name + "</p><span hidden name='id'>" + item.id + "</span></div>\n";
+                        var p = "<div class=\"row\" onclick='setChecked(this)'><input style='float: left;margin-left: 30px;margin-top: 8px' type='checkbox' checked name='select'><p style='float: left' class=\"firstMenu\">" + item.name + "</p><span hidden name='id'>" + item.id + "</span></div>\n" +
+                            "                            <hr class=\"firstMenu\">";
                     } else {
-                        var p = "<div onclick='setChecked(this)'><input type='checkbox' name='select'><p class=\"firstMenu\">" + item.name + "</p><span hidden name='id'>" + item.id + "</span></div>\n";
+                        var p = "<div class=\"row\" onclick='setChecked(this)'><input style='float: left;margin-left: 30px;margin-top: 8px' type='checkbox' name='select'><p style='float: left' class=\"firstMenu\">" + item.name + "</p><span hidden name='id'>" + item.id + "</span></div>\n" +
+                            "                            <hr class=\"firstMenu\">";
                     }
 
                 }
