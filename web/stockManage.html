@@ -10,6 +10,7 @@
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
+    <script language="javascript" src="js/bootstrap/printThis.js"></script>
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
@@ -388,11 +389,12 @@
 </div>
 <!--查看页面模态框-->
 <div class="modal fade bs-example-modal-lg" id="stockInfoForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document" id="print1" style="width: 65%">
+    <div class="modal-dialog modal-lg" role="document" id="print1" style="width:75%">
         <input class="hidden" id="stockId">
         <div class="modal-content" >
             <h4 class="sub-header text-center">库存申报信息</h4>
             <div style="margin: 5%;">
+                <table class="table table-bordered text-nowrap">
                 <div class="modal-body">
                         <div class="row">
                             <div class="form-horizontal col-md-4 form-inline">
@@ -443,6 +445,8 @@
                         </table>
                     </form>
                 </div>
+                </table>
+                <table class="table table-bordered text-nowrap">
                 <div class="row">
                     <div class="form-horizontal col-md-4">
                         <p class="text-left"><b>运输公司&nbsp;&nbsp;</b><span id="transport"></span></p>
@@ -453,6 +457,8 @@
                         <p class="text-left"><b>车牌号&nbsp;&nbsp;</b><span id="plateNumber"></span></p>
                     </div>
                 </div>
+                </table>
+                <table class="table table-bordered text-nowrap">
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <p class="text-left"><b>是否自运单位&nbsp;&nbsp;</b> <input type="checkbox" id="selfEmployed" disabled="disabled"></p>
@@ -462,10 +468,11 @@
                         <p class="text-left"><b>运输公司联系电话&nbsp;&nbsp;</b><span id="transportTelephone"></span></p>
                     </div>
                 </div>
+                </table>
                 <div class="row text-center">
                     <a class="btn btn-primary hidden-print" onclick="showApproval()" id="btn">审批</a>
                     <a class="btn btn-primary hidden-print" onclick="showPerfect()" id="perfect">完善</a>
-                    <a class="btn btn-primary hidden-print" onclick="" id="print">打印</a>
+                    <a class="btn btn-primary hidden-print" onclick="print()" id="print">打印</a>
                     <a class="btn btn-danger hidden-print" id="back" onclick="showBack()">驳回</a>
                     <a class="btn btn-danger hidden-print" data-dismiss="modal" id="close" onclick="re1();">关闭</a>
                 </div>
