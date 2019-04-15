@@ -666,7 +666,9 @@ function loadNavigationList() {
             success: function (result) {
                 if (result != null && result.status === "success") {
                     var obj = JSON.stringify(result.data);
+                    var arr = JSON.stringify(result.firstMenuConfiguration);
                     localStorage.setItem("menuOrganization", obj);
+                    localStorage.setItem("firstMenuConfiguration", arr);
                 }
             },
             error: function (result) {
@@ -714,7 +716,28 @@ function loadNavigationList() {
             setMenuTwo(secondMenuList);//递归设置二级菜单导航条
             var href = window.location.href.toString();
             if (href.substring(href.length - 14) === "firstPage.html") { // 判断是否为板块首页
-                setProcessIcon(secondMenuList); // 首页设置流程节点图标
+                var firstMenuConfiguration = JSON.parse(localStorage.getItem("firstMenuConfiguration"));
+                var newSecondMenuList = [];   // 新二级菜单数据（首页显示节点）
+                if(firstMenuConfiguration != null) {
+                    var firstMenuConfigurationList = firstMenuConfiguration.organizationList;
+                    if(firstMenuConfigurationList != null) {  // 自定义首页数据
+                        $.each(firstMenuConfigurationList,function(index, item) {
+                            if(item.name === localStorage.firstMuneName) {  // 查询到匹配的一级菜单名
+                                if(item.organizationList != null && item.organizationList.length > 0) {  // 自定义首页有数据
+                                    newSecondMenuList = item.organizationList;
+                                    console.log("二级菜单数据更新");
+                                    console.log(newSecondMenuList);
+                                }
+                            }
+                        });
+                    }
+                }
+                if(newSecondMenuList != null && newSecondMenuList.length > 0){
+                    setProcessIcon(newSecondMenuList);
+                }else {
+                    setProcessIcon(secondMenuList); // 首页设置流程节点图标
+                }
+
             }
             // 如果是网页则设置历史记录抬头导航
             if ($("ol[class='breadcrumb']").length > 0) {  // 有历史导航栏的判定为网页
@@ -741,6 +764,12 @@ function loadNavigationList() {
         $("ul[class='sidenav animated fadeInUp']").children().find("span[name='" + localStorage.firstMuneName + "']").parent().parent().addClass("active");
     }
     // 设置代办事项提示
+}
+
+/**
+ * 获取首页节点自定义页面数据
+ */
+function getFirstMenuPageConfigurationList() {
 
 }
 
@@ -886,6 +915,7 @@ function setProcessIcon(organizationList) {
     $("ul[class='nav navbar-nav']").find("li").eq(0).addClass("active");   // 设置首页二级菜单导航栏标蓝
     // console.log("二级菜单数据");
     // console.log(organizationList);
+    var j = 1;   // 计数器
     for (var i = 0; i < organizationList.length; i++) {  // 首页排除
         // if(i == 0){
         //     var br = "<div class='row'></div>";
@@ -893,12 +923,13 @@ function setProcessIcon(organizationList) {
         // }
         var organization = organizationList[i];
         name = organization.name;
-        if (organization.name != "首页") {
+        if (organization.name !== "首页") {
             var div = "<div class='row placeholders'></div>";
-            if ((i - 1) % 3 === 0) { // 三个设置为一行
+            if ((j - 1) % 3 === 0) { // 三个设置为一行
                 $(".page-header").append(div); // 插入新行
             }
-            if (organization.icon != null && organization.icon != "" && organization.url != null && organization.url != "") {
+            j++;
+            if (organization.icon != null && organization.icon !== "" && organization.url != null && organization.url !== "") {
                 var div1 = "<div class='col-xs-3 col-sm-3 col-md-3 placeholder'>" +
                     "<a href='" + organization.url + "' id='function_" + organization.id + "' onclick='checkAuthority($(this));'><img src='" + organization.icon + "' style='width: 80px;height: 80px;border-radius:1px' alt='Generic placeholder thumbnail'></a>" +
                     "<h4>" + organization.name + "</h4></div>";

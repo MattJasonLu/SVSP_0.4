@@ -6,6 +6,7 @@ import com.jdlink.service.FirstPageConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,5 +33,22 @@ public class FirstPageConfigurationServiceImpl implements FirstPageConfiguration
     public List<Integer> getByMenuNameAndRoleId(Organization organization) {
         return firstPageConfigurationMapper.getByMenuNameAndRoleId(organization);
     }
+
+    @Override
+    public List<Organization> getPageConfigurationTreeByRoleId(int id) {
+        List<Organization> organizationList = new ArrayList<>();   // 菜单列表
+        List<String> firstMenuNameList = firstPageConfigurationMapper.getFirstMenuNameListByRoleId(id);
+        if(firstMenuNameList != null && firstMenuNameList.size() > 0) {
+            for(String name : firstMenuNameList) {
+                Organization organization1 = new Organization();   // 一级菜单
+                organization1.setName(name);
+                organization1.setOrganizationList(firstPageConfigurationMapper.getPageByMenuNameAndRoleId(name,id));  // 查找菜单下设置的自定义首页页面数据);
+                organizationList.add(organization1);
+            }
+        }
+        return organizationList;
+    }
+
+
 
 }

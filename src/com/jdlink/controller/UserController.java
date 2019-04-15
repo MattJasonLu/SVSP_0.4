@@ -638,5 +638,25 @@ public class UserController {
         return res.toString();
     }
 
+    /**
+     * 删除账号
+     * @param
+     * @return 结果
+     */
+    @RequestMapping("deleteUserById")
+    @ResponseBody
+    public String deleteUserById(int id) {
+        JSONObject res = new JSONObject();
+        try {
+            userService.deleteUserById(id);
+            res.put("status", "success");
+            res.put("message", "删除账号成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "删除账号失败");
+        }
+        return res.toString();
+    }
 
 }

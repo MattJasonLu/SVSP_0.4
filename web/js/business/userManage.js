@@ -729,3 +729,33 @@ function updateUserInfo() {
     });
 }
 
+/**
+ * 用户删除
+ * @param e
+ */
+function userRemove(e) {
+    if(confirm("是否删除该账号？")) {
+        var userId = getUserId(e);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "deleteUserById",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {
+                id: userId
+            },
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    alert(result.message);
+                    window.location.reload();   // 刷新页面
+                }else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                alert("服务器错误！");
+            }
+        });
+    }
+
+}

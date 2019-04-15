@@ -103,6 +103,11 @@
         delete from t_ur_first_page_configuration where role_id=#{id};
     </delete>
 
+    <!--删除账号-->
+    <delete id="deleteUserById" parameterType="int" >
+        delete from user where id=#{id};
+    </delete>
+
     <!--列出所有功能-->
     <select id="listFunction" resultMap="FunctionRM">
         SELECT * FROM t_ur_function WHERE parentFunctionId=0;
