@@ -88,15 +88,14 @@ function firstModalShow(e) {
         $("#firstMenu").children().remove();   // 删除历史数据
         $.each(JSON.parse(localStorage.getItem("menuOrganization")).organizationList, function (index, item) {   // 循环页面list进行部署
             if (index < data.length - 1) {
-                var p = "<p onclick='showChildrenPage(this)' onmouseover='changeBackgroundColor(this)' class=\"firstMenu\">" + item.name + "</p><span hidden name=\"id\">" + item.id + "</span>\n" +
+                var p = "<p onclick='showChildrenPage(this)' class=\"firstMenu\">" + item.name + "</p><span hidden name=\"id\">" + item.id + "</span>\n" +
                     "                            <hr class=\"firstMenu\">";
             } else {   // 最后一个节点无需分割线
-                var p = "<p onclick='showChildrenPage()' class=\"firstMenu\">" + item.name + "</p><span hidden name=\"id\">" + item.id + "</span>\n";
+                var p = "<p onclick='showChildrenPage(this)' class=\"firstMenu\">" + item.name + "</p><span hidden name=\"id\">" + item.id + "</span>\n";
             }
             $("#firstMenu").append(p);   // 插入元素
         });
-
-
+        $("#menuPage").children().remove();   // 删除历史数据
     }
 }
 
@@ -133,7 +132,7 @@ function showChildrenPage(e) {
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result !== undefined && result.status === "success") {
-               selectPageList = result.data;
+                selectPageList = result.data;
             } else {
                 console.log(result.message);
             }
@@ -159,22 +158,24 @@ function showChildrenPage(e) {
  */
 function setPageUrlClone(data) {
     if (data.organizationList != null && data.organizationList.length > 0) {
+        var i = 0;
         $.each(data.organizationList, function (index, item) {
+            i++;
             if (item.url != null && item.url !== "" && item.url !== "firstPage.html") {
                 if (index < data.organizationList.length - 1) {  // 末尾不设分割线
                     if (selectPageList.indexOf(item.id) !== -1) {   // 该页面为已选
-                        var p = "<div class=\"row\" onclick='setChecked(this)'><input style='float: left;margin-left: 30px;margin-top: 8px' type='checkbox' checked  name='select'><p style='float: left' class=\"firstMenu\">" + item.name + "</p><span hidden name='id'>" + item.id + "</span></div>\n" +
+                        var p = "<div class=\"row\" ><input style='width:16px;height:16px;float: left;margin-left: 30px;margin-top: 8px' type='checkbox' checked  name='select'><p style='float: left' class=\"firstMenu\" >" + item.name + "</p><span hidden name='id'>" + item.id + "</span></div>\n" +
                             "                            <hr class=\"firstMenu\">";
                     } else {
-                        var p = "<div class=\"row\" onclick='setChecked(this)'><input style='float: left;margin-left: 30px;margin-top: 8px' type='checkbox' name='select'><p style='float: left' class=\"firstMenu\">" + item.name + "</p><span hidden name='id'>" + item.id + "</span></div>\n" +
+                        var p = "<div class=\"row\" ><input style='width:16px;height:16px;float: left;margin-left: 30px;margin-top: 8px' type='checkbox' name='select'><p style='float: left' class=\"firstMenu\" >" + item.name + "</p><span hidden name='id'>" + item.id + "</span></div>\n" +
                             "                            <hr class=\"firstMenu\">";
                     }
                 } else {
                     if (selectPageList.indexOf(item.id) !== -1) {   // 该页面为已选
-                        var p = "<div class=\"row\" onclick='setChecked(this)'><input style='float: left;margin-left: 30px;margin-top: 8px' type='checkbox' checked name='select'><p style='float: left' class=\"firstMenu\">" + item.name + "</p><span hidden name='id'>" + item.id + "</span></div>\n" +
+                        var p = "<div class=\"row\" ><input style='width:16px;height:16px;float: left;margin-left: 30px;margin-top: 8px' type='checkbox' checked name='select'><p style='float: left' class=\"firstMenu\" >" + item.name + "</p><span hidden name='id'>" + item.id + "</span></div>\n" +
                             "                            <hr class=\"firstMenu\">";
                     } else {
-                        var p = "<div class=\"row\" onclick='setChecked(this)'><input style='float: left;margin-left: 30px;margin-top: 8px' type='checkbox' name='select'><p style='float: left' class=\"firstMenu\">" + item.name + "</p><span hidden name='id'>" + item.id + "</span></div>\n" +
+                        var p = "<div class=\"row\" ><input style='width:16px;height:16px;float: left;margin-left: 30px;margin-top: 8px' type='checkbox' name='select' ><p style='float: left' class=\"firstMenu\" >" + item.name + "</p><span hidden name='id'>" + item.id + "</span></div>\n" +
                             "                            <hr class=\"firstMenu\">";
                     }
 
@@ -191,7 +192,13 @@ function setPageUrlClone(data) {
  * @param e
  */
 function setChecked(e) {
-    $(e).children().eq(0).find("input[name='select']").attr("checked", true);  // 设置选中
+    if($(e).parent().find("input[name='select']:checked").length > 0) {  // 已选中的设置为不选中
+        console.log("选中");
+        $(e).parent().find("input[name='select']").attr("checked", false);  // 设置不选中
+    }else{
+        console.log("不选中");
+        $(e).parent().find("input[name='select']").attr("checked", true);  // 设置选中
+    }
 }
 
 /**
