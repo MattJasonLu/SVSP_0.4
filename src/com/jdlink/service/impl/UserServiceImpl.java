@@ -53,6 +53,9 @@ public class UserServiceImpl implements UserService {
     public void deleteRoleById(int id) { userMapper.deleteRoleById(id);}
 
     @Override
+    public void deleteUserById(int id) { userMapper.deleteUserById(id);}
+
+    @Override
     public void update(User user) {
         userMapper.update(user);
     }
