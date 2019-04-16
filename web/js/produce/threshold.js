@@ -458,7 +458,8 @@ function enable(item) {
                     }
 
                 }
-                window.location.reload();
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
             } else {
                 console.log(result.message);
             }
@@ -489,7 +490,8 @@ function disabled(item) {
             console.log(result);
             if (result.data != undefined || result.status == "success") {
                 alert("关闭成功！");
-                window.location.reload();
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
             } else {
                 console.log(result.message);
             }

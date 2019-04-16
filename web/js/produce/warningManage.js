@@ -624,7 +624,8 @@ function removeWarning(item) {
             success: function (result) {
                 if (result != undefined) {
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                     console.log("fail: " + result);
                 }
@@ -656,7 +657,8 @@ function reStart(item){
             success: function (result) {
                 if (result != undefined) {
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                     console.log("fail: " + result);
                 }

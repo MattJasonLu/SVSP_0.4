@@ -625,7 +625,8 @@ function setSignIn(e) {
                 if (result != undefined && result.status == "success") {
                     console.log(result);
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                     alert(result.message);
                 }
@@ -657,7 +658,8 @@ function setInvalid(e) {    //已作废
                 if (result !== undefined && result.status === "success") {
                     console.log(result);
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                     alert(result.message);
                 }

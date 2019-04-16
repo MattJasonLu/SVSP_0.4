@@ -514,7 +514,8 @@ function deleteIngredient(e) {
             success: function (result) {
                 if (result.status == "success") {
                     alert("删除成功！");
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                     alert(result.message);
                 }
@@ -653,7 +654,9 @@ function modify() {
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             alert(result.message);
-            window.location.reload();
+            $("#pageNumber").val(currentPage);   // 设置当前页页数
+            inputSwitchPage();  // 跳转当前页
+            $("#modifyModal").modal('hide');
         },
         error: function (result) {
             console.log(result.message);

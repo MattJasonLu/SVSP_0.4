@@ -940,7 +940,8 @@ function setSubmit(item) {
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     alert(result.message)
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 }
 
             },
@@ -969,7 +970,8 @@ function setConfirm(item) {
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     alert(result.message)
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 }
 
             },
@@ -996,7 +998,8 @@ function setCancel(item) {
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     alert(result.message)
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 }
 
             },

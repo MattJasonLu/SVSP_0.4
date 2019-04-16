@@ -1420,7 +1420,8 @@ function signInQuestionnaire(item) {
                 console.log(result);
                 if (result != undefined) {
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                 }
             },
@@ -1614,7 +1615,9 @@ function addAppoint() {
                 console.log(result);
                 if (result != undefined) {
                     alert("保存成功!");
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
+                    $("#appointModal").modal("hide");  // 关闭打开的模态框
                 } else {
                     alert("保存失败!");
                 }

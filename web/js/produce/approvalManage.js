@@ -202,7 +202,7 @@ function inputSwitchPage() {
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined) {
-                    setWayBillList(result.data);
+                    setDataList(result.data);
                 } else {
                     console.log("fail: " + result);
                 }
@@ -683,7 +683,9 @@ function saveModifyData() {
             console.log(result);
             if (result.data != undefined || result.status == "success") {
                 alert(result.message);
-                window.location.reload();
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $("#editModal").modal("hide");   // 隐藏编辑模态框
             } else {
                 alert(result.message);
             }
@@ -781,7 +783,9 @@ function saveHref() {
             console.log(result);
             if (result.data != undefined || result.status == "success") {
                 alert(result.message);
-                window.location.reload();
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $("#hrefModal").modal("hide");   // 隐藏编辑模态框
             } else {
                 alert(result.message);
             }
@@ -811,7 +815,8 @@ function deleteModelById(e) {
             success: function (result) {
                 if (result.data != undefined || result.status == "success") {
                     alert("删除成功！");
-                    window.location.reload();  // 刷新页面
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                     alert(result.message);
                 }

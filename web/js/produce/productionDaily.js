@@ -1475,7 +1475,8 @@ function calculate(e) {
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                     alert(result.message);
                 }
@@ -1511,7 +1512,8 @@ function setInvalid(e) {
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                     alert(result.message);
                 }
@@ -1545,7 +1547,8 @@ function setLocked(e) {
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                     alert(result.message);
                 }
