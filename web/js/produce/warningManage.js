@@ -476,12 +476,8 @@ function delLine(item) {
  * 编辑按钮
  */
 function edit() {
-
     $("#btn").show();
-
     $('#plusBtn').show();
-
-
     var tr = $('#clonedTr');
     var input1="<input type='text' class='form-control'>" ;
     var input2="<input  type='number'  class='form-control' style='width: 100%;height: 100%'/>" ;
@@ -539,12 +535,7 @@ function edit() {
        //     $(this).children('td').eq(0).append(delBtn)
        // }
 
-
-    })
-
-
-
-
+    });
 }
 
 /***
