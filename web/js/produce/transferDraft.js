@@ -832,7 +832,7 @@ function adjustData(e) {
 function loadData() {
     // 设置下拉框数据
     getSelectedInfo();
-
+    loadNavigationList();   // 动态菜单加载
     var id = localStorage.transferDraftId;
     if (id != null) {
         $.ajax({
