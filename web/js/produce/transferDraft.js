@@ -625,7 +625,8 @@ function setSignIn(e) {
                 if (result != undefined && result.status == "success") {
                     console.log(result);
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                     alert(result.message);
                 }
@@ -657,7 +658,8 @@ function setInvalid(e) {    //已作废
                 if (result !== undefined && result.status === "success") {
                     console.log(result);
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                     alert(result.message);
                 }
@@ -865,13 +867,13 @@ function loadData() {
                     }
                     if (data.wastes != null) {
                         $("#wastesName").val(data.wastes.name);
-                        $("#wastesPrepareTransferCount").val(data.wastes.prepareTransferCount);
+                        $("#wastesPrepareTransferCount").val(data.wastes.prepareTransferCount.toFixed(3));
                         $("#wastesCharacter").val(data.wastes.wastesCharacter);
                         if (data.wastes.handleCategoryItem != null)
                         $("#wastesCategory").val(data.wastes.handleCategoryItem.dataDictionaryItemId);
-                        $("#wastesTransferCount").val(data.wastes.transferCount);
+                        $("#wastesTransferCount").val(data.wastes.transferCount.toFixed(3));
                         $("#wastesCode").val(data.wastes.wastesId);
-                        $("#wastesSignCount").val(data.wastes.signCount);
+                        $("#wastesSignCount").val(data.wastes.signCount.toFixed(3));
                         if (data.wastes.formTypeItem != null)
                         $("#wastesFormType").val(data.wastes.formTypeItem.dataDictionaryItemId);
                         if (data.wastes.packageTypeItem != null)

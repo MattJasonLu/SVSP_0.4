@@ -145,7 +145,8 @@
                     if (result != undefined) {
                         if (result.status == "success") {
                             alert("提交成功");
-                            window.location.reload();
+                            $("#pageNumber").val(currentPage);   // 设置当前页页数
+                            inputSwitchSupplierPage();  // 跳转当前页
                         } else if (result.status == "fail") {
                             alert("提交失败");
                         }
@@ -180,7 +181,8 @@
                     if (result != undefined) {
                         if (result.status == "success") {
                             alert("禁用成功");
-                            window.location.reload();
+                            $("#pageNumber").val(currentPage);   // 设置当前页页数
+                            inputSwitchSupplierPage();  // 跳转当前页
                         } else if (result.status == "fail") {
                             alert("禁用失败");
                         }
@@ -215,7 +217,8 @@
                     if (result != undefined) {
                         if (result.status == "success") {
                             alert("启用成功");
-                            window.location.reload();
+                            $("#pageNumber").val(currentPage);   // 设置当前页页数
+                            inputSwitchSupplierPage();  // 跳转当前页
                         } else if (result.status == "fail") {
                             alert("启用失败");
                         }
@@ -1447,7 +1450,8 @@
                     if (result != undefined) {
                         console.log(result);
                         alert("删除成功!");
-                        window.location.reload();
+                        $("#pageNumber").val(currentPage);   // 设置当前页页数
+                        inputSwitchSupplierPage();  // 跳转当前页
                     } else {
                         console.log("fail: " + result);
                         alert("删除失败!");

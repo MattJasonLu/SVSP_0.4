@@ -1214,7 +1214,9 @@ function adjustMaterialRequisition() {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 alert(result.message)
-                window.location.reload()
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $("#addModa2").modal("hide");
             }
 
         },
@@ -1293,7 +1295,9 @@ function confirmCancel() {
             success:function (result) {
                 if (result != undefined && result.status == "success"){
                     alert(result.message)
-                    window.location.reload()
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
+                    $("#appointModal3").modal("hide");
                 }
             },
             error:function (result) {

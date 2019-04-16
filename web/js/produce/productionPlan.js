@@ -933,7 +933,8 @@ function approval1(id) {
                 var data = eval(result);
                 if (data.status == "success") {
                     alert(data.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                     alert(data.message);
                 }
@@ -1001,7 +1002,8 @@ function invalid(item) {
                 success: function (result) {
                     if (result.status == "success") {
                         alert("作废成功！");
-                        window.location.reload();
+                        $("#pageNumber").val(currentPage);   // 设置当前页页数
+                        inputSwitchPage();  // 跳转当前页
                     } else {
                         alert(result.message);
                     }
@@ -1041,7 +1043,8 @@ function delete1(item) {
                 success: function (result) {
                     if (result.status == "success") {
                         alert("删除成功！");
-                        window.location.reload();
+                        $("#pageNumber").val(currentPage);   // 设置当前页页数
+                        inputSwitchPage();  // 跳转当前页
                     } else {
                         alert(result.message);
                     }
@@ -1081,7 +1084,8 @@ function confirm1(item) {
                 success: function (result) {
                     if (result.status == "success") {
                         alert("确认成功！");
-                        window.location.reload();
+                        $("#pageNumber").val(currentPage);   // 设置当前页页数
+                        inputSwitchPage();  // 跳转当前页
                     } else {
                         alert(result.message);
                     }
@@ -1200,7 +1204,9 @@ function save() {
                     var data = eval(result);
                     if (data.status == "success") {
                         alert(data.message);
-                        window.location.reload();
+                        $("#pageNumber").val(currentPage);   // 设置当前页页数
+                        inputSwitchPage();  // 跳转当前页
+                        $("#addModal").modal("hide");  // 关闭打开的模态框
                     } else {
                         alert(data.message);
                     }
@@ -1227,7 +1233,9 @@ function save() {
                     var data = eval(result);
                     if (data.status == "success") {
                         alert(data.message);
-                        window.location.reload();
+                        $("#pageNumber").val(currentPage);   // 设置当前页页数
+                        inputSwitchPage();  // 跳转当前页
+                        $("#addModal").modal("hide");  // 关闭打开的模态框
                     } else {
                         alert(data.message);
                     }

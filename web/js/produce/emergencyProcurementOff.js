@@ -1075,8 +1075,9 @@ function cancel(item) {
             //contentType: 'application/json;charset=utf-8',
             success:function (result) {
                 if (result != undefined && result.status == "success"){
-                    alert(result.message)
-                    window.location.reload()
+                    alert(result.message);
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 }
             },
             error:function (result) {

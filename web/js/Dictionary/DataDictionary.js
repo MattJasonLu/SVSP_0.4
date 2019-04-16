@@ -604,7 +604,7 @@ function edit(item) {
     var dataDictionaryId=$(item).parent().prev().html();
 
 
-    $('#addModa3').modal('show')
+    $('#addModa3').modal('show');
     //根据编号查看
     $.ajax({
         type: "POST",                       // 方法类型
@@ -689,7 +689,9 @@ function adjust() {
 
                 })
                 alert("修改成功！")
-                window.location.reload()
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $('#addModa3').modal('hide');
             }
         },
         error:function (result) {

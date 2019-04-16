@@ -1458,8 +1458,10 @@ function adjustSecOutBound() {
         contentType: "application/json; charset=utf-8",
         success:function (result) {
             if (result != undefined && result.status == "success"){
-                alert(result.message)
-                window.location.reload()
+                alert(result.message);
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $("#appointModal3").modal("hide");
             }
         },
         error:function (result) {
@@ -1565,7 +1567,9 @@ function confirmCancel(){
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
+                    $("#appointModal4").modal("hide");
                 }
                 else {
                     alert(result.message);
@@ -1803,7 +1807,9 @@ function confirmRetired() {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 alert(result.message);
-                window.location.reload();
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $("#appointModal5").modal("hide");
             }
             else {
                 alert(result.message);

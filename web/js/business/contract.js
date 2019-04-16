@@ -6743,7 +6743,8 @@ function cancel(item) {
                 var obj = eval(result);
                 if (obj.state == "success") {
                     alert("作废成功！");
-                    window.location.reload()
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 }
                 else {
                     alert("作废失败")
@@ -7035,7 +7036,8 @@ function signed(item) {
                  success:function (result) {
                      if (result != undefined && result.status == "success"){
                          alert(result.message)
-                         window.location.reload()
+                         $("#pageNumber").val(currentPage);   // 设置当前页页数
+                         inputSwitchPage();  // 跳转当前页
                      }
                      else {
 

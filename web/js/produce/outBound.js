@@ -839,7 +839,9 @@ function comfirm() {
             if (result != undefined && result.status == "success"){
                 console.log(result);
                 alert(result.message);
-                window.location.reload();
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $("#examineModal").modal("hide");
             }
             else {
                 alert(result.message);
@@ -1055,7 +1057,9 @@ function confirmCancel(){
             success:function (result) {
                 if (result != undefined && result.status == "success"){
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
+                    $("#appointModal3").modal("hide");
                 }
                 else {
                     alert(result.message);

@@ -30,7 +30,8 @@ function deleteEquipment(item) {
                 if (result != undefined) {
                     console.log("success: " + result);
                     alert("删除成功");
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                     console.log("fail: " + result);
                 }
@@ -993,7 +994,9 @@ function editData() {
             if (result != undefined && result.status == "success" ) {
                 console.log(result);
                 alert(result.message);
-                window.location.reload();
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $("#editModal").modal("hide");
             } else {
                 alert(result.message);
             }

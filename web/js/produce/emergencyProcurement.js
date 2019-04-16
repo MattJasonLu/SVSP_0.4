@@ -1123,8 +1123,9 @@ function cancel(item) {
             //contentType: 'application/json;charset=utf-8',
             success:function (result) {
                 if (result != undefined && result.status == "success"){
-                    alert(result.message)
-                    window.location.reload()
+                    alert(result.message);
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 }
                     },
             error:function (result) {
@@ -1433,7 +1434,7 @@ $('.myclass2').each(function () {
     })
     console.log(data)
 })
-    alert("修改成功")
+    alert("修改成功");
     // window.location.reload()
 
     $.ajax({

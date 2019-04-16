@@ -812,7 +812,8 @@ function invalidIngredientsIn(item) {
                 success: function (result) {
                     if (result.status == "success") {
                         alert("作废成功！");
-                        window.location.reload();
+                        $("#pageNumber").val(currentPage);   // 设置当前页页数
+                        inputSwitchPage();  // 跳转当前页
                     } else {
                         alert(result.message);
                     }
