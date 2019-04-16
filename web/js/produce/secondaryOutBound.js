@@ -313,6 +313,7 @@ function setPageClone(result) {
 function onLoadSecondary()
 
 {
+    loadNavigationList();   // 动态菜单加载
     $('.loader').show();
     loadNavigationList();    // 设置动态菜单
     $("#current").find("a").text("当前页：1");

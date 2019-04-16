@@ -1097,6 +1097,7 @@ function adjustStock(item) {
 
 //修改页面的初始
 function loadAdjustStock() {
+    loadNavigationList();   // 动态菜单加载
     //获取申报编号
     $('.selectpicker').selectpicker({
         language: 'zh_CN',

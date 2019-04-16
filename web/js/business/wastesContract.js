@@ -404,6 +404,7 @@ function view(item) {
 
 //查看页面接收编号
 function receptionId() {
+    loadNavigationList();   // 动态菜单加载
     var id=localStorage['id'];
     console.log(id)
     $.ajax({
@@ -461,6 +462,7 @@ function adjust(item) {
 }
 //修改页面
 function receptionIdAdjust() {
+    loadNavigationList();   // 动态菜单加载
 
     var id=localStorage['id'];
     $('#id').val(id)

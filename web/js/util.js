@@ -651,6 +651,7 @@ function getIdFromEquipment(Equipment) {
  * 加载导航条
  */
 function loadNavigationList() {
+    loadNavigationList();   // 动态菜单加载
     // console.log("旧动态菜单数据");
     // console.log(JSON.parse(localStorage.getItem("menuOrganization")));
     setToDoThingCount(); // 获取并设置待办事项总数

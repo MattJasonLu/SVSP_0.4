@@ -289,6 +289,7 @@ function inputSwitchPage() {
  * 分页 获取首页内容
  * */
 function loadPageList() {
+    loadNavigationList();   // 动态菜单加载
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
@@ -830,6 +831,7 @@ function adjustData(e) {
  * 根据编号来获取对应的联单信息
  */
 function loadData() {
+    loadNavigationList();   // 动态菜单加载
     // 设置下拉框数据
     getSelectedInfo();
     loadNavigationList();   // 动态菜单加载

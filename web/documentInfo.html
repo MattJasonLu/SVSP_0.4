@@ -18,6 +18,7 @@
 
 <script type="text/javascript">
     function getSelectedList() {
+        loadNavigationList();   // 动态菜单加载
         // 设置下拉列表
         $.ajax({
             type: "POST",                            // 方法类型

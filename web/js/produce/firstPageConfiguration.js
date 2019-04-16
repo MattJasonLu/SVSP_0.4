@@ -4,7 +4,7 @@ var firstMenuName = "";   // 一级菜单名
  * 加载首页数据
  */
 function loadData() {
-    loadNavigationList();   // 加
+    loadNavigationList();   // 动态菜单加载
     // 载动态菜单
     $.ajax({
         type: "POST",                       // 方法类型

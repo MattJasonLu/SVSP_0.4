@@ -493,6 +493,7 @@
     }
 
     function setSelectList() {
+        loadNavigationList();   // 动态菜单加载
         $.ajax({
             type: "POST",                            // 方法类型
             url: "getSelectedList",                  // url

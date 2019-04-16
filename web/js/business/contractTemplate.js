@@ -844,6 +844,7 @@ function dataLeftCompleting(bits, identifier, value) {
 
 //合同模板升级的载入方法
 function getContractList() {
+    loadNavigationList();   // 动态菜单加载
     var contractId=localStorage["contractId"];
     //console.log(contractId);
     $.ajax({
