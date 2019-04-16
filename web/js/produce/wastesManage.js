@@ -518,8 +518,6 @@ function loadWastesManage() {
             console.log("error: " + result);
         }
     });
-
-
     isSearch = false;
 }
 
