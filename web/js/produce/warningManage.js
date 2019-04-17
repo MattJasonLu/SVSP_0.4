@@ -632,6 +632,13 @@ function removeWarning(item) {
 
 }
 
+/**
+ * 角色配置
+ */
+function charge() {
+    $("#chargeModal").modal('show');
+}
+
 /*启用*/
 function reStart(item){
     if(confirm("确定启用?")){
