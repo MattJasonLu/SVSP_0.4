@@ -3121,6 +3121,7 @@ function delLine(e) {
 
 //应急合同新增页面加载
 function loadEmSelectList() {
+    loadNavigationList();   // 动态菜单加载
     CKEDITOR.editorConfig = function (config) {
         config.toolbarGroups = [
             {name: 'clipboard', groups: ['clipboard', 'undo']},
@@ -3607,6 +3608,7 @@ function contractEmSave() {
 
 //物流合同新增页面初始化
 function loadLogicContractSelectList() {
+    loadNavigationList();   // 动态菜单加载
     var contractType = $('#contractType');
     contractType.hide();//合同类型隐藏不需要显示
     var contractName1 = $('#contractName1');
@@ -4349,6 +4351,7 @@ function contractLogicSave() {
  * 装载危废合同修改下拉框列表
  */
 function loadContractSelectList() {
+    loadNavigationList();   // 动态菜单加载
 
     //危废编码赋值
     $.ajax({
@@ -5531,6 +5534,7 @@ function contractAdjustEmSave() {
  */
 
 function loadLogContractSelectList() {
+    loadNavigationList();   // 动态菜单加载
 
     //危废编码赋值
     $.ajax({

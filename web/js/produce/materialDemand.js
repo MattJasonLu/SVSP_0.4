@@ -1286,6 +1286,7 @@ function adjust(item) {
 //修改页面初始化
 
 function adjustMater() {
+    loadNavigationList();   // 动态菜单加载
     var materialRequireId = localStorage['materialRequireId'];
 
     $("#materialRequireId").text(materialRequireId);
