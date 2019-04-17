@@ -573,7 +573,6 @@ public class MenuManageController {
             List<Organization> organizationList = getTreeMenuAndFunctionList(organization); // 一级菜单及树状结构
             organization.setOrganizationList(organizationList);
             menuManageService.deleteFunction(); // 删除旧数据
-            System.out.println("重复数据为");
             for (Organization organization1 : organizationList) {
                 if (organization1.getpId() == 1) { // 一级菜单
                     organization1.setpId(0);   // 一级菜单在权限表中父节点为0
