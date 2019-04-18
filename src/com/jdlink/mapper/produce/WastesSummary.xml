@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jdlink.mapper.produce.WastesSummaryMapper" >
+<mapper namespace="com.jdlink.mapper.produce.WastesSummaryMapper">
     <!--危废汇总对象映射-->
     <resultMap id="WastesSummaryRM" type="WastesSummary">
         <result property="inboundOrderId" column="inboundOrderId"/>
@@ -29,23 +29,27 @@
         SELECT * FROM client WHERE clientId = #{produceCompanyId}
     </select>
     <!--获取状态数据字典-->
-    <select id="getUnitDataItem"  resultType="UnitDataItem">
+    <select id="getUnitDataItem" resultType="UnitDataItem">
         select * from datadictionaryitem where dataDictionaryItemId=#{unitId}
     </select>
 
     <!--获取危废汇总对象-->
     <select id="get" resultMap="WastesSummaryRM">
-        select t_pl_inboundorder.inboundDate ,t_pl_inboundorderitem.inboundOrderId, t_pl_inboundorderitem.inboundOrderItemId,
+        select t_pl_inboundorder.inboundDate ,t_pl_inboundorderitem.inboundOrderId,
+        t_pl_inboundorderitem.inboundOrderItemId,
         t_pl_inboundorderitem.produceCompanyId, t_pl_inboundorderitem.wastesName, t_pl_inboundorderitem.wastesCode,
         t_pl_inboundorderitem.unitId, t_pl_inboundorderitem.wastesAmount, t_pl_inboundorderitem.beginningCount,
         t_pl_inboundorderitem.storageCount, t_pl_inboundorder.checkStateId,
-        t_pl_outboundorder.outboundDate, t_pl_outboundorder.outboundOrderId, t_pl_outboundorder.outboundNumber, t_pl_outboundorder.clientId,
+        t_pl_outboundorder.outboundDate, t_pl_outboundorder.outboundOrderId, t_pl_outboundorder.outboundNumber,
+        t_pl_outboundorder.clientId,
         t_pl_outboundorder.wasteCategory,
         t_pl_wasteinventory.actualCount, t_pl_wasteinventory.wareHouseId,
         t_quotationitem.unitPriceTax
-        from (t_pl_inboundorderitem left join t_pl_inboundorder on t_pl_inboundorder.inboundOrderId=t_pl_inboundorderitem.inboundOrderId
+        from (t_pl_inboundorderitem left join t_pl_inboundorder on
+        t_pl_inboundorder.inboundOrderId=t_pl_inboundorderitem.inboundOrderId
         and (checkStateId is null or checkStateId != 69) and boundType='WasteInbound')
-        left join t_pl_outboundorder on t_pl_outboundorder.inboundOrderItemId=t_pl_inboundorderitem.inboundOrderItemId and
+        left join t_pl_outboundorder on t_pl_outboundorder.inboundOrderItemId=t_pl_inboundorderitem.inboundOrderItemId
+        and
         (t_pl_outboundorder.checkStateId is null or t_pl_outboundorder.checkStateId != 69)
         left join t_pl_wasteinventory on t_pl_wasteinventory.inboundOrderItemId=t_pl_inboundorderitem.inboundOrderItemId
         left join t_quotationitem on t_pl_inboundorderitem.wastesName=t_quotationitem.wastesName
@@ -61,5 +65,17 @@
         select count(*) from t_pl_inboundorder where (checkStateId is null or checkStateId != 69) and boundType='WasteInbound';
     </select>
 
+    <!--获取危废库存大于0的危废进出库信息-->
+    <select id="getWarningWastesInfo" resultMap="WastesSummaryRM">
+        select t_pl_inboundorder.inboundOrderId,t_pl_inboundorder.inboundDate ,t_pl_inboundorderitem.wastesCode,t_pl_inboundorderitem.wastesAmount,
+        t_pl_outboundorder.outboundNumber,t_pl_wasteinventory.wareHouseId from
+        (t_pl_inboundorderitem left join t_pl_inboundorder on t_pl_inboundorder.inboundOrderId=t_pl_inboundorderitem.inboundOrderId
+        and (checkStateId is null or checkStateId != 69)
+        left join t_pl_outboundorder on t_pl_outboundorder.inboundOrderItemId=t_pl_inboundorderitem.inboundOrderItemId
+        and (t_pl_outboundorder.checkStateId is null or t_pl_outboundorder.checkStateId != 69)
+        left join t_pl_wasteinventory on t_pl_wasteinventory.inboundOrderItemId=t_pl_inboundorderitem.inboundOrderItemId)
+        where t_pl_inboundorder.boundType='WasteInbound' and (t_pl_inboundorderitem.wastesAmount-t_pl_outboundorder.outboundNumber > 0 or t_pl_outboundorder.outboundNumber is NULL)
+        order by inboundDate desc;
+    </select>
 
 </mapper>

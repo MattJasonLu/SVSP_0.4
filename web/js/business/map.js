@@ -23,7 +23,6 @@ function loadClientData() {
                     // 移除编号
                     clonedDiv.removeAttr("id");
                     clonedDiv.insertBefore(div);
-
                 }
                 initMap(obj);
                 // 隐藏原来的div
@@ -43,7 +42,7 @@ function createMap(obj){
     $.each(obj,function (index,item) {
         // console.log(item.latitudeAndLongitude)
          if($.trim(item.latitudeAndLongitude).length>0){
-             console.log(item.latitudeAndLongitude);
+          //   console.log(item.latitudeAndLongitude);
             var strIndex=getStrIndex(item.latitudeAndLongitude,",");
             // console.log(strIndex);
             var latitude=item.latitudeAndLongitude.substring(0,strIndex);
@@ -130,6 +129,44 @@ function createMap(obj){
 
 //计算库存占比
 function  CalculateProportion(inventory,capacity) {
-     console.log(parseFloat(inventory)/parseFloat(capacity).toFixed(2)*100)
+   //  console.log(parseFloat(inventory)/parseFloat(capacity).toFixed(2)*100)
      return  (parseFloat(inventory)/parseFloat(capacity).toFixed(2)*100);
+}
+
+/**
+ * 显示预警信息
+ */
+function showWarningInfoByRole() {
+    var state = 0;
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getWarningInfoByRole",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined && result.status === "success") {
+                $.each(result.data, function (index, item){
+                    if(index < 1) {  // 存在数据则第一次克隆时清除旧数据
+                        $("#dataList").children().remove();  // 清空旧数据
+                    }
+                    state = 1;
+                    var div = "<div >\n" +
+                        "                        <p style=\"font-size: 15px;\">\n" +
+                        "                            <a>\n" +
+                        "                                <span class=\"glyphicon glyphicon-alert\" aria-hidden=\"true\"></span>\n" +
+                        "                                <span name=\"warning\"> "+item+"</span>\n" +
+                        "                            </a>\n" +
+                        "                        </p><br>\n" +
+                        "                    </div>";
+                    $("#dataList").append(div);
+                });
+            }else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log("获取预警信息失败");
+        }
+    });
+    return state;
 }

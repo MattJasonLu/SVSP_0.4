@@ -32,4 +32,6 @@ public interface WarningService {
     void updateWarningRoleIdList(Warning warning);
 
     void updateWarningDetail(Warning warning);
+
+    List<String> getWarningInfoByRole(int id);
 }

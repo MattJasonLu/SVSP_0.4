@@ -4,6 +4,7 @@ import com.jdlink.domain.Page;
 import com.jdlink.domain.User;
 import com.jdlink.domain.Warning;
 import com.jdlink.service.WarningService;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -275,6 +276,35 @@ public class WarningController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "更新失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 根据当前角色获取预警信息
+     * @param session
+     * @return
+     */
+    @RequestMapping("getWarningInfoByRole")
+    @ResponseBody
+    public String getWarningInfoByRole(HttpSession session) {
+        JSONObject res = new JSONObject();
+        try {
+            User user = (User) session.getAttribute("user");   // 获取当前角色
+            if(user != null) {
+                List<String> warningList = warningService.getWarningInfoByRole(user.getRole().getId());
+                JSONArray data = JSONArray.fromArray(warningList.toArray(new String[warningList.size()]));
+                res.put("data", data);
+                res.put("status", "success");
+                res.put("message", "查询成功");
+            }else {
+                res.put("status", "fail");
+                res.put("message", "查询失败");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
         }
         return res.toString();
     }

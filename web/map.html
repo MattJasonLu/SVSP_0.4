@@ -118,7 +118,7 @@
                         <ul class="dateList"></ul>
                     </div>
                 </div>
-                <div style="width:25%;height:380px;border:#ccc solid 1px;margin-top: 370px;margin-left: 71.2%; overflow-y:scroll; ">
+                <div id="dataList" style="width:25%;height:380px;border:#ccc solid 1px;margin-top: 370px;margin-left: 71.2%; overflow:auto; ">
                     <div id="cloneContent">
                         <p style="font-size: 15px;">
                             <a href="#">
@@ -222,9 +222,6 @@
     </div>
 </body>
 <script type="text/javascript">
-    function aa() {
-        alert("123");
-    }
     function dis() {
         $(".asd").removeAttr("onclick");
         document.getElementById("glyphicon").style.color="#9d9d9d";
@@ -232,6 +229,7 @@
     $("#glyphicon").hover(function () {
         document.getElementById("glyphicon").style.cursor="wait";
     });
+
     //创建和初始化地图函数：
     function initMap(obj){
         createMap(obj);//创建地图
@@ -250,7 +248,8 @@
         loadNavigationList();
         // update 2018年12月5日 by ljc ： 增加客户显示
         loadClientData();
-
+        // update by whx when 2019.4.18 根据角色判断权限是否显示预警信息
+        showWarningInfoByRole();
     };
     //地图事件设置函数：
     function setMapEvent(){
@@ -527,6 +526,8 @@
     function telephone() {
         $("#telephone").text($("#proTelephone").text())
     }
+
+
 </script>
 <style>
     * {margin: 0;padding: 0}

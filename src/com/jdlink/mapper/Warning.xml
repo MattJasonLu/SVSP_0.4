@@ -134,6 +134,9 @@
     </select>
 
 
+    <select id="getCountByRoleIdAndAid" resultType="int">
+        select count(*) from t_warning_role where a_id=#{aId} and role_id=#{roleId}
+    </select>
 
 
 </mapper>

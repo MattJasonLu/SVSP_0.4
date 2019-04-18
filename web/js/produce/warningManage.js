@@ -911,6 +911,7 @@ function addNewDetailLine(item) {
     clonedTr.attr('class', 'newLine');
     clonedTr.show();
     clonedTr.children().find("input").val("");
+    clonedTr.children().find("input[name='unit']").val("天");
     clonedTr.find("span[name='serialNumber']").text(serialNumber);
     clonedTr.insertBefore(tr);
     clonedTr.removeAttr("id");
