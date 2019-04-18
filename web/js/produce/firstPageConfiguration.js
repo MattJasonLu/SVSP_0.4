@@ -115,7 +115,10 @@ var selectPageList = ["page"];    // 选中的页面url 后台获取
  */
 function showChildrenPage(e) {
     $(".old_background").css("background-color","white");  //移除旧背景色
-    $(".old_background").removeAttr("class");  //移除class
+    // $(".old_background").removeStyle("background-color");  //移除旧背景色
+    // $(".old_background").removeAttr("class");  //移除class
+    $(".old_background").removeClass("old_background");  //移除class
+
     $(e).css("background-color","#8ec9ff");  //动态添加背景色
     $(e).addClass("old_background");   //添加class
     firstMenuName = $(e).text();      // 获取一级菜单名
