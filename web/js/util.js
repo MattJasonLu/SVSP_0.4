@@ -758,7 +758,12 @@ function loadNavigationList() {
                 // 设置二级菜单选中
                 if ($("ol[class='breadcrumb']").find("li").eq(1).length > 0)  // 更新二级菜单名
                     localStorage.secondMenuName = $("ol[class='breadcrumb']").find("li").eq(1).text();  // 获取二级菜单名
-                $("#navbar").find("a:contains('" + localStorage.secondMenuName + "')").parent().addClass("active");  // 设置二级菜单标蓝
+                $.each($("#navbar").find("a"), function(index,item){
+                    if($.trim($(item).text()) === localStorage.secondMenuName) {    // 精确匹配
+                        $(item).parent().addClass("active");  // 设置二级菜单标蓝
+                    }
+                });
+                // $("#navbar").find("a:contains('" + localStorage.secondMenuName + "')").parent().addClass("active");  // 设置二级菜单标蓝
             }
         }
         // 设置一级菜单选中标蓝

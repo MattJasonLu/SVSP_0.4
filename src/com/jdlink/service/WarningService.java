@@ -26,4 +26,10 @@ public interface WarningService {
     int searchWaringCount(Warning warning);
 
     void reStartWarning(int id);
+
+    List<Warning> getWarningDetailByAid(int id);
+
+    void updateWarningRoleIdList(Warning warning);
+
+    void updateWarningDetail(Warning warning);
 }

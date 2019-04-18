@@ -24,4 +24,15 @@ public interface WarningMapper {
     int searchWaringCount(Warning warning);
 
     void reStartWarning(int id);
+
+    List<Warning> getWarningDetailByAid(int id);
+
+    void deleteRoleListByAid(int id);
+
+    void deleteDetailByAid(int id);
+
+    void addRoleIdList(Warning warning);
+
+    void addDetailList(Warning warning);
+
 }

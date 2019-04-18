@@ -1,5 +1,10 @@
 package com.jdlink.domain;
 
+import com.jdlink.domain.Inventory.WareHouse;
+
+import javax.xml.crypto.Data;
+import java.util.List;
+
 /**
  * 预警模块数据结构
  */
@@ -39,6 +44,42 @@ public class Warning {
 
     /*状态*/
     private int useable;
+    /**
+     * 配置的角色ID集合
+     */
+    private List<Integer> roleIdList;
+    /**
+     * 详细配置
+     */
+    private List<Warning> warningList;
+    /**
+     * 修改人
+     */
+    private String modifier;
+
+    public String getModifier() {
+        return modifier;
+    }
+
+    public void setModifier(String modifier) {
+        this.modifier = modifier;
+    }
+
+    public List<Warning> getWarningList() {
+        return warningList;
+    }
+
+    public void setWarningList(List<Warning> warningList) {
+        this.warningList = warningList;
+    }
+
+    public List<Integer> getRoleIdList() {
+        return roleIdList;
+    }
+
+    public void setRoleIdList(List<Integer> roleIdList) {
+        this.roleIdList = roleIdList;
+    }
 
     public int getUseable() {
         return useable;

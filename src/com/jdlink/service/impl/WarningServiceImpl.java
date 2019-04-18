@@ -57,4 +57,19 @@ public class WarningServiceImpl implements WarningService {
     public void reStartWarning(int id) {
         warningMapper.reStartWarning(id);
     }
+
+    @Override
+    public List<Warning> getWarningDetailByAid(int id) { return warningMapper.getWarningDetailByAid(id); }
+
+    @Override
+    public void updateWarningRoleIdList(Warning warning) {
+         warningMapper.deleteRoleListByAid(warning.getId());  // 删除旧数据
+         warningMapper.addRoleIdList(warning);   // 新增数据
+    }
+
+    @Override
+    public void updateWarningDetail(Warning warning) {
+        warningMapper.deleteDetailByAid(warning.getId());   // 删除旧数据
+        warningMapper.addDetailList(warning);      // 新增数据
+    }
 }
