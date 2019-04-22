@@ -1479,3 +1479,102 @@ function getEmail(mail) {
 function emailSettings() {
     $("#emailSettingsModal").modal('show')
 }
+
+/**
+ *  点击表头排序方法
+ *  el  this 当前点击元素
+ *   tbodyId  tbody标签的id (可以不填)
+ *   compareFun  比较函数  内部定义，无需传值
+ * */
+function sortTable(el, tbodyId, compareFun) {
+    // 添加其它列的状态
+    var nowTd = $(el);
+    if (!nowTd.is('th')) {   // 如果元素是th标签
+        nowTd = nowTd.closest('th');  // 获取第一个为th的父标签
+    }
+    nowTd.siblings('th').each(function() {
+        if ($(this).find('[data-dirct]').length) {  // 如果之前存在排序则删除
+            $(this).find('[data-dirct]').attr('data-dirct', '');
+        } else {
+            $(this).attr('data-dirct', '');
+        }
+    });
+    var nowDirct = $(el).attr('data-dirct');
+    var table = $(el).closest('table');
+    //var tbody = $('#' + tbodyId);    // 获取tbody
+    var tbody = nowTd.parent().parent().next();   // 获取tbody
+    if (!nowDirct) {
+        nowDirct = 'asc';
+        $(el).attr('data-dirct', nowDirct);
+    } else {
+        $(el).attr('data-dirct', nowDirct === 'asc' ? 'desc' : 'asc');
+        reverse();
+        //   setSeq();   // 序号重新排序
+        return;
+    }
+
+    /**
+     * 反向排序
+     * */
+    function reverse() {
+        var trs2 = table.find('tr:not(:first)');  // 除去表头，一个数据行
+        for ( var i = trs2.length - 2; i >= 0; i--) {  // 反向插入
+            trs2.eq(i).appendTo(tbody);
+        }
+    }
+
+    /**
+     * 重新设置序号
+     */
+    function setSeq() {
+        var tsq = table.find('.sequence');   // 需要设置序号的列需提前在该列td上设置class='sequence'
+        for ( var i = 0; i < tsq.length; i++) {
+            tsq.eq(i).text((i + 1));
+        }
+    }
+
+    /**
+     * 获取td的值
+     * @param td
+     * @returns {*}
+     */
+    function getTdVal(td) {
+        // var val = td.attr('data-val');   // 获取data-val属性
+        // if (!val) {  // 没有按该td排序则获取该td的内容
+        //     val = $.trim(td.text());
+        // }
+        var val = $.trim(td.text());
+        if (/^[\d\.]+$/.test(val)) {  // 如果该td的内容是数字 则转化为数值类型
+            val = 1 * val;
+        }
+        return val;
+    }
+
+    if (!compareFun) {  // 如果该比较函数未定义则新定义如下：如果str1>str2则返回大于0的数，<则返回小于0的数，=则返回0
+        compareFun = function(str1, str2) {
+            if (typeof str1 === "number" && typeof str2 === "number") {  // 如果两个值都是数值则返回两值之差
+                return str1 - str2;
+            } else {  // 否则返回
+                str1 = '' + str1;
+                str2 = '' + str2;
+                return str1.localeCompare(str2);  // 比较字符串
+            }
+        }
+    }
+    // 得到所有tr 得到单元格位置
+    var trs = $(el).closest('table').find('tr:not(:first)');
+    var index = $(el).closest('th').index();    // 返回该td的相对位置index,即获取该列的列数
+    for ( var i = 0; i < trs.length - 1; i++) {  // 遍历所有数据行
+        for ( var j = 0; j < trs.length - 1 - i; j++) {  // 所有行之间两两进行比较
+            var str1 = getTdVal(trs.eq(j).find('td').eq(index));   // 获取该列的值
+            var str2 = getTdVal(trs.eq(j + 1).find('td').eq(index));
+            if (compareFun(str1, str2) > 0) { // 如果j行比j+1行大
+                trs.eq(j + 1).after(trs.eq(j));  // 调换位置
+                var tmp = trs[j + 1];   // 并将trs中两行的位置进行调换，方便下次遍历比较
+                trs[j + 1] = trs[j];
+                trs[j] = tmp;
+            }
+        }
+    }
+    //  setSeq();  // 设置序号
+}
