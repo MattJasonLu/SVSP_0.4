@@ -302,10 +302,10 @@
                                         <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
                                     </label>
                                 </th>
-                                <th class="text-center">合同编号</th>
-                                <th class="text-center" id="toggleName" style="width: 300px;">供应商名称</th><!--相当于公司名称-->
-                                <th class="text-center">合同名称</th>
-                                <th class="text-center">
+                                <th class="text-center" onclick="sortTable(this,'')">合同编号</th>
+                                <th class="text-center" onclick="sortTable(this,'')" id="toggleName" style="width: 300px;">供应商名称</th><!--相当于公司名称-->
+                                <th class="text-center" onclick="sortTable(this,'')">合同名称</th>
+                                <th class="text-center" onclick="sortTable(this,'')">
                                     <div class="form-inline">
                                         <label class="control-label">状态</label>
                                         <select class="form-control" id="state"  onchange="getstate(this)" style="height: 80%; font-size: x-small; display: none" >
@@ -320,13 +320,13 @@
                                 </th>
                                 <!--<th class="text-center" style="width: 200px">公司名称</th>-->
                                 <!--<th class="text-center">所属区域</th>-->
-                                <th class="text-center hidden">合约量</th>
-                                <th class="text-center">联系人</th>
-                                <th class="text-center">联系方式</th>
-                                <th class="text-center">签订日期</th>
-                                <th class="text-center">截止日期</th>
-                                <th class="text-center">小额合同</th>
-                                <th class="text-center">录入人</th>
+                                <th class="text-center hidden" onclick="sortTable(this,'')">合约量</th>
+                                <th class="text-center" onclick="sortTable(this,'')">联系人</th>
+                                <th class="text-center" onclick="sortTable(this,'')">联系方式</th>
+                                <th class="text-center" onclick="sortTable(this,'')">签订日期</th>
+                                <th class="text-center" onclick="sortTable(this,'')">截止日期</th>
+                                <th class="text-center" onclick="sortTable(this,'')">小额合同</th>
+                                <th class="text-center" onclick="sortTable(this,'')">录入人</th>
                                 <th class="text-center">操作</th>
                             </tr>
                             </thead>
